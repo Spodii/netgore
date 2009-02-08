@@ -1,4 +1,0 @@
-C:\Programming\Platyform\DemoGame.Client\Content\obj\x86\Profile\ResolveAssemblyReference.cache
-C:\Programming\Platyform\DemoGame.Client\Content\obj\x86\Release\ResolveAssemblyReference.cache
-E:\Platyform\DemoGame.Client\Content\obj\x86\Release\ResolveAssemblyReference.cache
-E:\Platyform\DemoGame.Client\Content\obj\x86\Debug\ResolveAssemblyReference.cache
