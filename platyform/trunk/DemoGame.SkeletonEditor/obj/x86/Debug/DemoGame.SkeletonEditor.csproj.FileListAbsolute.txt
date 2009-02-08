@@ -1,8 +1,0 @@
-E:\Platyform\DemoGame.Client\bin\Debug\DemoGame.SkeletonEditor.exe
-E:\Platyform\DemoGame.Client\bin\Debug\DemoGame.SkeletonEditor.pdb
-E:\Platyform\DemoGame.SkeletonEditor\obj\x86\Debug\ResolveAssemblyReference.cache
-E:\Platyform\DemoGame.SkeletonEditor\obj\x86\Debug\DemoGame.SkeletonEditor.Properties.Resources.resources
-E:\Platyform\DemoGame.SkeletonEditor\obj\x86\Debug\DemoGame.SkeletonEditor.ScreenForm.resources
-E:\Platyform\DemoGame.SkeletonEditor\obj\x86\Debug\DemoGame.SkeletonEditor.csproj.GenerateResource.Cache
-E:\Platyform\DemoGame.SkeletonEditor\obj\x86\Debug\DemoGame.SkeletonEditor.exe
-E:\Platyform\DemoGame.SkeletonEditor\obj\x86\Debug\DemoGame.SkeletonEditor.pdb
