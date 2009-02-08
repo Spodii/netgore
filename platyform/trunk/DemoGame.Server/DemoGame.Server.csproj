@@ -1,0 +1,204 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DemoGame.Server</RootNamespace>
+    <AssemblyName>DemoGame.Server</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AI\AIBase.cs" />
+    <Compile Include="AI\TestAI.cs" />
+    <Compile Include="Characters\Alliance.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Characters\AllianceManager.cs" />
+    <Compile Include="Characters\Character.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Characters\NPC.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Characters\NPCDrop.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Characters\NPCDropManager.cs" />
+    <Compile Include="GuidCreatorBase.cs" />
+    <Compile Include="Items\Inventory.cs" />
+    <Compile Include="Items\InventoryChangeInfo.cs" />
+    <Compile Include="Items\InventoryChangeTracker.cs" />
+    <Compile Include="Items\InventoryUpdateTracker.cs" />
+    <Compile Include="Items\ItemGuidCreator.cs" />
+    <Compile Include="Items\ItemStats.cs" />
+    <Compile Include="Items\ItemTemplates.cs" />
+    <Compile Include="Items\ItemValueTracker.cs" />
+    <Compile Include="Items\NPCInventory.cs" />
+    <Compile Include="ConsoleCommands.cs" />
+    <Compile Include="Items\ItemValues.cs" />
+    <Compile Include="Items\UserEquipped.cs" />
+    <Compile Include="Items\UserInventoryUpdater.cs" />
+    <Compile Include="Say\SayCommandAttribute.cs" />
+    <Compile Include="Say\SayCommandCallback.cs" />
+    <Compile Include="Say\SayCommandManager.cs" />
+    <Compile Include="Say\SayHandler.cs" />
+    <Compile Include="Networking\ServerPacket.cs" />
+    <Compile Include="Networking\ServerPacketHandler.cs" />
+    <Compile Include="SQL\DBController.cs" />
+    <Compile Include="SQL\Item\UpdateItemFieldQuery.cs" />
+    <Compile Include="SQL\Item\UpdateItemFieldValues.cs" />
+    <Compile Include="SQL\UserEquipped\DeleteUserEquippedQuery.cs" />
+    <Compile Include="SQL\UserItems\InsertUserItemQuery.cs" />
+    <Compile Include="SQL\OrdinalCacheBase.cs" />
+    <Compile Include="SQL\UserItems\DeleteUserItemQuery.cs" />
+    <Compile Include="SQL\Item\SelectItemQuery.cs" />
+    <Compile Include="SQL\Item\DeleteItemQuery.cs" />
+    <Compile Include="SQL\Item\ReplaceItemQuery.cs" />
+    <Compile Include="SQL\UserEquipped\UpdateUserEquipQuery.cs" />
+    <Compile Include="SQL\UserEquipped\UpdateUserEquipValues.cs" />
+    <Compile Include="SQL\User\UserQueryValues.cs" />
+    <Compile Include="World\IDynamicEntity.cs" />
+    <Compile Include="SQL\User\InsertUserQuery.cs" />
+    <Compile Include="Items\UserInventory.cs" />
+    <Compile Include="Items\ItemEntity.cs" />
+    <Compile Include="Items\ItemTemplate.cs" />
+    <Compile Include="SQL\User\UpdateUserQuery.cs" />
+    <Compile Include="Stats\IUpdateableStat.cs" />
+    <Compile Include="Stats\IUserStat.cs" />
+    <Compile Include="Stats\ModUserStat.cs" />
+    <Compile Include="Stats\NPCStats.cs" />
+    <Compile Include="Stats\StatUpdateHandlers.cs" />
+    <Compile Include="Stats\UserStat.cs" />
+    <Compile Include="Stats\UserStats.cs" />
+    <Compile Include="SQL\NonReaderQueryBase.cs" />
+    <Compile Include="SQL\User\UserQueryBase.cs" />
+    <Compile Include="World\IMapItemEntity.cs" />
+    <Compile Include="World\Map.cs" />
+    <Compile Include="Characters\NPCTemplate.cs" />
+    <Compile Include="Characters\NPCTemplateManager.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server.cs" />
+    <Compile Include="ServerSettings.cs" />
+    <Compile Include="Networking\ServerSockets.cs" />
+    <Compile Include="Characters\User.cs" />
+    <Compile Include="World\TeleportEntity.cs" />
+    <Compile Include="World\Wall.cs" />
+    <Compile Include="World\World.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DemoGame.Extensions\DemoGame.Extensions.csproj">
+      <Project>{DA62F910-7F9B-4E95-96C2-EB0CAD308BA9}</Project>
+      <Name>DemoGame.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MySql.Data\MySql.Data.csproj">
+      <Project>{E9DF5ED1-4CBD-4226-B931-9A51610AC14D}</Project>
+      <Name>MySql.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platyform.Extensions\Platyform.Extensions.csproj">
+      <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
+      <Name>Platyform.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platyform.IO\Platyform.IO.csproj">
+      <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
+      <Name>Platyform.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platyform.Network\Platyform.Network.csproj">
+      <Project>{B51BE2B8-B1A9-460A-BC38-794FAC66636C}</Project>
+      <Name>Platyform.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platyform\Platyform.csproj">
+      <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
+      <Name>Platyform</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoGame\DemoGame.csproj">
+      <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
+      <Name>DemoGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\System.Bits\System.Bits.csproj">
+      <Project>{51AA57D1-ADC2-48D5-88F0-DDBDAAF37DFB}</Project>
+      <Name>System.Bits</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Settings.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)\..\DemoGame.Client\Content\Maps" "$(TargetDir)Content\Maps" /E /C /R /K /I /Y
+xcopy "$(ProjectDir)\..\DemoGame.Client\Content\Data" "$(TargetDir)Content\Data" /E /C /R /K /I /Y</PostBuildEvent>
+  </PropertyGroup>
+</Project>

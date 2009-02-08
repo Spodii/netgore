@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Bodies>
+	<Body Index="1">
+		<Size Width="30" Height="78" />
+		<Body SkelBody="basic" />
+		<Stand SkelSet="stand" />
+		<Walk SkelSet="walk" />
+		<Jump SkelSet="jump" />
+		<Fall SkelSet="fall" />
+		
+		<Punch SkelSet="punch" X="$width/2" Y="0" Width="$width" Height="$height/2" />
+	</Body>
+</Bodies>

@@ -1,0 +1,7 @@
+E:\Platyform\DemoGame.Client\bin\Debug\Content\SpriteFont1.xnb
+E:\Platyform\DemoGame.Client\bin\Debug\DemoGame.GUITester.exe
+E:\Platyform\DemoGame.Client\bin\Debug\DemoGame.GUITester.pdb
+E:\Platyform\DemoGame.GUITester\obj\x86\Debug\ResolveAssemblyReference.cache
+E:\Platyform\DemoGame.GUITester\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+E:\Platyform\DemoGame.GUITester\obj\x86\Debug\DemoGame.GUITester.exe
+E:\Platyform\DemoGame.GUITester\obj\x86\Debug\DemoGame.GUITester.pdb

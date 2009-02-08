@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Set>
+  <Frame>
+    <Delay>120</Delay>
+    <FileName>walk1</FileName>
+  </Frame>
+  <Frame>
+    <Delay>120</Delay>
+    <FileName>walk2</FileName>
+  </Frame>
+  <Frame>
+    <Delay>120</Delay>
+    <FileName>walk3</FileName>
+  </Frame>
+  <Frame>
+    <Delay>120</Delay>
+    <FileName>walk4</FileName>
+  </Frame>
+  <Frame>
+    <Delay>120</Delay>
+    <FileName>walk5</FileName>
+  </Frame>
+  <Frame>
+    <Delay>120</Delay>
+    <FileName>walk6</FileName>
+  </Frame>
+  <Frame>
+    <Delay>120</Delay>
+    <FileName>walk7</FileName>
+  </Frame>
+  <Frame>
+    <Delay>120</Delay>
+    <FileName>walk8</FileName>
+  </Frame>
+</Set>

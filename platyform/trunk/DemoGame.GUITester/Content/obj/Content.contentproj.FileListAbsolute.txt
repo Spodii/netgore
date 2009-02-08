@@ -1,0 +1,5 @@
+C:\Programming\Projects\WindowsGame1\WindowsGame1\Content\obj\x86\Debug\ResolveAssemblyReference.cache
+C:\Programming\Projects\WindowsGame1\WindowsGame1\Content\obj\x86\Release\ResolveAssemblyReference.cache
+C:\Programming\Platyform\DemoGame.GUITester\Content\obj\x86\Release\ResolveAssemblyReference.cache
+E:\Platyform\DemoGame.GUITester\Content\obj\x86\Release\ResolveAssemblyReference.cache
+E:\Platyform\DemoGame.GUITester\Content\obj\x86\Debug\ResolveAssemblyReference.cache

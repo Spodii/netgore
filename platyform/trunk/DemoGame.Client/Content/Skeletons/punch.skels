@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Set>
+  <Frame>
+    <Delay>80</Delay>
+    <FileName>punch1</FileName>
+  </Frame>
+  <Frame>
+    <Delay>60</Delay>
+    <FileName>punch2</FileName>
+  </Frame>
+  <Frame>
+    <Delay>90</Delay>
+    <FileName>punch3</FileName>
+  </Frame>
+  <Frame>
+    <Delay>100</Delay>
+    <FileName>punch2</FileName>
+  </Frame>
+</Set>

@@ -1,0 +1,718 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Grhs>
+  <Grh Index="1">
+    <Frames Count="1" />
+    <Texture File="1" X="0" Y="0" W="32" H="32" />
+    <Category Name="Map.Platform.Grass" Title="Top-Left" />
+  </Grh>
+  <Grh Index="2">
+    <Frames Count="1" />
+    <Texture File="1" X="32" Y="0" W="32" H="32" />
+    <Category Name="Map.Platform.Grass" Title="Top-Mid" />
+  </Grh>
+  <Grh Index="3">
+    <Frames Count="1" />
+    <Texture File="1" X="64" Y="0" W="32" H="32" />
+    <Category Name="Map.Platform.Grass" Title="Top-Right" />
+  </Grh>
+  <Grh Index="4">
+    <Frames Count="1" />
+    <Texture File="1" X="0" Y="32" W="32" H="32" />
+    <Category Name="Map.Platform.Grass" Title="Mid-Left" />
+  </Grh>
+  <Grh Index="5">
+    <Frames Count="1" />
+    <Texture File="1" X="32" Y="32" W="32" H="32" />
+    <Category Name="Map.Platform.Grass" Title="Mid-Mid" />
+  </Grh>
+  <Grh Index="6">
+    <Frames Count="1" />
+    <Texture File="1" X="64" Y="32" W="32" H="32" />
+    <Category Name="Map.Platform.Grass" Title="Mid-Right" />
+  </Grh>
+  <Grh Index="7">
+    <Frames Count="1" />
+    <Texture File="1" X="0" Y="64" W="32" H="1" />
+    <Category Name="Map.Platform.Grass" Title="Bottom" />
+  </Grh>
+  <Grh Index="8">
+    <Frames Count="2" F1="1" F2="3" />
+    <Anim Speed="100" />
+    <Category Name="Map.Platform.Grass" Title="RAPE" />
+  </Grh>
+  <Grh Index="9">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="10" Y="36" W="4" H="4" />
+    <Category Name="GUI.Default.Controls.Form" Title="Background" />
+  </Grh>
+  <Grh Index="10">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="2" Y="36" W="4" H="4" />
+    <Category Name="GUI.Default.Controls.Form" Title="Left" />
+  </Grh>
+  <Grh Index="11">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="18" Y="36" W="4" H="4" />
+    <Category Name="GUI.Default.Controls.Form" Title="Right" />
+  </Grh>
+  <Grh Index="12">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="10" Y="44" W="4" H="4" />
+    <Category Name="GUI.Default.Controls.Form" Title="Bottom" />
+  </Grh>
+  <Grh Index="13">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="2" Y="44" W="4" H="4" />
+    <Category Name="GUI.Default.Controls.Form" Title="BottomLeft" />
+  </Grh>
+  <Grh Index="14">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="18" Y="44" W="4" H="4" />
+    <Category Name="GUI.Default.Controls.Form" Title="BottomRight" />
+  </Grh>
+  <Grh Index="15">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="2" Y="2" W="4" H="20" />
+    <Category Name="GUI.Default.Controls.Form" Title="TopLeft" />
+  </Grh>
+  <Grh Index="16">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="10" Y="2" W="4" H="20" />
+    <Category Name="GUI.Default.Controls.Form" Title="Top" />
+  </Grh>
+  <Grh Index="17">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="18" Y="2" W="4" H="20" />
+    <Category Name="GUI.Default.Controls.Form" Title="TopRight" />
+  </Grh>
+  <Grh Index="18">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="39" Y="41" W="2" H="2" />
+    <Category Name="GUI.Default.Controls.TextBox" Title="Background" />
+  </Grh>
+  <Grh Index="19">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="34" Y="41" W="2" H="2" />
+    <Category Name="GUI.Default.Controls.TextBox" Title="Left" />
+  </Grh>
+  <Grh Index="20">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="44" Y="41" W="2" H="2" />
+    <Category Name="GUI.Default.Controls.TextBox" Title="Right" />
+  </Grh>
+  <Grh Index="21">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="39" Y="46" W="2" H="2" />
+    <Category Name="GUI.Default.Controls.TextBox" Title="Bottom" />
+  </Grh>
+  <Grh Index="22">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="39" Y="36" W="2" H="2" />
+    <Category Name="GUI.Default.Controls.TextBox" Title="Top" />
+  </Grh>
+  <Grh Index="23">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="34" Y="36" W="2" H="2" />
+    <Category Name="GUI.Default.Controls.TextBox" Title="TopLeft" />
+  </Grh>
+  <Grh Index="24">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="44" Y="36" W="2" H="2" />
+    <Category Name="GUI.Default.Controls.TextBox" Title="TopRight" />
+  </Grh>
+  <Grh Index="25">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="34" Y="46" W="2" H="2" />
+    <Category Name="GUI.Default.Controls.TextBox" Title="BottomLeft" />
+  </Grh>
+  <Grh Index="26">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="44" Y="46" W="2" H="2" />
+    <Category Name="GUI.Default.Controls.TextBox" Title="BottomRight" />
+  </Grh>
+  <Grh Index="27">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="112" Y="36" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button" Title="Background" />
+  </Grh>
+  <Grh Index="28">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="103" Y="36" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button" Title="Left" />
+  </Grh>
+  <Grh Index="29">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="112" Y="28" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button" Title="Top" />
+  </Grh>
+  <Grh Index="30">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="121" Y="36" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button" Title="Right" />
+  </Grh>
+  <Grh Index="31">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="112" Y="44" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button" Title="Bottom" />
+  </Grh>
+  <Grh Index="32">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="103" Y="28" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button" Title="TopLeft" />
+  </Grh>
+  <Grh Index="33">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="121" Y="28" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button" Title="TopRight" />
+  </Grh>
+  <Grh Index="34">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="103" Y="44" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button" Title="BottomLeft" />
+  </Grh>
+  <Grh Index="35">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="121" Y="44" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button" Title="BottomRight" />
+  </Grh>
+  <Grh Index="36">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="112" Y="11" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.Pressed" Title="Background" />
+  </Grh>
+  <Grh Index="37">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="103" Y="11" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.Pressed" Title="Left" />
+  </Grh>
+  <Grh Index="38">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="112" Y="3" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.Pressed" Title="Top" />
+  </Grh>
+  <Grh Index="39">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="121" Y="11" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.Pressed" Title="Right" />
+  </Grh>
+  <Grh Index="40">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="112" Y="19" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.Pressed" Title="Bottom" />
+  </Grh>
+  <Grh Index="41">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="103" Y="3" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.Pressed" Title="TopLeft" />
+  </Grh>
+  <Grh Index="42">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="121" Y="3" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.Pressed" Title="TopRight" />
+  </Grh>
+  <Grh Index="43">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="103" Y="19" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.Pressed" Title="BottomLeft" />
+  </Grh>
+  <Grh Index="44">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="121" Y="19" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.Pressed" Title="BottomRight" />
+  </Grh>
+  <Grh Index="45">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="84" Y="11" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.MouseOver" Title="Background" />
+  </Grh>
+  <Grh Index="46">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="75" Y="11" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.MouseOver" Title="Left" />
+  </Grh>
+  <Grh Index="47">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="84" Y="3" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.MouseOver" Title="Top" />
+  </Grh>
+  <Grh Index="48">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="93" Y="11" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.MouseOver" Title="Right" />
+  </Grh>
+  <Grh Index="49">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="84" Y="19" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.MouseOver" Title="Bottom" />
+  </Grh>
+  <Grh Index="50">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="75" Y="3" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.MouseOver" Title="TopLeft" />
+  </Grh>
+  <Grh Index="51">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="93" Y="3" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.MouseOver" Title="TopRight" />
+  </Grh>
+  <Grh Index="52">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="75" Y="19" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.MouseOver" Title="BottomLeft" />
+  </Grh>
+  <Grh Index="53">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="93" Y="19" W="5" H="5" />
+    <Category Name="GUI.Default.Controls.Button.MouseOver" Title="BottomRight" />
+  </Grh>
+  <Grh Index="54">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="84" Y="11" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.MouseOver" Title="Background" />
+  </Grh>
+  <Grh Index="55">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="84" Y="19" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.MouseOver" Title="Bottom" />
+  </Grh>
+  <Grh Index="56">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="75" Y="19" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.MouseOver" Title="BottomLeft" />
+  </Grh>
+  <Grh Index="57">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="93" Y="19" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.MouseOver" Title="BottomRight" />
+  </Grh>
+  <Grh Index="58">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="75" Y="11" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.MouseOver" Title="Left" />
+  </Grh>
+  <Grh Index="59">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="93" Y="11" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.MouseOver" Title="Right" />
+  </Grh>
+  <Grh Index="60">
+    <Frames Count="1" />
+    <Texture File="gui/addstat" X="1" Y="1" W="12" H="12" />
+    <Category Name="GUI" Title="AddStat" />
+  </Grh>
+  <Grh Index="61">
+    <Frames Count="1" />
+    <Texture File="System/Blank" X="1" Y="1" W="2" H="2" />
+    <Category Name="System" Title="Blank" />
+  </Grh>
+  <Grh Index="62">
+    <Frames Count="1" />
+    <Texture File="System/Joint" X="1" Y="1" W="6" H="6" />
+    <Category Name="System" Title="Joint" />
+  </Grh>
+  <Grh Index="63">
+    <Frames Count="1" />
+    <Texture File="System/Triangle" X="0" Y="0" W="32" H="32" />
+    <Category Name="System" Title="Triangle" />
+  </Grh>
+  <Grh Index="64">
+    <Frames Count="1" />
+    <Texture File="System/Move" X="1" Y="1" W="15" H="15" />
+    <Category Name="System" Title="Move" />
+  </Grh>
+  <Grh Index="65">
+    <Frames Count="1" />
+    <Texture File="System/Resize" X="1" Y="1" W="6" H="6" />
+    <Category Name="System" Title="Resize" />
+  </Grh>
+  <Grh Index="66">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="84" Y="3" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.MouseOver" Title="Top" />
+  </Grh>
+  <Grh Index="67">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="75" Y="3" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.MouseOver" Title="TopLeft" />
+  </Grh>
+  <Grh Index="68">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="93" Y="3" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.MouseOver" Title="TopRight" />
+  </Grh>
+  <Grh Index="69">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="112" Y="11" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.Pressed" Title="Background" />
+  </Grh>
+  <Grh Index="70">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="112" Y="19" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.Pressed" Title="Bottom" />
+  </Grh>
+  <Grh Index="71">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="103" Y="19" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.Pressed" Title="BottomLeft" />
+  </Grh>
+  <Grh Index="72">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="121" Y="19" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.Pressed" Title="BottomRight" />
+  </Grh>
+  <Grh Index="73">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="103" Y="11" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.Pressed" Title="Left" />
+  </Grh>
+  <Grh Index="74">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="121" Y="11" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.Pressed" Title="Right" />
+  </Grh>
+  <Grh Index="75">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="112" Y="3" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.Pressed" Title="Top" />
+  </Grh>
+  <Grh Index="76">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="103" Y="3" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.Pressed" Title="TopLeft" />
+  </Grh>
+  <Grh Index="77">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="121" Y="3" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button.Pressed" Title="TopRight" />
+  </Grh>
+  <Grh Index="78">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="112" Y="36" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button" Title="Background" />
+  </Grh>
+  <Grh Index="79">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="112" Y="44" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button" Title="Bottom" />
+  </Grh>
+  <Grh Index="80">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="103" Y="44" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button" Title="BottomLeft" />
+  </Grh>
+  <Grh Index="81">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="121" Y="44" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button" Title="BottomRight" />
+  </Grh>
+  <Grh Index="82">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="103" Y="36" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button" Title="Left" />
+  </Grh>
+  <Grh Index="83">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="121" Y="36" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button" Title="Right" />
+  </Grh>
+  <Grh Index="84">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="112" Y="28" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button" Title="Top" />
+  </Grh>
+  <Grh Index="85">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="103" Y="28" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button" Title="TopLeft" />
+  </Grh>
+  <Grh Index="86">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="121" Y="28" W="5" H="5" />
+    <Category Name="GUI.XP.Controls.Button" Title="TopRight" />
+  </Grh>
+  <Grh Index="87">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="10" Y="36" W="4" H="4" />
+    <Category Name="GUI.XP.Controls.Form" Title="Background" />
+  </Grh>
+  <Grh Index="88">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="10" Y="44" W="4" H="4" />
+    <Category Name="GUI.XP.Controls.Form" Title="Bottom" />
+  </Grh>
+  <Grh Index="89">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="2" Y="44" W="4" H="4" />
+    <Category Name="GUI.XP.Controls.Form" Title="BottomLeft" />
+  </Grh>
+  <Grh Index="90">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="18" Y="44" W="4" H="4" />
+    <Category Name="GUI.XP.Controls.Form" Title="BottomRight" />
+  </Grh>
+  <Grh Index="91">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="2" Y="36" W="4" H="4" />
+    <Category Name="GUI.XP.Controls.Form" Title="Left" />
+  </Grh>
+  <Grh Index="92">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="18" Y="36" W="4" H="4" />
+    <Category Name="GUI.XP.Controls.Form" Title="Right" />
+  </Grh>
+  <Grh Index="93">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="10" Y="2" W="52" H="30" />
+    <Category Name="GUI.XP.Controls.Form" Title="Top" />
+  </Grh>
+  <Grh Index="94">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="2" Y="2" W="5" H="30" />
+    <Category Name="GUI.XP.Controls.Form" Title="TopLeft" />
+  </Grh>
+  <Grh Index="95">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="65" Y="2" W="5" H="30" />
+    <Category Name="GUI.XP.Controls.Form" Title="TopRight" />
+  </Grh>
+  <Grh Index="96">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="39" Y="41" W="2" H="2" />
+    <Category Name="GUI.XP.Controls.TextBox" Title="Background" />
+  </Grh>
+  <Grh Index="97">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="39" Y="46" W="2" H="2" />
+    <Category Name="GUI.XP.Controls.TextBox" Title="Bottom" />
+  </Grh>
+  <Grh Index="98">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="34" Y="46" W="2" H="2" />
+    <Category Name="GUI.XP.Controls.TextBox" Title="BottomLeft" />
+  </Grh>
+  <Grh Index="99">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="44" Y="46" W="2" H="2" />
+    <Category Name="GUI.XP.Controls.TextBox" Title="BottomRight" />
+  </Grh>
+  <Grh Index="100">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="34" Y="41" W="2" H="2" />
+    <Category Name="GUI.XP.Controls.TextBox" Title="Left" />
+  </Grh>
+  <Grh Index="101">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="44" Y="41" W="2" H="2" />
+    <Category Name="GUI.XP.Controls.TextBox" Title="Right" />
+  </Grh>
+  <Grh Index="102">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="39" Y="36" W="2" H="2" />
+    <Category Name="GUI.XP.Controls.TextBox" Title="Top" />
+  </Grh>
+  <Grh Index="103">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="34" Y="36" W="2" H="2" />
+    <Category Name="GUI.XP.Controls.TextBox" Title="TopLeft" />
+  </Grh>
+  <Grh Index="104">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="44" Y="36" W="2" H="2" />
+    <Category Name="GUI.XP.Controls.TextBox" Title="TopRight" />
+  </Grh>
+  <Grh Index="105">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="65" Y="37" W="13" H="13" />
+    <Category Name="GUI.Default.Controls.CheckBox" Title="Unticked" />
+  </Grh>
+  <Grh Index="106">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="65" Y="53" W="13" H="13" />
+    <Category Name="GUI.Default.Controls.CheckBox" Title="UntickedMouseOver" />
+  </Grh>
+  <Grh Index="107">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="65" Y="69" W="13" H="13" />
+    <Category Name="GUI.Default.Controls.CheckBox" Title="UntickedPressed" />
+  </Grh>
+  <Grh Index="108">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="82" Y="37" W="13" H="13" />
+    <Category Name="GUI.Default.Controls.CheckBox" Title="Ticked" />
+  </Grh>
+  <Grh Index="109">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="82" Y="53" W="13" H="13" />
+    <Category Name="GUI.Default.Controls.CheckBox" Title="TickedMouseOver" />
+  </Grh>
+  <Grh Index="110">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/controls" X="82" Y="69" W="13" H="13" />
+    <Category Name="GUI.Default.Controls.CheckBox" Title="TickedPressed" />
+  </Grh>
+  <Grh Index="111">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="82" Y="37" W="13" H="13" />
+    <Category Name="GUI.XP.Controls.CheckBox" Title="Ticked" />
+  </Grh>
+  <Grh Index="112">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="82" Y="53" W="13" H="13" />
+    <Category Name="GUI.XP.Controls.CheckBox" Title="TickedMouseOver" />
+  </Grh>
+  <Grh Index="113">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="82" Y="69" W="13" H="13" />
+    <Category Name="GUI.XP.Controls.CheckBox" Title="TickedPressed" />
+  </Grh>
+  <Grh Index="114">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="65" Y="37" W="13" H="13" />
+    <Category Name="GUI.XP.Controls.CheckBox" Title="Unticked" />
+  </Grh>
+  <Grh Index="115">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="65" Y="53" W="13" H="13" />
+    <Category Name="GUI.XP.Controls.CheckBox" Title="UntickedMouseOver" />
+  </Grh>
+  <Grh Index="116">
+    <Frames Count="1" />
+    <Texture File="GUI/XP/controls" X="65" Y="69" W="13" H="13" />
+    <Category Name="GUI.XP.Controls.CheckBox" Title="UntickedPressed" />
+  </Grh>
+  <Grh Index="117">
+    <Frames Count="1" />
+    <Texture File="Effect/Teleport" X="0" Y="0" W="32" H="64" />
+    <Category Name="Effect.Teleport.Frame" Title="1" />
+  </Grh>
+  <Grh Index="118">
+    <Frames Count="1" />
+    <Texture File="Effect/Teleport" X="32" Y="0" W="32" H="64" />
+    <Category Name="Effect.Teleport.Frame" Title="2" />
+  </Grh>
+  <Grh Index="119">
+    <Frames Count="1" />
+    <Texture File="Effect/Teleport" X="64" Y="0" W="32" H="64" />
+    <Category Name="Effect.Teleport.Frame" Title="3" />
+  </Grh>
+  <Grh Index="120">
+    <Frames Count="1" />
+    <Texture File="Effect/Teleport" X="96" Y="0" W="32" H="64" />
+    <Category Name="Effect.Teleport.Frame" Title="4" />
+  </Grh>
+  <Grh Index="121">
+    <Frames Count="1" />
+    <Texture File="Effect/Teleport" X="128" Y="0" W="32" H="64" />
+    <Category Name="Effect.Teleport.Frame" Title="5" />
+  </Grh>
+  <Grh Index="122">
+    <Frames Count="1" />
+    <Texture File="Effect/Teleport" X="160" Y="0" W="32" H="64" />
+    <Category Name="Effect.Teleport.Frame" Title="6" />
+  </Grh>
+  <Grh Index="123">
+    <Frames Count="1" />
+    <Texture File="Effect/Teleport" X="192" Y="0" W="32" H="64" />
+    <Category Name="Effect.Teleport.Frame" Title="7" />
+  </Grh>
+  <Grh Index="124">
+    <Frames Count="1" />
+    <Texture File="Effect/Teleport" X="224" Y="0" W="32" H="64" />
+    <Category Name="Effect.Teleport.Frame" Title="8" />
+  </Grh>
+  <Grh Index="125">
+    <Frames Count="8" F1="117" F2="118" F3="119" F4="120" F5="121" F6="122" F7="123" F8="124" />
+    <Anim Speed="100" />
+    <Category Name="Effect" Title="Teleport" />
+  </Grh>
+  <Grh Index="126">
+    <Frames Count="1" />
+    <Texture File="item/melee/titaniumsword" X="0" Y="0" W="24" H="24" />
+    <Category Name="Item.Melee" Title="TitaniumSword" />
+  </Grh>
+  <Grh Index="127">
+    <Frames Count="1" />
+    <Texture File="Item/Potion/Red" X="1" Y="1" W="9" H="16" />
+    <Category Name="Item.Potion" Title="Red" />
+  </Grh>
+  <Grh Index="128">
+    <Frames Count="1" />
+    <Texture File="Item/Potion/Blue" X="1" Y="1" W="9" H="16" />
+    <Category Name="Item.Potion" Title="Blue" />
+  </Grh>
+  <Grh Index="129">
+    <Frames Count="1" />
+    <Texture File="Item/Back/Crystal" X="0" Y="0" W="15" H="25" />
+    <Category Name="Item.Back" Title="Crystal" />
+  </Grh>
+  <Grh Index="130">
+    <Frames Count="1" />
+    <Texture File="Item/Body/Crystal" X="0" Y="0" W="22" H="22" />
+    <Category Name="Item.Body" Title="Crystal" />
+  </Grh>
+  <Grh Index="131">
+    <Frames Count="1" />
+    <Texture File="Item/Feet/Crystal" X="0" Y="0" W="15" H="14" />
+    <Category Name="Item.Feet" Title="Crystal" />
+  </Grh>
+  <Grh Index="132">
+    <Frames Count="1" />
+    <Texture File="Item/Head/Crystal" X="0" Y="0" W="11" H="16" />
+    <Category Name="Item.Head" Title="Crystal" />
+  </Grh>
+  <Grh Index="133">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/toolbar" X="0" Y="0" W="32" H="32" />
+    <Category Name="GUI.Default.Toolbar" Title="inventory" />
+  </Grh>
+  <Grh Index="134">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/toolbar" X="0" Y="64" W="32" H="32" />
+    <Category Name="GUI.Default.Toolbar" Title="stats" />
+  </Grh>
+  <Grh Index="135">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/toolbar" X="0" Y="32" W="32" H="32" />
+    <Category Name="GUI.Default.Toolbar" Title="equipped" />
+  </Grh>
+  <Grh Index="200">
+    <Frames Count="1" />
+    <Texture File="Character/Zombie/Head" X="0" Y="0" W="19" H="19" />
+    <Category Name="Character.Zombie" Title="Head" />
+  </Grh>
+  <Grh Index="201">
+    <Frames Count="1" />
+    <Texture File="Character/Zombie/Neck" X="0" Y="0" W="5" H="9" />
+    <Category Name="Character.Zombie" Title="Neck" />
+  </Grh>
+  <Grh Index="202">
+    <Frames Count="1" />
+    <Texture File="Character/Zombie/Torso" X="0" Y="0" W="16" H="28" />
+    <Category Name="Character.Zombie" Title="Torso" />
+  </Grh>
+  <Grh Index="203">
+    <Frames Count="1" />
+    <Texture File="Character/Zombie/ArmUpper" X="0" Y="0" W="6" H="10" />
+    <Category Name="Character.Zombie" Title="ArmUpper" />
+  </Grh>
+  <Grh Index="204">
+    <Frames Count="1" />
+    <Texture File="Character/Zombie/ArmLower" X="0" Y="0" W="5" H="21" />
+    <Category Name="Character.Zombie" Title="ArmLower" />
+  </Grh>
+  <Grh Index="205">
+    <Frames Count="1" />
+    <Texture File="Character/Zombie/LegUpper" X="0" Y="0" W="12" H="22" />
+    <Category Name="Character.Zombie" Title="LegUpper" />
+  </Grh>
+  <Grh Index="206">
+    <Frames Count="1" />
+    <Texture File="Character/Zombie/LegLower" X="0" Y="0" W="13" H="19" />
+    <Category Name="Character.Zombie" Title="LegLower" />
+  </Grh>
+  <Grh Index="207">
+    <Frames Count="1" />
+    <Texture File="Character/Zombie/Shoe" X="0" Y="0" W="6" H="17" />
+    <Category Name="Character.Zombie" Title="Shoe" />
+  </Grh>
+</Grhs>

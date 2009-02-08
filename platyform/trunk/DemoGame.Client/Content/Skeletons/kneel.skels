@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Set>
+  <Frame>
+    <Delay>400</Delay>
+    <FileName>stand</FileName>
+  </Frame>
+  <Frame>
+    <Delay>400</Delay>
+    <FileName>kneel1</FileName>
+  </Frame>
+  <Frame>
+    <Delay>400</Delay>
+    <FileName>kneel2</FileName>
+  </Frame>
+  <Frame>
+    <Delay>400</Delay>
+    <FileName>kneel3</FileName>
+  </Frame>
+  <Frame>
+    <Delay>400</Delay>
+    <FileName>kneel3</FileName>
+  </Frame>
+  <Frame>
+    <Delay>400</Delay>
+    <FileName>kneel3</FileName>
+  </Frame>
+  <Frame>
+    <Delay>400</Delay>
+    <FileName>kneel2</FileName>
+  </Frame>
+  <Frame>
+    <Delay>400</Delay>
+    <FileName>kneel1</FileName>
+  </Frame>
+</Set>
