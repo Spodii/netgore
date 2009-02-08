@@ -1,0 +1,123 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using DemoGame.Extensions;
+using Microsoft.Xna.Framework;
+using Platyform;
+using Platyform.Extensions;
+using Platyform.Graphics;
+using Platyform.Graphics.GUI;
+
+namespace DemoGame.Client
+{
+    /// <summary>
+    /// Root object for the Client
+    /// </summary>
+    public class DemoGame : Game
+    {
+        readonly GraphicsDeviceManager graphics;
+        ScreenManager screenManager;
+
+        /// <summary>
+        /// Sets up all the primary components of the game
+        /// </summary>
+        public DemoGame()
+        {
+            // Create the graphics manager and device
+            graphics = new GraphicsDeviceManager(this);
+
+            // Load the game data
+            GameData.Load();
+
+            // No need to use a time step since we use delta time in our updating
+            TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 1000 / 100);
+            IsFixedTimeStep = true;
+        }
+
+        protected override void BeginRun()
+        {
+            base.BeginRun();
+
+            // Create the screen manager
+            screenManager = new ScreenManager(this);
+            Components.Add(screenManager);
+
+            // Load the GrhInfo
+            LoadGrhInfo();
+
+            // Create the screens
+            screenManager.Add(new MainMenuScreen("main menu"));
+            screenManager.Add(new LoginScreen("login"));
+            screenManager.Add(new GameplayScreen("game"));
+            screenManager.SetScreen("main menu");
+        }
+
+        protected override void Initialize()
+        {
+            Content.RootDirectory = ContentPaths.Build.Root;
+            IsMouseVisible = true;
+
+            // Set the graphics settings
+            graphics.SynchronizeWithVerticalRetrace = false; // vsync
+            graphics.PreferMultiSampling = false;
+            graphics.PreferredBackBufferWidth = (int)GameData.ScreenSize.X;
+            graphics.PreferredBackBufferHeight = (int)GameData.ScreenSize.Y;
+            graphics.ApplyChanges();
+
+            base.Initialize();
+        }
+
+        /// <summary>
+        /// Loads the GrhInfo and places them in atlases based on their category
+        /// </summary>
+        void LoadGrhInfo()
+        {
+            // Load the Grh info, using the MapContent for the ContentManager since all
+            // but the map GrhDatas should end up in an atlas. For anything that does not
+            // end up in an atlas, this will provide them a way to load still.
+            GrhInfo.Load(ContentPaths.Build.Data.Join("grhdata.xml"), screenManager.MapContent);
+
+            // Build the texture atlases
+            TextureAtlas atlasChars = new TextureAtlas();
+            TextureAtlas atlasGUI = new TextureAtlas();
+            TextureAtlas atlasMisc = new TextureAtlas();
+
+            foreach (GrhData gd in GrhInfo.GrhDatas)
+            {
+                if (gd.Frames.Length == 1)
+                {
+                    if (gd.Category.Length > 9 && gd.Category.Substring(0, 9).ToLower() == "character")
+                        atlasChars.AtlasItems.Push(gd); // Characters
+                    else if (gd.Category.Length > 3 && gd.Category.Substring(0, 3).ToLower() == "gui")
+                        atlasGUI.AtlasItems.Push(gd); // GUI
+                    else if (!(gd.Category.Length > 3 && gd.Category.Substring(0, 3).ToLower() == "map"))
+                        atlasMisc.AtlasItems.Push(gd); // Misc
+                }
+            }
+
+            // Build the atlases, leaving everything but map Grhs in an atlas
+            atlasChars.Build(GraphicsDevice);
+            atlasGUI.Build(GraphicsDevice);
+            atlasMisc.Build(GraphicsDevice);
+
+            // Unload all of the textures temporarily loaded into the MapContent
+            // from the texture atlasing process
+            screenManager.MapContent.Unload();
+        }
+    }
+
+    /// <summary>
+    /// Main application entry point - does nothing more than start the primary class
+    /// </summary>
+    static class Program
+    {
+        static void Main()
+        {
+            using (DemoGame game = new DemoGame())
+            {
+                game.Run();
+            }
+        }
+    }
+}
