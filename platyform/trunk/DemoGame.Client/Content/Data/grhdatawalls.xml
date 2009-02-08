@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Walls>
+  <Wall GrhData="1" WallCount="1">
+    <Wall0 Type="TriangleTopLeft" X="0" Y="0" W="32" H="32" />
+  </Wall>
+  <Wall GrhData="2" WallCount="1">
+    <Wall0 Type="Full" X="0" Y="0" W="32" H="32" />
+  </Wall>
+  <Wall GrhData="3" WallCount="1">
+    <Wall0 Type="TriangleTopRight" X="0" Y="0" W="32" H="32" />
+  </Wall>
+  <Wall GrhData="4" WallCount="1">
+    <Wall0 Type="Full" X="0" Y="0" W="32" H="32" />
+  </Wall>
+  <Wall GrhData="5" WallCount="1">
+    <Wall0 Type="Full" X="0" Y="0" W="32" H="32" />
+  </Wall>
+  <Wall GrhData="6" WallCount="1">
+    <Wall0 Type="Full" X="0" Y="0" W="32" H="32" />
+  </Wall>
+  <Wall GrhData="7" WallCount="1">
+    <Wall0 Type="Full" X="0" Y="0" W="32" H="1" />
+  </Wall>
+</Walls>

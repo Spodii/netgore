@@ -1,0 +1,80 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Skeleton>
+  <Node>
+    <Name>Back Knee</Name>
+    <X>10.2818</X>
+    <Y>-23.94094</Y>
+    <ParentName>Pelvis</ParentName>
+  </Node>
+  <Node>
+    <Name>Back Foot</Name>
+    <X>-0.8639661</X>
+    <Y>-12.46174</Y>
+    <ParentName>Back Knee</ParentName>
+  </Node>
+  <Node>
+    <Name>Back Toe</Name>
+    <X>7.990859</X>
+    <Y>-5.935478</Y>
+    <ParentName>Back Foot</ParentName>
+  </Node>
+  <Node>
+    <Name>Front Knee</Name>
+    <X>-5.285607</X>
+    <Y>-21.09827</Y>
+    <ParentName>Pelvis</ParentName>
+  </Node>
+  <Node>
+    <Name>Front Foot</Name>
+    <X>-11.8219</X>
+    <Y>-6.49427</Y>
+    <ParentName>Front Knee</ParentName>
+  </Node>
+  <Node>
+    <Name>Front Toe</Name>
+    <X>-1.966107</X>
+    <Y>-1.609268</Y>
+    <ParentName>Front Foot</ParentName>
+  </Node>
+  <Node>
+    <Name>Neck</Name>
+    <X>-1.072884E-06</X>
+    <Y>-60.2</Y>
+    <ParentName>Pelvis</ParentName>
+  </Node>
+  <Node>
+    <Name>Back Elbow</Name>
+    <X>-1.388698</X>
+    <Y>-54.36292</Y>
+    <ParentName>Neck</ParentName>
+  </Node>
+  <Node>
+    <Name>Back Hand</Name>
+    <X>-1.824401</X>
+    <Y>-36.36819</Y>
+    <ParentName>Back Elbow</ParentName>
+  </Node>
+  <Node>
+    <Name>Front Elbow</Name>
+    <X>0.7623539</X>
+    <Y>-54.24863</Y>
+    <ParentName>Neck</ParentName>
+  </Node>
+  <Node>
+    <Name>Front Hand</Name>
+    <X>10.46434</X>
+    <Y>-39.08712</Y>
+    <ParentName>Front Elbow</ParentName>
+  </Node>
+  <Node>
+    <Name>Head</Name>
+    <X>-2.384186E-07</X>
+    <Y>-70.2</Y>
+    <ParentName>Neck</ParentName>
+  </Node>
+  <Node>
+    <Name>Pelvis</Name>
+    <X>0</X>
+    <Y>-36.2</Y>
+  </Node>
+</Skeleton>

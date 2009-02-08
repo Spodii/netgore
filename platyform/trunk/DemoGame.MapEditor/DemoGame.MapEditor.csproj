@@ -1,0 +1,179 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{E45C879C-61AC-45F0-8E25-453EE46EB086}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DemoGame.MapEditor</RootNamespace>
+    <AssemblyName>DemoGame.MapEditor</AssemblyName>
+    <TargetZone>LocalIntranet</TargetZone>
+    <GenerateManifests>false</GenerateManifests>
+    <ApplicationIcon>Game.ico</ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\DemoGame.Client\bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>..\DemoGame.Client\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>..\DemoGame.Client\bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>..\DemoGame.Client\bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Xna.Framework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86">
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BatchRenameTextureForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BatchRenameTextureForm.Designer.cs">
+      <DependentUpon>BatchRenameTextureForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Cursors\AddGrhCursor.cs" />
+    <Compile Include="Cursors\AddWallCursor.cs" />
+    <Compile Include="Cursors\EditorCursorBase.cs" />
+    <Compile Include="Cursors\EntityCursor.cs" />
+    <Compile Include="Cursors\GrhCursor.cs" />
+    <Compile Include="Cursors\WallCursor.cs" />
+    <Compile Include="EditGrhForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EditGrhForm.Designer.cs">
+      <DependentUpon>EditGrhForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GameScreenControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ListboxWall.cs" />
+    <Compile Include="MapGrhWalls.cs" />
+    <Compile Include="ScreenForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ScreenForm.Designer.cs">
+      <DependentUpon>ScreenForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="BatchRenameTextureForm.resx">
+      <DependentUpon>BatchRenameTextureForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EditGrhForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>EditGrhForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ScreenForm.resx">
+      <SubType>Designer</SubType>
+      <DependentUpon>ScreenForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <BaseApplicationManifest Include="Properties\app.manifest" />
+    <Compile Include="TransBox.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DemoGame.ClientObjs\DemoGame.ClientObjs.csproj">
+      <Project>{7313F955-A78D-48A2-B087-8EC22E24ED8A}</Project>
+      <Name>DemoGame.ClientObjs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoGame.Extensions\DemoGame.Extensions.csproj">
+      <Project>{DA62F910-7F9B-4E95-96C2-EB0CAD308BA9}</Project>
+      <Name>DemoGame.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoGame\DemoGame.csproj">
+      <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
+      <Name>DemoGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platyform.EditorTools\Platyform.EditorTools.csproj">
+      <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
+      <Name>Platyform.EditorTools</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platyform.Graphics.WinForms\Platyform.Graphics.WinForms.csproj">
+      <Project>{B2AC0C73-29FE-4184-97E7-929A98769248}</Project>
+      <Name>Platyform.Graphics.WinForms</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platyform.Graphics\Platyform.Graphics.csproj">
+      <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
+      <Name>Platyform.Graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platyform.IO\Platyform.IO.csproj">
+      <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
+      <Name>Platyform.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Platyform\Platyform.csproj">
+      <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
+      <Name>Platyform</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Game.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
+  </PropertyGroup>
+</Project>

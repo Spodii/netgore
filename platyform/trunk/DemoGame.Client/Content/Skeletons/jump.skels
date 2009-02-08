@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Set>
+  <Frame>
+    <Delay>160</Delay>
+    <FileName>jump1</FileName>
+  </Frame>
+  <Frame>
+    <Delay>160</Delay>
+    <FileName>jump2</FileName>
+  </Frame>
+</Set>

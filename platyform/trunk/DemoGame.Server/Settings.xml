@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Settings>
+  <MySql>
+    <User>root</User>
+    <Pass></Pass>
+    <Host>localhost</Host>
+	  <Database>demogame</Database>
+  </MySql>
+</Settings>

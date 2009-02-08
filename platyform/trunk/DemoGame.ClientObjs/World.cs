@@ -1,0 +1,141 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using DemoGame.Extensions;
+using log4net;
+using Microsoft.Xna.Framework.Graphics;
+using Platyform;
+using Platyform.Extensions;
+using Platyform.Graphics;
+
+namespace DemoGame.Client
+{
+    public class World : IGetTime
+    {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        readonly Camera2D _camera;
+
+        /// <summary>
+        /// Interface used to get the current time
+        /// </summary>
+        readonly IGetTime _getTime;
+
+        /// <summary>
+        /// Map currently being used
+        /// </summary>
+        Map _map;
+
+        int _userCharIndex;
+
+        /// <summary>
+        /// Gets the camera used for the active view
+        /// </summary>
+        public Camera2D Camera
+        {
+            get { return _camera; }
+        }
+
+        /// <summary>
+        /// Gets or sets the map currently being used
+        /// </summary>
+        public Map Map
+        {
+            get { return _map; }
+            set { _map = value; }
+        }
+
+        /// <summary>
+        /// Gets the user's character given the UserCharIndex
+        /// </summary>
+        public Character UserChar
+        {
+            get
+            {
+                if (_map == null || UserCharIndex == -1)
+                    return null;
+                return (Character)_map.GetCharacter(UserCharIndex);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the map index of the character that belongs to the user
+        /// </summary>
+        public int UserCharIndex
+        {
+            get { return _userCharIndex; }
+            set { _userCharIndex = value; }
+        }
+
+        /// <summary>
+        /// World constructor
+        /// </summary>
+        /// <param name="getTime">Interface to get the current time</param>
+        /// <param name="camera">Primary world view camera</param>
+        public World(IGetTime getTime, Camera2D camera)
+        {
+            _getTime = getTime;
+            _camera = camera;
+        }
+
+        /// <summary>
+        /// Draws the world
+        /// </summary>
+        /// <param name="sb">SpriteBatch to draw to</param>
+        public void Draw(SpriteBatch sb)
+        {
+            _map.Draw(sb, Camera);
+        }
+
+        public void SetMap(Map newMap)
+        {
+            if (newMap == null)
+                throw new ArgumentNullException("newMap");
+
+            // Check that the map actually needs to change
+            if (Map == newMap)
+            {
+                const string errmsg = "Requested to change map to the map we are already on.";
+                Debug.Fail(errmsg);
+                if (log.IsWarnEnabled)
+                    log.Warn(errmsg);
+                return;
+            }
+
+            // Invalidate the user's character index until it is reset
+            UserCharIndex = -1;
+
+            // Dispose of the old map
+            if (Map != null)
+                Map.Unload();
+
+            // Set the new map
+            Map = newMap;
+        }
+
+        /// <summary>
+        /// Updates the world
+        /// </summary>
+        public void Update()
+        {
+            // Update the map
+            if (_map != null)
+                _map.Update();
+        }
+
+        #region IGetTime Members
+
+        /// <summary>
+        /// Gets the current time
+        /// </summary>
+        /// <returns>Current time</returns>
+        public int GetTime()
+        {
+            return _getTime.GetTime();
+        }
+
+        #endregion
+    }
+}

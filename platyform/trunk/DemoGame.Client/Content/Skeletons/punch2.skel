@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Skeleton>
+  <Node>
+    <Name>Back Knee</Name>
+    <X>5.022664E-06</X>
+    <Y>-19.8</Y>
+    <InheritAngle>True</InheritAngle>
+    <IsModifier>True</IsModifier>
+    <ParentName>Pelvis</ParentName>
+  </Node>
+  <Node>
+    <Name>Back Foot</Name>
+    <X>0.8622326</X>
+    <Y>-3.823249</Y>
+    <InheritAngle>True</InheritAngle>
+    <IsModifier>True</IsModifier>
+    <ParentName>Back Knee</ParentName>
+  </Node>
+  <Node>
+    <Name>Back Toe</Name>
+    <X>11.86223</X>
+    <Y>-3.823249</Y>
+    <InheritAngle>True</InheritAngle>
+    <IsModifier>True</IsModifier>
+    <ParentName>Back Foot</ParentName>
+  </Node>
+  <Node>
+    <Name>Front Knee</Name>
+    <X>-0.8194281</X>
+    <Y>-19.821</Y>
+    <InheritAngle>True</InheritAngle>
+    <IsModifier>True</IsModifier>
+    <ParentName>Pelvis</ParentName>
+  </Node>
+  <Node>
+    <Name>Front Foot</Name>
+    <X>-1.354443</X>
+    <Y>-3.829943</Y>
+    <InheritAngle>True</InheritAngle>
+    <IsModifier>True</IsModifier>
+    <ParentName>Front Knee</ParentName>
+  </Node>
+  <Node>
+    <Name>Front Toe</Name>
+    <X>9.645556</X>
+    <Y>-3.829939</Y>
+    <InheritAngle>True</InheritAngle>
+    <IsModifier>True</IsModifier>
+    <ParentName>Front Foot</ParentName>
+  </Node>
+  <Node>
+    <Name>Neck</Name>
+    <X>7.533995E-06</X>
+    <Y>-59.8</Y>
+    <InheritAngle>True</InheritAngle>
+    <IsModifier>True</IsModifier>
+    <ParentName>Pelvis</ParentName>
+  </Node>
+  <Node>
+    <Name>Back Elbow</Name>
+    <X>-0.2714226</X>
+    <Y>-53.80614</Y>
+    <ParentName>Neck</ParentName>
+  </Node>
+  <Node>
+    <Name>Back Hand</Name>
+    <X>5.229375</X>
+    <Y>-36.66716</Y>
+    <ParentName>Back Elbow</ParentName>
+  </Node>
+  <Node>
+    <Name>Front Elbow</Name>
+    <X>1.20968</X>
+    <Y>-53.92321</Y>
+    <ParentName>Neck</ParentName>
+  </Node>
+  <Node>
+    <Name>Front Hand</Name>
+    <X>19.18085</X>
+    <Y>-52.90488</Y>
+    <ParentName>Front Elbow</ParentName>
+  </Node>
+  <Node>
+    <Name>Head</Name>
+    <X>1.067316E-05</X>
+    <Y>-69.8</Y>
+    <InheritAngle>True</InheritAngle>
+    <IsModifier>True</IsModifier>
+    <ParentName>Neck</ParentName>
+  </Node>
+  <Node>
+    <Name>Pelvis</Name>
+    <X>0</X>
+    <Y>-35.8</Y>
+    <InheritAngle>True</InheritAngle>
+    <IsModifier>True</IsModifier>
+  </Node>
+</Skeleton>

@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BodyInfo>
+  <ItemsCount>13</ItemsCount>
+  <BodyItem>
+    <GrhIndex>203</GrhIndex>
+    <Source>Neck</Source>
+    <Dest>Front Elbow</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>3</OriginX>
+    <OriginY>1</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>204</GrhIndex>
+    <Source>Front Elbow</Source>
+    <Dest>Front Hand</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>2.5</OriginX>
+    <OriginY>1</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>205</GrhIndex>
+    <Source>Pelvis</Source>
+    <Dest>Front Knee</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>6</OriginX>
+    <OriginY>3</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>206</GrhIndex>
+    <Source>Front Knee</Source>
+    <Dest>Front Foot</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>6</OriginX>
+    <OriginY>1</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>207</GrhIndex>
+    <Source>Front Foot</Source>
+    <Dest>Front Toe</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>3</OriginX>
+    <OriginY>4</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>202</GrhIndex>
+    <Source>Neck</Source>
+    <Dest>Pelvis</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>8</OriginX>
+    <OriginY>0</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>200</GrhIndex>
+    <Source>Head</Source>
+    <Dest />
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>9</OriginX>
+    <OriginY>9</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>201</GrhIndex>
+    <Source>Neck</Source>
+    <Dest>Head</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>2</OriginX>
+    <OriginY>2</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>205</GrhIndex>
+    <Source>Pelvis</Source>
+    <Dest>Back Knee</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>6</OriginX>
+    <OriginY>3</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>206</GrhIndex>
+    <Source>Back Knee</Source>
+    <Dest>Back Foot</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>6</OriginX>
+    <OriginY>1</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>207</GrhIndex>
+    <Source>Back Foot</Source>
+    <Dest>Back Toe</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>3</OriginX>
+    <OriginY>4</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>203</GrhIndex>
+    <Source>Neck</Source>
+    <Dest>Back Elbow</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>3</OriginX>
+    <OriginY>1</OriginY>
+  </BodyItem>
+  <BodyItem>
+    <GrhIndex>204</GrhIndex>
+    <Source>Back Elbow</Source>
+    <Dest>Back Hand</Dest>
+    <OffsetX>0</OffsetX>
+    <OffsetY>0</OffsetY>
+    <OriginX>2.5</OriginX>
+    <OriginY>1</OriginY>
+  </BodyItem>
+</BodyInfo>

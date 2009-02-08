@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Map>
+  <Header>
+    <Name>INSERT VALUE</Name>
+    <Width>960</Width>
+    <Height>640</Height>
+  </Header>
+  <Entities>
+    <Walls>
+      <Wall X="0" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="32" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="64" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="96" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="128" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="160" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="192" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="224" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="256" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="288" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="320" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="352" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="384" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="416" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="448" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="480" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="512" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="544" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="576" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="640" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="672" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="704" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="736" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="608" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="928" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="896" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="864" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="832" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="800" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="768" Y="608" W="32" H="32" CT="Full" />
+      <Wall X="480" Y="480" W="32" H="32" CT="Full" />
+      <Wall X="512" Y="480" W="32" H="32" CT="Full" />
+      <Wall X="544" Y="480" W="32" H="32" CT="Full" />
+      <Wall X="576" Y="480" W="32" H="32" CT="Full" />
+      <Wall X="448" Y="512" W="32" H="32" CT="Full" />
+      <Wall X="416" Y="544" W="32" H="32" CT="Full" />
+      <Wall X="640" Y="544" W="32" H="32" CT="Full" />
+      <Wall X="704" Y="576" W="32" H="32" CT="Full" />
+      <Wall X="416" Y="416" W="32" H="32" CT="Full" />
+      <Wall X="384" Y="416" W="32" H="32" CT="Full" />
+      <Wall X="320" Y="416" W="32" H="32" CT="Full" />
+      <Wall X="352" Y="416" W="32" H="32" CT="Full" />
+      <Wall X="288" Y="416" W="32" H="32" CT="Full" />
+      <Wall X="256" Y="416" W="32" H="32" CT="Full" />
+      <Wall X="256" Y="384" W="32" H="32" CT="Full" />
+      <Wall X="256" Y="352" W="32" H="32" CT="Full" />
+      <Wall X="256" Y="320" W="32" H="32" CT="Full" />
+    </Walls>
+    <Teleports>
+      <Teleport X="292" Y="326" W="26" H="52" CT="Full" DestX="50" DestY="50" DestMap="1" />
+    </Teleports>
+  </Entities>
+  <Misc>
+    <MapGrhs>
+      <UsedIndices>2,5,125</UsedIndices>
+      <MapGrh X="0" Y="608" I="2" FG="false" />
+      <MapGrh X="32" Y="608" I="2" FG="false" />
+      <MapGrh X="64" Y="608" I="2" FG="false" />
+      <MapGrh X="96" Y="608" I="2" FG="false" />
+      <MapGrh X="128" Y="608" I="2" FG="false" />
+      <MapGrh X="160" Y="608" I="2" FG="false" />
+      <MapGrh X="192" Y="608" I="2" FG="false" />
+      <MapGrh X="224" Y="608" I="2" FG="false" />
+      <MapGrh X="256" Y="608" I="2" FG="false" />
+      <MapGrh X="288" Y="608" I="2" FG="false" />
+      <MapGrh X="320" Y="608" I="2" FG="false" />
+      <MapGrh X="352" Y="608" I="2" FG="false" />
+      <MapGrh X="384" Y="608" I="2" FG="false" />
+      <MapGrh X="416" Y="608" I="2" FG="false" />
+      <MapGrh X="448" Y="608" I="2" FG="false" />
+      <MapGrh X="480" Y="608" I="2" FG="false" />
+      <MapGrh X="512" Y="608" I="2" FG="false" />
+      <MapGrh X="544" Y="608" I="2" FG="false" />
+      <MapGrh X="576" Y="608" I="2" FG="false" />
+      <MapGrh X="640" Y="608" I="2" FG="false" />
+      <MapGrh X="672" Y="608" I="2" FG="false" />
+      <MapGrh X="704" Y="608" I="2" FG="false" />
+      <MapGrh X="736" Y="608" I="2" FG="false" />
+      <MapGrh X="608" Y="608" I="2" FG="false" />
+      <MapGrh X="928" Y="608" I="2" FG="false" />
+      <MapGrh X="896" Y="608" I="2" FG="false" />
+      <MapGrh X="864" Y="608" I="2" FG="false" />
+      <MapGrh X="832" Y="608" I="2" FG="false" />
+      <MapGrh X="800" Y="608" I="2" FG="false" />
+      <MapGrh X="768" Y="608" I="2" FG="false" />
+      <MapGrh X="480" Y="480" I="5" FG="false" />
+      <MapGrh X="512" Y="480" I="5" FG="false" />
+      <MapGrh X="544" Y="480" I="5" FG="false" />
+      <MapGrh X="576" Y="480" I="5" FG="false" />
+      <MapGrh X="448" Y="512" I="5" FG="false" />
+      <MapGrh X="416" Y="544" I="5" FG="false" />
+      <MapGrh X="640" Y="544" I="5" FG="false" />
+      <MapGrh X="704" Y="576" I="5" FG="false" />
+      <MapGrh X="416" Y="416" I="5" FG="false" />
+      <MapGrh X="384" Y="416" I="5" FG="false" />
+      <MapGrh X="320" Y="416" I="5" FG="false" />
+      <MapGrh X="352" Y="416" I="5" FG="false" />
+      <MapGrh X="288" Y="416" I="5" FG="false" />
+      <MapGrh X="256" Y="416" I="5" FG="false" />
+      <MapGrh X="256" Y="384" I="5" FG="false" />
+      <MapGrh X="256" Y="352" I="5" FG="false" />
+      <MapGrh X="256" Y="320" I="5" FG="false" />
+      <MapGrh X="288" Y="320" I="125" FG="false" />
+    </MapGrhs>
+  </Misc>
+</Map>
