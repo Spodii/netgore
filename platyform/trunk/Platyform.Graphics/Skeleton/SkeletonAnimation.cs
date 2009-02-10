@@ -258,6 +258,7 @@ namespace Platyform.Graphics
         /// <returns></returns>
         public static SkeletonSet CreateSmoothedSet(SkeletonSet set, Skeleton skel)
         {
+            // TODO: Document parameters
             if (set == null)
             {
                 Debug.Fail("skel is null.");
