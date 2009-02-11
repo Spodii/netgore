@@ -1,0 +1,8 @@
+E:\NetGore\trunk\Platyform.XNASubstitute\bin\Debug\Platyform.XNASubstitute.dll
+E:\NetGore\trunk\Platyform.XNASubstitute\bin\Debug\Platyform.XNASubstitute.pdb
+E:\NetGore\trunk\Platyform.XNASubstitute\obj\x86\Debug\Platyform.XNASubstitute.dll
+E:\NetGore\trunk\Platyform.XNASubstitute\obj\x86\Debug\Platyform.XNASubstitute.pdb
+E:\NetGore\trunk\NetGore.XNASubstitute\bin\Debug\Platyform.XNASubstitute.dll
+E:\NetGore\trunk\NetGore.XNASubstitute\bin\Debug\Platyform.XNASubstitute.pdb
+E:\NetGore\trunk\NetGore.XNASubstitute\obj\x86\Debug\Platyform.XNASubstitute.dll
+E:\NetGore\trunk\NetGore.XNASubstitute\obj\x86\Debug\Platyform.XNASubstitute.pdb
