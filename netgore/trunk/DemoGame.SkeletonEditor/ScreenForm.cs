@@ -9,8 +9,8 @@ using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Platyform;
-using Platyform.Graphics;
+using NetGore;
+using NetGore.Graphics;
 using Color=System.Drawing.Color;
 
 namespace DemoGame.SkeletonEditor

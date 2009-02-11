@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
-using Platyform;
+using NetGore;
 
 namespace DemoGame.MapEditor
 {

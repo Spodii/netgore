@@ -4,8 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
-using Platyform;
-using Platyform.Extensions;
+using NetGore;
+using NetGore.Extensions;
 
 namespace DemoGame
 {

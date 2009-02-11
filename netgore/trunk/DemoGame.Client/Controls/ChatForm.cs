@@ -6,9 +6,8 @@ using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Platyform.Extensions;
-using Platyform.Graphics.GUI;
-using Platyform.IO;
+using NetGore.Graphics.GUI;
+using NetGore.IO;
 
 namespace DemoGame.Client
 {
@@ -73,7 +72,7 @@ namespace DemoGame.Client
         {
             const int bufferScrollRate = 3;
 
-            foreach (var key in e.Keys)
+            foreach (Keys key in e.Keys)
             {
                 switch (key)
                 {

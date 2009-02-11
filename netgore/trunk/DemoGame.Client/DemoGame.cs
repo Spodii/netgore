@@ -4,10 +4,9 @@ using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
-using Platyform;
-using Platyform.Extensions;
-using Platyform.Graphics;
-using Platyform.Graphics.GUI;
+using NetGore;
+using NetGore.Graphics;
+using NetGore.Graphics.GUI;
 
 namespace DemoGame.Client
 {

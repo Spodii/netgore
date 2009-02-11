@@ -6,8 +6,8 @@ using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
 using Microsoft.Xna.Framework;
-using Platyform;
-using Platyform.Extensions;
+using NetGore;
+using NetGore.Extensions;
 
 namespace DemoGame.Server
 {

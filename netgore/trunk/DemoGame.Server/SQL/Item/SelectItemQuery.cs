@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
 using MySql.Data.MySqlClient;
-using Platyform.Extensions;
+using NetGore.Extensions;
 
 namespace DemoGame.Server
 {

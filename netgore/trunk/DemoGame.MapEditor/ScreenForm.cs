@@ -11,9 +11,9 @@ using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Platyform;
-using Platyform.EditorTools;
-using Platyform.Graphics;
+using NetGore;
+using NetGore.EditorTools;
+using NetGore.Graphics;
 using Color=System.Drawing.Color;
 using Point=System.Drawing.Point;
 

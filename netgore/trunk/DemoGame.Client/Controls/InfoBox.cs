@@ -5,7 +5,6 @@ using System.Linq;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Platyform.Extensions;
 
 namespace DemoGame.Client
 {

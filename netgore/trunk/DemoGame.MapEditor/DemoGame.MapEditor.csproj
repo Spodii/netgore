@@ -138,25 +138,25 @@
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.EditorTools\Platyform.EditorTools.csproj">
+    <ProjectReference Include="..\NetGore.EditorTools\NetGore.EditorTools.csproj">
       <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
-      <Name>Platyform.EditorTools</Name>
+      <Name>NetGore.EditorTools</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.Graphics.WinForms\Platyform.Graphics.WinForms.csproj">
+    <ProjectReference Include="..\NetGore.Graphics.WinForms\NetGore.Graphics.WinForms.csproj">
       <Project>{B2AC0C73-29FE-4184-97E7-929A98769248}</Project>
-      <Name>Platyform.Graphics.WinForms</Name>
+      <Name>NetGore.Graphics.WinForms</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.Graphics\Platyform.Graphics.csproj">
+    <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
-      <Name>Platyform.Graphics</Name>
+      <Name>NetGore.Graphics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.IO\Platyform.IO.csproj">
+    <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
       <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
-      <Name>Platyform.IO</Name>
+      <Name>NetGore.IO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform\Platyform.csproj">
+    <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
-      <Name>Platyform</Name>
+      <Name>NetGore</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

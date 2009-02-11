@@ -93,21 +93,21 @@
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.Extensions\Platyform.Extensions.csproj">
+    <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
       <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
-      <Name>Platyform.Extensions</Name>
+      <Name>NetGore.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.Graphics\Platyform.Graphics.csproj">
+    <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
-      <Name>Platyform.Graphics</Name>
+      <Name>NetGore.Graphics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.GUI\Platyform.Graphics.GUI.csproj">
+    <ProjectReference Include="..\NetGore.GUI\NetGore.Graphics.GUI.csproj">
       <Project>{D33249A8-9956-46A0-BC1A-42D5206C9F01}</Project>
-      <Name>Platyform.Graphics.GUI</Name>
+      <Name>NetGore.Graphics.GUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform\Platyform.csproj">
+    <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
-      <Name>Platyform</Name>
+      <Name>NetGore</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

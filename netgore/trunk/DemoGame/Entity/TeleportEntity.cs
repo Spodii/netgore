@@ -4,8 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Xml;
 using Microsoft.Xna.Framework;
-using Platyform;
-using Platyform.Extensions;
+using NetGore;
 
 namespace DemoGame
 {

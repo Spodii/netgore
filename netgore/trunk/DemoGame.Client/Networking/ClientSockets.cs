@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
-using Platyform;
-using Platyform.Extensions;
-using Platyform.Network;
+using NetGore;
+using NetGore.Network;
 
 namespace DemoGame.Client
 {

@@ -104,17 +104,17 @@
     <Compile Include="Stats\StatType.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Platyform.Extensions\Platyform.Extensions.csproj">
+    <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
       <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
-      <Name>Platyform.Extensions</Name>
+      <Name>NetGore.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.IO\Platyform.IO.csproj">
+    <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
       <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
-      <Name>Platyform.IO</Name>
+      <Name>NetGore.IO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform\Platyform.csproj">
+    <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
-      <Name>Platyform</Name>
+      <Name>NetGore</Name>
     </ProjectReference>
     <ProjectReference Include="..\System.Bits\System.Bits.csproj">
       <Project>{51AA57D1-ADC2-48D5-88F0-DDBDAAF37DFB}</Project>

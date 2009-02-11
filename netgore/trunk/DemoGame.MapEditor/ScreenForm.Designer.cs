@@ -48,7 +48,7 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs = new System.Windows.Forms.TabPage();
             this.chkForeground = new System.Windows.Forms.CheckBox();
             this.chkSnapGrhGrid = new System.Windows.Forms.CheckBox();
-            this.treeGrhs = new Platyform.EditorTools.GrhTreeView();
+            this.treeGrhs = new NetGore.EditorTools.GrhTreeView();
             this.tabPageWalls = new System.Windows.Forms.TabPage();
             this.cmbWallType = new System.Windows.Forms.ComboBox();
             this.gbCurrentWall = new System.Windows.Forms.GroupBox();
@@ -275,8 +275,8 @@ namespace DemoGame.MapEditor
             this.treeGrhs.Size = new System.Drawing.Size(290, 512);
             this.treeGrhs.Sorted = true;
             this.treeGrhs.TabIndex = 8;
-            this.treeGrhs.GrhAfterSelect += new Platyform.EditorTools.GrhTreeViewEvent(this.treeGrhs_SelectGrh);
-            this.treeGrhs.GrhMouseDoubleClick += new Platyform.EditorTools.GrhTreeNodeMouseClickEvent(this.treeGrhs_DoubleClickGrh);
+            this.treeGrhs.GrhAfterSelect += new NetGore.EditorTools.GrhTreeViewEvent(this.treeGrhs_SelectGrh);
+            this.treeGrhs.GrhMouseDoubleClick += new NetGore.EditorTools.GrhTreeNodeMouseClickEvent(this.treeGrhs_DoubleClickGrh);
             // 
             // tabPageWalls
             // 
@@ -857,7 +857,7 @@ namespace DemoGame.MapEditor
             this.KeyPreview = true;
             this.Name = "ScreenForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Platyform Map Editor";
+            this.Text = "NetGore Map Editor";
             this.Load += new System.EventHandler(this.ScreenForm_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ScreenForm_FormClosing);
             this.tcMenu.ResumeLayout(false);
@@ -952,7 +952,7 @@ namespace DemoGame.MapEditor
         public System.Windows.Forms.PictureBox picToolGrhsAdd;
         public System.Windows.Forms.PictureBox picToolGrhs;
         public System.Windows.Forms.CheckBox chkSnapGrhGrid;
-        public Platyform.EditorTools.GrhTreeView treeGrhs;
+        public NetGore.EditorTools.GrhTreeView treeGrhs;
         public System.Windows.Forms.CheckBox chkForeground;
         private System.Windows.Forms.TextBox txtTeleportHeight;
         private System.Windows.Forms.Label label10;

@@ -6,8 +6,7 @@ using System.Reflection;
 using System.Threading;
 using DemoGame.Extensions;
 using log4net;
-using Platyform;
-using Platyform.Extensions;
+using NetGore;
 
 // TODO: When an item stops moving, send the position again to ensure it is valid
 

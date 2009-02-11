@@ -6,7 +6,7 @@ using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
-using Platyform;
+using NetGore;
 
 namespace DemoGame.MapEditor
 {

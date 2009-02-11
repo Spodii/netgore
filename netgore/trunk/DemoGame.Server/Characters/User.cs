@@ -9,9 +9,9 @@ using DemoGame.Extensions;
 using log4net;
 using Microsoft.Xna.Framework;
 using MySql.Data.MySqlClient;
-using Platyform;
-using Platyform.Extensions;
-using Platyform.Network;
+using NetGore;
+using NetGore.Extensions;
+using NetGore.Network;
 
 // TODO: Once the NPCs have Inventory support, move all the inventory-related shit into Character
 

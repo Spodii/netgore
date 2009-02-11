@@ -6,8 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Timers;
 using log4net;
-using Platyform;
-using Platyform.Extensions;
+using NetGore;
 
 namespace DemoGame
 {

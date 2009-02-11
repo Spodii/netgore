@@ -7,8 +7,7 @@ using System.Reflection;
 using System.Xml;
 using log4net;
 using Microsoft.Xna.Framework;
-using Platyform;
-using Platyform.Extensions;
+using NetGore;
 
 // FUTURE: Improve how characters handle when they hit the map's borders
 
