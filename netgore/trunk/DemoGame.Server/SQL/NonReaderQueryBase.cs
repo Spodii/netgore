@@ -9,7 +9,7 @@ using System.Threading;
 using DemoGame.Extensions;
 using log4net;
 using MySql.Data.MySqlClient;
-using Platyform.Extensions;
+using NetGore.Extensions;
 
 namespace DemoGame.Server
 {

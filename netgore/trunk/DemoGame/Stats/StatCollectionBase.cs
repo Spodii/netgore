@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using Platyform.Extensions;
 
 namespace DemoGame
 {

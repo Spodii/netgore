@@ -8,8 +8,8 @@ using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
 using MySql.Data.MySqlClient;
-using Platyform;
-using Platyform.Extensions;
+using NetGore;
+using NetGore.Extensions;
 
 namespace DemoGame.Server
 {

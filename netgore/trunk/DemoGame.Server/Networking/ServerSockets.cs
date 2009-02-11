@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
-using Platyform.Extensions;
-using Platyform.Network;
+using NetGore.Network;
 
 namespace DemoGame.Server
 {

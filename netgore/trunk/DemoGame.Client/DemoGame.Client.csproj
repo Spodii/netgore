@@ -128,29 +128,29 @@
       <Project>{DA62F910-7F9B-4E95-96C2-EB0CAD308BA9}</Project>
       <Name>DemoGame.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.Extensions\Platyform.Extensions.csproj">
+    <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
       <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
-      <Name>Platyform.Extensions</Name>
+      <Name>NetGore.Extensions</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.Graphics\Platyform.Graphics.csproj">
+    <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
-      <Name>Platyform.Graphics</Name>
+      <Name>NetGore.Graphics</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.GUI\Platyform.Graphics.GUI.csproj">
+    <ProjectReference Include="..\NetGore.GUI\NetGore.Graphics.GUI.csproj">
       <Project>{D33249A8-9956-46A0-BC1A-42D5206C9F01}</Project>
-      <Name>Platyform.Graphics.GUI</Name>
+      <Name>NetGore.Graphics.GUI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.IO\Platyform.IO.csproj">
+    <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
       <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
-      <Name>Platyform.IO</Name>
+      <Name>NetGore.IO</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform.Network\Platyform.Network.csproj">
+    <ProjectReference Include="..\NetGore.Network\NetGore.Network.csproj">
       <Project>{B51BE2B8-B1A9-460A-BC38-794FAC66636C}</Project>
-      <Name>Platyform.Network</Name>
+      <Name>NetGore.Network</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Platyform\Platyform.csproj">
+    <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
-      <Name>Platyform</Name>
+      <Name>NetGore</Name>
     </ProjectReference>
     <ProjectReference Include="..\DemoGame\DemoGame.csproj">
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>

@@ -6,9 +6,8 @@ using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
 using Microsoft.Xna.Framework.Graphics;
-using Platyform;
-using Platyform.Extensions;
-using Platyform.Graphics;
+using NetGore;
+using NetGore.Graphics;
 
 namespace DemoGame.Client
 {

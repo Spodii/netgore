@@ -6,10 +6,9 @@ using System.Linq;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Platyform;
-using Platyform.Extensions;
-using Platyform.Graphics.GUI;
-using Platyform.Network;
+using NetGore;
+using NetGore.Graphics.GUI;
+using NetGore.Network;
 
 #pragma warning disable 168
 

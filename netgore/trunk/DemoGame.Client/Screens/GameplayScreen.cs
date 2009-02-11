@@ -6,11 +6,10 @@ using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Platyform;
-using Platyform.Extensions;
-using Platyform.Graphics;
-using Platyform.Graphics.GUI;
-using Platyform.Network;
+using NetGore;
+using NetGore.Graphics;
+using NetGore.Graphics.GUI;
+using NetGore.Network;
 
 namespace DemoGame.Client
 {

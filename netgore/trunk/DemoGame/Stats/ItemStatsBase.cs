@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using Platyform.Extensions;
 
 // FUTURE: Could optimize the OnStatChange by only hooking to the Stat.OnChange when OnStatChange has listeners
 

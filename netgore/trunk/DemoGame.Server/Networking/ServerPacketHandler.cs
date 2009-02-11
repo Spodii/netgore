@@ -7,9 +7,8 @@ using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
 using MySql.Data.MySqlClient;
-using Platyform;
-using Platyform.Extensions;
-using Platyform.Network;
+using NetGore;
+using NetGore.Network;
 
 namespace DemoGame.Server
 {

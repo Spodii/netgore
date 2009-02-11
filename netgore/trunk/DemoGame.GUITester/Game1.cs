@@ -5,9 +5,9 @@ using System.Linq;
 using DemoGame.Client;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Platyform;
-using Platyform.Graphics;
-using Platyform.Graphics.GUI;
+using NetGore;
+using NetGore.Graphics;
+using NetGore.Graphics.GUI;
 
 namespace DemoGame.GUITester
 {

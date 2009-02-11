@@ -7,9 +7,8 @@ using DemoGame.Extensions;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Platyform;
-using Platyform.Extensions;
-using Platyform.Graphics;
+using NetGore;
+using NetGore.Graphics;
 
 // LATER: When editing Grhs and changing texture, change the preview
 // LATER: When updating a Grh, update the preview image

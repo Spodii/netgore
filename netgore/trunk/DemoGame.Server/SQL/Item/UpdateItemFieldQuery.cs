@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
 using MySql.Data.MySqlClient;
-using Platyform.Extensions;
 
 // FUTURE: Don't have all the database table names hard-coded
 

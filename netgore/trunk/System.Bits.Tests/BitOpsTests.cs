@@ -213,6 +213,8 @@ namespace System.Bits.Tests
         [Test]
         public void DoubleToLongTest()
         {
+            // NOTE: Do not worry that this test fails until we actually need to write a Double to the BitStream.
+
             const long iterations = 10000000;
 
             const long step = (long.MaxValue / iterations) / 2;

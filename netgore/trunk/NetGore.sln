@@ -9,21 +9,21 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Bits", "System.Bits\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Text", "System.Text\System.Text.csproj", "{443E3E19-DB04-46D2-AB28-8817A9A87969}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform.XNASubstitute", "Platyform.XNASubstitute\Platyform.XNASubstitute.csproj", "{4158B1D6-8CD7-4647-ABED-819D571BECD4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.XNASubstitute", "NetGore.XNASubstitute\NetGore.XNASubstitute.csproj", "{4158B1D6-8CD7-4647-ABED-819D571BECD4}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.ClientObjs", "DemoGame.ClientObjs\DemoGame.ClientObjs.csproj", "{7313F955-A78D-48A2-B087-8EC22E24ED8A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform.Graphics.WinForms", "Platyform.Graphics.WinForms\Platyform.Graphics.WinForms.csproj", "{B2AC0C73-29FE-4184-97E7-929A98769248}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Graphics.WinForms", "NetGore.Graphics.WinForms\NetGore.Graphics.WinForms.csproj", "{B2AC0C73-29FE-4184-97E7-929A98769248}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Client", "DemoGame.Client\DemoGame.Client.csproj", "{7A762FC3-FBD4-48D9-894E-D2279A6D33FA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Server", "DemoGame.Server\DemoGame.Server.csproj", "{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform.Graphics", "Platyform.Graphics\Platyform.Graphics.csproj", "{76C45E48-16F2-478F-B06C-5AD993F6B1F1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Graphics", "NetGore.Graphics\NetGore.Graphics.csproj", "{76C45E48-16F2-478F-B06C-5AD993F6B1F1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform.Network", "Platyform.Network\Platyform.Network.csproj", "{B51BE2B8-B1A9-460A-BC38-794FAC66636C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Network", "NetGore.Network\NetGore.Network.csproj", "{B51BE2B8-B1A9-460A-BC38-794FAC66636C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform", "Platyform\Platyform.csproj", "{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore", "NetGore\NetGore.csproj", "{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame", "DemoGame\DemoGame.csproj", "{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}"
 EndProject
@@ -32,9 +32,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.SkeletonEditor", "
 		{7A762FC3-FBD4-48D9-894E-D2279A6D33FA} = {7A762FC3-FBD4-48D9-894E-D2279A6D33FA}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform.EditorTools", "Platyform.EditorTools\Platyform.EditorTools.csproj", "{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.EditorTools", "NetGore.EditorTools\NetGore.EditorTools.csproj", "{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform.Graphics.GUI", "Platyform.GUI\Platyform.Graphics.GUI.csproj", "{D33249A8-9956-46A0-BC1A-42D5206C9F01}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Graphics.GUI", "NetGore.GUI\NetGore.Graphics.GUI.csproj", "{D33249A8-9956-46A0-BC1A-42D5206C9F01}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.GUITester", "DemoGame.GUITester\DemoGame.GUITester.csproj", "{E35B4F33-9ECB-448B-8D6F-EA1CC4FC87B9}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -45,7 +45,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clean", "Clean\Clean.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.Bits.Tests", "System.Bits.Tests\System.Bits.Tests.csproj", "{ED74E2EA-99BA-4D4F-93FC-64F562C80054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform.Extensions", "Platyform.Extensions\Platyform.Extensions.csproj", "{329A220A-93D3-40C2-A46B-51C55D4FA16A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Extensions", "NetGore.Extensions\NetGore.Extensions.csproj", "{329A220A-93D3-40C2-A46B-51C55D4FA16A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Extensions", "DemoGame.Extensions\DemoGame.Extensions.csproj", "{DA62F910-7F9B-4E95-96C2-EB0CAD308BA9}"
 EndProject
@@ -53,13 +53,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySql.Data", "MySql.Data\My
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySql.Data.Tests", "MySql.Data.Tests\MySql.Data.Tests.csproj", "{F29E5B3D-7F76-4CF9-BF5E-8E3A1377B1E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform.Tests", "Platyform.Tests\Platyform.Tests.csproj", "{EE6959A2-B5BD-4817-8D05-6A01AE107E31}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Tests", "NetGore.Tests\NetGore.Tests.csproj", "{EE6959A2-B5BD-4817-8D05-6A01AE107E31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform.Extensions.Tests", "Platyform.Extensions.Tests\Platyform.Extensions.Tests.csproj", "{34DA9060-1DC8-4AE8-B9EC-564CF90E7B6D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Extensions.Tests", "NetGore.Extensions.Tests\NetGore.Extensions.Tests.csproj", "{34DA9060-1DC8-4AE8-B9EC-564CF90E7B6D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform.IO", "Platyform.IO\Platyform.IO.csproj", "{E7C8665B-101F-4930-97B7-68FC2C236971}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.IO", "NetGore.IO\NetGore.IO.csproj", "{E7C8665B-101F-4930-97B7-68FC2C236971}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Platyform.IO.Tests", "Platyform.IO.Tests\Platyform.IO.Tests.csproj", "{07337A05-C38C-44DE-84E7-BA77D6021D0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.IO.Tests", "NetGore.IO.Tests\NetGore.IO.Tests.csproj", "{07337A05-C38C-44DE-84E7-BA77D6021D0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Server.Tests", "DemoGame.Server.Tests\DemoGame.Server.Tests.csproj", "{AAD5853E-3D64-472C-802F-B1899235680E}"
 EndProject
@@ -380,6 +380,16 @@ Global
 		{07337A05-C38C-44DE-84E7-BA77D6021D0F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{07337A05-C38C-44DE-84E7-BA77D6021D0F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{07337A05-C38C-44DE-84E7-BA77D6021D0F}.Release|x86.ActiveCfg = Release|Any CPU
+		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|x86.ActiveCfg = Release|Any CPU
 		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Debug|Any CPU.ActiveCfg = Debug|Xbox 360
 		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Debug|Mixed Platforms.ActiveCfg = Debug|Xbox 360
 		{5A09C6C9-0007-4F42-8EA0-3CD41968D6EE}.Debug|x86.ActiveCfg = Debug|x86
@@ -392,16 +402,6 @@ Global
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|Any CPU.ActiveCfg = Release|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|x86.ActiveCfg = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

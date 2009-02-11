@@ -6,7 +6,6 @@ using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
 using Microsoft.Xna.Framework;
-using Platyform.Extensions;
 
 namespace DemoGame.Server
 {

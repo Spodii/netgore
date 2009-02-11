@@ -5,8 +5,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
-using Platyform.Extensions;
-using Platyform.Network;
+using NetGore.Network;
 
 namespace DemoGame.Client
 {

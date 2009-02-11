@@ -7,8 +7,8 @@ using DemoGame.Client;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Platyform;
-using Platyform.Graphics;
+using NetGore;
+using NetGore.Graphics;
 using Point=System.Drawing.Point;
 
 namespace DemoGame.MapEditor

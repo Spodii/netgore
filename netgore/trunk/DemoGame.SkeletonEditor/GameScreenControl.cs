@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Extensions;
-using Platyform.Graphics.WinForms;
+using NetGore.Graphics.WinForms;
 
 namespace DemoGame.SkeletonEditor
 {

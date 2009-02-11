@@ -5,7 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
 using DemoGame.Extensions;
-using Platyform;
+using NetGore;
 
 namespace DemoGame.MapEditor
 {
