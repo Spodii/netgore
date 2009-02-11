@@ -8,8 +8,8 @@
     <ProjectGuid>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Platyform.Extensions</RootNamespace>
-    <AssemblyName>Platyform.Extensions</AssemblyName>
+    <RootNamespace>NetGore.Extensions</RootNamespace>
+    <AssemblyName>NetGore.Extensions</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

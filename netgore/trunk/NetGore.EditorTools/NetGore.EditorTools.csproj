@@ -7,8 +7,8 @@
     <ProjectGuid>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Platyform.EditorTools</RootNamespace>
-    <AssemblyName>Platyform.EditorTools</AssemblyName>
+    <RootNamespace>NetGore.EditorTools</RootNamespace>
+    <AssemblyName>NetGore.EditorTools</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

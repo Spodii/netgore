@@ -7,8 +7,8 @@
     <ProjectGuid>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Platyform</RootNamespace>
-    <AssemblyName>Platyform</AssemblyName>
+    <RootNamespace>NetGore</RootNamespace>
+    <AssemblyName>NetGore</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

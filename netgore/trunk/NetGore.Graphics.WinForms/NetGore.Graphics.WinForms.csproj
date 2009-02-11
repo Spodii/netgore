@@ -7,8 +7,8 @@
     <ProjectGuid>{B2AC0C73-29FE-4184-97E7-929A98769248}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Platyform.Graphics.WinForms</RootNamespace>
-    <AssemblyName>Platyform.Graphics.WinForms</AssemblyName>
+    <RootNamespace>NetGore.Graphics.WinForms</RootNamespace>
+    <AssemblyName>NetGore.Graphics.WinForms</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

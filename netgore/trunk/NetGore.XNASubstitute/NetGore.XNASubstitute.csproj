@@ -7,8 +7,8 @@
     <ProjectGuid>{4158B1D6-8CD7-4647-ABED-819D571BECD4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Platyform.XNASubstitute</RootNamespace>
-    <AssemblyName>Platyform.XNASubstitute</AssemblyName>
+    <RootNamespace>NetGore.XNASubstitute</RootNamespace>
+    <AssemblyName>NetGore.XNASubstitute</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -37,10 +37,10 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <OutputPath>bin\Debug\</OutputPath>
-	<DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
-	<Optimize>false</Optimize>
-	<WarningLevel>4</WarningLevel>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <PlatformTarget>x86</PlatformTarget>
     <ErrorReport>prompt</ErrorReport>

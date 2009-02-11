@@ -7,8 +7,8 @@
     <ProjectGuid>{B51BE2B8-B1A9-460A-BC38-794FAC66636C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Platyform.Network</RootNamespace>
-    <AssemblyName>Platyform.Network</AssemblyName>
+    <RootNamespace>NetGore.Network</RootNamespace>
+    <AssemblyName>NetGore.Network</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>

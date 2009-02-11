@@ -7,8 +7,8 @@
     <ProjectGuid>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Platyform.Graphics</RootNamespace>
-    <AssemblyName>Platyform.Graphics</AssemblyName>
+    <RootNamespace>NetGore.Graphics</RootNamespace>
+    <AssemblyName>NetGore.Graphics</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
