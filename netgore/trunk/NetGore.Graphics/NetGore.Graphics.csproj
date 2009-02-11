@@ -1,0 +1,124 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Platyform.Graphics</RootNamespace>
+    <AssemblyName>Platyform.Graphics</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;XNA</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;XNA</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE;XNA</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;XNA</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Atlas\AtlasNode.cs" />
+    <Compile Include="Atlas\ITextureAtlas.cs" />
+    <Compile Include="Atlas\TextureAtlas.cs" />
+    <Compile Include="Atlas\TextureAtlasInfo.cs" />
+    <Compile Include="Camera2D.cs" />
+    <Compile Include="Grh\AnimType.cs" />
+    <Compile Include="MapBorderDrawer.cs" />
+    <Compile Include="Skeleton\SkeletonBodyInfo.cs" />
+    <Compile Include="Skeleton\SkeletonFrame.cs" />
+    <Compile Include="XNAArrow.cs" />
+    <Compile Include="XNARectangle.cs" />
+    <Compile Include="FrameCounter.cs" />
+    <Compile Include="Grh\Grh.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Grh\GrhData.cs" />
+    <Compile Include="Grh\GrhInfo.cs" />
+    <Compile Include="ISprite.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScreenGrid.cs" />
+    <Compile Include="Skeleton\Skeleton.cs" />
+    <Compile Include="Skeleton\SkeletonAnimation.cs" />
+    <Compile Include="Skeleton\SkeletonBody.cs" />
+    <Compile Include="Skeleton\SkeletonBodyItem.cs" />
+    <Compile Include="Skeleton\SkeletonDrawer.cs" />
+    <Compile Include="Skeleton\SkeletonManager.cs" />
+    <Compile Include="Skeleton\SkeletonNode.cs" />
+    <Compile Include="Skeleton\SkeletonSet.cs" />
+    <Compile Include="Sprite.cs" />
+    <Compile Include="XNALine.cs" />
+    <Compile Include="XNATriangle.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
+      <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
+      <Name>NetGore.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
+      <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
+      <Name>NetGore.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore\NetGore.csproj">
+      <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
+      <Name>NetGore</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

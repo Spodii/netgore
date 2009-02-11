@@ -1,0 +1,124 @@
+﻿<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="3.5">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D33249A8-9956-46A0-BC1A-42D5206C9F01}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Platyform.Graphics.GUI</RootNamespace>
+    <AssemblyName>Platyform.Graphics.GUI</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkSubset>
+    </TargetFrameworkSubset>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
+    <Reference Include="Microsoft.Xna.Framework.Game, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Control Bases\ControlSettings.cs" />
+    <Compile Include="Control Bases\PictureControlSettings.cs" />
+    <Compile Include="Control Bases\TextControlSettings.cs" />
+    <Compile Include="Controls\ButtonSettings.cs" />
+    <Compile Include="Controls\CheckBoxSettings.cs" />
+    <Compile Include="Control Bases\Control.cs" />
+    <Compile Include="Control Bases\PictureControl.cs" />
+    <Compile Include="Control Bases\TextControl.cs" />
+    <Compile Include="Controls\Button.cs" />
+    <Compile Include="Controls\CheckBox.cs" />
+    <Compile Include="ControlBorder.cs" />
+    <Compile Include="Controls\FormSettings.cs" />
+    <Compile Include="Controls\LabelSettings.cs" />
+    <Compile Include="Controls\StyledText.cs" />
+    <Compile Include="Controls\TextBoxAutoScrollMode.cs" />
+    <Compile Include="Controls\TextBoxMultiLineLocked.cs" />
+    <Compile Include="Controls\PanelSettings.cs" />
+    <Compile Include="Controls\PictureBoxSettings.cs" />
+    <Compile Include="Controls\TextBoxSettings.cs" />
+    <Compile Include="EventArgs\KeyboardEventArgs.cs" />
+    <Compile Include="EventArgs\MouseButtons.cs" />
+    <Compile Include="EventArgs\MouseClickEventArgs.cs" />
+    <Compile Include="EventArgs\MouseEventArgs.cs" />
+    <Compile Include="Controls\Form.cs" />
+    <Compile Include="GUIManager.cs" />
+    <Compile Include="Controls\Label.cs" />
+    <Compile Include="Controls\Panel.cs" />
+    <Compile Include="Controls\PictureBox.cs" />
+    <Compile Include="Screen Manager\GameScreen.cs" />
+    <Compile Include="Screen Manager\MenuScreen.cs" />
+    <Compile Include="Screen Manager\ScreenManager.cs" />
+    <Compile Include="Controls\TextBoxSingleLine.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
+      <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
+      <Name>NetGore.Extensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
+      <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
+      <Name>NetGore.Graphics</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
