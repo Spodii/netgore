@@ -50,7 +50,12 @@ namespace NetGore.Graphics.GUI
             {
                 // Keep the new value in a valid range
                 if (value > _lines.Count - 1)
-                    _bufferOffset = _lines.Count - 1;
+                {
+                    if (_lines.Count > 0)
+                        _bufferOffset = _lines.Count - 1;
+                    else
+                        _bufferOffset = 0;
+                }
                 else if (value < 0)
                     _bufferOffset = 0;
                 else
