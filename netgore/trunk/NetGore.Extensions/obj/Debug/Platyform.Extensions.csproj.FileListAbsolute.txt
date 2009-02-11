@@ -1,5 +1,0 @@
-E:\NetGore\trunk\Platyform.Extensions\bin\Debug\Platyform.Extensions.dll
-E:\NetGore\trunk\Platyform.Extensions\bin\Debug\Platyform.Extensions.pdb
-E:\NetGore\trunk\Platyform.Extensions\obj\Debug\ResolveAssemblyReference.cache
-E:\NetGore\trunk\Platyform.Extensions\obj\Debug\Platyform.Extensions.dll
-E:\NetGore\trunk\Platyform.Extensions\obj\Debug\Platyform.Extensions.pdb

@@ -1,8 +1,0 @@
-E:\NetGore\trunk\Platyform.IO\bin\Debug\Platyform.IO.dll
-E:\NetGore\trunk\Platyform.IO\bin\Debug\Platyform.IO.pdb
-E:\NetGore\trunk\Platyform.IO\bin\Debug\log4net.dll
-E:\NetGore\trunk\Platyform.IO\bin\Debug\log4net.pdb
-E:\NetGore\trunk\Platyform.IO\bin\Debug\log4net.xml
-E:\NetGore\trunk\Platyform.IO\obj\Debug\ResolveAssemblyReference.cache
-E:\NetGore\trunk\Platyform.IO\obj\Debug\Platyform.IO.dll
-E:\NetGore\trunk\Platyform.IO\obj\Debug\Platyform.IO.pdb
