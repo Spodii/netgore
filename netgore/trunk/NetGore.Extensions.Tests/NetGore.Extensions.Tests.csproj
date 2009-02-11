@@ -8,8 +8,8 @@
     <ProjectGuid>{34DA9060-1DC8-4AE8-B9EC-564CF90E7B6D}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Platyform.Extensions.Tests</RootNamespace>
-    <AssemblyName>Platyform.Extensions.Tests</AssemblyName>
+    <RootNamespace>NetGore.Extensions.Tests</RootNamespace>
+    <AssemblyName>NetGore.Extensions.Tests</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
