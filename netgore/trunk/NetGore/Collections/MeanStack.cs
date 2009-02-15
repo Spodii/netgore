@@ -5,15 +5,20 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 
+// TODO: Create a CircularArray
+// TODO: Make the MeanStack use a CircularArray
+
 namespace NetGore
 {
     /// <summary>
     /// Delegate for finding the mean of an IEnumerable of values.
     /// </summary>
     /// <typeparam name="T">Type of values to work with.</typeparam>
-    /// <param name="values">IEnumerable of values to find the mean of.</param>
+    /// <param name="values">Array of values to find the mean of.</param>
+    /// <param name="offset">Array offset to start at.</param>
+    /// <param name="count">Number of elements in the array to use.</param>
     /// <returns>Mean of all the values in the <paramref name="values"/> array.</returns>
-    public delegate T MeanFinder<T>(IEnumerable<T> values);
+    public delegate T MeanFinder<T>(T[] values, int offset, int count);
 
     /// <summary>
     /// Contains a collection of methods for finding the mean of different types.
@@ -38,7 +43,7 @@ namespace NetGore
                 return (MeanFinder<T>)del;
 
             // Find the method to handle the type
-            MethodInfo method = typeof(MeanStack).GetMethod("Mean", new Type[] { typeof(IEnumerable<T>) });
+            MethodInfo method = typeof(MeanStack).GetMethod("Mean", new Type[] { typeof(T[]), typeof(int), typeof(int) });
 
             // Ensure we got a valid method
             if (method == null)
@@ -58,16 +63,19 @@ namespace NetGore
         /// Finds the mean for a collection of values of the specified type.
         /// </summary>
         /// <param name="values">Values to find the mean of.</param>
+        /// <param name="offset">Array offset to start at.</param>
+        /// <param name="count">Number of elements in the array to use.</param>
         /// <returns>Mean of the values in the <paramref name="values"/> array.</returns>
-        public static int Mean(IEnumerable<int> values)
+        public static int Mean(int[] values, int offset, int count)
         {
-            int sum = 0;
-            int count = 0;
+            if (count == 0)
+                return 0;
 
-            foreach (int v in values)
+            int sum = 0;
+
+            for (int i = offset; i < offset + count; i++)
             {
-                sum += v;
-                count++;
+                sum += values[i];
             }
 
             return sum / count;
@@ -77,35 +85,41 @@ namespace NetGore
         /// Finds the mean for a collection of values of the specified type.
         /// </summary>
         /// <param name="values">Values to find the mean of.</param>
+        /// <param name="offset">Array offset to start at.</param>
+        /// <param name="count">Number of elements in the array to use.</param>
         /// <returns>Mean of the values in the <paramref name="values"/> array.</returns>
-        public static uint Mean(IEnumerable<uint> values)
+        public static uint Mean(uint[] values, int offset, int count)
         {
+            if (count == 0)
+                return 0;
+
             uint sum = 0;
-            uint count = 0;
 
-            foreach (uint v in values)
+            for (int i = offset; i < offset + count; i++)
             {
-                sum += v;
-                count++;
+                sum += values[i];
             }
 
-            return sum / count;
+            return sum / (uint)count;
         }
 
         /// <summary>
         /// Finds the mean for a collection of values of the specified type.
         /// </summary>
         /// <param name="values">Values to find the mean of.</param>
+        /// <param name="offset">Array offset to start at.</param>
+        /// <param name="count">Number of elements in the array to use.</param>
         /// <returns>Mean of the values in the <paramref name="values"/> array.</returns>
-        public static Vector2 Mean(IEnumerable<Vector2> values)
+        public static Vector2 Mean(Vector2[] values, int offset, int count)
         {
+            if (count == 0)
+                return Vector2.Zero;
+
             Vector2 sum = Vector2.Zero;
-            int count = 0;
 
-            foreach (Vector2 v in values)
+            for (int i = offset; i < offset + count; i++)
             {
-                sum += v;
-                count++;
+                sum += values[i];
             }
 
             return sum / count;
@@ -115,16 +129,19 @@ namespace NetGore
         /// Finds the mean for a collection of values of the specified type.
         /// </summary>
         /// <param name="values">Values to find the mean of.</param>
+        /// <param name="offset">Array offset to start at.</param>
+        /// <param name="count">Number of elements in the array to use.</param>
         /// <returns>Mean of the values in the <paramref name="values"/> array.</returns>
-        public static ushort Mean(IEnumerable<ushort> values)
+        public static ushort Mean(ushort[] values, int offset, int count)
         {
-            int sum = 0;
-            int count = 0;
+            if (count == 0)
+                return 0;
 
-            foreach (ushort v in values)
+            int sum = 0;
+
+            for (int i = offset; i < offset + count; i++)
             {
-                sum += v;
-                count++;
+                sum += values[i];
             }
 
             return (ushort)(sum / count);
@@ -134,16 +151,19 @@ namespace NetGore
         /// Finds the mean for a collection of values of the specified type.
         /// </summary>
         /// <param name="values">Values to find the mean of.</param>
+        /// <param name="offset">Array offset to start at.</param>
+        /// <param name="count">Number of elements in the array to use.</param>
         /// <returns>Mean of the values in the <paramref name="values"/> array.</returns>
-        public static short Mean(IEnumerable<short> values)
+        public static short Mean(short[] values, int offset, int count)
         {
-            int sum = 0;
-            int count = 0;
+            if (count == 0)
+                return 0;
 
-            foreach (short v in values)
+            int sum = 0;
+
+            for (int i = offset; i < offset + count; i++)
             {
-                sum += v;
-                count++;
+                sum += values[i];
             }
 
             return (short)(sum / count);
@@ -153,16 +173,19 @@ namespace NetGore
         /// Finds the mean for a collection of values of the specified type.
         /// </summary>
         /// <param name="values">Values to find the mean of.</param>
+        /// <param name="offset">Array offset to start at.</param>
+        /// <param name="count">Number of elements in the array to use.</param>
         /// <returns>Mean of the values in the <paramref name="values"/> array.</returns>
-        public static byte Mean(IEnumerable<byte> values)
+        public static byte Mean(byte[] values, int offset, int count)
         {
-            int sum = 0;
-            int count = 0;
+            if (count == 0)
+                return 0;
 
-            foreach (byte v in values)
+            int sum = 0;
+
+            for (int i = offset; i < offset + count; i++)
             {
-                sum += v;
-                count++;
+                sum += values[i];
             }
 
             return (byte)(sum / count);
@@ -172,16 +195,19 @@ namespace NetGore
         /// Finds the mean for a collection of values of the specified type.
         /// </summary>
         /// <param name="values">Values to find the mean of.</param>
+        /// <param name="offset">Array offset to start at.</param>
+        /// <param name="count">Number of elements in the array to use.</param>
         /// <returns>Mean of the values in the <paramref name="values"/> array.</returns>
-        public static sbyte Mean(IEnumerable<sbyte> values)
+        public static sbyte Mean(sbyte[] values, int offset, int count)
         {
-            int sum = 0;
-            int count = 0;
+            if (count == 0)
+                return 0;
 
-            foreach (sbyte v in values)
+            int sum = 0;
+
+            for (int i = offset; i < offset + count; i++)
             {
-                sum += v;
-                count++;
+                sum += values[i];
             }
 
             return (sbyte)(sum / count);
@@ -191,16 +217,19 @@ namespace NetGore
         /// Finds the mean for a collection of values of the specified type.
         /// </summary>
         /// <param name="values">Values to find the mean of.</param>
+        /// <param name="offset">Array offset to start at.</param>
+        /// <param name="count">Number of elements in the array to use.</param>
         /// <returns>Mean of the values in the <paramref name="values"/> array.</returns>
-        public static float Mean(IEnumerable<float> values)
+        public static float Mean(float[] values, int offset, int count)
         {
+            if (count == 0)
+                return 0;
+
             float sum = 0;
-            int count = 0;
 
-            foreach (float v in values)
+            for (int i = offset; i < offset + count; i++)
             {
-                sum += v;
-                count++;
+                sum += values[i];
             }
 
             return sum / count;
@@ -210,16 +239,19 @@ namespace NetGore
         /// Finds the mean for a collection of values of the specified type.
         /// </summary>
         /// <param name="values">Values to find the mean of.</param>
+        /// <param name="offset">Array offset to start at.</param>
+        /// <param name="count">Number of elements in the array to use.</param>
         /// <returns>Mean of the values in the <paramref name="values"/> array.</returns>
-        public static double Mean(IEnumerable<double> values)
+        public static double Mean(double[] values, int offset, int count)
         {
+            if (count == 0)
+                return 0;
+
             double sum = 0;
-            int count = 0;
 
-            foreach (double v in values)
+            for (int i = offset; i < offset + count; i++)
             {
-                sum += v;
-                count++;
+                sum += values[i];
             }
 
             return sum / count;
@@ -229,16 +261,19 @@ namespace NetGore
         /// Finds the mean for a collection of values of the specified type.
         /// </summary>
         /// <param name="values">Values to find the mean of.</param>
+        /// <param name="offset">Array offset to start at.</param>
+        /// <param name="count">Number of elements in the array to use.</param>
         /// <returns>Mean of the values in the <paramref name="values"/> array.</returns>
-        public static long Mean(IEnumerable<long> values)
+        public static long Mean(long[] values, int offset, int count)
         {
+            if (count == 0)
+                return 0;
+
             long sum = 0;
-            int count = 0;
 
-            foreach (long v in values)
+            for (int i = offset; i < offset + count; i++)
             {
-                sum += v;
-                count++;
+                sum += values[i];
             }
 
             return sum / count;
@@ -248,19 +283,22 @@ namespace NetGore
         /// Finds the mean for a collection of values of the specified type.
         /// </summary>
         /// <param name="values">Values to find the mean of.</param>
+        /// <param name="offset">Array offset to start at.</param>
+        /// <param name="count">Number of elements in the array to use.</param>
         /// <returns>Mean of the values in the <paramref name="values"/> array.</returns>
-        public static ulong Mean(IEnumerable<ulong> values)
+        public static ulong Mean(ulong[] values, int offset, int count)
         {
-            ulong sum = 0;
-            ulong count = 0;
+            if (count == 0)
+                return 0;
 
-            foreach (ulong v in values)
+            ulong sum = 0;
+
+            for (int i = offset; i < offset + count; i++)
             {
-                sum += v;
-                count++;
+                sum += values[i];
             }
 
-            return sum / count;
+            return sum / (ulong)count;
         }
     }
 
@@ -279,6 +317,11 @@ namespace NetGore
         /// Delegate used to find the mean of the values for type T
         /// </summary>
         readonly MeanFinder<T> _mf;
+
+        /// <summary>
+        /// Highest index of the buffer used.
+        /// </summary>
+        int _high = -1;
 
         /// <summary>
         /// MeanStack constructor.
@@ -304,24 +347,30 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Fills the stack with the specified value
+        /// Fills the stack with the specified value.
         /// </summary>
-        /// <param name="value">Value to fill the stack with</param>
+        /// <param name="value">Value to fill the stack with.</param>
         public void Fill(T value)
         {
             for (int i = 0; i < _buffer.Length; i++)
             {
                 _buffer[i] = value;
             }
+            _high = _buffer.Length - 1;
         }
 
         /// <summary>
-        /// Finds the mean of the values in the stack
+        /// Finds the mean of the values in the stack.
         /// </summary>
-        /// <returns>Mean of the values in the stack</returns>
+        /// <returns>Mean of the values in the stack.</returns>
         public T Mean()
         {
-            return _mf(_buffer);
+            // If we have nothing, return the default value
+            if (_high == -1)
+                return default(T);
+
+            // Return the mean
+            return _mf(_buffer, 0, _high + 1);
         }
 
         /// <summary>
@@ -330,11 +379,13 @@ namespace NetGore
         /// <param name="value">Value to push into the stack</param>
         public void Push(T value)
         {
+            // Increase the highest value used
+            if (_high < _buffer.Length)
+                _high++;
+
             // Shift up all existing values, dropping the last one
-            for (int i = _buffer.Length - 1; i > 0; i--)
-            {
+            for (int i = _high; i > 0; i--)
                 _buffer[i] = _buffer[i - 1];
-            }
 
             // Store the new value in the first index
             _buffer[0] = value;

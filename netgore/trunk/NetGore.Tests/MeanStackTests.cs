@@ -10,21 +10,36 @@ namespace NetGore.Tests
     [TestFixture]
     public class MeanStackTests
     {
+        /// <summary>
+        /// Number of iterations to perform, where each iteration is the size of the MeanStack.
+        /// </summary>
+        const int _iterations = 70;
+
+        /// <summary>
+        /// Ending value for the sum of items to test.
+        /// </summary>
+        const int _itemEnd = 7;
+
+        /// <summary>
+        /// Starting value for the sum of items to test.
+        /// </summary>
+        const int _itemStart = 1;
+
         [Test]
         public void ByteMeanTest()
         {
-            for (int i = 1; i < 50; i++)
+            for (int i = _itemEnd; i < _iterations; i++)
             {
                 var mf = new MeanStack<byte>(i);
 
                 int sum = 0;
-                for (int j = 1; j <= i; j++)
+                for (int j = _itemStart; j <= _itemEnd; j++)
                 {
                     sum += j;
                     mf.Push((byte)j);
                 }
 
-                int mean = sum / i;
+                int mean = sum / (_itemEnd - _itemStart + 1);
                 Assert.AreEqual(mean, mf.Mean());
             }
         }
@@ -32,18 +47,18 @@ namespace NetGore.Tests
         [Test]
         public void DoubleMeanTest()
         {
-            for (int i = 1; i < 50; i++)
+            for (int i = _itemEnd; i < _iterations; i++)
             {
                 var mf = new MeanStack<double>(i);
 
                 double sum = 0;
-                for (int j = 1; j <= i; j++)
+                for (int j = _itemStart; j <= _itemEnd; j++)
                 {
                     sum += j;
                     mf.Push(j);
                 }
 
-                double mean = sum / i;
+                double mean = sum / (_itemEnd - _itemStart + 1);
                 Assert.AreEqual(mean, mf.Mean());
             }
         }
@@ -62,37 +77,38 @@ namespace NetGore.Tests
         [Test]
         public void FloatMeanTest()
         {
-            for (int i = 1; i < 50; i++)
+            for (int i = _itemEnd; i < _iterations; i++)
             {
                 var mf = new MeanStack<float>(i);
 
                 float sum = 0;
-                for (int j = 1; j <= i; j++)
+                for (int j = _itemStart; j <= _itemEnd; j++)
                 {
                     sum += j;
                     mf.Push(j);
                 }
 
-                float mean = sum / i;
-                Assert.AreEqual(mean, mf.Mean());
+                float mean = sum / (_itemEnd - _itemStart + 1);
+                float m = mf.Mean();
+                Assert.AreEqual(mean, m);
             }
         }
 
         [Test]
         public void IntMeanTest()
         {
-            for (int i = 1; i < 50; i++)
+            for (int i = _itemEnd; i < _iterations; i++)
             {
                 var mf = new MeanStack<int>(i);
 
                 int sum = 0;
-                for (int j = 1; j <= i; j++)
+                for (int j = _itemStart; j <= _itemEnd; j++)
                 {
                     sum += j;
                     mf.Push(j);
                 }
 
-                int mean = sum / i;
+                int mean = sum / (_itemEnd - _itemStart + 1);
                 Assert.AreEqual(mean, mf.Mean());
             }
         }
@@ -100,18 +116,18 @@ namespace NetGore.Tests
         [Test]
         public void LongMeanTest()
         {
-            for (int i = 1; i < 50; i++)
+            for (int i = _itemEnd; i < _iterations; i++)
             {
                 var mf = new MeanStack<long>(i);
 
                 long sum = 0;
-                for (long j = 1; j <= i; j++)
+                for (long j = _itemStart; j <= _itemEnd; j++)
                 {
                     sum += j;
                     mf.Push(j);
                 }
 
-                long mean = sum / i;
+                long mean = sum / (_itemEnd - _itemStart + 1);
                 Assert.AreEqual(mean, mf.Mean());
             }
         }
@@ -119,18 +135,18 @@ namespace NetGore.Tests
         [Test]
         public void SByteMeanTest()
         {
-            for (int i = 1; i < 50; i++)
+            for (int i = _itemEnd; i < _iterations; i++)
             {
                 var mf = new MeanStack<sbyte>(i);
 
                 int sum = 0;
-                for (int j = 1; j <= i; j++)
+                for (int j = _itemStart; j <= _itemEnd; j++)
                 {
                     sum += j;
                     mf.Push((sbyte)j);
                 }
 
-                int mean = sum / i;
+                int mean = sum / (_itemEnd - _itemStart + 1);
                 Assert.AreEqual(mean, mf.Mean());
             }
         }
@@ -138,18 +154,18 @@ namespace NetGore.Tests
         [Test]
         public void ShortMeanTest()
         {
-            for (int i = 1; i < 50; i++)
+            for (int i = _itemEnd; i < _iterations; i++)
             {
                 var mf = new MeanStack<short>(i);
 
                 int sum = 0;
-                for (int j = 1; j <= i; j++)
+                for (int j = _itemStart; j <= _itemEnd; j++)
                 {
                     sum += j;
                     mf.Push((short)j);
                 }
 
-                int mean = sum / i;
+                int mean = sum / (_itemEnd - _itemStart + 1);
                 Assert.AreEqual(mean, mf.Mean());
             }
         }
@@ -157,18 +173,18 @@ namespace NetGore.Tests
         [Test]
         public void UIntMeanTest()
         {
-            for (int i = 1; i < 50; i++)
+            for (int i = _itemEnd; i < _iterations; i++)
             {
                 var mf = new MeanStack<uint>(i);
 
                 uint sum = 0;
-                for (uint j = 1; j <= i; j++)
+                for (uint j = _itemStart; j <= _itemEnd; j++)
                 {
                     sum += j;
                     mf.Push(j);
                 }
 
-                long mean = sum / i;
+                long mean = sum / (_itemEnd - _itemStart + 1);
                 Assert.AreEqual(mean, mf.Mean());
             }
         }
@@ -176,18 +192,18 @@ namespace NetGore.Tests
         [Test]
         public void ULongMeanTest()
         {
-            for (int i = 1; i < 50; i++)
+            for (int i = _itemEnd; i < _iterations; i++)
             {
                 var mf = new MeanStack<ulong>(i);
 
                 ulong sum = 0;
-                for (ulong j = 1; j <= (ulong)i; j++)
+                for (ulong j = _itemStart; j <= _itemEnd; j++)
                 {
                     sum += j;
                     mf.Push(j);
                 }
 
-                ulong mean = sum / (ulong)i;
+                ulong mean = sum / (_itemEnd - _itemStart + 1);
                 Assert.AreEqual(mean, mf.Mean());
             }
         }
@@ -195,18 +211,18 @@ namespace NetGore.Tests
         [Test]
         public void UShortMeanTest()
         {
-            for (int i = 1; i < 50; i++)
+            for (int i = _itemEnd; i < _iterations; i++)
             {
                 var mf = new MeanStack<ushort>(i);
 
                 int sum = 0;
-                for (int j = 1; j <= i; j++)
+                for (int j = _itemStart; j <= _itemEnd; j++)
                 {
                     sum += j;
                     mf.Push((ushort)j);
                 }
 
-                int mean = sum / i;
+                int mean = sum / (_itemEnd - _itemStart + 1);
                 Assert.AreEqual(mean, mf.Mean());
             }
         }
@@ -214,19 +230,19 @@ namespace NetGore.Tests
         [Test]
         public void Vector2MeanTest()
         {
-            for (int i = 1; i < 50; i++)
+            for (int i = _itemEnd; i < _iterations; i++)
             {
                 var mf = new MeanStack<Vector2>(i);
 
                 Vector2 sum = Vector2.Zero;
-                for (int j = 1; j <= i; j++)
+                for (int j = _itemStart; j <= _itemEnd; j++)
                 {
                     Vector2 value = new Vector2(j, j * 2);
                     sum += value;
                     mf.Push(value);
                 }
 
-                Vector2 mean = sum / i;
+                Vector2 mean = sum / (_itemEnd - _itemStart + 1);
                 Assert.AreEqual(mean.X, mf.Mean().X);
                 Assert.AreEqual(mean.Y, mf.Mean().Y);
             }
