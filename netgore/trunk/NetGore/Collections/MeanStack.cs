@@ -380,7 +380,7 @@ namespace NetGore
         public void Push(T value)
         {
             // Increase the highest value used
-            if (_high < _buffer.Length)
+            if (_high < _buffer.Length - 1)
                 _high++;
 
             // Shift up all existing values, dropping the last one
