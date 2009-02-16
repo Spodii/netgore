@@ -5,9 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 
-// TODO: Create a CircularArray
-// TODO: Make the MeanStack use a CircularArray
-
 namespace NetGore
 {
     /// <summary>

@@ -163,7 +163,7 @@ namespace DemoGame.Client
             ushort mapCharIndex = r.ReadUShort();
             string text = r.ReadString(GameData.MaxServerSayLength);
 
-            // TODO: Make use of the mapCharIndex for a chat bubble
+            // NOTE: Make use of the mapCharIndex for a chat bubble
             GameplayScreen.AppendToChatOutput(CreateChatText(name, "says", text));
         }
 
@@ -351,7 +351,7 @@ namespace DemoGame.Client
                 }
             }
 
-            // TODO: Add proper handling of messages
+            // NOTE: Add proper handling of messages
             GameplayScreen.AppendToChatOutput("I received a Server.SendMessage, but fuck if I know what to do with it! :o",
                                               Color.Red);
         }

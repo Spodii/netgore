@@ -90,6 +90,7 @@
     <Compile Include="Packets\ServerPacketID.cs" />
     <Compile Include="Packets\PacketWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ServerMessage.cs" />
     <Compile Include="Stats\CharacterStatsBase.cs" />
     <Compile Include="Stats\ConstStat.cs" />
     <Compile Include="Stats\IStat.cs" />

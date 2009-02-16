@@ -138,7 +138,7 @@ namespace DemoGame.Server
 
         public static PacketWriter NotifyFullInv()
         {
-            // TODO: Unused packet
+            // TODO: Unused packet - remove completely
             return GetWriter(ServerPacketID.NotifyFullInv);
         }
 
