@@ -798,7 +798,7 @@ namespace DemoGame.MapEditor
             _font = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
 
             // Load the Grh information
-            // TODO: Would make more sense for the right-click menu of the Grh tree to be in the GrhTreeView class
+            // NOTE: Would make more sense for the right-click menu of the Grh tree to be in the GrhTreeView class
             ContextMenu mnu = new ContextMenu();
             mnu.MenuItems.Add(new MenuItem("Edit", treeGrhs_mnuEdit));
             mnu.MenuItems.Add(new MenuItem("New Grh", treeGrhs_mnuNewGrh));

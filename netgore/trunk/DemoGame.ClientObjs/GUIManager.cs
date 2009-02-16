@@ -74,8 +74,8 @@ namespace DemoGame.Client
         {
             string root = "GUI." + skin + ".Controls.";
 
-            // TODO: Revert to "Default" skin if something isn't found (use Skin.GetSkinGrh or whatever)
-
+            // NOTE: Revert to "Default" skin if something isn't found (use Skin.GetSkinGrh or whatever)
+            
             ControlBorder cbForm = CreateBorder(GrhInfo.GetData(root + "Form"));
             ControlBorder cbTextBox = CreateBorder(GrhInfo.GetData(root + "TextBox"));
             ControlBorder cbButton = CreateBorder(GrhInfo.GetData(root + "Button"));

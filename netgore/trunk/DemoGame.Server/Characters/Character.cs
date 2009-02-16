@@ -18,7 +18,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Amount of time the character must wait between attacks
         /// </summary>
-        const int _attackTimeout = 500; // TODO: Make variable attack rate
+        const int _attackTimeout = 500;
 
         /// <summary>
         /// Random number generator for Characters

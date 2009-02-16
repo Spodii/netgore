@@ -56,7 +56,7 @@ namespace DemoGame.Server
         [SayCommand("Whisper")]
         void CmdTell(string text, User user)
         {
-            // TODO: Tell
+            // NOTE: Add /tell support
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace DemoGame.Server
             if (string.IsNullOrEmpty(text))
                 return false;
 
-            // TODO: Check for invalid characters
+            // NOTE: Check for invalid characters
             return true;
         }
 

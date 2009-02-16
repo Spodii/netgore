@@ -581,7 +581,7 @@ namespace DemoGame.Client
         /// </summary>
         public void Unload()
         {
-            // TODO: Should be called Dispose() instead
+            // NOTE: Should be called Dispose() instead
             foreach (Texture2D atlas in _mapAtlases)
             {
                 atlas.Dispose();
