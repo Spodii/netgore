@@ -211,7 +211,20 @@ namespace DemoGame.Server
                     Console.WriteLine(" - " + resultStr);
             }
         }
-
+        public class SayHandler
+        {
+            public static bool IsValidSayString(string str)
+            {
+                foreach (char letter in str)
+                {
+                    if (Convert.ToInt32(letter) > 126 || Convert.ToInt32(letter) < 32)
+                    {
+                        return false;
+                    }
+                }
+            return true;
+            }
+        }
         public void Shutdown()
         {
             _isRunning = false;
