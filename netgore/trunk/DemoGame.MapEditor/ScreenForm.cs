@@ -798,16 +798,15 @@ namespace DemoGame.MapEditor
             _font = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
 
             // Load the Grh information
-            // NOTE: Would make more sense for the right-click menu of the Grh tree to be in the GrhTreeView class
-            ContextMenu mnu = new ContextMenu();
-            mnu.MenuItems.Add(new MenuItem("Edit", treeGrhs_mnuEdit));
-            mnu.MenuItems.Add(new MenuItem("New Grh", treeGrhs_mnuNewGrh));
-            mnu.MenuItems.Add(new MenuItem("Duplicate", treeGrhs_mnuDuplicate));
-            mnu.MenuItems.Add(new MenuItem("Batch Change Texture", treeGrhs_mnuBatchChangeTexture));
-            treeGrhs.ContextMenu = mnu;
             GrhInfo.Load(ContentPaths.Dev.Data.Join("grhdata.xml"), _content);
             treeGrhs.Initialize();
             TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
+
+            //Hook GrhTreeView context menu click events
+            treeGrhs.GrhContextMenuEditClick += treeGrhs_mnuEdit;
+            treeGrhs.GrhContextMenuDuplicateClick += treeGrhs_mnuDuplicate;
+            treeGrhs.GrhContextMenuBatchChangeTextureClick += treeGrhs_mnuBatchChangeTexture;
+            treeGrhs.GrhContextMenuNewGrhClick += treeGrhs_mnuNewGrh;
 
             // Start the stopwatch for the elapsed time checking
             _stopWatch.Start();
