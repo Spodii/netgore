@@ -43,7 +43,7 @@ namespace DemoGame.Server
             _commandManager = new SayCommandManager(this);
         }
 
-        [SayCommand("Shout")]
+        [SayCommand("Shout", true)]
         void CmdShout(string text, User user)
         {
             using (PacketWriter pw = ServerPacket.ChatShout(user.Name, text))
@@ -52,8 +52,8 @@ namespace DemoGame.Server
             }
         }
 
-        [SayCommand("Tell")]
-        [SayCommand("Whisper")]
+        [SayCommand("Tell", true)]
+        [SayCommand("Whisper", true)]
         void CmdTell(string text, User user)
         {
             // Check for a message to tell
