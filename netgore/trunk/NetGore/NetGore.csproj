@@ -70,6 +70,7 @@
     <Compile Include="Collections\BoolArray.cs" />
     <Compile Include="Collections\DArray.cs" />
     <Compile Include="Collections\DArrayModifyEventArgs.cs" />
+    <Compile Include="Collections\TSList.cs" />
     <Compile Include="Entities\BoxSide.cs" />
     <Compile Include="Entities\CollisionBox.cs" />
     <Compile Include="Entities\CollisionType.cs" />
