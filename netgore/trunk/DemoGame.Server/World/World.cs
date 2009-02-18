@@ -222,21 +222,15 @@ namespace DemoGame.Server
             if (log.IsErrorEnabled)
                 log.Warn("User not bound to connection tag.");
 
-            User ret = null;
-
             // No user bound to connection, perform manual search
-            foreach (User user in Users)
+            User ret = Users.First(x => x.Conn == conn);
+            if (ret == null)
             {
-                if (user.Conn == conn)
-                {
-                    ret = user;
-                    break;
-                }
+                const string errmsg = "No user found on socket `{0}`.";
+                Debug.Fail(string.Format(errmsg, conn));
+                if (log.IsWarnEnabled)
+                    log.ErrorFormat(errmsg, conn);
             }
-
-            Debug.Assert(ret != null, "No valid user found.");
-            if (log.IsWarnEnabled)
-                log.Error("No valid user found.");
 
             // Return value, which will be null if none found
             return ret;
