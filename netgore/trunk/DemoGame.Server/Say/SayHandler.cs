@@ -104,7 +104,7 @@ namespace DemoGame.Server
             else
             {
                 // NOTE: Needs to be part of the ServerMessages
-                using (PacketWriter pw = ServerPacket.Chat("Cannot find user " + text.Substring(0, spaceIndex)))
+                using (PacketWriter pw = ServerPacket.Chat("Cannot find user " + targetName))
                 {
                     user.Send(pw);
                 }
