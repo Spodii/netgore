@@ -214,7 +214,7 @@ namespace DemoGame.Server
             User ret = null;
 
             // No user bound to connection, perform manual search
-            foreach (User user in _users)
+            foreach (User user in Users)
             {
                 if (user.Conn == conn)
                 {
@@ -267,7 +267,7 @@ namespace DemoGame.Server
             }
 
             // Send to all users in the world
-            foreach (User user in _users)
+            foreach (User user in Users)
             {
                 if (user != null)
                     user.Send(data);
