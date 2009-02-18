@@ -92,8 +92,14 @@ namespace DemoGame.Server
             // Check if empty
             if (string.IsNullOrEmpty(text))
                 return false;
-
-            // NOTE: Check for invalid characters
+            //check each character in the string to make sure they are valid
+            foreach (char letter in text)
+            {
+                if (Convert.ToInt32(letter) > 126 || Convert.ToInt32(letter) < 32)
+                {
+                    return false;
+                }
+            }
             return true;
         }
 
