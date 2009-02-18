@@ -56,17 +56,46 @@ namespace DemoGame.Server
         [SayCommand("Whisper")]
         void CmdTell(string text, User user)
         {
-            User target = World.FindUser(text.Substring(0, text.IndexOf(' ')));
-            string message = text.Substring(text.IndexOf(' '));
+            // Check for a message to tell
+            if (string.IsNullOrEmpty(text))
+            {
+                // Invalid message
+                // NOTE: Needs to be part of the ServerMessages
+                using (PacketWriter pw = ServerPacket.Chat("Tell what to whom?"))
+                {
+                    user.Send(pw);
+                }
+                return;
+            }
 
+            // Find the user to tell
+            int spaceIndex = text.IndexOf(' ');
+            if (spaceIndex < 0)
+            {
+                // Invalid message
+                // NOTE: Needs to be part of the ServerMessages
+                using (PacketWriter pw = ServerPacket.Chat("What do you want to say?"))
+                {
+                    user.Send(pw);
+                }
+                return;
+            }
+
+            string targetName = text.Substring(0, spaceIndex);
+            User target = World.FindUser(targetName);
+
+            // Check if the target user is available or not
             if (target != null)
             {
-                // NOTE: These 3 messages need to be part of the ServerMessages
-                using (PacketWriter pw = ServerPacket.Chat("You Tell " + target.Name + message))
+                string message = text.Substring(spaceIndex);
+                
+                // NOTE: Needs to be part of the ServerMessages
+                using (PacketWriter pw = ServerPacket.Chat("You tell " + target.Name + message))
                 {
                     user.Send(pw);
                 }
 
+                // NOTE: Needs to be part of the ServerMessages
                 using (PacketWriter pw = ServerPacket.ChatTell(user.Name, message))
                 {
                     target.Send(pw);
@@ -74,6 +103,7 @@ namespace DemoGame.Server
             }
             else
             {
+                // NOTE: Needs to be part of the ServerMessages
                 using (PacketWriter pw = ServerPacket.Chat("Cannot find user " + text.Substring(0, text.IndexOf(' '))))
                 {
                     user.Send(pw);
