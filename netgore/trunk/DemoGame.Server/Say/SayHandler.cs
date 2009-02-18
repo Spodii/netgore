@@ -56,15 +56,15 @@ namespace DemoGame.Server
         [SayCommand("Whisper")]
         void CmdTell(string text, User user)
         {
-            User Target = World.FindUser(text.Substring(0, text.IndexOf(' ')));
-            string Message = text.Substring(text.IndexOf(' '));
-            if (Target != null)
+            User _target = World.FindUser(text.Substring(0, text.IndexOf(' ')));
+            string _message = text.Substring(text.IndexOf(' '));
+            if (_target != null)
             {
-                using (PacketWriter pw = ServerPacket.Chat("You Tell " + Target.Name + Message))
+                using (PacketWriter pw = ServerPacket.Chat("You Tell " + _target.Name + _message))
                 {
                     user.Send(pw);
                 }
-                using (PacketWriter pw = ServerPacket.ChatTell(user.Name, Message))
+                using (PacketWriter pw = ServerPacket.ChatTell(user.Name, _message))
                 {
                     Target.Send(pw);
                 }
