@@ -122,6 +122,17 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Searches for a User in this World.
+        /// </summary>
+        /// <param name="name">Name of the User to find.</param>
+        /// <returns>User with the given name, or null if the user is not online or invalid.</returns>
+        public User FindUser(string name)
+        {
+            name = name.ToLower();
+            return _users.Find(x => x.Name.ToLower() == name);
+        }
+
+        /// <summary>
         /// Adds a user to the world
         /// </summary>
         public void AddUser(User user)
