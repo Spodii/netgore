@@ -101,6 +101,7 @@
     <Compile Include="Items\ItemValues.cs" />
     <Compile Include="Items\UserEquipped.cs" />
     <Compile Include="Items\UserInventoryUpdater.cs" />
+    <Compile Include="Say\SayCommand.cs" />
     <Compile Include="Say\SayCommandAttribute.cs" />
     <Compile Include="Say\SayCommandCallback.cs" />
     <Compile Include="Say\SayCommandManager.cs" />

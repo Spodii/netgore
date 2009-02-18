@@ -16,8 +16,8 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly Dictionary<string, SayCommandCallback> _commands =
-            new Dictionary<string, SayCommandCallback>(StringComparer.OrdinalIgnoreCase);
+        readonly Dictionary<string, SayCommand> _commands =
+            new Dictionary<string, SayCommand>(StringComparer.OrdinalIgnoreCase);
 
         public SayCommandManager(object source)
         {
@@ -41,20 +41,21 @@ namespace DemoGame.Server
 
                     SayCommandCallback del =
                         (SayCommandCallback)Delegate.CreateDelegate(typeof(SayCommandCallback), source, method, true);
-                    _commands.Add(attribute.Command, del);
+                    SayCommand cmd = new SayCommand(del, attribute.ThreadSafe);
+                    _commands.Add(attribute.Command, cmd);
                 }
             }
         }
 
         /// <summary>
-        /// Gets the SayCommandCallback for the specified command name.
+        /// Gets the SayCommand for the specified command name.
         /// </summary>
-        /// <param name="command">Name of the command.</param>
-        /// <returns>SayCommandCallback for the specified command, or null if an invalid command.</returns>
-        public SayCommandCallback GetCallback(string command)
+        /// <param name="commandName">Name of the command.</param>
+        /// <returns>SayCommand for the specified command, or null if an invalid command.</returns>
+        public SayCommand GetCommand(string commandName)
         {
-            SayCommandCallback ret;
-            if (_commands.TryGetValue(command, out ret))
+            SayCommand ret;
+            if (_commands.TryGetValue(commandName, out ret))
                 return ret;
 
             return null;

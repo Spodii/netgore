@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using DemoGame.Extensions;
 using log4net;
 
@@ -88,7 +89,7 @@ namespace DemoGame.Server
             if (target != null)
             {
                 string message = text.Substring(spaceIndex);
-                
+
                 // NOTE: Needs to be part of the ServerMessages
                 using (PacketWriter pw = ServerPacket.Chat("You tell " + target.Name + message))
                 {
@@ -201,20 +202,32 @@ namespace DemoGame.Server
         void ProcessCommand(string text, User user)
         {
             // Split the text
-            string command;
+            string commandName;
             string remainder;
-            SplitCommandFromText(text, out command, out remainder);
+            SplitCommandFromText(text, out commandName, out remainder);
 
-            // Get the handler for the command
-            SayCommandCallback handler = _commandManager.GetCallback(command);
-            if (handler == null)
+            // Get the SayCommand for the given command name
+            SayCommand command = _commandManager.GetCommand(commandName);
+            if (command == null)
             {
                 user.Send(GameMessage.InvalidCommand);
                 return;
             }
 
             // Call the handler
-            handler(remainder, user);
+            if (!command.IsThreadSafe)
+            {
+                // Invoke synchronously
+                command.Callback(remainder, user);
+            }
+            else
+            {
+                // Invoke asynchronously
+                ThreadPool.QueueUserWorkItem(delegate
+                                             {
+                                                 command.Callback(remainder, user);
+                                             });
+            }
         }
 
         /// <summary>
