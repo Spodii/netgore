@@ -220,7 +220,7 @@ namespace DemoGame.Server
 
             Debug.Fail("User not bound to connection tag.");
             if (log.IsErrorEnabled)
-                log.Error("User not bound to connection tag.");
+                log.Warn("User not bound to connection tag.");
 
             User ret = null;
 
@@ -236,7 +236,7 @@ namespace DemoGame.Server
 
             Debug.Assert(ret != null, "No valid user found.");
             if (log.IsWarnEnabled)
-                log.Warn("No valid user found.");
+                log.Error("No valid user found.");
 
             // Return value, which will be null if none found
             return ret;
