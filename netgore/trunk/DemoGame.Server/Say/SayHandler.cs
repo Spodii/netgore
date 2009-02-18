@@ -58,17 +58,19 @@ namespace DemoGame.Server
         {
             User target = World.FindUser(text.Substring(0, text.IndexOf(' ')));
             string message = text.Substring(text.IndexOf(' '));
+
             if (target != null)
             {
+                // NOTE: These 3 messages need to be part of the ServerMessages
                 using (PacketWriter pw = ServerPacket.Chat("You Tell " + target.Name + message))
                 {
                     user.Send(pw);
                 }
+
                 using (PacketWriter pw = ServerPacket.ChatTell(user.Name, message))
                 {
                     target.Send(pw);
                 }
-
             }
             else
             {
