@@ -56,7 +56,27 @@ namespace DemoGame.Server
         [SayCommand("Whisper")]
         void CmdTell(string text, User user)
         {
-            // NOTE: Add /tell support
+            User Target = World.FindUser(text.Substring(0, text.IndexOf(' ')));
+            string Message = text.Substring(text.IndexOf(' '));
+            if (Target != null)
+            {
+                using (PacketWriter pw = ServerPacket.Chat("You Tell " + Target.Name + Message))
+                {
+                    user.Send(pw);
+                }
+                using (PacketWriter pw = ServerPacket.ChatTell(user.Name, Message))
+                {
+                    Target.Send(pw);
+                }
+
+            }
+            else
+            {
+                using (PacketWriter pw = ServerPacket.Chat("Cannot find user " + text.Substring(0, text.IndexOf(' '))))
+                {
+                    user.Send(pw);
+                }
+            }
         }
 
         /// <summary>
@@ -96,7 +116,7 @@ namespace DemoGame.Server
             // Check each character in the string to make sure they are valid
             foreach (char letter in text)
             {
-                int i = Convert.ToInt32(letter);
+                int i = Convert.ToInt32(Convert.ToChar(letter));
                 if (i > 126 || i < 32)
                     return false;
             }
