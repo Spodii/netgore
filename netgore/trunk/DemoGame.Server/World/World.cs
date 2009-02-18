@@ -51,9 +51,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// A list of all the maps in the world
+        /// Gets an IEnuermable of all the maps in the world.
         /// </summary>
-        public DArray<Map> Maps
+        public IEnumerable<Map> Maps
         {
             get { return _maps; }
         }
@@ -111,7 +111,7 @@ namespace DemoGame.Server
             _maps.Trim();
 
             // Create some test NPCs
-            foreach (Map m in _maps)
+            foreach (Map m in Maps)
             {
                 for (int i = 0; i < 5; i++)
                 {
@@ -163,7 +163,7 @@ namespace DemoGame.Server
             // Dispose of managed objects
             if (disposeManaged)
             {
-                foreach (Map map in _maps)
+                foreach (Map map in Maps)
                 {
                     _disposeStack.Push(map);
                 }
@@ -294,7 +294,7 @@ namespace DemoGame.Server
             ProcessDisposeStack();
 
             // Update every map
-            foreach (Map map in _maps)
+            foreach (Map map in Maps)
             {
                 // Make sure we do not have a null map somehow
                 if (map == null)
