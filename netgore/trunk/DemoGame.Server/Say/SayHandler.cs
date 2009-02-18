@@ -66,7 +66,7 @@ namespace DemoGame.Server
                 }
                 using (PacketWriter pw = ServerPacket.ChatTell(user.Name, _message))
                 {
-                    Target.Send(pw);
+                    _target.Send(pw);
                 }
 
             }
