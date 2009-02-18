@@ -240,7 +240,7 @@ namespace DemoGame.Server
         public override void Update(IMap imap, float deltaTime)
         {
             // Make sure there are users on the map
-            if (Map.Users.Count == 0)
+            if (Map.Users.Count() == 0)
                 return;
 
             // Check for spawning if dead

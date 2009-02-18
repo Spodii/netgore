@@ -20,14 +20,14 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly List<NPC> _npcs = new List<NPC>();
-        readonly List<User> _users = new List<User>();
+        readonly TSList<User> _users = new TSList<User>();
         readonly World _world;
         bool _disposed;
 
         /// <summary>
         /// Gets the list of NPCs on the map
         /// </summary>
-        public List<NPC> NPCs
+        public IEnumerable<NPC> NPCs
         {
             get { return _npcs; }
         }
@@ -35,7 +35,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the list of users on the map
         /// </summary>
-        public List<User> Users
+        public IEnumerable<User> Users
         {
             get { return _users; }
         }
@@ -77,7 +77,7 @@ namespace DemoGame.Server
             if (user != null)
             {
                 Debug.Assert(!Users.Contains(user), string.Format("Users list already contains `{0}`!", user));
-                Users.Add(user);
+                _users.Add(user);
                 SendMapData(user);
                 return true;
             }
@@ -87,7 +87,7 @@ namespace DemoGame.Server
             if (npc != null)
             {
                 Debug.Assert(!NPCs.Contains(npc), string.Format("NPCs list already contains `{0}`!", npc));
-                NPCs.Add(npc);
+                _npcs.Add(npc);
                 return true;
             }
 
@@ -105,9 +105,9 @@ namespace DemoGame.Server
             NPC npc;
 
             if ((user = character as User) != null)
-                Users.Remove(user);
+                _users.Remove(user);
             else if ((npc = character as NPC) != null)
-                NPCs.Remove(npc);
+                _npcs.Remove(npc);
 
             return true;
         }
@@ -157,7 +157,7 @@ namespace DemoGame.Server
             base.EntityAdded(entity);
 
             // Create the entity for everyone on the map
-            if (Users.Count > 0)
+            if (_users.Count > 0)
             {
                 IDynamicEntity dynamicEntity = entity as IDynamicEntity;
                 if (dynamicEntity != null)
@@ -186,7 +186,7 @@ namespace DemoGame.Server
             }
 
             // Destroy the entity for everyone on the map
-            if (Users.Count > 0)
+            if (_users.Count > 0)
             {
                 IDynamicEntity dynamicEntity = entity as IDynamicEntity;
                 if (dynamicEntity != null)
@@ -234,9 +234,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Send a message to every user in the map
+        /// Send a message to every user in the map. This method is thread-safe.
         /// </summary>
-        /// <param name="data">BitStream containing the data to send</param>
+        /// <param name="data">BitStream containing the data to send.</param>
         public void Send(BitStream data)
         {
             if (data == null || data.Length < 1)
@@ -248,7 +248,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            foreach (User user in _users)
+            foreach (var user in Users)
             {
                 if (user != null)
                     user.Send(data);
@@ -257,11 +257,20 @@ namespace DemoGame.Server
             }
         }
 
+        public override void Update()
+        {
+            // Skip updating maps with no users
+            if (_users.Count == 0)
+                return;
+
+            base.Update();
+        }
+
         /// <summary>
-        /// Send a packet to every user in the map
+        /// Send a packet to every user in the map. This method is thread-safe.
         /// </summary>
-        /// <param name="data">BitStream containing the data to send</param>
-        /// <param name="skipUser">User to skip sending to</param>
+        /// <param name="data">BitStream containing the data to send.</param>
+        /// <param name="skipUser">User to skip sending to.</param>
         public void Send(BitStream data, User skipUser)
         {
             if (data == null || data.Length < 1)
@@ -273,7 +282,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            foreach (User user in _users)
+            foreach (var user in Users)
             {
                 if (user != null)
                 {
@@ -341,7 +350,7 @@ namespace DemoGame.Server
             Vector2 min = origin - screenSize;
             Vector2 max = origin + screenSize;
 
-            foreach (User user in _users)
+            foreach (var user in Users)
             {
                 if (user != null)
                 {

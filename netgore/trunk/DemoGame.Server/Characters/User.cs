@@ -470,7 +470,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Sends data to the User.
+        /// Sends data to the User. This method is thread-safe.
         /// </summary>
         /// <param name="data">BitStream containing the data to send to the User.</param>
         public void Send(BitStream data)

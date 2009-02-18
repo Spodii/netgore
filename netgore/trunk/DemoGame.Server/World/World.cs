@@ -23,7 +23,7 @@ namespace DemoGame.Server
 
         readonly DArray<Map> _maps;
         readonly Server _parent;
-        readonly List<User> _users = new List<User>();
+        readonly TSList<User> _users = new TSList<User>();
 
         bool _disposed;
 
@@ -262,9 +262,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Send a message to every user in the world
+        /// Send a message to every user in the world. This method is thread-safe.
         /// </summary>
-        /// <param name="data">BitStream containing the data to send</param>
+        /// <param name="data">BitStream containing the data to send.</param>
         public void Send(BitStream data)
         {
             // Ensure the data is not null and of a valid length
@@ -305,7 +305,7 @@ namespace DemoGame.Server
             ProcessDisposeStack();
 
             // Update every map
-            foreach (Map map in Maps)
+            foreach (var map in Maps)
             {
                 // Make sure we do not have a null map somehow
                 if (map == null)
@@ -317,9 +317,8 @@ namespace DemoGame.Server
                     continue;
                 }
 
-                // Update the map if there are any users on it
-                if (map.Users.Count > 0)
-                    map.Update();
+                // Update the map 
+                map.Update();
             }
         }
 
