@@ -291,16 +291,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Closes the socket's connection and clears resources used by the connection.
-        /// </summary>
-        public void Close()
-        {
-            // Raise the OnClose event
-            if (OnDispose != null)
-                OnDispose(this);
-        }
-
-        /// <summary>
         /// Attempts to synchronously connect to a host
         /// </summary>
         /// <param name="host">Host address</param>
