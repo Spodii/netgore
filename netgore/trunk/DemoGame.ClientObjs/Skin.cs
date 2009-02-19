@@ -106,9 +106,9 @@ namespace DemoGame.Client
 
             // Handle having an extra period at the start of the subcategory
             if (subCategory.StartsWith("."))
-                category = "GUI." + Current + subCategory;
+                category = "GUI." + skin + subCategory;
             else
-                category = "GUI." + Current + "." + subCategory;
+                category = "GUI." + skin + "." + subCategory;
 
             return category;
         }
