@@ -223,7 +223,7 @@ namespace DemoGame.Server
                 log.Warn("User not bound to connection tag.");
 
             // No user bound to connection, perform manual search
-            User ret = Users.First(x => x.Conn == conn);
+            User ret = Users.FirstOrDefault(x => x.Conn == conn);
             if (ret == null)
             {
                 const string errmsg = "No user found on socket `{0}`.";

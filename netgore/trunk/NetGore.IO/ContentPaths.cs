@@ -21,6 +21,7 @@ namespace NetGore
         const string _settingsFolder = "Settings";
         const string _skeletonsFolder = "Skeletons";
         const string _texturesFolder = "Texture";
+        const string _languagesFolder = "Languages";
 
         static readonly ContentPaths _buildPaths;
         static readonly ContentPaths _devPaths;
@@ -35,6 +36,7 @@ namespace NetGore
         readonly PathString _settings;
         readonly PathString _skeletons;
         readonly PathString _textures;
+        readonly PathString _languages;
 
         /// <summary>
         /// Gets the ContentPaths for the Build content.
@@ -66,6 +68,14 @@ namespace NetGore
         public PathString Engine
         {
             get { return _engine; }
+        }
+
+        /// <summary>
+        /// Gets the file path to the Languages directory.
+        /// </summary>
+        public PathString Languages
+        {
+            get { return _languages; }
         }
 
         /// <summary>
@@ -145,6 +155,7 @@ namespace NetGore
             _skeletons = GetChildPath(_root, _skeletonsFolder);
             _textures = GetChildPath(_root, _texturesFolder);
             _settings = GetChildPath(_root, _settingsFolder);
+            _languages = GetChildPath(_root, _languagesFolder);
         }
 
         /// <summary>
