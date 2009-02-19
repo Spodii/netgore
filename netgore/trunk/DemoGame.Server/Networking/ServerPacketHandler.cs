@@ -290,8 +290,10 @@ namespace DemoGame.Server
         /// <param name="conn">Connection the user was using.</param>
         void ServerSockets_OnDisconnect(TCPSocket conn)
         {
+            // The user attached to the connection may already be disposed, so if we fail to find the user,
+            // just ignore the problem
             User user;
-            if (TryGetUser(conn, out user))
+            if (TryGetUser(conn, out user, false)) 
                 user.DelayedDispose();
         }
 
@@ -335,7 +337,7 @@ namespace DemoGame.Server
             return TryGetMap(user, out map);
         }
 
-        bool TryGetUser(TCPSocket conn, out User user)
+        bool TryGetUser(TCPSocket conn, out User user, bool failRecover)
         {
             // Check for a valid connection
             if (conn == null)
@@ -348,17 +350,25 @@ namespace DemoGame.Server
             }
 
             // Get the user
-            user = World.GetUser(conn);
+            user = World.GetUser(conn, failRecover);
 
             // Check for a valid user
             if (user == null)
             {
-                Debug.Fail("user is null.");
-                log.Error("user is null.");
+                if (failRecover)
+                {
+                    Debug.Fail("user is null.");
+                    log.Error("user is null.");
+                }
                 return false;
             }
 
             return true;
+        }
+
+        bool TryGetUser(TCPSocket conn, out User user)
+        {
+            return TryGetUser(conn, out user, true);
         }
 
         #region IGetTime Members
