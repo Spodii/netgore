@@ -13,6 +13,7 @@ namespace DemoGame
         /// <summary>
         /// Invalid Say chat command
         /// </summary>
-        InvalidCommand
+        InvalidCommand,
+        TellWithoutName
     }
 }
