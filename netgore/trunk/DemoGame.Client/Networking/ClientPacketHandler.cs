@@ -167,24 +167,6 @@ namespace DemoGame.Client
             GameplayScreen.AppendToChatOutput(CreateChatText(name, "says", text));
         }
 
-        [MessageHandler((byte)ServerPacketID.ChatShout)]
-        void RecvChatShout(TCPSocket conn, BitStream r)
-        {
-            string name = r.ReadString(GameData.MaxServerSayNameLength);
-            string text = r.ReadString(GameData.MaxServerSayLength);
-
-            GameplayScreen.AppendToChatOutput(CreateChatText(name, "shouts", text));
-        }
-
-        [MessageHandler((byte)ServerPacketID.ChatTell)]
-        void RecvChatTell(TCPSocket conn, BitStream r)
-        {
-            string name = r.ReadString(GameData.MaxServerSayNameLength);
-            string text = r.ReadString(GameData.MaxServerSayLength);
-
-            GameplayScreen.AppendToChatOutput(CreateChatText(name, "whispers", text));
-        }
-
         [MessageHandler((byte)ServerPacketID.CreateMapItem)]
         void RecvCreateMapItem(TCPSocket conn, BitStream r)
         {
@@ -335,6 +317,8 @@ namespace DemoGame.Client
             itemInfo.SetAsUpdated();
         }
 
+        readonly GameMessages _gameMessages = new GameMessages();
+
         [MessageHandler((byte)ServerPacketID.SendMessage)]
         void RecvSendMessage(TCPSocket conn, BitStream r)
         {
@@ -350,10 +334,11 @@ namespace DemoGame.Client
                     parameters[i] = r.ReadString(GameData.MaxServerMessageParameterLength);
                 }
             }
-            
-            string message = ServerMessage.Show(messageID, parameters[paramCount]);
-            GameplayScreen.AppendToChatOutput(message,
-                                              Color.Red);
+
+            GameMessage gameMessage = (GameMessage)messageID;
+            string message = _gameMessages.GetMessage(gameMessage, parameters);
+            if (!string.IsNullOrEmpty(message))
+                GameplayScreen.AppendToChatOutput(message, Color.Black);
         }
 
         [MessageHandler((byte)ServerPacketID.SetCharHeadingLeft)]

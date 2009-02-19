@@ -48,22 +48,6 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter ChatShout(string name, string text)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.ChatShout);
-            pw.Write(name, GameData.MaxServerSayNameLength);
-            pw.Write(text, GameData.MaxServerSayLength);
-            return pw;
-        }
-
-        public static PacketWriter ChatTell(string name, string text)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.ChatTell);
-            pw.Write(name, GameData.MaxServerSayNameLength);
-            pw.Write(text, GameData.MaxServerSayLength);
-            return pw;
-        }
-
         public static PacketWriter CreateMapItem(ushort mapItemIndex, Vector2 pos, Vector2 size, ushort graphic)
         {
             if (size.X > byte.MaxValue || size.Y > byte.MaxValue || size.X < byte.MinValue || size.Y < byte.MinValue)

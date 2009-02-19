@@ -68,7 +68,6 @@
     <Compile Include="ContentPaths.cs" />
     <Compile Include="FilePathString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SettingsPaths.cs" />
     <Compile Include="Xml\IRestorableSettings.cs" />
     <Compile Include="Xml\NodeItem.cs" />
     <Compile Include="Xml\NodeItems.cs" />

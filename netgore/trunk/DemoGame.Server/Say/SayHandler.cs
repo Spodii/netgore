@@ -47,7 +47,7 @@ namespace DemoGame.Server
         [SayCommand("Shout", true)]
         void CmdShout(string text, User user)
         {
-            using (PacketWriter pw = ServerPacket.ChatShout(user.Name, text))
+            using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandShout, user.Name, text))
             {
                 World.Send(pw);
             }
@@ -61,8 +61,7 @@ namespace DemoGame.Server
             if (string.IsNullOrEmpty(text))
             {
                 // Invalid message
-                // NOTE: Needs to be part of the ServerMessages
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.TellWithoutName))
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellNoName))
                 {
                     user.Send(pw);
                 }
@@ -73,9 +72,8 @@ namespace DemoGame.Server
             int spaceIndex = text.IndexOf(' ');
             if (spaceIndex < 0)
             {
-                // Invalid message
-                // NOTE: Needs to be part of the ServerMessages
-                using (PacketWriter pw = ServerPacket.Chat("What do you want to say?"))
+                // No or invalid message
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellNoMessage))
                 {
                     user.Send(pw);
                 }
@@ -88,24 +86,24 @@ namespace DemoGame.Server
             // Check if the target user is available or not
             if (target != null)
             {
-                string message = text.Substring(spaceIndex);
+                string message = text.Substring(spaceIndex + 1);
 
-                // NOTE: Needs to be part of the ServerMessages
-                using (PacketWriter pw = ServerPacket.Chat("You tell " + target.Name + message))
+                // Message to sender ("You tell...")
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellSender, target.Name, message))
                 {
                     user.Send(pw);
                 }
 
-                // NOTE: Needs to be part of the ServerMessages
-                using (PacketWriter pw = ServerPacket.ChatTell(user.Name, message))
+                // Message to receivd ("X tells you...")
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellReceiver, user.Name, message))
                 {
                     target.Send(pw);
                 }
             }
             else
             {
-                // NOTE: Needs to be part of the ServerMessages
-                using (PacketWriter pw = ServerPacket.Chat("Cannot find user " + targetName))
+                // User not found
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellInvalidUser, target))
                 {
                     user.Send(pw);
                 }
@@ -210,9 +208,16 @@ namespace DemoGame.Server
             SayCommand command = _commandManager.GetCommand(commandName);
             if (command == null)
             {
-                user.Send(GameMessage.InvalidCommand);
+                using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommand))
+                {
+                    user.Send(pw);
+                }
                 return;
             }
+
+            // Trim the remainder text
+            if (remainder != null)
+                remainder = remainder.Trim();
 
             // Call the handler
             if (!command.IsThreadSafe)
