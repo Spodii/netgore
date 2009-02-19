@@ -62,7 +62,7 @@ namespace DemoGame.Server
             {
                 // Invalid message
                 // NOTE: Needs to be part of the ServerMessages
-                using (PacketWriter pw = ServerPacket.Chat("Tell what to whom?"))
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.TellWithoutName))
                 {
                     user.Send(pw);
                 }
