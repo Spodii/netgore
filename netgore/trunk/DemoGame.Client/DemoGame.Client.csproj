@@ -107,6 +107,7 @@
     <Compile Include="DemoGame.cs" />
     <Compile Include="Controls\StatsForm.cs" />
     <Compile Include="Controls\Toolbar.cs" />
+    <Compile Include="ServerMessage.cs" />
     <Compile Include="StatTypeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>

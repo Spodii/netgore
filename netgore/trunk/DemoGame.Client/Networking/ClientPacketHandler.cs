@@ -350,9 +350,9 @@ namespace DemoGame.Client
                     parameters[i] = r.ReadString(GameData.MaxServerMessageParameterLength);
                 }
             }
-
-            // NOTE: Add proper handling of messages
-            GameplayScreen.AppendToChatOutput("I received a Server.SendMessage, but fuck if I know what to do with it! :o",
+            
+            string message = ServerMessage.Show(messageID, parameters[paramCount]);
+            GameplayScreen.AppendToChatOutput(message,
                                               Color.Red);
         }
 
