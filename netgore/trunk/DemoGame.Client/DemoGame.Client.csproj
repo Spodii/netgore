@@ -189,6 +189,7 @@
     </PreBuildEvent>
     <PostBuildEvent>xcopy "$(ProjectDir)\Content\Data" "$(TargetDir)Content\Data" /E /C /R /K /I /Y
 xcopy "$(ProjectDir)\Content\Skeletons" "$(TargetDir)Content\Skeletons"  /E /C /R /K /I /Y
-xcopy "$(ProjectDir)\Content\Maps" "$(TargetDir)Content\Maps"  /E /C /R /K /I /Y</PostBuildEvent>
+xcopy "$(ProjectDir)\Content\Maps" "$(TargetDir)Content\Maps"  /E /C /R /K /I /Y
+xcopy "$(ProjectDir)\Content\Languages" "$(TargetDir)Content\Languages"  /E /C /R /K /I /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>
