@@ -66,20 +66,7 @@ namespace DemoGame.Client
         /// <returns>True if the ID was parsed successfully, else false.</returns>
         protected override bool TryParseID(string str, out GameMessage id)
         {
-            // Parse the string
-            id = (GameMessage)Enum.Parse(typeof(GameMessage), str, true);
-
-            // Check if it is part of the enum
-            if (!Enum.IsDefined(typeof(GameMessage), id))
-            {
-                const string errmsg = "Languages file contains id `{0}`, but this is not in the ServerMessage enum.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, id);
-                Debug.Fail(string.Format(errmsg, id));
-                return false;
-            }
-
-            return true;
+            return ParseEnumHelper(str, out id);
         }
     }
 }
