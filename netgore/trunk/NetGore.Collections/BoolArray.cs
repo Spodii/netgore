@@ -6,7 +6,7 @@ using System.Linq;
 
 // Good thing I only spent a few hours making this fucking this before realizing there is a "BitArray"... -.-
 
-namespace NetGore
+namespace NetGore.Collections
 {
     /// <summary>
     /// An array that specializes in handling Boolean values.

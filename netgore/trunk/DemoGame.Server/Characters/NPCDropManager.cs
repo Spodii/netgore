@@ -9,6 +9,7 @@ using DemoGame.Extensions;
 using log4net;
 using MySql.Data.MySqlClient;
 using NetGore;
+using NetGore.Collections;
 using NetGore.Extensions;
 
 namespace DemoGame.Server

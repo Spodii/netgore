@@ -67,10 +67,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Collections\BoolArray.cs" />
-    <Compile Include="Collections\DArray.cs" />
-    <Compile Include="Collections\DArrayModifyEventArgs.cs" />
-    <Compile Include="Collections\TSList.cs" />
     <Compile Include="Entities\BoxSide.cs" />
     <Compile Include="Entities\CollisionBox.cs" />
     <Compile Include="Entities\CollisionType.cs" />
@@ -80,10 +76,7 @@
     <Compile Include="IGetTime.cs" />
     <Compile Include="IMap.cs" />
     <Compile Include="MathString.cs" />
-    <Compile Include="Collections\MeanStack.cs" />
-    <Compile Include="Object Pool\IPoolable.cs" />
-    <Compile Include="Object Pool\ObjectPoolBase.cs" />
-    <Compile Include="Object Pool\PoolData.cs" />
+    <Compile Include="MeanStackExtras.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WorldSettings.cs" />
   </ItemGroup>
