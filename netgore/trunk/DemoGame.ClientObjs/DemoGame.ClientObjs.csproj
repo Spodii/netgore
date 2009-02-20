@@ -94,6 +94,10 @@
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
+      <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
+      <Name>NetGore.Collections</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
       <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
       <Name>NetGore.Extensions</Name>

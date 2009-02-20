@@ -8,6 +8,7 @@ using System.Xml;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Collections;
 
 // FUTURE: Improve how characters handle when they hit the map's borders
 

@@ -7,6 +7,7 @@ using DemoGame.Extensions;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Network;
 
 namespace DemoGame.Server
 {

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace NetGore
+namespace NetGore.Collections
 {
     /// <summary>
     /// A thread-safe implementation of a List.

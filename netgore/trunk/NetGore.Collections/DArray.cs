@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 
-namespace NetGore
+namespace NetGore.Collections
 {
     /// <summary>
     /// Dynamic, auto-expanding array that preserves and recycles indices.

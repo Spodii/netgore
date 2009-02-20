@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.Collections
 {
     /// <summary>
     /// Contains the pool information for an individual item in the pool

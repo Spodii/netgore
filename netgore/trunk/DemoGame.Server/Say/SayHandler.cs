@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading;
 using DemoGame.Extensions;
 using log4net;
+using NetGore.Network;
 
 namespace DemoGame.Server
 {

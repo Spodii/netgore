@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.Collections
 {
     public delegate void DArrayModifyEventHandler<T>(object sender, DArrayModifyEventArgs<T> e);
 

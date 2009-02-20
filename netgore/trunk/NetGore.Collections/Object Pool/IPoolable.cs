@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace NetGore
+namespace NetGore.Collections
 {
     /// <summary>
     /// Interface for an object that can be placed in an object pool

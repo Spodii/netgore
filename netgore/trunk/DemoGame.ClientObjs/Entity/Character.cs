@@ -6,6 +6,7 @@ using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Collections;
 using NetGore.Graphics;
 
 namespace DemoGame.Client
@@ -17,7 +18,7 @@ namespace DemoGame.Client
     {
         readonly BodyInfo _bodyInfo;
         readonly Map _map;
-        readonly MeanStack<Vector2> _ms = new MeanStack<Vector2>(3, MeanStack.Mean);
+        readonly MeanStack<Vector2> _ms = new MeanStack<Vector2>(3, MeanStackExtras.Mean);
         readonly EventHandler _onLoopHandler;
         readonly SkeletonAnimation _skelAnim = null;
         readonly SkeletonManager _skelManager;

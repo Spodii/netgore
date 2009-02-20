@@ -6,7 +6,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 
-namespace NetGore
+namespace NetGore.Collections
 {
     /// <summary>
     /// Basic object pool layout. More complex pools can override this to allow for overriding of the

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
+using NetGore.Network;
 
 namespace DemoGame.Server
 {

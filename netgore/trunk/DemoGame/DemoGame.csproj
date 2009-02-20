@@ -86,9 +86,7 @@
     <Compile Include="MapBase.cs" />
     <Compile Include="Entity\TeleportEntity.cs" />
     <Compile Include="Packets\ClientPacketID.cs" />
-    <Compile Include="Packets\PacketWriterPool.cs" />
     <Compile Include="Packets\ServerPacketID.cs" />
-    <Compile Include="Packets\PacketWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Stats\CharacterStatsBase.cs" />
     <Compile Include="Stats\ConstStat.cs" />
@@ -104,6 +102,10 @@
     <Compile Include="Stats\StatType.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
+      <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
+      <Name>NetGore.Collections</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
       <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
       <Name>NetGore.Extensions</Name>
