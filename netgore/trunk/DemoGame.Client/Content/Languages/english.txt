@@ -1,0 +1,10 @@
+InvalidCommand: Invalid command.
+
+CommandShout: {0} shouts: "{1}"
+
+CommandTellNoName: Tell what to whom?
+CommandTellNoMessage: What do you want to say?
+CommandTellSender: You tell {0}: "{1}"
+CommandTellReceiver: {0} tells you: "{1}"
+CommandTellInvalidUser: User {0} does not exist.
+CommandTellOfflineUser: User {0} is currently offline.
