@@ -46,7 +46,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BoolArray.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="DArray.cs" />
     <Compile Include="DArrayModifyEventArgs.cs" />
     <Compile Include="MeanStack.cs" />
