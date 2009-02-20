@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
-using Microsoft.Xna.Framework.Net;
 using NetGore.Network;
 
 namespace DemoGame.Client
