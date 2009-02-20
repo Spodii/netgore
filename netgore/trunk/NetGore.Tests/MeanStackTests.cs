@@ -227,26 +227,5 @@ namespace NetGore.Tests
                 Assert.AreEqual(mean, mf.Mean());
             }
         }
-
-        [Test]
-        public void Vector2MeanTest()
-        {
-            for (int i = _itemEnd; i < _iterations; i++)
-            {
-                var mf = new MeanStack<Vector2>(i);
-
-                Vector2 sum = Vector2.Zero;
-                for (int j = _itemStart; j <= _itemEnd; j++)
-                {
-                    Vector2 value = new Vector2(j, j * 2);
-                    sum += value;
-                    mf.Push(value);
-                }
-
-                Vector2 mean = sum / (_itemEnd - _itemStart + 1);
-                Assert.AreEqual(mean.X, mf.Mean().X);
-                Assert.AreEqual(mean.Y, mf.Mean().Y);
-            }
-        }
     }
 }
