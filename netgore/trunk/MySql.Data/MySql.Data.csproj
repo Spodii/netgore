@@ -28,6 +28,10 @@
     </UpgradeBackupLocation>
     <SignAssembly>false</SignAssembly>
     <OldToolsVersion>2.0</OldToolsVersion>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <OutputPath>bin\net-2.0\Debug\</OutputPath>
