@@ -108,7 +108,7 @@ namespace DemoGame.Client
 
             // Dispose of the old map
             if (Map != null)
-                Map.Unload();
+                Map.Dispose();
 
             // Set the new map
             Map = newMap;
