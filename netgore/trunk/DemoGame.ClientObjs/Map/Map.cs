@@ -15,7 +15,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Map object for the client
     /// </summary>
-    public class Map : MapBase<Wall>
+    public class Map : MapBase<Wall>, IDisposable
     {
         static bool _drawBackground = true;
         static bool _drawCharacters = true;
@@ -140,7 +140,8 @@ namespace DemoGame.Client
         /// <param name="mapIndex">Index of the map</param>
         /// <param name="parent">World the map belongs to</param>
         /// <param name="graphics">GraphicsDevice to use to construct the atlas for the map</param>
-        public Map(ushort mapIndex, World parent, GraphicsDevice graphics) : base(mapIndex, parent)
+        public Map(ushort mapIndex, World parent, GraphicsDevice graphics)
+            : base(mapIndex, parent)
         {
             _graphics = graphics;
             _world = parent;
@@ -579,9 +580,8 @@ namespace DemoGame.Client
         /// <summary>
         /// Unloads the garbage created by the map (ie atlas textures)
         /// </summary>
-        public void Unload()
+        public void Dispose()
         {
-            // NOTE: Should be called Dispose() instead
             foreach (Texture2D atlas in _mapAtlases)
             {
                 atlas.Dispose();
