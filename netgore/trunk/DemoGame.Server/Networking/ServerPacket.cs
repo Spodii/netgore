@@ -194,30 +194,27 @@ namespace DemoGame.Server
 
         public static PacketWriter SendMessage(GameMessage message, params object[] p)
         {
-            int pLength;
+            PacketWriter pw = GetWriter(ServerPacketID.SendMessage);
+            pw.Write((byte)message);
+
+            // Write the parameter count and all of the parameters
             if (p == null || p.Length < 1)
             {
-                pLength = 0;
+                pw.Write((byte)0);
             }
             else
             {
-                pLength = p.Length;
-            }
+                pw.Write((byte)p.Length);
+                for (int i = 0; i < p.Length; i++)
+                {
+                    // Convert to a string, and ensure the string is short enough (trimming if it is too long)
+                    string str = p[i].ToString();
+                    if (str.Length > GameData.MaxServerMessageParameterLength)
+                        str = str.Substring(0, GameData.MaxServerMessageParameterLength);
 
-            PacketWriter pw = GetWriter(ServerPacketID.SendMessage);
-            pw.Write((byte)message);
-            pw.Write((byte)pLength);
-
-            // Write all the parameters
-            for (int i = 0; i < pLength; i++)
-            {
-                // Convert to a string, and ensure the string is short enough (trimming if it is too long)
-                string str = p[i].ToString();
-                if (str.Length > GameData.MaxServerMessageParameterLength)
-                    str = str.Substring(0, GameData.MaxServerMessageParameterLength);
-
-                // Write the string
-                pw.Write(str, GameData.MaxServerMessageParameterLength);
+                    // Write the string
+                    pw.Write(str, GameData.MaxServerMessageParameterLength);
+                }
             }
 
             return pw;
