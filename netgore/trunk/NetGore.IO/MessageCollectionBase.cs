@@ -131,7 +131,7 @@ namespace NetGore.IO
             {
                 var subArgs = args.Take(args.Length - 1);
                 string parsed2 = (subArgs.Count() > 0) ? string.Format(ret, subArgs) : ret;
-                valid = (parsed2 == parsed);
+                valid = (parsed2 != parsed);
             }
             catch (FormatException)
             {
