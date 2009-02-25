@@ -207,8 +207,22 @@ namespace DemoGame.Server
                 pw.Write((byte)p.Length);
                 for (int i = 0; i < p.Length; i++)
                 {
+                    // Get the object
+                    object obj = p[i];
+                    if (obj == null)
+                    {
+                        const string errmsg = "Null object passed to SendMessage().";
+                        Debug.Fail(errmsg);
+                        if (log.IsErrorEnabled)
+                            log.Error(errmsg);
+
+                        // Write out an error string instead for the parameter
+                        pw.Write("NULL_PARAMETER_ERROR", GameData.MaxServerMessageParameterLength);
+                        continue;
+                    }
+
                     // Convert to a string, and ensure the string is short enough (trimming if it is too long)
-                    string str = p[i].ToString();
+                    string str = obj.ToString();
                     if (str.Length > GameData.MaxServerMessageParameterLength)
                         str = str.Substring(0, GameData.MaxServerMessageParameterLength);
 
