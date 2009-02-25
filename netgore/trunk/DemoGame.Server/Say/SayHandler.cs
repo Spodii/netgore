@@ -104,7 +104,7 @@ namespace DemoGame.Server
             else
             {
                 // User not found
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellInvalidUser, target))
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellInvalidUser, targetName))
                 {
                     user.Send(pw);
                 }
