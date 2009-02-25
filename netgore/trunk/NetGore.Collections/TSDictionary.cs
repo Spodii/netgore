@@ -183,7 +183,7 @@ namespace NetGore.Collections
             get
             {
                 _lock.EnterReadLock();
-                var ret = new List<TKey>(_dict.Keys); // TODO: Use TSList<,>
+                var ret = new TSList<TKey>(_dict.Keys);
                 _lock.ExitReadLock();
 
                 return ret;
@@ -195,7 +195,7 @@ namespace NetGore.Collections
             get
             {
                 _lock.EnterReadLock();
-                var ret = new List<TValue>(_dict.Values); // TODO: Use TSList<,>
+                var ret = new TSList<TValue>(_dict.Values);
                 _lock.ExitReadLock();
 
                 return ret;

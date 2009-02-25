@@ -24,7 +24,7 @@ namespace DemoGame.Server
 
         readonly DArray<Map> _maps;
         readonly Server _parent;
-        readonly TSList<User> _users = new TSList<User>();
+        readonly TSDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
 
         bool _disposed;
 
@@ -32,6 +32,13 @@ namespace DemoGame.Server
         /// Time that the World was last updated
         /// </summary>
         int _lastUpdateTime;
+
+        /// <summary>
+        /// An IEnumerable of all of the Users. This is used for the Users property, which allows us to
+        /// use the Users property without worrying about thread safety or holding the users dictionary
+        /// in a lock. Make sure this is rebuilt every time the users dictionary is modified.
+        /// </summary>
+        IEnumerable<User> _usersEnumerable;
 
         /// <summary>
         /// Gets the MySqlConnection used by the world
@@ -80,7 +87,7 @@ namespace DemoGame.Server
         /// </summary>
         public IEnumerable<User> Users
         {
-            get { return _users; }
+            get { return _usersEnumerable; }
         }
 
         /// <summary>
@@ -123,29 +130,17 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Searches for a User in this World.
-        /// </summary>
-        /// <param name="name">Name of the User to find.</param>
-        /// <returns>User with the given name, or null if the user is not online or invalid.</returns>
-        public User FindUser(string name)
-        {
-            name = name.ToLower();
-            return _users.Find(x => x.Name.ToLower() == name);
-        }
-
-        /// <summary>
         /// Adds a user to the world
         /// </summary>
         public void AddUser(User user)
         {
-            if (user != null)
-                _users.Add(user);
-            else
-            {
-                Debug.Fail("user is null.");
-                if (log.IsErrorEnabled)
-                    log.Error("user is null.");
-            }
+            if (user == null)
+                throw new ArgumentNullException("user");
+            if (string.IsNullOrEmpty(user.Name))
+                throw new ArgumentException("User contains a null or invalid name.", "user");
+
+            _users.Add(user.Name, user);
+            _usersEnumerable = _users.Values;
         }
 
         /// <summary>
@@ -182,6 +177,20 @@ namespace DemoGame.Server
 
                 ProcessDisposeStack();
             }
+        }
+
+        /// <summary>
+        /// Searches for a User in this World.
+        /// </summary>
+        /// <param name="name">Name of the User to find.</param>
+        /// <returns>User with the given name, or null if the user is not online or invalid.</returns>
+        public User FindUser(string name)
+        {
+            User user;
+            if (!_users.TryGetValue(name, out user))
+                return null;
+
+            return user;
         }
 
         /// <summary>
@@ -314,7 +323,7 @@ namespace DemoGame.Server
             ProcessDisposeStack();
 
             // Update every map
-            foreach (var map in Maps)
+            foreach (Map map in Maps)
             {
                 // Make sure we do not have a null map somehow
                 if (map == null)
