@@ -14,15 +14,15 @@ namespace NetGore.Db
     public interface IPoolableDbConnection : IDisposable
     {
         /// <summary>
-        /// Gets the IDbConnection for this IPoolableDbConnection.
+        /// Gets the IDbConnection for this IPoolableDbConnection. Never dispose of this IDbConnection directly.
         /// </summary>
         IDbConnection Connection { get; }
 
         /// <summary>
-        /// Sets the DbConnection to be used by this IPoolableDbConnection. This should only be called by the
-        /// DbConnectionPool, and can only be called once.
+        /// Gets the IDbCommand for the IDbConnection in this IPoolableDbConnection. It is strongly suggested you use
+        /// this command instead of creating a new one to prevent creating extra garbage. This command is guarenteed
+        /// to be set up for the given Connection. Never dispose of this IDbCommand directly.
         /// </summary>
-        /// <param name="connection">Connection to be used by the IPoolableDbConnection.</param>
-        void SetConnection(DbConnection connection);
+        IDbCommand Command { get; }
     }
 }

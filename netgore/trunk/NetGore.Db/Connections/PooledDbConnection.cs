@@ -15,14 +15,20 @@ namespace NetGore.Db
     {
         PoolData<PooledDbConnection> _poolData;
         ObjectPool<PooledDbConnection> _objectPool;
-        DbConnection _connection;
+        IDbConnection _connection;
+        DbCommandContainer _commandContainer;
+
+        public IDbCommand Command
+        {
+            get { return _commandContainer; }
+        }
 
         /// <summary>
         /// Sets the DbConnection to be used by this IPoolableDbConnection. This should only be called by the
         /// DbConnectionPool, and can only be called once.
         /// </summary>
         /// <param name="connection">Connection to be used by the IPoolableDbConnection.</param>
-        void IPoolableDbConnection.SetConnection(DbConnection connection)
+        internal void SetConnection(IDbConnection connection)
         {
             if (_connection != null)
                 throw new MethodAccessException("Connection already set for this PooledDbConnection.");
@@ -30,6 +36,7 @@ namespace NetGore.Db
                 throw new ArgumentNullException("connection");
 
             _connection = connection;
+            _commandContainer = new DbCommandContainer(_connection);
         }
 
         /// <summary>
