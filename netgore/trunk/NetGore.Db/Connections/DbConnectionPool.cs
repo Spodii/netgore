@@ -10,7 +10,6 @@ namespace NetGore.Db
     /// <summary>
     /// Base class for a pool of database connections.
     /// </summary>
-    /// <typeparam name="T">Type of DbConnection to be managed by this DbConnectionPool.</typeparam>
     public abstract class DbConnectionPool : ObjectPool<PooledDbConnection>
     {
         readonly string _connectionString;
