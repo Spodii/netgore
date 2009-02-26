@@ -70,6 +70,16 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// When overridden in the derived class, allows for additional handling by the ObjectPoolBase when a new
+        /// object is created for the pool. This is only called when a new object is created, not activated. This is
+        /// called only once for each unique pool item, after IPoolable.SetPoolData() and before IPoolable.Activate().
+        /// </summary>
+        /// <param name="item">New object that was created.</param>
+        protected virtual void HandleNewPoolObject(T item)
+        {
+        }
+
+        /// <summary>
         /// Gets an item to use from the pool
         /// </summary>
         /// <returns>Item to use</returns>
@@ -95,6 +105,9 @@ namespace NetGore.Collections
 
                 // Make the item assign the pool data reference
                 item.SetPoolData(this, poolData);
+
+                // Allow for additional handling
+                HandleNewPoolObject(item);
 
                 lock (_poolLock)
                 {
