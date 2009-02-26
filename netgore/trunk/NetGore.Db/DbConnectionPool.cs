@@ -5,7 +5,10 @@ using System.Text;
 
 namespace NetGore.Db
 {
-    public class Class1
+    /// <summary>
+    /// Interface for an object that can pool
+    /// </summary>
+    public interface DbQueryPoolBase
     {
     }
 }
