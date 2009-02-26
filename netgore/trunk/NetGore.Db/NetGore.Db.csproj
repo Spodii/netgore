@@ -61,10 +61,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbConnectionPool.cs" />
-    <Compile Include="IDbManager.cs" />
-    <Compile Include="IPoolableDbConnection.cs" />
-    <Compile Include="PooledDbConnection.cs" />
+    <Compile Include="Connections\DbConnectionPool.cs" />
+    <Compile Include="DbManager.cs" />
+    <Compile Include="Connections\IPoolableDbConnection.cs" />
+    <Compile Include="Connections\PooledDbConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +72,9 @@
       <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
       <Name>NetGore.Collections</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Commands\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
