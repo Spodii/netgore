@@ -36,8 +36,7 @@ namespace NetGore.Db
         /// <param name="item">New object that was created.</param>
         protected override void HandleNewPoolObject(PooledDbConnection item)
         {
-            IPoolableDbConnection poolableDbConnection = item;
-            poolableDbConnection.SetConnection(CreateConnection(ConnectionString));
+            item.SetConnection(CreateConnection(ConnectionString));
         }
 
         /// <summary>
