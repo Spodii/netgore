@@ -45,6 +45,25 @@ namespace NetGore.Db.MySql.Tests
         }
 
         [Test]
+        public void MultiplePoolItemsTest()
+        {
+            var pool = CreateConnectionPool();
+
+            using (var a = pool.Create())
+            {
+                using (var b = pool.Create())
+                {
+                    using (var c = pool.Create())
+                    {
+                        Assert.IsNotNull(a);
+                        Assert.IsNotNull(b);
+                        Assert.IsNotNull(c);
+                    }
+                }
+            }
+        }
+
+        [Test]
         public void SelectQueryTest()
         {
             var pool = CreateConnectionPool();

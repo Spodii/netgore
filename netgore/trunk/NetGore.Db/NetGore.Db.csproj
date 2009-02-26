@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbConnectionPool.cs" />
+    <Compile Include="IDbManager.cs" />
     <Compile Include="IPoolableDbConnection.cs" />
     <Compile Include="PooledDbConnection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

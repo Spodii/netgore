@@ -8,10 +8,10 @@ using NetGore.Collections;
 namespace NetGore.Db
 {
     /// <summary>
-    /// Base for a pool of database connections.
+    /// Base class for a pool of database connections.
     /// </summary>
     /// <typeparam name="T">Type of DbConnection to be managed by this DbConnectionPool.</typeparam>
-    public abstract class DbConnectionPool<T> : ObjectPool<PooledDbConnection<T>> where T : DbConnection, new()
+    public abstract class DbConnectionPool : ObjectPool<PooledDbConnection>
     {
         readonly string _connectionString;
 
@@ -35,9 +35,9 @@ namespace NetGore.Db
         /// called only once for each unique pool item, after IPoolable.SetPoolData() and before IPoolable.Activate().
         /// </summary>
         /// <param name="item">New object that was created.</param>
-        protected override void HandleNewPoolObject(PooledDbConnection<T> item)
+        protected override void HandleNewPoolObject(PooledDbConnection item)
         {
-            IPoolableDbConnection<T> poolableDbConnection = item;
+            IPoolableDbConnection poolableDbConnection = item;
             poolableDbConnection.SetConnection(CreateConnection(ConnectionString));
         }
 
@@ -46,6 +46,6 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="connectionString">ConnectionString to create the DbConnection with.</param>
         /// <returns>DbConnection to be used with this ObjectPool.</returns>
-        protected abstract T CreateConnection(string connectionString);
+        protected abstract DbConnection CreateConnection(string connectionString);
     }
 }
