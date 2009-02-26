@@ -63,6 +63,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Collections", "NetG
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Collections.Tests", "NetGore.Collections.Tests\NetGore.Collections.Tests.csproj", "{9FF7C125-C009-4DE2-9022-BACBE3AFDB30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Db", "NetGore.Db\NetGore.Db.csproj", "{EF4B471E-C101-4AAC-882E-BBDE9A54D212}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Db.MySql", "NetGore.Db.MySql\NetGore.Db.MySql.csproj", "{43D09443-29F5-4688-81D7-5B5835EAC550}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -640,6 +644,42 @@ Global
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|Mixed Platforms.ActiveCfg = Release|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|x86.ActiveCfg = Release|x86
 		{586E77C1-8412-4CBB-AC4A-A9E7E6982388}.Release|Xbox 360.ActiveCfg = Release|x86
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Debug|Xbox 360.ActiveCfg = Debug|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Profile|Any CPU.ActiveCfg = Release|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Profile|Any CPU.Build.0 = Release|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Profile|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Profile|Mixed Platforms.Build.0 = Release|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Profile|x86.ActiveCfg = Release|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Profile|Xbox 360.ActiveCfg = Release|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Release|x86.ActiveCfg = Release|Any CPU
+		{EF4B471E-C101-4AAC-882E-BBDE9A54D212}.Release|Xbox 360.ActiveCfg = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Debug|Xbox 360.ActiveCfg = Debug|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Profile|Any CPU.ActiveCfg = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Profile|Any CPU.Build.0 = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Profile|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Profile|Mixed Platforms.Build.0 = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Profile|x86.ActiveCfg = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Profile|Xbox 360.ActiveCfg = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Release|x86.ActiveCfg = Release|Any CPU
+		{43D09443-29F5-4688-81D7-5B5835EAC550}.Release|Xbox 360.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
