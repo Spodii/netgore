@@ -62,11 +62,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataReaderContainer.cs" />
-    <Compile Include="DbCommandContainer.cs" />
+    <Compile Include="DbCommandContainer.cs">
+    </Compile>
     <Compile Include="Connections\DbConnectionPool.cs" />
     <Compile Include="DbManager.cs" />
     <Compile Include="Connections\IPoolableDbConnection.cs" />
     <Compile Include="Connections\PooledDbConnection.cs" />
+    <Compile Include="DbQueryNonReader.cs" />
+    <Compile Include="IDbQueryNonReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

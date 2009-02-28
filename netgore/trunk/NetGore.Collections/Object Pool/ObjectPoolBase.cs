@@ -28,6 +28,11 @@ namespace NetGore.Collections
         readonly LinkedList<T> _pool = new LinkedList<T>();
 
         /// <summary>
+        /// Gets the number of live items in the ObjectPool.
+        /// </summary>
+        public int Count { get { return _pool.Count - _free.Count; } }
+
+        /// <summary>
         /// Object used to lock the pool on thread-unsafe sections of code
         /// </summary>
         readonly object _poolLock = new object();
