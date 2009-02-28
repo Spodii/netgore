@@ -11,17 +11,10 @@ namespace NetGore.Db.MySql.Tests
     [TestFixture]
     public class MySqlDbConnectionPoolTests
     {
-        readonly string _connectionString = new MySqlConnectionStringBuilder { Server = "localhost", UserID = "root", Database = "demogame", Password = "" }.ToString();
-
-        MySqlDbConnectionPool CreateConnectionPool()
-        {
-            return new MySqlDbConnectionPool(_connectionString);
-        }
-
         [Test]
         public void ConnectionOpenTest()
         {
-            var pool = CreateConnectionPool();
+            var pool = TestSettings.CreateConnectionPool();
 
             using (var connPool = pool.Create())
             {
@@ -34,7 +27,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void ConnectionCloseTest()
         {
-            var pool = CreateConnectionPool();
+            var pool = TestSettings.CreateConnectionPool();
 
             IDbConnection conn;
             using (var connPool = pool.Create())
@@ -47,26 +40,33 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void MultiplePoolItemsTest()
         {
-            var pool = CreateConnectionPool();
+            var pool = TestSettings.CreateConnectionPool();
 
+            Assert.AreEqual(0, pool.Count);
             using (var a = pool.Create())
             {
+                Assert.AreEqual(1, pool.Count);
                 using (var b = pool.Create())
                 {
+                    Assert.AreEqual(2, pool.Count);
                     using (var c = pool.Create())
                     {
+                        Assert.AreEqual(3, pool.Count);
                         Assert.IsNotNull(a);
                         Assert.IsNotNull(b);
                         Assert.IsNotNull(c);
                     }
+                    Assert.AreEqual(2, pool.Count);
                 }
+                Assert.AreEqual(1, pool.Count);
             }
+            Assert.AreEqual(0, pool.Count);
         }
 
         [Test]
         public void SelectQueryTest()
         {
-            var pool = CreateConnectionPool();
+            var pool = TestSettings.CreateConnectionPool();
 
             using (var connPool = pool.Create())
             {

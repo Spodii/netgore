@@ -12,24 +12,69 @@ namespace NetGore.Db.MySql.Tests
     [TestFixture]
     public class MySqlDbManagerTests
     {
-        readonly string _connectionString = new MySqlConnectionStringBuilder { Server = "localhost", UserID = "root", Database = "demogame", Password = "" }.ToString();
-
-        DbManager CreateDbManager()
+        [Test]
+        public void CleanupConnectionsTest()
         {
-            return new DbManager(new MySqlDbConnectionPool(_connectionString));
+            var manager = TestSettings.CreateDbManager();
+            var stack = new Stack<IPoolableDbConnection>();
+
+            Assert.AreEqual(0, manager.ConnectionPool.Count);
+            for (int i = 1; i < 20; i++)
+            {
+                var item = manager.GetConnection();
+                stack.Push(item);
+                Assert.AreEqual(i, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
+            }
+
+            while (stack.Count > 0)
+            {
+                var item = stack.Pop();
+                int start = manager.ConnectionPool.Count;
+                item.Dispose();
+                Assert.AreEqual(start - 1, manager.ConnectionPool.Count);
+            }
+
+            Assert.AreEqual(0, manager.ConnectionPool.Count);
+        }
+
+        [Test]
+        public void CleanupCommandsTest()
+        {
+            var manager = TestSettings.CreateDbManager();
+            var stack = new Stack<IDbCommand>();
+
+            Assert.AreEqual(0, manager.ConnectionPool.Count);
+            for (int i = 1; i < 20; i++)
+            {
+                var item = manager.GetCommand();
+                stack.Push(item);
+                Assert.AreEqual(i, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
+            }
+
+            while (stack.Count > 0)
+            {
+                var item = stack.Pop();
+                int start = manager.ConnectionPool.Count;
+                item.Dispose();
+                Assert.AreEqual(start - 1, manager.ConnectionPool.Count);
+            }
+
+            Assert.AreEqual(0, manager.ConnectionPool.Count);
         }
 
         [Test]
         public void ConnectionTest()
         {
-            var manager = CreateDbManager();
+            var manager = TestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
+                Assert.AreEqual(0, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
                 IPoolableDbConnection pConn;
                 IDbConnection conn;
                 using (pConn = manager.GetConnection())
                 {
+                    Assert.AreEqual(1, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
                     conn = pConn.Connection;
                     Assert.IsNotNull(conn);
                     Assert.AreEqual(ConnectionState.Open, conn.State);
@@ -41,12 +86,15 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void CommandTest()
         {
-            var manager = CreateDbManager();
+            var manager = TestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
-                using (var cmd = manager.GetCommand())
+                Assert.AreEqual(0, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
+                IDbCommand cmd;
+                using (cmd = manager.GetCommand())
                 {
+                    Assert.AreEqual(1, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
                     Assert.IsNotNull(cmd);
                     cmd.CommandText = "SELECT 500 + 100";
                     using (var r = cmd.ExecuteReader())
@@ -59,14 +107,50 @@ namespace NetGore.Db.MySql.Tests
         }
 
         [Test]
-        public void CommandStringTest()
+        public void CommandParametersTest()
         {
-            var manager = CreateDbManager();
+            var manager = TestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
+                Assert.AreEqual(0, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
+
+                IDbCommand cmd;
+                using (cmd = manager.GetCommand())
+                {
+                    Assert.AreEqual(1, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
+                    Assert.IsNotNull(cmd);
+
+                    cmd.CommandText = "SELECT @left + @right";
+
+                    var left = new MySqlParameter("@left", null) { Value = 500 };
+                    var right = new MySqlParameter("@right", null) { Value = 100 };
+                    cmd.Parameters.Add(left);
+                    cmd.Parameters.Add(right);
+
+                    using (var r = cmd.ExecuteReader())
+                    {
+                        r.Read();
+                        Assert.AreEqual("600", r[0].ToString());
+                    }
+
+                    Assert.AreNotEqual(0, cmd.Parameters.Count);
+                    Assert.IsFalse(string.IsNullOrEmpty(cmd.CommandText));
+                }
+            }
+        }
+
+        [Test]
+        public void CommandStringTest()
+        {
+            var manager = TestSettings.CreateDbManager();
+
+            for (int i = 0; i < 10; i++)
+            {
+                Assert.AreEqual(0, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
                 using (var cmd = manager.GetCommand("SELECT 500 + 100"))
                 {
+                    Assert.AreEqual(1, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
                     Assert.IsNotNull(cmd);
                     Assert.AreEqual("SELECT 500 + 100", cmd.CommandText);
                     using (var r = cmd.ExecuteReader())
@@ -81,10 +165,11 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void ExecuteNonQueryTest()
         {
-            var manager = CreateDbManager();
+            var manager = TestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
+                Assert.AreEqual(0, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
                 int ret = manager.ExecuteNonQuery("SELECT 500 + 100");
                 Assert.AreEqual(-1, ret);
             }
@@ -93,12 +178,14 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void ExecuteReaderTest()
         {
-            var manager = CreateDbManager();
+            var manager = TestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
+                Assert.AreEqual(0, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
                 using (var r = manager.ExecuteReader("SELECT 500 + 100"))
                 {
+                    Assert.AreEqual(1, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
                     Assert.IsFalse(r.IsClosed);
                     r.Read();
                     Assert.AreEqual("600", r[0].ToString());
@@ -109,12 +196,14 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void ExecuteReader2Test()
         {
-            var manager = CreateDbManager();
+            var manager = TestSettings.CreateDbManager();
 
             for (int i = 0; i < 10; i++)
             {
+                Assert.AreEqual(0, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
                 using (var r = manager.ExecuteReader("SELECT 500 + 100", CommandBehavior.SingleResult))
                 {
+                    Assert.AreEqual(1, manager.ConnectionPool.Count, string.Format("Iteration {0}", i));
                     Assert.IsFalse(r.IsClosed);
                     r.Read();
                     Assert.AreEqual("600", r[0].ToString());

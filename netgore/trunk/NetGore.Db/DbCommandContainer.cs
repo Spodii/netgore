@@ -6,6 +6,7 @@ using System.Linq;
 
 namespace NetGore.Db
 {
+    /*
     /// <summary>
     /// Container for an IDbCommand that alters the behavior of Dispose to just close the connection used with
     /// the IDbCommand instead of actually disposing of the command.
@@ -51,6 +52,9 @@ namespace NetGore.Db
         ///<filterpriority>2</filterpriority>
         public void Dispose()
         {
+            _command.CommandType = CommandType.Text;
+            _command.CommandText = string.Empty;
+            _command.Parameters.Clear();
             _connection.Close();
         }
 
@@ -311,4 +315,5 @@ namespace NetGore.Db
             set { _command.UpdatedRowSource = value; }
         }
     }
+    */
 }
