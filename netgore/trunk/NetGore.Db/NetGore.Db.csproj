@@ -62,15 +62,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataReaderContainer.cs" />
-    <Compile Include="DbCommandContainer.cs">
-    </Compile>
     <Compile Include="Connections\DbConnectionPool.cs" />
     <Compile Include="DbManager.cs" />
     <Compile Include="Connections\IPoolableDbConnection.cs" />
     <Compile Include="Connections\PooledDbConnection.cs" />
-    <Compile Include="DbQueryNonReader.cs" />
-    <Compile Include="IDbQueryNonReader.cs" />
+    <Compile Include="Query\DbQueryBase.cs" />
+    <Compile Include="Query\DbQueryNonReader.cs" />
+    <Compile Include="Query\DbQueryReader.cs" />
+    <Compile Include="Query\IDbQueryHandler.cs" />
+    <Compile Include="Query\IDbQueryNonReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Query\IDbQueryReader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
