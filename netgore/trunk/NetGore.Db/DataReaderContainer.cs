@@ -6,10 +6,14 @@ using System.Linq;
 
 namespace NetGore.Db
 {
-    public sealed class DataReaderContainer : IDataReader
+    public class DataReaderContainer : IDataReader
     {
         readonly IDbCommand _command;
         readonly IDataReader _dataReader;
+
+        protected IDbCommand Command { get { return _command; } }
+
+        protected IDataReader DataReader { get { return _dataReader; } }
 
         internal DataReaderContainer(IDbCommand command, IDataReader dataReader)
         {
@@ -27,7 +31,7 @@ namespace NetGore.Db
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.             
         /// </summary>
-        public void Dispose()
+        public virtual void Dispose()
         {
             _dataReader.Dispose();
             _command.Dispose();

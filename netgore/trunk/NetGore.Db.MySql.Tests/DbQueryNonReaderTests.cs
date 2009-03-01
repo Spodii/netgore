@@ -51,10 +51,10 @@ namespace NetGore.Db.MySql.Tests
         {
             using (var nonReader = CreateNonReader())
             {
+                var cp = nonReader.ConnectionPool;
+
                 for (int i = 0; i < 100; i++)
                 {
-                    var cp = nonReader.ConnectionPool;
-
                     Assert.AreEqual(0, cp.Count);
                     nonReader.Execute(new MyNonReaderValues(5, 10, 15));
                     Assert.AreEqual(0, cp.Count);
