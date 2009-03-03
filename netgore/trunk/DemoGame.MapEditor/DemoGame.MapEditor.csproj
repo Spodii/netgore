@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.30729</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E45C879C-61AC-45F0-8E25-453EE46EB086}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -107,6 +107,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="BatchRenameTextureForm.resx">
       <DependentUpon>BatchRenameTextureForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="EditGrhForm.resx">
       <SubType>Designer</SubType>
