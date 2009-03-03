@@ -7,7 +7,7 @@ using System.Text;
 // FUTURE: Add a Debug check to see if Write operations result in data loss
 // TODO: Make BitStream inherit System.IO.Stream
 
-namespace NetGore.Network.Bits
+namespace NetGore.IO.Bits
 {
     /// <summary>
     /// A stream that supports performing I/O on a bit level. No parts of this class are
