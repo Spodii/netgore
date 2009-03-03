@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Bits;
+using NetGore.IO.Bits;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
