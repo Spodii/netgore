@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-// NOTE: Not sure I like BitOps being in here, but I have no idea where else to put it since I definitely don't want NetGore.IO dependent on any other projects
-
-namespace NetGore.IO
+namespace NetGore.Collections
 {
     /// <summary>
     /// Supplies a series of static bit operations
