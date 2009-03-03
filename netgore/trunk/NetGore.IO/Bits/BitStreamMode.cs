@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace NetGore.IO.Bits
+namespace NetGore.IO
 {
     /// <summary>
     /// I/O method to use on the bit stream

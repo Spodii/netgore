@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace NetGore.IO.Bits
+namespace NetGore.IO
 {
     /// <summary>
     /// Decides what happens when the end of the buffer is reached
