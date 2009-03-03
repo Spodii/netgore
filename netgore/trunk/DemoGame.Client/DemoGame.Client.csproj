@@ -164,10 +164,6 @@
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
     </ProjectReference>
-    <ProjectReference Include="..\System.Bits\System.Bits.csproj">
-      <Project>{51AA57D1-ADC2-48D5-88F0-DDBDAAF37DFB}</Project>
-      <Name>System.Bits</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
