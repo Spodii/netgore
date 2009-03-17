@@ -18,10 +18,11 @@ namespace DemoGame.Server
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static PacketWriter CharAttack(ushort mapCharIndex)
+        public static PacketWriter CharAttack(ushort mapCharIndex,int attackTimeout)
         {
             PacketWriter pw = GetWriter(ServerPacketID.CharAttack);
             pw.Write(mapCharIndex);
+            pw.Write(attackTimeout);
             return pw;
         }
 

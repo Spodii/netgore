@@ -19,7 +19,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Amount of time the character must wait between attacks
         /// </summary>
-        const int _attackTimeout = 500;
+        int _attackTimeout = 0;
 
         /// <summary>
         /// Random number generator for Characters
@@ -50,7 +50,6 @@ namespace DemoGame.Server
         /// <summary>
         /// Time at which the character last performed an attack
         /// </summary>
-        int _lastAttackTime;
 
         /// <summary>
         /// Character's state that was last sent to the map clients
@@ -73,6 +72,14 @@ namespace DemoGame.Server
         protected static Random Rand
         {
             get { return _rand; }
+        }
+        /// <summary>
+        /// Gets or sets (protected) the Character's AttackTimeout.
+        /// </summary>
+        public int AttackTimeout
+        {
+            get { return _attackTimeout; }
+            protected set { _attackTimeout = value; }
         }
 
         /// <summary>
@@ -182,14 +189,14 @@ namespace DemoGame.Server
             int currTime = GetTime();
 
             // Ensure enough time has elapsed since the last attack
-            if (currTime - _lastAttackTime <= _attackTimeout)
+            if (AttackTimeout - currTime <= 0)
                 return;
 
             // Update the last attack time to now
-            _lastAttackTime = currTime;
+            AttackTimeout = 500 + currTime;
 
             // Inform the map that the user has performed an attack
-            using (PacketWriter charAttack = ServerPacket.CharAttack(MapCharIndex))
+            using (PacketWriter charAttack = ServerPacket.CharAttack(MapCharIndex,AttackTimeout))
             {
                 Map.SendToArea(Position, charAttack);
             }
