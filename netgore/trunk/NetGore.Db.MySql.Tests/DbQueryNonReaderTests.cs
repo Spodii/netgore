@@ -26,18 +26,21 @@ namespace NetGore.Db.MySql.Tests
     class MyNonReader : DbQueryNonReader<MyNonReaderValues>
     {
         const string _commandText = "SELECT @a + @b + @c";
-        static readonly IEnumerable<DbParameter> _parameters = new DbParameter[] { new MySqlParameter("@a", null),
-            new MySqlParameter("@b", null), new MySqlParameter("@c", null) };
 
-        public MyNonReader(DbConnectionPool connectionPool) : base(connectionPool, _commandText, _parameters)
+        public MyNonReader(DbConnectionPool connectionPool) : base(connectionPool, _commandText)
         {
         }
 
-        protected override void SetParameters(DbParameterCollection parameters, MyNonReaderValues item)
+        protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            parameters["@a"].Value = item.A;
-            parameters["@b"].Value = item.B;
-            parameters["@c"].Value = item.C;
+            return CreateParameters("@a", "@b", "@c");
+        }
+
+        protected override void SetParameters(DbParameterValues p, MyNonReaderValues item)
+        {
+            p["@a"] = item.A;
+            p["@b"] = item.B;
+            p["@c"] = item.C;
         }
     }
 

@@ -5,7 +5,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 
-namespace NetGore.Db.Query
+namespace NetGore.Db
 {
     /// <summary>
     /// Base class for all database queries that execute queries that require reading the results of.
@@ -13,9 +13,17 @@ namespace NetGore.Db.Query
     /// <typeparam name="T">Type of the object used for executing the query.</typeparam>
     public abstract class DbQueryReader<T> : DbQueryBase, IDbQueryReader<T>
     {
-        protected DbQueryReader(DbConnectionPool connectionPool, string commandText, IEnumerable<DbParameter> parameters) : base(connectionPool, commandText, parameters)
+        protected DbQueryReader(DbConnectionPool connectionPool, string commandText) : base(connectionPool, commandText)
         {
         }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the database parameters based on the specified item.
+        /// </summary>
+        /// <typeparam name="T">Type of the object containing the values to set.</typeparam>
+        /// <param name="p">Collection of database parameters to set the values for.</param>
+        /// <param name="item">Item used to execute the query.</param>
+        protected abstract void SetParameters(DbParameterValues p, T item);
 
         /// <summary>
         /// Executes the query on the database using the specified <paramref name="item"/>.
@@ -30,7 +38,7 @@ namespace NetGore.Db.Query
 
             // Get and set up the command
             var cmd = GetCommand(conn);
-            SetParameters(cmd.Parameters, item);
+            SetParameters(new DbParameterValues(cmd.Parameters), item);
 
             // Execute the query
             var retReader = cmd.ExecuteReader();
@@ -39,13 +47,6 @@ namespace NetGore.Db.Query
             // properly free the command and close the connection when the DbDataReader is disposed
             return new SpecialDataReaderContainer(this, pooledConn, cmd, retReader);
         }
-
-        /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified item.
-        /// </summary>
-        /// <param name="parameters">Collection of database parameters to set the values for.</param>
-        /// <param name="item">Item used to execute the query.</param>
-        protected abstract void SetParameters(DbParameterCollection parameters, T item);
 
         class SpecialDataReaderContainer : DataReaderContainer
         {

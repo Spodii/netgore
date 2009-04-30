@@ -5,7 +5,7 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 
-namespace NetGore.Db.Query
+namespace NetGore.Db
 {
     /// <summary>
     /// Interface for a class that is used to perform a queries on a database that return a reader.

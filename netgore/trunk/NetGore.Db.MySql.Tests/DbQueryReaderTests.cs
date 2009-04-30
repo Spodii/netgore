@@ -4,7 +4,6 @@ using System.Data.Common;
 using System.Linq;
 using System.Text;
 using MySql.Data.MySqlClient;
-using NetGore.Db.Query;
 using NUnit.Framework;
 
 namespace NetGore.Db.MySql.Tests
@@ -26,19 +25,22 @@ namespace NetGore.Db.MySql.Tests
     class MyReader : DbQueryReader<MyNonReaderValues>
     {
         const string _commandText = "SELECT @a + @b + @c";
-        static readonly IEnumerable<DbParameter> _parameters = new DbParameter[] { new MySqlParameter("@a", null),
-            new MySqlParameter("@b", null), new MySqlParameter("@c", null) };
-
+ 
         public MyReader(DbConnectionPool connectionPool)
-            : base(connectionPool, _commandText, _parameters)
+            : base(connectionPool, _commandText)
         {
         }
 
-        protected override void SetParameters(DbParameterCollection parameters, MyNonReaderValues item)
+        protected override void SetParameters(DbParameterValues p, MyNonReaderValues item)
         {
-            parameters["@a"].Value = item.A;
-            parameters["@b"].Value = item.B;
-            parameters["@c"].Value = item.C;
+            p["@a"] = item.A;
+            p["@b"] = item.B;
+            p["@c"] = item.C;
+        }
+
+        protected override IEnumerable<DbParameter> InitializeParameters()
+        {
+            return CreateParameters("@a", "@b", "@c");
         }
     }
 

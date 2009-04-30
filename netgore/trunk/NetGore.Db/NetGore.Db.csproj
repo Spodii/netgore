@@ -66,6 +66,7 @@
     <Compile Include="DbManager.cs" />
     <Compile Include="Connections\IPoolableDbConnection.cs" />
     <Compile Include="Connections\PooledDbConnection.cs" />
+    <Compile Include="DbParameterValues.cs" />
     <Compile Include="Query\DbQueryBase.cs" />
     <Compile Include="Query\DbQueryNonReader.cs" />
     <Compile Include="Query\DbQueryReader.cs" />

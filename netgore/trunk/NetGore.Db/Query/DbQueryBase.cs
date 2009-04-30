@@ -22,6 +22,36 @@ namespace NetGore.Db
         bool _disposed;
 
         /// <summary>
+        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+        /// </summary>
+        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries.</returns>
+        protected abstract IEnumerable<DbParameter> InitializeParameters();
+
+        /// <summary>
+        /// Creates a DbParameter that can be used with this DbQueryBase.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter to create.</param>
+        /// <returns>DbParameter that can be used with this DbQueryBase.</returns>
+        protected DbParameter CreateParameter(string parameterName)
+        {
+            return ConnectionPool.CreateParameter(parameterName);
+        }
+
+        /// <summary>
+        /// Helps creates multiple DbParameters easily.
+        /// </summary>
+        /// <param name="parameterNames">Array of ParameterNames to create.</param>
+        /// <returns>IEnumerable of DbParameters, one for each element in the <paramref name="parameterNames"/> array.</returns>
+        protected IEnumerable<DbParameter> CreateParameters(params string[] parameterNames)
+        {
+            if (parameterNames == null)
+                throw new ArgumentNullException("parameterNames");
+
+            foreach (string parameterName in parameterNames)
+                yield return CreateParameter(parameterName);
+        }
+
+        /// <summary>
         /// Gets if this DbQueryBase has been disposed.
         /// </summary>
         public bool IsDisposed
@@ -29,7 +59,7 @@ namespace NetGore.Db
             get { return _disposed; }
         }
 
-        protected DbQueryBase(DbConnectionPool connectionPool, string commandText, IEnumerable<DbParameter> parameters)
+        protected DbQueryBase(DbConnectionPool connectionPool, string commandText)
         {
             if (connectionPool == null)
                 throw new ArgumentNullException("connectionPool");
@@ -37,8 +67,12 @@ namespace NetGore.Db
                 throw new ArgumentNullException("commandText");
 
             _connectionPool = connectionPool;
-            _parameters = parameters;
             _commandText = commandText;
+
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            // NOTE: Is this going to be okay? Will the virtual member call in constructor cause problems with this design?
+            _parameters = InitializeParameters();
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>

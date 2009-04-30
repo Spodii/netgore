@@ -7,6 +7,8 @@ using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
 using MySql.Data.MySqlClient;
+using NetGore.Db.MySql;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
@@ -21,7 +23,6 @@ namespace DemoGame.Server
         readonly DeleteItemQuery _deleteItemQuery;
         readonly DeleteUserEquippedQuery _deleteUserEquipQuery;
         readonly DeleteUserItemQuery _deleteUserItemQuery;
-        readonly List<IDisposable> _disposableQueries = new List<IDisposable>();
         readonly InsertUserEquippedQuery _insertUserEquipQuery;
         readonly InsertUserItemQuery _insertUserItemQuery;
         readonly InsertUserQuery _insertUserQuery;
@@ -30,6 +31,7 @@ namespace DemoGame.Server
         readonly SelectItemQuery _selectItemQuery;
         readonly UpdateItemFieldQuery _updateItemFieldQuery;
         readonly UpdateUserQuery _updateUserQuery;
+        readonly List<IDisposable> _disposableQueries = new List<IDisposable>();
 
         bool _disposed;
 
