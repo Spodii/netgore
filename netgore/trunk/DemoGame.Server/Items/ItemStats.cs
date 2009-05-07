@@ -15,7 +15,7 @@ namespace DemoGame.Server
             get
             {
                 if (_databaseStats == null)
-                    _databaseStats = from stat in new ItemStats() where stat.CanWrite select stat.StatType;
+                    _databaseStats = new ItemStats().Where(x => x.CanWrite).Select(x => x.StatType);
 
                 return _databaseStats;
             }

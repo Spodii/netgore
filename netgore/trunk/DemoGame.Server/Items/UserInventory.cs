@@ -32,19 +32,13 @@ namespace DemoGame.Server
             get { return _user; }
         }
 
-        DeleteUserItemQuery DeleteUserItem
+        DBController DbController
         {
-            get { return User.Map.World.Parent.DBController.DeleteUserItem; }
-        }
-
-        InsertUserItemQuery InsertUserItem
-        {
-            get { return User.Map.World.Parent.DBController.InsertUserItem; }
-        }
-
-        SelectItemQuery SelectItem
-        {
-            get { return User.Map.World.Parent.DBController.SelectItem; }
+            get
+            {
+                // HACK: This is a pretty shitty way to get to the DbController... should never have to crawl so deep
+                return User.Map.World.Parent.DBController;
+            }
         }
 
         /// <summary>
@@ -124,7 +118,7 @@ namespace DemoGame.Server
 
                 // Update the database
                 if (!_isLoading)
-                    DeleteUserItem.Execute(oldItem.Guid);
+                    DbController.DeleteUserItem.Execute(oldItem.Guid);
 
                 // Stop listening for changes
                 oldItem.OnChangeGraphicOrAmount -= ItemGraphicOrAmountChangeHandler;
@@ -135,7 +129,7 @@ namespace DemoGame.Server
 
                 // Update the database
                 if (!_isLoading)
-                    InsertUserItem.Execute(new InsertInventoryValues(User.Guid, newItem.Guid));
+                    DbController.InsertUserItem.Execute(new InsertUserItemValues(User.Guid, newItem.Guid));
 
                 // Listen to the item for changes
                 newItem.OnChangeGraphicOrAmount += ItemGraphicOrAmountChangeHandler;
@@ -178,7 +172,7 @@ namespace DemoGame.Server
 
             // TODO: Need to track the slots, too, I guess
             int slot = 0;
-            foreach (ItemValues values in SelectItem.ExecuteUserInventoryItems(User.Guid))
+            foreach (ItemValues values in DbController.SelectUserInventoryItems.Execute(User.Guid))
             {
                 // Make sure no item is already in the slot... just in case
                 if (this[slot] != null)

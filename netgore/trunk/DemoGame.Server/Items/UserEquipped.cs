@@ -17,19 +17,11 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly User _user;
 
-        DeleteUserEquippedQuery DeleteUserEquipped
+        DBController DbController
         {
-            get { return User.Map.World.Parent.DBController.DeleteUserEquipped; }
-        }
-
-        InsertUserEquippedQuery InsertUserEquipped
-        {
-            get { return User.Map.World.Parent.DBController.InsertUserEquipped; }
-        }
-
-        SelectItemQuery SelectItem
-        {
-            get { return User.Map.World.Parent.DBController.SelectItem; }
+            get { 
+                // HACK: This is a pretty shitty way to get to the DbController... should never have to crawl so deep
+                return User.Map.World.Parent.DBController; }
         }
 
         /// <summary>
@@ -97,7 +89,7 @@ namespace DemoGame.Server
         /// </summary>
         public void Load()
         {
-            var items = SelectItem.ExecuteUserEquippedItems(User.Guid);
+            var items = DbController.SelectUserEquippedItems.Execute(User.Guid);
 
             // Remove the listeners since we don't want to update the database when loading
             RemoveListeners();
@@ -137,14 +129,14 @@ namespace DemoGame.Server
             }
 
             InsertUserEquippedValues values = new InsertUserEquippedValues(User.Guid, item.Guid, slot);
-            InsertUserEquipped.Execute(values);
+            DbController.InsertUserEquipped.Execute(values);
 
             SendClientUpdate(slot, item.GraphicIndex);
         }
 
         void UserEquipped_OnRemove(EquippedBase<ItemEntity> equippedBase, ItemEntity item, EquipmentSlot slot)
         {
-            DeleteUserEquipped.Execute(item.Guid);
+            DbController.DeleteUserEquipped.Execute(item.Guid);
             ItemEntity remainder = User.Inventory.Add(item);
 
             SendClientUpdate(slot, null);

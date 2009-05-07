@@ -72,7 +72,7 @@ namespace DemoGame.Server
         /// </summary>
         void LoadAll()
         {
-            var allianceData = DBController.GetAllianceData();
+            var allianceData = DBController.SelectAlliances.Execute();
 
             // Create the alliance objects and store them by their name
             foreach (var data in allianceData)

@@ -10,7 +10,7 @@ namespace NetGore.Db
     /// <summary>
     /// Base class for a pool of database connections.
     /// </summary>
-    public abstract class DbConnectionPool : ObjectPool<PooledDbConnection>
+    public abstract class DbConnectionPool : ObjectPool<PooledDbConnection>, IDisposable
     {
         readonly string _connectionString;
 
@@ -53,5 +53,18 @@ namespace NetGore.Db
         /// <param name="parameterName">Reference name of the parameter.</param>
         /// <returns>DbParameter that is compatible with the connections in this DbConnectionPool.</returns>
         public abstract DbParameter CreateParameter(string parameterName);
+
+        bool _disposed;
+
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+
+            foreach (var item in this)
+                item.Dispose();
+        }
     }
 }

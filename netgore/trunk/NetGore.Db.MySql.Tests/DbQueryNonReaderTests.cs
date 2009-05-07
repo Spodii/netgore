@@ -9,13 +9,13 @@ using NUnit.Framework;
 
 namespace NetGore.Db.MySql.Tests
 {
-    struct MyNonReaderValues
+    struct QueryTestValues
     {
         public int A;
         public int B;
         public int C;
 
-        public MyNonReaderValues(int a, int b, int c)
+        public QueryTestValues(int a, int b, int c)
         {
             A = a;
             B = b;
@@ -23,7 +23,7 @@ namespace NetGore.Db.MySql.Tests
         }
     }
 
-    class MyNonReader : DbQueryNonReader<MyNonReaderValues>
+    class MyNonReader : DbQueryNonReader<QueryTestValues>
     {
         const string _commandText = "SELECT @a + @b + @c";
 
@@ -36,7 +36,7 @@ namespace NetGore.Db.MySql.Tests
             return CreateParameters("@a", "@b", "@c");
         }
 
-        protected override void SetParameters(DbParameterValues p, MyNonReaderValues item)
+        protected override void SetParameters(DbParameterValues p, QueryTestValues item)
         {
             p["@a"] = item.A;
             p["@b"] = item.B;
@@ -59,7 +59,7 @@ namespace NetGore.Db.MySql.Tests
                 for (int i = 0; i < 100; i++)
                 {
                     Assert.AreEqual(0, cp.Count);
-                    nonReader.Execute(new MyNonReaderValues(5, 10, 15));
+                    nonReader.Execute(new QueryTestValues(5, 10, 15));
                     Assert.AreEqual(0, cp.Count);
                 }
             }

@@ -6,7 +6,7 @@ using DemoGame.Extensions;
 
 namespace DemoGame.Server
 {
-    class NPCStats : CharacterStatsBase
+    public class NPCStats : CharacterStatsBase
     {
         readonly NPC _npc;
 

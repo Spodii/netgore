@@ -29,14 +29,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the Sql connection to use.
-        /// </summary>
-        public MySqlConnection SqlConn
-        {
-            get { return Server.DBController.Connection; }
-        }
-
-        /// <summary>
         /// Gets the World to use.
         /// </summary>
         public World World
@@ -111,6 +103,8 @@ namespace DemoGame.Server
                 user.Jump();
         }
 
+        public DBController DBController { get { return Server.DBController; } }
+
         [MessageHandler((byte)ClientPacketID.Login)]
         void RecvLogin(TCPSocket conn, BitStream r)
         {
@@ -124,10 +118,12 @@ namespace DemoGame.Server
                 return;
             }
 
-            if (!User.IsValidAccount(SqlConn, name, password))
+            // Check that the account is valid, and a valid password was specified
+            if (!User.IsValidAccount(DBController.SelectUserPassword, name, password))
             {
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Invalid login attempt: {0} / {1}", name, password);
+
                 using (PacketWriter pw = ServerPacket.InvalidAccount())
                 {
                     conn.Send(pw);

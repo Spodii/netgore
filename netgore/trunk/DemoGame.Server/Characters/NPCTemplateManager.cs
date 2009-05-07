@@ -17,34 +17,25 @@ namespace DemoGame.Server
         readonly AllianceManager _allianceManager;
         readonly NPCDropManager _npcDropManager;
         readonly DArray<NPCTemplate> _templates = new DArray<NPCTemplate>(false);
-        MySqlConnection _conn;
-
-        /// <summary>
-        /// Gets or sets the MySqlConnection used to load NPCTemplates with
-        /// </summary>
-        public MySqlConnection MySqlConnection
-        {
-            get { return _conn; }
-            set { _conn = value; }
-        }
+        SelectNPCTemplateQuery _query;
 
         /// <summary>
         /// NPCTemplateManager constructor.
         /// </summary>
-        /// <param name="conn">MySqlConnection used to load NPCTemplates with.</param>
+        /// <param name="query">SelectNPCTemplateQuery used to load NPCTemplates with.</param>
         /// <param name="allianceManager">AllianceManager containing the Alliances to be used.</param>
         /// <param name="npcDropManager">NPCDrops collection used to get the NPCDrop reference for each item the
         /// NPC drops.</param>
-        public NPCTemplateManager(MySqlConnection conn, AllianceManager allianceManager, NPCDropManager npcDropManager)
+        public NPCTemplateManager(SelectNPCTemplateQuery query, AllianceManager allianceManager, NPCDropManager npcDropManager)
         {
-            if (conn == null)
-                throw new ArgumentNullException("conn");
+            if (query == null)
+                throw new ArgumentNullException("query");
             if (allianceManager == null)
                 throw new ArgumentNullException("allianceManager");
             if (npcDropManager == null)
                 throw new ArgumentNullException("npcDropManager");
 
-            _conn = conn;
+            _query = query;
             _allianceManager = allianceManager;
             _npcDropManager = npcDropManager;
         }
@@ -65,7 +56,7 @@ namespace DemoGame.Server
             // If not cached, load it and place a copy in the cache
             if (ret == null)
             {
-                ret = new NPCTemplate(guid, _conn, _allianceManager, _npcDropManager);
+                ret = new NPCTemplate(guid, _query, _allianceManager, _npcDropManager);
                 _templates[guid] = ret;
             }
 

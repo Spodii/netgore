@@ -20,11 +20,6 @@ namespace DemoGame.Server
     /// </summary>
     public class NPCDropManager : IList<NPCDrop>
     {
-        /// <summary>
-        /// The table name for the NPC drops.
-        /// </summary>
-        public const string TableName = "npc_drops";
-
         const string _isReadonlyMessage =
             "This collection is read-only and may not be modified. Any IList or ICollection " +
             "method call that may result in the collection being modified will throw this MethodAccessException.";
@@ -33,43 +28,31 @@ namespace DemoGame.Server
 
         readonly DArray<NPCDrop> _npcDrops = new DArray<NPCDrop>(32, false);
 
-        public NPCDropManager(MySqlConnection conn, IList<ItemTemplate> itemTemplates, string tableName)
+        public NPCDropManager(SelectNPCDropsQuery query, IList<ItemTemplate> itemTemplates)
         {
-            if (conn == null)
-                throw new ArgumentNullException("conn");
-            if (string.IsNullOrEmpty(tableName))
-                throw new ArgumentNullException("tableName");
+            if (query == null)
+                throw new ArgumentNullException("query");
+            if (itemTemplates == null)
+                throw new ArgumentNullException("itemTemplates");
 
-            // Create the command
-            using (MySqlCommand cmd = conn.CreateCommand())
+            var dropValues = query.Execute();
+            foreach (var v in dropValues)
             {
-                // Select all the rows
-                cmd.CommandText = string.Format("SELECT * FROM `{0}`", tableName);
-                using (MySqlDataReader r = cmd.ExecuteReader())
+                // Get the template of the item to be dropped
+                ItemTemplate itemTemplate = itemTemplates[v.ItemGuid];
+                if (itemTemplate == null)
                 {
-                    // Ready the ordinal cache
-                    NPCDropsOC ordinalCache = new NPCDropsOC();
-                    ordinalCache.Initialize(r);
-
-                    // Read each of the individual rows
-                    while (r.Read())
-                    {
-                        // Load the values from the database
-                        ushort guid = r.GetUInt16(ordinalCache.Guid);
-                        int itemGuid = r.GetInt32(ordinalCache.ItemGuid);
-                        byte min = r.GetByte(ordinalCache.Min);
-                        byte max = r.GetByte(ordinalCache.Max);
-                        ushort chance = r.GetUInt16(ordinalCache.Chance);
-
-                        // Create the NPCDrop and add it to the DArray
-                        ItemTemplate itemTemplate = itemTemplates[itemGuid];
-                        NPCDrop drop = new NPCDrop(guid, itemTemplate, min, max, chance);
-                        _npcDrops[guid] = drop;
-
-                        if (log.IsInfoEnabled)
-                            log.InfoFormat("Loaded NPCDrop `{0}` for item `{1}`", guid, itemGuid);
-                    }
+                    // TODO: What will we do when the ItemTemplate is invalid for a NPCDrop?
+                    Debug.Fail(":(");
+                    continue;
                 }
+
+                // Create the NPCDrop and add it to the DArray
+                NPCDrop drop = new NPCDrop(v.Guid, itemTemplate, v.Min, v.Max, v.Chance);
+                _npcDrops[v.Guid] = drop;
+
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Loaded NPCDrop `{0}` for item `{1}`", v.Guid, v.ItemGuid);
             }
 
             // Trim down the DArray
@@ -205,48 +188,5 @@ namespace DemoGame.Server
         }
 
         #endregion
-
-        class NPCDropsOC : OrdinalCacheBase
-        {
-            byte _chance;
-            byte _guid;
-            byte _itemGuid;
-            byte _max;
-            byte _min;
-
-            public int Chance
-            {
-                get { return _chance; }
-            }
-
-            public int Guid
-            {
-                get { return _guid; }
-            }
-
-            public int ItemGuid
-            {
-                get { return _itemGuid; }
-            }
-
-            public int Max
-            {
-                get { return _max; }
-            }
-
-            public int Min
-            {
-                get { return _min; }
-            }
-
-            protected override void LoadCache(IDataRecord dataRecord)
-            {
-                _guid = dataRecord.GetOrdinalAsByte("guid");
-                _itemGuid = dataRecord.GetOrdinalAsByte("item_guid");
-                _min = dataRecord.GetOrdinalAsByte("min");
-                _max = dataRecord.GetOrdinalAsByte("max");
-                _chance = dataRecord.GetOrdinalAsByte("chance");
-            }
-        }
     }
 }

@@ -1,38 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
 using MySql.Data.MySqlClient;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public class InsertUserItemQuery : NonReaderQueryBase<InsertInventoryValues>
+    public class InsertUserItemQuery : DbQueryNonReader<InsertUserItemValues>
     {
-        readonly MySqlParameter _itemGuid = new MySqlParameter("@item_guid", null);
-        readonly MySqlParameter _userGuid = new MySqlParameter("@user_guid", null);
+        const string _queryString = "INSERT INTO `user_inventory` SET `user_guid`=@user_guid,`item_guid`=@item_guid";
 
-        public InsertUserItemQuery(MySqlConnection conn) : base(conn)
+        public InsertUserItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
-            var sqlParams = new MySqlParameter[] { _userGuid, _itemGuid };
-            AddParameters(sqlParams);
-
-            Initialize("INSERT INTO `user_inventory` SET `user_guid`=@user_guid,`item_guid`=@item_guid");
         }
 
-        protected override void SetParameters(InsertInventoryValues item)
+        protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            _itemGuid.Value = item.ItemGuid;
-            _userGuid.Value = item.UserGuid;
+            return CreateParameters("@item_guid", "@user_guid");
+        }
+
+        protected override void SetParameters(DbParameterValues p, InsertUserItemValues item)
+        {
+            p["@item_guid"] = item.ItemGuid;
+            p["@user_guid"] = item.UserGuid;
         }
     }
 
-    public struct InsertInventoryValues
+    public struct InsertUserItemValues
     {
         public readonly int ItemGuid;
         public readonly ushort UserGuid;
 
-        public InsertInventoryValues(ushort userGuid, int itemGuid)
+        public InsertUserItemValues(ushort userGuid, int itemGuid)
         {
             UserGuid = userGuid;
             ItemGuid = itemGuid;

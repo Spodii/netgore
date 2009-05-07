@@ -30,7 +30,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
         /// <returns>IDataReader used to read the results of the query.</returns>
-        public IDataReader Execute(T item)
+        public IDataReader ExecuteReader(T item)
         {
             // Get the connection to use
             var pooledConn = GetPoolableConnection();
@@ -38,7 +38,8 @@ namespace NetGore.Db
 
             // Get and set up the command
             var cmd = GetCommand(conn);
-            SetParameters(new DbParameterValues(cmd.Parameters), item);
+            if (HasParameters)
+                SetParameters(new DbParameterValues(cmd.Parameters), item);
 
             // Execute the query
             var retReader = cmd.ExecuteReader();

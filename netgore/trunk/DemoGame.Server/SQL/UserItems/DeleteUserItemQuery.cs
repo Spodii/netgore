@@ -1,26 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
 using MySql.Data.MySqlClient;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public class DeleteUserItemQuery : NonReaderQueryBase<int>
+    public class DeleteUserItemQuery : DbQueryNonReader<int>
     {
-        readonly MySqlParameter _itemGuid = new MySqlParameter("@item_guid", null);
+        const string _queryString = "DELETE QUICK FROM `user_inventory` WHERE `item_guid`=@item_guid LIMIT 1";
 
-        public DeleteUserItemQuery(MySqlConnection conn) : base(conn)
+        public DeleteUserItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
-            AddParameters(_itemGuid);
-
-            Initialize("DELETE QUICK FROM `user_inventory` WHERE `item_guid`=@item_guid LIMIT 1");
         }
 
-        protected override void SetParameters(int item)
+        protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            _itemGuid.Value = item;
+            return CreateParameters("@item_guid");
+        }
+
+        protected override void SetParameters(DbParameterValues p, int item)
+        {
+            p["@item_guid"] = item;
         }
     }
 }
