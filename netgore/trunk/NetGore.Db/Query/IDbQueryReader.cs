@@ -18,6 +18,6 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
         /// <returns>IDataReader used to read the results of the query.</returns>
-        IDataReader Execute(T item);
+        IDataReader ExecuteReader(T item);
     }
 }

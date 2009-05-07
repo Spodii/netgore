@@ -1,46 +1,43 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
-using MySql.Data.MySqlClient;
-
-// FUTURE: Don't have all the database table names hard-coded
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
     public class UpdateItemFieldQuery : IDisposable
     {
-        readonly MySqlConnection _conn;
-        readonly Dictionary<string, FieldUpdateQuery> _fieldUpdateQueries = new Dictionary<string, FieldUpdateQuery>();
+        const string _queryString = "UPDATE `" + ReplaceItemQuery.ItemsTableName + "` SET `{0}`=@value WHERE `guid`=@itemGuid";
+        readonly DbConnectionPool _connectionPool;
+
+        readonly Dictionary<string, InternalUpdateItemFieldQuery> _fieldQueries =
+            new Dictionary<string, InternalUpdateItemFieldQuery>(StringComparer.OrdinalIgnoreCase);
+
         bool _disposed;
 
-        public UpdateItemFieldQuery(MySqlConnection conn)
+        public UpdateItemFieldQuery(DbConnectionPool connectionPool)
         {
-            if (conn == null)
-                throw new ArgumentNullException("conn");
+            if (connectionPool == null)
+                throw new ArgumentNullException("connectionPool");
 
-            _conn = conn;
+            _connectionPool = connectionPool;
         }
 
-        public void Execute(string field, UpdateItemFieldValues value)
+        public void Execute(int itemGuid, string field, object value)
         {
-            field = field.ToLower();
+            InternalUpdateItemFieldQuery fieldQuery;
+            if (!_fieldQueries.TryGetValue(field, out fieldQuery))
+            {
+                string query = string.Format(_queryString, field.ToLower());
+                fieldQuery = new InternalUpdateItemFieldQuery(_connectionPool, query);
+                _fieldQueries.Add(field, fieldQuery);
+            }
 
-            FieldUpdateQuery fieldUpdate = GetFieldUpdateQuery(field);
-            fieldUpdate.Execute(value);
-        }
-
-        FieldUpdateQuery GetFieldUpdateQuery(string field)
-        {
-            FieldUpdateQuery ret;
-            if (_fieldUpdateQueries.TryGetValue(field, out ret))
-                return ret;
-
-            ret = new FieldUpdateQuery(_conn, field);
-            _fieldUpdateQueries.Add(field, ret);
-
-            return ret;
+            UpdateItemFieldValues values = new UpdateItemFieldValues(itemGuid, value);
+            fieldQuery.Execute(values);
         }
 
         #region IDisposable Members
@@ -52,32 +49,30 @@ namespace DemoGame.Server
 
             _disposed = true;
 
-            foreach (FieldUpdateQuery item in _fieldUpdateQueries.Values)
+            foreach (InternalUpdateItemFieldQuery query in _fieldQueries.Values)
             {
-                item.Dispose();
+                query.Dispose();
             }
         }
 
         #endregion
 
-        class FieldUpdateQuery : NonReaderQueryBase<UpdateItemFieldValues>
+        sealed class InternalUpdateItemFieldQuery : DbQueryNonReader<UpdateItemFieldValues>
         {
-            readonly MySqlParameter _itemGuid = new MySqlParameter("@itemGuid", null);
-            readonly MySqlParameter _value = new MySqlParameter("@value", null);
-
-            public FieldUpdateQuery(MySqlConnection conn, string field) : base(conn)
+            public InternalUpdateItemFieldQuery(DbConnectionPool connectionPool, string commandText)
+                : base(connectionPool, commandText)
             {
-                string query = "UPDATE `{0}` SET `{1}`=@value WHERE `guid`=@itemGuid";
-                query = string.Format(query, ReplaceItemQuery.ItemsTableName, field);
-
-                AddParameters(_value, _itemGuid);
-                Initialize(query);
             }
 
-            protected override void SetParameters(UpdateItemFieldValues item)
+            protected override IEnumerable<DbParameter> InitializeParameters()
             {
-                _itemGuid.Value = item.ItemGuid;
-                _value.Value = item.Value;
+                return CreateParameters("@itemGuid", "@value");
+            }
+
+            protected override void SetParameters(DbParameterValues p, UpdateItemFieldValues item)
+            {
+                p["@itemGuid"] = item.ItemGuid;
+                p["@value"] = item.Value;
             }
         }
     }

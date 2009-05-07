@@ -11,7 +11,7 @@ namespace NetGore.Db
     /// <summary>
     /// Class that wraps around a DbParameterCollection, exposing only the DbParameter's value. 
     /// </summary>
-    public sealed class DbParameterValues : IEnumerable<object>
+    public sealed class DbParameterValues : IEnumerable<KeyValuePair<string, object>>
     {
         /// <summary>
         /// DbParameterCollection that this DbParameterValues exposes the values of.
@@ -64,10 +64,10 @@ namespace NetGore.Db
         ///                
         ///</returns>
         ///<filterpriority>1</filterpriority>
-        public IEnumerator<object> GetEnumerator()
+        public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
             foreach (DbParameter parameter in _collection)
-                yield return parameter.Value;
+                yield return new KeyValuePair<string, object>(parameter.ParameterName, parameter.Value);
         }
 
         ///<summary>

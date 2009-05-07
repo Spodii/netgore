@@ -22,7 +22,6 @@ namespace DemoGame.Server
     /// </summary>
     public class User : Character
     {
-        static readonly UserDBOrdinalCache _ordinalCache = new UserDBOrdinalCache();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -77,24 +76,15 @@ namespace DemoGame.Server
             get { return _inventory; }
         }
 
-        public MySqlConnection SqlConn
-        {
-            get { return World.Conn; }
-        }
-
         public override CharacterStatsBase Stats
         {
             get { return _stats; }
         }
 
-        public UpdateUserQuery UpdateUser
+        public DBController DBController
         {
-            get { return World.Parent.DBController.UpdateUser; }
-        }
-
-        public InsertUserEquippedQuery UpdateUserEquip
-        {
-            get { return World.Parent.DBController.InsertUserEquipped; }
+            get {
+                return World.Parent.DBController; }
         }
 
         /// <summary>
@@ -330,27 +320,17 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Checks if a user account exists and the supplied password is valid
+        /// Checks if a user account exists and the supplied password is valid.
         /// </summary>
-        /// <param name="sqlConn">MySqlConnection to use to perform the database query</param>
-        /// <param name="name">Name of the user</param>
-        /// <param name="password">Password for the user's account</param>
-        /// <returns>True if the account exists</returns>
-        public static bool IsValidAccount(MySqlConnection sqlConn, string name, string password)
+        /// <param name="query">Query used to select the user's password.</param>
+        /// <param name="name">Name of the user.</param>
+        /// <param name="password">Password for the user's account.</param>
+        /// <returns>True if the account exists.</returns>
+        public static bool IsValidAccount(SelectUserPasswordQuery query, string name, string password)
         {
-            using (MySqlCommand cmd = sqlConn.CreateCommand())
-            {
-                cmd.CommandText = string.Format("SELECT password FROM users WHERE `name`='{0}'", name);
-                using (MySqlDataReader r = cmd.ExecuteReader(CommandBehavior.SingleRow))
-                {
-                    // Check that the record existed
-                    if (!r.Read())
-                        return false;
-
-                    // Check that the password matched
-                    return r.GetString("password") == password;
-                }
-            }
+            // Check that the password matches the database password
+            string dbPassword = query.Execute(name);
+            return dbPassword == password;
         }
 
         /// <summary>
@@ -376,14 +356,9 @@ namespace DemoGame.Server
         /// <returns>Index of the map the user is on</returns>
         void Load(string userName, World world)
         {
-            ushort mapIndex;
-            float x;
-            float y;
-            int body;
-
             Name = userName;
 
-            // Get the user information from the database
+            /*
             using (MySqlCommand cmd = SqlConn.CreateCommand())
             {
                 cmd.CommandText = string.Format("SELECT * FROM `users` WHERE `name`='{0}'", userName);
@@ -410,15 +385,20 @@ namespace DemoGame.Server
                     }
                 }
             }
+            */
+
+            // Get the user information from the database
+            var userValues = DBController.SelectUser.Execute(userName, Stats);
+            _id = userValues.Guid;
 
             // Use the retreived values
-            BodyInfo = GameData.Body(body);
-            CB = new CollisionBox(new Vector2(x, y), BodyInfo.Width, BodyInfo.Height);
+            BodyInfo = GameData.Body(userValues.BodyIndex);
+            CB = new CollisionBox(userValues.Position, BodyInfo.Width, BodyInfo.Height);
 
             // Create the user in the world
-            Map m = world.GetMap(mapIndex);
+            Map m = world.GetMap(userValues.MapIndex);
             if (m == null)
-                throw new Exception("Unable to get Map with index " + mapIndex);
+                throw new Exception("Unable to get Map with index " + userValues.MapIndex);
             world.AddUser(this);
             SetMap(m);
 
@@ -463,7 +443,7 @@ namespace DemoGame.Server
             _saved = true;
 
             // Execute the user save query
-            UpdateUser.Execute(new UserQueryValues(this));
+            DBController.UpdateUser.Execute(new UserQueryValues(this));
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Saved user `{0}`", this);
@@ -646,56 +626,6 @@ namespace DemoGame.Server
             // NOTE: Once I hook to the item's amount in the inventory to listen for changes, I can put this in UseItem()
             if (item.Type == ItemType.UseOnce)
                 _inventory.DecreaseItemAmount(slot);
-        }
-
-        class UserDBOrdinalCache : OrdinalCacheBase
-        {
-            byte _body;
-            byte _guid;
-            byte _mapIndex;
-            byte?[] _statOrdinals;
-            byte _x;
-            byte _y;
-
-            public int Body
-            {
-                get { return _body; }
-            }
-
-            public int Guid
-            {
-                get { return _guid; }
-            }
-
-            public int Map
-            {
-                get { return _mapIndex; }
-            }
-
-            public int X
-            {
-                get { return _x; }
-            }
-
-            public int Y
-            {
-                get { return _y; }
-            }
-
-            public int GetStatOrdinal(StatType statType)
-            {
-                return GetStatOrdinalHelper(statType, _statOrdinals);
-            }
-
-            protected override void LoadCache(IDataRecord dataRecord)
-            {
-                _guid = dataRecord.GetOrdinalAsByte("guid");
-                _mapIndex = dataRecord.GetOrdinalAsByte("map");
-                _x = dataRecord.GetOrdinalAsByte("x");
-                _y = dataRecord.GetOrdinalAsByte("y");
-                _body = dataRecord.GetOrdinalAsByte("body");
-                _statOrdinals = CreateStatOrdinalCache(dataRecord, UserStats.DatabaseStats);
-            }
         }
     }
 }

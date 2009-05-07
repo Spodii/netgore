@@ -1,28 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
 using MySql.Data.MySqlClient;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public class DeleteUserEquippedQuery : NonReaderQueryBase<int>
+    public class DeleteUserEquippedQuery : DbQueryNonReader<int>
     {
-        readonly MySqlParameter _itemGuid = new MySqlParameter("@itemGuid", null);
+        const string _queryString = "DELETE FROM `" + InsertUserEquippedQuery.UserEquippedTable + 
+            "` WHERE `item_guid`=@itemGuid LIMIT 1";
 
-        public DeleteUserEquippedQuery(MySqlConnection conn) : base(conn)
+        public DeleteUserEquippedQuery(DbConnectionPool connectionPool)
+            : base(connectionPool, _queryString)
         {
-            string query = "DELETE FROM `{0}` WHERE `item_guid`=@itemGuid LIMIT 1";
-            query = string.Format(query, InsertUserEquippedQuery.UserEquippedTable);
-
-            AddParameters(_itemGuid);
-            Initialize(query);
         }
 
-        protected override void SetParameters(int item)
+        protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            _itemGuid.Value = item;
+            return CreateParameters("@itemGuid");
+        }
+
+        protected override void SetParameters(DbParameterValues p, int item)
+        {
+            p["@itemGuid"] = item;
         }
     }
 }

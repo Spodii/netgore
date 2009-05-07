@@ -143,9 +143,9 @@ namespace DemoGame.Server
             GameData.Load();
             ItemEntity.Initialize(DBController);
             _allianceManager = new AllianceManager(DBController);
-            _itemTemplates = new ItemTemplates(DBController.Connection, ItemTemplates.TableName);
-            _npcDropManager = new NPCDropManager(DBController.Connection, _itemTemplates, NPCDropManager.TableName);
-            _npcManager = new NPCTemplateManager(DBController.Connection, AllianceManager, _npcDropManager);
+            _itemTemplates = new ItemTemplates(DBController.SelectItemTemplates);
+            _npcDropManager = new NPCDropManager(DBController.SelectNPCDrops, _itemTemplates);
+            _npcManager = new NPCTemplateManager(DBController.SelectNPCTemplate, AllianceManager, _npcDropManager);
 
             // Create the world and sockets
             _world = new World(this);

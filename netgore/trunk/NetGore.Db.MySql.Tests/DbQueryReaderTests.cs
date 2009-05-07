@@ -22,7 +22,7 @@ namespace NetGore.Db.MySql.Tests
         }
     }
 
-    class MyReader : DbQueryReader<MyNonReaderValues>
+    class MyReader : DbQueryReader<QueryTestValues>
     {
         const string _commandText = "SELECT @a + @b + @c";
  
@@ -31,7 +31,7 @@ namespace NetGore.Db.MySql.Tests
         {
         }
 
-        protected override void SetParameters(DbParameterValues p, MyNonReaderValues item)
+        protected override void SetParameters(DbParameterValues p, QueryTestValues item)
         {
             p["@a"] = item.A;
             p["@b"] = item.B;
@@ -52,14 +52,14 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void SelectTest()
         {
-            using (var nonReader = CreateReader())
+            using (var reader = CreateReader())
             {
-                var cp = nonReader.ConnectionPool;
+                var cp = reader.ConnectionPool;
 
                 for (int i = 0; i < 100; i++)
                 {
                     Assert.AreEqual(0, cp.Count);
-                    using (var r = nonReader.Execute(new MyNonReaderValues(5, 10, 15)))
+                    using (var r = reader.ExecuteReader(new QueryTestValues(5, 10, 15)))
                     {
                         Assert.AreEqual(1, cp.Count);
                         Assert.IsTrue(r.Read());
@@ -69,14 +69,14 @@ namespace NetGore.Db.MySql.Tests
             }
         }
 
-        static void SelectTestRecurse(IDbQueryReader<MyNonReaderValues> reader, int depth, int initialDepth)
+        static void SelectTestRecurse(IDbQueryReader<QueryTestValues> reader, int depth, int initialDepth)
         {
             var cp = reader.ConnectionPool;
-            var v = new MyNonReaderValues(depth * 2, depth - 2, depth + 57);
+            var v = new QueryTestValues(depth * 2, depth - 2, depth + 57);
             int expectedPoolSize = initialDepth - depth;
 
             Assert.AreEqual(expectedPoolSize, cp.Count);
-            using (var r = reader.Execute(v))
+            using (var r = reader.ExecuteReader(v))
             {
                 expectedPoolSize++;
 
@@ -92,7 +92,7 @@ namespace NetGore.Db.MySql.Tests
             Assert.AreEqual(expectedPoolSize, cp.Count);
         }
 
-        static void SelectTestRecurse(IDbQueryReader<MyNonReaderValues> reader, int depth)
+        static void SelectTestRecurse(IDbQueryReader<QueryTestValues> reader, int depth)
         {
             SelectTestRecurse(reader, depth, depth);
         }

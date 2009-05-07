@@ -478,7 +478,7 @@ namespace DemoGame.Server
 
         void SynchronizeField(string field, object value)
         {
-            UpdateItemField.Execute(field, new UpdateItemFieldValues(_guid, value));
+            UpdateItemField.Execute(_guid, field, value);
         }
 
         #region IDynamicEntity Members

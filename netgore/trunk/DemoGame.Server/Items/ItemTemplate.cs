@@ -81,6 +81,13 @@ namespace DemoGame.Server
             _width = width;
             _height = height;
             _stats = stats;
+
+            // Make sure the ItemType is defined
+            if (!type.IsDefined())
+            {
+                const string errmsg = "Invalid ItemType `{0}` for ItemTemplate guid `{1}`.";
+                throw new InvalidCastException(string.Format(errmsg, type, guid));
+            }
         }
 
         public override string ToString()

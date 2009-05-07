@@ -41,7 +41,8 @@ namespace NetGore.Db
 
                 // Get and set up the command
                 var cmd = GetCommand(conn);
-                SetParameters(new DbParameterValues(cmd.Parameters), item);
+                if (HasParameters)
+                    SetParameters(new DbParameterValues(cmd.Parameters), item);
                 
                 // Execute the command
                 returnValue = cmd.ExecuteNonQuery();

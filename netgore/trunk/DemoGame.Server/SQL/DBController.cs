@@ -7,8 +7,8 @@ using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
 using MySql.Data.MySqlClient;
-using NetGore.Db.MySql;
 using NetGore.Db;
+using NetGore.Db.MySql;
 
 namespace DemoGame.Server
 {
@@ -18,31 +18,30 @@ namespace DemoGame.Server
     public class DBController : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly DbConnectionPool _connectionPool;
 
-        readonly MySqlConnection _conn;
         readonly DeleteItemQuery _deleteItemQuery;
         readonly DeleteUserEquippedQuery _deleteUserEquipQuery;
         readonly DeleteUserItemQuery _deleteUserItemQuery;
+        readonly List<IDisposable> _disposableQueries = new List<IDisposable>();
         readonly InsertUserEquippedQuery _insertUserEquipQuery;
         readonly InsertUserItemQuery _insertUserItemQuery;
         readonly InsertUserQuery _insertUserQuery;
         readonly ItemGuidCreator _itemGuidCreator;
         readonly ReplaceItemQuery _replaceItemQuery;
         readonly SelectItemQuery _selectItemQuery;
+        readonly SelectItemsQuery _selectItemsQuery;
+        readonly SelectUserEquippedItemsQuery _selectUserEquippedItemsQuery;
+        readonly SelectUserInventoryItemsQuery _selectUserInventoryItemsQuery;
         readonly UpdateItemFieldQuery _updateItemFieldQuery;
         readonly UpdateUserQuery _updateUserQuery;
-        readonly List<IDisposable> _disposableQueries = new List<IDisposable>();
-
+        readonly SelectAlliancesQuery _selectAlliancesQuery;
+        readonly SelectUserQuery _selectUserQuery;
+        readonly SelectUserPasswordQuery _selectUserPasswordQuery;
+        readonly SelectItemTemplatesQuery _selectItemTemplatesQuery;
+        readonly SelectNPCDropsQuery _selectNPCDropsQuery;
+        readonly SelectNPCTemplateQuery _selectNPCTemplateQuery;
         bool _disposed;
-
-        public MySqlConnection Connection
-        {
-            get
-            {
-                // LATER: (MySql dependency removal) Remove all usage of this
-                return _conn;
-            }
-        }
 
         public DeleteItemQuery DeleteItem
         {
@@ -89,6 +88,46 @@ namespace DemoGame.Server
             get { return _selectItemQuery; }
         }
 
+        public SelectItemTemplatesQuery SelectItemTemplates
+        {
+            get { return _selectItemTemplatesQuery; }
+        }
+
+        public SelectNPCDropsQuery SelectNPCDrops
+        {
+            get { return _selectNPCDropsQuery; }
+        }
+
+        public SelectNPCTemplateQuery SelectNPCTemplate
+        {
+            get { return _selectNPCTemplateQuery; }
+        }
+
+        public SelectItemsQuery SelectItems
+        {
+            get { return _selectItemsQuery; }
+        }
+
+        public SelectUserQuery SelectUser
+        {
+            get { return _selectUserQuery; }
+        }
+
+        public SelectUserPasswordQuery SelectUserPassword
+        {
+            get { return _selectUserPasswordQuery; }
+        }
+
+        public SelectUserEquippedItemsQuery SelectUserEquippedItems
+        {
+            get { return _selectUserEquippedItemsQuery; }
+        }
+
+        public SelectUserInventoryItemsQuery SelectUserInventoryItems
+        {
+            get { return _selectUserInventoryItemsQuery; }
+        }
+
         public UpdateItemFieldQuery UpdateItemField
         {
             get { return _updateItemFieldQuery; }
@@ -99,121 +138,86 @@ namespace DemoGame.Server
             get { return _updateUserQuery; }
         }
 
+        public SelectAlliancesQuery SelectAlliances
+        {
+            get { return _selectAlliancesQuery; }
+        }
+
         public DBController(string connectionString)
         {
-            // Create the connection
-            _conn = new MySqlConnection(connectionString);
+            if (string.IsNullOrEmpty(connectionString))
+                throw new ArgumentNullException("connectionString");
 
-            // Open the connection
-            try
-            {
-                _conn.Open();
-            }
-            catch (Exception ex)
-            {
-                const string msg = "Failed to connect to MySql database.";
-                Debug.Fail(msg);
-                if (log.IsFatalEnabled)
-                    log.Fatal(msg, ex);
-                Dispose();
-                return;
-            }
+            // Create the connection pool
+            _connectionPool = new MySqlDbConnectionPool(connectionString);
 
             if (log.IsInfoEnabled)
-                log.InfoFormat("MySql connection to database '{0}' open", _conn.Database);
+                log.InfoFormat("Database connection pool created.");
 
+            // NOTE: It would be REALLY nice to find a better way to construct the query objects...
             // Create the query classes
-            _insertUserQuery = new InsertUserQuery(_conn);
+            _insertUserQuery = new InsertUserQuery(_connectionPool);
             _disposableQueries.Add(_insertUserQuery);
 
-            _updateUserQuery = new UpdateUserQuery(_conn);
+            _updateUserQuery = new UpdateUserQuery(_connectionPool);
             _disposableQueries.Add(_updateUserQuery);
 
-            _insertUserEquipQuery = new InsertUserEquippedQuery(_conn);
+            _insertUserEquipQuery = new InsertUserEquippedQuery(_connectionPool);
             _disposableQueries.Add(_insertUserEquipQuery);
 
-            _deleteUserEquipQuery = new DeleteUserEquippedQuery(_conn);
+            _deleteUserEquipQuery = new DeleteUserEquippedQuery(_connectionPool);
             _disposableQueries.Add(_deleteUserEquipQuery);
 
-            _selectItemQuery = new SelectItemQuery(_conn);
+            _selectItemQuery = new SelectItemQuery(_connectionPool);
             _disposableQueries.Add(_selectItemQuery);
 
-            _insertUserItemQuery = new InsertUserItemQuery(_conn);
+            _insertUserItemQuery = new InsertUserItemQuery(_connectionPool);
             _disposableQueries.Add(_insertUserItemQuery);
 
-            _deleteUserItemQuery = new DeleteUserItemQuery(_conn);
+            _deleteUserItemQuery = new DeleteUserItemQuery(_connectionPool);
             _disposableQueries.Add(_deleteUserItemQuery);
 
-            _deleteItemQuery = new DeleteItemQuery(_conn);
+            _deleteItemQuery = new DeleteItemQuery(_connectionPool);
             _disposableQueries.Add(_deleteItemQuery);
 
-            _replaceItemQuery = new ReplaceItemQuery(_conn);
+            _replaceItemQuery = new ReplaceItemQuery(_connectionPool);
             _disposableQueries.Add(_replaceItemQuery);
 
-            _updateItemFieldQuery = new UpdateItemFieldQuery(_conn);
+            _updateItemFieldQuery = new UpdateItemFieldQuery(_connectionPool);
             _disposableQueries.Add(_updateItemFieldQuery);
 
-            _itemGuidCreator = new ItemGuidCreator(_conn);
-        }
+            _selectItemsQuery = new SelectItemsQuery(_connectionPool);
+            _disposableQueries.Add(_selectItemsQuery);
 
-        /// <summary>
-        /// Gets all of the Alliance data.
-        /// </summary>
-        /// <returns>IEnumerable of Dictionaries with the key as the field name and value as the field value.</returns>
-        public IEnumerable<Dictionary<string, object>> GetAllianceData()
-        {
-            List<Dictionary<string, object>> ret;
+            _selectUserEquippedItemsQuery = new SelectUserEquippedItemsQuery(_connectionPool);
+            _disposableQueries.Add(_selectUserEquippedItemsQuery);
 
-            // Load all the data from the database
-            using (MySqlCommand cmd = _conn.CreateCommand())
-            {
-                cmd.CommandText = "SELECT * FROM `alliances`";
-                using (IDataReader r = cmd.ExecuteReader())
-                {
-                    ret = ToDictionary(r);
-                }
-            }
+            _selectUserInventoryItemsQuery = new SelectUserInventoryItemsQuery(_connectionPool);
+            _disposableQueries.Add(_selectUserInventoryItemsQuery);
 
-            return ret;
-        }
+            _selectAlliancesQuery = new SelectAlliancesQuery(_connectionPool);
+            _disposableQueries.Add(_selectAlliancesQuery);
 
-        /// <summary>
-        /// Loads all the values in an IDataReader and converts it into a list of dictionaries.
-        /// </summary>
-        /// <param name="dataReader">IDataReader to load the field names and values from.</param>
-        /// <returns>List of Dictionaries with a key of the field's name and value of the field's value.</returns>
-        static List<Dictionary<string, object>> ToDictionary(IDataReader dataReader)
-        {
-            // Get the name for each ordinal
-            var ordinalToName = new string[dataReader.FieldCount];
-            for (int i = 0; i < dataReader.FieldCount; i++)
-            {
-                ordinalToName[i] = dataReader.GetName(i);
-            }
+            _selectUserQuery = new SelectUserQuery(_connectionPool);
+            _disposableQueries.Add(_selectUserQuery);
 
-            // Start reading the values
-            var fields = new List<Dictionary<string, object>>();
-            while (dataReader.Read())
-            {
-                // Add all the field values to the dictionary
-                var field = new Dictionary<string, object>();
-                for (int i = 0; i < dataReader.FieldCount; i++)
-                {
-                    field.Add(ordinalToName[i], dataReader.GetValue(i));
-                }
+            _selectUserPasswordQuery = new SelectUserPasswordQuery(_connectionPool);
+            _disposableQueries.Add(_selectUserPasswordQuery);
 
-                fields.Add(field);
-            }
+            _selectItemTemplatesQuery = new SelectItemTemplatesQuery(_connectionPool);
+            _disposableQueries.Add(_selectItemTemplatesQuery);
 
-            return fields;
+            _selectNPCDropsQuery = new SelectNPCDropsQuery(_connectionPool);
+            _disposableQueries.Add(_selectNPCDropsQuery);
+
+            _selectNPCTemplateQuery = new SelectNPCTemplateQuery(_connectionPool);
+            _disposableQueries.Add(_selectNPCTemplateQuery);
+
+            _itemGuidCreator = new ItemGuidCreator(_connectionPool);
         }
 
         #region IDisposable Members
 
-        ///<summary>
-        ///Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        ///</summary>
-        ///<filterpriority>2</filterpriority>
         public void Dispose()
         {
             if (_disposed)
@@ -221,14 +225,14 @@ namespace DemoGame.Server
 
             _disposed = true;
 
-            // Dispose of all the queries
+            // Dispose of all the individual queries
             foreach (IDisposable item in _disposableQueries)
             {
                 item.Dispose();
             }
 
-            // Dispose of the connection
-            _conn.Dispose();
+            // Dispose of the DbConnectionPool
+            _connectionPool.Dispose();
         }
 
         #endregion

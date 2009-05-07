@@ -41,14 +41,6 @@ namespace DemoGame.Server
         IEnumerable<User> _usersEnumerable;
 
         /// <summary>
-        /// Gets the MySqlConnection used by the world
-        /// </summary>
-        public MySqlConnection Conn
-        {
-            get { return _parent.DBController.Connection; }
-        }
-
-        /// <summary>
         /// Gets a stack of objects that need to be disposed. The stack is processed once every frame.
         /// Use for any Dispose call that would otherwise cause a potential exception (such as
         /// trying to Dispose a character during their Update) or threading complications.
