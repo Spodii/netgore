@@ -1,18 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Db
 {
     /// <summary>
     /// Base class for all database queries that execute queries that do not use a reader.
     /// </summary>
+    public abstract class DbQueryNonReader : DbQueryBase, IDbQueryNonReader
+    {
+        /// <summary>
+        /// DbQueryNonReader constructor.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        /// <param name="commandText">String containing the command to use for the query.</param>
+        protected DbQueryNonReader(DbConnectionPool connectionPool, string commandText) : base(connectionPool, commandText)
+        {
+        }
+
+        protected override IEnumerable<DbParameter> InitializeParameters()
+        {
+            return null;
+        }
+
+        #region IDbQueryNonReader Members
+
+        /// <summary>
+        /// Executes the query on the database.
+        /// </summary>
+        /// <returns>Number of rows affected by the query.</returns>
+        public int Execute()
+        {
+            int returnValue;
+
+            // Get the connection to use
+            using (IPoolableDbConnection pooledConn = GetPoolableConnection())
+            {
+                DbConnection conn = pooledConn.Connection;
+
+                // Get and set up the command
+                DbCommand cmd = GetCommand(conn);
+
+                // Execute the command
+                returnValue = cmd.ExecuteNonQuery();
+
+                // Release the command so it can be used again later
+                ReleaseCommand(cmd);
+            }
+
+            // Return the value from ExecuteNonQuery
+            return returnValue;
+        }
+
+        #endregion
+    }
+
+    /// <summary>
+    /// Base class for all database queries that execute queries that do not use a reader.
+    /// </summary>
     /// <typeparam name="T">Type of the object used for executing the query.</typeparam>
     public abstract class DbQueryNonReader<T> : DbQueryBase, IDbQueryNonReader<T>
     {
+        /// <summary>
+        /// DbQueryNonReader constructor.
+        /// </summary>
+        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        /// <param name="commandText">String containing the command to use for the query.</param>
         protected DbQueryNonReader(DbConnectionPool connectionPool, string commandText) : base(connectionPool, commandText)
         {
         }
@@ -25,6 +80,8 @@ namespace NetGore.Db
         /// <param name="item">Item used to execute the query.</param>
         protected abstract void SetParameters(DbParameterValues p, T item);
 
+        #region IDbQueryNonReader<T> Members
+
         /// <summary>
         /// Executes the query on the database using the specified <paramref name="item"/>.
         /// </summary>
@@ -35,15 +92,15 @@ namespace NetGore.Db
             int returnValue;
 
             // Get the connection to use
-            using (var pooledConn = GetPoolableConnection())
+            using (IPoolableDbConnection pooledConn = GetPoolableConnection())
             {
-                var conn = pooledConn.Connection;
+                DbConnection conn = pooledConn.Connection;
 
                 // Get and set up the command
-                var cmd = GetCommand(conn);
+                DbCommand cmd = GetCommand(conn);
                 if (HasParameters)
                     SetParameters(new DbParameterValues(cmd.Parameters), item);
-                
+
                 // Execute the command
                 returnValue = cmd.ExecuteNonQuery();
 
@@ -54,5 +111,7 @@ namespace NetGore.Db
             // Return the value from ExecuteNonQuery
             return returnValue;
         }
+
+        #endregion
     }
 }

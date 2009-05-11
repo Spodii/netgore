@@ -140,7 +140,7 @@ namespace DemoGame.Server
             int lastValue = -1;
 
             // Execute the reader
-            using (IDataReader r = _selectGuidQuery.ExecuteReader(null))
+            using (IDataReader r = _selectGuidQuery.ExecuteReader())
             {
                 // Read until we run out of rows
                 while (r.Read())
@@ -236,23 +236,13 @@ namespace DemoGame.Server
 
         #endregion
 
-        class SelectGuidQuery : DbQueryReader<object>
+        class SelectGuidQuery : DbQueryReader
         {
             const string _queryString = "SELECT `{0}` FROM `{1}` ORDER BY `{0}` ASC";
 
             public SelectGuidQuery(DbConnectionPool connectionPool, string table, string column)
                 : base(connectionPool, string.Format(_queryString, column, table))
             {
-            }
-
-            protected override IEnumerable<DbParameter> InitializeParameters()
-            {
-                return null;
-            }
-
-            protected override void SetParameters(DbParameterValues p, object item)
-            {
-                Debug.Fail("This method should never be called since this query has no parameters.");
             }
         }
     }
