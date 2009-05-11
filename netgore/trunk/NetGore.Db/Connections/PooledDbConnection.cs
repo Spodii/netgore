@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NetGore.Collections;
 
 namespace NetGore.Db
@@ -13,9 +12,9 @@ namespace NetGore.Db
     /// </summary>
     public class PooledDbConnection : IPoolableDbConnection, IPoolable<PooledDbConnection>
     {
-        PoolData<PooledDbConnection> _poolData;
-        ObjectPool<PooledDbConnection> _objectPool;
         DbConnection _connection;
+        ObjectPool<PooledDbConnection> _objectPool;
+        PoolData<PooledDbConnection> _poolData;
 
         /// <summary>
         /// Sets the DbConnection to be used by this IPoolableDbConnection. This should only be called by the
@@ -32,10 +31,7 @@ namespace NetGore.Db
             _connection = connection;
         }
 
-        /// <summary>
-        /// Gets the IDbConnection for this IPoolableDbConnection.
-        /// </summary>
-        public DbConnection Connection { get { return _connection; } }
+        #region IPoolable<PooledDbConnection> Members
 
         /// <summary>
         /// Gets the PoolData associated with this poolable item
@@ -69,10 +65,23 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="objectPool">Pool that created this object</param>
         /// <param name="poolData">PoolData assigned to this object</param>
-        void IPoolable<PooledDbConnection>.SetPoolData(ObjectPool<PooledDbConnection> objectPool, PoolData<PooledDbConnection> poolData)
+        void IPoolable<PooledDbConnection>.SetPoolData(ObjectPool<PooledDbConnection> objectPool,
+                                                       PoolData<PooledDbConnection> poolData)
         {
             _objectPool = objectPool;
             _poolData = poolData;
+        }
+
+        #endregion
+
+        #region IPoolableDbConnection Members
+
+        /// <summary>
+        /// Gets the IDbConnection for this IPoolableDbConnection.
+        /// </summary>
+        public DbConnection Connection
+        {
+            get { return _connection; }
         }
 
         /// <summary>
@@ -82,5 +91,7 @@ namespace NetGore.Db
         {
             _objectPool.Destroy(this);
         }
+
+        #endregion
     }
 }

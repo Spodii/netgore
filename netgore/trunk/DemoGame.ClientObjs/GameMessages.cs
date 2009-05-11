@@ -53,7 +53,8 @@ namespace DemoGame.Client
         /// GameMessages constructor.
         /// </summary>
         /// <param name="language">Name of the language to load.</param>
-        public GameMessages(string language) : base(ContentPaths.Build.Languages.Join(language.ToLower() + _languageFileSuffix), _defaultMessages)
+        public GameMessages(string language)
+            : base(ContentPaths.Build.Languages.Join(language.ToLower() + _languageFileSuffix), _defaultMessages)
         {
             _language = language;
         }

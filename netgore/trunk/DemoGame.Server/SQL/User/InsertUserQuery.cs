@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
-using MySql.Data.MySqlClient;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -12,12 +12,14 @@ namespace DemoGame.Server
     {
         // TODO: This won't even work because the password is never set... but its not like new users even work yet
 
-        public InsertUserQuery(DbConnectionPool connectionPool) : base(connectionPool, string.Format("INSERT INTO {0} SET `password`=@password,`guid`=@guid,{1}", UsersTableName,
-                                         QueryFieldsStr))
+        public InsertUserQuery(DbConnectionPool connectionPool)
+            : base(
+                connectionPool,
+                string.Format("INSERT INTO {0} SET `password`=@password,`guid`=@guid,{1}", UsersTableName, QueryFieldsStr))
         {
         }
 
-        protected override IEnumerable<System.Data.Common.DbParameter> InitializeParameters()
+        protected override IEnumerable<DbParameter> InitializeParameters()
         {
             // TODO: Initialize password parameter
             return base.InitializeParameters();

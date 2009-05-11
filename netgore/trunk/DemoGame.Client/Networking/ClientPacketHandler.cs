@@ -1,5 +1,4 @@
 ﻿using System;
-using NetGore.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics.GUI;
+using NetGore.IO;
 using NetGore.Network;
 
 #pragma warning disable 168
@@ -16,6 +16,7 @@ namespace DemoGame.Client
 {
     public class ClientPacketHandler : IMessageProcessor, IGetTime
     {
+        readonly GameMessages _gameMessages = new GameMessages();
         readonly GameplayScreen _gameplayScreen;
         readonly Stopwatch _pingWatch = new Stopwatch();
         readonly MessageProcessorManager _ppManager;
@@ -316,8 +317,6 @@ namespace DemoGame.Client
 
             itemInfo.SetAsUpdated();
         }
-
-        readonly GameMessages _gameMessages = new GameMessages();
 
         [MessageHandler((byte)ServerPacketID.SendMessage)]
         void RecvSendMessage(TCPSocket conn, BitStream r)

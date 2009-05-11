@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using DemoGame.Extensions;
-using MySql.Data.MySqlClient;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -14,20 +13,24 @@ namespace DemoGame.Server
     {
         public const string ItemsTableName = "items";
 
+        static readonly IEnumerable<string> _otherFields = new string[]
+                                                           {
+                                                               "@amount", "@description", "@graphic", "@guid", "@height", "@name",
+                                                               "@type", "@value", "@width"
+                                                           };
+
         static readonly string _queryString;
 
-        static readonly IEnumerable<string> _statFields = ItemStats.DatabaseStats.Select(statType => "@" + statType.GetDatabaseField());
-        static readonly IEnumerable<string> _otherFields = new string[] { "@amount", "@description", "@graphic",
-            "@guid", "@height", "@name", "@type", "@value", "@width" };
-
-        static IEnumerable<string> GetFields()
-        {
-            return _statFields.Concat(_otherFields);
-        }
+        static readonly IEnumerable<string> _statFields =
+            ItemStats.DatabaseStats.Select(statType => "@" + statType.GetDatabaseField());
 
         static ReplaceItemQuery()
         {
             _queryString = BuildQueryString(GetFields());
+        }
+
+        public ReplaceItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        {
         }
 
         /// <summary>
@@ -65,8 +68,9 @@ namespace DemoGame.Server
             return sb.ToString();
         }
 
-        public ReplaceItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        static IEnumerable<string> GetFields()
         {
+            return _statFields.Concat(_otherFields);
         }
 
         protected override IEnumerable<DbParameter> InitializeParameters()
@@ -86,7 +90,7 @@ namespace DemoGame.Server
             p["@width"] = item.Width;
             p["@height"] = item.Height;
 
-            foreach (var statType in ItemStats.DatabaseStats)
+            foreach (StatType statType in ItemStats.DatabaseStats)
             {
                 string paramName = "@" + statType.GetDatabaseField();
                 IStat stat = item.Stats.GetStat(statType);

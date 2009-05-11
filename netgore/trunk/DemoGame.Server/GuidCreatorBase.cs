@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -17,7 +16,7 @@ namespace DemoGame.Server
     public abstract class GuidCreatorBase : IDisposable
     {
         readonly int _criticalSize;
-                     // FUTURE: Use the CriticalSize, which will automatically get the next free values asynchronously in the background
+        // FUTURE: Use the CriticalSize, which will automatically get the next free values asynchronously in the background
 
         readonly Stack<int> _freeIndices;
         readonly SelectGuidQuery _selectGuidQuery;

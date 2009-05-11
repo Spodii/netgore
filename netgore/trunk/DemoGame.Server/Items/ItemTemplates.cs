@@ -1,16 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
-using MySql.Data.MySqlClient;
-using NetGore;
 using NetGore.Collections;
-using NetGore.Extensions;
 
 namespace DemoGame.Server
 {
@@ -31,7 +27,7 @@ namespace DemoGame.Server
 
             // Load the item templates
             var itemTemplates = query.Execute();
-            foreach (var it in itemTemplates)
+            foreach (ItemTemplate it in itemTemplates)
             {
                 _itemTemplates[it.Guid] = it;
 

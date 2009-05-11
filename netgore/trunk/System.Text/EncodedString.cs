@@ -1,8 +1,8 @@
 using System;
-using NetGore.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using NetGore.IO;
 
 namespace System.Text
 {

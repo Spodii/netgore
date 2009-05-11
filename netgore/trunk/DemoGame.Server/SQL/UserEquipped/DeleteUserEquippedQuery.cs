@@ -4,18 +4,16 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
-using MySql.Data.MySqlClient;
 using NetGore.Db;
 
 namespace DemoGame.Server
 {
     public class DeleteUserEquippedQuery : DbQueryNonReader<int>
     {
-        const string _queryString = "DELETE FROM `" + InsertUserEquippedQuery.UserEquippedTable + 
-            "` WHERE `item_guid`=@itemGuid LIMIT 1";
+        const string _queryString =
+            "DELETE FROM `" + InsertUserEquippedQuery.UserEquippedTable + "` WHERE `item_guid`=@itemGuid LIMIT 1";
 
-        public DeleteUserEquippedQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public DeleteUserEquippedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 

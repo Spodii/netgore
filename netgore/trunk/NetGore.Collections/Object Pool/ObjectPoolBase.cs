@@ -28,11 +28,6 @@ namespace NetGore.Collections
         readonly LinkedList<T> _pool = new LinkedList<T>();
 
         /// <summary>
-        /// Gets the number of live items in the ObjectPool.
-        /// </summary>
-        public int Count { get { return _pool.Count - _free.Count; } }
-
-        /// <summary>
         /// Object used to lock the pool on thread-unsafe sections of code
         /// </summary>
         readonly object _poolLock = new object();
@@ -42,6 +37,14 @@ namespace NetGore.Collections
         /// means that the whole pool will be iterated through.
         /// </summary>
         LinkedListNode<T> _highNode = null;
+
+        /// <summary>
+        /// Gets the number of live items in the ObjectPool.
+        /// </summary>
+        public int Count
+        {
+            get { return _pool.Count - _free.Count; }
+        }
 
         /// <summary>
         /// Clears all nodes, dead and alive, from the pool
@@ -72,16 +75,6 @@ namespace NetGore.Collections
         public void Clear()
         {
             Clear(true);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling by the ObjectPoolBase when a new
-        /// object is created for the pool. This is only called when a new object is created, not activated. This is
-        /// called only once for each unique pool item, after IPoolable.SetPoolData() and before IPoolable.Activate().
-        /// </summary>
-        /// <param name="item">New object that was created.</param>
-        protected virtual void HandleNewPoolObject(T item)
-        {
         }
 
         /// <summary>
@@ -204,6 +197,16 @@ namespace NetGore.Collections
             {
                 _highNode = _highNode.Previous;
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling by the ObjectPoolBase when a new
+        /// object is created for the pool. This is only called when a new object is created, not activated. This is
+        /// called only once for each unique pool item, after IPoolable.SetPoolData() and before IPoolable.Activate().
+        /// </summary>
+        /// <param name="item">New object that was created.</param>
+        protected virtual void HandleNewPoolObject(T item)
+        {
         }
 
         #region IEnumerable<T> Members

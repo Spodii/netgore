@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using DemoGame.Extensions;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -17,9 +18,9 @@ namespace DemoGame.Server
 
         public IEnumerable<SelectNPCDropValues> Execute()
         {
-            List<SelectNPCDropValues> ret = new List<SelectNPCDropValues>();
+            var ret = new List<SelectNPCDropValues>();
 
-            using (var r = ExecuteReader())
+            using (IDataReader r = ExecuteReader())
             {
                 while (r.Read())
                 {
@@ -31,7 +32,7 @@ namespace DemoGame.Server
                     ushort chance = r.GetUInt16("chance");
 
                     // Create and enqueue the return object
-                    var values = new SelectNPCDropValues(guid, itemGuid, min, max, chance);
+                    SelectNPCDropValues values = new SelectNPCDropValues(guid, itemGuid, min, max, chance);
                     ret.Add(values);
                 }
             }

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Common;
+using System.Data;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using DemoGame.Extensions;
 using NetGore.Db;
 
@@ -12,16 +12,15 @@ namespace DemoGame.Server
     {
         const string _queryString = "SELECT * FROM `item_templates`";
 
-        public SelectItemTemplatesQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectItemTemplatesQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
         public IEnumerable<ItemTemplate> Execute()
         {
-            List<ItemTemplate> ret = new List<ItemTemplate>();
+            var ret = new List<ItemTemplate>();
 
-            using (var r = ExecuteReader())
+            using (IDataReader r = ExecuteReader())
             {
                 while (r.Read())
                 {
@@ -43,9 +42,9 @@ namespace DemoGame.Server
                         string dbColumn = statType.GetDatabaseField();
                         stat.Read(r, dbColumn);
                     }
-                    
+
                     // Create the template and enqueue it for returning
-                    var values = new ItemTemplate(guid, name, description, type, graphic, value, width, height, stats);
+                    ItemTemplate values = new ItemTemplate(guid, name, description, type, graphic, value, width, height, stats);
                     ret.Add(values);
                 }
             }

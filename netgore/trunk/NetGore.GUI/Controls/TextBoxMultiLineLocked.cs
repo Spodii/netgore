@@ -29,11 +29,6 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         readonly List<TextBoxLine> _lines = new List<TextBoxLine>(128);
 
-        /// <summary>
-        /// Gets the number of lines in this TextBox.
-        /// </summary>
-        public int Lines { get { return _lines.Count; } }
-
         int _bufferOffset = 0;
 
         int _bufferSize = _initialBufferSize;
@@ -90,6 +85,14 @@ namespace NetGore.Graphics.GUI
                     v += new Vector2(border.LeftWidth, border.TopHeight);
                 return v;
             }
+        }
+
+        /// <summary>
+        /// Gets the number of lines in this TextBox.
+        /// </summary>
+        public int Lines
+        {
+            get { return _lines.Count; }
         }
 
         /// <summary>

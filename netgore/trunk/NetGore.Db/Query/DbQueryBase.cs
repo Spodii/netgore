@@ -20,135 +20,16 @@ namespace NetGore.Db
         readonly object _commandsLock = new object();
         readonly string _commandText;
         readonly DbConnectionPool _connectionPool;
+        readonly bool _hasParameters;
         readonly IEnumerable<DbParameter> _parameters;
         bool _disposed;
-        readonly bool _hasParameters;
 
         /// <summary>
         /// Gets if this DbQueryBase contains a query that has any parameters.
         /// </summary>
-        public bool HasParameters { get { return _hasParameters; } }
-
-        /// <summary>
-        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
-        /// </summary>
-        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
-        /// no parameters will be used.</returns>
-        protected abstract IEnumerable<DbParameter> InitializeParameters();
-
-        /// <summary>
-        /// Gets the name of a DbParameter minus the prefix.
-        /// </summary>
-        /// <param name="parameter">DbParameter to get the name of.</param>
-        /// <returns>The name of a DbParameter minus the prefix.</returns>
-        public static string GetParameterNameWithoutPrefix(DbParameter parameter)
+        public bool HasParameters
         {
-            // HACK: Function needs better name and better location
-            return parameter.ParameterName.Substring(1);
-        }
-
-        /// <summary>
-        /// Loads all the values from all the rows in an IDataReader and converts it into a list of Dictionaries.
-        /// </summary>
-        /// <param name="dataReader">IDataReader to load the field names and values from.</param>
-        /// <returns>List of Dictionaries with a key of the field's name and value of the field's value.</returns>
-        public static List<Dictionary<string, object>> DataToDictionary(IDataReader dataReader)
-        {
-            // Get the name for each ordinal
-            var ordinalToName = new string[dataReader.FieldCount];
-            for (int i = 0; i < dataReader.FieldCount; i++)
-            {
-                ordinalToName[i] = dataReader.GetName(i);
-            }
-
-            // Start reading the values
-            var fields = new List<Dictionary<string, object>>();
-            while (dataReader.Read())
-            {
-                // Add all the field values to the dictionary
-                var field = new Dictionary<string, object>();
-                for (int i = 0; i < dataReader.FieldCount; i++)
-                {
-                    field.Add(ordinalToName[i], dataReader.GetValue(i));
-                }
-
-                fields.Add(field);
-            }
-
-            return fields;
-        }
-
-        /// <summary>
-        /// Gets the name of a DbParameter minus the prefix.
-        /// </summary>
-        /// <param name="parameterName">ParameterName to get the trimmed name of.</param>
-        /// <returns>The name of a DbParameter minus the prefix.</returns>
-        public static string GetParameterNameWithoutPrefix(string parameterName)
-        {
-            // HACK: Function needs better name and better location
-            return parameterName.Substring(1);
-        }
-
-        /// <summary>
-        /// Turns an IEnumerable of a string into the format of: `field`=@field. Each entry is comma-delimited.
-        /// </summary>
-        /// <returns>A comma-delimited string of all fields in the format of: `field`=@field.</returns>
-        public static string GetValuesQuery(IEnumerable<string> fields)
-        {
-            // HACK: Function needs better name and better location
-            StringBuilder sb = new StringBuilder(512);
-
-            foreach (string field in fields)
-            {
-                sb.Append("`");
-                sb.Append(field);
-                sb.Append("`=@");
-                sb.Append(field);
-                sb.Append(",");
-            }
-
-            // Remove the trailing comma
-            sb.Remove(sb.Length - 1, 1);
-
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Creates a DbParameter that can be used with this DbQueryBase.
-        /// </summary>
-        /// <param name="parameterName">Name of the parameter to create.</param>
-        /// <returns>DbParameter that can be used with this DbQueryBase.</returns>
-        protected DbParameter CreateParameter(string parameterName)
-        {
-            return ConnectionPool.CreateParameter(parameterName);
-        }
-
-        /// <summary>
-        /// Helps creates multiple DbParameters easily.
-        /// </summary>
-        /// <param name="parameterNames">Array of ParameterNames to create.</param>
-        /// <returns>IEnumerable of DbParameters, one for each element in the <paramref name="parameterNames"/> array.</returns>
-        protected IEnumerable<DbParameter> CreateParameters(params string[] parameterNames)
-        {
-            if (parameterNames == null)
-                throw new ArgumentNullException("parameterNames");
-
-            foreach (string parameterName in parameterNames)
-                yield return CreateParameter(parameterName);
-        }
-
-        /// <summary>
-        /// Helps creates multiple DbParameters easily.
-        /// </summary>
-        /// <param name="parameterNames">IEnumerable of ParameterNames to create.</param>
-        /// <returns>IEnumerable of DbParameters, one for each element in the <paramref name="parameterNames"/> array.</returns>
-        protected IEnumerable<DbParameter> CreateParameters(IEnumerable<string> parameterNames)
-        {
-            if (parameterNames == null)
-                throw new ArgumentNullException("parameterNames");
-
-            foreach (string parameterName in parameterNames)
-                yield return CreateParameter(parameterName);
+            get { return _hasParameters; }
         }
 
         /// <summary>
@@ -194,6 +75,79 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Creates a DbParameter that can be used with this DbQueryBase.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter to create.</param>
+        /// <returns>DbParameter that can be used with this DbQueryBase.</returns>
+        protected DbParameter CreateParameter(string parameterName)
+        {
+            return ConnectionPool.CreateParameter(parameterName);
+        }
+
+        /// <summary>
+        /// Helps creates multiple DbParameters easily.
+        /// </summary>
+        /// <param name="parameterNames">Array of ParameterNames to create.</param>
+        /// <returns>IEnumerable of DbParameters, one for each element in the <paramref name="parameterNames"/> array.</returns>
+        protected IEnumerable<DbParameter> CreateParameters(params string[] parameterNames)
+        {
+            if (parameterNames == null)
+                throw new ArgumentNullException("parameterNames");
+
+            foreach (string parameterName in parameterNames)
+            {
+                yield return CreateParameter(parameterName);
+            }
+        }
+
+        /// <summary>
+        /// Helps creates multiple DbParameters easily.
+        /// </summary>
+        /// <param name="parameterNames">IEnumerable of ParameterNames to create.</param>
+        /// <returns>IEnumerable of DbParameters, one for each element in the <paramref name="parameterNames"/> array.</returns>
+        protected IEnumerable<DbParameter> CreateParameters(IEnumerable<string> parameterNames)
+        {
+            if (parameterNames == null)
+                throw new ArgumentNullException("parameterNames");
+
+            foreach (string parameterName in parameterNames)
+            {
+                yield return CreateParameter(parameterName);
+            }
+        }
+
+        /// <summary>
+        /// Loads all the values from all the rows in an IDataReader and converts it into a list of Dictionaries.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to load the field names and values from.</param>
+        /// <returns>List of Dictionaries with a key of the field's name and value of the field's value.</returns>
+        public static List<Dictionary<string, object>> DataToDictionary(IDataReader dataReader)
+        {
+            // Get the name for each ordinal
+            var ordinalToName = new string[dataReader.FieldCount];
+            for (int i = 0; i < dataReader.FieldCount; i++)
+            {
+                ordinalToName[i] = dataReader.GetName(i);
+            }
+
+            // Start reading the values
+            var fields = new List<Dictionary<string, object>>();
+            while (dataReader.Read())
+            {
+                // Add all the field values to the dictionary
+                var field = new Dictionary<string, object>();
+                for (int i = 0; i < dataReader.FieldCount; i++)
+                {
+                    field.Add(ordinalToName[i], dataReader.GetValue(i));
+                }
+
+                fields.Add(field);
+            }
+
+            return fields;
+        }
+
+        /// <summary>
         /// Gets and sets up an available DbCommand.
         /// </summary>
         /// <param name="conn">DbConnection to assign the DbCommand to.</param>
@@ -236,6 +190,28 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Gets the name of a DbParameter minus the prefix.
+        /// </summary>
+        /// <param name="parameter">DbParameter to get the name of.</param>
+        /// <returns>The name of a DbParameter minus the prefix.</returns>
+        public static string GetParameterNameWithoutPrefix(DbParameter parameter)
+        {
+            // HACK: Function needs better name and better location
+            return parameter.ParameterName.Substring(1);
+        }
+
+        /// <summary>
+        /// Gets the name of a DbParameter minus the prefix.
+        /// </summary>
+        /// <param name="parameterName">ParameterName to get the trimmed name of.</param>
+        /// <returns>The name of a DbParameter minus the prefix.</returns>
+        public static string GetParameterNameWithoutPrefix(string parameterName)
+        {
+            // HACK: Function needs better name and better location
+            return parameterName.Substring(1);
+        }
+
+        /// <summary>
         /// Gets an available IPoolableDbConnection from the ConnectionPool.
         /// </summary>
         /// <returns>A free IPoolableDbConnection.</returns>
@@ -248,11 +224,42 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Turns an IEnumerable of a string into the format of: `field`=@field. Each entry is comma-delimited.
+        /// </summary>
+        /// <returns>A comma-delimited string of all fields in the format of: `field`=@field.</returns>
+        public static string GetValuesQuery(IEnumerable<string> fields)
+        {
+            // HACK: Function needs better name and better location
+            StringBuilder sb = new StringBuilder(512);
+
+            foreach (string field in fields)
+            {
+                sb.Append("`");
+                sb.Append(field);
+                sb.Append("`=@");
+                sb.Append(field);
+                sb.Append(",");
+            }
+
+            // Remove the trailing comma
+            sb.Remove(sb.Length - 1, 1);
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+        /// </summary>
+        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
+        /// no parameters will be used.</returns>
+        protected abstract IEnumerable<DbParameter> InitializeParameters();
+
+        /// <summary>
         /// Releases a DbCommand after it has been used. This must be called on every DbCommand once it is
         /// done being used to ensure it can be reused! Use this in place of disposing the DbCommand.
         /// </summary>
         /// <param name="cmd">DbCommand to release.</param>
-        internal protected void ReleaseCommand(DbCommand cmd)
+        protected internal void ReleaseCommand(DbCommand cmd)
         {
             if (_disposed)
                 throw new MethodAccessException(_disposedErrorMessage);

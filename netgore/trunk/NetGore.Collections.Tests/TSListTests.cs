@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using NetGore.Collections;
 using NUnit.Framework;
 
 namespace NetGore.Collections.Tests
@@ -19,7 +18,7 @@ namespace NetGore.Collections.Tests
         {
             IEnumerable e = (IEnumerable)obj;
 
-            foreach (var item in e)
+            foreach (object item in e)
             {
                 Thread.Sleep(1);
             }
@@ -28,11 +27,11 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ThreadSafeAddTest()
         {
-            TSList<int> l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, 1000));
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -43,13 +42,67 @@ namespace NetGore.Collections.Tests
         }
 
         [Test]
-        public void ThreadSafeInsertTest()
+        public void ThreadSafeFindTest()
         {
-            TSList<int> l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, 1000));
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
+                t.Start(l);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                l.Find(y => y == 10);
+            }
+        }
+
+        [Test]
+        public void ThreadSafeIndexerTest()
+        {
+            var l = new TSList<int>(Enumerable.Range(1, 1000));
+
+            for (int i = 0; i < 10; i++)
+            {
+                Thread t = new Thread(DummyEnumerator);
+                t.Start(l);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                int x = l[i];
+                l[i] = x + 1;
+                Assert.AreEqual(x + 1, l[i]);
+            }
+        }
+
+        [Test]
+        public void ThreadSafeIndexOfTest()
+        {
+            var l = new TSList<int>(Enumerable.Range(1, 1000));
+
+            for (int i = 0; i < 10; i++)
+            {
+                Thread t = new Thread(DummyEnumerator);
+                t.Start(l);
+            }
+
+            for (int i = 1; i < 10; i++)
+            {
+                int x = l.IndexOf(i);
+                Assert.AreEqual(i, l[x]);
+            }
+        }
+
+        [Test]
+        public void ThreadSafeInsertTest()
+        {
+            var l = new TSList<int>(Enumerable.Range(1, 1000));
+
+            for (int i = 0; i < 10; i++)
+            {
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -60,30 +113,13 @@ namespace NetGore.Collections.Tests
         }
 
         [Test]
-        public void ThreadSafeRemoveTest()
-        {
-            TSList<int> l = new TSList<int>(Enumerable.Range(1, 1000));
-
-            for (int i = 0; i < 10; i++)
-            {
-                var t = new Thread(DummyEnumerator);
-                t.Start(l);
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                l.Remove(i);
-            }
-        }
-
-        [Test]
         public void ThreadSafeRemoveAtTest()
         {
-            TSList<int> l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, 1000));
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -94,13 +130,30 @@ namespace NetGore.Collections.Tests
         }
 
         [Test]
-        public void ThreadSafeToArrayTest()
+        public void ThreadSafeRemoveTest()
         {
-            TSList<int> l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, 1000));
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
+                t.Start(l);
+            }
+
+            for (int i = 0; i < 10; i++)
+            {
+                l.Remove(i);
+            }
+        }
+
+        [Test]
+        public void ThreadSafeToArrayTest()
+        {
+            var l = new TSList<int>(Enumerable.Range(1, 1000));
+
+            for (int i = 0; i < 10; i++)
+            {
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -113,11 +166,11 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ThreadSafeTrimExcessTest()
         {
-            TSList<int> l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, 1000));
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -125,60 +178,6 @@ namespace NetGore.Collections.Tests
             {
                 l.TrimExcess();
                 l.AddRange(Enumerable.Range(1, 100));
-            }
-        }
-
-        [Test]
-        public void ThreadSafeFindTest()
-        {
-            TSList<int> l = new TSList<int>(Enumerable.Range(1, 1000));
-
-            for (int i = 0; i < 10; i++)
-            {
-                var t = new Thread(DummyEnumerator);
-                t.Start(l);
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                l.Find(y => y == 10);
-            }
-        }
-
-        [Test]
-        public void ThreadSafeIndexOfTest()
-        {
-            TSList<int> l = new TSList<int>(Enumerable.Range(1, 1000));
-
-            for (int i = 0; i < 10; i++)
-            {
-                var t = new Thread(DummyEnumerator);
-                t.Start(l);
-            }
-
-            for (int i = 1; i < 10; i++)
-            {
-                var x = l.IndexOf(i);
-                Assert.AreEqual(i, l[x]);
-            }
-        }
-
-        [Test]
-        public void ThreadSafeIndexerTest()
-        {
-            TSList<int> l = new TSList<int>(Enumerable.Range(1, 1000));
-
-            for (int i = 0; i < 10; i++)
-            {
-                var t = new Thread(DummyEnumerator);
-                t.Start(l);
-            }
-
-            for (int i = 0; i < 10; i++)
-            {
-                var x = l[i];
-                l[i] = x + 1;
-                Assert.AreEqual(x + 1, l[i]);
             }
         }
     }

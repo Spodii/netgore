@@ -199,9 +199,7 @@ namespace DemoGame.Server
 
             // Write the parameter count and all of the parameters
             if (p == null || p.Length < 1)
-            {
                 pw.Write((byte)0);
-            }
             else
             {
                 pw.Write((byte)p.Length);

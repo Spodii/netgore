@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using DemoGame.Extensions;
 using NetGore.Db;
 
 namespace DemoGame.Server
 {
     public class SelectUserInventoryItemsQuery : SelectItemQueryBase<int>
     {
-        const string _queryString = "SELECT items.* FROM `items`,`user_inventory` " + 
-                                    "WHERE user_inventory.user_guid = @userGuid " +
-                                    "AND items.guid = user_inventory.item_guid";
+        const string _queryString =
+            "SELECT items.* FROM `items`,`user_inventory` " + "WHERE user_inventory.user_guid = @userGuid " +
+            "AND items.guid = user_inventory.item_guid";
 
-        public SelectUserInventoryItemsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectUserInventoryItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
@@ -22,7 +23,7 @@ namespace DemoGame.Server
         {
             var retValues = new List<ItemValues>();
 
-            using (var r = ExecuteReader(userGuid))
+            using (IDataReader r = ExecuteReader(userGuid))
             {
                 while (r.Read())
                 {

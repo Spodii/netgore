@@ -31,31 +31,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Helper for parsing an enum. <typeparamref name="T"/> must be an Enum. Returns false if
-        /// the parse failed, or if the <paramref name="id"/> does not exist in the Enum.
-        /// </summary>
-        /// <param name="str">String to parse.</param>
-        /// <param name="id">Parsed ID from the <paramref name="str"/>.</param>
-        /// <returns>True if the ID was parsed successfully and exists in the Enum, else false.</returns>
-        protected bool ParseEnumHelper(string str, out T id)
-        {
-            // Parse the string
-            id = (T)Enum.Parse(typeof(T), str, true);
-
-            // Check if it is part of the enum
-            if (!Enum.IsDefined(typeof(T), id))
-            {
-                const string errmsg = "Languages file contains id `{0}`, but this is not in the ServerMessage enum.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, id);
-                Debug.Fail(string.Format(errmsg, id));
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// MessageCollectionBase constructor.
         /// </summary>
         /// <param name="file">Path to the file to load the messages from.</param>
@@ -79,7 +54,7 @@ namespace NetGore.IO
             {
                 if (dest.ContainsKey(sourceMsg.Key))
                     continue;
-                
+
                 dest.Add(sourceMsg.Key, sourceMsg.Value);
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Added message `{0}` from default messages.", sourceMsg.Key.ToString());
@@ -180,6 +155,31 @@ namespace NetGore.IO
                 AddMissingMessages(loadedMessages, secondary);
 
             return loadedMessages;
+        }
+
+        /// <summary>
+        /// Helper for parsing an enum. <typeparamref name="T"/> must be an Enum. Returns false if
+        /// the parse failed, or if the <paramref name="id"/> does not exist in the Enum.
+        /// </summary>
+        /// <param name="str">String to parse.</param>
+        /// <param name="id">Parsed ID from the <paramref name="str"/>.</param>
+        /// <returns>True if the ID was parsed successfully and exists in the Enum, else false.</returns>
+        protected bool ParseEnumHelper(string str, out T id)
+        {
+            // Parse the string
+            id = (T)Enum.Parse(typeof(T), str, true);
+
+            // Check if it is part of the enum
+            if (!Enum.IsDefined(typeof(T), id))
+            {
+                const string errmsg = "Languages file contains id `{0}`, but this is not in the ServerMessage enum.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, id);
+                Debug.Fail(string.Format(errmsg, id));
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

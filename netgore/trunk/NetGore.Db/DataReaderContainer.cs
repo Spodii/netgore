@@ -11,9 +11,15 @@ namespace NetGore.Db
         readonly IDbCommand _command;
         readonly IDataReader _dataReader;
 
-        protected IDbCommand Command { get { return _command; } }
+        protected IDbCommand Command
+        {
+            get { return _command; }
+        }
 
-        protected IDataReader DataReader { get { return _dataReader; } }
+        protected IDataReader DataReader
+        {
+            get { return _dataReader; }
+        }
 
         internal DataReaderContainer(IDbCommand command, IDataReader dataReader)
         {

@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
-using MySql.Data.MySqlClient;
-using NetGore.Extensions;
 
 namespace DemoGame.Server
 {
@@ -23,15 +20,10 @@ namespace DemoGame.Server
         readonly IEnumerable<NPCDrop> _drops;
         readonly ushort _giveCash;
         readonly ushort _giveExp;
+        readonly int _guid;
         readonly string _name;
         readonly ushort _respawnSecs;
-        readonly int _guid;
         readonly IEnumerable<IStat> _stats;
-
-        /// <summary>
-        /// Gets the guid of the NPCTemplate.
-        /// </summary>
-        public int Guid { get { return _guid; } }
 
         /// <summary>
         /// Gets the default AI module's name
@@ -70,6 +62,14 @@ namespace DemoGame.Server
         public ushort GiveExp
         {
             get { return _giveExp; }
+        }
+
+        /// <summary>
+        /// Gets the guid of the NPCTemplate.
+        /// </summary>
+        public int Guid
+        {
+            get { return _guid; }
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("npcDrops");
 
             // Drops and Stats are converted to an array just because they are the most compact IEnumerable collection
-            var values = query.Execute(guid);
+            SelectNPCTemplateQueryValues values = query.Execute(guid);
             _guid = values.Guid;
             _bodyIndex = values.BodyIndex;
             _name = values.Name;

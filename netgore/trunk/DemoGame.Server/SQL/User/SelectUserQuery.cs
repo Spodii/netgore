@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using NetGore.Db;
-using DemoGame.Extensions;
 
 namespace DemoGame.Server
 {
@@ -13,8 +14,7 @@ namespace DemoGame.Server
     {
         const string _queryString = "SELECT * FROM `users` WHERE `name`=@name";
 
-        public SelectUserQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectUserQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
@@ -25,22 +25,22 @@ namespace DemoGame.Server
 
             SelectUserQueryValues ret;
 
-            using (var r = ExecuteReader(userName))
+            using (IDataReader r = ExecuteReader(userName))
             {
                 if (!r.Read())
                     throw new ArgumentException(string.Format("Could not find a user with the name `{0}`", userName));
 
                 // Read the general user values
-                var guid = r.GetUInt16("guid");
-                var mapIndex = r.GetUInt16("map"); 
-                var x = r.GetFloat("x");
-                var y = r.GetFloat("y");
-                var body = r.GetUInt16("body");
+                ushort guid = r.GetUInt16("guid");
+                ushort mapIndex = r.GetUInt16("map");
+                float x = r.GetFloat("x");
+                float y = r.GetFloat("y");
+                ushort body = r.GetUInt16("body");
 
-                var pos = new Vector2(x, y);
+                Vector2 pos = new Vector2(x, y);
 
                 // Read the user's stats
-                foreach (var statType in UserStats.DatabaseStats)
+                foreach (StatType statType in UserStats.DatabaseStats)
                 {
                     IStat stat;
                     if (!stats.TryGetStat(statType, out stat))

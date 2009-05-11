@@ -359,7 +359,9 @@ namespace NetGore.Collections
 
             // Shift up all existing values, dropping the last one
             for (int i = _high; i > 0; i--)
+            {
                 _buffer[i] = _buffer[i - 1];
+            }
 
             // Store the new value in the first index
             _buffer[0] = value;

@@ -1,14 +1,13 @@
 using System;
-using NetGore.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
-using MySql.Data.MySqlClient;
 using NetGore;
 using NetGore.Collections;
+using NetGore.IO;
 using NetGore.Network;
 
 namespace DemoGame.Server

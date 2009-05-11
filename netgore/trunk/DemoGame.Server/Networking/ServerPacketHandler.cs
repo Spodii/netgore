@@ -1,13 +1,12 @@
 ﻿using System;
-using NetGore.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
-using MySql.Data.MySqlClient;
 using NetGore;
+using NetGore.IO;
 using NetGore.Network;
 
 namespace DemoGame.Server
@@ -19,6 +18,11 @@ namespace DemoGame.Server
         readonly SayHandler _sayHandler;
         readonly Server _server;
         readonly ServerSockets _serverSockets;
+
+        public DBController DBController
+        {
+            get { return Server.DBController; }
+        }
 
         /// <summary>
         /// Gets the server that the data is coming from.
@@ -102,8 +106,6 @@ namespace DemoGame.Server
             if (TryGetUser(conn, out user) && user.CanJump)
                 user.Jump();
         }
-
-        public DBController DBController { get { return Server.DBController; } }
 
         [MessageHandler((byte)ClientPacketID.Login)]
         void RecvLogin(TCPSocket conn, BitStream r)
@@ -289,7 +291,7 @@ namespace DemoGame.Server
             // The user attached to the connection may already be disposed, so if we fail to find the user,
             // just ignore the problem
             User user;
-            if (TryGetUser(conn, out user, false)) 
+            if (TryGetUser(conn, out user, false))
                 user.DelayedDispose();
         }
 

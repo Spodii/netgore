@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
-using NetGore.IO;
 
 #pragma warning disable 618,612
 

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NetGore.Collections;
 
 namespace NetGore.Db
@@ -13,11 +13,15 @@ namespace NetGore.Db
     public abstract class DbConnectionPool : ObjectPool<PooledDbConnection>, IDisposable
     {
         readonly string _connectionString;
+        bool _disposed;
 
         /// <summary>
         /// Gets the ConnectionString used for the connections made in this DbConnectionPool.
         /// </summary>
-        public string ConnectionString { get { return _connectionString; } }
+        public string ConnectionString
+        {
+            get { return _connectionString; }
+        }
 
         /// <summary>
         /// DbConnectionPool constructor
@@ -26,17 +30,6 @@ namespace NetGore.Db
         protected DbConnectionPool(string connectionString)
         {
             _connectionString = connectionString;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, allows for additional handling by the ObjectPoolBase when a new
-        /// object is created for the pool. This is only called when a new object is created, not activated. This is
-        /// called only once for each unique pool item, after IPoolable.SetPoolData() and before IPoolable.Activate().
-        /// </summary>
-        /// <param name="item">New object that was created.</param>
-        protected override void HandleNewPoolObject(PooledDbConnection item)
-        {
-            item.SetConnection(CreateConnection(ConnectionString));
         }
 
         /// <summary>
@@ -54,7 +47,18 @@ namespace NetGore.Db
         /// <returns>DbParameter that is compatible with the connections in this DbConnectionPool.</returns>
         public abstract DbParameter CreateParameter(string parameterName);
 
-        bool _disposed;
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling by the ObjectPoolBase when a new
+        /// object is created for the pool. This is only called when a new object is created, not activated. This is
+        /// called only once for each unique pool item, after IPoolable.SetPoolData() and before IPoolable.Activate().
+        /// </summary>
+        /// <param name="item">New object that was created.</param>
+        protected override void HandleNewPoolObject(PooledDbConnection item)
+        {
+            item.SetConnection(CreateConnection(ConnectionString));
+        }
+
+        #region IDisposable Members
 
         public void Dispose()
         {
@@ -63,8 +67,12 @@ namespace NetGore.Db
 
             _disposed = true;
 
-            foreach (var item in this)
+            foreach (PooledDbConnection item in this)
+            {
                 item.Dispose();
+            }
         }
+
+        #endregion
     }
 }

@@ -1,7 +1,5 @@
 using System;
-using NetGore.IO;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -10,7 +8,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using MySql.Data.MySqlClient;
 using NetGore;
-using NetGore.Extensions;
+using NetGore.IO;
 using NetGore.Network;
 
 // TODO: Once the NPCs have Inventory support, move all the inventory-related shit into Character
@@ -52,6 +50,11 @@ namespace DemoGame.Server
             get { return _conn; }
         }
 
+        public DBController DBController
+        {
+            get { return World.Parent.DBController; }
+        }
+
         /// <summary>
         /// Gets the equipped item handler for the User.
         /// </summary>
@@ -79,12 +82,6 @@ namespace DemoGame.Server
         public override CharacterStatsBase Stats
         {
             get { return _stats; }
-        }
-
-        public DBController DBController
-        {
-            get {
-                return World.Parent.DBController; }
         }
 
         /// <summary>
@@ -388,7 +385,7 @@ namespace DemoGame.Server
             */
 
             // Get the user information from the database
-            var userValues = DBController.SelectUser.Execute(userName, Stats);
+            SelectUserQueryValues userValues = DBController.SelectUser.Execute(userName, Stats);
             _id = userValues.Guid;
 
             // Use the retreived values

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Db
 {
@@ -52,6 +51,8 @@ namespace NetGore.Db
             _collection = dbParameterCollection;
         }
 
+        #region IEnumerable<KeyValuePair<string,object>> Members
+
         ///<summary>
         ///
         ///                    Returns an enumerator that iterates through the collection.
@@ -67,7 +68,9 @@ namespace NetGore.Db
         public IEnumerator<KeyValuePair<string, object>> GetEnumerator()
         {
             foreach (DbParameter parameter in _collection)
+            {
                 yield return new KeyValuePair<string, object>(parameter.ParameterName, parameter.Value);
+            }
         }
 
         ///<summary>
@@ -86,5 +89,7 @@ namespace NetGore.Db
         {
             return GetEnumerator();
         }
+
+        #endregion
     }
 }
