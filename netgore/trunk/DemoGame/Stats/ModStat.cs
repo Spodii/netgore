@@ -102,6 +102,8 @@ namespace DemoGame
 
     public class ModStat<T> : IStat where T : IStatValueType, new()
     {
+        const string _readonlyErrorMessage = "Can not set the Value for a ModStat.";
+
         readonly ModStatHandler _modHandler;
         readonly StatType _statType;
         readonly T _value = new T();
@@ -129,17 +131,22 @@ namespace DemoGame
                 _value.SetValue(_modHandler());
                 return _value.GetValue();
             }
-            set { throw new MethodAccessException("Can not set the Value for a ModStat."); }
+            set { throw new MethodAccessException(_readonlyErrorMessage); }
         }
 
         public void Read(BitStream bitStream)
         {
-            throw new MethodAccessException("Can not set the Value for a ModStat.");
+            throw new MethodAccessException(_readonlyErrorMessage);
         }
 
         public void Read(IDataRecord dataReader, int ordinal)
         {
-            throw new MethodAccessException("Can not set the Value for a ModStat.");
+            throw new MethodAccessException(_readonlyErrorMessage);
+        }
+
+        public void Read(IDataReader dataReader, string name)
+        {
+            throw new MethodAccessException(_readonlyErrorMessage);
         }
 
         public bool CanWrite
