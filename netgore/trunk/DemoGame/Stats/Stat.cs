@@ -59,6 +59,11 @@ namespace DemoGame
             _value.Read(dataReader, ordinal);
         }
 
+        public void Read(IDataReader dataReader, string name)
+        {
+            _value.Read(dataReader, dataReader.GetOrdinal(name));
+        }
+
         public event StatChangeHandler OnChange;
 
         public void Write(BitStream bitStream)
