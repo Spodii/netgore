@@ -23,13 +23,14 @@ namespace DemoGame.Server
             {
                 while (r.Read())
                 {
-                    // HACK: Remove r.GetOrdinal()s
-                    ushort guid = (ushort)r.GetInt16(r.GetOrdinal("guid")); // HACK: Use r.GetUShort()
-                    int itemGuid = r.GetInt32(r.GetOrdinal("item_guid"));
-                    byte min = r.GetByte(r.GetOrdinal("min"));
-                    byte max = r.GetByte(r.GetOrdinal("max"));
-                    ushort chance = (ushort)r.GetInt16(r.GetOrdinal("chance")); // HACK: Use r.GetUShort()
+                    // Read the values
+                    ushort guid = r.GetUInt16("guid");
+                    int itemGuid = r.GetInt32("item_guid");
+                    byte min = r.GetByte("min");
+                    byte max = r.GetByte("max");
+                    ushort chance = r.GetUInt16("chance");
 
+                    // Create and enqueue the return object
                     var values = new SelectNPCDropValues(guid, itemGuid, min, max, chance);
                     ret.Add(values);
                 }

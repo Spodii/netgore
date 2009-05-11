@@ -14,7 +14,7 @@ namespace DemoGame.Server
         {
         }
 
-        protected static ItemValues GetItemValues(IDataRecord r)
+        protected static ItemValues GetItemValues(IDataReader r)
         {
             // Stats
             ItemStats stats = new ItemStats();
@@ -25,15 +25,15 @@ namespace DemoGame.Server
             }
 
             // General
-            int guid = r.GetInt32(r.GetOrdinal("guid"));
-            byte width = r.GetByte(r.GetOrdinal("width"));
-            byte height = r.GetByte(r.GetOrdinal("height"));
-            string name = r.GetString(r.GetOrdinal("name"));
-            string description = r.GetString(r.GetOrdinal("description"));
-            ushort graphicIndex = (ushort)r.GetInt16(r.GetOrdinal("graphic")); // NOTE: Will this work for reading a ushort? I don't like the looks of it...
-            byte amount = r.GetByte(r.GetOrdinal("amount"));
-            int value = r.GetInt32(r.GetOrdinal("value"));
-            ItemType type = (ItemType)r.GetByte(r.GetOrdinal("type")); // TODO: Add GetItemType() extension for IDataReader in DemoGameServer
+            int guid = r.GetInt32("guid");
+            byte width = r.GetByte("width");
+            byte height = r.GetByte("height");
+            string name = r.GetString("name");
+            string description = r.GetString("description");
+            ushort graphicIndex = r.GetUInt16("graphic");
+            byte amount = r.GetByte("amount");
+            int value = r.GetInt32("value");
+            ItemType type = r.GetItemType("type");
 
             // FUTURE: Recover from this error by just not creating an item
             if (!type.IsDefined())

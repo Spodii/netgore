@@ -25,26 +25,26 @@ namespace DemoGame.Server
             {
                 while (r.Read())
                 {
-                    // HACK: Remove r.GetOrdinal()s
-                    ushort guid = (ushort)r.GetInt16(r.GetOrdinal("guid")); // HACK: Make r.GetUShort()
-                    string name = r.GetString(r.GetOrdinal("name"));
-                    string description = r.GetString(r.GetOrdinal("description"));
-                    ushort graphic = (ushort)r.GetInt16(r.GetOrdinal("graphic"));
-                    int value = r.GetInt32(r.GetOrdinal("value"));
-                    byte width = r.GetByte(r.GetOrdinal("width"));
-                    byte height = r.GetByte(r.GetOrdinal("height"));
-                    ItemType type = (ItemType)r.GetByte(r.GetOrdinal("type")); // HACK: Make r.GetItemType()
+                    // Read the general stat values
+                    ushort guid = r.GetUInt16("guid");
+                    string name = r.GetString("name");
+                    string description = r.GetString("description");
+                    ushort graphic = r.GetUInt16("graphic");
+                    int value = r.GetInt32("value");
+                    byte width = r.GetByte("width");
+                    byte height = r.GetByte("height");
+                    ItemType type = r.GetItemType("type");
 
-                    // HACK: Make r.GetItemStats()
+                    // Load the item's stats
                     ItemStats stats = new ItemStats();
                     foreach (StatType statType in ItemStats.DatabaseStats)
                     {
-                        string dbColumn = statType.GetDatabaseField();
-                        int ordinal = r.GetOrdinal(dbColumn);
                         IStat stat = stats.GetStat(statType);
-                        stat.Read(r, ordinal); // HACK: Allow specifying field name
+                        string dbColumn = statType.GetDatabaseField();
+                        stat.Read(r, dbColumn);
                     }
-
+                    
+                    // Create the template and enqueue it for returning
                     var values = new ItemTemplate(guid, name, description, type, graphic, value, width, height, stats);
                     ret.Add(values);
                 }

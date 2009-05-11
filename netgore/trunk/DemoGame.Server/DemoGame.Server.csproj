@@ -114,6 +114,7 @@
     <Compile Include="Networking\ServerPacket.cs" />
     <Compile Include="Networking\ServerPacketHandler.cs" />
     <Compile Include="SQL\DBController.cs" />
+    <Compile Include="SQL\IDataReaderExtensions.cs" />
     <Compile Include="SQL\Item\SelectItemQueryBase.cs" />
     <Compile Include="SQL\Item\SelectItemsQuery.cs" />
     <Compile Include="SQL\Item\SelectItemTemplatesQuery.cs" />

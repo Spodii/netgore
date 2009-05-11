@@ -30,15 +30,16 @@ namespace DemoGame.Server
                 if (!r.Read())
                     throw new ArgumentException(string.Format("Could not find a user with the name `{0}`", userName));
 
-                // HACK: Do not use r.GetOrdinal() externally
-                var guid = (ushort)r.GetInt16(r.GetOrdinal("guid")); // HACK: Needs to be r.GetUInt16()
-                var mapIndex = (ushort)r.GetInt16(r.GetOrdinal("map")); // HACK: Needs to be r.GetUInt16()
-                var x = r.GetFloat(r.GetOrdinal("x"));
-                var y = r.GetFloat(r.GetOrdinal("y"));
-                var body = (ushort)r.GetInt16(r.GetOrdinal("body")); // HACK: Needs to be r.GetUInt16()
+                // Read the general user values
+                var guid = r.GetUInt16("guid");
+                var mapIndex = r.GetUInt16("map"); 
+                var x = r.GetFloat("x");
+                var y = r.GetFloat("y");
+                var body = r.GetUInt16("body");
 
                 var pos = new Vector2(x, y);
 
+                // Read the user's stats
                 foreach (var statType in UserStats.DatabaseStats)
                 {
                     IStat stat;
@@ -46,9 +47,10 @@ namespace DemoGame.Server
                         continue;
 
                     string columnName = statType.GetDatabaseField();
-                    stat.Read(r, r.GetOrdinal(columnName)); // HACK: Need to remove r.GetOrdinal()
+                    stat.Read(r, columnName);
                 }
 
+                // Create the return object
                 ret = new SelectUserQueryValues(guid, mapIndex, pos, body, stats);
             }
 

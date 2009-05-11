@@ -156,6 +156,7 @@ namespace DemoGame
 
         public event StatChangeHandler OnChange
         {
+            // TODO: Need a decent way to handle tracking the ModStat's changes
             add { throw new NotImplementedException("Need a decent way to handle tracking the ModStat's changes"); }
             remove { throw new NotImplementedException("Need a decent way to handle tracking the ModStat's changes"); }
         }
