@@ -8,7 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public class SelectAlliancesQuery : DbQueryReader<object>
+    public class SelectAlliancesQuery : DbQueryReader
     {
         const string _queryString = "SELECT * FROM `alliances`";
 
@@ -21,22 +21,12 @@ namespace DemoGame.Server
         {
             IEnumerable<Dictionary<string, object>> ret;
 
-            using (var r = ExecuteReader(null))
+            using (var r = ExecuteReader())
             {
                 ret = DataToDictionary(r);
             }
 
             return ret;
-        }
-
-        protected override IEnumerable<DbParameter> InitializeParameters()
-        {
-            return null;
-        }
-
-        protected override void SetParameters(DbParameterValues p, object item)
-        {
-            Debug.Fail("This method should never be called since this query has no parameters.");
         }
     }
 }

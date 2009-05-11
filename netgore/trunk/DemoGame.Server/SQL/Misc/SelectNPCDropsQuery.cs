@@ -7,7 +7,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public class SelectNPCDropsQuery : DbQueryReader<object>
+    public class SelectNPCDropsQuery : DbQueryReader
     {
         const string _queryString = "SELECT * FROM `npc_drops";
 
@@ -19,7 +19,7 @@ namespace DemoGame.Server
         {
             List<SelectNPCDropValues> ret = new List<SelectNPCDropValues>();
 
-            using (var r = ExecuteReader(null))
+            using (var r = ExecuteReader())
             {
                 while (r.Read())
                 {
@@ -37,16 +37,6 @@ namespace DemoGame.Server
             }
 
             return ret;
-        }
-
-        protected override IEnumerable<DbParameter> InitializeParameters()
-        {
-            return null;
-        }
-
-        protected override void SetParameters(DbParameterValues p, object item)
-        {
-            throw new MethodAccessException();
         }
     }
 }

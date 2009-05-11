@@ -8,7 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public class SelectItemTemplatesQuery : DbQueryReader<object>
+    public class SelectItemTemplatesQuery : DbQueryReader
     {
         const string _queryString = "SELECT * FROM `item_templates`";
 
@@ -21,7 +21,7 @@ namespace DemoGame.Server
         {
             List<ItemTemplate> ret = new List<ItemTemplate>();
 
-            using (var r = ExecuteReader(null))
+            using (var r = ExecuteReader())
             {
                 while (r.Read())
                 {
@@ -51,16 +51,6 @@ namespace DemoGame.Server
             }
 
             return ret;
-        }
-
-        protected override IEnumerable<DbParameter> InitializeParameters()
-        {
-            return null;
-        }
-
-        protected override void SetParameters(DbParameterValues p, object item)
-        {
-            throw new MethodAccessException("Should not be accessed - no parameters");
         }
     }
 }

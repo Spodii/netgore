@@ -71,6 +71,7 @@
     <Compile Include="Query\DbQueryBase.cs" />
     <Compile Include="Query\DbQueryNonReader.cs" />
     <Compile Include="Query\DbQueryReader.cs" />
+    <Compile Include="Query\DbQueryReaderDataReaderContainer.cs" />
     <Compile Include="Query\IDbQueryHandler.cs" />
     <Compile Include="Query\IDbQueryNonReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -252,7 +252,7 @@ namespace NetGore.Db
         /// done being used to ensure it can be reused! Use this in place of disposing the DbCommand.
         /// </summary>
         /// <param name="cmd">DbCommand to release.</param>
-        protected void ReleaseCommand(DbCommand cmd)
+        internal protected void ReleaseCommand(DbCommand cmd)
         {
             if (_disposed)
                 throw new MethodAccessException(_disposedErrorMessage);
