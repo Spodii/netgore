@@ -9,6 +9,8 @@ namespace DemoGame
 {
     public class ConstStat<T> : IStat where T : IStatValueType, new()
     {
+        const string _readonlyErrorMessage = "Can not set the Value for a ConstStat.";
+
         readonly StatType _statType;
         readonly T _value;
 
@@ -23,17 +25,22 @@ namespace DemoGame
         public int Value
         {
             get { return _value.GetValue(); }
-            set { throw new MethodAccessException("Can not set the Value for a ConstStat."); }
+            set { throw new MethodAccessException(_readonlyErrorMessage); }
         }
 
         public void Read(BitStream bitStream)
         {
-            throw new MethodAccessException("Can not set the Value for a ConstStat.");
+            throw new MethodAccessException(_readonlyErrorMessage);
         }
 
         public void Read(IDataRecord dataRecord, int ordinal)
         {
-            throw new MethodAccessException("Can not set the Value for a ConstStat.");
+            throw new MethodAccessException(_readonlyErrorMessage);
+        }
+
+        public void Read(IDataReader dataReader, string name)
+        {
+            throw new MethodAccessException(_readonlyErrorMessage);
         }
 
         public event StatChangeHandler OnChange
