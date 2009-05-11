@@ -23,6 +23,31 @@ namespace DemoGame.Server
         {
         }
 
+        static List<int> ParseNPCDropsString(int guid, string npcDropsString)
+        {
+            string[] dropsStr = npcDropsString.Split(',');
+            List<int> drops = new List<int>(dropsStr.Length);
+
+            foreach (var d in dropsStr)
+            {
+                if (d.Length == 0)
+                    continue;
+
+                int value;
+                if (!int.TryParse(d, out value))
+                {
+                    const string errmsg = "Failed to parse NPCDrop index `{0}` for NPCTemplate `{1}`.";
+                    Debug.Fail(string.Format(errmsg, d, guid));
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, d, guid);
+                }
+
+                drops.Add(value);
+            }
+
+            return drops;
+        }
+
         public SelectNPCTemplateQueryValues Execute(int guid)
         {
             SelectNPCTemplateQueryValues ret;
@@ -32,45 +57,29 @@ namespace DemoGame.Server
                 if (!r.Read())
                     throw new ArgumentException(string.Format("No NPCTemplate found for guid `{0}`", guid), "guid");
 
-                // HACK: Remove r.GetOrdinal()s
-                int dbGuid = r.GetInt32(r.GetOrdinal("guid"));
+                // Check that the correct record was grabbed
+                int dbGuid = r.GetInt32("guid");
                 if (dbGuid != guid)
                 {
                     const string errmsg = "Performed SELECT for NPC Template with guid `{0}`, but got guid `{1}`!";
                     string err = string.Format(errmsg, guid, dbGuid);
                     log.Fatal(err);
                     Debug.Fail(err);
-                    throw new DataException(string.Format(errmsg, guid, dbGuid));
+                    throw new DataException(err);
                 }
 
-                string name = r.GetString(r.GetOrdinal("name"));
-                string ai = r.GetString(r.GetOrdinal("ai"));
-                string alliance = r.GetString(r.GetOrdinal("alliance"));
-                ushort bodyIndex = (ushort)r.GetInt16(r.GetOrdinal("body")); // HACK: Use r.GetUShort()
-                ushort respawn = (ushort)r.GetInt16(r.GetOrdinal("respawn")); // HACK: Use r.GetUShort()
-                ushort giveExp = (ushort)r.GetInt16(r.GetOrdinal("give_exp")); // HACK: Use r.GetUShort()
-                ushort giveCash = (ushort)r.GetInt16(r.GetOrdinal("give_cash")); // HACK: Use r.GetUShort()
+                // Load the general NPC template values
+                string name = r.GetString("name");
+                string ai = r.GetString("ai");
+                string alliance = r.GetString("alliance");
+                ushort bodyIndex = r.GetUInt16("body");
+                ushort respawn = r.GetUInt16("respawn");
+                ushort giveExp = r.GetUInt16("give_exp");
+                ushort giveCash = r.GetUInt16("give_cash");
                 
                 // Get the NPCDrop indices
-                string dropsStrRaw = r.GetString(r.GetOrdinal("drops"));
-                string[] dropsStr = dropsStrRaw.Split(',');
-                List<int> drops = new List<int>(dropsStr.Length);
-                foreach (var d in dropsStr)
-                {
-                    if (d.Length == 0)
-                        continue;
-
-                    int value;
-                    if (!int.TryParse(d, out value))
-                    {
-                        const string errmsg = "Failed to parse NPCDrop index `{0}` for NPCTemplate `{1}`.";
-                        Debug.Fail(string.Format(errmsg, d, guid));
-                        if (log.IsWarnEnabled)
-                            log.WarnFormat(errmsg, d, guid);
-                    }
-
-                    drops.Add(value);
-                }
+                string npcDropsString = r.GetString("drops");
+                var drops = ParseNPCDropsString(guid, npcDropsString);
 
                 // Get the NPCStats
                 // HACK: Do this properly

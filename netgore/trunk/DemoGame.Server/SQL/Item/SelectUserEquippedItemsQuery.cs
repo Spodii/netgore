@@ -25,7 +25,7 @@ namespace DemoGame.Server
             {
                 while (r.Read())
                 {
-                    EquipmentSlot slot = (EquipmentSlot)r.GetByte(r.GetOrdinal("slot")); // TODO: Add IDataReader extension GetEquipmentSlot()
+                    EquipmentSlot slot = r.GetEquipmentSlot("slot");
                     ItemValues values = GetItemValues(r);
                     retValues.Add(slot, values);
                 }
