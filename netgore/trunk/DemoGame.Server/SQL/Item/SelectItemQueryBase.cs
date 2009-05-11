@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using NetGore.Db;
 using DemoGame.Extensions;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {

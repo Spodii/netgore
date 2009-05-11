@@ -1,16 +1,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
-using MySql.Data.MySqlClient;
-using NetGore;
 using NetGore.Collections;
-using NetGore.Extensions;
 
 namespace DemoGame.Server
 {
@@ -36,7 +32,7 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("itemTemplates");
 
             var dropValues = query.Execute();
-            foreach (var v in dropValues)
+            foreach (SelectNPCDropValues v in dropValues)
             {
                 // Get the template of the item to be dropped
                 ItemTemplate itemTemplate = itemTemplates[v.ItemGuid];

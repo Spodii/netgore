@@ -1,13 +1,12 @@
 ﻿using System;
-using NetGore.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Timers;
 using log4net;
-using NetGore;
 using NetGore.Collections;
+using NetGore.IO;
 
 namespace NetGore.Network
 {
@@ -43,8 +42,7 @@ namespace NetGore.Network
         /// <summary>
         /// PacketWriter constructor
         /// </summary>
-        public PacketWriter()
-            : base(BitStreamMode.Write, 128)
+        public PacketWriter() : base(BitStreamMode.Write, 128)
         {
             ReadMode = BitStreamBufferMode.Static;
             WriteMode = BitStreamBufferMode.Dynamic;

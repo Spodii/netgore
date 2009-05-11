@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using MySql.Data.MySqlClient;
 using NUnit.Framework;
 
 namespace NetGore.Db.MySql.Tests
@@ -47,14 +45,17 @@ namespace NetGore.Db.MySql.Tests
     [TestFixture]
     public class DbQueryNonReaderTests
     {
-        static MyNonReader CreateNonReader() { return new MyNonReader(TestSettings.CreateConnectionPool()); }
+        static MyNonReader CreateNonReader()
+        {
+            return new MyNonReader(TestSettings.CreateConnectionPool());
+        }
 
         [Test]
         public void SelectTest()
         {
-            using (var nonReader = CreateNonReader())
+            using (MyNonReader nonReader = CreateNonReader())
             {
-                var cp = nonReader.ConnectionPool;
+                DbConnectionPool cp = nonReader.ConnectionPool;
 
                 for (int i = 0; i < 100; i++)
                 {

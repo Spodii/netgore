@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
-using MySql.Data.MySqlClient;
 using NetGore.Db;
 using NetGore.Db.MySql;
 
@@ -29,18 +27,18 @@ namespace DemoGame.Server
         readonly InsertUserQuery _insertUserQuery;
         readonly ItemGuidCreator _itemGuidCreator;
         readonly ReplaceItemQuery _replaceItemQuery;
+        readonly SelectAlliancesQuery _selectAlliancesQuery;
         readonly SelectItemQuery _selectItemQuery;
         readonly SelectItemsQuery _selectItemsQuery;
-        readonly SelectUserEquippedItemsQuery _selectUserEquippedItemsQuery;
-        readonly SelectUserInventoryItemsQuery _selectUserInventoryItemsQuery;
-        readonly UpdateItemFieldQuery _updateItemFieldQuery;
-        readonly UpdateUserQuery _updateUserQuery;
-        readonly SelectAlliancesQuery _selectAlliancesQuery;
-        readonly SelectUserQuery _selectUserQuery;
-        readonly SelectUserPasswordQuery _selectUserPasswordQuery;
         readonly SelectItemTemplatesQuery _selectItemTemplatesQuery;
         readonly SelectNPCDropsQuery _selectNPCDropsQuery;
         readonly SelectNPCTemplateQuery _selectNPCTemplateQuery;
+        readonly SelectUserEquippedItemsQuery _selectUserEquippedItemsQuery;
+        readonly SelectUserInventoryItemsQuery _selectUserInventoryItemsQuery;
+        readonly SelectUserPasswordQuery _selectUserPasswordQuery;
+        readonly SelectUserQuery _selectUserQuery;
+        readonly UpdateItemFieldQuery _updateItemFieldQuery;
+        readonly UpdateUserQuery _updateUserQuery;
         bool _disposed;
 
         public DeleteItemQuery DeleteItem
@@ -83,9 +81,19 @@ namespace DemoGame.Server
             get { return _replaceItemQuery; }
         }
 
+        public SelectAlliancesQuery SelectAlliances
+        {
+            get { return _selectAlliancesQuery; }
+        }
+
         public SelectItemQuery SelectItem
         {
             get { return _selectItemQuery; }
+        }
+
+        public SelectItemsQuery SelectItems
+        {
+            get { return _selectItemsQuery; }
         }
 
         public SelectItemTemplatesQuery SelectItemTemplates
@@ -103,19 +111,9 @@ namespace DemoGame.Server
             get { return _selectNPCTemplateQuery; }
         }
 
-        public SelectItemsQuery SelectItems
-        {
-            get { return _selectItemsQuery; }
-        }
-
         public SelectUserQuery SelectUser
         {
             get { return _selectUserQuery; }
-        }
-
-        public SelectUserPasswordQuery SelectUserPassword
-        {
-            get { return _selectUserPasswordQuery; }
         }
 
         public SelectUserEquippedItemsQuery SelectUserEquippedItems
@@ -128,6 +126,11 @@ namespace DemoGame.Server
             get { return _selectUserInventoryItemsQuery; }
         }
 
+        public SelectUserPasswordQuery SelectUserPassword
+        {
+            get { return _selectUserPasswordQuery; }
+        }
+
         public UpdateItemFieldQuery UpdateItemField
         {
             get { return _updateItemFieldQuery; }
@@ -136,11 +139,6 @@ namespace DemoGame.Server
         public UpdateUserQuery UpdateUser
         {
             get { return _updateUserQuery; }
-        }
-
-        public SelectAlliancesQuery SelectAlliances
-        {
-            get { return _selectAlliancesQuery; }
         }
 
         public DBController(string connectionString)

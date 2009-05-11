@@ -5,54 +5,26 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
+using DemoGame.Extensions;
 using log4net;
 using NetGore.Db;
-using DemoGame.Extensions;
 
 namespace DemoGame.Server
 {
     public class SelectNPCTemplateQuery : DbQueryReader<int>
     {
+        const string _queryString = "SELECT * FROM `npc_templates` WHERE `guid`=@guid";
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        const string _queryString = "SELECT * FROM `npc_templates` WHERE `guid`=@guid";
-
-        public SelectNPCTemplateQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectNPCTemplateQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
-        }
-
-        static List<int> ParseNPCDropsString(int guid, string npcDropsString)
-        {
-            string[] dropsStr = npcDropsString.Split(',');
-            List<int> drops = new List<int>(dropsStr.Length);
-
-            foreach (var d in dropsStr)
-            {
-                if (d.Length == 0)
-                    continue;
-
-                int value;
-                if (!int.TryParse(d, out value))
-                {
-                    const string errmsg = "Failed to parse NPCDrop index `{0}` for NPCTemplate `{1}`.";
-                    Debug.Fail(string.Format(errmsg, d, guid));
-                    if (log.IsWarnEnabled)
-                        log.WarnFormat(errmsg, d, guid);
-                }
-
-                drops.Add(value);
-            }
-
-            return drops;
         }
 
         public SelectNPCTemplateQueryValues Execute(int guid)
         {
             SelectNPCTemplateQueryValues ret;
 
-            using (var r = ExecuteReader(guid))
+            using (IDataReader r = ExecuteReader(guid))
             {
                 if (!r.Read())
                     throw new ArgumentException(string.Format("No NPCTemplate found for guid `{0}`", guid), "guid");
@@ -76,7 +48,7 @@ namespace DemoGame.Server
                 ushort respawn = r.GetUInt16("respawn");
                 ushort giveExp = r.GetUInt16("give_exp");
                 ushort giveCash = r.GetUInt16("give_cash");
-                
+
                 // Get the NPCDrop indices
                 string npcDropsString = r.GetString("drops");
                 var drops = ParseNPCDropsString(guid, npcDropsString);
@@ -104,15 +76,41 @@ namespace DemoGame.Server
                     stat.Read(r, ordinal);
                 }
 
-                ret = new SelectNPCTemplateQueryValues(guid, name, bodyIndex, ai, alliance, respawn, giveExp, giveCash, drops, stats);
+                ret = new SelectNPCTemplateQueryValues(guid, name, bodyIndex, ai, alliance, respawn, giveExp, giveCash, drops,
+                                                       stats);
             }
 
-            return ret; 
+            return ret;
         }
 
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return CreateParameters("@guid");
+        }
+
+        static List<int> ParseNPCDropsString(int guid, string npcDropsString)
+        {
+            var dropsStr = npcDropsString.Split(',');
+            var drops = new List<int>(dropsStr.Length);
+
+            foreach (string d in dropsStr)
+            {
+                if (d.Length == 0)
+                    continue;
+
+                int value;
+                if (!int.TryParse(d, out value))
+                {
+                    const string errmsg = "Failed to parse NPCDrop index `{0}` for NPCTemplate `{1}`.";
+                    Debug.Fail(string.Format(errmsg, d, guid));
+                    if (log.IsWarnEnabled)
+                        log.WarnFormat(errmsg, d, guid);
+                }
+
+                drops.Add(value);
+            }
+
+            return drops;
         }
 
         protected override void SetParameters(DbParameterValues p, int guid)

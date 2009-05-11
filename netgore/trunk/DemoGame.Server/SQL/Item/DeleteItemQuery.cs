@@ -4,7 +4,6 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
-using MySql.Data.MySqlClient;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -17,14 +16,14 @@ namespace DemoGame.Server
         {
         }
 
-        protected override void SetParameters(DbParameterValues p, int item)
-        {
-            p["@guid"] = item;
-        }
-
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return CreateParameters("@guid");
+        }
+
+        protected override void SetParameters(DbParameterValues p, int item)
+        {
+            p["@guid"] = item;
         }
     }
 }

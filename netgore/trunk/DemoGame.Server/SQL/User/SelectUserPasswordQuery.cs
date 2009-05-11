@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using DemoGame.Extensions;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -11,14 +13,13 @@ namespace DemoGame.Server
     {
         const string _queryString = "SELECT `password` FROM `users` WHERE `name`=@name";
 
-        public SelectUserPasswordQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectUserPasswordQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
         public string Execute(string userName)
         {
-            using (var r = ExecuteReader(userName))
+            using (IDataReader r = ExecuteReader(userName))
             {
                 if (!r.Read())
                     return null;

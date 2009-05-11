@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NetGore.Collections;
 using NUnit.Framework;
 
 #pragma warning disable 219

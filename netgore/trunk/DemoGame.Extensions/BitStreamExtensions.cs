@@ -1,10 +1,10 @@
 ﻿using System;
-using NetGore.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace DemoGame.Extensions
 {

@@ -1,5 +1,4 @@
 using System;
-using NetGore.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -10,6 +9,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
+using NetGore.IO;
 using NetGore.Network;
 
 namespace DemoGame.Server
@@ -250,22 +250,13 @@ namespace DemoGame.Server
                 return;
             }
 
-            foreach (var user in Users)
+            foreach (User user in Users)
             {
                 if (user != null)
                     user.Send(data);
                 else
                     Debug.Fail("Null user found in Map's Users list.");
             }
-        }
-
-        public override void Update()
-        {
-            // Skip updating maps with no users
-            if (_users.Count == 0)
-                return;
-
-            base.Update();
         }
 
         /// <summary>
@@ -284,7 +275,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            foreach (var user in Users)
+            foreach (User user in Users)
             {
                 if (user != null)
                 {
@@ -352,7 +343,7 @@ namespace DemoGame.Server
             Vector2 min = origin - screenSize;
             Vector2 max = origin + screenSize;
 
-            foreach (var user in Users)
+            foreach (User user in Users)
             {
                 if (user != null)
                 {
@@ -363,6 +354,15 @@ namespace DemoGame.Server
                 else
                     Debug.Fail("Null user found in Map's Users list.");
             }
+        }
+
+        public override void Update()
+        {
+            // Skip updating maps with no users
+            if (_users.Count == 0)
+                return;
+
+            base.Update();
         }
 
         #region IDisposable Members

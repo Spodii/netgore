@@ -19,9 +19,11 @@ namespace DemoGame.Server
 
         DBController DbController
         {
-            get { 
+            get
+            {
                 // HACK: This is a pretty shitty way to get to the DbController... should never have to crawl so deep
-                return User.Map.World.Parent.DBController; }
+                return User.Map.World.Parent.DBController;
+            }
         }
 
         /// <summary>

@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
-using MySql.Data.MySqlClient;
-using NetGore;
 using NetGore.Collections;
 
 namespace DemoGame.Server
@@ -16,8 +14,8 @@ namespace DemoGame.Server
     {
         readonly AllianceManager _allianceManager;
         readonly NPCDropManager _npcDropManager;
+        readonly SelectNPCTemplateQuery _query;
         readonly DArray<NPCTemplate> _templates = new DArray<NPCTemplate>(false);
-        SelectNPCTemplateQuery _query;
 
         /// <summary>
         /// NPCTemplateManager constructor.

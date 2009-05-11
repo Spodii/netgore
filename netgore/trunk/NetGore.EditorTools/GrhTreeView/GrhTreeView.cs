@@ -62,8 +62,6 @@ namespace NetGore.EditorTools
     /// </summary>
     public class GrhTreeView : TreeView, IComparer
     {
-        readonly ContextMenu _contextMenu = new ContextMenu();
-        
         /// <summary>
         /// Timer to update the animated Grhs in the grh tree
         /// </summary>
@@ -73,6 +71,8 @@ namespace NetGore.EditorTools
         /// List of animated grhs in the tree
         /// </summary>
         readonly List<GrhTreeNode> _animTreeNodes = new List<GrhTreeNode>();
+
+        readonly ContextMenu _contextMenu = new ContextMenu();
 
         /// <summary>
         /// Image list for the treeGrhs
@@ -94,6 +94,16 @@ namespace NetGore.EditorTools
         /// </summary>
         public event GrhTreeViewCancelEvent GrhBeforeSelect;
 
+        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuBatchChangeTextureClick;
+        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuDuplicateClick;
+
+        /// <summary>
+        /// Occurs when context menu item "Edit" is clicked.
+        /// </summary>
+        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuEditClick;
+
+        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuNewGrhClick;
+
         /// <summary>
         /// Occurs when a Grh node is clicked
         /// </summary>
@@ -103,17 +113,6 @@ namespace NetGore.EditorTools
         /// Occurs when a Grh node is double-clicked
         /// </summary>
         public event GrhTreeNodeMouseClickEvent GrhMouseDoubleClick;
-
-        /// <summary>
-        /// Occurs when context menu item "Edit" is clicked.
-        /// </summary>
-        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuEditClick;
-
-        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuNewGrhClick;
-
-        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuDuplicateClick;
-
-        public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuBatchChangeTextureClick;
 
         /// <summary>
         /// Gets or sets the size of the Grh preview images
@@ -181,40 +180,6 @@ namespace NetGore.EditorTools
             _contextMenu.MenuItems.Add(new MenuItem("Duplicate", ContextMenuItemClick));
             _contextMenu.MenuItems.Add(new MenuItem("Batch Change Texture", ContextMenuItemClick));
             ContextMenu = _contextMenu;
-        }
-
-        void ContextMenuItemClick(object sender, System.EventArgs e)
-        {
-            //Get the text value of the sender
-            string sendername = sender.ToString().Substring(sender.ToString().IndexOf("Text:")).Substring(6);
-
-            //Depending on the text value of the sender, raise a specific event
-            if (sendername != null)
-            {
-                switch (sendername)
-                {
-                    case "Edit":
-                        {
-                            GrhContextMenuEditClick(sender,e);
-                            break;
-                        }
-                    case "New Grh":
-                        {
-                            GrhContextMenuNewGrhClick(sender,e);
-                            break;
-                        }
-                    case "Duplicate":
-                        {
-                            GrhContextMenuDuplicateClick(sender,e);
-                            break;
-                        }
-                    case "Batch Change Texture":
-                        {
-                            GrhContextMenuBatchChangeTextureClick(sender, e);
-                            break;
-                        }
-                }
-            }
         }
 
         /// <summary>
@@ -317,6 +282,40 @@ namespace NetGore.EditorTools
             }
             catch (ContentLoadException)
             {
+            }
+        }
+
+        void ContextMenuItemClick(object sender, EventArgs e)
+        {
+            //Get the text value of the sender
+            string sendername = sender.ToString().Substring(sender.ToString().IndexOf("Text:")).Substring(6);
+
+            //Depending on the text value of the sender, raise a specific event
+            if (sendername != null)
+            {
+                switch (sendername)
+                {
+                    case "Edit":
+                    {
+                        GrhContextMenuEditClick(sender, e);
+                        break;
+                    }
+                    case "New Grh":
+                    {
+                        GrhContextMenuNewGrhClick(sender, e);
+                        break;
+                    }
+                    case "Duplicate":
+                    {
+                        GrhContextMenuDuplicateClick(sender, e);
+                        break;
+                    }
+                    case "Batch Change Texture":
+                    {
+                        GrhContextMenuBatchChangeTextureClick(sender, e);
+                        break;
+                    }
+                }
             }
         }
 

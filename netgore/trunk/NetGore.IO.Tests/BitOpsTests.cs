@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
-using NetGore.IO;
 
 namespace NetGore.IO.Tests
 {

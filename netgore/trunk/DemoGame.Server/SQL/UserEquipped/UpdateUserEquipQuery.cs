@@ -4,7 +4,6 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
-using MySql.Data.MySqlClient;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -13,11 +12,10 @@ namespace DemoGame.Server
     {
         public const string UserEquippedTable = "user_equipped";
 
-        const string _queryString = "INSERT INTO `" + UserEquippedTable + 
-            "` SET `user_guid`=@userGuid,`item_guid`=@itemGuid,`slot`=@slot";
+        const string _queryString =
+            "INSERT INTO `" + UserEquippedTable + "` SET `user_guid`=@userGuid,`item_guid`=@itemGuid,`slot`=@slot";
 
-        public InsertUserEquippedQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public InsertUserEquippedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 

@@ -1,9 +1,9 @@
 ﻿using System;
-using NetGore.IO;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using NetGore.IO;
 
 // TODO: I need to find a decent way to make the StatValueTypes an immutable struct, 
 // making them essentially just a wrapper of the ValueType.

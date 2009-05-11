@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using DemoGame.Extensions;
 
 namespace DemoGame.Server
 {
@@ -15,30 +16,6 @@ namespace DemoGame.Server
         {
             if (!Enum.IsDefined(typeof(T), value))
                 throw new InvalidCastException(string.Format("Value `{0}` is not defined for enum `{1}`.", value, typeof(T)));
-        }
-
-        /// <summary>
-        /// Gets the ItemType value from the specified column.
-        /// </summary>
-        /// <param name="dataReader">DataReader to read the value from.</param>
-        /// <param name="ordinal">The zero-based column ordinal to read from.</param>
-        /// <returns>The ItemType value from the specified column.</returns>
-        public static ItemType GetItemType(this IDataReader dataReader, int ordinal)
-        {
-            ItemType ret = (ItemType)dataReader.GetByte(ordinal);
-            CheckIfDefined(ret);
-            return ret;
-        }
-
-        /// <summary>
-        /// Gets the ItemType value from the specified column.
-        /// </summary>
-        /// <param name="dataReader">DataReader to read the value from.</param>
-        /// <param name="name">The name of the column to read from.</param>
-        /// <returns>The ItemType value from the specified column.</returns>
-        public static ItemType GetItemType(this IDataReader dataReader, string name)
-        {
-            return GetItemType(dataReader, dataReader.GetOrdinal(name));
         }
 
         /// <summary>
@@ -63,6 +40,30 @@ namespace DemoGame.Server
         public static EquipmentSlot GetEquipmentSlot(this IDataReader dataReader, string name)
         {
             return GetEquipmentSlot(dataReader, dataReader.GetOrdinal(name));
+        }
+
+        /// <summary>
+        /// Gets the ItemType value from the specified column.
+        /// </summary>
+        /// <param name="dataReader">DataReader to read the value from.</param>
+        /// <param name="ordinal">The zero-based column ordinal to read from.</param>
+        /// <returns>The ItemType value from the specified column.</returns>
+        public static ItemType GetItemType(this IDataReader dataReader, int ordinal)
+        {
+            ItemType ret = (ItemType)dataReader.GetByte(ordinal);
+            CheckIfDefined(ret);
+            return ret;
+        }
+
+        /// <summary>
+        /// Gets the ItemType value from the specified column.
+        /// </summary>
+        /// <param name="dataReader">DataReader to read the value from.</param>
+        /// <param name="name">The name of the column to read from.</param>
+        /// <returns>The ItemType value from the specified column.</returns>
+        public static ItemType GetItemType(this IDataReader dataReader, string name)
+        {
+            return GetItemType(dataReader, dataReader.GetOrdinal(name));
         }
     }
 }

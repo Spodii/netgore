@@ -16,8 +16,7 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly Dictionary<string, SayCommand> _commands =
-            new Dictionary<string, SayCommand>(StringComparer.OrdinalIgnoreCase);
+        readonly Dictionary<string, SayCommand> _commands = new Dictionary<string, SayCommand>(StringComparer.OrdinalIgnoreCase);
 
         public SayCommandManager(object source)
         {

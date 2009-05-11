@@ -1,9 +1,9 @@
 ﻿using System;
-using NetGore.IO;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using NetGore.IO;
 
 namespace DemoGame
 {
@@ -28,7 +28,7 @@ namespace DemoGame
         /// Gets the StatType of this IStat.
         /// </summary>
         StatType StatType { get; }
-        
+
         /// <summary>
         /// Gets or sets the value of this stat as an integer.
         /// </summary>

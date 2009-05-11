@@ -438,6 +438,24 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Sets the speed of the animation so that it finishes within a specified time limit.
+        /// </summary>
+        /// <param name="time">The time in milliseconds.</param>
+        void SetTargetTime(int time)
+        {
+            float totalTime = 0.0f;
+
+            //Find the total time taken to run through all of the frames
+            foreach (SkeletonFrame frame in _skelSet.KeyFrames)
+            {
+                totalTime += frame.Delay;
+            }
+
+            //Set the speed of the animation
+            _speed = totalTime / time;
+        }
+
+        /// <summary>
         /// Updates the skeleton animation
         /// </summary>
         /// <param name="currentTime">Current time</param>
@@ -508,24 +526,6 @@ namespace NetGore.Graphics
             // Apply the modifiers
             if (_mod != null)
                 _mod.Update(currentTime);
-        }
-
-        /// <summary>
-        /// Sets the speed of the animation so that it finishes within a specified time limit.
-        /// </summary>
-        /// <param name="time">The time in milliseconds.</param>
-        void SetTargetTime(int time)
-        {
-            float totalTime = 0.0f;
-
-            //Find the total time taken to run through all of the frames
-            foreach (SkeletonFrame frame in _skelSet.KeyFrames)
-            {
-                totalTime += frame.Delay;
-            }
-
-            //Set the speed of the animation
-            _speed = totalTime / time;
         }
     }
 }

@@ -4,10 +4,8 @@ using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using DemoGame.Extensions;
 using NetGore.Db;
-using NetGore.Extensions;
 
 namespace DemoGame.Server
 {
@@ -15,8 +13,7 @@ namespace DemoGame.Server
     {
         const string _queryString = "SELECT * FROM `items` WHERE `guid` BETWEEN @low AND @high";
 
-        public SelectItemsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
@@ -27,9 +24,9 @@ namespace DemoGame.Server
 
         public IEnumerable<ItemValues> Execute(SelectItemsQueryValues values)
         {
-            List<ItemValues> retValues = new List<ItemValues>();
+            var retValues = new List<ItemValues>();
 
-            using (var r = ExecuteReader(values))
+            using (IDataReader r = ExecuteReader(values))
             {
                 while (r.Read())
                 {
@@ -58,15 +55,15 @@ namespace DemoGame.Server
 
     public struct SelectItemsQueryValues
     {
-        public readonly int Low;
         public readonly int High;
+        public readonly int Low;
 
         public SelectItemsQueryValues(int low, int high)
         {
             if (low > high)
             {
                 Debug.Fail("low is greater than high.");
-                
+
                 // Swap values
                 // HACK: Should have an extension for swapping values
                 int tmp = low;
@@ -78,7 +75,7 @@ namespace DemoGame.Server
                 throw new ArgumentOutOfRangeException("low", "Value must be greater than or equal to 0.");
             if (high < 0)
                 throw new ArgumentOutOfRangeException("high", "Value must be greater than or equal to 0.");
-            
+
             Low = low;
             High = high;
         }

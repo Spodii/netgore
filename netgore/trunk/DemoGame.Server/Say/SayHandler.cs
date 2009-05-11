@@ -209,7 +209,7 @@ namespace DemoGame.Server
             SayCommand command = _commandManager.GetCommand(commandName);
             if (command == null)
             {
-                using (var pw = ServerPacket.SendMessage(GameMessage.InvalidCommand))
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.InvalidCommand))
                 {
                     user.Send(pw);
                 }

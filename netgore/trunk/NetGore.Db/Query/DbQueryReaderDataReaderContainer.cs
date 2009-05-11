@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 // ReSharper disable SuggestBaseTypeForParameter
 
@@ -18,8 +18,8 @@ namespace NetGore.Db
         readonly DbQueryBase _dbQueryBase;
         readonly IPoolableDbConnection _poolableConn;
 
-        internal DbQueryReaderDataReaderContainer(DbQueryBase dbQueryBase, IPoolableDbConnection poolableConn, DbCommand command, IDataReader dataReader)
-            : base(command, dataReader)
+        internal DbQueryReaderDataReaderContainer(DbQueryBase dbQueryBase, IPoolableDbConnection poolableConn, DbCommand command,
+                                                  IDataReader dataReader) : base(command, dataReader)
         {
             // We must use a DbCommand on the parameter, not IDbCommand, because Dispose explicitly casts to a DbCommand
 

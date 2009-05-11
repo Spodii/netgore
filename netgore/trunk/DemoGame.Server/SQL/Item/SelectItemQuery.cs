@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
-using MySql.Data.MySqlClient;
 using NetGore.Db;
-using NetGore.Extensions;
 
 namespace DemoGame.Server
 {
@@ -14,19 +13,8 @@ namespace DemoGame.Server
     {
         const string _queryString = "SELECT * FROM `items` WHERE `guid`=@guid";
 
-        public SelectItemQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
-        }
-
-        protected override IEnumerable<System.Data.Common.DbParameter> InitializeParameters()
-        {
-            return CreateParameters("@guid");
-        }
-
-        protected override void SetParameters(DbParameterValues p, int item)
-        {
-            p["@guid"] = item;
         }
 
         public ItemValues Execute(int guid)
@@ -36,7 +24,7 @@ namespace DemoGame.Server
 
             ItemValues retValues;
 
-            using (var r = ExecuteReader(guid))
+            using (IDataReader r = ExecuteReader(guid))
             {
                 if (!r.Read())
                     throw new DataException("Query contained no results for the specified guid.");
@@ -45,6 +33,16 @@ namespace DemoGame.Server
             }
 
             return retValues;
+        }
+
+        protected override IEnumerable<DbParameter> InitializeParameters()
+        {
+            return CreateParameters("@guid");
+        }
+
+        protected override void SetParameters(DbParameterValues p, int item)
+        {
+            p["@guid"] = item;
         }
     }
 }

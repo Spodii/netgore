@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
 
 // TODO: More ObjectPool tests
@@ -11,6 +11,8 @@ namespace NetGore.Collections.Tests
     class TestPoolItem : IPoolable<TestPoolItem>
     {
         PoolData<TestPoolItem> _poolData;
+
+        #region IPoolable<TestPoolItem> Members
 
         public PoolData<TestPoolItem> PoolData
         {
@@ -29,21 +31,21 @@ namespace NetGore.Collections.Tests
         {
             _poolData = poolData;
         }
+
+        #endregion
     }
 
     class TestPool : ObjectPool<TestPoolItem>
     {
-
     }
 
     [TestFixture]
     public class ObjectPoolTests
     {
-
         [Test]
         public void CountTest()
         {
-            var pool = new TestPool();
+            TestPool pool = new TestPool();
 
             var pooled = new Stack<TestPoolItem>();
 
