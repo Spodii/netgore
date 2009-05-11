@@ -129,7 +129,6 @@
     <Compile Include="SQL\NPC\SelectNPCTemplateQueryValues.cs" />
     <Compile Include="SQL\UserEquipped\DeleteUserEquippedQuery.cs" />
     <Compile Include="SQL\UserItems\InsertUserItemQuery.cs" />
-    <Compile Include="SQL\OrdinalCacheBase.cs" />
     <Compile Include="SQL\UserItems\DeleteUserItemQuery.cs" />
     <Compile Include="SQL\Item\SelectItemQuery.cs" />
     <Compile Include="SQL\Item\DeleteItemQuery.cs" />
@@ -153,7 +152,6 @@
     <Compile Include="Stats\StatUpdateHandlers.cs" />
     <Compile Include="Stats\UserStat.cs" />
     <Compile Include="Stats\UserStats.cs" />
-    <Compile Include="SQL\NonReaderQueryBase.cs" />
     <Compile Include="SQL\User\UserQueryBase.cs" />
     <Compile Include="World\IMapItemEntity.cs" />
     <Compile Include="World\Map.cs" />
