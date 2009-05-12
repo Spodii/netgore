@@ -136,7 +136,6 @@
     <Compile Include="SQL\User\SelectUserPasswordQuery.cs" />
     <Compile Include="SQL\User\SelectUserQuery.cs" />
     <Compile Include="SQL\User\SelectUserQueryValues.cs" />
-    <Compile Include="SQL\User\UserQueryValues.cs" />
     <Compile Include="World\IDynamicEntity.cs" />
     <Compile Include="SQL\User\InsertUserQuery.cs" />
     <Compile Include="Items\UserInventory.cs" />

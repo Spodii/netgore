@@ -440,7 +440,7 @@ namespace DemoGame.Server
             _saved = true;
 
             // Execute the user save query
-            DBController.UpdateUser.Execute(new UserQueryValues(this));
+            DBController.UpdateUser.Execute(this);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Saved user `{0}`", this);

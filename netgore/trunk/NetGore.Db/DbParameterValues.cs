@@ -29,6 +29,16 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Checks if the DbParameter with the specified <paramref name="parameterName"/> exists in this collection.
+        /// </summary>
+        /// <param name="parameterName">Name of the parameter to check if exists.</param>
+        /// <returns>True if the <paramref name="parameterName"/> exists in this collection.</returns>
+        public bool Contains(string parameterName)
+        {
+            return _collection.Contains(parameterName);
+        }
+
+        /// <summary>
         /// Gets or sets the parameter's value.
         /// </summary>
         /// <param name="parameterName">The name of the parameter.</param>

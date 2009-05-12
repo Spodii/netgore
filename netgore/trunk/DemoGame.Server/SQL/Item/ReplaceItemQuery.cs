@@ -15,14 +15,14 @@ namespace DemoGame.Server
 
         static readonly IEnumerable<string> _otherFields = new string[]
                                                            {
-                                                               "@amount", "@description", "@graphic", "@guid", "@height", "@name",
-                                                               "@type", "@value", "@width"
+                                                               "amount", "description", "graphic", "guid", "height", "name",
+                                                               "type", "value", "width"
                                                            };
 
         static readonly string _queryString;
 
         static readonly IEnumerable<string> _statFields =
-            ItemStats.DatabaseStats.Select(statType => "@" + statType.GetDatabaseField());
+            ItemStats.DatabaseStats.Select(statType => statType.GetDatabaseField());
 
         static ReplaceItemQuery()
         {

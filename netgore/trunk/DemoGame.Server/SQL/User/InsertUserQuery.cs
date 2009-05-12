@@ -25,7 +25,7 @@ namespace DemoGame.Server
             return base.InitializeParameters();
         }
 
-        protected override void SetParameters(DbParameterValues p, UserQueryValues user)
+        protected override void SetParameters(DbParameterValues p, User user)
         {
             // TODO: Set the password parameter
             base.SetParameters(p, user);
