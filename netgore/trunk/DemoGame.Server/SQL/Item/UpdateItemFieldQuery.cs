@@ -36,7 +36,7 @@ namespace DemoGame.Server
                 _fieldQueries.Add(field, fieldQuery);
             }
 
-            UpdateItemFieldValues values = new UpdateItemFieldValues(itemGuid, value);
+            QueryArgs values = new QueryArgs(itemGuid, value);
             fieldQuery.Execute(values);
         }
 
@@ -57,7 +57,7 @@ namespace DemoGame.Server
 
         #endregion
 
-        sealed class InternalUpdateItemFieldQuery : DbQueryNonReader<UpdateItemFieldValues>
+        sealed class InternalUpdateItemFieldQuery : DbQueryNonReader<QueryArgs>
         {
             public InternalUpdateItemFieldQuery(DbConnectionPool connectionPool, string commandText)
                 : base(connectionPool, commandText)
@@ -69,10 +69,25 @@ namespace DemoGame.Server
                 return CreateParameters("@itemGuid", "@value");
             }
 
-            protected override void SetParameters(DbParameterValues p, UpdateItemFieldValues item)
+            protected override void SetParameters(DbParameterValues p, QueryArgs item)
             {
                 p["@itemGuid"] = item.ItemGuid;
                 p["@value"] = item.Value;
+            }
+        }
+
+        /// <summary>
+        /// Arguments for the UpdateItemFieldQuery.
+        /// </summary>
+        public struct QueryArgs
+        {
+            public readonly int ItemGuid;
+            public readonly object Value;
+
+            public QueryArgs(int itemGuid, object value)
+            {
+                ItemGuid = itemGuid;
+                Value = value;
             }
         }
     }

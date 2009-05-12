@@ -8,7 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public class InsertUserItemQuery : DbQueryNonReader<InsertUserItemValues>
+    public class InsertUserItemQuery : DbQueryNonReader<InsertUserItemQuery.QueryArgs>
     {
         const string _queryString = "INSERT INTO `user_inventory` SET `user_guid`=@user_guid,`item_guid`=@item_guid";
 
@@ -21,22 +21,25 @@ namespace DemoGame.Server
             return CreateParameters("@item_guid", "@user_guid");
         }
 
-        protected override void SetParameters(DbParameterValues p, InsertUserItemValues item)
+        protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
             p["@item_guid"] = item.ItemGuid;
             p["@user_guid"] = item.UserGuid;
         }
-    }
 
-    public struct InsertUserItemValues
-    {
-        public readonly int ItemGuid;
-        public readonly ushort UserGuid;
-
-        public InsertUserItemValues(ushort userGuid, int itemGuid)
+        /// <summary>
+        /// Arguments for the InsertUserItemQuery.
+        /// </summary>
+        public struct QueryArgs
         {
-            UserGuid = userGuid;
-            ItemGuid = itemGuid;
+            public readonly int ItemGuid;
+            public readonly ushort UserGuid;
+
+            public QueryArgs(ushort userGuid, int itemGuid)
+            {
+                UserGuid = userGuid;
+                ItemGuid = itemGuid;
+            }
         }
     }
 }

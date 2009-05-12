@@ -121,10 +121,9 @@
     <Compile Include="SQL\Item\SelectUserEquippedItemsQuery.cs" />
     <Compile Include="SQL\Item\SelectUserInventoryItemsQuery.cs" />
     <Compile Include="SQL\Item\UpdateItemFieldQuery.cs" />
-    <Compile Include="SQL\Item\UpdateItemFieldValues.cs" />
     <Compile Include="SQL\Misc\SelectAlliancesQuery.cs" />
     <Compile Include="SQL\Misc\SelectNPCDropsQuery.cs" />
-    <Compile Include="SQL\Misc\SelectNPCDropValues.cs" />
+    <Compile Include="SQL\Misc\SelectNPCDropQueryValues.cs" />
     <Compile Include="SQL\NPC\SelectNPCTemplateQuery.cs" />
     <Compile Include="SQL\NPC\SelectNPCTemplateQueryValues.cs" />
     <Compile Include="SQL\UserEquipped\DeleteUserEquippedQuery.cs" />
@@ -133,8 +132,7 @@
     <Compile Include="SQL\Item\SelectItemQuery.cs" />
     <Compile Include="SQL\Item\DeleteItemQuery.cs" />
     <Compile Include="SQL\Item\ReplaceItemQuery.cs" />
-    <Compile Include="SQL\UserEquipped\UpdateUserEquipQuery.cs" />
-    <Compile Include="SQL\UserEquipped\UpdateUserEquipValues.cs" />
+    <Compile Include="SQL\UserEquipped\InsertUserEquippedQuery.cs" />
     <Compile Include="SQL\User\SelectUserPasswordQuery.cs" />
     <Compile Include="SQL\User\SelectUserQuery.cs" />
     <Compile Include="SQL\User\SelectUserQueryValues.cs" />

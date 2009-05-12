@@ -10,15 +10,15 @@ namespace DemoGame.Server
 {
     public class SelectNPCDropsQuery : DbQueryReader
     {
-        const string _queryString = "SELECT * FROM `npc_drops";
+        const string _queryString = "SELECT * FROM `npc_drops`";
 
         public SelectNPCDropsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
-        public IEnumerable<SelectNPCDropValues> Execute()
+        public IEnumerable<SelectNPCDropQueryValues> Execute()
         {
-            var ret = new List<SelectNPCDropValues>();
+            var ret = new List<SelectNPCDropQueryValues>();
 
             using (IDataReader r = ExecuteReader())
             {
@@ -32,7 +32,7 @@ namespace DemoGame.Server
                     ushort chance = r.GetUInt16("chance");
 
                     // Create and enqueue the return object
-                    SelectNPCDropValues values = new SelectNPCDropValues(guid, itemGuid, min, max, chance);
+                    SelectNPCDropQueryValues values = new SelectNPCDropQueryValues(guid, itemGuid, min, max, chance);
                     ret.Add(values);
                 }
             }

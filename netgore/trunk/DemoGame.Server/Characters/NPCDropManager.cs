@@ -32,7 +32,7 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("itemTemplates");
 
             var dropValues = query.Execute();
-            foreach (SelectNPCDropValues v in dropValues)
+            foreach (SelectNPCDropQueryValues v in dropValues)
             {
                 // Get the template of the item to be dropped
                 ItemTemplate itemTemplate = itemTemplates[v.ItemGuid];

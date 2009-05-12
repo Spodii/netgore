@@ -130,7 +130,7 @@ namespace DemoGame.Server
 
                 // Update the database
                 if (!_isLoading)
-                    DbController.InsertUserItem.Execute(new InsertUserItemValues(User.Guid, newItem.Guid));
+                    DbController.InsertUserItem.Execute(new InsertUserItemQuery.QueryArgs(User.Guid, newItem.Guid));
 
                 // Listen to the item for changes
                 newItem.OnChangeGraphicOrAmount += ItemGraphicOrAmountChangeHandler;
