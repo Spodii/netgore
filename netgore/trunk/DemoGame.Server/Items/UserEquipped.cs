@@ -132,7 +132,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            InsertUserEquippedValues values = new InsertUserEquippedValues(User.Guid, item.Guid, slot);
+            var values = new InsertUserEquippedQuery.QueryArgs(User.Guid, item.Guid, slot);
             DbController.InsertUserEquipped.Execute(values);
 
             SendClientUpdate(slot, item.GraphicIndex);

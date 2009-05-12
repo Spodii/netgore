@@ -6,7 +6,10 @@ using DemoGame.Extensions;
 
 namespace DemoGame.Server
 {
-    public class SelectNPCDropValues
+    /// <summary>
+    /// Values returned by the SelectNPCDropQuery.
+    /// </summary>
+    public class SelectNPCDropQueryValues
     {
         public readonly ushort Chance;
         public readonly ushort Guid;
@@ -14,7 +17,7 @@ namespace DemoGame.Server
         public readonly byte Max;
         public readonly byte Min;
 
-        public SelectNPCDropValues(ushort guid, int itemGuid, byte min, byte max, ushort chance)
+        public SelectNPCDropQueryValues(ushort guid, int itemGuid, byte min, byte max, ushort chance)
         {
             Guid = guid;
             ItemGuid = itemGuid;
