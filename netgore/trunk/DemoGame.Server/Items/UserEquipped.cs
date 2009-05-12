@@ -17,12 +17,14 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly User _user;
 
+        /// <summary>
+        /// Gets the DBController used by this UserEquipped.
+        /// </summary>
         DBController DbController
         {
             get
             {
-                // HACK: This is a pretty shitty way to get to the DbController... should never have to crawl so deep
-                return User.Map.World.Parent.DBController;
+                return User.DBController;
             }
         }
 

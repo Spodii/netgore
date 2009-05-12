@@ -22,7 +22,7 @@ namespace DemoGame.Server
         readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
 
         readonly DArray<Map> _maps;
-        readonly Server _parent;
+        readonly Server _server;
         readonly TSDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
 
         bool _disposed;
@@ -62,15 +62,20 @@ namespace DemoGame.Server
         /// </summary>
         public NPCTemplateManager NPCTemplates
         {
-            get { return _parent.NPCTemplateManager; }
+            get { return _server.NPCTemplateManager; }
         }
+
+        /// <summary>
+        /// Gets the DBController used by this World.
+        /// </summary>
+        public DBController DBController { get { return Server.DBController; } }
 
         /// <summary>
         /// Gets the server the world belongs to
         /// </summary>
-        public Server Parent
+        public Server Server
         {
-            get { return _parent; }
+            get { return _server; }
         }
 
         /// <summary>
@@ -91,7 +96,7 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("parent");
 
             // Store the parent
-            _parent = parent;
+            _server = parent;
 
             // Load the maps
             var mapFiles = Map.GetMapFiles(ContentPaths.Build);
@@ -339,7 +344,7 @@ namespace DemoGame.Server
         /// <returns>Current time</returns>
         public int GetTime()
         {
-            return _parent.GetTime();
+            return _server.GetTime();
         }
 
         #endregion

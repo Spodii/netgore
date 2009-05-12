@@ -15,7 +15,7 @@ using NetGore.Network;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// A map
+    /// Contains the information about a single map instance and all of the Entities it contains.
     /// </summary>
     public class Map : MapBase<Wall>, IDisposable
     {
@@ -27,7 +27,7 @@ namespace DemoGame.Server
         bool _disposed;
 
         /// <summary>
-        /// Gets the list of NPCs on the map
+        /// Gets an IEnumerable of NPCs on the Map.
         /// </summary>
         public IEnumerable<NPC> NPCs
         {
@@ -35,7 +35,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the list of users on the map
+        /// Gets the list of users on the Map.
         /// </summary>
         public IEnumerable<User> Users
         {
@@ -43,7 +43,12 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the world the map belongs to
+        /// Gets the DBController used by this Map.
+        /// </summary>
+        public DBController DBController { get { return World.DBController; } }
+
+        /// <summary>
+        /// Gets the World the Map belongs to.
         /// </summary>
         public World World
         {

@@ -62,10 +62,9 @@ namespace DemoGame.Server
         {
             if (low > high)
             {
-                Debug.Fail("low is greater than high.");
+                Debug.Fail("low is greater than high. Can be fixed, but this is often the indication of a bigger problem.");
 
                 // Swap values
-                // HACK: Should have an extension for swapping values
                 int tmp = low;
                 low = high;
                 high = tmp;

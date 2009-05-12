@@ -52,7 +52,7 @@ namespace DemoGame.Server
 
         public DBController DBController
         {
-            get { return World.Parent.DBController; }
+            get { return World.Server.DBController; }
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace DemoGame.Server
             IsAlive = true;
 
             // Load the user
-            Alliance = World.Parent.AllianceManager["user"];
+            Alliance = World.Server.AllianceManager["user"];
             Load(name, world);
         }
 
