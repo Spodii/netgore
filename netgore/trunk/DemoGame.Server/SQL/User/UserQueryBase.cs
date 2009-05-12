@@ -34,7 +34,7 @@ namespace DemoGame.Server
             get
             {
                 if (_queryFieldsStr == null)
-                    _queryFieldsStr = GetValuesQuery(FieldNames);
+                    _queryFieldsStr = FormatParametersIntoString(FieldNames);
 
                 return _queryFieldsStr;
             }

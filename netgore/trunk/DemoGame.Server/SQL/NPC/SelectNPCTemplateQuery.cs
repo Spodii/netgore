@@ -54,7 +54,6 @@ namespace DemoGame.Server
                 var drops = ParseNPCDropsString(guid, npcDropsString);
 
                 // Get the NPCStats
-                // HACK: Do this properly
                 NPCStats stats = new NPCStats();
                 foreach (StatType statType in NPCStats.NonModStats)
                 {
@@ -64,14 +63,8 @@ namespace DemoGame.Server
 
                     string columnName = statType.GetDatabaseField();
                     int ordinal;
-                    try
-                    {
-                        ordinal = r.GetOrdinal(columnName);
-                    }
-                    catch (IndexOutOfRangeException)
-                    {
+                    if (!r.ContainsField(columnName, out ordinal))
                         continue;
-                    }
 
                     stat.Read(r, ordinal);
                 }

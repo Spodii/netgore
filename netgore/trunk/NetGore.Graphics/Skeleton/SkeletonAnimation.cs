@@ -246,33 +246,14 @@ namespace NetGore.Graphics
             _currFrame = new SkeletonFrame("_worker_", _skel.DeepCopy(), delay);
         }
 
-        /// <summary>
-        /// Adds an additional frame will be added to both the beginning and end
-        /// of the animation set to transist back into the original skeleton smoothly. Be warned, this will
-        /// change the IsModifier property of the Skeleton for this SkeletonAnimation. This should only be
-        /// a concern if you plan on using this SkeletonAnimation as a modifier, too. Because of this, stacked
-        /// </summary>
-        /// <param name="set"></param>
-        /// <param name="skel"></param>
-        /// <returns></returns>
         public static SkeletonSet CreateSmoothedSet(SkeletonSet set, Skeleton skel)
         {
-            // TODO: Document parameters
             if (set == null)
-            {
-                Debug.Fail("skel is null.");
-                return set;
-            }
+                throw new ArgumentNullException("set");
             if (skel == null)
-            {
-                Debug.Fail("set is null.");
-                return set;
-            }
+                throw new ArgumentNullException("skel");
             if (set.KeyFrames.Length == 0)
-            {
-                Debug.Fail("set contians no KeyFrames.");
-                return set;
-            }
+                throw new ArgumentException("Parameter `set` contians no KeyFrames.", "set");
 
             // Create the new frames
             var frames = new SkeletonFrame[set.KeyFrames.Length + 2];

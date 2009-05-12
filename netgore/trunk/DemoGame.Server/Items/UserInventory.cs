@@ -6,7 +6,6 @@ using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
 
-// FUTURE: Can save a lot of memory by making the buffer dynamic
 // FUTURE: There may be a bug in picking up items, from threading conflict, that will allow two people to pick up the same item
 
 // TODO: Change the "UserItem" part of queries to "UserInventory", since it is a bit misleading
@@ -32,12 +31,14 @@ namespace DemoGame.Server
             get { return _user; }
         }
 
+        /// <summary>
+        /// Gets the DBController used by this UserInventory.
+        /// </summary>
         DBController DbController
         {
             get
             {
-                // HACK: This is a pretty shitty way to get to the DbController... should never have to crawl so deep
-                return User.Map.World.Parent.DBController;
+                return User.DBController;
             }
         }
 

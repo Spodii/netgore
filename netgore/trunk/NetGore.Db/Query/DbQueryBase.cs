@@ -190,25 +190,39 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Gets the name of a DbParameter minus the prefix.
+        /// Gets the name of a DbParameter minus the single-character ampersand or question-mark prefix.
         /// </summary>
         /// <param name="parameter">DbParameter to get the name of.</param>
-        /// <returns>The name of a DbParameter minus the prefix.</returns>
+        /// <returns>The name of a DbParameter minus the single-character prefix.</returns>
         public static string GetParameterNameWithoutPrefix(DbParameter parameter)
         {
-            // HACK: Function needs better name and better location
-            return parameter.ParameterName.Substring(1);
+            return GetParameterNameWithoutPrefix(parameter.ParameterName);
         }
 
         /// <summary>
-        /// Gets the name of a DbParameter minus the prefix.
+        /// Gets the name of a DbParameter minus the single-character ampersand or question-mark prefix.
         /// </summary>
         /// <param name="parameterName">ParameterName to get the trimmed name of.</param>
-        /// <returns>The name of a DbParameter minus the prefix.</returns>
+        /// <returns>The name of a DbParameter minus the single-character prefix.</returns>
         public static string GetParameterNameWithoutPrefix(string parameterName)
         {
-            // HACK: Function needs better name and better location
-            return parameterName.Substring(1);
+            if (string.IsNullOrEmpty(parameterName))
+                throw new ArgumentNullException(parameterName);
+
+            // Check what the first character is
+            switch (parameterName[0])
+            {
+                case '?':
+                case '@':
+                    // Remove the prefix
+                    if (parameterName.Length == 1)
+                        throw new ArgumentException("Invalid parameter name.");
+                    return parameterName.Substring(1);
+
+                default:
+                    // No prefix, return as normal
+                    return parameterName;
+            }
         }
 
         /// <summary>
@@ -224,12 +238,11 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Turns an IEnumerable of a string into the format of: `field`=@field. Each entry is comma-delimited.
+        /// Turns an IEnumerable of strings into the format of: `field`=@field. Each entry is comma-delimited.
         /// </summary>
         /// <returns>A comma-delimited string of all fields in the format of: `field`=@field.</returns>
-        public static string GetValuesQuery(IEnumerable<string> fields)
+        public static string FormatParametersIntoString(IEnumerable<string> fields)
         {
-            // HACK: Function needs better name and better location
             StringBuilder sb = new StringBuilder(512);
 
             foreach (string field in fields)
@@ -241,8 +254,8 @@ namespace NetGore.Db
                 sb.Append(",");
             }
 
-            // Remove the trailing comma
-            sb.Remove(sb.Length - 1, 1);
+            // Remove the trailing comma (last character)
+            sb.Length--;
 
             return sb.ToString();
         }

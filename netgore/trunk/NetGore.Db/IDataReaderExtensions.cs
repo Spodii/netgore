@@ -12,6 +12,52 @@ namespace NetGore.Db
     public static class IDataReaderExtensions
     {
         /// <summary>
+        /// Checks if the current row of the IDataReader contains a field of the specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to check.</param>
+        /// <param name="name">Name of the field to check if exists.</param>
+        /// <returns>True if a field of the specified <paramref name="name"/> exists, else false.</returns>
+        public static bool ContainsField(this IDataReader dataReader, string name)
+        {
+            // If the field name does not exist, GetOrdinal() should throw a IndexOutOfRangeException
+            try
+            {
+                dataReader.GetOrdinal(name);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if the current row of the IDataReader contains a field of the specified <paramref name="name"/>.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to check.</param>
+        /// <param name="name">Name of the field to check if exists.</param>
+        /// <param name="ordinal">If the field exists, contains the ordinal of the field. Otherwise this value
+        /// is -1.</param>
+        /// <returns>True if a field of the specified <paramref name="name"/> exists, else false.</returns>
+        public static bool ContainsField(this IDataReader dataReader, string name, out int ordinal)
+        {
+            ordinal = -1;
+
+            // If the field name does not exist, GetOrdinal() should throw a IndexOutOfRangeException
+            try
+            {
+                ordinal = dataReader.GetOrdinal(name);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Gets the boolean value of the specified field.
         /// </summary>
         /// <param name="dataReader">IDataReader to get the value from.</param>

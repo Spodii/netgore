@@ -10,7 +10,7 @@ namespace DemoGame
     /// </summary>
     public abstract class CharacterStatsBase : StatCollectionBase
     {
-        // NOTE: Having to list stats out like this is just stupid. Figure out a better way to handle stat meta-information.
+        // TODO: Having to list stats out like this is just stupid. Figure out a better way to handle stat meta-information.
         static readonly StatType[] _modStats = new StatType[]
                                                {
                                                    StatType.ModAcc, StatType.ModAgi, StatType.ModArmor, StatType.ModBra,
