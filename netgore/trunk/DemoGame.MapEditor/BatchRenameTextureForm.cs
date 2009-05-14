@@ -97,6 +97,7 @@ namespace DemoGame.MapEditor
                 if (gd.TextureName == oldTexture)
                 {
                     // To change the TextureName, we actually have to recreate the object
+                    // TODO: We shouldn't have to recreate the GrhData to change the texture
                     GrhData newGD = new GrhData();
                     newGD.Load(gd.ContentManager, gd.GrhIndex, newTexture, gd.X, gd.Y, gd.Width, gd.Height, gd.Category, gd.Title);
 
