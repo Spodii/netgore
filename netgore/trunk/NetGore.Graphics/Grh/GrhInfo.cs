@@ -52,6 +52,22 @@ namespace NetGore.Graphics
             titleDic.Add(gd.Title, gd);
         }
 
+        public static GrhData CreateGrhData(ContentManager contentManager, string category)
+        {
+            if (category == null)
+                category = string.Empty;
+
+            ushort grhIndex = NextFreeIndex();
+            string title = "tmp" + grhIndex;
+
+            // Create the new GrhData
+            GrhData gd = new GrhData();
+            gd.Load(contentManager, grhIndex, string.Empty, 0, 0, 0, 0, category, title);
+            GrhDatas[gd.GrhIndex] = gd;
+
+            return gd;
+        }
+
         /// <summary>
         /// Gets the GrhData by the given information
         /// </summary>
@@ -181,6 +197,9 @@ namespace NetGore.Graphics
         /// <returns>Next free GrhData index</returns>
         public static ushort NextFreeIndex()
         {
+            if (GrhDatas.TrackFree)
+                return (ushort)GrhDatas.NextFreeIndex();
+
             // Start at the first index
             ushort i = 1;
 

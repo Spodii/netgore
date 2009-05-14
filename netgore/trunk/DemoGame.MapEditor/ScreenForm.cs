@@ -1207,16 +1207,9 @@ namespace DemoGame.MapEditor
 
         void treeGrhs_mnuNewGrh(object sender, EventArgs e)
         {
-            ushort grhIndex = GrhInfo.NextFreeIndex();
-
-            // Set the categorization info
-            string category = GetCategoryFromTreeNode(treeGrhs.SelectedNode);
-            string title = "tmp" + grhIndex;
-
             // Create the new GrhData
-            GrhData gd = new GrhData();
-            gd.Load(_content, grhIndex, string.Empty, 0, 0, 0, 0, category, title);
-            GrhInfo.GrhDatas[gd.GrhIndex] = gd;
+            string category = GetCategoryFromTreeNode(treeGrhs.SelectedNode);
+            var gd = GrhInfo.CreateGrhData(_content, category);
             treeGrhs.UpdateGrh(gd);
 
             // Begin edit

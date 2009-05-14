@@ -481,25 +481,6 @@ namespace NetGore.EditorTools
                     return;
                 }
 
-                // Find the next free index
-                ushort newIndex;
-                var grhDatas = GrhInfo.GrhDatas;
-                if (GrhInfo.GrhDatas.TrackFree)
-                {
-                    // TrackFree is enabled, so we can just use NextFreeIndex()
-                    newIndex = (ushort)grhDatas.NextFreeIndex();
-                }
-                else
-                {
-                    // TrackFree is disabled, so use our own search
-                    // We simply just loop until we find a null value, or go beyond the size of the list
-                    newIndex = 1;
-                    while (grhDatas.CanGet(newIndex) && grhDatas[newIndex] != null)
-                    {
-                        newIndex++;
-                    }
-                }
-
                 // Build the new category
                 string newCat = oldGrhData.Category.Replace(oldCategory, newCategory);
 
@@ -511,10 +492,7 @@ namespace NetGore.EditorTools
                 }
 
                 // Create the new GrhData
-                GrhData newGrhData = oldGrhData.Duplicate(newIndex, newCat, newTitle);
-
-                // Add it to the GrhDatas list
-                GrhInfo.GrhDatas[newIndex] = newGrhData;
+                GrhData newGrhData = oldGrhData.Duplicate(newCat, newTitle);
 
                 // Add the GrhData in the tree, which will ensure it is in the display
                 AddGrhToTree(newGrhData);
