@@ -93,18 +93,13 @@ namespace DemoGame.MapEditor
                     return;
                 }
 
+                // Only change on stationary GrhDatas
+                if (gd.IsAnimated)
+                    return;
+
                 // Check if the texure matches, and change if it does
                 if (gd.TextureName == oldTexture)
-                {
-                    // To change the TextureName, we actually have to recreate the object
-                    // TODO: We shouldn't have to recreate the GrhData to change the texture
-                    GrhData newGD = new GrhData();
-                    newGD.Load(gd.ContentManager, gd.GrhIndex, newTexture, gd.X, gd.Y, gd.Width, gd.Height, gd.Category, gd.Title);
-
-                    // Remove the old GrhData and add the new one
-                    GrhInfo.GrhDatas.RemoveAt(gd.GrhIndex);
-                    GrhInfo.GrhDatas[gd.GrhIndex] = newGD;
-                }
+                    gd.ChangeTexture(newTexture);
             }
         }
 
