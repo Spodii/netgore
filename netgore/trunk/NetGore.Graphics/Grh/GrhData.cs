@@ -192,19 +192,33 @@ namespace NetGore.Graphics
         /// category and name must be different from the original GrhData, since duplicate names and categories
         /// will raise an exception.
         /// </summary>
-        /// <param name="newIndex">GrhIndex to give the duplicate GrhData</param>
         /// <param name="newCategory">Category for the duplicate GrhData</param>
         /// <param name="newTitle">Title for the duplicate GrhData</param>
         /// <returns>Deep copy of the GrhData</returns>
-        public GrhData Duplicate(ushort newIndex, string newCategory, string newTitle)
+        public GrhData Duplicate(string newCategory, string newTitle)
         {
-            GrhData nGD = new GrhData
+            var index = GrhInfo.NextFreeIndex();
+
+            Debug.Assert(GrhInfo.GrhDatas[index] == null, "Slot to use is already in use!");
+
+            GrhData gd = new GrhData
                           {
-                              _category = newCategory, _cm = _cm, _frames = _frames, _grhIndex = newIndex, _sourceRect = _sourceRect,
-                              _speed = _speed, _texture = _texture, _textureName = _textureName, _title = newTitle,
-                              _isUsingAtlas = _isUsingAtlas, _atlasSourceRect = _atlasSourceRect
+                              _category = newCategory,
+                              _cm = _cm,
+                              _frames = _frames,
+                              _grhIndex = index,
+                              _sourceRect = _sourceRect,
+                              _speed = _speed,
+                              _texture = _texture,
+                              _textureName = _textureName,
+                              _title = newTitle,
+                              _isUsingAtlas = _isUsingAtlas,
+                              _atlasSourceRect = _atlasSourceRect
                           };
-            return nGD;
+
+            GrhInfo.GrhDatas[index] = gd;
+
+            return gd;
         }
 
         /// <summary>
