@@ -675,6 +675,11 @@
     <Texture File="GUI/Default/toolbar" X="0" Y="32" W="32" H="32" />
     <Category Name="GUI.Default.Toolbar" Title="equipped" />
   </Grh>
+  <Grh Index="136">
+    <Frames Count="1" />
+    <Texture File="GUI/Default/item_slot" X="0" Y="0" W="32" H="32" />
+    <Category Name="GUI.Default" Title="item_slot" />
+  </Grh>
   <Grh Index="200">
     <Frames Count="1" />
     <Texture File="Character/Zombie/Head" X="0" Y="0" W="19" H="19" />

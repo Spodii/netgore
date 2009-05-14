@@ -6,6 +6,7 @@ using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 
@@ -39,7 +40,7 @@ namespace DemoGame.Client
         {
             if (itemInfoTooltip == null)
                 throw new ArgumentNullException("itemInfoTooltip");
-
+            
             _itemInfoTooltip = itemInfoTooltip;
 
             Vector2 itemsSize = _columns * new Vector2(_itemWidth, _itemHeight);
@@ -139,6 +140,15 @@ namespace DemoGame.Client
                 get { return _slot; }
             }
 
+            void LoadSprite()
+            {
+                var grhData = Skin.GetSkinGrhData(string.Empty, "item_slot");
+                if (grhData == null)
+                    return;
+
+                Sprite = new Grh(grhData);
+            }
+
             public InventoryItemPB(InventoryForm parent, Vector2 pos, byte slot)
                 : base(pos, null, new Vector2(_itemWidth, _itemHeight), parent)
             {
@@ -152,6 +162,14 @@ namespace DemoGame.Client
                 OnMouseEnter += _invForm.InventoryItemPB_OnMouseEnter;
                 OnMouseMove += _invForm.InventoryItemPB_OnMouseMove;
                 OnMouseUp += _invForm.InventoryItemPB_OnMouseUp;
+
+                Skin.OnChange += Skin_OnChange;
+                LoadSprite();
+            }
+
+            void Skin_OnChange(string newSkin, string oldSkin)
+            {
+                LoadSprite();
             }
 
             protected override void DrawControl(SpriteBatch spriteBatch)

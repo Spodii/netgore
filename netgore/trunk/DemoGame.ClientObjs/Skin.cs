@@ -98,19 +98,24 @@ namespace DemoGame.Client
         /// <returns>Complete skin category, including the <paramref name="subCategory"/>.</returns>
         static string ResolveCategory(string skin, string subCategory)
         {
-            string category;
+            if (string.IsNullOrEmpty(skin))
+                throw new ArgumentNullException("skin");
 
-            // Remove any trailing periods
-            if (subCategory.EndsWith("."))
-                subCategory = subCategory.Substring(0, subCategory.Length - 1);
+            string category = "GUI." + skin;
 
-            // Handle having an extra period at the start of the subcategory
-            if (subCategory.StartsWith("."))
-                category = "GUI." + skin + subCategory;
-            else
-                category = "GUI." + skin + "." + subCategory;
+            // Check for no subcategory
+            if (string.IsNullOrEmpty(subCategory))
+                return category;
 
-            return category;
+            // Remove any extra (leading and trailing) periods in the subCategory
+            subCategory.Trim('.');
+
+            // Check again if the subcategory is empty (in case it was nothing but periods)
+            if (subCategory.Length == 0)
+                return category;
+
+            // Combine the skin and subcategory
+            return category + "." + subCategory;
         }
     }
 }
