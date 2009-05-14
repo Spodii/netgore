@@ -121,7 +121,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the speed multiplier of the Grh animation where each frame lasts "Speed" milliseconds
+        /// Gets the speed multiplier of the Grh animation where each frame lasts "Speed" milliseconds.
         /// </summary>
         public float Speed
         {
@@ -136,6 +136,11 @@ namespace NetGore.Graphics
         {
             get { return _textureName; }
         }
+
+        /// <summary>
+        /// Gets if this GrhData is animated. If false, this is a stationary GrhData.
+        /// </summary>
+        public bool IsAnimated { get { return _frames.Length > 1 && _frames[0] != this; } }
 
         /// <summary>
         /// Gets the title of the GrhData. If the category has not yet been set (Load() has not been 
@@ -208,6 +213,31 @@ namespace NetGore.Graphics
         public Rectangle GetOriginalSource()
         {
             return _sourceRect;
+        }
+
+        /// <summary>
+        /// Changes the texture for a stationary GrhData.
+        /// </summary>
+        /// <param name="newTexture">Name of the new texture to use.</param>
+        public void ChangeTexture(string newTexture)
+        {
+            if (string.IsNullOrEmpty(newTexture))
+                throw new ArgumentNullException("newTexture");
+
+            // Ensure this is not an animated GrhData
+            if (IsAnimated)
+                throw new MemberAccessException("Cannot change the texture of an animated GrhData.");
+
+            // Check that it is actually a different texture
+            if (TextureName == newTexture)
+                return;
+
+            // Apply the new texture
+            _texture = null;
+            _isUsingAtlas = false;
+            _textureName = newTexture;
+
+            ValidateTexture();
         }
 
         /// <summary>
@@ -451,7 +481,7 @@ namespace NetGore.Graphics
                 throw new ArgumentNullException("texture");
 
             // An atlas may only be used on a frame, not an animation
-            if (_frames.Length > 1 || _frames[0] != this)
+            if (IsAnimated)
             {
                 const string errmsg = "An atlas may only be applied on a frame, not an animation!";
                 Debug.Fail(errmsg);
