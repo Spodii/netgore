@@ -18,7 +18,7 @@ namespace NetGore.Graphics
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         Rectangle _atlasSourceRect;
-        string _category = null;
+        string _category;
         ContentManager _cm;
         GrhData[] _frames;
         ushort _grhIndex;
@@ -27,7 +27,44 @@ namespace NetGore.Graphics
         float _speed;
         Texture2D _texture;
         string _textureName;
-        string _title = null;
+        string _title;
+        bool _automatic;
+        string _textureHash;
+        int _textureSize;
+
+        /// <summary>
+        /// Gets the hash of the referenced texture file in bytes for a stationary GrhData. If this GrhData is
+        /// animated, this value will always be null;
+        /// </summary>
+        public string TextureHash { get { return _textureHash; } }
+
+        /// <summary>
+        /// Gets the size of the referenced texture file in bytes for a stationary GrhData. If this GrhData is
+        /// animated, this value will always be -1.
+        /// </summary>
+        public int TextureSize { get { return _textureSize; } }
+
+        /// <summary>
+        /// GrhData constructor.
+        /// </summary>
+        public GrhData()
+        {
+        }
+
+        /// <summary>
+        /// GrhData constructor.
+        /// </summary>
+        /// <param name="automatic">If this GrhData was created automatically or not.</param>
+        public GrhData(bool automatic)
+        {
+            _automatic = automatic;
+        }
+
+        /// <summary>
+        /// Gets if this GrhData was created automatically. If false, the GrhData was created manually. This
+        /// does not affect how the GrhData is drawn or used, only how it behaves when editing.
+        /// </summary>
+        public bool Automatic { get { return _automatic; } }
 
         /// <summary>
         /// Notifies when either the category or title have been changed
@@ -260,6 +297,9 @@ namespace NetGore.Graphics
             // Header
             w.WriteStartElement("Grh");
             w.WriteAttributeString("Index", GrhIndex.ToString());
+            w.WriteAttributeString("Automatic", Automatic.ToString());
+            w.WriteAttributeString("TextureHash", TextureHash);
+            w.WriteAttributeString("TextureSize", TextureSize.ToString());
 
             // Single frame
             if (Frames == null || Frames.Length == 1)
