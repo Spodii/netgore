@@ -171,14 +171,25 @@ namespace NetGore.EditorTools
             GrhContextMenuBatchChangeTextureClick(sender, e);
         }
 
-        static void MenuClickAutomaticUpdate(object sender, EventArgs e)
+        void MenuClickAutomaticUpdate(object sender, EventArgs e)
         {
             // HACK: I shouldn't be grabbing the ContentManager like this... but how else should I go about getting it? o.O
             ContentManager cm = GrhInfo.GrhDatas.First(x => x.ContentManager != null).ContentManager;
             if (cm == null)
                 throw new Exception("Failed to find a ContentManager to use.");
 
-            AutomaticGrhUpdater.UpdateAll(cm, ContentPaths.Dev.Grhs);
+            var newGDs = AutomaticGrhUpdater.UpdateAll(cm, ContentPaths.Dev.Grhs);
+            int newCount = newGDs.Count();
+
+            if (newCount > 0)
+            {
+                UpdateGrhDatas(newGDs);
+                MessageBox.Show(newCount + " new GrhDatas have been automatically added.");
+            }
+            else
+            {
+                MessageBox.Show("No new GrhDatas automatically added - everything is already up to date.");
+            }
         }
 
         /// <summary>
@@ -947,13 +958,19 @@ namespace NetGore.EditorTools
             }
         }
 
-        /// <summary>
-        /// Updates a GrhData's information in the tree
-        /// </summary>
-        /// <param name="grh">Grh to update</param>
-        public void UpdateGrh(GrhData grh)
+        public void UpdateGrhDatas(IEnumerable<GrhData> grhDatas)
         {
-            AddGrhToTree(grh);
+            foreach (var grhData in grhDatas)
+                UpdateGrhData(grhData);
+        }
+
+        /// <summary>
+        /// Updates a GrhData's information in the tree.
+        /// </summary>
+        /// <param name="grhData">GrhData to update.</param>
+        public void UpdateGrhData(GrhData grhData)
+        {
+            AddGrhToTree(grhData);
             foreach (TreeNode node in Nodes)
             {
                 RemoveEmptyFolders(node);
@@ -965,9 +982,9 @@ namespace NetGore.EditorTools
         /// Updates a GrhData's information in the tree
         /// </summary>
         /// <param name="grhIndex">Index of the GrhData to update</param>
-        public void UpdateGrh(ushort grhIndex)
+        public void UpdateGrhData(ushort grhIndex)
         {
-            UpdateGrh(GrhInfo.GetData(grhIndex));
+            UpdateGrhData(GrhInfo.GetData(grhIndex));
         }
 
         /// <summary>

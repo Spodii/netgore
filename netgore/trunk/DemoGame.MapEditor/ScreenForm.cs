@@ -653,7 +653,7 @@ namespace DemoGame.MapEditor
             if (_editGrhData != null && _editNode != null)
             {
                 _editNode.Remove();
-                treeGrhs.UpdateGrh(_editGrhData);
+                treeGrhs.UpdateGrhData(_editGrhData);
             }
 
             _editNode = null;
@@ -1210,7 +1210,7 @@ namespace DemoGame.MapEditor
             // Create the new GrhData
             string category = GetCategoryFromTreeNode(treeGrhs.SelectedNode);
             var gd = GrhInfo.CreateGrhData(_content, category);
-            treeGrhs.UpdateGrh(gd);
+            treeGrhs.UpdateGrhData(gd);
 
             // Begin edit
             var nodes = treeGrhs.Nodes.Find(gd.GrhIndex.ToString(), true);
