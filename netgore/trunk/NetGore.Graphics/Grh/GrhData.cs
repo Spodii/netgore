@@ -259,45 +259,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Sets the data for a single GrhData (no animation)
-        /// </summary>
-        /// <param name="cm">ContentManager used by this texture</param>
-        /// <param name="grhIndex">Index of the Grh</param>
-        /// <param name="textureName">Path and name of the texture relative to the Content/Grh/ folder</param>
-        /// <param name="x">Pixel x coordinate of the source texture</param>
-        /// <param name="y">Pixel y coordinate of the source texture</param>
-        /// <param name="width">Pixel width of the source texture</param>
-        /// <param name="height">Pixel height of the source texture</param>
-        /// <param name="category">Period-delimited category</param>
-        /// <param name="title">Title of the GrhData. Must be unique for the supplied category.</param>
-        /// <param name="textureSize">Size of the referenced texture in bytes.</param>
-        /// <param name="textureHash">MD5 hash of the referenced texture.</param>
-        public void Load(ContentManager cm, ushort grhIndex, string textureName, int x, int y, int width, int height,
-                         string category, string title, int textureSize, string textureHash)
-        {
-            if (cm == null)
-            {
-                Debug.Fail("cm is null.");
-                if (log.IsFatalEnabled)
-                    log.Fatal("Parameter `cm`, ContentManager, is null.");
-                throw new ArgumentNullException("cm");
-            }
-
-            // We only have one frame, this one
-            _frames = new GrhData[1];
-            _frames[0] = this;
-
-            // Store some values and references
-            _cm = cm;
-            _textureName = textureName;
-            _sourceRect = new Rectangle(x, y, width, height);
-            _grhIndex = grhIndex;
-
-            // Set the categorization
-            SetCategorization(category, title);
-        }
-
-        /// <summary>
         /// Sets the data for an animated GrhData
         /// </summary>
         /// <param name="grhIndex">Index of the Grh</param>
@@ -315,8 +276,10 @@ namespace NetGore.Graphics
             }
 
             // Store some values and references
-            _speed = speed;
             _grhIndex = grhIndex;
+            _speed = speed;
+            if (_speed > 1f)
+                _speed = 1f / _speed;
 
             // Animated GrhDatas don't have a single texture, so there can't be a texture name
             _textureName = null;
@@ -449,6 +412,9 @@ namespace NetGore.Graphics
         /// </summary>
         void ValidateTexture()
         {
+            if (IsAnimated)
+                return;
+
             // If the texture is not set or is disposed, request a new one
             if (_texture == null || _texture.IsDisposed)
             {
