@@ -17,38 +17,6 @@ using Color=System.Drawing.Color;
 
 namespace NetGore.EditorTools
 {
-    public class GrhTreeViewEventArgs : TreeViewEventArgs
-    {
-        public readonly GrhData GrhData;
-
-        public GrhTreeViewEventArgs(GrhData grhData, TreeViewEventArgs args) : base(args.Node, args.Action)
-        {
-            GrhData = grhData;
-        }
-    }
-
-    public class GrhTreeNodeMouseClickEventArgs : TreeNodeMouseClickEventArgs
-    {
-        public readonly GrhData GrhData;
-
-        public GrhTreeNodeMouseClickEventArgs(GrhData grhData, TreeNodeMouseClickEventArgs args)
-            : base(args.Node, args.Button, args.Clicks, args.X, args.Y)
-        {
-            GrhData = grhData;
-        }
-    }
-
-    public class GrhTreeViewCancelEventArgs : TreeViewCancelEventArgs
-    {
-        public readonly GrhData GrhData;
-
-        public GrhTreeViewCancelEventArgs(GrhData grhData, TreeViewCancelEventArgs args)
-            : base(args.Node, args.Cancel, args.Action)
-        {
-            GrhData = grhData;
-        }
-    }
-
     public delegate void GrhTreeViewContextMenuItemClickEvent(object sender, EventArgs e);
 
     public delegate void GrhTreeViewEvent(object sender, GrhTreeViewEventArgs e);
