@@ -28,43 +28,6 @@ namespace NetGore.Graphics
         Texture2D _texture;
         string _textureName;
         string _title;
-        bool _automatic;
-        string _textureHash;
-        int _textureSize;
-
-        /// <summary>
-        /// Gets the hash of the referenced texture file in bytes for a stationary GrhData. If this GrhData is
-        /// animated, this value will always be null;
-        /// </summary>
-        public string TextureHash { get { return _textureHash; } }
-
-        /// <summary>
-        /// Gets the size of the referenced texture file in bytes for a stationary GrhData. If this GrhData is
-        /// animated, this value will always be -1.
-        /// </summary>
-        public int TextureSize { get { return _textureSize; } }
-
-        /// <summary>
-        /// GrhData constructor.
-        /// </summary>
-        public GrhData()
-        {
-        }
-
-        /// <summary>
-        /// GrhData constructor.
-        /// </summary>
-        /// <param name="automatic">If this GrhData was created automatically or not.</param>
-        public GrhData(bool automatic)
-        {
-            _automatic = automatic;
-        }
-
-        /// <summary>
-        /// Gets if this GrhData was created automatically. If false, the GrhData was created manually. This
-        /// does not affect how the GrhData is drawn or used, only how it behaves when editing.
-        /// </summary>
-        public bool Automatic { get { return _automatic; } }
 
         /// <summary>
         /// Notifies when either the category or title have been changed
@@ -292,6 +255,45 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Sets the data for a single GrhData (no animation)
+        /// </summary>
+        /// <param name="cm">ContentManager used by this texture</param>
+        /// <param name="grhIndex">Index of the Grh</param>
+        /// <param name="textureName">Path and name of the texture relative to the Content/Grh/ folder</param>
+        /// <param name="x">Pixel x coordinate of the source texture</param>
+        /// <param name="y">Pixel y coordinate of the source texture</param>
+        /// <param name="width">Pixel width of the source texture</param>
+        /// <param name="height">Pixel height of the source texture</param>
+        /// <param name="category">Period-delimited category</param>
+        /// <param name="title">Title of the GrhData. Must be unique for the supplied category.</param>
+        /// <param name="textureSize">Size of the referenced texture in bytes.</param>
+        /// <param name="textureHash">MD5 hash of the referenced texture.</param>
+        public void Load(ContentManager cm, ushort grhIndex, string textureName, int x, int y, int width, int height,
+                         string category, string title, int textureSize, string textureHash)
+        {
+            if (cm == null)
+            {
+                Debug.Fail("cm is null.");
+                if (log.IsFatalEnabled)
+                    log.Fatal("Parameter `cm`, ContentManager, is null.");
+                throw new ArgumentNullException("cm");
+            }
+
+            // We only have one frame, this one
+            _frames = new GrhData[1];
+            _frames[0] = this;
+
+            // Store some values and references
+            _cm = cm;
+            _textureName = textureName;
+            _sourceRect = new Rectangle(x, y, width, height);
+            _grhIndex = grhIndex;
+
+            // Set the categorization
+            SetCategorization(category, title);
+        }
+
+        /// <summary>
         /// Sets the data for an animated GrhData
         /// </summary>
         /// <param name="grhIndex">Index of the Grh</param>
@@ -341,9 +343,6 @@ namespace NetGore.Graphics
             // Header
             w.WriteStartElement("Grh");
             w.WriteAttributeString("Index", GrhIndex.ToString());
-            w.WriteAttributeString("Automatic", Automatic.ToString());
-            w.WriteAttributeString("TextureHash", TextureHash);
-            w.WriteAttributeString("TextureSize", TextureSize.ToString());
 
             // Single frame
             if (Frames == null || Frames.Length == 1)
