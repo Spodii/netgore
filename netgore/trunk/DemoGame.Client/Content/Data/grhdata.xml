@@ -722,7 +722,7 @@
   </Grh>
   <Grh Index="145">
     <Frames Count="8" F1="138" F2="140" F3="137" F4="142" F5="143" F6="139" F7="141" F8="144" />
-    <Anim Speed="0.0025" />
+    <Anim Speed="400" />
     <Category Name="Effect" Title="AutoTeleport" />
   </Grh>
   <Grh Index="200">
