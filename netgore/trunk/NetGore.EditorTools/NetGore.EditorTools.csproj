@@ -77,9 +77,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Undoer\PropertyInfoValue.cs" />
-    <Compile Include="Undoer\ObjectVersion.cs" />
-    <Compile Include="Undoer\Undoer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
