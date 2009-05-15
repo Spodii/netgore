@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using NetGore.Collections;
 
@@ -52,26 +53,29 @@ namespace NetGore.Graphics
             titleDic.Add(gd.Title, gd);
         }
 
-        /// <summary>
-        /// Creates a new GrhData, assigns it an index, and adds it to the list of GrhDatas..
-        /// </summary>
-        /// <param name="contentManager">ContentManager to use.</param>
-        /// <param name="category">Category for the GrhData.</param>
-        /// <returns>New GrhData instance.</returns>
-        public static GrhData CreateGrhData(ContentManager contentManager, string category)
+        static GrhData CreateGrhData(ushort grhIndex, ContentManager contentManager, string category, string title, string texture, Vector2 pos,
+            Vector2 size)
         {
             if (category == null)
                 category = string.Empty;
 
-            ushort grhIndex = NextFreeIndex();
-            string title = "tmp" + grhIndex;
-
-            // Create the new GrhData
             GrhData gd = new GrhData();
-            gd.Load(contentManager, grhIndex, string.Empty, 0, 0, 0, 0, category, title);
+            gd.Load(contentManager, grhIndex, texture, (int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y, category, title);
             GrhDatas[gd.GrhIndex] = gd;
-
             return gd;
+        }
+
+        public static GrhData CreateGrhData(ContentManager contentManager, string category, string title, string texture, Vector2 pos,
+            Vector2 size)
+        {
+            return CreateGrhData(NextFreeIndex(), contentManager, category, title, texture, pos, size);
+        }
+
+        public static GrhData CreateGrhData(ContentManager contentManager, string category)
+        {
+            var index = NextFreeIndex();
+            string title = "tmp" + index;
+            return CreateGrhData(NextFreeIndex(), contentManager, category, title, string.Empty, Vector2.Zero, Vector2.Zero);
         }
 
         /// <summary>
