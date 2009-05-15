@@ -11,10 +11,19 @@ using NetGore.Graphics;
 
 namespace NetGore.EditorTools
 {
+    /// <summary>
+    /// Handles the automatic GrhData generation.
+    /// </summary>
     public static class AutomaticGrhUpdater
     {
         public const int DefaultAnimationSpeed = 500;
 
+        /// <summary>
+        /// Finds the directories used to store the frames for automatic animations.
+        /// </summary>
+        /// <param name="rootDir">Root directory to search from.</param>
+        /// <returns>List of AnimationRegexInfos for each of the directories with the proper syntax for
+        /// containing the frames of an animation.</returns>
         static List<AnimationRegexInfo> FindFrameDirs(string rootDir)
         {
             // The regex to match against the frames folders for automatic animations
@@ -43,7 +52,15 @@ namespace NetGore.EditorTools
             return ret;
         }
 
-        static ushort[] FindFrameIndexes(int trimLen, string dir)
+        /// <summary>
+        /// Finds the indices of the GrhDatas that use the textures in the specified directory.
+        /// </summary>
+        /// <param name="trimLen">Amount to trim off of the absolute path to get the relative
+        /// path (use GetRelativeTrimLength()).</param>
+        /// <param name="dir">Directory containing the textures to find the GrhDatas for.</param>
+        /// <returns>Indices of the GrhDatas for the textures in the specified <paramref name="dir"/>, ordered
+        /// by their filename parsed as an int.</returns>
+        static ushort[] FindFrameIndices(int trimLen, string dir)
         {
             // Get all of the texture files
             var files = Directory.GetFiles(dir, "*.png", SearchOption.TopDirectoryOnly);
@@ -96,6 +113,11 @@ namespace NetGore.EditorTools
             return ret.ToArray();
         }
 
+        /// <summary>
+        /// Finds all of the texture files from the root directory.
+        /// </summary>
+        /// <param name="rootDir">Root directory to search from.</param>
+        /// <returns>List of the complete file paths from the <paramref name="rootDir"/>.</returns>
         static List<string> FindTextures(string rootDir)
         {
             var filePaths = Directory.GetFiles(rootDir, "*.png", SearchOption.AllDirectories);
@@ -108,6 +130,11 @@ namespace NetGore.EditorTools
             return ret;
         }
 
+        /// <summary>
+        /// Finds all of the used textures.
+        /// </summary>
+        /// <returns>Dictionary where the key is the virtual texture name (relative path minus the file extension) and
+        /// the value is a list of GrhDatas that use that texture.</returns>
         static Dictionary<string, List<GrhData>> FindUsedTextures()
         {
             var ret = new Dictionary<string, List<GrhData>>(StringComparer.OrdinalIgnoreCase);
@@ -132,6 +159,12 @@ namespace NetGore.EditorTools
             return ret;
         }
 
+        /// <summary>
+        /// Gets the amount to trim off of a directory to make it relative to the specified <paramref name="rootDir"/>.
+        /// </summary>
+        /// <param name="rootDir">Root directory to make other directories relative to.</param>
+        /// <returns>The amount to trim off of a directory to make it relative to the specified
+        /// <paramref name="rootDir"/>.</returns>
         static int GetRelativeTrimLength(string rootDir)
         {
             int len = rootDir.Length;
@@ -140,12 +173,23 @@ namespace NetGore.EditorTools
             return len;
         }
 
+        /// <summary>
+        /// Gets the size of a texture.
+        /// </summary>
+        /// <param name="filePath">Absolute file path to the texture.</param>
+        /// <returns>Size of the texture.</returns>
         static Vector2 GetTextureSize(string filePath)
         {
             TextureInformation info = Texture2D.GetTextureInformation(filePath);
             return new Vector2(info.Width, info.Height);
         }
 
+        /// <summary>
+        /// Converts an absolute path to a virtual texture path (relative path minus the extension).
+        /// </summary>
+        /// <param name="trimLen">Amount to trim off to make the path relative.</param>
+        /// <param name="absolute">Absolute path to find the relative path of.</param>
+        /// <returns>The relative path of the specified absolute path.</returns>
         static string TextureAbsoluteToRelativePath(int trimLen, string absolute)
         {
             absolute = absolute.Replace('\\', '/');
@@ -160,11 +204,22 @@ namespace NetGore.EditorTools
             return rel;
         }
 
-        public static IEnumerable<GrhData> UpdateAll(ContentManager cm, string rootDir)
+        /// <summary>
+        /// Updates all of the automatic GrhDatas.
+        /// </summary>
+        /// <param name="cm">ContentManager to use for new GrhDatas.</param>
+        /// <param name="rootGrhDir">Root Grh texture directory.</param>
+        /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
+        public static IEnumerable<GrhData> UpdateAll(ContentManager cm, string rootGrhDir)
         {
-            return UpdateStationary(cm, rootDir).Concat(UpdateAnimated(rootDir));
+            return UpdateStationary(cm, rootGrhDir).Concat(UpdateAnimated(rootGrhDir));
         }
 
+        /// <summary>
+        /// Updates all of the automatic GrhDatas.
+        /// </summary>
+        /// <param name="rootGrhDir">Root Grh texture directory.</param>
+        /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
         public static IEnumerable<GrhData> UpdateAnimated(string rootGrhDir)
         {
             int trimLen = GetRelativeTrimLength(rootGrhDir);
@@ -193,7 +248,7 @@ namespace NetGore.EditorTools
                     continue;
 
                 // Get the GrhIndices of the frames for the animation
-                var indices = FindFrameIndexes(trimLen, frameDirInfo.Dir);
+                var indices = FindFrameIndices(trimLen, frameDirInfo.Dir);
                 if (indices == null)
                     continue;
 
@@ -205,6 +260,12 @@ namespace NetGore.EditorTools
             return ret;
         }
 
+        /// <summary>
+        /// Updates all of the automatic GrhDatas.
+        /// </summary>
+        /// <param name="cm">ContentManager to use for new GrhDatas.</param>
+        /// <param name="rootGrhDir">Root Grh texture directory.</param>
+        /// <returns>IEnumerable of all of the new GrhDatas created.</returns>
         public static IEnumerable<GrhData> UpdateStationary(ContentManager cm, string rootGrhDir)
         {
             // Get a List of all of the textures from the root directory
@@ -247,12 +308,32 @@ namespace NetGore.EditorTools
             return ret;
         }
 
+        /// <summary>
+        /// Structure describing a directory containing frames for an automatic animation.
+        /// </summary>
         struct AnimationRegexInfo
         {
+            /// <summary>
+            /// Absolute path to the frames directory.
+            /// </summary>
             public readonly string Dir;
+
+            /// <summary>
+            /// Title to give the animation.
+            /// </summary>
             public readonly string Title;
+
+            /// <summary>
+            /// Speed to give the animation.
+            /// </summary>
             public readonly int Speed;
 
+            /// <summary>
+            /// AnimationRegexInfo constructor.
+            /// </summary>
+            /// <param name="dir">Absolute path to the frames directory.</param>
+            /// <param name="title">Title to give the animation.</param>
+            /// <param name="speed">Speed to give the animation.</param>
             public AnimationRegexInfo(string dir, string title, int speed)
             {
                 Dir = dir;
