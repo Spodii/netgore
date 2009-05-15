@@ -29,6 +29,10 @@ namespace NetGore.Graphics
         string _textureName;
         string _title;
 
+        internal GrhData()
+        {
+        }
+
         /// <summary>
         /// Notifies when either the category or title have been changed
         /// </summary>

@@ -680,6 +680,51 @@
     <Texture File="GUI/Default/item_slot" X="0" Y="0" W="32" H="32" />
     <Category Name="GUI.Default" Title="item_slot" />
   </Grh>
+  <Grh Index="137">
+    <Frames Count="1" />
+    <Texture File="Effect/_AutoTeleport_frames_400/0003" X="0" Y="0" W="32" H="64" />
+    <Category Name="Effect._AutoTeleport_frames_400" Title="0003" />
+  </Grh>
+  <Grh Index="138">
+    <Frames Count="1" />
+    <Texture File="Effect/_AutoTeleport_frames_400/1" X="0" Y="0" W="32" H="64" />
+    <Category Name="Effect._AutoTeleport_frames_400" Title="1" />
+  </Grh>
+  <Grh Index="139">
+    <Frames Count="1" />
+    <Texture File="Effect/_AutoTeleport_frames_400/100" X="0" Y="0" W="32" H="64" />
+    <Category Name="Effect._AutoTeleport_frames_400" Title="100" />
+  </Grh>
+  <Grh Index="140">
+    <Frames Count="1" />
+    <Texture File="Effect/_AutoTeleport_frames_400/2" X="0" Y="0" W="32" H="64" />
+    <Category Name="Effect._AutoTeleport_frames_400" Title="2" />
+  </Grh>
+  <Grh Index="141">
+    <Frames Count="1" />
+    <Texture File="Effect/_AutoTeleport_frames_400/200" X="0" Y="0" W="32" H="64" />
+    <Category Name="Effect._AutoTeleport_frames_400" Title="200" />
+  </Grh>
+  <Grh Index="142">
+    <Frames Count="1" />
+    <Texture File="Effect/_AutoTeleport_frames_400/4" X="0" Y="0" W="32" H="64" />
+    <Category Name="Effect._AutoTeleport_frames_400" Title="4" />
+  </Grh>
+  <Grh Index="143">
+    <Frames Count="1" />
+    <Texture File="Effect/_AutoTeleport_frames_400/9" X="0" Y="0" W="32" H="64" />
+    <Category Name="Effect._AutoTeleport_frames_400" Title="9" />
+  </Grh>
+  <Grh Index="144">
+    <Frames Count="1" />
+    <Texture File="Effect/_AutoTeleport_frames_400/9999" X="0" Y="0" W="32" H="64" />
+    <Category Name="Effect._AutoTeleport_frames_400" Title="9999" />
+  </Grh>
+  <Grh Index="145">
+    <Frames Count="8" F1="138" F2="140" F3="137" F4="142" F5="143" F6="139" F7="141" F8="144" />
+    <Anim Speed="0.0025" />
+    <Category Name="Effect" Title="AutoTeleport" />
+  </Grh>
   <Grh Index="200">
     <Frames Count="1" />
     <Texture File="Character/Zombie/Head" X="0" Y="0" W="19" H="19" />

@@ -58,9 +58,56 @@ namespace NetGore.Graphics
         {
             if (category == null)
                 category = string.Empty;
+            if (title == null)
+                throw new ArgumentNullException("title");
+
+            category = SanitizeCategory(category);
 
             GrhData gd = new GrhData();
             gd.Load(contentManager, grhIndex, texture, (int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y, category, title);
+            GrhDatas[gd.GrhIndex] = gd;
+            return gd;
+        }
+
+        public static string SanitizeCategory(string category)
+        {
+            return category.Replace('/', '.').Replace('\\', '.');
+        }
+
+        public static void SplitCategoryAndTitle(string categoryAndTitle, out string category, out string title)
+        {
+            if (string.IsNullOrEmpty(categoryAndTitle))
+                throw new ArgumentNullException("categoryAndTitle");
+
+            categoryAndTitle = SanitizeCategory(categoryAndTitle);
+
+            int lastSep = categoryAndTitle.LastIndexOf('.');
+            if (lastSep == -1)
+            {
+                // If there is no seperator, we'll just assume there is no category and the whole thing is the title
+                category = string.Empty;
+                title = categoryAndTitle;
+            }
+            else
+            {
+                // Split at the last separator
+                category = categoryAndTitle.Substring(0, lastSep);
+                title = categoryAndTitle.Substring(lastSep + 1);
+            }
+        }
+
+        public static GrhData CreateGrhData(ushort[] frames, float speed, string category, string title)
+        {
+            if (category == null)
+                category = string.Empty;
+            if (title == null)
+                throw new ArgumentNullException("title");
+
+            category = SanitizeCategory(category);
+
+            ushort grhIndex = NextFreeIndex();
+            GrhData gd = new GrhData();
+            gd.Load(grhIndex, frames, speed, category, title);
             GrhDatas[gd.GrhIndex] = gd;
             return gd;
         }
@@ -86,6 +133,11 @@ namespace NetGore.Graphics
         /// <returns>GrhData matching the given information if found, or null if no matches</returns>
         public static GrhData GetData(string category, string title)
         {
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException("category");
+
+            category = SanitizeCategory(category);
+
             // Get the dictionary for the category
             var titleDic = GetData(category);
 
@@ -110,6 +162,11 @@ namespace NetGore.Graphics
         /// null if the category was invalid</returns>
         public static Dictionary<string, GrhData> GetData(string category)
         {
+            if (string.IsNullOrEmpty(category))
+                throw new ArgumentNullException("category");
+
+            category = SanitizeCategory(category);
+
             Dictionary<string, GrhData> titleDic;
 
             // Return the whole dictionary for the given catgory, or null if it does not exist
