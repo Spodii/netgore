@@ -52,6 +52,12 @@ namespace NetGore.Graphics
             titleDic.Add(gd.Title, gd);
         }
 
+        /// <summary>
+        /// Creates a new GrhData, assigns it an index, and adds it to the list of GrhDatas..
+        /// </summary>
+        /// <param name="contentManager">ContentManager to use.</param>
+        /// <param name="category">Category for the GrhData.</param>
+        /// <returns>New GrhData instance.</returns>
         public static GrhData CreateGrhData(ContentManager contentManager, string category)
         {
             if (category == null)
