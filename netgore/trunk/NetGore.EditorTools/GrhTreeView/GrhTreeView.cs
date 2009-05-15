@@ -143,11 +143,42 @@ namespace NetGore.EditorTools
             _grhImageList.Images.Add("_folderopen", Resources.folderopen);
 
             //Set up the context menu for the GrhTreeView
-            _contextMenu.MenuItems.Add(new MenuItem("Edit", ContextMenuItemClick));
-            _contextMenu.MenuItems.Add(new MenuItem("New Grh", ContextMenuItemClick));
-            _contextMenu.MenuItems.Add(new MenuItem("Duplicate", ContextMenuItemClick));
-            _contextMenu.MenuItems.Add(new MenuItem("Batch Change Texture", ContextMenuItemClick));
+            _contextMenu.MenuItems.Add(new MenuItem("Edit", MenuClickEdit));
+            _contextMenu.MenuItems.Add(new MenuItem("New Grh", MenuClickNewGrh));
+            _contextMenu.MenuItems.Add(new MenuItem("Duplicate", MenuClickDuplicate));
+            _contextMenu.MenuItems.Add(new MenuItem("Batch Change Texture", MenuClickBatchChangeTexture));
+            _contextMenu.MenuItems.Add(new MenuItem("Automatic Update", MenuClickAutomaticUpdate));
             ContextMenu = _contextMenu;
+        }
+
+        void MenuClickEdit(object sender, EventArgs e)
+        {
+            GrhContextMenuEditClick(sender, e);
+        }
+
+        void MenuClickNewGrh(object sender, EventArgs e)
+        {
+            GrhContextMenuNewGrhClick(sender, e);
+        }
+
+        void MenuClickDuplicate(object sender, EventArgs e)
+        {
+            GrhContextMenuDuplicateClick(sender, e);
+        }
+
+        void MenuClickBatchChangeTexture(object sender, EventArgs e)
+        {
+            GrhContextMenuBatchChangeTextureClick(sender, e);
+        }
+
+        static void MenuClickAutomaticUpdate(object sender, EventArgs e)
+        {
+            // HACK: I shouldn't be grabbing the ContentManager like this... but how else should I go about getting it? o.O
+            ContentManager cm = GrhInfo.GrhDatas.First(x => x.ContentManager != null).ContentManager;
+            if (cm == null)
+                throw new Exception("Failed to find a ContentManager to use.");
+
+            AutomaticGrhUpdater.UpdateAll(cm, ContentPaths.Dev.Grhs);
         }
 
         /// <summary>
@@ -250,40 +281,6 @@ namespace NetGore.EditorTools
             }
             catch (ContentLoadException)
             {
-            }
-        }
-
-        void ContextMenuItemClick(object sender, EventArgs e)
-        {
-            //Get the text value of the sender
-            string sendername = sender.ToString().Substring(sender.ToString().IndexOf("Text:")).Substring(6);
-
-            //Depending on the text value of the sender, raise a specific event
-            if (sendername != null)
-            {
-                switch (sendername)
-                {
-                    case "Edit":
-                    {
-                        GrhContextMenuEditClick(sender, e);
-                        break;
-                    }
-                    case "New Grh":
-                    {
-                        GrhContextMenuNewGrhClick(sender, e);
-                        break;
-                    }
-                    case "Duplicate":
-                    {
-                        GrhContextMenuDuplicateClick(sender, e);
-                        break;
-                    }
-                    case "Batch Change Texture":
-                    {
-                        GrhContextMenuBatchChangeTextureClick(sender, e);
-                        break;
-                    }
-                }
             }
         }
 
