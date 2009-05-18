@@ -1,0 +1,24 @@
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<TextureTemplate Include="**\*.png">
+			<Importer>TextureImporter</Importer>
+			<Processor>TextureProcessor</Processor>
+		</TextureTemplate>
+	</ItemGroup>
+	
+	<ItemGroup>
+		<FontTemplate Include="**\*.spritefont">
+			<Importer>FontDescriptionImporter</Importer>
+			<Processor>FontDescriptionProcessor</Processor>
+		</FontTemplate>
+	</ItemGroup>
+	
+	<Target Name="BeforeBuild">
+		<CreateItem Include="@(TextureTemplate)" AdditionalMetadata="Name=%(FileName)">
+			<Output TaskParameter="Include" ItemName="Compile" />
+		</CreateItem>
+		<CreateItem Include="@(FontTemplate)" AdditionalMetadata="Name=%(FileName)">
+			<Output TaskParameter="Include" ItemName="Compile" />
+		</CreateItem>
+	</Target>
+</Project>
