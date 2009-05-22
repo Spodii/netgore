@@ -12,7 +12,17 @@ namespace NetGore.Extensions
     public static class Vector2Extensions
     {
         /// <summary>
-        /// Gets the absolute value of the x and y components of the Vector2.
+        /// Gets a Vector2 with the X and Y components rounded.
+        /// </summary>
+        /// <param name="source">Vector2 to round.</param>
+        /// <returns>A Vector2 containing the rounded value of the <paramref name="source"/> Vector2.</returns>
+        public static Vector2 Round(this Vector2 source)
+        {
+            return new Vector2(Math.Abs(source.X), Math.Abs(source.Y));
+        }
+
+        /// <summary>
+        /// Gets the absolute value of the X and Y components of the Vector2.
         /// </summary>
         /// <param name="source">Vector2 to get the absolute value of.</param>
         /// <returns>A Vector2 containing the absolute value of the <paramref name="source"/> Vector2.</returns>

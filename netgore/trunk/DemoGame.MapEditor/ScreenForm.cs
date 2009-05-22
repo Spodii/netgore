@@ -335,7 +335,7 @@ namespace DemoGame.MapEditor
             Vector2 pos;
             try
             {
-                pos = new Vector2(_editGrhData.Width / 2f, _editGrhData.Height / 2f);
+                pos = _editGrhData.Size / 2f;
             }
             catch (ContentLoadException)
             {

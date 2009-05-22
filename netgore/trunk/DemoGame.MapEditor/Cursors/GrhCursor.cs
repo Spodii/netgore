@@ -131,7 +131,7 @@ namespace DemoGame.MapEditor
                 _selectedMapGrhs.Clear();
                 foreach (MapGrh mg in screen.Map.MapGrhs)
                 {
-                    CollisionBox cb = new CollisionBox(mg.Destination, mg.Destination + new Vector2(mg.Grh.Width, mg.Grh.Height));
+                    CollisionBox cb = new CollisionBox(mg.Destination, mg.Destination + mg.Grh.Size);
                     if (CollisionBox.Intersect(cb, selectBox) && !_selectedMapGrhs.Contains(mg))
                         _selectedMapGrhs.Add(mg);
                 }

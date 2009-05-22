@@ -4,16 +4,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
-using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
-using Color=System.Drawing.Color;
+using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace NetGore.EditorTools
 {
@@ -30,7 +27,6 @@ namespace NetGore.EditorTools
     /// </summary>
     public class GrhTreeView : TreeView, IComparer
     {
-
         /// <summary>
         /// Timer to update the animated Grhs in the grh tree
         /// </summary>
@@ -106,6 +102,8 @@ namespace NetGore.EditorTools
         /// </summary>
         public GrhTreeView()
         {
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+
             AllowDrop = true;
 
             // Remove all nodes
@@ -150,106 +148,50 @@ namespace NetGore.EditorTools
             _contextMenu.MenuItems.Add(new MenuItem("Batch Change Texture", MenuClickBatchChangeTexture));
             _contextMenu.MenuItems.Add(new MenuItem("Automatic Update", MenuClickAutomaticUpdate));
             ContextMenu = _contextMenu;
-        }
 
-        void CheckForMissingTextures(ContentManager cm)
-        {
-            // We must create the hash collection since its constructor has the updating goodies, and we want
-            // to make sure that is called
-            TextureHashCollection hashCollection = new TextureHashCollection();
-
-            // Get the GrhDatas with missing textures
-            var missing = GrhInfo.FindMissingTextures();
-            if (missing.Count() == 0)
-                return;
-           
-            // Display a form showing which textures need to be fixed
-            // The GrhTreeView will be disabled until the MissingTexturesForm is closed
-            Enabled = false;
-            var frm = new MissingTexturesForm(hashCollection, missing, cm);
-            frm.FormClosed += delegate { RebuildTree(); Enabled = true; };
-            frm.Show();
-        }
-
-        void MenuClickEdit(object sender, EventArgs e)
-        {
-            GrhContextMenuEditClick(sender, e);
-        }
-
-        void MenuClickNewGrh(object sender, EventArgs e)
-        {
-            GrhContextMenuNewGrhClick(sender, e);
-        }
-
-        void MenuClickDuplicate(object sender, EventArgs e)
-        {
-            GrhContextMenuDuplicateClick(sender, e);
-        }
-
-        void MenuClickBatchChangeTexture(object sender, EventArgs e)
-        {
-            GrhContextMenuBatchChangeTextureClick(sender, e);
-        }
-
-        void MenuClickAutomaticUpdate(object sender, EventArgs e)
-        {
-            // HACK: I shouldn't be grabbing the ContentManager like this... but how else should I go about getting it? o.O
-            ContentManager cm = GrhInfo.GrhDatas.First(x => x.ContentManager != null).ContentManager;
-            if (cm == null)
-                throw new Exception("Failed to find a ContentManager to use.");
-
-            var newGDs = AutomaticGrhUpdater.UpdateAll(cm, ContentPaths.Dev.Grhs);
-            int newCount = newGDs.Count();
-
-            if (newCount > 0)
-            {
-                UpdateGrhDatas(newGDs);
-                MessageBox.Show(newCount + " new GrhDatas have been automatically added.");
-            }
-            else
-            {
-                MessageBox.Show("No new GrhDatas automatically added - everything is already up to date.");
-            }
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
-        /// Adds a Grh to the tree or updates it if it already exists
+        /// Adds a Grh to the tree or updates it if it already exists.
         /// </summary>
-        /// <param name="grh">Grh to add / update</param>
-        void AddGrhToTree(GrhData grh)
+        /// <param name="gd">Grh to add or update.</param>
+        void AddGrhToTree(GrhData gd)
         {
-            if (grh == null || grh.GrhIndex == 0)
+            if (gd == null || gd.GrhIndex == 0)
                 return;
-            string indexStr = grh.GrhIndex.ToString();
+            string indexStr = gd.GrhIndex.ToString();
 
             // Set the categorization information
             string category;
-            if (!string.IsNullOrEmpty(grh.Category))
-                category = grh.Category;
+            if (!string.IsNullOrEmpty(gd.Category))
+                category = gd.Category;
             else
                 category = "Uncategorized";
 
             string title = string.Format("[{0}]", indexStr);
-            if (!string.IsNullOrEmpty(grh.Title))
-                title = string.Format("{0} {1}", grh.Title, title);
+            if (!string.IsNullOrEmpty(gd.Title))
+                title = string.Format("{0} {1}", gd.Title, title);
 
             // Add to the tree
             string nodePath = string.Format("{0}.{1}", category, title);
             TreeNode node = CreateNode(indexStr, nodePath, '.');
 
             // Set the preview picture
-            if (!string.IsNullOrEmpty(grh.TextureName))
+            if (!string.IsNullOrEmpty(gd.TextureName))
             {
                 // Grh contains a valid texture
-                int w = _grhImageList.ImageSize.Width;
-                int h = _grhImageList.ImageSize.Height;
+                int destWidth = _grhImageList.ImageSize.Width;
+                int destHeight = _grhImageList.ImageSize.Height;
                 try
                 {
                     // Generate the image from the texture
                     Image img;
                     try
                     {
-                        img = ImageHelper.CreateFromTexture(grh.Texture, grh.X, grh.Y, grh.Width, grh.Height, w, h);
+                        Rectangle sourceRect = gd.SourceRect;
+                        img = ImageHelper.CreateFromTexture(gd.Texture, sourceRect.X, sourceRect.Y, sourceRect.Width,
+                                                            sourceRect.Height, destWidth, destHeight);
                     }
                     catch (Exception ex)
                     {
@@ -284,51 +226,39 @@ namespace NetGore.EditorTools
                 node.SelectedImageKey = node.ImageKey;
                 node.StateImageKey = node.ImageKey;
             }
-            else if (grh.Frames != null)
+            else if (gd.Frames != null)
             {
                 // Grh does not contain a valid texture, but it does have frames, so it must be animated
-                var nodeGrh = new Grh(grh.GrhIndex, AnimType.Loop, Time);
-                var treeNode = new GrhTreeNode(node, nodeGrh);
+                Grh nodeGrh = new Grh(gd.GrhIndex, AnimType.Loop, Time);
+                GrhTreeNode treeNode = new GrhTreeNode(node, nodeGrh);
                 _animTreeNodes.Add(treeNode);
             }
-            
-            if (grh.Frames == null)
-            {
-                Debug.Fail("This shouldn't happen. :(");
-                return;
-            }
 
-            // Build the tool-tip
-            try
-            {
-                if (grh.Frames.Length == 1)
-                {
-                    // Stationary
-                    node.ToolTipText = string.Format("Grh: {0}\nTexture: {1}\nPos: ({2},{3})\nSize: {4}x{5}", grh.GrhIndex,
-                                                     grh.TextureName, grh.X, grh.Y, grh.Width, grh.Height);
-                }
-                else
-                {
-                    // Animated
-                    node.ToolTipText = string.Format("Grh: {0}\nFrames: {1}\n  ", grh.GrhIndex, grh.Frames.Length);
-                    for (int i = 0; i < grh.Frames.Length; i++)
-                    {
-                        node.ToolTipText += grh.Frames[i].GrhIndex;
-                        if (i < grh.Frames.Length - 1)
-                        {
-                            if ((i + 1) % 6 == 0)
-                                node.ToolTipText += "\n  "; // Add a break every 6 indices
-                            else
-                                node.ToolTipText += ","; // Use a comma to separate the indices
-                        }
-                    }
-                    node.ToolTipText += "\nSpeed: " + (1f / grh.Speed);
-                }
-            }
-            catch (ContentLoadException ex)
-            {
-                Debug.Fail(ex.ToString());
-            }
+            // Set the tooltip text
+            node.ToolTipText = GetToolTipText(gd);
+        }
+
+        void CheckForMissingTextures(ContentManager cm)
+        {
+            // We must create the hash collection since its constructor has the updating goodies, and we want
+            // to make sure that is called
+            TextureHashCollection hashCollection = new TextureHashCollection();
+
+            // Get the GrhDatas with missing textures
+            var missing = GrhInfo.FindMissingTextures();
+            if (missing.Count() == 0)
+                return;
+
+            // Display a form showing which textures need to be fixed
+            // The GrhTreeView will be disabled until the MissingTexturesForm is closed
+            Enabled = false;
+            MissingTexturesForm frm = new MissingTexturesForm(hashCollection, missing, cm);
+            frm.FormClosed += delegate
+                              {
+                                  RebuildTree();
+                                  Enabled = true;
+                              };
+            frm.Show();
         }
 
         /// <summary>
@@ -523,6 +453,70 @@ namespace NetGore.EditorTools
             }
 
             return grhData;
+        }
+
+        /// <summary>
+        /// Creates the tooltip text to use for a GrhData.
+        /// </summary>
+        /// <param name="gd">GrhData to get the tooltip for.</param>
+        /// <returns>The tooltip text to use for a GrhData.</returns>
+        static string GetToolTipText(GrhData gd)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            try
+            {
+                if (gd.Frames.Length == 1)
+                {
+                    // Stationary
+                    Rectangle sourceRect = gd.SourceRect;
+
+                    sb.AppendLine("Grh: " + gd.GrhIndex);
+                    sb.AppendLine("Texture: " + gd.TextureName);
+                    sb.AppendLine("Pos: (" + sourceRect.X + "," + sourceRect.Y + ")");
+                    sb.Append("Size: " + sourceRect.Width + "x" + sourceRect.Height);
+                }
+                else
+                {
+                    // Animated
+                    const string framePadding = "  ";
+                    const string frameSeperator = ",";
+
+                    sb.AppendLine("Grh: " + gd.GrhIndex);
+                    sb.AppendLine("Frames: " + gd.Frames.Length);
+
+                    sb.Append(framePadding);
+                    for (int i = 0; i < gd.Frames.Length; i++)
+                    {
+                        sb.Append(gd.Frames[i].GrhIndex);
+                        if (i < gd.Frames.Length - 1)
+                        {
+                            if ((i + 1) % 6 == 0)
+                            {
+                                // Add a break every 6 indices
+                                sb.AppendLine();
+                                sb.Append(framePadding);
+                            }
+                            else
+                            {
+                                // Separate the frame indicies
+                                sb.Append(frameSeperator);
+                            }
+                        }
+                    }
+
+                    sb.AppendLine();
+                    sb.Append("Speed: " + (1f / gd.Speed));
+
+                    return sb.ToString();
+                }
+            }
+            catch (ContentLoadException ex)
+            {
+                Debug.Fail(ex.ToString());
+            }
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -722,22 +716,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Completely rebuilds the GrhTreeView.
-        /// </summary>
-        public void RebuildTree()
-        {
-            // Clear all nodes
-            Nodes.Clear();
-            _animTreeNodes.Clear();
-
-            // Re-add every GrhData
-            foreach (GrhData grh in GrhInfo.GrhDatas)
-            {
-                AddGrhToTree(grh);
-            }
-        }
-
-        /// <summary>
         /// Generates the tree information. Must be called after GrhInfo.Load().
         /// </summary>
         public void Initialize(ContentManager cm)
@@ -763,6 +741,45 @@ namespace NetGore.EditorTools
         static bool IsGrhNode(TreeNode node)
         {
             return (node.Name.Length > 0);
+        }
+
+        void MenuClickAutomaticUpdate(object sender, EventArgs e)
+        {
+            // HACK: I shouldn't be grabbing the ContentManager like this... but how else should I go about getting it? o.O
+            ContentManager cm = GrhInfo.GrhDatas.First(x => x.ContentManager != null).ContentManager;
+            if (cm == null)
+                throw new Exception("Failed to find a ContentManager to use.");
+
+            var newGDs = AutomaticGrhUpdater.UpdateAll(cm, ContentPaths.Dev.Grhs);
+            int newCount = newGDs.Count();
+
+            if (newCount > 0)
+            {
+                UpdateGrhDatas(newGDs);
+                MessageBox.Show(newCount + " new GrhDatas have been automatically added.");
+            }
+            else
+                MessageBox.Show("No new GrhDatas automatically added - everything is already up to date.");
+        }
+
+        void MenuClickBatchChangeTexture(object sender, EventArgs e)
+        {
+            GrhContextMenuBatchChangeTextureClick(sender, e);
+        }
+
+        void MenuClickDuplicate(object sender, EventArgs e)
+        {
+            GrhContextMenuDuplicateClick(sender, e);
+        }
+
+        void MenuClickEdit(object sender, EventArgs e)
+        {
+            GrhContextMenuEditClick(sender, e);
+        }
+
+        void MenuClickNewGrh(object sender, EventArgs e)
+        {
+            GrhContextMenuNewGrhClick(sender, e);
         }
 
         /// <summary>
@@ -797,6 +814,22 @@ namespace NetGore.EditorTools
                 const string txt = "Are you sure you wish to delete this node?";
                 if (MessageBox.Show(txt, "Delete node?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     DeleteNode(SelectedNode);
+            }
+        }
+
+        /// <summary>
+        /// Completely rebuilds the GrhTreeView.
+        /// </summary>
+        public void RebuildTree()
+        {
+            // Clear all nodes
+            Nodes.Clear();
+            _animTreeNodes.Clear();
+
+            // Re-add every GrhData
+            foreach (GrhData grh in GrhInfo.GrhDatas)
+            {
+                AddGrhToTree(grh);
             }
         }
 
@@ -934,12 +967,6 @@ namespace NetGore.EditorTools
             }
         }
 
-        public void UpdateGrhDatas(IEnumerable<GrhData> grhDatas)
-        {
-            foreach (var grhData in grhDatas)
-                UpdateGrhData(grhData);
-        }
-
         /// <summary>
         /// Updates a GrhData's information in the tree.
         /// </summary>
@@ -961,6 +988,14 @@ namespace NetGore.EditorTools
         public void UpdateGrhData(ushort grhIndex)
         {
             UpdateGrhData(GrhInfo.GetData(grhIndex));
+        }
+
+        public void UpdateGrhDatas(IEnumerable<GrhData> grhDatas)
+        {
+            foreach (GrhData grhData in grhDatas)
+            {
+                UpdateGrhData(grhData);
+            }
         }
 
         /// <summary>
