@@ -6,6 +6,7 @@ using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Extensions;
 using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
@@ -143,16 +144,16 @@ namespace DemoGame.MapEditor
             Position = position;
             Entity = entity;
 
+            GrhData sourceGrhData;
+
             if (transType == TransBoxType.Move)
-            {
-                Area = new Rectangle((int)position.X, (int)position.Y, Move.Width, Move.Height);
-                _grh = new Grh(Move);
-            }
+                sourceGrhData = Move;
             else
-            {
-                Area = new Rectangle((int)position.X, (int)position.Y, Scale.Width, Scale.Height);
-                _grh = new Grh(Scale);
-            }
+                sourceGrhData = Scale;
+
+            var size = sourceGrhData.Size;
+            Area = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+            _grh = new Grh(sourceGrhData);
         }
 
         /// <summary>
@@ -189,8 +190,8 @@ namespace DemoGame.MapEditor
             _move = moveIconData;
             _scale = sizeIconData;
 
-            _moveSize = new Vector2(moveIconData.Width, moveIconData.Height);
-            _scaleSize = new Vector2(_scale.Width, _scale.Height);
+            _moveSize = moveIconData.Size;
+            _scaleSize = _scale.Size;
         }
 
         /// <summary>
@@ -218,32 +219,36 @@ namespace DemoGame.MapEditor
             Vector2 min = entity.CB.Min;
             Vector2 max = entity.CB.Max;
 
+            var halfScaleSize = ScaleSize / 2f;
+
             // Find the center of the sides for the resize and move icons
-            float sizeCenterX = (float)Math.Round(min.X + (entity.CB.Width / 2f) - (Scale.Width / 2f));
-            float sizeCenterY = (float)Math.Round(min.Y + (entity.CB.Height / 2f) - (Scale.Height / 2f));
-            float moveCenterX = (float)Math.Round(min.X + (entity.CB.Width / 2f) - (Move.Width / 2f));
+            Vector2 sizeCenter = min + (entity.CB.Size / 2f) - halfScaleSize;
+            sizeCenter = sizeCenter.Round();
+
+            float moveCenterX = min.X + (entity.CB.Width / 2f) - (MoveSize.X / 2f);
+            moveCenterX = (float)Math.Round(moveCenterX);
 
             // Move box
             ret.Add(new TransBox(TransBoxType.Move, entity, new Vector2(moveCenterX, min.Y - Move.Height - 8)));
 
             // Four corners
-            ret.Add(new TransBox(TransBoxType.TopLeft, entity, new Vector2(min.X - Scale.Width, min.Y - Scale.Height)));
-            ret.Add(new TransBox(TransBoxType.TopRight, entity, new Vector2(max.X, min.Y - Scale.Height)));
-            ret.Add(new TransBox(TransBoxType.BottomLeft, entity, new Vector2(min.X - Scale.Width, max.Y)));
+            ret.Add(new TransBox(TransBoxType.TopLeft, entity, new Vector2(min.X - ScaleSize.X, min.Y - Scale.Height)));
+            ret.Add(new TransBox(TransBoxType.TopRight, entity, new Vector2(max.X, min.Y - ScaleSize.Y)));
+            ret.Add(new TransBox(TransBoxType.BottomLeft, entity, new Vector2(min.X - ScaleSize.X, max.Y)));
             ret.Add(new TransBox(TransBoxType.BottomRight, entity, max));
 
             // Horizontal sides
-            if (entity.CB.Width > Scale.Width + 4)
+            if (entity.CB.Width > ScaleSize.X + 4)
             {
-                ret.Add(new TransBox(TransBoxType.Top, entity, new Vector2(sizeCenterX, min.Y - Scale.Height)));
-                ret.Add(new TransBox(TransBoxType.Bottom, entity, new Vector2(sizeCenterX, max.Y)));
+                ret.Add(new TransBox(TransBoxType.Top, entity, new Vector2(sizeCenter.X, min.Y - ScaleSize.Y)));
+                ret.Add(new TransBox(TransBoxType.Bottom, entity, new Vector2(sizeCenter.X, max.Y)));
             }
 
             // Veritcal sides
-            if (entity.CB.Height > Scale.Height + 4)
+            if (entity.CB.Height > ScaleSize.Y + 4)
             {
-                ret.Add(new TransBox(TransBoxType.Left, entity, new Vector2(min.X - Scale.Width, sizeCenterY)));
-                ret.Add(new TransBox(TransBoxType.Right, entity, new Vector2(max.X, sizeCenterY)));
+                ret.Add(new TransBox(TransBoxType.Left, entity, new Vector2(min.X - ScaleSize.X, sizeCenter.Y)));
+                ret.Add(new TransBox(TransBoxType.Right, entity, new Vector2(max.X, sizeCenter.Y)));
             }
 
             return ret;

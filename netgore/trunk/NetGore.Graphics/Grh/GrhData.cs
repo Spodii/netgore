@@ -117,6 +117,30 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the zero-base source pixel position (top-left corner) for a single frame GrhData.
+        /// </summary>
+        public Vector2 Position
+        {
+            get
+            {
+                ValidateTexture();
+                return new Vector2(_sourceRect.Left, _sourceRect.Top);
+            }
+        }
+
+        /// <summary>
+        /// Gets the source pixel size for a single frame GrhData.
+        /// </summary>
+        public Vector2 Size
+        {
+            get
+            {
+                ValidateTexture();
+                return new Vector2(_sourceRect.Width, _sourceRect.Height);
+            }
+        }
+
+        /// <summary>
         /// Gets the speed multiplier of the Grh animation where each frame lasts "Speed" milliseconds.
         /// </summary>
         public float Speed
@@ -143,7 +167,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the pixel width for a single frame Grh (SourceRect.Width)
+        /// Gets the pixel width for a single frame GrhData.
         /// </summary>
         public int Width
         {
@@ -155,7 +179,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the pixel X coordinate for a single frame Grh (SourceRect.X)
+        /// Gets the pixel X coordinate for a single frame GrhData.
         /// </summary>
         public int X
         {
@@ -168,7 +192,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the pixel Y coordinate for a single frame Grh (SourceRect.Y)
+        /// Gets the pixel Y coordinate for a single frame GrhData.
         /// </summary>
         public int Y
         {
@@ -405,8 +429,8 @@ namespace NetGore.Graphics
             if (_category == category && _title == title)
                 return;
 
-            var oldCategory = _category;
-            var oldTitle = _title;
+            string oldCategory = _category;
+            string oldTitle = _title;
 
             // Set the new values
             _category = category;
