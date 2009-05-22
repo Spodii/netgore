@@ -103,10 +103,6 @@ namespace DemoGame.MapEditor
             if (txtTexture.Text.Length > 0)
                 txtTexture.Text = txtTexture.Text.Replace('\\', '/');
 
-            // Move the array index to the new index
-            GrhInfo.GrhDatas.RemoveAt(_gd.GrhIndex);
-            GrhInfo.GrhDatas[newIndex] = _gd;
-
             // Set the information
             if (radioStationary.Checked)
             {
