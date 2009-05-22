@@ -185,16 +185,11 @@ namespace NetGore.Graphics
         /// <param name="dest">Top-left corner pixel of the destination.</param>
         public void Draw(SpriteBatch sb, Vector2 dest)
         {
-            if (sb == null)
-                throw new ArgumentNullException("sb");
-            if (sb.IsDisposed)
-                throw new ArgumentException("Specified SpriteBatch is disposed.", "sb");
+            if (!CanDrawGrh(sb))
+                return;
 
-            if (GrhData != null)
-            {
-                Round(ref dest);
-                sb.Draw(Texture, dest, Source, Color.White);
-            }
+            Round(ref dest);
+            sb.Draw(Texture, dest, Source, Color.White);
         }
 
         /// <summary>
@@ -206,16 +201,11 @@ namespace NetGore.Graphics
         /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
         public void Draw(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect)
         {
-            if (sb == null)
-                throw new ArgumentNullException("sb");
-            if (sb.IsDisposed)
-                throw new ArgumentException("Specified SpriteBatch is disposed.", "sb");
+            if (!CanDrawGrh(sb))
+                return;
 
-            if (GrhData != null)
-            {
-                Round(ref dest);
-                sb.Draw(Texture, dest, Source, color, 0, Vector2.Zero, 1.0f, effect, 0);
-            }
+            Round(ref dest);
+            sb.Draw(Texture, dest, Source, color, 0, Vector2.Zero, 1.0f, effect, 0);
         }
 
         /// <summary>
@@ -231,16 +221,11 @@ namespace NetGore.Graphics
         public void Draw(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
                          float scale)
         {
-            if (sb == null)
-                throw new ArgumentNullException("sb");
-            if (sb.IsDisposed)
-                throw new ArgumentException("Specified SpriteBatch is disposed.", "sb");
+            if (!CanDrawGrh(sb))
+                return;
 
-            if (GrhData != null)
-            {
-                Round(ref dest);
-                sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect, 0);
-            }
+            Round(ref dest);
+            sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect, 0);
         }
 
         /// <summary>
@@ -256,16 +241,11 @@ namespace NetGore.Graphics
         public void Draw(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
                          Vector2 scale)
         {
-            if (sb == null)
-                throw new ArgumentNullException("sb");
-            if (sb.IsDisposed)
-                throw new ArgumentException("Specified SpriteBatch is disposed.", "sb");
+            if (!CanDrawGrh(sb))
+                return;
 
-            if (GrhData != null)
-            {
-                Round(ref dest);
-                sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect, 0);
-            }
+            Round(ref dest);
+            sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect, 0);
         }
 
         /// <summary>
@@ -279,86 +259,10 @@ namespace NetGore.Graphics
         /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
         public void Draw(SpriteBatch sb, Rectangle dest, Color color, SpriteEffects effect, float rotation, Vector2 origin)
         {
-            if (sb == null)
-                throw new ArgumentNullException("sb");
-            if (sb.IsDisposed)
-                throw new ArgumentException("Specified SpriteBatch is disposed.", "sb");
+            if (!CanDrawGrh(sb))
+                return;
 
-            if (GrhData != null)
-                sb.Draw(Texture, dest, Source, color, rotation, origin, effect, 0);
-        }
-
-        /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
-        /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
-        /// <param name="dest">Top-left corner pixel of the destination.</param>
-        public void DrawUnrounded(SpriteBatch sb, Vector2 dest)
-        {
-            if (sb == null)
-                throw new ArgumentNullException("sb");
-            if (sb.IsDisposed)
-                throw new ArgumentException("Specified SpriteBatch is disposed.", "sb");
-
-            if (GrhData != null)
-                sb.Draw(Texture, dest, Source, Color.White);
-        }
-
-        /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
-        /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
-        /// <param name="dest">Top-left corner pixel of the destination.</param>
-        /// <param name="color">Color of the sprite (default Color.White).</param>
-        public void DrawUnrounded(SpriteBatch sb, Vector2 dest, Color color)
-        {
-            if (sb == null)
-                throw new ArgumentNullException("sb");
-            if (sb.IsDisposed)
-                throw new ArgumentException("Specified SpriteBatch is disposed.", "sb");
-
-            if (GrhData != null)
-                sb.Draw(Texture, dest, Source, color);
-        }
-
-        /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
-        /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
-        /// <param name="dest">Top-left corner pixel of the destination.</param>
-        /// <param name="color">Color of the sprite (default Color.White).</param>
-        /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
-        public void DrawUnrounded(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect)
-        {
-            if (sb == null)
-                throw new ArgumentNullException("sb");
-            if (sb.IsDisposed)
-                throw new ArgumentException("Specified SpriteBatch is disposed.", "sb");
-
-            if (GrhData != null)
-                sb.Draw(Texture, dest, Source, color, 0, Vector2.Zero, 1.0f, effect, 0);
-        }
-
-        /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
-        /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
-        /// <param name="dest">Top-left corner pixel of the destination.</param>
-        /// <param name="color">Color of the sprite (default Color.White).</param>
-        /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
-        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin (default 0).</param>
-        /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
-        /// <param name="scale">Uniform multiply by which to scale the width and height.</param>
-        public void DrawUnrounded(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
-                                  float scale)
-        {
-            if (sb == null)
-                throw new ArgumentNullException("sb");
-            if (sb.IsDisposed)
-                throw new ArgumentException("Specified SpriteBatch is disposed.", "sb");
-
-            if (GrhData != null)
-                sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect, 0);
+            sb.Draw(Texture, dest, Source, color, rotation, origin, effect, 0);
         }
 
         /// <summary>
@@ -490,6 +394,53 @@ namespace NetGore.Graphics
             _frame = tmpFrame;
         }
 
+        /// <summary>
+        /// Performs a detailed check to ensure the Grh can be drawn without problem. This should be called before
+        /// any drawing is done!
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <returns>True if it is safe for the Grh to draw to the <paramref name="spriteBatch"/>, else false.</returns>
+        bool CanDrawGrh(SpriteBatch spriteBatch)
+        {
+            // Invalid GrhData
+            if (GrhData == null)
+            {
+                const string errmsg = "Failed to render Grh - GrhData is null!";
+                if (log.IsWarnEnabled)
+                    log.Warn(errmsg);
+                return false;
+            }
+
+            // Invalid texture
+            if (Texture == null)
+            {
+                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - GrhData returning null texture for `{3}`!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex, GrhData.TextureName);
+                return false;
+            }
+
+            // Invalid SpriteBatch
+            if (spriteBatch == null)
+            {
+                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - SpriteBatch is null!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex);
+                return false;
+            }
+
+            if (spriteBatch.IsDisposed)
+            {
+                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - SpriteBatch is disposed!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex);
+                return false;
+            }
+
+            // All is good
+            return true;
+        }
+
         #region ISprite Members
 
         /// <summary>
@@ -516,16 +467,10 @@ namespace NetGore.Graphics
         /// <param name="color">Color of the sprite (default Color.White).</param>
         public void Draw(SpriteBatch sb, Vector2 dest, Color color)
         {
-            if (sb == null)
-                throw new ArgumentNullException("sb");
-            if (sb.IsDisposed)
-                throw new ArgumentException("Specified SpriteBatch is disposed.", "sb");
+            if (!CanDrawGrh(sb))
+                return;
 
-            if (GrhData != null)
-            {
-                Round(ref dest);
-                sb.Draw(Texture, dest, Source, color);
-            }
+            sb.Draw(Texture, dest, Source, color);
         }
 
         /// <summary>
@@ -536,15 +481,76 @@ namespace NetGore.Graphics
         /// <param name="color">Color of the sprite (default Color.White).</param>
         public void Draw(SpriteBatch sb, Rectangle dest, Color color)
         {
-            if (sb == null)
-                throw new ArgumentNullException("sb");
-            if (sb.IsDisposed)
-                throw new ArgumentException("Specified SpriteBatch is disposed.", "sb");
+            if (!CanDrawGrh(sb))
+                return;
 
-            if (GrhData != null)
-                sb.Draw(Texture, dest, Source, color);
+            sb.Draw(Texture, dest, Source, color);
         }
 
         #endregion
+
+
+        /*
+        /// <summary>
+        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
+        /// </summary>
+        /// <param name="sb">SpriteBatch to add the draw to.</param>
+        /// <param name="dest">Top-left corner pixel of the destination.</param>
+        public void DrawUnrounded(SpriteBatch sb, Vector2 dest)
+        {
+            if (!CanDrawGrh(sb))
+                return;
+
+            sb.Draw(Texture, dest, Source, Color.White);
+        }
+
+        /// <summary>
+        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
+        /// </summary>
+        /// <param name="sb">SpriteBatch to add the draw to.</param>
+        /// <param name="dest">Top-left corner pixel of the destination.</param>
+        /// <param name="color">Color of the sprite (default Color.White).</param>
+        public void DrawUnrounded(SpriteBatch sb, Vector2 dest, Color color)
+        {
+            if (!CanDrawGrh(sb))
+                return;
+
+            sb.Draw(Texture, dest, Source, color);
+        }
+
+        /// <summary>
+        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
+        /// </summary>
+        /// <param name="sb">SpriteBatch to add the draw to.</param>
+        /// <param name="dest">Top-left corner pixel of the destination.</param>
+        /// <param name="color">Color of the sprite (default Color.White).</param>
+        /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
+        public void DrawUnrounded(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect)
+        {
+            if (!CanDrawGrh(sb))
+                return;
+
+            sb.Draw(Texture, dest, Source, color, 0, Vector2.Zero, 1.0f, effect, 0);
+        }
+
+        /// <summary>
+        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
+        /// </summary>
+        /// <param name="sb">SpriteBatch to add the draw to.</param>
+        /// <param name="dest">Top-left corner pixel of the destination.</param>
+        /// <param name="color">Color of the sprite (default Color.White).</param>
+        /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
+        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin (default 0).</param>
+        /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
+        /// <param name="scale">Uniform multiply by which to scale the width and height.</param>
+        public void DrawUnrounded(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
+                                  float scale)
+        {
+            if (!CanDrawGrh(sb))
+                return;
+                
+            sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect, 0);
+        }
+        */
     }
 }

@@ -58,6 +58,10 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core">
@@ -70,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutomaticGrhUpdater.cs" />
+    <Compile Include="EditorColors.cs" />
     <Compile Include="GrhTreeView\GrhTreeNodeMouseClickEventArgs.cs" />
     <Compile Include="GrhTreeView\GrhTreeView.cs">
       <SubType>Component</SubType>
@@ -77,12 +82,20 @@
     <Compile Include="GrhTreeView\GrhTreeNode.cs" />
     <Compile Include="GrhTreeView\GrhTreeViewCancelEventArgs.cs" />
     <Compile Include="GrhTreeView\GrhTreeViewEventArgs.cs" />
+    <Compile Include="MissingTexturesForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MissingTexturesForm.Designer.cs">
+      <DependentUpon>MissingTexturesForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="TextureHashCollection.cs" />
+    <Compile Include="ImageHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
@@ -108,6 +121,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GrhTreeView\Folder.png" />
+    <EmbeddedResource Include="MissingTexturesForm.resx">
+      <DependentUpon>MissingTexturesForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <SubType>Designer</SubType>
       <Generator>ResXFileCodeGenerator</Generator>

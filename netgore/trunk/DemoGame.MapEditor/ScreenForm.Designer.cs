@@ -61,6 +61,8 @@ namespace DemoGame.MapEditor
             this.tabTeleports = new System.Windows.Forms.TabPage();
             this.btnTeleportNew = new System.Windows.Forms.Button();
             this.gbSelectedTeleporter = new System.Windows.Forms.GroupBox();
+            this.txtTeleportMap = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
             this.txtTeleportHeight = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.txtTeleportWidth = new System.Windows.Forms.TextBox();
@@ -101,8 +103,6 @@ namespace DemoGame.MapEditor
             this.picToolWalls = new System.Windows.Forms.PictureBox();
             this.picToolSelect = new System.Windows.Forms.PictureBox();
             this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
-            this.txtTeleportMap = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
             this.tcMenu.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.MapSizeGroupBox.SuspendLayout();
@@ -425,6 +425,23 @@ namespace DemoGame.MapEditor
             this.gbSelectedTeleporter.TabIndex = 5;
             this.gbSelectedTeleporter.TabStop = false;
             this.gbSelectedTeleporter.Text = "Selected Teleporter";
+            // 
+            // txtTeleportMap
+            // 
+            this.txtTeleportMap.Location = new System.Drawing.Point(51, 16);
+            this.txtTeleportMap.Name = "txtTeleportMap";
+            this.txtTeleportMap.Size = new System.Drawing.Size(59, 20);
+            this.txtTeleportMap.TabIndex = 16;
+            this.txtTeleportMap.TextChanged += new System.EventHandler(this.txtTeleportMap_TextChanged);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(15, 19);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(31, 13);
+            this.label11.TabIndex = 15;
+            this.label11.Text = "Map:";
             // 
             // txtTeleportHeight
             // 
@@ -824,23 +841,6 @@ namespace DemoGame.MapEditor
             this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
             this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
-            // 
-            // txtTeleportMap
-            // 
-            this.txtTeleportMap.Location = new System.Drawing.Point(51, 16);
-            this.txtTeleportMap.Name = "txtTeleportMap";
-            this.txtTeleportMap.Size = new System.Drawing.Size(59, 20);
-            this.txtTeleportMap.TabIndex = 16;
-            this.txtTeleportMap.TextChanged += new System.EventHandler(this.txtTeleportMap_TextChanged);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(15, 19);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(31, 13);
-            this.label11.TabIndex = 15;
-            this.label11.Text = "Map:";
             // 
             // ScreenForm
             // 

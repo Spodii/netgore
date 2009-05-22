@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.EditorTools;
 using NetGore.Graphics;
 using Color=System.Drawing.Color;
 using Rectangle=Microsoft.Xna.Framework.Rectangle;
@@ -19,10 +20,6 @@ namespace DemoGame.MapEditor
 {
     public partial class EditGrhForm : Form
     {
-        static readonly Color ColorChanged = Color.Lime;
-        static readonly Color ColorError = Color.Red;
-        static readonly Color ColorNormal = SystemColors.Window;
-
         /// <summary>
         /// Character used to separate directories
         /// </summary>
@@ -120,6 +117,7 @@ namespace DemoGame.MapEditor
                 int w = int.Parse(txtW.Text);
                 int h = int.Parse(txtH.Text);
                 string textureName = txtTexture.Text;
+                bool autoSize = chkAutoSize.Checked;
 
                 // Validate the texture
                 try
@@ -133,6 +131,7 @@ namespace DemoGame.MapEditor
                 }
 
                 _gd.Load(cm, newIndex, textureName, x, y, w, h, txtCategory.Text, txtTitle.Text);
+                _gd.AutomaticSize = autoSize;
             }
             else
             {
@@ -149,7 +148,7 @@ namespace DemoGame.MapEditor
                 if (wall != null)
                     walls.Add(wall);
             }
-            _mapGrhWalls[_gd.GrhIndex] = walls;
+            _mapGrhWalls[_gd] = walls;
 
             // Save
             Enabled = false;
@@ -254,6 +253,7 @@ namespace DemoGame.MapEditor
             txtCategory.Text = _gd.Category;
             txtTitle.Text = _gd.Title;
             txtIndex.Text = _gd.GrhIndex.ToString();
+            chkAutoSize.Checked = _gd.AutomaticSize;
 
             if (_gd.Frames == null || _gd.Frames.Length == 1)
             {
@@ -282,7 +282,7 @@ namespace DemoGame.MapEditor
 
             // Bound walls
             lstWalls.Items.Clear();
-            var walls = _mapGrhWalls[_gd.GrhIndex];
+            var walls = _mapGrhWalls[_gd];
             if (walls != null)
             {
                 foreach (WallEntity wall in walls)
@@ -295,9 +295,9 @@ namespace DemoGame.MapEditor
         void txtCategory_TextChanged(object sender, EventArgs e)
         {
             if (txtCategory.Text == _gd.Category)
-                txtCategory.BackColor = ColorNormal;
+                txtCategory.BackColor = EditorColors.Normal;
             else
-                txtCategory.BackColor = ColorChanged;
+                txtCategory.BackColor = EditorColors.Changed;
         }
 
         void txtH_TextChanged(object sender, EventArgs e)
@@ -306,12 +306,12 @@ namespace DemoGame.MapEditor
             if (uint.TryParse(txtH.Text, out o))
             {
                 if (o == _gd.GetOriginalSource().Height)
-                    txtH.BackColor = ColorNormal;
+                    txtH.BackColor = EditorColors.Normal;
                 else
-                    txtH.BackColor = ColorChanged;
+                    txtH.BackColor = EditorColors.Changed;
             }
             else
-                txtH.BackColor = ColorError;
+                txtH.BackColor = EditorColors.Error;
         }
 
         void txtIndex_TextChanged(object sender, EventArgs e)
@@ -320,29 +320,29 @@ namespace DemoGame.MapEditor
             if (ushort.TryParse(txtIndex.Text, out o))
             {
                 if (o == _gd.GrhIndex)
-                    txtIndex.BackColor = ColorNormal;
+                    txtIndex.BackColor = EditorColors.Normal;
                 else
-                    txtIndex.BackColor = ColorChanged;
+                    txtIndex.BackColor = EditorColors.Changed;
             }
             else
-                txtIndex.BackColor = ColorError;
+                txtIndex.BackColor = EditorColors.Error;
         }
 
         void txtTexture_TextChanged(object sender, EventArgs e)
         {
             if (txtTexture.Text == _gd.TextureName)
-                txtTexture.BackColor = ColorNormal;
+                txtTexture.BackColor = EditorColors.Normal;
             else
             {
                 try
                 {
                     ContentManager cm = _gd.ContentManager;
                     cm.Load<Texture2D>("Grh" + DirSep + txtTexture.Text);
-                    txtTexture.BackColor = ColorChanged;
+                    txtTexture.BackColor = EditorColors.Changed;
                 }
                 catch
                 {
-                    txtTexture.BackColor = ColorError;
+                    txtTexture.BackColor = EditorColors.Error;
                 }
             }
         }
@@ -357,9 +357,9 @@ namespace DemoGame.MapEditor
         void txtTitle_TextChanged(object sender, EventArgs e)
         {
             if (txtTitle.Text == _gd.Title)
-                txtTitle.BackColor = ColorNormal;
+                txtTitle.BackColor = EditorColors.Normal;
             else
-                txtTitle.BackColor = ColorChanged;
+                txtTitle.BackColor = EditorColors.Changed;
         }
 
         void txtW_TextChanged(object sender, EventArgs e)
@@ -368,12 +368,12 @@ namespace DemoGame.MapEditor
             if (uint.TryParse(txtW.Text, out o))
             {
                 if (o == _gd.GetOriginalSource().Width)
-                    txtW.BackColor = ColorNormal;
+                    txtW.BackColor = EditorColors.Normal;
                 else
-                    txtW.BackColor = ColorChanged;
+                    txtW.BackColor = EditorColors.Changed;
             }
             else
-                txtW.BackColor = ColorError;
+                txtW.BackColor = EditorColors.Error;
         }
 
         void txtWallH_TextChanged(object sender, EventArgs e)
@@ -385,11 +385,11 @@ namespace DemoGame.MapEditor
             try
             {
                 wall.Resize(new Vector2(wall.Size.X, float.Parse(txtWallH.Text)));
-                txtWallH.BackColor = ColorNormal;
+                txtWallH.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtWallH.BackColor = ColorError;
+                txtWallH.BackColor = EditorColors.Error;
             }
         }
 
@@ -402,11 +402,11 @@ namespace DemoGame.MapEditor
             try
             {
                 wall.Resize(new Vector2(float.Parse(txtWallW.Text), wall.Size.Y));
-                txtWallW.BackColor = ColorNormal;
+                txtWallW.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtWallW.BackColor = ColorError;
+                txtWallW.BackColor = EditorColors.Error;
             }
         }
 
@@ -419,11 +419,11 @@ namespace DemoGame.MapEditor
             try
             {
                 wall.Position = new Vector2(float.Parse(txtWallX.Text), wall.CB.Min.Y);
-                txtWallX.BackColor = ColorNormal;
+                txtWallX.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtWallX.BackColor = ColorError;
+                txtWallX.BackColor = EditorColors.Error;
             }
         }
 
@@ -436,11 +436,11 @@ namespace DemoGame.MapEditor
             try
             {
                 wall.Position = new Vector2(wall.CB.Min.X, float.Parse(txtWallY.Text));
-                txtWallY.BackColor = ColorNormal;
+                txtWallY.BackColor = EditorColors.Normal;
             }
             catch
             {
-                txtWallY.BackColor = ColorError;
+                txtWallY.BackColor = EditorColors.Error;
             }
         }
 
@@ -450,12 +450,12 @@ namespace DemoGame.MapEditor
             if (uint.TryParse(txtX.Text, out o))
             {
                 if (o == _gd.GetOriginalSource().X)
-                    txtX.BackColor = ColorNormal;
+                    txtX.BackColor = EditorColors.Normal;
                 else
-                    txtX.BackColor = ColorChanged;
+                    txtX.BackColor = EditorColors.Changed;
             }
             else
-                txtX.BackColor = ColorError;
+                txtX.BackColor = EditorColors.Error;
         }
 
         void txtY_TextChanged(object sender, EventArgs e)
@@ -464,12 +464,12 @@ namespace DemoGame.MapEditor
             if (uint.TryParse(txtY.Text, out o))
             {
                 if (o == _gd.GetOriginalSource().Y)
-                    txtY.BackColor = ColorNormal;
+                    txtY.BackColor = EditorColors.Normal;
                 else
-                    txtY.BackColor = ColorChanged;
+                    txtY.BackColor = EditorColors.Changed;
             }
             else
-                txtY.BackColor = ColorError;
+                txtY.BackColor = EditorColors.Error;
         }
 
         bool ValidateCategorization(bool showMessage)
@@ -485,6 +485,16 @@ namespace DemoGame.MapEditor
                 return false;
             }
             return true;
+        }
+
+        private void chkAutoSize_CheckedChanged(object sender, EventArgs e)
+        {
+            bool enabled = !chkAutoSize.Checked;
+
+            txtX.Enabled = enabled;
+            txtY.Enabled = enabled;
+            txtW.Enabled = enabled;
+            txtH.Enabled = enabled;
         }
     }
 }

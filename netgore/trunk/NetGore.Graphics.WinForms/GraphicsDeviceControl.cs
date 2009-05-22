@@ -30,6 +30,7 @@ namespace NetGore.Graphics.WinForms
 
         /// <summary>
         /// Gets an IServiceProvider container
+        /// </summary>
         public ServiceContainer Services
         {
             get { return _services; }

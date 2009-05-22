@@ -30,6 +30,7 @@ namespace NetGore.EditorTools
     /// </summary>
     public class GrhTreeView : TreeView, IComparer
     {
+
         /// <summary>
         /// Timer to update the animated Grhs in the grh tree
         /// </summary>
@@ -107,6 +108,9 @@ namespace NetGore.EditorTools
         {
             AllowDrop = true;
 
+            // Remove all nodes
+            Nodes.Clear();
+
             // Create the animate timer
             _animTimer.Interval = 150;
             _animTimer.Tick += UpdateAnimations;
@@ -119,7 +123,7 @@ namespace NetGore.EditorTools
             TreeViewNodeSorter = this;
 
             // Create the ImageList containing the Grhs as an image
-            Image defaultImg = CreateSolidImage(32, 32, Color.Magenta);
+            Image defaultImg = ImageHelper.CreateSolid(32, 32, Color.Magenta);
             _grhImageList.TransparentColor = Color.Magenta;
             _grhImageList.Images.Add(defaultImg);
             ImageList = _grhImageList;
@@ -135,9 +139,6 @@ namespace NetGore.EditorTools
             DragOver += GrhTreeView_DragOver;
             AfterLabelEdit += GrhTreeView_AfterLabelEdit;
 
-            // Remove all nodes
-            Nodes.Clear();
-
             // Add the folder image
             _grhImageList.Images.Add("_folder", Resources.folder);
             _grhImageList.Images.Add("_folderopen", Resources.folderopen);
@@ -149,6 +150,25 @@ namespace NetGore.EditorTools
             _contextMenu.MenuItems.Add(new MenuItem("Batch Change Texture", MenuClickBatchChangeTexture));
             _contextMenu.MenuItems.Add(new MenuItem("Automatic Update", MenuClickAutomaticUpdate));
             ContextMenu = _contextMenu;
+        }
+
+        void CheckForMissingTextures(ContentManager cm)
+        {
+            // We must create the hash collection since its constructor has the updating goodies, and we want
+            // to make sure that is called
+            TextureHashCollection hashCollection = new TextureHashCollection();
+
+            // Get the GrhDatas with missing textures
+            var missing = GrhInfo.FindMissingTextures();
+            if (missing.Count() == 0)
+                return;
+           
+            // Display a form showing which textures need to be fixed
+            // The GrhTreeView will be disabled until the MissingTexturesForm is closed
+            Enabled = false;
+            var frm = new MissingTexturesForm(hashCollection, missing, cm);
+            frm.FormClosed += delegate { RebuildTree(); Enabled = true; };
+            frm.Show();
         }
 
         void MenuClickEdit(object sender, EventArgs e)
@@ -226,7 +246,16 @@ namespace NetGore.EditorTools
                 try
                 {
                     // Generate the image from the texture
-                    Image img = Texture2DToImage(grh.Texture, grh.X, grh.Y, grh.Width, grh.Height, w, h);
+                    Image img;
+                    try
+                    {
+                        img = ImageHelper.CreateFromTexture(grh.Texture, grh.X, grh.Y, grh.Width, grh.Height, w, h);
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.Fail(ex.ToString());
+                        img = null;
+                    }
 
                     if (img != null)
                     {
@@ -237,6 +266,10 @@ namespace NetGore.EditorTools
                         // Add the new image, apply it to the node
                         _grhImageList.Images.Add(indexStr, img);
                         node.ImageKey = indexStr;
+                    }
+                    else
+                    {
+                        // Debug.Fail("Failed to create image for the GrhData for the GrhTreeView.");
                     }
                 }
                 catch (Exception ex)
@@ -254,9 +287,11 @@ namespace NetGore.EditorTools
             else if (grh.Frames != null)
             {
                 // Grh does not contain a valid texture, but it does have frames, so it must be animated
-                _animTreeNodes.Add(new GrhTreeNode(node, new Grh(grh.GrhIndex, AnimType.Loop, Time)));
+                var nodeGrh = new Grh(grh.GrhIndex, AnimType.Loop, Time);
+                var treeNode = new GrhTreeNode(node, nodeGrh);
+                _animTreeNodes.Add(treeNode);
             }
-
+            
             if (grh.Frames == null)
             {
                 Debug.Fail("This shouldn't happen. :(");
@@ -290,8 +325,9 @@ namespace NetGore.EditorTools
                     node.ToolTipText += "\nSpeed: " + (1f / grh.Speed);
                 }
             }
-            catch (ContentLoadException)
+            catch (ContentLoadException ex)
             {
+                Debug.Fail(ex.ToString());
             }
         }
 
@@ -355,22 +391,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Creates an image with a solid color
-        /// </summary>
-        /// <param name="width">Width of the image</param>
-        /// <param name="height">Height of the image</param>
-        /// <param name="color">Fill color</param>
-        /// <returns>Image filled with the specified color</returns>
-        static Image CreateSolidImage(int width, int height, Color color)
-        {
-            Bitmap bmp = new Bitmap(width, height);
-            bmp.SetResolution(72, 72);
-            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
-            g.DrawRectangle(new Pen(color, width * 2), 0, 0, width, height);
-            return bmp;
-        }
-
-        /// <summary>
         /// Deletes a node from the tree, along with any node under it
         /// </summary>
         /// <param name="root">Root node to delete</param>
@@ -400,7 +420,7 @@ namespace NetGore.EditorTools
                 GrhData gd = GetGrhData(root);
                 if (gd == null)
                     throw new Exception("Failed to find a valid GrhData for node.");
-                GrhInfo.GrhDatas.RemoveAt(gd.GrhIndex);
+                GrhInfo.Delete(gd);
             }
 
             // Remove the node from the tree
@@ -702,10 +722,29 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
+        /// Completely rebuilds the GrhTreeView.
+        /// </summary>
+        public void RebuildTree()
+        {
+            // Clear all nodes
+            Nodes.Clear();
+            _animTreeNodes.Clear();
+
+            // Re-add every GrhData
+            foreach (GrhData grh in GrhInfo.GrhDatas)
+            {
+                AddGrhToTree(grh);
+            }
+        }
+
+        /// <summary>
         /// Generates the tree information. Must be called after GrhInfo.Load().
         /// </summary>
-        public void Initialize()
+        public void Initialize(ContentManager cm)
         {
+            // Check for missing textures
+            CheckForMissingTextures(cm);
+
             // Iterate through all the grhs
             foreach (GrhData grh in GrhInfo.GrhDatas)
             {
@@ -781,69 +820,6 @@ namespace NetGore.EditorTools
                     RemoveEmptyFolders(node);
                 }
             }
-        }
-
-        /// <summary>
-        /// Converts a Texture2D to an image
-        /// </summary>
-        /// <param name="texture">Texture to convert</param>
-        /// <param name="x">Source X</param>
-        /// <param name="y">Source Y</param>
-        /// <param name="width">Source width</param>
-        /// <param name="height">Source height</param>
-        /// <param name="destWidth">Destination width</param>
-        /// <param name="destHeight">Destination height</param>
-        /// <returns>Image representation of the Texture2D</returns>
-        static Image Texture2DToImage(Texture texture, int x, int y, int width, int height, int destWidth, int destHeight)
-        {
-            if (texture == null)
-                return null;
-
-            // Save the texture to a file
-            string filePath = Application.StartupPath + "/temp.png";
-            texture.Save(filePath, ImageFileFormat.Png);
-            if (!File.Exists(filePath))
-                return null;
-
-            Image ret;
-
-            // Open the texture file we saved
-            using (Image tmp = Image.FromStream(new MemoryStream(File.ReadAllBytes(filePath))))
-            {
-                // Delete the file now that it is in memory an as image
-                File.Delete(filePath);
-                MemoryStream fs;
-
-                // Create the bitmap
-                using (Bitmap bmp = new Bitmap(destWidth, destHeight, PixelFormat.Format32bppArgb))
-                {
-                    bmp.SetResolution(72, 72);
-
-                    // Create the graphics from the bitmap
-                    using (System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp))
-                    {
-                        // Clear the canvas with a transparent black
-                        g.Clear(Color.FromArgb(0, 0, 0, 0));
-
-                        // Set some smoothing for the scaling
-                        g.SmoothingMode = SmoothingMode.HighQuality;
-                        g.PixelOffsetMode = PixelOffsetMode.HighQuality;
-                        g.InterpolationMode = InterpolationMode.HighQualityBilinear;
-
-                        // Draw the texture image onto the bitmap
-                        Rectangle srcRect = new Rectangle(x, y, width, height);
-                        Rectangle destRect = new Rectangle(0, 0, Math.Min(destWidth, width), Math.Min(destHeight, height));
-                        g.DrawImage(tmp, destRect, srcRect, GraphicsUnit.Pixel);
-                    }
-                    // Save the bitmap into a memory stream
-                    fs = new MemoryStream();
-                    bmp.Save(fs, ImageFormat.Png);
-                }
-                // Create a new image from the memory stream
-                ret = Image.FromStream(fs);
-            }
-
-            return ret;
         }
 
         /// <summary>
