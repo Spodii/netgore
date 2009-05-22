@@ -394,7 +394,6 @@
       <MapGrh X="576" Y="274" I="7" FG="false" />
       <MapGrh X="876" Y="261" I="7" FG="false" />
       <MapGrh X="1057" Y="213" I="7" FG="false" />
-      <MapGrh X="431" Y="643" I="125" FG="false" />
       <MapGrh X="0" Y="736" I="5" FG="false" />
       <MapGrh X="0" Y="64" I="5" FG="false" />
       <MapGrh X="0" Y="0" I="1" FG="false" />
@@ -402,6 +401,7 @@
       <MapGrh X="224" Y="0" I="3" FG="false" />
       <MapGrh X="0" Y="32" I="5" FG="false" />
       <MapGrh X="224" Y="32" I="5" FG="false" />
+      <MapGrh X="432" Y="642" I="125" FG="false" />
     </MapGrhs>
   </Misc>
 </Map>

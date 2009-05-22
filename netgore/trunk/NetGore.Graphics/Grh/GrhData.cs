@@ -18,6 +18,7 @@ namespace NetGore.Graphics
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         Rectangle _atlasSourceRect;
+        bool _automaticSize = false;
         string _category;
         ContentManager _cm;
         GrhData[] _frames;
@@ -29,14 +30,34 @@ namespace NetGore.Graphics
         string _textureName;
         string _title;
 
-        internal GrhData()
-        {
-        }
-
         /// <summary>
         /// Notifies when either the category or title have been changed
         /// </summary>
-        public event EventHandler OnChangeCategorization;
+        public event EventHandler OnChangeCategorization; // TODO: Use a custom event delegate, not EventHandler
+
+        /// <summary>
+        /// Gets or sets if this GrhData automatically finds the Size by using the whole source texture. Only applies to
+        /// stationary GrhDatas.
+        /// </summary>
+        public bool AutomaticSize
+        {
+            get { return _automaticSize; }
+            set
+            {
+                if (IsAnimated || AutomaticSize == value)
+                    return;
+
+                _automaticSize = value;
+
+                if (AutomaticSize)
+                {
+                    _isUsingAtlas = false;
+                    _texture = null;
+                    ValidateTexture();
+                    _sourceRect = new Rectangle(0, 0, Texture.Width, Texture.Height);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the category of the GrhData (delimited by a period). If the category has not yet
@@ -83,8 +104,16 @@ namespace NetGore.Graphics
             get
             {
                 ValidateTexture();
-                return _isUsingAtlas ? _atlasSourceRect.Height : _sourceRect.Height;
+                return _sourceRect.Height;
             }
+        }
+
+        /// <summary>
+        /// Gets if this GrhData is animated. If false, this is a stationary GrhData.
+        /// </summary>
+        public bool IsAnimated
+        {
+            get { return _frames.Length > 1 && _frames[0] != this; }
         }
 
         /// <summary>
@@ -105,11 +134,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets if this GrhData is animated. If false, this is a stationary GrhData.
-        /// </summary>
-        public bool IsAnimated { get { return _frames.Length > 1 && _frames[0] != this; } }
-
-        /// <summary>
         /// Gets the title of the GrhData. If the category has not yet been set (Load() has not been 
         /// called on this GrhData), this value will be null. Other than that, this value will never be null.
         /// </summary>
@@ -126,7 +150,7 @@ namespace NetGore.Graphics
             get
             {
                 ValidateTexture();
-                return _isUsingAtlas ? _atlasSourceRect.Width : _sourceRect.Width;
+                return _sourceRect.Width;
             }
         }
 
@@ -138,6 +162,7 @@ namespace NetGore.Graphics
             get
             {
                 ValidateTexture();
+
                 return _isUsingAtlas ? _atlasSourceRect.X : _sourceRect.X;
             }
         }
@@ -154,46 +179,9 @@ namespace NetGore.Graphics
             }
         }
 
-        /// <summary>
-        /// Creates a duplicate (deep copy) of the GrhData, using the specified GrhIndex. Either one or both the
-        /// category and name must be different from the original GrhData, since duplicate names and categories
-        /// will raise an exception.
-        /// </summary>
-        /// <param name="newCategory">Category for the duplicate GrhData</param>
-        /// <param name="newTitle">Title for the duplicate GrhData</param>
-        /// <returns>Deep copy of the GrhData</returns>
-        public GrhData Duplicate(string newCategory, string newTitle)
+        internal GrhData()
         {
-            var index = GrhInfo.NextFreeIndex();
-
-            Debug.Assert(GrhInfo.GrhDatas[index] == null, "Slot to use is already in use!");
-
-            GrhData gd = new GrhData
-                          {
-                              _category = newCategory,
-                              _cm = _cm,
-                              _frames = _frames,
-                              _grhIndex = index,
-                              _sourceRect = _sourceRect,
-                              _speed = _speed,
-                              _texture = _texture,
-                              _textureName = _textureName,
-                              _title = newTitle,
-                              _isUsingAtlas = _isUsingAtlas,
-                              _atlasSourceRect = _atlasSourceRect
-                          };
-
-            GrhInfo.GrhDatas[index] = gd;
-
-            return gd;
-        }
-
-        /// <summary>
-        /// Gets the original source rectangle, bypassing any applied atlas
-        /// </summary>
-        public Rectangle GetOriginalSource()
-        {
-            return _sourceRect;
+            // Restrict construction to internal only
         }
 
         /// <summary>
@@ -219,6 +207,40 @@ namespace NetGore.Graphics
             _textureName = newTexture;
 
             ValidateTexture();
+        }
+
+        /// <summary>
+        /// Creates a duplicate (deep copy) of the GrhData, using the specified GrhIndex. Either one or both the
+        /// category and name must be different from the original GrhData, since duplicate names and categories
+        /// will raise an exception.
+        /// </summary>
+        /// <param name="newCategory">Category for the duplicate GrhData</param>
+        /// <param name="newTitle">Title for the duplicate GrhData</param>
+        /// <returns>Deep copy of the GrhData</returns>
+        public GrhData Duplicate(string newCategory, string newTitle)
+        {
+            ushort index = GrhInfo.NextFreeIndex();
+
+            Debug.Assert(GrhInfo.GrhDatas[index] == null, "Slot to use is already in use!");
+
+            GrhData gd = new GrhData
+                         {
+                             _category = newCategory, _cm = _cm, _frames = _frames, _grhIndex = index, _sourceRect = _sourceRect,
+                             _speed = _speed, _texture = _texture, _textureName = _textureName, _title = newTitle,
+                             _isUsingAtlas = _isUsingAtlas, _atlasSourceRect = _atlasSourceRect
+                         };
+
+            GrhInfo.GrhDatas[index] = gd;
+
+            return gd;
+        }
+
+        /// <summary>
+        /// Gets the original source rectangle, bypassing any applied atlas
+        /// </summary>
+        public Rectangle GetOriginalSource()
+        {
+            return _sourceRect;
         }
 
         /// <summary>
@@ -251,8 +273,8 @@ namespace NetGore.Graphics
             // Store some values and references
             _cm = cm;
             _textureName = textureName;
-            _sourceRect = new Rectangle(x, y, width, height);
             _grhIndex = grhIndex;
+            _sourceRect = new Rectangle(x, y, width, height);
 
             // Set the categorization
             SetCategorization(category, title);
@@ -321,17 +343,19 @@ namespace NetGore.Graphics
                 if (SourceRect.Height <= 0)
                     throw new Exception("SourceRect.Height must be > 0.");
 
+                w.WriteElementString("AutomaticSize", AutomaticSize.ToString());
+
                 w.WriteStartElement("Frames");
                 w.WriteAttributeString("Count", "1");
                 w.WriteEndElement();
 
                 w.WriteStartElement("Texture");
                 Rectangle r = GetOriginalSource();
-                w.WriteAttributeString("File", TextureName);
-                w.WriteAttributeString("X", r.X.ToString());
-                w.WriteAttributeString("Y", r.Y.ToString());
-                w.WriteAttributeString("W", r.Width.ToString());
-                w.WriteAttributeString("H", r.Height.ToString());
+                w.WriteElementString("File", TextureName);
+                w.WriteElementString("X", r.X.ToString());
+                w.WriteElementString("Y", r.Y.ToString());
+                w.WriteElementString("W", r.Width.ToString());
+                w.WriteElementString("H", r.Height.ToString());
                 w.WriteEndElement();
             }
             else
@@ -352,8 +376,8 @@ namespace NetGore.Graphics
 
             // Category
             w.WriteStartElement("Category");
-            w.WriteAttributeString("Name", Category);
-            w.WriteAttributeString("Title", Title);
+            w.WriteElementString("Name", Category);
+            w.WriteElementString("Title", Title);
             w.WriteEndElement();
 
             // End <Grh> element
@@ -418,13 +442,21 @@ namespace NetGore.Graphics
             // If the texture is not set or is disposed, request a new one
             if (_texture == null || _texture.IsDisposed)
             {
-                _texture = _cm.Load<Texture2D>("Grh/" + _textureName);
+                // Try to load the texture
+                try
+                {
+                    _texture = _cm.Load<Texture2D>("Grh/" + _textureName);
+                }
+                catch (ContentLoadException ex)
+                {
+                    const string errmsg = "Failed to load GrhData `{0}.{1}` [{2}] : {3}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, Category, Title, GrhIndex, ex);
+                }
 
                 // If we were using an atlas, we'll have to remove it because the texture was reloaded
                 _isUsingAtlas = false;
             }
-
-            Debug.Assert(_texture != null && !_texture.IsDisposed, "Why the hell is the texture still invalid?");
         }
 
         #region ITextureAtlas Members

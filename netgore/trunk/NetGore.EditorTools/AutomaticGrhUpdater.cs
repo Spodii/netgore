@@ -16,7 +16,10 @@ namespace NetGore.EditorTools
     /// </summary>
     public static class AutomaticGrhUpdater
     {
-        public const int DefaultAnimationSpeed = 500;
+        /// <summary>
+        /// The default speed of a new animation when no speed is specified.
+        /// </summary>
+        public const int DefaultAnimationSpeed = 400;
 
         /// <summary>
         /// Finds the directories used to store the frames for automatic animations.
@@ -101,8 +104,7 @@ namespace NetGore.EditorTools
                 // Ensure the GrhData exists
                 if (gd == null)
                 {
-                    // TODO: Report some kind of error message
-                    Debug.Fail("oh fuckcakes");
+                    Debug.Fail(string.Format("Failed to find frames for GrhData `{0}.{1}`", category, title));
                     return null;
                 }
 
@@ -234,8 +236,7 @@ namespace NetGore.EditorTools
                 DirectoryInfo parentDir = Directory.GetParent(frameDirInfo.Dir);
                 if (parentDir == null)
                 {
-                    // TODO: Error message if, for some reason, GetParent fails
-                    Debug.Fail("Gah!");
+                    Debug.Fail(string.Format("Directory.GetParent() failed on `{0}`", frameDirInfo.Dir));
                     continue;
                 }
 
@@ -254,6 +255,7 @@ namespace NetGore.EditorTools
 
                 // Create the GrhData
                 GrhData gd = GrhInfo.CreateGrhData(indices, frameDirInfo.Speed, category, title);
+                gd.AutomaticSize = true;
                 ret.Add(gd);
             }
 
@@ -302,6 +304,7 @@ namespace NetGore.EditorTools
 
                 // Create the GrhData
                 GrhData gd = GrhInfo.CreateGrhData(cm, category, title, relative, Vector2.Zero, size);
+                gd.AutomaticSize = true;
                 ret.Add(gd);
             }
 
@@ -319,14 +322,14 @@ namespace NetGore.EditorTools
             public readonly string Dir;
 
             /// <summary>
-            /// Title to give the animation.
-            /// </summary>
-            public readonly string Title;
-
-            /// <summary>
             /// Speed to give the animation.
             /// </summary>
             public readonly int Speed;
+
+            /// <summary>
+            /// Title to give the animation.
+            /// </summary>
+            public readonly string Title;
 
             /// <summary>
             /// AnimationRegexInfo constructor.

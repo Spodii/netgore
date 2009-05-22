@@ -53,49 +53,6 @@ namespace NetGore.Graphics
             titleDic.Add(gd.Title, gd);
         }
 
-        static GrhData CreateGrhData(ushort grhIndex, ContentManager contentManager, string category, string title, string texture, Vector2 pos,
-            Vector2 size)
-        {
-            if (category == null)
-                category = string.Empty;
-            if (title == null)
-                throw new ArgumentNullException("title");
-
-            category = SanitizeCategory(category);
-
-            GrhData gd = new GrhData();
-            gd.Load(contentManager, grhIndex, texture, (int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y, category, title);
-            GrhDatas[gd.GrhIndex] = gd;
-            return gd;
-        }
-
-        public static string SanitizeCategory(string category)
-        {
-            return category.Replace('/', '.').Replace('\\', '.');
-        }
-
-        public static void SplitCategoryAndTitle(string categoryAndTitle, out string category, out string title)
-        {
-            if (string.IsNullOrEmpty(categoryAndTitle))
-                throw new ArgumentNullException("categoryAndTitle");
-
-            categoryAndTitle = SanitizeCategory(categoryAndTitle);
-
-            int lastSep = categoryAndTitle.LastIndexOf('.');
-            if (lastSep == -1)
-            {
-                // If there is no seperator, we'll just assume there is no category and the whole thing is the title
-                category = string.Empty;
-                title = categoryAndTitle;
-            }
-            else
-            {
-                // Split at the last separator
-                category = categoryAndTitle.Substring(0, lastSep);
-                title = categoryAndTitle.Substring(lastSep + 1);
-            }
-        }
-
         public static GrhData CreateGrhData(ushort[] frames, float speed, string category, string title)
         {
             if (category == null)
@@ -112,17 +69,70 @@ namespace NetGore.Graphics
             return gd;
         }
 
-        public static GrhData CreateGrhData(ContentManager contentManager, string category, string title, string texture, Vector2 pos,
-            Vector2 size)
+        public static GrhData CreateGrhData(ContentManager contentManager, string category, string title, string texture,
+                                            Vector2 pos, Vector2 size)
         {
             return CreateGrhData(NextFreeIndex(), contentManager, category, title, texture, pos, size);
         }
 
         public static GrhData CreateGrhData(ContentManager contentManager, string category)
         {
-            var index = NextFreeIndex();
+            ushort index = NextFreeIndex();
             string title = "tmp" + index;
             return CreateGrhData(NextFreeIndex(), contentManager, category, title, string.Empty, Vector2.Zero, Vector2.Zero);
+        }
+
+        static GrhData CreateGrhData(ushort grhIndex, ContentManager contentManager, string category, string title, string texture,
+                                     Vector2 pos, Vector2 size)
+        {
+            if (category == null)
+                category = string.Empty;
+            if (title == null)
+                throw new ArgumentNullException("title");
+
+            category = SanitizeCategory(category);
+
+            GrhData gd = new GrhData();
+            gd.Load(contentManager, grhIndex, texture, (int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y, category, title);
+            GrhDatas[gd.GrhIndex] = gd;
+            return gd;
+        }
+
+        /// <summary>
+        /// Deletes a GrhData.
+        /// </summary>
+        /// <param name="grhData">GrhData to delete.</param>
+        public static void Delete(GrhData grhData)
+        {
+            if (grhData == null)
+                throw new ArgumentNullException("grhData");
+
+            Delete(grhData.GrhIndex);
+        }
+
+        /// <summary>
+        /// Deletes a GrhData.
+        /// </summary>
+        /// <param name="grhIndex">Index of the GrhData to delete.</param>
+        public static void Delete(int grhIndex)
+        {
+            if (!GrhDatas.CanGet(grhIndex))
+                return;
+
+            GrhDatas.RemoveAt(grhIndex);
+        }
+
+        /// <summary>
+        /// Finds all of the GrhDatas that reference a texture that does not exist.
+        /// </summary>
+        /// <returns>IEnumerable of all of the GrhDatas that reference a texture that does not exist.</returns>
+        public static IEnumerable<GrhData> FindMissingTextures()
+        {
+            var nonanimated = GrhDatas.Where(x => !x.IsAnimated);
+            var invalidTexture =
+                nonanimated.Where(
+                    x => string.IsNullOrEmpty(x.TextureName) || !File.Exists(ContentPaths.Build.Grhs.Join(x.TextureName) + ".xnb"));
+            return invalidTexture;
         }
 
         /// <summary>
@@ -190,6 +200,53 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Checks if the specified Grh texture exists.
+        /// </summary>
+        /// <param name="textureName">Name of the Grh texture to check.</param>
+        /// <returns>True if a texture with the specified Grh texture exists.</returns>
+        public static bool GrhTextureExists(string textureName)
+        {
+            if (string.IsNullOrEmpty(textureName))
+                throw new ArgumentNullException("textureName");
+
+            string filePath = GrhTextureNameToFile(textureName);
+
+            return File.Exists(filePath);
+        }
+
+        /// <summary>
+        /// Gets the texture name from the corresponding file.
+        /// </summary>
+        /// <param name="filePath">Path of the file to get the texture name for.</param>
+        /// <returns>The texture name from the corresponding file.</returns>
+        public static string GrhTextureNameFromFile(string filePath)
+        {
+            if (string.IsNullOrEmpty(filePath))
+                throw new ArgumentNullException("filePath");
+
+            string grhsPath = ContentPaths.Build.Grhs;
+
+            // Trim off the start (absolute directory) and last 4 characters (file suffix: ".xnb")
+            string textureName = filePath.Substring(grhsPath.Length, filePath.Length - grhsPath.Length - 4);
+            textureName.Replace('\\', '/');
+            return textureName;
+        }
+
+        /// <summary>
+        /// Gets the file name for the corresponding Grh texture.
+        /// </summary>
+        /// <param name="textureName">Name of the Grh texture to get the file name for.</param>
+        /// <returns>The file name for the corresponding Grh texture.</returns>
+        public static string GrhTextureNameToFile(string textureName)
+        {
+            if (string.IsNullOrEmpty(textureName))
+                throw new ArgumentNullException("textureName");
+
+            textureName = textureName.Replace('/', Path.DirectorySeparatorChar);
+            return ContentPaths.Build.Grhs.Join(textureName + ".xnb");
+        }
+
+        /// <summary>
         /// Loads all of the GrhData information
         /// </summary>
         /// <param name="path">Path to the file containing the GrhData information</param>
@@ -240,6 +297,11 @@ namespace NetGore.Graphics
                     int w = int.Parse(dic["Grh.Texture.W"]);
                     int h = int.Parse(dic["Grh.Texture.H"]);
                     currGrh.Load(cm, currGrhIndex, file, x, y, w, h, category, title);
+
+                    bool autoSize = false;
+                    if (dic.ContainsKey("Grh.AutomaticResize"))
+                        autoSize = bool.Parse(dic["Grh.AutomaticResize"]);
+                    currGrh.AutomaticSize = autoSize;
                 }
                 else
                 {
@@ -342,6 +404,11 @@ namespace NetGore.Graphics
                 titleDic.Remove(gd.Title);
         }
 
+        public static string SanitizeCategory(string category)
+        {
+            return category.Replace('/', '.').Replace('\\', '.');
+        }
+
         /// <summary>
         /// Saves all of the GrhData information to the specified file.
         /// </summary>
@@ -395,6 +462,28 @@ namespace NetGore.Graphics
             // Now that the temporary file has been successfully written, replace the existing file with it
             File.Delete(path);
             File.Move(tempPath, path);
+        }
+
+        public static void SplitCategoryAndTitle(string categoryAndTitle, out string category, out string title)
+        {
+            if (string.IsNullOrEmpty(categoryAndTitle))
+                throw new ArgumentNullException("categoryAndTitle");
+
+            categoryAndTitle = SanitizeCategory(categoryAndTitle);
+
+            int lastSep = categoryAndTitle.LastIndexOf('.');
+            if (lastSep == -1)
+            {
+                // If there is no seperator, we'll just assume there is no category and the whole thing is the title
+                category = string.Empty;
+                title = categoryAndTitle;
+            }
+            else
+            {
+                // Split at the last separator
+                category = categoryAndTitle.Substring(0, lastSep);
+                title = categoryAndTitle.Substring(lastSep + 1);
+            }
         }
     }
 }

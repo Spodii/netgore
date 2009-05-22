@@ -74,7 +74,7 @@ namespace DemoGame.MapEditor
             foreach (MapGrh mg in mapGrhs)
             {
                 // Grab the List for the given MapGrh
-                var mgWalls = this[mg.Grh.GrhData.GrhIndex];
+                var mgWalls = this[mg.Grh.GrhData];
                 if (mgWalls != null)
                 {
                     // Create a new instance of each of the walls and add it to the return List

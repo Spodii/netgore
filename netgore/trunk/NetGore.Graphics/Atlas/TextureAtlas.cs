@@ -345,13 +345,18 @@ namespace NetGore.Graphics
                     sb.Begin(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.None);
                     foreach (AtlasNode item in items)
                     {
-                        Rectangle srcRect = item.ITextureAtlas.SourceRect;
-
-                        // Image
+                        // Grab the texture and make sure it is valid
                         Texture2D tex = item.ITextureAtlas.Texture;
                         if (tex == null || tex.IsDisposed)
-                            throw new Exception(string.Format("Texture for atlas item `{0}` is null or disposed.", item));
+                        {
+                            const string errmsg = "Failed to add item `{0}` to atlas - texture is null or disposed.";
+                            if (log.IsErrorEnabled)
+                                log.ErrorFormat(errmsg, item);
+                            continue;
+                        }
 
+                        // Draw the actual image (raw, no borders)
+                        Rectangle srcRect = item.ITextureAtlas.SourceRect;
                         Vector2 dest = new Vector2(item.Rect.X + Padding, item.Y + Padding);
                         Rectangle src = srcRect;
                         sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);

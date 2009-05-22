@@ -73,6 +73,7 @@ namespace DemoGame.MapEditor
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
             this.lstWalls = new System.Windows.Forms.ListBox();
+            this.chkAutoSize = new System.Windows.Forms.CheckBox();
             this.gbCategorization.SuspendLayout();
             this.gbStationary.SuspendLayout();
             this.gbAnimated.SuspendLayout();
@@ -148,6 +149,7 @@ namespace DemoGame.MapEditor
             // 
             // gbStationary
             // 
+            this.gbStationary.Controls.Add(this.chkAutoSize);
             this.gbStationary.Controls.Add(this.txtH);
             this.gbStationary.Controls.Add(this.label7);
             this.gbStationary.Controls.Add(this.txtW);
@@ -474,6 +476,17 @@ namespace DemoGame.MapEditor
             this.lstWalls.TabIndex = 1;
             this.lstWalls.SelectedIndexChanged += new System.EventHandler(this.lstWalls_SelectedIndexChanged);
             // 
+            // chkAutoSize
+            // 
+            this.chkAutoSize.AutoSize = true;
+            this.chkAutoSize.Location = new System.Drawing.Point(6, 99);
+            this.chkAutoSize.Name = "chkAutoSize";
+            this.chkAutoSize.Size = new System.Drawing.Size(96, 17);
+            this.chkAutoSize.TabIndex = 15;
+            this.chkAutoSize.Text = "Automatic Size";
+            this.chkAutoSize.UseVisualStyleBackColor = true;
+            this.chkAutoSize.CheckedChanged += new System.EventHandler(this.chkAutoSize_CheckedChanged);
+            // 
             // EditGrhForm
             // 
             this.ClientSize = new System.Drawing.Size(395, 339);
@@ -548,6 +561,7 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Label label16;
         private System.Windows.Forms.Label label15;
         internal System.Windows.Forms.ListBox lstWalls;
+        private System.Windows.Forms.CheckBox chkAutoSize;
 
     }
 }

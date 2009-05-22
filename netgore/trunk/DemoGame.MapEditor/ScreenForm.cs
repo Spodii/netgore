@@ -51,6 +51,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         const Keys _cameraUp = Keys.W;
 
+        // TODO: Replace with EditorColors
         static readonly Color _colorChanged = Color.Lime;
         static readonly Color _colorError = Color.Red;
         static readonly Color _colorNormal = SystemColors.Window;
@@ -528,7 +529,7 @@ namespace DemoGame.MapEditor
                     if (!_camera.InView(mg.Grh, mg.Destination))
                         continue;
 
-                    var boundWalls = _mapGrhWalls[mg.Grh.GrhData.GrhIndex];
+                    var boundWalls = _mapGrhWalls[mg.Grh.GrhData];
                     if (boundWalls == null)
                         continue;
 
@@ -799,7 +800,7 @@ namespace DemoGame.MapEditor
 
             // Load the Grh information
             GrhInfo.Load(ContentPaths.Dev.Data.Join("grhdata.xml"), _content);
-            treeGrhs.Initialize();
+            treeGrhs.Initialize(_content);
             TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
 
             //Hook GrhTreeView context menu click events

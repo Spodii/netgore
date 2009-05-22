@@ -17,10 +17,6 @@ namespace DemoGame.MapEditor
 {
     public partial class BatchRenameTextureForm : Form
     {
-        static readonly Color ColorChanged = Color.Lime;
-        static readonly Color ColorError = Color.Red;
-        static readonly Color ColorNormal = SystemColors.Window;
-
         /// <summary>
         /// Character used to separate directories
         /// </summary>
@@ -158,7 +154,7 @@ namespace DemoGame.MapEditor
             if (txtCurrent.Text == (string)lstTextures.SelectedItem)
             {
                 // Same as original texture
-                txtCurrent.BackColor = ColorNormal;
+                txtCurrent.BackColor = EditorColors.Normal;
                 picNewTexture.ImageLocation = picOldTexture.ImageLocation;
             }
             else
@@ -168,12 +164,12 @@ namespace DemoGame.MapEditor
                 // Try to change to the specified texture
                 if (IsValidTexture(texturePath))
                 {
-                    txtCurrent.BackColor = ColorChanged;
+                    txtCurrent.BackColor = EditorColors.Changed;
                     picNewTexture.ImageLocation = ContentPaths.Dev.Grhs.Join(txtCurrent.Text + ".png");
                 }
                 else
                 {
-                    txtCurrent.BackColor = ColorError;
+                    txtCurrent.BackColor = EditorColors.Error;
                     picNewTexture.ImageLocation = string.Empty;
                 }
             }
