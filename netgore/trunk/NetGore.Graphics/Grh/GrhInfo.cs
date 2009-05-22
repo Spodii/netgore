@@ -368,11 +368,9 @@ namespace NetGore.Graphics
         /// <summary>
         /// Handles when the category of a GrhData in the DArray changes
         /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">Event args</param>
-        static void OnChangeCategorization(object sender, EventArgs e)
+        static void OnChangeCategorization(GrhData sender, string oldCategory, string oldTitle)
         {
-            GrhData gd = sender as GrhData;
+            GrhData gd = sender;
             if (gd == null)
             {
                 Debug.Fail("gd is null.");

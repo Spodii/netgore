@@ -33,7 +33,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Notifies when either the category or title have been changed
         /// </summary>
-        public event EventHandler OnChangeCategorization; // TODO: Use a custom event delegate, not EventHandler
+        public event ChangeCategorizationHandler OnChangeCategorization;
 
         /// <summary>
         /// Gets or sets if this GrhData automatically finds the Size by using the whole source texture. Only applies to
@@ -405,13 +405,16 @@ namespace NetGore.Graphics
             if (_category == category && _title == title)
                 return;
 
+            var oldCategory = _category;
+            var oldTitle = _title;
+
             // Set the new values
             _category = category;
             _title = title;
 
             // Raise the event
             if (OnChangeCategorization != null)
-                OnChangeCategorization(this, null);
+                OnChangeCategorization(this, oldCategory, oldTitle);
         }
 
         /// <summary>
