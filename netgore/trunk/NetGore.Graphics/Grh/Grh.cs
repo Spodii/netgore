@@ -341,7 +341,7 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current time.</param>
         public void SetGrh(ushort grhIndex, AnimType anim, int currentTime)
         {
-            if (grhIndex >= GrhInfo.GrhDatas.Length)
+            if (grhIndex >= GrhInfo.GrhDatas.Count())
             {
                 const string errmsg = "Specified grhIndex `{0}` is greater than total number of GrhDatas.";
                 Debug.Fail(string.Format(errmsg, grhIndex));

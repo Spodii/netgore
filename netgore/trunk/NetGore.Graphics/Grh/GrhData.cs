@@ -245,7 +245,7 @@ namespace NetGore.Graphics
         {
             ushort index = GrhInfo.NextFreeIndex();
 
-            Debug.Assert(GrhInfo.GrhDatas[index] == null, "Slot to use is already in use!");
+            Debug.Assert(GrhInfo.GetData(index) == null, "Slot to use is already in use!");
 
             GrhData gd = new GrhData
                          {
@@ -254,7 +254,7 @@ namespace NetGore.Graphics
                              _isUsingAtlas = _isUsingAtlas, _atlasSourceRect = _atlasSourceRect
                          };
 
-            GrhInfo.GrhDatas[index] = gd;
+            GrhInfo.AddGrhData(gd);
 
             return gd;
         }

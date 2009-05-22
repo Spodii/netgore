@@ -16,9 +16,14 @@ namespace NetGore.Graphics
     public static class GrhInfo
     {
         /// <summary>
+        /// Gets an IEnumerable of all of the GrhDatas.
+        /// </summary>
+        public static IEnumerable<GrhData> GrhDatas { get { return _grhDatas; }}
+
+        /// <summary>
         /// List of all the GrhData where the array index is the GrhIndex
         /// </summary>
-        public static DArray<GrhData> GrhDatas;
+        static DArray<GrhData> _grhDatas;
 
         /// <summary>
         /// Dictionary of categories, which contains a dictionary of all the names of the GrhDatas in
@@ -32,6 +37,34 @@ namespace NetGore.Graphics
         /// dictionaries created for the GrhData categorization.
         /// </summary>
         static readonly StringComparer _comparer = StringComparer.OrdinalIgnoreCase;
+
+        /// <summary>
+        /// Adds a GrhData to the list of GrhDatas at the index assigned to it.
+        /// </summary>
+        /// <param name="gd">GrhData to add</param>
+        static internal void AddGrhData(GrhData gd)
+        {
+            if (gd == null)
+                throw new ArgumentNullException("gd");
+
+            int index = gd.GrhIndex;
+
+#if DEBUG
+            // Check if a GrhData will be overwritten
+            if (_grhDatas.CanGet(index))
+            {
+                var currentGD = GetData(index);
+                if (currentGD != null && currentGD != gd)
+                    Debug.Fail("Existing GrhData is going to be overwritten. This is likely not what was intended.");
+            }
+#endif
+
+            _grhDatas[index] = gd;
+
+            // Make sure the GrhData is only in the list once
+            Debug.Assert(GrhDatas.Where(x => x == gd).Count() == 1, 
+                "The GrhData should be in the list only once. Somehow, its in there either more times, or not at all.");
+        }
 
         /// <summary>
         /// Adds a GrhData to the dictionary
@@ -65,7 +98,7 @@ namespace NetGore.Graphics
             ushort grhIndex = NextFreeIndex();
             GrhData gd = new GrhData();
             gd.Load(grhIndex, frames, speed, category, title);
-            GrhDatas[gd.GrhIndex] = gd;
+            AddGrhData(gd);
             return gd;
         }
 
@@ -94,7 +127,7 @@ namespace NetGore.Graphics
 
             GrhData gd = new GrhData();
             gd.Load(contentManager, grhIndex, texture, (int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y, category, title);
-            GrhDatas[gd.GrhIndex] = gd;
+            AddGrhData(gd);
             return gd;
         }
 
@@ -116,10 +149,10 @@ namespace NetGore.Graphics
         /// <param name="grhIndex">Index of the GrhData to delete.</param>
         public static void Delete(int grhIndex)
         {
-            if (!GrhDatas.CanGet(grhIndex))
+            if (!_grhDatas.CanGet(grhIndex))
                 return;
 
-            GrhDatas.RemoveAt(grhIndex);
+            _grhDatas.RemoveAt(grhIndex);
         }
 
         /// <summary>
@@ -193,8 +226,8 @@ namespace NetGore.Graphics
         /// <returns>GrhData matching the given information if found, or null if no matches</returns>
         public static GrhData GetData(int grhIndex)
         {
-            if (GrhDatas.CanGet(grhIndex))
-                return GrhDatas[grhIndex];
+            if (_grhDatas.CanGet(grhIndex))
+                return _grhDatas[grhIndex];
             else
                 return null;
         }
@@ -260,10 +293,10 @@ namespace NetGore.Graphics
                 throw new ArgumentException("Specified file path does not exist.", "path");
 
             // Create the GrhData DArray
-            GrhDatas = new DArray<GrhData>(1024, false);
+            _grhDatas = new DArray<GrhData>(1024, false);
             _catDic.Clear();
-            GrhDatas.OnAdd += OnAdd;
-            GrhDatas.OnRemove += OnRemove;
+            _grhDatas.OnAdd += OnAdd;
+            _grhDatas.OnRemove += OnRemove;
 
             // Load the GrhData from the file
             var grhDataFile = XmlInfoReader.ReadFile(path, true);
@@ -274,14 +307,14 @@ namespace NetGore.Graphics
             foreach (var dic in grhDataFile)
             {
                 ushort currGrhIndex = ushort.Parse(dic["Grh.Index"]);
-                GrhDatas[currGrhIndex] = new GrhData();
+                _grhDatas[currGrhIndex] = new GrhData();
             }
 
             // Load the information into the objects
             foreach (var dic in grhDataFile)
             {
                 ushort currGrhIndex = ushort.Parse(dic["Grh.Index"]);
-                GrhData currGrh = GrhDatas[currGrhIndex];
+                GrhData currGrh = GetData(currGrhIndex);
                 int numFrames = int.Parse(dic["Grh.Frames.Count"]);
 
                 // Categorization
@@ -316,8 +349,8 @@ namespace NetGore.Graphics
                 }
             }
 
-            // Trim down the GrhData array
-            GrhDatas.Trim();
+            // Trim down the GrhData array, mainly for the client since it will never add/remove any GrhDatas
+            _grhDatas.Trim();
         }
 
         /// <summary>
@@ -326,15 +359,15 @@ namespace NetGore.Graphics
         /// <returns>Next free GrhData index</returns>
         public static ushort NextFreeIndex()
         {
-            if (GrhDatas.TrackFree)
-                return (ushort)GrhDatas.NextFreeIndex();
+            if (_grhDatas.TrackFree)
+                return (ushort)_grhDatas.NextFreeIndex();
 
             // Start at the first index
             ushort i = 1;
 
             // Just loop through the indicies until we find one thats not in use or
             // passes the length of the GrhDatas array (which means its obviously not in use)
-            while (GrhDatas.CanGet(i) && GrhDatas[i] != null)
+            while (_grhDatas.CanGet(i) && _grhDatas[i] != null)
             {
                 i++;
             }
