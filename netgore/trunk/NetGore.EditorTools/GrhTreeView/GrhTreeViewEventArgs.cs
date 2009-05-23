@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using NetGore.Graphics;
 
@@ -11,8 +11,7 @@ namespace NetGore.EditorTools
     {
         public readonly GrhData GrhData;
 
-        public GrhTreeViewEventArgs(GrhData grhData, TreeViewEventArgs args)
-            : base(args.Node, args.Action)
+        public GrhTreeViewEventArgs(GrhData grhData, TreeViewEventArgs args) : base(args.Node, args.Action)
         {
             GrhData = grhData;
         }

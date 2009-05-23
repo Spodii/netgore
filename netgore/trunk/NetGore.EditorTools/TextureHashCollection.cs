@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -10,23 +11,17 @@ namespace NetGore.EditorTools
 {
     public class TextureHashCollection
     {
-        class HashInfo
-        {
-            public int FileSize;
-            public string Hash;
-            public long LastModifiedTime;
-
-            public HashInfo(string hash, int fileSize, long lastMod)
-            {
-                Hash = hash;
-                FileSize = fileSize;
-                LastModifiedTime = lastMod;
-            }
-        }
-
-        readonly Dictionary<string, HashInfo> _textureHash = new Dictionary<string, HashInfo>(StringComparer.CurrentCultureIgnoreCase);
         readonly string _dataFile;
         readonly string _rootTextureDir;
+
+        readonly Dictionary<string, HashInfo> _textureHash =
+            new Dictionary<string, HashInfo>(StringComparer.CurrentCultureIgnoreCase);
+
+        HashInfo this[string textureName]
+        {
+            get { return _textureHash[SanitizeTextureName(textureName)]; }
+            set { _textureHash.Add(SanitizeTextureName(textureName), value); }
+        }
 
         public TextureHashCollection()
         {
@@ -40,86 +35,9 @@ namespace NetGore.EditorTools
             UpdateHashes();
         }
 
-        void Save()
-        {
-            using (var fs = File.Open(_dataFile, FileMode.Create, FileAccess.Write))
-            {
-                using (var w = new BinaryWriter(fs))
-                {
-                    w.Write(_textureHash.Count);
-                    foreach (var kvp in _textureHash)
-                    {
-                        string textureName = kvp.Key;
-                        string hash = kvp.Value.Hash;
-                        int fileSize = kvp.Value.FileSize;
-                        long lastMod = kvp.Value.LastModifiedTime;
-
-                        w.Write(textureName);
-                        w.Write(hash);
-                        w.Write(fileSize);
-                        w.Write(lastMod);
-                    }
-                }
-            }
-        }
-
-        void Load()
-        {
-            // TODO: If there are problems loading the hash file, should just force-rebuild it all
-            if (!File.Exists(_dataFile))
-                return;
-
-            Clear();
-
-            using (var fs = File.Open(_dataFile, FileMode.Open, FileAccess.Read))
-            {
-                using (var r = new BinaryReader(fs))
-                {
-                    int entries = r.ReadInt32();
-                    for (int i = 0; i < entries; i++)
-                    {
-                        string textureName = r.ReadString();
-                        string hash = r.ReadString();
-                        int fileSize = r.ReadInt32();
-                        long lastMod = r.ReadInt64();
-
-                        this[textureName] = new HashInfo(hash, fileSize, lastMod);
-                    }
-                }
-            }
-        }
-
         void Clear()
         {
             _textureHash.Clear();
-        }
-
-        static string GetFileHash(string filePath)
-        {
-            byte[] hash;
-            using (FileStream fs = new FileStream(filePath, FileMode.Open))
-            {
-                MD5 md5 = new MD5CryptoServiceProvider();
-                hash = md5.ComputeHash(fs);
-            }
-
-            StringBuilder sb = new StringBuilder(hash.Length);
-            foreach (byte hex in hash)
-                sb.Append(Convert.ToString(hex, 16));
-
-            return sb.ToString();
-        }
-
-        static void GetFileSizeAndLastModified(string filePath, out int size, out long lastMod)
-        {
-            FileInfo fi = new FileInfo(filePath);
-            size = (int)fi.Length;
-            lastMod = fi.LastWriteTime.ToBinary();
-        }
-
-        static string SanitizeTextureName(string textureName)
-        {
-            return textureName.Replace('\\', '/');
         }
 
         bool Contains(string textureName)
@@ -145,17 +63,95 @@ namespace NetGore.EditorTools
             // Loop through every existing hash until we find one with the same size and hash, but the file exists
             foreach (var kvp in _textureHash)
             {
-                var hashInfo = kvp.Value;
+                HashInfo hashInfo = kvp.Value;
                 if (hashInfo != target && hashInfo.FileSize == target.FileSize && hashInfo.Hash == target.Hash)
                 {
                     string textureName = kvp.Key;
                     if (GrhInfo.GrhTextureExists(textureName))
                         return textureName;
                 }
-
             }
 
             return null;
+        }
+
+        static string GetFileHash(string filePath)
+        {
+            byte[] hash;
+            using (FileStream fs = new FileStream(filePath, FileMode.Open))
+            {
+                MD5 md5 = new MD5CryptoServiceProvider();
+                hash = md5.ComputeHash(fs);
+            }
+
+            StringBuilder sb = new StringBuilder(hash.Length);
+            foreach (byte hex in hash)
+            {
+                sb.Append(Convert.ToString(hex, 16));
+            }
+
+            return sb.ToString();
+        }
+
+        static void GetFileSizeAndLastModified(string filePath, out int size, out long lastMod)
+        {
+            FileInfo fi = new FileInfo(filePath);
+            size = (int)fi.Length;
+            lastMod = fi.LastWriteTime.ToBinary();
+        }
+
+        void Load()
+        {
+            // TODO: If there are problems loading the hash file, should just force-rebuild it all
+            if (!File.Exists(_dataFile))
+                return;
+
+            Clear();
+
+            using (FileStream fs = File.Open(_dataFile, FileMode.Open, FileAccess.Read))
+            {
+                using (BinaryReader r = new BinaryReader(fs))
+                {
+                    int entries = r.ReadInt32();
+                    for (int i = 0; i < entries; i++)
+                    {
+                        string textureName = r.ReadString();
+                        string hash = r.ReadString();
+                        int fileSize = r.ReadInt32();
+                        long lastMod = r.ReadInt64();
+
+                        this[textureName] = new HashInfo(hash, fileSize, lastMod);
+                    }
+                }
+            }
+        }
+
+        static string SanitizeTextureName(string textureName)
+        {
+            return textureName.Replace('\\', '/');
+        }
+
+        void Save()
+        {
+            using (FileStream fs = File.Open(_dataFile, FileMode.Create, FileAccess.Write))
+            {
+                using (BinaryWriter w = new BinaryWriter(fs))
+                {
+                    w.Write(_textureHash.Count);
+                    foreach (var kvp in _textureHash)
+                    {
+                        string textureName = kvp.Key;
+                        string hash = kvp.Value.Hash;
+                        int fileSize = kvp.Value.FileSize;
+                        long lastMod = kvp.Value.LastModifiedTime;
+
+                        w.Write(textureName);
+                        w.Write(hash);
+                        w.Write(fileSize);
+                        w.Write(lastMod);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -164,7 +160,7 @@ namespace NetGore.EditorTools
         void UpdateHashes()
         {
             var files = Directory.GetFiles(_rootTextureDir, "*.xnb", SearchOption.AllDirectories);
-            foreach (var file in files)
+            foreach (string file in files)
             {
                 // Get the current info
                 string textureName = GrhInfo.GrhTextureNameFromFile(file);
@@ -201,15 +197,17 @@ namespace NetGore.EditorTools
             Save();
         }
 
-        HashInfo this[string textureName]
+        class HashInfo
         {
-            get
+            public int FileSize;
+            public string Hash;
+            public long LastModifiedTime;
+
+            public HashInfo(string hash, int fileSize, long lastMod)
             {
-                return _textureHash[SanitizeTextureName(textureName)];
-            }
-            set
-            {
-                _textureHash.Add(SanitizeTextureName(textureName), value);
+                Hash = hash;
+                FileSize = fileSize;
+                LastModifiedTime = lastMod;
             }
         }
     }

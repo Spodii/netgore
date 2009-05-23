@@ -40,6 +40,14 @@ namespace DemoGame.Server
         IEnumerable<User> _usersEnumerable;
 
         /// <summary>
+        /// Gets the DBController used by this World.
+        /// </summary>
+        public DBController DBController
+        {
+            get { return Server.DBController; }
+        }
+
+        /// <summary>
         /// Gets a stack of objects that need to be disposed. The stack is processed once every frame.
         /// Use for any Dispose call that would otherwise cause a potential exception (such as
         /// trying to Dispose a character during their Update) or threading complications.
@@ -64,11 +72,6 @@ namespace DemoGame.Server
         {
             get { return _server.NPCTemplateManager; }
         }
-
-        /// <summary>
-        /// Gets the DBController used by this World.
-        /// </summary>
-        public DBController DBController { get { return Server.DBController; } }
 
         /// <summary>
         /// Gets the server the world belongs to

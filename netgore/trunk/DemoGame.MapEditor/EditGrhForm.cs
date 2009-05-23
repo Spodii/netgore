@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -13,8 +12,6 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
-using Color=System.Drawing.Color;
-using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace DemoGame.MapEditor
 {
@@ -172,6 +169,16 @@ namespace DemoGame.MapEditor
             if (wall == null)
                 return;
             lstWalls.Items.Remove(wall);
+        }
+
+        void chkAutoSize_CheckedChanged(object sender, EventArgs e)
+        {
+            bool enabled = !chkAutoSize.Checked;
+
+            txtX.Enabled = enabled;
+            txtY.Enabled = enabled;
+            txtW.Enabled = enabled;
+            txtH.Enabled = enabled;
         }
 
         void cmbWallType_SelectedIndexChanged(object sender, EventArgs e)
@@ -481,16 +488,6 @@ namespace DemoGame.MapEditor
                 return false;
             }
             return true;
-        }
-
-        private void chkAutoSize_CheckedChanged(object sender, EventArgs e)
-        {
-            bool enabled = !chkAutoSize.Checked;
-
-            txtX.Enabled = enabled;
-            txtY.Enabled = enabled;
-            txtW.Enabled = enabled;
-            txtH.Enabled = enabled;
         }
     }
 }

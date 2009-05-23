@@ -65,22 +65,6 @@ namespace NetGore.EditorTools
             RemoveSelectedTextureListItem();
         }
 
-        void RemoveSelectedTextureListItem()
-        {
-            var selectedItem = TextureList.SelectedItem;
-            if (selectedItem == null)
-                return;
-
-            // Remove the entry
-            TextureList.Items.Remove(selectedItem);
-
-            // Auto-select the first item in the list
-            if (TextureList.Items.Count > 0)
-                TextureList.SelectedIndex = 0;
-            else
-                Close();
-        }
-
         void BadGrhDatasList_SelectedIndexChanged(object sender, EventArgs e)
         {
             TextureListItem selectedItem = TextureList.SelectedItem as TextureListItem;
@@ -129,6 +113,22 @@ namespace NetGore.EditorTools
             return ret;
         }
 
+        void DeleteBtn_Click(object sender, EventArgs e)
+        {
+            // Find the selected item
+            TextureListItem selectedItem = TextureList.SelectedItem as TextureListItem;
+            if (selectedItem == null)
+                return;
+
+            // Delete every GrhData using the texture
+            foreach (GrhData gd in selectedItem.GrhDatas)
+            {
+                GrhInfo.Delete(gd);
+            }
+
+            RemoveSelectedTextureListItem();
+        }
+
         void MissingTexturesForm_Load(object sender, EventArgs e)
         {
             // Populate the list
@@ -162,6 +162,22 @@ namespace NetGore.EditorTools
             }
         }
 
+        void RemoveSelectedTextureListItem()
+        {
+            object selectedItem = TextureList.SelectedItem;
+            if (selectedItem == null)
+                return;
+
+            // Remove the entry
+            TextureList.Items.Remove(selectedItem);
+
+            // Auto-select the first item in the list
+            if (TextureList.Items.Count > 0)
+                TextureList.SelectedIndex = 0;
+            else
+                Close();
+        }
+
         /// <summary>
         /// A single item for the TextureList
         /// </summary>
@@ -187,22 +203,6 @@ namespace NetGore.EditorTools
             {
                 return TextureName;
             }
-        }
-
-        private void DeleteBtn_Click(object sender, EventArgs e)
-        {
-            // Find the selected item
-            TextureListItem selectedItem = TextureList.SelectedItem as TextureListItem;
-            if (selectedItem == null)
-                return;
-
-            // Delete every GrhData using the texture
-            foreach (var gd in selectedItem.GrhDatas)
-            {
-                GrhInfo.Delete(gd);
-            }
-
-            RemoveSelectedTextureListItem();
         }
     }
 }

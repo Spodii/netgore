@@ -7,7 +7,6 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using Microsoft.Xna.Framework.Graphics;
 using Color=System.Drawing.Color;
@@ -20,22 +19,6 @@ namespace NetGore.EditorTools
     public static class ImageHelper
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// Creates an Image with a solid color.
-        /// </summary>
-        /// <param name="width">Width of the image.</param>
-        /// <param name="height">Height of the image.</param>
-        /// <param name="color">Fill color.</param>
-        /// <returns>Image filled with the specified color.</returns>
-        public static Image CreateSolid(int width, int height, Color color)
-        {
-            Bitmap bmp = new Bitmap(width, height);
-            bmp.SetResolution(72, 72);
-            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
-            g.DrawRectangle(new Pen(color, width * 2), 0, 0, width, height);
-            return bmp;
-        }
 
         /// <summary>
         /// Creates an Image from a Texture2D.
@@ -70,7 +53,7 @@ namespace NetGore.EditorTools
             // Open the texture file we saved
             try
             {
-                using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                 {
                     using (Image tmp = Image.FromStream(fileStream))
                     {
@@ -99,7 +82,7 @@ namespace NetGore.EditorTools
                             // Save the bitmap into a memory stream, then use that stream to load the image
                             // Keep in mind we do not dispose of the bitmapStream since that will be used by the
                             // image we return, so we need it to live
-                            var bitmapStream = new MemoryStream();
+                            MemoryStream bitmapStream = new MemoryStream();
                             bmp.Save(bitmapStream, ImageFormat.Png);
                             ret = Image.FromStream(bitmapStream);
                         }
@@ -113,6 +96,22 @@ namespace NetGore.EditorTools
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Creates an Image with a solid color.
+        /// </summary>
+        /// <param name="width">Width of the image.</param>
+        /// <param name="height">Height of the image.</param>
+        /// <param name="color">Fill color.</param>
+        /// <returns>Image filled with the specified color.</returns>
+        public static Image CreateSolid(int width, int height, Color color)
+        {
+            Bitmap bmp = new Bitmap(width, height);
+            bmp.SetResolution(72, 72);
+            System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
+            g.DrawRectangle(new Pen(color, width * 2), 0, 0, width, height);
+            return bmp;
         }
     }
 }

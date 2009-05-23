@@ -27,6 +27,14 @@ namespace DemoGame.Server
         bool _disposed;
 
         /// <summary>
+        /// Gets the DBController used by this Map.
+        /// </summary>
+        public DBController DBController
+        {
+            get { return World.DBController; }
+        }
+
+        /// <summary>
         /// Gets an IEnumerable of NPCs on the Map.
         /// </summary>
         public IEnumerable<NPC> NPCs
@@ -41,11 +49,6 @@ namespace DemoGame.Server
         {
             get { return _users; }
         }
-
-        /// <summary>
-        /// Gets the DBController used by this Map.
-        /// </summary>
-        public DBController DBController { get { return World.DBController; } }
 
         /// <summary>
         /// Gets the World the Map belongs to.

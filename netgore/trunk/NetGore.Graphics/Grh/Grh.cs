@@ -179,6 +179,53 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Performs a detailed check to ensure the Grh can be drawn without problem. This should be called before
+        /// any drawing is done!
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <returns>True if it is safe for the Grh to draw to the <paramref name="spriteBatch"/>, else false.</returns>
+        bool CanDrawGrh(SpriteBatch spriteBatch)
+        {
+            // Invalid GrhData
+            if (GrhData == null)
+            {
+                const string errmsg = "Failed to render Grh - GrhData is null!";
+                if (log.IsWarnEnabled)
+                    log.Warn(errmsg);
+                return false;
+            }
+
+            // Invalid texture
+            if (Texture == null)
+            {
+                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - GrhData returning null texture for `{3}`!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex, GrhData.TextureName);
+                return false;
+            }
+
+            // Invalid SpriteBatch
+            if (spriteBatch == null)
+            {
+                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - SpriteBatch is null!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex);
+                return false;
+            }
+
+            if (spriteBatch.IsDisposed)
+            {
+                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - SpriteBatch is disposed!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex);
+                return false;
+            }
+
+            // All is good
+            return true;
+        }
+
+        /// <summary>
         /// Draws the current frame of a Grh to an existing SpriteBatch.
         /// </summary>
         /// <param name="sb">SpriteBatch to add the draw to.</param>
@@ -394,53 +441,6 @@ namespace NetGore.Graphics
             _frame = tmpFrame;
         }
 
-        /// <summary>
-        /// Performs a detailed check to ensure the Grh can be drawn without problem. This should be called before
-        /// any drawing is done!
-        /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
-        /// <returns>True if it is safe for the Grh to draw to the <paramref name="spriteBatch"/>, else false.</returns>
-        bool CanDrawGrh(SpriteBatch spriteBatch)
-        {
-            // Invalid GrhData
-            if (GrhData == null)
-            {
-                const string errmsg = "Failed to render Grh - GrhData is null!";
-                if (log.IsWarnEnabled)
-                    log.Warn(errmsg);
-                return false;
-            }
-
-            // Invalid texture
-            if (Texture == null)
-            {
-                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - GrhData returning null texture for `{3}`!";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex, GrhData.TextureName);
-                return false;
-            }
-
-            // Invalid SpriteBatch
-            if (spriteBatch == null)
-            {
-                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - SpriteBatch is null!";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex);
-                return false;
-            }
-
-            if (spriteBatch.IsDisposed)
-            {
-                const string errmsg = "Failed to render Grh `{0}.{1}` [{2}] - SpriteBatch is disposed!";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, GrhData.Category, GrhData.Title, GrhData.GrhIndex);
-                return false;
-            }
-
-            // All is good
-            return true;
-        }
-
         #region ISprite Members
 
         /// <summary>
@@ -488,7 +488,6 @@ namespace NetGore.Graphics
         }
 
         #endregion
-
 
         /*
         /// <summary>

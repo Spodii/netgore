@@ -36,10 +36,7 @@ namespace DemoGame.Server
         /// </summary>
         DBController DbController
         {
-            get
-            {
-                return User.DBController;
-            }
+            get { return User.DBController; }
         }
 
         /// <summary>
