@@ -44,8 +44,9 @@ namespace DemoGame.Client
             _itemInfoTooltip = itemInfoTooltip;
 
             Vector2 itemsSize = _columns * new Vector2(_itemWidth, _itemHeight);
-            Vector2 paddingSize = 2 * _columns * new Vector2(_sepX, _sepY);
-            Size = itemsSize + paddingSize;
+            Vector2 paddingSize = (_columns + 1) * new Vector2(_sepX, _sepY);
+            var borderSize = (Border != null ? Border.Size : Vector2.Zero);
+            Size = itemsSize + paddingSize + borderSize;
 
             CreateItemSlots();
         }
