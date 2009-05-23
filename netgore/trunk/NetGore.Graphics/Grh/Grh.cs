@@ -342,16 +342,6 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current time.</param>
         public void SetGrh(GrhData grhData, AnimType anim, int currentTime)
         {
-            // Do not set to a null GrhData - try to save ourself by just not changing it
-            if (grhData == null)
-            {
-                const string errmsg = "Could not set new GrhData becuase it is null.";
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                Debug.Fail(errmsg);
-                return;
-            }
-
             // Only set the new Grh if it is different
             if (_grhData == grhData)
                 return;
@@ -380,7 +370,7 @@ namespace NetGore.Graphics
         public void SetGrh(ushort grhIndex, AnimType anim, int currentTime)
         {
             var grhData = GrhInfo.GetData(grhIndex);
-            if (grhData == null)
+            if (grhData == null && grhIndex != 0)
             {
                 const string errmsg = "Failed to set Grh - GrhIndex `{0}` does not exist.";
                 Debug.Fail(string.Format(errmsg, grhIndex));
