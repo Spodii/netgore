@@ -228,7 +228,22 @@ namespace NetGore.Network
         /// </summary>
         void BeginSend()
         {
-            Debug.Assert(_isSending, "Called BeginSend() while _isSending is not set! Oh crap!");
+            if (!_isSending)
+            {
+                const string errmsg = "Called BeginSend() while _isSending == False. This should never happen!";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
+
+            if (_socket == null)
+            {
+                const string errmsg = "BeginSend() failed since the socket is null (Disposed = `{0}`).";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, _disposed);
+                return;
+            }
 
             bool fromStream;
             byte[] msg;
