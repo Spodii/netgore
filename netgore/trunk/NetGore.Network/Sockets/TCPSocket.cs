@@ -234,6 +234,7 @@ namespace NetGore.Network
                 if (log.IsErrorEnabled)
                     log.Error(errmsg);
                 Debug.Fail(errmsg);
+                _isSending = false;
                 return;
             }
 
@@ -242,6 +243,7 @@ namespace NetGore.Network
                 const string errmsg = "BeginSend() failed since the socket is null (Disposed = `{0}`).";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, _disposed);
+                _isSending = false;
                 return;
             }
 
@@ -265,7 +267,15 @@ namespace NetGore.Network
                 msgLength = _sendStream.Length;
             }
 
-            Debug.Assert(msgLength > 0, "Tried to send... well... nothing.");
+            if (msgLength <= 0)
+            {
+                const string errmsg = "Sending failed since there is no message!";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                _isSending = false;
+                return;
+            }
 
             // Copy over the contents of the message into the send buffer, along with the
             // 2 byte prefix that states the length of the message
