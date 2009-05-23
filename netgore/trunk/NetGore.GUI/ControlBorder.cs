@@ -229,7 +229,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public Vector2 Size
         {
-            get { return new Vector2(Width + Height); }
+            get { return new Vector2(Width,  Height); }
         }
 
         /// <summary>
