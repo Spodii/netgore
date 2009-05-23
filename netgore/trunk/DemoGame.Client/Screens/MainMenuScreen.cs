@@ -25,10 +25,12 @@ namespace DemoGame.Client
 
         void cNewAccount_OnClick(object sender, MouseClickEventArgs e)
         {
+            // Not implemented...
         }
 
         void cOptions_OnClick(object sender, MouseClickEventArgs e)
         {
+            // Not implemented...
         }
 
         void cQuit_OnClick(object sender, MouseClickEventArgs e)
