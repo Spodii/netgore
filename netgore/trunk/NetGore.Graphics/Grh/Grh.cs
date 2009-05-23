@@ -388,16 +388,16 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current time.</param>
         public void SetGrh(ushort grhIndex, AnimType anim, int currentTime)
         {
-            if (grhIndex >= GrhInfo.GrhDatas.Count())
+            var grhData = GrhInfo.GetData(grhIndex);
+            if (grhData == null)
             {
-                const string errmsg = "Specified grhIndex `{0}` is greater than total number of GrhDatas.";
+                const string errmsg = "Failed to set Grh - GrhIndex `{0}` does not exist.";
                 Debug.Fail(string.Format(errmsg, grhIndex));
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, grhIndex);
                 return;
             }
-
-            SetGrh(GrhInfo.GetData(grhIndex), anim, currentTime);
+            SetGrh(grhData, anim, currentTime);
         }
 
         /// <summary>
