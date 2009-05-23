@@ -103,7 +103,6 @@ namespace NetGore.Graphics
         {
             get
             {
-                ValidateTexture();
                 return _sourceRect.Height;
             }
         }
@@ -135,7 +134,6 @@ namespace NetGore.Graphics
         {
             get
             {
-                ValidateTexture();
                 return new Vector2(_sourceRect.Width, _sourceRect.Height);
             }
         }
@@ -173,7 +171,6 @@ namespace NetGore.Graphics
         {
             get
             {
-                ValidateTexture();
                 return _sourceRect.Width;
             }
         }
@@ -186,7 +183,6 @@ namespace NetGore.Graphics
             get
             {
                 ValidateTexture();
-
                 return _isUsingAtlas ? _atlasSourceRect.X : _sourceRect.X;
             }
         }
