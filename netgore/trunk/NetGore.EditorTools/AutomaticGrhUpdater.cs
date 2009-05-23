@@ -244,19 +244,26 @@ namespace NetGore.EditorTools
                 string category = parentDir.FullName.Substring(trimLen);
                 string title = frameDirInfo.Title;
 
-                // Ensure the GrhData doesn't already exist
-                if (GrhInfo.GetData(category, title) != null)
-                    continue;
-
                 // Get the GrhIndices of the frames for the animation
                 var indices = FindFrameIndices(trimLen, frameDirInfo.Dir);
                 if (indices == null)
                     continue;
 
-                // Create the GrhData
-                GrhData gd = GrhInfo.CreateGrhData(indices, frameDirInfo.Speed, category, title);
-                gd.AutomaticSize = true;
-                ret.Add(gd);
+                // If the GrhData does not already exist, create it
+                // If it does exist, update the frames and speed
+                GrhData gd = GrhInfo.GetData(category, title);
+                if (gd == null)
+                {
+                    // Create the new GrhData
+                    gd = GrhInfo.CreateGrhData(indices, frameDirInfo.Speed, category, title);
+                    gd.AutomaticSize = true;
+                    ret.Add(gd);
+                }
+                else
+                {
+                    // Re-load the GrhData with the new values
+                    gd.Load(gd.GrhIndex, indices, frameDirInfo.Speed, category, title);
+                }
             }
 
             return ret;
