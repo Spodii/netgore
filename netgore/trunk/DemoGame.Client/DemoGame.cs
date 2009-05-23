@@ -60,8 +60,18 @@ namespace DemoGame.Client
             // Set the graphics settings
             graphics.SynchronizeWithVerticalRetrace = false; // vsync
             graphics.PreferMultiSampling = false;
+            
+            // Disable filtering, which makes our 2d art look like crap
+            graphics.GraphicsDevice.SamplerStates[0].MinFilter = Microsoft.Xna.Framework.Graphics.TextureFilter.None;
+            graphics.GraphicsDevice.SamplerStates[0].MipFilter = Microsoft.Xna.Framework.Graphics.TextureFilter.None;
+            graphics.GraphicsDevice.SamplerStates[0].MagFilter = Microsoft.Xna.Framework.Graphics.TextureFilter.None;
+            graphics.GraphicsDevice.SamplerStates[0].MaxMipLevel = 0;
+
+            // Screen size
             graphics.PreferredBackBufferWidth = (int)GameData.ScreenSize.X;
             graphics.PreferredBackBufferHeight = (int)GameData.ScreenSize.Y;
+
+            // Apply the changes
             graphics.ApplyChanges();
 
             base.Initialize();
