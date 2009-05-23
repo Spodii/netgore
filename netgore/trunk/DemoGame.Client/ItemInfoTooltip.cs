@@ -6,6 +6,7 @@ using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
+using NetGore.Network;
 
 namespace DemoGame.Client
 {
@@ -17,21 +18,21 @@ namespace DemoGame.Client
         const int _showItemInfoDelay = 300;
 
         readonly ItemInfo _itemInfo;
-
         object _hoverObject = null;
-
         int _hoverStartTime = int.MinValue;
         bool _sentItemInfoRequest;
-
         byte _slot;
         ItemInfoSource _source;
 
+        /// <summary>
+        /// Gets the ItemInfo containing the information drawn by this ItemInfoTooltip.
+        /// </summary>
         public ItemInfo ItemInfo
         {
             get { return _itemInfo; }
         }
 
-        public ItemInfoTooltip(ClientSockets socket)
+        public ItemInfoTooltip(ISocketSender socket)
         {
             _itemInfo = new ItemInfo(socket);
         }
@@ -118,6 +119,7 @@ namespace DemoGame.Client
 
         static int GetTime()
         {
+            // HACK: Not a very nice way to get the time. Should be using something with an IGetTime.
             return Environment.TickCount;
         }
 
@@ -134,8 +136,10 @@ namespace DemoGame.Client
             _slot = slot;
         }
 
+// ReSharper disable UnusedParameter.Global
         public void HandleMouseLeave(object sender, ItemInfoSource source, byte slot)
         {
+// ReSharper restore UnusedParameter.Global
             // Only set the hoverObject to null if it came from the sender
             if (_hoverObject != sender)
                 return;
@@ -144,8 +148,10 @@ namespace DemoGame.Client
             _sentItemInfoRequest = false;
         }
 
+// ReSharper disable UnusedParameter.Global
         public void HandleMouseMove(object sender, ItemInfoSource source, byte slot)
         {
+// ReSharper restore UnusedParameter.Global
             _hoverStartTime = GetTime();
         }
 

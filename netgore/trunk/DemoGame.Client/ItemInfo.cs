@@ -62,7 +62,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets or sets the socket used to request the ItemInfo.
         /// </summary>
-        public ClientSockets Socket { get; set; }
+        public ISocketSender Socket { get; set; }
 
         /// <summary>
         /// Gets the source that the ItemInfo came from.
@@ -92,7 +92,7 @@ namespace DemoGame.Client
         /// ItemInfo constructor.
         /// </summary>
         /// <param name="socket">Socket used to request the ItemInfo.</param>
-        public ItemInfo(ClientSockets socket)
+        public ItemInfo(ISocketSender socket)
         {
             Socket = socket;
         }

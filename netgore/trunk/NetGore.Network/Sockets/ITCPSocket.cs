@@ -28,11 +28,6 @@ namespace NetGore.Network
         string Address { get; }
 
         /// <summary>
-        /// Gets if the socket is currently connected.
-        /// </summary>
-        bool IsConnected { get; }
-
-        /// <summary>
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag
         /// is not used in any way by the ITCPSocket itself.
         /// </summary>
