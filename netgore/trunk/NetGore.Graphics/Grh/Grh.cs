@@ -37,12 +37,6 @@ namespace NetGore.Graphics
         int _lastUpdated = 0;
 
         /// <summary>
-        /// Gets or sets if setting a Grh's GrhData as null throws an Exception, or just returns without
-        /// changing anything.
-        /// </summary>
-        public static bool WarnOnSetNullGrhData { get; set; }
-
-        /// <summary>
         /// Gets or sets the animation type for the Grh.
         /// </summary>
         public AnimType AnimType
@@ -351,13 +345,10 @@ namespace NetGore.Graphics
             // Do not set to a null GrhData - try to save ourself by just not changing it
             if (grhData == null)
             {
-                if (WarnOnSetNullGrhData)
-                {
-                    const string errmsg = "grhData is null.";
-                    if (log.IsFatalEnabled)
-                        log.Fatal(errmsg);
-                    Debug.Fail(errmsg);
-                }
+                const string errmsg = "Could not set new GrhData becuase it is null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
                 return;
             }
 
