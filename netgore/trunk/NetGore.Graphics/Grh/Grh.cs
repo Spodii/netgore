@@ -229,7 +229,6 @@ namespace NetGore.Graphics
             if (!CanDrawGrh(sb))
                 return;
 
-            Round(ref dest);
             sb.Draw(Texture, dest, Source, Color.White);
         }
 
@@ -245,7 +244,6 @@ namespace NetGore.Graphics
             if (!CanDrawGrh(sb))
                 return;
 
-            Round(ref dest);
             sb.Draw(Texture, dest, Source, color, 0, Vector2.Zero, 1.0f, effect, 0);
         }
 
@@ -265,7 +263,6 @@ namespace NetGore.Graphics
             if (!CanDrawGrh(sb))
                 return;
 
-            Round(ref dest);
             sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect, 0);
         }
 
@@ -285,7 +282,6 @@ namespace NetGore.Graphics
             if (!CanDrawGrh(sb))
                 return;
 
-            Round(ref dest);
             sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect, 0);
         }
 
@@ -313,16 +309,6 @@ namespace NetGore.Graphics
         public Grh Duplicate()
         {
             return new Grh(_grhData, _anim, _lastUpdated) { _frame = _frame };
-        }
-
-        /// <summary>
-        /// Rounds a Vector2's values.
-        /// </summary>
-        /// <param name="v">Vector2 to round.</param>
-        static void Round(ref Vector2 v)
-        {
-            v.X = (float)Math.Round(v.X);
-            v.Y = (float)Math.Round(v.Y);
         }
 
         /// <summary>
