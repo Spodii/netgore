@@ -148,6 +148,29 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Turns an IEnumerable of strings into the format of: `field`=@field. Each entry is comma-delimited.
+        /// </summary>
+        /// <returns>A comma-delimited string of all fields in the format of: `field`=@field.</returns>
+        public static string FormatParametersIntoString(IEnumerable<string> fields)
+        {
+            StringBuilder sb = new StringBuilder(512);
+
+            foreach (string field in fields)
+            {
+                sb.Append("`");
+                sb.Append(field);
+                sb.Append("`=@");
+                sb.Append(field);
+                sb.Append(",");
+            }
+
+            // Remove the trailing comma (last character)
+            sb.Length--;
+
+            return sb.ToString();
+        }
+
+        /// <summary>
         /// Gets and sets up an available DbCommand.
         /// </summary>
         /// <param name="conn">DbConnection to assign the DbCommand to.</param>
@@ -235,29 +258,6 @@ namespace NetGore.Db
                 throw new MethodAccessException(_disposedErrorMessage);
 
             return ConnectionPool.Create();
-        }
-
-        /// <summary>
-        /// Turns an IEnumerable of strings into the format of: `field`=@field. Each entry is comma-delimited.
-        /// </summary>
-        /// <returns>A comma-delimited string of all fields in the format of: `field`=@field.</returns>
-        public static string FormatParametersIntoString(IEnumerable<string> fields)
-        {
-            StringBuilder sb = new StringBuilder(512);
-
-            foreach (string field in fields)
-            {
-                sb.Append("`");
-                sb.Append(field);
-                sb.Append("`=@");
-                sb.Append(field);
-                sb.Append(",");
-            }
-
-            // Remove the trailing comma (last character)
-            sb.Length--;
-
-            return sb.ToString();
         }
 
         /// <summary>

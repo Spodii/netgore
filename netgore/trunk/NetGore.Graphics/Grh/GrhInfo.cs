@@ -16,16 +16,6 @@ namespace NetGore.Graphics
     public static class GrhInfo
     {
         /// <summary>
-        /// Gets an IEnumerable of all of the GrhDatas.
-        /// </summary>
-        public static IEnumerable<GrhData> GrhDatas { get { return _grhDatas; }}
-
-        /// <summary>
-        /// List of all the GrhData where the array index is the GrhIndex
-        /// </summary>
-        static DArray<GrhData> _grhDatas;
-
-        /// <summary>
         /// Dictionary of categories, which contains a dictionary of all the names of the GrhDatas in
         /// that category, which contains the GrhData of that given name and category
         /// </summary>
@@ -39,10 +29,23 @@ namespace NetGore.Graphics
         static readonly StringComparer _comparer = StringComparer.OrdinalIgnoreCase;
 
         /// <summary>
+        /// List of all the GrhData where the array index is the GrhIndex
+        /// </summary>
+        static DArray<GrhData> _grhDatas;
+
+        /// <summary>
+        /// Gets an IEnumerable of all of the GrhDatas.
+        /// </summary>
+        public static IEnumerable<GrhData> GrhDatas
+        {
+            get { return _grhDatas; }
+        }
+
+        /// <summary>
         /// Adds a GrhData to the list of GrhDatas at the index assigned to it.
         /// </summary>
         /// <param name="gd">GrhData to add</param>
-        static internal void AddGrhData(GrhData gd)
+        internal static void AddGrhData(GrhData gd)
         {
             if (gd == null)
                 throw new ArgumentNullException("gd");
@@ -53,7 +56,7 @@ namespace NetGore.Graphics
             // Check if a GrhData will be overwritten
             if (_grhDatas.CanGet(index))
             {
-                var currentGD = GetData(index);
+                GrhData currentGD = GetData(index);
                 if (currentGD != null && currentGD != gd)
                     Debug.Fail("Existing GrhData is going to be overwritten. This is likely not what was intended.");
             }
@@ -62,8 +65,8 @@ namespace NetGore.Graphics
             _grhDatas[index] = gd;
 
             // Make sure the GrhData is only in the list once
-            Debug.Assert(GrhDatas.Where(x => x == gd).Count() == 1, 
-                "The GrhData should be in the list only once. Somehow, its in there either more times, or not at all.");
+            Debug.Assert(GrhDatas.Where(x => x == gd).Count() == 1,
+                         "The GrhData should be in the list only once. Somehow, its in there either more times, or not at all.");
         }
 
         /// <summary>

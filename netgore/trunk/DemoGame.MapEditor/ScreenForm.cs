@@ -1210,7 +1210,7 @@ namespace DemoGame.MapEditor
         {
             // Create the new GrhData
             string category = GetCategoryFromTreeNode(treeGrhs.SelectedNode);
-            var gd = GrhInfo.CreateGrhData(_content, category);
+            GrhData gd = GrhInfo.CreateGrhData(_content, category);
             treeGrhs.UpdateGrhData(gd);
 
             // Begin edit

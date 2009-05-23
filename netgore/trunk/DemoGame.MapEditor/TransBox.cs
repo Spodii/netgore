@@ -151,7 +151,7 @@ namespace DemoGame.MapEditor
             else
                 sourceGrhData = Scale;
 
-            var size = sourceGrhData.Size;
+            Vector2 size = sourceGrhData.Size;
             Area = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
             _grh = new Grh(sourceGrhData);
         }
@@ -219,7 +219,7 @@ namespace DemoGame.MapEditor
             Vector2 min = entity.CB.Min;
             Vector2 max = entity.CB.Max;
 
-            var halfScaleSize = ScaleSize / 2f;
+            Vector2 halfScaleSize = ScaleSize / 2f;
 
             // Find the center of the sides for the resize and move icons
             Vector2 sizeCenter = min + (entity.CB.Size / 2f) - halfScaleSize;

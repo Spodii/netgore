@@ -22,10 +22,7 @@ namespace DemoGame.Server
         /// </summary>
         DBController DbController
         {
-            get
-            {
-                return User.DBController;
-            }
+            get { return User.DBController; }
         }
 
         /// <summary>
@@ -132,7 +129,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            var values = new InsertUserEquippedQuery.QueryArgs(User.Guid, item.Guid, slot);
+            InsertUserEquippedQuery.QueryArgs values = new InsertUserEquippedQuery.QueryArgs(User.Guid, item.Guid, slot);
             DbController.InsertUserEquipped.Execute(values);
 
             SendClientUpdate(slot, item.GraphicIndex);

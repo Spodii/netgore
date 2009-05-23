@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -11,7 +10,6 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
-using Color=System.Drawing.Color;
 
 namespace DemoGame.MapEditor
 {

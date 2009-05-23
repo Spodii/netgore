@@ -40,7 +40,7 @@ namespace DemoGame.Client
         {
             if (itemInfoTooltip == null)
                 throw new ArgumentNullException("itemInfoTooltip");
-            
+
             _itemInfoTooltip = itemInfoTooltip;
 
             Vector2 itemsSize = _columns * new Vector2(_itemWidth, _itemHeight);
@@ -140,15 +140,6 @@ namespace DemoGame.Client
                 get { return _slot; }
             }
 
-            void LoadSprite()
-            {
-                var grhData = Skin.GetSkinGrhData(string.Empty, "item_slot");
-                if (grhData == null)
-                    return;
-
-                Sprite = new Grh(grhData);
-            }
-
             public InventoryItemPB(InventoryForm parent, Vector2 pos, byte slot)
                 : base(pos, null, new Vector2(_itemWidth, _itemHeight), parent)
             {
@@ -164,11 +155,6 @@ namespace DemoGame.Client
                 OnMouseUp += _invForm.InventoryItemPB_OnMouseUp;
 
                 Skin.OnChange += Skin_OnChange;
-                LoadSprite();
-            }
-
-            void Skin_OnChange(string newSkin, string oldSkin)
-            {
                 LoadSprite();
             }
 
@@ -206,6 +192,20 @@ namespace DemoGame.Client
                 sb.DrawString(GUIManager.Font, txt, pos + new Vector2(-1, 0), background);
                 sb.DrawString(GUIManager.Font, txt, pos + new Vector2(0, -1), background);
                 sb.DrawString(GUIManager.Font, txt, pos, foreground);
+            }
+
+            void LoadSprite()
+            {
+                GrhData grhData = Skin.GetSkinGrhData(string.Empty, "item_slot");
+                if (grhData == null)
+                    return;
+
+                Sprite = new Grh(grhData);
+            }
+
+            void Skin_OnChange(string newSkin, string oldSkin)
+            {
+                LoadSprite();
             }
         }
     }
