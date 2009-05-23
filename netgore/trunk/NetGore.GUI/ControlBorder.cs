@@ -225,6 +225,14 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets a Vector2 that represents the Width and Height of all sides of the border.
+        /// </summary>
+        public Vector2 Size
+        {
+            get { return new Vector2(Width + Height); }
+        }
+
+        /// <summary>
         /// ControlBorder constructor
         /// </summary>
         /// <param name="source">ControlBorder to copy from</param>
