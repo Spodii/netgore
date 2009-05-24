@@ -2019,6 +2019,7 @@ namespace DemoGame
                     return;
                 }
 
+                // NOTE: entity.Update() can modify the Entities collection! See bug: http://netgore.com/bugs/view.php?id=47
                 entity.Update(this, deltaTime);
             }
         }

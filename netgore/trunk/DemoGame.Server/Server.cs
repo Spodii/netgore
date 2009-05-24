@@ -152,7 +152,7 @@ namespace DemoGame.Server
             _sockets = new ServerSockets(this);
 
             // Start the input thread
-            _inputThread = new Thread(HandleInput);
+            _inputThread = new Thread(HandleInput) { Name = "Input Handler" };
             _inputThread.Start();
 
             // Start the main game loop
