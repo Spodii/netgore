@@ -56,15 +56,19 @@ namespace DemoGame
         /// </summary>
         readonly Stack<Entity> _cdStack = new Stack<Entity>();
 
+        readonly SafeEnumerator<CharacterEntity> _characterEnumerator;
+
         /// <summary>
         /// Array of characters on the map
         /// </summary>
-        readonly DArray<CharacterEntity> _characters = new DArray<CharacterEntity>(true);
+        readonly DArray<CharacterEntity> _characters;
 
         /// <summary>
         /// List of entities in the map
         /// </summary>
-        readonly List<Entity> _entities = new List<Entity>();
+        readonly List<Entity> _entities;
+
+        readonly SafeEnumerator<Entity> _entityEnumerator;
 
         /// <summary>
         /// Lock used for updating entities that have moved in the entity grid
@@ -76,10 +80,12 @@ namespace DemoGame
         /// </summary>
         readonly IGetTime _getTime;
 
+        readonly SafeEnumerator<ItemEntityBase> _itemEnumerator;
+
         /// <summary>
         /// Array of items on the map
         /// </summary>
-        readonly DArray<ItemEntityBase> _items = new DArray<ItemEntityBase>(true);
+        readonly DArray<ItemEntityBase> _items;
 
         /// <summary>
         /// Index of the map
@@ -126,7 +132,7 @@ namespace DemoGame
         /// </summary>
         public IEnumerable<CharacterEntity> Characters
         {
-            get { return _characters; }
+            get { return _characterEnumerator; }
         }
 
         /// <summary>
@@ -161,7 +167,7 @@ namespace DemoGame
         /// </summary>
         public IEnumerable<ItemEntityBase> Items
         {
-            get { return _items; }
+            get { return _itemEnumerator; }
         }
 
         /// <summary>
@@ -194,6 +200,15 @@ namespace DemoGame
             _getTime = getTime;
             _mapIndex = mapIndex;
             _updateStopWatch.Start();
+
+            _entities = new List<Entity>();
+            _entityEnumerator = new SafeEnumerator<Entity>(_entities);
+
+            _characters = new DArray<CharacterEntity>(true);
+            _characterEnumerator = new SafeEnumerator<CharacterEntity>(_characters);
+
+            _items = new DArray<ItemEntityBase>(true);
+            _itemEnumerator = new SafeEnumerator<ItemEntityBase>(_items);
         }
 
         /// <summary>
@@ -2075,7 +2090,7 @@ namespace DemoGame
         /// </summary>
         public IEnumerable<Entity> Entities
         {
-            get { return _entities; }
+            get { return _entityEnumerator; }
         }
 
         /// <summary>
