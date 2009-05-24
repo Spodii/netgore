@@ -9,8 +9,7 @@ namespace NetGore.Collections
     /// <summary>
     /// Wrapper for safely enumerating over a collection. This is primarily intended for collections that
     /// can be altered while they are being enumerated over, especially when the collection's items are the ones
-    /// that alter the collection. This is not thread-safe, and each instance should not be enumerated over more than
-    /// once at the same time.
+    /// that alter the collection. This is not completely thread-safe.
     /// </summary>
     /// <typeparam name="T">Type of object to enumerate over.</typeparam>
     public class SafeEnumerator<T> : IEnumerable<T>
@@ -36,11 +35,6 @@ namespace NetGore.Collections
         /// every call to GetEnumerator().
         /// </summary>
         readonly bool _isSourceReadonly;
-
-        /// <summary>
-        /// Enumerator used to enumerate over the buffer.
-        /// </summary>
-        readonly Enumerator _bufferEnumerator;
 
         /// <summary>
         /// Buffer containing all of the items to be enumerated over. This is what is actually ultimately enumerated
@@ -76,8 +70,16 @@ namespace NetGore.Collections
                 _useCollection = true;
                 _isSourceReadonly = _sourceAsCollection.IsReadOnly;
 
-                if (!_isSourceReadonly)
+                // If the source is readonly, we only need to populate the buffer once (now)
+                if (_isSourceReadonly)
+                {
+                    _buffer = _source.ToArray();
+                    _sourceLength = _source.Count();
+                }
+                else
+                {
                     _buffer = new T[_sourceAsCollection.Count];
+                }
             }
             else
             {
@@ -85,12 +87,6 @@ namespace NetGore.Collections
                 _useCollection = false;
                 _buffer = new T[_source.Count()];
             }
-
-            // Cast the buffer as an IEnumerable<T> to avoid casting later
-            // No need to do this is readonly since we can just return the actual enumerator since a
-            // read-only collection is never modified anyways, making this SafeEnumerator useless
-            if (!_isSourceReadonly)
-                _bufferEnumerator = new Enumerator(_buffer);
         }
 
         /// <summary>
@@ -105,10 +101,7 @@ namespace NetGore.Collections
 
                 // Resize the buffer if needed
                 if (_buffer.Length < _sourceLength)
-                {
                     Array.Resize(ref _buffer, _sourceLength + 32);
-                    _bufferEnumerator.ChangeArray(_buffer);
-                }
 
                 // Copy the elements from the source into the buffer
                 _sourceAsCollection.CopyTo(_buffer, 0);
@@ -120,10 +113,7 @@ namespace NetGore.Collections
 
                 // Resize the buffer if needed
                 if (_buffer.Length < _sourceLength)
-                {
                     Array.Resize(ref _buffer, _sourceLength + 32);
-                    _bufferEnumerator.ChangeArray(_buffer);
-                }
 
                 // Copy the elements from the source into the buffer
                 int i = -1;
@@ -141,16 +131,12 @@ namespace NetGore.Collections
         /// <filterpriority>1</filterpriority>
         public IEnumerator<T> GetEnumerator()
         {
-            // If a read-only source, just return the normal enumerator since its already safe
-            if (_isSourceReadonly)
-                return _source.GetEnumerator();
-                
-            // Update the buffer
-            UpdateBuffer();
+            // Update the buffer for a non-readonly source
+            if (!_isSourceReadonly)
+                UpdateBuffer();
 
             // Return the enumerator for the buffer
-            _bufferEnumerator.Initialize(_sourceLength);
-            return _bufferEnumerator;
+            return new Enumerator(_buffer, _sourceLength);
         }
 
         /// <summary>
@@ -166,40 +152,22 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Enumerator for enumerating over only part of an array, not the whole thing. Specialized to be reused
-        /// to enumerate over the same array numerous times.
+        /// Enumerator for enumerating over only part of an array, not the whole thing.
         /// </summary>
         class Enumerator : IEnumerator<T>
         {
-            T[] _array;
-            int _endIndex;
+            readonly T[] _array;
+            readonly int _endIndex;
             int _index;
 
             /// <summary>
             /// Enumerator constructor.
             /// </summary>
             /// <param name="array">Array to be enumerated over.</param>
-            public Enumerator(T[] array)
+            /// <param name="endIndex">Index to stop at when reached. Synonymous with Array.Length.</param>
+            public Enumerator(T[] array, int endIndex)
             {
                 _array = array;
-            }
-
-            /// <summary>
-            /// Changes the array used by this Enumerator.
-            /// </summary>
-            /// <param name="newArray">New array to use.</param>
-            public void ChangeArray(T[] newArray)
-            {
-                _array = newArray;
-            }
-
-            /// <summary>
-            /// Readies the Enumerator for usage. Must be called before being returned.
-            /// </summary>
-            /// <param name="endIndex">Index to stop at when reached. Synonymous with Array.Length.</param>
-            public void Initialize(int endIndex)
-            {
-                Reset();
                 _endIndex = endIndex;
             }
 
