@@ -6,7 +6,7 @@ using System.Text;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Interface for an object that reads values written by an IValueReader.
+    /// Interface for an object that reads values written by an IValueWriter.
     /// </summary>
     public interface IValueReader
     {
