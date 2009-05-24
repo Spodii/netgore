@@ -79,6 +79,7 @@ namespace NetGore.Collections.Tests
             var se = new SafeEnumerator<int>(source);
 
             int sum = 0;
+#pragma warning disable 168
             foreach (var i1 in se)
             {
                 foreach (var i2 in se)
@@ -86,6 +87,7 @@ namespace NetGore.Collections.Tests
                     sum++;
                 }
             }
+#pragma warning restore 168
             Assert.AreEqual(se.Count() * se.Count(), sum);
         }
 
