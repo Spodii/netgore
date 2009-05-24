@@ -144,7 +144,6 @@ namespace NetGore.Collections
             // Update the buffer for a non-readonly source
             if (!_isSourceReadonly)
                 UpdateBuffer();
-            Array.Resize(ref _buffer, _sourceLength + 32);
 
             // Return the enumerator for the buffer
             _bufferEnumerator.Initialize(_sourceLength);
