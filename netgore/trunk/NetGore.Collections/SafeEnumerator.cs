@@ -76,10 +76,7 @@ namespace NetGore.Collections
                 _useCollection = true;
                 _isSourceReadonly = _sourceAsCollection.IsReadOnly;
 
-                // If the source is readonly, we only need to populate the buffer once (now)
-                if (_isSourceReadonly)
-                    _buffer = _source.ToArray();
-                else
+                if (!_isSourceReadonly)
                     _buffer = new T[_sourceAsCollection.Count];
             }
             else
@@ -90,7 +87,10 @@ namespace NetGore.Collections
             }
 
             // Cast the buffer as an IEnumerable<T> to avoid casting later
-            _bufferEnumerator = new Enumerator(_buffer);
+            // No need to do this is readonly since we can just return the actual enumerator since a
+            // read-only collection is never modified anyways, making this SafeEnumerator useless
+            if (!_isSourceReadonly)
+                _bufferEnumerator = new Enumerator(_buffer);
         }
 
         /// <summary>
@@ -141,9 +141,12 @@ namespace NetGore.Collections
         /// <filterpriority>1</filterpriority>
         public IEnumerator<T> GetEnumerator()
         {
-            // Update the buffer for a non-readonly source
-            if (!_isSourceReadonly)
-                UpdateBuffer();
+            // If a read-only source, just return the normal enumerator since its already safe
+            if (_isSourceReadonly)
+                return _source.GetEnumerator();
+                
+            // Update the buffer
+            UpdateBuffer();
 
             // Return the enumerator for the buffer
             _bufferEnumerator.Initialize(_sourceLength);

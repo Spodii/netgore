@@ -71,6 +71,7 @@
     <Compile Include="MeanStackTests.cs" />
     <Compile Include="ObjectPoolTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SafeEnumeratorTests.cs" />
     <Compile Include="TSListTests.cs" />
   </ItemGroup>
   <ItemGroup>
