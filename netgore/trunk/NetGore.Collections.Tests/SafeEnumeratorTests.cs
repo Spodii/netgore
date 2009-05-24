@@ -162,5 +162,29 @@ namespace NetGore.Collections.Tests
         {
             DoubleEnumerateTest(new TSList<int>(Enumerable.Range(0, 100)));
         }
+
+        [Test]
+        public void EnumerateClearDArrayTest()
+        {
+            ClearEnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
+        }
+
+        [Test]
+        public void EnumerateModifiedDArrayTest()
+        {
+            ModifyEnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
+        }
+
+        [Test]
+        public void EnumerateDArrayTest()
+        {
+            EnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
+        }
+
+        [Test]
+        public void DoubleEnumerateDArrayTest()
+        {
+            DoubleEnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
+        }
     }
 }
