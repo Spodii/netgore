@@ -7,8 +7,17 @@ using NetGore.IO;
 
 namespace NetGore
 {
+    /// <summary>
+    /// Extensions for the IValueReader.
+    /// </summary>
     public static class IValueReaderExtensions
     {
+        /// <summary>
+        /// Reads a Vector2.
+        /// </summary>
+        /// <param name="reader">IValueReader to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
         public static Vector2 ReadVector2(this IValueReader reader, string name)
         {
             if (reader.SupportsNameLookup)
@@ -27,11 +36,24 @@ namespace NetGore
             }
         }
 
+        /// <summary>
+        /// Reads a CollisionType.
+        /// </summary>
+        /// <param name="reader">IValueReader to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
         public static CollisionType ReadCollisionType(this IValueReader reader, string name)
         {
             return ReadEnum<CollisionType>(reader, name);
         }
 
+        /// <summary>
+        /// Reads an enum from an IValueReader.
+        /// </summary>
+        /// <typeparam name="T">Type of the enum to read.</typeparam>
+        /// <param name="reader">IValueReader to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
         static T ReadEnum<T>(IValueReader reader, string name)
         {
             Type type = typeof(T);
