@@ -37,6 +37,15 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
+        /// be read back in the same order they were written and the name field will be ignored.
+        /// </summary>
+        public bool SupportsNameLookup
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Writes a 32-bit signed integer.
         /// </summary>
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it

@@ -11,7 +11,17 @@ namespace NetGore
     {
         public static void Write(this IValueWriter writer, string name, Vector2 value)
         {
-            writer.Write(name, value.X + "," + value.Y);
+            if (writer.SupportsNameLookup)
+            {
+                // We are using name lookup, so we have to combine the values so we use only one name
+                writer.Write(name, value.X + "," + value.Y);
+            }
+            else
+            {
+                // Not using name lookup, so just write them out
+                writer.Write(null, value.X);
+                writer.Write(null, value.Y);
+            }
         }
 
         public static void Write(this IValueWriter writer, string name, CollisionType collisionType)
