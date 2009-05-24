@@ -8,6 +8,10 @@ using DemoGame.Extensions;
 using log4net;
 using NetGore.Network;
 
+// ReSharper disable SuggestBaseTypeForParameter
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedParameter.Local
+
 namespace DemoGame.Server
 {
     /// <summary>
