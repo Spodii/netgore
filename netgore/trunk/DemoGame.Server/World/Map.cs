@@ -21,10 +21,13 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly List<NPC> _npcs = new List<NPC>();
-        readonly TSList<User> _users = new TSList<User>();
+        readonly List<NPC> _npcs;
+        readonly TSList<User> _users;
         readonly World _world;
         bool _disposed;
+
+        readonly SafeEnumerator<NPC> _npcEnumerator;
+        readonly SafeEnumerator<User> _userEnumerator;
 
         /// <summary>
         /// Gets the DBController used by this Map.
@@ -39,7 +42,7 @@ namespace DemoGame.Server
         /// </summary>
         public IEnumerable<NPC> NPCs
         {
-            get { return _npcs; }
+            get { return _npcEnumerator; }
         }
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace DemoGame.Server
         /// </summary>
         public IEnumerable<User> Users
         {
-            get { return _users; }
+            get { return _userEnumerator; }
         }
 
         /// <summary>
@@ -61,6 +64,12 @@ namespace DemoGame.Server
         public Map(ushort mapIndex, World world) : base(mapIndex, world)
         {
             _world = world;
+
+            _npcs = new List<NPC>();
+            _npcEnumerator = new SafeEnumerator<NPC>(_npcs);
+
+            _users = new TSList<User>();
+            _userEnumerator = new SafeEnumerator<User>(_users);
         }
 
         bool CharAdded(Entity entity)
