@@ -105,7 +105,10 @@ namespace NetGore.Collections
 
                 // Resize the buffer if needed
                 if (_buffer.Length < _sourceLength)
+                {
                     Array.Resize(ref _buffer, _sourceLength + 32);
+                    _bufferEnumerator.ChangeArray(_buffer);
+                }
 
                 // Copy the elements from the source into the buffer
                 _sourceAsCollection.CopyTo(_buffer, 0);
@@ -117,7 +120,10 @@ namespace NetGore.Collections
 
                 // Resize the buffer if needed
                 if (_buffer.Length < _sourceLength)
+                {
                     Array.Resize(ref _buffer, _sourceLength + 32);
+                    _bufferEnumerator.ChangeArray(_buffer);
+                }
 
                 // Copy the elements from the source into the buffer
                 int i = -1;
@@ -138,6 +144,7 @@ namespace NetGore.Collections
             // Update the buffer for a non-readonly source
             if (!_isSourceReadonly)
                 UpdateBuffer();
+            Array.Resize(ref _buffer, _sourceLength + 32);
 
             // Return the enumerator for the buffer
             _bufferEnumerator.Initialize(_sourceLength);
@@ -162,7 +169,7 @@ namespace NetGore.Collections
         /// </summary>
         class Enumerator : IEnumerator<T>
         {
-            readonly T[] _array;
+            T[] _array;
             int _endIndex;
             int _index;
 
@@ -176,11 +183,21 @@ namespace NetGore.Collections
             }
 
             /// <summary>
+            /// Changes the array used by this Enumerator.
+            /// </summary>
+            /// <param name="newArray">New array to use.</param>
+            public void ChangeArray(T[] newArray)
+            {
+                _array = newArray;
+            }
+
+            /// <summary>
             /// Readies the Enumerator for usage. Must be called before being returned.
             /// </summary>
             /// <param name="endIndex">Index to stop at when reached. Synonymous with Array.Length.</param>
             public void Initialize(int endIndex)
             {
+                Reset();
                 _endIndex = endIndex;
             }
 
