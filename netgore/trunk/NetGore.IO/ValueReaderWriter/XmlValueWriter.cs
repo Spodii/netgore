@@ -9,7 +9,7 @@ namespace NetGore.IO
     /// <summary>
     /// Implementation of the INamedValueWriter using Xml.
     /// </summary>
-    public class XmlValueWriter : INamedValueWriter
+    public class XmlValueWriter : IValueWriter
     {
         readonly XmlWriter _writer;
 

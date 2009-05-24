@@ -73,7 +73,7 @@ namespace NetGore
             string typeName = _typeCollection[type];
             BitStreamValueWriter valueWriter = new BitStreamValueWriter(writer);
 
-            valueWriter.Write(typeName);
+            valueWriter.Write(null, typeName);
             dEntity.Write(valueWriter);
         }
 

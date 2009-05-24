@@ -15,20 +15,10 @@ namespace DemoGame
 
         protected override void WriteCustomValues(IValueWriter writer)
         {
-            writer.Write(Damage);
-        }
-
-        protected override void WriteCustomValues(INamedValueWriter writer)
-        {
             writer.Write("Damage", Damage);
         }
 
         protected override void ReadCustomValues(IValueReader reader)
-        {
-            _damage = reader.ReadInt();
-        }
-
-        protected override void ReadCustomValues(INamedValueReader reader)
         {
             _damage = reader.ReadInt("Damage");
         }

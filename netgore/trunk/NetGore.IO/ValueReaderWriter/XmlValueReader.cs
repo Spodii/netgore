@@ -10,7 +10,7 @@ namespace NetGore.IO
     /// <summary>
     /// Implementation of the INamedValueWriter using Xml.
     /// </summary>
-    public class XmlValueReader : INamedValueReader
+    public class XmlValueReader : IValueReader
     {
         readonly Dictionary<string, string> _values;
 
@@ -61,6 +61,15 @@ namespace NetGore.IO
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
+        /// be read back in the same order they were written and the name field will be ignored.
+        /// </summary>
+        public bool SupportsNameLookup
+        {
+            get { return true; }
         }
 
         /// <summary>

@@ -12,19 +12,6 @@ namespace NetGore
     {
         public void Read(IValueReader reader)
         {
-            Vector2 position = reader.ReadVector2();
-            Vector2 size = reader.ReadVector2();
-            Vector2 velocity = reader.ReadVector2();
-            float weight = reader.ReadFloat();
-            CollisionType collisionType = reader.ReadCollisionType();
-
-            LoadEntityValues(position, size, velocity, weight, collisionType);
-
-            ReadCustomValues(reader);
-        }
-
-        public void Read(INamedValueReader reader)
-        {
             Vector2 position = reader.ReadVector2("Position");
             Vector2 size = reader.ReadVector2("Size");
             Vector2 velocity = reader.ReadVector2("Velocity");
@@ -43,19 +30,7 @@ namespace NetGore
 
         protected abstract void ReadCustomValues(IValueReader reader);
 
-        protected abstract void ReadCustomValues(INamedValueReader reader);
-
         public void Write(IValueWriter writer)
-        {
-            writer.Write(Position);
-            writer.Write(Size);
-            writer.Write(Velocity);
-            writer.Write(Weight);
-            writer.Write(CollisionType);
-            WriteCustomValues(writer);
-        }
-
-        public void Write(INamedValueWriter writer)
         {
             writer.Write("Position", Position);
             writer.Write("Size", Size);
@@ -66,7 +41,5 @@ namespace NetGore
         }
 
         protected abstract void WriteCustomValues(IValueWriter writer);
-
-        protected abstract void WriteCustomValues(INamedValueWriter writer);
     }
 }
