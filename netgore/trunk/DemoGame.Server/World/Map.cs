@@ -178,6 +178,15 @@ namespace DemoGame.Server
                             Send(creationData);
                     }
                 }
+
+                DynamicEntity de = entity as DynamicEntity;
+                if (de != null)
+                {
+                    using (var pw = ServerPacket.CreateDynamicEntity(de))
+                    {
+                        Send(pw);
+                    }
+                }
             }
 
             // Handle the different types of entities

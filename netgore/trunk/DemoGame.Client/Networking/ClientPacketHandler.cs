@@ -11,6 +11,8 @@ using NetGore.IO;
 using NetGore.Network;
 
 #pragma warning disable 168
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedParameter.Local
 
 namespace DemoGame.Client
 {
@@ -148,6 +150,13 @@ namespace DemoGame.Client
                 return;
 
             GameplayScreen.DamageTextPool.Create(damage, chr, GetTime());
+        }
+
+        [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
+        void RecvCreateDynamicEntity(TCPSocket conn, BitStream r)
+        {
+            var dynamicEntity = DynamicEntityFactory.Read(r);
+            Map.AddEntity(dynamicEntity);
         }
 
         [MessageHandler((byte)ServerPacketID.Chat)]

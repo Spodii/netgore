@@ -6,6 +6,8 @@ using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
 using Microsoft.Xna.Framework;
+using NetGore;
+using NetGore.IO;
 using NetGore.Network;
 
 namespace DemoGame.Server
@@ -46,6 +48,13 @@ namespace DemoGame.Server
             pw.Write(name, GameData.MaxServerSayNameLength);
             pw.Write(mapCharIndex);
             pw.Write(text, GameData.MaxServerSayLength);
+            return pw;
+        }
+
+        public static PacketWriter CreateDynamicEntity(DynamicEntity dynamicEntity)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.CreateDynamicEntity);
+            DynamicEntityFactory.Write(pw, dynamicEntity);
             return pw;
         }
 

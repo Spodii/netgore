@@ -14,6 +14,7 @@ namespace DemoGame
         CharDamage,
         Chat,
         ChatSay,
+        CreateDynamicEntity,
         CreateNPC,
         CreateUser,
         CreateMapItem,
