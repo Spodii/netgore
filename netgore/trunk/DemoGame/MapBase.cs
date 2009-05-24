@@ -2232,8 +2232,8 @@ namespace DemoGame
                 {
                     const string errmsg = "Found element name `{0}` when expecting `Wall`";
                     Debug.Fail(string.Format(errmsg, r.Name));
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, r.Name);
+                    if (log.IsFatalEnabled)
+                        log.FatalFormat(errmsg, r.Name);
                 }
             }
         }

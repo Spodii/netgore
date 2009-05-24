@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{E7C8665B-101F-4930-97B7-68FC2C236971}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -77,8 +77,16 @@
     <Compile Include="Bits\BitStreamSeekOrigin.cs" />
     <Compile Include="ContentPaths.cs" />
     <Compile Include="FilePathString.cs" />
+    <Compile Include="ValueReaderWriter\BitStreamValueReader.cs" />
+    <Compile Include="ValueReaderWriter\BitStreamValueWriter.cs" />
+    <Compile Include="ValueReaderWriter\INamedValueReader.cs" />
+    <Compile Include="ValueReaderWriter\INamedValueWriter.cs" />
+    <Compile Include="ValueReaderWriter\IValueReader.cs" />
+    <Compile Include="ValueReaderWriter\IValueWriter.cs" />
     <Compile Include="MessageCollectionBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValueReaderWriter\XmlValueReader.cs" />
+    <Compile Include="ValueReaderWriter\XmlValueWriter.cs" />
     <Compile Include="Xml\IRestorableSettings.cs" />
     <Compile Include="Xml\NodeItem.cs" />
     <Compile Include="Xml\NodeItems.cs" />

@@ -72,6 +72,7 @@
     <Compile Include="BoolArray.cs" />
     <Compile Include="DArray.cs" />
     <Compile Include="DArrayModifyEventArgs.cs" />
+    <Compile Include="FactoryTypeCollection.cs" />
     <Compile Include="MeanStack.cs" />
     <Compile Include="Object Pool\IPoolable.cs" />
     <Compile Include="Object Pool\ObjectPoolBase.cs" />

@@ -137,13 +137,6 @@ namespace NetGore
         protected Entity(Vector2 position, Vector2 size)
         {
             CB = new CollisionBox(position, size.X, size.Y);
-            if (CB == null)
-            {
-                const string errmsg = "Failed to create CollisionBox.";
-                Debug.Fail(errmsg);
-                if (log.IsFatalEnabled)
-                    log.Fatal(errmsg);
-            }
         }
 
         /// <summary>
@@ -255,6 +248,24 @@ namespace NetGore
 
             if (OnResize != null)
                 OnResize(this, oldSize);
+        }
+
+        /// <summary>
+        /// Loads the Entity's values directly, completely bypassing any events or updating. This should only be used
+        /// for when constructing an Entity when these values cannot be passed directly to the constructor or Create().
+        /// </summary>
+        /// <param name="position">New position value.</param>
+        /// <param name="size">New size value.</param>
+        /// <param name="velocity">New velocity value.</param>
+        /// <param name="weight">New weight value.</param>
+        /// <param name="collisionType">New collision type.</param>
+        protected internal void LoadEntityValues(Vector2 position, Vector2 size, Vector2 velocity, float weight, CollisionType collisionType)
+        {
+            CB.Teleport(position);
+            CB.Resize(size);
+            _velocity = velocity;
+            _weight = weight;
+            _ct = collisionType;
         }
 
         /// <summary>

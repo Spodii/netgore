@@ -54,6 +54,15 @@ namespace DemoGame.Server
             }
         }
 
+        [SayCommand("CreateTestDamageTrap", false)]
+        void CmdCreateTestDamageTrap(string text, User user)
+        {
+            var trap = new DamageTrapEntity();
+            trap.Resize(new Microsoft.Xna.Framework.Vector2(64, 64));
+            trap.Teleport(user.Position);
+            user.Map.AddEntity(trap);
+        }
+
         [SayCommand("Tell", true)]
         [SayCommand("Whisper", true)]
         void CmdTell(string text, User user)
