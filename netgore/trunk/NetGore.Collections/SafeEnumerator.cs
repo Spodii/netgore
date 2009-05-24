@@ -136,6 +136,10 @@ namespace NetGore.Collections
                 UpdateBuffer();
 
             // Return the enumerator for the buffer
+            if (_source is TSList<T>)
+            {
+            }
+
             return new Enumerator(_buffer, _sourceLength);
         }
 
@@ -167,6 +171,7 @@ namespace NetGore.Collections
             /// <param name="endIndex">Index to stop at when reached. Synonymous with Array.Length.</param>
             public Enumerator(T[] array, int endIndex)
             {
+                _index = -1;
                 _array = array;
                 _endIndex = endIndex;
             }
