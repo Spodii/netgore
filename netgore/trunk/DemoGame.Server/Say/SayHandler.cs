@@ -57,6 +57,7 @@ namespace DemoGame.Server
         [SayCommand("CreateTestDamageTrap", false)]
         void CmdCreateTestDamageTrap(string text, User user)
         {
+            // NOTE: This is a temporary command
             var trap = new DamageTrapEntity();
             trap.Resize(new Microsoft.Xna.Framework.Vector2(64, 64));
             trap.Teleport(user.Position);
