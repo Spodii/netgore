@@ -31,7 +31,7 @@ namespace NetGore.Collections.Tests
         /// <summary>
         /// Tests enumeration over a collection being modified between enumerations.
         /// </summary>
-        /// <param name="source">Source to test</param>
+        /// <param name="source">Source to test.</param>
         static void ModifyEnumerateTest(ICollection<int> source)
         {
             var se = new SafeEnumerator<int>(source);
@@ -53,7 +53,7 @@ namespace NetGore.Collections.Tests
         /// <summary>
         /// Tests enumeration over a collection, clearing it, then enumerating over it again.
         /// </summary>
-        /// <param name="source">Source to test</param>
+        /// <param name="source">Source to test.</param>
         static void ClearEnumerateTest(ICollection<int> source)
         {
             var se = new SafeEnumerator<int>(source);
@@ -70,6 +70,10 @@ namespace NetGore.Collections.Tests
             }
         }
 
+        /// <summary>
+        /// Tests enumerating over an IEnumerable that is already being enumerated over.
+        /// </summary>
+        /// <param name="source">Source to test.</param>
         static void DoubleEnumerateTest(IEnumerable<int> source)
         {
             var se = new SafeEnumerator<int>(source);
