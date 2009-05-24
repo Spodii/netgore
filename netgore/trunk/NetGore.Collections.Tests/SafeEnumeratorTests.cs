@@ -70,6 +70,39 @@ namespace NetGore.Collections.Tests
             }
         }
 
+        static void DoubleEnumerateTest(IEnumerable<int> source)
+        {
+            var se = new SafeEnumerator<int>(source);
+
+            int sum = 0;
+            foreach (var i1 in se)
+            {
+                foreach (var i2 in se)
+                {
+                    sum++;
+                }
+            }
+            Assert.AreEqual(se.Count() * se.Count(), sum);
+        }
+
+        [Test]
+        public void DoubleEnumerateCollectionTest()
+        {
+            DoubleEnumerateTest(Enumerable.Range(0, 100).ToList());
+        }
+
+        [Test]
+        public void DoubleEnumerateReadonlyCollectionTest()
+        {
+            DoubleEnumerateTest(Enumerable.Range(0, 100).ToList().AsReadOnly());
+        }
+
+        [Test]
+        public void DoubleEnumerateEnumerableTest()
+        {
+            DoubleEnumerateTest(Enumerable.Range(0, 100));
+        }
+
         [Test]
         public void EnumerateCollectionTest()
         {
