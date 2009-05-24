@@ -9,33 +9,30 @@ namespace NetGore
 {
     public static class IValueReaderExtensions
     {
-        public static Vector2 ReadVector2(this IValueReader reader)
+        public static Vector2 ReadVector2(this IValueReader reader, string name)
         {
-            var x = reader.ReadFloat();
-            var y = reader.ReadFloat();
-            return new Vector2(x, y);
+            if (reader.SupportsNameLookup)
+            {
+                string value = reader.ReadString(name);
+                string[] split = value.Split(',');
+                var x = float.Parse(split[0]);
+                var y = float.Parse(split[1]);
+                return new Vector2(x, y);
+            }
+            else
+            {
+                var x = reader.ReadFloat(null);
+                var y = reader.ReadFloat(null);
+                return new Vector2(x, y);
+            }
         }
 
-        public static Vector2 ReadVector2(this INamedValueReader reader, string name)
-        {
-            string value = reader.ReadString(name);
-            string[] split = value.Split(',');
-            var x = float.Parse(split[0]);
-            var y = float.Parse(split[1]);
-            return new Vector2(x, y);
-        }
-
-        public static CollisionType ReadCollisionType(this IValueReader reader)
-        {
-            return (CollisionType)reader.ReadByte();
-        }
-
-        public static CollisionType ReadCollisionType(this INamedValueReader reader, string name)
+        public static CollisionType ReadCollisionType(this IValueReader reader, string name)
         {
             return ReadEnum<CollisionType>(reader, name);
         }
 
-        static T ReadEnum<T>(INamedValueReader reader, string name)
+        static T ReadEnum<T>(IValueReader reader, string name)
         {
             Type type = typeof(T);
             var str = reader.ReadString(name);

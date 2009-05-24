@@ -12,6 +12,7 @@ namespace NetGore.IO.ValueReaderWriter
     {
         readonly BitStream _reader;
 
+
         /// <summary>
         /// BitStreamValueReader constructor.
         /// </summary>
@@ -29,8 +30,9 @@ namespace NetGore.IO.ValueReaderWriter
         /// <summary>
         /// Reads a 8-bit unsigned integer.
         /// </summary>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <returns>Value read from the reader.</returns>
-        public byte ReadByte()
+        public byte ReadByte(string name)
         {
             return _reader.ReadByte();
         }
@@ -38,17 +40,28 @@ namespace NetGore.IO.ValueReaderWriter
         /// <summary>
         /// Reads a 32-bit floating-point number.
         /// </summary>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <returns>Value read from the reader.</returns>
-        public float ReadFloat()
+        public float ReadFloat(string name)
         {
             return _reader.ReadFloat();
         }
 
         /// <summary>
+        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
+        /// be read back in the same order they were written and the name field will be ignored.
+        /// </summary>
+        public bool SupportsNameLookup
+        {
+            get { return false; }
+        }
+
+        /// <summary>
         /// Reads a 32-bit signed integer.
         /// </summary>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <returns>Value read from the reader.</returns>
-        public int ReadInt()
+        public int ReadInt(string name)
         {
             return _reader.ReadInt();
         }
@@ -56,8 +69,9 @@ namespace NetGore.IO.ValueReaderWriter
         /// <summary>
         /// Reads a 8-bit signed integer.
         /// </summary>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <returns>Value read from the reader.</returns>
-        public sbyte ReadSByte()
+        public sbyte ReadSByte(string name)
         {
             return _reader.ReadSByte();
         }
@@ -65,8 +79,9 @@ namespace NetGore.IO.ValueReaderWriter
         /// <summary>
         /// Reads a 16-bit signed integer.
         /// </summary>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <returns>Value read from the reader.</returns>
-        public short ReadShort()
+        public short ReadShort(string name)
         {
             return _reader.ReadShort();
         }
@@ -74,8 +89,9 @@ namespace NetGore.IO.ValueReaderWriter
         /// <summary>
         /// Reads a variable-length string of up to 65535 characters in length.
         /// </summary>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <returns>String read from the reader.</returns>
-        public string ReadString()
+        public string ReadString(string name)
         {
             return _reader.ReadString();
         }
@@ -83,8 +99,9 @@ namespace NetGore.IO.ValueReaderWriter
         /// <summary>
         /// Reads a 32-bit unsigned integer.
         /// </summary>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <returns>Value read from the reader.</returns>
-        public uint ReadUInt()
+        public uint ReadUInt(string name)
         {
             return _reader.ReadUInt();
         }
@@ -92,8 +109,9 @@ namespace NetGore.IO.ValueReaderWriter
         /// <summary>
         /// Reads a 16-bit unsigned integer.
         /// </summary>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <returns>Value read from the reader.</returns>
-        public ushort ReadUShort()
+        public ushort ReadUShort(string name)
         {
             return _reader.ReadUShort();
         }

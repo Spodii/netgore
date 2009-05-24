@@ -79,8 +79,6 @@
     <Compile Include="FilePathString.cs" />
     <Compile Include="ValueReaderWriter\BitStreamValueReader.cs" />
     <Compile Include="ValueReaderWriter\BitStreamValueWriter.cs" />
-    <Compile Include="ValueReaderWriter\INamedValueReader.cs" />
-    <Compile Include="ValueReaderWriter\INamedValueWriter.cs" />
     <Compile Include="ValueReaderWriter\IValueReader.cs" />
     <Compile Include="ValueReaderWriter\IValueWriter.cs" />
     <Compile Include="MessageCollectionBase.cs" />
