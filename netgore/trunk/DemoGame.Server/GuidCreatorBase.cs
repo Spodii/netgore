@@ -65,7 +65,7 @@ namespace DemoGame.Server
                 _isRefilling = true;
 
                 // Start the refill thread
-                Thread refillThread = new Thread(Refill);
+                Thread refillThread = new Thread(Refill) { Name = "Guid Refiller" };
                 refillThread.Start();
             }
         }
