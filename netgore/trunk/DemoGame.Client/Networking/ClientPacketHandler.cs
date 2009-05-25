@@ -462,7 +462,7 @@ namespace DemoGame.Client
 
             // Create the new map
             Map newMap = new Map(mapIndex, World, GameplayScreen.ScreenManager.GraphicsDevice);
-            newMap.Load(ContentPaths.Build);
+            newMap.Load(ContentPaths.Build, false);
 
             // Change maps
             World.SetMap(newMap);

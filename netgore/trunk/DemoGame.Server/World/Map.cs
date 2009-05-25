@@ -164,11 +164,6 @@ namespace DemoGame.Server
             return item;
         }
 
-        protected override TeleportEntityBase CreateTeleportEntity(XmlReader r)
-        {
-            return new TeleportEntity(r);
-        }
-
         protected override void EntityAdded(Entity entity)
         {
             base.EntityAdded(entity);
@@ -340,6 +335,16 @@ namespace DemoGame.Server
                 {
                     if (creationData != null)
                         user.Send(creationData);
+                }
+            }
+
+            // Send dynamic entities
+            foreach (var dynamicEntity in DynamicEntities)
+            {
+                // TODO: Should serialize all DynamicEntities to just one PacketWriter, not one per entity
+                using (var pw = ServerPacket.CreateDynamicEntity(dynamicEntity))
+                {
+                    user.Send(pw);
                 }
             }
 

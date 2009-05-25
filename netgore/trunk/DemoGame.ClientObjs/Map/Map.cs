@@ -227,11 +227,6 @@ namespace DemoGame.Client
             _mapAtlases = ta.Build(_graphics);
         }
 
-        protected override TeleportEntityBase CreateTeleportEntity(XmlReader r)
-        {
-            return new TeleportEntity(r);
-        }
-
         /// <summary>
         /// Draws the content of the map to the screen
         /// </summary>

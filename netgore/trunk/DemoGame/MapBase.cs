@@ -209,7 +209,15 @@ namespace DemoGame
 
             _items = new DArray<ItemEntityBase>(true);
             _itemEnumerator = new SafeEnumerator<ItemEntityBase>(_items);
+
+            _dynamicEntities = new DArray<DynamicEntity>(true);
+            _dyanmicEntityEnumerator = new SafeEnumerator<DynamicEntity>(_dynamicEntities);
         }
+
+        readonly DArray<DynamicEntity> _dynamicEntities;
+        readonly SafeEnumerator<DynamicEntity> _dyanmicEntityEnumerator;
+
+        public IEnumerable<DynamicEntity> DynamicEntities { get { return _dyanmicEntityEnumerator; } }
 
         /// <summary>
         /// Adds a character to the map.
@@ -250,6 +258,7 @@ namespace DemoGame
             // For everything that is index-bound, assign the index
             CharacterEntity charEntity;
             ItemEntityBase itemEntity;
+            DynamicEntity dynamicEntity;
 
             if ((charEntity = entity as CharacterEntity) != null)
             {
@@ -260,6 +269,11 @@ namespace DemoGame
             {
                 Debug.Assert(!_items.Contains(itemEntity), "Item is already in the Items list!");
                 itemEntity.MapItemIndex = (ushort)_items.Insert(itemEntity);
+            }
+            else if ((dynamicEntity = entity as DynamicEntity) != null)
+            {
+                Debug.Assert(!_dynamicEntities.Contains(dynamicEntity), "DynamicEntity is already in the DynamicEntity list!");
+                dynamicEntity.MapIndex = _dynamicEntities.Insert(dynamicEntity);
             }
 
             // Finish adding the Entity
@@ -394,8 +408,6 @@ namespace DemoGame
         {
             return Contains(cb.ToRectangle());
         }
-
-        protected abstract TeleportEntityBase CreateTeleportEntity(XmlReader r);
 
         /// <summary>
         /// Handles when an Entity is disposed while still on the map.
@@ -1461,17 +1473,21 @@ namespace DemoGame
         /// Loads the map from the specified content path.
         /// </summary>
         /// <param name="contentPath">ContentPath to load the map from.</param>
-        public void Load(ContentPaths contentPath)
+        /// <param name="loadDynamicEntities">If true, the DynamicEntities will be loaded from the file. If false,
+        /// all DynamicEntities will be skipped.</param>
+        public void Load(ContentPaths contentPath, bool loadDynamicEntities)
         {
             string path = contentPath.Maps.Join(Index + "." + MapFileSuffix);
-            Load(path);
+            Load(path, loadDynamicEntities);
         }
 
         /// <summary>
         /// Loads the map.
         /// </summary>
         /// <param name="filePath">Path to the file to load</param>
-        protected virtual void Load(string filePath)
+        /// <param name="loadDynamicEntities">If true, the DynamicEntities will be loaded from the file. If false,
+        /// all DynamicEntities will be skipped.</param>
+        protected virtual void Load(string filePath, bool loadDynamicEntities)
         {
             if (!File.Exists(filePath))
             {
@@ -1490,6 +1506,9 @@ namespace DemoGame
                         if (r.NodeType != XmlNodeType.Element)
                             continue;
 
+                        // TODO: r.ReadSubtree() doesn't seem to work the way I thought it does. It should read the whole
+                        // subtree, allowing the new reader to ONLY handle that Xml, and advance the reader past it no matter
+                        // how much the child reads
                         switch (r.Name)
                         {
                             case "Map":
@@ -1497,8 +1516,14 @@ namespace DemoGame
                             case "Header":
                                 LoadHeader(r.ReadSubtree());
                                 break;
-                            case "Entities":
-                                LoadEntities(r.ReadSubtree());
+                            case "Walls":
+                                LoadWalls(r.ReadSubtree());
+                                break;
+                            case "DynamicEntities":
+                                if (loadDynamicEntities)
+                                    LoadDynamicEntities(r.ReadSubtree());
+                                else
+                                    r.ReadOuterXml();
                                 break;
                             case "Misc":
                                 LoadMiscs(r.ReadSubtree());
@@ -1511,44 +1536,15 @@ namespace DemoGame
             }
         }
 
-        /// <summary>
-        /// Handles loading the entities
-        /// </summary>
-        /// <param name="r">XmlReader containing the subtree of the Entities element</param>
-        void LoadEntities(XmlReader r)
+        void LoadDynamicEntities(XmlReader r)
         {
-            // Parse the whole subtree
             while (r.Read())
             {
-                // We're only interested in element starts
-                if (r.NodeType != XmlNodeType.Element || r.Name == "Entities")
-                    continue;
-
-                XmlReader subTreeReader = r.ReadSubtree();
-                subTreeReader.MoveToContent();
-
-                // Handle the walls internally, forwarding the rest to the custom Entity loader
-                if (r.Name == "Walls")
-                    LoadWalls(subTreeReader);
-                else
-                    LoadEntity(subTreeReader);
-            }
-        }
-
-        /// <summary>
-        /// Handles loading of custom entities. Will be called for each subtree in the Entities
-        /// tree, except for the Walls, which are handled internally. <paramref name="r"/> will only
-        /// contain the subtree, so there are no concerns with over or under-parsing, or running
-        /// into any unknowns.
-        /// </summary>
-        /// <param name="r">XmlReader containing the subtree for the custom Entities element</param>
-        protected virtual void LoadEntity(XmlReader r)
-        {
-            switch (r.Name)
-            {
-                case "Teleports":
-                    LoadTeleports(r.ReadSubtree());
-                    break;
+                if (r.NodeType == XmlNodeType.Element && r.Name == DynamicEntityFactory.NodeName)
+                {
+                    var dynamicEntity = DynamicEntityFactory.Read(r);
+                    AddEntity(dynamicEntity);
+                }
             }
         }
 
@@ -1619,18 +1615,6 @@ namespace DemoGame
                     subTreeReader.MoveToContent();
                     LoadMisc(subTreeReader);
                 }
-            }
-        }
-
-        void LoadTeleports(XmlReader r)
-        {
-            while (r.Read())
-            {
-                if (r.NodeType != XmlNodeType.Element || !r.HasAttributes)
-                    continue;
-
-                TeleportEntityBase te = CreateTeleportEntity(r);
-                AddEntity(te);
             }
         }
 
@@ -1798,7 +1782,8 @@ namespace DemoGame
 
                     // Write the different parts of the map
                     SaveHeader(w);
-                    SaveEntitiesInternal(w);
+                    SaveWalls(w);
+                    SaveDynamicEntities(w);
                     SaveMisc(w);
 
                     // Write the end of the XML document
@@ -1808,24 +1793,11 @@ namespace DemoGame
             }
         }
 
-        /// <summary>
-        /// Saves additional entity information to the Entities element in the map
-        /// </summary>
-        /// <param name="w">XmlWriter to use to save the entity information</param>
-        protected virtual void SaveEntities(XmlWriter w)
+        void SaveDynamicEntities(XmlWriter w)
         {
-            SaveTeleports(w);
-        }
-
-        /// <summary>
-        /// Handles saving the wall entities, along with the custom entities, to the map file
-        /// </summary>
-        /// <param name="w">XmlWriter to use to save the entity information</param>
-        void SaveEntitiesInternal(XmlWriter w)
-        {
-            w.WriteStartElement("Entities");
-            SaveWalls(w);
-            SaveEntities(w);
+            w.WriteStartElement("DynamicEntities");
+            foreach (var dynamicEntity in DynamicEntities)
+                DynamicEntityFactory.Write(w, dynamicEntity);
             w.WriteEndElement();
         }
 
@@ -1853,20 +1825,6 @@ namespace DemoGame
         /// <param name="w">XmlWriter to write to the file</param>
         protected virtual void SaveMisc(XmlWriter w)
         {
-        }
-
-        void SaveTeleports(XmlWriter w)
-        {
-            w.WriteStartElement("Teleports");
-
-            foreach (Entity entity in Entities)
-            {
-                TeleportEntityBase te = entity as TeleportEntityBase;
-                if (te != null)
-                    te.Save(w);
-            }
-
-            w.WriteEndElement();
         }
 
         /// <summary>
@@ -2244,7 +2202,7 @@ namespace DemoGame
                     Entity wall = WallEntity.Load<TWall>(r.ReadSubtree());
                     AddEntity(wall);
                 }
-                else
+                else if (r.Name != "Walls")
                 {
                     const string errmsg = "Found element name `{0}` when expecting `Wall`";
                     Debug.Fail(string.Format(errmsg, r.Name));

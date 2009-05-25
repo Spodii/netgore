@@ -81,6 +81,7 @@
     <Compile Include="Entity\IPickupableEntity.cs" />
     <Compile Include="Entity\ItemEntityBase.cs" />
     <Compile Include="Entity\IUseableEntity.cs" />
+    <Compile Include="Entity\NewTeleportEntityBase.cs" />
     <Compile Include="EquippedEventHandler.cs" />
     <Compile Include="EquipmentSlot.cs" />
     <Compile Include="EquippedBase.cs" />
@@ -89,7 +90,6 @@
     <Compile Include="InventoryBase.cs" />
     <Compile Include="ItemType.cs" />
     <Compile Include="MapBase.cs" />
-    <Compile Include="Entity\TeleportEntity.cs" />
     <Compile Include="Packets\ClientPacketID.cs" />
     <Compile Include="Packets\ServerPacketID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
