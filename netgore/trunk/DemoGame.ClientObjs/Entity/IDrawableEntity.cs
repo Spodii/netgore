@@ -9,31 +9,31 @@ using NetGore.Graphics;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Interface for entities which support drawing itself
+    /// Interface for an Entity that support drawing itself.
     /// </summary>
     public interface IDrawableEntity
     {
         /// <summary>
-        /// Notifies that the Entity's MapRenderLayer has changed
+        /// Notifies listeners that the Entity's MapRenderLayer has changed.
         /// </summary>
         event MapRenderLayerChange OnChangeRenderLayer;
 
         /// <summary>
-        /// Gets the layer that this entity is rendered at
+        /// Gets the MapRenderLayer that this entity is rendered on.
         /// </summary>
         MapRenderLayer MapRenderLayer { get; }
 
         /// <summary>
-        /// Tells the entity to draw itself
+        /// Makes the Entity draw itself.
         /// </summary>
-        /// <param name="sb">SpriteBatch the entity can use to draw itself with</param>
+        /// <param name="sb">SpriteBatch the entity can use to draw itself with.</param>
         void Draw(SpriteBatch sb);
 
         /// <summary>
-        /// Checks if in view of the specified camera
+        /// Checks if in the Entity is in view of the specified camera.
         /// </summary>
-        /// <param name="camera">Camera to check if in view of</param>
-        /// <returns>True if in view of the camera, else false</returns>
+        /// <param name="camera">Camera to check if the Entity is in view of.</param>
+        /// <returns>True if the Entity is in view of the camera, else False.</returns>
         bool InView(Camera2D camera);
     }
 }
