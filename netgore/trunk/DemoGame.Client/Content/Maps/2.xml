@@ -5,7 +5,6 @@
     <Width>960</Width>
     <Height>640</Height>
   </Header>
-  <Entities>
     <Walls>
       <Wall X="0" Y="608" W="32" H="32" CT="Full" />
       <Wall X="32" Y="608" W="32" H="32" CT="Full" />
@@ -55,10 +54,17 @@
       <Wall X="256" Y="352" W="32" H="32" CT="Full" />
       <Wall X="256" Y="320" W="32" H="32" CT="Full" />
     </Walls>
-    <Teleports>
-      <Teleport X="292" Y="326" W="26" H="52" CT="Full" DestX="50" DestY="50" DestMap="1" />
-    </Teleports>
-  </Entities>
+  <DynamicEntities>
+    <DynamicEntity Type="NewTeleportEntity">
+      <Position>292,326</Position>
+      <Size>26,52</Size>
+      <Velocity>0,0</Velocity>
+      <Weight>1</Weight>
+      <CollisionType>Full</CollisionType>
+      <Destination>50,50</Destination>
+      <DestinationMap>1</DestinationMap>
+    </DynamicEntity>
+  </DynamicEntities>
   <Misc>
     <MapGrhs>
       <UsedIndices>2,5,125</UsedIndices>
