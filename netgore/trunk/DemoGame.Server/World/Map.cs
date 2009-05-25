@@ -20,14 +20,12 @@ namespace DemoGame.Server
     public class Map : MapBase<Wall>, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        readonly SafeEnumerator<NPC> _npcEnumerator;
         readonly List<NPC> _npcs;
+        readonly SafeEnumerator<User> _userEnumerator;
         readonly TSList<User> _users;
         readonly World _world;
         bool _disposed;
-
-        readonly SafeEnumerator<NPC> _npcEnumerator;
-        readonly SafeEnumerator<User> _userEnumerator;
 
         /// <summary>
         /// Gets the DBController used by this Map.
@@ -191,7 +189,7 @@ namespace DemoGame.Server
                 DynamicEntity de = entity as DynamicEntity;
                 if (de != null)
                 {
-                    using (var pw = ServerPacket.CreateDynamicEntity(de))
+                    using (PacketWriter pw = ServerPacket.CreateDynamicEntity(de))
                     {
                         Send(pw);
                     }
