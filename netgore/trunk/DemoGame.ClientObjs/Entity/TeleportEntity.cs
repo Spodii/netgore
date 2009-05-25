@@ -6,7 +6,7 @@ using NetGore;
 
 namespace DemoGame.Client
 {
-    public class NewTeleportEntity : NewTeleportEntityBase
+    public class TeleportEntity : TeleportEntityBase
     {
         public override bool Use(CharacterEntity charEntity)
         {

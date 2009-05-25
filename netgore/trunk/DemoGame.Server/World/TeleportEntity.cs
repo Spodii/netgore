@@ -9,7 +9,7 @@ using NetGore;
 
 namespace DemoGame.Server
 {
-    public class NewTeleportEntity : NewTeleportEntityBase
+    public class TeleportEntity : TeleportEntityBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

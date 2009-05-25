@@ -7,13 +7,13 @@ using NetGore;
 
 namespace DemoGame
 {
-    public abstract class NewTeleportEntityBase : DynamicEntity, IUseableEntity
+    public abstract class TeleportEntityBase : DynamicEntity, IUseableEntity
     {
         public Vector2 Destination { get; set; }
 
         public ushort DestinationMap { get; set; }
 
-        protected NewTeleportEntityBase()
+        protected TeleportEntityBase()
         {
             Weight = 0f;
         }
