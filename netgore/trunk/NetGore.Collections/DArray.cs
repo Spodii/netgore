@@ -107,30 +107,10 @@ namespace NetGore.Collections
         /// </summary>
         /// <param name="content">Initial content to put in the DArray</param>
         /// <param name="trackFree">If free indices will be tracked and Add can be used</param>
-        public DArray(T[] content, bool trackFree)
+        public DArray(IEnumerable<T> content, bool trackFree) : this(content.Count(), trackFree)
         {
-            throw new MethodAccessException("Not implemented.");
-            /*
-            if (content == null)
-                throw new ArgumentNullException("content");
-
-            // Create the buffer and copy over the contents
-            ResizeBuffer(content.Length);
-            content.CopyTo(_buffer, 0);
-
-            // Set the highest index
-            _highestIndex = _buffer.Length - 1;
-            EqualityComparer<T> comparer = EqualityComparer<T>.Default;
-            while (_highestIndex >= 0 && comparer.Equals(_buffer[_highestIndex], default(T)))
-                _highestIndex--;
-
-            // Set the tracking value
-            _trackFree = trackFree;
-
-            // Only create the free indicies stack if we are tracking them
-            if (_trackFree)
-                _freeIndices = new Stack<int>(_defaultFreeStackSize);
-            */
+            foreach (var item in content)
+                Add(item);
         }
 
         /// <summary>
