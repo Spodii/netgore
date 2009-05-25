@@ -11,16 +11,7 @@ namespace DemoGame
     {
         int _damage;
 
-        public int Damage { get { return _damage; } }
-
-        protected override void WriteCustomValues(IValueWriter writer)
-        {
-            writer.Write("Damage", Damage);
-        }
-
-        protected override void ReadCustomValues(IValueReader reader)
-        {
-            _damage = reader.ReadInt("Damage");
-        }
+        [SyncValue]
+        public int Damage { get { return _damage; } set { _damage = value; } }
     }
 }

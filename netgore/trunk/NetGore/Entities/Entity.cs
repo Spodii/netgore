@@ -102,6 +102,11 @@ namespace NetGore
         public Vector2 Size
         {
             get { return _collisionBox.Size; }
+            internal set
+            { 
+                // NOTE: Temporary setter - do not actually use!
+                Resize(value);
+            }
         }
 
         /// <summary>
@@ -110,6 +115,10 @@ namespace NetGore
         public Vector2 Velocity
         {
             get { return _velocity; }
+            internal set
+            {
+                // NOTE: Temporary setter - do not actually use!
+                SetVelocity(value); }
         }
 
         /// <summary>
@@ -266,6 +275,30 @@ namespace NetGore
             _velocity = velocity;
             _weight = weight;
             _ct = collisionType;
+        }
+
+        protected internal void SetVelocityRaw(Vector2 newVelocity)
+        {
+            _velocity = newVelocity;
+        }
+
+        protected internal void SetPositionRaw(Vector2 newPosition)
+        {
+            CB.Teleport(newPosition);
+        }
+        protected internal void SetSizeRaw(Vector2 newSize)
+        {
+            CB.Resize(newSize);
+        }
+
+        protected internal void SetWeightRaw(float newWeight)
+        {
+            _weight = newWeight;
+        }
+
+        protected internal void SetCollisionTypeRaw(CollisionType newCollisionType)
+        {
+            _ct = newCollisionType;
         }
 
         /// <summary>

@@ -529,7 +529,10 @@ namespace DemoGame.Server
         {
             if (Map == null)
             {
-                Debug.Fail("Attempted to teleport a character will a null map.");
+                const string errmsg = "Attempted to teleport a Character `{0}` while their map was null.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
                 return;
             }
 
