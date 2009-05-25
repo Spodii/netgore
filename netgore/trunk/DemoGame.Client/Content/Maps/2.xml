@@ -55,7 +55,7 @@
       <Wall X="256" Y="320" W="32" H="32" CT="Full" />
     </Walls>
   <DynamicEntities>
-    <DynamicEntity Type="NewTeleportEntity">
+    <DynamicEntity Type="TeleportEntity">
       <Position>292,326</Position>
       <Size>26,52</Size>
       <Velocity>0,0</Velocity>
