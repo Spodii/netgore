@@ -15,7 +15,11 @@ namespace NetGore
 {
     public static class DynamicEntityFactory
     {
-        const string _nodeName = "DynamicEntity";
+        /// <summary>
+        /// The name given to each DynamicEntity instance when using an IValueWriter that supports nodes.
+        /// </summary>
+        public const string NodeName = "DynamicEntity";
+
         static readonly FactoryTypeCollection _typeCollection;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -51,7 +55,7 @@ namespace NetGore
                 throw new ArgumentNullException("reader");
 
             string nodeName = reader.Name;
-            if (nodeName != _nodeName)
+            if (nodeName != NodeName)
                 throw new ArgumentException("XmlReader was not at a valid location", "reader");
 
             reader.MoveToAttribute("Type");
@@ -87,7 +91,7 @@ namespace NetGore
             Type type = dEntity.GetType();
             string typeName = _typeCollection[type];
 
-            writer.WriteStartElement(_nodeName);
+            writer.WriteStartElement(NodeName);
             writer.WriteAttributeString("Type", typeName);
             dEntity.Write(new XmlValueWriter(writer));
             writer.WriteEndElement();

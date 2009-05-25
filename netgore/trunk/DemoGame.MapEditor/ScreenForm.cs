@@ -353,14 +353,16 @@ namespace DemoGame.MapEditor
 
         void btnTeleportCopy_Click(object sender, EventArgs e)
         {
+            throw new NotImplementedException("See code");
             if (_map == null)
                 return;
 
-            TeleportEntityBase selected = lstTeleports.SelectedItem as TeleportEntityBase;
+            NewTeleportEntityBase selected = lstTeleports.SelectedItem as NewTeleportEntityBase;
             if (selected == null)
                 return;
 
-            _map.AddEntity(new TeleportEntity(selected.Position, selected.CB.Size, selected.Destination));
+            // NOTE: Removed line when implementing new TeleportEntity:
+            // _map.AddEntity(new NewTeleportEntity(selected.Position, selected.CB.Size, selected.Destination));
             UpdateTeleporterList();
         }
 
@@ -369,7 +371,7 @@ namespace DemoGame.MapEditor
             if (_map == null)
                 return;
 
-            TeleportEntityBase selected = lstTeleports.SelectedItem as TeleportEntityBase;
+            NewTeleportEntityBase selected = lstTeleports.SelectedItem as NewTeleportEntityBase;
             if (selected == null)
                 return;
 
@@ -382,7 +384,7 @@ namespace DemoGame.MapEditor
             if (_map == null)
                 return;
 
-            TeleportEntityBase selected = lstTeleports.SelectedItem as TeleportEntityBase;
+            NewTeleportEntityBase selected = lstTeleports.SelectedItem as NewTeleportEntityBase;
             if (selected == null)
                 return;
 
@@ -391,10 +393,12 @@ namespace DemoGame.MapEditor
 
         void btnTeleportNew_Click(object sender, EventArgs e)
         {
+            throw new NotImplementedException("See code");
             if (_map == null)
                 return;
 
-            _map.AddEntity(new TeleportEntity(new Vector2(10, 10), new Vector2(32, 32), new Vector2(10, 10)));
+            // NOTE: Removed line when implementing new TeleportEntity:
+            //_map.AddEntity(new NewTeleportEntity(new Vector2(10, 10), new Vector2(32, 32), new Vector2(10, 10)));
             UpdateTeleporterList();
         }
 
@@ -906,7 +910,7 @@ namespace DemoGame.MapEditor
 
         void lstTeleports_SelectedIndexChanged(object sender, EventArgs e)
         {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
+            NewTeleportEntityBase tele = lstTeleports.SelectedItem as NewTeleportEntityBase;
             if (tele == null)
             {
                 gbSelectedTeleporter.Enabled = false;
@@ -1083,7 +1087,7 @@ namespace DemoGame.MapEditor
         {
             ushort index = Map.GetIndexFromPath(filePath);
             _map = new Map(index, _world, GameScreen.GraphicsDevice);
-            _map.Load(ContentPaths.Dev);
+            _map.Load(ContentPaths.Dev, true);
 
             // Remove all of the walls previously created from the MapGrhs
             var grhWalls = _mapGrhWalls.CreateWallList(_map.MapGrhs);
@@ -1284,7 +1288,7 @@ namespace DemoGame.MapEditor
 
         void txtTeleportHeight_TextChanged(object sender, EventArgs e)
         {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
+            NewTeleportEntityBase tele = lstTeleports.SelectedItem as NewTeleportEntityBase;
             if (tele == null)
                 return;
 
@@ -1301,7 +1305,7 @@ namespace DemoGame.MapEditor
 
         void txtTeleportMap_TextChanged(object sender, EventArgs e)
         {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
+            NewTeleportEntityBase tele = lstTeleports.SelectedItem as NewTeleportEntityBase;
             if (tele == null)
                 return;
 
@@ -1319,7 +1323,7 @@ namespace DemoGame.MapEditor
 
         void txtTeleportToX_TextChanged(object sender, EventArgs e)
         {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
+            NewTeleportEntityBase tele = lstTeleports.SelectedItem as NewTeleportEntityBase;
             if (tele == null)
                 return;
 
@@ -1336,7 +1340,7 @@ namespace DemoGame.MapEditor
 
         void txtTeleportToY_TextChanged(object sender, EventArgs e)
         {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
+            NewTeleportEntityBase tele = lstTeleports.SelectedItem as NewTeleportEntityBase;
             if (tele == null)
                 return;
 
@@ -1353,7 +1357,7 @@ namespace DemoGame.MapEditor
 
         void txtTeleportWidth_TextChanged(object sender, EventArgs e)
         {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
+            NewTeleportEntityBase tele = lstTeleports.SelectedItem as NewTeleportEntityBase;
             if (tele == null)
                 return;
 
@@ -1370,7 +1374,7 @@ namespace DemoGame.MapEditor
 
         void txtTeleportX_TextChanged(object sender, EventArgs e)
         {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
+            NewTeleportEntityBase tele = lstTeleports.SelectedItem as NewTeleportEntityBase;
             if (tele == null)
                 return;
 
@@ -1387,7 +1391,7 @@ namespace DemoGame.MapEditor
 
         void txtTeleportY_TextChanged(object sender, EventArgs e)
         {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
+            NewTeleportEntityBase tele = lstTeleports.SelectedItem as NewTeleportEntityBase;
             if (tele == null)
                 return;
 
@@ -1482,7 +1486,7 @@ namespace DemoGame.MapEditor
 
             foreach (Entity entity in _map.Entities)
             {
-                if (entity is TeleportEntityBase)
+                if (entity is NewTeleportEntityBase)
                     lstTeleports.Items.Add(entity);
             }
 

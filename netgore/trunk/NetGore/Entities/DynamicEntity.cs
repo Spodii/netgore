@@ -10,6 +10,17 @@ namespace NetGore
 {
     public abstract class DynamicEntity : Entity
     {
+        ushort _mapIndex;
+        
+        public int MapIndex { get { return _mapIndex; } 
+            set {
+
+                // TODO: Setter needs to eventually be hidden from alteration outside of the map
+                if (value < 0 || value > ushort.MaxValue)
+                    throw new ArgumentOutOfRangeException("value");
+
+                _mapIndex = (ushort)value; } }
+
         public void Read(IValueReader reader)
         {
             Vector2 position = reader.ReadVector2("Position");

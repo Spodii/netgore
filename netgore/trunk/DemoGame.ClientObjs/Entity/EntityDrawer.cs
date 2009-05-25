@@ -53,12 +53,12 @@ namespace DemoGame.Client
         public static void Draw(SpriteBatch sb, Entity entity)
         {
             WallEntity wallEntity;
-            TeleportEntity teleportEntity;
+            NewTeleportEntity teleportEntity;
 
             // Check for a different entity type
             if ((wallEntity = entity as WallEntity) != null)
                 Draw(sb, wallEntity);
-            else if ((teleportEntity = entity as TeleportEntity) != null)
+            else if ((teleportEntity = entity as NewTeleportEntity) != null)
                 Draw(sb, teleportEntity);
             else
             {
@@ -72,7 +72,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="sb">SpriteBatch to draw to</param>
         /// <param name="tele">TeleportEntity to draw</param>
-        public static void Draw(SpriteBatch sb, TeleportEntity tele)
+        public static void Draw(SpriteBatch sb, NewTeleportEntity tele)
         {
             // Source
             DrawCB(sb, tele.CB, tele.CollisionType, _teleSourceColor);

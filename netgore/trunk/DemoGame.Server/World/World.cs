@@ -108,7 +108,7 @@ namespace DemoGame.Server
             {
                 ushort mapIndex = Map.GetIndexFromPath(mapFile);
                 Map m = new Map(mapIndex, this);
-                m.Load(ContentPaths.Build);
+                m.Load(ContentPaths.Build, true);
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Loaded map index {0} from file {1}", mapIndex, mapFile);
                 _maps[mapIndex] = m;
