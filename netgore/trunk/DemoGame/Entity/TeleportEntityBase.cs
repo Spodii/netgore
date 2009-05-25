@@ -9,25 +9,18 @@ namespace DemoGame
 {
     public abstract class TeleportEntityBase : DynamicEntity, IUseableEntity
     {
-        public Vector2 Destination { get; set; }
+        Vector2 _destination;
+        ushort _destinationMap;
 
-        public ushort DestinationMap { get; set; }
+        [SyncValue]
+        public Vector2 Destination { get { return _destination; } set { _destination = value; } }
+
+        [SyncValue]
+        public ushort DestinationMap { get { return _destinationMap; } set { _destinationMap = value; } }
 
         protected TeleportEntityBase()
         {
             Weight = 0f;
-        }
-
-        protected override void WriteCustomValues(NetGore.IO.IValueWriter writer)
-        {
-            writer.Write("Destination", Destination);
-            writer.Write("DestinationMap", DestinationMap);
-        }
-
-        protected override void ReadCustomValues(NetGore.IO.IValueReader reader)
-        {
-            Destination = reader.ReadVector2("Destination");
-            DestinationMap = reader.ReadUShort("DestinationMap");
         }
 
         #region IUseableEntity Members

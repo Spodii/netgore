@@ -78,6 +78,9 @@
     <Compile Include="Entities\DynamicEntityFactory.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityEventHandler.cs" />
+    <Compile Include="PropertySync\PropertySyncCollisionType.cs" />
+    <Compile Include="PropertySync\PropertySyncUShort.cs" />
+    <Compile Include="PropertySync\PropertySyncVector2.cs" />
     <Compile Include="Entities\WallEntity.cs" />
     <Compile Include="IGetTime.cs" />
     <Compile Include="IMap.cs" />
@@ -86,6 +89,13 @@
     <Compile Include="MathString.cs" />
     <Compile Include="MeanStackExtras.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PropertySync\PropertySyncBase.cs" />
+    <Compile Include="PropertySync\PropertySyncByte.cs" />
+    <Compile Include="PropertySync\PropertySyncFloat.cs" />
+    <Compile Include="PropertySync\PropertySyncHandlerAttribute.cs" />
+    <Compile Include="PropertySync\PropertySyncInt.cs" />
+    <Compile Include="PropertySync\PropertySyncString.cs" />
+    <Compile Include="PropertySync\SyncValueAttribute.cs" />
     <Compile Include="WorldSettings.cs" />
   </ItemGroup>
   <ItemGroup>
