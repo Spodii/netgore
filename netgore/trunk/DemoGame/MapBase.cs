@@ -762,6 +762,16 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets the DynamicEntity with the specified MapIndex.
+        /// </summary>
+        /// <param name="mapIndex">MapIndex of the DynamicEntity to get.</param>
+        /// <returns>The DynamicEntity with the specified MapIndex.</returns>
+        public DynamicEntity GetDynamicEntity(int mapIndex)
+        {
+            return _dynamicEntities[mapIndex];
+        }
+
+        /// <summary>
         /// Gets the Entities found intersecting the given region
         /// </summary>
         /// <param name="rect">Region to check for Entities</param>

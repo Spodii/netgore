@@ -7,9 +7,6 @@ using System.Xml;
 using log4net;
 using NetGore.Collections;
 using NetGore.IO;
-using NetGore.IO.ValueReaderWriter;
-
-// TODO: Perform Type discovery at constructor
 
 namespace NetGore
 {
@@ -44,7 +41,7 @@ namespace NetGore
             string typeName = reader.ReadString();
 
             DynamicEntity dEntity = (DynamicEntity)_typeCollection.GetTypeInstance(typeName);
-            dEntity.Read(new BitStreamValueReader(reader));
+            dEntity.ReadAll(new BitStreamValueReader(reader));
 
             return dEntity;
         }
@@ -62,7 +59,7 @@ namespace NetGore
             string typeName = reader.ReadContentAsString();
 
             DynamicEntity dEntity = (DynamicEntity)_typeCollection.GetTypeInstance(typeName);
-            dEntity.Read(new XmlValueReader(reader));
+            dEntity.ReadAll(new XmlValueReader(reader));
             return dEntity;
         }
 
@@ -78,7 +75,7 @@ namespace NetGore
             BitStreamValueWriter valueWriter = new BitStreamValueWriter(writer);
 
             valueWriter.Write(null, typeName);
-            dEntity.Write(valueWriter);
+            dEntity.WriteAll(valueWriter);
         }
 
         public static void Write(XmlWriter writer, DynamicEntity dEntity)
@@ -93,7 +90,7 @@ namespace NetGore
 
             writer.WriteStartElement(NodeName);
             writer.WriteAttributeString("Type", typeName);
-            dEntity.Write(new XmlValueWriter(writer));
+            dEntity.WriteAll(new XmlValueWriter(writer));
             writer.WriteEndElement();
         }
     }

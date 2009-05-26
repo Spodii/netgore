@@ -231,6 +231,15 @@ namespace DemoGame.Client
                 OnLogin(conn);
         }
 
+        [MessageHandler((byte)ServerPacketID.SynchronizeDynamicEntity)]
+        void RecvSynchronizeDynamicEntity(TCPSocket conn, BitStream r)
+        {
+            ushort entityMapIndex = r.ReadUShort();
+
+            DynamicEntity dynamicEntity = World.Map.GetDynamicEntity(entityMapIndex);
+            dynamicEntity.Desynchronize(new BitStreamValueReader(r));
+        }
+
         [MessageHandler((byte)ServerPacketID.NotifyExpCash)]
         void RecvNotifyExpCash(TCPSocket conn, BitStream r)
         {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NetGore.IO.ValueReaderWriter
+namespace NetGore.IO
 {
     /// <summary>
     /// Implementation of the IValueReader using a BitStream.
