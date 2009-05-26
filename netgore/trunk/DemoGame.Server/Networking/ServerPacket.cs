@@ -167,6 +167,15 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter SynchronizeDynamicEntity(DynamicEntity dynamicEntity)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SynchronizeDynamicEntity);
+            pw.Write((ushort)dynamicEntity.MapIndex);
+            // TODO: This will create garbage for EVERY synchronization... :( Make PacketWriter implement IValueWriter?
+            dynamicEntity.Synchronize(new BitStreamValueWriter(pw));
+            return pw;
+        }
+
         public static PacketWriter RemoveMapItem(ushort mapItemIndex)
         {
             PacketWriter pw = GetWriter(ServerPacketID.RemoveMapItem);

@@ -392,6 +392,25 @@ namespace DemoGame.Server
                 return;
 
             base.Update();
+
+            SynchronizeDynamicEntities();
+        }
+
+        /// <summary>
+        /// Synchronizes all of the DynamicEntities.
+        /// </summary>
+        void SynchronizeDynamicEntities()
+        {
+            foreach (var dynamicEntity in DynamicEntities)
+            {
+                if (dynamicEntity.IsSynchronized)
+                    continue;
+
+                using (var pw = ServerPacket.SynchronizeDynamicEntity(dynamicEntity))
+                {
+                    Send(pw);
+                }
+            }
         }
 
         #region IDisposable Members
