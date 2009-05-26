@@ -79,6 +79,9 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityEventHandler.cs" />
     <Compile Include="PropertySync\PropertySyncCollisionType.cs" />
+    <Compile Include="PropertySync\PropertySyncSByte.cs" />
+    <Compile Include="PropertySync\PropertySyncShort.cs" />
+    <Compile Include="PropertySync\PropertySyncUInt.cs" />
     <Compile Include="PropertySync\PropertySyncUShort.cs" />
     <Compile Include="PropertySync\PropertySyncVector2.cs" />
     <Compile Include="Entities\WallEntity.cs" />

@@ -8,17 +8,17 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Implementation of a PropertySyncBase that handles synchronizing a string.
+    /// Implementation of a PropertySyncBase that handles synchronizing an unsigned 32-bit integer.
     /// </summary>
-    [PropertySyncHandler(typeof(string))]
-    public sealed class PropertySyncString : PropertySyncBase<string>
+    [PropertySyncHandler(typeof(uint))]
+    public sealed class PropertySyncUInt : PropertySyncBase<uint>
     {
         /// <summary>
-        /// PropertySyncString constructor.
+        /// PropertySyncVector2 constructor.
         /// </summary>
         /// <param name="bindObject">Object to bind to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncString(object bindObject, PropertyInfo p)
+        public PropertySyncUInt(object bindObject, PropertyInfo p)
             : base(bindObject, p)
         {
         }
@@ -29,9 +29,9 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="reader">IValueReader to read from.</param>
         /// <returns>Value read from the IValueReader.</returns>
-        protected override string Read(string name, IValueReader reader)
+        protected override uint Read(string name, IValueReader reader)
         {
-            return reader.ReadString(name);
+            return reader.ReadUInt(name);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace NetGore
         /// <param name="name">Name of the value.</param>
         /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="value">Value to write.</param>
-        protected override void Write(string name, IValueWriter writer, string value)
+        protected override void Write(string name, IValueWriter writer, uint value)
         {
             writer.Write(name, value);
         }

@@ -2,9 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 using DemoGame.Extensions;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -288,6 +290,8 @@ namespace DemoGame.Client
             }
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Delegate for when an IDrawableEntity's MapRenderLayer is changed
         /// </summary>
@@ -298,8 +302,10 @@ namespace DemoGame.Client
             // Remove the IDrawableEntity from the old layer
             if (!GetLayerList(oldLayer).Remove(drawableEntity))
             {
-                // Only notify if the drawableEntity wasn't in the list in debug build
-                Debug.Fail("drawableENtity not in layer list!");
+                const string errmsg = "IDrawableEntity `{0}` not found in old layer list `{1}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, drawableEntity, oldLayer);
+                Debug.Fail(string.Format(errmsg, drawableEntity, oldLayer));
             }
 
             // Set the new layer
@@ -422,9 +428,14 @@ namespace DemoGame.Client
                     return _drawLayerItem;
                 case MapRenderLayer.Foreground:
                     return _drawLayerForeground;
+                default:
+                    const string errmsg = "Could not get the list for unknown layer `{0}`.";
+                    if (log.IsFatalEnabled)
+                        log.FatalFormat(errmsg, layer);
+                    Debug.Fail(string.Format(errmsg, layer));
+                    throw new ArgumentOutOfRangeException("layer", string.Format(errmsg, layer));
             }
 
-            throw new ArgumentOutOfRangeException("layer", "Unknown layer");
         }
 
         /// <summary>
