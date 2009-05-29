@@ -17,7 +17,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Map object for the client
     /// </summary>
-    public class Map : MapBase<Wall>, IDisposable
+    public class Map : MapBase<WallEntity>, IDisposable
     {
         static bool _drawBackground = true;
         static bool _drawCharacters = true;
@@ -257,7 +257,7 @@ namespace DemoGame.Client
             {
                 foreach (Entity entity in Entities)
                 {
-                    Wall w = entity as Wall;
+                    var w = entity as WallEntity;
                     if (w != null && camera.InView(w))
                         EntityDrawer.Draw(sb, w);
                 }
@@ -268,7 +268,7 @@ namespace DemoGame.Client
             {
                 foreach (Entity entity in Entities)
                 {
-                    if (entity is Wall)
+                    if (entity is WallEntityBase)
                         continue;
                     EntityDrawer.Draw(sb, entity);
                 }
@@ -345,21 +345,21 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="compareTo">Walls to compare against</param>
         /// <returns>A list of all duplicate walls in the map</returns>
-        public List<WallEntity> FindDuplicateWalls(IEnumerable<WallEntity> compareTo)
+        public List<WallEntityBase> FindDuplicateWalls(IEnumerable<WallEntityBase> compareTo)
         {
             // List to store all the duplicates
-            var ret = new List<WallEntity>(32);
+            var ret = new List<WallEntityBase>(32);
 
             // Loop through each entity in the map
             foreach (Entity entity in Entities)
             {
                 // Check if the map is a WallEntity
-                WallEntity a = entity as WallEntity;
+                WallEntityBase a = entity as WallEntityBase;
                 if (a == null)
                     continue;
 
                 // Loop through each WallEntity in the comparison enum
-                foreach (WallEntity b in compareTo)
+                foreach (WallEntityBase b in compareTo)
                 {
                     if (b == null)
                         continue;
@@ -381,21 +381,21 @@ namespace DemoGame.Client
         /// Finds all duplicate (same position, size and type) walls
         /// </summary>
         /// <returns>A list of all duplicate walls in the map</returns>
-        public List<WallEntity> FindDuplicateWalls()
+        public List<WallEntityBase> FindDuplicateWalls()
         {
-            var ret = new List<WallEntity>();
+            var ret = new List<WallEntityBase>();
 
             // Initial loop (all walls but the last)
             for (int i = 0; i < Entities.Count() - 1; i++)
             {
-                WallEntity a = GetEntity(i) as WallEntity; // Skip if not a WallEntity
+                WallEntityBase a = GetEntity(i) as WallEntityBase; // Skip if not a WallEntity
                 if (a == null)
                     continue;
 
                 // Comparison loop (all walls after the initial)
                 for (int j = i + 1; j < Entities.Count(); j++)
                 {
-                    WallEntity b = GetEntity(j) as WallEntity; // Skip if not a WallEntity
+                    WallEntityBase b = GetEntity(j) as WallEntityBase; // Skip if not a WallEntity
                     if (b == null)
                         continue;
 

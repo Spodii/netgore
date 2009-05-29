@@ -81,7 +81,7 @@ namespace DemoGame
         public override void CollideInto(Entity collideWith, Vector2 displacement)
         {
             // Collision against a wall
-            if (collideWith is WallEntity)
+            if (collideWith is WallEntityBase)
             {
                 // Move the item away from the wall
                 Move(displacement);

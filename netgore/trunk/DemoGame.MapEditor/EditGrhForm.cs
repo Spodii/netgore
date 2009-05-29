@@ -134,10 +134,10 @@ namespace DemoGame.MapEditor
             }
 
             // Set the MapGrhWalls
-            var walls = new List<WallEntity>();
+            var walls = new List<WallEntityBase>();
             foreach (object o in lstWalls.Items)
             {
-                WallEntity wall = o as WallEntity;
+                WallEntityBase wall = o as WallEntityBase;
                 if (wall != null)
                     walls.Add(wall);
             }
@@ -153,7 +153,7 @@ namespace DemoGame.MapEditor
 
         void btnAdd_Click(object sender, EventArgs e)
         {
-            WallEntity wall = Entity.Create<Wall>(Vector2.Zero, 16, 16);
+            var wall = Entity.Create<WallEntity>(Vector2.Zero, 16, 16);
             lstWalls.Items.Add(wall);
             lstWalls.SelectedItem = wall;
         }
@@ -165,7 +165,7 @@ namespace DemoGame.MapEditor
 
         void btnRemove_Click(object sender, EventArgs e)
         {
-            WallEntity wall = lstWalls.SelectedItem as WallEntity;
+            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
             lstWalls.Items.Remove(wall);
@@ -183,7 +183,7 @@ namespace DemoGame.MapEditor
 
         void cmbWallType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            WallEntity wall = lstWalls.SelectedItem as WallEntity;
+            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -211,7 +211,7 @@ namespace DemoGame.MapEditor
 
         void lstWalls_SelectedIndexChanged(object sender, EventArgs e)
         {
-            WallEntity wall = lstWalls.SelectedItem as WallEntity;
+            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
             bool isEnabled = (wall != null);
 
             cmbWallType.Enabled = isEnabled;
@@ -288,7 +288,7 @@ namespace DemoGame.MapEditor
             var walls = _mapGrhWalls[_gd];
             if (walls != null)
             {
-                foreach (WallEntity wall in walls)
+                foreach (WallEntityBase wall in walls)
                 {
                     lstWalls.Items.Add(wall);
                 }
@@ -381,7 +381,7 @@ namespace DemoGame.MapEditor
 
         void txtWallH_TextChanged(object sender, EventArgs e)
         {
-            WallEntity wall = lstWalls.SelectedItem as WallEntity;
+            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -398,7 +398,7 @@ namespace DemoGame.MapEditor
 
         void txtWallW_TextChanged(object sender, EventArgs e)
         {
-            WallEntity wall = lstWalls.SelectedItem as WallEntity;
+            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -415,7 +415,7 @@ namespace DemoGame.MapEditor
 
         void txtWallX_TextChanged(object sender, EventArgs e)
         {
-            WallEntity wall = lstWalls.SelectedItem as WallEntity;
+            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -432,7 +432,7 @@ namespace DemoGame.MapEditor
 
         void txtWallY_TextChanged(object sender, EventArgs e)
         {
-            WallEntity wall = lstWalls.SelectedItem as WallEntity;
+            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 

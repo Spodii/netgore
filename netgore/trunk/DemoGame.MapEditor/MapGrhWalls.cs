@@ -21,7 +21,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Array containing a list of WallEntities for each valid GrhData by index
         /// </summary>
-        readonly DArray<List<WallEntity>> _walls = new DArray<List<WallEntity>>(false);
+        readonly DArray<List<WallEntityBase>> _walls = new DArray<List<WallEntityBase>>(false);
 
         /// <summary>
         /// Gets or sets the List of WallEntities for the given GrhData
@@ -29,7 +29,7 @@ namespace DemoGame.MapEditor
         /// <param name="index">Index of the GrhData to get/set the walls for</param>
         /// <returns>List of the WallEntities for the given GrhData, or null if the GrhData is
         /// invalid or no bound walls exist for it</returns>
-        public List<WallEntity> this[int index]
+        public List<WallEntityBase> this[int index]
         {
             get
             {
@@ -46,7 +46,7 @@ namespace DemoGame.MapEditor
         /// <param name="gd">GrhData to get/set the walls for</param>
         /// <returns>List of the WallEntities for the given GrhData, or null if the GrhData is
         /// invalid or does not exist</returns>
-        public List<WallEntity> this[GrhData gd]
+        public List<WallEntityBase> this[GrhData gd]
         {
             get { return this[gd.GrhIndex]; }
             set { this[gd.GrhIndex] = value; }
@@ -66,9 +66,9 @@ namespace DemoGame.MapEditor
         /// </summary>
         /// <param name="mapGrhs">Set of MapGrhs to get the walls for</param>
         /// <returns>List of each bound wall for all the MapGrhs</returns>
-        public List<WallEntity> CreateWallList(IEnumerable<MapGrh> mapGrhs)
+        public List<WallEntityBase> CreateWallList(IEnumerable<MapGrh> mapGrhs)
         {
-            var ret = new List<WallEntity>();
+            var ret = new List<WallEntityBase>();
 
             // Iterate through the requested MapGrhs
             foreach (MapGrh mg in mapGrhs)
@@ -78,9 +78,9 @@ namespace DemoGame.MapEditor
                 if (mgWalls != null)
                 {
                     // Create a new instance of each of the walls and add it to the return List
-                    foreach (WallEntity wall in mgWalls)
+                    foreach (WallEntityBase wall in mgWalls)
                     {
-                        WallEntity w = Entity.Create<Wall>(mg.Destination + wall.Position, wall.CB.Width, wall.CB.Height);
+                        var w = Entity.Create<WallEntity>(mg.Destination + wall.Position, wall.CB.Width, wall.CB.Height);
                         w.CollisionType = wall.CollisionType;
                         ret.Add(w);
                     }
@@ -114,7 +114,7 @@ namespace DemoGame.MapEditor
                 // Get the list information
                 ushort grhIndex = ushort.Parse(wallInfo["Wall.GrhData"]);
                 int wallCount = int.Parse(wallInfo["Wall.WallCount"]);
-                var walls = new List<WallEntity>(wallCount);
+                var walls = new List<WallEntityBase>(wallCount);
                 _walls[grhIndex] = walls;
 
                 // Create the individual walls
@@ -126,7 +126,7 @@ namespace DemoGame.MapEditor
                     float w = float.Parse(wallInfo["Wall.Wall" + i + ".W"]);
                     float h = float.Parse(wallInfo["Wall.Wall" + i + ".H"]);
 
-                    WallEntity newWall = Entity.Create<Wall>(new Vector2(x, y), w, h);
+                    var newWall = Entity.Create<WallEntity>(new Vector2(x, y), w, h);
                     newWall.CollisionType = ct;
                     walls.Add(newWall);
                 }
@@ -166,7 +166,7 @@ namespace DemoGame.MapEditor
 
                         // Individual walls
                         int wallIndex = 0;
-                        foreach (WallEntity wall in walls)
+                        foreach (WallEntityBase wall in walls)
                         {
                             w.WriteStartElement("Wall" + wallIndex);
                             w.WriteAttributeString("Type", wall.CollisionType.ToString());

@@ -15,13 +15,13 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Wall used in the Listbox entry
         /// </summary>
-        readonly WallEntity _wall;
+        readonly WallEntityBase _wall;
 
         /// <summary>
         /// ListboxWall constructor
         /// </summary>
         /// <param name="wall">Wall used in the Listbox entry</param>
-        public ListboxWall(WallEntity wall)
+        public ListboxWall(WallEntityBase wall)
         {
             _wall = wall;
         }
@@ -40,7 +40,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         /// <param name="lbw">ListboxWall to convert from</param>
         /// <returns>WallEntity for the given ListboxWall</returns>
-        public static implicit operator WallEntity(ListboxWall lbw)
+        public static implicit operator WallEntityBase(ListboxWall lbw)
         {
             return lbw._wall;
         }

@@ -84,7 +84,7 @@
     <Compile Include="PropertySync\PropertySyncUInt.cs" />
     <Compile Include="PropertySync\PropertySyncUShort.cs" />
     <Compile Include="PropertySync\PropertySyncVector2.cs" />
-    <Compile Include="Entities\WallEntity.cs" />
+    <Compile Include="Entities\WallEntityBase.cs" />
     <Compile Include="IGetTime.cs" />
     <Compile Include="IMap.cs" />
     <Compile Include="IValueReaderExtensions.cs" />

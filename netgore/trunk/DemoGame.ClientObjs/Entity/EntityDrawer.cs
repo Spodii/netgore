@@ -52,11 +52,11 @@ namespace DemoGame.Client
         /// <param name="entity">Entity to draw</param>
         public static void Draw(SpriteBatch sb, Entity entity)
         {
-            WallEntity wallEntity;
+            WallEntityBase wallEntity;
             TeleportEntity teleportEntity;
 
             // Check for a different entity type
-            if ((wallEntity = entity as WallEntity) != null)
+            if ((wallEntity = entity as WallEntityBase) != null)
                 Draw(sb, wallEntity);
             else if ((teleportEntity = entity as TeleportEntity) != null)
                 Draw(sb, teleportEntity);
@@ -91,7 +91,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="sb">SpriteBatch to draw to</param>
         /// <param name="wall">WallEntity to draw</param>
-        public static void Draw(SpriteBatch sb, WallEntity wall)
+        public static void Draw(SpriteBatch sb, WallEntityBase wall)
         {
             Draw(sb, wall, Vector2.Zero);
         }
@@ -102,7 +102,7 @@ namespace DemoGame.Client
         /// <param name="sb">SpriteBatch to draw to</param>
         /// <param name="wall">WallEntity to draw</param>
         /// <param name="offset">Offset to draw the WallEntity at from the original position</param>
-        public static void Draw(SpriteBatch sb, WallEntity wall, Vector2 offset)
+        public static void Draw(SpriteBatch sb, WallEntityBase wall, Vector2 offset)
         {
             // Find the positon to draw to
             Vector2 p = wall.Position + offset;

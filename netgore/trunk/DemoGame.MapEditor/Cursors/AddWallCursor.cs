@@ -17,7 +17,7 @@ namespace DemoGame.MapEditor
             screen.toolBarItem_Click(screen.picToolWalls, null);
 
             // Create the new wall
-            Wall w = Entity.Create<Wall>(screen.Camera.ToWorld(e.X, e.Y), 1f, 1f);
+            var w = Entity.Create<WallEntity>(screen.Camera.ToWorld(e.X, e.Y), 1f, 1f);
             screen.Map.AddEntity(w);
             w.CollisionType = (CollisionType)screen.cmbWallType.SelectedItem;
             if (screen.chkSnapWallGrid.Checked)
@@ -35,7 +35,7 @@ namespace DemoGame.MapEditor
                 }
             }
 
-            screen.UpdateSelectedWallsList(new List<WallEntity>(1) { w });
+            screen.UpdateSelectedWallsList(new List<WallEntityBase>(1) { w });
         }
     }
 }

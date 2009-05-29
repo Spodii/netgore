@@ -1391,9 +1391,9 @@ namespace DemoGame
         /// </summary>
         /// <param name="p">Point on the map contained in the wall</param>
         /// <returns>First wall meeting the condition, null if none found</returns>
-        public WallEntity GetWall(Vector2 p)
+        public WallEntityBase GetWall(Vector2 p)
         {
-            return GetEntity<WallEntity>(p);
+            return GetEntity<WallEntityBase>(p);
         }
 
         /// <summary>
@@ -1401,7 +1401,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="cb">Collision box area to find walls from</param>
         /// <returns>List of walls in the area</returns>
-        public List<WallEntity> GetWalls(CollisionBox cb)
+        public List<WallEntityBase> GetWalls(CollisionBox cb)
         {
             if (cb == null)
             {
@@ -1409,10 +1409,10 @@ namespace DemoGame
                 Debug.Fail(errmsg);
                 if (log.IsErrorEnabled)
                     log.Error(errmsg);
-                return new List<WallEntity>(0);
+                return new List<WallEntityBase>(0);
             }
 
-            return GetEntities<WallEntity>(cb.ToRectangle());
+            return GetEntities<WallEntityBase>(cb.ToRectangle());
         }
 
         public bool IsInMapBoundaries(Vector2 point)
@@ -1851,7 +1851,7 @@ namespace DemoGame
             w.WriteStartElement("Walls");
             foreach (Entity entity in Entities)
             {
-                WallEntity wall = entity as WallEntity;
+                WallEntityBase wall = entity as WallEntityBase;
                 if (wall != null)
                     wall.Save(w);
             }
@@ -1877,7 +1877,7 @@ namespace DemoGame
                     if (entity == null)
                         continue;
 
-                    if (entity is WallEntity)
+                    if (entity is WallEntityBase)
                     {
                         // Remove a wall if the min value passes the new dimensions, 
                         if (entity.CB.Min.X > newSize.X || entity.CB.Max.Y > newSize.Y)
@@ -1936,7 +1936,7 @@ namespace DemoGame
 
             foreach (Entity e in Entities)
             {
-                WallEntity w = e as WallEntity;
+                WallEntityBase w = e as WallEntityBase;
                 if (w == null || w == entity || !CollisionBox.Intersect(w.CB, newCB))
                     continue;
 
@@ -2178,7 +2178,7 @@ namespace DemoGame
     /// Base map class
     /// </summary>
     /// <typeparam name="TWall">Wall type</typeparam>
-    public abstract class MapBase<TWall> : MapBase where TWall : WallEntity, new()
+    public abstract class MapBase<TWall> : MapBase where TWall : WallEntityBase, new()
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -2190,6 +2190,12 @@ namespace DemoGame
         protected MapBase(ushort mapIndex, IGetTime getTime) : base(mapIndex, getTime)
         {
         }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a new WallEntityBase instance.
+        /// </summary>
+        /// <returns>WallEntityBase that is to be used on the map.</returns>
+       // TODO: protected abstract TWall CreateWall();
 
         /// <summary>
         /// Loads the wall information for the map
@@ -2209,7 +2215,7 @@ namespace DemoGame
 
                 if (r.Name == "Wall")
                 {
-                    Entity wall = WallEntity.Load<TWall>(r.ReadSubtree());
+                    Entity wall = WallEntityBase.Load<TWall>(r.ReadSubtree());
                     AddEntity(wall);
                 }
                 else if (r.Name != "Walls")

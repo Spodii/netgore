@@ -189,7 +189,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Wall currently being edited
         /// </summary>
-        WallEntity _wallToEdit = null;
+        WallEntityBase _wallToEdit = null;
 
         public AddGrhCursor AddGrhCursor
         {
@@ -485,7 +485,7 @@ namespace DemoGame.MapEditor
 
             // Add the MapGrh-bound walls
             var extraWalls = _mapGrhWalls.CreateWallList(_map.MapGrhs);
-            foreach (WallEntity wall in extraWalls)
+            foreach (WallEntityBase wall in extraWalls)
             {
                 _map.AddEntity(wall);
             }
@@ -494,7 +494,7 @@ namespace DemoGame.MapEditor
             _map.Save(_map.Index, ContentPaths.Dev);
 
             // Remove the extra walls
-            foreach (WallEntity wall in extraWalls)
+            foreach (WallEntityBase wall in extraWalls)
             {
                 _map.RemoveEntity(wall);
             }
@@ -537,7 +537,7 @@ namespace DemoGame.MapEditor
                     if (boundWalls == null)
                         continue;
 
-                    foreach (Wall wall in boundWalls)
+                    foreach (var wall in boundWalls)
                     {
                         EntityDrawer.Draw(_sb, wall, mg.Destination);
                     }
@@ -623,7 +623,7 @@ namespace DemoGame.MapEditor
             // Walls
             foreach (object o in _editGrhWallItems)
             {
-                Wall wall = o as Wall;
+                var wall = o as WallEntity;
                 if (wall != null)
                     EntityDrawer.Draw(_sb, wall);
             }
@@ -1092,7 +1092,7 @@ namespace DemoGame.MapEditor
             // Remove all of the walls previously created from the MapGrhs
             var grhWalls = _mapGrhWalls.CreateWallList(_map.MapGrhs);
             var dupeWalls = _map.FindDuplicateWalls(grhWalls);
-            foreach (WallEntity dupeWall in dupeWalls)
+            foreach (WallEntityBase dupeWall in dupeWalls)
             {
                 _map.RemoveEntity(dupeWall);
             }
@@ -1104,7 +1104,7 @@ namespace DemoGame.MapEditor
             UpdateTeleporterList();
         }
 
-        void SetWallToEdit(WallEntity wall)
+        void SetWallToEdit(WallEntityBase wall)
         {
             _wallToEdit = wall;
             gbCurrentWall.Enabled = (_wallToEdit != null);
@@ -1453,10 +1453,10 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Updates the list of selected walls
         /// </summary>
-        public void UpdateSelectedWallsList(List<WallEntity> selectedWalls)
+        public void UpdateSelectedWallsList(List<WallEntityBase> selectedWalls)
         {
             lstSelectedWalls.Items.Clear();
-            foreach (WallEntity wall in selectedWalls)
+            foreach (WallEntityBase wall in selectedWalls)
             {
                 lstSelectedWalls.Items.Add(new ListboxWall(wall));
             }
