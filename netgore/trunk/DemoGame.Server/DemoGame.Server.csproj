@@ -162,7 +162,6 @@
     <Compile Include="Networking\ServerSockets.cs" />
     <Compile Include="Characters\User.cs" />
     <Compile Include="World\TeleportEntity.cs" />
-    <Compile Include="World\Wall.cs" />
     <Compile Include="World\World.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -8,16 +8,18 @@ using Microsoft.Xna.Framework;
 namespace NetGore
 {
     /// <summary>
-    /// Base of all entities in the world which are not passable by other entities. Despite the name,
+    /// Base of all entities in the world which are not passable by other solid entities. WallEntities also do
+    /// not ever change or move, allowing them to be stored in the map files. Despite the name,
     /// this refers to more than just walls such as a floor, platform, or even just an invisible
     /// plane of nothingness that you are just not allowed to go inside of for absolutely no reason.
+    /// If you want a dynamic wall, you will want to use a DynamicEntity.
     /// </summary>
-    public abstract class WallEntity : Entity
+    public abstract class WallEntityBase : Entity
     {
         /// <summary>
         /// WallEntity constructor
         /// </summary>
-        protected WallEntity(Vector2 position, Vector2 size) : base(position, size)
+        protected WallEntityBase(Vector2 position, Vector2 size) : base(position, size)
         {
             Weight = 0.0f; // Walls have no weight
         }
@@ -25,11 +27,11 @@ namespace NetGore
         /// <summary>
         /// WallEntity constructor
         /// </summary>
-        protected WallEntity()
+        protected WallEntityBase()
         {
         }
 
-        public static TWall Load<TWall>(XmlReader r) where TWall : WallEntity, new()
+        public static TWall Load<TWall>(XmlReader r) where TWall : WallEntityBase, new()
         {
             r.MoveToContent();
 

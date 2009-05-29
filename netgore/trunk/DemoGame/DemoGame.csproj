@@ -82,6 +82,7 @@
     <Compile Include="Entity\ItemEntityBase.cs" />
     <Compile Include="Entity\IUseableEntity.cs" />
     <Compile Include="Entity\TeleportEntityBase.cs" />
+    <Compile Include="Entity\WallEntity.cs" />
     <Compile Include="EquippedEventHandler.cs" />
     <Compile Include="EquipmentSlot.cs" />
     <Compile Include="EquippedBase.cs" />

@@ -17,7 +17,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Contains the information about a single map instance and all of the Entities it contains.
     /// </summary>
-    public class Map : MapBase<Wall>, IDisposable
+    public class Map : MapBase<WallEntity>, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly SafeEnumerator<NPC> _npcEnumerator;

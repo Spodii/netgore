@@ -18,7 +18,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// List of all the currently selected walls
         /// </summary>
-        readonly List<WallEntity> _selectedWalls = new List<WallEntity>();
+        readonly List<WallEntityBase> _selectedWalls = new List<WallEntityBase>();
 
         MouseButtons _mouseDragButton = MouseButtons.None;
 
@@ -30,7 +30,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Gets the List of all the currently selected walls
         /// </summary>
-        public List<WallEntity> SelectedWalls
+        public List<WallEntityBase> SelectedWalls
         {
             get { return _selectedWalls; }
         }
@@ -83,7 +83,7 @@ namespace DemoGame.MapEditor
             else
             {
                 // Check for wall collision for quick dragging
-                WallEntity w = screen.Map.GetWall(cursorPos);
+                WallEntityBase w = screen.Map.GetWall(cursorPos);
                 if (w == null)
                     return;
 
@@ -128,13 +128,13 @@ namespace DemoGame.MapEditor
                     offset.Y = (float)Math.Round(offset.Y);
 
                     // Keep the walls in the map area
-                    foreach (WallEntity selWall in _selectedWalls)
+                    foreach (WallEntityBase selWall in _selectedWalls)
                     {
                         map.KeepInMap(selWall, ref offset);
                     }
 
                     // Move the walls
-                    foreach (WallEntity selWall in _selectedWalls)
+                    foreach (WallEntityBase selWall in _selectedWalls)
                     {
                         selWall.Move(offset);
                     }
@@ -237,7 +237,7 @@ namespace DemoGame.MapEditor
                         _selectedWalls.Clear();
 
                     // Add all selected to the list if they are not already in it
-                    foreach (WallEntity wall in walls)
+                    foreach (WallEntityBase wall in walls)
                     {
                         if (!_selectedWalls.Contains(wall))
                             _selectedWalls.Add(wall);
@@ -246,7 +246,7 @@ namespace DemoGame.MapEditor
                 else if (e.Button == MouseButtons.Right)
                 {
                     // Deselection dragging
-                    foreach (WallEntity wall in walls)
+                    foreach (WallEntityBase wall in walls)
                     {
                         _selectedWalls.Remove(wall);
                     }
@@ -263,7 +263,7 @@ namespace DemoGame.MapEditor
                 screen.TransBoxes.Add(new TransBox(TransBoxType.Move, null, mouseDragEnd));
 
             // Create the transformation boxes
-            foreach (WallEntity wall in _selectedWalls)
+            foreach (WallEntityBase wall in _selectedWalls)
             {
                 TransBox.SurroundEntity(wall, screen.TransBoxes);
             }
@@ -279,7 +279,7 @@ namespace DemoGame.MapEditor
 
         public override void PressDelete(ScreenForm screen)
         {
-            foreach (WallEntity selectedWall in _selectedWalls)
+            foreach (WallEntityBase selectedWall in _selectedWalls)
             {
                 screen.Map.RemoveEntity(selectedWall);
             }
