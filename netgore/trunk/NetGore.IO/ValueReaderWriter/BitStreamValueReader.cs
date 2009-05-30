@@ -66,6 +66,17 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads a signed integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public int ReadInt(string name, int bits)
+        {
+            return _reader.ReadInt(bits);
+        }
+
+        /// <summary>
         /// Reads a 8-bit signed integer.
         /// </summary>
         /// <param name="name">Unused by the BitStreamValueReader.</param>
@@ -73,6 +84,17 @@ namespace NetGore.IO
         public sbyte ReadSByte(string name)
         {
             return _reader.ReadSByte();
+        }
+
+        /// <summary>
+        /// Reads an unsigned integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public uint ReadUInt(string name, int bits)
+        {
+            return _reader.ReadUInt(bits);
         }
 
         /// <summary>

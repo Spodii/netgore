@@ -449,10 +449,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Finds the number of bits required to store a numeric value (log base 2)
+        /// Finds the number of bits required to store a 0-base numeric value (log base 2).
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Number of bits required for the value</returns>
+        /// <param name="value">Greatest integer value that needs to be supported.</param>
+        /// <returns>Number of bits required for the value.</returns>
         public static int RequiredBits(uint value)
         {
             int ret;

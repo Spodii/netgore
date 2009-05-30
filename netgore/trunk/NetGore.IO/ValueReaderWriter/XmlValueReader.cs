@@ -88,6 +88,17 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads a signed integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public int ReadInt(string name, int bits)
+        {
+            return ReadInt(name);
+        }
+
+        /// <summary>
         /// Reads a 32-bit unsigned integer.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
@@ -95,6 +106,17 @@ namespace NetGore.IO
         public uint ReadUInt(string name)
         {
             return uint.Parse(_values[name]);
+        }
+
+        /// <summary>
+        /// Reads an unsigned integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public uint ReadUInt(string name, int bits)
+        {
+            return ReadUInt(name);
         }
 
         /// <summary>
