@@ -12,7 +12,6 @@ namespace NetGore.IO
     {
         readonly BitStream _reader;
 
-
         /// <summary>
         /// BitStreamValueReader constructor.
         /// </summary>
@@ -74,6 +73,16 @@ namespace NetGore.IO
         public sbyte ReadSByte(string name)
         {
             return _reader.ReadSByte();
+        }
+
+        /// <summary>
+        /// Reads a boolean.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public bool ReadBool(string name)
+        {
+            return _reader.ReadBool();
         }
 
         /// <summary>

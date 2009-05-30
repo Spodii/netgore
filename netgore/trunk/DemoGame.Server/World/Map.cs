@@ -17,7 +17,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Contains the information about a single map instance and all of the Entities it contains.
     /// </summary>
-    public class Map : MapBase<WallEntity>, IDisposable
+    public class Map : MapBase, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly SafeEnumerator<NPC> _npcEnumerator;
@@ -394,6 +394,11 @@ namespace DemoGame.Server
             base.Update();
 
             SynchronizeDynamicEntities();
+        }
+
+        protected override WallEntityBase CreateWall(IValueReader r)
+        {
+            return new WallEntity(r);
         }
 
         /// <summary>

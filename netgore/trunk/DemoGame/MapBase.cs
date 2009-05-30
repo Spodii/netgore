@@ -9,6 +9,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
+using NetGore.IO;
 
 // FUTURE: Improve how characters handle when they hit the map's borders
 
@@ -46,6 +47,11 @@ namespace DemoGame
         /// </summary>
         protected const int WallGridSize = 128;
 
+        /// <summary>
+        /// The name of the node for each individual WallEntity.
+        /// </summary>
+        const string _wallNodeName = "Wall";
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -56,12 +62,25 @@ namespace DemoGame
         /// </summary>
         readonly Stack<Entity> _cdStack = new Stack<Entity>();
 
+        /// <summary>
+        /// Enumerator for the CharacterEntities.
+        /// </summary>
         readonly SafeEnumerator<CharacterEntity> _characterEnumerator;
 
         /// <summary>
         /// Array of characters on the map
         /// </summary>
         readonly DArray<CharacterEntity> _characters;
+
+        /// <summary>
+        /// Enumerator for the DynamicEntities.
+        /// </summary>
+        readonly SafeEnumerator<DynamicEntity> _dyanmicEntityEnumerator;
+
+        /// <summary>
+        /// Collection of DynamicEntities on this map.
+        /// </summary>
+        readonly DArray<DynamicEntity> _dynamicEntities;
 
         /// <summary>
         /// List of entities in the map
@@ -133,6 +152,11 @@ namespace DemoGame
         public IEnumerable<CharacterEntity> Characters
         {
             get { return _characterEnumerator; }
+        }
+
+        public IEnumerable<DynamicEntity> DynamicEntities
+        {
+            get { return _dyanmicEntityEnumerator; }
         }
 
         /// <summary>
@@ -213,11 +237,6 @@ namespace DemoGame
             _dynamicEntities = new DArray<DynamicEntity>(true);
             _dyanmicEntityEnumerator = new SafeEnumerator<DynamicEntity>(_dynamicEntities);
         }
-
-        readonly DArray<DynamicEntity> _dynamicEntities;
-        readonly SafeEnumerator<DynamicEntity> _dyanmicEntityEnumerator;
-
-        public IEnumerable<DynamicEntity> DynamicEntities { get { return _dyanmicEntityEnumerator; } }
 
         /// <summary>
         /// Adds a character to the map.
@@ -410,6 +429,12 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// When overridden in the derived class, creates a new WallEntityBase instance.
+        /// </summary>
+        /// <returns>WallEntityBase that is to be used on the map.</returns>
+        protected abstract WallEntityBase CreateWall(IValueReader r);
+
+        /// <summary>
         /// Handles when an Entity is disposed while still on the map.
         /// </summary>
         /// <param name="entity"></param>
@@ -533,6 +558,16 @@ namespace DemoGame
         {
             Vector2 size = max - min;
             return GetCharacters(new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y));
+        }
+
+        /// <summary>
+        /// Gets the DynamicEntity with the specified MapIndex.
+        /// </summary>
+        /// <param name="mapIndex">MapIndex of the DynamicEntity to get.</param>
+        /// <returns>The DynamicEntity with the specified MapIndex.</returns>
+        public DynamicEntity GetDynamicEntity(int mapIndex)
+        {
+            return _dynamicEntities[mapIndex];
         }
 
         /// <summary>
@@ -759,16 +794,6 @@ namespace DemoGame
 
             // Return the results
             return ret;
-        }
-
-        /// <summary>
-        /// Gets the DynamicEntity with the specified MapIndex.
-        /// </summary>
-        /// <param name="mapIndex">MapIndex of the DynamicEntity to get.</param>
-        /// <returns>The DynamicEntity with the specified MapIndex.</returns>
-        public DynamicEntity GetDynamicEntity(int mapIndex)
-        {
-            return _dynamicEntities[mapIndex];
         }
 
         /// <summary>
@@ -1516,7 +1541,6 @@ namespace DemoGame
                         if (r.NodeType != XmlNodeType.Element)
                             continue;
 
-                        // TODO: r.ReadSubtree() doesn't seem to work the way I thought it does. It should read the whole
                         // subtree, allowing the new reader to ONLY handle that Xml, and advance the reader past it no matter
                         // how much the child reads
                         switch (r.Name)
@@ -1550,11 +1574,11 @@ namespace DemoGame
         {
             while (r.Read())
             {
-                if (r.NodeType == XmlNodeType.Element && r.Name == DynamicEntityFactory.NodeName)
-                {
-                    var dynamicEntity = DynamicEntityFactory.Read(r);
-                    AddEntity(dynamicEntity);
-                }
+                if (r.NodeType != XmlNodeType.Element || r.Name != DynamicEntityFactory.NodeName)
+                    continue;
+
+                DynamicEntity dynamicEntity = DynamicEntityFactory.Read(r);
+                AddEntity(dynamicEntity);
             }
         }
 
@@ -1628,11 +1652,41 @@ namespace DemoGame
             }
         }
 
+        WallEntityBase LoadWall(XmlReader r)
+        {
+            return CreateWall(new XmlValueReader(r, _wallNodeName));
+        }
+
         /// <summary>
         /// Loads the wall information for the map
         /// </summary>
         /// <param name="r">XmlReader used to load the map file</param>
-        protected internal abstract void LoadWalls(XmlReader r);
+        void LoadWalls(XmlReader r)
+        {
+            if (r == null)
+                throw new ArgumentNullException("r");
+            if (r.ReadState == ReadState.Closed || r.ReadState == ReadState.Error)
+                throw new ArgumentException("Invalid XmlReader state", "r");
+
+            while (r.Read())
+            {
+                if (r.NodeType != XmlNodeType.Element)
+                    continue;
+
+                if (r.Name == _wallNodeName)
+                {
+                    WallEntityBase wall = LoadWall(r);
+                    AddEntity(wall);
+                }
+                else if (r.Name != "Walls")
+                {
+                    const string errmsg = "Found element name `{0}` when expecting `Wall`";
+                    Debug.Fail(string.Format(errmsg, r.Name));
+                    if (log.IsFatalEnabled)
+                        log.FatalFormat(errmsg, r.Name);
+                }
+            }
+        }
 
         /// <summary>
         /// Removes an entity from the map
@@ -1806,8 +1860,10 @@ namespace DemoGame
         void SaveDynamicEntities(XmlWriter w)
         {
             w.WriteStartElement("DynamicEntities");
-            foreach (var dynamicEntity in DynamicEntities)
+            foreach (DynamicEntity dynamicEntity in DynamicEntities)
+            {
                 DynamicEntityFactory.Write(w, dynamicEntity);
+            }
             w.WriteEndElement();
         }
 
@@ -1849,11 +1905,12 @@ namespace DemoGame
                 throw new ArgumentException("XmlWriter is in an invalid state", "w");
 
             w.WriteStartElement("Walls");
-            foreach (Entity entity in Entities)
+            foreach (WallEntityBase wall in Entities.OfType<WallEntityBase>())
             {
-                WallEntityBase wall = entity as WallEntityBase;
-                if (wall != null)
-                    wall.Save(w);
+                using (XmlValueWriter valueWriter = new XmlValueWriter(w, _wallNodeName))
+                {
+                    wall.Write(valueWriter);
+                }
             }
             w.WriteEndElement();
         }
@@ -2002,7 +2059,6 @@ namespace DemoGame
                     return;
                 }
 
-                // NOTE: entity.Update() can modify the Entities collection! See bug: http://netgore.com/bugs/view.php?id=47
                 entity.Update(this, deltaTime);
             }
         }
@@ -2172,60 +2228,5 @@ namespace DemoGame
         }
 
         #endregion
-    }
-
-    /// <summary>
-    /// Base map class
-    /// </summary>
-    /// <typeparam name="TWall">Wall type</typeparam>
-    public abstract class MapBase<TWall> : MapBase where TWall : WallEntityBase, new()
-    {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// MapBase constructor
-        /// </summary>
-        /// <param name="mapIndex">Index of the map</param>
-        /// <param name="getTime">Interface used to get the time</param>
-        protected MapBase(ushort mapIndex, IGetTime getTime) : base(mapIndex, getTime)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, creates a new WallEntityBase instance.
-        /// </summary>
-        /// <returns>WallEntityBase that is to be used on the map.</returns>
-       // TODO: protected abstract TWall CreateWall();
-
-        /// <summary>
-        /// Loads the wall information for the map
-        /// </summary>
-        /// <param name="r">XmlReader used to load the map file</param>
-        protected internal override void LoadWalls(XmlReader r)
-        {
-            if (r == null)
-                throw new ArgumentNullException("r");
-            if (r.ReadState == ReadState.Closed || r.ReadState == ReadState.Error)
-                throw new ArgumentException("Invalid XmlReader state", "r");
-
-            while (r.Read())
-            {
-                if (r.NodeType != XmlNodeType.Element)
-                    continue;
-
-                if (r.Name == "Wall")
-                {
-                    Entity wall = WallEntityBase.Load<TWall>(r.ReadSubtree());
-                    AddEntity(wall);
-                }
-                else if (r.Name != "Walls")
-                {
-                    const string errmsg = "Found element name `{0}` when expecting `Wall`";
-                    Debug.Fail(string.Format(errmsg, r.Name));
-                    if (log.IsFatalEnabled)
-                        log.FatalFormat(errmsg, r.Name);
-                }
-            }
-        }
     }
 }

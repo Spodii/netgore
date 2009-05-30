@@ -31,6 +31,13 @@ namespace NetGore.IO
         uint ReadUInt(string name);
 
         /// <summary>
+        /// Reads a boolean.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        bool ReadBool(string name);
+
+        /// <summary>
         /// Reads a 16-bit signed integer.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>

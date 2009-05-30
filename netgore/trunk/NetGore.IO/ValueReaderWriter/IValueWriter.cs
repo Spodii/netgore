@@ -9,7 +9,7 @@ namespace NetGore.IO
     /// Interface for an object that can write basic values for read-back later by using the unique name
     /// given to each individual value.
     /// </summary>
-    public interface IValueWriter
+    public interface IValueWriter: IDisposable
     {
         /// <summary>
         /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
@@ -24,6 +24,14 @@ namespace NetGore.IO
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
         void Write(string name, int value);
+
+        /// <summary>
+        /// Writes a boolean.
+        /// </summary>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        void Write(string name, bool value);
 
         /// <summary>
         /// Writes a 32-bit unsigned integer.

@@ -78,6 +78,7 @@
     <Compile Include="Entities\DynamicEntityFactory.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityEventHandler.cs" />
+    <Compile Include="PropertySync\PropertySyncBool.cs" />
     <Compile Include="PropertySync\PropertySyncCollisionType.cs" />
     <Compile Include="PropertySync\PropertySyncSByte.cs" />
     <Compile Include="PropertySync\PropertySyncShort.cs" />

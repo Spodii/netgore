@@ -80,8 +80,7 @@ namespace DemoGame.MapEditor
                     // Create a new instance of each of the walls and add it to the return List
                     foreach (WallEntityBase wall in mgWalls)
                     {
-                        var w = Entity.Create<WallEntity>(mg.Destination + wall.Position, wall.CB.Width, wall.CB.Height);
-                        w.CollisionType = wall.CollisionType;
+                        var w = new WallEntity(mg.Destination + wall.Position, wall.CB.Size, wall.CollisionType);
                         ret.Add(w);
                     }
                 }
@@ -126,8 +125,7 @@ namespace DemoGame.MapEditor
                     float w = float.Parse(wallInfo["Wall.Wall" + i + ".W"]);
                     float h = float.Parse(wallInfo["Wall.Wall" + i + ".H"]);
 
-                    var newWall = Entity.Create<WallEntity>(new Vector2(x, y), w, h);
-                    newWall.CollisionType = ct;
+                    var newWall = new WallEntity(new Vector2(x, y), new Vector2(w, h), ct);
                     walls.Add(newWall);
                 }
             }

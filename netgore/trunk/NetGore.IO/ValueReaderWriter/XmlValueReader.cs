@@ -18,12 +18,13 @@ namespace NetGore.IO
         /// XmlValueReader constructor.
         /// </summary>
         /// <param name="reader">XmlReader that the values will be read from.</param>
-        public XmlValueReader(XmlReader reader)
+        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
+        public XmlValueReader(XmlReader reader, string rootNodeName)
         {
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
-            _values = ReadNodesIntoDictionary(reader);
+            _values = ReadNodesIntoDictionary(reader, rootNodeName);
         }
 
         /// <summary>
@@ -31,17 +32,19 @@ namespace NetGore.IO
         /// any Element node containing child Element nodes, not a value, will result in an exception being thrown.
         /// </summary>
         /// <param name="reader">XmlReader to read the values from.</param>
+        /// <param name="rootNodeName">Name of the root node that is to be read from. Serves as a means of checking
+        /// to ensure the XmlValueReader is at the expected location.</param>
         /// <returns>Dictionary containing the content of each Element node.</returns>
-        static Dictionary<string, string> ReadNodesIntoDictionary(XmlReader reader)
+        static Dictionary<string, string> ReadNodesIntoDictionary(XmlReader reader, string rootNodeName)
         {
-            if (!reader.MoveToElement())
-                throw new XmlException("Failed to move to the next Element in the XmlReader.");
-
             var ret = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-            int initialDepth = reader.Depth;
 
-            // Read through the Xml
-            while (reader.Read())
+            // Read past the first node if it is the root node
+            if (string.Equals(reader.Name, rootNodeName, StringComparison.OrdinalIgnoreCase))
+                reader.Read();
+
+            // Read all the values
+            while (true)
             {
                 switch (reader.NodeType)
                 {
@@ -53,14 +56,16 @@ namespace NetGore.IO
                         break;
 
                     case XmlNodeType.EndElement:
-                        // At the end of an Element, if we are back at the original depth, we're done
-                        if (reader.Depth == initialDepth)
+                        // Check if we hit the end of the nodes
+                        if (string.Equals(reader.Name, rootNodeName, StringComparison.OrdinalIgnoreCase))
                             return ret;
-                        break;
+                        else
+                            throw new Exception(string.Format("Was expecting end of element `{0}`, but found `{1}`.", rootNodeName, reader.Name));
                 }
-            }
 
-            return ret;
+                // Keep reading
+                reader.Read();
+            }
         }
 
         /// <summary>
@@ -90,6 +95,16 @@ namespace NetGore.IO
         public uint ReadUInt(string name)
         {
             return uint.Parse(_values[name]);
+        }
+
+        /// <summary>
+        /// Reads a boolean.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public bool ReadBool(string name)
+        {
+            return bool.Parse(_values[name]);
         }
 
         /// <summary>

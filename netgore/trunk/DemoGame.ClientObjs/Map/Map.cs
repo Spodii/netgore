@@ -11,14 +11,16 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace DemoGame.Client
 {
     /// <summary>
     /// Map object for the client
     /// </summary>
-    public class Map : MapBase<WallEntity>, IDisposable
+    public class Map : MapBase, IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static bool _drawBackground = true;
         static bool _drawCharacters = true;
         static bool _drawEntities = false;
@@ -229,6 +231,11 @@ namespace DemoGame.Client
             _mapAtlases = ta.Build(_graphics);
         }
 
+        protected override WallEntityBase CreateWall(IValueReader r)
+        {
+            return new WallEntity(r);
+        }
+
         /// <summary>
         /// Draws the content of the map to the screen
         /// </summary>
@@ -257,7 +264,7 @@ namespace DemoGame.Client
             {
                 foreach (Entity entity in Entities)
                 {
-                    var w = entity as WallEntity;
+                    WallEntity w = entity as WallEntity;
                     if (w != null && camera.InView(w))
                         EntityDrawer.Draw(sb, w);
                 }
@@ -289,8 +296,6 @@ namespace DemoGame.Client
                     drawableEntity.Draw(sb);
             }
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Delegate for when an IDrawableEntity's MapRenderLayer is changed
@@ -435,7 +440,6 @@ namespace DemoGame.Client
                     Debug.Fail(string.Format(errmsg, layer));
                     throw new ArgumentOutOfRangeException("layer", string.Format(errmsg, layer));
             }
-
         }
 
         /// <summary>
@@ -488,6 +492,8 @@ namespace DemoGame.Client
 
         void LoadGrhs(XmlReader r)
         {
+            int currentTime = World.GetTime();
+
             while (r.Read())
             {
                 if (r.NodeType != XmlNodeType.Element)
@@ -502,7 +508,8 @@ namespace DemoGame.Client
 
                     case "MapGrh":
                         // Load the MapGrh
-                        AddMapGrh(MapGrh.Load(r.ReadSubtree(), World.GetTime()));
+                        MapGrh mapGrh = new MapGrh(new XmlValueReader(r, "MapGrh"), currentTime);
+                        AddMapGrh(mapGrh);
                         break;
                 }
             }
@@ -565,7 +572,10 @@ namespace DemoGame.Client
 
             foreach (MapGrh mg in _mapGrhs)
             {
-                mg.Save(w);
+                using (XmlValueWriter valueWriter = new XmlValueWriter(w, "MapGrh"))
+                {
+                    mg.Write(valueWriter);
+                }
             }
 
             w.WriteEndElement();

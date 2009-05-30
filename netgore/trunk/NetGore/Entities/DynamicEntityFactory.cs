@@ -59,7 +59,7 @@ namespace NetGore
             string typeName = reader.ReadContentAsString();
 
             DynamicEntity dEntity = (DynamicEntity)_typeCollection.GetTypeInstance(typeName);
-            dEntity.ReadAll(new XmlValueReader(reader));
+            dEntity.ReadAll(new XmlValueReader(reader, NodeName));
             return dEntity;
         }
 
@@ -72,10 +72,12 @@ namespace NetGore
 
             Type type = dEntity.GetType();
             string typeName = _typeCollection[type];
-            BitStreamValueWriter valueWriter = new BitStreamValueWriter(writer);
 
-            valueWriter.Write(null, typeName);
-            dEntity.WriteAll(valueWriter);
+            using (var valueWriter = new BitStreamValueWriter(writer))
+            {
+                valueWriter.Write(null, typeName);
+                dEntity.WriteAll(valueWriter);
+            }
         }
 
         public static void Write(XmlWriter writer, DynamicEntity dEntity)
@@ -88,10 +90,10 @@ namespace NetGore
             Type type = dEntity.GetType();
             string typeName = _typeCollection[type];
 
-            writer.WriteStartElement(NodeName);
-            writer.WriteAttributeString("Type", typeName);
-            dEntity.WriteAll(new XmlValueWriter(writer));
-            writer.WriteEndElement();
+            using (var valueWriter = new XmlValueWriter(writer, NodeName, "Type", typeName))
+            {
+                dEntity.WriteAll(valueWriter);
+            }
         }
     }
 }
