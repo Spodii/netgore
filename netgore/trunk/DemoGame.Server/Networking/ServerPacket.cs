@@ -172,7 +172,10 @@ namespace DemoGame.Server
             PacketWriter pw = GetWriter(ServerPacketID.SynchronizeDynamicEntity);
             pw.Write((ushort)dynamicEntity.MapIndex);
             // TODO: This will create garbage for EVERY synchronization... :( Make PacketWriter implement IValueWriter?
-            dynamicEntity.Synchronize(new BitStreamValueWriter(pw));
+            using (var valueWriter = new BitStreamValueWriter(pw))
+            {
+                dynamicEntity.Synchronize(valueWriter);
+            }
             return pw;
         }
 

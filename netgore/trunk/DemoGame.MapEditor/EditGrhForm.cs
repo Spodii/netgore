@@ -153,7 +153,7 @@ namespace DemoGame.MapEditor
 
         void btnAdd_Click(object sender, EventArgs e)
         {
-            var wall = Entity.Create<WallEntity>(Vector2.Zero, 16, 16);
+            var wall = new WallEntity(Vector2.Zero, new Vector2(16));
             lstWalls.Items.Add(wall);
             lstWalls.SelectedItem = wall;
         }

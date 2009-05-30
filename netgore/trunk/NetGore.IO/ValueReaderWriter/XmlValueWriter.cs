@@ -17,12 +17,35 @@ namespace NetGore.IO
         /// XmlValueWriter constructor.
         /// </summary>
         /// <param name="writer">XmlWriter to write the values to.</param>
-        public XmlValueWriter(XmlWriter writer)
+        /// <param name="nodeName">Name to give the root node containing the values.</param>
+        public XmlValueWriter(XmlWriter writer, string nodeName)
         {
             if (writer == null)
                 throw new ArgumentNullException("writer");
 
             _writer = writer;
+            _writer.WriteStartElement(nodeName);
+        }
+
+        /// <summary>
+        /// XmlValueWriter constructor.
+        /// </summary>
+        /// <param name="writer">XmlWriter to write the values to.</param>
+        /// <param name="nodeName">Name to give the root node containing the values.</param>
+        /// <param name="attributeName">Name of the attribute.</param>
+        /// <param name="attributeValue">Value of the attribute.</param>
+        public XmlValueWriter(XmlWriter writer, string nodeName, string attributeName, string attributeValue)
+        {
+            if (writer == null)
+                throw new ArgumentNullException("writer");
+            if (string.IsNullOrEmpty(attributeName))
+                throw new ArgumentNullException("attributeName");
+            if (string.IsNullOrEmpty(attributeValue))
+                throw new ArgumentNullException("attributeValue");
+
+            _writer = writer;
+            _writer.WriteStartElement(nodeName);
+            _writer.WriteAttributeString(attributeName, attributeValue);
         }
 
         /// <summary>
@@ -52,6 +75,17 @@ namespace NetGore.IO
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, int value)
+        {
+            Write(name, value.ToString());
+        }
+
+        /// <summary>
+        /// Writes a boolean.
+        /// </summary>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void Write(string name, bool value)
         {
             Write(name, value.ToString());
         }
@@ -120,6 +154,17 @@ namespace NetGore.IO
         public void Write(string name, sbyte value)
         {
             Write(name, value.ToString());
+        }
+
+        bool _disposed;
+
+        public void Dispose()
+        {
+            if (_disposed)
+                throw new MemberAccessException("Object already disposed!");
+
+            _disposed = true;
+            _writer.WriteEndElement();
         }
     }
 }

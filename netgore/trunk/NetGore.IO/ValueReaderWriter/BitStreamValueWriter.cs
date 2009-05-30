@@ -27,6 +27,17 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Writes a boolean.
+        /// </summary>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void Write(string name, bool value)
+        {
+            _writer.Write(value);
+        }
+
+        /// <summary>
         /// Writes a 32-bit unsigned integer.
         /// </summary>
         /// <param name="name">Unused by the BitStreamValueWriter.</param>
@@ -113,6 +124,10 @@ namespace NetGore.IO
         public void Write(string name, float value)
         {
             _writer.Write(value);
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Xml;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace NetGore
 {
@@ -16,56 +17,35 @@ namespace NetGore
     /// </summary>
     public abstract class WallEntityBase : Entity
     {
-        /// <summary>
-        /// WallEntity constructor
-        /// </summary>
-        protected WallEntityBase(Vector2 position, Vector2 size) : base(position, size)
+        protected WallEntityBase(Vector2 position, Vector2 size)
+            : this(position, size, CollisionType.Full)
         {
+        }
+
+        protected WallEntityBase(IValueReader r)
+        {
+            Read(r);
+        }
+
+        protected WallEntityBase(Vector2 position, Vector2 size, CollisionType collisionType)
+            : base(position, size)
+        {
+            CollisionType = collisionType;
             Weight = 0.0f; // Walls have no weight
         }
 
-        /// <summary>
-        /// WallEntity constructor
-        /// </summary>
-        protected WallEntityBase()
+        public void Write(IValueWriter w)
         {
+            w.Write("Position", Position);
+            w.Write("Size", Size);
+            w.Write("CollisionType", CollisionType);
         }
 
-        public static TWall Load<TWall>(XmlReader r) where TWall : WallEntityBase, new()
+        void Read(IValueReader r)
         {
-            r.MoveToContent();
-
-            r.MoveToAttribute("X");
-            float x = r.ReadContentAsFloat();
-
-            r.MoveToAttribute("Y");
-            float y = r.ReadContentAsFloat();
-
-            r.MoveToAttribute("W");
-            float w = r.ReadContentAsFloat();
-
-            r.MoveToAttribute("H");
-            float h = r.ReadContentAsFloat();
-
-            r.MoveToAttribute("CT");
-            CollisionType ct = (CollisionType)Enum.Parse(typeof(CollisionType), r.ReadContentAsString());
-
-            r.Read();
-
-            TWall wall = Create<TWall>(new Vector2(x, y), w, h);
-            wall.CollisionType = ct;
-            return wall;
-        }
-
-        public void Save(XmlWriter w)
-        {
-            w.WriteStartElement("Wall");
-            w.WriteAttributeString("X", CB.Min.X.ToString());
-            w.WriteAttributeString("Y", CB.Min.Y.ToString());
-            w.WriteAttributeString("W", CB.Width.ToString());
-            w.WriteAttributeString("H", CB.Height.ToString());
-            w.WriteAttributeString("CT", CollisionType.ToString());
-            w.WriteEndElement();
+            SetPositionRaw(r.ReadVector2("Position"));
+            SetSizeRaw(r.ReadVector2("Size"));
+            SetCollisionTypeRaw(r.ReadCollisionType("CollisionType"));
         }
     }
 }

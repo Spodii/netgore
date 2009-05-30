@@ -7,6 +7,9 @@ using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
+using NetGore.IO;
+using NetGore.Extensions;
+using NetGore;
 
 namespace DemoGame.Client
 {
@@ -75,6 +78,18 @@ namespace DemoGame.Client
             IsForeground = isForeground;
         }
 
+        public MapGrh(IValueReader reader, int currentTime)
+        {
+            if (reader == null)
+                throw new ArgumentNullException("reader");
+
+            _destination = reader.ReadVector2("Position");
+            ushort grhIndex = reader.ReadUShort("GrhIndex");
+            _isForeground = reader.ReadBool("IsForeground");
+
+            _grh = new Grh(grhIndex, AnimType.Loop, currentTime);
+        }
+
         /// <summary>
         /// Checks if the given point is over the MapGrh
         /// </summary>
@@ -86,38 +101,21 @@ namespace DemoGame.Client
                     Destination.Y + Grh.Height >= p.Y);
         }
 
-        public static MapGrh Load(XmlReader r, int currentTime)
+        /// <summary>
+        /// Writes the MapGrh to an IValueWriter.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write the MapGrh to.</param>
+        public void Write(IValueWriter writer)
         {
-            r.MoveToContent();
-
-            r.MoveToAttribute("X");
-            float x = r.ReadContentAsFloat();
-
-            r.MoveToAttribute("Y");
-            float y = r.ReadContentAsFloat();
-
-            r.MoveToAttribute("I");
-            int index = r.ReadContentAsInt();
-
-            r.MoveToAttribute("FG");
-            bool isForeground = r.ReadContentAsBoolean();
-
-            r.Read();
-
-            Grh grh = new Grh((ushort)index, AnimType.Loop, currentTime);
-            return new MapGrh(grh, new Vector2(x, y), isForeground);
+            writer.Write("Position", Destination);
+            writer.Write("GrhIndex", Grh.GrhData.GrhIndex);
+            writer.Write("IsForeground", IsForeground);
         }
 
-        public void Save(XmlWriter w)
-        {
-            w.WriteStartElement("MapGrh");
-            w.WriteAttributeString("X", Destination.X.ToString());
-            w.WriteAttributeString("Y", Destination.Y.ToString());
-            w.WriteAttributeString("I", Grh.GrhData.GrhIndex.ToString());
-            w.WriteAttributeString("FG", IsForeground.ToString().ToLower());
-            w.WriteEndElement();
-        }
-
+        /// <summary>
+        /// Updates the MapGrh.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
         public void Update(int currentTime)
         {
             _grh.Update(currentTime);
