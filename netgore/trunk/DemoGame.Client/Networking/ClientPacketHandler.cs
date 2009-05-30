@@ -257,12 +257,6 @@ namespace DemoGame.Client
             _gameplayScreen.InfoBox.Add(msg);
         }
 
-        [MessageHandler((byte)ServerPacketID.NotifyFullInv)]
-        void RecvNotifyFullInv(TCPSocket conn, BitStream r)
-        {
-            _gameplayScreen.InfoBox.Add("Your inventory is full!");
-        }
-
         [MessageHandler((byte)ServerPacketID.NotifyLevel)]
         void RecvNotifyLevel(TCPSocket conn, BitStream r)
         {
