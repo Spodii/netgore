@@ -24,11 +24,27 @@ namespace NetGore.IO
         int ReadInt(string name);
 
         /// <summary>
+        /// Reads a signed integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        int ReadInt(string name, int bits);
+
+        /// <summary>
         /// Reads a 32-bit unsigned integer.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
         uint ReadUInt(string name);
+
+        /// <summary>
+        /// Reads an unsigned integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        uint ReadUInt(string name, int bits);
 
         /// <summary>
         /// Reads a boolean.

@@ -27,6 +27,18 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Writes an unsigned integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        /// <param name="bits">Number of bits to write.</param>
+        public void Write(string name, uint value, int bits)
+        {
+            _writer.Write(value, bits);
+        }
+
+        /// <summary>
         /// Writes a boolean.
         /// </summary>
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
@@ -114,6 +126,18 @@ namespace NetGore.IO
         public void Write(string name, int value)
         {
             _writer.Write(value);
+        }
+
+        /// <summary>
+        /// Writes a signed integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        /// <param name="bits">Number of bits to write.</param>
+        public void Write(string name, int value, int bits)
+        {
+            _writer.Write(value, bits);
         }
 
         /// <summary>

@@ -17,6 +17,11 @@ namespace NetGore
         ushort _mapIndex;
 
         /// <summary>
+        /// Number of bits used for I/O on the Property index.
+        /// </summary>
+        byte _indexBitLength;
+
+        /// <summary>
         /// Synchronizes the CollisionType for the base Entity.
         /// </summary>
         [SyncValue("CollisionType")]
@@ -125,6 +130,9 @@ namespace NetGore
         {
             // Get the PropertySyncBases for this DynamicEntity instance
             _propertySyncs = PropertySyncBase.GetPropertySyncs(this).ToArray();
+
+            // Cache the number of bits needed for the index
+            _indexBitLength = (byte)BitOps.RequiredBits((uint)_propertySyncs.Length - 1);
         }
 
         /// <summary>
