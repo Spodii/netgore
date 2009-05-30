@@ -8,11 +8,7 @@ namespace DemoGame.Server
 {
     public class DamageTrapEntity : DamageTrapEntityBase
     {
-        public DamageTrapEntity()
-        {
-        }
-
-        public override void CollideFrom(NetGore.Entity collider, Microsoft.Xna.Framework.Vector2 displacement)
+        public override void CollideFrom(NetGore.Entity collider, Vector2 displacement)
         {
             Character other = collider as Character;
             if (other == null)
@@ -21,7 +17,7 @@ namespace DemoGame.Server
             other.Damage(this, 1);
         }
 
-        public override void CollideInto(NetGore.Entity collideWith, Microsoft.Xna.Framework.Vector2 displacement)
+        public override void CollideInto(NetGore.Entity collideWith, Vector2 displacement)
         {
             CollideFrom(collideWith, displacement);
         }
