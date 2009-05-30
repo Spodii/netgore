@@ -237,7 +237,7 @@ namespace DemoGame.Client
             ushort entityMapIndex = r.ReadUShort();
 
             DynamicEntity dynamicEntity = World.Map.GetDynamicEntity(entityMapIndex);
-            dynamicEntity.Desynchronize(new BitStreamValueReader(r));
+            dynamicEntity.Deserialize(new BitStreamValueReader(r));
         }
 
         [MessageHandler((byte)ServerPacketID.NotifyExpCash)]

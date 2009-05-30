@@ -174,7 +174,7 @@ namespace DemoGame.Server
             // TODO: This will create garbage for EVERY synchronization... :( Make PacketWriter implement IValueWriter?
             using (var valueWriter = new BitStreamValueWriter(pw))
             {
-                dynamicEntity.Synchronize(valueWriter);
+                dynamicEntity.Serialize(valueWriter);
             }
             return pw;
         }
