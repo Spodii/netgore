@@ -17,11 +17,6 @@ namespace NetGore
         ushort _mapIndex;
 
         /// <summary>
-        /// Number of bits used for I/O on the Property index.
-        /// </summary>
-        byte _indexBitLength;
-
-        /// <summary>
         /// Synchronizes the CollisionType for the base Entity.
         /// </summary>
         [SyncValue("CollisionType")]
@@ -130,9 +125,6 @@ namespace NetGore
         {
             // Get the PropertySyncBases for this DynamicEntity instance
             _propertySyncs = PropertySyncBase.GetPropertySyncs(this).ToArray();
-
-            // Cache the number of bits needed for the index
-            _indexBitLength = (byte)BitOps.RequiredBits((uint)_propertySyncs.Length - 1);
         }
 
         /// <summary>
@@ -141,14 +133,20 @@ namespace NetGore
         /// <param name="reader">IValueReader to read the changed property values from.</param>
         public void Deserialize(IValueReader reader)
         {
-            // Grab the count for the number of properties to read
-            byte count = reader.ReadByte(null);
+            // Highest possible PropertySync index that we will be writing
+            uint highestPropertyIndex = (uint)(_propertySyncs.Length - 1);
 
-            // Read the properties
+            // Grab the count for the number of properties to read
+            uint count = reader.ReadUInt("Count", 0, highestPropertyIndex);
+
+            // Read the properties, which will be in ascending order
+            // See the Serialize() function to see why this is, and why we do it this way
+            uint lastIndex = 0;
             for (int i = 0; i < count; i++)
             {
-                byte propIndex = reader.ReadByte(null);
+                uint propIndex = reader.ReadUInt("PropertyIndex", lastIndex, highestPropertyIndex);
                 _propertySyncs[propIndex].ReadValue(reader);
+                lastIndex = propIndex;
             }
         }
 
@@ -181,26 +179,34 @@ namespace NetGore
         /// <param name="writer">IValueWriter to write the changed property values to.</param>
         public void Serialize(IValueWriter writer)
         {
-            // TODO: See: http://netgore.com/bugs/view.php?id=50
+            // Length of the PropertySyncs array
+            int propertySyncsLength = _propertySyncs.Length;
+            
+            // Highest possible PropertySync index that we will be writing
+            uint highestPropertyIndex = (uint)(propertySyncsLength - 1);
 
             // Find the indicies that need to be synchronized
-            var writeIndices = new Queue<byte>(_propertySyncs.Length);
-            for (int i = 0; i < _propertySyncs.Length; i++)
+            // Its important to note that we are iterating in ascending order and putting them in a queue, so they
+            // will come out in ascending order, too
+            var writeIndices = new Queue<int>(propertySyncsLength);
+            for (int i = 0; i < propertySyncsLength; i++)
             {
                 if (_propertySyncs[i].HasValueChanged())
-                    writeIndices.Enqueue((byte)i);
+                    writeIndices.Enqueue(i);
             }
 
-            // Write the count
-            byte count = (byte)writeIndices.Count;
-            writer.Write(null, count);
+            // Write the count so the reader knows how many indicies there will be
+            writer.Write("Count", (uint)writeIndices.Count, 0, highestPropertyIndex);
 
-            // Write the properties
+            // Write the properties - first their index (so we know what property it is), then the value
+            // Since the indices are sorted, we know that each index cannot be greater than the previous index
+            uint lastIndex = 0;
             while (writeIndices.Count > 0)
             {
-                byte propIndex = writeIndices.Dequeue();
-                writer.Write("PropertyIndex", propIndex);
+                uint propIndex = (uint)writeIndices.Dequeue();
+                writer.Write("PropertyIndex", propIndex, lastIndex, highestPropertyIndex);
                 _propertySyncs[propIndex].WriteValue(writer);
+                lastIndex = propIndex;
             }
 
             // Synchronized!

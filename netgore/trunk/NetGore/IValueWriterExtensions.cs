@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
@@ -12,6 +13,62 @@ namespace NetGore
     /// </summary>
     public static class IValueWriterExtensions
     {
+        /// <summary>
+        /// Writes an unsigned integer with the specified range to an IValueWriter.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write to.</param>
+        /// <param name="value">Value to write.</param>
+        /// <param name="name">Name of the value to write.</param>
+        /// <param name="minValue">Minimum (inclusive) value that the written value can be.</param>
+        /// <param name="maxValue">Maximum (inclusive) value that the written value can be.</param>
+        public static void Write(this IValueWriter writer, string name, uint value, uint minValue, uint maxValue)
+        {
+            if (value < minValue || value > maxValue)
+                throw new ArgumentOutOfRangeException("value", "Value parameter must be between minValue and maxValue.");
+            if (maxValue < minValue)
+                throw new ArgumentOutOfRangeException("maxValue", "MaxValue must be greater than or equal to MinValue.");
+
+            // Find the number of bits required for the range of desired values
+            uint maxWriteValue = maxValue - minValue;
+            int bitsRequired = BitOps.RequiredBits(maxWriteValue);
+
+            // Subtract the minimum value from the value since we want to write how high above the minimum value
+            // the value is, not the actual value
+            uint offsetFromMin = value - minValue;
+            writer.Write(name, offsetFromMin, bitsRequired);
+
+            Debug.Assert((value - minValue) <= maxWriteValue);
+            Debug.Assert((1 << bitsRequired) >= maxWriteValue);
+        }
+
+        /// <summary>
+        /// Writes a signed integer with the specified range to an IValueWriter.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write to.</param>
+        /// <param name="value">Value to write.</param>
+        /// <param name="name">Name of the value to write.</param>
+        /// <param name="minValue">Minimum (inclusive) value that the written value can be.</param>
+        /// <param name="maxValue">Maximum (inclusive) value that the written value can be.</param>
+        public static void Write(this IValueWriter writer, string name, int value, int minValue, int maxValue)
+        {
+            if (value < minValue || value > maxValue)
+                throw new ArgumentOutOfRangeException("value", "Value parameter must be between minValue and maxValue.");
+            if (maxValue < minValue)
+                throw new ArgumentOutOfRangeException("maxValue", "MaxValue must be greater than or equal to MinValue.");
+
+            // Find the number of bits required for the range of desired values
+            uint maxWriteValue = (uint)(maxValue - minValue);
+            int bitsRequired = BitOps.RequiredBits(maxWriteValue);
+
+            // Subtract the minimum value from the value since we want to write how high above the minimum value
+            // the value is, not the actual value
+            uint offsetFromMin = (uint)(value - minValue);
+            writer.Write(name, offsetFromMin, bitsRequired);
+
+            Debug.Assert((value - minValue) <= maxWriteValue);
+            Debug.Assert((1 << bitsRequired) >= maxWriteValue);
+        }
+
         /// <summary>
         /// Writes a Vector2.
         /// </summary>
