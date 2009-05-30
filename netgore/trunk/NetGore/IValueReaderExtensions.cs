@@ -13,6 +13,52 @@ namespace NetGore
     public static class IValueReaderExtensions
     {
         /// <summary>
+        /// Reads an unsigned integer with the specified range from an IValueReader.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the value from.</param>
+        /// <param name="name">Name of the value to read.</param>
+        /// <param name="minValue">Minimum (inclusive) value that the read value can be.</param>
+        /// <param name="maxValue">Maximum (inclusive) value that the read value can be.</param>
+        /// <returns>Value read from the IValueReader.</returns>
+        public static uint ReadUInt(this IValueReader reader, string name, uint minValue, uint maxValue)
+        {
+            if (maxValue < minValue)
+                throw new ArgumentOutOfRangeException("maxValue", "MaxValue must be greater than or equal to MinValue.");
+
+            // Find the number of bits required for the range of desired values
+            uint maxWriteValue = maxValue - minValue;
+            int bitsRequired = BitOps.RequiredBits(maxWriteValue);
+
+            // Read the value, which is the offset from the minimum possible value, then add it to the minimum
+            // possible value
+            uint offsetFromMin = reader.ReadUInt(name, bitsRequired);
+            return minValue + offsetFromMin;
+        }
+
+        /// <summary>
+        /// Reads a signed integer with the specified range from an IValueReader.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the value from.</param>
+        /// <param name="name">Name of the value to read.</param>
+        /// <param name="minValue">Minimum (inclusive) value that the read value can be.</param>
+        /// <param name="maxValue">Maximum (inclusive) value that the read value can be.</param>
+        /// <returns>Value read from the IValueReader.</returns>
+        public static int ReadUInt(this IValueReader reader, string name, int minValue, int maxValue)
+        {
+            if (maxValue < minValue)
+                throw new ArgumentOutOfRangeException("maxValue", "MaxValue must be greater than or equal to MinValue.");
+
+            // Find the number of bits required for the range of desired values
+            uint maxWriteValue = (uint)(maxValue - minValue);
+            int bitsRequired = BitOps.RequiredBits(maxWriteValue);
+
+            // Read the value, which is the offset from the minimum possible value, then add it to the minimum
+            // possible value
+            uint offsetFromMin = reader.ReadUInt(name, bitsRequired);
+            return minValue + (int)offsetFromMin;
+        }
+
+        /// <summary>
         /// Reads a Vector2.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
