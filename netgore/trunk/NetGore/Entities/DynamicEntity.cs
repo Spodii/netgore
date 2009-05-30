@@ -128,10 +128,10 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads all of the changed property values from the specified IValueReader. Use in conjunction with Synchronize().
+        /// Reads all of the changed property values from the specified IValueReader. Use in conjunction with Serialize().
         /// </summary>
         /// <param name="reader">IValueReader to read the changed property values from.</param>
-        public void Desynchronize(IValueReader reader)
+        public void Deserialize(IValueReader reader)
         {
             // Grab the count for the number of properties to read
             byte count = reader.ReadByte(null);
@@ -168,10 +168,10 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Writes all of the changed property values to the specified IValueWriter. Use in conjunction with Desynchronize().
+        /// Writes all of the changed property values to the specified IValueWriter. Use in conjunction with Deserialize().
         /// </summary>
         /// <param name="writer">IValueWriter to write the changed property values to.</param>
-        public void Synchronize(IValueWriter writer)
+        public void Serialize(IValueWriter writer)
         {
             // TODO: See: http://netgore.com/bugs/view.php?id=50
 
