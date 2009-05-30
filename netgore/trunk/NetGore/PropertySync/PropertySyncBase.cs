@@ -34,23 +34,8 @@ namespace NetGore
         /// </summary>
         /// <param name="bindObject">Object that this property is to be bound to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
-        protected PropertySyncBase(object bindObject, PropertyInfo p)
-            : base(bindObject, p)
+        protected PropertySyncBase(object bindObject, PropertyInfo p) : base(bindObject, p)
         {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, contains the Delegate for the property's getter and setter so they
-        /// can be stored by the derived class, casted to their appropriate type.
-        /// </summary>
-        /// <param name="getter">Getter delegate to be stored. Guarenteed to be able to cast to the
-        /// same Type that was returned by GetGetDelegateType().</param>
-        /// <param name="setter">Setter delegate to be stored. Guarenteed to be able to cast to the
-        /// same Type that was returned by GetSetDelegateType().</param>
-        protected override void StoreDelegates(Delegate getter, Delegate setter)
-        {
-            _getter = (GetHandler)getter;
-            _setter = (SetHandler)setter;
         }
 
         /// <summary>
@@ -96,6 +81,20 @@ namespace NetGore
         public override void ReadValue(IValueReader reader)
         {
             Value = Read(Name, reader);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, contains the Delegate for the property's getter and setter so they
+        /// can be stored by the derived class, casted to their appropriate type.
+        /// </summary>
+        /// <param name="getter">Getter delegate to be stored. Guarenteed to be able to cast to the
+        /// same Type that was returned by GetGetDelegateType().</param>
+        /// <param name="setter">Setter delegate to be stored. Guarenteed to be able to cast to the
+        /// same Type that was returned by GetSetDelegateType().</param>
+        protected override void StoreDelegates(Delegate getter, Delegate setter)
+        {
+            _getter = (GetHandler)getter;
+            _setter = (SetHandler)setter;
         }
 
         /// <summary>
@@ -147,13 +146,18 @@ namespace NetGore
         /// </summary>
         static readonly Dictionary<Type, PropertyInfoData[]> _syncValueProperties = new Dictionary<Type, PropertyInfoData[]>();
 
-        string _name;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Gets the name of the synchronized value. This is what populates the Name parameter of the IValueReader
         /// and IValueWriter functions.
         /// </summary>
-        public string Name { get { return _name; } private set { _name = value; } }
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets if this Property should be skipped when synchronizing over the network.
+        /// </summary>
+        public bool SkipNetworkSync { get; private set; }
 
         /// <summary>
         /// PropertySyncBase static constructor.
@@ -194,7 +198,7 @@ namespace NetGore
         /// <param name="p">PropertyInfo for the property to bind to.</param>
         protected PropertySyncBase(object bindObject, PropertyInfo p)
         {
-            _name = p.Name;
+            Name = p.Name;
 
             if (!p.CanWrite)
                 throw new ArgumentException("Properties with the SyncValue attribute must contain a setter.");
@@ -207,20 +211,74 @@ namespace NetGore
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Delegate getter = Delegate.CreateDelegate(GetGetDelegateType(), bindObject, getMethod, true);
             Delegate setter = Delegate.CreateDelegate(GetSetDelegateType(), bindObject, setMethod, true);
-         
+
             StoreDelegates(getter, setter);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
-        /// When overridden in the derived class, contains the Delegate for the property's getter and setter so they
-        /// can be stored by the derived class, casted to their appropriate type.
+        /// Creates an array of PropertyInfoDatas for the given Type.
         /// </summary>
-        /// <param name="getter">Getter delegate to be stored. Guarenteed to be able to cast to the
-        /// same Type that was returned by GetGetDelegateType().</param>
-        /// <param name="setter">Setter delegate to be stored. Guarenteed to be able to cast to the
-        /// same Type that was returned by GetSetDelegateType().</param>
-        protected abstract void StoreDelegates(Delegate getter, Delegate setter);
+        /// <param name="type">Type to get the PropertyInfoDatas for.</param>
+        /// <returns>An array of PropertyInfoDatas for the given Type.</returns>
+        static PropertyInfoData[] CreatePropertyInfoDatas(Type type)
+        {
+            const BindingFlags flags =
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetProperty |
+                BindingFlags.SetProperty;
+
+            var tempPropInfos = new List<PropertyInfoData>();
+
+            // Find all of the properties for this type
+            foreach (PropertyInfo property in type.GetProperties(flags))
+            {
+                // Get the SyncValueAttribute for the property, skipping if none found
+                var attribs = property.GetCustomAttributes(typeof(SyncValueAttribute), true);
+                if (attribs.Length == 0)
+                    continue;
+                if (attribs.Length > 1)
+                {
+                    const string errmsg = "Property `{0}` contains more than one SyncValueAttribute!";
+                    string err = string.Format(errmsg, property);
+                    log.FatalFormat(err);
+                    Debug.Fail(err);
+                    throw new Exception(err);
+                }
+
+                // Get the attribute attached to this Property
+                SyncValueAttribute attribute = (SyncValueAttribute)attribs[0];
+
+                // Find the name to use (CustomName if one supplied, otherwise use the Property's name)
+                string name;
+                if (string.IsNullOrEmpty(attribute.CustomName))
+                    name = property.Name;
+                else
+                    name = attribute.CustomName;
+
+                // Find the SkipNetworkSync value
+                bool skipNetworkSync = attribute.SkipNetworkSync;
+
+                // Ensure we don't already have a property with this name
+                if (tempPropInfos.Count(x => x.Name == name) > 0)
+                {
+                    const string errmsg = "Class `{0}` contains more than one SyncValueAttribute with the name `{1}`!";
+                    string err = string.Format(errmsg, type, name);
+                    log.FatalFormat(err);
+                    Debug.Fail(err);
+                    throw new Exception(err);
+                }
+
+                // Add the property the list
+                PropertyInfoData newData = new PropertyInfoData(property, name, skipNetworkSync);
+                tempPropInfos.Add(newData);
+            }
+
+            // Sort the list so we can ensure that, every time this runs, the order will always be the same
+            tempPropInfos.Sort(PropertyInfoAndAttributeComparer);
+
+            // Convert to an array and return
+            return tempPropInfos.ToArray();
+        }
 
         /// <summary>
         /// When overridden in the derived class, gets the Type of the Delegate for the property's accessor.
@@ -259,99 +317,9 @@ namespace NetGore
                 Debug.Fail(string.Format(errmsg, handledType));
                 throw new Exception(string.Format(errmsg, handledType));
             }
-            
+
             // Return the instance of the PropertySyncBase
             return (PropertySyncBase)Activator.CreateInstance(syncType, bindObject, propertyInfo);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the Type of the Delegate for the property's mutator.
-        /// </summary>
-        /// <returns>The Type of the Delegate for the property's mutator.</returns>
-        protected abstract Type GetSetDelegateType();
-
-        /// <summary>
-        /// Struct containing the cached PropertyInfo data.
-        /// </summary>
-        struct PropertyInfoData
-        {
-            /// <summary>
-            /// The PropertyInfo.
-            /// </summary>
-            public readonly PropertyInfo PropertyInfo;
-
-            /// <summary>
-            /// The name to give the PropertySyncBase.
-            /// </summary>
-            public readonly string Name;
-
-            /// <summary>
-            /// PropertyInfoData constructor.
-            /// </summary>
-            /// <param name="propertyInfo">The PropertyInfo.</param>
-            /// <param name="name">The name to give the PropertySyncBase.</param>
-            public PropertyInfoData(PropertyInfo propertyInfo, string name)
-            {
-                PropertyInfo = propertyInfo;
-                Name = name;
-            }
-        }
-
-        /// <summary>
-        /// Creates an array of PropertyInfoDatas for the given Type.
-        /// </summary>
-        /// <param name="type">Type to get the PropertyInfoDatas for.</param>
-        /// <returns>An array of PropertyInfoDatas for the given Type.</returns>
-        static PropertyInfoData[] CreatePropertyInfoDatas(Type type)
-        {
-            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
-                                       BindingFlags.GetProperty | BindingFlags.SetProperty;
-
-            var tempPropInfos = new List<PropertyInfoData>();
-
-            // Find all of the properties for this type
-            foreach (var property in type.GetProperties(flags))
-            {
-                // Get the SyncValueAttribute for the property, skipping if none found
-                var attribs = property.GetCustomAttributes(typeof(SyncValueAttribute), true);
-                if (attribs.Length == 0)
-                    continue;
-                if (attribs.Length > 1)
-                {
-                    const string errmsg = "Property `{0}` contains more than one SyncValueAttribute!";
-                    string err = string.Format(errmsg, property);
-                    log.FatalFormat(err);
-                    Debug.Fail(err);
-                    throw new Exception(err);
-                }
-
-                // Find the name to use (CustomName if one supplied, otherwise use the Property's name)
-                var attribute = (SyncValueAttribute)attribs[0];
-                string name;
-                if (string.IsNullOrEmpty(attribute.CustomName))
-                    name = property.Name;
-                else
-                    name = attribute.CustomName;
-
-                // Ensure we don't already have a property with this name
-                if (tempPropInfos.Count(x => x.Name == name) > 0)
-                {
-                    const string errmsg = "Class `{0}` contains more than one SyncValueAttribute with the name `{1}`!";
-                    string err = string.Format(errmsg, type, name);
-                    log.FatalFormat(err);
-                    Debug.Fail(err);
-                    throw new Exception(err);
-                }
-
-                // Add the property the list
-                tempPropInfos.Add(new PropertyInfoData(property, name));
-            }
-
-            // Sort the list so we can ensure that, every time this runs, the order will always be the same
-            tempPropInfos.Sort(PropertyInfoAndAttributeComparer);
-
-            // Convert to an array and return
-            return tempPropInfos.ToArray();
         }
 
         /// <summary>
@@ -378,15 +346,26 @@ namespace NetGore
             }
 
             // Loop through each of the PropertyInfoDatas and create the PropertySyncBase for it
-            foreach (var p in propInfos)
+            foreach (PropertyInfoData p in propInfos)
             {
-                var propertySync = GetPropertySync(p.PropertyInfo, obj);
+                PropertySyncBase propertySync = GetPropertySync(p.PropertyInfo, obj);
                 propertySync.Name = p.Name;
+                propertySync.SkipNetworkSync = p.SkipNetworkSync; 
                 yield return propertySync;
             }
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        /// <summary>
+        /// When overridden in the derived class, gets the Type of the Delegate for the property's mutator.
+        /// </summary>
+        /// <returns>The Type of the Delegate for the property's mutator.</returns>
+        protected abstract Type GetSetDelegateType();
+
+        /// <summary>
+        /// When overridden in the derived class, gets if the Property's value has changed and needs to be re-synchronized.
+        /// </summary>
+        /// <returns>True if the Property needs to be re-synchronized, else False.</returns>
+        public abstract bool HasValueChanged();
 
         /// <summary>
         /// Compares two PropertyInfoDatas by using the PropertyInfo's Name.
@@ -400,12 +379,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets if the Property's value has changed and needs to be re-synchronized.
-        /// </summary>
-        /// <returns>True if the Property needs to be re-synchronized, else False.</returns>
-        public abstract bool HasValueChanged();
-
-        /// <summary>
         /// When overridden in the derived class, reads the Property's value from an IValueReader and updates the
         /// Property's value with the value read.
         /// </summary>
@@ -413,10 +386,22 @@ namespace NetGore
         public abstract void ReadValue(IValueReader reader);
 
         /// <summary>
+        /// When overridden in the derived class, contains the Delegate for the property's getter and setter so they
+        /// can be stored by the derived class, casted to their appropriate type.
+        /// </summary>
+        /// <param name="getter">Getter delegate to be stored. Guarenteed to be able to cast to the
+        /// same Type that was returned by GetGetDelegateType().</param>
+        /// <param name="setter">Setter delegate to be stored. Guarenteed to be able to cast to the
+        /// same Type that was returned by GetSetDelegateType().</param>
+        protected abstract void StoreDelegates(Delegate getter, Delegate setter);
+
+        /// <summary>
         /// When overridden in the derived class, writes the Property's value to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write the Property's value to.</param>
         public abstract void WriteValue(IValueWriter writer);
+
+        #region IComparable<PropertySyncBase> Members
 
         /// <summary>
         /// Compares the current object with another object of the same type.
@@ -436,6 +421,42 @@ namespace NetGore
         public int CompareTo(PropertySyncBase other)
         {
             return Name.CompareTo(other.Name);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Struct containing the cached PropertyInfo data.
+        /// </summary>
+        struct PropertyInfoData
+        {
+            /// <summary>
+            /// The name to give the PropertySyncBase.
+            /// </summary>
+            public readonly string Name;
+
+            /// <summary>
+            /// The PropertyInfo.
+            /// </summary>
+            public readonly PropertyInfo PropertyInfo;
+
+            /// <summary>
+            /// The SkipNetworkSync value.
+            /// </summary>
+            public readonly bool SkipNetworkSync;
+
+            /// <summary>
+            /// PropertyInfoData constructor.
+            /// </summary>
+            /// <param name="propertyInfo">The PropertyInfo.</param>
+            /// <param name="name">The name to give the PropertySyncBase.</param>
+            /// <param name="skipNetworkSync">The SkipNetworkSync value.</param>
+            public PropertyInfoData(PropertyInfo propertyInfo, string name, bool skipNetworkSync)
+            {
+                PropertyInfo = propertyInfo;
+                Name = name;
+                SkipNetworkSync = skipNetworkSync;
+            }
         }
     }
 }

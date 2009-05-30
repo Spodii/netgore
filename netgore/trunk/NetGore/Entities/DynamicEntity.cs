@@ -8,12 +8,33 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Base class for any Entity that must be synchronized between both the Client and Server.
+    /// Base class for any Entity that must be synchronized between both the Client and Server. This
+    /// base class supplies the synchronization of the supplied Properties, and synchronizing of additional
+    /// properties through the SyncValue attribute.
     /// </summary>
     public abstract class DynamicEntity : Entity
     {
+        /// <summary>
+        /// Index of the last PropertySync where SkipNetworkSync is false. See <see cref="_propertySyncs"/>
+        /// comments for more details.
+        /// </summary>
+        readonly byte _lastNetworkSyncIndex;
+
+        /// <summary>
+        /// The PropertySyncs used by this DynamicEntity. Index 0 to <see cref="_lastNetworkSyncIndex"/>, inclusive,
+        /// is guarenteed to have SkipNetworkSync equal false. Any PropertySync after the index at
+        /// <see cref="_lastNetworkSyncIndex"/>, if any, are guarenteed to have SkipNetworkSync equal true.
+        /// </summary>
         readonly PropertySyncBase[] _propertySyncs;
+
+        /// <summary>
+        /// If we know if one of the PropertySync's value have changed.
+        /// </summary>
         bool _isSynchronized;
+
+        /// <summary>
+        /// Index of the map this DynamicEntity is on.
+        /// </summary>
         ushort _mapIndex;
 
         /// <summary>
@@ -22,7 +43,7 @@ namespace NetGore
         [SyncValue("CollisionType")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
 // ReSharper disable UnusedMember.Local
-        protected internal CollisionType CollisionTypeSync // ReSharper restore UnusedMember.Local
+            protected internal CollisionType CollisionTypeSync // ReSharper restore UnusedMember.Local
         {
             get { return CollisionType; }
             set { SetCollisionTypeRaw(value); }
@@ -76,7 +97,7 @@ namespace NetGore
         [SyncValue("Position")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
 // ReSharper disable UnusedMember.Local
-        protected internal Vector2 PositionSync // ReSharper restore UnusedMember.Local
+            protected internal Vector2 PositionSync // ReSharper restore UnusedMember.Local
         {
             get { return Position; }
             set { SetPositionRaw(value); }
@@ -88,7 +109,7 @@ namespace NetGore
         [SyncValue("Size")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
 // ReSharper disable UnusedMember.Local
-        protected internal Vector2 SizeSync // ReSharper restore UnusedMember.Local
+            protected internal Vector2 SizeSync // ReSharper restore UnusedMember.Local
         {
             get { return Size; }
             set { SetSizeRaw(value); }
@@ -100,7 +121,7 @@ namespace NetGore
         [SyncValue("Velocity")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
 // ReSharper disable UnusedMember.Local
-        protected internal Vector2 VelocitySync // ReSharper restore UnusedMember.Local
+            protected internal Vector2 VelocitySync // ReSharper restore UnusedMember.Local
         {
             get { return Velocity; }
             set { SetVelocityRaw(value); }
@@ -112,7 +133,7 @@ namespace NetGore
         [SyncValue("Weight")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
 // ReSharper disable UnusedMember.Local
-        protected internal float WeightSync // ReSharper restore UnusedMember.Local
+            protected internal float WeightSync // ReSharper restore UnusedMember.Local
         {
             get { return Weight; }
             set { SetWeightRaw(value); }
@@ -124,7 +145,28 @@ namespace NetGore
         protected DynamicEntity()
         {
             // Get the PropertySyncBases for this DynamicEntity instance
-            _propertySyncs = PropertySyncBase.GetPropertySyncs(this).ToArray();
+            // OrderBy() will make sure every PropertySync where SkipNetworkSync is true is at the end of the array
+            _propertySyncs = PropertySyncBase.GetPropertySyncs(this).OrderBy(x => x.SkipNetworkSync).ToArray();
+
+            // Store the index of the last PropertySync that needs to be synchronized over the network
+            _lastNetworkSyncIndex = (byte)(_propertySyncs.Count(x => !x.SkipNetworkSync) - 1);
+
+#if DEBUG
+            // Ensure the _lastNetworkSyncIndex valid, and that every index [0, _lastNetworkSyncIndex] is
+            // set to false, and [_lastNetworkSyncIndex+1, end] is true for SkipNetworkSync.
+            for (int i = 0; i < _lastNetworkSyncIndex; i++)
+                Debug.Assert(!_propertySyncs[i].SkipNetworkSync);
+            for (int i = _lastNetworkSyncIndex + 1; i < _propertySyncs.Length; i++)
+                Debug.Assert(_propertySyncs[i].SkipNetworkSync);
+#endif
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles post-creation processing. This is required if you want to make use
+        /// of any of the Entity's values, which are not available at the constructor.
+        /// </summary>
+        protected virtual void AfterCreation()
+        {
         }
 
         /// <summary>
@@ -134,7 +176,7 @@ namespace NetGore
         public void Deserialize(IValueReader reader)
         {
             // Highest possible PropertySync index that we will be writing
-            uint highestPropertyIndex = (uint)(_propertySyncs.Length - 1);
+            uint highestPropertyIndex = _lastNetworkSyncIndex;
 
             // Grab the count for the number of properties to read
             uint count = reader.ReadUInt("Count", 0, highestPropertyIndex);
@@ -166,32 +208,22 @@ namespace NetGore
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles post-creation processing. This is required if you want to make use
-        /// of any of the Entity's values, which are not available at the constructor.
-        /// </summary>
-        protected virtual void AfterCreation()
-        {
-        }
-
-        /// <summary>
         /// Writes all of the changed property values to the specified IValueWriter. Use in conjunction with Deserialize().
         /// </summary>
         /// <param name="writer">IValueWriter to write the changed property values to.</param>
         public void Serialize(IValueWriter writer)
         {
-            // Length of the PropertySyncs array
-            int propertySyncsLength = _propertySyncs.Length;
-            
             // Highest possible PropertySync index that we will be writing
-            uint highestPropertyIndex = (uint)(propertySyncsLength - 1);
+            uint highestPropertyIndex = _lastNetworkSyncIndex;
 
             // Find the indicies that need to be synchronized
             // Its important to note that we are iterating in ascending order and putting them in a queue, so they
             // will come out in ascending order, too
-            var writeIndices = new Queue<int>(propertySyncsLength);
-            for (int i = 0; i < propertySyncsLength; i++)
+            var writeIndices = new Queue<int>(_lastNetworkSyncIndex + 1);
+            for (int i = 0; i <= _lastNetworkSyncIndex; i++)
             {
-                if (_propertySyncs[i].HasValueChanged())
+                PropertySyncBase propertySync = _propertySyncs[i];
+                if (!propertySync.SkipNetworkSync && propertySync.HasValueChanged())
                     writeIndices.Enqueue(i);
             }
 
