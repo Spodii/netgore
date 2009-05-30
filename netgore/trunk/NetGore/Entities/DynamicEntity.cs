@@ -7,6 +7,9 @@ using NetGore.IO;
 
 namespace NetGore
 {
+    /// <summary>
+    /// Base class for any Entity that must be synchronized between both the Client and Server.
+    /// </summary>
     public abstract class DynamicEntity : Entity
     {
         readonly PropertySyncBase[] _propertySyncs;
