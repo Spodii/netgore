@@ -7,7 +7,6 @@ using DemoGame.Extensions;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
-using NetGore.IO;
 using NetGore.Network;
 
 namespace DemoGame.Server
@@ -99,6 +98,11 @@ namespace DemoGame.Server
             return pw;
         }
 
+        /// <summary>
+        /// Gets a PacketWriter to use.
+        /// </summary>
+        /// <param name="id">ServerPacketID that this PacketWriter will be writing.</param>
+        /// <returns>PacketWriter to use.</returns>
         static PacketWriter GetWriter(ServerPacketID id)
         {
             PacketWriter pw = _writerPool.Create();
@@ -130,12 +134,6 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter NotifyFullInv()
-        {
-            // TODO: Unused packet - remove completely
-            return GetWriter(ServerPacketID.NotifyFullInv);
-        }
-
         public static PacketWriter NotifyGetItem(string name, byte amount)
         {
             PacketWriter pw = GetWriter(ServerPacketID.NotifyGetItem);
@@ -164,18 +162,6 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter(ServerPacketID.RemoveChar);
             pw.Write(mapCharIndex);
-            return pw;
-        }
-
-        public static PacketWriter SynchronizeDynamicEntity(DynamicEntity dynamicEntity)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SynchronizeDynamicEntity);
-            pw.Write((ushort)dynamicEntity.MapIndex);
-            // TODO: This will create garbage for EVERY synchronization... :( Make PacketWriter implement IValueWriter?
-            using (var valueWriter = new BitStreamValueWriter(pw))
-            {
-                dynamicEntity.Serialize(valueWriter);
-            }
             return pw;
         }
 
@@ -357,6 +343,14 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetUserChar);
             pw.Write(mapCharIndex);
+            return pw;
+        }
+
+        public static PacketWriter SynchronizeDynamicEntity(DynamicEntity dynamicEntity)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SynchronizeDynamicEntity);
+            pw.Write((ushort)dynamicEntity.MapIndex);
+            dynamicEntity.Serialize(pw);
             return pw;
         }
 

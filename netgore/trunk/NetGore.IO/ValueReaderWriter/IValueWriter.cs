@@ -9,7 +9,7 @@ namespace NetGore.IO
     /// Interface for an object that can write basic values for read-back later by using the unique name
     /// given to each individual value.
     /// </summary>
-    public interface IValueWriter: IDisposable
+    public interface IValueWriter : IDisposable
     {
         /// <summary>
         /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to

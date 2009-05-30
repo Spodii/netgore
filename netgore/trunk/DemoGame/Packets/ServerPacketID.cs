@@ -23,7 +23,6 @@ namespace DemoGame
         NotifyExpCash,
         NotifyLevel,
         NotifyGetItem,
-        NotifyFullInv,
         Ping,
         RemoveChar,
         RemoveMapItem,
