@@ -43,7 +43,7 @@ namespace NetGore
         [SyncValue("CollisionType")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         // ReSharper disable UnusedMember.Local
-        protected internal CollisionType CollisionTypeSync // ReSharper restore UnusedMember.Local
+            protected internal CollisionType CollisionTypeSync // ReSharper restore UnusedMember.Local
         {
             get { return CollisionType; }
             set { SetCollisionTypeRaw(value); }
@@ -97,7 +97,7 @@ namespace NetGore
         [SyncValue("Position")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         // ReSharper disable UnusedMember.Local
-        protected internal Vector2 PositionSync // ReSharper restore UnusedMember.Local
+            protected internal Vector2 PositionSync // ReSharper restore UnusedMember.Local
         {
             get { return Position; }
             set { SetPositionRaw(value); }
@@ -109,7 +109,7 @@ namespace NetGore
         [SyncValue("Size")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         // ReSharper disable UnusedMember.Local
-        protected internal Vector2 SizeSync // ReSharper restore UnusedMember.Local
+            protected internal Vector2 SizeSync // ReSharper restore UnusedMember.Local
         {
             get { return Size; }
             set { SetSizeRaw(value); }
@@ -121,7 +121,7 @@ namespace NetGore
         [SyncValue("Velocity")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         // ReSharper disable UnusedMember.Local
-        protected internal Vector2 VelocitySync // ReSharper restore UnusedMember.Local
+            protected internal Vector2 VelocitySync // ReSharper restore UnusedMember.Local
         {
             get { return Velocity; }
             set { SetVelocityRaw(value); }
@@ -133,7 +133,7 @@ namespace NetGore
         [SyncValue("Weight")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         // ReSharper disable UnusedMember.Local
-        protected internal float WeightSync // ReSharper restore UnusedMember.Local
+            protected internal float WeightSync // ReSharper restore UnusedMember.Local
         {
             get { return Weight; }
             set { SetWeightRaw(value); }
@@ -213,7 +213,7 @@ namespace NetGore
         /// <param name="propertySync">PropertySyncBase for the property that is being deserialized.</param>
         // ReSharper disable UnusedParameter.Global
         protected virtual void DeserializeProprety(IValueReader reader, PropertySyncBase propertySync)
-        // ReSharper restore UnusedParameter.Global
+            // ReSharper restore UnusedParameter.Global
         {
         }
 
@@ -287,7 +287,7 @@ namespace NetGore
         /// <param name="propertySync">PropertySyncBase for the property that is being serialized.</param>
         // ReSharper disable UnusedParameter.Global
         protected virtual void SerializeProperty(IValueWriter writer, PropertySyncBase propertySync)
-        // ReSharper restore UnusedParameter.Global
+            // ReSharper restore UnusedParameter.Global
         {
         }
 
