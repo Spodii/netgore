@@ -14,7 +14,8 @@ namespace NetGore
         readonly string _customName;
 
         /// <summary>
-        /// Gets the custom name to be used for when synchronizing. Can be null.
+        /// Gets the custom name to be used for when synchronizing. Can be null, and is null by default.
+        /// When null, the name of the Property will be used instead.
         /// </summary>
         public string CustomName
         {
@@ -23,7 +24,7 @@ namespace NetGore
 
         /// <summary>
         /// Gets or sets if this SyncValueAttribute will be skipped when synchronizing values from
-        /// the Server to the Client.
+        /// the Server to the Client. Default is true.
         /// </summary>
         public bool SkipNetworkSync { get; set; }
 

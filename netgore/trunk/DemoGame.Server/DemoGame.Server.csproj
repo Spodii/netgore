@@ -151,7 +151,7 @@
     <Compile Include="Stats\UserStat.cs" />
     <Compile Include="Stats\UserStats.cs" />
     <Compile Include="SQL\User\UserQueryBase.cs" />
-    <Compile Include="World\IMapItemEntity.cs" />
+    <Compile Include="World\IMapControlledEntity.cs" />
     <Compile Include="World\Map.cs" />
     <Compile Include="Characters\NPCTemplate.cs" />
     <Compile Include="Characters\NPCTemplateManager.cs" />
