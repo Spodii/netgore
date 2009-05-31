@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
 using DemoGame.Extensions;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -162,6 +161,11 @@ namespace DemoGame.Server
             ItemEntity item = new ItemEntity(template, pos, amount);
             AddEntity(item);
             return item;
+        }
+
+        protected override WallEntityBase CreateWall(IValueReader r)
+        {
+            return new WallEntity(r);
         }
 
         protected override void EntityAdded(Entity entity)
@@ -339,10 +343,10 @@ namespace DemoGame.Server
             }
 
             // Send dynamic entities
-            foreach (var dynamicEntity in DynamicEntities)
+            foreach (DynamicEntity dynamicEntity in DynamicEntities)
             {
                 // TODO: Should serialize all DynamicEntities to just one PacketWriter, not one per entity
-                using (var pw = ServerPacket.CreateDynamicEntity(dynamicEntity))
+                using (PacketWriter pw = ServerPacket.CreateDynamicEntity(dynamicEntity))
                 {
                     user.Send(pw);
                 }
@@ -385,6 +389,23 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Synchronizes all of the DynamicEntities.
+        /// </summary>
+        void SynchronizeDynamicEntities()
+        {
+            foreach (DynamicEntity dynamicEntity in DynamicEntities)
+            {
+                if (dynamicEntity.IsSynchronized)
+                    continue;
+
+                using (PacketWriter pw = ServerPacket.SynchronizeDynamicEntity(dynamicEntity))
+                {
+                    Send(pw);
+                }
+            }
+        }
+
         public override void Update()
         {
             // Skip updating maps with no users
@@ -394,28 +415,6 @@ namespace DemoGame.Server
             base.Update();
 
             SynchronizeDynamicEntities();
-        }
-
-        protected override WallEntityBase CreateWall(IValueReader r)
-        {
-            return new WallEntity(r);
-        }
-
-        /// <summary>
-        /// Synchronizes all of the DynamicEntities.
-        /// </summary>
-        void SynchronizeDynamicEntities()
-        {
-            foreach (var dynamicEntity in DynamicEntities)
-            {
-                if (dynamicEntity.IsSynchronized)
-                    continue;
-
-                using (var pw = ServerPacket.SynchronizeDynamicEntity(dynamicEntity))
-                {
-                    Send(pw);
-                }
-            }
         }
 
         #region IDisposable Members

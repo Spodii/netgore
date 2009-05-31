@@ -537,7 +537,7 @@ namespace DemoGame.MapEditor
                     if (boundWalls == null)
                         continue;
 
-                    foreach (var wall in boundWalls)
+                    foreach (WallEntityBase wall in boundWalls)
                     {
                         EntityDrawer.Draw(_sb, wall, mg.Destination);
                     }
@@ -623,7 +623,7 @@ namespace DemoGame.MapEditor
             // Walls
             foreach (object o in _editGrhWallItems)
             {
-                var wall = o as WallEntity;
+                WallEntity wall = o as WallEntity;
                 if (wall != null)
                     EntityDrawer.Draw(_sb, wall);
             }

@@ -355,7 +355,7 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current time.</param>
         public void SetGrh(ushort grhIndex, AnimType anim, int currentTime)
         {
-            var grhData = GrhInfo.GetData(grhIndex);
+            GrhData grhData = GrhInfo.GetData(grhIndex);
             if (grhData == null && grhIndex != 0)
             {
                 const string errmsg = "Failed to set Grh - GrhIndex `{0}` does not exist.";

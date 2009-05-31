@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.IO
 {
@@ -25,6 +25,8 @@ namespace NetGore.IO
 
             _writer = writer;
         }
+
+        #region IValueWriter Members
 
         /// <summary>
         /// Writes an unsigned integer of up to 32 bits.
@@ -157,5 +159,7 @@ namespace NetGore.IO
         public void Dispose()
         {
         }
+
+        #endregion
     }
 }

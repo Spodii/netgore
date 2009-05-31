@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -54,17 +55,18 @@ namespace NetGore.IO.Tests
         static void MoveXmlReaderToNode(XmlReader xmlReader, string nodeName)
         {
             while (xmlReader.Read() && xmlReader.Name != nodeName)
-            { }
+            {
+            }
         }
 
         [Test(Description = "Make sure we can create an XmlValueReader at the start of the node to read.")]
         public void CreateXmlReaderAtNodeTest()
         {
             // Create the reader at the Values node
-            var xmlReader = GetTestXmlValueReaderReader();
+            XmlReader xmlReader = GetTestXmlValueReaderReader();
             MoveXmlReaderToNode(xmlReader, "Values");
 
-            var r = new XmlValueReader(xmlReader, "Values");
+            XmlValueReader r = new XmlValueReader(xmlReader, "Values");
             TestXmlValueReader(r);
         }
 
@@ -72,10 +74,10 @@ namespace NetGore.IO.Tests
         public void CreateXmlReaderInsideNodeTest()
         {
             // Create the reader at the MyInt node (first value node)
-            var xmlReader = GetTestXmlValueReaderReader();
+            XmlReader xmlReader = GetTestXmlValueReaderReader();
             MoveXmlReaderToNode(xmlReader, "MyInt");
 
-            var r = new XmlValueReader(xmlReader, "Values");
+            XmlValueReader r = new XmlValueReader(xmlReader, "Values");
             TestXmlValueReader(r);
         }
     }

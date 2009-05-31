@@ -103,7 +103,7 @@ namespace NetGore
         {
             get { return _collisionBox.Size; }
             internal set
-            { 
+            {
                 // NOTE: Temporary setter - do not actually use!
                 Resize(value);
             }
@@ -118,7 +118,8 @@ namespace NetGore
             internal set
             {
                 // NOTE: Temporary setter - do not actually use!
-                SetVelocity(value); }
+                SetVelocity(value);
+            }
         }
 
         /// <summary>
@@ -228,6 +229,25 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Loads the Entity's values directly, completely bypassing any events or updating. This should only be used
+        /// for when constructing an Entity when these values cannot be passed directly to the constructor or Create().
+        /// </summary>
+        /// <param name="position">New position value.</param>
+        /// <param name="size">New size value.</param>
+        /// <param name="velocity">New velocity value.</param>
+        /// <param name="weight">New weight value.</param>
+        /// <param name="collisionType">New collision type.</param>
+        protected internal void LoadEntityValues(Vector2 position, Vector2 size, Vector2 velocity, float weight,
+                                                 CollisionType collisionType)
+        {
+            CB.Teleport(position);
+            CB.Resize(size);
+            _velocity = velocity;
+            _weight = weight;
+            _ct = collisionType;
+        }
+
+        /// <summary>
         /// Translates the entity from its current position
         /// </summary>
         /// <param name="adjustment">Amount to move</param>
@@ -259,46 +279,19 @@ namespace NetGore
                 OnResize(this, oldSize);
         }
 
-        /// <summary>
-        /// Loads the Entity's values directly, completely bypassing any events or updating. This should only be used
-        /// for when constructing an Entity when these values cannot be passed directly to the constructor or Create().
-        /// </summary>
-        /// <param name="position">New position value.</param>
-        /// <param name="size">New size value.</param>
-        /// <param name="velocity">New velocity value.</param>
-        /// <param name="weight">New weight value.</param>
-        /// <param name="collisionType">New collision type.</param>
-        protected internal void LoadEntityValues(Vector2 position, Vector2 size, Vector2 velocity, float weight, CollisionType collisionType)
+        protected internal void SetCollisionTypeRaw(CollisionType newCollisionType)
         {
-            CB.Teleport(position);
-            CB.Resize(size);
-            _velocity = velocity;
-            _weight = weight;
-            _ct = collisionType;
-        }
-
-        protected internal void SetVelocityRaw(Vector2 newVelocity)
-        {
-            _velocity = newVelocity;
+            _ct = newCollisionType;
         }
 
         protected internal void SetPositionRaw(Vector2 newPosition)
         {
             CB.Teleport(newPosition);
         }
+
         protected internal void SetSizeRaw(Vector2 newSize)
         {
             CB.Resize(newSize);
-        }
-
-        protected internal void SetWeightRaw(float newWeight)
-        {
-            _weight = newWeight;
-        }
-
-        protected internal void SetCollisionTypeRaw(CollisionType newCollisionType)
-        {
-            _ct = newCollisionType;
         }
 
         /// <summary>
@@ -308,6 +301,16 @@ namespace NetGore
         public virtual void SetVelocity(Vector2 newVelocity)
         {
             _velocity = newVelocity;
+        }
+
+        protected internal void SetVelocityRaw(Vector2 newVelocity)
+        {
+            _velocity = newVelocity;
+        }
+
+        protected internal void SetWeightRaw(float newWeight)
+        {
+            _weight = newWeight;
         }
 
         /// <summary>

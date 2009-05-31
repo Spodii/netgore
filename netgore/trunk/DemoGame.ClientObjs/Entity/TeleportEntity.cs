@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using DemoGame.Extensions;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
@@ -10,9 +12,10 @@ namespace DemoGame.Client
 {
     public class TeleportEntity : TeleportEntityBase, IDrawableEntity
     {
-        public override bool Use(CharacterEntity charEntity)
+        public override event EntityEventHandler<CharacterEntity> OnUse
         {
-            throw new MethodAccessException("The client may not actually an IUsableEntity, only send requests to use them.");
+            add { }
+            remove { }
         }
 
         public override bool CanUse(CharacterEntity charEntity)
@@ -20,13 +23,15 @@ namespace DemoGame.Client
             return true;
         }
 
-        public override event EntityEventHandler<CharacterEntity> OnUse
+        public override bool Use(CharacterEntity charEntity)
         {
-            add { }
-            remove { }
+            throw new MethodAccessException("The client may not actually an IUsableEntity, only send requests to use them.");
         }
 
+        #region IDrawableEntity Members
+
         public event MapRenderLayerChange OnChangeRenderLayer;
+
         public MapRenderLayer MapRenderLayer
         {
             get { return MapRenderLayer.Foreground; }
@@ -34,7 +39,7 @@ namespace DemoGame.Client
 
         public void Draw(SpriteBatch sb)
         {
-            var rect = CB.ToRectangle();
+            Rectangle rect = CB.ToRectangle();
             XNARectangle.Draw(sb, rect, new Color(255, 255, 255, 100), Color.Black);
         }
 
@@ -42,5 +47,7 @@ namespace DemoGame.Client
         {
             return camera.InView(this);
         }
+
+        #endregion
     }
 }

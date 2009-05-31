@@ -45,7 +45,7 @@ namespace DemoGame.Client
 
             Vector2 itemsSize = _columns * new Vector2(_itemWidth, _itemHeight);
             Vector2 paddingSize = (_columns + 1) * new Vector2(_sepX, _sepY);
-            var borderSize = (Border != null ? Border.Size : Vector2.Zero);
+            Vector2 borderSize = (Border != null ? Border.Size : Vector2.Zero);
             Size = itemsSize + paddingSize + borderSize;
 
             CreateItemSlots();

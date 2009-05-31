@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Collections
 {
@@ -13,6 +13,39 @@ namespace NetGore.Collections
     {
         readonly Dictionary<string, Type> _nameToType;
         readonly Dictionary<Type, string> _typeToName;
+
+        public Type this[string typeName]
+        {
+            get { return _nameToType[typeName]; }
+        }
+
+        public string this[Type type]
+        {
+            get { return _typeToName[type]; }
+        }
+
+        public IEnumerable<Type> Types
+        {
+            get { return _typeToName.Keys; }
+        }
+
+        public FactoryTypeCollection(IEnumerable<Type> types)
+        {
+            int count = types.Count();
+
+            _nameToType = new Dictionary<string, Type>(count, StringComparer.OrdinalIgnoreCase);
+            _typeToName = new Dictionary<Type, string>(count);
+
+            foreach (Type type in types)
+            {
+                // ReSharper disable DoNotCallOverridableMethodsInConstructor
+                string typeName = GetTypeName(type);
+                // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
+                _nameToType.Add(typeName, type);
+                _typeToName.Add(type, typeName);
+            }
+        }
 
         static IEnumerable<Type> AllTypes()
         {
@@ -33,21 +66,6 @@ namespace NetGore.Collections
             return types;
         }
 
-        public Type this[string typeName]
-        {
-            get { return _nameToType[typeName]; }
-        }
-
-        public string this[Type type]
-        {
-            get { return _typeToName[type]; }
-        }
-
-        public IEnumerable<Type> Types
-        {
-            get { return _typeToName.Keys; }
-        }
-
         public object GetTypeInstance(Type type)
         {
             object instance = Activator.CreateInstance(type, true);
@@ -56,26 +74,8 @@ namespace NetGore.Collections
 
         public object GetTypeInstance(string typeName)
         {
-            var type = this[typeName];
+            Type type = this[typeName];
             return GetTypeInstance(type);
-        }
-
-        public FactoryTypeCollection(IEnumerable<Type> types)
-        {
-            int count = types.Count();
-
-            _nameToType = new Dictionary<string, Type>(count, StringComparer.OrdinalIgnoreCase);
-            _typeToName = new Dictionary<Type, string>(count);
-
-            foreach (Type type in types)
-            {
-                // ReSharper disable DoNotCallOverridableMethodsInConstructor
-                string typeName = GetTypeName(type);
-                // ReSharper restore DoNotCallOverridableMethodsInConstructor
-
-                _nameToType.Add(typeName, type);
-                _typeToName.Add(type, typeName);
-            }
         }
 
         protected virtual string GetTypeName(Type type)

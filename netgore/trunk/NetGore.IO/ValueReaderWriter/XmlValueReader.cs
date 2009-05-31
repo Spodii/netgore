@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Xml;
 
 namespace NetGore.IO
@@ -60,13 +59,16 @@ namespace NetGore.IO
                         if (string.Equals(reader.Name, rootNodeName, StringComparison.OrdinalIgnoreCase))
                             return ret;
                         else
-                            throw new Exception(string.Format("Was expecting end of element `{0}`, but found `{1}`.", rootNodeName, reader.Name));
+                            throw new Exception(string.Format("Was expecting end of element `{0}`, but found `{1}`.", rootNodeName,
+                                                              reader.Name));
                 }
 
                 // Keep reading
                 reader.Read();
             }
         }
+
+        #region IValueReader Members
 
         /// <summary>
         /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
@@ -188,5 +190,7 @@ namespace NetGore.IO
         {
             return _values[name];
         }
+
+        #endregion
     }
 }

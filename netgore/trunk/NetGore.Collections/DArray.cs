@@ -109,8 +109,10 @@ namespace NetGore.Collections
         /// <param name="trackFree">If free indices will be tracked and Add can be used</param>
         public DArray(IEnumerable<T> content, bool trackFree) : this(content.Count(), trackFree)
         {
-            foreach (var item in content)
+            foreach (T item in content)
+            {
                 Add(item);
+            }
         }
 
         /// <summary>

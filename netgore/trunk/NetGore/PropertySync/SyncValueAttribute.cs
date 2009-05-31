@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace NetGore
 {
@@ -16,7 +16,10 @@ namespace NetGore
         /// <summary>
         /// Gets the custom name to be used for when synchronizing. Can be null.
         /// </summary>
-        public string CustomName { get { return _customName; } }
+        public string CustomName
+        {
+            get { return _customName; }
+        }
 
         /// <summary>
         /// Gets or sets if this SyncValueAttribute will be skipped when synchronizing values from

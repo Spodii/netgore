@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Xml;
 
 namespace NetGore.IO
@@ -12,6 +12,7 @@ namespace NetGore.IO
     public class XmlValueWriter : IValueWriter
     {
         readonly XmlWriter _writer;
+        bool _disposed;
 
         /// <summary>
         /// XmlValueWriter constructor.
@@ -47,6 +48,8 @@ namespace NetGore.IO
             _writer.WriteStartElement(nodeName);
             _writer.WriteAttributeString(attributeName, attributeValue);
         }
+
+        #region IValueWriter Members
 
         /// <summary>
         /// Writes a variable-length string of up to 65535 characters in length.
@@ -180,8 +183,6 @@ namespace NetGore.IO
             Write(name, value.ToString());
         }
 
-        bool _disposed;
-
         public void Dispose()
         {
             if (_disposed)
@@ -190,5 +191,7 @@ namespace NetGore.IO
             _disposed = true;
             _writer.WriteEndElement();
         }
+
+        #endregion
     }
 }

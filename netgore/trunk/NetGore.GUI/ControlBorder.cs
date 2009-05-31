@@ -122,6 +122,14 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets a Vector2 that represents the Width and Height of all sides of the border.
+        /// </summary>
+        public Vector2 Size
+        {
+            get { return new Vector2(Width, Height); }
+        }
+
+        /// <summary>
         /// Gets or sets the source for the background
         /// </summary>
         public ISprite SourceBackground
@@ -222,14 +230,6 @@ namespace NetGore.Graphics.GUI
         public int Width
         {
             get { return LeftWidth + RightWidth; }
-        }
-
-        /// <summary>
-        /// Gets a Vector2 that represents the Width and Height of all sides of the border.
-        /// </summary>
-        public Vector2 Size
-        {
-            get { return new Vector2(Width,  Height); }
         }
 
         /// <summary>
