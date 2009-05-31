@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Network;
 
+// TODO: Would be nice to refactor out the Map reference from the ItemEntity completely
+
 namespace DemoGame.Server
 {
     /// <summary>
