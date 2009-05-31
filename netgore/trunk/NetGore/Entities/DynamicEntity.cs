@@ -76,7 +76,8 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the unique index of this DynamicEntity on the map.
+        /// Gets the unique index of this DynamicEntity on the map. This is used to distinguish each individual
+        /// DynamicEntity from one another.
         /// </summary>
         public int MapIndex
         {
