@@ -42,8 +42,8 @@ namespace NetGore
         /// </summary>
         [SyncValue("CollisionType")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
-// ReSharper disable UnusedMember.Local
-            protected internal CollisionType CollisionTypeSync // ReSharper restore UnusedMember.Local
+        // ReSharper disable UnusedMember.Local
+        protected internal CollisionType CollisionTypeSync // ReSharper restore UnusedMember.Local
         {
             get { return CollisionType; }
             set { SetCollisionTypeRaw(value); }
@@ -96,8 +96,8 @@ namespace NetGore
         /// </summary>
         [SyncValue("Position")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
-// ReSharper disable UnusedMember.Local
-            protected internal Vector2 PositionSync // ReSharper restore UnusedMember.Local
+        // ReSharper disable UnusedMember.Local
+        protected internal Vector2 PositionSync // ReSharper restore UnusedMember.Local
         {
             get { return Position; }
             set { SetPositionRaw(value); }
@@ -108,8 +108,8 @@ namespace NetGore
         /// </summary>
         [SyncValue("Size")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
-// ReSharper disable UnusedMember.Local
-            protected internal Vector2 SizeSync // ReSharper restore UnusedMember.Local
+        // ReSharper disable UnusedMember.Local
+        protected internal Vector2 SizeSync // ReSharper restore UnusedMember.Local
         {
             get { return Size; }
             set { SetSizeRaw(value); }
@@ -120,8 +120,8 @@ namespace NetGore
         /// </summary>
         [SyncValue("Velocity")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
-// ReSharper disable UnusedMember.Local
-            protected internal Vector2 VelocitySync // ReSharper restore UnusedMember.Local
+        // ReSharper disable UnusedMember.Local
+        protected internal Vector2 VelocitySync // ReSharper restore UnusedMember.Local
         {
             get { return Velocity; }
             set { SetVelocityRaw(value); }
@@ -132,8 +132,8 @@ namespace NetGore
         /// </summary>
         [SyncValue("Weight")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
-// ReSharper disable UnusedMember.Local
-            protected internal float WeightSync // ReSharper restore UnusedMember.Local
+        // ReSharper disable UnusedMember.Local
+        protected internal float WeightSync // ReSharper restore UnusedMember.Local
         {
             get { return Weight; }
             set { SetWeightRaw(value); }
@@ -155,9 +155,13 @@ namespace NetGore
             // Ensure the _lastNetworkSyncIndex valid, and that every index [0, _lastNetworkSyncIndex] is
             // set to false, and [_lastNetworkSyncIndex+1, end] is true for SkipNetworkSync.
             for (int i = 0; i < _lastNetworkSyncIndex; i++)
+            {
                 Debug.Assert(!_propertySyncs[i].SkipNetworkSync);
+            }
             for (int i = _lastNetworkSyncIndex + 1; i < _propertySyncs.Length; i++)
+            {
                 Debug.Assert(_propertySyncs[i].SkipNetworkSync);
+            }
 #endif
         }
 
@@ -186,10 +190,31 @@ namespace NetGore
             uint lastIndex = 0;
             for (int i = 0; i < count; i++)
             {
+                // Get the PropertySync to be deserialized
                 uint propIndex = reader.ReadUInt("PropertyIndex", lastIndex, highestPropertyIndex);
-                _propertySyncs[propIndex].ReadValue(reader);
+                PropertySyncBase propertySync = _propertySyncs[propIndex];
+
+                // Read the value into the property
+                propertySync.ReadValue(reader);
+
+                // Allow for additional post-deserializtion processing
+                DeserializeProprety(reader, propertySync);
+
+                // Store this property index as the last written index
                 lastIndex = propIndex;
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of a property that is
+        /// being deserialized, immediately after the value has been read from the <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader">IValueReader that the property value is being deserialized from.</param>
+        /// <param name="propertySync">PropertySyncBase for the property that is being deserialized.</param>
+        // ReSharper disable UnusedParameter.Global
+        protected virtual void DeserializeProprety(IValueReader reader, PropertySyncBase propertySync)
+        // ReSharper restore UnusedParameter.Global
+        {
         }
 
         /// <summary>
@@ -235,14 +260,35 @@ namespace NetGore
             uint lastIndex = 0;
             while (writeIndices.Count > 0)
             {
+                // Write the index of the property
                 uint propIndex = (uint)writeIndices.Dequeue();
                 writer.Write("PropertyIndex", propIndex, lastIndex, highestPropertyIndex);
-                _propertySyncs[propIndex].WriteValue(writer);
+
+                // Write the actual property value
+                PropertySyncBase propertySync = _propertySyncs[propIndex];
+                propertySync.WriteValue(writer);
+
+                // Allow for additonal handling
+                SerializeProperty(writer, propertySync);
+
+                // Store this property index as the last written index
                 lastIndex = propIndex;
             }
 
             // Synchronized!
             _isSynchronized = true;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, allows for additional handling of a property that is
+        /// being serialized, immediately after the value has been written to the <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer">IValueWriter that the property value is being serialized to.</param>
+        /// <param name="propertySync">PropertySyncBase for the property that is being serialized.</param>
+        // ReSharper disable UnusedParameter.Global
+        protected virtual void SerializeProperty(IValueWriter writer, PropertySyncBase propertySync)
+        // ReSharper restore UnusedParameter.Global
+        {
         }
 
         /// <summary>
