@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace NetGore
 {
@@ -16,7 +16,10 @@ namespace NetGore
         /// <summary>
         /// Gets the Property value Type that the class handles.
         /// </summary>
-        public Type HandledType { get { return _handledType; } }
+        public Type HandledType
+        {
+            get { return _handledType; }
+        }
 
         /// <summary>
         /// PropertySyncHandlerAttribute constructor.

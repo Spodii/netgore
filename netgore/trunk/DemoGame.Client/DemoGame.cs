@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -60,11 +61,11 @@ namespace DemoGame.Client
             // Set the graphics settings
             graphics.SynchronizeWithVerticalRetrace = false; // vsync
             graphics.PreferMultiSampling = false;
-            
+
             // Disable filtering, which makes our 2d art look like crap
-            graphics.GraphicsDevice.SamplerStates[0].MinFilter = Microsoft.Xna.Framework.Graphics.TextureFilter.None;
-            graphics.GraphicsDevice.SamplerStates[0].MipFilter = Microsoft.Xna.Framework.Graphics.TextureFilter.None;
-            graphics.GraphicsDevice.SamplerStates[0].MagFilter = Microsoft.Xna.Framework.Graphics.TextureFilter.None;
+            graphics.GraphicsDevice.SamplerStates[0].MinFilter = TextureFilter.None;
+            graphics.GraphicsDevice.SamplerStates[0].MipFilter = TextureFilter.None;
+            graphics.GraphicsDevice.SamplerStates[0].MagFilter = TextureFilter.None;
             graphics.GraphicsDevice.SamplerStates[0].MaxMipLevel = 0;
 
             // Screen size

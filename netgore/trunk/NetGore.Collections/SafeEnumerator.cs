@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Collections
 {
@@ -15,9 +15,10 @@ namespace NetGore.Collections
     public class SafeEnumerator<T> : IEnumerable<T>
     {
         /// <summary>
-        /// Contains the _source casted to an ICollection.
+        /// If true, the source is a read-only ICollection so the buffer does not need to be updated
+        /// every call to GetEnumerator().
         /// </summary>
-        readonly ICollection<T> _sourceAsCollection;
+        readonly bool _isSourceReadonly;
 
         /// <summary>
         /// Contains the source IEnumerable to enumerate over.
@@ -25,16 +26,15 @@ namespace NetGore.Collections
         readonly IEnumerable<T> _source;
 
         /// <summary>
+        /// Contains the _source casted to an ICollection.
+        /// </summary>
+        readonly ICollection<T> _sourceAsCollection;
+
+        /// <summary>
         /// If true, we can optimize for using the _sourceAsCollection instead of _source to make use
         /// of all the extra stuff an ICollection provides.
         /// </summary>
         readonly bool _useCollection;
-
-        /// <summary>
-        /// If true, the source is a read-only ICollection so the buffer does not need to be updated
-        /// every call to GetEnumerator().
-        /// </summary>
-        readonly bool _isSourceReadonly;
 
         /// <summary>
         /// Buffer containing all of the items to be enumerated over. This is what is actually ultimately enumerated
@@ -50,7 +50,10 @@ namespace NetGore.Collections
         /// <summary>
         /// Gets the source that is being enumerated over.
         /// </summary>
-        public IEnumerable<T> Source { get { return _source; } }
+        public IEnumerable<T> Source
+        {
+            get { return _source; }
+        }
 
         /// <summary>
         /// SafeEnumerator constructor
@@ -77,9 +80,7 @@ namespace NetGore.Collections
                     _sourceLength = _source.Count();
                 }
                 else
-                {
                     _buffer = new T[_sourceAsCollection.Count];
-                }
             }
             else
             {
@@ -117,10 +118,14 @@ namespace NetGore.Collections
 
                 // Copy the elements from the source into the buffer
                 int i = -1;
-                foreach (var item in _source)
+                foreach (T item in _source)
+                {
                     _buffer[++i] = item;
+                }
             }
         }
+
+        #region IEnumerable<T> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -155,6 +160,8 @@ namespace NetGore.Collections
             return GetEnumerator();
         }
 
+        #endregion
+
         /// <summary>
         /// Enumerator for enumerating over only part of an array, not the whole thing.
         /// </summary>
@@ -175,6 +182,8 @@ namespace NetGore.Collections
                 _array = array;
                 _endIndex = endIndex;
             }
+
+            #region IEnumerator<T> Members
 
             /// <summary>
             /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -241,6 +250,8 @@ namespace NetGore.Collections
             {
                 get { return Current; }
             }
+
+            #endregion
         }
     }
 }

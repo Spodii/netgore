@@ -28,8 +28,10 @@ namespace NetGore
 
             if (log.IsInfoEnabled)
             {
-                foreach (var type in types)
+                foreach (Type type in types)
+                {
                     log.InfoFormat("Found DynamicEntity type `{0}`.", _typeCollection[type]);
+                }
             }
         }
 
@@ -73,7 +75,7 @@ namespace NetGore
             Type type = dEntity.GetType();
             string typeName = _typeCollection[type];
 
-            using (var valueWriter = new BitStreamValueWriter(writer))
+            using (BitStreamValueWriter valueWriter = new BitStreamValueWriter(writer))
             {
                 valueWriter.Write(null, typeName);
                 dEntity.WriteAll(valueWriter);
@@ -90,7 +92,7 @@ namespace NetGore
             Type type = dEntity.GetType();
             string typeName = _typeCollection[type];
 
-            using (var valueWriter = new XmlValueWriter(writer, NodeName, "Type", typeName))
+            using (XmlValueWriter valueWriter = new XmlValueWriter(writer, NodeName, "Type", typeName))
             {
                 dEntity.WriteAll(valueWriter);
             }

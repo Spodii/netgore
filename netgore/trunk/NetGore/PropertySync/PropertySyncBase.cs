@@ -350,7 +350,7 @@ namespace NetGore
             {
                 PropertySyncBase propertySync = GetPropertySync(p.PropertyInfo, obj);
                 propertySync.Name = p.Name;
-                propertySync.SkipNetworkSync = p.SkipNetworkSync; 
+                propertySync.SkipNetworkSync = p.SkipNetworkSync;
                 yield return propertySync;
             }
         }

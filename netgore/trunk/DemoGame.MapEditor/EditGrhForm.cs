@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.Client;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -153,7 +152,7 @@ namespace DemoGame.MapEditor
 
         void btnAdd_Click(object sender, EventArgs e)
         {
-            var wall = new WallEntity(Vector2.Zero, new Vector2(16));
+            WallEntity wall = new WallEntity(Vector2.Zero, new Vector2(16));
             lstWalls.Items.Add(wall);
             lstWalls.SelectedItem = wall;
         }

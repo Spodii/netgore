@@ -18,20 +18,6 @@ namespace DemoGame.Client
         TCPSocket _conn = null;
 
         /// <summary>
-        /// Gets a bool stating if the client is currently connected or not.
-        /// </summary>
-        public bool IsConnected
-        {
-            get
-            {
-                if (_conn == null)
-                    return false;
-
-                return _conn.IsConnected;
-            }
-        }
-
-        /// <summary>
         /// Gets the ClientPacketHandler used to handle data from this ClientSockets.
         /// </summary>
         public ClientPacketHandler PacketHandler
@@ -94,6 +80,20 @@ namespace DemoGame.Client
         #endregion
 
         #region ISocketSender Members
+
+        /// <summary>
+        /// Gets a bool stating if the client is currently connected or not.
+        /// </summary>
+        public bool IsConnected
+        {
+            get
+            {
+                if (_conn == null)
+                    return false;
+
+                return _conn.IsConnected;
+            }
+        }
 
         /// <summary>
         /// Sends data to the server

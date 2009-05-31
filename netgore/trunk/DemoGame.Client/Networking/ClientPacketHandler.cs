@@ -152,13 +152,6 @@ namespace DemoGame.Client
             GameplayScreen.DamageTextPool.Create(damage, chr, GetTime());
         }
 
-        [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
-        void RecvCreateDynamicEntity(TCPSocket conn, BitStream r)
-        {
-            var dynamicEntity = DynamicEntityFactory.Read(r);
-            Map.AddEntity(dynamicEntity);
-        }
-
         [MessageHandler((byte)ServerPacketID.Chat)]
         void RecvChat(TCPSocket conn, BitStream r)
         {
@@ -175,6 +168,13 @@ namespace DemoGame.Client
 
             // NOTE: Make use of the mapCharIndex for a chat bubble
             GameplayScreen.AppendToChatOutput(CreateChatText(name, "says", text));
+        }
+
+        [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
+        void RecvCreateDynamicEntity(TCPSocket conn, BitStream r)
+        {
+            DynamicEntity dynamicEntity = DynamicEntityFactory.Read(r);
+            Map.AddEntity(dynamicEntity);
         }
 
         [MessageHandler((byte)ServerPacketID.CreateMapItem)]
@@ -229,15 +229,6 @@ namespace DemoGame.Client
         {
             if (OnLogin != null)
                 OnLogin(conn);
-        }
-
-        [MessageHandler((byte)ServerPacketID.SynchronizeDynamicEntity)]
-        void RecvSynchronizeDynamicEntity(TCPSocket conn, BitStream r)
-        {
-            ushort entityMapIndex = r.ReadUShort();
-
-            DynamicEntity dynamicEntity = World.Map.GetDynamicEntity(entityMapIndex);
-            dynamicEntity.Deserialize(new BitStreamValueReader(r));
         }
 
         [MessageHandler((byte)ServerPacketID.NotifyExpCash)]
@@ -479,6 +470,15 @@ namespace DemoGame.Client
         {
             ushort mapCharIndex = r.ReadUShort();
             World.UserCharIndex = mapCharIndex;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SynchronizeDynamicEntity)]
+        void RecvSynchronizeDynamicEntity(TCPSocket conn, BitStream r)
+        {
+            ushort entityMapIndex = r.ReadUShort();
+
+            DynamicEntity dynamicEntity = World.Map.GetDynamicEntity(entityMapIndex);
+            dynamicEntity.Deserialize(new BitStreamValueReader(r));
         }
 
         [MessageHandler((byte)ServerPacketID.TeleportChar)]

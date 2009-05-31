@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Threading;
 using DemoGame.Extensions;
 using log4net;
+using Microsoft.Xna.Framework;
 using NetGore.Network;
 
 // ReSharper disable SuggestBaseTypeForParameter
@@ -49,6 +50,16 @@ namespace DemoGame.Server
             _commandManager = new SayCommandManager(this);
         }
 
+        [SayCommand("CreateTestDamageTrap", false)]
+        void CmdCreateTestDamageTrap(string text, User user)
+        {
+            // NOTE: This is a temporary command
+            DamageTrapEntity trap = new DamageTrapEntity();
+            trap.Resize(new Vector2(64, 64));
+            trap.Teleport(user.Position);
+            user.Map.AddEntity(trap);
+        }
+
         [SayCommand("Shout", true)]
         void CmdShout(string text, User user)
         {
@@ -56,16 +67,6 @@ namespace DemoGame.Server
             {
                 World.Send(pw);
             }
-        }
-
-        [SayCommand("CreateTestDamageTrap", false)]
-        void CmdCreateTestDamageTrap(string text, User user)
-        {
-            // NOTE: This is a temporary command
-            var trap = new DamageTrapEntity();
-            trap.Resize(new Microsoft.Xna.Framework.Vector2(64, 64));
-            trap.Teleport(user.Position);
-            user.Map.AddEntity(trap);
         }
 
         [SayCommand("Tell", true)]

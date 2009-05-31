@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Xml;
 using Microsoft.Xna.Framework;
 using NetGore.IO;
 
@@ -17,8 +16,7 @@ namespace NetGore
     /// </summary>
     public abstract class WallEntityBase : Entity
     {
-        protected WallEntityBase(Vector2 position, Vector2 size)
-            : this(position, size, CollisionType.Full)
+        protected WallEntityBase(Vector2 position, Vector2 size) : this(position, size, CollisionType.Full)
         {
         }
 
@@ -27,18 +25,10 @@ namespace NetGore
             Read(r);
         }
 
-        protected WallEntityBase(Vector2 position, Vector2 size, CollisionType collisionType)
-            : base(position, size)
+        protected WallEntityBase(Vector2 position, Vector2 size, CollisionType collisionType) : base(position, size)
         {
             CollisionType = collisionType;
             Weight = 0.0f; // Walls have no weight
-        }
-
-        public void Write(IValueWriter w)
-        {
-            w.Write("Position", Position);
-            w.Write("Size", Size);
-            w.Write("CollisionType", CollisionType);
         }
 
         void Read(IValueReader r)
@@ -46,6 +36,13 @@ namespace NetGore
             SetPositionRaw(r.ReadVector2("Position"));
             SetSizeRaw(r.ReadVector2("Size"));
             SetCollisionTypeRaw(r.ReadCollisionType("CollisionType"));
+        }
+
+        public void Write(IValueWriter w)
+        {
+            w.Write("Position", Position);
+            w.Write("Size", Size);
+            w.Write("CollisionType", CollisionType);
         }
     }
 }

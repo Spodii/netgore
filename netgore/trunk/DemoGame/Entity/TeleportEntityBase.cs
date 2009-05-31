@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using NetGore;
 
@@ -19,13 +19,21 @@ namespace DemoGame
         /// Gets or sets the map position that the Entity will be teleported to upon use.
         /// </summary>
         [SyncValue(SkipNetworkSync = true)]
-        public Vector2 Destination { get { return _destination; } set { _destination = value; } }
+        public Vector2 Destination
+        {
+            get { return _destination; }
+            set { _destination = value; }
+        }
 
         /// <summary>
         /// Gets or sets the index of the map that the Entity will be teleported to upon use.
         /// </summary>
         [SyncValue(SkipNetworkSync = true)]
-        public ushort DestinationMap { get { return _destinationMap; } set { _destinationMap = value; } }
+        public ushort DestinationMap
+        {
+            get { return _destinationMap; }
+            set { _destinationMap = value; }
+        }
 
         protected TeleportEntityBase()
         {

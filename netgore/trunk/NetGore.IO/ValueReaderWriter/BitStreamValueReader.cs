@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.IO
 {
@@ -25,6 +25,8 @@ namespace NetGore.IO
 
             _reader = reader;
         }
+
+        #region IValueReader Members
 
         /// <summary>
         /// Reads a 8-bit unsigned integer.
@@ -146,5 +148,7 @@ namespace NetGore.IO
         {
             return _reader.ReadUShort();
         }
+
+        #endregion
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NUnit.Framework;
 
 namespace NetGore.Collections.Tests
@@ -20,7 +20,7 @@ namespace NetGore.Collections.Tests
             for (int i = 0; i < 3; i++)
             {
                 int sum = 0;
-                foreach (var item in se)
+                foreach (int item in se)
                 {
                     sum += item;
                 }
@@ -38,11 +38,13 @@ namespace NetGore.Collections.Tests
 
             for (int i = 0; i < 3; i++)
             {
-                foreach (var item in Enumerable.Range(i * 10, i * 10 + 5))
+                foreach (int item in Enumerable.Range(i * 10, i * 10 + 5))
+                {
                     source.Add(item);
+                }
 
                 int sum = 0;
-                foreach (var item in se)
+                foreach (int item in se)
                 {
                     sum += item;
                 }
@@ -61,7 +63,7 @@ namespace NetGore.Collections.Tests
             for (int i = 0; i < 3; i++)
             {
                 int sum = 0;
-                foreach (var item in se)
+                foreach (int item in se)
                 {
                     sum += item;
                 }
@@ -80,9 +82,9 @@ namespace NetGore.Collections.Tests
 
             int sum = 0;
 #pragma warning disable 168
-            foreach (var i1 in se)
+            foreach (int i1 in se)
             {
-                foreach (var i2 in se)
+                foreach (int i2 in se)
                 {
                     sum++;
                 }
@@ -98,9 +100,9 @@ namespace NetGore.Collections.Tests
         }
 
         [Test]
-        public void DoubleEnumerateReadonlyCollectionTest()
+        public void DoubleEnumerateDArrayTest()
         {
-            DoubleEnumerateTest(Enumerable.Range(0, 100).ToList().AsReadOnly());
+            DoubleEnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
         }
 
         [Test]
@@ -110,15 +112,45 @@ namespace NetGore.Collections.Tests
         }
 
         [Test]
+        public void DoubleEnumerateReadonlyCollectionTest()
+        {
+            DoubleEnumerateTest(Enumerable.Range(0, 100).ToList().AsReadOnly());
+        }
+
+        [Test]
+        public void DoubleEnumerateTSListTest()
+        {
+            DoubleEnumerateTest(new TSList<int>(Enumerable.Range(0, 100)));
+        }
+
+        [Test]
+        public void EnumerateClearCollectionTest()
+        {
+            ClearEnumerateTest(Enumerable.Range(0, 100).ToList());
+        }
+
+        [Test]
+        public void EnumerateClearDArrayTest()
+        {
+            ClearEnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
+        }
+
+        [Test]
+        public void EnumerateClearTSListTest()
+        {
+            ClearEnumerateTest(new TSList<int>(Enumerable.Range(0, 100)));
+        }
+
+        [Test]
         public void EnumerateCollectionTest()
         {
             EnumerateTest(Enumerable.Range(0, 100).ToList());
         }
 
         [Test]
-        public void EnumerateReadonlyCollectionTest()
+        public void EnumerateDArrayTest()
         {
-            EnumerateTest(Enumerable.Range(0, 100).ToList().AsReadOnly());
+            EnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
         }
 
         [Test]
@@ -134,15 +166,9 @@ namespace NetGore.Collections.Tests
         }
 
         [Test]
-        public void EnumerateClearCollectionTest()
+        public void EnumerateModifiedDArrayTest()
         {
-            ClearEnumerateTest(Enumerable.Range(0, 100).ToList());
-        }
-
-        [Test]
-        public void EnumerateClearTSListTest()
-        {
-            ClearEnumerateTest(new TSList<int>(Enumerable.Range(0, 100)));
+            ModifyEnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
         }
 
         [Test]
@@ -152,39 +178,15 @@ namespace NetGore.Collections.Tests
         }
 
         [Test]
+        public void EnumerateReadonlyCollectionTest()
+        {
+            EnumerateTest(Enumerable.Range(0, 100).ToList().AsReadOnly());
+        }
+
+        [Test]
         public void EnumerateTSListTest()
         {
             EnumerateTest(new TSList<int>(Enumerable.Range(0, 100)));
-        }
-
-        [Test]
-        public void DoubleEnumerateTSListTest()
-        {
-            DoubleEnumerateTest(new TSList<int>(Enumerable.Range(0, 100)));
-        }
-
-        [Test]
-        public void EnumerateClearDArrayTest()
-        {
-            ClearEnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
-        }
-
-        [Test]
-        public void EnumerateModifiedDArrayTest()
-        {
-            ModifyEnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
-        }
-
-        [Test]
-        public void EnumerateDArrayTest()
-        {
-            EnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
-        }
-
-        [Test]
-        public void DoubleEnumerateDArrayTest()
-        {
-            DoubleEnumerateTest(new DArray<int>(Enumerable.Range(0, 100), false));
         }
     }
 }

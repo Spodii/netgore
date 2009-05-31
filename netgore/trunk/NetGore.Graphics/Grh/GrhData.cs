@@ -101,10 +101,7 @@ namespace NetGore.Graphics
         /// </summary>
         public int Height
         {
-            get
-            {
-                return _sourceRect.Height;
-            }
+            get { return _sourceRect.Height; }
         }
 
         /// <summary>
@@ -132,10 +129,7 @@ namespace NetGore.Graphics
         /// </summary>
         public Vector2 Size
         {
-            get
-            {
-                return new Vector2(_sourceRect.Width, _sourceRect.Height);
-            }
+            get { return new Vector2(_sourceRect.Width, _sourceRect.Height); }
         }
 
         /// <summary>
@@ -169,10 +163,7 @@ namespace NetGore.Graphics
         /// </summary>
         public int Width
         {
-            get
-            {
-                return _sourceRect.Width;
-            }
+            get { return _sourceRect.Width; }
         }
 
         /// <summary>

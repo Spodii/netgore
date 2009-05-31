@@ -12,14 +12,14 @@ namespace NetGore.Network
     public interface ISocketSender
     {
         /// <summary>
+        /// Gets if the socket is currently connected.
+        /// </summary>
+        bool IsConnected { get; }
+
+        /// <summary>
         /// Asynchronously sends data to the socket.
         /// </summary>
         /// <param name="sourceStream">BitStream containing the data to send.</param>
         void Send(BitStream sourceStream);
-
-        /// <summary>
-        /// Gets if the socket is currently connected.
-        /// </summary>
-        bool IsConnected { get; }
     }
 }

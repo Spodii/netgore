@@ -2,14 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Xml;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.IO;
-using NetGore.Extensions;
-using NetGore;
 
 namespace DemoGame.Client
 {
@@ -102,6 +100,15 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Updates the MapGrh.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
+        public void Update(int currentTime)
+        {
+            _grh.Update(currentTime);
+        }
+
+        /// <summary>
         /// Writes the MapGrh to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write the MapGrh to.</param>
@@ -110,15 +117,6 @@ namespace DemoGame.Client
             writer.Write("Position", Destination);
             writer.Write("GrhIndex", Grh.GrhData.GrhIndex);
             writer.Write("IsForeground", IsForeground);
-        }
-
-        /// <summary>
-        /// Updates the MapGrh.
-        /// </summary>
-        /// <param name="currentTime">Current game time.</param>
-        public void Update(int currentTime)
-        {
-            _grh.Update(currentTime);
         }
 
         #region IDrawableEntity Members

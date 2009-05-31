@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NetGore;
-using NetGore.IO;
 
 namespace DemoGame
 {
@@ -18,6 +17,10 @@ namespace DemoGame
         /// Gets or sets the amount of damage that is done to the Entity that touches this DamageTrapEntityBase.
         /// </summary>
         [SyncValue(SkipNetworkSync = true)]
-        public int Damage { get { return _damage; } set { _damage = value; } }
+        public int Damage
+        {
+            get { return _damage; }
+            set { _damage = value; }
+        }
     }
 }
