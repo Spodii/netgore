@@ -44,12 +44,6 @@ namespace DemoGame.Server
         public event ItemEntityEventHandler OnChangeGraphicOrAmount;
 
         /// <summary>
-        /// Notifies listeners that any item-related values (Amount, Description, Name, Value, Stats, etc)
-        /// have changed. Does not notify when there are Entity-related changes (Map, Size, Position, etc).
-        /// </summary>
-        public event EntityEventHandler OnItemChange;
-
-        /// <summary>
         /// Notifies listeners that this <see cref="Entity"/> was picked up.
         /// </summary>
         public override event EntityEventHandler<CharacterEntity> OnPickup;
@@ -86,8 +80,6 @@ namespace DemoGame.Server
                     return;
 
                 _amount = value;
-                if (OnItemChange != null)
-                    OnItemChange(this);
 
                 if (OnChangeGraphicOrAmount != null)
                     OnChangeGraphicOrAmount(this);
@@ -108,8 +100,6 @@ namespace DemoGame.Server
                     return;
 
                 _description = value;
-                if (OnItemChange != null)
-                    OnItemChange(this);
 
                 SynchronizeField("description", _description);
             }
@@ -127,8 +117,6 @@ namespace DemoGame.Server
                     return;
 
                 _graphicIndex = value;
-                if (OnItemChange != null)
-                    OnItemChange(this);
 
                 if (OnChangeGraphicOrAmount != null)
                     OnChangeGraphicOrAmount(this);
@@ -165,8 +153,6 @@ namespace DemoGame.Server
                     return;
 
                 _name = value;
-                if (OnItemChange != null)
-                    OnItemChange(this);
 
                 SynchronizeField("name", _name);
             }
@@ -192,8 +178,6 @@ namespace DemoGame.Server
                     return;
 
                 _type = value;
-                if (OnItemChange != null)
-                    OnItemChange(this);
 
                 SynchronizeField("type", (byte)_type);
             }
@@ -211,8 +195,6 @@ namespace DemoGame.Server
                     return;
 
                 _value = value;
-                if (OnItemChange != null)
-                    OnItemChange(this);
 
                 SynchronizeField("value", _value);
             }
@@ -471,9 +453,6 @@ namespace DemoGame.Server
         /// <param name="stat">Stats collection that changed.</param>
         void StatChangeReceiver(IStat stat)
         {
-            if (OnItemChange != null)
-                OnItemChange(this);
-
             SynchronizeField(stat.StatType.GetDatabaseField(), stat.Value);
         }
 
