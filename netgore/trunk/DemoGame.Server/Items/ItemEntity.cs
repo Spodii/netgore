@@ -456,6 +456,11 @@ namespace DemoGame.Server
             SynchronizeField(stat.StatType.GetDatabaseField(), stat.Value);
         }
 
+        /// <summary>
+        /// Updates a single field for the ItemEntity in the database.
+        /// </summary>
+        /// <param name="field">Name of the field to update.</param>
+        /// <param name="value">New value for the field.</param>
         void SynchronizeField(string field, object value)
         {
             UpdateItemField.Execute(_guid, field, value);
