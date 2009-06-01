@@ -110,7 +110,7 @@ namespace NetGore
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        static void WriteEnum<T>(IValueWriter writer, string name, T value)
+        public static void WriteEnum<T>(IValueWriter writer, string name, T value)
         {
             writer.Write(name, value.ToString());
         }

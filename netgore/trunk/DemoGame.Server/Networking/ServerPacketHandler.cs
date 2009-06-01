@@ -9,6 +9,9 @@ using NetGore;
 using NetGore.IO;
 using NetGore.Network;
 
+// ReSharper disable UnusedMember.Local
+// ReSharper disable UnusedParameter.Local
+
 namespace DemoGame.Server
 {
     class ServerPacketHandler : IMessageProcessor, IGetTime
@@ -174,7 +177,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.PickupItem)]
         void RecvPickupItem(TCPSocket conn, BitStream r)
         {
-            ushort mapItemIndex = r.ReadUShort();
+            ushort mapIndex = r.ReadUShort();
 
             User user;
             Map map;
@@ -184,7 +187,7 @@ namespace DemoGame.Server
             // TODO: Distance validation on item pickup
 
             ItemEntityBase item;
-            if (map.TryGetItem(mapItemIndex, out item))
+            if (map.TryGetDynamicEntity(mapIndex, out item))
                 item.Pickup(user);
         }
 

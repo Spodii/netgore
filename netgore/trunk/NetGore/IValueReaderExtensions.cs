@@ -30,7 +30,7 @@ namespace NetGore
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
-        static T ReadEnum<T>(IValueReader reader, string name)
+        public static T ReadEnum<T>(IValueReader reader, string name)
         {
             Type type = typeof(T);
             string str = reader.ReadString(name);

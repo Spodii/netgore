@@ -99,13 +99,6 @@ namespace DemoGame
         /// </summary>
         readonly IGetTime _getTime;
 
-        readonly SafeEnumerator<ItemEntityBase> _itemEnumerator;
-
-        /// <summary>
-        /// Array of items on the map
-        /// </summary>
-        readonly DArray<ItemEntityBase> _items;
-
         /// <summary>
         /// Index of the map
         /// </summary>
@@ -187,14 +180,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets an enumerator for all the items on the map.
-        /// </summary>
-        public IEnumerable<ItemEntityBase> Items
-        {
-            get { return _itemEnumerator; }
-        }
-
-        /// <summary>
         /// Gets or sets the name of the map.
         /// </summary>
         public string Name
@@ -231,9 +216,6 @@ namespace DemoGame
             _characters = new DArray<CharacterEntity>(true);
             _characterEnumerator = new SafeEnumerator<CharacterEntity>(_characters);
 
-            _items = new DArray<ItemEntityBase>(true);
-            _itemEnumerator = new SafeEnumerator<ItemEntityBase>(_items);
-
             _dynamicEntities = new DArray<DynamicEntity>(true);
             _dyanmicEntityEnumerator = new SafeEnumerator<DynamicEntity>(_dynamicEntities);
         }
@@ -265,6 +247,20 @@ namespace DemoGame
             AddEntityFinish(charEntity);
         }
 
+        public void AddDynamicEntity(DynamicEntity entity, int mapEntityIndex)
+        {
+            if (entity == null)
+                throw new ArgumentNullException("entity");
+
+            Debug.Assert(!_dynamicEntities.Contains(entity), "DynamicEntity is already in the DynamicEntity list!");
+            // Debug.Assert(!_dynamicEntities.CanGet(mapEntityIndex) || _dynamicEntities[mapEntityIndex] == null, "A DynamicEntity already exists at this MapEntityIndex!");
+            
+            entity.MapIndex = mapEntityIndex;
+            _dynamicEntities[mapEntityIndex] = entity;
+
+            AddEntityFinish(entity);
+        }
+
         /// <summary>
         /// Adds an entity to the map
         /// </summary>
@@ -276,18 +272,12 @@ namespace DemoGame
 
             // For everything that is index-bound, assign the index
             CharacterEntity charEntity;
-            ItemEntityBase itemEntity;
             DynamicEntity dynamicEntity;
 
             if ((charEntity = entity as CharacterEntity) != null)
             {
                 Debug.Assert(!_characters.Contains(charEntity), "Character is already in the Characters list!");
                 charEntity.MapCharIndex = (ushort)_characters.Insert(charEntity);
-            }
-            else if ((itemEntity = entity as ItemEntityBase) != null)
-            {
-                Debug.Assert(!_items.Contains(itemEntity), "Item is already in the Items list!");
-                itemEntity.MapItemIndex = (ushort)_items.Insert(itemEntity);
             }
             else if ((dynamicEntity = entity as DynamicEntity) != null)
             {
@@ -922,7 +912,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="rect">Region to check for the Entity</param>
         /// <param name="condition">Condition the entity must meet</param>
-        /// <typeparam name="T">Type to convert to</typeparam>
+        /// <typeparam name="T">Type of Entity to look for.</typeparam>
         /// <returns>First Entity found at the given point, or null if none found</returns>
         public T GetEntity<T>(Rectangle rect, Func<T, bool> condition) where T : Entity
         {
@@ -934,8 +924,7 @@ namespace DemoGame
                 if (condition != null)
                     entities = entities.Where(condition);
 
-                if (entities.Count() > 0)
-                    return entities.First();
+                return entities.FirstOrDefault();
             }
 
             // No entity found
@@ -1190,53 +1179,6 @@ namespace DemoGame
                 throw new ArgumentNullException("path");
 
             return ushort.Parse(Path.GetFileNameWithoutExtension(path));
-        }
-
-        /// <summary>
-        /// Retrieves an item on the map
-        /// </summary>
-        /// <param name="index">Index of the item</param>
-        /// <returns>Item with the given index, or null if invalid</returns>
-        public ItemEntityBase GetItem(int index)
-        {
-            Debug.Assert(index >= 0, "Item index must be greater than or equal to zero.");
-            Debug.Assert(index < _items.Length, "Item index greater than Items list length.");
-            Debug.Assert(_items.CanGet(index), "Invalid item index.");
-            Debug.Assert(_items[index] != null, "Specified item is null.");
-
-            if (_items.CanGet(index))
-                return _items[index];
-
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the first ItemEntityBase that intersects the specified <paramref name="rect"/>
-        /// </summary>
-        /// <param name="rect">Rectangle to look for the ItemEntityBase in</param>
-        /// <returns>First ItemEntityBase found in the specified <paramref name="rect"/>, or null if none</returns>
-        public ItemEntityBase GetItem(Rectangle rect)
-        {
-            return GetEntity<ItemEntityBase>(rect);
-        }
-
-        /// <summary>
-        /// Gets all the ItemEntityBases that intersects a specified area
-        /// </summary>
-        /// <param name="cb">CollisionBox containing the area to check</param>
-        /// <returns>A list containing all ItemEntityBases that intersect the specified area</returns>
-        public List<ItemEntityBase> GetItems(CollisionBox cb)
-        {
-            if (cb == null)
-            {
-                const string errmsg = "Parameter cb is null - falling back to returning empty list.";
-                Debug.Fail(errmsg);
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                return new List<ItemEntityBase>(0);
-            }
-
-            return GetItems(cb.ToRectangle());
         }
 
         /// <summary>
@@ -1709,16 +1651,17 @@ namespace DemoGame
 
             // If a character or item, remove from the respective list
             CharacterEntity charEntity;
-            ItemEntityBase itemEntity;
+            DynamicEntity dynamicEntity;
+
             if ((charEntity = entity as CharacterEntity) != null)
             {
                 Debug.Assert(_characters[charEntity.MapCharIndex] == charEntity, "Character is holding an invalid MapCharIndex!");
                 _characters.RemoveAt(charEntity.MapCharIndex);
             }
-            else if ((itemEntity = entity as ItemEntityBase) != null)
+            else if ((dynamicEntity = entity as DynamicEntity) != null)
             {
-                Debug.Assert(_items[itemEntity.MapItemIndex] == itemEntity, "Item is holding an invalid MapItemIndex!");
-                _items.RemoveAt(itemEntity.MapItemIndex);
+                Debug.Assert(_dynamicEntities[dynamicEntity.MapIndex] == dynamicEntity, "DynamicEntity is holding an invalid MapIndex!");
+                _dynamicEntities.RemoveAt(dynamicEntity.MapIndex);
             }
 
             // Remove the entity from the grid, iterating through every segment to ensure we get all references
@@ -2017,14 +1960,38 @@ namespace DemoGame
             return ret;
         }
 
-        public bool TryGetItem(int index, out ItemEntityBase item)
+        /// <summary>
+        /// Tries to get the DynamicEntity at the specified index.
+        /// </summary>
+        /// <param name="index">Unique index of the DynamicEntity to get.</param>
+        /// <param name="dynamicEntity">DynamicEntity found at the specified index, or null if none found.</param>
+        /// <returns>True if the DynamicEntity was successfully found, else false.</returns>
+        public bool TryGetDynamicEntity(int index, out DynamicEntity dynamicEntity)
         {
-            if (!_items.CanGet(index))
-                item = null;
+            if (!_dynamicEntities.CanGet(index))
+                dynamicEntity = null;
             else
-                item = _items[index];
+                dynamicEntity = _dynamicEntities[index];
 
-            return (item != null);
+            return (dynamicEntity != null);
+        }
+
+        /// <summary>
+        /// Tries to get the DynamicEntity at the specified index.
+        /// </summary>
+        /// <typeparam name="T">Type of DynamicEntity to find.</typeparam>
+        /// <param name="index">Unique index of the DynamicEntity to get.</param>
+        /// <param name="dynamicEntity">DynamicEntity found at the specified index and of
+        /// the specified type, otherwise null.</param>
+        /// <returns>True if the DynamicEntity was successfully found, else false.</returns>
+        public bool TryGetDynamicEntity<T>(int index, out T dynamicEntity) where T : DynamicEntity
+        {
+            if (!_dynamicEntities.CanGet(index))
+                dynamicEntity = null;
+            else
+                dynamicEntity = _dynamicEntities[index] as T;
+
+            return (dynamicEntity != null);
         }
 
         /// <summary>

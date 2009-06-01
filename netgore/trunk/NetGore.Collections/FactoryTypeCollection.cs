@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace NetGore.Collections
 {
@@ -11,6 +13,7 @@ namespace NetGore.Collections
     /// </summary>
     public class FactoryTypeCollection : IEnumerable<Type>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly Dictionary<string, Type> _nameToType;
         readonly Dictionary<Type, string> _typeToName;
 
@@ -56,17 +59,31 @@ namespace NetGore.Collections
         /// Finds all Types that inherit the specified <paramref name="baseClass"/>.
         /// </summary>
         /// <param name="baseClass">Base class or interface to find the classes that inherit.</param>
-        /// <param name="parameterlessConstructor">If true, only types with a parameterless constructor will be returned.</param>
+        /// <param name="parameterlessConstructor">If true, a MissingMethodException will be thrown if a non-abstract Type
+        /// is found that does not implement a parameterless constructor.</param>
         /// <returns>IEnumerable of all Types that inherit the specified <paramref name="baseClass"/>.</returns>
         public static IEnumerable<Type> FindTypesThatInherit(Type baseClass, bool parameterlessConstructor)
         {
             var types = AllTypes().Where(x => x.IsSubclassOf(baseClass));
             if (parameterlessConstructor)
-                types = types.Where(x => !x.IsAbstract && x.GetConstructor(new Type[] { }) != null);
+            {
+                foreach (Type type in types)
+                {
+                    if (!type.IsAbstract && type.GetConstructor(new Type[] { }) == null)
+                    {
+                        const string errmsg = "No parameterless constructor found for type `{0}`.";
+                        string err = string.Format(errmsg, type);
+                        Debug.Fail(err);
+                        log.Fatal(err);
+                        throw new MissingMethodException(err);
+                    }
+                }
+            }
+
             return types;
         }
 
-        public object GetTypeInstance(Type type)
+        static public object GetTypeInstance(Type type)
         {
             object instance = Activator.CreateInstance(type, true);
             return instance;

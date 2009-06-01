@@ -217,6 +217,50 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets all of the custom attributes for a PropertyInfo, including those attached to interfaces and abstract
+        /// Properties on base classes.
+        /// </summary>
+        /// <param name="propInfo">PropertyInfo to get the custom attributes for.</param>
+        /// <param name="attribType">Type of the custom attribute to find.</param>
+        /// <param name="type">Type of the class to search for the PropertyInfos in.</param>
+        /// <param name="flags">BindingFlags to use for finding the PropertyInfos.</param>
+        /// <returns>An IEnumerable of all of the custom attributes for a PropertyInfo.</returns>
+        static IEnumerable<object> InternalGetAllCustomAttributes(PropertyInfo propInfo, Type attribType, Type type, BindingFlags flags)
+        {
+            // Get the attributes for this type
+            var customAttributes = propInfo.GetCustomAttributes(attribType, false);
+            foreach (var attrib in customAttributes)
+                yield return attrib;
+
+            // Get the base type
+            Type baseType = type.BaseType;
+
+            // Get the property for the base type
+            PropertyInfo baseProp = baseType.GetProperty(propInfo.Name, flags);
+
+            // If the property for the base type exists, find the attributes for it
+            if (baseProp != null)
+            {
+                var baseAttributes = InternalGetAllCustomAttributes(baseProp, attribType, baseType, flags);
+                foreach (var attrib in baseAttributes)
+                    yield return attrib;
+            }
+        }
+
+        /// <summary>
+        /// Gets all of the custom attributes for a PropertyInfo, including those attached to
+        /// abstract Properties on base classes.
+        /// </summary>
+        /// <param name="propInfo">PropertyInfo to get the custom attributes for.</param>
+        /// <param name="attribType">Type of the custom attribute to find.</param>
+        /// <param name="flags">BindingFlags to use for finding the PropertyInfos.</param>
+        /// <returns>An IEnumerable of all of the custom attributes for a PropertyInfo.</returns>
+        static IEnumerable<object> GetAllCustomAttributes(PropertyInfo propInfo, Type attribType, BindingFlags flags)
+        {
+            return InternalGetAllCustomAttributes(propInfo, attribType, propInfo.DeclaringType, flags).Distinct();
+        }
+
+        /// <summary>
         /// Creates an array of PropertyInfoDatas for the given Type.
         /// </summary>
         /// <param name="type">Type to get the PropertyInfoDatas for.</param>
@@ -233,8 +277,8 @@ namespace NetGore
             foreach (PropertyInfo property in type.GetProperties(flags))
             {
                 // Get the SyncValueAttribute for the property, skipping if none found
-                var attribs = property.GetCustomAttributes(typeof(SyncValueAttribute), true);
-                if (attribs.Length == 0)
+                var attribs = GetAllCustomAttributes(property, typeof(SyncValueAttribute), flags).ToArray();
+                if (attribs.Count() == 0)
                     continue;
                 if (attribs.Length > 1)
                 {

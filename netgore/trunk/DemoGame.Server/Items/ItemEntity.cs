@@ -22,7 +22,7 @@ namespace DemoGame.Server
     /// <summary>
     /// An item on the server.
     /// </summary>
-    public class ItemEntity : ItemEntityBase, IDynamicEntity, IMapControlledEntity
+    public class ItemEntity : ItemEntityBase, IMapControlledEntity
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static DBController _dbController;
@@ -34,7 +34,6 @@ namespace DemoGame.Server
         string _description;
         ushort _graphicIndex;
         Map _map;
-        ushort _mapItemIndex;
         string _name;
         ItemType _type;
         int _value;
@@ -155,15 +154,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets or sets the unique map index of the item.
-        /// </summary>
-        public override ushort MapItemIndex
-        {
-            get { return _mapItemIndex; }
-            set { _mapItemIndex = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the name of the item.
         /// </summary>
         public override string Name
@@ -231,10 +221,17 @@ namespace DemoGame.Server
         public ItemEntity(ItemTemplate t, Vector2 pos, byte amount)
             : this(pos, t.Size, t.Name, t.Description, t.Type, t.Graphic, t.Value, amount, t.Stats)
         {
+            // NOTE: Can I get rid of this constructor?
+        }
+
+        public ItemEntity()
+        {
+            _guid = GuidCreator.GetNext();
         }
 
         public ItemEntity(ItemValues iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
         {
+            // NOTE: Can I get rid of this constructor?
             _guid = iv.Guid;
 
             _name = iv.Name;
@@ -252,6 +249,7 @@ namespace DemoGame.Server
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, ushort graphic, int value, byte amount,
                    IEnumerable<IStat> stats) : base(pos, size)
         {
+            // NOTE: Can I get rid of this constructor?
             _guid = GuidCreator.GetNext();
 
             _name = name;
@@ -272,6 +270,7 @@ namespace DemoGame.Server
         ItemEntity(ItemEntity s)
             : this(s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.Stats)
         {
+            // NOTE: Can I get rid of this constructor?
             // Do we actually need to copy over the map? Even if we do, the map doesn't know about the ItemEntity,
             // and that doesn't really seem like what we will ever want.
 
@@ -482,30 +481,6 @@ namespace DemoGame.Server
         {
             UpdateItemField.Execute(_guid, field, value);
         }
-
-        #region IDynamicEntity Members
-
-        /// <summary>
-        /// Gets the byte array that needs to be send to the Client to destroy this Entity on the Client.
-        /// </summary>
-        /// <returns>PacketWriter containing the data used by the Client to destroy this Entity. Can be null if the Entity
-        /// can not be destroyed in it's current state.</returns>
-        public PacketWriter GetRemovalData()
-        {
-            return ServerPacket.RemoveMapItem(MapItemIndex);
-        }
-
-        /// <summary>
-        /// Gets the byte array that needs to be sent to the Client to create this Entity on the Client.
-        /// </summary>
-        /// <returns>PacketWriter containing the data used by the Client to create this Entity. Can be null if the Entity
-        /// can not be created in it's current state.</returns>
-        public PacketWriter GetCreationData()
-        {
-            return ServerPacket.CreateMapItem(MapItemIndex, Position, CB.Size, GraphicIndex);
-        }
-
-        #endregion
 
         #region IMapControlledEntity Members
 

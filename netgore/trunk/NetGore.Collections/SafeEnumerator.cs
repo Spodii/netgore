@@ -56,14 +56,24 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// Gets if any element that matches default(<typeparamref name="T"/>) will be skipped. Recommended to only
+        /// be used when <typeparamref name="T"/> is a class. By default, this is false unless <typeparamref name="T"/>
+        /// is a class.
+        /// </summary>
+        public bool SkipDefault { get; private set; }
+
+        /// <summary>
         /// SafeEnumerator constructor
         /// </summary>
         /// <param name="source">Source to enumerate over.</param>
-        public SafeEnumerator(IEnumerable<T> source)
+        /// <param name="skipDefault">Whether or not any element that matches default(<typeparamref name="T"/>) will
+        /// be skipped. By default, this is false unless <typeparamref name="T"/> is a class.</param>
+        public SafeEnumerator(IEnumerable<T> source, bool skipDefault)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
 
+            SkipDefault = skipDefault;
             _source = source;
             _sourceAsCollection = source as ICollection<T>;
 
@@ -88,6 +98,14 @@ namespace NetGore.Collections
                 _useCollection = false;
                 _buffer = new T[_source.Count()];
             }
+        }
+
+        /// <summary>
+        /// SafeEnumerator constructor
+        /// </summary>
+        /// <param name="source">Source to enumerate over.</param>
+        public SafeEnumerator(IEnumerable<T> source) : this(source, typeof(T).IsClass)
+        {
         }
 
         /// <summary>
@@ -145,7 +163,7 @@ namespace NetGore.Collections
             {
             }
 
-            return new Enumerator(_buffer, _sourceLength);
+            return new Enumerator(_buffer, _sourceLength, SkipDefault);
         }
 
         /// <summary>
@@ -169,6 +187,7 @@ namespace NetGore.Collections
         {
             readonly T[] _array;
             readonly int _endIndex;
+            readonly bool _skipDefault;
             int _index;
 
             /// <summary>
@@ -176,11 +195,14 @@ namespace NetGore.Collections
             /// </summary>
             /// <param name="array">Array to be enumerated over.</param>
             /// <param name="endIndex">Index to stop at when reached. Synonymous with Array.Length.</param>
-            public Enumerator(T[] array, int endIndex)
+            /// <param name="skipDefault">Whether or not any element that matches default(<typeparamref name="T"/>) will
+            /// be skipped.</param>
+            public Enumerator(T[] array, int endIndex, bool skipDefault)
             {
                 _index = -1;
                 _array = array;
                 _endIndex = endIndex;
+                _skipDefault = skipDefault;
             }
 
             #region IEnumerator<T> Members
@@ -206,7 +228,26 @@ namespace NetGore.Collections
                 if (_index < _endIndex)
                 {
                     _index++;
-                    return (_index < _endIndex);
+                    if (!_skipDefault)
+                    {
+                        // No skipping needed
+                        return (_index < _endIndex);
+                    }
+                    else
+                    {
+                        // Keep skipping past any default(T)
+                        if (_index >= _endIndex)
+                            return false;
+
+                        while (Equals(_array[_index], default(T)))
+                        {
+                            _index++;
+                            if (_index >= _endIndex)
+                                return false;
+                        }
+
+                        return true;
+                    }
                 }
                 return false;
             }
