@@ -20,13 +20,13 @@ namespace NetGore
         SetHandler _setter;
 
         /// <summary>
-        /// Gets or sets the Property's value. This is not cached in any way - the value comes from or goes to
+        /// Gets the Property's value. This is not cached in any way - the value comes from or goes to
         /// the Property directly. Local caching should be used where possible.
         /// </summary>
-        protected T Value
+        public T Value
         {
             get { return _getter(); }
-            set { _setter(value); }
+            private set { _setter(value); }
         }
 
         /// <summary>
