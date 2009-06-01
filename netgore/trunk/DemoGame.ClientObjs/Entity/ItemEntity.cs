@@ -27,7 +27,6 @@ namespace DemoGame.Client
 
         byte _amount = 1;
         string _description;
-        ushort _mapItemIndex;
         string _name;
         ItemType _type;
         int _value;
@@ -67,9 +66,6 @@ namespace DemoGame.Client
             get { return _grh.GrhData.GrhIndex; }
             set
             {
-                if (_grh.GrhData.GrhIndex == value)
-                    return;
-
                 _grh.SetGrh(value);
             }
         }
@@ -80,15 +76,6 @@ namespace DemoGame.Client
         public Grh Grh
         {
             get { return _grh; }
-        }
-
-        /// <summary>
-        /// Gets or sets the unique map index of the item
-        /// </summary>
-        public override ushort MapItemIndex
-        {
-            get { return _mapItemIndex; }
-            set { _mapItemIndex = value; }
         }
 
         /// <summary>
@@ -118,11 +105,16 @@ namespace DemoGame.Client
             set { _value = value; }
         }
 
+        public ItemEntity()
+        {
+            _grh = new Grh(null);
+        }
+
         public ItemEntity(ushort graphicIndex, byte amount, int currentTime) : base(Vector2.Zero, Vector2.Zero)
         {
+            // NOTE: Can I get rid of this constructor?
             _amount = amount;
 
-            _mapItemIndex = 0;
             _name = string.Empty;
             _description = string.Empty;
             _value = 0;
@@ -130,9 +122,10 @@ namespace DemoGame.Client
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
 
-        public ItemEntity(ushort mapItemIndex, Vector2 pos, Vector2 size, ushort graphicIndex, int currentTime) : base(pos, size)
+        public ItemEntity(ushort mapIndex, Vector2 pos, Vector2 size, ushort graphicIndex, int currentTime) : base(pos, size)
         {
-            _mapItemIndex = mapItemIndex;
+            // NOTE: Can I get rid of this constructor?
+            MapIndex = mapIndex;
 
             _amount = 0;
             _name = string.Empty;
@@ -167,7 +160,7 @@ namespace DemoGame.Client
         /// <returns>A deep copy of the object</returns>
         public override ItemEntityBase DeepCopy()
         {
-            return new ItemEntity(MapItemIndex, Position, CB.Size, GraphicIndex, _grh.LastUpdated);
+            return new ItemEntity((ushort)MapIndex, Position, CB.Size, GraphicIndex, _grh.LastUpdated);
         }
 
         /// <summary>

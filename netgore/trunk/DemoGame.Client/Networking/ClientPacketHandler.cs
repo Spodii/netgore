@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using DemoGame.Extensions;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -173,23 +175,36 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
         void RecvCreateDynamicEntity(TCPSocket conn, BitStream r)
         {
+            ushort mapEntityIndex = r.ReadUShort();
             DynamicEntity dynamicEntity = DynamicEntityFactory.Read(r);
-            Map.AddEntity(dynamicEntity);
+            Map.AddDynamicEntity(dynamicEntity, mapEntityIndex);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Created DynamicEntity with index `{0}` of type `{1}`", dynamicEntity.MapIndex, dynamicEntity.GetType());
         }
 
-        [MessageHandler((byte)ServerPacketID.CreateMapItem)]
-        void RecvCreateMapItem(TCPSocket conn, BitStream r)
+        [MessageHandler((byte)ServerPacketID.RemoveDynamicEntity)]
+        void RecvRemoveDynamicEntity(TCPSocket conn, BitStream r)
         {
             ushort mapIndex = r.ReadUShort();
-            Vector2 pos = r.ReadVector2();
-            byte width = r.ReadByte();
-            byte height = r.ReadByte();
-            ushort graphicIndex = r.ReadUShort();
+            DynamicEntity dynamicEntity = Map.GetDynamicEntity(mapIndex);
 
-            Vector2 size = new Vector2(width, height);
-            ItemEntity item = new ItemEntity(mapIndex, pos, size, graphicIndex, GetTime());
-            Map.AddEntity(item);
+            if (dynamicEntity != null)
+            {
+                Map.RemoveEntity(dynamicEntity);
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Removed DynamicEntity with index `{0}`", mapIndex);
+            }
+            else
+            {
+                const string errmsg = "Could not remove DynamicEntity with index `{0}` - no DynamicEntity found.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, mapIndex);
+                Debug.Fail(string.Format(errmsg, mapIndex));
+            }
         }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         [MessageHandler((byte)ServerPacketID.CreateNPC)]
         void RecvCreateNPC(TCPSocket conn, BitStream r)
@@ -292,18 +307,6 @@ namespace DemoGame.Client
                 return;
 
             Map.RemoveEntity(chr);
-        }
-
-        [MessageHandler((byte)ServerPacketID.RemoveMapItem)]
-        void RecvRemoveMapItem(TCPSocket conn, BitStream r)
-        {
-            ushort mapItemIndex = r.ReadUShort();
-
-            ItemEntity item = Map.GetItem(mapItemIndex) as ItemEntity;
-            if (item == null)
-                return;
-
-            Map.RemoveEntity(item);
         }
 
         [MessageHandler((byte)ServerPacketID.SendItemInfo)]

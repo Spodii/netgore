@@ -53,21 +53,15 @@ namespace DemoGame.Server
         public static PacketWriter CreateDynamicEntity(DynamicEntity dynamicEntity)
         {
             PacketWriter pw = GetWriter(ServerPacketID.CreateDynamicEntity);
+            pw.Write((ushort)dynamicEntity.MapIndex);
             DynamicEntityFactory.Write(pw, dynamicEntity);
             return pw;
         }
 
-        public static PacketWriter CreateMapItem(ushort mapItemIndex, Vector2 pos, Vector2 size, ushort graphic)
+        public static PacketWriter RemoveDynamicEntity(DynamicEntity dynamicEntity)
         {
-            if (size.X > byte.MaxValue || size.Y > byte.MaxValue || size.X < byte.MinValue || size.Y < byte.MinValue)
-                throw new ArgumentOutOfRangeException("size", "Cannot convert parameter size's values bytes.");
-
-            PacketWriter pw = GetWriter(ServerPacketID.CreateMapItem);
-            pw.Write(mapItemIndex);
-            pw.Write(pos);
-            pw.Write((byte)size.X);
-            pw.Write((byte)size.Y);
-            pw.Write(graphic);
+            PacketWriter pw = GetWriter(ServerPacketID.RemoveDynamicEntity);
+            pw.Write((ushort)dynamicEntity.MapIndex);
             return pw;
         }
 
@@ -162,13 +156,6 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter(ServerPacketID.RemoveChar);
             pw.Write(mapCharIndex);
-            return pw;
-        }
-
-        public static PacketWriter RemoveMapItem(ushort mapItemIndex)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.RemoveMapItem);
-            pw.Write(mapItemIndex);
             return pw;
         }
 

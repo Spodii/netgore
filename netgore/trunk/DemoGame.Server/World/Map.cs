@@ -206,21 +206,17 @@ namespace DemoGame.Server
             base.EntityRemoved(entity);
 
             // Handle the different types of entities
-            if (ItemRemoved(entity) || CharRemoved(entity))
+            DynamicEntity dynamicEntity;
+            if ((dynamicEntity = entity as DynamicEntity) != null)
             {
-            }
+                ItemRemoved(entity);
+                CharRemoved(entity);
 
-            // Destroy the entity for everyone on the map
-            if (_users.Count > 0)
-            {
-                IDynamicEntity dynamicEntity = entity as IDynamicEntity;
-                if (dynamicEntity != null)
+                // Destroy the DynamicEntity for everyone on the map
+                if (_users.Count > 0)
                 {
-                    using (PacketWriter removalData = dynamicEntity.GetRemovalData())
-                    {
-                        if (removalData != null)
-                            Send(removalData);
-                    }
+                    using (var pw = ServerPacket.RemoveDynamicEntity(dynamicEntity))
+                        Send(pw);
                 }
             }
         }
@@ -236,8 +232,8 @@ namespace DemoGame.Server
             {
                 const string errmsg = "Item `{0}` [{1}] added to new map, but is already on a map!";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, item, item.MapItemIndex);
-                Debug.Fail(string.Format(errmsg, item, item.MapItemIndex));
+                    log.WarnFormat(errmsg, item, item.MapIndex);
+                Debug.Fail(string.Format(errmsg, item, item.MapIndex));
                 item.Map.RemoveEntity(item);
             }
 
@@ -326,16 +322,6 @@ namespace DemoGame.Server
             foreach (Character character in Characters)
             {
                 using (PacketWriter creationData = character.GetCreationData())
-                {
-                    if (creationData != null)
-                        user.Send(creationData);
-                }
-            }
-
-            // Send items
-            foreach (ItemEntity item in Items)
-            {
-                using (PacketWriter creationData = item.GetCreationData())
                 {
                     if (creationData != null)
                         user.Send(creationData);

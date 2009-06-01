@@ -10,7 +10,7 @@ namespace DemoGame
     /// <summary>
     /// Defines the basics of a single item
     /// </summary>
-    public abstract class ItemEntityBase : Entity, IPickupableEntity
+    public abstract class ItemEntityBase : DynamicEntity, IPickupableEntity
     {
         /// <summary>
         /// Maximum number of items allowed in a single item stack.
@@ -20,36 +20,37 @@ namespace DemoGame
         /// <summary>
         /// Gets or sets the size of this item cluster (1 for a single item).
         /// </summary>
+        [SyncValue(SkipNetworkSync = true)]
         public abstract byte Amount { get; set; }
 
         /// <summary>
         /// Gets or sets the description of the item.
         /// </summary>
+        [SyncValue(SkipNetworkSync = true)]
         public abstract string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the index of the graphic that is used for this item.
         /// </summary>
+        [SyncValue]
         public abstract ushort GraphicIndex { get; set; }
-
-        /// <summary>
-        /// Gets or sets the unique map index of the item.
-        /// </summary>
-        public abstract ushort MapItemIndex { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the item.
         /// </summary>
+        [SyncValue(SkipNetworkSync = true)]
         public abstract string Name { get; set; }
 
         /// <summary>
         /// Gets or sets the type of item this is.
         /// </summary>
+        [SyncValue(SkipNetworkSync = true)]
         public abstract ItemType Type { get; set; }
 
         /// <summary>
         /// Gets or sets the value of the item.
         /// </summary>
+        [SyncValue(SkipNetworkSync = true)]
         public abstract int Value { get; set; }
 
         /// <summary>
@@ -59,7 +60,15 @@ namespace DemoGame
         /// <param name="size">Size of the item's CollisionBox</param>
         protected ItemEntityBase(Vector2 pos, Vector2 size)
         {
+            // NOTE: Can I get rid of this constructor?
             CB = new CollisionBox(pos, size.X, size.Y);
+        }
+
+        /// <summary>
+        /// ItemEntityBase constructor
+        /// </summary>
+        protected ItemEntityBase()
+        {
         }
 
         /// <summary>
