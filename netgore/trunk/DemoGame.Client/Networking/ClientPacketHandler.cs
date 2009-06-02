@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics.GUI;
@@ -20,6 +19,7 @@ namespace DemoGame.Client
 {
     public class ClientPacketHandler : IMessageProcessor, IGetTime
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly GameMessages _gameMessages = new GameMessages();
         readonly GameplayScreen _gameplayScreen;
         readonly Stopwatch _pingWatch = new Stopwatch();
@@ -134,7 +134,7 @@ namespace DemoGame.Client
         {
             ushort mapCharIndex = r.ReadUShort();
 
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
+            Character chr = Map.GetDynamicEntity<Character>(mapCharIndex);
             if (chr == null)
                 return;
 
@@ -147,7 +147,7 @@ namespace DemoGame.Client
             ushort mapCharIndex = r.ReadUShort();
             int damage = r.ReadInt();
 
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
+            Character chr = Map.GetDynamicEntity<Character>(mapCharIndex);
             if (chr == null)
                 return;
 
@@ -179,57 +179,16 @@ namespace DemoGame.Client
             DynamicEntity dynamicEntity = DynamicEntityFactory.Read(r);
             Map.AddDynamicEntity(dynamicEntity, mapEntityIndex);
 
+            Character character = dynamicEntity as Character;
+            if (character != null)
+            {
+                // HACK: ...
+                character.Initialize(Map, GameplayScreen.SkeletonManager);
+            }
+
             if (log.IsInfoEnabled)
-                log.InfoFormat("Created DynamicEntity with index `{0}` of type `{1}`", dynamicEntity.MapIndex, dynamicEntity.GetType());
-        }
-
-        [MessageHandler((byte)ServerPacketID.RemoveDynamicEntity)]
-        void RecvRemoveDynamicEntity(TCPSocket conn, BitStream r)
-        {
-            ushort mapIndex = r.ReadUShort();
-            DynamicEntity dynamicEntity = Map.GetDynamicEntity(mapIndex);
-
-            if (dynamicEntity != null)
-            {
-                Map.RemoveEntity(dynamicEntity);
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Removed DynamicEntity with index `{0}`", mapIndex);
-            }
-            else
-            {
-                const string errmsg = "Could not remove DynamicEntity with index `{0}` - no DynamicEntity found.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, mapIndex);
-                Debug.Fail(string.Format(errmsg, mapIndex));
-            }
-        }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        [MessageHandler((byte)ServerPacketID.CreateNPC)]
-        void RecvCreateNPC(TCPSocket conn, BitStream r)
-        {
-            ushort mapCharIndex = r.ReadUShort();
-            string name = r.ReadString();
-            Vector2 pos = r.ReadVector2();
-            ushort bodyIndex = r.ReadUShort();
-
-            Character c = new Character(Map, pos, GameData.Body(bodyIndex), GameplayScreen.SkeletonManager)
-                          { Name = name, MapCharIndex = mapCharIndex };
-            Map.AddCharacter(c, mapCharIndex);
-        }
-
-        [MessageHandler((byte)ServerPacketID.CreateUser)]
-        void RecvCreateUser(TCPSocket conn, BitStream r)
-        {
-            ushort mapCharIndex = r.ReadUShort();
-            string name = r.ReadString();
-            Vector2 pos = r.ReadVector2();
-            ushort bodyIndex = r.ReadUShort();
-
-            Character c = new Character(Map, pos, GameData.Body(bodyIndex), GameplayScreen.SkeletonManager)
-                          { Name = name, MapCharIndex = mapCharIndex };
-            Map.AddCharacter(c, mapCharIndex);
+                log.InfoFormat("Created DynamicEntity with index `{0}` of type `{1}`", dynamicEntity.MapIndex,
+                               dynamicEntity.GetType());
         }
 
         [MessageHandler((byte)ServerPacketID.InvalidAccount)]
@@ -268,7 +227,7 @@ namespace DemoGame.Client
         {
             ushort mapCharIndex = r.ReadUShort();
 
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
+            Character chr = Map.GetDynamicEntity<Character>(mapCharIndex);
             if (chr == null)
                 return;
 
@@ -297,16 +256,25 @@ namespace DemoGame.Client
             _pingWatch.Stop();
         }
 
-        [MessageHandler((byte)ServerPacketID.RemoveChar)]
-        void RecvRemoveChar(TCPSocket conn, BitStream r)
+        [MessageHandler((byte)ServerPacketID.RemoveDynamicEntity)]
+        void RecvRemoveDynamicEntity(TCPSocket conn, BitStream r)
         {
-            ushort mapCharIndex = r.ReadUShort();
+            ushort mapIndex = r.ReadUShort();
+            DynamicEntity dynamicEntity = Map.GetDynamicEntity(mapIndex);
 
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
-            if (chr == null)
-                return;
-
-            Map.RemoveEntity(chr);
+            if (dynamicEntity != null)
+            {
+                Map.RemoveEntity(dynamicEntity);
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Removed DynamicEntity with index `{0}`", mapIndex);
+            }
+            else
+            {
+                const string errmsg = "Could not remove DynamicEntity with index `{0}` - no DynamicEntity found.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, mapIndex);
+                Debug.Fail(string.Format(errmsg, mapIndex));
+            }
         }
 
         [MessageHandler((byte)ServerPacketID.SendItemInfo)]
@@ -344,102 +312,6 @@ namespace DemoGame.Client
             string message = _gameMessages.GetMessage(gameMessage, parameters);
             if (!string.IsNullOrEmpty(message))
                 GameplayScreen.AppendToChatOutput(message, Color.Black);
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetCharHeadingLeft)]
-        void RecvSetCharHeadingLeft(TCPSocket conn, BitStream r)
-        {
-            ushort mapCharIndex = r.ReadUShort();
-
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
-            if (chr == null)
-                return;
-
-            chr.SetHeading(Direction.West);
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetCharHeadingRight)]
-        void RecvSetCharHeadingRight(TCPSocket conn, BitStream r)
-        {
-            ushort mapCharIndex = r.ReadUShort();
-
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
-            if (chr == null)
-                return;
-
-            chr.SetHeading(Direction.East);
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetCharName)]
-        void RecvSetCharName(TCPSocket conn, BitStream r)
-        {
-            ushort mapCharIndex = r.ReadUShort();
-            string name = r.ReadString();
-
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
-            if (chr == null)
-                return;
-
-            chr.Name = name;
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetCharVelocity)]
-        void RecvSetCharVelocity(TCPSocket conn, BitStream r)
-        {
-            ushort mapCharIndex = r.ReadUShort();
-            Vector2 pos = r.ReadVector2();
-            Vector2 velocity = r.ReadVector2();
-
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
-            if (chr == null)
-                return;
-
-            chr.SetVelocity(velocity);
-            chr.UpdatePosition(pos);
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetCharVelocityX)]
-        void RecvSetCharVelocityX(TCPSocket conn, BitStream r)
-        {
-            ushort mapCharIndex = r.ReadUShort();
-            Vector2 pos = r.ReadVector2();
-            float velocityX = r.ReadFloat();
-
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
-            if (chr == null)
-                return;
-
-            chr.SetVelocity(new Vector2(velocityX, 0));
-            chr.UpdatePosition(pos);
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetCharVelocityY)]
-        void RecvSetCharVelocityY(TCPSocket conn, BitStream r)
-        {
-            ushort mapCharIndex = r.ReadUShort();
-            Vector2 pos = r.ReadVector2();
-            float velocityY = r.ReadFloat();
-
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
-            if (chr == null)
-                return;
-
-            chr.SetVelocity(new Vector2(0, velocityY));
-            chr.UpdatePosition(pos);
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetCharVelocityZero)]
-        void RecvSetCharVelocityZero(TCPSocket conn, BitStream r)
-        {
-            ushort mapCharIndex = r.ReadUShort();
-            Vector2 pos = r.ReadVector2();
-
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
-            if (chr == null)
-                return;
-
-            chr.SetVelocity(Vector2.Zero);
-            chr.UpdatePosition(pos);
         }
 
         [MessageHandler((byte)ServerPacketID.SetInventorySlot)]
@@ -482,20 +354,6 @@ namespace DemoGame.Client
 
             DynamicEntity dynamicEntity = World.Map.GetDynamicEntity(entityMapIndex);
             dynamicEntity.Deserialize(new BitStreamValueReader(r));
-        }
-
-        [MessageHandler((byte)ServerPacketID.TeleportChar)]
-        void RecvTeleportChar(TCPSocket conn, BitStream r)
-        {
-            ushort mapCharIndex = r.ReadUShort();
-            Vector2 pos = r.ReadVector2();
-
-            Character chr = Map.GetCharacter(mapCharIndex) as Character;
-            if (chr == null)
-                return;
-
-            chr.Teleport(pos);
-            chr.SetVelocity(Vector2.Zero);
         }
 
         [MessageHandler((byte)ServerPacketID.UpdateEquipmentSlot)]

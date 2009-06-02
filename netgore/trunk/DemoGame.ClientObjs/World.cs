@@ -55,7 +55,7 @@ namespace DemoGame.Client
             {
                 if (_map == null || UserCharIndex == -1)
                     return null;
-                return (Character)_map.GetCharacter(UserCharIndex);
+                return _map.GetDynamicEntity<Character>(UserCharIndex);
             }
         }
 

@@ -9,7 +9,7 @@ using NetGore.IO;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Manages a group of message processors.
+    /// Manages a group of message processing methods, each identified by the attribute MessageHandlerAttribute.
     /// </summary>
     public class MessageProcessorManager
     {
@@ -107,17 +107,26 @@ namespace NetGore.Network
         {
             if (socket == null)
             {
-                Debug.Fail("socket is null.");
+                const string errmsg = "socket is null.";
+                Debug.Fail(errmsg);
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
                 return;
             }
             if (data == null)
             {
-                Debug.Fail("data is null.");
+                const string errmsg = "data is null.";
+                Debug.Fail(errmsg);
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
                 return;
             }
             if (data.Length == 0)
             {
-                Debug.Fail("data array is empty.");
+                const string errmsg = "data array is empty.";
+                Debug.Fail(errmsg);
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
                 return;
             }
 

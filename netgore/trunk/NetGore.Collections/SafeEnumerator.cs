@@ -116,7 +116,14 @@ namespace NetGore.Collections
             if (_useCollection)
             {
                 // Get the size of the source
-                _sourceLength = _sourceAsCollection.Count;
+                DArray<T> darray;
+                T[] array;
+                if ((darray = _source as DArray<T>) != null)
+                    _sourceLength = darray.Length;
+                else if ((array = _source as T[]) != null)
+                    _sourceLength = array.Length;
+                else
+                    _sourceLength = _sourceAsCollection.Count;
 
                 // Resize the buffer if needed
                 if (_buffer.Length < _sourceLength)

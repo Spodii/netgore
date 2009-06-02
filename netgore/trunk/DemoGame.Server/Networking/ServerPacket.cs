@@ -65,33 +65,6 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter CreateNPC(ushort mapCharIndex, string name, Vector2 position, ushort bodyIndex)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.CreateNPC);
-            pw.Write(mapCharIndex);
-            pw.Write(name);
-            pw.Write(position);
-            pw.Write(bodyIndex);
-            return pw;
-        }
-
-        /// <summary>
-        /// Creates a user on the map
-        /// </summary>
-        /// <param name="mapCharIndex">Map character index of the user</param>
-        /// <param name="name">Name of the user</param>
-        /// <param name="pos">Position of the user</param>
-        /// <param name="bodyIndex">Index of the body information</param>
-        public static PacketWriter CreateUser(ushort mapCharIndex, string name, Vector2 pos, ushort bodyIndex)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.CreateUser);
-            pw.Write(mapCharIndex);
-            pw.Write(name);
-            pw.Write(pos);
-            pw.Write(bodyIndex);
-            return pw;
-        }
-
         /// <summary>
         /// Gets a PacketWriter to use.
         /// </summary>
@@ -146,17 +119,6 @@ namespace DemoGame.Server
         public static PacketWriter Ping()
         {
             return GetWriter(ServerPacketID.Ping);
-        }
-
-        /// <summary>
-        /// Removes a character from the map
-        /// </summary>
-        /// <param name="mapCharIndex">Map index of the character to remove</param>
-        public static PacketWriter RemoveChar(ushort mapCharIndex)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.RemoveChar);
-            pw.Write(mapCharIndex);
-            return pw;
         }
 
         public static PacketWriter SendItemInfo(ItemEntity item)
@@ -226,86 +188,6 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SetCharHeadingLeft(ushort mapCharIndex)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetCharHeadingLeft);
-            pw.Write(mapCharIndex);
-            return pw;
-        }
-
-        public static PacketWriter SetCharHeadingRight(ushort mapCharIndex)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetCharHeadingRight);
-            pw.Write(mapCharIndex);
-            return pw;
-        }
-
-        public static PacketWriter SetCharName(ushort mapCharIndex, string name)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetCharName);
-            pw.Write(mapCharIndex);
-            pw.Write(name);
-            return pw;
-        }
-
-        /// <summary>
-        /// Sets the position and velocity of a character
-        /// </summary>
-        /// <param name="mapCharIndex">Map index of the character to update</param>
-        /// <param name="pos">Character position</param>
-        /// <param name="velocity">Character velocity</param>
-        public static PacketWriter SetCharVelocity(ushort mapCharIndex, Vector2 pos, Vector2 velocity)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetCharVelocity);
-            pw.Write(mapCharIndex);
-            pw.Write(pos);
-            pw.Write(velocity);
-            return pw;
-        }
-
-        /// <summary>
-        /// Sets the position and X velocity of a character, assuming the Y velocity is zero
-        /// </summary>
-        /// <param name="mapCharIndex">Map index of the character to update</param>
-        /// <param name="pos">Character position</param>
-        /// <param name="vX">X velocity of the character</param>
-        public static PacketWriter SetCharVelocityX(ushort mapCharIndex, Vector2 pos, float vX)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetCharVelocityX);
-            pw.Write(mapCharIndex);
-            pw.Write(pos);
-            pw.Write(vX);
-            return pw;
-        }
-
-        /// <summary>
-        /// Sets the position and Y velocity of a character, assuming the X velocity is zero
-        /// </summary>
-        /// <param name="mapCharIndex">Map index of the character to update</param>
-        /// <param name="pos">Character position</param>
-        /// <param name="vY">Y velocity of the character</param>
-        public static PacketWriter SetCharVelocityY(ushort mapCharIndex, Vector2 pos, float vY)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetCharVelocityY);
-            pw.Write(mapCharIndex);
-            pw.Write(pos);
-            pw.Write(vY);
-            return pw;
-        }
-
-        /// <summary>
-        /// Sends the position of the character and assumes the velocity is zero
-        /// </summary>
-        /// <param name="mapCharIndex">Map index of the character</param>
-        /// <param name="pos">Character position</param>
-        public static PacketWriter SetCharVelocityZero(ushort mapCharIndex, Vector2 pos)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetCharVelocityZero);
-            pw.Write(mapCharIndex);
-            pw.Write(pos);
-            return pw;
-        }
-
         public static PacketWriter SetInventorySlot(byte slot, ushort graphic, byte amount)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetInventorySlot);
@@ -338,20 +220,6 @@ namespace DemoGame.Server
             PacketWriter pw = GetWriter(ServerPacketID.SynchronizeDynamicEntity);
             pw.Write((ushort)dynamicEntity.MapIndex);
             dynamicEntity.Serialize(pw);
-            return pw;
-        }
-
-        /// <summary>
-        /// Teleports a character to a designated location (instead of smoothly translating
-        /// the character) and assumes the character's velocity is zero
-        /// </summary>
-        /// <param name="mapCharIndex">Map index of the character</param>
-        /// <param name="pos">Character position</param>
-        public static PacketWriter TeleportChar(ushort mapCharIndex, Vector2 pos)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.TeleportChar);
-            pw.Write(mapCharIndex);
-            pw.Write(pos);
             return pw;
         }
 

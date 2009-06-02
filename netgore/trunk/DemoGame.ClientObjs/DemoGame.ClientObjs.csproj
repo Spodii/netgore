@@ -76,7 +76,9 @@
     <Compile Include="Entity\EntityDrawer.cs" />
     <Compile Include="Entity\ItemEntity.cs" />
     <Compile Include="Entity\MapRenderLayerChange.cs" />
+    <Compile Include="Entity\NPC.cs" />
     <Compile Include="Entity\TeleportEntity.cs" />
+    <Compile Include="Entity\User.cs" />
     <Compile Include="GameMessages.cs" />
     <Compile Include="GUIManager.cs" />
     <Compile Include="Entity\IDrawableEntity.cs" />

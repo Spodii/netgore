@@ -117,13 +117,23 @@ namespace DemoGame.Server
             // Trim down the maps array under the assumption we won't be adding more maps
             _maps.Trim();
 
-            // Create some test NPCs
+            // NOTE: Just temporary until we get real NPC creation going on
+            // Create some test NPCs and items
+            Random rand = new Random();
             foreach (Map m in Maps)
             {
                 for (int i = 0; i < 5; i++)
                 {
                     NPC npc = new NPC(this, NPCTemplates.GetTemplate(1));
                     npc.SetMap(m);
+                }
+                for (int i = 0; i < 10; i++)
+                {
+                    float x = rand.Next(128, (int)m.Width - 128);
+                    float y = rand.Next(128, (int)m.Height - 128);
+                    int id = rand.Next(1, Server.ItemTemplates.Count);
+                    ItemEntity item = new ItemEntity(Server.ItemTemplates[id], new Microsoft.Xna.Framework.Vector2(x, y), 1);
+                    m.AddEntity(item);
                 }
             }
         }
