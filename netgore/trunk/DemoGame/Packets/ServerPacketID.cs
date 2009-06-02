@@ -29,6 +29,7 @@ namespace DemoGame
         SetUserChar,
         SynchronizeDynamicEntity,
         UpdateEquipmentSlot,
-        UpdateStat
+        UpdateStat,
+        UpdateVelocityAndPosition
     }
 }

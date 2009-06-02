@@ -1072,7 +1072,7 @@ namespace DemoGame
             }
             if (maxY > _entityGrid.GetLength(1) - 1)
             {
-                Debug.Fail("Invalid entity position.");
+                // TODO: Debug.Fail("Invalid entity position.");
                 maxY = _entityGrid.GetLength(1) - 1;
             }
 

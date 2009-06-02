@@ -331,14 +331,25 @@ namespace DemoGame.Server
         /// </summary>
         void SynchronizeDynamicEntities()
         {
+            int currentTime = GetTime();
+
             foreach (DynamicEntity dynamicEntity in DynamicEntities)
             {
-                if (dynamicEntity.IsSynchronized)
-                    continue;
-
-                using (PacketWriter pw = ServerPacket.SynchronizeDynamicEntity(dynamicEntity))
+                if (!dynamicEntity.IsSynchronized)
                 {
-                    Send(pw);
+                    using (PacketWriter pw = ServerPacket.SynchronizeDynamicEntity(dynamicEntity))
+                    {
+                        Send(pw);
+                    }
+                }
+
+                if (dynamicEntity.NeedSyncPositionAndVelocity(currentTime))
+                {
+                    using (PacketWriter pw = ServerPacket.UpdateVelocityAndPosition(dynamicEntity, currentTime))
+                    {
+                        // TODO: Send to visual area, plus a little more
+                        Send(pw);
+                    }
                 }
             }
         }

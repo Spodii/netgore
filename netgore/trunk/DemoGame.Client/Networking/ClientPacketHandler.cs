@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics.GUI;
@@ -170,6 +171,25 @@ namespace DemoGame.Client
 
             // NOTE: Make use of the mapCharIndex for a chat bubble
             GameplayScreen.AppendToChatOutput(CreateChatText(name, "says", text));
+        }
+
+        [MessageHandler((byte)ServerPacketID.UpdateVelocityAndPosition)]
+        void RecvUpdateVelocityAndPosition(TCPSocket conn, BitStream r)
+        {
+            ushort mapEntityIndex = r.ReadUShort();
+
+            // Grab the DynamicEntity
+            DynamicEntity dynamicEntity = Map.GetDynamicEntity<DynamicEntity>(mapEntityIndex);
+            if (dynamicEntity == null)
+            {
+                // TODO: Will need to be able to read the values even if the dynamicEntity is invalid since the
+                // data will be getting sent on a different pipe
+                Debug.Fail("dynamicEntity not found.");
+                return;
+            }
+
+            // Deserialize
+            dynamicEntity.DeserializePositionAndVelocity(new BitStreamValueReader(r));
         }
 
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]

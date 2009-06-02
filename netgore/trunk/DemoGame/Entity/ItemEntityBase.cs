@@ -62,7 +62,6 @@ namespace DemoGame
         {
             // NOTE: Can I get rid of this constructor?
             CB = new CollisionBox(pos, size.X, size.Y);
-            Weight = 0.1f;
         }
 
         /// <summary>
@@ -70,7 +69,6 @@ namespace DemoGame
         /// </summary>
         protected ItemEntityBase()
         {
-            Weight = 0.1f;
         }
 
         /// <summary>

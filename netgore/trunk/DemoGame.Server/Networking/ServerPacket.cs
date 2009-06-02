@@ -140,6 +140,14 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter UpdateVelocityAndPosition(DynamicEntity dynamicEntity, int currentTime)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.UpdateVelocityAndPosition);
+            pw.Write((ushort)dynamicEntity.MapIndex);
+            dynamicEntity.SerializePositionAndVelocity(pw, currentTime);
+            return pw;
+        }
+
         public static PacketWriter SendMessage(GameMessage message)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SendMessage);

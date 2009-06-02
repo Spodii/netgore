@@ -122,6 +122,7 @@ namespace DemoGame.Server
             Random rand = new Random();
             foreach (Map m in Maps)
             {
+                /*
                 for (int i = 0; i < 5; i++)
                 {
                     NPC npc = new NPC(this, NPCTemplates.GetTemplate(1));
@@ -135,6 +136,7 @@ namespace DemoGame.Server
                     ItemEntity item = new ItemEntity(Server.ItemTemplates[id], new Microsoft.Xna.Framework.Vector2(x, y), 1);
                     m.AddEntity(item);
                 }
+                */
             }
         }
 

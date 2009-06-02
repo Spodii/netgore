@@ -314,20 +314,20 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Moves the entity to a new location instantly
+        /// Moves the Entity to a new location instantly.
         /// </summary>
-        /// <param name="position">New position</param>
-        public virtual void Teleport(Vector2 position)
+        /// <param name="newPosition">New position for the Entity.</param>
+        public virtual void Teleport(Vector2 newPosition)
         {
             // Do not update if we're already at the specified position
-            if (position == _collisionBox.Min)
+            if (newPosition == Position)
                 return;
 
-            Vector2 oldPos = _collisionBox.Min;
+            Vector2 oldPos = Position;
 
             // Treat as if not on ground, and move the CollisionBox
             _onGround = false;
-            _collisionBox.Teleport(position);
+            _collisionBox.Teleport(newPosition);
 
             // Notify of movement
             if (OnMove != null)
