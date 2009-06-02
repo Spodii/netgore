@@ -165,7 +165,9 @@ namespace DemoGame
             base.Teleport(position);
         }
 
+// ReSharper disable UnusedParameter.Global
         protected virtual void UpdatePostCollision(float deltaTime)
+// ReSharper restore UnusedParameter.Global
         {
             // Update the character's state
             UpdateState();
