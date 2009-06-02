@@ -196,9 +196,7 @@ namespace DemoGame.Server
             }
 
             // Handle the different types of entities
-            if (ItemAdded(entity) || CharAdded(entity))
-            {
-            }
+            CharAdded(entity);
         }
 
         protected override void EntityRemoved(Entity entity)
@@ -209,7 +207,6 @@ namespace DemoGame.Server
             DynamicEntity dynamicEntity;
             if ((dynamicEntity = entity as DynamicEntity) != null)
             {
-                ItemRemoved(entity);
                 CharRemoved(entity);
 
                 // Destroy the DynamicEntity for everyone on the map
@@ -219,39 +216,6 @@ namespace DemoGame.Server
                         Send(pw);
                 }
             }
-        }
-
-        bool ItemAdded(Entity entity)
-        {
-            ItemEntity item = entity as ItemEntity;
-            if (item == null)
-                return false;
-
-            // If the item was already on a map, so remove them from the old map
-            if (item.Map != null)
-            {
-                const string errmsg = "Item `{0}` [{1}] added to new map, but is already on a map!";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, item, item.MapIndex);
-                Debug.Fail(string.Format(errmsg, item, item.MapIndex));
-                item.Map.RemoveEntity(item);
-            }
-
-            // Set the new map
-            ((IMapControlledEntity)item).SetMap(this);
-
-            return true;
-        }
-
-        static bool ItemRemoved(Entity entity)
-        {
-            ItemEntity item = entity as ItemEntity;
-            if (item == null)
-                return false;
-
-            ((IMapControlledEntity)item).SetMap(null);
-
-            return true;
         }
 
         /// <summary>
