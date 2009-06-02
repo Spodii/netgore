@@ -16,12 +16,11 @@ namespace DemoGame.Client
     /// </summary>
     public class Character : CharacterEntity, IGetTime, IDrawableEntity
     {
-        readonly BodyInfo _bodyInfo;
-        readonly Map _map;
+        Map _map;
         readonly MeanStack<Vector2> _ms = new MeanStack<Vector2>(3, MeanStackExtras.Mean);
-        readonly EventHandler _onLoopHandler;
-        readonly SkeletonAnimation _skelAnim = null;
-        readonly SkeletonManager _skelManager;
+        EventHandler _onLoopHandler;
+        SkeletonAnimation _skelAnim = null;
+        SkeletonManager _skelManager;
 
         string _currSkelSet;
         Vector2 _drawPos;
@@ -36,16 +35,36 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the name of the character
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
         /// Gets the map the character belongs to
         /// </summary>
         public Map Parent
         {
             get { return _map; }
+        }
+
+        public Character()
+        {
+        }
+
+        protected override void AfterCreation()
+        {
+            // HACK: ...
+            base.AfterCreation();
+
+            _ms.Fill(Position);
+        }
+
+        public void Initialize(Map map, SkeletonManager skelManager)
+        {
+            // HACK: This is quite a dirty way to do this
+            _map = map;
+            _skelManager = skelManager;
+            _onLoopHandler = skelAnim_OnLoop;
+
+            // Set up the skeleton
+            _currSkelSet = BodyInfo.Stand;
+            _skelAnim = new SkeletonAnimation(GetTime(), _skelManager.LoadSet(_currSkelSet));
+            _skelAnim.SkeletonBody = new SkeletonBody(_skelManager.LoadBodyInfo(BodyInfo.Body), _skelAnim.Skeleton);
         }
 
         /// <summary>
@@ -59,17 +78,17 @@ namespace DemoGame.Client
         {
             _map = map;
             _skelManager = skelManager;
-            _bodyInfo = bodyInfo;
             _ms.Fill(position);
             _onLoopHandler = skelAnim_OnLoop;
+            BodyInfo = bodyInfo;
 
             // Set up the skeleton
-            _currSkelSet = _bodyInfo.Stand;
+            _currSkelSet = BodyInfo.Stand;
             _skelAnim = new SkeletonAnimation(GetTime(), _skelManager.LoadSet(_currSkelSet));
-            _skelAnim.SkeletonBody = new SkeletonBody(_skelManager.LoadBodyInfo(_bodyInfo.Body), _skelAnim.Skeleton);
+            _skelAnim.SkeletonBody = new SkeletonBody(_skelManager.LoadBodyInfo(BodyInfo.Body), _skelAnim.Skeleton);
 
             // Set the collision box and position
-            CB = new CollisionBox(_bodyInfo.Width, _bodyInfo.Height);
+            CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
             Position = position;
         }
 
@@ -78,7 +97,7 @@ namespace DemoGame.Client
         /// </summary>
         public void Attack()
         {
-            SkeletonSet set = _skelManager.LoadSet(_bodyInfo.Punch);
+            SkeletonSet set = _skelManager.LoadSet(BodyInfo.Punch);
             set = SkeletonAnimation.CreateSmoothedSet(set, _skelAnim.Skeleton);
             SkeletonAnimation mod = new SkeletonAnimation(GetTime(), set);
             _skelAnim.AddModifier(mod);
@@ -194,24 +213,24 @@ namespace DemoGame.Client
             switch (State)
             {
                 case CharacterState.Idle:
-                    ChangeSet(_bodyInfo.Stand);
+                    ChangeSet(BodyInfo.Stand);
                     break;
 
                 case CharacterState.Falling:
                 case CharacterState.FallingLeft:
                 case CharacterState.FallingRight:
-                    ChangeSet(_bodyInfo.Fall);
+                    ChangeSet(BodyInfo.Fall);
                     break;
 
                 case CharacterState.Jumping:
                 case CharacterState.JumpingLeft:
                 case CharacterState.JumpingRight:
-                    ChangeSet(_bodyInfo.Jump);
+                    ChangeSet(BodyInfo.Jump);
                     break;
 
                 case CharacterState.WalkingLeft:
                 case CharacterState.WalkingRight:
-                    ChangeSet(_bodyInfo.Walk);
+                    ChangeSet(BodyInfo.Walk);
                     break;
             }
         }
@@ -237,15 +256,15 @@ namespace DemoGame.Client
         /// <param name="sb">SpriteBatch to draw the character with</param>
         public void Draw(SpriteBatch sb)
         {
+            if (_skelAnim == null)
+                return;
+
             // Draw the character body
-            if (_skelAnim != null)
-            {
-                SpriteEffects se = (Heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
-                Vector2 p = DrawPosition;
-                p.X += _bodyInfo.Width / 2f;
-                p.Y += _bodyInfo.Height;
-                _skelAnim.Draw(sb, p, se);
-            }
+            SpriteEffects se = (Heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
+            Vector2 p = DrawPosition;
+            p.X += BodyInfo.Width / 2f;
+            p.Y += BodyInfo.Height;
+            _skelAnim.Draw(sb, p, se);
         }
 
         /// <summary>

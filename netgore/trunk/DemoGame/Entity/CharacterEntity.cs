@@ -10,10 +10,22 @@ namespace DemoGame
     /// <summary>
     /// Abstract class for an Entity that is a Character
     /// </summary>
-    public abstract class CharacterEntity : Entity
+    public abstract class CharacterEntity : DynamicEntity
     {
         Direction _heading = Direction.East;
         CharacterState _state = CharacterState.Idle;
+
+        /// <summary>
+        /// Synchronizes the BodyInfo index for the CharacterEntity.
+        /// </summary>
+        [SyncValue("BodyIndex")]
+        [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        // ReSharper disable UnusedMember.Local
+        protected internal ushort BodyInfoIndex // ReSharper restore UnusedMember.Local
+        {
+            get { return BodyInfo.Index; }
+            set { BodyInfo = GameData.Body(value); }
+        }
 
         /// <summary>
         /// Gets if the character meets the requirements allowing them to jump.
@@ -22,6 +34,11 @@ namespace DemoGame
         {
             get { return OnGround; }
         }
+
+        /// <summary>
+        /// Gets or sets the name of the CharacterEntity.
+        /// </summary>
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Gets the direction the character is currently facing.
@@ -48,17 +65,17 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets or sets (protected) the CharacterEntity's BodyInfo.
+        /// </summary>
+        public BodyInfo BodyInfo { get; protected set; }
+
+        /// <summary>
         /// Gets if the character is moving to the right.
         /// </summary>
         public bool IsMovingRight
         {
             get { return Velocity.X > 0; }
         }
-
-        /// <summary>
-        /// Gets or sets the character's unique index for the map they are on.
-        /// </summary>
-        public ushort MapCharIndex { get; set; }
 
         /// <summary>
         /// Gets the character's current state
@@ -144,6 +161,9 @@ namespace DemoGame
         /// </summary>
         public override void Update(IMap imap, float deltaTime)
         {
+            Debug.Assert(imap != null, "How the hell is a null Map updating?");
+            Debug.Assert(deltaTime >= 0, "Unless we're going back in time, deltaTime < 0 makes no sense at all.");
+
             // Perform pre-collision detection updating
             UpdatePreCollision(deltaTime);
 

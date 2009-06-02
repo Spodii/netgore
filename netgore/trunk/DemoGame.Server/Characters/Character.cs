@@ -14,7 +14,7 @@ namespace DemoGame.Server
     /// <summary>
     /// A game character
     /// </summary>
-    public abstract class Character : CharacterEntity, IGetTime, IDynamicEntity
+    public abstract class Character : CharacterEntity, IGetTime
     {
         /// <summary>
         /// Amount of time the character must wait between attacks
@@ -31,44 +31,34 @@ namespace DemoGame.Server
         readonly World _world;
 
         /// <summary>
-        /// Character's alliance
+        /// Character's alliance.
         /// </summary>
         Alliance _alliance;
 
         /// <summary>
-        /// Body information for the character
-        /// </summary>
-        BodyInfo _bodyInfo;
-
-        /// <summary>
-        /// If the character is alive or not
+        /// If the character is alive or not.
         /// </summary>
         bool _isAlive = false;
 
         bool _isLoaded = false;
 
         /// <summary>
-        /// Time at which the character last performed an attack
+        /// Time at which the character last performed an attack.
         /// </summary>
         int _lastAttackTime;
 
         /// <summary>
-        /// Character's state that was last sent to the map clients
-        /// </summary>
-        CharacterState _lastState;
-
-        /// <summary>
-        /// Map the character is currently on
+        /// Map the character is currently on.
         /// </summary>
         Map _map;
 
         /// <summary>
-        /// Name of the character
+        /// Name of the character.
         /// </summary>
         string _name;
 
         /// <summary>
-        /// Gets the random number generator for Characters.
+        /// Gets a random number generator to be used for Characters.
         /// </summary>
         protected static Random Rand
         {
@@ -82,15 +72,6 @@ namespace DemoGame.Server
         {
             get { return _alliance; }
             protected set { _alliance = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets (protected) the Character's body information.
-        /// </summary>
-        public BodyInfo BodyInfo
-        {
-            get { return _bodyInfo; }
-            protected set { _bodyInfo = value; }
         }
 
         /// <summary>
@@ -129,25 +110,25 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets the name of the character.
         /// </summary>
-        public string Name
+        public override string Name
         {
             get { return _name; }
             set
             {
-                Debug.Assert(value != null, "Attempted to give a character a null name.");
-                if (Name == value)
-                    return;
-
-                // Update the character's name on the clients
-                if (Map != null)
+                // Check that the name is valid
+                // TODO: Need to find a good way to handle validating the User and NPC names individually
+                /*
+                if (!GameData.IsValidCharName(value))
                 {
-                    using (PacketWriter pw = ServerPacket.SetCharName(MapCharIndex, value))
-                    {
-                        Map.Send(pw);
-                    }
+                    const string errmsg = "Attempted to give Character `{0}` an invalid name `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, _name, value);
+                    Debug.Fail(string.Format(errmsg, _name, value));
+                    return;
                 }
+                */
 
-                // Store the character's new name
+                // Set the new name
                 _name = value;
             }
         }
@@ -163,6 +144,12 @@ namespace DemoGame.Server
         public World World
         {
             get { return _world; }
+        }
+
+        protected Character()
+        {
+            throw new MethodAccessException("Character's empty constructor should never be used on the server since the " +
+                "server never needs to deserialize a DynamicEntity.");
         }
 
         /// <summary>
@@ -189,14 +176,14 @@ namespace DemoGame.Server
             _lastAttackTime = currTime;
 
             // Inform the map that the user has performed an attack
-            using (PacketWriter charAttack = ServerPacket.CharAttack(MapCharIndex))
+            using (PacketWriter charAttack = ServerPacket.CharAttack((ushort)MapIndex))
             {
                 Map.SendToArea(Position, charAttack);
             }
 
             // Damage all hit characters
             Rectangle hitRect = BodyInfo.GetHitRect(this, BodyInfo.PunchRect);
-            var hitChars = Map.GetCharacters(hitRect);
+            var hitChars = Map.GetEntities<Character>(hitRect);
             foreach (Character c in hitChars)
             {
                 Attack(c);
@@ -249,7 +236,7 @@ namespace DemoGame.Server
                 damage = Stats[StatType.MaxHP];
 
             // Apply damage
-            using (PacketWriter pw = ServerPacket.CharDamage(MapCharIndex, damage))
+            using (PacketWriter pw = ServerPacket.CharDamage((ushort)MapIndex, damage))
             {
                 Map.SendToArea(source.Position, pw);
             }
@@ -404,84 +391,12 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Sends the character's velocity and position to all 
-        /// the clients on the map
-        /// </summary>
-        void SendVelocity()
-        {
-            _lastState = State;
-
-            if (Velocity.X != 0 && Velocity.Y != 0)
-            {
-                // Velocity X and Y are non-zero
-                using (PacketWriter pw = ServerPacket.SetCharVelocity(MapCharIndex, Position, Velocity))
-                {
-                    Map.Send(pw);
-                }
-            }
-            else if (Velocity.X != 0 && Velocity.Y == 0)
-            {
-                // Velocity X is non-zero, Y is zero
-                using (PacketWriter pw = ServerPacket.SetCharVelocityX(MapCharIndex, Position, Velocity.X))
-                {
-                    Map.Send(pw);
-                }
-            }
-            else if (Velocity.X == 0 && Velocity.Y != 0)
-            {
-                // Velocity Y is non-zero, X is zero
-                using (PacketWriter pw = ServerPacket.SetCharVelocityY(MapCharIndex, Position, Velocity.Y))
-                {
-                    Map.Send(pw);
-                }
-            }
-            else
-            {
-                // Velocity X and Y are zero
-                using (PacketWriter pw = ServerPacket.SetCharVelocityZero(MapCharIndex, Position))
-                {
-                    Map.Send(pw);
-                }
-            }
-        }
-
-        /// <summary>
         /// Sets the Character to being loaded. Must be called after the Character has been loaded.
         /// </summary>
         protected void SetAsLoaded()
         {
             Debug.Assert(!_isLoaded, "SetAsLoaded() has already been called on this Character.");
             _isLoaded = true;
-        }
-
-        /// <summary>
-        /// Sets the character's heading.
-        /// </summary>
-        /// <param name="newHeading">New heading for the character.</param>
-        public override void SetHeading(Direction newHeading)
-        {
-            // Confirm the heading has changed
-            if (Heading == newHeading)
-                return;
-
-            // Change the heading
-            base.SetHeading(newHeading);
-
-            // Notify the map
-            if (newHeading == Direction.East)
-            {
-                using (PacketWriter pw = ServerPacket.SetCharHeadingRight(MapCharIndex))
-                {
-                    Map.Send(pw);
-                }
-            }
-            else
-            {
-                using (PacketWriter pw = ServerPacket.SetCharHeadingLeft(MapCharIndex))
-                {
-                    Map.Send(pw);
-                }
-            }
         }
 
         /// <summary>
@@ -537,15 +452,6 @@ namespace DemoGame.Server
             }
 
             base.Teleport(position);
-
-            // Only send an update message if the character is not dead
-            if (IsAlive)
-            {
-                using (PacketWriter pw = ServerPacket.TeleportChar(MapCharIndex, position))
-                {
-                    Map.Send(pw);
-                }
-            }
         }
 
         /// <summary>
@@ -555,14 +461,18 @@ namespace DemoGame.Server
         {
             Debug.Assert(imap == Map, "Character.Update()'s imap is, for whatever reason, not equal to the set Map.");
 
+            // Update shouldn't be called on disposed Characters since they shouldn't be referenced
+            // by the Map anymore
             if (IsDisposed)
+            {
+                const string errmsg = "Updated called on disposed Character `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, Name);
+                Debug.Fail(string.Format(errmsg, Name));
                 return;
+            }
 
             base.Update(imap, deltaTime);
-
-            // We must always send an update if the state changed
-            if (State != _lastState)
-                SendVelocity();
         }
 
         bool UseEquipment(ItemEntity item, byte? inventorySlot)
@@ -637,31 +547,6 @@ namespace DemoGame.Server
 
             return true;
         }
-
-        #region IDynamicEntity Members
-
-        /// <summary>
-        /// Gets the byte array that needs to be sent to the Client to create this Entity on the Client
-        /// </summary>
-        /// <returns>PacketWriter containing the data used by the Client to create this Entity. Can be null if the Entity
-        /// can not be created in it's current state.</returns>
-        public abstract PacketWriter GetCreationData();
-
-        /// <summary>
-        /// Gets the byte array that needs to be send to the Client to destroy this Entity on the Client.
-        /// </summary>
-        /// <returns>PacketWriter containing the data used by the Client to destroy this Entity. Can be null if the Entity
-        /// can not be destroyed in it's current state.</returns>
-        public PacketWriter GetRemovalData()
-        {
-            // Can't remove what is already dead
-            if (!IsAlive)
-                return null;
-
-            return ServerPacket.RemoveChar(MapCharIndex);
-        }
-
-        #endregion
 
         #region IGetTime Members
 

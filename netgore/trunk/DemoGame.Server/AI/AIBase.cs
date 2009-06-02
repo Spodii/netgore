@@ -97,25 +97,26 @@ namespace DemoGame.Server
             Character closestChar = null;
             float closestDist = 0f;
 
-            foreach (Character c in Actor.Map.Characters)
+            foreach (NPC character in Actor.Map.NPCs)
             {
-                if (c == null)
+                if (character == null)
                 {
                     const string errmsg =
-                        "Shouldn't even run into a null Character from Actor.Map.Characters since the underlying type (DArray or List) should not return removed elements when enumerating.";
+                        "Shouldn't even run into a null Character from Actor.Map.Characters since the underlying " + 
+                        "type (DArray or List) should not return removed elements when enumerating.";
                     if (log.IsErrorEnabled)
                         log.Error(errmsg);
                     Debug.Fail(errmsg);
                     continue;
                 }
 
-                if (!Actor.Alliance.IsHostile(c.Alliance) || !IsInView(c))
+                if (!Actor.Alliance.IsHostile(character.Alliance) || !IsInView(character))
                     continue;
 
-                float dist = Vector2.Distance(Actor.Position, c.Position);
+                float dist = Vector2.Distance(Actor.Position, character.Position);
                 if (closestChar == null || closestDist > dist)
                 {
-                    closestChar = c;
+                    closestChar = character;
                     closestDist = dist;
                 }
             }

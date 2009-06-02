@@ -202,7 +202,7 @@ namespace DemoGame.Server
             }
 
             // Not a command, so just do a normal, to-area chat
-            using (PacketWriter pw = ServerPacket.ChatSay(user.Name, user.MapCharIndex, text))
+            using (PacketWriter pw = ServerPacket.ChatSay(user.Name, (ushort)user.MapIndex, text))
             {
                 user.Map.SendToArea(user.Center, pw);
             }

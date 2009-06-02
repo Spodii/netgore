@@ -63,16 +63,6 @@ namespace DemoGame
         readonly Stack<Entity> _cdStack = new Stack<Entity>();
 
         /// <summary>
-        /// Enumerator for the CharacterEntities.
-        /// </summary>
-        readonly SafeEnumerator<CharacterEntity> _characterEnumerator;
-
-        /// <summary>
-        /// Array of characters on the map
-        /// </summary>
-        readonly DArray<CharacterEntity> _characters;
-
-        /// <summary>
         /// Enumerator for the DynamicEntities.
         /// </summary>
         readonly SafeEnumerator<DynamicEntity> _dyanmicEntityEnumerator;
@@ -87,6 +77,9 @@ namespace DemoGame
         /// </summary>
         readonly List<Entity> _entities;
 
+        /// <summary>
+        /// Enumerator for the Entities.
+        /// </summary>
         readonly SafeEnumerator<Entity> _entityEnumerator;
 
         /// <summary>
@@ -140,13 +133,8 @@ namespace DemoGame
         float _width = float.MinValue;
 
         /// <summary>
-        /// Gets an enumerator for all the characters on the map
+        /// Gets a thread-safe IEnumerable of all the DynamicEntities on the Map.
         /// </summary>
-        public IEnumerable<CharacterEntity> Characters
-        {
-            get { return _characterEnumerator; }
-        }
-
         public IEnumerable<DynamicEntity> DynamicEntities
         {
             get { return _dyanmicEntityEnumerator; }
@@ -213,48 +201,24 @@ namespace DemoGame
             _entities = new List<Entity>();
             _entityEnumerator = new SafeEnumerator<Entity>(_entities);
 
-            _characters = new DArray<CharacterEntity>(true);
-            _characterEnumerator = new SafeEnumerator<CharacterEntity>(_characters);
-
             _dynamicEntities = new DArray<DynamicEntity>(true);
             _dyanmicEntityEnumerator = new SafeEnumerator<DynamicEntity>(_dynamicEntities);
         }
 
         /// <summary>
-        /// Adds a character to the map.
+        /// Adds a DynamicEntity to the Map, using the pre-determined unique index.
         /// </summary>
-        /// <param name="charEntity">CharacterEntity to add to the map.</param>
-        /// <param name="mapCharIndex">Map character index to add the character at.</param>
-        /// <exception cref="ArgumentException">Specified <paramref name="mapCharIndex"/> is already in use.</exception>
-        public void AddCharacter(CharacterEntity charEntity, int mapCharIndex)
-        {
-            if (charEntity == null)
-                throw new ArgumentNullException("charEntity");
-            if (mapCharIndex < 0)
-                throw new ArgumentOutOfRangeException("mapCharIndex");
-
-            // Ensure the index is not already in use
-            if (_characters.CanGet(mapCharIndex) && _characters[mapCharIndex] != null)
-            {
-                const string errmsg = "Specified mapCharIndex `{0}` [{1}] already in use by `{2}";
-                throw new ArgumentException(string.Format(errmsg, mapCharIndex, charEntity, _characters[mapCharIndex]));
-            }
-
-            // Add the character to the characters list
-            _characters[mapCharIndex] = charEntity;
-
-            // Finish adding the Entity
-            AddEntityFinish(charEntity);
-        }
-
+        /// <param name="entity">DynamicEntity to add to the Map.</param>
+        /// <param name="mapEntityIndex">Unique index to assign to the DynamicEntity.</param>
         public void AddDynamicEntity(DynamicEntity entity, int mapEntityIndex)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
             Debug.Assert(!_dynamicEntities.Contains(entity), "DynamicEntity is already in the DynamicEntity list!");
-            // Debug.Assert(!_dynamicEntities.CanGet(mapEntityIndex) || _dynamicEntities[mapEntityIndex] == null, "A DynamicEntity already exists at this MapEntityIndex!");
-            
+            Debug.Assert(!_dynamicEntities.CanGet(mapEntityIndex) || _dynamicEntities[mapEntityIndex] == null,
+                         "A DynamicEntity already exists at this MapEntityIndex!");
+
             entity.MapIndex = mapEntityIndex;
             _dynamicEntities[mapEntityIndex] = entity;
 
@@ -262,24 +226,17 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Adds an entity to the map
+        /// Adds an Entity to the map.
         /// </summary>
-        /// <param name="entity">Entity to add to the map</param>
+        /// <param name="entity">Entity to add to the map.</param>
         public void AddEntity(Entity entity)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
-            // For everything that is index-bound, assign the index
-            CharacterEntity charEntity;
+            // Assign a DynamicEntity its unique map index
             DynamicEntity dynamicEntity;
-
-            if ((charEntity = entity as CharacterEntity) != null)
-            {
-                Debug.Assert(!_characters.Contains(charEntity), "Character is already in the Characters list!");
-                charEntity.MapCharIndex = (ushort)_characters.Insert(charEntity);
-            }
-            else if ((dynamicEntity = entity as DynamicEntity) != null)
+            if ((dynamicEntity = entity as DynamicEntity) != null)
             {
                 Debug.Assert(!_dynamicEntities.Contains(dynamicEntity), "DynamicEntity is already in the DynamicEntity list!");
                 dynamicEntity.MapIndex = _dynamicEntities.Insert(dynamicEntity);
@@ -447,17 +404,19 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Allows for additional processing for entities added to the map
+        /// When overridden in the derived class, allows for additional processing on Entities added to the map.
+        /// This is called after the Entity has finished being added to the map.
         /// </summary>
-        /// <param name="entity">Entity added to the map</param>
+        /// <param name="entity">Entity that was added to the map.</param>
         protected virtual void EntityAdded(Entity entity)
         {
         }
 
         /// <summary>
-        /// Allows for additional processing for entities removed from the map
+        /// When overriddeni n the derived class, allows for additional processing on Entities removed from the map.
+        /// This is called after the Entity has finished being removed from the map.
         /// </summary>
-        /// <param name="entity">Entity removed from the map</param>
+        /// <param name="entity">Entity that was removed from the map.</param>
         protected virtual void EntityRemoved(Entity entity)
         {
         }
@@ -485,72 +444,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Retrieves a character on the map
-        /// </summary>
-        /// <param name="index">Index of the character</param>
-        /// <returns>Character with the given index, or null if invalid</returns>
-        public CharacterEntity GetCharacter(int index)
-        {
-            Debug.Assert(index >= 0, "Character index must be greater than or equal to zero.");
-            Debug.Assert(index < _characters.Length, "Character index greater than Characters list length.");
-            //Debug.Assert(_characters.CanGet(index), "Invalid character index.");
-            //Debug.Assert(_characters[index] != null, "Specified character is null.");
-
-            if (_characters.CanGet(index))
-                return _characters[index];
-
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the first CharacterEntity that intersects the specified <paramref name="rect"/>
-        /// </summary>
-        /// <param name="rect">Rectangle to look for the CharacterEntity in</param>
-        /// <returns>First CharacterEntity found in the specified <paramref name="rect"/>, or null if none</returns>
-        public CharacterEntity GetCharacter(Rectangle rect)
-        {
-            return GetEntity<CharacterEntity>(rect);
-        }
-
-        /// <summary>
-        /// Gets all the CharacterEntities that intersects a specified area
-        /// </summary>
-        /// <param name="cb">CollisionBox containing the area to check</param>
-        /// <returns>A list containing all CharacterEntities that intersect the specified area</returns>
-        public List<CharacterEntity> GetCharacters(CollisionBox cb)
-        {
-            if (cb == null)
-            {
-                Debug.Fail("Parameter cb is null.");
-                return new List<CharacterEntity>(0);
-            }
-
-            return GetCharacters(cb.ToRectangle());
-        }
-
-        /// <summary>
-        /// Gets all the characters that intersect a specified area
-        /// </summary>
-        /// <param name="rect">Rectangle of the area to check</param>
-        /// <returns>A list containing all CharacterEntities that intersect the specified area</returns>
-        public List<CharacterEntity> GetCharacters(Rectangle rect)
-        {
-            return GetEntities<CharacterEntity>(rect);
-        }
-
-        /// <summary>
-        /// Gets all the characters that intersect a specified area
-        /// </summary>
-        /// <param name="min">Min point of the collision area</param>
-        /// <param name="max">Max point of the collision area</param>
-        /// <returns>A list containing all CharacterEntities that intersect the specified area</returns>
-        public List<CharacterEntity> GetCharacters(Vector2 min, Vector2 max)
-        {
-            Vector2 size = max - min;
-            return GetCharacters(new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y));
-        }
-
-        /// <summary>
         /// Gets the DynamicEntity with the specified MapIndex.
         /// </summary>
         /// <param name="mapIndex">MapIndex of the DynamicEntity to get.</param>
@@ -558,6 +451,28 @@ namespace DemoGame
         public DynamicEntity GetDynamicEntity(int mapIndex)
         {
             return _dynamicEntities[mapIndex];
+        }
+
+        /// <summary>
+        /// Gets the DynamicEntity with the specified MapIndex.
+        /// </summary>
+        /// <typeparam name="T">Type of DynamicEntity to get.</typeparam>
+        /// <param name="mapIndex">MapIndex of the DynamicEntity to get.</param>
+        /// <returns>The DynamicEntity with the specified MapIndex.</returns>
+        public T GetDynamicEntity<T>(int mapIndex) where T : DynamicEntity
+        {
+            DynamicEntity dynamicEntity = GetDynamicEntity(mapIndex);
+            T casted = dynamicEntity as T;
+
+            if (casted == null && dynamicEntity != null)
+            {
+                const string errmsg = "DynamicEntity found, but was of type `{0}`, not type `{1}` like expected!";
+                Debug.Fail(string.Format(errmsg, dynamicEntity.GetType(), typeof(T)));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, dynamicEntity.GetType(), typeof(T));
+            }
+
+            return casted;
         }
 
         /// <summary>
@@ -908,27 +823,36 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the first Entity found in the given region
+        /// Gets the first Entity of type <typeparamref name="T"/> found in the given region.
         /// </summary>
-        /// <param name="rect">Region to check for the Entity</param>
-        /// <param name="condition">Condition the entity must meet</param>
         /// <typeparam name="T">Type of Entity to look for.</typeparam>
-        /// <returns>First Entity found at the given point, or null if none found</returns>
+        /// <param name="rect">Region to check for the Entity.</param>
+        /// <param name="condition">Condition the entity must meet.</param>
+        /// <returns>First Entity found at the given point, or null if none found.</returns>
         public T GetEntity<T>(Rectangle rect, Func<T, bool> condition) where T : Entity
         {
-            // Iterate through the grid segments
-            foreach (var gridSegment in GetEntityGrids(rect))
-            {
-                var entities = gridSegment.OfType<T>().Where(entity => entity.CB.Intersect(rect));
+            if (condition == null)
+                return GetEntity<T>(rect);
 
-                if (condition != null)
-                    entities = entities.Where(condition);
+            // Grab the segments
+            var grids = GetEntityGrids(rect);
 
-                return entities.FirstOrDefault();
-            }
+            // Select the Entities
+            var entities = grids.SelectMany(x => x);
 
-            // No entity found
-            return null;
+            // Find the entities of the type we want
+            var typedEntities = entities.OfType<T>();
+
+            // Find the entities that hit the target rect
+            typedEntities = typedEntities.Where(entity => entity.CB.Intersect(rect));
+
+            // Test against the custom condition
+            typedEntities = typedEntities.Where(condition);
+
+            // Return first match, if any
+            var match = typedEntities.FirstOrDefault();
+
+            return match;
         }
 
         /// <summary>
@@ -940,14 +864,14 @@ namespace DemoGame
         /// <returns>First entity found at the given point, or null if none found</returns>
         public T GetEntity<T>(Vector2 p, Predicate<T> condition) where T : Entity
         {
+            // If condition is null, don't use it
+            if (condition == null)
+                return GetEntity<T>(p);
+
             // Get and validate the grid segment
             var gridSegment = GetEntityGrid(p);
             if (gridSegment == null)
                 return null;
-
-            // If condition is null, don't use it
-            if (condition == null)
-                return GetEntity<T>(p);
 
             // Iterate through all entities and return the first one to contain the segment
             foreach (Entity entity in gridSegment)
@@ -1649,18 +1573,12 @@ namespace DemoGame
                 Debug.Fail("entity was not in the Entities list");
             }
 
-            // If a character or item, remove from the respective list
-            CharacterEntity charEntity;
+            // If a DynamicEntity, remove it from the DynamicEntities list
             DynamicEntity dynamicEntity;
-
-            if ((charEntity = entity as CharacterEntity) != null)
+            if ((dynamicEntity = entity as DynamicEntity) != null)
             {
-                Debug.Assert(_characters[charEntity.MapCharIndex] == charEntity, "Character is holding an invalid MapCharIndex!");
-                _characters.RemoveAt(charEntity.MapCharIndex);
-            }
-            else if ((dynamicEntity = entity as DynamicEntity) != null)
-            {
-                Debug.Assert(_dynamicEntities[dynamicEntity.MapIndex] == dynamicEntity, "DynamicEntity is holding an invalid MapIndex!");
+                Debug.Assert(_dynamicEntities[dynamicEntity.MapIndex] == dynamicEntity,
+                             "DynamicEntity is holding an invalid MapIndex!");
                 _dynamicEntities.RemoveAt(dynamicEntity.MapIndex);
             }
 
@@ -2017,7 +1935,7 @@ namespace DemoGame
             if (deltaTime > MaxUpdateDeltaTime)
                 deltaTime = MaxUpdateDeltaTime;
 
-            // Update characters
+            // Update the Entities
             foreach (Entity entity in Entities)
             {
                 if (entity == null)
@@ -2077,7 +1995,7 @@ namespace DemoGame
         #region IMap Members
 
         /// <summary>
-        /// Gets an IEnumerable of all the Entities on the map
+        /// Gets a thrad-safe IEnumerable of all the Entities on the Map.
         /// </summary>
         public IEnumerable<Entity> Entities
         {

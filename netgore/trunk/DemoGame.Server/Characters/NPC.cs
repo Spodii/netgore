@@ -67,6 +67,11 @@ namespace DemoGame.Server
             get { return _stats; }
         }
 
+        [Obsolete("Do not use this empty constructor on the Server!")]
+        public NPC()
+        {
+        }
+
         /// <summary>
         /// NPC constructor
         /// </summary>
@@ -83,7 +88,9 @@ namespace DemoGame.Server
             _inventory = new NPCInventory(this);
 
             // Set up the NPC
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
             Name = template.Name;
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
             Alliance = template.Alliance;
             BodyInfo = GameData.Body(template.BodyIndex);
             CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
@@ -110,15 +117,6 @@ namespace DemoGame.Server
 
             // Done loading
             SetAsLoaded();
-        }
-
-        public override PacketWriter GetCreationData()
-        {
-            // We do not notify about dead NPCs
-            if (!IsAlive)
-                return null;
-
-            return ServerPacket.CreateNPC(MapCharIndex, Name, Position, BodyInfo.Index);
         }
 
         /// <summary>
@@ -165,12 +163,6 @@ namespace DemoGame.Server
                 byte amount = drop.GetDropAmount();
                 if (amount > 0)
                     DropItem(drop.ItemTemplate, amount);
-            }
-
-            // Remove the NPC from the clients (must be called before IsAlive is set to false!)
-            using (PacketWriter removalData = GetRemovalData())
-            {
-                Map.Send(removalData);
             }
 
             // Start the respawn sequence
@@ -227,12 +219,6 @@ namespace DemoGame.Server
 
             // Set the NPC as alive
             IsAlive = true;
-
-            // Create the NPC on the clients (must be called after IsAlive is set to true!)
-            using (PacketWriter pw = GetCreationData())
-            {
-                Map.Send(pw);
-            }
         }
 
         /// <summary>

@@ -19,7 +19,10 @@ namespace NetGore.Collections
 
         public Type this[string typeName]
         {
-            get { return _nameToType[typeName]; }
+            get 
+            {
+                return _nameToType[typeName]; 
+            }
         }
 
         public string this[Type type]
@@ -97,7 +100,8 @@ namespace NetGore.Collections
 
         protected virtual string GetTypeName(Type type)
         {
-            return type.ToString().Split('.').Last();
+            var name = type.ToString().Split('.').Last();
+            return name;
         }
 
         #region IEnumerable<Type> Members

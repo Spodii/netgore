@@ -71,6 +71,11 @@ namespace DemoGame.Server
             get { return _id; }
         }
 
+        [Obsolete("Do not use this empty constructor on the Server!")]
+        public User()
+        {
+        }
+
         /// <summary>
         /// Gets the Character's Inventory.
         /// </summary>
@@ -204,19 +209,10 @@ namespace DemoGame.Server
             Stats[StatType.Level]++;
 
             // Notify users on the map of the level-up
-            using (PacketWriter pw = ServerPacket.NotifyLevel(MapCharIndex))
+            using (PacketWriter pw = ServerPacket.NotifyLevel((ushort)MapIndex))
             {
                 Send(pw);
             }
-        }
-
-        public override PacketWriter GetCreationData()
-        {
-            // We do not notify about dead users
-            if (!IsAlive)
-                return null;
-
-            return ServerPacket.CreateUser(MapCharIndex, Name, Position, BodyInfo.Index);
         }
 
         /// <summary>
@@ -458,7 +454,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            if (_conn != null)
+            if (_conn != null && _conn.IsConnected)
                 _conn.Send(data);
             else
                 DelayedDispose();

@@ -69,19 +69,19 @@ namespace DemoGame.Server
             _userEnumerator = new SafeEnumerator<User>(_users);
         }
 
-        bool CharAdded(Entity entity)
+        void CharAdded(Entity entity)
         {
             Character character = entity as Character;
             if (character == null)
-                return false;
+                return;
 
             // If the character was already on a map, so remove them from the old map
             if (character.Map != null)
             {
                 const string errmsg = "Character `{0}` [{1}] added to new map, but is already on a map!";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, character, character.MapCharIndex);
-                Debug.Fail(string.Format(errmsg, character, character.MapCharIndex));
+                    log.WarnFormat(errmsg, character, character.MapIndex);
+                Debug.Fail(string.Format(errmsg, character, character.MapIndex));
                 character.Map.RemoveEntity(character);
             }
 
@@ -95,7 +95,7 @@ namespace DemoGame.Server
                 Debug.Assert(!Users.Contains(user), string.Format("Users list already contains `{0}`!", user));
                 _users.Add(user);
                 SendMapData(user);
-                return true;
+                return;
             }
 
             // Added character is a NPC
@@ -104,18 +104,18 @@ namespace DemoGame.Server
             {
                 Debug.Assert(!NPCs.Contains(npc), string.Format("NPCs list already contains `{0}`!", npc));
                 _npcs.Add(npc);
-                return true;
+                return;
             }
 
             // Unknown added character type - not actually an error, but it is likely an oversight
             throw new Exception("Unknown Character type - not a NPC or User...?");
         }
 
-        bool CharRemoved(Entity entity)
+        void CharRemoved(Entity entity)
         {
             Character character = entity as Character;
             if (character == null)
-                return false;
+                return;
 
             User user;
             NPC npc;
@@ -125,7 +125,7 @@ namespace DemoGame.Server
             else if ((npc = character as NPC) != null)
                 _npcs.Remove(npc);
 
-            return true;
+            return;
         }
 
         /// <summary>
@@ -163,28 +163,27 @@ namespace DemoGame.Server
             return item;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates a new WallEntityBase instance.
+        /// </summary>
+        /// <returns>WallEntityBase that is to be used on the map.</returns>
         protected override WallEntityBase CreateWall(IValueReader r)
         {
             return new WallEntity(r);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, allows for additional processing on Entities added to the map.
+        /// This is called after the Entity has finished being added to the map.
+        /// </summary>
+        /// <param name="entity">Entity that was added to the map.</param>
         protected override void EntityAdded(Entity entity)
         {
             base.EntityAdded(entity);
 
-            // Create the entity for everyone on the map
+            // Create the DynamicEntity for everyone on the map
             if (_users.Count > 0)
             {
-                IDynamicEntity dynamicEntity = entity as IDynamicEntity;
-                if (dynamicEntity != null)
-                {
-                    using (PacketWriter creationData = dynamicEntity.GetCreationData())
-                    {
-                        if (creationData != null)
-                            Send(creationData);
-                    }
-                }
-
                 DynamicEntity de = entity as DynamicEntity;
                 if (de != null)
                 {
@@ -199,6 +198,11 @@ namespace DemoGame.Server
             CharAdded(entity);
         }
 
+        /// <summary>
+        /// When overriddeni n the derived class, allows for additional processing on Entities removed from the map.
+        /// This is called after the Entity has finished being removed from the map.
+        /// </summary>
+        /// <param name="entity">Entity that was removed from the map.</param>
         protected override void EntityRemoved(Entity entity)
         {
             base.EntityRemoved(entity);
@@ -224,22 +228,7 @@ namespace DemoGame.Server
         /// <param name="data">BitStream containing the data to send.</param>
         public void Send(BitStream data)
         {
-            if (data == null || data.Length < 1)
-            {
-                const string errmsg = "Attempted to send null or invalid data to the map.";
-                if (log.IsWarnEnabled)
-                    log.Warn(errmsg);
-                Debug.Fail(errmsg);
-                return;
-            }
-
-            foreach (User user in Users)
-            {
-                if (user != null)
-                    user.Send(data);
-                else
-                    Debug.Fail("Null user found in Map's Users list.");
-            }
+            Send(data, null);
         }
 
         /// <summary>
@@ -249,6 +238,7 @@ namespace DemoGame.Server
         /// <param name="skipUser">User to skip sending to.</param>
         public void Send(BitStream data, User skipUser)
         {
+            // Check for valid data
             if (data == null || data.Length < 1)
             {
                 const string errmsg = "Attempted to send null or invalid data to the map.";
@@ -258,6 +248,7 @@ namespace DemoGame.Server
                 return;
             }
 
+            // Send the data to all users in the map
             foreach (User user in Users)
             {
                 if (user != null)
@@ -266,7 +257,12 @@ namespace DemoGame.Server
                         user.Send(data);
                 }
                 else
-                    Debug.Fail("Null user found in Map's Users list.");
+                {
+                    const string errmsg = "Null User found in the Map's User list. This should never happen.";
+                    Debug.Fail(errmsg);
+                    if (log.IsErrorEnabled)
+                        log.Error(errmsg);
+                }
             }
         }
 
@@ -276,26 +272,17 @@ namespace DemoGame.Server
         /// <param name="user">User to send the map data to</param>
         void SendMapData(User user)
         {
+            // NOTE: See: http://netgore.com/bugs/view.php?id=59
+
             // Tell the user to change the map
             using (PacketWriter pw = ServerPacket.SetMap(Index))
             {
                 user.Send(pw);
             }
 
-            // Send characters
-            foreach (Character character in Characters)
-            {
-                using (PacketWriter creationData = character.GetCreationData())
-                {
-                    if (creationData != null)
-                        user.Send(creationData);
-                }
-            }
-
             // Send dynamic entities
             foreach (DynamicEntity dynamicEntity in DynamicEntities)
             {
-                // TODO: Should serialize all DynamicEntities to just one PacketWriter, not one per entity
                 using (PacketWriter pw = ServerPacket.CreateDynamicEntity(dynamicEntity))
                 {
                     user.Send(pw);
@@ -303,7 +290,7 @@ namespace DemoGame.Server
             }
 
             // Now that the user know about the map and every character on it, tell them which one is theirs
-            using (PacketWriter pw = ServerPacket.SetUserChar(user.MapCharIndex))
+            using (PacketWriter pw = ServerPacket.SetUserChar((ushort)user.MapIndex))
             {
                 user.Send(pw);
             }
