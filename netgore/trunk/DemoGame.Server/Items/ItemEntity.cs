@@ -30,7 +30,6 @@ namespace DemoGame.Server
         byte _amount = 1;
         string _description;
         ushort _graphicIndex;
-        Map _map;
         string _name;
         ItemType _type;
         int _value;
