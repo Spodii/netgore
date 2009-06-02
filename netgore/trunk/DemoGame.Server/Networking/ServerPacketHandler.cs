@@ -119,9 +119,12 @@ namespace DemoGame.Server
             if (conn == null)
             {
                 Debug.Fail("conn is null.");
-                log.Error("conn is null.");
+                if (log.IsErrorEnabled)
+                    log.Error("conn is null.");
                 return;
             }
+
+            // TODO: http://netgore.com/bugs/view.php?id=58
 
             // Check that the account is valid, and a valid password was specified
             if (!User.IsValidAccount(DBController.SelectUserPassword, name, password))
