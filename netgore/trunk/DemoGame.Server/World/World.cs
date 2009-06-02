@@ -33,13 +33,6 @@ namespace DemoGame.Server
         int _lastUpdateTime;
 
         /// <summary>
-        /// An IEnumerable of all of the Users. This is used for the Users property, which allows us to
-        /// use the Users property without worrying about thread safety or holding the users dictionary
-        /// in a lock. Make sure this is rebuilt every time the users dictionary is modified.
-        /// </summary>
-        IEnumerable<User> _usersEnumerable;
-
-        /// <summary>
         /// Gets the DBController used by this World.
         /// </summary>
         public DBController DBController
@@ -79,14 +72,6 @@ namespace DemoGame.Server
         public Server Server
         {
             get { return _server; }
-        }
-
-        /// <summary>
-        /// An IEnumerable of all the Users in the world
-        /// </summary>
-        public IEnumerable<User> Users
-        {
-            get { return _usersEnumerable; }
         }
 
         /// <summary>
@@ -149,7 +134,6 @@ namespace DemoGame.Server
                 throw new ArgumentException("User contains a null or invalid name.", "user");
 
             _users.Add(user.Name, user);
-            _usersEnumerable = _users.Values;
         }
 
         /// <summary>
@@ -246,7 +230,7 @@ namespace DemoGame.Server
                 log.Warn("User not bound to connection tag.");
 
             // No user bound to connection, perform manual search
-            User ret = Users.FirstOrDefault(x => x.Conn == conn);
+            User ret = _users.Values.FirstOrDefault(x => x.Conn == conn);
             if (ret == null)
             {
                 const string errmsg = "No user found on socket `{0}`.";
