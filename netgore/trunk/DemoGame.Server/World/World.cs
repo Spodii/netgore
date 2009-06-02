@@ -304,11 +304,10 @@ namespace DemoGame.Server
                 return;
             }
 
-            // Send to all users in the world
-            foreach (User user in Users)
+            // Send to all users in all maps
+            foreach (var map in Maps)
             {
-                if (user != null)
-                    user.Send(data);
+                map.Send(data);
             }
         }
 
