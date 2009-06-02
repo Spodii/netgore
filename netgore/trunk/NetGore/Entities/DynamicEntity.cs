@@ -5,6 +5,22 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore.IO;
 
+/* NOTE ON THE POSITION AND VELOCITY SYNCING:
+ * --------------------------------------------------------------------------------------------------------------
+ * Position and Velocity have to be treated special because they can change so quickly and having them
+ * not be synchronized correctly is probably the most visually obvious (and annoying) issue in any game.
+ * We need to make sure the Position and Velocity are kept up-to-date, but not updated at an insanely
+ * fast rate. Right now, what I have is the following:
+ *  - When ForceUpdatePositionAndVelocity() is called, synchronization will happen immediately
+ *  - When Teleport() is called, if the Position change, synchronization will happen immediately
+ *  - When Velocity changes direction (ie from jumping, falling, stopping, moving), synchronization will happen immediately
+ *  - Every ForceUpdatePositionAndVelocity() results in _syncPnVDupeCounter = _syncPnVDupeTimes
+ *  - The _syncPnVDupeCounter is to ensure the changed data reaches the destination since it will be on
+ *    a lossy network channel
+ *  - While moving, every DynamicEntity will always update at a minimum rate of _syncPnVMoveRate
+ * --------------------------------------------------------------------------------------------------------------
+ */
+
 namespace NetGore
 {
     /// <summary>
@@ -14,6 +30,24 @@ namespace NetGore
     /// </summary>
     public abstract class DynamicEntity : Entity
     {
+        /// <summary>
+        /// How frequently, in milliseconds, the Position and Velocity are synchronized when _syncPnVCount is greater
+        /// than zero. This is to ensure the synchronization message is received and starts off correctly.
+        /// </summary>
+        const int _syncPnVDupeDelay = 100;
+
+        /// <summary>
+        /// How many times the Position and Velocity will be synchronized if the value does not change.
+        /// </summary>
+        const byte _syncPnVDupeTimes = 3;
+
+        /// <summary>
+        /// How frequently, in milliseconds, the Position and Velocity are synchronized when the DynamicEntity is moving.
+        /// This will cause synchronization to happen even when the _syncPnVCount is 0 since it is used to ensure the
+        /// simulation doesn't get too out of sync between the client and server.
+        /// </summary>
+        const int _syncPnVMoveRate = 1000;
+
         /// <summary>
         /// Index of the last PropertySync where SkipNetworkSync is false. See <see cref="_propertySyncs"/>
         /// comments for more details.
@@ -33,9 +67,29 @@ namespace NetGore
         bool _isSynchronized;
 
         /// <summary>
+        /// Last sent Position.
+        /// </summary>
+        Vector2 _lastSentPosition;
+
+        /// <summary>
+        /// Last sent Velocity.
+        /// </summary>
+        Vector2 _lastSentVelocity;
+
+        /// <summary>
         /// Index of the map this DynamicEntity is on.
         /// </summary>
         ushort _mapIndex;
+
+        /// <summary>
+        /// How many more times the Position and Velocity will be synchronized without the values changing.
+        /// </summary>
+        byte _syncPnVDupeCounter;
+
+        /// <summary>
+        /// Game time that the Position and Velocity were last synchronized.
+        /// </summary>
+        int _syncPnVLastTime;
 
         /// <summary>
         /// Synchronizes the CollisionType for the base Entity.
@@ -61,7 +115,7 @@ namespace NetGore
                     return false;
 
                 // Check each property, stopping at the first non-synchronized one
-                for (int i = 0; i < _propertySyncs.Length; i++)
+                for (int i = 0; i <= _lastNetworkSyncIndex; i++)
                 {
                     if (_propertySyncs[i].HasValueChanged())
                     {
@@ -95,7 +149,7 @@ namespace NetGore
         /// <summary>
         /// Synchronizes the Position for the base Entity.
         /// </summary>
-        [SyncValue("Position")]
+        [SyncValue("Position", SkipNetworkSync = true)]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         // ReSharper disable UnusedMember.Local
             protected internal Vector2 PositionSync // ReSharper restore UnusedMember.Local
@@ -119,7 +173,7 @@ namespace NetGore
         /// <summary>
         /// Synchronizes the Velocity for the base Entity.
         /// </summary>
-        [SyncValue("Velocity")]
+        [SyncValue("Velocity", SkipNetworkSync = true)]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         // ReSharper disable UnusedMember.Local
             protected internal Vector2 VelocitySync // ReSharper restore UnusedMember.Local
@@ -207,6 +261,20 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Reads the Position and Velocity from the specified IValueReader. Use in conjunction with
+        /// SerializePositionAndVelocity();
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        public void DeserializePositionAndVelocity(IValueReader reader)
+        {
+            Vector2 position = reader.ReadVector2("Position");
+            Vector2 velocity = reader.ReadVector2("velocity");
+
+            SetPositionRaw(position);
+            SetVelocityRaw(velocity);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional handling of a property that is
         /// being deserialized, immediately after the value has been read from the <paramref name="reader"/>.
         /// </summary>
@@ -216,6 +284,36 @@ namespace NetGore
         protected virtual void DeserializeProprety(IValueReader reader, PropertySyncBase propertySync)
             // ReSharper restore UnusedParameter.Global
         {
+        }
+
+        /// <summary>
+        /// Forces the Position and Velocity to be synchronized.
+        /// </summary>
+        protected void ForceUpdatePositionAndVelocity()
+        {
+            _syncPnVDupeCounter = _syncPnVDupeTimes;
+        }
+
+        /// <summary>
+        /// Checks if the Position and Velocity need to be synchronized.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
+        /// <returns>True if the Position and Velocity need to be synchronized, else false.</returns>
+        public bool NeedSyncPositionAndVelocity(int currentTime)
+        {
+            // Sync instantly when _syncPnVCount == _dupeSyncTimes
+            if (_syncPnVDupeCounter >= _syncPnVDupeTimes)
+                return true;
+
+            // Check for repeated syncs
+            if (_syncPnVDupeCounter > 0 && _syncPnVLastTime + _syncPnVDupeDelay < currentTime)
+                return true;
+
+            // Update no matter what when moving and enough time has elapsed since last send
+            if (Velocity != Vector2.Zero && _syncPnVLastTime + _syncPnVMoveRate < currentTime)
+                return true;
+
+            return false;
         }
 
         /// <summary>
@@ -281,6 +379,25 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Writes the Position and Velocity to the specified IValueWriter. Use in conjuncture with
+        /// DeserializePositionAndVelocity().
+        /// </summary>
+        /// <param name="writer">IValueWriter to write the values to.</param>
+        /// <param name="currentTime">Current game time.</param>
+        public void SerializePositionAndVelocity(IValueWriter writer, int currentTime)
+        {
+            if (_syncPnVDupeCounter > 0)
+                --_syncPnVDupeCounter;
+
+            writer.Write("Position", Position);
+            writer.Write("Velocity", Velocity);
+
+            _lastSentPosition = Position;
+            _lastSentVelocity = Velocity;
+            _syncPnVLastTime = currentTime;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional handling of a property that is
         /// being serialized, immediately after the value has been written to the <paramref name="writer"/>.
         /// </summary>
@@ -290,6 +407,51 @@ namespace NetGore
         protected virtual void SerializeProperty(IValueWriter writer, PropertySyncBase propertySync)
             // ReSharper restore UnusedParameter.Global
         {
+        }
+
+        /// <summary>
+        /// Moves the Entity to a new location instantly.
+        /// </summary>
+        /// <param name="newPosition">New position for the Entity.</param>
+        public override void Teleport(Vector2 newPosition)
+        {
+            base.Teleport(newPosition);
+
+            // If the position has changed, force update
+            if (newPosition != _lastSentPosition)
+                ForceUpdatePositionAndVelocity();
+        }
+
+        /// <summary>
+        /// Updates the Entity
+        /// </summary>
+        /// <param name="imap">Map that the Entity is on</param>
+        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update</param>
+        public override void Update(IMap imap, float deltaTime)
+        {
+            base.Update(imap, deltaTime);
+
+            // If the velocity has changed direction, force update
+            if (VelocityChangedDirection())
+                ForceUpdatePositionAndVelocity();
+        }
+
+        /// <summary>
+        /// Checks if the Velocity has changed direction from the last synchronization.
+        /// </summary>
+        /// <returns>True if the Velocity has changed direction, else false.</returns>
+        bool VelocityChangedDirection()
+        {
+            if ((Velocity.X == 0 && _lastSentVelocity.X != 0) || (Velocity.Y == 0 && _lastSentVelocity.Y != 0))
+                return true;
+
+            if ((Velocity.X < 0 && _lastSentVelocity.X >= 0) || (Velocity.Y < 0 && _lastSentVelocity.Y >= 0))
+                return true;
+
+            if ((Velocity.X > 0 && _lastSentVelocity.X <= 0) || (Velocity.Y > 0 && _lastSentVelocity.Y <= 0))
+                return true;
+
+            return false;
         }
 
         /// <summary>
