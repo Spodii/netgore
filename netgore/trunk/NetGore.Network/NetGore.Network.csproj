@@ -85,6 +85,7 @@
     <Compile Include="Sockets\SocketReceiveData.cs" />
     <Compile Include="Sockets\SocketReceiveEventHandler.cs" />
     <Compile Include="Sockets\TCPSocket.cs" />
+    <Compile Include="Sockets\UDPSocket.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
