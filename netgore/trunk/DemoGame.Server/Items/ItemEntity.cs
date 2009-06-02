@@ -7,9 +7,6 @@ using DemoGame.Extensions;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
-using NetGore.Network;
-
-// TODO: Would be nice to refactor out the Map reference from the ItemEntity completely
 
 namespace DemoGame.Server
 {
@@ -131,14 +128,6 @@ namespace DemoGame.Server
         public int Guid
         {
             get { return _guid; }
-        }
-
-        /// <summary>
-        /// Gets the map that the item is on.
-        /// </summary>
-        public Map Map
-        {
-            get { return _map; }
         }
 
         /// <summary>
@@ -345,13 +334,22 @@ namespace DemoGame.Server
             _dbController = dbController;
         }
 
+        /// <summary>
+        /// Handles when an ItemEntity is resized.
+        /// </summary>
+        /// <param name="entity">ItemEntity that was resized.</param>
+        /// <param name="oldSize">Old ItemEntity size.</param>
         void ItemEntity_OnResize(Entity entity, Vector2 oldSize)
         {
+            Debug.Assert(entity == this, "Why did we receive an ItemEntity_OnResize for another Entity?");
+
+            // Get the sizes as a byte
             byte oldWidth = (byte)oldSize.X;
             byte oldHeight = (byte)oldSize.Y;
             byte width = (byte)entity.CB.Width;
             byte height = (byte)entity.CB.Height;
 
+            // Update the changed sizes
             if (oldWidth != width)
                 SynchronizeField("width", width);
 
@@ -359,6 +357,11 @@ namespace DemoGame.Server
                 SynchronizeField("height", height);
         }
 
+        /// <summary>
+        /// Creates an ItemStats from the given collection of IStats.
+        /// </summary>
+        /// <param name="statValues">IStats to create the ItemStats from.</param>
+        /// <returns>An ItemStats from the given collection of IStats.</returns>
         ItemStats NewItemStats(IEnumerable<IStat> statValues)
         {
             ItemStats ret = new ItemStats(statValues);
@@ -403,8 +406,8 @@ namespace DemoGame.Server
             // Give the item to the character
             if (character.GiveItem(this) == null)
             {
-                // The item was all added to the inventory, so remove from the map and dispose
-                Map.RemoveEntity(this);
+                // The item was all added to the inventory, so dispose of it
+                // The map automatically removes disposed Entities
                 Dispose();
             }
 

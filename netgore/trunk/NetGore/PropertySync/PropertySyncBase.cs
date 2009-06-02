@@ -39,6 +39,15 @@ namespace NetGore
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the Property's value as an object.
+        /// </summary>
+        /// <returns>The Property's value as an object.</returns>
+        public override object GetPropertyValue()
+        {
+            return Value;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the Type of the Delegate for the property's accessor.
         /// </summary>
         /// <returns>The Type of the Delegate for the property's accessor.</returns>
@@ -158,6 +167,12 @@ namespace NetGore
         /// Gets if this Property should be skipped when synchronizing over the network.
         /// </summary>
         public bool SkipNetworkSync { get; private set; }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the Property's value as an object.
+        /// </summary>
+        /// <returns>The Property's value as an object.</returns>
+        public abstract object GetPropertyValue();
 
         /// <summary>
         /// PropertySyncBase static constructor.
