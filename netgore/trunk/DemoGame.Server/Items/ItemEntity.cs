@@ -19,7 +19,7 @@ namespace DemoGame.Server
     /// <summary>
     /// An item on the server.
     /// </summary>
-    public class ItemEntity : ItemEntityBase, IMapControlledEntity
+    public class ItemEntity : ItemEntityBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static DBController _dbController;
@@ -468,14 +468,5 @@ namespace DemoGame.Server
         {
             UpdateItemField.Execute(_guid, field, value);
         }
-
-        #region IMapControlledEntity Members
-
-        void IMapControlledEntity.SetMap(Map newMap)
-        {
-            _map = newMap;
-        }
-
-        #endregion
     }
 }
