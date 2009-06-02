@@ -13,11 +13,10 @@ namespace DemoGame
     public abstract class CharacterEntity : Entity
     {
         Direction _heading = Direction.East;
-
         CharacterState _state = CharacterState.Idle;
 
         /// <summary>
-        /// Gets if the character meets the requirements allowing them to jump
+        /// Gets if the character meets the requirements allowing them to jump.
         /// </summary>
         public bool CanJump
         {
@@ -25,7 +24,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the direction the character is currently facing
+        /// Gets the direction the character is currently facing.
         /// </summary>
         public Direction Heading
         {
@@ -33,7 +32,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets if the character is moving left or right
+        /// Gets if the character is moving left or right.
         /// </summary>
         public bool IsMoving
         {
@@ -41,7 +40,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets if the character is moving to the left
+        /// Gets if the character is moving to the left.
         /// </summary>
         public bool IsMovingLeft
         {
@@ -49,7 +48,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets if the character is moving to the right
+        /// Gets if the character is moving to the right.
         /// </summary>
         public bool IsMovingRight
         {
@@ -57,7 +56,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets or sets the character's unique index for the map they are on
+        /// Gets or sets the character's unique index for the map they are on.
         /// </summary>
         public ushort MapCharIndex { get; set; }
 
@@ -70,10 +69,10 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Handle collision against other entities
+        /// Handles collision against other entities.
         /// </summary>
-        /// <param name="collideWith">Entity the character collided with</param>
-        /// <param name="displacement">Displacement between the character and entity</param>
+        /// <param name="collideWith">Entity the character collided with.</param>
+        /// <param name="displacement">Displacement between the character and entity.</param>
         public override void CollideInto(Entity collideWith, Vector2 displacement)
         {
             // Collision against a wall
@@ -104,13 +103,13 @@ namespace DemoGame
         /// Gets the map interface for the CharacterEntity. If no valid map interface is supplied,
         /// no map-based collision detection and updating can be used.
         /// </summary>
-        /// <returns>Map interface for the CharacterEntity</returns>
+        /// <returns>Map interface for the CharacterEntity.</returns>
         protected abstract IMap GetIMap();
 
         /// <summary>
-        /// Sets the character's heading
+        /// Sets the character's heading.
         /// </summary>
-        /// <param name="newHeading">New heading for the character</param>
+        /// <param name="newHeading">New heading for the character.</param>
         public virtual void SetHeading(Direction newHeading)
         {
             _heading = newHeading;
@@ -141,7 +140,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Perform character updating post-collision
+        /// Perform character updating post-collision.
         /// </summary>
         public override void Update(IMap imap, float deltaTime)
         {
@@ -174,7 +173,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Performs the pre-collision detection updating
+        /// Performs the pre-collision detection updating.
         /// </summary>
         protected virtual void UpdatePreCollision(float deltaTime)
         {
@@ -183,7 +182,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Updates the character's state
+        /// Updates the character's state.
         /// </summary>
         void UpdateState()
         {
