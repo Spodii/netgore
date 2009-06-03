@@ -278,6 +278,16 @@ namespace DemoGame.Server
         /// <param name="data">BitStream containing the data to send.</param>
         public void Send(BitStream data)
         {
+            Send(data, true);
+        }
+
+        /// <summary>
+        /// Send a message to every user in the world. This method is thread-safe.
+        /// </summary>
+        /// <param name="data">BitStream containing the data to send.</param>
+        /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
+        public void Send(BitStream data, bool reliable)
+        {
             // Ensure the data is not null and of a valid length
             if (data == null || data.Length < 1)
             {
@@ -291,7 +301,7 @@ namespace DemoGame.Server
             // Send to all users in all maps
             foreach (var map in Maps)
             {
-                map.Send(data);
+                map.Send(data, reliable);
             }
         }
 
