@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
+using log4net;
 
 namespace NetGore.Network
 {
@@ -23,10 +25,7 @@ namespace NetGore.Network
         /// </summary>
         const int _maxPacketSize = 1024 - _headerSize;
 
-        /// <summary>
-        /// The port used by this UDPSocket.
-        /// </summary>
-        int _port;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Buffer for receiving data.
@@ -47,6 +46,11 @@ namespace NetGore.Network
         /// EndPoint the Socket binded to.
         /// </summary>
         EndPoint _bindEndPoint;
+
+        /// <summary>
+        /// The port used by this UDPSocket.
+        /// </summary>
+        int _port;
 
         /// <summary>
         /// EndPoint for the last packet received.
@@ -84,6 +88,40 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Changes the Port for this UDPSocket.
+        /// </summary>
+        /// <returns>Port that the UDPSocket bound to.</returns>
+        public int Bind()
+        {
+            // NOTE: This will probably crash if the port is already set
+
+            // Close down the old connection
+            if (_socket.IsBound)
+                _socket.Disconnect(true);
+
+            // Bind
+            _bindEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            _socket.Bind(_bindEndPoint);
+
+            // Get the port
+            EndPoint endPoint = _socket.LocalEndPoint;
+            if (endPoint == null)
+            {
+                const string errmsg = "Failed to bind the UDPSocket!";
+                if (log.IsFatalEnabled)
+                    log.Fatal(errmsg);
+                Debug.Fail(errmsg);
+                throw new Exception(errmsg);
+            }
+            _port = ((IPEndPoint)endPoint).Port;
+
+            // Begin receiving
+            BeginReceiveFrom();
+
+            return _port;
+        }
+
+        /// <summary>
         /// Gets the queued data received by this UDPSocket.
         /// </summary>
         /// <returns>The queued data received by this UDPSocket, or null if empty.</returns>
@@ -102,29 +140,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Changes the Port for this UDPSocket.
-        /// </summary>
-        /// <returns>Port that the UDPSocket bound to.</returns>
-        public int Bind()
-        {
-            // NOTE: This will probably crash if the port is already set
-
-            // Close down the old connection
-            if (_socket.IsBound)
-                _socket.Disconnect(true);
-
-            // Bind to the new port
-            _bindEndPoint = new IPEndPoint(IPAddress.Any, 0);
-            _socket.Bind(_bindEndPoint);
-            _port = ((IPEndPoint)_socket.LocalEndPoint).Port; // TODO: ...
-
-            // Begin receiving
-            BeginReceiveFrom();
-
-            return _port;
-        }
-
-        /// <summary>
         /// Callback for ReceiveFrom.
         /// </summary>
         /// <param name="result">Async result.</param>
@@ -138,10 +153,15 @@ namespace NetGore.Network
                 int bytesRead = _socket.EndReceiveFrom(result, ref _remoteEndPoint);
                 received = new byte[bytesRead];
                 Buffer.BlockCopy(_receiveBuffer, 0, received, 0, bytesRead);
+
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Received {0} bytes from {1}", bytesRead, _remoteEndPoint);
             }
             catch (SocketException e)
             {
-                // TODO: Handle
+                if (log.IsErrorEnabled)
+                    log.Error(e);
+                Debug.Fail(e.ToString());
             }
             finally
             {
@@ -150,14 +170,12 @@ namespace NetGore.Network
             }
 
             // Push the received data into the receive queue
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
             if (received != null)
+// ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 lock (_receiveQueue)
                     _receiveQueue.Enqueue(received);
-            }
-            else
-            {
-                // TODO: Failed to receive error message
             }
         }
 
@@ -178,6 +196,9 @@ namespace NetGore.Network
 
             data = AddHeader(data, (ushort)length);
             _socket.SendTo(data, data.Length + _headerSize, SocketFlags.None, endPoint);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Sent `{0}` bytes to `{1}`", length, endPoint);
         }
 
         /// <summary>
@@ -190,6 +211,8 @@ namespace NetGore.Network
             Send(data, data.Length, endPoint);
         }
 
+        #region IDisposable Members
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -199,5 +222,7 @@ namespace NetGore.Network
             if (_socket != null)
                 _socket.Close();
         }
+
+        #endregion
     }
 }
