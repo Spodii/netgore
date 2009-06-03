@@ -449,6 +449,16 @@ namespace DemoGame.Server
         /// <param name="data">BitStream containing the data to send to the User.</param>
         public void Send(BitStream data)
         {
+            Send(data, true);
+        }
+
+        /// <summary>
+        /// Sends data to the User. This method is thread-safe.
+        /// </summary>
+        /// <param name="data">BitStream containing the data to send to the User.</param>
+        /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
+        public void Send(BitStream data, bool reliable)
+        {
             if (data == null)
             {
                 Debug.Fail("data is null.");
@@ -456,7 +466,7 @@ namespace DemoGame.Server
             }
 
             if (_conn != null && _conn.IsConnected)
-                _conn.Send(data);
+                _conn.Send(data, reliable);
             else
                 DelayedDispose();
         }
