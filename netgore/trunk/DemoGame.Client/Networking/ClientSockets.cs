@@ -15,7 +15,7 @@ namespace DemoGame.Client
     public class ClientSockets : SocketManager, IGetTime, ISocketSender
     {
         readonly ClientPacketHandler _packetHandler;
-        TCPSocket _conn = null;
+        IIPSocket _conn = null;
 
         /// <summary>
         /// Gets the ClientPacketHandler used to handle data from this ClientSockets.
@@ -28,7 +28,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the TCPSocket used for the connection to the server if a connection is established.
         /// </summary>
-        public TCPSocket Socket
+        public IIPSocket Socket
         {
             get { return _conn; }
         }
@@ -61,7 +61,7 @@ namespace DemoGame.Client
         /// Sets the active connection when the connection is made so it can be used
         /// </summary>
         /// <param name="conn">Incoming connection</param>
-        void onConnect(TCPSocket conn)
+        void onConnect(IIPSocket conn)
         {
             _conn = conn;
         }

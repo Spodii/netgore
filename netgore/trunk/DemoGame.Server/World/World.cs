@@ -216,7 +216,7 @@ namespace DemoGame.Server
         /// <param name="conn">Client connection information</param>
         /// <param name="failRecover">If true, will try to find the User even if the TCPSocket isn't properly bound to the User.</param>
         /// <returns>User bound to the connection if any, else null</returns>
-        public User GetUser(TCPSocket conn, bool failRecover)
+        public User GetUser(IIPSocket conn, bool failRecover)
         {
             // Check for a user bound to the connection
             if (conn.Tag != null)
@@ -248,7 +248,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="conn">Client connection information</param>
         /// <returns>User bound to the connection if any, else null</returns>
-        public User GetUser(TCPSocket conn)
+        public User GetUser(IIPSocket conn)
         {
             return GetUser(conn, true);
         }

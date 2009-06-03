@@ -131,7 +131,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.CharAttack)]
-        void RecvCharAttack(TCPSocket conn, BitStream r)
+        void RecvCharAttack(IIPSocket conn, BitStream r)
         {
             ushort mapCharIndex = r.ReadUShort();
 
@@ -143,7 +143,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.CharDamage)]
-        void RecvCharDamage(TCPSocket conn, BitStream r)
+        void RecvCharDamage(IIPSocket conn, BitStream r)
         {
             ushort mapCharIndex = r.ReadUShort();
             int damage = r.ReadInt();
@@ -156,14 +156,14 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.Chat)]
-        void RecvChat(TCPSocket conn, BitStream r)
+        void RecvChat(IIPSocket conn, BitStream r)
         {
             string text = r.ReadString(GameData.MaxServerSayLength);
             GameplayScreen.AppendToChatOutput(text);
         }
 
         [MessageHandler((byte)ServerPacketID.ChatSay)]
-        void RecvChatSay(TCPSocket conn, BitStream r)
+        void RecvChatSay(IIPSocket conn, BitStream r)
         {
             string name = r.ReadString(GameData.MaxServerSayNameLength);
             ushort mapCharIndex = r.ReadUShort();
@@ -174,7 +174,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.UpdateVelocityAndPosition)]
-        void RecvUpdateVelocityAndPosition(TCPSocket conn, BitStream r)
+        void RecvUpdateVelocityAndPosition(IIPSocket conn, BitStream r)
         {
             ushort mapEntityIndex = r.ReadUShort();
 
@@ -193,7 +193,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
-        void RecvCreateDynamicEntity(TCPSocket conn, BitStream r)
+        void RecvCreateDynamicEntity(IIPSocket conn, BitStream r)
         {
             ushort mapEntityIndex = r.ReadUShort();
             DynamicEntity dynamicEntity = DynamicEntityFactory.Read(r);
@@ -212,21 +212,21 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.InvalidAccount)]
-        void RecvInvalidAccount(TCPSocket conn, BitStream r)
+        void RecvInvalidAccount(IIPSocket conn, BitStream r)
         {
             if (OnInvalidAccount != null)
                 OnInvalidAccount(conn);
         }
 
         [MessageHandler((byte)ServerPacketID.Login)]
-        void RecvLogin(TCPSocket conn, BitStream r)
+        void RecvLogin(IIPSocket conn, BitStream r)
         {
             if (OnLogin != null)
                 OnLogin(conn);
         }
 
         [MessageHandler((byte)ServerPacketID.NotifyExpCash)]
-        void RecvNotifyExpCash(TCPSocket conn, BitStream r)
+        void RecvNotifyExpCash(IIPSocket conn, BitStream r)
         {
             int exp = r.ReadInt();
             int cash = r.ReadInt();
@@ -243,7 +243,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.NotifyLevel)]
-        void RecvNotifyLevel(TCPSocket conn, BitStream r)
+        void RecvNotifyLevel(IIPSocket conn, BitStream r)
         {
             ushort mapCharIndex = r.ReadUShort();
 
@@ -256,7 +256,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.NotifyGetItem)]
-        void RecvNotifyPickup(TCPSocket conn, BitStream r)
+        void RecvNotifyPickup(IIPSocket conn, BitStream r)
         {
             string name = r.ReadString();
             byte amount = r.ReadByte();
@@ -271,13 +271,13 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.Ping)]
-        void RecvPing(TCPSocket conn, BitStream r)
+        void RecvPing(IIPSocket conn, BitStream r)
         {
             _pingWatch.Stop();
         }
 
         [MessageHandler((byte)ServerPacketID.RemoveDynamicEntity)]
-        void RecvRemoveDynamicEntity(TCPSocket conn, BitStream r)
+        void RecvRemoveDynamicEntity(IIPSocket conn, BitStream r)
         {
             ushort mapIndex = r.ReadUShort();
             DynamicEntity dynamicEntity = Map.GetDynamicEntity(mapIndex);
@@ -298,7 +298,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.SendItemInfo)]
-        void RecvSendItemInfo(TCPSocket conn, BitStream r)
+        void RecvSendItemInfo(IIPSocket conn, BitStream r)
         {
             string name = r.ReadString();
             string desc = r.ReadString();
@@ -313,7 +313,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.SendMessage)]
-        void RecvSendMessage(TCPSocket conn, BitStream r)
+        void RecvSendMessage(IIPSocket conn, BitStream r)
         {
             byte messageID = r.ReadByte();
             byte paramCount = r.ReadByte();
@@ -335,7 +335,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.SetInventorySlot)]
-        void RecvSetInventorySlot(TCPSocket conn, BitStream r)
+        void RecvSetInventorySlot(IIPSocket conn, BitStream r)
         {
             byte slot = r.ReadByte();
             ushort graphic = r.ReadUShort();
@@ -345,7 +345,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.SetMap)]
-        void RecvSetMap(TCPSocket conn, BitStream r)
+        void RecvSetMap(IIPSocket conn, BitStream r)
         {
             ushort mapIndex = r.ReadUShort();
 
@@ -361,14 +361,14 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.SetUserChar)]
-        void RecvSetUserChar(TCPSocket conn, BitStream r)
+        void RecvSetUserChar(IIPSocket conn, BitStream r)
         {
             ushort mapCharIndex = r.ReadUShort();
             World.UserCharIndex = mapCharIndex;
         }
 
         [MessageHandler((byte)ServerPacketID.SynchronizeDynamicEntity)]
-        void RecvSynchronizeDynamicEntity(TCPSocket conn, BitStream r)
+        void RecvSynchronizeDynamicEntity(IIPSocket conn, BitStream r)
         {
             ushort entityMapIndex = r.ReadUShort();
 
@@ -377,7 +377,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.UpdateEquipmentSlot)]
-        void RecvUpdateEquipmentSlot(TCPSocket conn, BitStream r)
+        void RecvUpdateEquipmentSlot(IIPSocket conn, BitStream r)
         {
             EquipmentSlot slot = r.ReadEquipmentSlot();
             bool hasValue = r.ReadBool();
@@ -392,7 +392,7 @@ namespace DemoGame.Client
         }
 
         [MessageHandler((byte)ServerPacketID.UpdateStat)]
-        void RecvUpdateStat(TCPSocket conn, BitStream r)
+        void RecvUpdateStat(IIPSocket conn, BitStream r)
         {
             r.ReadStat(UserStats);
         }
@@ -426,7 +426,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="socket">Socket the data came from.</param>
         /// <param name="data">Data to process.</param>
-        public void Process(TCPSocket socket, byte[] data)
+        public void Process(IIPSocket socket, byte[] data)
         {
             _ppManager.Process(socket, data);
         }

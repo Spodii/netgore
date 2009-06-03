@@ -99,11 +99,11 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Handles received data and forwards it to the corresponding MessageProcessors
+        /// Handles received data and forwards it to the corresponding MessageProcessors.
         /// </summary>
-        /// <param name="socket">Socket the data came from</param>
-        /// <param name="data">Data to process</param>
-        public void Process(TCPSocket socket, byte[] data)
+        /// <param name="socket">Socket the data came from.</param>
+        /// <param name="data">Data to process.</param>
+        public void Process(IIPSocket socket, byte[] data)
         {
             if (socket == null)
             {

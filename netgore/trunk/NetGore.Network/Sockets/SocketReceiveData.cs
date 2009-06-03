@@ -18,14 +18,14 @@ namespace NetGore.Network
         /// <summary>
         /// Socket the data came from
         /// </summary>
-        public readonly TCPSocket Socket;
+        public readonly IIPSocket Socket;
 
         /// <summary>
         /// SocketReceiveData structure
         /// </summary>
         /// <param name="socket">Socket the data came from</param>
         /// <param name="data">Data received</param>
-        public SocketReceiveData(TCPSocket socket, byte[][] data)
+        public SocketReceiveData(IIPSocket socket, byte[][] data)
         {
             Socket = socket;
             Data = data;
