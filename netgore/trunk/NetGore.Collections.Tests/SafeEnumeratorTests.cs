@@ -78,13 +78,13 @@ namespace NetGore.Collections.Tests
         /// <param name="source">Source to test.</param>
         static void SkipEnumerateTest(IEnumerable<object> source)
         {
-            int expectedCount= source.Count(x => x != null);
+            int expectedCount = source.Count(x => x != null);
             var se = new SafeEnumerator<object>(source, true);
 
             for (int i = 0; i < 3; i++)
             {
                 int count = 0;
-                foreach (var s in se)
+                foreach (object s in se)
                 {
                     Assert.NotNull(s);
                     count++;
@@ -113,6 +113,28 @@ namespace NetGore.Collections.Tests
             }
 #pragma warning restore 168
             Assert.AreEqual(se.Count() * se.Count(), sum);
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of IEnumerables of objects, where some are null, some are not.
+        /// </summary>
+        /// <returns>An IEnumerable of IEnumerables of objects.</returns>
+        static IEnumerable<IEnumerable<object>> GetObjectEnumerables()
+        {
+            Random r = new Random();
+
+            for (int i = 0; i < 100; i++)
+            {
+                var l = new List<object>(10);
+                for (int j = 0; j < r.Next(1, 8); j++)
+                {
+                    if (r.Next(2) == 0)
+                        l.Add(null);
+                    else
+                        l.Add(new object());
+                }
+                yield return l;
+            }
         }
 
         [Test]
@@ -169,59 +191,6 @@ namespace NetGore.Collections.Tests
             EnumerateTest(Enumerable.Range(0, 100).ToList());
         }
 
-        /// <summary>
-        /// Gets an IEnumerable of IEnumerables of objects, where some are null, some are not.
-        /// </summary>
-        /// <returns>An IEnumerable of IEnumerables of objects.</returns>
-        static IEnumerable<IEnumerable<object>> GetObjectEnumerables()
-        {
-            Random r = new Random();
-
-            for (int i = 0; i < 100; i++)
-            {
-                List<object> l = new List<object>(10);
-                for (int j = 0; j < r.Next(1, 8); j++)
-                {
-                    if (r.Next(2) == 0)
-                        l.Add(null);
-                    else
-                        l.Add(new object());
-                }
-                yield return l;
-            }
-        }
-
-        [Test]
-        public void SkipEnumerateListTest()
-        {
-            foreach (var l in GetObjectEnumerables())
-                SkipEnumerateTest(l.ToList());
-        }
-
-        [Test]
-        public void SkipEnumerateArrayTest()
-        {
-            foreach (var l in GetObjectEnumerables())
-                SkipEnumerateTest(l.ToArray());
-        }
-
-        [Test]
-        public void SkipDefaultDefaultValueTest()
-        {
-            SafeEnumerator<object> o = new SafeEnumerator<object>(new object[] { });
-            Assert.IsTrue(o.SkipDefault);
-
-            SafeEnumerator<int> v = new SafeEnumerator<int>(new int[] { });
-            Assert.IsFalse(v.SkipDefault);
-        }
-
-        [Test]
-        public void SkipEnumerateDArrayTest()
-        {
-            foreach (var l in GetObjectEnumerables())
-                SkipEnumerateTest(new DArray<object>(l, false));
-        }
-
         [Test]
         public void EnumerateDArrayTest()
         {
@@ -262,6 +231,43 @@ namespace NetGore.Collections.Tests
         public void EnumerateTSListTest()
         {
             EnumerateTest(new TSList<int>(Enumerable.Range(0, 100)));
+        }
+
+        [Test]
+        public void SkipDefaultDefaultValueTest()
+        {
+            var o = new SafeEnumerator<object>(new object[] { });
+            Assert.IsTrue(o.SkipDefault);
+
+            var v = new SafeEnumerator<int>(new int[] { });
+            Assert.IsFalse(v.SkipDefault);
+        }
+
+        [Test]
+        public void SkipEnumerateArrayTest()
+        {
+            foreach (var l in GetObjectEnumerables())
+            {
+                SkipEnumerateTest(l.ToArray());
+            }
+        }
+
+        [Test]
+        public void SkipEnumerateDArrayTest()
+        {
+            foreach (var l in GetObjectEnumerables())
+            {
+                SkipEnumerateTest(new DArray<object>(l, false));
+            }
+        }
+
+        [Test]
+        public void SkipEnumerateListTest()
+        {
+            foreach (var l in GetObjectEnumerables())
+            {
+                SkipEnumerateTest(l.ToList());
+            }
         }
     }
 }

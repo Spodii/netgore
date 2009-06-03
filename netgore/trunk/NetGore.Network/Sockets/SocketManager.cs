@@ -16,9 +16,8 @@ namespace NetGore.Network
     /// </summary>
     public class SocketManager : IDisposable
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         const int _udpPort = 61100; // HACK: Should be able to set the port, not have a constant
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// List of all the current connections.
@@ -30,12 +29,12 @@ namespace NetGore.Network
         /// </summary>
         readonly object _connectionsLock = new object();
 
-        bool _disposed;
-
         /// <summary>
         /// The UDPSocket used by all connections.
         /// </summary>
         readonly UDPSocket _udpSocket = new UDPSocket();
+
+        bool _disposed;
 
         /// <summary>
         /// Socket for accepting connections
@@ -98,6 +97,11 @@ namespace NetGore.Network
                 if (log.IsInfoEnabled)
                     log.InfoFormat("MaxDupeIP changed to {0}", _maxDupeIP);
             }
+        }
+
+        public int BindUDP()
+        {
+            return _udpSocket.Bind();
         }
 
         /// <summary>
@@ -171,7 +175,7 @@ namespace NetGore.Network
             int ret = 0;
             string targetIP = targetConn.Address.Split(':')[0];
 
-            foreach (var ipSocket in Connections)
+            foreach (IPSocket ipSocket in Connections)
             {
                 // Compare the two IPs (we must chop off the port)
                 if (targetIP == ipSocket.Address.Split(':')[0])
@@ -195,7 +199,7 @@ namespace NetGore.Network
             }
 
             // Remove each of the connections
-            foreach (var ipSocket in connsToRemove)
+            foreach (IPSocket ipSocket in connsToRemove)
             {
                 ipSocket.TCPSocket.Dispose();
             }
@@ -244,7 +248,7 @@ namespace NetGore.Network
             lock (_connectionsLock)
             {
                 // Loop through each socket
-                foreach (var conn in Connections)
+                foreach (IPSocket conn in Connections)
                 {
                     // Get the queued receive data from the socket, continue if has data
                     var data = conn.GetRecvData();
@@ -261,11 +265,6 @@ namespace NetGore.Network
             }
 
             return ret;
-        }
-
-        public int BindUDP()
-        {
-            return _udpSocket.Bind();
         }
 
         /// <summary>
@@ -301,11 +300,11 @@ namespace NetGore.Network
         /// <param name="match">The System.Predicate delegate that defines the conditions of the elements to remove.</param>
         public void Remove(Func<IIPSocket, bool> match)
         {
-            Stack<IPSocket> connsToRemove = new Stack<IPSocket>(8);
+            var connsToRemove = new Stack<IPSocket>(8);
 
             lock (_connectionsLock)
             {
-                foreach (var ipSocket in _connections)
+                foreach (IPSocket ipSocket in _connections)
                 {
                     if (match(ipSocket))
                         connsToRemove.Push(ipSocket);
@@ -320,7 +319,7 @@ namespace NetGore.Network
                 return;
 
             // Call dispose on all the connections being removed
-            foreach (var conn in connsToRemove)
+            foreach (IPSocket conn in connsToRemove)
             {
                 conn.Dispose();
             }

@@ -149,7 +149,7 @@ namespace DemoGame.Server
         protected Character()
         {
             throw new MethodAccessException("Character's empty constructor should never be used on the server since the " +
-                "server never needs to deserialize a DynamicEntity.");
+                                            "server never needs to deserialize a DynamicEntity.");
         }
 
         /// <summary>

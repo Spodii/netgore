@@ -71,11 +71,6 @@ namespace DemoGame.Server
             get { return _id; }
         }
 
-        [Obsolete("Do not use this empty constructor on the Server!")]
-        public User()
-        {
-        }
-
         /// <summary>
         /// Gets the Character's Inventory.
         /// </summary>
@@ -89,14 +84,18 @@ namespace DemoGame.Server
             get { return _stats; }
         }
 
+        [Obsolete("Do not use this empty constructor on the Server!")]
+        public User()
+        {
+        }
+
         /// <summary>
         /// User constructor.
         /// </summary>
         /// <param name="conn">Connection to the user's client.</param>
         /// <param name="world">World the user belongs to.</param>
         /// <param name="name">User's name.</param>
-        public User(IIPSocket conn, World world, string name)
-            : base(world)
+        public User(IIPSocket conn, World world, string name) : base(world)
         {
             if (log.IsInfoEnabled)
                 log.InfoFormat("User {0} logged in", name);

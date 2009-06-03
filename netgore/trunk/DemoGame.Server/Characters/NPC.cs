@@ -5,7 +5,6 @@ using System.Linq;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using NetGore;
-using NetGore.Network;
 
 namespace DemoGame.Server
 {

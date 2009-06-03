@@ -102,7 +102,7 @@ namespace DemoGame.Server
                 if (character == null)
                 {
                     const string errmsg =
-                        "Shouldn't even run into a null Character from Actor.Map.Characters since the underlying " + 
+                        "Shouldn't even run into a null Character from Actor.Map.Characters since the underlying " +
                         "type (DArray or List) should not return removed elements when enumerating.";
                     if (log.IsErrorEnabled)
                         log.Error(errmsg);

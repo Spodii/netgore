@@ -16,15 +16,15 @@ namespace DemoGame.Client
     /// </summary>
     public class Character : CharacterEntity, IGetTime, IDrawableEntity
     {
-        Map _map;
         readonly MeanStack<Vector2> _ms = new MeanStack<Vector2>(3, MeanStackExtras.Mean);
-        EventHandler _onLoopHandler;
-        SkeletonAnimation _skelAnim = null;
-        SkeletonManager _skelManager;
 
         string _currSkelSet;
         Vector2 _drawPos;
         CharacterState _lastState = CharacterState.Idle;
+        Map _map;
+        EventHandler _onLoopHandler;
+        SkeletonAnimation _skelAnim = null;
+        SkeletonManager _skelManager;
 
         /// <summary>
         /// Gets the location at which the character is to be drawn
@@ -44,27 +44,6 @@ namespace DemoGame.Client
 
         public Character()
         {
-        }
-
-        protected override void AfterCreation()
-        {
-            // HACK: ...
-            base.AfterCreation();
-
-            _ms.Fill(Position);
-        }
-
-        public void Initialize(Map map, SkeletonManager skelManager)
-        {
-            // HACK: This is quite a dirty way to do this
-            _map = map;
-            _skelManager = skelManager;
-            _onLoopHandler = skelAnim_OnLoop;
-
-            // Set up the skeleton
-            _currSkelSet = BodyInfo.Stand;
-            _skelAnim = new SkeletonAnimation(GetTime(), _skelManager.LoadSet(_currSkelSet));
-            _skelAnim.SkeletonBody = new SkeletonBody(_skelManager.LoadBodyInfo(BodyInfo.Body), _skelAnim.Skeleton);
         }
 
         /// <summary>
@@ -90,6 +69,14 @@ namespace DemoGame.Client
             // Set the collision box and position
             CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
             Position = position;
+        }
+
+        protected override void AfterCreation()
+        {
+            // HACK: ...
+            base.AfterCreation();
+
+            _ms.Fill(Position);
         }
 
         /// <summary>
@@ -135,6 +122,19 @@ namespace DemoGame.Client
         protected override IMap GetIMap()
         {
             return _map;
+        }
+
+        public void Initialize(Map map, SkeletonManager skelManager)
+        {
+            // HACK: This is quite a dirty way to do this
+            _map = map;
+            _skelManager = skelManager;
+            _onLoopHandler = skelAnim_OnLoop;
+
+            // Set up the skeleton
+            _currSkelSet = BodyInfo.Stand;
+            _skelAnim = new SkeletonAnimation(GetTime(), _skelManager.LoadSet(_currSkelSet));
+            _skelAnim.SkeletonBody = new SkeletonBody(_skelManager.LoadBodyInfo(BodyInfo.Body), _skelAnim.Skeleton);
         }
 
         /// <summary>

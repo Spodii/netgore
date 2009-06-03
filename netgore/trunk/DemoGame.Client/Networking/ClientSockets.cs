@@ -15,8 +15,8 @@ namespace DemoGame.Client
     public class ClientSockets : SocketManager, IGetTime, ISocketSender
     {
         readonly ClientPacketHandler _packetHandler;
-        IIPSocket _conn = null;
         readonly int _udpPort;
+        IIPSocket _conn = null;
 
         /// <summary>
         /// Gets the ClientPacketHandler used to handle data from this ClientSockets.
@@ -68,10 +68,10 @@ namespace DemoGame.Client
         void onConnect(IIPSocket conn)
         {
             _conn = conn;
-            
+
             // Make sure the very first thing we send is the Client's UDP port so the server knows what
             // port to use when sending the data
-            using (var pw = ClientPacket.SetUDPPort(_udpPort))
+            using (PacketWriter pw = ClientPacket.SetUDPPort(_udpPort))
             {
                 Send(pw);
             }

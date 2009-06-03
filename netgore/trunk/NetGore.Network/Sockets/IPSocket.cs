@@ -14,18 +14,18 @@ namespace NetGore.Network
     /// </summary>
     public class IPSocket : IIPSocket
     {
+        /// <summary>
+        /// Value given to the remote UDP port when it has not been set.
+        /// </summary>
+        const int _unsetRemoteUDPPortValue = 0;
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly TCPSocket _tcpSocket;
         readonly UDPSocket _udpSocket;
         bool _disposed = false;
-        EndPoint _udpEndPoint;
         int _remoteUDPPort = _unsetRemoteUDPPortValue;
-
-        /// <summary>
-        /// Value given to the remote UDP port when it has not been set.
-        /// </summary>
-        const int _unsetRemoteUDPPortValue = 0;
+        EndPoint _udpEndPoint;
 
         /// <summary>
         /// Gets the TCPSocket used in this IPSocket.
@@ -43,6 +43,19 @@ namespace NetGore.Network
             get { return _udpSocket; }
         }
 
+        public IPSocket(TCPSocket tcpSocket, UDPSocket udpSocket)
+        {
+            if (tcpSocket == null)
+                throw new ArgumentNullException("tcpSocket");
+            if (udpSocket == null)
+                throw new ArgumentNullException("udpSocket");
+
+            _tcpSocket = tcpSocket;
+            _udpSocket = udpSocket;
+
+            _tcpSocket.Tag = this;
+        }
+
         /// <summary>
         /// Creates an EndPoint.
         /// </summary>
@@ -58,19 +71,6 @@ namespace NetGore.Network
 
             IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
             return endPoint;
-        }
-
-        public IPSocket(TCPSocket tcpSocket, UDPSocket udpSocket)
-        {
-            if (tcpSocket == null)
-                throw new ArgumentNullException("tcpSocket");
-            if (udpSocket == null)
-                throw new ArgumentNullException("udpSocket");
-
-            _tcpSocket = tcpSocket;
-            _udpSocket = udpSocket;
-
-            _tcpSocket.Tag = this;
         }
 
         /// <summary>

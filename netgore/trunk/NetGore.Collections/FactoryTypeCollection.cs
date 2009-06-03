@@ -19,10 +19,7 @@ namespace NetGore.Collections
 
         public Type this[string typeName]
         {
-            get 
-            {
-                return _nameToType[typeName]; 
-            }
+            get { return _nameToType[typeName]; }
         }
 
         public string this[Type type]
@@ -86,7 +83,7 @@ namespace NetGore.Collections
             return types;
         }
 
-        static public object GetTypeInstance(Type type)
+        public static object GetTypeInstance(Type type)
         {
             object instance = Activator.CreateInstance(type, true);
             return instance;
@@ -100,7 +97,7 @@ namespace NetGore.Collections
 
         protected virtual string GetTypeName(Type type)
         {
-            var name = type.ToString().Split('.').Last();
+            string name = type.ToString().Split('.').Last();
             return name;
         }
 

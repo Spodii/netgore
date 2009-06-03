@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 
 namespace NetGore.Network
@@ -13,9 +13,9 @@ namespace NetGore.Network
     public interface IIPSocket : IDisposable
     {
         /// <summary>
-        /// Gets the time that this IIPSocket was created.
+        /// Gets the IP address string that this IIPSocket is connected to.
         /// </summary>
-        int TimeCreated { get; }
+        string Address { get; }
 
         /// <summary>
         /// Gets if this IIPSocket is currently connected.
@@ -23,15 +23,15 @@ namespace NetGore.Network
         bool IsConnected { get; }
 
         /// <summary>
-        /// Gets the IP address string that this IIPSocket is connected to.
-        /// </summary>
-        string Address { get; }
-
-        /// <summary>
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag
         /// is not used in any way by the IIPSocket itself.
         /// </summary>
         object Tag { get; set; }
+
+        /// <summary>
+        /// Gets the time that this IIPSocket was created.
+        /// </summary>
+        int TimeCreated { get; }
 
         /// <summary>
         /// Gets the queue of received data.
@@ -46,12 +46,6 @@ namespace NetGore.Network
         void Send(BitStream data);
 
         /// <summary>
-        /// Sets the port used to communicate with the remote connection over an unreliable stream.
-        /// </summary>
-        /// <param name="port">Port for the unreliable stream.</param>
-        void SetRemoteUnreliablePort(int port);
-
-        /// <summary>
         /// Sends data over a stream.
         /// </summary>
         /// <param name="data">Data to send.</param>
@@ -59,5 +53,11 @@ namespace NetGore.Network
         /// the data may be received out of order, or not at all. All data is guarenteed to be received in full if
         /// it is received.</param>
         void Send(BitStream data, bool reliable);
+
+        /// <summary>
+        /// Sets the port used to communicate with the remote connection over an unreliable stream.
+        /// </summary>
+        /// <param name="port">Port for the unreliable stream.</param>
+        void SetRemoteUnreliablePort(int port);
     }
 }

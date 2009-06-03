@@ -16,12 +16,17 @@ namespace DemoGame
         CharacterState _state = CharacterState.Idle;
 
         /// <summary>
+        /// Gets or sets (protected) the CharacterEntity's BodyInfo.
+        /// </summary>
+        public BodyInfo BodyInfo { get; protected set; }
+
+        /// <summary>
         /// Synchronizes the BodyInfo index for the CharacterEntity.
         /// </summary>
         [SyncValue("BodyIndex")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         // ReSharper disable UnusedMember.Local
-        protected internal ushort BodyInfoIndex // ReSharper restore UnusedMember.Local
+            protected internal ushort BodyInfoIndex // ReSharper restore UnusedMember.Local
         {
             get { return BodyInfo.Index; }
             set { BodyInfo = GameData.Body(value); }
@@ -34,11 +39,6 @@ namespace DemoGame
         {
             get { return OnGround; }
         }
-
-        /// <summary>
-        /// Gets or sets the name of the CharacterEntity.
-        /// </summary>
-        public virtual string Name { get; set; }
 
         /// <summary>
         /// Gets the direction the character is currently facing.
@@ -65,17 +65,17 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets or sets (protected) the CharacterEntity's BodyInfo.
-        /// </summary>
-        public BodyInfo BodyInfo { get; protected set; }
-
-        /// <summary>
         /// Gets if the character is moving to the right.
         /// </summary>
         public bool IsMovingRight
         {
             get { return Velocity.X > 0; }
         }
+
+        /// <summary>
+        /// Gets or sets the name of the CharacterEntity.
+        /// </summary>
+        public virtual string Name { get; set; }
 
         /// <summary>
         /// Gets the character's current state
@@ -185,8 +185,7 @@ namespace DemoGame
         }
 
 // ReSharper disable UnusedParameter.Global
-        protected virtual void UpdatePostCollision(float deltaTime)
-// ReSharper restore UnusedParameter.Global
+        protected virtual void UpdatePostCollision(float deltaTime) // ReSharper restore UnusedParameter.Global
         {
             // Update the character's state
             UpdateState();
