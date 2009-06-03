@@ -48,19 +48,19 @@ namespace NetGore.Collections
         int _sourceLength;
 
         /// <summary>
+        /// Gets if any element that matches default(<typeparamref name="T"/>) will be skipped. Recommended to only
+        /// be used when <typeparamref name="T"/> is a class. By default, this is false unless <typeparamref name="T"/>
+        /// is a class.
+        /// </summary>
+        public bool SkipDefault { get; private set; }
+
+        /// <summary>
         /// Gets the source that is being enumerated over.
         /// </summary>
         public IEnumerable<T> Source
         {
             get { return _source; }
         }
-
-        /// <summary>
-        /// Gets if any element that matches default(<typeparamref name="T"/>) will be skipped. Recommended to only
-        /// be used when <typeparamref name="T"/> is a class. By default, this is false unless <typeparamref name="T"/>
-        /// is a class.
-        /// </summary>
-        public bool SkipDefault { get; private set; }
 
         /// <summary>
         /// SafeEnumerator constructor

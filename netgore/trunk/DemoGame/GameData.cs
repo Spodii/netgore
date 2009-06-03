@@ -14,10 +14,6 @@ namespace DemoGame
     /// </summary>
     public static class GameData
     {
-        public const string ServerIP = "127.0.0.1";
-
-        public const int ServerTCPPort = 44445;
-
         /// <summary>
         /// Maximum length of a Say packet's string from the client to the server.
         /// </summary>
@@ -37,6 +33,10 @@ namespace DemoGame
         /// Maximum length of the Name string used by the server's Say messages.
         /// </summary>
         public const int MaxServerSayNameLength = 60;
+
+        public const string ServerIP = "127.0.0.1";
+
+        public const int ServerTCPPort = 44445;
 
         /// <summary>
         /// Size of the screen (ScreenWidth / ScreenHeight) represented in a Vector2

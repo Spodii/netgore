@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Network;
 
@@ -55,13 +54,6 @@ namespace DemoGame.Server
             PacketWriter pw = GetWriter(ServerPacketID.CreateDynamicEntity);
             pw.Write((ushort)dynamicEntity.MapIndex);
             DynamicEntityFactory.Write(pw, dynamicEntity);
-            return pw;
-        }
-
-        public static PacketWriter RemoveDynamicEntity(DynamicEntity dynamicEntity)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.RemoveDynamicEntity);
-            pw.Write((ushort)dynamicEntity.MapIndex);
             return pw;
         }
 
@@ -121,6 +113,13 @@ namespace DemoGame.Server
             return GetWriter(ServerPacketID.Ping);
         }
 
+        public static PacketWriter RemoveDynamicEntity(DynamicEntity dynamicEntity)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.RemoveDynamicEntity);
+            pw.Write((ushort)dynamicEntity.MapIndex);
+            return pw;
+        }
+
         public static PacketWriter SendItemInfo(ItemEntity item)
         {
             if (item == null)
@@ -137,14 +136,6 @@ namespace DemoGame.Server
             pw.Write(item.Description);
             pw.Write(item.Value);
             pw.Write(item.Stats);
-            return pw;
-        }
-
-        public static PacketWriter UpdateVelocityAndPosition(DynamicEntity dynamicEntity, int currentTime)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.UpdateVelocityAndPosition);
-            pw.Write((ushort)dynamicEntity.MapIndex);
-            dynamicEntity.SerializePositionAndVelocity(pw, currentTime);
             return pw;
         }
 
@@ -248,6 +239,14 @@ namespace DemoGame.Server
             PacketWriter pw = GetWriter(ServerPacketID.UpdateStat);
             pw.Write(stat.StatType);
             stat.Write(pw);
+            return pw;
+        }
+
+        public static PacketWriter UpdateVelocityAndPosition(DynamicEntity dynamicEntity, int currentTime)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.UpdateVelocityAndPosition);
+            pw.Write((ushort)dynamicEntity.MapIndex);
+            dynamicEntity.SerializePositionAndVelocity(pw, currentTime);
             return pw;
         }
     }

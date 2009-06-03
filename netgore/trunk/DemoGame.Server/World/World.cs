@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
+using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
@@ -117,7 +118,7 @@ namespace DemoGame.Server
                     float x = rand.Next(128, (int)m.Width - 128);
                     float y = rand.Next(128, (int)m.Height - 128);
                     int id = rand.Next(1, Server.ItemTemplates.Count);
-                    ItemEntity item = new ItemEntity(Server.ItemTemplates[id], new Microsoft.Xna.Framework.Vector2(x, y), 1);
+                    ItemEntity item = new ItemEntity(Server.ItemTemplates[id], new Vector2(x, y), 1);
                     m.AddEntity(item);
                 }
             }
@@ -299,7 +300,7 @@ namespace DemoGame.Server
             }
 
             // Send to all users in all maps
-            foreach (var map in Maps)
+            foreach (Map map in Maps)
             {
                 map.Send(data, reliable);
             }

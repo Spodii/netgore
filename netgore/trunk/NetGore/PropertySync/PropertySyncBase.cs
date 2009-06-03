@@ -39,21 +39,21 @@ namespace NetGore
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the Property's value as an object.
-        /// </summary>
-        /// <returns>The Property's value as an object.</returns>
-        public override object GetPropertyValue()
-        {
-            return Value;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, gets the Type of the Delegate for the property's accessor.
         /// </summary>
         /// <returns>The Type of the Delegate for the property's accessor.</returns>
         protected override Type GetGetDelegateType()
         {
             return typeof(GetHandler);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the Property's value as an object.
+        /// </summary>
+        /// <returns>The Property's value as an object.</returns>
+        public override object GetPropertyValue()
+        {
+            return Value;
         }
 
         /// <summary>
@@ -169,12 +169,6 @@ namespace NetGore
         public bool SkipNetworkSync { get; private set; }
 
         /// <summary>
-        /// When overridden in the derived class, gets the Property's value as an object.
-        /// </summary>
-        /// <returns>The Property's value as an object.</returns>
-        public abstract object GetPropertyValue();
-
-        /// <summary>
         /// PropertySyncBase static constructor.
         /// </summary>
         static PropertySyncBase()
@@ -229,50 +223,6 @@ namespace NetGore
 
             StoreDelegates(getter, setter);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
-        }
-
-        /// <summary>
-        /// Gets all of the custom attributes for a PropertyInfo, including those attached to interfaces and abstract
-        /// Properties on base classes.
-        /// </summary>
-        /// <param name="propInfo">PropertyInfo to get the custom attributes for.</param>
-        /// <param name="attribType">Type of the custom attribute to find.</param>
-        /// <param name="type">Type of the class to search for the PropertyInfos in.</param>
-        /// <param name="flags">BindingFlags to use for finding the PropertyInfos.</param>
-        /// <returns>An IEnumerable of all of the custom attributes for a PropertyInfo.</returns>
-        static IEnumerable<object> InternalGetAllCustomAttributes(PropertyInfo propInfo, Type attribType, Type type, BindingFlags flags)
-        {
-            // Get the attributes for this type
-            var customAttributes = propInfo.GetCustomAttributes(attribType, false);
-            foreach (var attrib in customAttributes)
-                yield return attrib;
-
-            // Get the base type
-            Type baseType = type.BaseType;
-
-            // Get the property for the base type
-            PropertyInfo baseProp = baseType.GetProperty(propInfo.Name, flags);
-
-            // If the property for the base type exists, find the attributes for it
-            if (baseProp != null)
-            {
-                var baseAttributes = InternalGetAllCustomAttributes(baseProp, attribType, baseType, flags);
-                foreach (var attrib in baseAttributes)
-                    yield return attrib;
-            }
-        }
-
-        /// <summary>
-        /// Gets all of the custom attributes for a PropertyInfo, including those attached to
-        /// abstract Properties on base classes.
-        /// </summary>
-        /// <param name="propInfo">PropertyInfo to get the custom attributes for.</param>
-        /// <param name="attribType">Type of the custom attribute to find.</param>
-        /// <param name="flags">BindingFlags to use for finding the PropertyInfos.</param>
-        /// <returns>An IEnumerable of all of the custom attributes for a PropertyInfo.</returns>
-        static IEnumerable<object> GetAllCustomAttributes(PropertyInfo propInfo, Type attribType, BindingFlags flags)
-        {
-            return InternalGetAllCustomAttributes(propInfo, attribType, propInfo.DeclaringType, flags).Distinct();
         }
 
         /// <summary>
@@ -337,6 +287,19 @@ namespace NetGore
 
             // Convert to an array and return
             return tempPropInfos.ToArray();
+        }
+
+        /// <summary>
+        /// Gets all of the custom attributes for a PropertyInfo, including those attached to
+        /// abstract Properties on base classes.
+        /// </summary>
+        /// <param name="propInfo">PropertyInfo to get the custom attributes for.</param>
+        /// <param name="attribType">Type of the custom attribute to find.</param>
+        /// <param name="flags">BindingFlags to use for finding the PropertyInfos.</param>
+        /// <returns>An IEnumerable of all of the custom attributes for a PropertyInfo.</returns>
+        static IEnumerable<object> GetAllCustomAttributes(PropertyInfo propInfo, Type attribType, BindingFlags flags)
+        {
+            return InternalGetAllCustomAttributes(propInfo, attribType, propInfo.DeclaringType, flags).Distinct();
         }
 
         /// <summary>
@@ -415,6 +378,12 @@ namespace NetGore
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the Property's value as an object.
+        /// </summary>
+        /// <returns>The Property's value as an object.</returns>
+        public abstract object GetPropertyValue();
+
+        /// <summary>
         /// When overridden in the derived class, gets the Type of the Delegate for the property's mutator.
         /// </summary>
         /// <returns>The Type of the Delegate for the property's mutator.</returns>
@@ -425,6 +394,42 @@ namespace NetGore
         /// </summary>
         /// <returns>True if the Property needs to be re-synchronized, else False.</returns>
         public abstract bool HasValueChanged();
+
+        /// <summary>
+        /// Gets all of the custom attributes for a PropertyInfo, including those attached to interfaces and abstract
+        /// Properties on base classes.
+        /// </summary>
+        /// <param name="propInfo">PropertyInfo to get the custom attributes for.</param>
+        /// <param name="attribType">Type of the custom attribute to find.</param>
+        /// <param name="type">Type of the class to search for the PropertyInfos in.</param>
+        /// <param name="flags">BindingFlags to use for finding the PropertyInfos.</param>
+        /// <returns>An IEnumerable of all of the custom attributes for a PropertyInfo.</returns>
+        static IEnumerable<object> InternalGetAllCustomAttributes(PropertyInfo propInfo, Type attribType, Type type,
+                                                                  BindingFlags flags)
+        {
+            // Get the attributes for this type
+            var customAttributes = propInfo.GetCustomAttributes(attribType, false);
+            foreach (object attrib in customAttributes)
+            {
+                yield return attrib;
+            }
+
+            // Get the base type
+            Type baseType = type.BaseType;
+
+            // Get the property for the base type
+            PropertyInfo baseProp = baseType.GetProperty(propInfo.Name, flags);
+
+            // If the property for the base type exists, find the attributes for it
+            if (baseProp != null)
+            {
+                var baseAttributes = InternalGetAllCustomAttributes(baseProp, attribType, baseType, flags);
+                foreach (object attrib in baseAttributes)
+                {
+                    yield return attrib;
+                }
+            }
+        }
 
         /// <summary>
         /// Compares two PropertyInfoDatas by using the PropertyInfo's Name.

@@ -850,7 +850,7 @@ namespace DemoGame
             typedEntities = typedEntities.Where(condition);
 
             // Return first match, if any
-            var match = typedEntities.FirstOrDefault();
+            T match = typedEntities.FirstOrDefault();
 
             return match;
         }

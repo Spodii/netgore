@@ -64,10 +64,7 @@ namespace DemoGame.Client
         public override ushort GraphicIndex
         {
             get { return _grh.GrhData.GrhIndex; }
-            set
-            {
-                _grh.SetGrh(value);
-            }
+            set { _grh.SetGrh(value); }
         }
 
         /// <summary>
