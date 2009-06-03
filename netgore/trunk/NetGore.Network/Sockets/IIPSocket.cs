@@ -46,6 +46,12 @@ namespace NetGore.Network
         void Send(BitStream data);
 
         /// <summary>
+        /// Sets the port used to communicate with the remote connection over an unreliable stream.
+        /// </summary>
+        /// <param name="port">Port for the unreliable stream.</param>
+        void SetRemoteUnreliablePort(int port);
+
+        /// <summary>
         /// Sends data over a stream.
         /// </summary>
         /// <param name="data">Data to send.</param>

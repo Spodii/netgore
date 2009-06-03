@@ -16,6 +16,7 @@ namespace DemoGame.Client
     {
         readonly ClientPacketHandler _packetHandler;
         IIPSocket _conn = null;
+        readonly int _udpPort;
 
         /// <summary>
         /// Gets the ClientPacketHandler used to handle data from this ClientSockets.
@@ -37,6 +38,9 @@ namespace DemoGame.Client
         {
             _packetHandler = new ClientPacketHandler(this, gameplayScreen);
             OnConnect += onConnect;
+
+            // Bind the UDP port
+            _udpPort = BindUDP();
         }
 
         /// <summary>
@@ -44,7 +48,7 @@ namespace DemoGame.Client
         /// </summary>
         public void Connect()
         {
-            Connect("127.0.0.1", 44445);
+            Connect(GameData.ServerIP, GameData.ServerTCPPort);
         }
 
         /// <summary>
@@ -64,6 +68,13 @@ namespace DemoGame.Client
         void onConnect(IIPSocket conn)
         {
             _conn = conn;
+            
+            // Make sure the very first thing we send is the Client's UDP port so the server knows what
+            // port to use when sending the data
+            using (var pw = ClientPacket.SetUDPPort(_udpPort))
+            {
+                Send(pw);
+            }
         }
 
         #region IGetTime Members

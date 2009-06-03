@@ -90,6 +90,13 @@ namespace DemoGame.Server
                 user.SendEquipmentItemStats(slot);
         }
 
+        [MessageHandler((byte)ClientPacketID.SetUDPPort)]
+        void RecvSetUDPPort(IIPSocket conn, BitStream r)
+        {
+            ushort remotePort = r.ReadUShort();
+            conn.SetRemoteUnreliablePort(remotePort);
+        }
+
         [MessageHandler((byte)ClientPacketID.GetInventoryItemInfo)]
         void RecvGetInventoryItemInfo(IIPSocket conn, BitStream r)
         {

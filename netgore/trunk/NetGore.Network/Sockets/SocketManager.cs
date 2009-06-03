@@ -18,6 +18,8 @@ namespace NetGore.Network
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        const int _udpPort = 61100; // HACK: Should be able to set the port, not have a constant
+
         /// <summary>
         /// List of all the current connections.
         /// </summary>
@@ -148,10 +150,6 @@ namespace NetGore.Network
                 conn = null;
             }
 
-            // Set the port on the UDPSocket
-            if (conn != null)
-                _udpSocket.SetPort(port);
-
             return ipSocket;
         }
 
@@ -263,6 +261,11 @@ namespace NetGore.Network
             }
 
             return ret;
+        }
+
+        public int BindUDP()
+        {
+            return _udpSocket.Bind();
         }
 
         /// <summary>
