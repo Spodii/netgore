@@ -21,7 +21,7 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="socket">Socket the data came from.</param>
         /// <param name="data">Data to process.</param>
-        void Process(TCPSocket socket, byte[] data);
+        void Process(IIPSocket socket, byte[] data);
 
         /// <summary>
         /// Handles a list of received data and forwards it to the corresponding MessageProcessors.

@@ -10,8 +10,18 @@ namespace NetGore.Network
     /// Interface for a socket that abstracts the protocol implementation (ie TCP or UDP) into a single
     /// object that just sends and receives data.
     /// </summary>
-    public interface IIPSocket
+    public interface IIPSocket : IDisposable
     {
+        /// <summary>
+        /// Gets the time that this IIPSocket was created.
+        /// </summary>
+        int TimeCreated { get; }
+
+        /// <summary>
+        /// Gets if this IIPSocket is currently connected.
+        /// </summary>
+        bool IsConnected { get; }
+
         /// <summary>
         /// Gets the IP address string that this IIPSocket is connected to.
         /// </summary>

@@ -28,6 +28,24 @@ namespace NetGore.Network
 
             _tcpSocket = tcpSocket;
             _udpSocket = udpSocket;
+
+            _tcpSocket.Tag = this;
+        }
+
+        /// <summary>
+        /// Gets the time that this IIPSocket was created.
+        /// </summary>
+        public int TimeCreated
+        {
+            get { return _tcpSocket.TimeCreated; }
+        }
+
+        /// <summary>
+        /// Gets if this IIPSocket is currently connected.
+        /// </summary>
+        public bool IsConnected
+        {
+            get { return _tcpSocket.IsConnected; }
         }
 
         /// <summary>
@@ -42,11 +60,7 @@ namespace NetGore.Network
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag
         /// is not used in any way by the IIPSocket itself.
         /// </summary>
-        public object Tag
-        {
-            get { return _tcpSocket.Tag; }
-            set { _tcpSocket.Tag = value; }
-        }
+        public object Tag { get; set; }
 
         /// <summary>
         /// Gets the queue of received data.
@@ -54,7 +68,40 @@ namespace NetGore.Network
         /// <returns>Queue of received data if any, or null if no queued data.</returns>
         public byte[][] GetRecvData()
         {
-            throw new NotImplementedException();
+            // Get the messages from both sockets
+            byte[][] fromTCP = TCPSocket.GetRecvData();
+            byte[][] fromUDP = UDPSocket.GetRecvData();
+
+            // If they're both null, return null
+            if (fromTCP == null && fromUDP == null)
+                return null;
+
+            // If they're both not null, we have to join them together
+            // If only one is null, we can just return that one
+            if (fromTCP == null)
+                return fromUDP;
+            else
+            {
+                if (fromUDP != null)
+                    return JoinArrays(fromUDP, fromTCP);
+                else
+                    return fromTCP;
+            }
+        }
+
+        /// <summary>
+        /// Joins two arrays together.
+        /// </summary>
+        /// <typeparam name="T">Type of the arrays to join.</typeparam>
+        /// <param name="first">First array to join.</param>
+        /// <param name="second">Second array to join.</param>
+        /// <returns>The two arrays joined together.</returns>
+        static T[] JoinArrays<T>(T[] first, T[] second)
+        {
+            T[] joined = new T[first.Length + second.Length];
+            first.CopyTo(joined, 0);
+            second.CopyTo(joined, first.Length);
+            return joined;
         }
 
         /// <summary>
@@ -88,6 +135,23 @@ namespace NetGore.Network
                 else
                     _udpSocket.Send(data.GetBuffer(), _udpEndPoint);
             }
+        }
+
+        bool _disposed = false;
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+
+            if (_tcpSocket != null)
+                _tcpSocket.Dispose();
         }
     }
 }

@@ -7,11 +7,11 @@ using NetGore.IO;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Delegate to a message processor method
+    /// Delegate to a message processor method.
     /// </summary>
-    /// <param name="conn">Connection the message came from</param>
-    /// <param name="reader">Binary reader containing the message to be processed</param>
-    public delegate void MessageProcessorDelegate(TCPSocket conn, BitStream reader);
+    /// <param name="conn">Connection the message came from.</param>
+    /// <param name="reader">Binary reader containing the message to be processed.</param>
+    public delegate void MessageProcessorDelegate(IIPSocket conn, BitStream reader);
 
     /// <summary>
     /// Holds information allowing the ability to call a message processor class

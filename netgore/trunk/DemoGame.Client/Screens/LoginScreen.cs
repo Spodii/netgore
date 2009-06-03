@@ -125,7 +125,7 @@ namespace DemoGame.Client
             _cError.Text = string.Format("Error: {0}", message);
         }
 
-        void sockets_OnConnect(TCPSocket conn)
+        void sockets_OnConnect(IIPSocket conn)
         {
             using (PacketWriter pw = ClientPacket.Login(_cNameText.Text, _cPasswordText.Text))
             {
@@ -133,17 +133,17 @@ namespace DemoGame.Client
             }
         }
 
-        void sockets_OnFailedConnect(TCPSocket conn)
+        void sockets_OnFailedConnect(IIPSocket conn)
         {
             SetError("Failed to connect to server.");
         }
 
-        void sockets_OnInvalidAccount(TCPSocket conn)
+        void sockets_OnInvalidAccount(IIPSocket conn)
         {
             SetError("Invalid or unknown account.");
         }
 
-        void sockets_OnLogin(TCPSocket conn)
+        void sockets_OnLogin(IIPSocket conn)
         {
             ScreenManager.SetScreen("game");
         }

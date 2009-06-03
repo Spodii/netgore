@@ -60,7 +60,7 @@ namespace DemoGame.Server
 
         [MessageHandler((byte)ClientPacketID.Attack)]
 #pragma warning disable 168
-        void RecvAttack(TCPSocket conn, BitStream r)
+        void RecvAttack(IIPSocket conn, BitStream r)
 #pragma warning restore 168
         {
             User user;
@@ -69,7 +69,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.DropInventoryItem)]
-        void RecvDropInventoryItem(TCPSocket conn, BitStream r)
+        void RecvDropInventoryItem(IIPSocket conn, BitStream r)
         {
             byte slot = r.ReadByte();
 
@@ -81,7 +81,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.GetEquipmentItemInfo)]
-        void RecvGetEquipmentItemInfo(TCPSocket conn, BitStream r)
+        void RecvGetEquipmentItemInfo(IIPSocket conn, BitStream r)
         {
             EquipmentSlot slot = r.ReadEquipmentSlot();
 
@@ -91,7 +91,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.GetInventoryItemInfo)]
-        void RecvGetInventoryItemInfo(TCPSocket conn, BitStream r)
+        void RecvGetInventoryItemInfo(IIPSocket conn, BitStream r)
         {
             byte slot = r.ReadByte();
 
@@ -102,7 +102,7 @@ namespace DemoGame.Server
 
         [MessageHandler((byte)ClientPacketID.Jump)]
 #pragma warning disable 168
-        void RecvJump(TCPSocket conn, BitStream r)
+        void RecvJump(IIPSocket conn, BitStream r)
 #pragma warning restore 168
         {
             User user;
@@ -111,7 +111,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.Login)]
-        void RecvLogin(TCPSocket conn, BitStream r)
+        void RecvLogin(IIPSocket conn, BitStream r)
         {
             string name = r.ReadString();
             string password = r.ReadString();
@@ -149,7 +149,7 @@ namespace DemoGame.Server
 
         [MessageHandler((byte)ClientPacketID.MoveLeft)]
 #pragma warning disable 168
-        void RecvMoveLeft(TCPSocket conn, BitStream r)
+        void RecvMoveLeft(IIPSocket conn, BitStream r)
 #pragma warning restore 168
         {
             User user;
@@ -159,7 +159,7 @@ namespace DemoGame.Server
 
         [MessageHandler((byte)ClientPacketID.MoveRight)]
 #pragma warning disable 168
-        void RecvMoveRight(TCPSocket conn, BitStream r)
+        void RecvMoveRight(IIPSocket conn, BitStream r)
 #pragma warning restore 168
         {
             User user;
@@ -169,7 +169,7 @@ namespace DemoGame.Server
 
         [MessageHandler((byte)ClientPacketID.MoveStop)]
 #pragma warning disable 168
-        void RecvMoveStop(TCPSocket conn, BitStream r)
+        void RecvMoveStop(IIPSocket conn, BitStream r)
 #pragma warning restore 168
         {
             User user;
@@ -178,7 +178,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.PickupItem)]
-        void RecvPickupItem(TCPSocket conn, BitStream r)
+        void RecvPickupItem(IIPSocket conn, BitStream r)
         {
             ushort mapIndex = r.ReadUShort();
 
@@ -196,7 +196,7 @@ namespace DemoGame.Server
 
         [MessageHandler((byte)ClientPacketID.Ping)]
 #pragma warning disable 168
-        void RecvPing(TCPSocket conn, BitStream r)
+        void RecvPing(IIPSocket conn, BitStream r)
 #pragma warning restore 168
         {
             // Get the User
@@ -211,7 +211,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.RaiseStat)]
-        void RecvRaiseStat(TCPSocket conn, BitStream r)
+        void RecvRaiseStat(IIPSocket conn, BitStream r)
         {
             StatType statType;
 
@@ -239,7 +239,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.Say)]
-        void RecvSay(TCPSocket conn, BitStream r)
+        void RecvSay(IIPSocket conn, BitStream r)
         {
             string text = r.ReadString(GameData.MaxClientSayLength);
 
@@ -251,7 +251,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.UnequipItem)]
-        void RecvUnequipItem(TCPSocket conn, BitStream r)
+        void RecvUnequipItem(IIPSocket conn, BitStream r)
         {
             EquipmentSlot slot = r.ReadEquipmentSlot();
 
@@ -261,7 +261,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.UseInventoryItem)]
-        void RecvUseInventoryItem(TCPSocket conn, BitStream r)
+        void RecvUseInventoryItem(IIPSocket conn, BitStream r)
         {
             byte slot = r.ReadByte();
 
@@ -274,7 +274,7 @@ namespace DemoGame.Server
 
         [MessageHandler((byte)ClientPacketID.UseWorld)]
 #pragma warning disable 168
-        void RecvUseWorld(TCPSocket conn, BitStream r)
+        void RecvUseWorld(IIPSocket conn, BitStream r)
 #pragma warning restore 168
         {
             User user;
@@ -292,7 +292,7 @@ namespace DemoGame.Server
         /// A connection has been lost with a client.
         /// </summary>
         /// <param name="conn">Connection the user was using.</param>
-        void ServerSockets_OnDisconnect(TCPSocket conn)
+        void ServerSockets_OnDisconnect(IIPSocket conn)
         {
             // The user attached to the connection may already be disposed, so if we fail to find the user,
             // just ignore the problem
@@ -330,7 +330,7 @@ namespace DemoGame.Server
             return true;
         }
 
-        bool TryGetMap(TCPSocket conn, out User user, out Map map)
+        bool TryGetMap(IIPSocket conn, out User user, out Map map)
         {
             if (!TryGetUser(conn, out user))
             {
@@ -341,7 +341,7 @@ namespace DemoGame.Server
             return TryGetMap(user, out map);
         }
 
-        bool TryGetUser(TCPSocket conn, out User user, bool failRecover)
+        bool TryGetUser(IIPSocket conn, out User user, bool failRecover)
         {
             // Check for a valid connection
             if (conn == null)
@@ -370,7 +370,7 @@ namespace DemoGame.Server
             return true;
         }
 
-        bool TryGetUser(TCPSocket conn, out User user)
+        bool TryGetUser(IIPSocket conn, out User user)
         {
             return TryGetUser(conn, out user, true);
         }
@@ -391,7 +391,7 @@ namespace DemoGame.Server
             _ppManager.Process(rec);
         }
 
-        public void Process(TCPSocket socket, byte[] data)
+        public void Process(IIPSocket socket, byte[] data)
         {
             _ppManager.Process(socket, data);
         }

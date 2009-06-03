@@ -403,7 +403,7 @@ namespace DemoGame.Client
             _damageFont = ScreenManager.Content.Load<SpriteFont>("Font/Game");
         }
 
-        void OnDisconnect(TCPSocket conn)
+        void OnDisconnect(IIPSocket conn)
         {
             ScreenManager.SetScreen("login");
             LoginScreen login = (LoginScreen)ScreenManager.GetScreen("login");

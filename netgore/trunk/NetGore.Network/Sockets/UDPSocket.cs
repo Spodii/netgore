@@ -167,7 +167,8 @@ namespace NetGore.Network
             _port = newPort;
 
             // Close down the old connection
-            _socket.Disconnect(true);
+            if (_socket.IsBound)
+                _socket.Disconnect(true);
 
             // Bind to the new port
             _bindEndPoint = new IPEndPoint(IPAddress.Any, Port);

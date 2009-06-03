@@ -21,7 +21,7 @@ namespace NetGore.Network
         /// <summary>
         /// List of all the current connections.
         /// </summary>
-        readonly List<TCPSocket> _connections = new List<TCPSocket>();
+        readonly List<IPSocket> _connections = new List<IPSocket>();
 
         /// <summary>
         /// Lock used to synchronize the Connections list.
@@ -68,7 +68,7 @@ namespace NetGore.Network
         /// <summary>
         /// Gets an IEnumerable of all open and established connections.
         /// </summary>
-        IEnumerable<TCPSocket> Connections
+        IEnumerable<IPSocket> Connections
         {
             get { return _connections; }
         }
@@ -104,12 +104,14 @@ namespace NetGore.Network
         /// <param name="host">Host address (IP or domain name) to connect to</param>
         /// <param name="port">Port number to connect to</param>
         /// <returns>Socket used to create the connection or null if unsuccessful</returns>
-        public TCPSocket Connect(string host, int port)
+        public IIPSocket Connect(string host, int port)
         {
             // Create the socket to connect with
             TCPSocket conn = new TCPSocket();
             if (log.IsInfoEnabled)
                 log.InfoFormat("Connecting to host at {0}:{1}", host, port);
+
+            IPSocket ipSocket = null;
 
             try
             {
@@ -118,21 +120,22 @@ namespace NetGore.Network
                     // Create the connection and add it to the connections list
                     conn.Initialize();
                     conn.OnDispose += SocketDisposeHandler;
+                    ipSocket = new IPSocket(conn, _udpSocket);
                     lock (_connectionsLock)
                     {
-                        _connections.Add(conn);
+                        _connections.Add(ipSocket);
                     }
 
                     // Raise the on connection event
                     if (OnConnect != null)
-                        OnConnect(conn);
+                        OnConnect(ipSocket);
                 }
                 else
                 {
                     if (log.IsInfoEnabled)
                         log.Info("Unable to connect to host");
                     if (OnFailedConnect != null)
-                        OnFailedConnect(conn);
+                        OnFailedConnect(ipSocket);
                 }
             }
             catch (SocketException ex)
@@ -140,7 +143,7 @@ namespace NetGore.Network
                 if (log.IsWarnEnabled)
                     log.Warn("Unable to connect to host: {0}", ex);
                 if (OnFailedConnect != null)
-                    OnFailedConnect(conn);
+                    OnFailedConnect(ipSocket);
 
                 conn = null;
             }
@@ -149,7 +152,7 @@ namespace NetGore.Network
             if (conn != null)
                 _udpSocket.SetPort(port);
 
-            return conn;
+            return ipSocket;
         }
 
         /// <summary>
@@ -170,10 +173,10 @@ namespace NetGore.Network
             int ret = 0;
             string targetIP = targetConn.Address.Split(':')[0];
 
-            foreach (TCPSocket checkConn in Connections)
+            foreach (var ipSocket in Connections)
             {
                 // Compare the two IPs (we must chop off the port)
-                if (targetIP == checkConn.Address.Split(':')[0])
+                if (targetIP == ipSocket.Address.Split(':')[0])
                     ret++;
             }
 
@@ -185,18 +188,18 @@ namespace NetGore.Network
         /// </summary>
         public void Disconnect()
         {
-            Stack<TCPSocket> connsToRemove;
+            Stack<IPSocket> connsToRemove;
 
             // Get the connections to remove
             lock (_connectionsLock)
             {
-                connsToRemove = new Stack<TCPSocket>(Connections);
+                connsToRemove = new Stack<IPSocket>(Connections);
             }
 
             // Remove each of the connections
-            foreach (TCPSocket conn in connsToRemove)
+            foreach (var ipSocket in connsToRemove)
             {
-                conn.Dispose();
+                ipSocket.TCPSocket.Dispose();
             }
 
 #if DEBUG
@@ -243,10 +246,10 @@ namespace NetGore.Network
             lock (_connectionsLock)
             {
                 // Loop through each socket
-                foreach (TCPSocket socket in Connections)
+                foreach (var conn in Connections)
                 {
                     // Get the queued receive data from the socket, continue if has data
-                    var data = socket.GetRecvData();
+                    var data = conn.GetRecvData();
                     if (data != null && data.Length > 0)
                     {
                         // Create the return object if needed
@@ -254,7 +257,7 @@ namespace NetGore.Network
                             ret = new List<SocketReceiveData>();
 
                         // Add the data to the return list
-                        ret.Add(new SocketReceiveData(socket, data));
+                        ret.Add(new SocketReceiveData(conn, data));
                     }
                 }
             }
@@ -293,14 +296,17 @@ namespace NetGore.Network
         /// Removes all the Connections that satisfy the condition.
         /// </summary>
         /// <param name="match">The System.Predicate delegate that defines the conditions of the elements to remove.</param>
-        public void Remove(Func<TCPSocket, bool> match)
+        public void Remove(Func<IIPSocket, bool> match)
         {
-            IEnumerable<TCPSocket> connsToRemove;
+            Stack<IPSocket> connsToRemove = new Stack<IPSocket>(8);
 
             lock (_connectionsLock)
             {
-                // Get an IEnumerable of the matches
-                connsToRemove = _connections.Where(match);
+                foreach (var ipSocket in _connections)
+                {
+                    if (match(ipSocket))
+                        connsToRemove.Push(ipSocket);
+                }
             }
 
             // Get the number of matches found
@@ -311,7 +317,7 @@ namespace NetGore.Network
                 return;
 
             // Call dispose on all the connections being removed
-            foreach (TCPSocket conn in connsToRemove)
+            foreach (var conn in connsToRemove)
             {
                 conn.Dispose();
             }
@@ -333,6 +339,8 @@ namespace NetGore.Network
         /// <param name="conn">TCPSocket that the new connection is on</param>
         void SocketAcceptHandler(TCPSocket conn)
         {
+            IPSocket ipSocket;
+
             lock (_connectionsLock)
             {
                 // Check for too many connections from this address
@@ -350,12 +358,13 @@ namespace NetGore.Network
                 // Initialize the connection and add it to the connections list
                 conn.Initialize();
                 conn.OnDispose += SocketDisposeHandler;
-                _connections.Add(conn);
+                ipSocket = new IPSocket(conn, _udpSocket);
+                _connections.Add(ipSocket);
             }
 
             // Notify that a connection has been accepted
             if (OnConnection != null)
-                OnConnection(conn);
+                OnConnection(ipSocket);
         }
 
         /// <summary>
@@ -367,18 +376,21 @@ namespace NetGore.Network
             if (log.IsInfoEnabled)
                 log.InfoFormat("Address `{0}` connection closed.", sender.Address);
 
+            IPSocket ipSocket;
+
             // Remove the connect from the active connections list
             bool wasRemoved;
             lock (_connectionsLock)
             {
-                wasRemoved = _connections.Remove(sender);
+                ipSocket = (IPSocket)sender.Tag;
+                wasRemoved = _connections.Remove(ipSocket);
             }
 
             // If it was removed, call the OnDisconnect, else produce an error message
             if (wasRemoved)
             {
                 if (OnDisconnect != null)
-                    OnDisconnect(sender);
+                    OnDisconnect(ipSocket);
             }
             else
             {
