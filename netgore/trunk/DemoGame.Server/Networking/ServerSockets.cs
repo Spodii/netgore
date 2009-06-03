@@ -20,7 +20,7 @@ namespace DemoGame.Server
         public ServerSockets(Server server)
         {
             _packetHandler = new ServerPacketHandler(this, server);
-            Listen(44445);
+            Listen(GameData.ServerTCPPort);
         }
 
         /// <summary>

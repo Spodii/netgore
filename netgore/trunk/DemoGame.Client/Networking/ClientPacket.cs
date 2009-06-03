@@ -19,6 +19,13 @@ namespace DemoGame.Client
             return GetWriter(ClientPacketID.Attack);
         }
 
+        public static PacketWriter SetUDPPort(int port)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.SetUDPPort);
+            pw.Write((ushort)port);
+            return pw;
+        }
+
         public static PacketWriter DropInventoryItem(byte slot)
         {
             PacketWriter pw = GetWriter(ClientPacketID.DropInventoryItem);

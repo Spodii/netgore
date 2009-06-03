@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Text;
+using System.Reflection;
+using log4net;
 using NetGore.IO;
 
 namespace NetGore.Network
@@ -12,12 +14,51 @@ namespace NetGore.Network
     /// </summary>
     public class IPSocket : IIPSocket
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly TCPSocket _tcpSocket;
         readonly UDPSocket _udpSocket;
+        bool _disposed = false;
+        EndPoint _udpEndPoint;
+        int _remoteUDPPort = _unsetRemoteUDPPortValue;
 
-        internal TCPSocket TCPSocket { get { return _tcpSocket; } }
+        /// <summary>
+        /// Value given to the remote UDP port when it has not been set.
+        /// </summary>
+        const int _unsetRemoteUDPPortValue = 0;
 
-        internal UDPSocket UDPSocket { get { return _udpSocket; } }
+        /// <summary>
+        /// Gets the TCPSocket used in this IPSocket.
+        /// </summary>
+        internal TCPSocket TCPSocket
+        {
+            get { return _tcpSocket; }
+        }
+
+        /// <summary>
+        /// Gets the UDPSocket used in this IPSocket.
+        /// </summary>
+        internal UDPSocket UDPSocket
+        {
+            get { return _udpSocket; }
+        }
+
+        /// <summary>
+        /// Creates an EndPoint.
+        /// </summary>
+        /// <param name="address">IP address for the EndPoint.</param>
+        /// <param name="port">Port for the EndPoint.</param>
+        /// <returns>An EndPoint with the given <paramref name="address"/> and <paramref name="port"/>.</returns>
+        static EndPoint CreateEndPoint(string address, int port)
+        {
+            IPAddress ipAddress = IPAddress.Parse(address);
+
+            if (ipAddress == null)
+                throw new ArgumentException("address");
+
+            IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
+            return endPoint;
+        }
 
         public IPSocket(TCPSocket tcpSocket, UDPSocket udpSocket)
         {
@@ -31,6 +72,23 @@ namespace NetGore.Network
 
             _tcpSocket.Tag = this;
         }
+
+        /// <summary>
+        /// Joins two arrays together.
+        /// </summary>
+        /// <typeparam name="T">Type of the arrays to join.</typeparam>
+        /// <param name="first">First array to join.</param>
+        /// <param name="second">Second array to join.</param>
+        /// <returns>The two arrays joined together.</returns>
+        static T[] JoinArrays<T>(T[] first, T[] second)
+        {
+            var joined = new T[first.Length + second.Length];
+            first.CopyTo(joined, 0);
+            second.CopyTo(joined, first.Length);
+            return joined;
+        }
+
+        #region IIPSocket Members
 
         /// <summary>
         /// Gets the time that this IIPSocket was created.
@@ -69,8 +127,8 @@ namespace NetGore.Network
         public byte[][] GetRecvData()
         {
             // Get the messages from both sockets
-            byte[][] fromTCP = TCPSocket.GetRecvData();
-            byte[][] fromUDP = UDPSocket.GetRecvData();
+            var fromTCP = TCPSocket.GetRecvData();
+            var fromUDP = UDPSocket.GetRecvData();
 
             // If they're both null, return null
             if (fromTCP == null && fromUDP == null)
@@ -90,21 +148,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Joins two arrays together.
-        /// </summary>
-        /// <typeparam name="T">Type of the arrays to join.</typeparam>
-        /// <param name="first">First array to join.</param>
-        /// <param name="second">Second array to join.</param>
-        /// <returns>The two arrays joined together.</returns>
-        static T[] JoinArrays<T>(T[] first, T[] second)
-        {
-            T[] joined = new T[first.Length + second.Length];
-            first.CopyTo(joined, 0);
-            second.CopyTo(joined, first.Length);
-            return joined;
-        }
-
-        /// <summary>
         /// Sends data over a reliable stream.
         /// </summary>
         /// <param name="data">Data to send.</param>
@@ -113,7 +156,14 @@ namespace NetGore.Network
             Send(data, true);
         }
 
-        EndPoint _udpEndPoint;
+        /// <summary>
+        /// Sets the port used to communicate with the remote connection over an unreliable stream.
+        /// </summary>
+        /// <param name="port">Port for the unreliable stream.</param>
+        public void SetRemoteUnreliablePort(int port)
+        {
+            _remoteUDPPort = port;
+        }
 
         /// <summary>
         /// Sends data over a stream.
@@ -124,20 +174,31 @@ namespace NetGore.Network
         /// it is received.</param>
         public void Send(BitStream data, bool reliable)
         {
+            // Send reliable data over TCP
             if (reliable)
             {
                 _tcpSocket.Send(data);
+                return;
             }
-            else
-            {
-                if (_udpEndPoint == null)
-                    _udpEndPoint = _udpSocket.Send(data.GetBuffer(), Address);
-                else
-                    _udpSocket.Send(data.GetBuffer(), _udpEndPoint);
-            }
-        }
 
-        bool _disposed = false;
+            // If the remote UDP port hasn't been set yet, we can still fall back on TCP at least instead of just
+            // dropping the send completely
+            if (_remoteUDPPort == _unsetRemoteUDPPortValue)
+            {
+                const string errmsg = "Tried sending over unreliable stream before setting the port.";
+                Debug.Fail(errmsg);
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Send(data, true);
+                return;
+            }
+
+            // Create the EndPoint if it has not already been created
+            if (_udpEndPoint == null)
+                _udpEndPoint = CreateEndPoint(Address.Split(':')[0], _remoteUDPPort);
+
+            _udpSocket.Send(data.GetBuffer(), data.Length, _udpEndPoint);
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -153,5 +214,7 @@ namespace NetGore.Network
             if (_tcpSocket != null)
                 _tcpSocket.Dispose();
         }
+
+        #endregion
     }
 }

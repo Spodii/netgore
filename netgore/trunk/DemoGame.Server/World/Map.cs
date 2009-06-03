@@ -369,7 +369,7 @@ namespace DemoGame.Server
                     using (PacketWriter pw = ServerPacket.UpdateVelocityAndPosition(dynamicEntity, currentTime))
                     {
                         // TODO: Send to visual area, plus a little more
-                        Send(pw);
+                        Send(pw, false);
                     }
                 }
             }

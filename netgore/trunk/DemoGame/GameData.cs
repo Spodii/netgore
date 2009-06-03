@@ -14,6 +14,10 @@ namespace DemoGame
     /// </summary>
     public static class GameData
     {
+        public const string ServerIP = "127.0.0.1";
+
+        public const int ServerTCPPort = 44445;
+
         /// <summary>
         /// Maximum length of a Say packet's string from the client to the server.
         /// </summary>

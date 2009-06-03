@@ -39,11 +39,6 @@ namespace NetGore.Network
         readonly Queue<byte[]> _receiveQueue = new Queue<byte[]>(2);
 
         /// <summary>
-        /// Buffer for sending data.
-        /// </summary>
-        readonly byte[] _sendBuffer;
-
-        /// <summary>
         /// Underlying Socket used by this UDPSocket.
         /// </summary>
         readonly Socket _socket;
@@ -59,30 +54,12 @@ namespace NetGore.Network
         EndPoint _remoteEndPoint = new IPEndPoint(0, 0);
 
         /// <summary>
-        /// Gets the port used by this UDPSocket.
-        /// </summary>
-        public int Port
-        {
-            get { return _port; }
-        }
-
-        /// <summary>
         /// UDPSocket constructor.
         /// </summary>
         public UDPSocket()
         {
-            _sendBuffer = new byte[_maxPacketSize + _headerSize];
             _receiveBuffer = new byte[_maxPacketSize + _headerSize];
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-        }
-
-        /// <summary>
-        /// UDPSocket constructor.
-        /// </summary>
-        /// <param name="port">The port used by this UDPSocket.</param>
-        public UDPSocket(int port) : this()
-        {
-            SetPort(port);
         }
 
         /// <summary>
@@ -91,7 +68,7 @@ namespace NetGore.Network
         /// <param name="data">Packet to add the header to.</param>
         /// <param name="length">Length of the packet in bytes.</param>
         /// <returns>Byte array containing the <paramref name="data"/> with the packet header prefixed.</returns>
-        byte[] AddHeader(byte[] data, ushort length)
+        static byte[] AddHeader(byte[] data, ushort length)
         {
             // No headers needed right now
             return data;
@@ -104,33 +81,6 @@ namespace NetGore.Network
         {
             _socket.BeginReceiveFrom(_receiveBuffer, 0, _receiveBuffer.Length, SocketFlags.None, ref _bindEndPoint,
                                      ReceiveFromCallback, this);
-        }
-
-        /// <summary>
-        /// Gets the EndPoint for an IP address and port.
-        /// </summary>
-        /// <param name="address">IP address to get the EndPoint for.</param>
-        /// <param name="port">Port to get the EndPoint for.</param>
-        /// <returns>The EndPoint for an IP address and port.</returns>
-        public static EndPoint GetEndPoint(string address, int port)
-        {
-            IPAddress ipAddress = IPAddress.Parse(address);
-
-            if (ipAddress == null)
-                throw new ArgumentException("address");
-
-            IPEndPoint endPoint = new IPEndPoint(ipAddress, port);
-            return endPoint;
-        }
-
-        /// <summary>
-        /// Gets the EndPoint for an IP address.
-        /// </summary>
-        /// <param name="address">IP address to get the EndPoint for.</param>
-        /// <returns>The EndPoint for an IP address.</returns>
-        public EndPoint GetEndPoint(string address)
-        {
-            return GetEndPoint(address, Port);
         }
 
         /// <summary>
@@ -154,28 +104,24 @@ namespace NetGore.Network
         /// <summary>
         /// Changes the Port for this UDPSocket.
         /// </summary>
-        /// <param name="newPort">New port.</param>
-        public void SetPort(int newPort)
+        /// <returns>Port that the UDPSocket bound to.</returns>
+        public int Bind()
         {
-            if (Port == newPort)
-                return;
-
-            // Check for a valid range
-            if (newPort < IPEndPoint.MinPort || newPort > IPEndPoint.MaxPort)
-                throw new ArgumentOutOfRangeException("newPort");
-
-            _port = newPort;
+            // NOTE: This will probably crash if the port is already set
 
             // Close down the old connection
             if (_socket.IsBound)
                 _socket.Disconnect(true);
 
             // Bind to the new port
-            _bindEndPoint = new IPEndPoint(IPAddress.Any, Port);
+            _bindEndPoint = new IPEndPoint(IPAddress.Any, 0);
             _socket.Bind(_bindEndPoint);
+            _port = ((IPEndPoint)_socket.LocalEndPoint).Port; // TODO: ...
 
-            // Begin receiving again
+            // Begin receiving
             BeginReceiveFrom();
+
+            return _port;
         }
 
         /// <summary>
@@ -216,35 +162,21 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Sends data to the specified <paramref name="address"/>.
-        /// </summary>
-        /// <param name="data">Data to send.</param>
-        /// <param name="address">Address to send the data to.</param>
-        /// <returns>EndPoint for the <paramref name="address"/> so it can be reused later instead of
-        /// being parsed every Send.</returns>
-        public EndPoint Send(byte[] data, string address)
-        {
-            EndPoint endPoint = GetEndPoint(address);
-            Send(data, endPoint);
-            return endPoint;
-        }
-
-        /// <summary>
         /// Sends data to the specified <paramref name="endPoint"/>.
         /// </summary>
         /// <param name="data">Data to send.</param>
         /// <param name="length">Length of the data to send in bytes.</param>
         /// <param name="endPoint">EndPoint to send the data to.</param>
-        public void Send(byte[] data, ushort length, EndPoint endPoint)
+        public void Send(byte[] data, int length, EndPoint endPoint)
         {
             if (endPoint == null)
                 throw new ArgumentNullException("endPoint");
             if (data == null || data.Length == 0)
                 throw new ArgumentNullException("data");
-            if (data.Length > _maxPacketSize)
+            if (length > _maxPacketSize)
                 throw new ArgumentOutOfRangeException("data", "Data is too large to send.");
 
-            data = AddHeader(data, length);
+            data = AddHeader(data, (ushort)length);
             _socket.SendTo(data, data.Length + _headerSize, SocketFlags.None, endPoint);
         }
 
@@ -255,7 +187,7 @@ namespace NetGore.Network
         /// <param name="endPoint">EndPoint to send the data to.</param>
         public void Send(byte[] data, EndPoint endPoint)
         {
-            Send(data, (ushort)data.Length, endPoint);
+            Send(data, data.Length, endPoint);
         }
 
         /// <summary>

@@ -23,6 +23,7 @@ namespace DemoGame
         PickupItem,
         Ping,
         RaiseStat,
+        SetUDPPort,
         UnequipItem,
         UseInventoryItem,
         UseWorld
