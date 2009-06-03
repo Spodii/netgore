@@ -31,6 +31,11 @@ namespace NetGore.Network
         bool _disposed;
 
         /// <summary>
+        /// The UDPSocket used by all connections.
+        /// </summary>
+        readonly UDPSocket _udpSocket = new UDPSocket();
+
+        /// <summary>
         /// Socket for accepting connections
         /// </summary>
         ListenSocket _listenSocket;
@@ -129,8 +134,6 @@ namespace NetGore.Network
                     if (OnFailedConnect != null)
                         OnFailedConnect(conn);
                 }
-
-                return conn;
             }
             catch (SocketException ex)
             {
@@ -139,8 +142,14 @@ namespace NetGore.Network
                 if (OnFailedConnect != null)
                     OnFailedConnect(conn);
 
-                return null;
+                conn = null;
             }
+
+            // Set the port on the UDPSocket
+            if (conn != null)
+                _udpSocket.SetPort(port);
+
+            return conn;
         }
 
         /// <summary>
