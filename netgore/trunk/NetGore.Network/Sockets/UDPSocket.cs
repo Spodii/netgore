@@ -11,7 +11,7 @@ namespace NetGore.Network
     /// A single, basic, thread-safe socket that uses UDP. Each UDPSocket will both send and listen on the
     /// same port it is created on.
     /// </summary>
-    public class UDPSocket
+    public class UDPSocket : IDisposable
     {
         /// <summary>
         /// Length of the custom packet header in bytes.
@@ -26,7 +26,7 @@ namespace NetGore.Network
         /// <summary>
         /// The port used by this UDPSocket.
         /// </summary>
-        readonly int _port;
+        int _port;
 
         /// <summary>
         /// Buffer for receiving data.
@@ -69,22 +69,20 @@ namespace NetGore.Network
         /// <summary>
         /// UDPSocket constructor.
         /// </summary>
-        /// <param name="port">The port used by this UDPSocket.</param>
-        public UDPSocket(int port)
+        public UDPSocket()
         {
-            if (port < IPEndPoint.MinPort || port > IPEndPoint.MaxPort)
-                throw new ArgumentOutOfRangeException("port");
-
             _sendBuffer = new byte[_maxPacketSize + _headerSize];
             _receiveBuffer = new byte[_maxPacketSize + _headerSize];
-
-            _port = port;
-
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            _bindEndPoint = new IPEndPoint(IPAddress.Any, _port);
-            _socket.Bind(_bindEndPoint);
+        }
 
-            BeginReceiveFrom();
+        /// <summary>
+        /// UDPSocket constructor.
+        /// </summary>
+        /// <param name="port">The port used by this UDPSocket.</param>
+        public UDPSocket(int port) : this()
+        {
+            SetPort(port);
         }
 
         /// <summary>
@@ -154,6 +152,32 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Changes the Port for this UDPSocket.
+        /// </summary>
+        /// <param name="newPort">New port.</param>
+        public void SetPort(int newPort)
+        {
+            if (Port == newPort)
+                return;
+
+            // Check for a valid range
+            if (newPort < IPEndPoint.MinPort || newPort > IPEndPoint.MaxPort)
+                throw new ArgumentOutOfRangeException("newPort");
+
+            _port = newPort;
+
+            // Close down the old connection
+            _socket.Disconnect(true);
+
+            // Bind to the new port
+            _bindEndPoint = new IPEndPoint(IPAddress.Any, Port);
+            _socket.Bind(_bindEndPoint);
+
+            // Begin receiving again
+            BeginReceiveFrom();
+        }
+
+        /// <summary>
         /// Callback for ReceiveFrom.
         /// </summary>
         /// <param name="result">Async result.</param>
@@ -208,8 +232,9 @@ namespace NetGore.Network
         /// Sends data to the specified <paramref name="endPoint"/>.
         /// </summary>
         /// <param name="data">Data to send.</param>
+        /// <param name="length">Length of the data to send in bytes.</param>
         /// <param name="endPoint">EndPoint to send the data to.</param>
-        public void Send(byte[] data, EndPoint endPoint)
+        public void Send(byte[] data, ushort length, EndPoint endPoint)
         {
             if (endPoint == null)
                 throw new ArgumentNullException("endPoint");
@@ -218,9 +243,28 @@ namespace NetGore.Network
             if (data.Length > _maxPacketSize)
                 throw new ArgumentOutOfRangeException("data", "Data is too large to send.");
 
-            ushort length = (ushort)data.Length;
             data = AddHeader(data, length);
             _socket.SendTo(data, data.Length + _headerSize, SocketFlags.None, endPoint);
+        }
+
+        /// <summary>
+        /// Sends data to the specified <paramref name="endPoint"/>.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        /// <param name="endPoint">EndPoint to send the data to.</param>
+        public void Send(byte[] data, EndPoint endPoint)
+        {
+            Send(data, (ushort)data.Length, endPoint);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            if (_socket != null)
+                _socket.Close();
         }
     }
 }

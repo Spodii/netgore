@@ -73,6 +73,8 @@
     <Compile Include="MessageProcessor\IMessageProcessor.cs" />
     <Compile Include="PacketWriter.cs" />
     <Compile Include="PacketWriterPool.cs" />
+    <Compile Include="Sockets\IIPSocket.cs" />
+    <Compile Include="Sockets\IPSocket.cs" />
     <Compile Include="Sockets\ISocketSender.cs" />
     <Compile Include="Sockets\ITCPSocket.cs" />
     <Compile Include="Sockets\ListenSocket.cs" />
