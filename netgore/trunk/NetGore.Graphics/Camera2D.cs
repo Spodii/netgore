@@ -14,6 +14,9 @@ namespace NetGore.Graphics
     public class Camera2D
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        bool _keepInMap = true;
+
+        IMap _map;
 
         /// <summary>
         /// Transformation matrix to be used on the SpriteBatch.Begin call
@@ -36,6 +39,37 @@ namespace NetGore.Graphics
         float _scale = 1.0f;
 
         Vector2 _size;
+
+        /// <summary>
+        /// Gets or sets if the camera is forced to stay in view of the map. If true, the camera will never show anything
+        /// outside of the range of the map.
+        /// </summary>
+        public bool KeepInMap
+        {
+            get { return _keepInMap; }
+            set
+            {
+                if (_keepInMap == value)
+                    return;
+
+                _keepInMap = value;
+                UpdateMatrix();
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the map that this camera is viewing. If null, KeepInMap will not be able to work.
+        /// </summary>
+        public IMap Map
+        {
+            get { return _map; }
+            set
+            {
+                _map = value;
+                if (_map != null && KeepInMap)
+                    UpdateMatrix();
+            }
+        }
 
         /// <summary>
         /// Gets the transformation matrix to be used on the SpriteBatch.Begin call
@@ -293,6 +327,21 @@ namespace NetGore.Graphics
         /// </summary>
         void UpdateMatrix()
         {
+            // Force the camera to stay in the map
+            if (Map != null && KeepInMap)
+            {
+                if (_min.X < 0)
+                    _min.X = 0;
+                else if (_min.X + _size.X > Map.Width)
+                    _min.X = Map.Width - _size.X;
+
+                if (_min.Y < 0)
+                    _min.Y = 0;
+                else if (_min.Y + _size.Y > Map.Height)
+                    _min.Y = Map.Height - _size.Y;
+            }
+
+            // Update the matrix
             Vector3 origin = new Vector3(_min, 0);
             _matrix = Matrix.CreateTranslation(-origin) * Matrix.CreateScale(_scale) * Matrix.CreateRotationZ(_rotation);
         }

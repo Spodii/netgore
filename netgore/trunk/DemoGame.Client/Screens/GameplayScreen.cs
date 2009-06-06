@@ -469,6 +469,7 @@ namespace DemoGame.Client
 
             // Update the camera
             _camera.Min = UserChar.GetCameraPos();
+            _camera.Map = Map;
         }
 
         void UpdateInput()
