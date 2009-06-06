@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
@@ -30,6 +31,21 @@ namespace NetGore.Graphics
             // Set the default values
             HorizontalLayout = BackgroundLayerLayout.Stretched;
             VerticalLayout = BackgroundLayerLayout.Stretched;
+        }
+
+        public BackgroundLayer(IValueReader reader, int currentTime)
+            : base(reader, currentTime)
+        {
+            HorizontalLayout = reader.ReadBackgroundLayerLayout("HorizontalLayout");
+            VerticalLayout = reader.ReadBackgroundLayerLayout("VerticalLayout");
+        }
+
+        public override void Write(IValueWriter writer)
+        {
+            base.Write(writer);
+
+            writer.Write("HorizontalLayout", HorizontalLayout);
+            writer.Write("VerticalLayout", VerticalLayout);
         }
 
         /// <summary>

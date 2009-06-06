@@ -1709,7 +1709,11 @@ namespace DemoGame
                     SaveHeader(w);
                     SaveWalls(w);
                     SaveDynamicEntities(w);
+
+                    // Save the misc stuff
+                    w.WriteStartElement("Misc");
                     SaveMisc(w);
+                    w.WriteEndElement();
 
                     // Write the end of the XML document
                     w.WriteEndElement();
