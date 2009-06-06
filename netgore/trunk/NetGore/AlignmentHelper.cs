@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Xna.Framework;
 
-namespace NetGore.Graphics
+namespace NetGore
 {
     public static class AlignmentHelper
     {

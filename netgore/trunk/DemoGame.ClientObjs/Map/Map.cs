@@ -20,6 +20,11 @@ namespace DemoGame.Client
     /// </summary>
     public class Map : MapBase, IDisposable
     {
+        const string _bgImageNodeName = "BackgroundImage";
+        const string _bgImagesNodeName = "BackgroundImages";
+        const string _mapGrhNodeName = "MapGrh";
+        const string _mapGrhsNodeName = "MapGrhs";
+        const string _usedIndiciesNodeName = "UsedIndicies";
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static bool _drawBackground = true;
         static bool _drawCharacters = true;
@@ -155,6 +160,7 @@ namespace DemoGame.Client
             _world = parent;
 
             // NOTE: Test background images
+            /*
             Grh biGrh = new Grh(GrhInfo.GetData("Background.sky"), AnimType.Loop, 0);
             BackgroundImage bi = new BackgroundLayer
             {
@@ -177,7 +183,6 @@ namespace DemoGame.Client
             {
                 Sprite = biGrh,
                 Depth = 3,
-                Offset = new Vector2(200, 0),
                 Color = new Color(150, 150, 150, 255)
             };
             _backgroundImages.Add(bi);
@@ -190,6 +195,14 @@ namespace DemoGame.Client
                 Color = new Color(200, 200, 200, 255)
             };
             _backgroundImages.Add(bi);
+            */
+        }
+
+        public void AddBackgroundImage(BackgroundImage bgImage)
+        {
+            Debug.Assert(!_backgroundImages.Contains(bgImage), "BackgroundImage already in the list!");
+
+            _backgroundImages.Add(bgImage);
         }
 
         /// <summary>
@@ -538,6 +551,25 @@ namespace DemoGame.Client
             return sb.ToString();
         }
 
+        void LoadBackgroundImages(XmlReader r)
+        {
+            int currentTime = World.GetTime();
+
+            while (r.Read())
+            {
+                if (r.NodeType != XmlNodeType.Element)
+                    continue;
+
+                switch (r.Name)
+                {
+                    case _bgImageNodeName:
+                        BackgroundLayer bgLayer = new BackgroundLayer(new XmlValueReader(r, _bgImageNodeName), currentTime);
+                        AddBackgroundImage(bgLayer);
+                        break;
+                }
+            }
+        }
+
         void LoadGrhs(XmlReader r)
         {
             int currentTime = World.GetTime();
@@ -549,14 +581,14 @@ namespace DemoGame.Client
 
                 switch (r.Name)
                 {
-                    case "UsedIndices":
+                    case _usedIndiciesNodeName:
                         // Build an atlas out of the MapGrhs
                         BuildAtlas(r.ReadElementContentAsString());
                         break;
 
-                    case "MapGrh":
+                    case _mapGrhNodeName:
                         // Load the MapGrh
-                        MapGrh mapGrh = new MapGrh(new XmlValueReader(r, "MapGrh"), currentTime);
+                        MapGrh mapGrh = new MapGrh(new XmlValueReader(r, _mapGrhNodeName), currentTime);
                         AddMapGrh(mapGrh);
                         break;
                 }
@@ -568,13 +600,17 @@ namespace DemoGame.Client
         /// tree. <paramref name="r"/> will only contain the subtree, so there are no concerns 
         /// with over or under-parsing, or running into any unknowns.
         /// </summary>
-        /// <param name="r">XmlReader containing the subtree for the custom Misc element</param>
+        /// <param name="r">XmlReader containing the subtree for the custom Misc element.</param>
         protected override void LoadMisc(XmlReader r)
         {
             switch (r.Name)
             {
-                case "MapGrhs":
+                case _mapGrhsNodeName:
                     LoadGrhs(r);
+                    break;
+
+                case _bgImagesNodeName:
+                    LoadBackgroundImages(r);
                     break;
             }
         }
@@ -610,17 +646,36 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Writes all the MapGrhs to a XmlWriter
+        /// Writes all the BackgroundImages to a XmlWriter.
         /// </summary>
-        /// <param name="w">XmlWriter to write to</param>
+        /// <param name="w">XmlWriter to write to.</param>
+        void SaveBackgroundImages(XmlWriter w)
+        {
+            w.WriteStartElement(_bgImagesNodeName);
+
+            foreach (BackgroundImage bgImage in _backgroundImages)
+            {
+                using (XmlValueWriter valueWriter = new XmlValueWriter(w, _bgImageNodeName))
+                {
+                    bgImage.Write(valueWriter);
+                }
+            }
+
+            w.WriteEndElement();
+        }
+
+        /// <summary>
+        /// Writes all the MapGrhs to a XmlWriter.
+        /// </summary>
+        /// <param name="w">XmlWriter to write to.</param>
         void SaveGrhs(XmlWriter w)
         {
-            w.WriteStartElement("MapGrhs");
-            w.WriteElementString("UsedIndices", GetMapGrhList());
+            w.WriteStartElement(_mapGrhsNodeName);
+            w.WriteElementString(_usedIndiciesNodeName, GetMapGrhList());
 
             foreach (MapGrh mg in _mapGrhs)
             {
-                using (XmlValueWriter valueWriter = new XmlValueWriter(w, "MapGrh"))
+                using (XmlValueWriter valueWriter = new XmlValueWriter(w, _mapGrhNodeName))
                 {
                     mg.Write(valueWriter);
                 }
@@ -635,9 +690,8 @@ namespace DemoGame.Client
         /// <param name="w">XmlWriter to write to</param>
         protected override void SaveMisc(XmlWriter w)
         {
-            w.WriteStartElement("Misc");
             SaveGrhs(w);
-            w.WriteEndElement();
+            SaveBackgroundImages(w);
         }
 
         /// <summary>

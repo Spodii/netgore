@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace NetGore.Graphics
+namespace NetGore
 {
     /// <summary>
     /// Describes how something is aligned to the target.

@@ -1025,12 +1025,12 @@
   <DynamicEntities>
     <DynamicEntity Type="TeleportEntity">
       <CollisionType>Full</CollisionType>
+      <Size>23,56</Size>
+      <Weight>1</Weight>
       <Destination>575,160</Destination>
       <DestinationMap>2</DestinationMap>
       <Position>436,646</Position>
-      <Size>23,56</Size>
       <Velocity>0,0</Velocity>
-      <Weight>1</Weight>
     </DynamicEntity>
   </DynamicEntities>
   <Misc>
@@ -2007,5 +2007,43 @@
         <IsForeground>False</IsForeground>
       </MapGrh>
     </MapGrhs>
+    <BackgroundImages>
+      <BackgroundImage>
+        <Alignment>TopLeft</Alignment>
+        <Color>255,255,255,255</Color>
+        <Depth>6</Depth>
+        <Offset>0,0</Offset>
+        <GrhIndex>137</GrhIndex>
+        <HorizontalLayout>Stretched</HorizontalLayout>
+        <VerticalLayout>Stretched</VerticalLayout>
+      </BackgroundImage>
+      <BackgroundImage>
+        <Alignment>TopLeft</Alignment>
+        <Color>50,50,50,255</Color>
+        <Depth>4</Depth>
+        <Offset>0,0</Offset>
+        <GrhIndex>138</GrhIndex>
+        <HorizontalLayout>Stretched</HorizontalLayout>
+        <VerticalLayout>Stretched</VerticalLayout>
+      </BackgroundImage>
+      <BackgroundImage>
+        <Alignment>TopLeft</Alignment>
+        <Color>150,150,150,255</Color>
+        <Depth>3</Depth>
+        <Offset>0,0</Offset>
+        <GrhIndex>138</GrhIndex>
+        <HorizontalLayout>Stretched</HorizontalLayout>
+        <VerticalLayout>Stretched</VerticalLayout>
+      </BackgroundImage>
+      <BackgroundImage>
+        <Alignment>TopLeft</Alignment>
+        <Color>200,200,200,255</Color>
+        <Depth>2</Depth>
+        <Offset>0,0</Offset>
+        <GrhIndex>139</GrhIndex>
+        <HorizontalLayout>Stretched</HorizontalLayout>
+        <VerticalLayout>Stretched</VerticalLayout>
+      </BackgroundImage>
+    </BackgroundImages>
   </Misc>
 </Map>

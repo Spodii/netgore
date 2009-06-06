@@ -71,6 +71,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Alignment.cs" />
+    <Compile Include="AlignmentHelper.cs" />
     <Compile Include="Entities\BoxSide.cs" />
     <Compile Include="Entities\CollisionBox.cs" />
     <Compile Include="Entities\CollisionType.cs" />

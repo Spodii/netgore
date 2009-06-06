@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
 
 namespace NetGore
@@ -100,6 +101,44 @@ namespace NetGore
         public static void Write(this IValueWriter writer, string name, CollisionType value)
         {
             WriteEnum(writer, name, value);
+        }
+
+        /// <summary>
+        /// Writes an Alignment.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, Alignment value)
+        {
+            WriteEnum(writer, name, value);
+        }
+
+        /// <summary>
+        /// Writes a Color.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, Color value)
+        {
+            if (writer.SupportsNameLookup)
+            {
+                // We are using name lookup, so we have to combine the values so we use only one name
+                writer.Write(name, string.Format("{0},{1},{2},{3}", value.R, value.G, value.B, value.A));
+            }
+            else
+            {
+                // Not using name lookup, so just write them out
+                // ReSharper disable RedundantCast
+                writer.Write(null, (byte)value.R);
+                writer.Write(null, (byte)value.G);
+                writer.Write(null, (byte)value.B);
+                writer.Write(null, (byte)value.A);
+                // ReSharper restore RedundantCast
+            }
         }
 
         /// <summary>

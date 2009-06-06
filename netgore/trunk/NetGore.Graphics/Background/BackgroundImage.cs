@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
@@ -50,9 +51,9 @@ namespace NetGore.Graphics
         public Vector2 Offset { get; set; }
 
         /// <summary>
-        /// Gets or sets the ISprite to draw. 
+        /// Gets or sets the sprite to draw. 
         /// </summary>
-        public ISprite Sprite { get; set; }
+        public Grh Sprite { get; set; }
 
         /// <summary>
         /// BackgroundImage constructor.
@@ -63,6 +64,34 @@ namespace NetGore.Graphics
             Offset = Vector2.Zero;
             Color = Color.White;
             Alignment = Alignment.TopLeft;
+        }
+
+        protected BackgroundImage(IValueReader reader, int currentTime)
+        {
+            Alignment = reader.ReadAlignment("Alignment");
+            Color = reader.ReadColor("Color");
+            Depth = reader.ReadFloat("Depth");
+            Offset = reader.ReadVector2("Offset");
+
+            int grhIndex = reader.ReadInt("GrhIndex");
+            GrhData grhData = GrhInfo.GetData(grhIndex);
+            Grh grh = new Grh(grhData, AnimType.Loop, currentTime);
+
+            Sprite = grh;
+        }
+
+        public virtual void Write(IValueWriter writer)
+        {
+            writer.Write("Alignment", Alignment);
+            writer.Write("Color", Color);
+            writer.Write("Depth", Depth);
+            writer.Write("Offset", Offset);
+
+            int grhIndex = 0;
+            if (Sprite != null && Sprite.GrhData != null)
+                grhIndex = Sprite.GrhData.GrhIndex;
+
+            writer.Write("GrhIndex", grhIndex);
         }
 
         /// <summary>
