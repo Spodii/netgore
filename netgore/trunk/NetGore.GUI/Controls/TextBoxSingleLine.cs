@@ -230,13 +230,13 @@ namespace NetGore.Graphics.GUI
             }
         }
 
-        protected override void UpdateControl()
+        protected override void UpdateControl(int currentTime)
         {
             // Decrease the solid cursor time
             if (_cursorSolidCount > 0)
                 _cursorSolidCount--;
 
-            base.UpdateControl();
+            base.UpdateControl(currentTime);
         }
 
         protected override void UpdateKeyboard()

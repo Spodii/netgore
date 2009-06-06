@@ -133,9 +133,9 @@ namespace DemoGame.Client
             OnRaiseStat(this, statPB.StatType);
         }
 
-        protected override void UpdateControl()
+        protected override void UpdateControl(int currentTime)
         {
-            base.UpdateControl();
+            base.UpdateControl(currentTime);
 
             if (!IsVisible)
                 return;
@@ -231,9 +231,9 @@ namespace DemoGame.Client
                 _statType = statType;
             }
 
-            protected override void UpdateControl()
+            protected override void UpdateControl(int currentTime)
             {
-                base.UpdateControl();
+                base.UpdateControl(currentTime);
                 IsVisible = CanRaiseStat;
             }
         }

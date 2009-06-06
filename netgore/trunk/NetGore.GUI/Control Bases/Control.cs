@@ -448,7 +448,7 @@ namespace NetGore.Graphics.GUI
         /// Primary drawing routine
         /// </summary>
         /// <param name="sb">SpriteBatch to draw to</param>
-        internal void Draw(SpriteBatch sb)
+        public void Draw(SpriteBatch sb)
         {
             if (Parent != null)
                 throw new MethodAccessException("Draw() may only be called from the root control.");
@@ -775,11 +775,11 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Primary update for the Control
+        /// Updates the Control.
         /// </summary>
-        /// <param name="pointedAtControl">The top-most Control that the cursor is currently over, or
-        /// null if none.</param>
-        internal void Update(Control pointedAtControl)
+        /// <param name="currentTime">Current game time.</param>
+        /// <param name="pointedAtControl">The top-most Control that the cursor is currently over, or null if none.</param>
+        public void Update(int currentTime, Control pointedAtControl)
         {
             if (Parent != null)
                 throw new MethodAccessException("Update() may only be called from the root control.");
@@ -801,13 +801,13 @@ namespace NetGore.Graphics.GUI
             }
 
             // Perform misc updating
-            UpdateControl();
+            UpdateControl(currentTime);
         }
 
         /// <summary>
         /// Updates the Control for anything other than the Mouse or Keyboard
         /// </summary>
-        protected virtual void UpdateControl()
+        protected virtual void UpdateControl(int currentTime)
         {
             if (_isDisposed)
             {
@@ -821,7 +821,7 @@ namespace NetGore.Graphics.GUI
             // Update all the child controls
             foreach (Control c in Controls)
             {
-                c.UpdateControl();
+                c.UpdateControl(currentTime);
             }
 
             // Set the top-most controls if needed

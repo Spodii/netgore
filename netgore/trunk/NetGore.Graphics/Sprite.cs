@@ -201,6 +201,15 @@ namespace NetGore.Graphics
             spriteBatch.Draw(_texture, dest, _source, color);
         }
 
+        /// <summary>
+        /// Updates the ISprite.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
+        public void Update(int currentTime)
+        {
+            // Nothing to update... ever
+        }
+
         #endregion
     }
 }
