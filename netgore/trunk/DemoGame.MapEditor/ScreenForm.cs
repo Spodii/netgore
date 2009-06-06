@@ -155,10 +155,6 @@ namespace DemoGame.MapEditor
         SpriteFont _font;
 
         KeyEventArgs _keyEventArgs = new KeyEventArgs(Keys.None);
-
-        /// <summary>
-        /// Current map
-        /// </summary>
         Map _map;
 
         /// <summary>
@@ -250,11 +246,16 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets the currently loaded map
+        /// Gets or sets (private) the currently loaded map.
         /// </summary>
         public Map Map
         {
             get { return _map; }
+            private set
+            {
+                _map = value;
+                _camera.Map = Map;
+            }
         }
 
         /// <summary>
@@ -354,7 +355,7 @@ namespace DemoGame.MapEditor
         void btnTeleportCopy_Click(object sender, EventArgs e)
         {
             throw new NotImplementedException("See code");
-            if (_map == null)
+            if (Map == null)
                 return;
 
             TeleportEntityBase selected = lstTeleports.SelectedItem as TeleportEntityBase;
@@ -362,26 +363,26 @@ namespace DemoGame.MapEditor
                 return;
 
             // NOTE: Removed line when implementing new TeleportEntity:
-            // _map.AddEntity(new NewTeleportEntity(selected.Position, selected.CB.Size, selected.Destination));
+            // Map.AddEntity(new NewTeleportEntity(selected.Position, selected.CB.Size, selected.Destination));
             UpdateTeleporterList();
         }
 
         void btnTeleportDelete_Click(object sender, EventArgs e)
         {
-            if (_map == null)
+            if (Map == null)
                 return;
 
             TeleportEntityBase selected = lstTeleports.SelectedItem as TeleportEntityBase;
             if (selected == null)
                 return;
 
-            _map.RemoveEntity(selected);
+            Map.RemoveEntity(selected);
             UpdateTeleporterList();
         }
 
         void btnTeleportLocate_Click(object sender, EventArgs e)
         {
-            if (_map == null)
+            if (Map == null)
                 return;
 
             TeleportEntityBase selected = lstTeleports.SelectedItem as TeleportEntityBase;
@@ -394,11 +395,11 @@ namespace DemoGame.MapEditor
         void btnTeleportNew_Click(object sender, EventArgs e)
         {
             throw new NotImplementedException("See code");
-            if (_map == null)
+            if (Map == null)
                 return;
 
             // NOTE: Removed line when implementing new TeleportEntity:
-            //_map.AddEntity(new NewTeleportEntity(new Vector2(10, 10), new Vector2(32, 32), new Vector2(10, 10)));
+            //Map.AddEntity(new NewTeleportEntity(new Vector2(10, 10), new Vector2(32, 32), new Vector2(10, 10)));
             UpdateTeleporterList();
         }
 
@@ -426,14 +427,14 @@ namespace DemoGame.MapEditor
 
         void cmdApplySize_Click(object sender, EventArgs e)
         {
-            if (_map == null)
+            if (Map == null)
                 return;
 
             uint width;
             uint height;
 
             if (uint.TryParse(txtMapWidth.Text, out width) && uint.TryParse(txtMapHeight.Text, out height))
-                _map.SetDimensions(new Vector2(width, height));
+                Map.SetDimensions(new Vector2(width, height));
 
             txtMapWidth_TextChanged(null, null);
             txtMapHeight_TextChanged(null, null);
@@ -469,34 +470,34 @@ namespace DemoGame.MapEditor
                 return;
             }
 
-            _map = new Map(index, _world, GameScreen.GraphicsDevice);
-            _map.SetDimensions(new Vector2(30 * 32, 20 * 32));
-            _map.Save(index, ContentPaths.Dev);
+            Map = new Map(index, _world, GameScreen.GraphicsDevice);
+            Map.SetDimensions(new Vector2(30 * 32, 20 * 32));
+            Map.Save(index, ContentPaths.Dev);
             SetMap(newMapPath);
         }
 
         void cmdSave_Click(object sender, EventArgs e)
         {
-            if (_map == null)
+            if (Map == null)
                 return;
 
             Cursor = Cursors.WaitCursor;
             Enabled = false;
 
             // Add the MapGrh-bound walls
-            var extraWalls = _mapGrhWalls.CreateWallList(_map.MapGrhs);
+            var extraWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
             foreach (WallEntityBase wall in extraWalls)
             {
-                _map.AddEntity(wall);
+                Map.AddEntity(wall);
             }
 
             // Save the map
-            _map.Save(_map.Index, ContentPaths.Dev);
+            Map.Save(Map.Index, ContentPaths.Dev);
 
             // Remove the extra walls
             foreach (WallEntityBase wall in extraWalls)
             {
-                _map.RemoveEntity(wall);
+                Map.RemoveEntity(wall);
             }
 
             Enabled = true;
@@ -516,19 +517,19 @@ namespace DemoGame.MapEditor
             }
 
             // Check for a valid map
-            if (_map == null)
+            if (Map == null)
                 return;
 
             // Begin the rendering
             _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
 
             // Map
-            _map.Draw(_sb, _camera);
+            Map.Draw(_sb, _camera);
 
             // MapGrh bound walls
             if (chkDrawAutoWalls.Checked)
             {
-                foreach (MapGrh mg in _map.MapGrhs)
+                foreach (MapGrh mg in Map.MapGrhs)
                 {
                     if (!_camera.InView(mg.Grh, mg.Destination))
                         continue;
@@ -545,7 +546,7 @@ namespace DemoGame.MapEditor
             }
 
             // Border
-            _mapBorderDrawer.Draw(_sb, _map, _camera);
+            _mapBorderDrawer.Draw(_sb, Map, _camera);
 
             // Selection area
             if (_selectedTool != null)
@@ -697,7 +698,7 @@ namespace DemoGame.MapEditor
         void GameScreen_MouseDown(object sender, MouseEventArgs e)
         {
             _mouseButton = e.Button;
-            if (_map == null)
+            if (Map == null)
                 return;
 
             GameScreen.Focus();
@@ -712,7 +713,7 @@ namespace DemoGame.MapEditor
         void GameScreen_MouseMove(object sender, MouseEventArgs e)
         {
             _mouseButton = e.Button;
-            if (_map == null)
+            if (Map == null)
                 return;
 
             // Update the cursor position
@@ -728,7 +729,7 @@ namespace DemoGame.MapEditor
         void GameScreen_MouseUp(object sender, MouseEventArgs e)
         {
             _mouseButton = e.Button;
-            if (_map == null)
+            if (Map == null)
                 return;
 
             if (_editGrh != null)
@@ -898,7 +899,7 @@ namespace DemoGame.MapEditor
 
         void lstSelectedWalls_SelectedValueChanged(object sender, EventArgs e)
         {
-            if (_map == null)
+            if (Map == null)
                 return;
 
             WallCursor.SelectedWalls.Clear();
@@ -1080,27 +1081,27 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Sets the map being used. Use this instead of directly setting _map.
+        /// Sets the map being used. Use this instead of directly setting Map.
         /// </summary>
         /// <param name="filePath">Path to the map to use</param>
         void SetMap(string filePath)
         {
             ushort index = Map.GetIndexFromPath(filePath);
-            _map = new Map(index, _world, GameScreen.GraphicsDevice);
-            _map.Load(ContentPaths.Dev, true);
+            Map = new Map(index, _world, GameScreen.GraphicsDevice);
+            Map.Load(ContentPaths.Dev, true);
 
             // Remove all of the walls previously created from the MapGrhs
-            var grhWalls = _mapGrhWalls.CreateWallList(_map.MapGrhs);
-            var dupeWalls = _map.FindDuplicateWalls(grhWalls);
+            var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
+            var dupeWalls = Map.FindDuplicateWalls(grhWalls);
             foreach (WallEntityBase dupeWall in dupeWalls)
             {
-                _map.RemoveEntity(dupeWall);
+                Map.RemoveEntity(dupeWall);
             }
 
             // Reset some of the variables
             _camera.Min = Vector2.Zero;
-            txtMapWidth.Text = _map.Width.ToString();
-            txtMapHeight.Text = _map.Height.ToString();
+            txtMapWidth.Text = Map.Width.ToString();
+            txtMapHeight.Text = Map.Height.ToString();
             UpdateTeleporterList();
         }
 
@@ -1240,7 +1241,7 @@ namespace DemoGame.MapEditor
 
         void txtGridHeight_TextChanged(object sender, EventArgs e)
         {
-            if (_map == null)
+            if (Map == null)
                 return;
 
             float result;
@@ -1250,7 +1251,7 @@ namespace DemoGame.MapEditor
 
         void txtGridWidth_TextChanged(object sender, EventArgs e)
         {
-            if (_map == null)
+            if (Map == null)
                 return;
 
             float result;
@@ -1263,7 +1264,7 @@ namespace DemoGame.MapEditor
             uint o;
             if (uint.TryParse(txtMapHeight.Text, out o))
             {
-                if (o == _map.Height)
+                if (o == Map.Height)
                     txtMapHeight.BackColor = _colorNormal;
                 else
                     txtMapHeight.BackColor = _colorChanged;
@@ -1277,7 +1278,7 @@ namespace DemoGame.MapEditor
             uint o;
             if (uint.TryParse(txtMapWidth.Text, out o))
             {
-                if (o == _map.Width)
+                if (o == Map.Width)
                     txtMapWidth.BackColor = _colorNormal;
                 else
                     txtMapWidth.BackColor = _colorChanged;
@@ -1384,7 +1385,7 @@ namespace DemoGame.MapEditor
             else
             {
                 txtTeleportX.BackColor = _colorNormal;
-                _map.SafeTeleportEntity(tele, new Vector2(x, tele.Position.Y));
+                Map.SafeTeleportEntity(tele, new Vector2(x, tele.Position.Y));
                 UpdateTeleporterList();
             }
         }
@@ -1401,7 +1402,7 @@ namespace DemoGame.MapEditor
             else
             {
                 txtTeleportY.BackColor = _colorNormal;
-                _map.SafeTeleportEntity(tele, new Vector2(tele.Position.X, y));
+                Map.SafeTeleportEntity(tele, new Vector2(tele.Position.X, y));
                 UpdateTeleporterList();
             }
         }
@@ -1434,14 +1435,14 @@ namespace DemoGame.MapEditor
                 _editGrh.Update(_currentTime);
 
             // Check for a map
-            if (_map == null)
+            if (Map == null)
                 return;
 
             // Move the camera
             _camera.Min += _moveCamera;
 
             // Update the map
-            _map.Update();
+            Map.Update();
 
             // Update the cursor
             UpdateCursor();
@@ -1477,14 +1478,14 @@ namespace DemoGame.MapEditor
 
         public void UpdateTeleporterList()
         {
-            if (_map == null)
+            if (Map == null)
                 return;
 
             object selected = lstTeleports.SelectedItem;
 
             lstTeleports.Items.Clear();
 
-            foreach (Entity entity in _map.Entities)
+            foreach (Entity entity in Map.Entities)
             {
                 if (entity is TeleportEntityBase)
                     lstTeleports.Items.Add(entity);
