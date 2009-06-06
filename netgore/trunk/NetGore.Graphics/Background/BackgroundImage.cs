@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Describes a single image that resides in the background of the map.
+    /// A single image that resides in the background of the map.
     /// </summary>
     public abstract class BackgroundImage
     {
@@ -54,6 +54,23 @@ namespace NetGore.Graphics
             Sprite.Draw(spriteBatch, position, Color);
         }
 
+        /// <summary>
+        /// Draws the image to the specified SpriteBatch.
+        /// </summary>
+        /// <param name="spriteBatch">SpriteBatch to draw the image to.</param>
+        /// <param name="camera">Camera that describes the current view.</param>
+        /// <param name="mapSize">Size of the map to draw to.</param>
+        /// <param name="spriteSize">Size to draw the sprite.</param>
+        public virtual void Draw(SpriteBatch spriteBatch, Camera2D camera, Vector2 mapSize, Vector2 spriteSize)
+        {
+            if (Sprite == null)
+                return;
+
+            Vector2 position = GetPosition(mapSize, camera, spriteSize);
+            Rectangle rect = new Rectangle((int)position.X, (int)position.Y, (int)spriteSize.X, (int)spriteSize.Y);
+            Sprite.Draw(spriteBatch, rect, Color);
+        }
+
         static Vector2 GetOffsetMultiplier(Alignment alignment)
         {
             switch (alignment)
@@ -86,16 +103,17 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="mapSize">Size of the map that this image is on.</param>
         /// <param name="camera">Camera that describes the current view.</param>
+        /// <param name="spriteSize">Size of the Sprite that will be drawn.</param>
         /// <returns>The map position of the image using the given <paramref name="camera"/>.</returns>
-        public Vector2 GetPosition(Vector2 mapSize, Camera2D camera)
+        public Vector2 GetPosition(Vector2 mapSize, Camera2D camera, Vector2 spriteSize)
         {
-            if (Sprite == null)
+            // Can't draw a sprite that has no size...
+            if (spriteSize == Vector2.Zero)
                 return Vector2.Zero;
 
             // Get the position from the alignment
-            Vector2 spriteSize = new Vector2(Sprite.Source.Width, Sprite.Source.Height);
             Vector2 alignmentPosition = AlignmentHelper.FindOffset(Alignment, spriteSize, mapSize);
-           
+
             // Add the custom offset
             Vector2 position = alignmentPosition + Offset;
 
@@ -112,6 +130,31 @@ namespace NetGore.Graphics
             position -= diff;
 
             return position;
+        }
+
+        /// <summary>
+        /// Gets the size of the Sprite source image.
+        /// </summary>
+        protected Vector2 SpriteSourceSize
+        {
+            get 
+            {
+                if (Sprite == null)
+                    return Vector2.Zero;
+
+                return new Vector2(Sprite.Source.Width, Sprite.Source.Height); 
+            } 
+        }
+
+        /// <summary>
+        /// Finds the map position of the image using the given <paramref name="camera"/>.
+        /// </summary>
+        /// <param name="mapSize">Size of the map that this image is on.</param>
+        /// <param name="camera">Camera that describes the current view.</param>
+        /// <returns>The map position of the image using the given <paramref name="camera"/>.</returns>
+        public Vector2 GetPosition(Vector2 mapSize, Camera2D camera)
+        {
+            return GetPosition(mapSize, camera, SpriteSourceSize);
         }
 
         /// <summary>

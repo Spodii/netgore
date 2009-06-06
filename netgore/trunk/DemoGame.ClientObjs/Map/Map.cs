@@ -156,7 +156,7 @@ namespace DemoGame.Client
 
             // NOTE: Test background images
             Grh biGrh = new Grh(GrhInfo.GetData("Background.test"), AnimType.Loop, 0);
-            BackgroundImage bi = new BackgroundLayer { Sprite = biGrh, Alignment = Alignment.TopRight, Color = new Color(255, 255, 255, 255), Depth = 1 };
+            BackgroundImage bi = new BackgroundLayer { Sprite = biGrh, Alignment = Alignment.TopRight, Color = new Color(255, 255, 255, 255), Depth = 2 };
             _backgroundImages.Add(bi);
         }
 
