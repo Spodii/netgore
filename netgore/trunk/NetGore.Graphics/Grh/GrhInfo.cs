@@ -11,7 +11,7 @@ using NetGore.Collections;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Holds the GrhData and related methods
+    /// Holds the GrhDatas and related methods.
     /// </summary>
     public static class GrhInfo
     {
@@ -19,19 +19,23 @@ namespace NetGore.Graphics
         /// Dictionary of categories, which contains a dictionary of all the names of the GrhDatas in
         /// that category, which contains the GrhData of that given name and category
         /// </summary>
-        static readonly Dictionary<string, Dictionary<string, GrhData>> _catDic =
-            new Dictionary<string, Dictionary<string, GrhData>>(_comparer);
+        static readonly Dictionary<string, Dictionary<string, GrhData>> _catDic;
 
         /// <summary>
         /// The StringComparer used for the GrhData dictionaries. This must be used for all of the
         /// dictionaries created for the GrhData categorization.
         /// </summary>
-        static readonly StringComparer _comparer = StringComparer.OrdinalIgnoreCase;
+        static readonly StringComparer _comparer = StringComparer.InvariantCultureIgnoreCase;
 
         /// <summary>
         /// List of all the GrhData where the array index is the GrhIndex
         /// </summary>
         static DArray<GrhData> _grhDatas;
+
+        static GrhInfo()
+        {
+            _catDic = new Dictionary<string, Dictionary<string, GrhData>>(_comparer);
+        }
 
         /// <summary>
         /// Gets an IEnumerable of all of the GrhDatas.
@@ -56,7 +60,7 @@ namespace NetGore.Graphics
             // Check if a GrhData will be overwritten
             if (_grhDatas.CanGet(index))
             {
-                GrhData currentGD = GetDatas(index);
+                GrhData currentGD = GetData(index);
                 if (currentGD != null && currentGD != gd)
                     Debug.Fail("Existing GrhData is going to be overwritten. This is likely not what was intended.");
             }
@@ -180,7 +184,7 @@ namespace NetGore.Graphics
         {
             string category, title;
             SplitCategoryAndTitle(categoryAndTitle, out category, out title);
-            return GetDatas(category, title);
+            return GetData(category, title);
         }
 
         /// <summary>
@@ -189,7 +193,7 @@ namespace NetGore.Graphics
         /// <param name="category">Category of the GrhData</param>
         /// <param name="title">Title of the GrhData</param>
         /// <returns>GrhData matching the given information if found, or null if no matches</returns>
-        public static GrhData GetDatas(string category, string title)
+        public static GrhData GetData(string category, string title)
         {
             if (string.IsNullOrEmpty(category))
                 throw new ArgumentNullException("category");
@@ -239,7 +243,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="grhIndex">GrhIndex of the GrhData</param>
         /// <returns>GrhData matching the given information if found, or null if no matches</returns>
-        public static GrhData GetDatas(int grhIndex)
+        public static GrhData GetData(int grhIndex)
         {
             if (_grhDatas.CanGet(grhIndex))
                 return _grhDatas[grhIndex];
@@ -329,7 +333,7 @@ namespace NetGore.Graphics
             foreach (var dic in grhDataFile)
             {
                 ushort currGrhIndex = ushort.Parse(dic["Grh.Index"]);
-                GrhData currGrh = GetDatas(currGrhIndex);
+                GrhData currGrh = GetData(currGrhIndex);
                 int numFrames = int.Parse(dic["Grh.Frames.Count"]);
 
                 // Categorization

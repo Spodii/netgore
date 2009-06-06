@@ -2026,6 +2026,51 @@
       <Title>item_slot</Title>
     </Category>
   </Grh>
+  <Grh Index="137">
+    <AutomaticSize>False</AutomaticSize>
+    <Frames Count="1" />
+    <Texture>
+      <File>Background/sky</File>
+      <X>0</X>
+      <Y>0</Y>
+      <W>1024</W>
+      <H>238</H>
+    </Texture>
+    <Category>
+      <Name>Background</Name>
+      <Title>sky</Title>
+    </Category>
+  </Grh>
+  <Grh Index="138">
+    <AutomaticSize>False</AutomaticSize>
+    <Frames Count="1" />
+    <Texture>
+      <File>Background/trees/dense</File>
+      <X>0</X>
+      <Y>0</Y>
+      <W>1024</W>
+      <H>512</H>
+    </Texture>
+    <Category>
+      <Name>Background.trees</Name>
+      <Title>dense</Title>
+    </Category>
+  </Grh>
+  <Grh Index="139">
+    <AutomaticSize>False</AutomaticSize>
+    <Frames Count="1" />
+    <Texture>
+      <File>Background/trees/sparse</File>
+      <X>0</X>
+      <Y>0</Y>
+      <W>1024</W>
+      <H>512</H>
+    </Texture>
+    <Category>
+      <Name>Background.trees</Name>
+      <Title>sparse</Title>
+    </Category>
+  </Grh>
   <Grh Index="200">
     <AutomaticSize>False</AutomaticSize>
     <Frames Count="1" />

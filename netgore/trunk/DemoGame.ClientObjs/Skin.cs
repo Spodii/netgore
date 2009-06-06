@@ -65,13 +65,13 @@ namespace DemoGame.Client
 
             // Check the current skin
             string category = ResolveCategory(skin, subCategory);
-            GrhData ret = GrhInfo.GetDatas(category, title);
+            GrhData ret = GrhInfo.GetData(category, title);
 
             // Check the default skin if it wasn't found in the current skin
             if (ret == null && DefaultSkin != skin)
             {
                 category = ResolveCategory(DefaultSkin, subCategory);
-                ret = GrhInfo.GetDatas(category, title);
+                ret = GrhInfo.GetData(category, title);
             }
 
             if (ret == null)

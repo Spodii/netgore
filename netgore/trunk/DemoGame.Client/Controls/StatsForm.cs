@@ -23,7 +23,7 @@ namespace DemoGame.Client
     class StatsForm : Form, IRestorableSettings
     {
         const float _xOffset = 21;
-        readonly Grh _addStatGrh = new Grh(GrhInfo.GetDatas("GUI", "AddStat"));
+        readonly Grh _addStatGrh = new Grh(GrhInfo.GetData("GUI", "AddStat"));
         readonly CharacterStats _charStats;
         float _yOffset = 0;
 

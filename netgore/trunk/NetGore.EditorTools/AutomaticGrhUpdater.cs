@@ -99,7 +99,7 @@ namespace NetGore.EditorTools
 
                 // Because the frames should be automatically generated, we should know exactly where it is
                 // just from the filepath and not have to search through the GrhDatas
-                GrhData gd = GrhInfo.GetDatas(category, title);
+                GrhData gd = GrhInfo.GetData(category, title);
 
                 // Ensure the GrhData exists
                 if (gd == null)
@@ -251,7 +251,7 @@ namespace NetGore.EditorTools
 
                 // If the GrhData does not already exist, create it
                 // If it does exist, update the frames and speed
-                GrhData gd = GrhInfo.GetDatas(category, title);
+                GrhData gd = GrhInfo.GetData(category, title);
                 if (gd == null)
                 {
                     // Create the new GrhData
@@ -303,7 +303,7 @@ namespace NetGore.EditorTools
                 GrhInfo.SplitCategoryAndTitle(relative, out category, out title);
 
                 // Ensure the GrhData doesn't already exist
-                if (GrhInfo.GetDatas(category, title) != null)
+                if (GrhInfo.GetData(category, title) != null)
                     continue;
 
                 // Load the texture size from the file

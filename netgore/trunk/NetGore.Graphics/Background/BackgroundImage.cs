@@ -12,25 +12,40 @@ namespace NetGore.Graphics
     /// </summary>
     public abstract class BackgroundImage
     {
+        float _depth;
+
         /// <summary>
-        /// Gets or sets how the background image is aligned to the map.
+        /// Gets or sets how the background image is aligned to the map. Default is TopLeft.
         /// </summary>
         public Alignment Alignment { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the image used when drawing.
+        /// Gets or sets the color of the image used when drawing. Default is white (ARGB: 255,255,255,255).
         /// </summary>
         public Color Color { get; set; }
 
         /// <summary>
         /// Gets or sets the depth of the image relative to other background images, and how fast the
         /// image moves with the camera. A depth of 1.0 will move as fast as the camera, while a depth of
-        /// 2.0 will move at half the speed of the camera. Must be greater than or equal to 1.0.
+        /// 2.0 will move at half the speed of the camera. Must be greater than or equal to 1.0. Default is 1.0.
         /// </summary>
-        public float Depth { get; set; }
+        public float Depth
+        {
+            get
+            {
+                return _depth;
+            }
+            set
+            {
+                if (value < 1.0f)
+                    throw new ArgumentOutOfRangeException("value");
+
+                _depth = value;
+            }
+        }
 
         /// <summary>
-        /// Gets or sets the pixel offset of the image from the Alignment. 
+        /// Gets or sets the pixel offset of the image from the Alignment.
         /// </summary>
         public Vector2 Offset { get; set; }
 
@@ -38,6 +53,17 @@ namespace NetGore.Graphics
         /// Gets or sets the ISprite to draw. 
         /// </summary>
         public ISprite Sprite { get; set; }
+
+        /// <summary>
+        /// BackgroundImage constructor.
+        /// </summary>
+        protected BackgroundImage()
+        {
+            // Set the default values
+            Offset = Vector2.Zero;
+            Color = Color.White;
+            Alignment = Alignment.TopLeft;
+        }
 
         /// <summary>
         /// Draws the image to the specified SpriteBatch.
@@ -124,7 +150,7 @@ namespace NetGore.Graphics
             diff += (camera.Size - spriteSize) * GetOffsetMultiplier(Alignment);
 
             // Compensate for the depth
-            diff = diff * ((1 / Depth) - 1);
+            diff *= ((1 / Depth) - 1);
 
             // Add the difference to the position
             position -= diff;

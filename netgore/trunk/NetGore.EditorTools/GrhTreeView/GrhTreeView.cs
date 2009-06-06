@@ -412,7 +412,7 @@ namespace NetGore.EditorTools
 
                 // Build the new title (appending " copy" constantly until it is unique) and category
                 string newTitle = oldGrhData.Title;
-                while (GrhInfo.GetDatas(newCat, newTitle) != null)
+                while (GrhInfo.GetData(newCat, newTitle) != null)
                 {
                     newTitle += " copy";
                 }
@@ -445,7 +445,7 @@ namespace NetGore.EditorTools
             }
 
             // Get the data
-            GrhData grhData = GrhInfo.GetDatas(grhIndex);
+            GrhData grhData = GrhInfo.GetData(grhIndex);
             if (grhData == null || grhData.GrhIndex == 0)
             {
                 Debug.Fail("Failed to find the GrhData associated with the node.");
@@ -896,7 +896,7 @@ namespace NetGore.EditorTools
             }
 
             // Get the data
-            GrhData grhData = GrhInfo.GetDatas(grhIndex);
+            GrhData grhData = GrhInfo.GetData(grhIndex);
             if (grhData == null || grhData.GrhIndex == 0)
             {
                 Debug.Fail("Failed to find the GrhData associated with the node.");
@@ -928,7 +928,7 @@ namespace NetGore.EditorTools
             }
 
             // Get the data
-            GrhData grhData = GrhInfo.GetDatas(grhIndex);
+            GrhData grhData = GrhInfo.GetData(grhIndex);
             if (grhData == null || grhData.GrhIndex == 0)
             {
                 Debug.Fail("Failed to find the GrhData associated with the node.");
@@ -987,7 +987,7 @@ namespace NetGore.EditorTools
         /// <param name="grhIndex">Index of the GrhData to update</param>
         public void UpdateGrhData(ushort grhIndex)
         {
-            UpdateGrhData(GrhInfo.GetDatas(grhIndex));
+            UpdateGrhData(GrhInfo.GetData(grhIndex));
         }
 
         public void UpdateGrhDatas(IEnumerable<GrhData> grhDatas)
