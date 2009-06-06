@@ -77,6 +77,7 @@
     <Compile Include="Atlas\TextureAtlas.cs" />
     <Compile Include="Atlas\TextureAtlasInfo.cs" />
     <Compile Include="Background\BackgroundImage.cs" />
+    <Compile Include="Background\BackgroundLayerLayout.cs" />
     <Compile Include="Background\BackgroundLayer.cs" />
     <Compile Include="Camera2D.cs" />
     <Compile Include="Grh\AnimType.cs" />
