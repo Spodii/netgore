@@ -71,14 +71,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AlignmentHelper.cs" />
     <Compile Include="Atlas\AtlasNode.cs" />
     <Compile Include="Atlas\ITextureAtlas.cs" />
     <Compile Include="Atlas\TextureAtlas.cs" />
     <Compile Include="Atlas\TextureAtlasInfo.cs" />
+    <Compile Include="Background\BackgroundImage.cs" />
+    <Compile Include="Background\BackgroundLayer.cs" />
     <Compile Include="Camera2D.cs" />
     <Compile Include="Grh\AnimType.cs" />
     <Compile Include="Grh\ChangeCategorizationHandler.cs" />
     <Compile Include="MapBorderDrawer.cs" />
+    <Compile Include="Alignment.cs" />
     <Compile Include="Skeleton\SkeletonBodyInfo.cs" />
     <Compile Include="Skeleton\SkeletonFrame.cs" />
     <Compile Include="XNAArrow.cs" />

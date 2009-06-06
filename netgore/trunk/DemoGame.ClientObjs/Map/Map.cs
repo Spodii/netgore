@@ -29,6 +29,11 @@ namespace DemoGame.Client
         static bool _drawWalls = false;
 
         /// <summary>
+        /// List of BackgroundImages on this map.
+        /// </summary>
+        readonly List<BackgroundImage> _backgroundImages = new List<BackgroundImage>();
+
+        /// <summary>
         /// List of IDrawableEntity objects in the background layer
         /// </summary>
         readonly List<IDrawableEntity> _drawLayerBackground = new List<IDrawableEntity>();
@@ -148,6 +153,11 @@ namespace DemoGame.Client
         {
             _graphics = graphics;
             _world = parent;
+
+            // NOTE: Test background images
+            Grh biGrh = new Grh(GrhInfo.GetData("Background.test"), AnimType.Loop, 0);
+            BackgroundImage bi = new BackgroundLayer { Sprite = biGrh, Alignment = Alignment.TopRight, Color = new Color(255, 255, 255, 255), Depth = 1 };
+            _backgroundImages.Add(bi);
         }
 
         /// <summary>
@@ -215,7 +225,7 @@ namespace DemoGame.Client
 
                 // Convert the index to a ushort and get the GrhData for it
                 ushort index = ushort.Parse(s);
-                GrhData gd = GrhInfo.GetData(index);
+                GrhData gd = GrhInfo.GetDatas(index);
 
                 // Every frame of the GrhData gets added
                 // For animations, this is one per each frame
@@ -243,6 +253,12 @@ namespace DemoGame.Client
         /// <param name="camera">Camera used to find the view area</param>
         public void Draw(SpriteBatch sb, Camera2D camera)
         {
+            // Draw the background
+            foreach (var bgImage in _backgroundImages)
+            {
+                bgImage.Draw(sb, camera, Size);
+            }
+
             // Draw the background map graphics (behind the character)
             if (_drawBackground)
                 DrawLayer(sb, camera, _drawLayerBackground);
@@ -283,14 +299,14 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws the specified layer
+        /// Draws an IEnumerable of IDrawableEntities.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw to</param>
-        /// <param name="camera">Camera to use to check if in view</param>
-        /// <param name="layerList">List of IDrawableEntity objects to draw</param>
-        static void DrawLayer(SpriteBatch sb, Camera2D camera, IEnumerable<IDrawableEntity> layerList)
+        /// <param name="sb">SpriteBatch to draw to.</param>
+        /// <param name="camera">Camera to use to check if in view.</param>
+        /// <param name="drawableEntities">List of IDrawableEntity objects to draw.</param>
+        static void DrawLayer(SpriteBatch sb, Camera2D camera, IEnumerable<IDrawableEntity> drawableEntities)
         {
-            foreach (IDrawableEntity drawableEntity in layerList)
+            foreach (IDrawableEntity drawableEntity in drawableEntities)
             {
                 if (drawableEntity.InView(camera))
                     drawableEntity.Draw(sb);
@@ -607,6 +623,10 @@ namespace DemoGame.Client
                 if (World.Camera.InView(g.Grh, g.Destination))
                     g.Update(currentTime);
             }
+            
+            // Update the background images
+            foreach (var bgImage in _backgroundImages)
+                bgImage.Update(currentTime);
         }
 
         #region IDisposable Members

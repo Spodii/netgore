@@ -412,7 +412,7 @@ namespace NetGore.EditorTools
 
                 // Build the new title (appending " copy" constantly until it is unique) and category
                 string newTitle = oldGrhData.Title;
-                while (GrhInfo.GetData(newCat, newTitle) != null)
+                while (GrhInfo.GetDatas(newCat, newTitle) != null)
                 {
                     newTitle += " copy";
                 }
@@ -445,7 +445,7 @@ namespace NetGore.EditorTools
             }
 
             // Get the data
-            GrhData grhData = GrhInfo.GetData(grhIndex);
+            GrhData grhData = GrhInfo.GetDatas(grhIndex);
             if (grhData == null || grhData.GrhIndex == 0)
             {
                 Debug.Fail("Failed to find the GrhData associated with the node.");
@@ -896,7 +896,7 @@ namespace NetGore.EditorTools
             }
 
             // Get the data
-            GrhData grhData = GrhInfo.GetData(grhIndex);
+            GrhData grhData = GrhInfo.GetDatas(grhIndex);
             if (grhData == null || grhData.GrhIndex == 0)
             {
                 Debug.Fail("Failed to find the GrhData associated with the node.");
@@ -928,7 +928,7 @@ namespace NetGore.EditorTools
             }
 
             // Get the data
-            GrhData grhData = GrhInfo.GetData(grhIndex);
+            GrhData grhData = GrhInfo.GetDatas(grhIndex);
             if (grhData == null || grhData.GrhIndex == 0)
             {
                 Debug.Fail("Failed to find the GrhData associated with the node.");
@@ -951,16 +951,16 @@ namespace NetGore.EditorTools
                     continue;
 
                 // Store the GrhIndex of the animation before updating it to compare if there was a change
-                int oldGrhIndex = atn.Grh.CurrentGrh.GrhIndex;
+                int oldGrhIndex = atn.Grh.CurrentGrhData.GrhIndex;
 
                 // Update the Grh
                 atn.Grh.Update(Time);
 
                 // Check that the GrhIndex changed from the update
-                if (oldGrhIndex != atn.Grh.CurrentGrh.GrhIndex)
+                if (oldGrhIndex != atn.Grh.CurrentGrhData.GrhIndex)
                 {
                     // Change the image
-                    atn.TreeNode.ImageKey = atn.Grh.CurrentGrh.GrhIndex.ToString();
+                    atn.TreeNode.ImageKey = atn.Grh.CurrentGrhData.GrhIndex.ToString();
                     atn.TreeNode.SelectedImageKey = atn.TreeNode.ImageKey;
                     atn.TreeNode.StateImageKey = atn.TreeNode.ImageKey;
                 }
@@ -987,7 +987,7 @@ namespace NetGore.EditorTools
         /// <param name="grhIndex">Index of the GrhData to update</param>
         public void UpdateGrhData(ushort grhIndex)
         {
-            UpdateGrhData(GrhInfo.GetData(grhIndex));
+            UpdateGrhData(GrhInfo.GetDatas(grhIndex));
         }
 
         public void UpdateGrhDatas(IEnumerable<GrhData> grhDatas)

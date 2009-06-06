@@ -28,7 +28,7 @@ namespace DemoGame.Client
             {
                 if (_blankGrh == null)
                 {
-                    GrhData gd = GrhInfo.GetData("System", "Blank");
+                    GrhData gd = GrhInfo.GetDatas("System", "Blank");
                     if (gd == null)
                         throw new Exception("Failed to load the System.Blank GrhData.");
                     _blankGrh = new Grh(gd);
@@ -76,13 +76,13 @@ namespace DemoGame.Client
 
             // NOTE: Revert to "Default" skin if something isn't found (use Skin.GetSkinGrh or whatever)
 
-            ControlBorder cbForm = CreateBorder(GrhInfo.GetData(root + "Form"));
-            ControlBorder cbTextBox = CreateBorder(GrhInfo.GetData(root + "TextBox"));
-            ControlBorder cbButton = CreateBorder(GrhInfo.GetData(root + "Button"));
-            ControlBorder cbButtonPressed = CreateBorder(GrhInfo.GetData(root + "Button.Pressed"));
-            ControlBorder cbButtonOver = CreateBorder(GrhInfo.GetData(root + "Button.MouseOver"));
+            ControlBorder cbForm = CreateBorder(GrhInfo.GetDatas(root + "Form"));
+            ControlBorder cbTextBox = CreateBorder(GrhInfo.GetDatas(root + "TextBox"));
+            ControlBorder cbButton = CreateBorder(GrhInfo.GetDatas(root + "Button"));
+            ControlBorder cbButtonPressed = CreateBorder(GrhInfo.GetDatas(root + "Button.Pressed"));
+            ControlBorder cbButtonOver = CreateBorder(GrhInfo.GetDatas(root + "Button.MouseOver"));
 
-            var dic = GrhInfo.GetData(root + "CheckBox");
+            var dic = GrhInfo.GetDatas(root + "CheckBox");
             ISprite ut = new Grh(dic["Unticked"]);
             ISprite utOver = new Grh(dic["UntickedMouseOver"]);
             ISprite utPressed = new Grh(dic["UntickedPressed"]);

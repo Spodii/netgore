@@ -66,7 +66,7 @@ namespace NetGore.Graphics
         {
             if (_blankGrh == null)
             {
-                GrhData gd = GrhInfo.GetData("System", "Blank");
+                GrhData gd = GrhInfo.GetDatas("System", "Blank");
                 if (gd == null)
                     throw new Exception("Failed to load GrhData System.Blank.");
                 _blankGrh = new Grh(gd);
