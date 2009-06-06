@@ -103,7 +103,7 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 // Ensure the new control can receive focus
-                if (!value.CanFocus)
+                if (value != null && !value.CanFocus)
                     return;
 
                 Control oldFocusedControl = _focusedControl;
@@ -582,9 +582,10 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Updates all of the controls in the GUIManager
+        /// Updates all of the controls in the GUIManager.
         /// </summary>
-        public void Update()
+        /// <param name="currentTime">Current game time.</param>
+        public void Update(int currentTime)
         {
             // Set the last state
             _lastMouseState = _mouseState;
@@ -607,7 +608,7 @@ namespace NetGore.Graphics.GUI
             Control pointedAtControl = GetControlAtPoint(CursorPosition);
             foreach (Control control in Controls.Reverse())
             {
-                control.Update(pointedAtControl);
+                control.Update(currentTime, pointedAtControl);
             }
         }
 

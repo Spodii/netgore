@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Interface for a 2D game sprite with basic drawing abilities
+    /// Interface for a 2D game sprite with basic drawing and updating abilities.
     /// </summary>
     public interface ISprite
     {
@@ -23,19 +23,25 @@ namespace NetGore.Graphics
         Texture2D Texture { get; }
 
         /// <summary>
-        /// Draws the sprite
+        /// Draws the ISprite.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
-        /// <param name="position">Position to draw to</param>
-        /// <param name="color">Color to draw with</param>
+        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="position">Position to draw to.</param>
+        /// <param name="color">Color to draw with.</param>
         void Draw(SpriteBatch spriteBatch, Vector2 position, Color color);
 
         /// <summary>
-        /// Draws the sprite
+        /// Draws the ISprite.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
-        /// <param name="dest">Rectangle to draw to</param>
-        /// <param name="color">Color to draw with</param>
+        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="dest">Rectangle to draw to.</param>
+        /// <param name="color">Color to draw with.</param>
         void Draw(SpriteBatch spriteBatch, Rectangle dest, Color color);
+
+        /// <summary>
+        /// Updates the ISprite.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
+        void Update(int currentTime);
     }
 }

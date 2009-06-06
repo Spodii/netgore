@@ -462,7 +462,7 @@ namespace DemoGame.Client
             // Update some other goodies
             World.Update();
             ItemInfoTooltip.Update();
-            _gui.Update();
+            _gui.Update(_currentTime);
             _damageTextPool.Update(_currentTime);
             UpdateInput();
             _guiSettings.Update(_currentTime);

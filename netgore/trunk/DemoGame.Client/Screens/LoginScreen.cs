@@ -150,7 +150,9 @@ namespace DemoGame.Client
 
         public override void Update(GameTime gameTime)
         {
-            _gui.Update();
+            int currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
+
+            _gui.Update(currentTime);
 
             if (_sockets != null)
                 _sockets.Heartbeat();
