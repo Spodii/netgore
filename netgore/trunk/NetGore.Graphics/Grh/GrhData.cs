@@ -232,7 +232,7 @@ namespace NetGore.Graphics
         {
             ushort index = GrhInfo.NextFreeIndex();
 
-            Debug.Assert(GrhInfo.GetDatas(index) == null, "Slot to use is already in use!");
+            Debug.Assert(GrhInfo.GetData(index) == null, "Slot to use is already in use!");
 
             GrhData gd = new GrhData
                          {
@@ -305,7 +305,7 @@ namespace NetGore.Graphics
             _frames = new GrhData[frames.Length];
             for (int i = 0; i < frames.Length; i++)
             {
-                _frames[i] = GrhInfo.GetDatas(frames[i]);
+                _frames[i] = GrhInfo.GetData(frames[i]);
             }
 
             // Store some values and references

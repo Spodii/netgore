@@ -63,7 +63,7 @@ namespace NetGore.Graphics
         {
             if (_triangleGrh == null)
             {
-                GrhData gd = GrhInfo.GetDatas("System", "Triangle");
+                GrhData gd = GrhInfo.GetData("System", "Triangle");
                 if (gd == null)
                     throw new Exception("Failed loading GrhData 'System.Triangle'");
                 _triangleGrh = new Grh(gd);

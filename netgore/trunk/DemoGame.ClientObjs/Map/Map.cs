@@ -155,8 +155,40 @@ namespace DemoGame.Client
             _world = parent;
 
             // NOTE: Test background images
-            Grh biGrh = new Grh(GrhInfo.GetData("Background.test"), AnimType.Loop, 0);
-            BackgroundImage bi = new BackgroundLayer { Sprite = biGrh, Alignment = Alignment.TopRight, Color = new Color(255, 255, 255, 255), Depth = 2 };
+            Grh biGrh = new Grh(GrhInfo.GetData("Background.sky"), AnimType.Loop, 0);
+            BackgroundImage bi = new BackgroundLayer
+            {
+                Sprite = biGrh,
+                Depth = 6
+            };
+            _backgroundImages.Add(bi);
+
+            biGrh = new Grh(GrhInfo.GetData("Background.Trees.dense"), AnimType.Loop, 0);
+            bi = new BackgroundLayer
+            {
+                Sprite = biGrh,
+                Depth = 4,
+                Color = new Color(50, 50, 50, 255)
+            };
+            _backgroundImages.Add(bi);
+
+            biGrh = new Grh(GrhInfo.GetData("Background.Trees.dense"), AnimType.Loop, 0);
+            bi = new BackgroundLayer
+            {
+                Sprite = biGrh,
+                Depth = 3,
+                Offset = new Vector2(200, 0),
+                Color = new Color(150, 150, 150, 255)
+            };
+            _backgroundImages.Add(bi);
+
+            biGrh = new Grh(GrhInfo.GetData("Background.Trees.sparse"), AnimType.Loop, 0);
+            bi = new BackgroundLayer
+            {
+                Sprite = biGrh,
+                Depth = 2,
+                Color = new Color(200, 200, 200, 255)
+            };
             _backgroundImages.Add(bi);
         }
 
@@ -225,7 +257,7 @@ namespace DemoGame.Client
 
                 // Convert the index to a ushort and get the GrhData for it
                 ushort index = ushort.Parse(s);
-                GrhData gd = GrhInfo.GetDatas(index);
+                GrhData gd = GrhInfo.GetData(index);
 
                 // Every frame of the GrhData gets added
                 // For animations, this is one per each frame
@@ -254,7 +286,7 @@ namespace DemoGame.Client
         public void Draw(SpriteBatch sb, Camera2D camera)
         {
             // Draw the background
-            foreach (var bgImage in _backgroundImages)
+            foreach (BackgroundImage bgImage in _backgroundImages)
             {
                 bgImage.Draw(sb, camera, Size);
             }
@@ -623,10 +655,12 @@ namespace DemoGame.Client
                 if (World.Camera.InView(g.Grh, g.Destination))
                     g.Update(currentTime);
             }
-            
+
             // Update the background images
-            foreach (var bgImage in _backgroundImages)
+            foreach (BackgroundImage bgImage in _backgroundImages)
+            {
                 bgImage.Update(currentTime);
+            }
         }
 
         #region IDisposable Members

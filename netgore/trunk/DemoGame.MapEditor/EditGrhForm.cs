@@ -54,7 +54,7 @@ namespace DemoGame.MapEditor
                         int lastPeriod = framesText[i].LastIndexOf('.');
                         string category = framesText[i].Substring(0, lastPeriod);
                         string title = framesText[i].Substring(lastPeriod + 1);
-                        GrhData tempGD = GrhInfo.GetDatas(category, title);
+                        GrhData tempGD = GrhInfo.GetData(category, title);
                         if (tempGD != null)
                             frames[i] = tempGD.GrhIndex;
                     }
@@ -63,7 +63,7 @@ namespace DemoGame.MapEditor
                 // Check that all the frames are valid
                 foreach (ushort frame in frames)
                 {
-                    if (GrhInfo.GetDatas(frame) == null)
+                    if (GrhInfo.GetData(frame) == null)
                     {
                         MessageBox.Show("GrhIndex [" + frame + "] does not exist! Aborting save...");
                         return;
@@ -82,7 +82,7 @@ namespace DemoGame.MapEditor
                                         "Change GrhIndex", MessageBoxButtons.YesNo) == DialogResult.No)
                         return;
 
-                    if (GrhInfo.GetDatas(newIndex) != null)
+                    if (GrhInfo.GetData(newIndex) != null)
                     {
                         MessageBox.Show("Index already in use");
                         return;
@@ -476,7 +476,7 @@ namespace DemoGame.MapEditor
 
         bool ValidateCategorization(bool showMessage)
         {
-            GrhData gd = GrhInfo.GetDatas(txtCategory.Text, txtTitle.Text);
+            GrhData gd = GrhInfo.GetData(txtCategory.Text, txtTitle.Text);
             if (gd != null && gd != _gd)
             {
                 if (showMessage)

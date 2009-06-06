@@ -28,7 +28,7 @@ namespace DemoGame.Client
             {
                 if (_blankGrh == null)
                 {
-                    GrhData gd = GrhInfo.GetDatas("System", "Blank");
+                    GrhData gd = GrhInfo.GetData("System", "Blank");
                     if (gd == null)
                         throw new Exception("Failed to load the System.Blank GrhData.");
                     _blankGrh = new Grh(gd);

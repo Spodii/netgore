@@ -806,7 +806,7 @@ namespace DemoGame.MapEditor
             // Load the Grh information
             GrhInfo.Load(ContentPaths.Dev.Data.Join("grhdata.xml"), _content);
             treeGrhs.Initialize(_content);
-            TransBox.Initialize(GrhInfo.GetDatas("System", "Move"), GrhInfo.GetDatas("System", "Resize"));
+            TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
 
             //Hook GrhTreeView context menu click events
             treeGrhs.GrhContextMenuEditClick += treeGrhs_mnuEdit;
