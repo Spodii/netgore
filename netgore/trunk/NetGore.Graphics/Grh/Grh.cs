@@ -49,7 +49,7 @@ namespace NetGore.Graphics
         /// Gets the GrhData to use for drawing based on the current frame. 
         /// On non-animated Grhs, this will be a reference to itself.
         /// </summary>
-        public GrhData CurrentGrh
+        public GrhData CurrentGrhData
         {
             get
             {
@@ -95,10 +95,10 @@ namespace NetGore.Graphics
         {
             get
             {
-                if (CurrentGrh == null)
+                if (CurrentGrhData == null)
                     return 0;
 
-                return CurrentGrh.Height;
+                return CurrentGrhData.Height;
             }
         }
 
@@ -125,10 +125,10 @@ namespace NetGore.Graphics
         {
             get
             {
-                if (CurrentGrh == null)
+                if (CurrentGrhData == null)
                     return 0;
 
-                return CurrentGrh.Width;
+                return CurrentGrhData.Width;
             }
         }
 
@@ -355,7 +355,7 @@ namespace NetGore.Graphics
         /// <param name="currentTime">Current time.</param>
         public void SetGrh(ushort grhIndex, AnimType anim, int currentTime)
         {
-            GrhData grhData = GrhInfo.GetData(grhIndex);
+            GrhData grhData = GrhInfo.GetDatas(grhIndex);
             if (grhData == null && grhIndex != 0)
             {
                 const string errmsg = "Failed to set Grh - GrhIndex `{0}` does not exist.";
@@ -415,7 +415,12 @@ namespace NetGore.Graphics
         /// </summary>
         public Rectangle Source
         {
-            get { return CurrentGrh.SourceRect; }
+            get 
+            {
+                if (CurrentGrhData == null)
+                    return Rectangle.Empty;
+                return CurrentGrhData.SourceRect; 
+            }
         }
 
         /// <summary>
@@ -423,7 +428,12 @@ namespace NetGore.Graphics
         /// </summary>
         public Texture2D Texture
         {
-            get { return CurrentGrh.Texture; }
+            get
+            {
+                if (CurrentGrhData == null)
+                    return null;
+                return CurrentGrhData.Texture; 
+            }
         }
 
         /// <summary>

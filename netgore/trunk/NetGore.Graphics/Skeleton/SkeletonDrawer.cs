@@ -96,7 +96,7 @@ namespace NetGore.Graphics
         {
             if (_joint == null)
             {
-                GrhData gd = GrhInfo.GetData("System", "Joint");
+                GrhData gd = GrhInfo.GetDatas("System", "Joint");
                 if (gd == null)
                     throw new Exception("Failed to load GrhData System.Joint.");
                 _joint = new Grh(gd);

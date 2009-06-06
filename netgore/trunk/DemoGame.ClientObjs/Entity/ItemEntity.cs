@@ -116,7 +116,7 @@ namespace DemoGame.Client
             _description = string.Empty;
             _value = 0;
 
-            _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
+            _grh = new Grh(GrhInfo.GetDatas(graphicIndex), AnimType.Loop, currentTime);
         }
 
         public ItemEntity(ushort mapIndex, Vector2 pos, Vector2 size, ushort graphicIndex, int currentTime) : base(pos, size)
@@ -129,7 +129,7 @@ namespace DemoGame.Client
             _description = string.Empty;
             _value = 0;
 
-            _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
+            _grh = new Grh(GrhInfo.GetDatas(graphicIndex), AnimType.Loop, currentTime);
         }
 
         /// <summary>

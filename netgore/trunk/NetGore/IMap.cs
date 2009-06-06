@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Xna.Framework;
 
 namespace NetGore
 {
@@ -14,6 +15,11 @@ namespace NetGore
         /// Gets an IEnumerable of all the Entities on the map.
         /// </summary>
         IEnumerable<Entity> Entities { get; }
+
+        /// <summary>
+        /// Gets the size of the map in pixels.
+        /// </summary>
+        Vector2 Size { get; }
 
         /// <summary>
         /// Gets the height of the map in pixels.

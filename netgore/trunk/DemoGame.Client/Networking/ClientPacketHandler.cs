@@ -381,19 +381,28 @@ namespace DemoGame.Client
         void RecvUpdateVelocityAndPosition(IIPSocket conn, BitStream r)
         {
             ushort mapEntityIndex = r.ReadUShort();
+            DynamicEntity dynamicEntity = null;
 
             // Grab the DynamicEntity
-            DynamicEntity dynamicEntity = Map.GetDynamicEntity<DynamicEntity>(mapEntityIndex);
-            if (dynamicEntity == null)
+            try
             {
-                // TODO: Will need to be able to read the values even if the dynamicEntity is invalid since the
-                // data will be getting sent on a different pipe
-                Debug.Fail("dynamicEntity not found.");
-                return;
+                dynamicEntity = Map.GetDynamicEntity<DynamicEntity>(mapEntityIndex);
+                if (dynamicEntity == null)
+                {
+                    // TODO: Will need to be able to read the values even if the dynamicEntity is invalid since the
+                    // data will be getting sent on a different pipe
+                    Debug.Fail("dynamicEntity not found.");
+                    return;
+                }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                // Ignore errors about finding the DynamicEntity
             }
 
             // Deserialize
-            dynamicEntity.DeserializePositionAndVelocity(new BitStreamValueReader(r));
+            if (dynamicEntity != null)
+                dynamicEntity.DeserializePositionAndVelocity(new BitStreamValueReader(r));
         }
 
         #region IGetTime Members
