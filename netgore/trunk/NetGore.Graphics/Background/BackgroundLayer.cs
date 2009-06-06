@@ -13,14 +13,24 @@ namespace NetGore.Graphics
     public class BackgroundLayer : BackgroundImage
     {
         /// <summary>
-        /// Gets or sets how the image is drawn on the horizontal axis.
+        /// Gets or sets how the image is drawn on the horizontal axis. Default is Stretched.
         /// </summary>
         public BackgroundLayerLayout HorizontalLayout { get; set; }
 
         /// <summary>
-        /// Gets or sets how the image is drawn on the vertical axis.
+        /// Gets or sets how the image is drawn on the vertical axis. Default is Stretched.
         /// </summary>
         public BackgroundLayerLayout VerticalLayout { get; set; }
+
+        /// <summary>
+        /// BackgroundLayer constructor.
+        /// </summary>
+        public BackgroundLayer()
+        {
+            // Set the default values
+            HorizontalLayout = BackgroundLayerLayout.Stretched;
+            VerticalLayout = BackgroundLayerLayout.Stretched;
+        }
 
         /// <summary>
         /// Draws the image to the specified SpriteBatch.
@@ -36,7 +46,7 @@ namespace NetGore.Graphics
             switch (HorizontalLayout)
             {
                 case BackgroundLayerLayout.Stretched:
-                    spriteSize.X = GetStretchedSize(camera.X, mapSize.X, Depth);
+                    spriteSize.X = GetStretchedSize(camera.Size.X, mapSize.X, Depth);
                     break;
 
                 case BackgroundLayerLayout.Tiled:
@@ -47,7 +57,7 @@ namespace NetGore.Graphics
             switch (VerticalLayout)
             {
                 case BackgroundLayerLayout.Stretched:
-                    spriteSize.Y = GetStretchedSize(camera.Y, mapSize.Y, Depth);
+                    spriteSize.Y = GetStretchedSize(camera.Size.Y, mapSize.Y, Depth);
                     break;
 
                 case BackgroundLayerLayout.Tiled:
@@ -66,7 +76,7 @@ namespace NetGore.Graphics
         /// <returns>The size to use for a BackgroundLayer sprite to stretch it across the whole map.</returns>
         static protected float GetStretchedSize(float cameraSize, float targetSize, float depth)
         {
-            return (targetSize + cameraSize) / depth;
+            return cameraSize + ((targetSize - cameraSize) / depth);
         }
     }
 }
