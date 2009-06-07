@@ -2009,6 +2009,7 @@
     </MapGrhs>
     <BackgroundImages>
       <BackgroundImage>
+		<Name></Name>
         <Alignment>TopLeft</Alignment>
         <Color>255,255,255,255</Color>
         <Depth>6</Depth>
@@ -2018,6 +2019,7 @@
         <VerticalLayout>Stretched</VerticalLayout>
       </BackgroundImage>
       <BackgroundImage>
+		<Name></Name>
         <Alignment>TopLeft</Alignment>
         <Color>50,50,50,255</Color>
         <Depth>4</Depth>
@@ -2027,6 +2029,7 @@
         <VerticalLayout>Stretched</VerticalLayout>
       </BackgroundImage>
       <BackgroundImage>
+		<Name></Name>
         <Alignment>TopLeft</Alignment>
         <Color>150,150,150,255</Color>
         <Depth>3</Depth>
@@ -2036,6 +2039,7 @@
         <VerticalLayout>Stretched</VerticalLayout>
       </BackgroundImage>
       <BackgroundImage>
+		<Name></Name>
         <Alignment>TopLeft</Alignment>
         <Color>200,200,200,255</Color>
         <Depth>2</Depth>
