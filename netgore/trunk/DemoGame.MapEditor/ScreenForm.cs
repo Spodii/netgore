@@ -1102,7 +1102,9 @@ namespace DemoGame.MapEditor
             _camera.Min = Vector2.Zero;
             txtMapWidth.Text = Map.Width.ToString();
             txtMapHeight.Text = Map.Height.ToString();
+
             UpdateTeleporterList();
+            UpdateBGItems();
         }
 
         void SetWallToEdit(WallEntityBase wall)
@@ -1476,6 +1478,24 @@ namespace DemoGame.MapEditor
                 SetWallToEdit(null);
         }
 
+        public void UpdateBGItems()
+        {
+            if (Map == null)
+                return;
+
+            object selected = lstBGItems.SelectedItem;
+
+            lstBGItems.Items.Clear();
+
+            foreach (var bgItem in Map.BackgroundImages)
+            {
+                lstBGItems.Items.Add(bgItem);
+            }
+
+            if (selected != null)
+                lstBGItems.SelectedItem = selected;
+        }
+
         public void UpdateTeleporterList()
         {
             if (Map == null)
@@ -1507,5 +1527,15 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lstBGItems_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            pgBGItem.SelectedObject = lstBGItems.SelectedItem;
+        }
     }
 }
