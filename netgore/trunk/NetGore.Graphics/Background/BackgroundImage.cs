@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Design;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
 
@@ -14,15 +16,27 @@ namespace NetGore.Graphics
     public abstract class BackgroundImage
     {
         float _depth;
+        string _name;
 
         /// <summary>
         /// Gets or sets how the background image is aligned to the map. Default is TopLeft.
         /// </summary>
+        [Category("Position")]
+        [DisplayName("Alignment")]
+        [Description("How the background image is aligned to the map.")]
+        [DefaultValue(Alignment.TopLeft)]
+        [Browsable(true)]
         public Alignment Alignment { get; set; }
 
         /// <summary>
-        /// Gets or sets the color of the image used when drawing. Default is white (ARGB: 255,255,255,255).
+        /// Gets or sets the color to use when drawing the image where RGBA 255,255,255,255 will draw
+        /// the image unaltered. Default is white (ARGB: 255,255,255,255).
         /// </summary>
+        [Category("Display")]
+        [DisplayName("Color")]
+        [Description("The color to use when drawing the image where RGBA 255,255,255,255 will draw the image unaltered.")]
+        [DefaultValue(typeof(Color), "255, 255, 255, 255")]
+        [Browsable(true)]
         public Color Color { get; set; }
 
         /// <summary>
@@ -30,12 +44,14 @@ namespace NetGore.Graphics
         /// image moves with the camera. A depth of 1.0 will move as fast as the camera, while a depth of
         /// 2.0 will move at half the speed of the camera. Must be greater than or equal to 1.0. Default is 1.0.
         /// </summary>
+        [Category("Position")]
+        [DisplayName("Depth")]
+        [Description("Defines the drawing order and movement speed, where 1.0 is same speed of the camera, and 2.0 is half the speed.")]
+        [DefaultValue(1)]
+        [Browsable(true)]
         public float Depth
         {
-            get
-            {
-                return _depth;
-            }
+            get { return _depth; }
             set
             {
                 if (value < 1.0f)
@@ -46,14 +62,53 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets or sets the optional name of this BackgroundImage. This is only used for personal purposes and
+        /// has absolutely no affect on the BackgroundImage itself.
+        /// </summary>
+        [Category("Design")]
+        [DisplayName("Name")]
+        [Description("The optional name of this BackgroundImage. Used for development purposes only.")]
+        [Browsable(true)]
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value ?? string.Empty; }
+        }
+
+        /// <summary>
         /// Gets or sets the pixel offset of the image from the Alignment.
         /// </summary>
+        [Category("Position")]
+        [DisplayName("Offset")]
+        [Description("The pixel offset of the image from the Alignment.")]
+        [DefaultValue(typeof(Vector2), "0, 0")]
+        [Browsable(true)]
         public Vector2 Offset { get; set; }
 
         /// <summary>
         /// Gets or sets the sprite to draw. 
         /// </summary>
+        [Category("Display")]
+        [DisplayName("Sprite")]
+        [Description("The sprite to draw.")]
+        [Browsable(true)]
+        [TypeConverter(typeof(GrhConverter))]
         public Grh Sprite { get; set; }
+
+        /// <summary>
+        /// Gets the size of the Sprite source image.
+        /// </summary>
+        [Browsable(false)]
+        protected Vector2 SpriteSourceSize
+        {
+            get
+            {
+                if (Sprite == null)
+                    return Vector2.Zero;
+
+                return new Vector2(Sprite.Source.Width, Sprite.Source.Height);
+            }
+        }
 
         /// <summary>
         /// BackgroundImage constructor.
@@ -68,6 +123,7 @@ namespace NetGore.Graphics
 
         protected BackgroundImage(IValueReader reader, int currentTime)
         {
+            Name = reader.ReadString("Name");
             Alignment = reader.ReadAlignment("Alignment");
             Color = reader.ReadColor("Color");
             Depth = reader.ReadFloat("Depth");
@@ -78,20 +134,6 @@ namespace NetGore.Graphics
             Grh grh = new Grh(grhData, AnimType.Loop, currentTime);
 
             Sprite = grh;
-        }
-
-        public virtual void Write(IValueWriter writer)
-        {
-            writer.Write("Alignment", Alignment);
-            writer.Write("Color", Color);
-            writer.Write("Depth", Depth);
-            writer.Write("Offset", Offset);
-
-            int grhIndex = 0;
-            if (Sprite != null && Sprite.GrhData != null)
-                grhIndex = Sprite.GrhData.GrhIndex;
-
-            writer.Write("GrhIndex", grhIndex);
         }
 
         /// <summary>
@@ -188,20 +230,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the size of the Sprite source image.
-        /// </summary>
-        protected Vector2 SpriteSourceSize
-        {
-            get 
-            {
-                if (Sprite == null)
-                    return Vector2.Zero;
-
-                return new Vector2(Sprite.Source.Width, Sprite.Source.Height); 
-            } 
-        }
-
-        /// <summary>
         /// Finds the map position of the image using the given <paramref name="camera"/>.
         /// </summary>
         /// <param name="mapSize">Size of the map that this image is on.</param>
@@ -219,6 +247,21 @@ namespace NetGore.Graphics
         public virtual void Update(int currentTime)
         {
             // TODO: Sprite.Update(currentTime);
+        }
+
+        public virtual void Write(IValueWriter writer)
+        {
+            writer.Write("Name", Name);
+            writer.Write("Alignment", Alignment);
+            writer.Write("Color", Color);
+            writer.Write("Depth", Depth);
+            writer.Write("Offset", Offset);
+
+            int grhIndex = 0;
+            if (Sprite != null && Sprite.GrhData != null)
+                grhIndex = Sprite.GrhData.GrhIndex;
+
+            writer.Write("GrhIndex", grhIndex);
         }
     }
 }

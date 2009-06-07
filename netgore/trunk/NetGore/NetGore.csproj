@@ -102,6 +102,8 @@
     <Compile Include="PropertySync\PropertySyncInt.cs" />
     <Compile Include="PropertySync\PropertySyncString.cs" />
     <Compile Include="PropertySync\SyncValueAttribute.cs" />
+    <Compile Include="Converters\SimpleMemberDescriptor.cs" />
+    <Compile Include="Converters\TypeConverterBase.cs" />
     <Compile Include="WorldSettings.cs" />
   </ItemGroup>
   <ItemGroup>

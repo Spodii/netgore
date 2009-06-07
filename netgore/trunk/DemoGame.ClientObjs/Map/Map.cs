@@ -10,6 +10,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Collections;
 using NetGore.Graphics;
 using NetGore.IO;
 
@@ -32,6 +33,10 @@ namespace DemoGame.Client
         static bool _drawForeground = true;
         static bool _drawItems = true;
         static bool _drawWalls = false;
+
+        readonly SafeEnumerator<BackgroundImage> _backgroundImagesEnumerator;
+
+        public IEnumerable<BackgroundImage> BackgroundImages { get { return _backgroundImagesEnumerator; } }
 
         /// <summary>
         /// List of BackgroundImages on this map.
@@ -158,8 +163,8 @@ namespace DemoGame.Client
         {
             _graphics = graphics;
             _world = parent;
+            _backgroundImagesEnumerator = new SafeEnumerator<BackgroundImage>(_backgroundImages, true);
 
-            // NOTE: Test background images
             /*
             Grh biGrh = new Grh(GrhInfo.GetData("Background.sky"), AnimType.Loop, 0);
             BackgroundImage bi = new BackgroundLayer

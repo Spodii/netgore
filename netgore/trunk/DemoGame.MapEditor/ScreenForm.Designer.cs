@@ -79,6 +79,12 @@ namespace DemoGame.MapEditor
             this.txtTeleportX = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.lstTeleports = new System.Windows.Forms.ListBox();
+            this.tabPageBackground = new System.Windows.Forms.TabPage();
+            this.pgBGItem = new System.Windows.Forms.PropertyGrid();
+            this.btnNewBGSprite = new System.Windows.Forms.Button();
+            this.btnNewBGLayer = new System.Windows.Forms.Button();
+            this.btnDeleteBGItem = new System.Windows.Forms.Button();
+            this.lstBGItems = new System.Windows.Forms.ListBox();
             this.tabPageNPCs = new System.Windows.Forms.TabPage();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -113,6 +119,7 @@ namespace DemoGame.MapEditor
             this.tabControl1.SuspendLayout();
             this.tabTeleports.SuspendLayout();
             this.gbSelectedTeleporter.SuspendLayout();
+            this.tabPageBackground.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -130,12 +137,13 @@ namespace DemoGame.MapEditor
             this.tcMenu.Controls.Add(this.tabPageGrhs);
             this.tcMenu.Controls.Add(this.tabPageWalls);
             this.tcMenu.Controls.Add(this.tabPageEnvironment);
+            this.tcMenu.Controls.Add(this.tabPageBackground);
             this.tcMenu.Controls.Add(this.tabPageNPCs);
             this.tcMenu.Controls.Add(this.tabPageSettings);
             this.tcMenu.Location = new System.Drawing.Point(839, 3);
             this.tcMenu.Name = "tcMenu";
             this.tcMenu.SelectedIndex = 0;
-            this.tcMenu.Size = new System.Drawing.Size(304, 570);
+            this.tcMenu.Size = new System.Drawing.Size(307, 570);
             this.tcMenu.TabIndex = 1;
             // 
             // tabPageGeneral
@@ -146,7 +154,7 @@ namespace DemoGame.MapEditor
             this.tabPageGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabPageGeneral.Name = "tabPageGeneral";
             this.tabPageGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageGeneral.Size = new System.Drawing.Size(296, 544);
+            this.tabPageGeneral.Size = new System.Drawing.Size(299, 544);
             this.tabPageGeneral.TabIndex = 0;
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.ToolTipText = "General map information";
@@ -233,7 +241,7 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs.Controls.Add(this.treeGrhs);
             this.tabPageGrhs.Location = new System.Drawing.Point(4, 22);
             this.tabPageGrhs.Name = "tabPageGrhs";
-            this.tabPageGrhs.Size = new System.Drawing.Size(296, 544);
+            this.tabPageGrhs.Size = new System.Drawing.Size(299, 544);
             this.tabPageGrhs.TabIndex = 5;
             this.tabPageGrhs.Text = "Grhs";
             this.tabPageGrhs.UseVisualStyleBackColor = true;
@@ -288,7 +296,7 @@ namespace DemoGame.MapEditor
             this.tabPageWalls.Location = new System.Drawing.Point(4, 22);
             this.tabPageWalls.Name = "tabPageWalls";
             this.tabPageWalls.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWalls.Size = new System.Drawing.Size(296, 544);
+            this.tabPageWalls.Size = new System.Drawing.Size(299, 544);
             this.tabPageWalls.TabIndex = 1;
             this.tabPageWalls.Text = "Walls";
             this.tabPageWalls.ToolTipText = "Collision walls";
@@ -362,7 +370,7 @@ namespace DemoGame.MapEditor
             this.tabPageEnvironment.Controls.Add(this.tabControl1);
             this.tabPageEnvironment.Location = new System.Drawing.Point(4, 22);
             this.tabPageEnvironment.Name = "tabPageEnvironment";
-            this.tabPageEnvironment.Size = new System.Drawing.Size(296, 544);
+            this.tabPageEnvironment.Size = new System.Drawing.Size(299, 544);
             this.tabPageEnvironment.TabIndex = 2;
             this.tabPageEnvironment.Text = "Environment";
             this.tabPageEnvironment.ToolTipText = "Graphics and effects";
@@ -585,11 +593,69 @@ namespace DemoGame.MapEditor
             this.lstTeleports.TabIndex = 4;
             this.lstTeleports.SelectedIndexChanged += new System.EventHandler(this.lstTeleports_SelectedIndexChanged);
             // 
+            // tabPageBackground
+            // 
+            this.tabPageBackground.Controls.Add(this.pgBGItem);
+            this.tabPageBackground.Controls.Add(this.btnNewBGSprite);
+            this.tabPageBackground.Controls.Add(this.btnNewBGLayer);
+            this.tabPageBackground.Controls.Add(this.btnDeleteBGItem);
+            this.tabPageBackground.Controls.Add(this.lstBGItems);
+            this.tabPageBackground.Location = new System.Drawing.Point(4, 22);
+            this.tabPageBackground.Name = "tabPageBackground";
+            this.tabPageBackground.Size = new System.Drawing.Size(299, 544);
+            this.tabPageBackground.TabIndex = 6;
+            this.tabPageBackground.Text = "Background";
+            this.tabPageBackground.UseVisualStyleBackColor = true;
+            // 
+            // pgBGItem
+            // 
+            this.pgBGItem.Location = new System.Drawing.Point(3, 173);
+            this.pgBGItem.Name = "pgBGItem";
+            this.pgBGItem.Size = new System.Drawing.Size(293, 368);
+            this.pgBGItem.TabIndex = 5;
+            // 
+            // btnNewBGSprite
+            // 
+            this.btnNewBGSprite.Location = new System.Drawing.Point(224, 143);
+            this.btnNewBGSprite.Name = "btnNewBGSprite";
+            this.btnNewBGSprite.Size = new System.Drawing.Size(74, 24);
+            this.btnNewBGSprite.TabIndex = 4;
+            this.btnNewBGSprite.Text = "New Sprite";
+            this.btnNewBGSprite.UseVisualStyleBackColor = true;
+            this.btnNewBGSprite.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // btnNewBGLayer
+            // 
+            this.btnNewBGLayer.Location = new System.Drawing.Point(144, 143);
+            this.btnNewBGLayer.Name = "btnNewBGLayer";
+            this.btnNewBGLayer.Size = new System.Drawing.Size(74, 24);
+            this.btnNewBGLayer.TabIndex = 3;
+            this.btnNewBGLayer.Text = "New Layer";
+            this.btnNewBGLayer.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteBGItem
+            // 
+            this.btnDeleteBGItem.Location = new System.Drawing.Point(64, 143);
+            this.btnDeleteBGItem.Name = "btnDeleteBGItem";
+            this.btnDeleteBGItem.Size = new System.Drawing.Size(74, 24);
+            this.btnDeleteBGItem.TabIndex = 2;
+            this.btnDeleteBGItem.Text = "Delete";
+            this.btnDeleteBGItem.UseVisualStyleBackColor = true;
+            // 
+            // lstBGItems
+            // 
+            this.lstBGItems.FormattingEnabled = true;
+            this.lstBGItems.Location = new System.Drawing.Point(3, 3);
+            this.lstBGItems.Name = "lstBGItems";
+            this.lstBGItems.Size = new System.Drawing.Size(293, 134);
+            this.lstBGItems.TabIndex = 0;
+            this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
+            // 
             // tabPageNPCs
             // 
             this.tabPageNPCs.Location = new System.Drawing.Point(4, 22);
             this.tabPageNPCs.Name = "tabPageNPCs";
-            this.tabPageNPCs.Size = new System.Drawing.Size(296, 544);
+            this.tabPageNPCs.Size = new System.Drawing.Size(299, 544);
             this.tabPageNPCs.TabIndex = 4;
             this.tabPageNPCs.Text = "NPCs";
             this.tabPageNPCs.ToolTipText = "Mob and NPC spawning and settings";
@@ -601,7 +667,7 @@ namespace DemoGame.MapEditor
             this.tabPageSettings.Controls.Add(this.groupBox1);
             this.tabPageSettings.Location = new System.Drawing.Point(4, 22);
             this.tabPageSettings.Name = "tabPageSettings";
-            this.tabPageSettings.Size = new System.Drawing.Size(296, 544);
+            this.tabPageSettings.Size = new System.Drawing.Size(299, 544);
             this.tabPageSettings.TabIndex = 3;
             this.tabPageSettings.Text = "Settings";
             this.tabPageSettings.ToolTipText = "Map editor settings";
@@ -846,7 +912,7 @@ namespace DemoGame.MapEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1155, 606);
+            this.ClientSize = new System.Drawing.Size(1151, 606);
             this.Controls.Add(this.GameScreen);
             this.Controls.Add(this.panToolBar);
             this.Controls.Add(this.cmdOptimize);
@@ -875,6 +941,7 @@ namespace DemoGame.MapEditor
             this.tabTeleports.ResumeLayout(false);
             this.gbSelectedTeleporter.ResumeLayout(false);
             this.gbSelectedTeleporter.PerformLayout();
+            this.tabPageBackground.ResumeLayout(false);
             this.tabPageSettings.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -960,5 +1027,11 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.TextBox txtTeleportMap;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TabPage tabPageBackground;
+        private System.Windows.Forms.ListBox lstBGItems;
+        private System.Windows.Forms.Button btnNewBGSprite;
+        private System.Windows.Forms.Button btnNewBGLayer;
+        private System.Windows.Forms.Button btnDeleteBGItem;
+        private System.Windows.Forms.PropertyGrid pgBGItem;
     }
 }

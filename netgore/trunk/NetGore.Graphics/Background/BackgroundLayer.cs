@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -16,11 +17,21 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets how the image is drawn on the horizontal axis. Default is Stretched.
         /// </summary>
+        [Category("Display")]
+        [DisplayName("Horizontal")]
+        [Description("How the image is drawn on the horizontal axis.")]
+        [DefaultValue(BackgroundLayerLayout.Stretched)]
+        [Browsable(true)]
         public BackgroundLayerLayout HorizontalLayout { get; set; }
 
         /// <summary>
         /// Gets or sets how the image is drawn on the vertical axis. Default is Stretched.
         /// </summary>
+        [Category("Display")]
+        [DisplayName("Vertical")]
+        [Description("How the image is drawn on the vertical axis.")]
+        [DefaultValue(BackgroundLayerLayout.Stretched)]
+        [Browsable(true)]
         public BackgroundLayerLayout VerticalLayout { get; set; }
 
         /// <summary>
