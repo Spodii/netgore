@@ -86,7 +86,7 @@ namespace NetGore.Collections.Tests
                 int count = 0;
                 foreach (object s in se)
                 {
-                    Assert.NotNull(s);
+                    Assert.IsNotNull(s);
                     count++;
                 }
 
