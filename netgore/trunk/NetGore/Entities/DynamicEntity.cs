@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -96,6 +97,7 @@ namespace NetGore
         /// </summary>
         [SyncValue("CollisionType")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        [Browsable(false)]
         // ReSharper disable UnusedMember.Local
             protected internal CollisionType CollisionTypeSync // ReSharper restore UnusedMember.Local
         {
@@ -106,6 +108,7 @@ namespace NetGore
         /// <summary>
         /// Gets if the DynamicEntity's values are already synchronized.
         /// </summary>
+        [Browsable(false)]
         public bool IsSynchronized
         {
             get
@@ -133,6 +136,7 @@ namespace NetGore
         /// Gets the unique index of this DynamicEntity on the map. This is used to distinguish each individual
         /// DynamicEntity from one another.
         /// </summary>
+        [Browsable(false)]
         public int MapIndex
         {
             get { return _mapIndex; }
@@ -151,6 +155,7 @@ namespace NetGore
         /// </summary>
         [SyncValue("Position", SkipNetworkSync = true)]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        [Browsable(false)]
         // ReSharper disable UnusedMember.Local
             protected internal Vector2 PositionSync // ReSharper restore UnusedMember.Local
         {
@@ -163,6 +168,7 @@ namespace NetGore
         /// </summary>
         [SyncValue("Size")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        [Browsable(false)]
         // ReSharper disable UnusedMember.Local
             protected internal Vector2 SizeSync // ReSharper restore UnusedMember.Local
         {
@@ -175,6 +181,7 @@ namespace NetGore
         /// </summary>
         [SyncValue("Velocity", SkipNetworkSync = true)]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        [Browsable(false)]
         // ReSharper disable UnusedMember.Local
             protected internal Vector2 VelocitySync // ReSharper restore UnusedMember.Local
         {
@@ -187,6 +194,7 @@ namespace NetGore
         /// </summary>
         [SyncValue("Weight")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        [Browsable(false)]
         // ReSharper disable UnusedMember.Local
             protected internal float WeightSync // ReSharper restore UnusedMember.Local
         {

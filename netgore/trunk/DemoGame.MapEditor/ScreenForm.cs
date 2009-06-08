@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Collections;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using Color=System.Drawing.Color;
@@ -317,6 +318,11 @@ namespace DemoGame.MapEditor
             InitializeComponent();
             GameScreen.Screen = this;
 
+            // Set up the EntityTypes
+            cmbEntityTypes.Items.Clear();
+            cmbEntityTypes.Items.AddRange(MapFileEntityAttribute.GetTypes().ToArray());
+            cmbEntityTypes.SelectedIndex = 0;
+
             // Load the settings
             LoadSettings();
             _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev.Data.Join("grhdatawalls.xml"));
@@ -350,57 +356,6 @@ namespace DemoGame.MapEditor
             AddOwnedForm(f);
             f.Show();
             _editGrhWallItems = f.lstWalls.Items;
-        }
-
-        void btnTeleportCopy_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException("See code");
-            if (Map == null)
-                return;
-
-            TeleportEntityBase selected = lstTeleports.SelectedItem as TeleportEntityBase;
-            if (selected == null)
-                return;
-
-            // NOTE: Removed line when implementing new TeleportEntity:
-            // Map.AddEntity(new NewTeleportEntity(selected.Position, selected.CB.Size, selected.Destination));
-            UpdateTeleporterList();
-        }
-
-        void btnTeleportDelete_Click(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            TeleportEntityBase selected = lstTeleports.SelectedItem as TeleportEntityBase;
-            if (selected == null)
-                return;
-
-            Map.RemoveEntity(selected);
-            UpdateTeleporterList();
-        }
-
-        void btnTeleportLocate_Click(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            TeleportEntityBase selected = lstTeleports.SelectedItem as TeleportEntityBase;
-            if (selected == null)
-                return;
-
-            Camera.Center(selected);
-        }
-
-        void btnTeleportNew_Click(object sender, EventArgs e)
-        {
-            throw new NotImplementedException("See code");
-            if (Map == null)
-                return;
-
-            // NOTE: Removed line when implementing new TeleportEntity:
-            //Map.AddEntity(new NewTeleportEntity(new Vector2(10, 10), new Vector2(32, 32), new Vector2(10, 10)));
-            UpdateTeleporterList();
         }
 
         void chkDrawEntities_CheckedChanged(object sender, EventArgs e)
@@ -841,6 +796,23 @@ namespace DemoGame.MapEditor
 
             // Load the first map
             SetMap(ContentPaths.Dev.Maps.Join("1." + Map.MapFileSuffix));
+
+            // Set up the MapItemListBoxes
+            foreach (MapItemListBox lb in GetAllControls(this).OfType<MapItemListBox>())
+            {
+                lb.IMap = Map;
+                lb.Camera = Camera;
+            }
+        }
+
+        static IEnumerable<Control> GetAllControls(Control root)
+        {
+            List<Control> ret = new List<Control> { root };
+
+            foreach (Control child in root.Controls)
+                ret.AddRange(GetAllControls(child));
+
+            return ret;
         }
 
         /// <summary>
@@ -907,24 +879,6 @@ namespace DemoGame.MapEditor
             {
                 WallCursor.SelectedWalls.Add(lbw);
             }
-        }
-
-        void lstTeleports_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
-            if (tele == null)
-            {
-                gbSelectedTeleporter.Enabled = false;
-                return;
-            }
-
-            gbSelectedTeleporter.Enabled = true;
-            txtTeleportX.Text = tele.Position.X.ToString();
-            txtTeleportY.Text = tele.Position.Y.ToString();
-            txtTeleportToX.Text = tele.Destination.X.ToString();
-            txtTeleportToY.Text = tele.Destination.Y.ToString();
-            txtTeleportWidth.Text = tele.CB.Width.ToString();
-            txtTeleportHeight.Text = tele.CB.Height.ToString();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -1102,9 +1056,6 @@ namespace DemoGame.MapEditor
             _camera.Min = Vector2.Zero;
             txtMapWidth.Text = Map.Width.ToString();
             txtMapHeight.Text = Map.Height.ToString();
-
-            UpdateTeleporterList();
-            UpdateBGItems();
         }
 
         void SetWallToEdit(WallEntityBase wall)
@@ -1289,126 +1240,6 @@ namespace DemoGame.MapEditor
                 txtMapWidth.BackColor = _colorError;
         }
 
-        void txtTeleportHeight_TextChanged(object sender, EventArgs e)
-        {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
-            if (tele == null)
-                return;
-
-            float height;
-            if (!float.TryParse(txtTeleportHeight.Text, out height))
-                txtTeleportHeight.BackColor = _colorError;
-            else
-            {
-                txtTeleportHeight.BackColor = _colorNormal;
-                tele.Resize(new Vector2(tele.Size.X, height));
-                UpdateTeleporterList();
-            }
-        }
-
-        void txtTeleportMap_TextChanged(object sender, EventArgs e)
-        {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
-            if (tele == null)
-                return;
-
-            // TODO: Check for a valid map, not just a valid number
-            ushort mapID;
-            if (!ushort.TryParse(txtTeleportX.Text, out mapID))
-                txtTeleportX.BackColor = _colorError;
-            else
-            {
-                txtTeleportX.BackColor = _colorNormal;
-                tele.DestinationMap = mapID;
-                UpdateTeleporterList();
-            }
-        }
-
-        void txtTeleportToX_TextChanged(object sender, EventArgs e)
-        {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
-            if (tele == null)
-                return;
-
-            float x;
-            if (!float.TryParse(txtTeleportToX.Text, out x))
-                txtTeleportToX.BackColor = _colorError;
-            else
-            {
-                txtTeleportToX.BackColor = _colorNormal;
-                tele.Destination = new Vector2(x, tele.Destination.Y);
-                UpdateTeleporterList();
-            }
-        }
-
-        void txtTeleportToY_TextChanged(object sender, EventArgs e)
-        {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
-            if (tele == null)
-                return;
-
-            float y;
-            if (!float.TryParse(txtTeleportToY.Text, out y))
-                txtTeleportToY.BackColor = _colorError;
-            else
-            {
-                txtTeleportToY.BackColor = _colorNormal;
-                tele.Destination = new Vector2(tele.Destination.X, y);
-                UpdateTeleporterList();
-            }
-        }
-
-        void txtTeleportWidth_TextChanged(object sender, EventArgs e)
-        {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
-            if (tele == null)
-                return;
-
-            float width;
-            if (!float.TryParse(txtTeleportWidth.Text, out width))
-                txtTeleportWidth.BackColor = _colorError;
-            else
-            {
-                txtTeleportWidth.BackColor = _colorNormal;
-                tele.Resize(new Vector2(width, tele.Size.Y));
-                UpdateTeleporterList();
-            }
-        }
-
-        void txtTeleportX_TextChanged(object sender, EventArgs e)
-        {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
-            if (tele == null)
-                return;
-
-            float x;
-            if (!float.TryParse(txtTeleportX.Text, out x))
-                txtTeleportX.BackColor = _colorError;
-            else
-            {
-                txtTeleportX.BackColor = _colorNormal;
-                Map.SafeTeleportEntity(tele, new Vector2(x, tele.Position.Y));
-                UpdateTeleporterList();
-            }
-        }
-
-        void txtTeleportY_TextChanged(object sender, EventArgs e)
-        {
-            TeleportEntityBase tele = lstTeleports.SelectedItem as TeleportEntityBase;
-            if (tele == null)
-                return;
-
-            float y;
-            if (!float.TryParse(txtTeleportY.Text, out y))
-                txtTeleportY.BackColor = _colorError;
-            else
-            {
-                txtTeleportY.BackColor = _colorNormal;
-                Map.SafeTeleportEntity(tele, new Vector2(tele.Position.X, y));
-                UpdateTeleporterList();
-            }
-        }
-
         /// <summary>
         /// Updates the cursor based on the transformation box the cursor is over
         /// or the currently selected transformation box
@@ -1478,41 +1309,17 @@ namespace DemoGame.MapEditor
                 SetWallToEdit(null);
         }
 
-        public void UpdateBGItems()
+        static void UpdateListBox<T>(ListBox listBox, IEnumerable<T> items)
         {
-            if (Map == null)
-                return;
+            var lbItems = listBox.Items.OfType<T>();
+            var toAdd = items.Except(lbItems);
+            var toRemove = lbItems.Except(items);
 
-            object selected = lstBGItems.SelectedItem;
+            foreach (T item in toAdd)
+                listBox.Items.Add(item);
 
-            lstBGItems.Items.Clear();
-
-            foreach (var bgItem in Map.BackgroundImages)
-            {
-                lstBGItems.Items.Add(bgItem);
-            }
-
-            if (selected != null)
-                lstBGItems.SelectedItem = selected;
-        }
-
-        public void UpdateTeleporterList()
-        {
-            if (Map == null)
-                return;
-
-            object selected = lstTeleports.SelectedItem;
-
-            lstTeleports.Items.Clear();
-
-            foreach (Entity entity in Map.Entities)
-            {
-                if (entity is TeleportEntityBase)
-                    lstTeleports.Items.Add(entity);
-            }
-
-            if (selected != null)
-                lstTeleports.SelectedItem = selected;
+            foreach (T item in toRemove)
+                listBox.Items.Remove(item);
         }
 
         #region IGetTime Members
@@ -1528,14 +1335,42 @@ namespace DemoGame.MapEditor
 
         #endregion
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void lstBGItems_SelectedIndexChanged(object sender, EventArgs e)
         {
-            pgBGItem.SelectedObject = lstBGItems.SelectedItem;
+            if (pgBGItem.SelectedObject != lstBGItems.SelectedItem)
+                pgBGItem.SelectedObject = lstBGItems.SelectedItem;
+        }
+
+        private void btnNewBGLayer_Click(object sender, EventArgs e)
+        {
+            var bgLayer = new BackgroundLayer();
+            Map.AddBackgroundImage(bgLayer);
+        }
+
+        private void lstEntities_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (pgEntity.SelectedObject != lstEntities.SelectedItem)
+                pgEntity.SelectedObject = lstEntities.SelectedItem;
+        }
+
+        private void btnNewEntity_Click(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            // Get the selected type
+            Type selectedType = cmbEntityTypes.SelectedItem as Type;
+            if (selectedType == null)
+                return;
+
+            // Create the Entity
+            Entity entity = (Entity)Activator.CreateInstance(selectedType);
+            Map.AddEntity(entity);
+
+            // Move to the center of the screen
+            Vector2 size = new Vector2(64);
+            entity.Position = Camera.Min + (Camera.Size / 2) - (size / 2);
+            entity.Size = size;
         }
     }
 }

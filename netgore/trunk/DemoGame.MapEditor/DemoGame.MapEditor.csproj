@@ -95,6 +95,15 @@
     <Compile Include="GameScreenControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ListBoxes\BackgroundItemListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ListBoxes\EntityListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="ListBoxes\WallListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ListboxWall.cs" />
     <Compile Include="MapGrhWalls.cs" />
     <Compile Include="ScreenForm.cs">
