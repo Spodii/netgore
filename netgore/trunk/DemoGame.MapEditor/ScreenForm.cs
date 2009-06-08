@@ -12,7 +12,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
-using NetGore.Collections;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using Color=System.Drawing.Color;
@@ -358,14 +357,40 @@ namespace DemoGame.MapEditor
             _editGrhWallItems = f.lstWalls.Items;
         }
 
+        void btnNewBGLayer_Click(object sender, EventArgs e)
+        {
+            BackgroundLayer bgLayer = new BackgroundLayer();
+            Map.AddBackgroundImage(bgLayer);
+        }
+
+        void btnNewEntity_Click(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            // Get the selected type
+            Type selectedType = cmbEntityTypes.SelectedItem as Type;
+            if (selectedType == null)
+                return;
+
+            // Create the Entity
+            Entity entity = (Entity)Activator.CreateInstance(selectedType);
+            Map.AddEntity(entity);
+
+            // Move to the center of the screen
+            Vector2 size = new Vector2(64);
+            entity.Position = Camera.Min + (Camera.Size / 2) - (size / 2);
+            entity.Size = size;
+        }
+
+        void chkDrawBackground_CheckedChanged(object sender, EventArgs e)
+        {
+            Map.DrawBackground = chkDrawBackground.Checked;
+        }
+
         void chkDrawEntities_CheckedChanged(object sender, EventArgs e)
         {
             Map.DrawEntityBoxes = chkDrawEntities.Checked;
-        }
-
-        private void chkDrawBackground_CheckedChanged(object sender, EventArgs e)
-        {
-            Map.DrawBackground = chkDrawBackground.Checked;
         }
 
         void chkShowGrhs_CheckedChanged(object sender, EventArgs e)
@@ -698,6 +723,18 @@ namespace DemoGame.MapEditor
             _selectedTool.MouseUp(this, e);
         }
 
+        static IEnumerable<Control> GetAllControls(Control root)
+        {
+            var ret = new List<Control> { root };
+
+            foreach (Control child in root.Controls)
+            {
+                ret.AddRange(GetAllControls(child));
+            }
+
+            return ret;
+        }
+
         string GetCategoryFromTreeNode(TreeNode node)
         {
             string category = "Uncategorized";
@@ -809,16 +846,6 @@ namespace DemoGame.MapEditor
             }
         }
 
-        static IEnumerable<Control> GetAllControls(Control root)
-        {
-            List<Control> ret = new List<Control> { root };
-
-            foreach (Control child in root.Controls)
-                ret.AddRange(GetAllControls(child));
-
-            return ret;
-        }
-
         /// <summary>
         /// Loads the map editor settings
         /// </summary>
@@ -874,6 +901,18 @@ namespace DemoGame.MapEditor
                     }
                 }
             }
+        }
+
+        void lstBGItems_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (pgBGItem.SelectedObject != lstBGItems.SelectedItem)
+                pgBGItem.SelectedObject = lstBGItems.SelectedItem;
+        }
+
+        void lstEntities_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (pgEntity.SelectedObject != lstEntities.SelectedItem)
+                pgEntity.SelectedObject = lstEntities.SelectedItem;
         }
 
         void lstSelectedWalls_SelectedValueChanged(object sender, EventArgs e)
@@ -1329,43 +1368,5 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
-
-        private void lstBGItems_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (pgBGItem.SelectedObject != lstBGItems.SelectedItem)
-                pgBGItem.SelectedObject = lstBGItems.SelectedItem;
-        }
-
-        private void btnNewBGLayer_Click(object sender, EventArgs e)
-        {
-            var bgLayer = new BackgroundLayer();
-            Map.AddBackgroundImage(bgLayer);
-        }
-
-        private void lstEntities_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (pgEntity.SelectedObject != lstEntities.SelectedItem)
-                pgEntity.SelectedObject = lstEntities.SelectedItem;
-        }
-
-        private void btnNewEntity_Click(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            // Get the selected type
-            Type selectedType = cmbEntityTypes.SelectedItem as Type;
-            if (selectedType == null)
-                return;
-
-            // Create the Entity
-            Entity entity = (Entity)Activator.CreateInstance(selectedType);
-            Map.AddEntity(entity);
-
-            // Move to the center of the screen
-            Vector2 size = new Vector2(64);
-            entity.Position = Camera.Min + (Camera.Size / 2) - (size / 2);
-            entity.Size = size;
-        }
     }
 }

@@ -32,17 +32,17 @@ namespace NetGore.Graphics
         /// </summary>
         static DArray<GrhData> _grhDatas;
 
-        static GrhInfo()
-        {
-            _catDic = new Dictionary<string, Dictionary<string, GrhData>>(_comparer);
-        }
-
         /// <summary>
         /// Gets an IEnumerable of all of the GrhDatas.
         /// </summary>
         public static IEnumerable<GrhData> GrhDatas
         {
             get { return _grhDatas; }
+        }
+
+        static GrhInfo()
+        {
+            _catDic = new Dictionary<string, Dictionary<string, GrhData>>(_comparer);
         }
 
         /// <summary>
@@ -219,6 +219,19 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the GrhData by the given information
         /// </summary>
+        /// <param name="grhIndex">GrhIndex of the GrhData</param>
+        /// <returns>GrhData matching the given information if found, or null if no matches</returns>
+        public static GrhData GetData(int grhIndex)
+        {
+            if (_grhDatas.CanGet(grhIndex))
+                return _grhDatas[grhIndex];
+            else
+                return null;
+        }
+
+        /// <summary>
+        /// Gets the GrhData by the given information
+        /// </summary>
         /// <param name="category">Category of the GrhData</param>
         /// <returns>Dictionary of all GrhDatas from the given category with their Title as the key, or
         /// null if the category was invalid</returns>
@@ -234,19 +247,6 @@ namespace NetGore.Graphics
             // Return the whole dictionary for the given catgory, or null if it does not exist
             if (_catDic.TryGetValue(category, out titleDic))
                 return titleDic;
-            else
-                return null;
-        }
-
-        /// <summary>
-        /// Gets the GrhData by the given information
-        /// </summary>
-        /// <param name="grhIndex">GrhIndex of the GrhData</param>
-        /// <returns>GrhData matching the given information if found, or null if no matches</returns>
-        public static GrhData GetData(int grhIndex)
-        {
-            if (_grhDatas.CanGet(grhIndex))
-                return _grhDatas[grhIndex];
             else
                 return null;
         }

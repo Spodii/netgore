@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -44,19 +44,10 @@ namespace NetGore.Graphics
             VerticalLayout = BackgroundLayerLayout.Stretched;
         }
 
-        public BackgroundLayer(IValueReader reader, int currentTime)
-            : base(reader, currentTime)
+        public BackgroundLayer(IValueReader reader, int currentTime) : base(reader, currentTime)
         {
             HorizontalLayout = reader.ReadBackgroundLayerLayout("HorizontalLayout");
             VerticalLayout = reader.ReadBackgroundLayerLayout("VerticalLayout");
-        }
-
-        public override void Write(IValueWriter writer)
-        {
-            base.Write(writer);
-
-            writer.Write("HorizontalLayout", HorizontalLayout);
-            writer.Write("VerticalLayout", VerticalLayout);
         }
 
         /// <summary>
@@ -101,9 +92,17 @@ namespace NetGore.Graphics
         /// <param name="targetSize">Target sprite size for the given axis.</param>
         /// <param name="depth">Depth of the BackgroundImage.</param>
         /// <returns>The size to use for a BackgroundLayer sprite to stretch it across the whole map.</returns>
-        static protected float GetStretchedSize(float cameraSize, float targetSize, float depth)
+        protected static float GetStretchedSize(float cameraSize, float targetSize, float depth)
         {
             return cameraSize + ((targetSize - cameraSize) / depth);
+        }
+
+        public override void Write(IValueWriter writer)
+        {
+            base.Write(writer);
+
+            writer.Write("HorizontalLayout", HorizontalLayout);
+            writer.Write("VerticalLayout", VerticalLayout);
         }
     }
 }

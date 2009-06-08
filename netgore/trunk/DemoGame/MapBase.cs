@@ -177,14 +177,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the size of the map in pixels.
-        /// </summary>
-        public Vector2 Size
-        {
-            get { return new Vector2(_width, _height); }
-        }
-
-        /// <summary>
         /// MapBase constructor
         /// </summary>
         /// <param name="mapIndex">Index of the map</param>
@@ -1997,6 +1989,14 @@ namespace DemoGame
         }
 
         #region IMap Members
+
+        /// <summary>
+        /// Gets the size of the map in pixels.
+        /// </summary>
+        public Vector2 Size
+        {
+            get { return new Vector2(_width, _height); }
+        }
 
         /// <summary>
         /// Gets a thrad-safe IEnumerable of all the Entities on the Map.
