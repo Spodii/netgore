@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -38,19 +38,6 @@ namespace DemoGame.Extensions
         }
 
         /// <summary>
-        /// Reads an IStat from the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read from.</param>
-        /// <param name="statCollection">IStatCollection that the stat value will be loaded into. This IStatCollection
-        /// must contain the StatType being read.</param>
-        public static void ReadStat(this BitStream bitStream, IStatCollection statCollection)
-        {
-            StatType statType = bitStream.ReadStatType();
-            IStat stat = statCollection.GetStat(statType);
-            stat.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads a MapEntityIndex from the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
@@ -66,6 +53,19 @@ namespace DemoGame.Extensions
         public static MapIndex ReadMapIndex(this BitStream bitStream)
         {
             return MapIndex.Read(bitStream);
+        }
+
+        /// <summary>
+        /// Reads an IStat from the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read from.</param>
+        /// <param name="statCollection">IStatCollection that the stat value will be loaded into. This IStatCollection
+        /// must contain the StatType being read.</param>
+        public static void ReadStat(this BitStream bitStream, IStatCollection statCollection)
+        {
+            StatType statType = bitStream.ReadStatType();
+            IStat stat = statCollection.GetStat(statType);
+            stat.Read(bitStream);
         }
 
         /// <summary>

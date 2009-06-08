@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -18,8 +18,7 @@ namespace NetGore
         /// </summary>
         /// <param name="bindObject">Object to bind to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncMapIndex(object bindObject, PropertyInfo p)
-            : base(bindObject, p)
+        public PropertySyncMapIndex(object bindObject, PropertyInfo p) : base(bindObject, p)
         {
         }
 

@@ -59,14 +59,6 @@ namespace NetGore.Graphics.GUI
             }
         }
 
-        protected override void UpdateControl(int currentTime)
-        {
-            base.UpdateControl(currentTime);
-
-            if (Sprite != null)
-                Sprite.Update(currentTime);
-        }
-
         /// <summary>
         /// SpriteControl constructor
         /// </summary>
@@ -139,6 +131,14 @@ namespace NetGore.Graphics.GUI
                 // Non-stretched draw
                 _sprite.Draw(spriteBatch, min, Color.White);
             }
+        }
+
+        protected override void UpdateControl(int currentTime)
+        {
+            base.UpdateControl(currentTime);
+
+            if (Sprite != null)
+                Sprite.Update(currentTime);
         }
     }
 }

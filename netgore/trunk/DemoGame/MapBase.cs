@@ -1674,7 +1674,7 @@ namespace DemoGame
         /// <param name="contentPath">Content path to save the map file to.</param>
         public void Save(MapIndex mapIndex, ContentPaths contentPath)
         {
-            var path = contentPath.Maps.Join(mapIndex + "." + MapFileSuffix);
+            PathString path = contentPath.Maps.Join(mapIndex + "." + MapFileSuffix);
             Save(path);
         }
 

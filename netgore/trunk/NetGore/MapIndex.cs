@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
@@ -133,6 +133,18 @@ namespace NetGore
         {
             ushort value = bitStream.ReadUShort();
             return new MapIndex(value);
+        }
+
+        /// <summary>
+        /// Returns the fully qualified type name of this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> containing a fully qualified type name.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override string ToString()
+        {
+            return _value.ToString();
         }
 
         /// <summary>
@@ -664,18 +676,6 @@ namespace NetGore
         public static bool operator ==(MapIndex left, MapIndex right)
         {
             return left._value == right._value;
-        }
-
-        /// <summary>
-        /// Returns the fully qualified type name of this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> containing a fully qualified type name.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override string ToString()
-        {
-            return _value.ToString();
         }
     }
 }
