@@ -187,7 +187,7 @@ namespace DemoGame.Client
             }
 
             if (log.IsInfoEnabled)
-                log.InfoFormat("Created DynamicEntity with index `{0}` of type `{1}`", dynamicEntity.MapIndex,
+                log.InfoFormat("Created DynamicEntity with index `{0}` of type `{1}`", dynamicEntity.MapEntityIndex,
                                dynamicEntity.GetType());
         }
 
@@ -259,21 +259,21 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.RemoveDynamicEntity)]
         void RecvRemoveDynamicEntity(IIPSocket conn, BitStream r)
         {
-            ushort mapIndex = r.ReadUShort();
-            DynamicEntity dynamicEntity = Map.GetDynamicEntity(mapIndex);
+            ushort mapEntityIndex = r.ReadUShort();
+            DynamicEntity dynamicEntity = Map.GetDynamicEntity(mapEntityIndex);
 
             if (dynamicEntity != null)
             {
                 Map.RemoveEntity(dynamicEntity);
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Removed DynamicEntity with index `{0}`", mapIndex);
+                    log.InfoFormat("Removed DynamicEntity with index `{0}`", mapEntityIndex);
             }
             else
             {
                 const string errmsg = "Could not remove DynamicEntity with index `{0}` - no DynamicEntity found.";
                 if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, mapIndex);
-                Debug.Fail(string.Format(errmsg, mapIndex));
+                    log.ErrorFormat(errmsg, mapEntityIndex);
+                Debug.Fail(string.Format(errmsg, mapEntityIndex));
             }
         }
 
@@ -327,10 +327,10 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetMap)]
         void RecvSetMap(IIPSocket conn, BitStream r)
         {
-            ushort mapIndex = r.ReadUShort();
+            ushort mapEntityIndex = r.ReadUShort();
 
             // Create the new map
-            Map newMap = new Map(mapIndex, World, GameplayScreen.ScreenManager.GraphicsDevice);
+            Map newMap = new Map(mapEntityIndex, World, GameplayScreen.ScreenManager.GraphicsDevice);
             newMap.Load(ContentPaths.Build, false);
 
             // Change maps
@@ -350,9 +350,9 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SynchronizeDynamicEntity)]
         void RecvSynchronizeDynamicEntity(IIPSocket conn, BitStream r)
         {
-            ushort entityMapIndex = r.ReadUShort();
+            ushort mapEntityIndex = r.ReadUShort();
 
-            DynamicEntity dynamicEntity = World.Map.GetDynamicEntity(entityMapIndex);
+            DynamicEntity dynamicEntity = World.Map.GetDynamicEntity(mapEntityIndex);
             dynamicEntity.Deserialize(new BitStreamValueReader(r));
         }
 

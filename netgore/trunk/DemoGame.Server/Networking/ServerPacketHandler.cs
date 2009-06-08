@@ -180,7 +180,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.PickupItem)]
         void RecvPickupItem(IIPSocket conn, BitStream r)
         {
-            ushort mapIndex = r.ReadUShort();
+            ushort mapEntityIndex = r.ReadUShort();
 
             User user;
             Map map;
@@ -190,7 +190,7 @@ namespace DemoGame.Server
             // TODO: Distance validation on item pickup
 
             ItemEntityBase item;
-            if (map.TryGetDynamicEntity(mapIndex, out item))
+            if (map.TryGetDynamicEntity(mapEntityIndex, out item))
                 item.Pickup(user);
         }
 
