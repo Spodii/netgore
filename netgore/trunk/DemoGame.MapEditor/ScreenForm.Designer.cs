@@ -62,16 +62,17 @@ namespace DemoGame.MapEditor
             this.cmbEntityTypes = new System.Windows.Forms.ComboBox();
             this.btnNewEntity = new System.Windows.Forms.Button();
             this.pgEntity = new System.Windows.Forms.PropertyGrid();
-            this.lstEntities = new EntityListBox();
+            this.lstEntities = new DemoGame.MapEditor.EntityListBox();
             this.tabPageBackground = new System.Windows.Forms.TabPage();
             this.pgBGItem = new System.Windows.Forms.PropertyGrid();
             this.btnNewBGSprite = new System.Windows.Forms.Button();
             this.btnNewBGLayer = new System.Windows.Forms.Button();
             this.btnDeleteBGItem = new System.Windows.Forms.Button();
-            this.lstBGItems = new BackgroundItemListBox();
+            this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
             this.tabPageNPCs = new System.Windows.Forms.TabPage();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chkDrawBackground = new System.Windows.Forms.CheckBox();
             this.chkDrawEntities = new System.Windows.Forms.CheckBox();
             this.chkDrawAutoWalls = new System.Windows.Forms.CheckBox();
             this.chkShowGrhs = new System.Windows.Forms.CheckBox();
@@ -389,6 +390,7 @@ namespace DemoGame.MapEditor
             // 
             this.lstEntities.Camera = null;
             this.lstEntities.FormattingEnabled = true;
+            this.lstEntities.IMap = null;
             this.lstEntities.Location = new System.Drawing.Point(3, 6);
             this.lstEntities.Name = "lstEntities";
             this.lstEntities.Size = new System.Drawing.Size(293, 186);
@@ -446,7 +448,9 @@ namespace DemoGame.MapEditor
             // 
             // lstBGItems
             // 
+            this.lstBGItems.Camera = null;
             this.lstBGItems.FormattingEnabled = true;
+            this.lstBGItems.IMap = null;
             this.lstBGItems.Location = new System.Drawing.Point(3, 3);
             this.lstBGItems.Name = "lstBGItems";
             this.lstBGItems.Size = new System.Drawing.Size(293, 134);
@@ -477,6 +481,7 @@ namespace DemoGame.MapEditor
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.chkDrawBackground);
             this.groupBox3.Controls.Add(this.chkDrawEntities);
             this.groupBox3.Controls.Add(this.chkDrawAutoWalls);
             this.groupBox3.Controls.Add(this.chkShowGrhs);
@@ -484,10 +489,21 @@ namespace DemoGame.MapEditor
             this.groupBox3.Controls.Add(this.chkDrawGrid);
             this.groupBox3.Location = new System.Drawing.Point(3, 52);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(290, 136);
+            this.groupBox3.Size = new System.Drawing.Size(290, 95);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Display Options";
+            // 
+            // chkDrawBackground
+            // 
+            this.chkDrawBackground.AutoSize = true;
+            this.chkDrawBackground.Location = new System.Drawing.Point(120, 67);
+            this.chkDrawBackground.Name = "chkDrawBackground";
+            this.chkDrawBackground.Size = new System.Drawing.Size(112, 17);
+            this.chkDrawBackground.TabIndex = 14;
+            this.chkDrawBackground.Text = "Draw Background";
+            this.chkDrawBackground.UseVisualStyleBackColor = true;
+            this.chkDrawBackground.CheckedChanged += new System.EventHandler(this.chkDrawBackground_CheckedChanged);
             // 
             // chkDrawEntities
             // 
@@ -513,8 +529,6 @@ namespace DemoGame.MapEditor
             // chkShowGrhs
             // 
             this.chkShowGrhs.AutoSize = true;
-            this.chkShowGrhs.Checked = true;
-            this.chkShowGrhs.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShowGrhs.Location = new System.Drawing.Point(6, 67);
             this.chkShowGrhs.Name = "chkShowGrhs";
             this.chkShowGrhs.Size = new System.Drawing.Size(76, 17);
@@ -537,8 +551,6 @@ namespace DemoGame.MapEditor
             // chkDrawGrid
             // 
             this.chkDrawGrid.AutoSize = true;
-            this.chkDrawGrid.Checked = true;
-            this.chkDrawGrid.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDrawGrid.Location = new System.Drawing.Point(6, 21);
             this.chkDrawGrid.Name = "chkDrawGrid";
             this.chkDrawGrid.Size = new System.Drawing.Size(73, 17);
@@ -813,5 +825,6 @@ namespace DemoGame.MapEditor
         private EntityListBox lstEntities;
         private System.Windows.Forms.Button btnNewEntity;
         private System.Windows.Forms.ComboBox cmbEntityTypes;
+        private System.Windows.Forms.CheckBox chkDrawBackground;
     }
 }

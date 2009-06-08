@@ -360,13 +360,17 @@ namespace DemoGame.MapEditor
 
         void chkDrawEntities_CheckedChanged(object sender, EventArgs e)
         {
-            Map.DrawEntities = chkDrawEntities.Checked;
+            Map.DrawEntityBoxes = chkDrawEntities.Checked;
+        }
+
+        private void chkDrawBackground_CheckedChanged(object sender, EventArgs e)
+        {
+            Map.DrawBackground = chkDrawBackground.Checked;
         }
 
         void chkShowGrhs_CheckedChanged(object sender, EventArgs e)
         {
-            Map.DrawForeground = chkShowGrhs.Checked;
-            Map.DrawBackground = chkShowGrhs.Checked;
+            Map.DrawMapGrhs = chkShowGrhs.Checked;
         }
 
         void chkShowWalls_CheckedChanged(object sender, EventArgs e)
@@ -864,6 +868,9 @@ namespace DemoGame.MapEditor
                         case "Display.Entities":
                             chkDrawEntities.Checked = bool.Parse(value);
                             break;
+                        case "Display.Background":
+                            chkDrawBackground.Checked = bool.Parse(value);
+                            break;
                     }
                 }
             }
@@ -1002,6 +1009,7 @@ namespace DemoGame.MapEditor
                     w.WriteElementString("Walls", chkShowWalls.Checked.ToString().ToLower());
                     w.WriteElementString("AutoWalls", chkDrawAutoWalls.Checked.ToString().ToLower());
                     w.WriteElementString("Entities", chkDrawEntities.Checked.ToString().ToLower());
+                    w.WriteElementString("Background", chkDrawBackground.Checked.ToString().ToLower());
                     w.WriteEndElement();
 
                     w.WriteEndElement();
@@ -1307,19 +1315,6 @@ namespace DemoGame.MapEditor
                 SetWallToEdit(selectedWalls[0]);
             else
                 SetWallToEdit(null);
-        }
-
-        static void UpdateListBox<T>(ListBox listBox, IEnumerable<T> items)
-        {
-            var lbItems = listBox.Items.OfType<T>();
-            var toAdd = items.Except(lbItems);
-            var toRemove = lbItems.Except(items);
-
-            foreach (T item in toAdd)
-                listBox.Items.Add(item);
-
-            foreach (T item in toRemove)
-                listBox.Items.Remove(item);
         }
 
         #region IGetTime Members
