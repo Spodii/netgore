@@ -139,51 +139,14 @@ namespace DemoGame.Client
         /// <summary>
         /// Map constructor
         /// </summary>
-        /// <param name="mapIndex">Index of the map</param>
+        /// <param name="mapEntityIndex">Index of the map</param>
         /// <param name="parent">World the map belongs to</param>
         /// <param name="graphics">GraphicsDevice to use to construct the atlas for the map</param>
-        public Map(ushort mapIndex, World parent, GraphicsDevice graphics) : base(mapIndex, parent)
+        public Map(ushort mapEntityIndex, World parent, GraphicsDevice graphics) : base(mapEntityIndex, parent)
         {
             _graphics = graphics;
             _world = parent;
             _backgroundImagesEnumerator = new SafeEnumerator<BackgroundImage>(_backgroundImages, true);
-
-            /*
-            Grh biGrh = new Grh(GrhInfo.GetData("Background.sky"), AnimType.Loop, 0);
-            BackgroundImage bi = new BackgroundLayer
-            {
-                Sprite = biGrh,
-                Depth = 6
-            };
-            _backgroundImages.Add(bi);
-
-            biGrh = new Grh(GrhInfo.GetData("Background.Trees.dense"), AnimType.Loop, 0);
-            bi = new BackgroundLayer
-            {
-                Sprite = biGrh,
-                Depth = 4,
-                Color = new Color(50, 50, 50, 255)
-            };
-            _backgroundImages.Add(bi);
-
-            biGrh = new Grh(GrhInfo.GetData("Background.Trees.dense"), AnimType.Loop, 0);
-            bi = new BackgroundLayer
-            {
-                Sprite = biGrh,
-                Depth = 3,
-                Color = new Color(150, 150, 150, 255)
-            };
-            _backgroundImages.Add(bi);
-
-            biGrh = new Grh(GrhInfo.GetData("Background.Trees.sparse"), AnimType.Loop, 0);
-            bi = new BackgroundLayer
-            {
-                Sprite = biGrh,
-                Depth = 2,
-                Color = new Color(200, 200, 200, 255)
-            };
-            _backgroundImages.Add(bi);
-            */
         }
 
         public void AddBackgroundImage(BackgroundImage bgImage)

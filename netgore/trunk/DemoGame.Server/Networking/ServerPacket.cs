@@ -52,7 +52,7 @@ namespace DemoGame.Server
         public static PacketWriter CreateDynamicEntity(DynamicEntity dynamicEntity)
         {
             PacketWriter pw = GetWriter(ServerPacketID.CreateDynamicEntity);
-            pw.Write((ushort)dynamicEntity.MapIndex);
+            pw.Write((ushort)dynamicEntity.MapEntityIndex);
             DynamicEntityFactory.Write(pw, dynamicEntity);
             return pw;
         }
@@ -116,7 +116,7 @@ namespace DemoGame.Server
         public static PacketWriter RemoveDynamicEntity(DynamicEntity dynamicEntity)
         {
             PacketWriter pw = GetWriter(ServerPacketID.RemoveDynamicEntity);
-            pw.Write((ushort)dynamicEntity.MapIndex);
+            pw.Write((ushort)dynamicEntity.MapEntityIndex);
             return pw;
         }
 
@@ -217,7 +217,7 @@ namespace DemoGame.Server
         public static PacketWriter SynchronizeDynamicEntity(DynamicEntity dynamicEntity)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SynchronizeDynamicEntity);
-            pw.Write((ushort)dynamicEntity.MapIndex);
+            pw.Write((ushort)dynamicEntity.MapEntityIndex);
             dynamicEntity.Serialize(pw);
             return pw;
         }
@@ -245,7 +245,7 @@ namespace DemoGame.Server
         public static PacketWriter UpdateVelocityAndPosition(DynamicEntity dynamicEntity, int currentTime)
         {
             PacketWriter pw = GetWriter(ServerPacketID.UpdateVelocityAndPosition);
-            pw.Write((ushort)dynamicEntity.MapIndex);
+            pw.Write((ushort)dynamicEntity.MapEntityIndex);
             dynamicEntity.SerializePositionAndVelocity(pw, currentTime);
             return pw;
         }

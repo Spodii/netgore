@@ -80,8 +80,8 @@ namespace DemoGame.Server
             {
                 const string errmsg = "Character `{0}` [{1}] added to new map, but is already on a map!";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, character, character.MapIndex);
-                Debug.Fail(string.Format(errmsg, character, character.MapIndex));
+                    log.WarnFormat(errmsg, character, character.MapEntityIndex);
+                Debug.Fail(string.Format(errmsg, character, character.MapEntityIndex));
                 character.Map.RemoveEntity(character);
             }
 
@@ -313,7 +313,7 @@ namespace DemoGame.Server
             }
 
             // Now that the user know about the map and every character on it, tell them which one is theirs
-            using (PacketWriter pw = ServerPacket.SetUserChar((ushort)user.MapIndex))
+            using (PacketWriter pw = ServerPacket.SetUserChar((ushort)user.MapEntityIndex))
             {
                 user.Send(pw);
             }
