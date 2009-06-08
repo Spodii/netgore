@@ -95,7 +95,7 @@ namespace DemoGame
         /// <summary>
         /// Index of the map
         /// </summary>
-        readonly ushort _mapIndex;
+        readonly MapIndex _mapIndex;
 
         /// <summary>
         /// StopWatch used to update the map
@@ -143,7 +143,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the index of the map.
         /// </summary>
-        public ushort Index
+        public MapIndex Index
         {
             get { return _mapIndex; }
         }
@@ -181,7 +181,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="mapIndex">Index of the map</param>
         /// <param name="getTime">Interface used to get the time</param>
-        protected MapBase(ushort mapIndex, IGetTime getTime)
+        protected MapBase(MapIndex mapIndex, IGetTime getTime)
         {
             if (getTime == null)
                 throw new ArgumentNullException("getTime");
@@ -1089,12 +1089,14 @@ namespace DemoGame
         /// </summary>
         /// <param name="path">File path to the map</param>
         /// <returns>Index of the map</returns>
-        public static ushort GetIndexFromPath(string path)
+        public static MapIndex GetIndexFromPath(string path)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            return ushort.Parse(Path.GetFileNameWithoutExtension(path));
+            string fileName = Path.GetFileNameWithoutExtension(path);
+            int value = int.Parse(fileName);
+            return new MapIndex(value);
         }
 
         /// <summary>
@@ -1140,23 +1142,23 @@ namespace DemoGame
         /// </summary>
         /// <param name="path">ContentPaths containing the maps.</param>
         /// <returns>Next free map index.</returns>
-        public static ushort GetNextFreeIndex(ContentPaths path)
+        public static MapIndex GetNextFreeIndex(ContentPaths path)
         {
             var mapFiles = GetMapFiles(path);
             var indices = mapFiles.Select(x => GetIndexFromPath(x)).ToList();
             indices.Sort();
 
             // Check every map index starting at 1, returning the first free value found
-            ushort expected = 1;
+            int expected = 1;
             for (int i = 0; i < indices.Count; i++)
             {
-                if (indices[i] != expected)
-                    return expected;
+                if ((int)indices[i] != expected)
+                    return new MapIndex(expected);
 
                 expected++;
             }
 
-            return expected;
+            return new MapIndex(expected);
         }
 
         /// <summary>
@@ -1670,9 +1672,10 @@ namespace DemoGame
         /// </summary>
         /// <param name="mapIndex">Map index to save as.</param>
         /// <param name="contentPath">Content path to save the map file to.</param>
-        public void Save(ushort mapIndex, ContentPaths contentPath)
+        public void Save(MapIndex mapIndex, ContentPaths contentPath)
         {
-            Save(contentPath.Maps.Join(mapIndex + "." + MapFileSuffix));
+            var path = contentPath.Maps.Join(mapIndex + "." + MapFileSuffix);
+            Save(path);
         }
 
         /// <summary>

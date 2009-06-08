@@ -445,7 +445,7 @@ namespace DemoGame.MapEditor
                                 "Create new map?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
-            ushort index = Map.GetNextFreeIndex(ContentPaths.Dev);
+            MapIndex index = Map.GetNextFreeIndex(ContentPaths.Dev);
 
             string newMapPath = ContentPaths.Dev.Maps.Join(index + "." + Map.MapFileSuffix);
             if (File.Exists(newMapPath))
@@ -1087,7 +1087,7 @@ namespace DemoGame.MapEditor
         /// <param name="filePath">Path to the map to use</param>
         void SetMap(string filePath)
         {
-            ushort index = Map.GetIndexFromPath(filePath);
+            MapIndex index = Map.GetIndexFromPath(filePath);
             Map = new Map(index, _world, GameScreen.GraphicsDevice);
             Map.Load(ContentPaths.Dev, true);
 

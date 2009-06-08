@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -35,15 +36,92 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <returns>
+        /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
+        /// </returns>
+        /// <param name="other">Another object to compare to. 
+        /// </param><filterpriority>2</filterpriority>
+        public bool Equals(MapEntityIndex other)
+        {
+            return other._value == _value;
+        }
+
+        /// <summary>
+        /// Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <returns>
+        /// True if <paramref name="obj"/> and this instance are the same type and represent the same value; otherwise, false.
+        /// </returns>
+        /// <param name="obj">Another object to compare to. 
+        /// </param><filterpriority>2</filterpriority>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+                return false;
+            if (obj.GetType() != typeof(MapEntityIndex))
+                return false;
+            return Equals((MapEntityIndex)obj);
+        }
+
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that is the hash code for this instance.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override int GetHashCode()
+        {
+            return _value.GetHashCode();
+        }
+
+        /// <summary>
+        /// Gets the raw internal value of this MapEntityIndex.
+        /// </summary>
+        /// <returns>The raw internal value.</returns>
+        public ushort GetRawValue()
+        {
+            return _value;
+        }
+
+        /// <summary>
         /// Reads an MapEntityIndex from an IValueReader.
         /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
         /// <param name="reader">IValueReader to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
         /// <returns>The MapEntityIndex read from the IValueReader.</returns>
-        public static MapEntityIndex Read(string name, IValueReader reader)
+        public static MapEntityIndex Read(IValueReader reader, string name)
         {
             ushort value = reader.ReadUShort(name);
             return new MapEntityIndex(value);
+        }
+
+        /// <summary>
+        /// Reads an MapEntityIndex from an IDataReader.
+        /// </summary>
+        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The MapEntityIndex read from the IDataReader.</returns>
+        public static MapEntityIndex Read(IDataReader reader, int i)
+        {
+            object value = reader.GetValue(i);
+            if (value is ushort)
+                return new MapEntityIndex((ushort)value);
+
+            return new MapEntityIndex(Convert.ToUInt16(value));
+        }
+
+        /// <summary>
+        /// Reads an MapEntityIndex from an IDataReader.
+        /// </summary>
+        /// <param name="reader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The MapEntityIndex read from the IDataReader.</returns>
+        public static MapEntityIndex Read(IDataReader reader, string name)
+        {
+            return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
@@ -60,10 +138,10 @@ namespace NetGore
         /// <summary>
         /// Writes the MapEntityIndex to an IValueWriter.
         /// </summary>
+        /// <param name="writer">IValueWriter to write to.</param>
         /// <param name="name">Unique name of the MapEntityIndex that will be used to distinguish it
         /// from other values when reading.</param>
-        /// <param name="writer">IValueWriter to write to.</param>
-        public void Write(string name, IValueWriter writer)
+        public void Write(IValueWriter writer, string name)
         {
             writer.Write(name, _value);
         }
@@ -393,6 +471,182 @@ namespace NetGore
         #endregion
 
         /// <summary>
+        /// Implements operator +.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>Result of the left side plus the right side.</returns>
+        public static MapEntityIndex operator +(MapEntityIndex left, MapEntityIndex right)
+        {
+            return new MapEntityIndex(left._value + right._value);
+        }
+
+        /// <summary>
+        /// Implements operator -.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>Result of the left side minus the right side.</returns>
+        public static MapEntityIndex operator -(MapEntityIndex left, MapEntityIndex right)
+        {
+            return new MapEntityIndex(left._value - right._value);
+        }
+
+        /// <summary>
+        /// Implements operator ==.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the two arguments are equal.</returns>
+        public static bool operator ==(MapEntityIndex left, int right)
+        {
+            return left._value == right;
+        }
+
+        /// <summary>
+        /// Implements operator !=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the two arguments are not equal.</returns>
+        public static bool operator !=(MapEntityIndex left, int right)
+        {
+            return left._value != right;
+        }
+
+        /// <summary>
+        /// Implements operator !=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the two arguments are not equal.</returns>
+        public static bool operator !=(MapEntityIndex left, MapEntityIndex right)
+        {
+            return left._value != right._value;
+        }
+
+        /// <summary>
+        /// Implements operator ==.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the two arguments are equal.</returns>
+        public static bool operator ==(MapEntityIndex left, MapEntityIndex right)
+        {
+            return left._value == right._value;
+        }
+
+        /// <summary>
+        /// Implements operator ==.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the two arguments are equal.</returns>
+        public static bool operator ==(int left, MapEntityIndex right)
+        {
+            return left == right._value;
+        }
+
+        /// <summary>
+        /// Implements operator !=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the two arguments are not equal.</returns>
+        public static bool operator !=(int left, MapEntityIndex right)
+        {
+            return left != right._value;
+        }
+
+        /// <summary>
+        /// Implements operator >.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the left argument is greater than the right.</returns>
+        public static bool operator >(int left, MapEntityIndex right)
+        {
+            return left > right._value;
+        }
+
+        /// <summary>
+        /// Implements operator <
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than the left.</returns>
+        public static bool operator <(int left, MapEntityIndex right)
+        {
+            return left < right._value;
+        }
+
+        /// <summary>
+        /// Implements operator >.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the left argument is greater than the right.</returns>
+        public static bool operator >(MapEntityIndex left, int right)
+        {
+            return left._value > right;
+        }
+
+        /// <summary>
+        /// Implements operator <
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than the left.</returns>
+        public static bool operator <(MapEntityIndex left, int right)
+        {
+            return left._value < right;
+        }
+
+        /// <summary>
+        /// Implements operator >=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the left argument is greater than or equal to the right.</returns>
+        public static bool operator >=(int left, MapEntityIndex right)
+        {
+            return left >= right._value;
+        }
+
+        /// <summary>
+        /// Implements operator <=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        public static bool operator <=(int left, MapEntityIndex right)
+        {
+            return left <= right._value;
+        }
+
+        /// <summary>
+        /// Implements operator >=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the left argument is greater than or equal to the right.</returns>
+        public static bool operator >=(MapEntityIndex left, int right)
+        {
+            return left._value >= right;
+        }
+
+        /// <summary>
+        /// Implements operator <=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        public static bool operator <=(MapEntityIndex left, int right)
+        {
+            return left._value <= right;
+        }
+
+        /// <summary>
         /// Casts a MapEntityIndex to an Int32.
         /// </summary>
         /// <param name="mapEntityIndex">MapEntityIndex to cast.</param>
@@ -410,6 +664,18 @@ namespace NetGore
         public static explicit operator MapEntityIndex(int value)
         {
             return new MapEntityIndex(value);
+        }
+
+        /// <summary>
+        /// Returns the fully qualified type name of this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> containing a fully qualified type name.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override string ToString()
+        {
+            return _value.ToString();
         }
     }
 }

@@ -327,7 +327,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetMap)]
         void RecvSetMap(IIPSocket conn, BitStream r)
         {
-            ushort mapIndex = r.ReadUShort();
+            MapIndex mapIndex = r.ReadMapIndex();
 
             // Create the new map
             Map newMap = new Map(mapIndex, World, GameplayScreen.ScreenManager.GraphicsDevice);
