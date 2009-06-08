@@ -367,6 +367,8 @@ namespace NetGore.Graphics
             SetGrh(grhData, anim, currentTime);
         }
 
+        #region ISprite Members
+
         /// <summary>
         /// Updates the Grh if it is animated.
         /// </summary>
@@ -408,18 +410,16 @@ namespace NetGore.Graphics
             _frame = tmpFrame;
         }
 
-        #region ISprite Members
-
         /// <summary>
         /// Gets the source rectangle for the current frame.
         /// </summary>
         public Rectangle Source
         {
-            get 
+            get
             {
                 if (CurrentGrhData == null)
                     return Rectangle.Empty;
-                return CurrentGrhData.SourceRect; 
+                return CurrentGrhData.SourceRect;
             }
         }
 
@@ -432,7 +432,7 @@ namespace NetGore.Graphics
             {
                 if (CurrentGrhData == null)
                     return null;
-                return CurrentGrhData.Texture; 
+                return CurrentGrhData.Texture;
             }
         }
 

@@ -1,10 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Design;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
 
@@ -46,7 +45,8 @@ namespace NetGore.Graphics
         /// </summary>
         [Category("Position")]
         [DisplayName("Depth")]
-        [Description("Defines the drawing order and movement speed, where 1.0 is same speed of the camera, and 2.0 is half the speed.")]
+        [Description(
+            "Defines the drawing order and movement speed, where 1.0 is same speed of the camera, and 2.0 is half the speed.")]
         [DefaultValue(1)]
         [Browsable(true)]
         public float Depth
@@ -241,15 +241,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Updates the BackgroundImage.
-        /// </summary>
-        /// <param name="currentTime">Current game time.</param>
-        public virtual void Update(int currentTime)
-        {
-            // TODO: Sprite.Update(currentTime);
-        }
-
-        /// <summary>
         /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </summary>
         /// <returns>
@@ -265,6 +256,15 @@ namespace NetGore.Graphics
                 name = Name;
 
             return string.Format("[{0}] {1}", GetType().Name, name);
+        }
+
+        /// <summary>
+        /// Updates the BackgroundImage.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
+        public virtual void Update(int currentTime)
+        {
+            // TODO: Sprite.Update(currentTime);
         }
 
         public virtual void Write(IValueWriter writer)

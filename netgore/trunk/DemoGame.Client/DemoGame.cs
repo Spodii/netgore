@@ -63,7 +63,7 @@ namespace DemoGame.Client
             graphics.PreferMultiSampling = false;
 
             // Disable filtering, which makes our 2d art look like crap
-            var samplerStates = graphics.GraphicsDevice.SamplerStates;
+            SamplerStateCollection samplerStates = graphics.GraphicsDevice.SamplerStates;
             samplerStates[0].MinFilter = TextureFilter.None;
             samplerStates[0].MipFilter = TextureFilter.None;
             samplerStates[0].MagFilter = TextureFilter.None;

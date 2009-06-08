@@ -125,7 +125,7 @@ namespace DemoGame.Client
         {
             get { return _world; }
         }
-        
+
         static Map()
         {
             DrawBackground = true;
