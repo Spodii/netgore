@@ -1,0 +1,415 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Runtime.InteropServices;
+using NetGore.IO;
+
+namespace NetGore
+{
+    /// <summary>
+    /// A numeric value that represents an Entity's unique index on a map.
+    /// </summary>
+    [Serializable]
+    [StructLayout(LayoutKind.Sequential)]
+    public struct MapEntityIndex : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    {
+        const int _maxValue = ushort.MaxValue;
+        const int _minValue = 0;
+
+        /// <summary>
+        /// Underlying value.
+        /// </summary>
+        readonly ushort _value;
+
+        /// <summary>
+        /// MapEntityIndex constructor.
+        /// </summary>
+        /// <param name="value">Value for the MapEntityIndex.</param>
+        public MapEntityIndex(int value)
+        {
+            if (value < _minValue || value > _maxValue)
+                throw new ArgumentOutOfRangeException("value");
+
+            _value = (ushort)value;
+        }
+
+        /// <summary>
+        /// Reads an MapEntityIndex from an IValueReader.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="reader">IValueReader to read from.</param>
+        /// <returns>The MapEntityIndex read from the IValueReader.</returns>
+        public static MapEntityIndex Read(string name, IValueReader reader)
+        {
+            ushort value = reader.ReadUShort(name);
+            return new MapEntityIndex(value);
+        }
+
+        /// <summary>
+        /// Reads an MapEntityIndex from an IValueReader.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read from.</param>
+        /// <returns>The MapEntityIndex read from the BitStream.</returns>
+        public static MapEntityIndex Read(BitStream bitStream)
+        {
+            ushort value = bitStream.ReadUShort();
+            return new MapEntityIndex(value);
+        }
+
+        /// <summary>
+        /// Writes the MapEntityIndex to an IValueWriter.
+        /// </summary>
+        /// <param name="name">Unique name of the MapEntityIndex that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="writer">IValueWriter to write to.</param>
+        public void Write(string name, IValueWriter writer)
+        {
+            writer.Write(name, _value);
+        }
+
+        /// <summary>
+        /// Writes the MapEntityIndex to an IValueWriter.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        public void Write(BitStream bitStream)
+        {
+            bitStream.Write(_value);
+        }
+
+        #region IComparable Members
+
+        /// <summary>
+        /// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has these meanings: 
+        ///                     Value 
+        ///                     Meaning 
+        ///                     Less than zero 
+        ///                     This instance is less than <paramref name="obj"/>. 
+        ///                     Zero 
+        ///                     This instance is equal to <paramref name="obj"/>. 
+        ///                     Greater than zero 
+        ///                     This instance is greater than <paramref name="obj"/>. 
+        /// </returns>
+        /// <param name="obj">An object to compare with this instance. 
+        ///                 </param><exception cref="T:System.ArgumentException"><paramref name="obj"/> is not the same type as this instance. 
+        ///                 </exception><filterpriority>2</filterpriority>
+        public int CompareTo(object obj)
+        {
+            return _value.CompareTo(obj);
+        }
+
+        #endregion
+
+        #region IComparable<int> Members
+
+        /// <summary>
+        /// Compares the current object with another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// A 32-bit signed integer that indicates the relative order of the objects being compared. The return value has the following meanings: 
+        ///                     Value 
+        ///                     Meaning 
+        ///                     Less than zero 
+        ///                     This object is less than the <paramref name="other"/> parameter.
+        ///                     Zero 
+        ///                     This object is equal to <paramref name="other"/>. 
+        ///                     Greater than zero 
+        ///                     This object is greater than <paramref name="other"/>. 
+        /// </returns>
+        /// <param name="other">An object to compare with this object.
+        ///                 </param>
+        public int CompareTo(int other)
+        {
+            return _value.CompareTo(other);
+        }
+
+        #endregion
+
+        #region IConvertible Members
+
+        /// <summary>
+        /// Returns the <see cref="T:System.TypeCode"/> for this instance.
+        /// </summary>
+        /// <returns>
+        /// The enumerated constant that is the <see cref="T:System.TypeCode"/> of the class or value type that implements this interface.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public TypeCode GetTypeCode()
+        {
+            return _value.GetTypeCode();
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent Boolean value using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// A Boolean value equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        bool IConvertible.ToBoolean(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToBoolean(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent Unicode character using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// A Unicode character equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        char IConvertible.ToChar(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToChar(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 8-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// An 8-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        sbyte IConvertible.ToSByte(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToSByte(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 8-bit unsigned integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// An 8-bit unsigned integer equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        byte IConvertible.ToByte(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToByte(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 16-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// An 16-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        short IConvertible.ToInt16(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToInt16(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 16-bit unsigned integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// An 16-bit unsigned integer equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        ushort IConvertible.ToUInt16(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToUInt16(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 32-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// An 32-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        int IConvertible.ToInt32(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToInt32(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 32-bit unsigned integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// An 32-bit unsigned integer equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        uint IConvertible.ToUInt32(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToUInt32(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 64-bit signed integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// An 64-bit signed integer equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        long IConvertible.ToInt64(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToInt64(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent 64-bit unsigned integer using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// An 64-bit unsigned integer equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        ulong IConvertible.ToUInt64(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToUInt64(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent single-precision floating-point number using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// A single-precision floating-point number equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        float IConvertible.ToSingle(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToSingle(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent double-precision floating-point number using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// A double-precision floating-point number equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        double IConvertible.ToDouble(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToDouble(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent <see cref="T:System.Decimal"/> number using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Decimal"/> number equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        decimal IConvertible.ToDecimal(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToDecimal(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent <see cref="T:System.DateTime"/> using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.DateTime"/> instance equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        DateTime IConvertible.ToDateTime(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToDateTime(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an equivalent <see cref="T:System.String"/> using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> instance equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        string IConvertible.ToString(IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToString(provider);
+        }
+
+        /// <summary>
+        /// Converts the value of this instance to an <see cref="T:System.Object"/> of the specified <see cref="T:System.Type"/> that has an equivalent value, using the specified culture-specific formatting information.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Object"/> instance of type <paramref name="conversionType"/> whose value is equivalent to the value of this instance.
+        /// </returns>
+        /// <param name="conversionType">The <see cref="T:System.Type"/> to which the value of this instance is converted. 
+        ///                 </param><param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
+        ///                 </param><filterpriority>2</filterpriority>
+        object IConvertible.ToType(Type conversionType, IFormatProvider provider)
+        {
+            return ((IConvertible)_value).ToType(conversionType, provider);
+        }
+
+        #endregion
+
+        #region IEquatable<int> Members
+
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.
+        ///                 </param>
+        public bool Equals(int other)
+        {
+            return _value.Equals(other);
+        }
+
+        #endregion
+
+        #region IFormattable Members
+
+        /// <summary>
+        /// Formats the value of the current instance using the specified format.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> containing the value of the current instance in the specified format.
+        /// </returns>
+        /// <param name="format">The <see cref="T:System.String"/> specifying the format to use.
+        ///                     -or- 
+        ///                 null to use the default format defined for the type of the <see cref="T:System.IFormattable"/> implementation. 
+        ///                 </param><param name="formatProvider">The <see cref="T:System.IFormatProvider"/> to use to format the value.
+        ///                     -or- 
+        ///                 null to obtain the numeric format information from the current locale setting of the operating system. 
+        ///                 </param><filterpriority>2</filterpriority>
+        public string ToString(string format, IFormatProvider formatProvider)
+        {
+            return _value.ToString(format, formatProvider);
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Casts a MapEntityIndex to an Int32.
+        /// </summary>
+        /// <param name="mapEntityIndex">MapEntityIndex to cast.</param>
+        /// <returns>The Int32.</returns>
+        public static explicit operator int(MapEntityIndex mapEntityIndex)
+        {
+            return mapEntityIndex._value;
+        }
+
+        /// <summary>
+        /// Casts an Int32 to a MapEntityIndex.
+        /// </summary>
+        /// <param name="value">Int32 to cast.</param>
+        /// <returns>The MapEntityIndex.</returns>
+        public static explicit operator MapEntityIndex(int value)
+        {
+            return new MapEntityIndex(value);
+        }
+    }
+}

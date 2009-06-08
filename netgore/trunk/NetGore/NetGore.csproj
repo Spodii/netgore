@@ -81,6 +81,7 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityEventHandler.cs" />
     <Compile Include="MapEntityAttribute.cs" />
+    <Compile Include="MapEntityIndex.cs" />
     <Compile Include="PropertySync\PropertySyncBool.cs" />
     <Compile Include="PropertySync\PropertySyncCollisionType.cs" />
     <Compile Include="PropertySync\PropertySyncSByte.cs" />

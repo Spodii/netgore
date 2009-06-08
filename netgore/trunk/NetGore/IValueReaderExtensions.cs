@@ -36,6 +36,17 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Reads a MapEntityIndex.
+        /// </summary>
+        /// <param name="reader">IValueReader to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public static MapEntityIndex ReadMapEntityIndex(this IValueReader reader, string name)
+        {
+            return MapEntityIndex.Read(name, reader);
+        }
+
+        /// <summary>
         /// Reads a Color.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>

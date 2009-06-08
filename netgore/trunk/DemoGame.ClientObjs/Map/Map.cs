@@ -137,12 +137,12 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Map constructor
+        /// Map constructor.
         /// </summary>
-        /// <param name="mapEntityIndex">Index of the map</param>
-        /// <param name="parent">World the map belongs to</param>
-        /// <param name="graphics">GraphicsDevice to use to construct the atlas for the map</param>
-        public Map(ushort mapEntityIndex, World parent, GraphicsDevice graphics) : base(mapEntityIndex, parent)
+        /// <param name="mapIndex">Index of the map.</param>
+        /// <param name="parent">World the map belongs to.</param>
+        /// <param name="graphics">GraphicsDevice to use to construct the atlas for the map.</param>
+        public Map(ushort mapIndex, World parent, GraphicsDevice graphics) : base(mapIndex, parent)
         {
             _graphics = graphics;
             _world = parent;

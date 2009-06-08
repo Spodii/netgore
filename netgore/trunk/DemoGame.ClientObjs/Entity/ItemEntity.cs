@@ -119,7 +119,8 @@ namespace DemoGame.Client
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
 
-        public ItemEntity(ushort mapEntityIndex, Vector2 pos, Vector2 size, ushort graphicIndex, int currentTime) : base(pos, size)
+        public ItemEntity(MapEntityIndex mapEntityIndex, Vector2 pos, Vector2 size, ushort graphicIndex, int currentTime)
+            : base(pos, size)
         {
             // NOTE: Can I get rid of this constructor?
             MapEntityIndex = mapEntityIndex;
@@ -157,7 +158,7 @@ namespace DemoGame.Client
         /// <returns>A deep copy of the object</returns>
         public override ItemEntityBase DeepCopy()
         {
-            return new ItemEntity((ushort)MapEntityIndex, Position, CB.Size, GraphicIndex, _grh.LastUpdated);
+            return new ItemEntity(MapEntityIndex, Position, CB.Size, GraphicIndex, _grh.LastUpdated);
         }
 
         /// <summary>

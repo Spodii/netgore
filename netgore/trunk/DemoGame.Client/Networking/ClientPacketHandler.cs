@@ -132,7 +132,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.CharAttack)]
         void RecvCharAttack(IIPSocket conn, BitStream r)
         {
-            ushort mapCharIndex = r.ReadUShort();
+            MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
 
             Character chr = Map.GetDynamicEntity<Character>(mapCharIndex);
             if (chr == null)
@@ -144,7 +144,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.CharDamage)]
         void RecvCharDamage(IIPSocket conn, BitStream r)
         {
-            ushort mapCharIndex = r.ReadUShort();
+            MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
             int damage = r.ReadInt();
 
             Character chr = Map.GetDynamicEntity<Character>(mapCharIndex);
@@ -175,7 +175,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
         void RecvCreateDynamicEntity(IIPSocket conn, BitStream r)
         {
-            ushort mapEntityIndex = r.ReadUShort();
+            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
             DynamicEntity dynamicEntity = DynamicEntityFactory.Read(r);
             Map.AddDynamicEntity(dynamicEntity, mapEntityIndex);
 
@@ -225,7 +225,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.NotifyLevel)]
         void RecvNotifyLevel(IIPSocket conn, BitStream r)
         {
-            ushort mapCharIndex = r.ReadUShort();
+            MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
 
             Character chr = Map.GetDynamicEntity<Character>(mapCharIndex);
             if (chr == null)
@@ -259,7 +259,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.RemoveDynamicEntity)]
         void RecvRemoveDynamicEntity(IIPSocket conn, BitStream r)
         {
-            ushort mapEntityIndex = r.ReadUShort();
+            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
             DynamicEntity dynamicEntity = Map.GetDynamicEntity(mapEntityIndex);
 
             if (dynamicEntity != null)
@@ -327,10 +327,10 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetMap)]
         void RecvSetMap(IIPSocket conn, BitStream r)
         {
-            ushort mapEntityIndex = r.ReadUShort();
+            ushort mapIndex = r.ReadUShort();
 
             // Create the new map
-            Map newMap = new Map(mapEntityIndex, World, GameplayScreen.ScreenManager.GraphicsDevice);
+            Map newMap = new Map(mapIndex, World, GameplayScreen.ScreenManager.GraphicsDevice);
             newMap.Load(ContentPaths.Build, false);
 
             // Change maps
@@ -343,14 +343,14 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetUserChar)]
         void RecvSetUserChar(IIPSocket conn, BitStream r)
         {
-            ushort mapCharIndex = r.ReadUShort();
+            MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
             World.UserCharIndex = mapCharIndex;
         }
 
         [MessageHandler((byte)ServerPacketID.SynchronizeDynamicEntity)]
         void RecvSynchronizeDynamicEntity(IIPSocket conn, BitStream r)
         {
-            ushort mapEntityIndex = r.ReadUShort();
+            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
 
             DynamicEntity dynamicEntity = World.Map.GetDynamicEntity(mapEntityIndex);
             dynamicEntity.Deserialize(new BitStreamValueReader(r));
@@ -380,7 +380,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.UpdateVelocityAndPosition)]
         void RecvUpdateVelocityAndPosition(IIPSocket conn, BitStream r)
         {
-            ushort mapEntityIndex = r.ReadUShort();
+            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
             DynamicEntity dynamicEntity;
 
             // Grab the DynamicEntity
