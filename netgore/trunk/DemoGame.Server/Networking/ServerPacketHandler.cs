@@ -180,7 +180,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.PickupItem)]
         void RecvPickupItem(IIPSocket conn, BitStream r)
         {
-            ushort mapEntityIndex = r.ReadUShort();
+            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
 
             User user;
             Map map;

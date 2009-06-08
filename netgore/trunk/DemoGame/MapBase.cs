@@ -202,17 +202,17 @@ namespace DemoGame
         /// </summary>
         /// <param name="entity">DynamicEntity to add to the Map.</param>
         /// <param name="mapEntityIndex">Unique index to assign to the DynamicEntity.</param>
-        public void AddDynamicEntity(DynamicEntity entity, int mapEntityIndex)
+        public void AddDynamicEntity(DynamicEntity entity, MapEntityIndex mapEntityIndex)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
 
             Debug.Assert(!_dynamicEntities.Contains(entity), "DynamicEntity is already in the DynamicEntity list!");
-            Debug.Assert(!_dynamicEntities.CanGet(mapEntityIndex) || _dynamicEntities[mapEntityIndex] == null,
+            Debug.Assert(!_dynamicEntities.CanGet((int)mapEntityIndex) || _dynamicEntities[(int)mapEntityIndex] == null,
                          "A DynamicEntity already exists at this MapEntityIndex!");
 
             entity.MapEntityIndex = mapEntityIndex;
-            _dynamicEntities[mapEntityIndex] = entity;
+            _dynamicEntities[(int)mapEntityIndex] = entity;
 
             AddEntityFinish(entity);
         }
@@ -231,7 +231,7 @@ namespace DemoGame
             if ((dynamicEntity = entity as DynamicEntity) != null)
             {
                 Debug.Assert(!_dynamicEntities.Contains(dynamicEntity), "DynamicEntity is already in the DynamicEntity list!");
-                dynamicEntity.MapEntityIndex = _dynamicEntities.Insert(dynamicEntity);
+                dynamicEntity.MapEntityIndex = new MapEntityIndex(_dynamicEntities.Insert(dynamicEntity));
             }
 
             // Finish adding the Entity
@@ -440,9 +440,9 @@ namespace DemoGame
         /// </summary>
         /// <param name="mapEntityIndex">Index of the DynamicEntity to get.</param>
         /// <returns>The DynamicEntity with the specified <paramref name="mapEntityIndex"/>.</returns>
-        public DynamicEntity GetDynamicEntity(int mapEntityIndex)
+        public DynamicEntity GetDynamicEntity(MapEntityIndex mapEntityIndex)
         {
-            return _dynamicEntities[mapEntityIndex];
+            return _dynamicEntities[(int)mapEntityIndex];
         }
 
         /// <summary>
@@ -451,7 +451,7 @@ namespace DemoGame
         /// <typeparam name="T">Type of DynamicEntity to get.</typeparam>
         /// <param name="mapEntityIndex">Index of the DynamicEntity to get.</param>
         /// <returns>The DynamicEntity with the specified <paramref name="mapEntityIndex"/>.</returns>
-        public T GetDynamicEntity<T>(int mapEntityIndex) where T : DynamicEntity
+        public T GetDynamicEntity<T>(MapEntityIndex mapEntityIndex) where T : DynamicEntity
         {
             DynamicEntity dynamicEntity = GetDynamicEntity(mapEntityIndex);
             T casted = dynamicEntity as T;
@@ -1569,9 +1569,9 @@ namespace DemoGame
             DynamicEntity dynamicEntity;
             if ((dynamicEntity = entity as DynamicEntity) != null)
             {
-                Debug.Assert(_dynamicEntities[dynamicEntity.MapEntityIndex] == dynamicEntity,
+                Debug.Assert(_dynamicEntities[(int)dynamicEntity.MapEntityIndex] == dynamicEntity,
                              "DynamicEntity is holding an invalid MapEntityIndex!");
-                _dynamicEntities.RemoveAt(dynamicEntity.MapEntityIndex);
+                _dynamicEntities.RemoveAt((int)dynamicEntity.MapEntityIndex);
             }
 
             // Remove the entity from the grid, iterating through every segment to ensure we get all references
@@ -1880,12 +1880,12 @@ namespace DemoGame
         /// <param name="index">Unique index of the DynamicEntity to get.</param>
         /// <param name="dynamicEntity">DynamicEntity found at the specified index, or null if none found.</param>
         /// <returns>True if the DynamicEntity was successfully found, else false.</returns>
-        public bool TryGetDynamicEntity(int index, out DynamicEntity dynamicEntity)
+        public bool TryGetDynamicEntity(MapEntityIndex index, out DynamicEntity dynamicEntity)
         {
-            if (!_dynamicEntities.CanGet(index))
+            if (!_dynamicEntities.CanGet((int)index))
                 dynamicEntity = null;
             else
-                dynamicEntity = _dynamicEntities[index];
+                dynamicEntity = _dynamicEntities[(int)index];
 
             return (dynamicEntity != null);
         }
@@ -1898,12 +1898,12 @@ namespace DemoGame
         /// <param name="dynamicEntity">DynamicEntity found at the specified index and of
         /// the specified type, otherwise null.</param>
         /// <returns>True if the DynamicEntity was successfully found, else false.</returns>
-        public bool TryGetDynamicEntity<T>(int index, out T dynamicEntity) where T : DynamicEntity
+        public bool TryGetDynamicEntity<T>(MapEntityIndex index, out T dynamicEntity) where T : DynamicEntity
         {
-            if (!_dynamicEntities.CanGet(index))
+            if (!_dynamicEntities.CanGet((int)index))
                 dynamicEntity = null;
             else
-                dynamicEntity = _dynamicEntities[index] as T;
+                dynamicEntity = _dynamicEntities[(int)index] as T;
 
             return (dynamicEntity != null);
         }

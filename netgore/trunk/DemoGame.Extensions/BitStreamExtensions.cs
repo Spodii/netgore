@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
+using NetGore;
 using NetGore.IO;
 
 namespace DemoGame.Extensions
@@ -47,6 +48,15 @@ namespace DemoGame.Extensions
             StatType statType = bitStream.ReadStatType();
             IStat stat = statCollection.GetStat(statType);
             stat.Read(bitStream);
+        }
+
+        /// <summary>
+        /// Reads a MapEntityIndex from the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read from.</param>
+        public static MapEntityIndex ReadMapEntityIndex(this BitStream bitStream)
+        {
+            return MapEntityIndex.Read(bitStream);
         }
 
         /// <summary>
@@ -129,6 +139,16 @@ namespace DemoGame.Extensions
         public static void Write(this BitStream bitStream, StatType statType)
         {
             bitStream.Write((byte)statType);
+        }
+
+        /// <summary>
+        /// Writes a MapEntityIndex to the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="mapEntityIndex">MapEntityIndex to write.</param>
+        public static void Write(this BitStream bitStream, MapEntityIndex mapEntityIndex)
+        {
+            mapEntityIndex.Write(bitStream);
         }
 
         /// <summary>

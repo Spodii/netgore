@@ -80,7 +80,7 @@ namespace NetGore
         /// <summary>
         /// Index of the map this DynamicEntity is on.
         /// </summary>
-        ushort _mapEntityIndex;
+        MapEntityIndex _mapEntityIndex;
 
         /// <summary>
         /// How many more times the Position and Velocity will be synchronized without the values changing.
@@ -137,16 +137,13 @@ namespace NetGore
         /// DynamicEntity from one another.
         /// </summary>
         [Browsable(false)]
-        public int MapEntityIndex
+        public MapEntityIndex MapEntityIndex
         {
             get { return _mapEntityIndex; }
             set
             {
                 // TODO: Setter needs to eventually be hidden from alteration outside of the map
-                if (value < 0 || value > ushort.MaxValue)
-                    throw new ArgumentOutOfRangeException("value");
-
-                _mapEntityIndex = (ushort)value;
+                _mapEntityIndex = value;
             }
         }
 

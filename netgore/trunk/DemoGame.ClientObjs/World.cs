@@ -27,8 +27,6 @@ namespace DemoGame.Client
         /// </summary>
         Map _map;
 
-        int _userCharIndex;
-
         /// <summary>
         /// Gets the camera used for the active view
         /// </summary>
@@ -53,19 +51,31 @@ namespace DemoGame.Client
         {
             get
             {
-                if (_map == null || UserCharIndex == -1)
+                if (_map == null || !UserCharIndexSet)
                     return null;
+
                 return _map.GetDynamicEntity<Character>(UserCharIndex);
             }
         }
 
         /// <summary>
-        /// Gets or sets the map index of the character that belongs to the user
+        /// Gets or sets if the UserCharIndex is set.
         /// </summary>
-        public int UserCharIndex
+        public bool UserCharIndexSet { get; set; }
+
+        MapEntityIndex _usercharIndex;
+
+        /// <summary>
+        /// Gets or sets the MapEntityIndex of the Character that belongs to the client's character.
+        /// </summary>
+        public MapEntityIndex UserCharIndex
         {
-            get { return _userCharIndex; }
-            set { _userCharIndex = value; }
+            get { return _usercharIndex; }
+            set
+            {
+                _usercharIndex = value;
+                UserCharIndexSet = true;
+            }
         }
 
         /// <summary>
@@ -104,7 +114,7 @@ namespace DemoGame.Client
             }
 
             // Invalidate the user's character index until it is reset
-            UserCharIndex = -1;
+            UserCharIndexSet = false;
 
             // Dispose of the old map
             if (Map != null)
