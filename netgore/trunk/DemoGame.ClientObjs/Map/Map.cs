@@ -27,21 +27,13 @@ namespace DemoGame.Client
         const string _mapGrhsNodeName = "MapGrhs";
         const string _usedIndiciesNodeName = "UsedIndicies";
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static bool _drawBackground = true;
-        static bool _drawCharacters = true;
-        static bool _drawEntities = false;
-        static bool _drawForeground = true;
-        static bool _drawItems = true;
-        static bool _drawWalls = false;
-
-        readonly SafeEnumerator<BackgroundImage> _backgroundImagesEnumerator;
-
-        public IEnumerable<BackgroundImage> BackgroundImages { get { return _backgroundImagesEnumerator; } }
 
         /// <summary>
         /// List of BackgroundImages on this map.
         /// </summary>
         readonly List<BackgroundImage> _backgroundImages = new List<BackgroundImage>();
+
+        readonly SafeEnumerator<BackgroundImage> _backgroundImagesEnumerator;
 
         /// <summary>
         /// List of IDrawableEntity objects in the background layer
@@ -84,57 +76,38 @@ namespace DemoGame.Client
         List<Texture2D> _mapAtlases = new List<Texture2D>();
 
         /// <summary>
-        /// Gets or sets if the background layer is drawn
+        /// Gets or sets if the background items are drawn.
         /// </summary>
-        public static bool DrawBackground
-        {
-            get { return _drawBackground; }
-            set { _drawBackground = value; }
-        }
+        public static bool DrawBackground { get; set; }
 
         /// <summary>
-        /// Gets or sets if the character layer is drawn
+        /// Gets or sets if the character layer is drawn.
         /// </summary>
-        public static bool DrawCharacter
-        {
-            get { return _drawCharacters; }
-            set { _drawCharacters = value; }
-        }
+        public static bool DrawCharacters { get; set; }
 
         /// <summary>
-        /// Gets or sets if the collision boxes for map entities (except for walls) are drawn
+        /// Gets or sets if the collision boxes for map entities (except for walls) are drawn.
         /// </summary>
-        public static bool DrawEntities
-        {
-            get { return _drawEntities; }
-            set { _drawEntities = value; }
-        }
+        public static bool DrawEntityBoxes { get; set; }
 
         /// <summary>
-        /// Gets or sets if the foreground layer is drawn
+        /// Gets or sets if the items layer is drawn.
         /// </summary>
-        public static bool DrawForeground
-        {
-            get { return _drawForeground; }
-            set { _drawForeground = value; }
-        }
+        public static bool DrawItems { get; set; }
 
         /// <summary>
-        /// Gets or sets if the items layer is drawn
+        /// Gets or sets if the map graphics are drawn.
         /// </summary>
-        public static bool DrawItems
-        {
-            get { return _drawItems; }
-            set { _drawItems = value; }
-        }
+        public static bool DrawMapGrhs { get; set; }
 
         /// <summary>
-        /// Gets or sets if walls are drawn
+        /// Gets or sets if walls are drawn.
         /// </summary>
-        public static bool DrawWalls
+        public static bool DrawWalls { get; set; }
+
+        public IEnumerable<BackgroundImage> BackgroundImages
         {
-            get { return _drawWalls; }
-            set { _drawWalls = value; }
+            get { return _backgroundImagesEnumerator; }
         }
 
         /// <summary>
@@ -304,29 +277,32 @@ namespace DemoGame.Client
         public void Draw(SpriteBatch sb, Camera2D camera)
         {
             // Draw the background
-            foreach (BackgroundImage bgImage in _backgroundImages)
+            if (DrawBackground)
             {
-                bgImage.Draw(sb, camera, Size);
+                foreach (BackgroundImage bgImage in _backgroundImages)
+                {
+                    bgImage.Draw(sb, camera, Size);
+                }
             }
 
             // Draw the background map graphics (behind the character)
-            if (_drawBackground)
+            if (DrawMapGrhs)
                 DrawLayer(sb, camera, _drawLayerBackground);
 
             // Draw the characters
-            if (_drawCharacters)
+            if (DrawCharacters)
                 DrawLayer(sb, camera, _drawLayerCharacter);
 
             // Draw the items
-            if (_drawItems)
+            if (DrawItems)
                 DrawLayer(sb, camera, _drawLayerItem);
 
             // Draw the foreground map graphics (in front of the character)
-            if (_drawForeground)
+            if (DrawMapGrhs)
                 DrawLayer(sb, camera, _drawLayerForeground);
 
             // Draw the wall entities
-            if (_drawWalls)
+            if (DrawWalls)
             {
                 foreach (Entity entity in Entities)
                 {
@@ -337,7 +313,7 @@ namespace DemoGame.Client
             }
 
             // Draw the non-wall entities
-            if (_drawEntities)
+            if (DrawEntityBoxes)
             {
                 foreach (Entity entity in Entities)
                 {
