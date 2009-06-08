@@ -317,7 +317,7 @@ namespace DemoGame.Client
         /// </summary>
         void DrawHUD()
         {
-            _spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+            _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
             _infoBox.Draw(_spriteBatch);
             _gui.Draw(_spriteBatch);
             _itemInfoTooltip.Draw(_gui.CursorPosition, _spriteBatch, _guiFont);
@@ -330,7 +330,7 @@ namespace DemoGame.Client
         /// </summary>
         void DrawWorld()
         {
-            _spriteBatch.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
+            _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
             World.Draw(_spriteBatch);
             _damageTextPool.Draw(_spriteBatch, _damageFont);
             _spriteBatch.End();

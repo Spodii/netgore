@@ -480,7 +480,7 @@ namespace DemoGame.MapEditor
                 return;
 
             // Begin the rendering
-            _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
+            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
 
             // Map
             Map.Draw(_sb, _camera);
@@ -550,7 +550,7 @@ namespace DemoGame.MapEditor
             _sb.End();
 
             // Begin GUI rendering
-            _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
 
             // Cursor position
             Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
@@ -565,7 +565,7 @@ namespace DemoGame.MapEditor
         void DrawGrhPreview()
         {
             // Begin rendering
-            _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _editGrhCamera.Matrix);
+            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _editGrhCamera.Matrix);
 
             // Grh - try/catch since invalid texture will throw an exception
 #if !DEBUG

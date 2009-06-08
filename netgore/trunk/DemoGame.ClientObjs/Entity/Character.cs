@@ -264,6 +264,7 @@ namespace DemoGame.Client
             Vector2 p = DrawPosition;
             p.X += BodyInfo.Width / 2f;
             p.Y += BodyInfo.Height;
+           
             _skelAnim.Draw(sb, p, se);
         }
 

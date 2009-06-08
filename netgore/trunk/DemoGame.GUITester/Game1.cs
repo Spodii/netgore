@@ -43,7 +43,7 @@ namespace DemoGame.GUITester
         {
             _graphics.GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            _sb.Begin();
+            _sb.BeginUnfiltered();
             _gui.Draw(_sb);
             _sb.End();
 
