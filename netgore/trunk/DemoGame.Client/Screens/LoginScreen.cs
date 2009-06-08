@@ -5,6 +5,7 @@ using System.Linq;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 
@@ -79,7 +80,7 @@ namespace DemoGame.Client
             if (_sb == null)
                 return;
 
-            _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
+            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
             _gui.Draw(_sb);
             _sb.End();
         }

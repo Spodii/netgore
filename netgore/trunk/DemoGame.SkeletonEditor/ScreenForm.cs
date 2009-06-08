@@ -487,7 +487,7 @@ namespace DemoGame.SkeletonEditor
             GameScreen.GraphicsDevice.Clear(Microsoft.Xna.Framework.Graphics.Color.CornflowerBlue);
 
             // Screen
-            _sb.Begin(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
+            _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
 
             foreach (XNALine l in _centerLines)
             {

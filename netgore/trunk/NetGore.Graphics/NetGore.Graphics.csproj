@@ -87,6 +87,7 @@
     <Compile Include="MapBorderDrawer.cs" />
     <Compile Include="Skeleton\SkeletonBodyInfo.cs" />
     <Compile Include="Skeleton\SkeletonFrame.cs" />
+    <Compile Include="SpriteBatchExtensions.cs" />
     <Compile Include="XNAArrow.cs" />
     <Compile Include="XNARectangle.cs" />
     <Compile Include="FrameCounter.cs" />

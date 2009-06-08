@@ -342,7 +342,7 @@ namespace NetGore.Graphics
                 using (SpriteBatch sb = new SpriteBatch(device))
                 {
                     // Draw every atlas item to the texture
-                    sb.Begin(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.None);
+                    sb.BeginUnfiltered(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.None);
                     foreach (AtlasNode item in items)
                     {
                         // Grab the texture and make sure it is valid
