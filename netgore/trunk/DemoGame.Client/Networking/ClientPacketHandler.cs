@@ -380,34 +380,31 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.UpdateVelocityAndPosition)]
         void RecvUpdateVelocityAndPosition(IIPSocket conn, BitStream r)
         {
+            ushort mapEntityIndex = r.ReadUShort();
+            DynamicEntity dynamicEntity;
+
+            // Grab the DynamicEntity
             try
             {
-                ushort mapEntityIndex = r.ReadUShort();
-                DynamicEntity dynamicEntity = null;
-
-                // Grab the DynamicEntity
-                try
-                {
-                    dynamicEntity = Map.GetDynamicEntity<DynamicEntity>(mapEntityIndex);
-                    if (dynamicEntity == null)
-                    {
-                        // NOTE: See bug: http://netgore.com/bugs/view.php?id=68
-                        Debug.Fail("dynamicEntity not found.");
-                        return;
-                    }
-                }
-                catch (ArgumentOutOfRangeException)
-                {
-                    // Ignore errors about finding the DynamicEntity
-                }
-
-                // Deserialize
-                if (dynamicEntity != null)
-                    dynamicEntity.DeserializePositionAndVelocity(new BitStreamValueReader(r));
+                dynamicEntity = Map.GetDynamicEntity<DynamicEntity>(mapEntityIndex);
             }
             catch (Exception)
             {
-                // NOTE: Catch is just temporary until the bug can be fixed
+                // Ignore errors about finding the DynamicEntity
+                dynamicEntity = null;
+            }
+
+            // Deserialize
+            IValueReader valueReader = new BitStreamValueReader(r);
+            if (dynamicEntity != null)
+            {
+                // Read the value into the DynamicEntity
+                dynamicEntity.DeserializePositionAndVelocity(valueReader);
+            }
+            else
+            {
+                // Just flush the values from the reader
+                DynamicEntity.FlushPositionAndVelocity(valueReader);
             }
         }
 
