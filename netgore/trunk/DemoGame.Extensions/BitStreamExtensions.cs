@@ -60,6 +60,15 @@ namespace DemoGame.Extensions
         }
 
         /// <summary>
+        /// Reads a MapIndex from the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read from.</param>
+        public static MapIndex ReadMapIndex(this BitStream bitStream)
+        {
+            return MapIndex.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads a collection of stats. It is important to know all stats will be set to zero first, then be read.
         /// This is because only non-zero stats are sent.
         /// </summary>
@@ -149,6 +158,16 @@ namespace DemoGame.Extensions
         public static void Write(this BitStream bitStream, MapEntityIndex mapEntityIndex)
         {
             mapEntityIndex.Write(bitStream);
+        }
+
+        /// <summary>
+        /// Writes a MapIndex to the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="mapIndex">MapIndex to write.</param>
+        public static void Write(this BitStream bitStream, MapIndex mapIndex)
+        {
+            mapIndex.Write(bitStream);
         }
 
         /// <summary>

@@ -196,7 +196,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SetMap(ushort mapIndex)
+        public static PacketWriter SetMap(MapIndex mapIndex)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetMap);
             pw.Write(mapIndex);

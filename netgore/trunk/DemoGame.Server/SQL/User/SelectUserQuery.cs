@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -32,7 +33,7 @@ namespace DemoGame.Server
 
                 // Read the general user values
                 ushort guid = r.GetUInt16("guid");
-                ushort mapIndex = r.GetUInt16("map");
+                MapIndex mapIndex = r.GetMapIndex("map");
                 float x = r.GetFloat("x");
                 float y = r.GetFloat("y");
                 ushort body = r.GetUInt16("body");

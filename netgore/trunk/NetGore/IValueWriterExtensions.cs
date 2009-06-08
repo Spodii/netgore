@@ -112,7 +112,19 @@ namespace NetGore
         /// <param name="value">Value to write.</param>
         public static void Write(this IValueWriter writer, string name, MapEntityIndex value)
         {
-            value.Write(name, writer);
+            value.Write(writer, name);
+        }
+
+        /// <summary>
+        /// Writes a MapIndex.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public static void Write(this IValueWriter writer, string name, MapIndex value)
+        {
+            value.Write(writer, name);
         }
 
         /// <summary>

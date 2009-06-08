@@ -14,7 +14,7 @@ namespace DemoGame
     public abstract class TeleportEntityBase : DynamicEntity, IUseableEntity
     {
         Vector2 _destination;
-        ushort _destinationMap;
+        MapIndex _destinationMap;
 
         /// <summary>
         /// Gets or sets the map position that the Entity will be teleported to upon use.
@@ -38,7 +38,7 @@ namespace DemoGame
         [DisplayName("DestinationMap")]
         [Description("Map to teleport the Entity that uses this Teleport to.")]
         [Browsable(true)]
-        public ushort DestinationMap
+        public MapIndex DestinationMap
         {
             get { return _destinationMap; }
             set { _destinationMap = value; }

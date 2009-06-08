@@ -91,12 +91,12 @@ namespace DemoGame.Server
             _maps = new DArray<Map>(mapFiles.Count() + 10, false);
             foreach (string mapFile in mapFiles)
             {
-                ushort mapIndex = Map.GetIndexFromPath(mapFile);
+                MapIndex mapIndex = Map.GetIndexFromPath(mapFile);
                 Map m = new Map(mapIndex, this);
                 m.Load(ContentPaths.Build, true);
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Loaded map index {0} from file {1}", mapIndex, mapFile);
-                _maps[mapIndex] = m;
+                _maps[(int)mapIndex] = m;
             }
 
             // Trim down the maps array under the assumption we won't be adding more maps
@@ -193,16 +193,16 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="mapIndex">Index of the map</param>
         /// <returns>Map for the given index, or null if invalid</returns>
-        public Map GetMap(ushort mapIndex)
+        public Map GetMap(MapIndex mapIndex)
         {
             // If the map can be grabbed from the index, grab it
-            if (_maps.CanGet(mapIndex))
+            if (_maps.CanGet((int)mapIndex))
             {
                 // Check that the map is valid
-                Debug.Assert(_maps[mapIndex] != null, "Tried to get a null map.");
+                Debug.Assert(_maps[(int)mapIndex] != null, "Tried to get a null map.");
 
                 // Return the map at the index
-                return _maps[mapIndex];
+                return _maps[(int)mapIndex];
             }
 
             // Could not grab by index
