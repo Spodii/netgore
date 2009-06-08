@@ -249,6 +249,24 @@ namespace NetGore.Graphics
             // TODO: Sprite.Update(currentTime);
         }
 
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override string ToString()
+        {
+            string name;
+            if (string.IsNullOrEmpty(Name))
+                name = "Unnamed";
+            else
+                name = Name;
+
+            return string.Format("[{0}] {1}", GetType().Name, name);
+        }
+
         public virtual void Write(IValueWriter writer)
         {
             writer.Write("Name", Name);

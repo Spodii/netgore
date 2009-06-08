@@ -3,6 +3,8 @@
 // ReSharper disable RedundantDelegateCreation
 // ReSharper disable RedundantCast
 
+using NetGore.EditorTools;
+
 namespace DemoGame.MapEditor
 {
     partial class ScreenForm
@@ -56,35 +58,17 @@ namespace DemoGame.MapEditor
             this.chkSnapWallGrid = new System.Windows.Forms.CheckBox();
             this.chkSnapWallWall = new System.Windows.Forms.CheckBox();
             this.lstSelectedWalls = new System.Windows.Forms.ListBox();
-            this.tabPageEnvironment = new System.Windows.Forms.TabPage();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabTeleports = new System.Windows.Forms.TabPage();
-            this.btnTeleportNew = new System.Windows.Forms.Button();
-            this.gbSelectedTeleporter = new System.Windows.Forms.GroupBox();
-            this.txtTeleportMap = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.txtTeleportHeight = new System.Windows.Forms.TextBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.txtTeleportWidth = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.btnTeleportLocate = new System.Windows.Forms.Button();
-            this.btnTeleportDelete = new System.Windows.Forms.Button();
-            this.btnTeleportCopy = new System.Windows.Forms.Button();
-            this.txtTeleportToY = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
-            this.txtTeleportToX = new System.Windows.Forms.TextBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.txtTeleportY = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.txtTeleportX = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.lstTeleports = new System.Windows.Forms.ListBox();
+            this.tabPageEntities = new System.Windows.Forms.TabPage();
+            this.cmbEntityTypes = new System.Windows.Forms.ComboBox();
+            this.btnNewEntity = new System.Windows.Forms.Button();
+            this.pgEntity = new System.Windows.Forms.PropertyGrid();
+            this.lstEntities = new EntityListBox();
             this.tabPageBackground = new System.Windows.Forms.TabPage();
             this.pgBGItem = new System.Windows.Forms.PropertyGrid();
             this.btnNewBGSprite = new System.Windows.Forms.Button();
             this.btnNewBGLayer = new System.Windows.Forms.Button();
             this.btnDeleteBGItem = new System.Windows.Forms.Button();
-            this.lstBGItems = new System.Windows.Forms.ListBox();
+            this.lstBGItems = new BackgroundItemListBox();
             this.tabPageNPCs = new System.Windows.Forms.TabPage();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -115,10 +99,7 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs.SuspendLayout();
             this.tabPageWalls.SuspendLayout();
             this.gbCurrentWall.SuspendLayout();
-            this.tabPageEnvironment.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabTeleports.SuspendLayout();
-            this.gbSelectedTeleporter.SuspendLayout();
+            this.tabPageEntities.SuspendLayout();
             this.tabPageBackground.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -136,7 +117,7 @@ namespace DemoGame.MapEditor
             this.tcMenu.Controls.Add(this.tabPageGeneral);
             this.tcMenu.Controls.Add(this.tabPageGrhs);
             this.tcMenu.Controls.Add(this.tabPageWalls);
-            this.tcMenu.Controls.Add(this.tabPageEnvironment);
+            this.tcMenu.Controls.Add(this.tabPageEntities);
             this.tcMenu.Controls.Add(this.tabPageBackground);
             this.tcMenu.Controls.Add(this.tabPageNPCs);
             this.tcMenu.Controls.Add(this.tabPageSettings);
@@ -365,233 +346,54 @@ namespace DemoGame.MapEditor
             this.lstSelectedWalls.TabIndex = 3;
             this.lstSelectedWalls.SelectedValueChanged += new System.EventHandler(this.lstSelectedWalls_SelectedValueChanged);
             // 
-            // tabPageEnvironment
+            // tabPageEntities
             // 
-            this.tabPageEnvironment.Controls.Add(this.tabControl1);
-            this.tabPageEnvironment.Location = new System.Drawing.Point(4, 22);
-            this.tabPageEnvironment.Name = "tabPageEnvironment";
-            this.tabPageEnvironment.Size = new System.Drawing.Size(299, 544);
-            this.tabPageEnvironment.TabIndex = 2;
-            this.tabPageEnvironment.Text = "Environment";
-            this.tabPageEnvironment.ToolTipText = "Graphics and effects";
-            this.tabPageEnvironment.UseVisualStyleBackColor = true;
+            this.tabPageEntities.Controls.Add(this.cmbEntityTypes);
+            this.tabPageEntities.Controls.Add(this.btnNewEntity);
+            this.tabPageEntities.Controls.Add(this.pgEntity);
+            this.tabPageEntities.Controls.Add(this.lstEntities);
+            this.tabPageEntities.Location = new System.Drawing.Point(4, 22);
+            this.tabPageEntities.Name = "tabPageEntities";
+            this.tabPageEntities.Size = new System.Drawing.Size(299, 544);
+            this.tabPageEntities.TabIndex = 7;
+            this.tabPageEntities.Text = "Entities";
+            this.tabPageEntities.UseVisualStyleBackColor = true;
             // 
-            // tabControl1
+            // cmbEntityTypes
             // 
-            this.tabControl1.Controls.Add(this.tabTeleports);
-            this.tabControl1.Location = new System.Drawing.Point(0, 3);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(296, 541);
-            this.tabControl1.TabIndex = 0;
+            this.cmbEntityTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEntityTypes.FormattingEnabled = true;
+            this.cmbEntityTypes.Location = new System.Drawing.Point(3, 198);
+            this.cmbEntityTypes.Name = "cmbEntityTypes";
+            this.cmbEntityTypes.Size = new System.Drawing.Size(228, 21);
+            this.cmbEntityTypes.TabIndex = 11;
             // 
-            // tabTeleports
+            // btnNewEntity
             // 
-            this.tabTeleports.Controls.Add(this.btnTeleportNew);
-            this.tabTeleports.Controls.Add(this.gbSelectedTeleporter);
-            this.tabTeleports.Controls.Add(this.lstTeleports);
-            this.tabTeleports.Location = new System.Drawing.Point(4, 22);
-            this.tabTeleports.Name = "tabTeleports";
-            this.tabTeleports.Padding = new System.Windows.Forms.Padding(3);
-            this.tabTeleports.Size = new System.Drawing.Size(288, 515);
-            this.tabTeleports.TabIndex = 0;
-            this.tabTeleports.Text = "Teleports";
-            this.tabTeleports.UseVisualStyleBackColor = true;
+            this.btnNewEntity.Location = new System.Drawing.Point(237, 197);
+            this.btnNewEntity.Name = "btnNewEntity";
+            this.btnNewEntity.Size = new System.Drawing.Size(59, 24);
+            this.btnNewEntity.TabIndex = 10;
+            this.btnNewEntity.Text = "New";
+            this.btnNewEntity.UseVisualStyleBackColor = true;
+            this.btnNewEntity.Click += new System.EventHandler(this.btnNewEntity_Click);
             // 
-            // btnTeleportNew
+            // pgEntity
             // 
-            this.btnTeleportNew.Location = new System.Drawing.Point(220, 338);
-            this.btnTeleportNew.Name = "btnTeleportNew";
-            this.btnTeleportNew.Size = new System.Drawing.Size(59, 24);
-            this.btnTeleportNew.TabIndex = 9;
-            this.btnTeleportNew.Text = "New";
-            this.btnTeleportNew.UseVisualStyleBackColor = true;
-            this.btnTeleportNew.Click += new System.EventHandler(this.btnTeleportNew_Click);
+            this.pgEntity.Location = new System.Drawing.Point(3, 224);
+            this.pgEntity.Name = "pgEntity";
+            this.pgEntity.Size = new System.Drawing.Size(293, 317);
+            this.pgEntity.TabIndex = 1;
             // 
-            // gbSelectedTeleporter
+            // lstEntities
             // 
-            this.gbSelectedTeleporter.Controls.Add(this.txtTeleportMap);
-            this.gbSelectedTeleporter.Controls.Add(this.label11);
-            this.gbSelectedTeleporter.Controls.Add(this.txtTeleportHeight);
-            this.gbSelectedTeleporter.Controls.Add(this.label10);
-            this.gbSelectedTeleporter.Controls.Add(this.txtTeleportWidth);
-            this.gbSelectedTeleporter.Controls.Add(this.label9);
-            this.gbSelectedTeleporter.Controls.Add(this.btnTeleportLocate);
-            this.gbSelectedTeleporter.Controls.Add(this.btnTeleportDelete);
-            this.gbSelectedTeleporter.Controls.Add(this.btnTeleportCopy);
-            this.gbSelectedTeleporter.Controls.Add(this.txtTeleportToY);
-            this.gbSelectedTeleporter.Controls.Add(this.label7);
-            this.gbSelectedTeleporter.Controls.Add(this.txtTeleportToX);
-            this.gbSelectedTeleporter.Controls.Add(this.label8);
-            this.gbSelectedTeleporter.Controls.Add(this.txtTeleportY);
-            this.gbSelectedTeleporter.Controls.Add(this.label6);
-            this.gbSelectedTeleporter.Controls.Add(this.txtTeleportX);
-            this.gbSelectedTeleporter.Controls.Add(this.label5);
-            this.gbSelectedTeleporter.Location = new System.Drawing.Point(9, 358);
-            this.gbSelectedTeleporter.Name = "gbSelectedTeleporter";
-            this.gbSelectedTeleporter.Size = new System.Drawing.Size(270, 151);
-            this.gbSelectedTeleporter.TabIndex = 5;
-            this.gbSelectedTeleporter.TabStop = false;
-            this.gbSelectedTeleporter.Text = "Selected Teleporter";
-            // 
-            // txtTeleportMap
-            // 
-            this.txtTeleportMap.Location = new System.Drawing.Point(51, 16);
-            this.txtTeleportMap.Name = "txtTeleportMap";
-            this.txtTeleportMap.Size = new System.Drawing.Size(59, 20);
-            this.txtTeleportMap.TabIndex = 16;
-            this.txtTeleportMap.TextChanged += new System.EventHandler(this.txtTeleportMap_TextChanged);
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(15, 19);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(31, 13);
-            this.label11.TabIndex = 15;
-            this.label11.Text = "Map:";
-            // 
-            // txtTeleportHeight
-            // 
-            this.txtTeleportHeight.Location = new System.Drawing.Point(179, 95);
-            this.txtTeleportHeight.Name = "txtTeleportHeight";
-            this.txtTeleportHeight.Size = new System.Drawing.Size(59, 20);
-            this.txtTeleportHeight.TabIndex = 14;
-            this.txtTeleportHeight.TextChanged += new System.EventHandler(this.txtTeleportHeight_TextChanged);
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(132, 98);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(41, 13);
-            this.label10.TabIndex = 13;
-            this.label10.Text = "Height:";
-            // 
-            // txtTeleportWidth
-            // 
-            this.txtTeleportWidth.Location = new System.Drawing.Point(51, 95);
-            this.txtTeleportWidth.Name = "txtTeleportWidth";
-            this.txtTeleportWidth.Size = new System.Drawing.Size(59, 20);
-            this.txtTeleportWidth.TabIndex = 12;
-            this.txtTeleportWidth.TextChanged += new System.EventHandler(this.txtTeleportWidth_TextChanged);
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(7, 98);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(38, 13);
-            this.label9.TabIndex = 11;
-            this.label9.Text = "Width:";
-            // 
-            // btnTeleportLocate
-            // 
-            this.btnTeleportLocate.Location = new System.Drawing.Point(163, 121);
-            this.btnTeleportLocate.Name = "btnTeleportLocate";
-            this.btnTeleportLocate.Size = new System.Drawing.Size(59, 24);
-            this.btnTeleportLocate.TabIndex = 10;
-            this.btnTeleportLocate.Text = "Locate";
-            this.btnTeleportLocate.UseVisualStyleBackColor = true;
-            this.btnTeleportLocate.Click += new System.EventHandler(this.btnTeleportLocate_Click);
-            // 
-            // btnTeleportDelete
-            // 
-            this.btnTeleportDelete.Location = new System.Drawing.Point(33, 121);
-            this.btnTeleportDelete.Name = "btnTeleportDelete";
-            this.btnTeleportDelete.Size = new System.Drawing.Size(59, 24);
-            this.btnTeleportDelete.TabIndex = 9;
-            this.btnTeleportDelete.Text = "Delete";
-            this.btnTeleportDelete.UseVisualStyleBackColor = true;
-            this.btnTeleportDelete.Click += new System.EventHandler(this.btnTeleportDelete_Click);
-            // 
-            // btnTeleportCopy
-            // 
-            this.btnTeleportCopy.Location = new System.Drawing.Point(98, 121);
-            this.btnTeleportCopy.Name = "btnTeleportCopy";
-            this.btnTeleportCopy.Size = new System.Drawing.Size(59, 24);
-            this.btnTeleportCopy.TabIndex = 8;
-            this.btnTeleportCopy.Text = "Copy";
-            this.btnTeleportCopy.UseVisualStyleBackColor = true;
-            this.btnTeleportCopy.Click += new System.EventHandler(this.btnTeleportCopy_Click);
-            // 
-            // txtTeleportToY
-            // 
-            this.txtTeleportToY.Location = new System.Drawing.Point(179, 68);
-            this.txtTeleportToY.Name = "txtTeleportToY";
-            this.txtTeleportToY.Size = new System.Drawing.Size(59, 20);
-            this.txtTeleportToY.TabIndex = 7;
-            this.txtTeleportToY.TextChanged += new System.EventHandler(this.txtTeleportToY_TextChanged);
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(143, 71);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(30, 13);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "ToY:";
-            // 
-            // txtTeleportToX
-            // 
-            this.txtTeleportToX.Location = new System.Drawing.Point(51, 68);
-            this.txtTeleportToX.Name = "txtTeleportToX";
-            this.txtTeleportToX.Size = new System.Drawing.Size(59, 20);
-            this.txtTeleportToX.TabIndex = 5;
-            this.txtTeleportToX.TextChanged += new System.EventHandler(this.txtTeleportToX_TextChanged);
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(15, 71);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(30, 13);
-            this.label8.TabIndex = 4;
-            this.label8.Text = "ToX:";
-            // 
-            // txtTeleportY
-            // 
-            this.txtTeleportY.Location = new System.Drawing.Point(179, 42);
-            this.txtTeleportY.Name = "txtTeleportY";
-            this.txtTeleportY.Size = new System.Drawing.Size(59, 20);
-            this.txtTeleportY.TabIndex = 3;
-            this.txtTeleportY.TextChanged += new System.EventHandler(this.txtTeleportY_TextChanged);
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(156, 45);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(17, 13);
-            this.label6.TabIndex = 2;
-            this.label6.Text = "Y:";
-            // 
-            // txtTeleportX
-            // 
-            this.txtTeleportX.Location = new System.Drawing.Point(51, 42);
-            this.txtTeleportX.Name = "txtTeleportX";
-            this.txtTeleportX.Size = new System.Drawing.Size(59, 20);
-            this.txtTeleportX.TabIndex = 1;
-            this.txtTeleportX.TextChanged += new System.EventHandler(this.txtTeleportX_TextChanged);
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(28, 45);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(17, 13);
-            this.label5.TabIndex = 0;
-            this.label5.Text = "X:";
-            // 
-            // lstTeleports
-            // 
-            this.lstTeleports.FormattingEnabled = true;
-            this.lstTeleports.Location = new System.Drawing.Point(6, 6);
-            this.lstTeleports.Name = "lstTeleports";
-            this.lstTeleports.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstTeleports.Size = new System.Drawing.Size(276, 329);
-            this.lstTeleports.TabIndex = 4;
-            this.lstTeleports.SelectedIndexChanged += new System.EventHandler(this.lstTeleports_SelectedIndexChanged);
+            this.lstEntities.Camera = null;
+            this.lstEntities.FormattingEnabled = true;
+            this.lstEntities.Location = new System.Drawing.Point(3, 6);
+            this.lstEntities.Name = "lstEntities";
+            this.lstEntities.Size = new System.Drawing.Size(293, 186);
+            this.lstEntities.TabIndex = 0;
+            this.lstEntities.SelectedIndexChanged += new System.EventHandler(this.lstEntities_SelectedIndexChanged);
             // 
             // tabPageBackground
             // 
@@ -622,7 +424,6 @@ namespace DemoGame.MapEditor
             this.btnNewBGSprite.TabIndex = 4;
             this.btnNewBGSprite.Text = "New Sprite";
             this.btnNewBGSprite.UseVisualStyleBackColor = true;
-            this.btnNewBGSprite.Click += new System.EventHandler(this.button2_Click);
             // 
             // btnNewBGLayer
             // 
@@ -632,6 +433,7 @@ namespace DemoGame.MapEditor
             this.btnNewBGLayer.TabIndex = 3;
             this.btnNewBGLayer.Text = "New Layer";
             this.btnNewBGLayer.UseVisualStyleBackColor = true;
+            this.btnNewBGLayer.Click += new System.EventHandler(this.btnNewBGLayer_Click);
             // 
             // btnDeleteBGItem
             // 
@@ -936,11 +738,7 @@ namespace DemoGame.MapEditor
             this.tabPageWalls.ResumeLayout(false);
             this.tabPageWalls.PerformLayout();
             this.gbCurrentWall.ResumeLayout(false);
-            this.tabPageEnvironment.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.tabTeleports.ResumeLayout(false);
-            this.gbSelectedTeleporter.ResumeLayout(false);
-            this.gbSelectedTeleporter.PerformLayout();
+            this.tabPageEntities.ResumeLayout(false);
             this.tabPageBackground.ResumeLayout(false);
             this.tabPageSettings.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
@@ -962,7 +760,6 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.TabControl tcMenu;
         private System.Windows.Forms.TabPage tabPageGeneral;
         private System.Windows.Forms.TabPage tabPageWalls;
-        private System.Windows.Forms.TabPage tabPageEnvironment;
         private System.Windows.Forms.TabPage tabPageNPCs;
         private System.Windows.Forms.TabPage tabPageSettings;
         private System.Windows.Forms.Button cmdSave;
@@ -986,22 +783,6 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.TabPage tabPageGrhs;
         private GameScreenControl GameScreen;
         private System.Windows.Forms.GroupBox gbCurrentWall;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabTeleports;
-        private System.Windows.Forms.ListBox lstTeleports;
-        private System.Windows.Forms.GroupBox gbSelectedTeleporter;
-        private System.Windows.Forms.TextBox txtTeleportToY;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox txtTeleportToX;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox txtTeleportY;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.TextBox txtTeleportX;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Button btnTeleportLocate;
-        private System.Windows.Forms.Button btnTeleportDelete;
-        private System.Windows.Forms.Button btnTeleportCopy;
-        private System.Windows.Forms.Button btnTeleportNew;
         private System.Windows.Forms.ComboBox cmbCurrWallType;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox chkShowGrhs;
@@ -1021,17 +802,16 @@ namespace DemoGame.MapEditor
         public System.Windows.Forms.CheckBox chkSnapGrhGrid;
         public NetGore.EditorTools.GrhTreeView treeGrhs;
         public System.Windows.Forms.CheckBox chkForeground;
-        private System.Windows.Forms.TextBox txtTeleportHeight;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TextBox txtTeleportWidth;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.TextBox txtTeleportMap;
-        private System.Windows.Forms.Label label11;
         private System.Windows.Forms.TabPage tabPageBackground;
-        private System.Windows.Forms.ListBox lstBGItems;
+        private BackgroundItemListBox lstBGItems;
         private System.Windows.Forms.Button btnNewBGSprite;
         private System.Windows.Forms.Button btnNewBGLayer;
         private System.Windows.Forms.Button btnDeleteBGItem;
         private System.Windows.Forms.PropertyGrid pgBGItem;
+        private System.Windows.Forms.TabPage tabPageEntities;
+        private System.Windows.Forms.PropertyGrid pgEntity;
+        private EntityListBox lstEntities;
+        private System.Windows.Forms.Button btnNewEntity;
+        private System.Windows.Forms.ComboBox cmbEntityTypes;
     }
 }

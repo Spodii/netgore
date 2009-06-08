@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -19,6 +20,10 @@ namespace DemoGame
         /// Gets or sets the map position that the Entity will be teleported to upon use.
         /// </summary>
         [SyncValue(SkipNetworkSync = true)]
+        [Category("Teleport")]
+        [DisplayName("Destination")]
+        [Description("Position to teleport the Entity that uses this Teleport to.")]
+        [Browsable(true)]
         public Vector2 Destination
         {
             get { return _destination; }
@@ -29,6 +34,10 @@ namespace DemoGame
         /// Gets or sets the index of the map that the Entity will be teleported to upon use.
         /// </summary>
         [SyncValue(SkipNetworkSync = true)]
+        [Category("Teleport")]
+        [DisplayName("DestinationMap")]
+        [Description("Map to teleport the Entity that uses this Teleport to.")]
+        [Browsable(true)]
         public ushort DestinationMap
         {
             get { return _destinationMap; }

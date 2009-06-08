@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -18,13 +19,10 @@ namespace NetGore
         readonly object _disposeLock = new object();
 
         CollisionBox _collisionBox;
-
         CollisionType _ct = CollisionType.Full;
         bool _isDisposed;
-
         bool _onGround = false;
         Vector2 _velocity;
-
         float _weight = 1.0f;
 
         /// <summary>
@@ -32,21 +30,25 @@ namespace NetGore
         /// disposing takes place, but the Entity's IsDisposed property will be true. This event
         /// is guarenteed to only be raised once.
         /// </summary>
+        [Browsable(false)]
         public event EntityEventHandler OnDispose;
 
         /// <summary>
         /// Notifies listeners that the Entity was moved, and passes the old position of the Entity.
         /// </summary>
+        [Browsable(false)]
         public event EntityEventHandler<Vector2> OnMove;
 
         /// <summary>
         /// Notifies listeners that the Entity was resized, and passes the old size of the Entity.
         /// </summary>
+        [Browsable(false)]
         public event EntityEventHandler<Vector2> OnResize;
 
         /// <summary>
         /// Gets or sets the collision box for the entity
         /// </summary>
+        [Browsable(false)]
         public CollisionBox CB
         {
             get { return _collisionBox; }
@@ -56,14 +58,20 @@ namespace NetGore
         /// <summary>
         /// Gets the center of the entity.
         /// </summary>
+        [Browsable(false)]
         public Vector2 Center
         {
             get { return Position + (Size / 2); }
         }
 
         /// <summary>
-        /// Gets or sets the collision type used for the entity
+        /// Gets or sets the collision type used for the entity.
         /// </summary>
+        [Category("Entity")]
+        [DisplayName("CollisionType")]
+        [Description("The collision type used for the Entity.")]
+        [DefaultValue(CollisionType.Full)]
+        [Browsable(true)]
         public CollisionType CollisionType
         {
             get { return _ct; }
@@ -73,6 +81,7 @@ namespace NetGore
         /// <summary>
         /// Gets if this Entity has been disposed, or is in the process of being disposed.
         /// </summary>
+        [Browsable(false)]
         public bool IsDisposed
         {
             get { return _isDisposed; }
@@ -81,6 +90,7 @@ namespace NetGore
         /// <summary>
         /// Gets or sets (protected) if the character is currently on the ground (only applies to moving entities)
         /// </summary>
+        [Browsable(false)]
         public bool OnGround
         {
             get { return _onGround; }
@@ -88,8 +98,12 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets or sets the top-left corner of the entity.
+        /// Gets or sets the position of the top-left corner of the entity.
         /// </summary>
+        [Category("Entity")]
+        [DisplayName("Position")]
+        [Description("Location of the top-left corner of the Entity on the map.")]
+        [Browsable(true)]
         public Vector2 Position
         {
             get { return CB.Min; }
@@ -97,14 +111,17 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the size of the Entity.
+        /// Gets or sets the size of the Entity.
         /// </summary>
+        [Category("Entity")]
+        [DisplayName("Size")]
+        [Description("Size of the Entity.")]
+        [Browsable(true)]
         public Vector2 Size
         {
             get { return _collisionBox.Size; }
-            internal set
+            set
             {
-                // NOTE: Temporary setter - do not actually use!
                 Resize(value);
             }
         }
@@ -112,6 +129,7 @@ namespace NetGore
         /// <summary>
         /// Gets the velocity of the Entity.
         /// </summary>
+        [Browsable(false)]
         public Vector2 Velocity
         {
             get { return _velocity; }
@@ -125,6 +143,11 @@ namespace NetGore
         /// <summary>
         /// Gets or sets the weight of the Entity (used in gravity calculations).
         /// </summary>
+        [Category("Entity")]
+        [DisplayName("Weight")]
+        [Description("The weight of the Entity. Higher the weight, the greater the effects of the gravity, where 0 is unaffected by gravity.")]
+        [DefaultValue(0.0f)]
+        [Browsable(true)]
         public float Weight
         {
             get { return _weight; }

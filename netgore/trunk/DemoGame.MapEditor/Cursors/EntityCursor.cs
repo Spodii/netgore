@@ -68,8 +68,6 @@ namespace DemoGame.MapEditor
                 {
                     // Move the entity
                     map.SafeTeleportEntity(_selectedEntity, screen.CursorPos - _selectionOffset);
-                    if (_selectedEntity is TeleportEntityBase)
-                        screen.UpdateTeleporterList();
                 }
             }
             else
