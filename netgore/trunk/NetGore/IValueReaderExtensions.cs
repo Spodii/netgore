@@ -14,6 +14,17 @@ namespace NetGore
     public static class IValueReaderExtensions
     {
         /// <summary>
+        /// Reads an Alignment.
+        /// </summary>
+        /// <param name="reader">IValueReader to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public static Alignment ReadAlignment(this IValueReader reader, string name)
+        {
+            return ReadEnum<Alignment>(reader, name);
+        }
+
+        /// <summary>
         /// Reads a CollisionType.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
@@ -25,14 +36,48 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads an Alignment.
+        /// Reads a Color.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
-        public static Alignment ReadAlignment(this IValueReader reader, string name)
+        public static Color ReadColor(this IValueReader reader, string name)
         {
-            return ReadEnum<Alignment>(reader, name);
+            byte r, g, b, a;
+
+            if (reader.SupportsNameLookup)
+            {
+                string value = reader.ReadString(name);
+                var split = value.Split(',');
+                r = byte.Parse(split[0]);
+                g = byte.Parse(split[1]);
+                b = byte.Parse(split[2]);
+                a = byte.Parse(split[3]);
+            }
+            else
+            {
+                r = reader.ReadByte(null);
+                g = reader.ReadByte(null);
+                b = reader.ReadByte(null);
+                a = reader.ReadByte(null);
+            }
+
+            return new Color(r, g, b, a);
+        }
+
+        /// <summary>
+        /// Reads an enum from an IValueReader.
+        /// </summary>
+        /// <typeparam name="T">Type of the enum to read.</typeparam>
+        /// <param name="reader">IValueReader to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public static T ReadEnum<T>(IValueReader reader, string name)
+        {
+            Type type = typeof(T);
+            string str = reader.ReadString(name);
+            T value = (T)Enum.Parse(type, str);
+            return value;
         }
 
         /// <summary>
@@ -55,51 +100,6 @@ namespace NetGore
         public static MapIndex ReadMapIndex(this IValueReader reader, string name)
         {
             return MapIndex.Read(reader, name);
-        }
-
-        /// <summary>
-        /// Reads a Color.
-        /// </summary>
-        /// <param name="reader">IValueReader to read from.</param>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public static Color ReadColor(this IValueReader reader, string name)
-        {
-            byte r,g,b,a;
-
-            if (reader.SupportsNameLookup)
-            {
-                string value = reader.ReadString(name);
-                var split = value.Split(',');
-                r = byte.Parse(split[0]);
-                g = byte.Parse(split[1]);
-                b = byte.Parse(split[2]);
-                a = byte.Parse(split[3]);
-            }
-            else
-            {
-                r = reader.ReadByte(null);
-                g = reader.ReadByte(null);
-                b = reader.ReadByte(null);
-                a = reader.ReadByte(null);
-            }
-            
-            return new Color(r, g, b, a);
-        }
-
-        /// <summary>
-        /// Reads an enum from an IValueReader.
-        /// </summary>
-        /// <typeparam name="T">Type of the enum to read.</typeparam>
-        /// <param name="reader">IValueReader to read from.</param>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public static T ReadEnum<T>(IValueReader reader, string name)
-        {
-            Type type = typeof(T);
-            string str = reader.ReadString(name);
-            T value = (T)Enum.Parse(type, str);
-            return value;
         }
 
         /// <summary>
