@@ -125,6 +125,16 @@ namespace DemoGame.Client
         {
             get { return _world; }
         }
+        
+        static Map()
+        {
+            DrawBackground = true;
+            DrawCharacters = true;
+            DrawEntityBoxes = false;
+            DrawItems = true;
+            DrawMapGrhs = true;
+            DrawWalls = false;
+        }
 
         /// <summary>
         /// Map constructor

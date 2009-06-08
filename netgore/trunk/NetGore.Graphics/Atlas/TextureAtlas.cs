@@ -34,7 +34,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Maximum size of the atlas texture (there is such thing as too big...)
         /// </summary>
-        int _maxSize = 1024;
+        int _maxSize = 2048;
 
         /// <summary>
         /// Number of pixels to pad around each item in the atlas
@@ -433,7 +433,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Heuristic (aka shitty) guesses for what might be a good starting size
+        /// Heuristic (aka shitty) guesses for what might be a good starting size.
         /// </summary>
         void GetStartSize(IEnumerable<ITextureAtlas> items, int maxSize, out int width, out int height)
         {
