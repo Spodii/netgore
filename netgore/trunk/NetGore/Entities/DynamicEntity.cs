@@ -275,11 +275,36 @@ namespace NetGore
         /// <param name="reader">IValueReader to read the values from.</param>
         public void DeserializePositionAndVelocity(IValueReader reader)
         {
-            Vector2 position = reader.ReadVector2("Position");
-            Vector2 velocity = reader.ReadVector2("velocity");
+            Vector2 position, velocity;
+            DeserializePositionAndVelocity(reader, out position, out velocity);
 
             SetPositionRaw(position);
             SetVelocityRaw(velocity);
+        }
+
+        /// <summary>
+        /// Reads the Position and Velocity from the specified IValueReader. Use in conjunction with
+        /// SerializePositionAndVelocity();
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <param name="position">Position read from the IValueReader.</param>
+        /// <param name="velocity">Position read from the IValueReader.</param>
+        static void DeserializePositionAndVelocity(IValueReader reader, out Vector2 position, out Vector2 velocity)
+        {
+            position = reader.ReadVector2("Position");
+            velocity = reader.ReadVector2("velocity");
+        }
+
+        /// <summary>
+        /// Reads the Position and Velocity from the specified IValueReader without the need of a valid DynamicEntity.
+        /// The data is not actually used in any way, it just progresses the reader like the values were read.
+        /// </summary>
+        /// <param name="reader">IValueReader ot read the values from.</param>
+        public static void FlushPositionAndVelocity(IValueReader reader)
+        {
+            // Do nothing with the values, just read them to progress the reader
+            Vector2 position, velocity;
+            DeserializePositionAndVelocity(reader, out position, out velocity);
         }
 
         /// <summary>
