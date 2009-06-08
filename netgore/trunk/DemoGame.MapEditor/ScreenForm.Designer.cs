@@ -122,10 +122,10 @@ namespace DemoGame.MapEditor
             this.tcMenu.Controls.Add(this.tabPageBackground);
             this.tcMenu.Controls.Add(this.tabPageNPCs);
             this.tcMenu.Controls.Add(this.tabPageSettings);
-            this.tcMenu.Location = new System.Drawing.Point(839, 3);
+            this.tcMenu.Location = new System.Drawing.Point(810, 3);
             this.tcMenu.Name = "tcMenu";
             this.tcMenu.SelectedIndex = 0;
-            this.tcMenu.Size = new System.Drawing.Size(307, 570);
+            this.tcMenu.Size = new System.Drawing.Size(345, 605);
             this.tcMenu.TabIndex = 1;
             // 
             // tabPageGeneral
@@ -136,7 +136,7 @@ namespace DemoGame.MapEditor
             this.tabPageGeneral.Location = new System.Drawing.Point(4, 22);
             this.tabPageGeneral.Name = "tabPageGeneral";
             this.tabPageGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageGeneral.Size = new System.Drawing.Size(299, 544);
+            this.tabPageGeneral.Size = new System.Drawing.Size(337, 579);
             this.tabPageGeneral.TabIndex = 0;
             this.tabPageGeneral.Text = "General";
             this.tabPageGeneral.ToolTipText = "General map information";
@@ -607,9 +607,9 @@ namespace DemoGame.MapEditor
             // 
             // cmdSave
             // 
-            this.cmdSave.Location = new System.Drawing.Point(1002, 579);
+            this.cmdSave.Location = new System.Drawing.Point(987, 610);
             this.cmdSave.Name = "cmdSave";
-            this.cmdSave.Size = new System.Drawing.Size(59, 24);
+            this.cmdSave.Size = new System.Drawing.Size(65, 24);
             this.cmdSave.TabIndex = 2;
             this.cmdSave.Text = "Save";
             this.cmdSave.UseVisualStyleBackColor = true;
@@ -617,9 +617,9 @@ namespace DemoGame.MapEditor
             // 
             // cmdLoad
             // 
-            this.cmdLoad.Location = new System.Drawing.Point(937, 579);
+            this.cmdLoad.Location = new System.Drawing.Point(916, 610);
             this.cmdLoad.Name = "cmdLoad";
-            this.cmdLoad.Size = new System.Drawing.Size(59, 24);
+            this.cmdLoad.Size = new System.Drawing.Size(65, 24);
             this.cmdLoad.TabIndex = 3;
             this.cmdLoad.Text = "Load";
             this.cmdLoad.UseVisualStyleBackColor = true;
@@ -627,9 +627,9 @@ namespace DemoGame.MapEditor
             // 
             // cmdNew
             // 
-            this.cmdNew.Location = new System.Drawing.Point(872, 579);
+            this.cmdNew.Location = new System.Drawing.Point(845, 610);
             this.cmdNew.Name = "cmdNew";
-            this.cmdNew.Size = new System.Drawing.Size(59, 24);
+            this.cmdNew.Size = new System.Drawing.Size(65, 24);
             this.cmdNew.TabIndex = 4;
             this.cmdNew.Text = "New";
             this.cmdNew.UseVisualStyleBackColor = true;
@@ -637,9 +637,9 @@ namespace DemoGame.MapEditor
             // 
             // cmdOptimize
             // 
-            this.cmdOptimize.Location = new System.Drawing.Point(1067, 579);
+            this.cmdOptimize.Location = new System.Drawing.Point(1058, 610);
             this.cmdOptimize.Name = "cmdOptimize";
-            this.cmdOptimize.Size = new System.Drawing.Size(59, 24);
+            this.cmdOptimize.Size = new System.Drawing.Size(65, 24);
             this.cmdOptimize.TabIndex = 5;
             this.cmdOptimize.Text = "Optimize";
             this.cmdOptimize.UseVisualStyleBackColor = true;
@@ -653,16 +653,16 @@ namespace DemoGame.MapEditor
             this.panToolBar.Controls.Add(this.picToolWallsAdd);
             this.panToolBar.Controls.Add(this.picToolWalls);
             this.panToolBar.Controls.Add(this.picToolSelect);
-            this.panToolBar.Location = new System.Drawing.Point(0, 0);
+            this.panToolBar.Location = new System.Drawing.Point(4, 4);
             this.panToolBar.Name = "panToolBar";
-            this.panToolBar.Size = new System.Drawing.Size(30, 611);
+            this.panToolBar.Size = new System.Drawing.Size(800, 32);
             this.panToolBar.TabIndex = 6;
             // 
             // picToolGrhsAdd
             // 
             this.picToolGrhsAdd.Image = ((System.Drawing.Image)(resources.GetObject("picToolGrhsAdd.Image")));
             this.picToolGrhsAdd.InitialImage = null;
-            this.picToolGrhsAdd.Location = new System.Drawing.Point(2, 120);
+            this.picToolGrhsAdd.Location = new System.Drawing.Point(123, 3);
             this.picToolGrhsAdd.Name = "picToolGrhsAdd";
             this.picToolGrhsAdd.Size = new System.Drawing.Size(24, 24);
             this.picToolGrhsAdd.TabIndex = 4;
@@ -673,7 +673,7 @@ namespace DemoGame.MapEditor
             // 
             this.picToolGrhs.Image = ((System.Drawing.Image)(resources.GetObject("picToolGrhs.Image")));
             this.picToolGrhs.InitialImage = null;
-            this.picToolGrhs.Location = new System.Drawing.Point(1, 90);
+            this.picToolGrhs.Location = new System.Drawing.Point(93, 3);
             this.picToolGrhs.Name = "picToolGrhs";
             this.picToolGrhs.Size = new System.Drawing.Size(24, 24);
             this.picToolGrhs.TabIndex = 3;
@@ -683,7 +683,7 @@ namespace DemoGame.MapEditor
             // 
             this.picToolWallsAdd.Image = ((System.Drawing.Image)(resources.GetObject("picToolWallsAdd.Image")));
             this.picToolWallsAdd.InitialImage = null;
-            this.picToolWallsAdd.Location = new System.Drawing.Point(2, 60);
+            this.picToolWallsAdd.Location = new System.Drawing.Point(63, 3);
             this.picToolWallsAdd.Name = "picToolWallsAdd";
             this.picToolWallsAdd.Size = new System.Drawing.Size(24, 24);
             this.picToolWallsAdd.TabIndex = 2;
@@ -693,7 +693,7 @@ namespace DemoGame.MapEditor
             // 
             this.picToolWalls.Image = ((System.Drawing.Image)(resources.GetObject("picToolWalls.Image")));
             this.picToolWalls.InitialImage = null;
-            this.picToolWalls.Location = new System.Drawing.Point(2, 30);
+            this.picToolWalls.Location = new System.Drawing.Point(33, 3);
             this.picToolWalls.Name = "picToolWalls";
             this.picToolWalls.Size = new System.Drawing.Size(24, 24);
             this.picToolWalls.TabIndex = 1;
@@ -703,7 +703,7 @@ namespace DemoGame.MapEditor
             // 
             this.picToolSelect.Image = ((System.Drawing.Image)(resources.GetObject("picToolSelect.Image")));
             this.picToolSelect.InitialImage = null;
-            this.picToolSelect.Location = new System.Drawing.Point(2, 2);
+            this.picToolSelect.Location = new System.Drawing.Point(3, 3);
             this.picToolSelect.Name = "picToolSelect";
             this.picToolSelect.Size = new System.Drawing.Size(24, 24);
             this.picToolSelect.TabIndex = 0;
@@ -712,7 +712,7 @@ namespace DemoGame.MapEditor
             // GameScreen
             // 
             this.GameScreen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.GameScreen.Location = new System.Drawing.Point(33, 3);
+            this.GameScreen.Location = new System.Drawing.Point(4, 38);
             this.GameScreen.Name = "GameScreen";
             this.GameScreen.Screen = null;
             this.GameScreen.Size = new System.Drawing.Size(800, 600);
@@ -726,7 +726,7 @@ namespace DemoGame.MapEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1151, 606);
+            this.ClientSize = new System.Drawing.Size(1158, 642);
             this.Controls.Add(this.GameScreen);
             this.Controls.Add(this.panToolBar);
             this.Controls.Add(this.cmdOptimize);
