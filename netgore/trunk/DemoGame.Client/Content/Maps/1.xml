@@ -7,56 +7,6 @@
   </Header>
   <Walls>
     <Wall>
-      <Position>384,704</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
-      <Position>480,704</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
-      <Position>672,704</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
-      <Position>704,672</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
-      <Position>736,640</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
-      <Position>768,608</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
-      <Position>800,576</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
-      <Position>0,0</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
-      <Position>1536,32</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
-      <Position>224,0</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
       <Position>1536,736</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
