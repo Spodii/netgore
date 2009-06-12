@@ -650,9 +650,15 @@ namespace NetGore.Network
             // Close down the socket
             if (_socket != null)
             {
-                _socket.Shutdown(SocketShutdown.Both);
-                _socket.Close();
-                _socket = null;
+                try
+                {
+                    _socket.Shutdown(SocketShutdown.Both);
+                    _socket.Close();
+                }
+                finally
+                {
+                    _socket = null;
+                }
             }
 
             // Clear out the queues
