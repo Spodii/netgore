@@ -13,6 +13,7 @@ namespace DemoGame.Server
     public class ServerSockets : SocketManager
     {
         readonly ServerPacketHandler _packetHandler;
+        readonly LatencyTrackerServer _latencyTracker;
 
         /// <summary>
         /// Constructor for the socket
@@ -21,6 +22,8 @@ namespace DemoGame.Server
         {
             _packetHandler = new ServerPacketHandler(this, server);
             Listen(GameData.ServerTCPPort);
+
+            _latencyTracker = new LatencyTrackerServer(GameData.ServerPingPort);
         }
 
         /// <summary>
@@ -31,6 +34,9 @@ namespace DemoGame.Server
             // Process received data
             var recvData = GetReceivedData();
             _packetHandler.Process(recvData);
+
+            // Update the latency tracker
+            _latencyTracker.Update();
         }
 
         /// <summary>

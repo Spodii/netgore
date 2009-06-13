@@ -17,6 +17,7 @@ namespace DemoGame.Client
         readonly ClientPacketHandler _packetHandler;
         readonly int _udpPort;
         IIPSocket _conn = null;
+        LatencyTrackerClient _latencyTracker;
 
         /// <summary>
         /// Gets the ClientPacketHandler used to handle data from this ClientSockets.
@@ -43,31 +44,56 @@ namespace DemoGame.Client
             _udpPort = BindUDP();
         }
 
+        void Ping()
+        {
+            if (_latencyTracker == null)
+            {
+                Debug.Fail("LatencyTrackerClient has not been set up yet!");
+                return;
+            }
+
+            _lastPingTime = GetTime();
+            _latencyTracker.Ping();
+        }
+
         /// <summary>
-        /// Starts the client's connection to the server
+        /// Starts the client's connection to the server.
         /// </summary>
         public void Connect()
         {
             Connect(GameData.ServerIP, GameData.ServerTCPPort);
         }
 
+        const int _updateLatencyInterval = 5000;
+
         /// <summary>
-        /// Updates the sockets
+        /// Updates the sockets.
         /// </summary>
         public void Heartbeat()
         {
             // Process received data
             var recvData = GetReceivedData();
             _packetHandler.Process(recvData);
+
+            // Update the latency tracker
+            _latencyTracker.Update();
+
+            // Check if enough time has elapsed for sending another ping
+            if (_lastPingTime + _updateLatencyInterval < GetTime())
+                Ping();
         }
 
+        int _lastPingTime;
+
         /// <summary>
-        /// Sets the active connection when the connection is made so it can be used
+        /// Sets the active connection when the connection is made so it can be used.
         /// </summary>
-        /// <param name="conn">Incoming connection</param>
+        /// <param name="conn">Incoming connection.</param>
         void onConnect(IIPSocket conn)
         {
             _conn = conn;
+            _latencyTracker = new LatencyTrackerClient(GameData.ServerIP, GameData.ServerPingPort);
+            Ping();
 
             // Make sure the very first thing we send is the Client's UDP port so the server knows what
             // port to use when sending the data

@@ -70,9 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LatencyTracker\LatencyTrackerBase.cs" />
+    <Compile Include="LatencyTracker\LatencyTrackerServer.cs" />
+    <Compile Include="LatencyTracker\LatencyTrackerClient.cs" />
     <Compile Include="MessageProcessor\IMessageProcessor.cs" />
-    <Compile Include="PacketWriter.cs" />
-    <Compile Include="PacketWriterPool.cs" />
+    <Compile Include="PacketWriter\PacketWriter.cs" />
+    <Compile Include="PacketWriter\PacketWriterPool.cs" />
     <Compile Include="Sockets\IIPSocket.cs" />
     <Compile Include="Sockets\IPSocket.cs" />
     <Compile Include="Sockets\ISocketSender.cs" />
@@ -82,6 +85,7 @@
     <Compile Include="MessageProcessor\MessageHandlerAttribute.cs" />
     <Compile Include="MessageProcessor\MessageProcessorManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sockets\ReceivePacket.cs" />
     <Compile Include="Sockets\SocketEventHandler.cs" />
     <Compile Include="Sockets\SocketManager.cs" />
     <Compile Include="Sockets\SocketReceiveData.cs" />
