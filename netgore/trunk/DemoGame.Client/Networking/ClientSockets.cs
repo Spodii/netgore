@@ -86,6 +86,11 @@ namespace DemoGame.Client
         int _lastPingTime;
 
         /// <summary>
+        /// Gets the latency of the connection in milliseconds.
+        /// </summary>
+        public int Latency { get { return _latencyTracker.Latency; } }
+
+        /// <summary>
         /// Sets the active connection when the connection is made so it can be used.
         /// </summary>
         /// <param name="conn">Incoming connection.</param>

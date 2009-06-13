@@ -145,6 +145,11 @@ namespace DemoGame.Client
         StatsForm _statsForm;
 
         /// <summary>
+        /// Label used for displaying the latency.
+        /// </summary>
+        Label _latencyLabel;
+
+        /// <summary>
         /// Root world of the game
         /// </summary>
         World _world;
@@ -382,6 +387,8 @@ namespace DemoGame.Client
             _chatForm = new ChatForm(cScreen, new Vector2(0, cScreen.Size.Y));
             _chatForm.OnSay += ChatForm_OnSay;
 
+            _latencyLabel = new Label(string.Format(_latencyString, 0), cScreen.Size - new Vector2(75, 5), cScreen);
+            
             Toolbar toolbar = new Toolbar(cScreen, new Vector2(200, 200));
             toolbar.OnClickItem += Toolbar_OnClickItem;
 
@@ -445,6 +452,8 @@ namespace DemoGame.Client
             }
         }
 
+        const string _latencyString = "Latency: {0} ms";
+
         public override void Update(GameTime gameTime)
         {
             // Get the current time
@@ -466,6 +475,9 @@ namespace DemoGame.Client
             _damageTextPool.Update(_currentTime);
             UpdateInput();
             _guiSettings.Update(_currentTime);
+
+            if (_latencyLabel != null)
+                _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
 
             // Update the camera
             _camera.Min = UserChar.GetCameraPos();

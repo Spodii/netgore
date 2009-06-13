@@ -14,6 +14,11 @@ namespace NetGore.Network
     /// </summary>
     public class LatencyTrackerClient
     {
+        /// <summary>
+        /// Default size of the latency buffer.
+        /// </summary>
+        const int _defaultBufferSize = 3;
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -34,10 +39,15 @@ namespace NetGore.Network
         readonly UDPSocket _socket;
 
         /// <summary>
-        /// The latency of this connection.
+        /// The buffer of latencies.
         /// </summary>
-        ushort _latency;
+        readonly ushort[] _latencies = new ushort[_defaultBufferSize];
 
+        /// <summary>
+        /// The current position in the latencies buffer.
+        /// </summary>
+        byte _latencyBufferPos;
+    
         /// <summary>
         /// The signature of the last ping we sent. This ensures that we listen for the correct ping, not just any
         /// data received on the channel.
@@ -58,13 +68,35 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Gets the latency of this connection in milliseconds.
+        /// The calculated average latency.
+        /// </summary>
+        ushort _latency;
+
+        /// <summary>
+        /// Gets the average latency of this connection in milliseconds.
         /// </summary>
         public int Latency
         {
             get { return _latency; }
         }
 
+        /// <summary>
+        /// Gets the number of latencies are buffered. The greater this value, the greater time-span and range of lantencies
+        /// are used when calculating the Latency property value.
+        /// </summary>
+        public int BufferSize
+        {
+            get
+            {
+                return _latencies.Length;
+            }
+        }
+
+        /// <summary>
+        /// LatencyTrackerClient constructor.
+        /// </summary>
+        /// <param name="hostAddress">Remote address of the LatencyTrackerServer to ping.</param>
+        /// <param name="hostPort">Remote port of the LatencyTrackerServer to ping.</param>
         public LatencyTrackerClient(string hostAddress, int hostPort)
         {
             // Find the remote endpoint
@@ -121,7 +153,53 @@ namespace NetGore.Network
                 roundTripTime = ushort.MaxValue;
 
             // Divide the ping by two to get the approximate one-way time
-            _latency = (ushort)(roundTripTime / 2);
+            ushort latency = (ushort)(roundTripTime / 2);
+
+            // Add the latency to the buffer
+            // If this is the first time adding to the buffer, flood the whole buffer
+            if (IsFirstLatencyUpdate)
+            {
+                for (int i = 0; i < _latencies.Length; i++)
+                    _latencies[i] = latency;
+            }
+            else
+            {
+                _latencies[_latencyBufferPos] = latency;
+            }
+
+            // Increment the buffer index, or roll back to the first index if needed
+            if (_latencyBufferPos + 1 >= _latencies.Length)
+                _latencyBufferPos = 0;
+            else
+                _latencyBufferPos++;
+
+            // Recalculate the average latency
+            _latency = (ushort)_latencies.Average(x => x);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Ping had a one-way latency of `{0}`.", _latency);
+        }
+
+        /// <summary>
+        /// Gets if this is the first time the latency buffer has been updated.
+        /// </summary>
+        bool IsFirstLatencyUpdate
+        {
+            get
+            {
+                // Average latency will be 0 if it has never been updated
+                if (_latency != 0)
+                    return false;
+
+                // All latencies will be 0, too
+                foreach (var latency in _latencies)
+                {
+                    if (latency != 0)
+                        return false;
+                }
+
+                return true;
+            }
         }
 
         /// <summary>
@@ -156,7 +234,11 @@ namespace NetGore.Network
 
                 // Signature matches! This is the packet we wanted, so stop the timer
                 _pingTimer.Stop();
+                _waitingForPong = false;
                 SetLatency((int)_pingTimer.ElapsedMilliseconds);
+
+                // We can break since we found the only thing we were looking for
+                break;
             }
         }
     }
