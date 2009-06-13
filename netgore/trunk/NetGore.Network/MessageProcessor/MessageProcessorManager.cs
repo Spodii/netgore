@@ -140,7 +140,7 @@ namespace NetGore.Network
                 byte msgID = recvReader.ReadByte();
 
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Received message ID `{0}`. Stream now at bit position `{1}`.", msgID, recvReader.PositionBits);
+                    log.InfoFormat("Parsing message ID `{0}`. Stream now at bit position `{1}`.", msgID, recvReader.PositionBits);
 
                 // If we get a message ID of 0, we have likely hit the end
                 if (msgID == 0)
