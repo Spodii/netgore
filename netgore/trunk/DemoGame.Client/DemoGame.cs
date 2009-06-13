@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using DemoGame.Extensions;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -123,8 +125,13 @@ namespace DemoGame.Client
     /// </summary>
     static class Program
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         static void Main()
         {
+            if (log.IsInfoEnabled)
+                log.Info("Starting client...");
+
             using (DemoGame game = new DemoGame())
             {
                 game.Run();
