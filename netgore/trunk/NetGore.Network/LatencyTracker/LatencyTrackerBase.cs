@@ -6,7 +6,10 @@ using System.Text;
 
 namespace NetGore.Network
 {
-    public class LatencyTrackerBase
+    /// <summary>
+    /// Helper functions for the LatencyTrackerServer and LatencyTrackerClient.
+    /// </summary>
+    internal static class LatencyTrackerHelper
     {
         /// <summary>
         /// Size of the ping signature in bytes.
