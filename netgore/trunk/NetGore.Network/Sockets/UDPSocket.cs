@@ -195,7 +195,7 @@ namespace NetGore.Network
                 throw new ArgumentOutOfRangeException("data", "Data is too large to send.");
 
             data = AddHeader(data, (ushort)length);
-            _socket.SendTo(data, data.Length + _headerSize, SocketFlags.None, endPoint);
+            _socket.SendTo(data, length + _headerSize, SocketFlags.None, endPoint);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Sent `{0}` bytes to `{1}`", length, endPoint);
