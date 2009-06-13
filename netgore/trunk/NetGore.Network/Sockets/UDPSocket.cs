@@ -35,7 +35,7 @@ namespace NetGore.Network
         /// <summary>
         /// Queue of received data that has yet to be handled.
         /// </summary>
-        readonly Queue<ReceivePacket> _receiveQueue = new Queue<ReceivePacket>(2);
+        readonly Queue<AddressedPacket> _receiveQueue = new Queue<AddressedPacket>(2);
 
         /// <summary>
         /// Underlying Socket used by this UDPSocket.
@@ -130,7 +130,7 @@ namespace NetGore.Network
         /// Gets the queued data received by this UDPSocket.
         /// </summary>
         /// <returns>The queued data received by this UDPSocket, or null if empty.</returns>
-        public ReceivePacket[] GetRecvData()
+        public AddressedPacket[] GetRecvData()
         {
             lock (_receiveQueue)
             {
@@ -181,7 +181,7 @@ namespace NetGore.Network
 // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 lock (_receiveQueue)
-                    _receiveQueue.Enqueue(new ReceivePacket(received, remoteEndPoint));
+                    _receiveQueue.Enqueue(new AddressedPacket(received, remoteEndPoint));
             }
         }
 
