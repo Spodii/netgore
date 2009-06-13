@@ -3,11 +3,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Reflection;
+using log4net;
 
 namespace NetGore.Network
 {
-    public class LatencyTrackerClient : LatencyTrackerBase
+    /// <summary>
+    /// Client that pings a LatencyTrackerServer to find the latency between the location of this LatencyTrackerClient
+    /// and the target LatencyTrackerServer.
+    /// </summary>
+    public class LatencyTrackerClient
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// EndPoint that we will be pinging.
         /// </summary>
@@ -21,7 +29,7 @@ namespace NetGore.Network
         /// <summary>
         /// Buffer that will be used to send our pings. This will be recycled so we don't create garbage for every send.
         /// </summary>
-        readonly byte[] _sendBuffer = new byte[SignatureSize];
+        readonly byte[] _sendBuffer = new byte[LatencyTrackerHelper.SignatureSize];
 
         readonly UDPSocket _socket;
 
@@ -70,6 +78,9 @@ namespace NetGore.Network
             // Create the socket
             _socket = new UDPSocket();
             _socket.Bind();
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Created LatencyTrackerClient to ping remote address `{0}:{1}`.", hostAddress, hostPort);
         }
 
         /// <summary>
@@ -86,12 +97,15 @@ namespace NetGore.Network
             _pingSignature += 11;
 
             // Build the data and send it
-            WriteSignature(_sendBuffer, _pingSignature, 0);
+            LatencyTrackerHelper.WriteSignature(_sendBuffer, _pingSignature, 0);
             _socket.Send(_sendBuffer, _endPoint);
 
             // Start the timer
             _pingTimer.Reset();
             _pingTimer.Start();
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Ping sent to remote address `{0}`.", _endPoint);
         }
 
         /// <summary>
@@ -129,14 +143,14 @@ namespace NetGore.Network
                 byte[] packet = recvPacket.Data;
 
                 // Ensure the length of the packet is valid
-                if (packet.Length != SignatureSize)
+                if (packet.Length != LatencyTrackerHelper.SignatureSize)
                 {
                     Debug.Fail("Received invalid data. Possibly just garbage on the channel.");
                     continue;
                 }
 
                 // Grab the signature, which should be the same as what we sent
-                int recvSignature = ReadSignature(packet, 0);
+                int recvSignature = LatencyTrackerHelper.ReadSignature(packet, 0);
                 if (recvSignature != _pingSignature)
                     continue;
 

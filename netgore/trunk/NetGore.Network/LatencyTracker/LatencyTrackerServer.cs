@@ -2,12 +2,20 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using log4net;
 
 namespace NetGore.Network
 {
-    public class LatencyTrackerServer : LatencyTrackerBase
+    /// <summary>
+    /// Server that responds to pings received from a LatencyTrackerClient. This does not actually care about who
+    /// is pinging it or the latency.
+    /// </summary>
+    public class LatencyTrackerServer
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly UDPSocket _socket;
         readonly ushort _port;
 
@@ -26,6 +34,9 @@ namespace NetGore.Network
 
             _socket = new UDPSocket();
             _socket.Bind(port);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Created LatencyTrackerServer bound to port `{0}`.", port);
         }
 
         /// <summary>
@@ -47,7 +58,7 @@ namespace NetGore.Network
                 byte[] packet = recvPacket.Data;
 
                 // Ensure the length of the packet is valid
-                if (packet.Length != SignatureSize)
+                if (packet.Length != LatencyTrackerHelper.SignatureSize)
                 {
                     Debug.Fail("Received invalid data. Possibly just garbage on the channel.");
                     continue;
@@ -55,6 +66,9 @@ namespace NetGore.Network
 
                 // Repeat the packet back to the sender
                 _socket.Send(recvPacket.Data, recvPacket.RemoteEndPoint);
+
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Ping received and resent to `{0}`.", recvPacket.RemoteEndPoint);
             }
         }
     }
