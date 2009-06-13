@@ -107,7 +107,8 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Gets the IP address string that this IIPSocket is connected to.
+        /// Gets the IP address string that this IIPSocket is connected to. This is formatted as IPAddress:Port. For
+        /// example: 127.0.0.1:5555 would be IP address 127.0.0.1 and port 5555.
         /// </summary>
         public string Address
         {
@@ -127,8 +128,14 @@ namespace NetGore.Network
         public byte[][] GetRecvData()
         {
             // Get the messages from both sockets
-            var fromTCP = TCPSocket.GetRecvData();
-            var fromUDP = UDPSocket.GetRecvData();
+            byte[][] fromTCP = TCPSocket.GetRecvData();
+
+            var udpData = UDPSocket.GetRecvData();
+            byte[][] fromUDP;
+            if (udpData == null)
+                fromUDP = null;
+            else
+                fromUDP = udpData.Select(x => x.Data).ToArray();
 
             // If they're both null, return null
             if (fromTCP == null && fromUDP == null)

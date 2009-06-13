@@ -35,7 +35,7 @@ namespace NetGore.Network
         /// <summary>
         /// Queue of received data that has yet to be handled.
         /// </summary>
-        readonly Queue<byte[]> _receiveQueue = new Queue<byte[]>(2);
+        readonly Queue<ReceivePacket> _receiveQueue = new Queue<ReceivePacket>(2);
 
         /// <summary>
         /// Underlying Socket used by this UDPSocket.
@@ -51,11 +51,6 @@ namespace NetGore.Network
         /// The port used by this UDPSocket.
         /// </summary>
         int _port;
-
-        /// <summary>
-        /// EndPoint for the last packet received.
-        /// </summary>
-        EndPoint _remoteEndPoint = new IPEndPoint(0, 0);
 
         /// <summary>
         /// UDPSocket constructor.
@@ -88,19 +83,29 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Changes the Port for this UDPSocket.
+        /// Binds the UDPSocket to a random available port.
         /// </summary>
         /// <returns>Port that the UDPSocket bound to.</returns>
         public int Bind()
         {
-            // NOTE: This will probably crash if the port is already set
+            return Bind(0);
+        }
+
+        /// <summary>
+        /// Binds the UDPSocket to a random available port.
+        /// </summary>
+        /// <param name="port">Port to bind to.</param>
+        /// <returns>Port that the UDPSocket bound to.</returns>
+        public int Bind(int port)
+        {
+            // NOTE: This will probably crash if Bind has already been called
 
             // Close down the old connection
             if (_socket.IsBound)
                 _socket.Disconnect(true);
 
             // Bind
-            _bindEndPoint = new IPEndPoint(IPAddress.Any, 0);
+            _bindEndPoint = new IPEndPoint(IPAddress.Any, port);
             _socket.Bind(_bindEndPoint);
 
             // Get the port
@@ -125,7 +130,7 @@ namespace NetGore.Network
         /// Gets the queued data received by this UDPSocket.
         /// </summary>
         /// <returns>The queued data received by this UDPSocket, or null if empty.</returns>
-        public byte[][] GetRecvData()
+        public ReceivePacket[] GetRecvData()
         {
             lock (_receiveQueue)
             {
@@ -146,16 +151,17 @@ namespace NetGore.Network
         void ReceiveFromCallback(IAsyncResult result)
         {
             byte[] received = null;
+            EndPoint remoteEndPoint = new IPEndPoint(0, 0);
 
             try
             {
                 // Read the received data and put it into a temporary buffer
-                int bytesRead = _socket.EndReceiveFrom(result, ref _remoteEndPoint);
+                int bytesRead = _socket.EndReceiveFrom(result, ref remoteEndPoint);
                 received = new byte[bytesRead];
                 Buffer.BlockCopy(_receiveBuffer, 0, received, 0, bytesRead);
 
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Received {0} bytes from {1}", bytesRead, _remoteEndPoint);
+                    log.InfoFormat("Received {0} bytes from {1}", bytesRead, remoteEndPoint);
             }
             catch (SocketException e)
             {
@@ -175,7 +181,7 @@ namespace NetGore.Network
 // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 lock (_receiveQueue)
-                    _receiveQueue.Enqueue(received);
+                    _receiveQueue.Enqueue(new ReceivePacket(received, remoteEndPoint));
             }
         }
 

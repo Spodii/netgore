@@ -34,9 +34,20 @@ namespace DemoGame
         /// </summary>
         public const int MaxServerSayNameLength = 60;
 
+        /// <summary>
+        /// IP address of the server.
+        /// </summary>
         public const string ServerIP = "127.0.0.1";
 
+        /// <summary>
+        /// Port used by the server for TCP connections.
+        /// </summary>
         public const int ServerTCPPort = 44445;
+
+        /// <summary>
+        /// Port used by the server for handling pings.
+        /// </summary>
+        public const int ServerPingPort = 44446;
 
         /// <summary>
         /// Size of the screen (ScreenWidth / ScreenHeight) represented in a Vector2
