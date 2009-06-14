@@ -18,6 +18,8 @@ namespace DemoGame.Client
     /// </summary>
     public class GameplayScreen : GameScreen, IDisposable, IGetTime
     {
+        const string _latencyString = "Latency: {0} ms";
+
         /// <summary>
         /// Minimum time the user must wait before performing a new attack
         /// </summary>
@@ -130,6 +132,11 @@ namespace DemoGame.Client
         int _lastUseTime;
 
         /// <summary>
+        /// Label used for displaying the latency.
+        /// </summary>
+        Label _latencyLabel;
+
+        /// <summary>
         /// Client socket system used to handle the networking for the game
         /// </summary>
         ClientSockets _socket;
@@ -143,11 +150,6 @@ namespace DemoGame.Client
         /// Form used to display stats
         /// </summary>
         StatsForm _statsForm;
-
-        /// <summary>
-        /// Label used for displaying the latency.
-        /// </summary>
-        Label _latencyLabel;
 
         /// <summary>
         /// Root world of the game
@@ -388,7 +390,7 @@ namespace DemoGame.Client
             _chatForm.OnSay += ChatForm_OnSay;
 
             _latencyLabel = new Label(string.Format(_latencyString, 0), cScreen.Size - new Vector2(75, 5), cScreen);
-            
+
             Toolbar toolbar = new Toolbar(cScreen, new Vector2(200, 200));
             toolbar.OnClickItem += Toolbar_OnClickItem;
 
@@ -451,8 +453,6 @@ namespace DemoGame.Client
                     break;
             }
         }
-
-        const string _latencyString = "Latency: {0} ms";
 
         public override void Update(GameTime gameTime)
         {

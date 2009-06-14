@@ -39,9 +39,6 @@ namespace DemoGame.Client
             _sockets.OnFailedConnect += sockets_OnFailedConnect;
             _sockets.PacketHandler.OnInvalidAccount += sockets_OnInvalidAccount;
             _sockets.PacketHandler.OnLogin += sockets_OnLogin;
-
-            // TEMP:
-            cLogin_OnClick(null, null);
         }
 
         void cBack_OnClick(object sender, MouseClickEventArgs e)

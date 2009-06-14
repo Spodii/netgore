@@ -71,6 +71,10 @@ namespace DemoGame.Client
         /// </summary>
         public void Heartbeat()
         {
+            // Ensure the connection has been established first
+            if (_conn == null)
+                return;
+
             // Process received data
             var recvData = GetReceivedData();
             _packetHandler.Process(recvData);
