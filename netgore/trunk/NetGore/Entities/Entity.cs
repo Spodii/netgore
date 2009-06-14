@@ -399,7 +399,7 @@ namespace NetGore
                 _velocity.Y = -WorldSettings.MaxVelocity.Y;
 
             // Move according to the velocity
-            Move(Vector2.Multiply(_velocity, deltaTime));
+            Move(_velocity * deltaTime);
 
             // Notify of movement
             if (OnMove != null)

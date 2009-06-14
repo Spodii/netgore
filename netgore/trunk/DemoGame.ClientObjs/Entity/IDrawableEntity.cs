@@ -20,7 +20,7 @@ namespace DemoGame.Client
         event MapRenderLayerChange OnChangeRenderLayer;
 
         /// <summary>
-        /// Gets the MapRenderLayer that this entity is rendered on.
+        /// Gets the MapRenderLayer that this Entity is rendered on.
         /// </summary>
         MapRenderLayer MapRenderLayer { get; }
 

@@ -8,7 +8,7 @@ using NetGore;
 namespace DemoGame
 {
     /// <summary>
-    /// Abstract class for an Entity that is a Character
+    /// Abstract class for an Entity that is a Character.
     /// </summary>
     public abstract class CharacterEntity : DynamicEntity
     {

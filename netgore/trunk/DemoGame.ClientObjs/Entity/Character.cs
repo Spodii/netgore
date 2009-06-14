@@ -16,22 +16,23 @@ namespace DemoGame.Client
     /// </summary>
     public class Character : CharacterEntity, IGetTime, IDrawableEntity
     {
-        readonly MeanStack<Vector2> _ms = new MeanStack<Vector2>(3, MeanStackExtras.Mean);
-
         string _currSkelSet;
-        Vector2 _drawPos;
         CharacterState _lastState = CharacterState.Idle;
         Map _map;
         EventHandler _onLoopHandler;
         SkeletonAnimation _skelAnim = null;
         SkeletonManager _skelManager;
 
+        readonly EntityInterpolator _interpolator = new EntityInterpolator();
+
+        public EntityInterpolator Interpolator { get { return _interpolator; } }
+
         /// <summary>
         /// Gets the location at which the character is to be drawn
         /// </summary>
         public Vector2 DrawPosition
         {
-            get { return _drawPos; }
+            get { return Interpolator.DrawPosition; }
         }
 
         /// <summary>
@@ -57,7 +58,6 @@ namespace DemoGame.Client
         {
             _map = map;
             _skelManager = skelManager;
-            _ms.Fill(position);
             _onLoopHandler = skelAnim_OnLoop;
             BodyInfo = bodyInfo;
 
@@ -69,14 +69,6 @@ namespace DemoGame.Client
             // Set the collision box and position
             CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
             Position = position;
-        }
-
-        protected override void AfterCreation()
-        {
-            // HACK: ...
-            base.AfterCreation();
-
-            _ms.Fill(Position);
         }
 
         /// <summary>
@@ -138,16 +130,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Rounds a Vector2's values
-        /// </summary>
-        /// <param name="v">Vector2 to round</param>
-        static void Round(ref Vector2 v)
-        {
-            v.X = (float)Math.Round(v.X);
-            v.Y = (float)Math.Round(v.Y);
-        }
-
-        /// <summary>
         /// Sets the character's heading
         /// </summary>
         /// <param name="newHeading">New heading for the character</param>
@@ -169,20 +151,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Teleports the character to a new location without any smooth translation
-        /// from the last position like with UpdatePosition(). Intended to be used
-        /// in cases where the character needs to be instantly put at a location
-        /// such as character creation, teleportation spells, etc.
-        /// </summary>
-        /// <param name="position">Location to teleport the character</param>
-        public override void Teleport(Vector2 position)
-        {
-            _ms.Fill(position);
-            _drawPos = position;
-            base.Teleport(position);
-        }
-
-        /// <summary>
         /// Updates the character
         /// </summary>
         public override void Update(IMap imap, float deltaTime)
@@ -197,7 +165,7 @@ namespace DemoGame.Client
                 _skelAnim.Update(GetTime());
 
             // Update the drawing position
-            UpdateDrawPos();
+            _interpolator.Update(this, GetTime());
         }
 
         /// <summary>
@@ -233,19 +201,6 @@ namespace DemoGame.Client
                     ChangeSet(BodyInfo.Walk);
                     break;
             }
-        }
-
-        /// <summary>
-        /// Interpolates the drawing position to the real position to help reduce skips
-        /// </summary>
-        void UpdateDrawPos()
-        {
-            // Push the current position onto the MeanStack
-            _ms.Push(Position);
-
-            // Get the mean position over the last few positions and round it
-            _drawPos = _ms.Mean();
-            Round(ref _drawPos);
         }
 
         #region IDrawableEntity Members
