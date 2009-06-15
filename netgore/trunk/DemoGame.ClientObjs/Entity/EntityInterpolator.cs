@@ -35,6 +35,8 @@ namespace DemoGame.Client
         {
             Vector2 position = entity.Position;
 
+            // TODO: Store the greatest known velocity, and use that when needed if the current velocity == 0
+
             // Draw position and real position are already equal
             if (position == _drawPosition)
                 return;
