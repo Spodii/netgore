@@ -133,7 +133,7 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("user");
             if (string.IsNullOrEmpty(user.Name))
                 throw new ArgumentException("User contains a null or invalid name.", "user");
-            
+
             // NOTE: If the user is already logged in, this will throw an exception
             // Will have to determine how to handle this scenario
             _users.Add(user.Name, user);

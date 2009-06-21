@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -44,7 +44,7 @@ namespace NetGore.Graphics
         /// <param name="sortMode">Sorting options to use when rendering.</param>
         /// <param name="stateMode">Rendering state options.</param>
         public static void BeginUnfiltered(this SpriteBatch spriteBatch, SpriteBlendMode blendMode, SpriteSortMode sortMode,
-            SaveStateMode stateMode)
+                                           SaveStateMode stateMode)
         {
             spriteBatch.Begin(blendMode, sortMode, stateMode);
             SetUnfiltered(spriteBatch);
@@ -61,7 +61,7 @@ namespace NetGore.Graphics
         /// <param name="transformMatrix">A matrix to apply to position, rotation, scale, and 
         /// depth data passed to SpriteBatch.Draw.</param>
         public static void BeginUnfiltered(this SpriteBatch spriteBatch, SpriteBlendMode blendMode, SpriteSortMode sortMode,
-            SaveStateMode stateMode, Matrix transformMatrix)
+                                           SaveStateMode stateMode, Matrix transformMatrix)
         {
             spriteBatch.Begin(blendMode, sortMode, stateMode, transformMatrix);
             SetUnfiltered(spriteBatch);

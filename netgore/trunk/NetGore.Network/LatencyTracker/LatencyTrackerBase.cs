@@ -1,15 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Network
 {
     /// <summary>
     /// Helper functions for the LatencyTrackerServer and LatencyTrackerClient.
     /// </summary>
-    internal static class LatencyTrackerHelper
+    static class LatencyTrackerHelper
     {
         /// <summary>
         /// Size of the ping signature in bytes.

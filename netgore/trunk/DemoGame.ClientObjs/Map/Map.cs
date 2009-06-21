@@ -142,8 +142,7 @@ namespace DemoGame.Client
         /// <param name="mapIndex">Index of the map.</param>
         /// <param name="parent">World the map belongs to.</param>
         /// <param name="graphics">GraphicsDevice to use to construct the atlas for the map.</param>
-        public Map(MapIndex mapIndex, World parent, GraphicsDevice graphics)
-            : base(mapIndex, parent)
+        public Map(MapIndex mapIndex, World parent, GraphicsDevice graphics) : base(mapIndex, parent)
         {
             _graphics = graphics;
             _world = parent;

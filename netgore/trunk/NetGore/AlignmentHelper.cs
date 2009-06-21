@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore
@@ -49,7 +49,7 @@ namespace NetGore
             Vector2 min = new Vector2(targetRegion.X, targetRegion.Y);
             Vector2 regionSize = new Vector2(targetRegion.Width, targetRegion.Height);
             Vector2 offset = FindOffset(alignment, itemSize, regionSize);
-            
+
             return offset + min;
         }
     }

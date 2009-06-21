@@ -293,18 +293,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads the Position and Velocity from the specified IValueReader without the need of a valid DynamicEntity.
-        /// The data is not actually used in any way, it just progresses the reader like the values were read.
-        /// </summary>
-        /// <param name="reader">IValueReader ot read the values from.</param>
-        public static void FlushPositionAndVelocity(IValueReader reader)
-        {
-            // Do nothing with the values, just read them to progress the reader
-            Vector2 position, velocity;
-            DeserializePositionAndVelocity(reader, out position, out velocity);
-        }
-
-        /// <summary>
         /// When overridden in the derived class, allows for additional handling of a property that is
         /// being deserialized, immediately after the value has been read from the <paramref name="reader"/>.
         /// </summary>
@@ -314,6 +302,18 @@ namespace NetGore
         protected virtual void DeserializeProprety(IValueReader reader, PropertySyncBase propertySync)
             // ReSharper restore UnusedParameter.Global
         {
+        }
+
+        /// <summary>
+        /// Reads the Position and Velocity from the specified IValueReader without the need of a valid DynamicEntity.
+        /// The data is not actually used in any way, it just progresses the reader like the values were read.
+        /// </summary>
+        /// <param name="reader">IValueReader ot read the values from.</param>
+        public static void FlushPositionAndVelocity(IValueReader reader)
+        {
+            // Do nothing with the values, just read them to progress the reader
+            Vector2 position, velocity;
+            DeserializePositionAndVelocity(reader, out position, out velocity);
         }
 
         /// <summary>

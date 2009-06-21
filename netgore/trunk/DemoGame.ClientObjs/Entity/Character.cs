@@ -6,7 +6,6 @@ using DemoGame.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
-using NetGore.Collections;
 using NetGore.Graphics;
 
 namespace DemoGame.Client
@@ -16,6 +15,7 @@ namespace DemoGame.Client
     /// </summary>
     public class Character : CharacterEntity, IGetTime, IDrawableEntity
     {
+        readonly EntityInterpolator _interpolator = new EntityInterpolator();
         string _currSkelSet;
         CharacterState _lastState = CharacterState.Idle;
         Map _map;
@@ -23,16 +23,17 @@ namespace DemoGame.Client
         SkeletonAnimation _skelAnim = null;
         SkeletonManager _skelManager;
 
-        readonly EntityInterpolator _interpolator = new EntityInterpolator();
-
-        public EntityInterpolator Interpolator { get { return _interpolator; } }
-
         /// <summary>
         /// Gets the location at which the character is to be drawn
         /// </summary>
         public Vector2 DrawPosition
         {
             get { return Interpolator.DrawPosition; }
+        }
+
+        public EntityInterpolator Interpolator
+        {
+            get { return _interpolator; }
         }
 
         /// <summary>
@@ -219,7 +220,7 @@ namespace DemoGame.Client
             Vector2 p = DrawPosition;
             p.X += BodyInfo.Width / 2f;
             p.Y += BodyInfo.Height;
-           
+
             _skelAnim.Draw(sb, p, se);
         }
 

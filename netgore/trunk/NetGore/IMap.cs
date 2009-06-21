@@ -17,14 +17,14 @@ namespace NetGore
         IEnumerable<Entity> Entities { get; }
 
         /// <summary>
-        /// Gets the size of the map in pixels.
-        /// </summary>
-        Vector2 Size { get; }
-
-        /// <summary>
         /// Gets the height of the map in pixels.
         /// </summary>
         float Height { get; }
+
+        /// <summary>
+        /// Gets the size of the map in pixels.
+        /// </summary>
+        Vector2 Size { get; }
 
         /// <summary>
         /// Gets the width of the map in pixels.

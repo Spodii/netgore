@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using DemoGame.Client;
+using DemoGame.Extensions;
 using NetGore;
 using NetGore.EditorTools;
 
@@ -21,14 +22,14 @@ namespace DemoGame.MapEditor
             Map.RemoveEntity(item);
         }
 
-        protected override void Locate(Entity item)
-        {
-            Camera.Center(item);
-        }
-
         protected override IEnumerable<Entity> GetItems()
         {
             return Map.DynamicEntities.OfType<Entity>();
+        }
+
+        protected override void Locate(Entity item)
+        {
+            Camera.Center(item);
         }
     }
 }

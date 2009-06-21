@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
-using System.Text;
 
 namespace NetGore.Network
 {
@@ -14,12 +14,12 @@ namespace NetGore.Network
         /// <summary>
         /// The received packet data.
         /// </summary>
-        readonly public byte[] Data;
+        public readonly byte[] Data;
 
         /// <summary>
         /// The EndPoint that the Data came from.
         /// </summary>
-        readonly public EndPoint RemoteEndPoint;
+        public readonly EndPoint RemoteEndPoint;
 
         /// <summary>
         /// AddressedPacket constructor.
