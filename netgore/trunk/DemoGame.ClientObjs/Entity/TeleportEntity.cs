@@ -11,7 +11,7 @@ using NetGore.Graphics;
 
 namespace DemoGame.Client
 {
-    [MapFileEntityAttribute]
+    [MapFileEntity]
     public class TeleportEntity : TeleportEntityBase, IDrawableEntity
     {
         /// <summary>

@@ -12,8 +12,8 @@ namespace DemoGame.Server
     /// </summary>
     public class ServerSockets : SocketManager
     {
-        readonly ServerPacketHandler _packetHandler;
         readonly LatencyTrackerServer _latencyTracker;
+        readonly ServerPacketHandler _packetHandler;
 
         /// <summary>
         /// Constructor for the socket

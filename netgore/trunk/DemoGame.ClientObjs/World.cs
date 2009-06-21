@@ -27,6 +27,8 @@ namespace DemoGame.Client
         /// </summary>
         Map _map;
 
+        MapEntityIndex _usercharIndex;
+
         /// <summary>
         /// Gets the camera used for the active view
         /// </summary>
@@ -59,13 +61,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets or sets if the UserCharIndex is set.
-        /// </summary>
-        public bool UserCharIndexSet { get; set; }
-
-        MapEntityIndex _usercharIndex;
-
-        /// <summary>
         /// Gets or sets the MapEntityIndex of the Character that belongs to the client's character.
         /// </summary>
         public MapEntityIndex UserCharIndex
@@ -77,6 +72,11 @@ namespace DemoGame.Client
                 UserCharIndexSet = true;
             }
         }
+
+        /// <summary>
+        /// Gets or sets if the UserCharIndex is set.
+        /// </summary>
+        public bool UserCharIndexSet { get; set; }
 
         /// <summary>
         /// World constructor

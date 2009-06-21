@@ -58,8 +58,7 @@ namespace DemoGame.Server
             get { return _world; }
         }
 
-        public Map(MapIndex mapIndex, World world)
-            : base(mapIndex, world)
+        public Map(MapIndex mapIndex, World world) : base(mapIndex, world)
         {
             _world = world;
 

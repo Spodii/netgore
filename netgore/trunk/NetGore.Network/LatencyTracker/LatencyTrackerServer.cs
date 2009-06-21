@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 
 namespace NetGore.Network
@@ -16,13 +15,16 @@ namespace NetGore.Network
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly UDPSocket _socket;
         readonly ushort _port;
+        readonly UDPSocket _socket;
 
         /// <summary>
         /// Gets the port that this LatencyTrackerServer is bound to.
         /// </summary>
-        public int BindPort { get { return _port; } }
+        public int BindPort
+        {
+            get { return _port; }
+        }
 
         /// <summary>
         /// LatencyTrackerServer constructor.
@@ -50,12 +52,12 @@ namespace NetGore.Network
                 return;
 
             // Parse the available data
-            foreach (var recvPacket in data)
+            foreach (AddressedPacket recvPacket in data)
             {
                 Debug.Assert(recvPacket.Data != null);
                 Debug.Assert(recvPacket.RemoteEndPoint != null);
 
-                byte[] packet = recvPacket.Data;
+                var packet = recvPacket.Data;
 
                 // Ensure the length of the packet is valid
                 if (packet.Length != LatencyTrackerHelper.SignatureSize)

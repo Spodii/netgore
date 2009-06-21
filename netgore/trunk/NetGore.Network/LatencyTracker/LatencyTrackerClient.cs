@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -27,6 +27,11 @@ namespace NetGore.Network
         readonly EndPoint _endPoint;
 
         /// <summary>
+        /// The buffer of latencies.
+        /// </summary>
+        readonly ushort[] _latencies = new ushort[_defaultBufferSize];
+
+        /// <summary>
         /// Keeps track of how long the response took for the ping.
         /// </summary>
         readonly Stopwatch _pingTimer = new Stopwatch();
@@ -39,15 +44,15 @@ namespace NetGore.Network
         readonly UDPSocket _socket;
 
         /// <summary>
-        /// The buffer of latencies.
+        /// The calculated average latency.
         /// </summary>
-        readonly ushort[] _latencies = new ushort[_defaultBufferSize];
+        ushort _latency;
 
         /// <summary>
         /// The current position in the latencies buffer.
         /// </summary>
         byte _latencyBufferPos;
-    
+
         /// <summary>
         /// The signature of the last ping we sent. This ensures that we listen for the correct ping, not just any
         /// data received on the channel.
@@ -60,6 +65,15 @@ namespace NetGore.Network
         bool _waitingForPong;
 
         /// <summary>
+        /// Gets the number of latencies are buffered. The greater this value, the greater time-span and range of lantencies
+        /// are used when calculating the Latency property value.
+        /// </summary>
+        public int BufferSize
+        {
+            get { return _latencies.Length; }
+        }
+
+        /// <summary>
         /// Gets if we are already waiting for a ping response.
         /// </summary>
         public bool IsBusy
@@ -68,9 +82,26 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// The calculated average latency.
+        /// Gets if this is the first time the latency buffer has been updated.
         /// </summary>
-        ushort _latency;
+        bool IsFirstLatencyUpdate
+        {
+            get
+            {
+                // Average latency will be 0 if it has never been updated
+                if (_latency != 0)
+                    return false;
+
+                // All latencies will be 0, too
+                foreach (ushort latency in _latencies)
+                {
+                    if (latency != 0)
+                        return false;
+                }
+
+                return true;
+            }
+        }
 
         /// <summary>
         /// Gets the average latency of this connection in milliseconds.
@@ -78,18 +109,6 @@ namespace NetGore.Network
         public int Latency
         {
             get { return _latency; }
-        }
-
-        /// <summary>
-        /// Gets the number of latencies are buffered. The greater this value, the greater time-span and range of lantencies
-        /// are used when calculating the Latency property value.
-        /// </summary>
-        public int BufferSize
-        {
-            get
-            {
-                return _latencies.Length;
-            }
         }
 
         /// <summary>
@@ -160,12 +179,12 @@ namespace NetGore.Network
             if (IsFirstLatencyUpdate)
             {
                 for (int i = 0; i < _latencies.Length; i++)
+                {
                     _latencies[i] = latency;
+                }
             }
             else
-            {
                 _latencies[_latencyBufferPos] = latency;
-            }
 
             // Increment the buffer index, or roll back to the first index if needed
             if (_latencyBufferPos + 1 >= _latencies.Length)
@@ -181,28 +200,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Gets if this is the first time the latency buffer has been updated.
-        /// </summary>
-        bool IsFirstLatencyUpdate
-        {
-            get
-            {
-                // Average latency will be 0 if it has never been updated
-                if (_latency != 0)
-                    return false;
-
-                // All latencies will be 0, too
-                foreach (var latency in _latencies)
-                {
-                    if (latency != 0)
-                        return false;
-                }
-
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Updates the buffer and parses any received data. Recommended this is called every frame.
         /// </summary>
         public void Update()
@@ -213,12 +210,12 @@ namespace NetGore.Network
                 return;
 
             // Parse the available data
-            foreach (var recvPacket in data)
+            foreach (AddressedPacket recvPacket in data)
             {
                 Debug.Assert(recvPacket.Data != null);
                 Debug.Assert(recvPacket.RemoteEndPoint != null);
 
-                byte[] packet = recvPacket.Data;
+                var packet = recvPacket.Data;
 
                 // Ensure the length of the packet is valid
                 if (packet.Length != LatencyTrackerHelper.SignatureSize)

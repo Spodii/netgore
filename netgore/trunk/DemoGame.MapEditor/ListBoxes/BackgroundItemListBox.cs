@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using DemoGame.Client;
+using DemoGame.Extensions;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 
@@ -22,13 +23,13 @@ namespace DemoGame.MapEditor
             throw new NotImplementedException();
         }
 
-        protected override void Locate(BackgroundImage item)
-        {
-        }
-
         protected override IEnumerable<BackgroundImage> GetItems()
         {
             return Map.BackgroundImages;
+        }
+
+        protected override void Locate(BackgroundImage item)
+        {
         }
     }
 }

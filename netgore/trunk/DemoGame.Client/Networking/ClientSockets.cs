@@ -14,10 +14,20 @@ namespace DemoGame.Client
     /// </summary>
     public class ClientSockets : SocketManager, IGetTime, ISocketSender
     {
+        const int _updateLatencyInterval = 5000;
         readonly ClientPacketHandler _packetHandler;
         readonly int _udpPort;
         IIPSocket _conn = null;
+        int _lastPingTime;
         LatencyTrackerClient _latencyTracker;
+
+        /// <summary>
+        /// Gets the latency of the connection in milliseconds.
+        /// </summary>
+        public int Latency
+        {
+            get { return _latencyTracker.Latency; }
+        }
 
         /// <summary>
         /// Gets the ClientPacketHandler used to handle data from this ClientSockets.
@@ -44,18 +54,6 @@ namespace DemoGame.Client
             _udpPort = BindUDP();
         }
 
-        void Ping()
-        {
-            if (_latencyTracker == null)
-            {
-                Debug.Fail("LatencyTrackerClient has not been set up yet!");
-                return;
-            }
-
-            _lastPingTime = GetTime();
-            _latencyTracker.Ping();
-        }
-
         /// <summary>
         /// Starts the client's connection to the server.
         /// </summary>
@@ -63,8 +61,6 @@ namespace DemoGame.Client
         {
             Connect(GameData.ServerIP, GameData.ServerTCPPort);
         }
-
-        const int _updateLatencyInterval = 5000;
 
         /// <summary>
         /// Updates the sockets.
@@ -87,13 +83,6 @@ namespace DemoGame.Client
                 Ping();
         }
 
-        int _lastPingTime;
-
-        /// <summary>
-        /// Gets the latency of the connection in milliseconds.
-        /// </summary>
-        public int Latency { get { return _latencyTracker.Latency; } }
-
         /// <summary>
         /// Sets the active connection when the connection is made so it can be used.
         /// </summary>
@@ -110,6 +99,18 @@ namespace DemoGame.Client
             {
                 Send(pw);
             }
+        }
+
+        void Ping()
+        {
+            if (_latencyTracker == null)
+            {
+                Debug.Fail("LatencyTrackerClient has not been set up yet!");
+                return;
+            }
+
+            _lastPingTime = GetTime();
+            _latencyTracker.Ping();
         }
 
         #region IGetTime Members

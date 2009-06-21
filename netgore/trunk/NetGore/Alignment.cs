@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace NetGore
 {
@@ -29,7 +29,7 @@ namespace NetGore
         /// Bottom-right corner of this item is at the bottom-right corner of the target.
         /// </summary>
         BottomRight,
-        
+
         /// <summary>
         /// Top side of this item is centered on the top side of the target.
         /// </summary>

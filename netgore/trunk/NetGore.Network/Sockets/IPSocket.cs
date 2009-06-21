@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -128,7 +128,7 @@ namespace NetGore.Network
         public byte[][] GetRecvData()
         {
             // Get the messages from both sockets
-            byte[][] fromTCP = TCPSocket.GetRecvData();
+            var fromTCP = TCPSocket.GetRecvData();
 
             var udpData = UDPSocket.GetRecvData();
             byte[][] fromUDP;

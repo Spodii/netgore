@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using DemoGame.Client;
+using DemoGame.Extensions;
 using NetGore;
 using NetGore.EditorTools;
 
@@ -22,15 +23,15 @@ namespace DemoGame.MapEditor
             throw new NotImplementedException();
         }
 
+        protected override IEnumerable<WallEntityBase> GetItems()
+        {
+            return Map.Entities.OfType<WallEntityBase>();
+        }
+
         protected override void Locate(WallEntityBase item)
         {
             // TODO: Locate WallEntity
             throw new NotImplementedException();
-        }
-
-        protected override IEnumerable<WallEntityBase> GetItems()
-        {
-            return Map.Entities.OfType<WallEntityBase>();
         }
     }
 }

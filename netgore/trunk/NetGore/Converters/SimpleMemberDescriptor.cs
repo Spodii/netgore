@@ -38,7 +38,9 @@ namespace NetGore
         }
 
         public SimpleMemberDescriptor(Type type, string memberName, string displayName, string description, string category)
-            : base(memberName, new Attribute[]
+            : base(
+                memberName,
+                new Attribute[]
                 { new CategoryAttribute(category), new DisplayNameAttribute(displayName), new DescriptionAttribute(description) })
         {
             PropertyInfo prop = type.GetProperty(memberName);
