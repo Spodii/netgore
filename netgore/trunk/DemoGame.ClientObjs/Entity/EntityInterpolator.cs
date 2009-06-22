@@ -19,7 +19,6 @@ namespace DemoGame.Client
         /// </summary>
         Vector2 _greatestVelocity;
         Vector2 _drawPosition;
-        int _lastTime;
 
         /// <summary>
         /// Gets the position to use when drawing the Entity.
@@ -48,8 +47,8 @@ namespace DemoGame.Client
         /// Updates the drawing position interpolation.
         /// </summary>
         /// <param name="entity">Entity that this EntityInterpolator is for.</param>
-        /// <param name="currentTime">Current game time.</param>
-        public void Update(Entity entity, int currentTime)
+        /// <param name="deltaTime">Time elapsed since the last update.</param>
+        public void Update(Entity entity, int deltaTime)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
@@ -61,18 +60,15 @@ namespace DemoGame.Client
             if (position == _drawPosition)
                 return;
 
-            int elapsedTime = currentTime - _lastTime;
-            _lastTime = currentTime;
-
             // Get the velocity to use
             Vector2 velocity = entity.Velocity;
-            if (velocity.X == 0)
+            if (velocity.X == 0 && position.X != _drawPosition.X)
             {
                 velocity.X = _greatestVelocity.X;
                 if (position.X < _drawPosition.X)
                     velocity.X *= -1;
             }
-            if (velocity.Y == 0)
+            if (velocity.Y == 0 && position.Y != _drawPosition.Y)
             {
                 velocity.Y = _greatestVelocity.Y;
                 if (position.Y < _drawPosition.Y)
@@ -80,7 +76,7 @@ namespace DemoGame.Client
             }
 
             // Get the new position
-            Vector2 newPosition = _drawPosition + (velocity * elapsedTime);
+            Vector2 newPosition = _drawPosition + (velocity * deltaTime);
 
             // Don't allow the draw position to exceed the real position
             if (_drawPosition.X > position.X && newPosition.X < position.X)
@@ -94,9 +90,9 @@ namespace DemoGame.Client
                 newPosition.Y = position.Y;
 
             // If we are too far out of sync, just jump to the real position
-            Vector2 diff = newPosition - position;
-            const float teleDiff = 25f;
-            if (diff.X > teleDiff || diff.X < teleDiff || diff.Y > teleDiff || diff.Y < teleDiff)
+            Vector2 diff = (newPosition - position).Abs();
+            const float teleDiff = 50f;
+            if (diff.X > teleDiff || diff.Y > teleDiff)
                 newPosition = position;
 
             // Set the new drawing position

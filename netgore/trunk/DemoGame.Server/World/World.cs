@@ -100,6 +100,7 @@ namespace DemoGame.Server
 
             // NOTE: Just temporary until we get real NPC creation going on
             // Create some test NPCs and items
+#if false
             Random rand = new Random();
             foreach (Map m in Maps)
             {
@@ -117,6 +118,7 @@ namespace DemoGame.Server
                     m.AddEntity(item);
                 }
             }
+#endif
         }
 
         /// <summary>

@@ -17,6 +17,12 @@ namespace DemoGame.Client
     {
         readonly EntityInterpolator _interpolator = new EntityInterpolator();
         string _currSkelSet;
+
+        /// <summary>
+        /// The time that Draw() was last called.
+        /// </summary>
+        int _lastDrawnTime;
+
         CharacterState _lastState = CharacterState.Idle;
         Map _map;
         EventHandler _onLoopHandler;
@@ -152,24 +158,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Updates the character
-        /// </summary>
-        public override void Update(IMap imap, float deltaTime)
-        {
-            base.Update(imap, deltaTime);
-
-            // Update the animation if the state has changed
-            UpdateAnimation();
-
-            // Update the skeleton
-            if (_skelAnim != null)
-                _skelAnim.Update(GetTime());
-
-            // Update the drawing position
-            _interpolator.Update(this, GetTime());
-        }
-
-        /// <summary>
         /// Updates the character's sprites
         /// </summary>
         void UpdateAnimation()
@@ -214,6 +202,16 @@ namespace DemoGame.Client
         {
             if (_skelAnim == null)
                 return;
+
+            // Get the delta time
+            int currentTime = GetTime();
+            int deltaTime = Math.Min(currentTime - _lastDrawnTime, GameData.MaxDrawDeltaTime);
+            _lastDrawnTime = currentTime;
+
+            // Update the drawable stuff
+            UpdateAnimation();
+            _skelAnim.Update(currentTime);
+            _interpolator.Update(this, deltaTime);
 
             // Draw the character body
             SpriteEffects se = (Heading == Direction.East ? SpriteEffects.None : SpriteEffects.FlipHorizontally);
