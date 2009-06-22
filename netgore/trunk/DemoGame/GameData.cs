@@ -18,7 +18,13 @@ namespace DemoGame
         /// Gets the number of milliseconds between each World update step. This only applies to the synchronized
         /// physics, not client-side visuals.
         /// </summary>
-        public static int WorldPhysicsUpdateRate { get { return 75; } }
+        public static int WorldPhysicsUpdateRate { get { return 20; } }
+
+        /// <summary>
+        /// Gets the maximum delta time between draws for any kind of drawable component. If the delta time between
+        /// draw calls on the component exceeds this value, the delta time should then be reduced to be equal to this value.
+        /// </summary>
+        public static int MaxDrawDeltaTime { get { return 100; } }
 
         /// <summary>
         /// Maximum length of a Say packet's string from the client to the server.
