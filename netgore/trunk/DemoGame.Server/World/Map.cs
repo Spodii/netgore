@@ -377,13 +377,13 @@ namespace DemoGame.Server
             }
         }
 
-        public override void Update()
+        public override void Update(int deltaTime)
         {
             // Skip updating maps with no users
             if (_users.Count == 0)
                 return;
 
-            base.Update();
+            base.Update(deltaTime);
 
             SynchronizeDynamicEntities();
         }

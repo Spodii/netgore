@@ -1308,6 +1308,8 @@ namespace DemoGame.MapEditor
         public void UpdateGame()
         {
             // Update the time
+            int currTime = (int)_stopWatch.ElapsedMilliseconds;
+            int deltaTime = currTime - _currentTime;
             _currentTime = (int)_stopWatch.ElapsedMilliseconds;
 
             // Edited Grh
@@ -1322,7 +1324,7 @@ namespace DemoGame.MapEditor
             _camera.Min += _moveCamera;
 
             // Update the map
-            Map.Update();
+            Map.Update(deltaTime);
 
             // Update the cursor
             UpdateCursor();
