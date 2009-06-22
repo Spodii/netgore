@@ -16,7 +16,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Handles the game's world, keeping track of all maps and characters
     /// </summary>
-    public class World : IGetTime
+    public class World : WorldBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -27,11 +27,6 @@ namespace DemoGame.Server
         readonly TSDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
 
         bool _disposed;
-
-        /// <summary>
-        /// Time that the World was last updated
-        /// </summary>
-        int _lastUpdateTime;
 
         /// <summary>
         /// Gets the DBController used by this World.
@@ -214,11 +209,12 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Finds a user based on their connection information
+        /// Finds a user based on their connection information.
         /// </summary>
-        /// <param name="conn">Client connection information</param>
-        /// <param name="failRecover">If true, will try to find the User even if the TCPSocket isn't properly bound to the User.</param>
-        /// <returns>User bound to the connection if any, else null</returns>
+        /// <param name="conn">Client connection information.</param>
+        /// <param name="failRecover">If true, will try to find the User even if the TCPSocket isn't properly
+        /// bound to the User.</param>
+        /// <returns>User bound to the connection if any, else null.</returns>
         public User GetUser(IIPSocket conn, bool failRecover)
         {
             // Check for a user bound to the connection
@@ -309,24 +305,22 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Update the world and all of its contents
+        /// Updates the World.
         /// </summary>
-        public void Update(int currentTime)
+        public override void Update()
         {
-            // If the last update time is greater than current, we have a problem
-            // Too much time has elapsed that if we update, we may cause problems
-            if (_lastUpdateTime > currentTime)
-            {
-                _lastUpdateTime = currentTime;
-                return;
-            }
-
-            // Set the new update time
-            _lastUpdateTime = currentTime;
-
             // Process the dispose stack
             ProcessDisposeStack();
 
+            base.Update();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles updating all of the Maps in this World.
+        /// </summary>
+        /// <param name="deltaTime">Delta time to use for updating the maps.</param>
+        protected override void UpdateMaps(int deltaTime)
+        {
             // Update every map
             foreach (Map map in Maps)
             {
@@ -341,21 +335,18 @@ namespace DemoGame.Server
                 }
 
                 // Update the map 
-                map.Update();
+                map.Update(deltaTime);
             }
         }
 
-        #region IGetTime Members
-
         /// <summary>
-        /// Gets the current time
+        /// Gets the current time.
         /// </summary>
-        /// <returns>Current time</returns>
-        public int GetTime()
+        /// <returns>Current time.</returns>
+        public override int GetTime()
         {
             return _server.GetTime();
         }
 
-        #endregion
     }
 }

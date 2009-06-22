@@ -11,7 +11,7 @@ using NetGore.Graphics;
 
 namespace DemoGame.Client
 {
-    public class World : IGetTime
+    public class World : WorldBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -124,27 +124,20 @@ namespace DemoGame.Client
             Map = newMap;
         }
 
-        /// <summary>
-        /// Updates the world
-        /// </summary>
-        public void Update()
+        protected override void UpdateMaps(int deltaTime)
         {
             // Update the map
             if (_map != null)
-                _map.Update();
+                _map.Update(deltaTime);
         }
-
-        #region IGetTime Members
 
         /// <summary>
         /// Gets the current time
         /// </summary>
         /// <returns>Current time</returns>
-        public int GetTime()
+        public override int GetTime()
         {
             return _getTime.GetTime();
         }
-
-        #endregion
     }
 }

@@ -185,7 +185,7 @@ namespace DemoGame.Server
                 ServerSockets.Heartbeat();
 
                 // Update the world
-                _world.Update((int)_gameTimer.ElapsedMilliseconds);
+                _world.Update();
 
                 // Check if we can afford sleeping the thread
                 long sleepTime = _serverUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);

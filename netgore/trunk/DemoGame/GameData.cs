@@ -15,6 +15,12 @@ namespace DemoGame
     public static class GameData
     {
         /// <summary>
+        /// Gets the number of milliseconds between each World update step. This only applies to the synchronized
+        /// physics, not client-side visuals.
+        /// </summary>
+        public static int WorldPhysicsUpdateRate { get { return 75; } }
+
+        /// <summary>
         /// Maximum length of a Say packet's string from the client to the server.
         /// </summary>
         public const int MaxClientSayLength = 255;

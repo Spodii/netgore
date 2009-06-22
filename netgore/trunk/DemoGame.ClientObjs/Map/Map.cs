@@ -651,9 +651,9 @@ namespace DemoGame.Client
         /// <summary>
         /// Updates the map
         /// </summary>
-        public override void Update()
+        public override void Update(int deltaTime)
         {
-            base.Update();
+            base.Update(deltaTime);
 
             int currentTime = World.GetTime();
 

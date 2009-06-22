@@ -110,6 +110,7 @@
     <Compile Include="Stats\StatChangeHandler.cs" />
     <Compile Include="Stats\StatCollectionBase.cs" />
     <Compile Include="Stats\StatType.cs" />
+    <Compile Include="WorldBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">

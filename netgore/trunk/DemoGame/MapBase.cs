@@ -26,22 +26,6 @@ namespace DemoGame
         public const string MapFileSuffix = "xml";
 
         /// <summary>
-        /// If the delta time for updating exceeds this value, it will
-        /// be reduced to this value to prevent errors at the cost of
-        /// potential visual artifacts.
-        /// </summary>
-        protected const float MaxUpdateDeltaTime = 35f; // ~30 FPS
-
-        /// <summary>
-        /// Rate in milliseconds at which server and client 
-        /// synchronized physics (ie character movement) is updated. A
-        /// higher update rate results in smoother and more accurate
-        /// physics but much more strain on the server. Recommended
-        /// to keep between 30 and 60 FPS.
-        /// </summary>
-        protected const float PhysicsUpdateRate = 1000f / 60f; // 60 FPS
-
-        /// <summary>
         /// Size of each segment of the wall grid in pixels (smallest requires more
         /// memory but often less checks (to an extent))
         /// </summary>
@@ -1914,25 +1898,11 @@ namespace DemoGame
         /// <summary>
         /// Updates the map
         /// </summary>
-        public virtual void Update()
+        public virtual void Update(int deltaTime)
         {
             // Check for a valid map
             if (_entityGrid == null)
                 return;
-
-            // Calculate the elapsed time
-            float deltaTime = _updateStopWatch.ElapsedMilliseconds - _lastUpdateTime;
-
-            // Check if enough time has elapsed
-            if (deltaTime < PhysicsUpdateRate)
-                return;
-
-            // Update the last update time
-            _lastUpdateTime = _updateStopWatch.ElapsedMilliseconds;
-
-            // Don't let the deltaTime go out of control
-            if (deltaTime > MaxUpdateDeltaTime)
-                deltaTime = MaxUpdateDeltaTime;
 
             // Update the Entities
             foreach (Entity entity in Entities)
