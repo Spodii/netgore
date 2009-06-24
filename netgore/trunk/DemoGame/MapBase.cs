@@ -102,11 +102,6 @@ namespace DemoGame
         bool _isUpdating = true;
 
         /// <summary>
-        /// Time the map was last updated
-        /// </summary>
-        long _lastUpdateTime;
-
-        /// <summary>
         /// Name of the map
         /// </summary>
         string _name = null;
@@ -564,12 +559,6 @@ namespace DemoGame
         /// <returns>List of all Entities found intersecting the given region</returns>
         public List<Entity> GetEntities(CollisionBox cb, Predicate<Entity> condition)
         {
-            if (cb == null)
-            {
-                Debug.Fail("Parameter cb is null.");
-                return new List<Entity>(0);
-            }
-
             return GetEntities(cb.ToRectangle(), condition);
         }
 
@@ -582,12 +571,6 @@ namespace DemoGame
         /// <returns>List of all Entities found intersecting the given region</returns>
         public List<T> GetEntities<T>(CollisionBox cb, Predicate<T> condition) where T : Entity
         {
-            if (cb == null)
-            {
-                Debug.Fail("Parameter cb is null.");
-                return new List<T>(0);
-            }
-
             return GetEntities(cb.ToRectangle(), condition);
         }
 
@@ -600,7 +583,7 @@ namespace DemoGame
         /// <returns>List of all Entities found intersecting the given region</returns>
         public List<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
         {
-            var ret = new List<T>(16);
+            var ret = new List<T>();
 
             // If condition is null, don't use it
             if (condition == null)
@@ -647,10 +630,6 @@ namespace DemoGame
         {
             var ret = new List<Entity>(16);
 
-            // If condition is null, don't use it
-            if (condition == null)
-                return GetEntities(rect);
-
             // Iterate through the grid segments
             foreach (var gridSegment in GetEntityGrids(rect))
             {
@@ -666,7 +645,7 @@ namespace DemoGame
                         continue;
 
                     // Condition check
-                    if (!condition(entity))
+                    if (condition == null || !condition(entity))
                         continue;
 
                     ret.Add(entity);
@@ -684,28 +663,7 @@ namespace DemoGame
         /// <returns>List of all Entities found intersecting the given region</returns>
         public List<Entity> GetEntities(Rectangle rect)
         {
-            var ret = new List<Entity>(16);
-
-            // Iterate through the grid segments
-            foreach (var gridSegment in GetEntityGrids(rect))
-            {
-                // Iterate through each entity in the grid segment
-                foreach (Entity entity in gridSegment)
-                {
-                    // Intersection check
-                    if (!entity.CB.Intersect(rect))
-                        continue;
-
-                    // Duplicates check
-                    if (ret.Contains(entity))
-                        continue;
-
-                    ret.Add(entity);
-                }
-            }
-
-            // Return the results
-            return ret;
+            return GetEntities(rect, null);
         }
 
         /// <summary>
@@ -716,10 +674,6 @@ namespace DemoGame
         /// <returns>First Entity found at the given point, or null if none found</returns>
         public Entity GetEntity(Rectangle rect, Predicate<Entity> condition)
         {
-            // If condition is null, don't use it
-            if (condition == null)
-                return GetEntity(rect);
-
             // Iterate through the grid segments
             foreach (var gridSegment in GetEntityGrids(rect))
             {
@@ -731,7 +685,7 @@ namespace DemoGame
                         continue;
 
                     // Condition check
-                    if (!condition(entity))
+                    if (condition == null || !condition(entity))
                         continue;
 
                     return entity;
@@ -749,22 +703,7 @@ namespace DemoGame
         /// <returns>First Entity found at the given point, or null if none found</returns>
         public Entity GetEntity(Rectangle rect)
         {
-            // Iterate through the grid segments
-            foreach (var gridSegment in GetEntityGrids(rect))
-            {
-                // Iterate through each entity in the grid segment
-                foreach (Entity entity in gridSegment)
-                {
-                    // Intersection check
-                    if (!entity.CB.Intersect(rect))
-                        continue;
-
-                    return entity;
-                }
-            }
-
-            // No entity found
-            return null;
+            return GetEntity(rect, null);
         }
 
         /// <summary>
@@ -775,27 +714,7 @@ namespace DemoGame
         /// <returns>First Entity found at the given point, or null if none found</returns>
         public T GetEntity<T>(Rectangle rect) where T : Entity
         {
-            // Iterate through the grid segments
-            foreach (var gridSegment in GetEntityGrids(rect))
-            {
-                // Iterate through each entity in the segment
-                foreach (Entity entity in gridSegment)
-                {
-                    // Type cast check
-                    T entityT = entity as T;
-                    if (entityT == null)
-                        continue;
-
-                    // Intersection check
-                    if (!entity.CB.Intersect(rect))
-                        continue;
-
-                    return entityT;
-                }
-            }
-
-            // No entity found
-            return null;
+            return GetEntity<T>(rect, null);
         }
 
         /// <summary>
@@ -807,9 +726,6 @@ namespace DemoGame
         /// <returns>First Entity found at the given point, or null if none found.</returns>
         public T GetEntity<T>(Rectangle rect, Func<T, bool> condition) where T : Entity
         {
-            if (condition == null)
-                return GetEntity<T>(rect);
-
             // Grab the segments
             var grids = GetEntityGrids(rect);
 
@@ -823,7 +739,8 @@ namespace DemoGame
             typedEntities = typedEntities.Where(entity => entity.CB.Intersect(rect));
 
             // Test against the custom condition
-            typedEntities = typedEntities.Where(condition);
+            if (condition != null)
+                typedEntities = typedEntities.Where(condition);
 
             // Return first match, if any
             T match = typedEntities.FirstOrDefault();
@@ -840,10 +757,6 @@ namespace DemoGame
         /// <returns>First entity found at the given point, or null if none found</returns>
         public T GetEntity<T>(Vector2 p, Predicate<T> condition) where T : Entity
         {
-            // If condition is null, don't use it
-            if (condition == null)
-                return GetEntity<T>(p);
-
             // Get and validate the grid segment
             var gridSegment = GetEntityGrid(p);
             if (gridSegment == null)
@@ -862,7 +775,7 @@ namespace DemoGame
                     continue;
 
                 // Condition check
-                if (!condition(entityT))
+                if (condition == null || !condition(entityT))
                     continue;
 
                 return entityT;
@@ -885,10 +798,6 @@ namespace DemoGame
             if (gridSegment == null)
                 return null;
 
-            // If condition is null, don't use it
-            if (condition == null)
-                return GetEntity(p);
-
             // Iterate through all entities and return the first one to contain the segment
             foreach (Entity entity in gridSegment)
             {
@@ -897,7 +806,7 @@ namespace DemoGame
                     continue;
 
                 // Condition check
-                if (!condition(entity))
+                if (condition == null || !condition(entity))
                     continue;
 
                 return entity;
@@ -915,28 +824,7 @@ namespace DemoGame
         /// <typeparam name="T">Type of Entity to look for</typeparam>
         public T GetEntity<T>(Vector2 p) where T : Entity
         {
-            // Get and validate the grid segment
-            var gridSegment = GetEntityGrid(p);
-            if (gridSegment == null)
-                return null;
-
-            // Iterate through all entities and return the first one to contain the segment
-            foreach (Entity entity in gridSegment)
-            {
-                // Type cast check
-                T entityT = entity as T;
-                if (entityT == null)
-                    continue;
-
-                // Hit test check
-                if (!entity.CB.HitTest(p))
-                    continue;
-
-                return entityT;
-            }
-
-            // None found
-            return null;
+            return GetEntity<T>(p, null);
         }
 
         /// <summary>
@@ -946,23 +834,7 @@ namespace DemoGame
         /// <returns>First entity found at the given point, or null if none found</returns>
         public Entity GetEntity(Vector2 p)
         {
-            // Get and validate the grid segment
-            var gridSegment = GetEntityGrid(p);
-            if (gridSegment == null)
-                return null;
-
-            // Iterate through all entities and return the first one to contain the segment
-            foreach (Entity entity in gridSegment)
-            {
-                // Hit test check
-                if (!entity.CB.HitTest(p))
-                    continue;
-
-                return entity;
-            }
-
-            // None found
-            return null;
+            return GetEntity(p, null);
         }
 
         /// <summary>
@@ -1146,71 +1018,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the first IPickupableEntity that intersects a specified area
-        /// </summary>
-        /// <param name="rect">Rectangle of the area to check</param>
-        /// <returns>First IPickupableEntity that intersects the specified area, or null if none</returns>
-        public IPickupableEntity GetPickupable(Rectangle rect)
-        {
-            return GetEntity(rect, entity => entity is IPickupableEntity) as IPickupableEntity;
-        }
-
-        /// <summary>
-        /// Gets the first IPickupableEntity that intersects a specified area
-        /// </summary>
-        /// <param name="rect">Rectangle of the area to check</param>
-        /// <param name="charEntity">CharacterEntity that must be able to pick up the IPickupableEntity</param>
-        /// <returns>First IPickupableEntity that intersects the specified area that the charEntity is
-        /// able to pick up, or null if none</returns>
-        public IPickupableEntity GetPickupable(Rectangle rect, CharacterEntity charEntity)
-        {
-            // Predicate that will check if an Entity inherits interface IUseableEntity,
-            // and if it can be used by the specified CharacterEntity
-            Predicate<Entity> pred = delegate(Entity entity)
-                                     {
-                                         IPickupableEntity useable = entity as IPickupableEntity;
-                                         if (useable == null)
-                                             return false;
-
-                                         return useable.CanPickup(charEntity);
-                                     };
-
-            return GetEntity(rect, pred) as IPickupableEntity;
-        }
-
-        /// <summary>
-        /// Gets the first IPickupableEntity that intersects a specified area
-        /// </summary>
-        /// <param name="cb">CollisionBox of the area to check</param>
-        /// <returns>First IUseableEntity that intersects the specified area, or null if none</returns>
-        public IPickupableEntity GetPickupable(CollisionBox cb)
-        {
-            return GetPickupable(cb.ToRectangle());
-        }
-
-        /// <summary>
-        /// Gets the first IPickupableEntity that intersects a specified area
-        /// </summary>
-        /// <param name="cb">CollisionBox of the area to check</param>
-        /// <param name="charEntity">CharacterEntity that must be able to pick up the IPickupableEntity</param>
-        /// <returns>First IPickupableEntity that intersects the specified area that the charEntity is
-        /// able to pick up, or null if none</returns>
-        public IPickupableEntity GetPickupable(CollisionBox cb, CharacterEntity charEntity)
-        {
-            return GetPickupable(cb.ToRectangle(), charEntity);
-        }
-
-        /// <summary>
-        /// Gets the first IUseableEntity that intersects a specified area
-        /// </summary>
-        /// <param name="rect">Rectangle of the area to check</param>
-        /// <returns>First IUseableEntity that intersects the specified area, or null if none</returns>
-        public IUseableEntity GetUseable(Rectangle rect)
-        {
-            return GetEntity(rect, entity => entity is IUseableEntity) as IUseableEntity;
-        }
-
-        /// <summary>
         /// Gets the first IUseableEntity that intersects a specified area
         /// </summary>
         /// <param name="rect">Rectangle of the area to check</param>
@@ -1231,16 +1038,6 @@ namespace DemoGame
                                      };
 
             return GetEntity(rect, pred) as IUseableEntity;
-        }
-
-        /// <summary>
-        /// Gets the first IUseableEntity that intersects a specified area
-        /// </summary>
-        /// <param name="cb">CollisionBox of the area to check</param>
-        /// <returns>First IUseableEntity that intersects the specified area, or null if none</returns>
-        public IUseableEntity GetUseable(CollisionBox cb)
-        {
-            return GetUseable(cb.ToRectangle());
         }
 
         /// <summary>
