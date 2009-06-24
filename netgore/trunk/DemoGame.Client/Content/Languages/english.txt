@@ -8,3 +8,6 @@ CommandTellSender: You tell {0}: "{1}"
 CommandTellReceiver: {0} tells you: "{1}"
 CommandTellInvalidUser: User {0} does not exist.
 CommandTellOfflineUser: User {0} is currently offline.
+
+LoginInvalidNamePassword: Invalid account name and password combination.
+LoginUserAlreadyOnline: This character is already logged in.
