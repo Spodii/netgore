@@ -16,6 +16,7 @@ namespace DemoGame.Server
     public class DBController : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly DbConnectionPool _connectionPool;
 
         readonly DeleteItemQuery _deleteItemQuery;
@@ -39,6 +40,8 @@ namespace DemoGame.Server
         readonly SelectUserQuery _selectUserQuery;
         readonly UpdateItemFieldQuery _updateItemFieldQuery;
         readonly UpdateUserQuery _updateUserQuery;
+        readonly UserExistsQuery _userExistsQuery;
+
         bool _disposed;
 
         public DeleteItemQuery DeleteItem
@@ -141,6 +144,11 @@ namespace DemoGame.Server
             get { return _updateUserQuery; }
         }
 
+        public UserExistsQuery UserExistsQuery
+        {
+            get { return _userExistsQuery; }
+        }
+
         public DBController(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
@@ -153,7 +161,7 @@ namespace DemoGame.Server
                 log.InfoFormat("Database connection pool created.");
 
             // NOTE: It would be REALLY nice to find a better way to construct the query objects...
-            // Create the query classes
+            // Create the query objects
             _insertUserQuery = new InsertUserQuery(_connectionPool);
             _disposableQueries.Add(_insertUserQuery);
 
@@ -210,6 +218,9 @@ namespace DemoGame.Server
 
             _selectNPCTemplateQuery = new SelectNPCTemplateQuery(_connectionPool);
             _disposableQueries.Add(_selectNPCTemplateQuery);
+
+            _userExistsQuery = new UserExistsQuery(_connectionPool);
+            _disposableQueries.Add(_userExistsQuery);
 
             _itemGuidCreator = new ItemGuidCreator(_connectionPool);
         }
