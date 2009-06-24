@@ -70,19 +70,34 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Tells the user they entered invalid account information upon logging in
+        /// Tells the user their login attempt was successful.
         /// </summary>
-        public static PacketWriter InvalidAccount()
+        public static PacketWriter LoginSuccessful()
         {
-            return GetWriter(ServerPacketID.InvalidAccount);
+            return GetWriter(ServerPacketID.LoginSuccessful);
         }
 
         /// <summary>
-        /// Tells the user they have successfully logged in
+        /// Tells the user their login attempt was unsuccessful.
         /// </summary>
-        public static PacketWriter Login()
+        /// <param name="gameMessage">GameMessage for explaining why the login was unsuccessful.</param>
+        public static PacketWriter LoginUnsuccessful(GameMessage gameMessage)
         {
-            return GetWriter(ServerPacketID.Login);
+            var pw = GetWriter(ServerPacketID.LoginUnsuccessful);
+            pw.Write(gameMessage);
+            return pw;
+        }
+
+        /// <summary>
+        /// Tells the user their login attempt was unsuccessful.
+        /// </summary>
+        /// <param name="gameMessage">GameMessage for explaining why the login was unsuccessful.</param>
+        /// <param name="p">Arguments for the GameMessage.</param>
+        public static PacketWriter LoginUnsuccessful(GameMessage gameMessage, params object[] p)
+        {
+            var pw = GetWriter(ServerPacketID.LoginUnsuccessful);
+            pw.Write(gameMessage, p);
+            return pw;
         }
 
         public static PacketWriter NotifyExpCash(int exp, int cash)
@@ -139,51 +154,17 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SendMessage(GameMessage message)
+        public static PacketWriter SendMessage(GameMessage gameMessage)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SendMessage);
-            pw.Write((byte)message);
-            pw.Write((byte)0);
+            pw.Write(gameMessage);
             return pw;
         }
 
-        public static PacketWriter SendMessage(GameMessage message, params object[] p)
+        public static PacketWriter SendMessage(GameMessage gameMessage, params object[] p)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SendMessage);
-            pw.Write((byte)message);
-
-            // Write the parameter count and all of the parameters
-            if (p == null || p.Length < 1)
-                pw.Write((byte)0);
-            else
-            {
-                pw.Write((byte)p.Length);
-                for (int i = 0; i < p.Length; i++)
-                {
-                    // Get the object
-                    object obj = p[i];
-                    if (obj == null)
-                    {
-                        const string errmsg = "Null object passed to SendMessage().";
-                        Debug.Fail(errmsg);
-                        if (log.IsErrorEnabled)
-                            log.Error(errmsg);
-
-                        // Write out an error string instead for the parameter
-                        pw.Write("NULL_PARAMETER_ERROR", GameData.MaxServerMessageParameterLength);
-                        continue;
-                    }
-
-                    // Convert to a string, and ensure the string is short enough (trimming if it is too long)
-                    string str = obj.ToString();
-                    if (str.Length > GameData.MaxServerMessageParameterLength)
-                        str = str.Substring(0, GameData.MaxServerMessageParameterLength);
-
-                    // Write the string
-                    pw.Write(str, GameData.MaxServerMessageParameterLength);
-                }
-            }
-
+            pw.Write(gameMessage, p);
             return pw;
         }
 

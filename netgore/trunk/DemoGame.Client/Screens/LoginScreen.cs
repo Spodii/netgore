@@ -37,8 +37,8 @@ namespace DemoGame.Client
 
             _sockets.OnConnect += sockets_OnConnect;
             _sockets.OnFailedConnect += sockets_OnFailedConnect;
-            _sockets.PacketHandler.OnInvalidAccount += sockets_OnInvalidAccount;
-            _sockets.PacketHandler.OnLogin += sockets_OnLogin;
+            _sockets.PacketHandler.OnLoginUnsuccessful += sockets_OnLoginUnsuccessful;
+            _sockets.PacketHandler.OnLoginSuccessful += sockets_OnLoginSuccessful;
         }
 
         void cBack_OnClick(object sender, MouseClickEventArgs e)
@@ -62,8 +62,8 @@ namespace DemoGame.Client
             {
                 _sockets.OnConnect -= sockets_OnConnect;
                 _sockets.OnFailedConnect -= sockets_OnFailedConnect;
-                _sockets.PacketHandler.OnLogin -= sockets_OnLogin;
-                _sockets.PacketHandler.OnInvalidAccount -= sockets_OnInvalidAccount;
+                _sockets.PacketHandler.OnLoginSuccessful -= sockets_OnLoginSuccessful;
+                _sockets.PacketHandler.OnLoginUnsuccessful -= sockets_OnLoginUnsuccessful;
             }
 
             _gpScreen = null;
@@ -136,12 +136,12 @@ namespace DemoGame.Client
             SetError("Failed to connect to server.");
         }
 
-        void sockets_OnInvalidAccount(IIPSocket conn)
+        void sockets_OnLoginUnsuccessful(IIPSocket conn, string message)
         {
-            SetError("Invalid or unknown account.");
+            SetError(message);
         }
 
-        void sockets_OnLogin(IIPSocket conn)
+        void sockets_OnLoginSuccessful(IIPSocket conn)
         {
             ScreenManager.SetScreen("game");
         }

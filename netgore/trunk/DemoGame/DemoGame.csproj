@@ -88,6 +88,7 @@
     <Compile Include="EquippedBase.cs" />
     <Compile Include="GameData.cs" />
     <Compile Include="GameMessage.cs" />
+    <Compile Include="GameMessages.cs" />
     <Compile Include="InventoryBase.cs" />
     <Compile Include="ItemType.cs" />
     <Compile Include="IValueReaderExtensions.cs" />

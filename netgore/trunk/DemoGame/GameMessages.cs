@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.Extensions;
 using log4net;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame.Client
+namespace DemoGame
 {
     /// <summary>
     /// Class containing all of the messages for the correspoding GameMessage.
@@ -29,8 +28,6 @@ namespace DemoGame.Client
         /// Reference to the GameMessages of the default language.
         /// </summary>
         static readonly GameMessages _defaultMessages = new GameMessages();
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly string _language;
 

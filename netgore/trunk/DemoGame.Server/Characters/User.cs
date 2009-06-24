@@ -351,35 +351,6 @@ namespace DemoGame.Server
         {
             Name = userName;
 
-            /*
-            using (MySqlCommand cmd = SqlConn.CreateCommand())
-            {
-                cmd.CommandText = string.Format("SELECT * FROM `users` WHERE `name`='{0}'", userName);
-                using (MySqlDataReader r = cmd.ExecuteReader(CommandBehavior.SingleRow))
-                {
-                    r.Read();
-
-                    // Ensure the ordinal cache is ready
-                    _ordinalCache.Initialize(r);
-
-                    // General
-                    _id = r.GetUInt16(_ordinalCache.Guid);
-                    mapIndex = r.GetUInt16(_ordinalCache.Map);
-                    x = r.GetFloat(_ordinalCache.X);
-                    y = r.GetFloat(_ordinalCache.Y);
-                    body = r.GetInt32(_ordinalCache.Body);
-
-                    // Stats
-                    foreach (StatType statType in UserStats.DatabaseStats)
-                    {
-                        int ordinal = _ordinalCache.GetStatOrdinal(statType);
-                        IStat stat = Stats.GetStat(statType);
-                        stat.Read(r, ordinal);
-                    }
-                }
-            }
-            */
-
             // Get the user information from the database
             SelectUserQueryValues userValues = DBController.SelectUser.Execute(userName, Stats);
             _id = userValues.Guid;

@@ -7,6 +7,7 @@ using System.Threading;
 using DemoGame.Extensions;
 using log4net;
 using NetGore;
+using NetGore.Network;
 
 // TODO: When an item stops moving, send the position again to ensure it is valid
 
@@ -157,6 +158,62 @@ namespace DemoGame.Server
 
             // Start the main game loop
             GameLoop();
+        }
+
+        /// <summary>
+        /// Lock used to ensure that only one user is logging in at a time. The main intention of this is to prevent
+        /// a race condition allowing a User to log in twice with the same character.
+        /// </summary>
+        readonly object _loginLock = new object();
+
+        /// <summary>
+        /// Handles the login attempt of a user.
+        /// </summary>
+        /// <param name="conn">Connection that the login request was made on.</param>
+        /// <param name="name">Name of the user.</param>
+        /// <param name="password">Entered password for this user.</param>
+        public void LoginUser(IIPSocket conn, string name, string password)
+        {
+            if (conn == null)
+            {
+                if (log.IsErrorEnabled)
+                    log.Error("conn is null.");
+                return;
+            }
+
+            // Check that the account is valid, and a valid password was specified
+            if (!User.IsValidAccount(DBController.SelectUserPassword, name, password))
+            {
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Login for user `{0}` failed due to invalid name or password.", name);
+
+                using (PacketWriter pw = ServerPacket.LoginUnsuccessful(GameMessage.LoginInvalidNamePassword))
+                    conn.Send(pw);
+
+                return;
+            }
+
+            lock (_loginLock)
+            {
+                // Check if the user is already logged in
+                if (World.FindUser(name) != null)
+                {
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Login for user `{0}` failed since they are already online.", name);
+
+                    using (PacketWriter pw = ServerPacket.LoginUnsuccessful(GameMessage.LoginUserAlreadyOnline))
+                        conn.Send(pw);
+
+                    return;
+                }
+
+                // Send the "Login Successful" message
+                using (PacketWriter pw = ServerPacket.LoginSuccessful())
+                    conn.Send(pw);
+
+                // Create the User
+                new User(conn, World, name);
+            }
         }
 
         /// <summary>

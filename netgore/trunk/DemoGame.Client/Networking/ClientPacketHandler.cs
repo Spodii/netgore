@@ -27,14 +27,14 @@ namespace DemoGame.Client
         readonly ISocketSender _socketSender;
 
         /// <summary>
-        /// Client has supplied invalid account information
+        /// Notifies listeners when a successful login request has been made.
         /// </summary>
-        public event SocketEventHandler OnInvalidAccount;
+        public event SocketEventHandler OnLoginSuccessful;
 
         /// <summary>
-        /// Client has been successfully logged in
+        /// Notifies listeners when an unsuccessful login request has been made.
         /// </summary>
-        public event SocketEventHandler OnLogin;
+        public event SocketEventHandler<string> OnLoginUnsuccessful;
 
         /// <summary>
         /// Gets the GameplayScreen the ClientSockets are a part of
@@ -169,7 +169,9 @@ namespace DemoGame.Client
             string text = r.ReadString(GameData.MaxServerSayLength);
 
             // NOTE: Make use of the mapCharIndex for a chat bubble
-            GameplayScreen.AppendToChatOutput(CreateChatText(name, "says", text));
+            // TODO: Should use a GameMessage so we don't have the constant "says"
+            var chatText = CreateChatText(name, "says", text);
+            GameplayScreen.AppendToChatOutput(chatText);
         }
 
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
@@ -191,18 +193,20 @@ namespace DemoGame.Client
                                dynamicEntity.GetType());
         }
 
-        [MessageHandler((byte)ServerPacketID.InvalidAccount)]
-        void RecvInvalidAccount(IIPSocket conn, BitStream r)
+        [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
+        void RecvLoginSuccessful(IIPSocket conn, BitStream r)
         {
-            if (OnInvalidAccount != null)
-                OnInvalidAccount(conn);
+            if (OnLoginSuccessful != null)
+                OnLoginSuccessful(conn);
         }
 
-        [MessageHandler((byte)ServerPacketID.Login)]
-        void RecvLogin(IIPSocket conn, BitStream r)
+        [MessageHandler((byte)ServerPacketID.LoginUnsuccessful)]
+        void RecvLoginUnsuccessful(IIPSocket conn, BitStream r)
         {
-            if (OnLogin != null)
-                OnLogin(conn);
+            string message = r.ReadGameMessage(_gameMessages);
+
+            if (OnLoginUnsuccessful != null)
+                OnLoginUnsuccessful(conn, message);
         }
 
         [MessageHandler((byte)ServerPacketID.NotifyExpCash)]
@@ -295,23 +299,17 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SendMessage)]
         void RecvSendMessage(IIPSocket conn, BitStream r)
         {
-            byte messageID = r.ReadByte();
-            byte paramCount = r.ReadByte();
+            string message = r.ReadGameMessage(_gameMessages);
 
-            string[] parameters = null;
-            if (paramCount > 0)
+            if (string.IsNullOrEmpty(message))
             {
-                parameters = new string[paramCount];
-                for (int i = 0; i < paramCount; i++)
-                {
-                    parameters[i] = r.ReadString(GameData.MaxServerMessageParameterLength);
-                }
+                const string errmsg = "Received empty or null GameMessage.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                return;
             }
 
-            GameMessage gameMessage = (GameMessage)messageID;
-            string message = _gameMessages.GetMessage(gameMessage, parameters);
-            if (!string.IsNullOrEmpty(message))
-                GameplayScreen.AppendToChatOutput(message, Color.Black);
+            GameplayScreen.AppendToChatOutput(message, Color.Black);
         }
 
         [MessageHandler((byte)ServerPacketID.SetInventorySlot)]
