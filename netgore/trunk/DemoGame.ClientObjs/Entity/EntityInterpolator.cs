@@ -61,19 +61,20 @@ namespace DemoGame.Client
                 return;
 
             // Get the velocity to use
-            Vector2 velocity = entity.Velocity;
+            Vector2 velocity = entity.Velocity.Abs();
+
+            // If the velocity we grabbed is zero, but we're not at the position we need to be at, we will have to use
+            // the greatest velocity so we can "guess" on how to move (since not moving is not a good option)
             if (velocity.X == 0 && position.X != _drawPosition.X)
-            {
                 velocity.X = _greatestVelocity.X;
-                if (position.X < _drawPosition.X)
-                    velocity.X *= -1;
-            }
             if (velocity.Y == 0 && position.Y != _drawPosition.Y)
-            {
                 velocity.Y = _greatestVelocity.Y;
-                if (position.Y < _drawPosition.Y)
-                    velocity.Y *= -1;
-            }
+
+            // Make sure we point in the correct direction - that is, point the DrawPosition to the Position
+            if (position.X < _drawPosition.X)
+                velocity.X *= -1;
+            if (position.Y < _drawPosition.Y)
+                velocity.Y *= -1;
 
             // Get the new position
             Vector2 newPosition = _drawPosition + (velocity * deltaTime);
