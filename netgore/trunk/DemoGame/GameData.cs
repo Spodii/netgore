@@ -10,7 +10,7 @@ using NetGore.Extensions;
 namespace DemoGame
 {
     /// <summary>
-    /// Contains static data for the game
+    /// Contains static data for the game.
     /// </summary>
     public static class GameData
     {
@@ -47,19 +47,19 @@ namespace DemoGame
         public const int MaxServerSayNameLength = 60;
 
         /// <summary>
-        /// IP address of the server.
+        /// Gets the IP address of the server.
         /// </summary>
-        public const string ServerIP = "127.0.0.1";
+        public static string ServerIP { get { return "127.0.0.1"; } }
 
         /// <summary>
-        /// Port used by the server for handling pings.
+        /// Gets the port used by the server for handling pings.
         /// </summary>
-        public const int ServerPingPort = 44446;
+        public static int ServerPingPort { get { return 44446; } }
 
         /// <summary>
-        /// Port used by the server for TCP connections.
+        /// Gets the port used by the server for TCP connections.
         /// </summary>
-        public const int ServerTCPPort = 44445;
+        public static int ServerTCPPort { get { return 44445; } }
 
         /// <summary>
         /// Size of the screen (ScreenWidth / ScreenHeight) represented in a Vector2
@@ -77,12 +77,13 @@ namespace DemoGame
         static BodyInfo[] _bodyInfo;
 
         /// <summary>
-        /// Retreives the information of a body by a given index
+        /// Retreives the information of a body by a given index.
         /// </summary>
-        /// <param name="index">Index of the body</param>
-        /// <returns>Body information for the index</returns>
+        /// <param name="index">Index of the body.</param>
+        /// <returns>Body information for the index.</returns>
         public static BodyInfo Body(int index)
         {
+            // TODO: Move this crap out of GameData. Body data should be with the BodyInfo class.
             if (index < _bodyInfo.Length)
                 return _bodyInfo[index];
             else
@@ -141,10 +142,18 @@ namespace DemoGame
             return (int)y;
         }
 
-        public static bool ValidServerPickupDistance(Vector2 source, Vector2 target)
+        /// <summary>
+        /// Gets if the distance between two points is short enough to allow picking-up.
+        /// </summary>
+        /// <param name="source">The Entity doing the picking-up.</param>
+        /// <param name="target">The Entity to be picked-up.</param>
+        /// <returns>True if the <paramref name="source"/> is close enough to the <paramref name="target"/> to
+        /// pick it up, otherwise false.</returns>
+        public static bool ValidServerPickupDistance(Entity source, Entity target)
         {
+            // TODO: Make use of this!
             const float maxDistance = 200.0f;
-            float dist = source.QuickDistance(target);
+            float dist = source.Position.QuickDistance(target.Position);
             return dist < maxDistance;
         }
     }
