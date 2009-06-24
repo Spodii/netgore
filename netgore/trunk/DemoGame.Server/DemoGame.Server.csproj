@@ -155,6 +155,7 @@
     <Compile Include="SQL\User\SelectUserPasswordQuery.cs" />
     <Compile Include="SQL\User\SelectUserQuery.cs" />
     <Compile Include="SQL\User\SelectUserQueryValues.cs" />
+    <Compile Include="SQL\User\UserExistsQuery.cs" />
     <Compile Include="World\DamageTrapEntity.cs" />
     <Compile Include="SQL\User\InsertUserQuery.cs" />
     <Compile Include="Items\UserInventory.cs" />

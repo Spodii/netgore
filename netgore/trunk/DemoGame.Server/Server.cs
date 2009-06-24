@@ -14,7 +14,7 @@ using NetGore.Network;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Root Server managing object
+    /// The core component of the game server.
     /// </summary>
     public class Server : IDisposable, IGetTime
     {
