@@ -116,35 +116,7 @@ namespace DemoGame.Server
             string name = r.ReadString();
             string password = r.ReadString();
 
-            if (conn == null)
-            {
-                Debug.Fail("conn is null.");
-                if (log.IsErrorEnabled)
-                    log.Error("conn is null.");
-                return;
-            }
-
-            // TODO: http://netgore.com/bugs/view.php?id=58
-
-            // Check that the account is valid, and a valid password was specified
-            if (!User.IsValidAccount(DBController.SelectUserPassword, name, password))
-            {
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Invalid login attempt: {0} / {1}", name, password);
-
-                using (PacketWriter pw = ServerPacket.InvalidAccount())
-                {
-                    conn.Send(pw);
-                }
-                return;
-            }
-
-            using (PacketWriter pw = ServerPacket.Login())
-            {
-                conn.Send(pw);
-            }
-
-            new User(conn, World, name);
+            Server.LoginUser(conn, name, password);
         }
 
         [MessageHandler((byte)ClientPacketID.MoveLeft)]

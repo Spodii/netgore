@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using DemoGame.Extensions;
+using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.IO;
@@ -95,6 +97,38 @@ namespace DemoGame.Extensions
         }
 
         /// <summary>
+        /// Reads a GameMessage from the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read from.</param>
+        /// <param name="gameMessages">Collection of GameMessages to use to grab the message.</param>
+        /// <returns>String of the parsed GameMessage read from the BitStream.</returns>
+        public static string ReadGameMessage(this BitStream bitStream, GameMessages gameMessages)
+        {
+            if (gameMessages == null)
+                throw new ArgumentNullException("gameMessages");
+
+            byte messageID = bitStream.ReadByte();
+            byte paramCount = bitStream.ReadByte();
+
+            // Parse the parameters
+            string[] parameters = null;
+            if (paramCount > 0)
+            {
+                parameters = new string[paramCount];
+                for (int i = 0; i < paramCount; i++)
+                {
+                    parameters[i] = bitStream.ReadString(GameData.MaxServerMessageParameterLength);
+                }
+            }
+
+            // Parse the message and return it
+            GameMessage gameMessage = (GameMessage)messageID;
+            string message = gameMessages.GetMessage(gameMessage, parameters);
+
+            return message;
+        }
+
+        /// <summary>
         /// Reads a StatType from the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
@@ -138,6 +172,69 @@ namespace DemoGame.Extensions
         {
             bitStream.Write(vector2.X);
             bitStream.Write(vector2.Y);
+        }
+
+        /// <summary>
+        /// Writes a GameMessage to the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="gameMessage">GameMessage to write.</param>
+        public static void Write(this BitStream bitStream, GameMessage gameMessage)
+        {
+            bitStream.Write((byte)gameMessage);
+            bitStream.Write((byte)0);
+        }
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Writes a GameMessage to the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="gameMessage">GameMessage to write.</param>
+        /// <param name="args">Arguments for the message.</param>
+        public static void Write(this BitStream bitStream, GameMessage gameMessage, params object[] args)
+        {
+            // Write the message ID
+            bitStream.Write((byte)gameMessage);
+
+            // Write the parameter count and all of the parameters
+            if (args == null || args.Length < 1)
+            {
+                // No parameters makes our life easy
+                bitStream.Write((byte)0);
+            }
+            else
+            {
+                // One or more parameters are present, so start by writing the count
+                bitStream.Write((byte)args.Length);
+
+                // Write each parameter
+                for (int i = 0; i < args.Length; i++)
+                {
+                    // Make sure the object isn't null
+                    object obj = args[i];
+                    if (obj == null)
+                    {
+                        const string errmsg = "Null object argument found when writing GameMessage.";
+                        Debug.Fail(errmsg);
+                        if (log.IsErrorEnabled)
+                            log.Error(errmsg);
+
+                        // Write out an error string instead for the parameter
+                        bitStream.Write("NULL_PARAMETER_ERROR", GameData.MaxServerMessageParameterLength);
+                        continue;
+                    }
+
+                    // Convert to a string, and ensure the string is short enough (trimming if it is too long)
+                    string str = obj.ToString();
+                    if (str.Length > GameData.MaxServerMessageParameterLength)
+                        str = str.Substring(0, GameData.MaxServerMessageParameterLength);
+
+                    // Write the string
+                    bitStream.Write(str, GameData.MaxServerMessageParameterLength);
+                }
+            }
         }
 
         /// <summary>
