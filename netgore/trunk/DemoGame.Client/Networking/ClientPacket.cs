@@ -44,7 +44,7 @@ namespace DemoGame.Client
         static PacketWriter GetWriter(ClientPacketID id)
         {
             PacketWriter pw = _writerPool.Create();
-            pw.Write((byte)id);
+            pw.Write(id);
             return pw;
         }
 

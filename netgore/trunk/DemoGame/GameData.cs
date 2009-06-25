@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Extensions;
+using NetGore.IO;
 
 namespace DemoGame
 {
@@ -14,18 +15,6 @@ namespace DemoGame
     /// </summary>
     public static class GameData
     {
-        /// <summary>
-        /// Gets the number of milliseconds between each World update step. This only applies to the synchronized
-        /// physics, not client-side visuals.
-        /// </summary>
-        public static int WorldPhysicsUpdateRate { get { return 20; } }
-
-        /// <summary>
-        /// Gets the maximum delta time between draws for any kind of drawable component. If the delta time between
-        /// draw calls on the component exceeds this value, the delta time should then be reduced to be equal to this value.
-        /// </summary>
-        public static int MaxDrawDeltaTime { get { return 100; } }
-
         /// <summary>
         /// Maximum length of a Say packet's string from the client to the server.
         /// </summary>
@@ -47,21 +36,6 @@ namespace DemoGame
         public const int MaxServerSayNameLength = 60;
 
         /// <summary>
-        /// Gets the IP address of the server.
-        /// </summary>
-        public static string ServerIP { get { return "127.0.0.1"; } }
-
-        /// <summary>
-        /// Gets the port used by the server for handling pings.
-        /// </summary>
-        public static int ServerPingPort { get { return 44446; } }
-
-        /// <summary>
-        /// Gets the port used by the server for TCP connections.
-        /// </summary>
-        public static int ServerTCPPort { get { return 44445; } }
-
-        /// <summary>
         /// Size of the screen (ScreenWidth / ScreenHeight) represented in a Vector2
         /// </summary>
         public static Vector2 ScreenSize = new Vector2(800, 600);
@@ -76,6 +50,79 @@ namespace DemoGame
         /// </summary>
         static BodyInfo[] _bodyInfo;
 
+        static int _clientMessageIDBitLength = -1;
+        static int _serverMessageIDBitLength = -1;
+
+        /// <summary>
+        /// Gets the length of the ID for messages that are sent from the Client to the Server.
+        /// </summary>
+        public static int ClientMessageIDBitLength
+        {
+            get
+            {
+                if (_clientMessageIDBitLength == -1)
+                    _clientMessageIDBitLength = GetRequiredMessageIDBitLength(typeof(ClientPacketID));
+
+                return _clientMessageIDBitLength;
+            }
+        }
+
+        /// <summary>
+        /// Gets the maximum delta time between draws for any kind of drawable component. If the delta time between
+        /// draw calls on the component exceeds this value, the delta time should then be reduced to be equal to this value.
+        /// </summary>
+        public static int MaxDrawDeltaTime
+        {
+            get { return 100; }
+        }
+
+        /// <summary>
+        /// Gets the IP address of the server.
+        /// </summary>
+        public static string ServerIP
+        {
+            get { return "127.0.0.1"; }
+        }
+
+        /// <summary>
+        /// Gets the length of the ID for messages that are sent from the Server to the Client.
+        /// </summary>
+        public static int ServerMessageIDBitLength
+        {
+            get
+            {
+                if (_serverMessageIDBitLength == -1)
+                    _serverMessageIDBitLength = GetRequiredMessageIDBitLength(typeof(ServerPacketID));
+
+                return _serverMessageIDBitLength;
+            }
+        }
+
+        /// <summary>
+        /// Gets the port used by the server for handling pings.
+        /// </summary>
+        public static int ServerPingPort
+        {
+            get { return 44446; }
+        }
+
+        /// <summary>
+        /// Gets the port used by the server for TCP connections.
+        /// </summary>
+        public static int ServerTCPPort
+        {
+            get { return 44445; }
+        }
+
+        /// <summary>
+        /// Gets the number of milliseconds between each World update step. This only applies to the synchronized
+        /// physics, not client-side visuals.
+        /// </summary>
+        public static int WorldPhysicsUpdateRate
+        {
+            get { return 20; }
+        }
+
         /// <summary>
         /// Retreives the information of a body by a given index.
         /// </summary>
@@ -88,6 +135,29 @@ namespace DemoGame
                 return _bodyInfo[index];
             else
                 return null;
+        }
+
+        /// <summary>
+        /// Gets the minimum number of bits required for the message ID.
+        /// </summary>
+        /// <param name="enumType">Type of an Enum containing all messages that will need to be read.</param>
+        /// <returns>The minimum number of bits required for the message ID.</returns>
+        static int GetRequiredMessageIDBitLength(Type enumType)
+        {
+            if (!enumType.IsEnum)
+                throw new ArgumentException("The specified type must be for an Enum.", "enumType");
+
+            // Get all the values
+            Array values = Enum.GetValues(enumType);
+
+            // Get the values as bytes
+            var bytes = values.Cast<byte>();
+
+            // Find the greatest value
+            byte max = bytes.Max();
+
+            // Return the number of bits required for the max value
+            return BitOps.RequiredBits(max);
         }
 
         /// <summary>

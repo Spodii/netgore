@@ -55,7 +55,7 @@ namespace DemoGame.Server
             _serverSockets.OnDisconnect += ServerSockets_OnDisconnect;
             _sayHandler = new SayHandler(server);
 
-            _ppManager = new MessageProcessorManager(this);
+            _ppManager = new MessageProcessorManager(this, GameData.ClientMessageIDBitLength);
         }
 
         [MessageHandler((byte)ClientPacketID.Attack)]
