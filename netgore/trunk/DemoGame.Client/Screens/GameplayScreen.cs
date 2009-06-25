@@ -569,7 +569,7 @@ namespace DemoGame.Client
 
                 if (pickupItem != null)
                 {
-                    using (PacketWriter pw = ClientPacket.PickupItem((ushort)pickupItem.MapEntityIndex))
+                    using (PacketWriter pw = ClientPacket.PickupItem(pickupItem.MapEntityIndex))
                     {
                         Socket.Send(pw);
                     }

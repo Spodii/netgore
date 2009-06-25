@@ -176,7 +176,7 @@ namespace DemoGame.Server
             _lastAttackTime = currTime;
 
             // Inform the map that the user has performed an attack
-            using (PacketWriter charAttack = ServerPacket.CharAttack((ushort)MapEntityIndex))
+            using (PacketWriter charAttack = ServerPacket.CharAttack(MapEntityIndex))
             {
                 Map.SendToArea(Position, charAttack);
             }
@@ -236,7 +236,7 @@ namespace DemoGame.Server
                 damage = Stats[StatType.MaxHP];
 
             // Apply damage
-            using (PacketWriter pw = ServerPacket.CharDamage((ushort)MapEntityIndex, damage))
+            using (PacketWriter pw = ServerPacket.CharDamage(MapEntityIndex, damage))
             {
                 Map.SendToArea(source.Position, pw);
             }

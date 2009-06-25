@@ -209,7 +209,7 @@ namespace DemoGame.Server
             Stats[StatType.Level]++;
 
             // Notify users on the map of the level-up
-            using (PacketWriter pw = ServerPacket.NotifyLevel((ushort)MapEntityIndex))
+            using (PacketWriter pw = ServerPacket.NotifyLevel(MapEntityIndex))
             {
                 Send(pw);
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Extensions;
+using NetGore;
 using NetGore.Network;
 
 namespace DemoGame.Client
@@ -75,10 +76,10 @@ namespace DemoGame.Client
             return GetWriter(ClientPacketID.MoveStop);
         }
 
-        public static PacketWriter PickupItem(ushort mapItemIndex)
+        public static PacketWriter PickupItem(MapEntityIndex mapEntityIndex)
         {
             PacketWriter pw = GetWriter(ClientPacketID.PickupItem);
-            pw.Write(mapItemIndex);
+            pw.Write(mapEntityIndex);
             return pw;
         }
 
