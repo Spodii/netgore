@@ -6,6 +6,7 @@ using System.Reflection;
 using DemoGame.Extensions;
 using log4net;
 using NetGore;
+using NetGore.IO;
 using NetGore.Network;
 
 namespace DemoGame.Server
@@ -49,24 +50,46 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static void CreateDynamicEntity(PacketWriter packetWriter, DynamicEntity dynamicEntity)
+        {
+            WriteServerPacketID(packetWriter, ServerPacketID.CreateDynamicEntity);
+            packetWriter.Write(dynamicEntity.MapEntityIndex);
+            DynamicEntityFactory.Write(packetWriter, dynamicEntity);
+        }
+
         public static PacketWriter CreateDynamicEntity(DynamicEntity dynamicEntity)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.CreateDynamicEntity);
-            pw.Write(dynamicEntity.MapEntityIndex);
-            DynamicEntityFactory.Write(pw, dynamicEntity);
+            PacketWriter pw = GetWriter();
+            CreateDynamicEntity(pw, dynamicEntity);
             return pw;
         }
 
         /// <summary>
-        /// Gets a PacketWriter to use.
+        /// Gets a PacketWriter to use from the internal pool. It is important that this
+        /// PacketWriter is disposed of properly when done.
         /// </summary>
         /// <param name="id">ServerPacketID that this PacketWriter will be writing.</param>
         /// <returns>PacketWriter to use.</returns>
         static PacketWriter GetWriter(ServerPacketID id)
         {
             PacketWriter pw = _writerPool.Create();
-            pw.Write((byte)id);
+            WriteServerPacketID(pw, id);
             return pw;
+        }
+
+        static void WriteServerPacketID(BitStream packetWriter, ServerPacketID id)
+        {
+            packetWriter.Write((byte)id);
+        }
+
+        /// <summary>
+        /// Gets a PacketWriter to use from the internal pool. It is important that this
+        /// PacketWriter is disposed of properly when done.
+        /// </summary>
+        /// <returns>PacketWriter to use.</returns>
+        public static PacketWriter GetWriter()
+        {
+            return _writerPool.Create();
         }
 
         /// <summary>
@@ -179,12 +202,13 @@ namespace DemoGame.Server
 
         public static void SetMap(PacketWriter packetWriter, MapIndex mapIndex)
         {
+            WriteServerPacketID(packetWriter, ServerPacketID.SetMap);
             packetWriter.Write(mapIndex);
         }
 
         public static PacketWriter SetMap(MapIndex mapIndex)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SetMap);
+            PacketWriter pw = GetWriter();
             SetMap(pw, mapIndex);
             return pw;
         }
@@ -196,13 +220,19 @@ namespace DemoGame.Server
         public static PacketWriter SetUserChar(MapEntityIndex mapEntityIndex)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetUserChar);
-            pw.Write(mapEntityIndex);
+            SetUserChar(pw, mapEntityIndex);
             return pw;
+        }
+
+        public static void SetUserChar(PacketWriter packetWriter, MapEntityIndex mapEntityIndex)
+        {
+            WriteServerPacketID(packetWriter, ServerPacketID.SetUserChar);
+            packetWriter.Write(mapEntityIndex);
         }
 
         public static PacketWriter SynchronizeDynamicEntity(DynamicEntity dynamicEntity)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SynchronizeDynamicEntity);
+            PacketWriter pw = GetWriter();
             pw.Write(dynamicEntity.MapEntityIndex);
             dynamicEntity.Serialize(pw);
             return pw;
