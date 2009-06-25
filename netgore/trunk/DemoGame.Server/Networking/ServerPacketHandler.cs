@@ -276,7 +276,7 @@ namespace DemoGame.Server
             }
 
             // Ensure the used DynamicEntity is even usable
-            IUseableEntity asUsable = useEntity as IUseableEntity;
+            IUsableEntity asUsable = useEntity as IUsableEntity;
             if (asUsable == null)
             {
                 const string errmsg = "UseEntity received but useByIndex `{0}` refers to DynamicEntity `{1}` which does " +

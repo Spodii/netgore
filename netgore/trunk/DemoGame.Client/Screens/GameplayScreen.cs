@@ -584,7 +584,7 @@ namespace DemoGame.Client
         static bool UsableEntityFilter(DynamicEntity dynamicEntity)
         {
             // Make sure it is usable
-            var asUsable = dynamicEntity as IUseableEntity;
+            var asUsable = dynamicEntity as IUsableEntity;
             if (asUsable == null)
                 return false;
 

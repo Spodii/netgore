@@ -1018,38 +1018,38 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the first IUseableEntity that intersects a specified area
+        /// Gets the first IUsableEntity that intersects a specified area
         /// </summary>
         /// <param name="rect">Rectangle of the area to check</param>
-        /// <param name="charEntity">CharacterEntity that must be able to use the IUseableEntity</param>
-        /// <returns>First IUseableEntity that intersects the specified area that the charEntity
+        /// <param name="charEntity">CharacterEntity that must be able to use the IUsableEntity</param>
+        /// <returns>First IUsableEntity that intersects the specified area that the charEntity
         /// is able to use, or null if none</returns>
-        public IUseableEntity GetUseable(Rectangle rect, CharacterEntity charEntity)
+        public IUsableEntity GetUsable(Rectangle rect, CharacterEntity charEntity)
         {
-            // Predicate that will check if an Entity inherits interface IUseableEntity,
+            // Predicate that will check if an Entity inherits interface IUsableEntity,
             // and if it can be used by the specified CharacterEntity
             Predicate<Entity> pred = delegate(Entity entity)
                                      {
-                                         IUseableEntity useable = entity as IUseableEntity;
-                                         if (useable == null)
+                                         IUsableEntity usable = entity as IUsableEntity;
+                                         if (usable == null)
                                              return false;
 
-                                         return useable.CanUse(charEntity);
+                                         return usable.CanUse(charEntity);
                                      };
 
-            return GetEntity(rect, pred) as IUseableEntity;
+            return GetEntity(rect, pred) as IUsableEntity;
         }
 
         /// <summary>
-        /// Gets the first IUseableEntity that intersects a specified area
+        /// Gets the first IUsableEntity that intersects a specified area
         /// </summary>
         /// <param name="cb">CollisionBox of the area to check</param>
-        /// <param name="charEntity">CharacterEntity that must be able to use the IUseableEntity</param>
-        /// <returns>First IUseableEntity that intersects the specified area that the charEntity
+        /// <param name="charEntity">CharacterEntity that must be able to use the IUsableEntity</param>
+        /// <returns>First IUsableEntity that intersects the specified area that the charEntity
         /// is able to use, or null if none</returns>
-        public IUseableEntity GetUseable(CollisionBox cb, CharacterEntity charEntity)
+        public IUsableEntity GetUsable(CollisionBox cb, CharacterEntity charEntity)
         {
-            return GetUseable(cb.ToRectangle(), charEntity);
+            return GetUsable(cb.ToRectangle(), charEntity);
         }
 
         /// <summary>
