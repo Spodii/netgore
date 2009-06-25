@@ -16,6 +16,7 @@ namespace NetGore.Network
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly MessageProcessor[] _processors;
+        readonly int _messageIDBitLength;
 
         /// <summary>
         /// Gets an IEnumerable of all the MessageProcessors handled by this MessageProcessorManager.
@@ -32,9 +33,17 @@ namespace NetGore.Network
         /// will be found and returned.
         /// </summary>
         /// <param name="source">Root object instance containing all the classes (null if static)</param>
+        /// <param name="messageIDBitLength">The length of the message ID in bits. Must be between 1 and 8 bits.</param>
         /// <returns>Returns a list of all the found message processors for a given class</returns>
-        public MessageProcessorManager(object source)
+        public MessageProcessorManager(object source, int messageIDBitLength)
         {
+            if (source == null)
+                throw new ArgumentNullException("source");
+            if (messageIDBitLength > 8 || messageIDBitLength < 1)
+                throw new ArgumentOutOfRangeException("messageIDBitLength");
+
+            _messageIDBitLength = messageIDBitLength;
+
             // Store the types we will use
             Type mpdType = typeof(MessageProcessorDelegate);
             Type atbType = typeof(MessageHandlerAttribute);
@@ -137,7 +146,7 @@ namespace NetGore.Network
             while (recvReader.PositionBytes < data.Length)
             {
                 // Get the ID of the message
-                byte msgID = recvReader.ReadByte();
+                byte msgID = recvReader.ReadByte(_messageIDBitLength);
 
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Parsing message ID `{0}`. Stream now at bit position `{1}`.", msgID, recvReader.PositionBits);

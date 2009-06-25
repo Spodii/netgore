@@ -16,6 +16,8 @@ namespace DemoGame.Extensions
     /// </summary>
     public static class BitStreamExtensions
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Reads a StatType from the BitStream.
         /// </summary>
@@ -37,6 +39,38 @@ namespace DemoGame.Extensions
             }
 
             return slot;
+        }
+
+        /// <summary>
+        /// Reads a GameMessage from the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read from.</param>
+        /// <param name="gameMessages">Collection of GameMessages to use to grab the message.</param>
+        /// <returns>String of the parsed GameMessage read from the BitStream.</returns>
+        public static string ReadGameMessage(this BitStream bitStream, GameMessages gameMessages)
+        {
+            if (gameMessages == null)
+                throw new ArgumentNullException("gameMessages");
+
+            byte messageID = bitStream.ReadByte();
+            byte paramCount = bitStream.ReadByte();
+
+            // Parse the parameters
+            string[] parameters = null;
+            if (paramCount > 0)
+            {
+                parameters = new string[paramCount];
+                for (int i = 0; i < paramCount; i++)
+                {
+                    parameters[i] = bitStream.ReadString(GameData.MaxServerMessageParameterLength);
+                }
+            }
+
+            // Parse the message and return it
+            GameMessage gameMessage = (GameMessage)messageID;
+            string message = gameMessages.GetMessage(gameMessage, parameters);
+
+            return message;
         }
 
         /// <summary>
@@ -97,38 +131,6 @@ namespace DemoGame.Extensions
         }
 
         /// <summary>
-        /// Reads a GameMessage from the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read from.</param>
-        /// <param name="gameMessages">Collection of GameMessages to use to grab the message.</param>
-        /// <returns>String of the parsed GameMessage read from the BitStream.</returns>
-        public static string ReadGameMessage(this BitStream bitStream, GameMessages gameMessages)
-        {
-            if (gameMessages == null)
-                throw new ArgumentNullException("gameMessages");
-
-            byte messageID = bitStream.ReadByte();
-            byte paramCount = bitStream.ReadByte();
-
-            // Parse the parameters
-            string[] parameters = null;
-            if (paramCount > 0)
-            {
-                parameters = new string[paramCount];
-                for (int i = 0; i < paramCount; i++)
-                {
-                    parameters[i] = bitStream.ReadString(GameData.MaxServerMessageParameterLength);
-                }
-            }
-
-            // Parse the message and return it
-            GameMessage gameMessage = (GameMessage)messageID;
-            string message = gameMessages.GetMessage(gameMessage, parameters);
-
-            return message;
-        }
-
-        /// <summary>
         /// Reads a StatType from the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
@@ -184,8 +186,6 @@ namespace DemoGame.Extensions
             bitStream.Write((byte)gameMessage);
             bitStream.Write((byte)0);
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Writes a GameMessage to the BitStream.
@@ -255,6 +255,28 @@ namespace DemoGame.Extensions
         public static void Write(this BitStream bitStream, MapEntityIndex mapEntityIndex)
         {
             mapEntityIndex.Write(bitStream);
+        }
+
+        /// <summary>
+        /// Writes a ServerPacketID to the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="serverPacketID">ServerPacketID to write.</param>
+        public static void Write(this BitStream bitStream, ServerPacketID serverPacketID)
+        {
+            byte value = (byte)serverPacketID;
+            bitStream.Write(value, GameData.ServerMessageIDBitLength);
+        }
+
+        /// <summary>
+        /// Writes a ClientPacketID to the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="clientPacketID">ClientPacketID to write.</param>
+        public static void Write(this BitStream bitStream, ClientPacketID clientPacketID)
+        {
+            byte value = (byte)clientPacketID;
+            bitStream.Write(value, GameData.ClientMessageIDBitLength);
         }
 
         /// <summary>

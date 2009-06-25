@@ -52,7 +52,7 @@ namespace DemoGame.Server
 
         public static void CreateDynamicEntity(PacketWriter packetWriter, DynamicEntity dynamicEntity)
         {
-            WriteServerPacketID(packetWriter, ServerPacketID.CreateDynamicEntity);
+            packetWriter.Write(ServerPacketID.CreateDynamicEntity);
             packetWriter.Write(dynamicEntity.MapEntityIndex);
             DynamicEntityFactory.Write(packetWriter, dynamicEntity);
         }
@@ -73,13 +73,8 @@ namespace DemoGame.Server
         static PacketWriter GetWriter(ServerPacketID id)
         {
             PacketWriter pw = _writerPool.Create();
-            WriteServerPacketID(pw, id);
+            pw.Write(id);
             return pw;
-        }
-
-        static void WriteServerPacketID(BitStream packetWriter, ServerPacketID id)
-        {
-            packetWriter.Write((byte)id);
         }
 
         /// <summary>
@@ -202,7 +197,7 @@ namespace DemoGame.Server
 
         public static void SetMap(PacketWriter packetWriter, MapIndex mapIndex)
         {
-            WriteServerPacketID(packetWriter, ServerPacketID.SetMap);
+            packetWriter.Write(ServerPacketID.SetMap);
             packetWriter.Write(mapIndex);
         }
 
@@ -226,7 +221,7 @@ namespace DemoGame.Server
 
         public static void SetUserChar(PacketWriter packetWriter, MapEntityIndex mapEntityIndex)
         {
-            WriteServerPacketID(packetWriter, ServerPacketID.SetUserChar);
+            packetWriter.Write(ServerPacketID.SetUserChar);
             packetWriter.Write(mapEntityIndex);
         }
 
