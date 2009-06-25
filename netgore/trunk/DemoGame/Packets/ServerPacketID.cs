@@ -30,6 +30,7 @@ namespace DemoGame
         SynchronizeDynamicEntity,
         UpdateEquipmentSlot,
         UpdateStat,
-        UpdateVelocityAndPosition
+        UpdateVelocityAndPosition,
+        UseEntity
     }
 }

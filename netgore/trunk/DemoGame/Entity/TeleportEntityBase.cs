@@ -52,26 +52,53 @@ namespace DemoGame
         #region IUseableEntity Members
 
         /// <summary>
-        /// When overridden in the derived class, uses this <see cref="TeleportEntityBase"/>.
+        /// Client:
+        ///     Handles any additional usage stuff. When this is called, it is to be assumed that the Server has recognized
+        ///     the IUseableEntity as having been successfully used.
+        /// Server:
+        ///     Attempts to use this IUsableEntity on the <paramref name="charEntity"/>.
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to use this <see cref="TeleportEntityBase"/></param>
-        /// <returns>True if this <see cref="TeleportEntityBase"/> was successfully used, else false</returns>
-        public abstract bool Use(CharacterEntity charEntity);
+        /// <param name="charEntity">CharacterEntity that is trying to use this IUseableEntity. Can be null.</param>
+        /// <returns>True if this IUseableEntity was successfully used, else false. On the Client, this is generally
+        /// unused.</returns>
+        public abstract bool Use(DynamicEntity charEntity);
 
         /// <summary>
-        /// When overridden in the derived class, checks if this <see cref="TeleportEntityBase"/> 
-        /// can be used by the specified <paramref name="charEntity"/>, but does
-        /// not actually use this <see cref="TeleportEntityBase"/>
+        /// Client: 
+        ///     Checks if the Client's character can attempt to use the IUseableEntity. If false, the Client
+        ///     wont even attempt to use the IUseableEntity. If true, the Client will attempt to use it, but
+        ///     it is not guarenteed the Server will also allow it to be used.
+        /// Server:
+        ///     Checks if the specified Entity may use the IUseableEntity.
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to use this <see cref="TeleportEntityBase"/></param>
-        /// <returns>True if this <see cref="TeleportEntityBase"/> can be used, else false</returns>
-        public abstract bool CanUse(CharacterEntity charEntity);
+        /// <param name="charEntity">The CharacterEntity that is trying to use this IUsableEntity. For the Client,
+        /// this will always be the User's Character. Can be null.</param>
+        /// <returns>True if this IUsableEntity can be used by the <paramref name="charEntity"/>, else false.</returns>
+        public virtual bool CanUse(DynamicEntity charEntity)
+        {
+            if (charEntity == null)
+                return false;
+
+            return true;
+        }
 
         /// <summary>
-        /// When overridden in the derived class, notifies listeners that this <see cref="TeleportEntityBase"/> was used,
-        /// and which <see cref="CharacterEntity"/> used it
+        /// Gets if the Client should be notified when this IUseableEntity is used. If true, when this IUsableEntity is
+        /// used on the Server, every Client in the Map will be notified of the usage. As a result, Use() will be called
+        /// on each Client. If false, this message will never be sent. Only set to true if any code is placed in
+        /// Use() on the Client implementation of the IUseableEntity, or there are expected to be listeners to OnUse.
         /// </summary>
-        public abstract event EntityEventHandler<CharacterEntity> OnUse;
+        public bool NotifyClientsOfUsage
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Notifies the listeners when the IUseableEntity was used, and the DynamicEntity that used it. On the Client, this
+        /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
+        /// that used this IUsableEntity may be null.
+        /// </summary>
+        public abstract event EntityEventHandler<DynamicEntity> OnUse;
 
         #endregion
     }

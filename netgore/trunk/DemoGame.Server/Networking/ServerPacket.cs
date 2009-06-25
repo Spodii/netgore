@@ -26,6 +26,14 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter UseEntity(MapEntityIndex usedEntity, MapEntityIndex usedBy)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.UseEntity);
+            pw.Write(usedEntity);
+            pw.Write(usedBy);
+            return pw;
+        }
+
         public static PacketWriter CharDamage(MapEntityIndex mapEntityIndex, int damage)
         {
             PacketWriter pw = GetWriter(ServerPacketID.CharDamage);
