@@ -7,29 +7,48 @@ using NetGore;
 namespace DemoGame
 {
     /// <summary>
-    /// Interface for an <see cref="Entity"/> that can be used by a <see cref="CharacterEntity"/>
+    /// Interface for a DynamicEntity that can be used by a DynamicEntity.
     /// </summary>
     public interface IUseableEntity
     {
         /// <summary>
-        /// Notifies listeners that this <see cref="Entity"/> was used,
-        /// and which <see cref="CharacterEntity"/> used it
+        /// Gets if the Client should be notified when this IUseableEntity is used. If true, when this IUsableEntity is
+        /// used on the Server, every Client in the Map will be notified of the usage. As a result, Use() will be called
+        /// on each Client. If false, this message will never be sent. Only set to true if any code is placed in
+        /// Use() on the Client implementation of the IUseableEntity, or there are expected to be listeners to OnUse.
         /// </summary>
-        event EntityEventHandler<CharacterEntity> OnUse;
+        bool NotifyClientsOfUsage { get; }
 
         /// <summary>
-        /// Checks if this <see cref="Entity"/> can be used by the specified <paramref name="charEntity"/>, but does
-        /// not actually use this <see cref="Entity"/>
+        /// Notifies the listeners when the IUseableEntity was used, and the DynamicEntity that used it. On the Client, this
+        /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
+        /// that used this IUsableEntity may be null.
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to use this <see cref="Entity"/></param>
-        /// <returns>True if this <see cref="Entity"/> can be used, else false</returns>
-        bool CanUse(CharacterEntity charEntity);
+        event EntityEventHandler<DynamicEntity> OnUse;
 
         /// <summary>
-        /// Uses this <see cref="Entity"/>
+        /// Client: 
+        ///     Checks if the Client's character can attempt to use the IUseableEntity. If false, the Client
+        ///     wont even attempt to use the IUseableEntity. If true, the Client will attempt to use it, but
+        ///     it is not guarenteed the Server will also allow it to be used.
+        /// Server:
+        ///     Checks if the specified Entity may use the IUseableEntity.
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to use this <see cref="Entity"/></param>
-        /// <returns>True if this <see cref="Entity"/> was successfully used, else false</returns>
-        bool Use(CharacterEntity charEntity);
+        /// <param name="charEntity">The CharacterEntity that is trying to use this IUsableEntity. For the Client,
+        /// this will always be the User's Character. Can be null.</param>
+        /// <returns>True if this IUsableEntity can be used by the <paramref name="charEntity"/>, else false.</returns>
+        bool CanUse(DynamicEntity charEntity);
+
+        /// <summary>
+        /// Client:
+        ///     Handles any additional usage stuff. When this is called, it is to be assumed that the Server has recognized
+        ///     the IUseableEntity as having been successfully used.
+        /// Server:
+        ///     Attempts to use this IUsableEntity on the <paramref name="charEntity"/>.
+        /// </summary>
+        /// <param name="charEntity">CharacterEntity that is trying to use this IUseableEntity. Can be null.</param>
+        /// <returns>True if this IUseableEntity was successfully used, else false. On the Client, this is generally
+        /// unused.</returns>
+        bool Use(DynamicEntity charEntity);
     }
 }

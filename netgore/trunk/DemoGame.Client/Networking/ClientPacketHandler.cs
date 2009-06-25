@@ -209,6 +209,49 @@ namespace DemoGame.Client
                 OnLoginUnsuccessful(conn, message);
         }
 
+        [MessageHandler((byte)ServerPacketID.UseEntity)]
+        void RecvUseEntity(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex usedEntityIndex = r.ReadMapEntityIndex();
+            MapEntityIndex usedByIndex = r.ReadMapEntityIndex();
+
+            // Grab the used DynamicEntity
+            DynamicEntity usedEntity = Map.GetDynamicEntity(usedEntityIndex);
+            if (usedEntity == null)
+            {
+                const string errmsg = "UseEntity received but usedEntityIndex `{0}` is not a valid DynamicEntity.";
+                Debug.Fail(string.Format(errmsg, usedEntityIndex));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, usedEntityIndex);
+                return;
+            }
+
+            // Grab the one who used this DynamicEntity (we can still use it, we'll just pass null)
+            DynamicEntity usedBy = Map.GetDynamicEntity(usedEntityIndex);
+            if (usedBy == null)
+            {
+                const string errmsg = "UseEntity received but usedByIndex `{0}` is not a valid DynamicEntity.";
+                Debug.Fail(string.Format(errmsg, usedEntityIndex));
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, usedEntityIndex);
+            }
+
+            // Ensure the used DynamicEntity is even usable
+            IUseableEntity asUsable = usedEntity as IUseableEntity;
+            if (asUsable == null)
+            {
+                const string errmsg = "UseEntity received but usedByIndex `{0}` refers to DynamicEntity `{1}` which does " +
+                    "not implement IUsableEntity.";
+                Debug.Fail(string.Format(errmsg, usedEntityIndex, usedEntity));
+                if (log.IsErrorEnabled)
+                    log.WarnFormat(errmsg, usedEntityIndex, usedEntity);
+                return;
+            }
+
+            // Use it
+            asUsable.Use(usedBy);
+        }
+
         [MessageHandler((byte)ServerPacketID.NotifyExpCash)]
         void RecvNotifyExpCash(IIPSocket conn, BitStream r)
         {

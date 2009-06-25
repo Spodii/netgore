@@ -548,10 +548,10 @@ namespace DemoGame.Client
             if (_currentTime - _lastUseTime > _minUseRate && ks.IsKeyDown(Keys.LeftAlt))
             {
                 _lastUseTime = _currentTime;
-                // Check if a useable entity could be found
-                if (Map.GetUseable(UserChar.CB, UserChar) != null)
+                var useEntity = Map.GetEntity<DynamicEntity>(UserChar.CB.ToRectangle(), UsableEntityFilter);
+                if (useEntity != null)
                 {
-                    using (PacketWriter pw = ClientPacket.UseWorld())
+                    using (PacketWriter pw = ClientPacket.UseWorld(useEntity.MapEntityIndex))
                     {
                         Socket.Send(pw);
                     }
@@ -565,8 +565,7 @@ namespace DemoGame.Client
 
                 // Check if a pickupable item could be found
                 Rectangle userRect = UserChar.CB.ToRectangle();
-                ItemEntity pickupItem = Map.GetEntity<ItemEntity>(userRect, item => item.CanPickup(UserChar));
-
+                ItemEntity pickupItem = Map.GetEntity<ItemEntity>(userRect);
                 if (pickupItem != null)
                 {
                     using (PacketWriter pw = ClientPacket.PickupItem(pickupItem.MapEntityIndex))
@@ -575,6 +574,22 @@ namespace DemoGame.Client
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Filter used to find a DynamicEntity for the User to use.
+        /// </summary>
+        /// <param name="dynamicEntity">The User's character.</param>
+        /// <returns>True if it can be used by the <paramref name="dynamicEntity"/>, else false.</returns>
+        static bool UsableEntityFilter(DynamicEntity dynamicEntity)
+        {
+            // Make sure it is usable
+            var asUsable = dynamicEntity as IUseableEntity;
+            if (asUsable == null)
+                return false;
+
+            // Check that this DynamicEntity can use it
+            return asUsable.CanUse(dynamicEntity);
         }
 
         #region IDisposable Members

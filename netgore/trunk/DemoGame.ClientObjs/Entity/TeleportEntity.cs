@@ -15,38 +15,22 @@ namespace DemoGame.Client
     public class TeleportEntity : TeleportEntityBase, IDrawableEntity
     {
         /// <summary>
-        /// When overridden in the derived class, notifies listeners that this <see cref="TeleportEntityBase"/> was used,
-        /// and which <see cref="CharacterEntity"/> used it
+        /// Client:
+        ///     Handles any additional usage stuff. When this is called, it is to be assumed that the Server has recognized
+        ///     the IUseableEntity as having been successfully used.
+        /// Server:
+        ///     Attempts to use this IUsableEntity on the <paramref name="charEntity"/>.
         /// </summary>
-        public override event EntityEventHandler<CharacterEntity> OnUse
+        /// <param name="charEntity">CharacterEntity that is trying to use this IUseableEntity. Can be null.</param>
+        /// <returns>True if this IUseableEntity was successfully used, else false. On the Client, this is generally
+        /// unused.</returns>
+        public override bool Use(DynamicEntity charEntity)
         {
-            add { }
-            remove { }
-        }
+            if (OnUse != null)
+                OnUse(this, charEntity);
 
-        /// <summary>
-        /// When overridden in the derived class, checks if this <see cref="TeleportEntityBase"/> 
-        /// can be used by the specified <paramref name="charEntity"/>, but does
-        /// not actually use this <see cref="TeleportEntityBase"/>
-        /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to use this <see cref="TeleportEntityBase"/></param>
-        /// <returns>True if this <see cref="TeleportEntityBase"/> can be used, else false</returns>
-        public override bool CanUse(CharacterEntity charEntity)
-        {
             return true;
         }
-
-        /// <summary>
-        /// When overridden in the derived class, uses this <see cref="TeleportEntityBase"/>.
-        /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to use this <see cref="TeleportEntityBase"/></param>
-        /// <returns>True if this <see cref="TeleportEntityBase"/> was successfully used, else false</returns>
-        public override bool Use(CharacterEntity charEntity)
-        {
-            throw new MethodAccessException("The client may not actually an IUsableEntity, only send requests to use them.");
-        }
-
-        #region IDrawableEntity Members
 
         /// <summary>
         /// Notifies listeners that the Entity's MapRenderLayer has changed.
@@ -82,6 +66,11 @@ namespace DemoGame.Client
             return camera.InView(this);
         }
 
-        #endregion
+        /// <summary>
+        /// Notifies the listeners when the IUseableEntity was used, and the DynamicEntity that used it. On the Client, this
+        /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
+        /// that used this IUsableEntity may be null.
+        /// </summary>
+        public override event EntityEventHandler<DynamicEntity> OnUse;
     }
 }

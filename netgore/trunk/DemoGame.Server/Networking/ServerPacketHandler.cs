@@ -256,15 +256,49 @@ namespace DemoGame.Server
         void RecvUseWorld(IIPSocket conn, BitStream r)
 #pragma warning restore 168
         {
+            MapEntityIndex useEntityIndex = r.ReadMapEntityIndex();
+            
+            // Get the map and user
             User user;
             Map map;
             if (!TryGetMap(conn, out user, out map))
                 return;
 
-            // Use the first IUseableEntity on the map at the user's position
-            IUseableEntity useable = map.GetUseable(user.CB, user);
-            if (useable != null)
-                useable.Use(user);
+            // Grab the DynamicEntity to use
+            DynamicEntity useEntity = map.GetDynamicEntity(useEntityIndex);
+            if (useEntity == null)
+            {
+                const string errmsg = "UseEntity received but usedEntityIndex `{0}` is not a valid DynamicEntity.";
+                Debug.Fail(string.Format(errmsg, useEntityIndex));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, useEntityIndex);
+                return;
+            }
+
+            // Ensure the used DynamicEntity is even usable
+            IUseableEntity asUsable = useEntity as IUseableEntity;
+            if (asUsable == null)
+            {
+                const string errmsg = "UseEntity received but useByIndex `{0}` refers to DynamicEntity `{1}` which does " +
+                    "not implement IUsableEntity.";
+                Debug.Fail(string.Format(errmsg, useEntityIndex, useEntity));
+                if (log.IsErrorEnabled)
+                    log.WarnFormat(errmsg, useEntityIndex, useEntity);
+                return;
+            }
+
+            // Use it
+            if (asUsable.Use(user))
+            {
+                // Notify everyone in the map it was used
+                if (asUsable.NotifyClientsOfUsage)
+                {
+                    using (var pw = ServerPacket.UseEntity(useEntity.MapEntityIndex, user.MapEntityIndex))
+                    {
+                        map.Send(pw);
+                    }
+                }
+            }
         }
 
         /// <summary>

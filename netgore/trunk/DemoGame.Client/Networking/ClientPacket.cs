@@ -123,9 +123,11 @@ namespace DemoGame.Client
             return pw;
         }
 
-        public static PacketWriter UseWorld()
+        public static PacketWriter UseWorld(MapEntityIndex useItemIndex)
         {
-            return GetWriter(ClientPacketID.UseWorld);
+            PacketWriter pw = GetWriter(ClientPacketID.UseWorld);
+            pw.Write(useItemIndex);
+            return pw;
         }
     }
 }
