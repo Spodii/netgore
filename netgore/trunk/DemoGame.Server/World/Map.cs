@@ -295,24 +295,21 @@ namespace DemoGame.Server
         /// <param name="user">User to send the map data to</param>
         void SendMapData(User user)
         {
-            // Tell the user to change the map
-            using (PacketWriter pw = ServerPacket.SetMap(Index))
+            using (PacketWriter pw = ServerPacket.GetWriter())
             {
-                user.Send(pw);
-            }
+                // Tell the user to change the map
+                ServerPacket.SetMap(pw, Index);
 
-            // Send dynamic entities
-            foreach (DynamicEntity dynamicEntity in DynamicEntities)
-            {
-                using (PacketWriter pw = ServerPacket.CreateDynamicEntity(dynamicEntity))
+                // Send dynamic entities
+                foreach (DynamicEntity dynamicEntity in DynamicEntities)
                 {
-                    user.Send(pw);
+                    ServerPacket.CreateDynamicEntity(pw, dynamicEntity);
                 }
-            }
 
-            // Now that the user know about the map and every character on it, tell them which one is theirs
-            using (PacketWriter pw = ServerPacket.SetUserChar(user.MapEntityIndex))
-            {
+                // Now that the user know about the map and every character on it, tell them which one is theirs
+                ServerPacket.SetUserChar(pw, user.MapEntityIndex);
+
+                // Actually send the data to the user
                 user.Send(pw);
             }
         }
