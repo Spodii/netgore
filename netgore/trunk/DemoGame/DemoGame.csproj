@@ -80,7 +80,7 @@
     <Compile Include="Entity\DamageTrapEntityBase.cs" />
     <Compile Include="Entity\IPickupableEntity.cs" />
     <Compile Include="Entity\ItemEntityBase.cs" />
-    <Compile Include="Entity\IUseableEntity.cs" />
+    <Compile Include="Entity\IUsableEntity.cs" />
     <Compile Include="Entity\TeleportEntityBase.cs" />
     <Compile Include="Entity\WallEntity.cs" />
     <Compile Include="EquippedEventHandler.cs" />

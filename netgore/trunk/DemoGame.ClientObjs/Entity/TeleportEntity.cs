@@ -17,12 +17,12 @@ namespace DemoGame.Client
         /// <summary>
         /// Client:
         ///     Handles any additional usage stuff. When this is called, it is to be assumed that the Server has recognized
-        ///     the IUseableEntity as having been successfully used.
+        ///     the IUsableEntity as having been successfully used.
         /// Server:
         ///     Attempts to use this IUsableEntity on the <paramref name="charEntity"/>.
         /// </summary>
-        /// <param name="charEntity">CharacterEntity that is trying to use this IUseableEntity. Can be null.</param>
-        /// <returns>True if this IUseableEntity was successfully used, else false. On the Client, this is generally
+        /// <param name="charEntity">CharacterEntity that is trying to use this IUsableEntity. Can be null.</param>
+        /// <returns>True if this IUsableEntity was successfully used, else false. On the Client, this is generally
         /// unused.</returns>
         public override bool Use(DynamicEntity charEntity)
         {
@@ -67,7 +67,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Notifies the listeners when the IUseableEntity was used, and the DynamicEntity that used it. On the Client, this
+        /// Notifies the listeners when the IUsableEntity was used, and the DynamicEntity that used it. On the Client, this
         /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
         /// that used this IUsableEntity may be null.
         /// </summary>
