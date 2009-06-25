@@ -295,8 +295,6 @@ namespace DemoGame.Server
         /// <param name="user">User to send the map data to</param>
         void SendMapData(User user)
         {
-            // NOTE: See: http://netgore.com/bugs/view.php?id=59
-
             // Tell the user to change the map
             using (PacketWriter pw = ServerPacket.SetMap(Index))
             {
@@ -313,7 +311,7 @@ namespace DemoGame.Server
             }
 
             // Now that the user know about the map and every character on it, tell them which one is theirs
-            using (PacketWriter pw = ServerPacket.SetUserChar((ushort)user.MapEntityIndex))
+            using (PacketWriter pw = ServerPacket.SetUserChar(user.MapEntityIndex))
             {
                 user.Send(pw);
             }
