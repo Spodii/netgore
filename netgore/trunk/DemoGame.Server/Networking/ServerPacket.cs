@@ -58,17 +58,11 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static void CreateDynamicEntity(PacketWriter packetWriter, DynamicEntity dynamicEntity)
-        {
-            packetWriter.Write(ServerPacketID.CreateDynamicEntity);
-            packetWriter.Write(dynamicEntity.MapEntityIndex);
-            DynamicEntityFactory.Write(packetWriter, dynamicEntity);
-        }
-
         public static PacketWriter CreateDynamicEntity(DynamicEntity dynamicEntity)
         {
-            PacketWriter pw = GetWriter();
-            CreateDynamicEntity(pw, dynamicEntity);
+            PacketWriter pw = GetWriter(ServerPacketID.CreateDynamicEntity);
+            pw.Write(dynamicEntity.MapEntityIndex);
+            DynamicEntityFactory.Write(pw, dynamicEntity);
             return pw;
         }
 
@@ -203,16 +197,10 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static void SetMap(PacketWriter packetWriter, MapIndex mapIndex)
-        {
-            packetWriter.Write(ServerPacketID.SetMap);
-            packetWriter.Write(mapIndex);
-        }
-
         public static PacketWriter SetMap(MapIndex mapIndex)
         {
-            PacketWriter pw = GetWriter();
-            SetMap(pw, mapIndex);
+            PacketWriter pw = GetWriter(ServerPacketID.SetMap);
+            pw.Write(mapIndex);
             return pw;
         }
 
@@ -223,19 +211,13 @@ namespace DemoGame.Server
         public static PacketWriter SetUserChar(MapEntityIndex mapEntityIndex)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetUserChar);
-            SetUserChar(pw, mapEntityIndex);
+            pw.Write(mapEntityIndex);
             return pw;
-        }
-
-        public static void SetUserChar(PacketWriter packetWriter, MapEntityIndex mapEntityIndex)
-        {
-            packetWriter.Write(ServerPacketID.SetUserChar);
-            packetWriter.Write(mapEntityIndex);
         }
 
         public static PacketWriter SynchronizeDynamicEntity(DynamicEntity dynamicEntity)
         {
-            PacketWriter pw = GetWriter();
+            PacketWriter pw = GetWriter(ServerPacketID.CreateDynamicEntity);
             pw.Write(dynamicEntity.MapEntityIndex);
             dynamicEntity.Serialize(pw);
             return pw;

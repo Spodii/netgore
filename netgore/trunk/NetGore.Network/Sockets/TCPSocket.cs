@@ -38,12 +38,12 @@ namespace NetGore.Network
         /// <summary>
         /// Maximum receive size
         /// </summary>
-        public const int MaxRecvSize = 1024 - SizeHeaderLength;
+        public const int MaxRecvSize = 512 - SizeHeaderLength;
 
         /// <summary>
         /// Maximum send size
         /// </summary>
-        public const int MaxSendSize = 1024 - SizeHeaderLength;
+        public const int MaxSendSize = 512 - SizeHeaderLength;
 
         /// <summary>
         /// Size of the message length header in bytes
@@ -167,7 +167,7 @@ namespace NetGore.Network
             }
 
             // Check for too much data in the stream
-            if (buildStreamLenBits > MaxSendSize)
+            if (buildStreamLenBits > MaxSendSize * 8)
             {
                 const string errmsg = "Send() call contained too much data [`{0}` bytes] to be sent! Unable to send.";
                 if (log.IsFatalEnabled)
@@ -654,6 +654,9 @@ namespace NetGore.Network
                 {
                     _socket.Shutdown(SocketShutdown.Both);
                     _socket.Close();
+                }
+                catch (ObjectDisposedException)
+                {
                 }
                 finally
                 {
