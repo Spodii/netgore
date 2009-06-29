@@ -129,6 +129,7 @@ namespace DemoGame.Client
             _map = map;
             _skelManager = skelManager;
             _onLoopHandler = skelAnim_OnLoop;
+            Interpolator.Teleport(Position);
 
             // Set up the skeleton
             _currSkelSet = BodyInfo.Stand;

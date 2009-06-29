@@ -27,7 +27,6 @@ namespace DemoGame
         SetInventorySlot,
         SetMap,
         SetUserChar,
-        SynchronizeDynamicEntity,
         UpdateEquipmentSlot,
         UpdateStat,
         UpdateVelocityAndPosition,
