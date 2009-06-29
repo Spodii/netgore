@@ -100,7 +100,7 @@ namespace DemoGame.Server
 
             // NOTE: Just temporary until we get real NPC creation going on
             // Create some test NPCs and items
-#if false
+#if true
             Random rand = new Random();
             foreach (Map m in Maps)
             {

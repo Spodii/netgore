@@ -29,6 +29,15 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Forces the Interpolator to teleport the DrawPosition to the specified position.
+        /// </summary>
+        /// <param name="position">The new position.</param>
+        public void Teleport(Vector2 position)
+        {
+            _drawPosition = position;
+        }
+
+        /// <summary>
         /// Updates the Entity's greatest velocity.
         /// </summary>
         /// <param name="currentVelocity">Current velocity.</param>

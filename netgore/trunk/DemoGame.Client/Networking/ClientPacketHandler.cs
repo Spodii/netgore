@@ -184,7 +184,7 @@ namespace DemoGame.Client
             Character character = dynamicEntity as Character;
             if (character != null)
             {
-                // HACK: ...
+                // HACK: Having to call this .Initialize() and pass these parameters seems hacky
                 character.Initialize(Map, GameplayScreen.SkeletonManager);
             }
 
@@ -386,15 +386,6 @@ namespace DemoGame.Client
         {
             MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
             World.UserCharIndex = mapCharIndex;
-        }
-
-        [MessageHandler((byte)ServerPacketID.SynchronizeDynamicEntity)]
-        void RecvSynchronizeDynamicEntity(IIPSocket conn, BitStream r)
-        {
-            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-
-            DynamicEntity dynamicEntity = World.Map.GetDynamicEntity(mapEntityIndex);
-            dynamicEntity.Deserialize(new BitStreamValueReader(r));
         }
 
         [MessageHandler((byte)ServerPacketID.UpdateEquipmentSlot)]

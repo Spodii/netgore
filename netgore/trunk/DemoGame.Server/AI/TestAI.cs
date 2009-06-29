@@ -21,7 +21,8 @@ namespace DemoGame.Server
 
         public override void Update()
         {
-            //return;
+            // NOTE: Temp AI removal
+            return;
 
             Character target = GetClosestHostile();
 
