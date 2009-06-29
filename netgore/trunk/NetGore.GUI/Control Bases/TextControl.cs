@@ -18,12 +18,12 @@ namespace NetGore.Graphics.GUI
         string _text = string.Empty;
 
         /// <summary>
-        /// Notifies when the SpriteFont used by this Control has changed
+        /// Notifies listeners when the SpriteFont used by this Control has changed.
         /// </summary>
         public event ControlEventHandler OnChangeFont;
 
         /// <summary>
-        /// Notifies when the Control's text has changed
+        /// Notifies listeners when the Control's text has changed
         /// </summary>
         public event ControlEventHandler OnChangeText;
 
@@ -55,7 +55,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets the text of the TextControl
+        /// Gets or sets the text of the TextControl.
         /// </summary>
         public virtual string Text
         {
@@ -72,15 +72,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// TextControl constructor
+        /// TextControl constructor.
         /// </summary>
-        /// <param name="gui">GUIManager used by this Control</param>
-        /// <param name="settings">Settings for this TextControl</param>
-        /// <param name="text">Text to display</param>
-        /// <param name="font">SpriteFont used to write the text</param>
-        /// <param name="position">Position of the Control relative to its parent</param>
-        /// <param name="size">Size of the Control</param>
-        /// <param name="parent">Control that this Control belongs to</param>
+        /// <param name="gui">GUIManager used by this Control.</param>
+        /// <param name="settings">Settings for this TextControl.</param>
+        /// <param name="text">Text to display.</param>
+        /// <param name="font">SpriteFont used to write the text.</param>
+        /// <param name="position">Position of the Control relative to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        /// <param name="parent">Control that this Control belongs to.</param>
         protected TextControl(GUIManagerBase gui, TextControlSettings settings, string text, SpriteFont font, Vector2 position,
                               Vector2 size, Control parent) : base(gui, settings, position, size, parent)
         {
@@ -89,10 +89,10 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Draws the text for the control
+        /// Draws the text for the control.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
-        /// <param name="position">Position relative to the Control to draw the text</param>
+        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="position">Position relative to the Control to draw the text.</param>
         protected void DrawText(SpriteBatch spriteBatch, Vector2 position)
         {
             if (!string.IsNullOrEmpty(Text) && Font != null)
@@ -100,22 +100,22 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the string for a key if the key represents a valid ASCII character
+        /// Gets the string for a key if the key represents a valid ASCII character.
         /// </summary>
-        /// <param name="key">Key to check</param>
-        /// <param name="state">Current KeyboardState</param>
-        /// <returns>String for the key, or String.Empty if invalid</returns>
+        /// <param name="key">Key to check.</param>
+        /// <param name="state">Current KeyboardState.</param>
+        /// <returns>String for the key, or String.Empty if invalid.</returns>
         public static string GetKeyString(Keys key, KeyboardState state)
         {
             return GetKeyString(key, state.IsKeyDown(Keys.LeftShift) || state.IsKeyDown(Keys.RightShift));
         }
 
         /// <summary>
-        /// Gets the string for a key if the key represents a valid ASCII character
+        /// Gets the string for a key if the key represents a valid ASCII character.
         /// </summary>
-        /// <param name="key">Key to check</param>
-        /// <param name="shift">If true, shift will be treated as being pressed</param>
-        /// <returns>String for the key, or String.Empty if invalid</returns>
+        /// <param name="key">Key to check.</param>
+        /// <param name="shift">If true, shift will be treated as being pressed.</param>
+        /// <returns>String for the key, or String.Empty if invalid.</returns>
         public static string GetKeyString(Keys key, bool shift)
         {
             if (shift)
@@ -130,10 +130,11 @@ namespace NetGore.Graphics.GUI
             }
         }
 
-        /// Gets the string for a key if the key represents a valid ASCII character with shift up
+        /// <summary>
+        /// Gets the string for a key if the key represents a valid ASCII character with shift up.
         /// </summary>
-        /// <param name="key">Key to check</param>
-        /// <returns>String for the key, or String.Empty if invalid</returns>
+        /// <param name="key">Key to check.</param>
+        /// <returns>String for the key, or String.Empty if invalid.</returns>
         static string GetKeyStringNoShift(Keys key)
         {
             switch (key)
@@ -268,10 +269,10 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the string for a key if the key represents a valid ASCII character with shift down
+        /// Gets the string for a key if the key represents a valid ASCII character with shift down.
         /// </summary>
-        /// <param name="key">Key to check</param>
-        /// <returns>String for the key, or String.Empty if invalid</returns>
+        /// <param name="key">Key to check.</param>
+        /// <returns>String for the key, or String.Empty if invalid.</returns>
         static string GetKeyStringShift(Keys key)
         {
             switch (key)

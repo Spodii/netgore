@@ -122,6 +122,9 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        /// <summary>
+        /// Gets or sets the text of the TextControl.
+        /// </summary>
         public override string Text
         {
             get
@@ -318,7 +321,7 @@ namespace NetGore.Graphics.GUI
             foreach (StyledText t in text.Text)
             {
                 // Draw the text
-                spriteBatch.DrawString(Font, t.Text, pos, t.Color);
+                t.Draw(spriteBatch, Font, pos);
 
                 // If this isn't the last element, increase the offset
                 if (t != last)
