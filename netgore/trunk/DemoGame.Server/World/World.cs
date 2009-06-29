@@ -104,12 +104,12 @@ namespace DemoGame.Server
             Random rand = new Random();
             foreach (Map m in Maps)
             {
-                for (int i = 0; i < 2; i++)
+                for (int i = 0; i < 3; i++)
                 {
                     NPC npc = new NPC(this, NPCTemplates.GetTemplate(1));
                     npc.SetMap(m);
                 }
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     float x = rand.Next(128, (int)m.Width - 256);
                     float y = rand.Next(128, (int)m.Height - 256);

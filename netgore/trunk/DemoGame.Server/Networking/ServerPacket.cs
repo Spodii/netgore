@@ -58,11 +58,17 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter CreateDynamicEntity(DynamicEntity dynamicEntity)
+        public static void CreateDynamicEntity(PacketWriter pw, DynamicEntity dynamicEntity)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.CreateDynamicEntity);
+            pw.Write(ServerPacketID.CreateDynamicEntity);
             pw.Write(dynamicEntity.MapEntityIndex);
             DynamicEntityFactory.Write(pw, dynamicEntity);
+        }
+
+        public static PacketWriter CreateDynamicEntity(DynamicEntity dynamicEntity)
+        {
+            PacketWriter pw = GetWriter();
+            CreateDynamicEntity(pw, dynamicEntity);
             return pw;
         }
 
@@ -197,11 +203,23 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static void SetMap(PacketWriter pw, MapIndex mapIndex)
+        {
+            pw.Write(ServerPacketID.SetMap);
+            pw.Write(mapIndex);
+        }
+
         public static PacketWriter SetMap(MapIndex mapIndex)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SetMap);
-            pw.Write(mapIndex);
+            PacketWriter pw = GetWriter();
+            SetMap(pw, mapIndex);
             return pw;
+        }
+
+        public static void SetUserChar(PacketWriter pw, MapEntityIndex mapEntityIndex)
+        {
+            pw.Write(ServerPacketID.SetUserChar);
+            pw.Write(mapEntityIndex);
         }
 
         /// <summary>
@@ -210,8 +228,8 @@ namespace DemoGame.Server
         /// <param name="mapEntityIndex">Map character index controlled by the user</param>
         public static PacketWriter SetUserChar(MapEntityIndex mapEntityIndex)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.SetUserChar);
-            pw.Write(mapEntityIndex);
+            PacketWriter pw = GetWriter();
+            SetUserChar(pw, mapEntityIndex);
             return pw;
         }
 

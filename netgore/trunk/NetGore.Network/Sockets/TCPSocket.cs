@@ -38,12 +38,12 @@ namespace NetGore.Network
         /// <summary>
         /// Maximum receive size
         /// </summary>
-        public const int MaxRecvSize = 512 - SizeHeaderLength;
+        public const int MaxRecvSize = 2048 - SizeHeaderLength;
 
         /// <summary>
         /// Maximum send size
         /// </summary>
-        public const int MaxSendSize = 512 - SizeHeaderLength;
+        public const int MaxSendSize = 2048 - SizeHeaderLength;
 
         /// <summary>
         /// Size of the message length header in bytes
