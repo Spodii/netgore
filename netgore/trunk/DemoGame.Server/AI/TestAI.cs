@@ -15,6 +15,7 @@ namespace DemoGame.Server
         // ReSharper disable UnusedPrivateMember
         static AIBase CreateInstance(Character actor)
         {
+            // TODO: Instead of using a private static function, just have the reflection look for the constructor.
             // ReSharper restore UnusedPrivateMember
             return new TestAI(actor);
         }
