@@ -21,21 +21,27 @@ namespace NetGore
         public const string NodeName = "DynamicEntity";
 
         static readonly FactoryTypeCollection _typeCollection;
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        
+        /// <summary>
+        /// Static DynamicEntityFactory constructor.
+        /// </summary>
         static DynamicEntityFactory()
         {
-            var types = TypeHelper.FindTypesThatInherit(typeof(DynamicEntity), true);
-            _typeCollection = new FactoryTypeCollection(types);
+            var filter = FactoryTypeCollection.CreateFilter(typeof(DynamicEntity));
+            _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler);
+        }
 
+        /// <summary>
+        /// Handles when a new type has been loaded into a FactoryTypeCollection.
+        /// </summary>
+        /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
+        /// <param name="loadedType">Type that was loaded.</param>
+        /// <param name="name">Name of the Type.</param>
+        static void OnLoadTypeHandler(FactoryTypeCollection factoryTypeCollection, Type loadedType, string name)
+        {
             if (log.IsInfoEnabled)
-            {
-                foreach (Type type in types)
-                {
-                    log.InfoFormat("Found DynamicEntity type `{0}`.", _typeCollection[type]);
-                }
-            }
+                log.InfoFormat("Loaded DynamicEntity `{0}` from Type `{1}`.", name, loadedType);
         }
 
         /// <summary>
