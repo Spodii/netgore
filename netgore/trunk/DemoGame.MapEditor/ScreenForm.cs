@@ -7,7 +7,6 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using DemoGame.Client;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;

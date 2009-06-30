@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -70,7 +69,8 @@ namespace NetGore.Scripting
         /// <param name="name">The name of this ScriptTypeCollection. This name should be unique from all other
         /// ScriptTypeCollections.</param>
         /// <param name="scriptDir">Directory containing the scripts to load.</param>
-        public ScriptTypeCollection(string name, string scriptDir) : this(name, Directory.GetFiles(scriptDir, "*", SearchOption.TopDirectoryOnly))
+        public ScriptTypeCollection(string name, string scriptDir)
+            : this(name, Directory.GetFiles(scriptDir, "*", SearchOption.TopDirectoryOnly))
         {
         }
 
@@ -125,7 +125,9 @@ namespace NetGore.Scripting
                 // Add the new types
                 var newTypes = asm.GetExportedTypes();
                 foreach (Type newType in newTypes)
+                {
                     _types.Add(newType.Name, newType);
+                }
             }
 
             return errors;

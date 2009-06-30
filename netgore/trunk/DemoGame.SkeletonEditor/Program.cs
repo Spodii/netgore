@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 
-
 namespace DemoGame.SkeletonEditor
 {
     static class Program
