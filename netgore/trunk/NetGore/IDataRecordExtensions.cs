@@ -4,7 +4,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Linq;
 
-namespace NetGore.Extensions
+namespace NetGore
 {
     /// <summary>
     /// Extensions for the System.Data.IDataRecord.

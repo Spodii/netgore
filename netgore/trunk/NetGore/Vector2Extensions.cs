@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 
-namespace NetGore.Extensions
+namespace NetGore
 {
     /// <summary>
     /// Extensions for the Microsoft.Xna.Framework.Vector2.

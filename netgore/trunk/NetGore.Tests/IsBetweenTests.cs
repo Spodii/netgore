@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using NUnit.Framework;
 
-namespace NetGore.Extensions.Tests
+namespace NetGore.Tests
 {
     [TestFixture]
     public class IsBetweenTests

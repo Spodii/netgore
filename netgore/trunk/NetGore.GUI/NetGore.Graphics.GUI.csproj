@@ -108,10 +108,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
-      <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
-      <Name>NetGore.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
       <Name>NetGore.Graphics</Name>

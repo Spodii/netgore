@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
-namespace NetGore.Extensions
+namespace NetGore
 {
     /// <summary>
     /// Extensions for the IEnumerable class.

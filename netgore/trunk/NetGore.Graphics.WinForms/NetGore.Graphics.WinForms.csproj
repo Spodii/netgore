@@ -75,12 +75,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServiceContainer.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
-      <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
-      <Name>NetGore.Extensions</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

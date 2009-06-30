@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace NetGore.Extensions
+namespace NetGore
 {
     /// <summary>
     /// Extensions for multiple numeric types to clamp the value between a range.

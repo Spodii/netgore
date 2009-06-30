@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BitStreamExtensions.cs" />
     <Compile Include="BodyInfo.cs" />
     <Compile Include="Entity\CharacterEntity.cs" />
     <Compile Include="Entity\CharacterState.cs" />
@@ -89,8 +90,10 @@
     <Compile Include="GameData.cs" />
     <Compile Include="GameMessage.cs" />
     <Compile Include="GameMessages.cs" />
+    <Compile Include="IDataReaderExtensions.cs" />
     <Compile Include="InventoryBase.cs" />
     <Compile Include="ItemType.cs" />
+    <Compile Include="ItemTypeExtensions.cs" />
     <Compile Include="IValueReaderExtensions.cs" />
     <Compile Include="IValueWriterExtensions.cs" />
     <Compile Include="MapBase.cs" />
@@ -111,16 +114,13 @@
     <Compile Include="Stats\StatChangeHandler.cs" />
     <Compile Include="Stats\StatCollectionBase.cs" />
     <Compile Include="Stats\StatType.cs" />
+    <Compile Include="StatTypeExtensions.cs" />
     <Compile Include="WorldBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
       <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
       <Name>NetGore.Collections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
-      <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
-      <Name>NetGore.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
       <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>

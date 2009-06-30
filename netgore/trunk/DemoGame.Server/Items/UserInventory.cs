@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.Extensions;
+
 using log4net;
 
 // FUTURE: There may be a bug in picking up items, from threading conflict, that will allow two people to pick up the same item

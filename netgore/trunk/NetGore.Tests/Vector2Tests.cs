@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using NUnit.Framework;
 
-namespace NetGore.Extensions.Tests
+namespace NetGore.Tests
 {
     [TestFixture]
     public class Vector2Tests
