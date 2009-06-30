@@ -144,10 +144,6 @@
       <Project>{7313F955-A78D-48A2-B087-8EC22E24ED8A}</Project>
       <Name>DemoGame.ClientObjs</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DemoGame.Extensions\DemoGame.Extensions.csproj">
-      <Project>{DA62F910-7F9B-4E95-96C2-EB0CAD308BA9}</Project>
-      <Name>DemoGame.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DemoGame\DemoGame.csproj">
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
@@ -159,10 +155,6 @@
     <ProjectReference Include="..\NetGore.EditorTools\NetGore.EditorTools.csproj">
       <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
       <Name>NetGore.EditorTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
-      <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
-      <Name>NetGore.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics.WinForms\NetGore.Graphics.WinForms.csproj">
       <Project>{B2AC0C73-29FE-4184-97E7-929A98769248}</Project>

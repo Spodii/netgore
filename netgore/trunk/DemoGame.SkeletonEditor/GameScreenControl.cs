@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame.Extensions;
+
 using NetGore.Graphics.WinForms;
 
 namespace DemoGame.SkeletonEditor

@@ -107,10 +107,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DemoGame.Extensions\DemoGame.Extensions.csproj">
-      <Project>{DA62F910-7F9B-4E95-96C2-EB0CAD308BA9}</Project>
-      <Name>DemoGame.Extensions</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DemoGame\DemoGame.csproj">
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>

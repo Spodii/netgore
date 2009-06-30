@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using DemoGame.Extensions;
 
-namespace DemoGame.Extensions
+namespace DemoGame
 {
     /// <summary>
     /// Extensions for the DemoGame.StatType.

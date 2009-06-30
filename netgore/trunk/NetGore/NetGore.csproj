@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Alignment.cs" />
     <Compile Include="AlignmentHelper.cs" />
+    <Compile Include="ClampExtensions.cs" />
     <Compile Include="Entities\BoxSide.cs" />
     <Compile Include="Entities\CollisionBox.cs" />
     <Compile Include="Entities\CollisionType.cs" />
@@ -80,6 +81,11 @@
     <Compile Include="Entities\DynamicEntityFactory.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityEventHandler.cs" />
+    <Compile Include="IDataRecordExtensions.cs" />
+    <Compile Include="IEnumerableExtensions.cs" />
+    <Compile Include="IsBetweenExtensions.cs" />
+    <Compile Include="IValueReaderExtensions.cs" />
+    <Compile Include="IValueWriterExtensions.cs" />
     <Compile Include="MapEntityAttribute.cs" />
     <Compile Include="MapEntityIndex.cs" />
     <Compile Include="MapIndex.cs" />
@@ -97,8 +103,6 @@
     <Compile Include="Entities\WallEntityBase.cs" />
     <Compile Include="IGetTime.cs" />
     <Compile Include="IMap.cs" />
-    <Compile Include="IValueReaderExtensions.cs" />
-    <Compile Include="IValueWriterExtensions.cs" />
     <Compile Include="MathString.cs" />
     <Compile Include="MeanStackExtras.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -111,16 +115,14 @@
     <Compile Include="PropertySync\SyncValueAttribute.cs" />
     <Compile Include="Converters\SimpleMemberDescriptor.cs" />
     <Compile Include="Converters\TypeConverterBase.cs" />
+    <Compile Include="StackExtensions.cs" />
+    <Compile Include="Vector2Extensions.cs" />
     <Compile Include="WorldSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
       <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
       <Name>NetGore.Collections</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetGore.Extensions\NetGore.Extensions.csproj">
-      <Project>{329A220A-93D3-40C2-A46B-51C55D4FA16A}</Project>
-      <Name>NetGore.Extensions</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
       <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>

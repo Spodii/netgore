@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using NetGore;
-using NetGore.Extensions;
 using NetGore.IO;
 
 namespace DemoGame

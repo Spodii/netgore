@@ -4,7 +4,7 @@ using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
-using DemoGame.Extensions;
+
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Db;

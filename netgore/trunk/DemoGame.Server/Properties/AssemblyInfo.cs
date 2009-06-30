@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using DemoGame.Extensions;
+
 using log4net.Config;
 
 // General Information about an assembly is controlled through the following 

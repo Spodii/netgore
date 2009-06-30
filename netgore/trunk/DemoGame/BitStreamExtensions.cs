@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.Extensions;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.IO;
 
-namespace DemoGame.Extensions
+namespace DemoGame
 {
     /// <summary>
     /// Extensions for handling I/O of specialized types in the BitStream.

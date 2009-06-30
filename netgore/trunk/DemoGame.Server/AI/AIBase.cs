@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.Extensions;
+
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
-using NetGore.Extensions;
 
 namespace DemoGame.Server
 {

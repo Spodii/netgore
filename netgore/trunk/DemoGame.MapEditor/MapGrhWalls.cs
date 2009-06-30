@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using DemoGame.Client;
-using DemoGame.Extensions;
+
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;

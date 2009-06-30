@@ -5,7 +5,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.Extensions;
+
 using log4net;
 using NetGore.Db;
 

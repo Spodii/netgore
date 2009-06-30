@@ -69,9 +69,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClampTests.cs" />
     <Compile Include="EntityTests.cs" />
+    <Compile Include="IEnumerableTests.cs" />
+    <Compile Include="IsBetweenTests.cs" />
     <Compile Include="MathStringTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StackTests.cs" />
+    <Compile Include="Vector2Tests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
