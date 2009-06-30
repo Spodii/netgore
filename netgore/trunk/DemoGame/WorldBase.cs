@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using NetGore;
 
@@ -12,8 +12,8 @@ namespace DemoGame
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        int _lastUpdateTime;
         bool _isFirstUpdate = true;
+        int _lastUpdateTime;
 
         /// <summary>
         /// Updates the World.
@@ -40,17 +40,21 @@ namespace DemoGame
                 _lastUpdateTime += updateRate;
             }
         }
-        
+
         /// <summary>
         /// When overridden in the derived class, handles updating all of the Maps in this World.
         /// </summary>
         /// <param name="deltaTime">Delta time to use for updating the maps.</param>
         protected abstract void UpdateMaps(int deltaTime);
 
+        #region IGetTime Members
+
         /// <summary>
         /// Gets the current time.
         /// </summary>
         /// <returns>Current time.</returns>
         public abstract int GetTime();
+
+        #endregion
     }
 }

@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
@@ -13,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("WindowsGame1")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyCopyright("Copyright ©  2008")]
+[assembly: AssemblyCopyright("Copyright �  2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

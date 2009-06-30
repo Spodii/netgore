@@ -1,7 +1,3 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -22,6 +18,12 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public readonly string Text;
 
+        public StyledText(string text, Color color)
+        {
+            Text = text;
+            Color = color;
+        }
+
         /// <summary>
         /// Draws the StyledText to the <paramref name="spriteBatch"/>.
         /// </summary>
@@ -31,12 +33,6 @@ namespace NetGore.Graphics.GUI
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont, Vector2 position)
         {
             spriteBatch.DrawString(spriteFont, Text, position, Color);
-        }
-
-        public StyledText(string text, Color color)
-        {
-            Text = text;
-            Color = color;
         }
     }
 }

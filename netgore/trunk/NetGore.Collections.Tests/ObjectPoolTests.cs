@@ -1,7 +1,4 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using NUnit.Framework;
 
 // TODO: More ObjectPool tests

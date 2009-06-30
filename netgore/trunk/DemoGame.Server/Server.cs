@@ -1,10 +1,9 @@
 using System;
-using System.Collections.Generic;
+using System.CodeDom.Compiler;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-
 using log4net;
 using NetGore;
 using NetGore.Network;
@@ -44,6 +43,13 @@ namespace DemoGame.Server
         readonly Thread _inputThread;
 
         readonly ItemTemplates _itemTemplates;
+
+        /// <summary>
+        /// Lock used to ensure that only one user is logging in at a time. The main intention of this is to prevent
+        /// a race condition allowing a User to log in twice with the same character.
+        /// </summary>
+        readonly object _loginLock = new object();
+
         readonly NPCDropManager _npcDropManager;
         readonly NPCTemplateManager _npcManager;
         readonly ServerSockets _sockets;
@@ -163,67 +169,38 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Lock used to ensure that only one user is logging in at a time. The main intention of this is to prevent
-        /// a race condition allowing a User to log in twice with the same character.
+        /// Creates a ScriptTypeCollection with the specified name.
         /// </summary>
-        readonly object _loginLock = new object();
-
-        /// <summary>
-        /// Handles the login attempt of a user.
-        /// </summary>
-        /// <param name="conn">Connection that the login request was made on.</param>
-        /// <param name="name">Name of the user.</param>
-        /// <param name="password">Entered password for this user.</param>
-        public void LoginUser(IIPSocket conn, string name, string password)
+        /// <param name="name">Name of the ScriptTypeCollection.</param>
+        static void CreateScriptTypeCollection(string name)
         {
-            if (conn == null)
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Loading scripts `{0}`.", name);
+
+            ScriptTypeCollection scriptTypes = new ScriptTypeCollection(name,
+                                                                        ContentPaths.Build.Data.Join("ServerScripts").Join(name));
+
+            // Display warnings
+            if (log.IsWarnEnabled)
             {
-                if (log.IsErrorEnabled)
-                    log.Error("conn is null.");
-                return;
-            }
-
-            // Check that the account is valid, and a valid password was specified
-            if (!User.IsValidAccount(DBController.SelectUserPassword, name, password))
-            {
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Login for user `{0}` failed due to invalid name or password.", name);
-
-                using (PacketWriter pw = ServerPacket.LoginUnsuccessful(GameMessage.LoginInvalidNamePassword))
-                    conn.Send(pw);
-
-                return;
-            }
-
-            lock (_loginLock)
-            {
-                // Check if the user is already logged in
-                if (World.FindUser(name) != null)
+                foreach (CompilerError warning in scriptTypes.CompilerErrors.Where(x => x.IsWarning))
                 {
-                    if (log.IsInfoEnabled)
-                        log.InfoFormat("Login for user `{0}` failed since they are already online.", name);
-
-                    using (PacketWriter pw = ServerPacket.LoginUnsuccessful(GameMessage.LoginUserAlreadyOnline))
-                        conn.Send(pw);
-
-                    return;
+                    log.Warn(warning);
                 }
-
-                // Send the "Login Successful" message
-                using (PacketWriter pw = ServerPacket.LoginSuccessful())
-                    conn.Send(pw);
-
-                // Create the User
-                new User(conn, World, name);
             }
-        }
 
-        /// <summary>
-        /// Initializes the scripts.
-        /// </summary>
-        static void InitializeScripts()
-        {
-            CreateScriptTypeCollection("AI");
+            // Display errors
+            if (log.IsErrorEnabled)
+            {
+                foreach (CompilerError error in scriptTypes.CompilerErrors.Where(x => !x.IsWarning))
+                {
+                    log.Error(error);
+                }
+            }
+
+            // Check if the compilation failed
+            if (scriptTypes.CompilationFailed && log.IsFatalEnabled)
+                log.FatalFormat("Failed to compile scripts for `{0}`!", name);
         }
 
         /// <summary>
@@ -280,37 +257,67 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Creates a ScriptTypeCollection with the specified name.
+        /// Initializes the scripts.
         /// </summary>
-        /// <param name="name">Name of the ScriptTypeCollection.</param>
-        static void CreateScriptTypeCollection(string name)
+        static void InitializeScripts()
         {
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Loading scripts `{0}`.", name);
+            CreateScriptTypeCollection("AI");
+        }
 
-            var scriptTypes = new ScriptTypeCollection(name, ContentPaths.Build.Data.Join("ServerScripts").Join(name));
-
-            // Display warnings
-            if (log.IsWarnEnabled)
+        /// <summary>
+        /// Handles the login attempt of a user.
+        /// </summary>
+        /// <param name="conn">Connection that the login request was made on.</param>
+        /// <param name="name">Name of the user.</param>
+        /// <param name="password">Entered password for this user.</param>
+        public void LoginUser(IIPSocket conn, string name, string password)
+        {
+            if (conn == null)
             {
-                foreach (var warning in scriptTypes.CompilerErrors.Where(x => x.IsWarning))
-                {
-                    log.Warn(warning);
-                }
+                if (log.IsErrorEnabled)
+                    log.Error("conn is null.");
+                return;
             }
 
-            // Display errors
-            if (log.IsErrorEnabled)
+            // Check that the account is valid, and a valid password was specified
+            if (!User.IsValidAccount(DBController.SelectUserPassword, name, password))
             {
-                foreach (var error in scriptTypes.CompilerErrors.Where(x => !x.IsWarning))
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Login for user `{0}` failed due to invalid name or password.", name);
+
+                using (PacketWriter pw = ServerPacket.LoginUnsuccessful(GameMessage.LoginInvalidNamePassword))
                 {
-                    log.Error(error);
+                    conn.Send(pw);
                 }
+
+                return;
             }
 
-            // Check if the compilation failed
-            if (scriptTypes.CompilationFailed && log.IsFatalEnabled)
-                log.FatalFormat("Failed to compile scripts for `{0}`!", name);
+            lock (_loginLock)
+            {
+                // Check if the user is already logged in
+                if (World.FindUser(name) != null)
+                {
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Login for user `{0}` failed since they are already online.", name);
+
+                    using (PacketWriter pw = ServerPacket.LoginUnsuccessful(GameMessage.LoginUserAlreadyOnline))
+                    {
+                        conn.Send(pw);
+                    }
+
+                    return;
+                }
+
+                // Send the "Login Successful" message
+                using (PacketWriter pw = ServerPacket.LoginSuccessful())
+                {
+                    conn.Send(pw);
+                }
+
+                // Create the User
+                new User(conn, World, name);
+            }
         }
 
         public void Shutdown()

@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
 using Microsoft.Xna.Framework;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;

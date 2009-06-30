@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Data.Common;
-using System.Diagnostics;
-using System.Linq;
 
 namespace NetGore.Db
 {
