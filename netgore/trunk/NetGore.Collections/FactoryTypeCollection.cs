@@ -17,21 +17,38 @@ namespace NetGore.Collections
         readonly Dictionary<string, Type> _nameToType;
         readonly Dictionary<Type, string> _typeToName;
 
+        /// <summary>
+        /// Gets a Type from its name.
+        /// </summary>
+        /// <param name="typeName">Name of the Type to get.</param>
+        /// <returns>The Type with the specified name.</returns>
         public Type this[string typeName]
         {
             get { return _nameToType[typeName]; }
         }
 
+        /// <summary>
+        /// Gets the name of a Type.
+        /// </summary>
+        /// <param name="type">Type to get the name of.</param>
+        /// <returns>The name of the Type.</returns>
         public string this[Type type]
         {
             get { return _typeToName[type]; }
         }
 
+        /// <summary>
+        /// Gets an IEnumerable of all of the Types in this FactoryTypeCollection.
+        /// </summary>
         public IEnumerable<Type> Types
         {
             get { return _typeToName.Keys; }
         }
 
+        /// <summary>
+        /// FactoryTypeCollection constructor.
+        /// </summary>
+        /// <param name="types">Types to be used in this FactoryTypeCollection.</param>
         public FactoryTypeCollection(IEnumerable<Type> types)
         {
             int count = types.Count();
@@ -49,52 +66,34 @@ namespace NetGore.Collections
                 _typeToName.Add(type, typeName);
             }
         }
-
-        static IEnumerable<Type> AllTypes()
-        {
-            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
-        }
-
+        
         /// <summary>
-        /// Finds all Types that inherit the specified <paramref name="baseClass"/>.
+        /// Creates an instance of a Type.
         /// </summary>
-        /// <param name="baseClass">Base class or interface to find the classes that inherit.</param>
-        /// <param name="parameterlessConstructor">If true, a MissingMethodException will be thrown if a non-abstract Type
-        /// is found that does not implement a parameterless constructor.</param>
-        /// <returns>IEnumerable of all Types that inherit the specified <paramref name="baseClass"/>.</returns>
-        public static IEnumerable<Type> FindTypesThatInherit(Type baseClass, bool parameterlessConstructor)
-        {
-            var types = AllTypes().Where(x => x.IsSubclassOf(baseClass));
-            if (parameterlessConstructor)
-            {
-                foreach (Type type in types)
-                {
-                    if (!type.IsAbstract && type.GetConstructor(new Type[] { }) == null)
-                    {
-                        const string errmsg = "No parameterless constructor found for type `{0}`.";
-                        string err = string.Format(errmsg, type);
-                        Debug.Fail(err);
-                        log.Fatal(err);
-                        throw new MissingMethodException(err);
-                    }
-                }
-            }
-
-            return types;
-        }
-
+        /// <param name="type">Type to create an instance of.</param>
+        /// <returns>An instance of the Type.</returns>
         public static object GetTypeInstance(Type type)
         {
             object instance = Activator.CreateInstance(type, true);
             return instance;
         }
 
+        /// <summary>
+        /// Gets an instance of a Type from its name.
+        /// </summary>
+        /// <param name="typeName">Name of the Type to create an instance of.</param>
+        /// <returns>An instance of the Type.</returns>
         public object GetTypeInstance(string typeName)
         {
             Type type = this[typeName];
             return GetTypeInstance(type);
         }
 
+        /// <summary>
+        /// Gets the name of a Type.
+        /// </summary>
+        /// <param name="type">Type to get the name of.</param>
+        /// <returns>The name of the Type.</returns>
         protected virtual string GetTypeName(Type type)
         {
             string name = type.ToString().Split('.').Last();
@@ -103,6 +102,13 @@ namespace NetGore.Collections
 
         #region IEnumerable<Type> Members
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>1</filterpriority>
         public IEnumerator<Type> GetEnumerator()
         {
             foreach (Type key in _typeToName.Keys)
@@ -111,6 +117,13 @@ namespace NetGore.Collections
             }
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
