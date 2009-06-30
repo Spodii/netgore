@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using NetGore.Collections;
-using NetGore.Scripting;
 
 namespace DemoGame.Server
 {
@@ -14,8 +10,8 @@ namespace DemoGame.Server
     /// </summary>
     public static class AIFactory
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly FactoryTypeCollection _typeCollection;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Static AIFactory constructor.

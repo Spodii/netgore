@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using System.Xml;
 using log4net;
@@ -22,7 +19,7 @@ namespace NetGore
 
         static readonly FactoryTypeCollection _typeCollection;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
+
         /// <summary>
         /// Static DynamicEntityFactory constructor.
         /// </summary>
