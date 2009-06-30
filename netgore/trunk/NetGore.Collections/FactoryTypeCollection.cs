@@ -66,7 +66,7 @@ namespace NetGore.Collections
                 _typeToName.Add(type, typeName);
             }
         }
-        
+
         /// <summary>
         /// Creates an instance of a Type.
         /// </summary>
@@ -79,6 +79,18 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// Creates an instance of a Type.
+        /// </summary>
+        /// <param name="type">Type to create an instance of.</param>
+        /// <param name="arguments">Arguments to use when invoking the constructor.</param>
+        /// <returns>An instance of the Type.</returns>
+        public static object GetTypeInstance(Type type, params object[] arguments)
+        {
+            object instance = Activator.CreateInstance(type, arguments);
+            return instance;
+        }
+
+        /// <summary>
         /// Gets an instance of a Type from its name.
         /// </summary>
         /// <param name="typeName">Name of the Type to create an instance of.</param>
@@ -87,6 +99,18 @@ namespace NetGore.Collections
         {
             Type type = this[typeName];
             return GetTypeInstance(type);
+        }
+
+        /// <summary>
+        /// Gets an instance of a Type from its name.
+        /// </summary>
+        /// <param name="typeName">Name of the Type to create an instance of.</param>
+        /// <param name="arguments">Arguments to use when invoking the constructor.</param>
+        /// <returns>An instance of the Type.</returns>
+        public object GetTypeInstance(string typeName, params object[] arguments)
+        {
+            Type type = this[typeName];
+            return GetTypeInstance(type, arguments);
         }
 
         /// <summary>

@@ -96,7 +96,7 @@ namespace DemoGame.Server
 
             // Create the AI
             if (!string.IsNullOrEmpty(template.AIName))
-                _ai = AIBase.CreateInstance(template.AIName, this);
+                _ai = AIFactory.Create(template.AIName, this);
 
             // Create and copy over the stats
             _stats = new NPCStats(this);

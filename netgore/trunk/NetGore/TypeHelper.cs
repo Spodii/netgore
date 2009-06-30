@@ -14,7 +14,6 @@ namespace NetGore
     public static class TypeHelper
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static IEnumerable<Type> _allTypes = null;
 
         /// <summary>
         /// Gets all Types from every Assembly.
@@ -22,10 +21,7 @@ namespace NetGore
         /// <returns>All Types from every Assembly.</returns>
         public static IEnumerable<Type> AllTypes()
         {
-            if (_allTypes == null)
-                _allTypes = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Distinct();
-
-            return _allTypes;
+            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Distinct();
         }
 
         /// <summary>

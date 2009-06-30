@@ -8,6 +8,7 @@ using System.Threading;
 using log4net;
 using NetGore;
 using NetGore.Network;
+using NetGore.Scripting;
 
 // TODO: When an item stops moving, send the position again to ensure it is valid
 
@@ -147,6 +148,7 @@ namespace DemoGame.Server
             _itemTemplates = new ItemTemplates(DBController.SelectItemTemplates);
             _npcDropManager = new NPCDropManager(DBController.SelectNPCDrops, _itemTemplates);
             _npcManager = new NPCTemplateManager(DBController.SelectNPCTemplate, AllianceManager, _npcDropManager);
+            InitializeScripts();
 
             // Create the world and sockets
             _world = new World(this);
@@ -217,6 +219,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Initializes the scripts.
+        /// </summary>
+        static void InitializeScripts()
+        {
+            CreateScriptTypeCollection("AI");
+        }
+
+        /// <summary>
         /// Main game loop for the server
         /// </summary>
         void GameLoop()
@@ -267,6 +277,40 @@ namespace DemoGame.Server
                 if (!string.IsNullOrEmpty(resultStr))
                     Console.WriteLine(" - " + resultStr);
             }
+        }
+
+        /// <summary>
+        /// Creates a ScriptTypeCollection with the specified name.
+        /// </summary>
+        /// <param name="name">Name of the ScriptTypeCollection.</param>
+        static void CreateScriptTypeCollection(string name)
+        {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Loading scripts `{0}`.", name);
+
+            var scriptTypes = new ScriptTypeCollection(name, ContentPaths.Build.Data.Join("ServerScripts").Join(name));
+
+            // Display warnings
+            if (log.IsWarnEnabled)
+            {
+                foreach (var warning in scriptTypes.CompilerErrors.Where(x => x.IsWarning))
+                {
+                    log.Warn(warning);
+                }
+            }
+
+            // Display errors
+            if (log.IsErrorEnabled)
+            {
+                foreach (var error in scriptTypes.CompilerErrors.Where(x => !x.IsWarning))
+                {
+                    log.Error(error);
+                }
+            }
+
+            // Check if the compilation failed
+            if (scriptTypes.CompilationFailed && log.IsFatalEnabled)
+                log.FatalFormat("Failed to compile scripts for `{0}`!", name);
         }
 
         public void Shutdown()

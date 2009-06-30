@@ -11,7 +11,7 @@
     <AssemblyName>DemoGame.Server</AssemblyName>
     <StartupObject>
     </StartupObject>
-    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>2.0</OldToolsVersion>
@@ -96,7 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AI\AIBase.cs" />
-    <Compile Include="AI\TestAI.cs" />
+    <Compile Include="AI\AIFactory.cs" />
     <Compile Include="Characters\Alliance.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -203,6 +203,10 @@
       <Project>{B51BE2B8-B1A9-460A-BC38-794FAC66636C}</Project>
       <Name>NetGore.Network</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.Scripting\NetGore.Scripting.csproj">
+      <Project>{4E491135-6089-4875-AEE8-9B35F64C6F59}</Project>
+      <Name>NetGore.Scripting</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
       <Name>NetGore</Name>
@@ -260,6 +264,7 @@
   -->
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)\..\DemoGame.Client\Content\Maps" "$(TargetDir)Content\Maps" /E /C /R /K /I /Y
-xcopy "$(ProjectDir)\..\DemoGame.Client\Content\Data" "$(TargetDir)Content\Data" /E /C /R /K /I /Y</PostBuildEvent>
+xcopy "$(ProjectDir)\..\DemoGame.Client\Content\Data" "$(TargetDir)Content\Data" /E /C /R /K /I /Y
+xcopy "$(ProjectDir)\ServerScripts" "$(TargetDir)Content\Data\ServerScripts" /E /C /R /K /I /Y</PostBuildEvent>
   </PropertyGroup>
 </Project>
