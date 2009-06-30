@@ -10,6 +10,9 @@ using NetGore.IO;
 
 namespace NetGore
 {
+    /// <summary>
+    /// Factory for DynamicEntity creation and serialization.
+    /// </summary>
     public static class DynamicEntityFactory
     {
         /// <summary>
@@ -23,7 +26,7 @@ namespace NetGore
 
         static DynamicEntityFactory()
         {
-            var types = FactoryTypeCollection.FindTypesThatInherit(typeof(DynamicEntity), true);
+            var types = TypeHelper.FindTypesThatInherit(typeof(DynamicEntity), true);
             _typeCollection = new FactoryTypeCollection(types);
 
             if (log.IsInfoEnabled)
@@ -35,6 +38,11 @@ namespace NetGore
             }
         }
 
+        /// <summary>
+        /// Reads and constructs a DynamicEntity from a stream.
+        /// </summary>
+        /// <param name="reader">BitStream to read the DynamicEntity from.</param>
+        /// <returns>The DynamicEntity created from the <paramref name="reader"/>.</returns>
         public static DynamicEntity Read(BitStream reader)
         {
             if (reader == null)
@@ -48,6 +56,11 @@ namespace NetGore
             return dEntity;
         }
 
+        /// <summary>
+        /// Reads and constructs a DynamicEntity from a stream.
+        /// </summary>
+        /// <param name="reader">XmlReader to read the DynamicEntity from.</param>
+        /// <returns>The DynamicEntity created from the <paramref name="reader"/>.</returns>
         public static DynamicEntity Read(XmlReader reader)
         {
             if (reader == null)
@@ -65,6 +78,11 @@ namespace NetGore
             return dEntity;
         }
 
+        /// <summary>
+        /// Writes a DynamicEntity to a stream.
+        /// </summary>
+        /// <param name="writer">BitStream to write the DynamicEntity to.</param>
+        /// <param name="dEntity">DynamicEntity to write to the stream.</param>
         public static void Write(BitStream writer, DynamicEntity dEntity)
         {
             if (writer == null)
@@ -82,6 +100,11 @@ namespace NetGore
             }
         }
 
+        /// <summary>
+        /// Writes a DynamicEntity to a stream.
+        /// </summary>
+        /// <param name="writer">XmlWriter to write the DynamicEntity to.</param>
+        /// <param name="dEntity">DynamicEntity to write to the stream.</param>
         public static void Write(XmlWriter writer, DynamicEntity dEntity)
         {
             if (writer == null)

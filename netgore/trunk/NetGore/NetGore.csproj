@@ -116,6 +116,7 @@
     <Compile Include="Converters\SimpleMemberDescriptor.cs" />
     <Compile Include="Converters\TypeConverterBase.cs" />
     <Compile Include="StackExtensions.cs" />
+    <Compile Include="TypeHelper.cs" />
     <Compile Include="Vector2Extensions.cs" />
     <Compile Include="WorldSettings.cs" />
   </ItemGroup>
