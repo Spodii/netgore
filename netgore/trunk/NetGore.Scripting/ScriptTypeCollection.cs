@@ -3,6 +3,7 @@ using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using Microsoft.CSharp;
@@ -68,6 +69,16 @@ namespace NetGore.Scripting
         /// </summary>
         /// <param name="name">The name of this ScriptTypeCollection. This name should be unique from all other
         /// ScriptTypeCollections.</param>
+        /// <param name="scriptDir">Directory containing the scripts to load.</param>
+        public ScriptTypeCollection(string name, string scriptDir) : this(name, Directory.GetFiles(scriptDir, "*", SearchOption.TopDirectoryOnly))
+        {
+        }
+
+        /// <summary>
+        /// ScriptTypeCollection constructor.
+        /// </summary>
+        /// <param name="name">The name of this ScriptTypeCollection. This name should be unique from all other
+        /// ScriptTypeCollections.</param>
         /// <param name="sourceFiles">IEnumerable of source code file paths.</param>
         public ScriptTypeCollection(string name, IEnumerable<string> sourceFiles)
         {
@@ -114,10 +125,7 @@ namespace NetGore.Scripting
                 // Add the new types
                 var newTypes = asm.GetExportedTypes();
                 foreach (Type newType in newTypes)
-                {
-                    // TODO: Ensure each Type is defined only once
                     _types.Add(newType.Name, newType);
-                }
             }
 
             return errors;
@@ -161,8 +169,8 @@ namespace NetGore.Scripting
                                                  OutputAssembly = Name + "." + language + ".dll"
                                              };
 
-                Assembly currAssembly = Assembly.GetExecutingAssembly();
-                options.ReferencedAssemblies.Add(currAssembly.Location);
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                options.ReferencedAssemblies.AddRange(assemblies.Select(x => x.Location).ToArray());
 
                 result = codeDomProvider.CompileAssemblyFromFile(options, files.ToArray());
             }
