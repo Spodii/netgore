@@ -48,6 +48,13 @@
     <Compile Include="ScriptTypeCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ScriptLanguage.cs" />
+    <Compile Include="ScriptTypeHelper.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetGore\NetGore.csproj">
+      <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
+      <Name>NetGore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
