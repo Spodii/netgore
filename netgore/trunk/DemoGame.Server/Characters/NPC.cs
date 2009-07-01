@@ -168,13 +168,29 @@ namespace DemoGame.Server
                     DropItem(drop.ItemTemplate, amount);
             }
 
-            // Start the respawn sequence
-            IsAlive = false;
-            _respawnTime = GetTime() + (RespawnSecs * 1000);
+            // Check to respawn
+            if (WillRespawn)
+            {
+                // Start the respawn sequence
+                IsAlive = false;
+                _respawnTime = GetTime() + (RespawnSecs * 1000);
 
-            ChangeMap(null);
-            RespawnMap.AddToRespawn(this);
+                ChangeMap(null);
+                RespawnMap.AddToRespawn(this);
+            }
+            else
+            {
+                // No respawning, so just dispose
+                DelayedDispose();
+            }
         }
+
+        /// <summary>
+        /// Gets if this NPC will respawn after dieing.
+        /// </summary>
+// ReSharper disable MemberCanBeMadeStatic.Global
+        public bool WillRespawn { get { return true; } }
+// ReSharper restore MemberCanBeMadeStatic.Global
 
         /// <summary>
         /// Updates the NPC

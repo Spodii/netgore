@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -25,15 +24,6 @@ namespace DemoGame.Server
         readonly TSList<User> _users;
         readonly World _world;
         bool _disposed;
-
-        /// <summary>
-        /// Adds an IRespawnable to the list of objects that need to respawn.
-        /// </summary>
-        /// <param name="respawnable">The object to respawn.</param>
-        public void AddToRespawn(IRespawnable respawnable)
-        {
-            World.AddToRespawn(respawnable);
-        }
 
         /// <summary>
         /// Gets the DBController used by this Map.
@@ -76,6 +66,27 @@ namespace DemoGame.Server
 
             _users = new TSList<User>();
             _userEnumerator = new SafeEnumerator<User>(_users);
+        }
+
+        public override void AddEntity(Entity entity)
+        {
+            IRespawnable respawnable = entity as IRespawnable;
+            if (respawnable != null && !respawnable.ReadyToRespawn(GetTime()))
+            {
+                AddToRespawn(respawnable);
+                return;
+            }
+
+            base.AddEntity(entity);
+        }
+
+        /// <summary>
+        /// Adds an IRespawnable to the list of objects that need to respawn.
+        /// </summary>
+        /// <param name="respawnable">The object to respawn.</param>
+        public void AddToRespawn(IRespawnable respawnable)
+        {
+            World.AddToRespawn(respawnable);
         }
 
         void CharAdded(Entity entity)
@@ -207,18 +218,6 @@ namespace DemoGame.Server
             CharAdded(entity);
         }
 
-        public override void AddEntity(Entity entity)
-        {
-            IRespawnable respawnable = entity as IRespawnable;
-            if (respawnable != null && !respawnable.ReadyToRespawn(GetTime()))
-            {
-                AddToRespawn(respawnable);
-                return;
-            }
-
-            base.AddEntity(entity);
-        }
-
         /// <summary>
         /// When overridden in the derived class, allows for additional processing on Entities removed from the map.
         /// This is called after the Entity has finished being removed from the map.
@@ -316,7 +315,7 @@ namespace DemoGame.Server
         /// <param name="user">User to send the map data to</param>
         void SendMapData(User user)
         {
-            using (var pw = ServerPacket.GetWriter())
+            using (PacketWriter pw = ServerPacket.GetWriter())
             {
                 // Tell the user to change the map
                 ServerPacket.SetMap(pw, Index);

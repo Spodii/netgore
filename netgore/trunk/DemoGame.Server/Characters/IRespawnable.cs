@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NetGore;
+﻿using NetGore;
 
 namespace DemoGame.Server
 {
@@ -11,6 +7,11 @@ namespace DemoGame.Server
     /// </summary>
     public interface IRespawnable
     {
+        /// <summary>
+        /// Gets the DynamicEntity to respawn (typically just "this").
+        /// </summary>
+        DynamicEntity DynamicEntity { get; }
+
         /// <summary>
         /// Checks if the IRespawnable is ready to be respawned. If the object is already spawned, this should
         /// still return true.
@@ -23,10 +24,5 @@ namespace DemoGame.Server
         /// Handles respawning the DynamicEntity. This must also take care of setting the Map.
         /// </summary>
         void Respawn();
-
-        /// <summary>
-        /// Gets the DynamicEntity to respawn (typically just "this").
-        /// </summary>
-        DynamicEntity DynamicEntity { get; }
     }
 }

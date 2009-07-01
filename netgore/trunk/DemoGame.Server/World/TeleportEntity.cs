@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-
 using log4net;
 using NetGore;
 
@@ -12,6 +8,13 @@ namespace DemoGame.Server
     public class TeleportEntity : TeleportEntityBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Notifies the listeners when the IUsableEntity was used, and the DynamicEntity that used it. On the Client, this
+        /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
+        /// that used this IUsableEntity may be null.
+        /// </summary>
+        public override event EntityEventHandler<DynamicEntity> OnUse;
 
         /// <summary>
         /// Client: 
@@ -80,12 +83,5 @@ namespace DemoGame.Server
             // Successfully used
             return true;
         }
-
-        /// <summary>
-        /// Notifies the listeners when the IUsableEntity was used, and the DynamicEntity that used it. On the Client, this
-        /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
-        /// that used this IUsableEntity may be null.
-        /// </summary>
-        public override event EntityEventHandler<DynamicEntity> OnUse;
     }
 }

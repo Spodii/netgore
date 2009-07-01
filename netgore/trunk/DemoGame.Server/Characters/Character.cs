@@ -16,7 +16,7 @@ namespace DemoGame.Server
     /// </summary>
     /// <param name="character">The Character that the event took place on.</param>
     public delegate void CharacterEventHandler(Character character);
-    
+
     /// <summary>
     /// Handles Character attack events.
     /// </summary>
@@ -59,37 +59,6 @@ namespace DemoGame.Server
         readonly World _world;
 
         /// <summary>
-        /// Notifies listeners when the Character performs an attack. The attack does not have to actually hit
-        /// anything for this event to be raised. This will be raised before <see cref="OnAttackCharacter"/>.
-        /// </summary>
-        public event CharacterEventHandler OnAttack;
-
-        /// <summary>
-        /// Notifies listeners when this Character has successfully attacked another Character.
-        /// </summary>
-        public event CharacterAttackCharacterEventHandler OnAttackCharacter;
-
-        /// <summary>
-        /// Notifies listeners when this Character has been attacked by another Character.
-        /// </summary>
-        public event CharacterAttackCharacterEventHandler OnAttackedByCharacter;
-
-        /// <summary>
-        /// Notifies listeners when this Character has killed another Character.
-        /// </summary>
-        public event CharacterKillEventHandler OnKillCharacter;
-
-        /// <summary>
-        /// Notifies listeners when this Character has been killed by another Character.
-        /// </summary>
-        public event CharacterKillEventHandler OnKilledByCharacter;
-
-        /// <summary>
-        /// Notifies listeners when this Character has been killed in any way, no matter who did it or how it happened.
-        /// </summary>
-        public event CharacterEventHandler OnKilled;
-
-        /// <summary>
         /// Character's alliance.
         /// </summary>
         Alliance _alliance;
@@ -115,6 +84,37 @@ namespace DemoGame.Server
         /// Name of the character.
         /// </summary>
         string _name;
+
+        /// <summary>
+        /// Notifies listeners when the Character performs an attack. The attack does not have to actually hit
+        /// anything for this event to be raised. This will be raised before <see cref="OnAttackCharacter"/>.
+        /// </summary>
+        public event CharacterEventHandler OnAttack;
+
+        /// <summary>
+        /// Notifies listeners when this Character has successfully attacked another Character.
+        /// </summary>
+        public event CharacterAttackCharacterEventHandler OnAttackCharacter;
+
+        /// <summary>
+        /// Notifies listeners when this Character has been attacked by another Character.
+        /// </summary>
+        public event CharacterAttackCharacterEventHandler OnAttackedByCharacter;
+
+        /// <summary>
+        /// Notifies listeners when this Character has killed another Character.
+        /// </summary>
+        public event CharacterKillEventHandler OnKillCharacter;
+
+        /// <summary>
+        /// Notifies listeners when this Character has been killed in any way, no matter who did it or how it happened.
+        /// </summary>
+        public event CharacterEventHandler OnKilled;
+
+        /// <summary>
+        /// Notifies listeners when this Character has been killed by another Character.
+        /// </summary>
+        public event CharacterKillEventHandler OnKilledByCharacter;
 
         /// <summary>
         /// Gets a random number generator to be used for Characters.
@@ -292,28 +292,26 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the amount of damage for a normal attack.
+        /// Changes the Character's map.
         /// </summary>
-        /// <param name="target">Character being attacked.</param>
-        /// <returns>The amount of damage to inflict for a normal attack.</returns>
-        public int GetAttackDamage(Character target)
+        /// <param name="newMap">New map to place the Character on.</param>
+        public void ChangeMap(Map newMap)
         {
-            if (target == null)
-                throw new ArgumentNullException("target");
+            if (Map == newMap)
+            {
+                Debug.Fail("Character is already on this map.");
+                return;
+            }
 
-            int damage = Rand.Next(Stats[StatType.MinHit], Stats[StatType.MaxHit]);
+            // Remove the Character from the last map
+            if (Map != null)
+                Map.RemoveEntity(this);
 
-            // Apply the defence, and ensure the damage is in a valid range
-            int defence;
-            if (!target.Stats.TryGetStatValue(StatType.Defence, out defence))
-                defence = 0;
+            _map = null;
 
-            damage -= defence / 2;
-
-            if (damage < 1)
-                damage = 1;
-
-            return damage;
+            // Set the Character's new map
+            if (newMap != null)
+                newMap.AddEntity(this);
         }
 
         /// <summary>
@@ -389,6 +387,31 @@ namespace DemoGame.Server
             Map.CreateItem(itemTemplate, dropPos, amount);
         }
 
+        /// <summary>
+        /// Gets the amount of damage for a normal attack.
+        /// </summary>
+        /// <param name="target">Character being attacked.</param>
+        /// <returns>The amount of damage to inflict for a normal attack.</returns>
+        public int GetAttackDamage(Character target)
+        {
+            if (target == null)
+                throw new ArgumentNullException("target");
+
+            int damage = Rand.Next(Stats[StatType.MinHit], Stats[StatType.MaxHit]);
+
+            // Apply the defence, and ensure the damage is in a valid range
+            int defence;
+            if (!target.Stats.TryGetStatValue(StatType.Defence, out defence))
+                defence = 0;
+
+            damage -= defence / 2;
+
+            if (damage < 1)
+                damage = 1;
+
+            return damage;
+        }
+
         Vector2 GetDropPos()
         {
             const int _dropRange = 32;
@@ -419,6 +442,27 @@ namespace DemoGame.Server
         /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
         /// item was added.</returns>
         public abstract ItemEntity GiveItem(ItemEntity item);
+
+        /// <summary>
+        /// Handles when the Character's HP changes.
+        /// </summary>
+        /// <param name="stat">Stat that changed.</param>
+        void HP_OnChange(IStat stat)
+        {
+            int hp = Stats[StatType.HP];
+            int maxHP = Stats[StatType.MaxHP];
+
+            if (hp > maxHP)
+            {
+                // Keep the HP in a valid range
+                Stats[StatType.HP] = maxHP;
+            }
+            else if (hp <= 0)
+            {
+                // No more HP, no more living
+                Kill();
+            }
+        }
 
         /// <summary>
         /// Checks if a username is valid
@@ -463,42 +507,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Handles when the Character's MP changes.
-        /// </summary>
-        /// <param name="stat">Stat that changed.</param>
-        void MP_OnChange(IStat stat)
-        {
-            int mp = Stats[StatType.MP];
-            int maxMP = Stats[StatType.MaxMP];
-
-            if (mp > maxMP)
-                Stats[StatType.MP] = maxMP;
-            else if (mp < 0)
-                Stats[StatType.MP] = 0;
-        }
-
-        /// <summary>
-        /// Handles when the Character's HP changes.
-        /// </summary>
-        /// <param name="stat">Stat that changed.</param>
-        void HP_OnChange(IStat stat)
-        {
-            int hp = Stats[StatType.HP];
-            int maxHP = Stats[StatType.MaxHP];
-
-            if (hp > maxHP)
-            {
-                // Keep the HP in a valid range
-                Stats[StatType.HP] = maxHP;
-            }
-            else if (hp <= 0)
-            {
-                // No more HP, no more living
-                Kill();
-            }
-        }
-
-        /// <summary>
         /// Starts moving the character to the left
         /// </summary>
         public void MoveLeft()
@@ -521,6 +529,21 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Handles when the Character's MP changes.
+        /// </summary>
+        /// <param name="stat">Stat that changed.</param>
+        void MP_OnChange(IStat stat)
+        {
+            int mp = Stats[StatType.MP];
+            int maxMP = Stats[StatType.MaxMP];
+
+            if (mp > maxMP)
+                Stats[StatType.MP] = maxMP;
+            else if (mp < 0)
+                Stats[StatType.MP] = 0;
+        }
+
+        /// <summary>
         /// Sets the Character to being loaded. Must be called after the Character has been loaded.
         /// </summary>
         protected void SetAsLoaded()
@@ -531,29 +554,6 @@ namespace DemoGame.Server
             // Hook some event listeners
             Stats.GetStat(StatType.HP).OnChange += HP_OnChange;
             Stats.GetStat(StatType.MP).OnChange += MP_OnChange;
-        }
-
-        /// <summary>
-        /// Changes the Character's map.
-        /// </summary>
-        /// <param name="newMap">New map to place the Character on.</param>
-        public void ChangeMap(Map newMap)
-        {
-            if (Map == newMap)
-            {
-                Debug.Fail("Character is already on this map.");
-                return;
-            }
-
-            // Remove the Character from the last map
-            if (Map != null)
-                Map.RemoveEntity(this);
-
-            _map = null;
-
-            // Set the Character's new map
-            if (newMap != null)
-                newMap.AddEntity(this);
         }
 
         /// <summary>
