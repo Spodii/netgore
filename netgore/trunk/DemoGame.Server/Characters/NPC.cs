@@ -77,7 +77,9 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets if this NPC will respawn after dieing.
         /// </summary>
+// ReSharper disable MemberCanBeMadeStatic.Global
         public bool WillRespawn
+// ReSharper restore MemberCanBeMadeStatic.Global
         {
             get { return true; }
         }
@@ -224,7 +226,7 @@ namespace DemoGame.Server
             Stats[StatType.MP] = Stats[StatType.MaxMP];
 
             // Set the NPC's new location
-            Teleport(new Vector2(560f, 490f)); // HACK: Hard-coded spawn location
+            Teleport(new Vector2(560f, 400f)); // HACK: Hard-coded spawn location
 
             // Set the NPC as alive
             IsAlive = true;
