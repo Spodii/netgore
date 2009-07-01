@@ -150,26 +150,32 @@
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
       <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
       <Name>NetGore.Collections</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.EditorTools\NetGore.EditorTools.csproj">
       <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
       <Name>NetGore.EditorTools</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics.WinForms\NetGore.Graphics.WinForms.csproj">
       <Project>{B2AC0C73-29FE-4184-97E7-929A98769248}</Project>
       <Name>NetGore.Graphics.WinForms</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
       <Name>NetGore.Graphics</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
       <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
       <Name>NetGore.IO</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
       <Name>NetGore</Name>
+      <Private>True</Private>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
