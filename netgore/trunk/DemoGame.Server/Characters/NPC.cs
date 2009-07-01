@@ -2,7 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using System.Reflection;
+using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 
@@ -11,8 +12,10 @@ namespace DemoGame.Server
     /// <summary>
     /// A non-player character
     /// </summary>
-    public class NPC : Character
+    public class NPC : Character, IRespawnable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// NPC's AI module
         /// </summary>
@@ -28,9 +31,9 @@ namespace DemoGame.Server
         ushort _respawnSecs;
 
         /// <summary>
-        /// The game time at which the NPC will respawn (IsAlive must be false)
+        /// The game time at which the NPC will respawn.
         /// </summary>
-        int _spawnTime = 0;
+        int _respawnTime = 0;
 
         public ushort GiveCash
         {
@@ -52,8 +55,10 @@ namespace DemoGame.Server
             get { return _inventory; }
         }
 
+        public Map RespawnMap { get; set; }
+
         /// <summary>
-        /// Gets or sets (protected) the amount of time it takes (in milliseconds) for the NPC to respawn
+        /// Gets or sets (protected) the amount of time it takes (in milliseconds) for the NPC to respawn.
         /// </summary>
         public ushort RespawnSecs
         {
@@ -61,6 +66,9 @@ namespace DemoGame.Server
             protected set { _respawnSecs = value; }
         }
 
+        /// <summary>
+        /// Gets the CharacterStatsBase used for this Character's stats.
+        /// </summary>
         public override CharacterStatsBase Stats
         {
             get { return _stats; }
@@ -105,9 +113,6 @@ namespace DemoGame.Server
             _stats[StatType.HP] = _stats[StatType.MaxHP];
             _stats[StatType.MP] = _stats[StatType.MaxMP];
 
-            _stats.GetStat(StatType.HP).OnChange += HP_OnChange;
-            _stats.GetStat(StatType.MP).OnChange += MP_OnChange;
-
             // Set the rest of the template stuff
             _respawnSecs = template.RespawnSecs;
             _giveExp = template.GiveExp;
@@ -129,30 +134,29 @@ namespace DemoGame.Server
             return _inventory.Add(item);
         }
 
-        void HP_OnChange(IStat stat)
-        {
-            int hp = Stats[StatType.HP];
-            int maxHP = Stats[StatType.MaxHP];
-
-            if (hp > maxHP)
-                Stats[StatType.HP] = maxHP;
-            else if (hp <= 0)
-                Kill();
-        }
-
         /// <summary>
-        /// Kills the NPC, visually removing them from the map and starting their respawn timer
+        /// When overridden in the derived class, implements the Character being killed. This 
+        /// doesn't actually care how the Character was killed, it just takes the appropriate
+        /// actions to kill them.
         /// </summary>
         public override void Kill()
         {
+            base.Kill();
+
             if (!IsAlive)
             {
-                Debug.Fail("Attempted to kill a dead NPC.");
+                const string errmsg = "Attempted to kill dead NPC `{0}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
                 return;
             }
             if (Map == null)
             {
-                Debug.Fail("Attempted to kill a NPC not on a map.");
+                const string errmsg = "Attempted to kill NPC `{0}` with a null map.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
                 return;
             }
 
@@ -166,58 +170,10 @@ namespace DemoGame.Server
 
             // Start the respawn sequence
             IsAlive = false;
-            _spawnTime = GetTime() + (RespawnSecs * 1000);
-        }
+            _respawnTime = GetTime() + (RespawnSecs * 1000);
 
-        /// <summary>
-        /// Handles what happens when the NPC is killed
-        /// </summary>
-        /// <param name="source">Entity that killed the NPC</param>
-        protected override void KilledBy(Entity source)
-        {
-            // Killed by a user
-            User user = source as User;
-            if (user != null)
-                user.GiveKillReward(GiveExp, GiveCash);
-        }
-
-        void MP_OnChange(IStat stat)
-        {
-            int mp = Stats[StatType.MP];
-            int maxMP = Stats[StatType.MaxMP];
-
-            if (mp > maxMP)
-                Stats[StatType.MP] = maxMP;
-            else if (mp < 0)
-                Stats[StatType.MP] = 0;
-        }
-
-        /// <summary>
-        /// Spawns the NPC on the map
-        /// </summary>
-        void Spawn()
-        {
-            // NPC must already be alive
-            if (IsAlive)
-            {
-                Debug.Fail("Attempted to spawn a living NPC.");
-                return;
-            }
-            if (Map == null)
-            {
-                Debug.Fail("Attempted to spawn a NPC with no map.");
-                return;
-            }
-
-            // Restore the NPC's stats
-            Stats[StatType.HP] = Stats[StatType.MaxHP];
-            Stats[StatType.MP] = Stats[StatType.MaxMP];
-
-            // Set the NPC's new location
-            Teleport(new Vector2(560f, 490f));
-
-            // Set the NPC as alive
-            IsAlive = true;
+            ChangeMap(null);
+            RespawnMap.AddToRespawn(this);
         }
 
         /// <summary>
@@ -225,18 +181,9 @@ namespace DemoGame.Server
         /// </summary>
         public override void Update(IMap imap, float deltaTime)
         {
-            // Make sure there are users on the map
-            if (Map.Users.Count() == 0)
-                return;
-
             // Check for spawning if dead
             if (!IsAlive)
-            {
-                if (_spawnTime > GetTime())
-                    return; // Still more time until the NPC spawns
-
-                Spawn();
-            }
+                return;
 
             // Update the AI
             if (_ai != null)
@@ -245,5 +192,48 @@ namespace DemoGame.Server
             // Perform the base update of the character
             base.Update(imap, deltaTime);
         }
+
+        #region IRespawnable Members
+
+        public bool ReadyToRespawn(int currentTime)
+        {
+            return IsAlive || currentTime > _respawnTime;
+        }
+
+        void IRespawnable.Respawn()
+        {
+            // Restore the NPC's stats
+            Stats[StatType.HP] = Stats[StatType.MaxHP];
+            Stats[StatType.MP] = Stats[StatType.MaxMP];
+
+            // Set the NPC's new location
+            Teleport(new Vector2(560f, 490f)); // HACK: Hard-coded spawn location
+
+            // Set the NPC as alive
+            IsAlive = true;
+
+            // Set the map
+            if (RespawnMap == null)
+            {
+                // If the respawn map is invalid, there is nothing we can do to spawn it, so dispose of it
+                const string errmsg = "Null respawn map for NPC `{0}`. Cannot respawn - disposing instead.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                DelayedDispose();
+            }
+            else
+            {
+                if (RespawnMap != null)
+                    ChangeMap(RespawnMap);
+            }
+        }
+
+        DynamicEntity IRespawnable.DynamicEntity
+        {
+            get { return this; }
+        }
+
+        #endregion
     }
 }

@@ -27,6 +27,15 @@ namespace DemoGame.Server
         bool _disposed;
 
         /// <summary>
+        /// Adds an IRespawnable to the list of objects that need to respawn.
+        /// </summary>
+        /// <param name="respawnable">The object to respawn.</param>
+        public void AddToRespawn(IRespawnable respawnable)
+        {
+            World.AddToRespawn(respawnable);
+        }
+
+        /// <summary>
         /// Gets the DBController used by this Map.
         /// </summary>
         public DBController DBController
@@ -198,8 +207,20 @@ namespace DemoGame.Server
             CharAdded(entity);
         }
 
+        public override void AddEntity(Entity entity)
+        {
+            IRespawnable respawnable = entity as IRespawnable;
+            if (respawnable != null && !respawnable.ReadyToRespawn(GetTime()))
+            {
+                AddToRespawn(respawnable);
+                return;
+            }
+
+            base.AddEntity(entity);
+        }
+
         /// <summary>
-        /// When overriddeni n the derived class, allows for additional processing on Entities removed from the map.
+        /// When overridden in the derived class, allows for additional processing on Entities removed from the map.
         /// This is called after the Entity has finished being removed from the map.
         /// </summary>
         /// <param name="entity">Entity that was removed from the map.</param>

@@ -79,6 +79,9 @@ namespace DemoGame.Server
             get { return _inventory; }
         }
 
+        /// <summary>
+        /// Gets the CharacterStatsBase used for this Character's stats.
+        /// </summary>
         public override CharacterStatsBase Stats
         {
             get { return _stats; }
@@ -119,6 +122,23 @@ namespace DemoGame.Server
             // Load the user
             Alliance = World.Server.AllianceManager["user"];
             Load(name, world);
+
+            // Attach to some events
+            OnKillCharacter += User_OnKillCharacter;
+        }
+
+        void User_OnKillCharacter(Character killed, Character killer)
+        {
+            Debug.Assert(killer == this);
+            Debug.Assert(killed != null);
+
+            NPC killedNPC = killed as NPC;
+
+            // Handle killing a NPC
+            if (killedNPC != null)
+            {
+                GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
+            }
         }
 
         /// <summary>
@@ -286,16 +306,17 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Raises the user's exp and cash along with notifies them of the amounts
+        /// Raises the user's exp and cash along with notifies them of the amounts.
         /// </summary>
-        /// <param name="exp">Amount of exp to give</param>
-        /// <param name="cash">Amount of cash to give</param>
-        public void GiveKillReward(ushort exp, ushort cash)
+        /// <param name="exp">Amount of exp to give.</param>
+        /// <param name="cash">Amount of cash to give.</param>
+        void GiveKillReward(int exp, int cash)
         {
             using (PacketWriter pw = ServerPacket.NotifyExpCash(exp, cash))
             {
                 Send(pw);
             }
+
             Stats[StatType.Exp] += exp;
             Stats[StatType.Cash] += cash;
         }
@@ -331,6 +352,8 @@ namespace DemoGame.Server
         /// </summary>
         public override void Kill()
         {
+            base.Kill();
+
             Teleport(new Vector2(100, 100));
             Stats[StatType.HP] = Stats[StatType.MaxHP];
             Stats[StatType.MP] = Stats[StatType.MaxMP];
@@ -364,7 +387,7 @@ namespace DemoGame.Server
             if (m == null)
                 throw new Exception("Unable to get Map with index " + userValues.MapIndex);
             world.AddUser(this);
-            SetMap(m);
+            ChangeMap(m);
 
             // Load the User's items
             _inventory.Load();

@@ -66,7 +66,7 @@ namespace DemoGame.Server
                             log.ErrorFormat(errmsg, c, this);
                         return false;
                     }
-                    c.SetMap(newMap);
+                    c.ChangeMap(newMap);
                 }
             }
 
