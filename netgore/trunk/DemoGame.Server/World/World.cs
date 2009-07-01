@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -23,6 +22,7 @@ namespace DemoGame.Server
         readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
 
         readonly DArray<Map> _maps;
+        readonly List<IRespawnable> _respawnables = new List<IRespawnable>();
         readonly Server _server;
         readonly TSDictionary<string, User> _users = new TSDictionary<string, User>(StringComparer.OrdinalIgnoreCase);
 
@@ -68,43 +68,6 @@ namespace DemoGame.Server
         public Server Server
         {
             get { return _server; }
-        }
-
-        /// <summary>
-        /// Adds an IRespawnable to the list of objects that need to respawn.
-        /// </summary>
-        /// <param name="respawnable">The object to respawn.</param>
-        public void AddToRespawn(IRespawnable respawnable)
-        {
-            _respawnables.Add(respawnable);
-        }
-
-        readonly List<IRespawnable> _respawnables = new List<IRespawnable>();
-
-        void UpdateRespawnables()
-        {
-            if (_respawnables.Count == 0)
-                return;
-
-            Stack<IRespawnable> toRespawn = new Stack<IRespawnable>(_respawnables);
-            Stack<IRespawnable> respawned = new Stack<IRespawnable>();
-
-            int currentTime = GetTime();
-
-            // Try to respawn each IRespawnable
-            while (toRespawn.Count > 0)
-            {
-                IRespawnable respawnable = toRespawn.Pop();
-                if (respawnable.ReadyToRespawn(currentTime))
-                {
-                    respawnable.Respawn();
-                    respawned.Push(respawnable);
-                }
-            }
-
-            // Remove the successful respawns from the master list
-            if (respawned.Count > 0)
-                _respawnables.RemoveAll(respawned.Contains);
         }
 
         /// <summary>
@@ -156,6 +119,15 @@ namespace DemoGame.Server
                 }
             }
 #endif
+        }
+
+        /// <summary>
+        /// Adds an IRespawnable to the list of objects that need to respawn.
+        /// </summary>
+        /// <param name="respawnable">The object to respawn.</param>
+        public void AddToRespawn(IRespawnable respawnable)
+        {
+            _respawnables.Add(respawnable);
         }
 
         /// <summary>
@@ -245,6 +217,15 @@ namespace DemoGame.Server
                 log.WarnFormat("GetMap() on index {0} returned null because map does not exist.");
 
             return null;
+        }
+
+        /// <summary>
+        /// Gets the current time.
+        /// </summary>
+        /// <returns>Current time.</returns>
+        public override int GetTime()
+        {
+            return _server.GetTime();
         }
 
         /// <summary>
@@ -378,14 +359,30 @@ namespace DemoGame.Server
             }
         }
 
-        /// <summary>
-        /// Gets the current time.
-        /// </summary>
-        /// <returns>Current time.</returns>
-        public override int GetTime()
+        void UpdateRespawnables()
         {
-            return _server.GetTime();
-        }
+            if (_respawnables.Count == 0)
+                return;
 
+            var toRespawn = new Stack<IRespawnable>(_respawnables);
+            var respawned = new Stack<IRespawnable>();
+
+            int currentTime = GetTime();
+
+            // Try to respawn each IRespawnable
+            while (toRespawn.Count > 0)
+            {
+                IRespawnable respawnable = toRespawn.Pop();
+                if (respawnable.ReadyToRespawn(currentTime))
+                {
+                    respawnable.Respawn();
+                    respawned.Push(respawnable);
+                }
+            }
+
+            // Remove the successful respawns from the master list
+            if (respawned.Count > 0)
+                _respawnables.RemoveAll(respawned.Contains);
+        }
     }
 }

@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-
 using log4net;
 using Microsoft.Xna.Framework;
 using MySql.Data.MySqlClient;
@@ -125,20 +122,6 @@ namespace DemoGame.Server
 
             // Attach to some events
             OnKillCharacter += User_OnKillCharacter;
-        }
-
-        void User_OnKillCharacter(Character killed, Character killer)
-        {
-            Debug.Assert(killer == this);
-            Debug.Assert(killed != null);
-
-            NPC killedNPC = killed as NPC;
-
-            // Handle killing a NPC
-            if (killedNPC != null)
-            {
-                GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
-            }
         }
 
         /// <summary>
@@ -623,6 +606,18 @@ namespace DemoGame.Server
             // NOTE: Once I hook to the item's amount in the inventory to listen for changes, I can put this in UseItem()
             if (item.Type == ItemType.UseOnce)
                 _inventory.DecreaseItemAmount(slot);
+        }
+
+        void User_OnKillCharacter(Character killed, Character killer)
+        {
+            Debug.Assert(killer == this);
+            Debug.Assert(killed != null);
+
+            NPC killedNPC = killed as NPC;
+
+            // Handle killing a NPC
+            if (killedNPC != null)
+                GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
         }
     }
 }
