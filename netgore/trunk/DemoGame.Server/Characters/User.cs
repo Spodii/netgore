@@ -613,7 +613,7 @@ namespace DemoGame.Server
             Debug.Assert(killer == this);
             Debug.Assert(killed != null);
 
-            NPC killedNPC = killed as NPC;
+            var killedNPC = killed as NPC;
 
             // Handle killing a NPC
             if (killedNPC != null)

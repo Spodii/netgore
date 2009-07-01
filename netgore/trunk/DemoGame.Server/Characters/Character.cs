@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -245,7 +246,7 @@ namespace DemoGame.Server
 
             // Damage all hit characters
             Rectangle hitRect = BodyInfo.GetHitRect(this, BodyInfo.PunchRect);
-            var hitChars = Map.GetEntities<Character>(hitRect);
+            List<Character> hitChars = Map.GetEntities<Character>(hitRect);
             foreach (Character c in hitChars)
             {
                 Attack(c);
@@ -334,7 +335,7 @@ namespace DemoGame.Server
             {
                 if (source != null)
                 {
-                    Character sourceCharacter = source as Character;
+                    var sourceCharacter = source as Character;
                     if (sourceCharacter != null)
                     {
                         if (sourceCharacter.OnKillCharacter != null)
@@ -354,7 +355,7 @@ namespace DemoGame.Server
         /// </summary>
         public void DelayedDispose()
         {
-            var stack = Map.World.DisposeStack;
+            Stack<IDisposable> stack = Map.World.DisposeStack;
             if (!stack.Contains(this))
                 stack.Push(this);
         }
@@ -610,7 +611,7 @@ namespace DemoGame.Server
         bool UseEquipment(ItemEntity item, byte? inventorySlot)
         {
             // Only allow users to equip items
-            User user = this as User;
+            var user = this as User;
             if (user == null)
                 return false;
 
@@ -671,7 +672,7 @@ namespace DemoGame.Server
 
         bool UseItemUseOnce(ItemEntity item)
         {
-            var useBonuses = item.Stats.Where(stat => stat.Value != 0);
+            IEnumerable<IStat> useBonuses = item.Stats.Where(stat => stat.Value != 0);
             foreach (IStat stat in useBonuses)
             {
                 Stats[stat.StatType] += stat.Value;

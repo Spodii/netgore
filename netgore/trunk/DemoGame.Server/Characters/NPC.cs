@@ -74,6 +74,14 @@ namespace DemoGame.Server
             get { return _stats; }
         }
 
+        /// <summary>
+        /// Gets if this NPC will respawn after dieing.
+        /// </summary>
+        public bool WillRespawn
+        {
+            get { return true; }
+        }
+
         [Obsolete("Do not use this empty constructor on the Server!")]
         public NPC()
         {
@@ -184,13 +192,6 @@ namespace DemoGame.Server
                 DelayedDispose();
             }
         }
-
-        /// <summary>
-        /// Gets if this NPC will respawn after dieing.
-        /// </summary>
-// ReSharper disable MemberCanBeMadeStatic.Global
-        public bool WillRespawn { get { return true; } }
-// ReSharper restore MemberCanBeMadeStatic.Global
 
         /// <summary>
         /// Updates the NPC
