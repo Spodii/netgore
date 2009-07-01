@@ -7,8 +7,38 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Network;
 
+// TODO: Clean up this crap some more. The events should be STRONGLY defined. Then the rest of the events should be added
+
 namespace DemoGame.Server
 {
+    /// <summary>
+    /// Handles Character events.
+    /// </summary>
+    /// <param name="character">The Character that the event took place on.</param>
+    public delegate void CharacterEventHandler(Character character);
+    
+    /// <summary>
+    /// Handles Character attack events.
+    /// </summary>
+    /// <param name="attacker">The Character that did the attacking.</param>
+    /// <param name="attacked">The Character that was attacked.</param>
+    /// <param name="damage">Amount of damage that was inflicted.</param>
+    public delegate void CharacterAttackCharacterEventHandler(Character attacker, Character attacked, int damage);
+
+    /// <summary>
+    /// Handles Character Map events.
+    /// </summary>
+    /// <param name="character">The Character that the event took place on.</param>
+    /// <param name="map">The Map related to the event.</param>
+    public delegate void CharacterMapEventHandler(Character character, Map map);
+
+    /// <summary>
+    /// Handles Character killing events.
+    /// </summary>
+    /// <param name="killed">The Character that was killed.</param>
+    /// <param name="killer">The Character that did the killing.</param>
+    public delegate void CharacterKillEventHandler(Character killed, Character killer);
+
     /// <summary>
     /// A game character
     /// </summary>
@@ -27,6 +57,37 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly World _world;
+
+        /// <summary>
+        /// Notifies listeners when the Character performs an attack. The attack does not have to actually hit
+        /// anything for this event to be raised. This will be raised before <see cref="OnAttackCharacter"/>.
+        /// </summary>
+        public event CharacterEventHandler OnAttack;
+
+        /// <summary>
+        /// Notifies listeners when this Character has successfully attacked another Character.
+        /// </summary>
+        public event CharacterAttackCharacterEventHandler OnAttackCharacter;
+
+        /// <summary>
+        /// Notifies listeners when this Character has been attacked by another Character.
+        /// </summary>
+        public event CharacterAttackCharacterEventHandler OnAttackedByCharacter;
+
+        /// <summary>
+        /// Notifies listeners when this Character has killed another Character.
+        /// </summary>
+        public event CharacterKillEventHandler OnKillCharacter;
+
+        /// <summary>
+        /// Notifies listeners when this Character has been killed by another Character.
+        /// </summary>
+        public event CharacterKillEventHandler OnKilledByCharacter;
+
+        /// <summary>
+        /// Notifies listeners when this Character has been killed in any way, no matter who did it or how it happened.
+        /// </summary>
+        public event CharacterEventHandler OnKilled;
 
         /// <summary>
         /// Character's alliance.
@@ -173,6 +234,9 @@ namespace DemoGame.Server
             // Update the last attack time to now
             _lastAttackTime = currTime;
 
+            if (OnAttack != null)
+                OnAttack(this);
+
             // Inform the map that the user has performed an attack
             using (PacketWriter charAttack = ServerPacket.CharAttack(MapEntityIndex))
             {
@@ -213,36 +277,76 @@ namespace DemoGame.Server
             if (!Alliance.CanAttack(target.Alliance))
                 return;
 
-            // Perform attack
-            ushort damage = (ushort)Rand.Next(Stats[StatType.MinHit], Stats[StatType.MaxHit]);
+            // Get the damage
+            int damage = GetAttackDamage(target);
+
+            // Apply the damage to the target
             target.Damage(this, damage);
+
+            // Raise attack events
+            if (OnAttackCharacter != null)
+                OnAttackCharacter(this, target, damage);
+
+            if (target.OnAttackedByCharacter != null)
+                target.OnAttackedByCharacter(this, target, damage);
         }
 
         /// <summary>
-        /// Applies damage to the Character
+        /// Gets the amount of damage for a normal attack.
         /// </summary>
-        /// <param name="source">Entity the damage came from (can be null)</param>
+        /// <param name="target">Character being attacked.</param>
+        /// <returns>The amount of damage to inflict for a normal attack.</returns>
+        public int GetAttackDamage(Character target)
+        {
+            if (target == null)
+                throw new ArgumentNullException("target");
+
+            int damage = Rand.Next(Stats[StatType.MinHit], Stats[StatType.MaxHit]);
+
+            // Apply the defence, and ensure the damage is in a valid range
+            int defence;
+            if (!target.Stats.TryGetStatValue(StatType.Defence, out defence))
+                defence = 0;
+
+            damage -= defence / 2;
+
+            if (damage < 1)
+                damage = 1;
+
+            return damage;
+        }
+
+        /// <summary>
+        /// Applies damage to the Character.
+        /// </summary>
+        /// <param name="source">Entity the damage came from. Can be null.</param>
         /// <param name="damage">Amount of damage to apply to the Character. Does not include damage reduction
         /// from defense or any other kind of damage alterations since these are calculated here.</param>
         public virtual void Damage(Entity source, int damage)
         {
-            // Apply the defence, and ensure the damage is in a valid range
-            damage -= Stats[StatType.Defence] / 2;
-            if (damage < 1)
-                damage = 1;
-            else if (damage > Stats[StatType.MaxHP])
-                damage = Stats[StatType.MaxHP];
-
             // Apply damage
             using (PacketWriter pw = ServerPacket.CharDamage(MapEntityIndex, damage))
             {
-                Map.SendToArea(source.Position, pw);
+                Map.SendToArea(Position, pw);
             }
-            Stats[StatType.HP] -= (short)damage;
+            Stats[StatType.HP] -= damage;
 
             // Check if the character died
             if (Stats[StatType.HP] <= 0)
-                KilledBy(source);
+            {
+                if (source != null)
+                {
+                    Character sourceCharacter = source as Character;
+                    if (sourceCharacter != null)
+                    {
+                        if (sourceCharacter.OnKillCharacter != null)
+                            sourceCharacter.OnKillCharacter(this, sourceCharacter);
+
+                        if (OnKilledByCharacter != null)
+                            OnKilledByCharacter(this, sourceCharacter);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -348,22 +452,50 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Implements the Character being killed. This doesn't actually care how the Character
-        /// was killed, it just takes the appropriate actions to kill them. To handle actions
-        /// based on who or what killed the Character, override KilledBy().
+        /// When overridden in the derived class, implements the Character being killed. This 
+        /// doesn't actually care how the Character was killed, it just takes the appropriate
+        /// actions to kill them.
         /// </summary>
-        public abstract void Kill();
+        public virtual void Kill()
+        {
+            if (OnKilled != null)
+                OnKilled(this);
+        }
 
         /// <summary>
-        /// Handles the Character dieing by a given source. Used to allow the entity that
-        /// killed the NPC to be rewarded, or for the death to be handled differently if needed.
-        /// Characters can die without this being called. This is not a substitue for Kill(),
-        /// which actually kills off the character. This just provides additional processing
-        /// for death by a certain source. KilledBy() will likely always be called after Kill().
+        /// Handles when the Character's MP changes.
         /// </summary>
-        /// <param name="source">Entity that killed the Character</param>
-        protected virtual void KilledBy(Entity source)
+        /// <param name="stat">Stat that changed.</param>
+        void MP_OnChange(IStat stat)
         {
+            int mp = Stats[StatType.MP];
+            int maxMP = Stats[StatType.MaxMP];
+
+            if (mp > maxMP)
+                Stats[StatType.MP] = maxMP;
+            else if (mp < 0)
+                Stats[StatType.MP] = 0;
+        }
+
+        /// <summary>
+        /// Handles when the Character's HP changes.
+        /// </summary>
+        /// <param name="stat">Stat that changed.</param>
+        void HP_OnChange(IStat stat)
+        {
+            int hp = Stats[StatType.HP];
+            int maxHP = Stats[StatType.MaxHP];
+
+            if (hp > maxHP)
+            {
+                // Keep the HP in a valid range
+                Stats[StatType.HP] = maxHP;
+            }
+            else if (hp <= 0)
+            {
+                // No more HP, no more living
+                Kill();
+            }
         }
 
         /// <summary>
@@ -395,22 +527,23 @@ namespace DemoGame.Server
         {
             Debug.Assert(!_isLoaded, "SetAsLoaded() has already been called on this Character.");
             _isLoaded = true;
+
+            // Hook some event listeners
+            Stats.GetStat(StatType.HP).OnChange += HP_OnChange;
+            Stats.GetStat(StatType.MP).OnChange += MP_OnChange;
         }
 
         /// <summary>
-        /// Sets the Character's map.
+        /// Changes the Character's map.
         /// </summary>
-        /// <param name="newMap">Map to place the Character on.</param>
-        public void SetMap(Map newMap)
+        /// <param name="newMap">New map to place the Character on.</param>
+        public void ChangeMap(Map newMap)
         {
             if (Map == newMap)
             {
                 Debug.Fail("Character is already on this map.");
                 return;
             }
-
-            if (newMap == null)
-                throw new ArgumentNullException("newMap");
 
             // Remove the Character from the last map
             if (Map != null)
@@ -419,7 +552,8 @@ namespace DemoGame.Server
             _map = null;
 
             // Set the Character's new map
-            newMap.AddEntity(this);
+            if (newMap != null)
+                newMap.AddEntity(this);
         }
 
         /// <summary>
@@ -440,7 +574,7 @@ namespace DemoGame.Server
         /// <param name="position">Position to teleport to.</param>
         public override void Teleport(Vector2 position)
         {
-            if (Map == null)
+            if (Map == null && IsAlive && IsLoaded)
             {
                 const string errmsg = "Attempted to teleport a Character `{0}` while their map was null.";
                 if (log.IsErrorEnabled)

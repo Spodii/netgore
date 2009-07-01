@@ -14,5 +14,7 @@ namespace DemoGame
         IStat GetStat(StatType statType);
 
         bool TryGetStat(StatType statType, out IStat stat);
+
+        bool TryGetStatValue(StatType statType, out int value);
     }
 }

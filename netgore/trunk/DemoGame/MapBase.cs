@@ -181,7 +181,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="entity">DynamicEntity to add to the Map.</param>
         /// <param name="mapEntityIndex">Unique index to assign to the DynamicEntity.</param>
-        public void AddDynamicEntity(DynamicEntity entity, MapEntityIndex mapEntityIndex)
+        public virtual void AddDynamicEntity(DynamicEntity entity, MapEntityIndex mapEntityIndex)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
@@ -200,7 +200,7 @@ namespace DemoGame
         /// Adds an Entity to the map.
         /// </summary>
         /// <param name="entity">Entity to add to the map.</param>
-        public void AddEntity(Entity entity)
+        public virtual void AddEntity(Entity entity)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");

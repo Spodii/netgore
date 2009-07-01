@@ -71,6 +71,43 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Adds an IRespawnable to the list of objects that need to respawn.
+        /// </summary>
+        /// <param name="respawnable">The object to respawn.</param>
+        public void AddToRespawn(IRespawnable respawnable)
+        {
+            _respawnables.Add(respawnable);
+        }
+
+        readonly List<IRespawnable> _respawnables = new List<IRespawnable>();
+
+        void UpdateRespawnables()
+        {
+            if (_respawnables.Count == 0)
+                return;
+
+            Stack<IRespawnable> toRespawn = new Stack<IRespawnable>(_respawnables);
+            Stack<IRespawnable> respawned = new Stack<IRespawnable>();
+
+            int currentTime = GetTime();
+
+            // Try to respawn each IRespawnable
+            while (toRespawn.Count > 0)
+            {
+                IRespawnable respawnable = toRespawn.Pop();
+                if (respawnable.ReadyToRespawn(currentTime))
+                {
+                    respawnable.Respawn();
+                    respawned.Push(respawnable);
+                }
+            }
+
+            // Remove the successful respawns from the master list
+            if (respawned.Count > 0)
+                _respawnables.RemoveAll(respawned.Contains);
+        }
+
+        /// <summary>
         /// World constructor
         /// </summary>
         /// <param name="parent">Server this world is part of</param>
@@ -106,8 +143,8 @@ namespace DemoGame.Server
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    NPC npc = new NPC(this, NPCTemplates.GetTemplate(1));
-                    npc.SetMap(m);
+                    NPC npc = new NPC(this, NPCTemplates.GetTemplate(1)) { RespawnMap = m };
+                    npc.ChangeMap(m);
                 }
                 for (int i = 0; i < 5; i++)
                 {
@@ -311,8 +348,8 @@ namespace DemoGame.Server
         /// </summary>
         public override void Update()
         {
-            // Process the dispose stack
             ProcessDisposeStack();
+            UpdateRespawnables();
 
             base.Update();
         }

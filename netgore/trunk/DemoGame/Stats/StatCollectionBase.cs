@@ -131,6 +131,19 @@ namespace DemoGame
             return _stats.TryGetValue(statType, out stat);
         }
 
+        public bool TryGetStatValue(StatType statType, out int value)
+        {
+            IStat stat;
+            if (!TryGetStat(statType, out stat))
+            {
+                value = 0;
+                return false;
+            }
+
+            value = stat.Value;
+            return true;
+        }
+
         #endregion
     }
 }
