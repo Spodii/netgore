@@ -78,6 +78,7 @@
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\log4net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
     <Reference Include="Microsoft.Xna.Framework.Game, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=MSIL" />
@@ -85,11 +86,14 @@
     <Reference Include="System">
       <Private>False</Private>
     </Reference>
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -179,11 +183,11 @@
   </Target>
   -->
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
-    <PostBuildEvent>xcopy "$(ProjectDir)\Content\Data" "$(TargetDir)Content\Data" /E /C /R /K /I /Y
+    <PreBuildEvent>xcopy "$(ProjectDir)\Content\Data" "$(TargetDir)Content\Data" /E /C /R /K /I /Y
 xcopy "$(ProjectDir)\Content\Skeletons" "$(TargetDir)Content\Skeletons"  /E /C /R /K /I /Y
 xcopy "$(ProjectDir)\Content\Maps" "$(TargetDir)Content\Maps"  /E /C /R /K /I /Y
-xcopy "$(ProjectDir)\Content\Languages" "$(TargetDir)Content\Languages"  /E /C /R /K /I /Y</PostBuildEvent>
+xcopy "$(ProjectDir)\Content\Languages" "$(TargetDir)Content\Languages"  /E /C /R /K /I /Y</PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
 </Project>
