@@ -41,6 +41,13 @@ namespace DemoGame.Server
     public delegate void CharacterKillEventHandler(Character killed, Character killer);
 
     /// <summary>
+    /// Handles Character item events.
+    /// </summary>
+    /// <param name="character">The Character that the event took place on.</param>
+    /// <param name="item">The ItemEntity related to the event.</param>
+    public delegate void CharacterItemEventHandler(Character character, ItemEntity item);
+
+    /// <summary>
     /// A game character
     /// </summary>
     public abstract class Character : CharacterEntity, IGetTime
@@ -106,6 +113,21 @@ namespace DemoGame.Server
         /// Notifies listeners when this Character has killed another Character.
         /// </summary>
         public event CharacterKillEventHandler OnKillCharacter;
+
+        /// <summary>
+        /// Notifies listeners when this Character has dropped an item.
+        /// </summary>
+        public event CharacterItemEventHandler OnDropItem;
+
+        /// <summary>
+        /// Notifies listeners when this Character has received an item.
+        /// </summary>
+        public event CharacterItemEventHandler OnGetItem; // TODO: Implement. Difficulty implementing is due to the inventory system making a deep copy of things. Should probably add some events to the InventoryBase.
+
+        /// <summary>
+        /// Notifies listeners when this Character uses an item.
+        /// </summary>
+        public event CharacterItemEventHandler OnUseItem;
 
         /// <summary>
         /// Notifies listeners when this Character has been killed in any way, no matter who did it or how it happened.
@@ -361,7 +383,8 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Makes the Character drop an existing item.
+        /// Makes the Character drop an existing item. This does NOT remove the ItemEntity from the Character in any
+        /// way. Be sure to remove the ItemEntity from the Character first if needed.
         /// </summary>
         /// <param name="item">ItemEntity to drop.</param>
         public void DropItem(ItemEntity item)
@@ -371,6 +394,9 @@ namespace DemoGame.Server
 
             // Add the item to the map
             Map.AddEntity(item);
+
+            if (OnDropItem != null)
+                OnDropItem(this, item);
         }
 
         /// <summary>
@@ -385,7 +411,10 @@ namespace DemoGame.Server
             Vector2 dropPos = GetDropPos();
 
             // Create the item on the map
-            Map.CreateItem(itemTemplate, dropPos, amount);
+            var droppedItem = Map.CreateItem(itemTemplate, dropPos, amount);
+
+            if (OnDropItem != null)
+                OnDropItem(this, droppedItem);
         }
 
         /// <summary>
@@ -437,7 +466,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gives an item to the Character.
+        /// Gives an item to the Character to be placed in their Inventory.
         /// </summary>
         /// <param name="item">Item to give to the character.</param>
         /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
@@ -646,18 +675,22 @@ namespace DemoGame.Server
             }
 
             // Use the item based on the item's type
+            bool wasUsed;
             switch (item.Type)
             {
                 case ItemType.Unusable:
-                    return false;
+                    wasUsed = false;
+                    break;
 
                 case ItemType.UseOnce:
-                    return UseItemUseOnce(item);
+                    wasUsed = UseItemUseOnce(item);
+                    break;
 
                 case ItemType.Weapon:
                 case ItemType.Helmet:
                 case ItemType.Body:
-                    return UseEquipment(item, inventorySlot);
+                    wasUsed = UseEquipment(item, inventorySlot);
+                    break;
 
                 default:
                     // Unhandled item type
@@ -666,8 +699,14 @@ namespace DemoGame.Server
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, item, item.Type);
 
-                    return false;
+                    wasUsed = false;
+                    break;
             }
+
+            if (wasUsed && OnUseItem != null)
+                OnUseItem(this, item);
+
+            return wasUsed;
         }
 
         bool UseItemUseOnce(ItemEntity item)
