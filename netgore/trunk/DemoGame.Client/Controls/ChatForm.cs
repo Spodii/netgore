@@ -1,7 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -27,10 +24,10 @@ namespace DemoGame.Client
             // Add the input and output boxes
             float fontHeight = Font.LineSpacing;
 
-            Vector2 inputSize = new Vector2(ClientSize.X, fontHeight);
-            Vector2 outputSize = new Vector2(ClientSize.X, ClientSize.Y - inputSize.Y);
+            var inputSize = new Vector2(ClientSize.X, fontHeight);
+            var outputSize = new Vector2(ClientSize.X, ClientSize.Y - inputSize.Y);
 
-            Vector2 inputPos = new Vector2(0, outputSize.Y);
+            var inputPos = new Vector2(0, outputSize.Y);
             Vector2 outputPos = Vector2.Zero;
 
             _input = new TextBoxSingleLine(string.Empty, inputPos, inputSize, this);

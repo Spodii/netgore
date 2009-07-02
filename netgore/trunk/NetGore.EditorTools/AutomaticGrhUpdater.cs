@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -31,10 +31,10 @@ namespace NetGore.EditorTools
         {
             // The regex to match against the frames folders for automatic animations
             const string matchRegex = ".+_(?<Title>.+)_frames_?(?<Speed>\\d+)?";
-            Regex r = new Regex(matchRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase);
+            var r = new Regex(matchRegex, RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
             // Get all directories
-            var dirs = Directory.GetDirectories(rootDir, "*", SearchOption.AllDirectories);
+            string[] dirs = Directory.GetDirectories(rootDir, "*", SearchOption.AllDirectories);
 
             // Filter out only those that match our regex
             var ret = new List<AnimationRegexInfo>();
@@ -66,7 +66,7 @@ namespace NetGore.EditorTools
         static ushort[] FindFrameIndices(int trimLen, string dir)
         {
             // Get all of the texture files
-            var files = Directory.GetFiles(dir, "*.png", SearchOption.TopDirectoryOnly);
+            string[] files = Directory.GetFiles(dir, "*.png", SearchOption.TopDirectoryOnly);
             if (files.Count() == 0)
                 return null;
 
@@ -85,7 +85,7 @@ namespace NetGore.EditorTools
                 return null;
 
             // Sort by the integer value, giving us our frame order, then grab just the path
-            var goodFiles = fileInts.OrderBy(x => x.Key).Select(x => x.Value);
+            IEnumerable<string> goodFiles = fileInts.OrderBy(x => x.Key).Select(x => x.Value);
 
             // Find the corresponding GrhDatas
             var ret = new List<ushort>();
@@ -122,7 +122,7 @@ namespace NetGore.EditorTools
         /// <returns>List of the complete file paths from the <paramref name="rootDir"/>.</returns>
         static List<string> FindTextures(string rootDir)
         {
-            var filePaths = Directory.GetFiles(rootDir, "*.png", SearchOption.AllDirectories);
+            string[] filePaths = Directory.GetFiles(rootDir, "*.png", SearchOption.AllDirectories);
             var ret = new List<string>(filePaths.Count());
             foreach (string filePath in filePaths)
             {
@@ -227,7 +227,7 @@ namespace NetGore.EditorTools
             int trimLen = GetRelativeTrimLength(rootGrhDir);
 
             // Find the frame directories for auto-animations
-            var frameDirInfos = FindFrameDirs(rootGrhDir);
+            List<AnimationRegexInfo> frameDirInfos = FindFrameDirs(rootGrhDir);
 
             var ret = new List<GrhData>();
             foreach (AnimationRegexInfo frameDirInfo in frameDirInfos)
@@ -245,7 +245,7 @@ namespace NetGore.EditorTools
                 string title = frameDirInfo.Title;
 
                 // Get the GrhIndices of the frames for the animation
-                var indices = FindFrameIndices(trimLen, frameDirInfo.Dir);
+                ushort[] indices = FindFrameIndices(trimLen, frameDirInfo.Dir);
                 if (indices == null)
                     continue;
 
@@ -278,10 +278,10 @@ namespace NetGore.EditorTools
         public static IEnumerable<GrhData> UpdateStationary(ContentManager cm, string rootGrhDir)
         {
             // Get a List of all of the textures from the root directory
-            var textures = FindTextures(rootGrhDir);
+            List<string> textures = FindTextures(rootGrhDir);
 
             // Get a List of all of the used textures
-            var usedTextures = FindUsedTextures();
+            Dictionary<string, List<GrhData>> usedTextures = FindUsedTextures();
 
             // Grab the relative path instead of the complete file path since this
             // is how they are stored in the GrhData, then if it is in the usedTextures, remove it

@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -363,7 +360,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             // Find the text offset
-            Vector2 textOffset = new Vector2(sprite.Source.Width + _textXAdjust, 0);
+            var textOffset = new Vector2(sprite.Source.Width + _textXAdjust, 0);
 
             // Draw the checkbox
             if (sprite.Texture != null)

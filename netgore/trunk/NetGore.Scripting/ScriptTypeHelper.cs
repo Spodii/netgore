@@ -10,6 +10,15 @@ namespace NetGore.Scripting
     public static class ScriptTypeHelper
     {
         /// <summary>
+        /// Gets all Types from every Assembly.
+        /// </summary>
+        /// <returns>All Types from every Assembly.</returns>
+        public static IEnumerable<Type> AllTypes()
+        {
+            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Distinct();
+        }
+
+        /// <summary>
         /// Filters an IEnumerable of Types to only the instanceable types.
         /// </summary>
         /// <param name="types">Types to filter.</param>
@@ -20,15 +29,6 @@ namespace NetGore.Scripting
         }
 
         /// <summary>
-        /// Gets all Types from every Assembly.
-        /// </summary>
-        /// <returns>All Types from every Assembly.</returns>
-        public static IEnumerable<Type> AllTypes()
-        {
-            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Distinct();
-        }
-
-        /// <summary>
         /// Finds every instanceable Type that is defined in the code or in scripts that meets the specified conditions.
         /// </summary>
         /// <param name="subclassType">The Type that each type must be a subclass of.</param>
@@ -36,7 +36,7 @@ namespace NetGore.Scripting
         /// <returns>Every Type that satisfies the given conditions.</returns>
         public static IEnumerable<Type> GetTypes(Type subclassType, Type[] constructorParams)
         {
-            var allTypes = FilterInstanceable(AllTypes());
+            IEnumerable<Type> allTypes = FilterInstanceable(AllTypes());
 
             if (subclassType != null)
                 allTypes = allTypes.Where(x => x.IsSubclassOf(subclassType));

@@ -82,7 +82,7 @@ namespace NetGore.Collections
         /// <returns>Item to use</returns>
         public virtual T Create()
         {
-            var node = GetFree();
+            LinkedListNode<T> node = GetFree();
             PoolData<T> poolData;
             T item;
 
@@ -141,8 +141,8 @@ namespace NetGore.Collections
         /// <param name="item">Item to deactivate</param>
         public virtual void Destroy(T item)
         {
-            var poolData = item.PoolData;
-            var node = poolData.PoolNode;
+            PoolData<T> poolData = item.PoolData;
+            LinkedListNode<T> node = poolData.PoolNode;
 
             if (node == null)
             {

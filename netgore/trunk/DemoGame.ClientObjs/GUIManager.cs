@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -81,7 +79,7 @@ namespace DemoGame.Client
             ControlBorder cbButtonPressed = CreateBorder(GrhInfo.GetDatas(root + "Button.Pressed"));
             ControlBorder cbButtonOver = CreateBorder(GrhInfo.GetDatas(root + "Button.MouseOver"));
 
-            var dic = GrhInfo.GetDatas(root + "CheckBox");
+            Dictionary<string, GrhData> dic = GrhInfo.GetDatas(root + "CheckBox");
             ISprite ut = new Grh(dic["Unticked"]);
             ISprite utOver = new Grh(dic["UntickedMouseOver"]);
             ISprite utPressed = new Grh(dic["UntickedPressed"]);

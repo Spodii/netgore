@@ -42,7 +42,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void CountTest()
         {
-            TestPool pool = new TestPool();
+            var pool = new TestPool();
 
             var pooled = new Stack<TestPoolItem>();
 

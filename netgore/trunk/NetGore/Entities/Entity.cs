@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -205,7 +203,7 @@ namespace NetGore
         /// <returns>A new entity</returns>
         public static T Create<T>(Vector2 position, float width, float height) where T : Entity, new()
         {
-            T entity = new T { CB = new CollisionBox(width, height) };
+            var entity = new T { CB = new CollisionBox(width, height) };
             entity.Teleport(position);
             return entity;
         }

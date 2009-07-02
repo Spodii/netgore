@@ -89,7 +89,7 @@ namespace DemoGame.Client
         void NewPointsLabel()
         {
             AddLine();
-            Vector2 pos = new Vector2(_xOffset, _yOffset);
+            var pos = new Vector2(_xOffset, _yOffset);
             new PointsLabel(pos, this);
         }
 
@@ -97,7 +97,7 @@ namespace DemoGame.Client
         {
             AddLine();
 
-            Vector2 pos = new Vector2(_xOffset, _yOffset);
+            var pos = new Vector2(_xOffset, _yOffset);
             new StatLabel(pos, stat, this);
 
             // Add the mod stat where applicable
@@ -113,14 +113,14 @@ namespace DemoGame.Client
             // Add the stat raise button
             if (CharacterStats.RaiseableStats.Contains(stat.StatType))
             {
-                RaiseStatPB statPB = new RaiseStatPB(pos - new Vector2(22, 0), _addStatGrh, this, stat.StatType);
+                var statPB = new RaiseStatPB(pos - new Vector2(22, 0), _addStatGrh, this, stat.StatType);
                 statPB.OnClick += StatPB_OnClick;
             }
         }
 
         void StatPB_OnClick(object sender, MouseClickEventArgs e)
         {
-            RaiseStatPB statPB = (RaiseStatPB)sender;
+            var statPB = (RaiseStatPB)sender;
 
             // Ensure the stat can be raised
             if (!statPB.CanRaiseStat)

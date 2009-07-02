@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -52,7 +51,7 @@ namespace DemoGame.Client
 
         void CreateItemSlots()
         {
-            Vector2 offset = new Vector2(_sepX, _sepY);
+            var offset = new Vector2(_sepX, _sepY);
 
             for (int i = 0; i < Inventory.MaxInventorySize; i++)
             {
@@ -96,7 +95,7 @@ namespace DemoGame.Client
 
         void InventoryItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
         {
-            InventoryItemPB itemPB = (InventoryItemPB)sender;
+            var itemPB = (InventoryItemPB)sender;
 
             if (e.Button == MouseButtons.Right)
             {
@@ -174,7 +173,7 @@ namespace DemoGame.Client
                     return;
 
                 // Draw the item in the center of the slot
-                Vector2 offset = new Vector2(_itemWidth, _itemHeight);
+                var offset = new Vector2(_itemWidth, _itemHeight);
                 offset -= item.Grh.Size;
                 offset /= 2;
 

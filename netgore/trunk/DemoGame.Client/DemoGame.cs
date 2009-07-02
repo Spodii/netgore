@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -91,9 +88,9 @@ namespace DemoGame.Client
             GrhInfo.Load(ContentPaths.Build.Data.Join("grhdata.xml"), screenManager.MapContent);
 
             // Build the texture atlases
-            TextureAtlas atlasChars = new TextureAtlas();
-            TextureAtlas atlasGUI = new TextureAtlas();
-            TextureAtlas atlasMisc = new TextureAtlas();
+            var atlasChars = new TextureAtlas();
+            var atlasGUI = new TextureAtlas();
+            var atlasMisc = new TextureAtlas();
 
             foreach (GrhData gd in GrhInfo.GrhDatas)
             {
@@ -131,7 +128,7 @@ namespace DemoGame.Client
             if (log.IsInfoEnabled)
                 log.Info("Starting client...");
 
-            using (DemoGame game = new DemoGame())
+            using (var game = new DemoGame())
             {
                 game.Run();
             }

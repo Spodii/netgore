@@ -59,8 +59,7 @@ namespace DemoGame.GUITester
             topForm = new Form(_gui, "Primary form", new Vector2(5, 5), new Vector2(500, 500));
             topForm.OnMouseMove += topForm_OnMouseMove;
 
-            TextBoxMultiLineLocked tbmll = new TextBoxMultiLineLocked(string.Empty, new Vector2(10, 10), new Vector2(150, 300),
-                                                                      topForm);
+            var tbmll = new TextBoxMultiLineLocked(string.Empty, new Vector2(10, 10), new Vector2(150, 300), topForm);
 
             var styledTexts = new List<StyledText>
                               {
@@ -73,17 +72,17 @@ namespace DemoGame.GUITester
 
             _topBorder = topForm.Border;
 
-            Form form = new Form(_gui, "My form", new Vector2(50, 50), new Vector2(200, 200), topForm);
-            TextBoxSingleLine tb = new TextBoxSingleLine("My textboxadsfasdf sd", new Vector2(20, 90), new Vector2(150, 50), form);
+            var form = new Form(_gui, "My form", new Vector2(50, 50), new Vector2(200, 200), topForm);
+            var tb = new TextBoxSingleLine("My textboxadsfasdf sd", new Vector2(20, 90), new Vector2(150, 50), form);
 
-            Button b = new Button("Press me", new Vector2(20, 20), new Vector2(80, 30), form);
+            var b = new Button("Press me", new Vector2(20, 20), new Vector2(80, 30), form);
             b.OnClick += b_OnMouseDown;
 
             new CheckBox("Checkbox", new Vector2(20, 200), form);
 
-            Form f2 = new Form(_gui, "My form 2", new Vector2(200, 200), new Vector2(300, 300), topForm);
-            Form f3 = new Form(_gui, "form 3", Vector2.Zero, new Vector2(200, 200), f2);
-            Form f4 = new Form(_gui, "form 4", Vector2.Zero, new Vector2(100, 100), f3);
+            var f2 = new Form(_gui, "My form 2", new Vector2(200, 200), new Vector2(300, 300), topForm);
+            var f3 = new Form(_gui, "form 3", Vector2.Zero, new Vector2(200, 200), f2);
+            var f4 = new Form(_gui, "form 4", Vector2.Zero, new Vector2(100, 100), f3);
 
             topForm.OnBeginDrag += OnDrag;
             topForm.OnEndDrag += OnDrag;
@@ -99,7 +98,7 @@ namespace DemoGame.GUITester
 
         void OnDrag(Control sender)
         {
-            TextControl s = (TextControl)sender;
+            var s = (TextControl)sender;
             s.Text = s.Position.ToString();
             Window.Title = "Screen Position: " + s.ScreenPosition;
         }
@@ -119,7 +118,7 @@ namespace DemoGame.GUITester
 
         protected override void Update(GameTime gameTime)
         {
-            int currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
+            var currentTime = (int)gameTime.TotalRealTime.TotalMilliseconds;
             _gui.Update(currentTime);
             base.Update(gameTime);
         }

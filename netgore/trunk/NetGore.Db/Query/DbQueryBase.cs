@@ -65,7 +65,7 @@ namespace NetGore.Db
         /// <returns>Clone of the <paramref name="source"/> DbParameter.</returns>
         static DbParameter CloneDbParameter(DbParameter source)
         {
-            ICloneable cloneable = source as ICloneable;
+            var cloneable = source as ICloneable;
             if (cloneable != null)
                 return (DbParameter)cloneable.Clone();
 
@@ -152,7 +152,7 @@ namespace NetGore.Db
         /// <returns>A comma-delimited string of all fields in the format of: `field`=@field.</returns>
         public static string FormatParametersIntoString(IEnumerable<string> fields)
         {
-            StringBuilder sb = new StringBuilder(512);
+            var sb = new StringBuilder(512);
 
             foreach (string field in fields)
             {

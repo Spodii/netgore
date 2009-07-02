@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics.GUI;
@@ -54,8 +52,8 @@ namespace DemoGame.Client
 
         void CreateItemSlots(int row, int column, EquipmentSlot slot)
         {
-            Vector2 size = new Vector2(_itemWidth, _itemHeight);
-            Vector2 loc = new Vector2(row, column);
+            var size = new Vector2(_itemWidth, _itemHeight);
+            var loc = new Vector2(row, column);
             Vector2 pos = size * loc;
 
             new EquippedItemPB(this, pos, slot);
@@ -170,7 +168,7 @@ namespace DemoGame.Client
                     return;
 
                 // Draw the item in the center of the slot
-                Vector2 offset = new Vector2(_itemWidth, _itemHeight);
+                var offset = new Vector2(_itemWidth, _itemHeight);
                 offset -= item.Grh.Size;
                 offset /= 2;
 

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics;
@@ -216,13 +215,13 @@ namespace NetGore.EditorTools
             if (Map == null || Camera == null)
                 return;
 
-            var allItems = GetItems();
+            IEnumerable<TItem> allItems = GetItems();
             if (allItems == null || allItems.Count() == 0)
                 return;
 
-            var existingItems = Items.OfType<TItem>();
-            var toAdd = allItems.Except(existingItems).ToArray();
-            var toRemove = allItems.Except(existingItems).ToArray();
+            IEnumerable<TItem> existingItems = Items.OfType<TItem>();
+            TItem[] toAdd = allItems.Except(existingItems).ToArray();
+            TItem[] toRemove = allItems.Except(existingItems).ToArray();
 
             try
             {
