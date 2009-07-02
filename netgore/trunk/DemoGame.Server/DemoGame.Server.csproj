@@ -107,7 +107,7 @@
     <Compile Include="Characters\NPCDrop.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Characters\NPCDropManager.cs" />
+    <Compile Include="Characters\NPCDropChance.cs" />
     <Compile Include="GuidCreatorBase.cs" />
     <Compile Include="Items\Inventory.cs" />
     <Compile Include="Items\InventoryChangeInfo.cs" />
@@ -138,8 +138,8 @@
     <Compile Include="SQL\Item\SelectUserInventoryItemsQuery.cs" />
     <Compile Include="SQL\Item\UpdateItemFieldQuery.cs" />
     <Compile Include="SQL\Misc\SelectAlliancesQuery.cs" />
-    <Compile Include="SQL\Misc\SelectNPCDropsQuery.cs" />
-    <Compile Include="SQL\Misc\SelectNPCDropQueryValues.cs" />
+    <Compile Include="SQL\NPC\SelectNPCTemplateDropsQuery.cs" />
+    <Compile Include="SQL\NPC\SelectNPCTemplateDropsQueryValues.cs" />
     <Compile Include="SQL\NPC\SelectNPCTemplateQuery.cs" />
     <Compile Include="SQL\NPC\SelectNPCTemplateQueryValues.cs" />
     <Compile Include="SQL\UserEquipped\DeleteUserEquippedQuery.cs" />

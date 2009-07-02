@@ -412,7 +412,7 @@ namespace DemoGame.Server
 
             // Create the item on the map
             var droppedItem = Map.CreateItem(itemTemplate, dropPos, amount);
-
+            
             if (OnDropItem != null)
                 OnDropItem(this, droppedItem);
         }
