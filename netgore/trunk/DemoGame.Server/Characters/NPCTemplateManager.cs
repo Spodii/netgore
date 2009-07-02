@@ -9,29 +9,32 @@ namespace DemoGame.Server
     public class NPCTemplateManager
     {
         readonly AllianceManager _allianceManager;
-        readonly NPCDropManager _npcDropManager;
+        readonly ItemTemplates _itemTemplates;
         readonly SelectNPCTemplateQuery _query;
         readonly DArray<NPCTemplate> _templates = new DArray<NPCTemplate>(false);
+        readonly SelectNPCTemplateDropsQuery _dropsQuery;
 
         /// <summary>
         /// NPCTemplateManager constructor.
         /// </summary>
         /// <param name="query">SelectNPCTemplateQuery used to load NPCTemplates with.</param>
         /// <param name="allianceManager">AllianceManager containing the Alliances to be used.</param>
-        /// <param name="npcDropManager">NPCDrops collection used to get the NPCDrop reference for each item the
-        /// NPC drops.</param>
-        public NPCTemplateManager(SelectNPCTemplateQuery query, AllianceManager allianceManager, NPCDropManager npcDropManager)
+        /// <param name="itemTemplates">ItemTemplates containing the templates for the items the NPCs will drop.</param>
+        public NPCTemplateManager(SelectNPCTemplateQuery query, SelectNPCTemplateDropsQuery dropsQuery, AllianceManager allianceManager, ItemTemplates itemTemplates)
         {
             if (query == null)
                 throw new ArgumentNullException("query");
+            if (dropsQuery == null)
+                throw new ArgumentNullException("dropsQuery");
             if (allianceManager == null)
                 throw new ArgumentNullException("allianceManager");
-            if (npcDropManager == null)
-                throw new ArgumentNullException("npcDropManager");
+            if (itemTemplates == null)
+                throw new ArgumentNullException("itemTemplates");
 
             _query = query;
+            _dropsQuery = dropsQuery;
             _allianceManager = allianceManager;
-            _npcDropManager = npcDropManager;
+            _itemTemplates = itemTemplates;
         }
 
         /// <summary>
@@ -50,7 +53,7 @@ namespace DemoGame.Server
             // If not cached, load it and place a copy in the cache
             if (ret == null)
             {
-                ret = new NPCTemplate(guid, _query, _allianceManager, _npcDropManager);
+                ret = new NPCTemplate(guid, _query, _dropsQuery, _allianceManager, _itemTemplates);
                 _templates[guid] = ret;
             }
 

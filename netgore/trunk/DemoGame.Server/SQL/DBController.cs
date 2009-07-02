@@ -32,7 +32,7 @@ namespace DemoGame.Server
         readonly SelectItemQuery _selectItemQuery;
         readonly SelectItemsQuery _selectItemsQuery;
         readonly SelectItemTemplatesQuery _selectItemTemplatesQuery;
-        readonly SelectNPCDropsQuery _selectNPCDropsQuery;
+        readonly SelectNPCTemplateDropsQuery _selectNPCTemplateDropsQuery;
         readonly SelectNPCTemplateQuery _selectNPCTemplateQuery;
         readonly SelectUserEquippedItemsQuery _selectUserEquippedItemsQuery;
         readonly SelectUserInventoryItemsQuery _selectUserInventoryItemsQuery;
@@ -47,6 +47,11 @@ namespace DemoGame.Server
         public DeleteItemQuery DeleteItem
         {
             get { return _deleteItemQuery; }
+        }
+
+        public SelectNPCTemplateDropsQuery SelectNPCTemplateDrops
+        {
+            get { return _selectNPCTemplateDropsQuery; }
         }
 
         public DeleteUserEquippedQuery DeleteUserEquipped
@@ -102,11 +107,6 @@ namespace DemoGame.Server
         public SelectItemTemplatesQuery SelectItemTemplates
         {
             get { return _selectItemTemplatesQuery; }
-        }
-
-        public SelectNPCDropsQuery SelectNPCDrops
-        {
-            get { return _selectNPCDropsQuery; }
         }
 
         public SelectNPCTemplateQuery SelectNPCTemplate
@@ -213,8 +213,8 @@ namespace DemoGame.Server
             _selectItemTemplatesQuery = new SelectItemTemplatesQuery(_connectionPool);
             _disposableQueries.Add(_selectItemTemplatesQuery);
 
-            _selectNPCDropsQuery = new SelectNPCDropsQuery(_connectionPool);
-            _disposableQueries.Add(_selectNPCDropsQuery);
+            _selectNPCTemplateDropsQuery = new SelectNPCTemplateDropsQuery(_connectionPool);
+            _disposableQueries.Add(_selectNPCTemplateDropsQuery);
 
             _selectNPCTemplateQuery = new SelectNPCTemplateQuery(_connectionPool);
             _disposableQueries.Add(_selectNPCTemplateQuery);

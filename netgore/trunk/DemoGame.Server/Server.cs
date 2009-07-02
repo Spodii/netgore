@@ -50,7 +50,6 @@ namespace DemoGame.Server
         /// </summary>
         readonly object _loginLock = new object();
 
-        readonly NPCDropManager _npcDropManager;
         readonly NPCTemplateManager _npcManager;
         readonly ServerSockets _sockets;
 
@@ -87,11 +86,6 @@ namespace DemoGame.Server
         public ItemTemplates ItemTemplates
         {
             get { return _itemTemplates; }
-        }
-
-        public NPCDropManager NPCDropManager
-        {
-            get { return _npcDropManager; }
         }
 
         /// <summary>
@@ -152,8 +146,7 @@ namespace DemoGame.Server
             ItemEntity.Initialize(DBController);
             _allianceManager = new AllianceManager(DBController);
             _itemTemplates = new ItemTemplates(DBController.SelectItemTemplates);
-            _npcDropManager = new NPCDropManager(DBController.SelectNPCDrops, _itemTemplates);
-            _npcManager = new NPCTemplateManager(DBController.SelectNPCTemplate, AllianceManager, _npcDropManager);
+            _npcManager = new NPCTemplateManager(DBController.SelectNPCTemplate, DBController.SelectNPCTemplateDrops, AllianceManager, _itemTemplates);
             InitializeScripts();
 
             // Create the world and sockets

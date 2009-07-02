@@ -101,14 +101,12 @@ namespace DemoGame.Server
         /// <param name="guid">Unique ID of the NPC template.</param>
         /// <param name="query">SelectNPCTemplateQuery to load the information from.</param>
         /// <param name="allianceManager">AllianceManager containing the alliances used by the NPCs.</param>
-        /// <param name="npcDrops">NPCDropManager collection used to get the NPCDrop reference for each item the
-        /// NPC drops.</param>
-        public NPCTemplate(int guid, SelectNPCTemplateQuery query, AllianceManager allianceManager, IList<NPCDrop> npcDrops)
+        /// <param name="itemTemplates">ItemTemplates containing the templates for items the NPCs will drop.</param>
+        public NPCTemplate(int guid, SelectNPCTemplateQuery query, SelectNPCTemplateDropsQuery dropsQuery,
+            AllianceManager allianceManager, ItemTemplates itemTemplates)
         {
             if (allianceManager == null)
                 throw new ArgumentNullException("allianceManager");
-            if (npcDrops == null)
-                throw new ArgumentNullException("npcDrops");
 
             // Drops and Stats are converted to an array just because they are the most compact IEnumerable collection
             SelectNPCTemplateQueryValues values = query.Execute(guid);
@@ -119,14 +117,33 @@ namespace DemoGame.Server
             _aiName = values.AIName;
             _giveExp = values.GiveExp;
             _giveCash = values.GiveCash;
-            _drops = values.Drops.Select(x => npcDrops[x]).Distinct().ToArray();
             _alliance = allianceManager[values.Alliance];
+
+            // Get the drops
+            var drops = GetNPCDrops(dropsQuery, guid, itemTemplates);
+            _drops = drops.ToArray();
 
             // Only store stats that have a non-zero value, and assume the rest are zero
             _stats = values.Stats.Where(x => x.Value != 0).ToArray();
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded NPCTemplate `{0}` [{1}]", Guid, Name);
+        }
+
+        public static IEnumerable<NPCDrop> GetNPCDrops(SelectNPCTemplateDropsQuery dropsQuery, int npcGuid, ItemTemplates itemTemplates)
+        {
+            var dropValues = dropsQuery.Execute(npcGuid);
+
+            var ret = new List<NPCDrop>(dropValues.Count());
+            foreach (var value in dropValues)
+            {
+                // TODO: Error handling for when the ItemTemplate does not exist
+                var itemTemplate = itemTemplates[value.ItemGuid];
+                var drop = new NPCDrop(itemTemplate, value.DropChance);
+                ret.Add(drop);
+            }
+
+            return ret;
         }
     }
 }

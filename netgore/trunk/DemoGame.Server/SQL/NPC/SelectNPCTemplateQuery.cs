@@ -49,10 +49,6 @@ namespace DemoGame.Server
                 ushort giveExp = r.GetUInt16("give_exp");
                 ushort giveCash = r.GetUInt16("give_cash");
 
-                // Get the NPCDrop indices
-                string npcDropsString = r.GetString("drops");
-                var drops = ParseNPCDropsString(guid, npcDropsString);
-
                 // Get the NPCStats
                 NPCStats stats = new NPCStats();
                 foreach (StatType statType in NPCStats.NonModStats)
@@ -69,8 +65,7 @@ namespace DemoGame.Server
                     stat.Read(r, ordinal);
                 }
 
-                ret = new SelectNPCTemplateQueryValues(guid, name, bodyIndex, ai, alliance, respawn, giveExp, giveCash, drops,
-                                                       stats);
+                ret = new SelectNPCTemplateQueryValues(guid, name, bodyIndex, ai, alliance, respawn, giveExp, giveCash, stats);
             }
 
             return ret;
