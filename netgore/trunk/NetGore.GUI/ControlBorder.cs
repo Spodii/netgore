@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -280,10 +276,10 @@ namespace NetGore.Graphics.GUI
 
             // Set some values we will be using extensively
             Vector2 sp = c.ScreenPosition;
-            int cX = (int)sp.X;
-            int cY = (int)sp.Y;
-            int cW = (int)c.Size.X;
-            int cH = (int)c.Size.Y;
+            var cX = (int)sp.X;
+            var cY = (int)sp.Y;
+            var cW = (int)c.Size.X;
+            var cH = (int)c.Size.Y;
 
             Rectangle r;
 

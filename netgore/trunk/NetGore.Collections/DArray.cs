@@ -377,7 +377,7 @@ namespace NetGore.Collections
         /// <returns>Index of the item if found, or -1 if not found</returns>
         public int IndexOf(T item)
         {
-            var comparer = EqualityComparer<T>.Default;
+            EqualityComparer<T> comparer = EqualityComparer<T>.Default;
 
             // Iterate through the whole list
             for (int i = 0; i <= _highestIndex; i++)
@@ -452,7 +452,7 @@ namespace NetGore.Collections
         /// <returns>True if the DArray contains the specified item, else false</returns>
         public bool Contains(T item)
         {
-            var comparer = EqualityComparer<T>.Default;
+            EqualityComparer<T> comparer = EqualityComparer<T>.Default;
             foreach (T element in _buffer)
             {
                 if (comparer.Equals(element, item))

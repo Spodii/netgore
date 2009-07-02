@@ -103,7 +103,7 @@ namespace NetGore.Graphics
             category = SanitizeCategory(category);
 
             ushort grhIndex = NextFreeIndex();
-            GrhData gd = new GrhData();
+            var gd = new GrhData();
             gd.Load(grhIndex, frames, speed, category, title);
             AddGrhData(gd);
             return gd;
@@ -132,7 +132,7 @@ namespace NetGore.Graphics
 
             category = SanitizeCategory(category);
 
-            GrhData gd = new GrhData();
+            var gd = new GrhData();
             gd.Load(contentManager, grhIndex, texture, (int)pos.X, (int)pos.Y, (int)size.X, (int)size.Y, category, title);
             AddGrhData(gd);
             return gd;
@@ -168,8 +168,8 @@ namespace NetGore.Graphics
         /// <returns>IEnumerable of all of the GrhDatas that reference a texture that does not exist.</returns>
         public static IEnumerable<GrhData> FindMissingTextures()
         {
-            var nonanimated = GrhDatas.Where(x => !x.IsAnimated);
-            var invalidTexture =
+            IEnumerable<GrhData> nonanimated = GrhDatas.Where(x => !x.IsAnimated);
+            IEnumerable<GrhData> invalidTexture =
                 nonanimated.Where(
                     x => string.IsNullOrEmpty(x.TextureName) || !File.Exists(ContentPaths.Build.Grhs.Join(x.TextureName) + ".xnb"));
             return invalidTexture;
@@ -201,7 +201,7 @@ namespace NetGore.Graphics
             category = SanitizeCategory(category);
 
             // Get the dictionary for the category
-            var titleDic = GetDatas(category);
+            Dictionary<string, GrhData> titleDic = GetDatas(category);
 
             // If we failed to get it, return null
             if (titleDic == null)
@@ -318,7 +318,7 @@ namespace NetGore.Graphics
             _grhDatas.OnRemove += OnRemove;
 
             // Load the GrhData from the file
-            var grhDataFile = XmlInfoReader.ReadFile(path, true);
+            List<Dictionary<string, string>> grhDataFile = XmlInfoReader.ReadFile(path, true);
             if (grhDataFile.Count <= 0)
                 throw new Exception("Error loading GrhData information from the specified file.");
 
@@ -474,10 +474,10 @@ namespace NetGore.Graphics
             Directory.CreateDirectory(Path.GetDirectoryName(path));
 
             // Open the FileStream
-            using (FileStream stream = new FileStream(tempPath, FileMode.Create))
+            using (var stream = new FileStream(tempPath, FileMode.Create))
             {
                 // Create the XmlWriter and settings
-                XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+                var settings = new XmlWriterSettings { Indent = true };
                 using (XmlWriter w = XmlWriter.Create(stream, settings))
                 {
                     if (w == null)
@@ -488,9 +488,9 @@ namespace NetGore.Graphics
                     w.WriteStartElement("Grhs");
 
                     // Get all of the single and multiple frame GrhDatas
-                    var nonNullDatas = GrhDatas.Where(gd => gd != null);
-                    var singleFrames = nonNullDatas.Where(gd => gd.Frames == null);
-                    var multiFrames = nonNullDatas.Where(gd => gd.Frames != null);
+                    IEnumerable<GrhData> nonNullDatas = GrhDatas.Where(gd => gd != null);
+                    IEnumerable<GrhData> singleFrames = nonNullDatas.Where(gd => gd.Frames == null);
+                    IEnumerable<GrhData> multiFrames = nonNullDatas.Where(gd => gd.Frames != null);
 
                     // Save the single frame GrhDatas first, then the animated GrhDatas
                     foreach (GrhData grhData in singleFrames)

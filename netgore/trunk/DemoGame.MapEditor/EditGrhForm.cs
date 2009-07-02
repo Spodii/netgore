@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -42,7 +40,7 @@ namespace DemoGame.MapEditor
             if (radioAnimated.Checked)
             {
                 // Generate the frames
-                var framesText = txtFrames.Text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                string[] framesText = txtFrames.Text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
                 frames = new ushort[framesText.Length];
                 for (int i = 0; i < framesText.Length; i++)
                 {
@@ -135,7 +133,7 @@ namespace DemoGame.MapEditor
             var walls = new List<WallEntityBase>();
             foreach (object o in lstWalls.Items)
             {
-                WallEntityBase wall = o as WallEntityBase;
+                var wall = o as WallEntityBase;
                 if (wall != null)
                     walls.Add(wall);
             }
@@ -151,7 +149,7 @@ namespace DemoGame.MapEditor
 
         void btnAdd_Click(object sender, EventArgs e)
         {
-            WallEntity wall = new WallEntity(Vector2.Zero, new Vector2(16));
+            var wall = new WallEntity(Vector2.Zero, new Vector2(16));
             lstWalls.Items.Add(wall);
             lstWalls.SelectedItem = wall;
         }
@@ -163,7 +161,7 @@ namespace DemoGame.MapEditor
 
         void btnRemove_Click(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
             lstWalls.Items.Remove(wall);
@@ -181,7 +179,7 @@ namespace DemoGame.MapEditor
 
         void cmbWallType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -209,7 +207,7 @@ namespace DemoGame.MapEditor
 
         void lstWalls_SelectedIndexChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             bool isEnabled = (wall != null);
 
             cmbWallType.Enabled = isEnabled;
@@ -283,7 +281,7 @@ namespace DemoGame.MapEditor
 
             // Bound walls
             lstWalls.Items.Clear();
-            var walls = _mapGrhWalls[_gd];
+            List<WallEntityBase> walls = _mapGrhWalls[_gd];
             if (walls != null)
             {
                 foreach (WallEntityBase wall in walls)
@@ -379,7 +377,7 @@ namespace DemoGame.MapEditor
 
         void txtWallH_TextChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -396,7 +394,7 @@ namespace DemoGame.MapEditor
 
         void txtWallW_TextChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -413,7 +411,7 @@ namespace DemoGame.MapEditor
 
         void txtWallX_TextChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 
@@ -430,7 +428,7 @@ namespace DemoGame.MapEditor
 
         void txtWallY_TextChanged(object sender, EventArgs e)
         {
-            WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
+            var wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
 

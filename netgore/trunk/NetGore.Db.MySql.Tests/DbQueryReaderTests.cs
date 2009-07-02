@@ -51,7 +51,7 @@ namespace NetGore.Db.MySql.Tests
         static void SelectTestRecurse(IDbQueryReader<QueryTestValues> reader, int depth, int initialDepth)
         {
             DbConnectionPool cp = reader.ConnectionPool;
-            QueryTestValues v = new QueryTestValues(depth * 2, depth - 2, depth + 57);
+            var v = new QueryTestValues(depth * 2, depth - 2, depth + 57);
             int expectedPoolSize = initialDepth - depth;
 
             Assert.AreEqual(expectedPoolSize, cp.Count);

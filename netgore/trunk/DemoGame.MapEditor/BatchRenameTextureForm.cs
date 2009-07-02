@@ -1,8 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -45,7 +43,7 @@ namespace DemoGame.MapEditor
             if (lstTextures.SelectedItem == null)
                 return;
 
-            string oldTexture = (string)lstTextures.SelectedItem;
+            var oldTexture = (string)lstTextures.SelectedItem;
             if (string.IsNullOrEmpty(oldTexture))
                 return;
 

@@ -108,7 +108,7 @@ namespace NetGore.Graphics.GUI
             // Call Dispose on screens that implement it
             foreach (GameScreen screen in _screens.Values)
             {
-                IDisposable disposable = screen as IDisposable;
+                var disposable = screen as IDisposable;
                 if (disposable != null)
                     disposable.Dispose();
             }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Reflection;
 
@@ -80,7 +80,7 @@ namespace Clean
             }
 
             // Split the individual directories
-            var dirs = dir.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
+            string[] dirs = dir.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
 
             if (dirs.Length < 1)
                 return;

@@ -20,7 +20,7 @@ namespace NetGore.Tests
         [Test]
         public void HitTestTest()
         {
-            TestEntity e = new TestEntity(Vector2.Zero, new Vector2(10, 10));
+            var e = new TestEntity(Vector2.Zero, new Vector2(10, 10));
             Assert.IsTrue(e.HitTest(new Vector2(0, 0)));
             Assert.IsTrue(e.HitTest(new Vector2(10, 0)));
             Assert.IsTrue(e.HitTest(new Vector2(0, 10)));
@@ -38,8 +38,8 @@ namespace NetGore.Tests
         [Test]
         public void IntersectTest()
         {
-            TestEntity a = new TestEntity(Vector2.Zero, new Vector2(10, 10));
-            TestEntity b = new TestEntity(Vector2.Zero, new Vector2(10, 10));
+            var a = new TestEntity(Vector2.Zero, new Vector2(10, 10));
+            var b = new TestEntity(Vector2.Zero, new Vector2(10, 10));
 
             Assert.IsTrue(a.Intersect(b));
 
@@ -71,7 +71,7 @@ namespace NetGore.Tests
         [Test]
         public void MoveTest()
         {
-            TestEntity e = new TestEntity(new Vector2(10, 10), new Vector2(10, 10));
+            var e = new TestEntity(new Vector2(10, 10), new Vector2(10, 10));
             Assert.AreEqual(10, e.Position.X);
             Assert.AreEqual(10, e.Position.Y);
             Assert.AreEqual(10, e.Size.X);
@@ -87,7 +87,7 @@ namespace NetGore.Tests
         [Test]
         public void TeleportTest()
         {
-            TestEntity e = new TestEntity(new Vector2(10, 10), new Vector2(10, 10));
+            var e = new TestEntity(new Vector2(10, 10), new Vector2(10, 10));
             Assert.AreEqual(10, e.Position.X);
             Assert.AreEqual(10, e.Position.Y);
             Assert.AreEqual(10, e.Size.X);

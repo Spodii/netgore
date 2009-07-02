@@ -53,7 +53,7 @@ namespace NetGore
             var ret = new List<Dictionary<string, string>>(1);
 
             // Load up the xml document
-            XmlDocument xmlDoc = new XmlDocument();
+            var xmlDoc = new XmlDocument();
             xmlDoc.Load(filePath);
 
             if (xmlDoc.DocumentElement == null)
@@ -65,7 +65,7 @@ namespace NetGore
                 foreach (XmlNode node in xmlDoc.DocumentElement.ChildNodes)
                 {
                     // Get the list as normal
-                    var dict = RecursiveReadNodes(node.ChildNodes);
+                    Dictionary<string, string> dict = RecursiveReadNodes(node.ChildNodes);
 
                     // Ensure we grab attributes from the parent if they exist
                     CombineDictionaries(dict, ResolveAttributes(node, string.Empty));
@@ -110,7 +110,7 @@ namespace NetGore
                 if (node.HasChildNodes)
                 {
                     // Read all the child nodes of the node
-                    var childRet = RecursiveReadNodes(node.ChildNodes);
+                    Dictionary<string, string> childRet = RecursiveReadNodes(node.ChildNodes);
                     if (childRet.Count > 0)
                     {
                         foreach (string key in childRet.Keys)

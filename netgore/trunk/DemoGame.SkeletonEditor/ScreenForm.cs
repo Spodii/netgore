@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -194,7 +193,7 @@ namespace DemoGame.SkeletonEditor
 
         void btnCopyInherits_Click(object sender, EventArgs e)
         {
-            var results = GetLoadSkeletonDialogResults(_filterFrame);
+            string[] results = GetLoadSkeletonDialogResults(_filterFrame);
 
             if (results == null || results.Length <= 0)
                 return;
@@ -212,7 +211,7 @@ namespace DemoGame.SkeletonEditor
 
         void btnCopyLen_Click(object sender, EventArgs e)
         {
-            var results = GetLoadSkeletonDialogResults(_filterFrame);
+            string[] results = GetLoadSkeletonDialogResults(_filterFrame);
 
             if (results == null || results.Length <= 0)
                 return;
@@ -241,7 +240,7 @@ namespace DemoGame.SkeletonEditor
             if (rX == DialogResult.No && rY == DialogResult.No)
                 return;
 
-            var results = GetLoadSkeletonDialogResults(_filterFrame);
+            string[] results = GetLoadSkeletonDialogResults(_filterFrame);
 
             if (results != null && results.Length > 0)
             {
@@ -323,8 +322,8 @@ namespace DemoGame.SkeletonEditor
             else
                 return;
 
-            SkeletonSet ss = new SkeletonSet(new[] { frame1, frame2 });
-            SkeletonAnimation sa = new SkeletonAnimation(GetTime(), ss);
+            var ss = new SkeletonSet(new[] { frame1, frame2 });
+            var sa = new SkeletonAnimation(GetTime(), ss);
             sa.Update(5);
             LoadFrame(sa.Skeleton);
         }
@@ -390,7 +389,7 @@ namespace DemoGame.SkeletonEditor
                 return;
 
             Skeleton newSkeleton = Skeleton.Load(ContentPaths.Dev.Skeletons.Join("stand.skel"));
-            SkeletonFrame nFrame0 = new SkeletonFrame("stand", newSkeleton);
+            var nFrame0 = new SkeletonFrame("stand", newSkeleton);
             _skeletonAnim.ChangeSet(new SkeletonSet(new[] { nFrame0 }));
         }
 
@@ -518,7 +517,7 @@ namespace DemoGame.SkeletonEditor
                 if (e.Button == MouseButtons.Left)
                 {
                     // Select new node
-                    var nodes = _skeleton.RootNode.GetAllNodes();
+                    List<SkeletonNode> nodes = _skeleton.RootNode.GetAllNodes();
                     foreach (SkeletonNode node in nodes)
                     {
                         if (node.HitTest(_camera, _cursorPos))
@@ -615,7 +614,7 @@ namespace DemoGame.SkeletonEditor
         {
             string result;
 
-            using (OpenFileDialog fd = new OpenFileDialog())
+            using (var fd = new OpenFileDialog())
             {
                 fd.Filter = filter;
                 fd.InitialDirectory = ContentPaths.Dev.Skeletons;
@@ -631,7 +630,7 @@ namespace DemoGame.SkeletonEditor
         {
             string[] result;
 
-            using (OpenFileDialog fd = new OpenFileDialog())
+            using (var fd = new OpenFileDialog())
             {
                 fd.Filter = filter;
                 fd.InitialDirectory = ContentPaths.Dev.Skeletons;
@@ -647,7 +646,7 @@ namespace DemoGame.SkeletonEditor
         {
             string result;
 
-            using (SaveFileDialog fd = new SaveFileDialog())
+            using (var fd = new SaveFileDialog())
             {
                 fd.Filter = filter;
                 fd.InitialDirectory = ContentPaths.Dev.Skeletons;
@@ -693,7 +692,7 @@ namespace DemoGame.SkeletonEditor
 
         public void LoadBody(string filePath)
         {
-            SkeletonBodyInfo bodyInfo = new SkeletonBodyInfo(filePath);
+            var bodyInfo = new SkeletonBodyInfo(filePath);
             _skeletonAnim.SkeletonBody = new SkeletonBody(bodyInfo, _skeletonAnim.Skeleton);
             _frameBody = new SkeletonBody(bodyInfo, _skeleton);
             UpdateBodyList();
@@ -822,7 +821,7 @@ namespace DemoGame.SkeletonEditor
 
             // Create the skeleton-related objects
             _skeleton = new Skeleton();
-            SkeletonFrame frame = new SkeletonFrame("stand", Skeleton.Load(ContentPaths.Dev.Skeletons.Join("stand.skel")));
+            var frame = new SkeletonFrame("stand", Skeleton.Load(ContentPaths.Dev.Skeletons.Join("stand.skel")));
             _skeletonAnim = new SkeletonAnimation(GetTime(), frame);
             _skeletonDrawer = new SkeletonDrawer();
 
@@ -1004,7 +1003,7 @@ namespace DemoGame.SkeletonEditor
 
         void UpdateAnimationNodeCBs()
         {
-            var nodes = _skeletonAnim.Skeleton.RootNode.GetAllNodes();
+            List<SkeletonNode> nodes = _skeletonAnim.Skeleton.RootNode.GetAllNodes();
             cmbSource.Items.Clear();
             cmbTarget.Items.Clear();
             cmbTarget.Items.Add(new ListItem<SkeletonNode>(null, "_null_"));
@@ -1030,7 +1029,7 @@ namespace DemoGame.SkeletonEditor
         void UpdateFrameNodeCBs()
         {
             cmbSkeletonNodes.Items.Clear();
-            var nodes = _skeleton.RootNode.GetAllNodes();
+            List<SkeletonNode> nodes = _skeleton.RootNode.GetAllNodes();
             foreach (SkeletonNode node in nodes)
             {
                 cmbSkeletonNodes.Items.Add(new ListItem<SkeletonNode>(node, node.Name));

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -104,7 +104,7 @@ namespace NetGore.IO
             bool valid;
             try
             {
-                var subArgs = args.Take(args.Length - 1);
+                IEnumerable<string> subArgs = args.Take(args.Length - 1);
                 string parsed2 = (subArgs.Count() > 0) ? string.Format(ret, subArgs) : ret;
                 valid = (parsed2 != parsed);
             }
@@ -139,7 +139,7 @@ namespace NetGore.IO
             var loadedMessages = new Dictionary<T, string>();
 
             // Load all the lines in the file
-            var lines = File.ReadAllLines(filePath);
+            string[] lines = File.ReadAllLines(filePath);
 
             // Parse the lines
             foreach (string fileLine in lines)

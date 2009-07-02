@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace NetGore
@@ -235,7 +233,7 @@ namespace NetGore
             string op = match.Value;
 
             // Find the values (should only be 2 - left and right side of the operator)
-            var values = text.Split(new[] { op }, StringSplitOptions.RemoveEmptyEntries);
+            string[] values = text.Split(new[] { op }, StringSplitOptions.RemoveEmptyEntries);
             if (values.Length != 2)
                 throw new Exception(string.Format("Failed to acquire values in the text '{0}'", text));
 

@@ -10,7 +10,7 @@ namespace NetGore.Tests
         [Test]
         public void SortAscTest()
         {
-            Random rnd = new Random();
+            var rnd = new Random();
             var s = new Stack<int>();
 
             for (int i = 0; i < 100; i++)
@@ -34,7 +34,7 @@ namespace NetGore.Tests
         [Test]
         public void SortAscWhereTest()
         {
-            Random rnd = new Random();
+            var rnd = new Random();
             var s = new Stack<int>();
 
             for (int i = 0; i < 100; i++)
@@ -59,7 +59,7 @@ namespace NetGore.Tests
         [Test]
         public void SortDescTest()
         {
-            Random rnd = new Random();
+            var rnd = new Random();
             var s = new Stack<int>();
 
             for (int i = 0; i < 100; i++)
@@ -83,7 +83,7 @@ namespace NetGore.Tests
         [Test]
         public void SortDescWhereTest()
         {
-            Random rnd = new Random();
+            var rnd = new Random();
             var s = new Stack<int>();
 
             for (int i = 0; i < 100; i++)
