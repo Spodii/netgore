@@ -8,8 +8,6 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Network;
 
-// TODO: Clean up this crap some more. The events should be STRONGLY defined. Then the rest of the events should be added
-
 namespace DemoGame.Server
 {
     /// <summary>
