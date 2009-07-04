@@ -9,17 +9,18 @@ using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public class SelectUserEquippedItemsQuery : SelectItemQueryBase<int>
+    public class SelectCharacterEquippedItemsQuery : SelectItemQueryBase<uint>
     {
         const string _queryString =
-            "SELECT items.*,user_equipped.slot FROM `items`,`user_equipped` " + "WHERE user_equipped.user_guid = @userGuid " +
-            "AND items.guid = user_equipped.item_guid";
+            "SELECT items.*,character_equipped.slot FROM `items`,`character_equipped` " + 
+            "WHERE character_equipped.character_guid = @characterID " +
+            "AND items.guid = character_equipped.item_guid";
 
-        public SelectUserEquippedItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public SelectCharacterEquippedItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
-        public IDictionary<EquipmentSlot, ItemValues> Execute(int userGuid)
+        public IDictionary<EquipmentSlot, ItemValues> Execute(uint userGuid)
         {
             var retValues = new Dictionary<EquipmentSlot, ItemValues>();
 
@@ -38,12 +39,12 @@ namespace DemoGame.Server
 
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@userGuid");
+            return CreateParameters("@characterID");
         }
 
-        protected override void SetParameters(DbParameterValues p, int item)
+        protected override void SetParameters(DbParameterValues p, uint characterID)
         {
-            p["@userGuid"] = item;
+            p["@characterID"] = characterID;
         }
     }
 }

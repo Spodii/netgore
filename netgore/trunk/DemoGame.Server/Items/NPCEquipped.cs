@@ -1,14 +1,14 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 namespace DemoGame.Server
 {
-    class NPCInventory : Inventory
+    public class NPCEquipped : CharacterEquipped
     {
 // ReSharper disable SuggestBaseTypeForParameter
-        public NPCInventory(NPC npc) : base(npc)
+        public NPCEquipped(NPC npc) : base(npc)
 // ReSharper restore SuggestBaseTypeForParameter
         {
         }

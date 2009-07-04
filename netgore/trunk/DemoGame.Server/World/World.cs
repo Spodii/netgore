@@ -15,7 +15,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Handles the game's world, keeping track of all maps and characters
     /// </summary>
-    public class World : WorldBase
+    public class World : WorldBase, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -119,6 +119,13 @@ namespace DemoGame.Server
                 }
             }
 #endif
+
+            // HACK: This is just for testing the persistent NPCs
+            var a = new NPC(this, 2);
+            var b = new NPC(this, 3);
+
+            a.AI = AIFactory.Create("testAI", a);
+            b.AI = AIFactory.Create("testAI", b);
         }
 
         /// <summary>
@@ -140,25 +147,14 @@ namespace DemoGame.Server
             if (string.IsNullOrEmpty(user.Name))
                 throw new ArgumentException("User contains a null or invalid name.", "user");
 
-            // NOTE: If the user is already logged in, this will throw an exception
-            // Will have to determine how to handle this scenario
+            // NOTE: If the user is already logged in, this will throw an exception. Will have to determine how to handle this scenario.
             _users.Add(user.Name, user);
         }
 
         /// <summary>
-        /// Disposes of the world and disposes all maps and users on it
+        /// Disposes of the World and everything in it.
         /// </summary>
         public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Disposes of the world and disposes all maps and users on it
-        /// </summary>
-        /// <param name="disposeManaged">If true, dispose of managed resources</param>
-        void Dispose(bool disposeManaged)
         {
             if (_disposed)
             {
@@ -169,14 +165,13 @@ namespace DemoGame.Server
             // Set the World as disposed
             _disposed = true;
 
-            // Dispose of managed objects
-            if (disposeManaged)
-            {
-                foreach (Map map in Maps)
-                {
-                    _disposeStack.Push(map);
-                }
+            // Dispose of the maps
+            foreach (Map map in Maps)
+                map.Dispose();
 
+            // Process the dispose stack
+            while (_disposeStack.Count > 0)
+            {
                 ProcessDisposeStack();
             }
         }

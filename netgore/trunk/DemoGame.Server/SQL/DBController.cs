@@ -20,11 +20,11 @@ namespace DemoGame.Server
         readonly DbConnectionPool _connectionPool;
 
         readonly DeleteItemQuery _deleteItemQuery;
-        readonly DeleteUserEquippedQuery _deleteUserEquipQuery;
-        readonly DeleteUserItemQuery _deleteUserItemQuery;
+        readonly DeleteCharacterEquippedItemQuery _deleteCharacterEquippedItemQuery;
+        readonly DeleteCharacterInventoryItemQuery _deleteCharacterInventoryItemQuery;
         readonly List<IDisposable> _disposableQueries = new List<IDisposable>();
-        readonly InsertUserEquippedQuery _insertUserEquipQuery;
-        readonly InsertUserItemQuery _insertUserItemQuery;
+        readonly InsertCharacterEquippedItemQuery _insertCharacterEquippedItemQuery;
+        readonly InsertCharacterInventoryItemQuery _insertCharacterInventoryItemQuery;
         readonly InsertUserQuery _insertUserQuery;
         readonly ItemGuidCreator _itemGuidCreator;
         readonly ReplaceItemQuery _replaceItemQuery;
@@ -34,12 +34,13 @@ namespace DemoGame.Server
         readonly SelectItemTemplatesQuery _selectItemTemplatesQuery;
         readonly SelectNPCTemplateDropsQuery _selectNPCTemplateDropsQuery;
         readonly SelectNPCTemplateQuery _selectNPCTemplateQuery;
-        readonly SelectUserEquippedItemsQuery _selectUserEquippedItemsQuery;
-        readonly SelectUserInventoryItemsQuery _selectUserInventoryItemsQuery;
+        readonly SelectCharacterEquippedItemsQuery _selectCharacterEquippedItemsQuery;
+        readonly SelectCharacterInventoryItemsQuery _selectCharacterInventoryItemsQuery;
         readonly SelectUserPasswordQuery _selectUserPasswordQuery;
-        readonly SelectUserQuery _selectUserQuery;
+        readonly SelectCharacterQuery _selectCharacterQuery;
+        readonly SelectCharacterByIDQuery _selectCharacterByIDQuery;
         readonly UpdateItemFieldQuery _updateItemFieldQuery;
-        readonly UpdateUserQuery _updateUserQuery;
+        readonly UpdateCharacterQuery _updateCharacterQuery;
         readonly UserExistsQuery _userExistsQuery;
 
         bool _disposed;
@@ -54,14 +55,14 @@ namespace DemoGame.Server
             get { return _selectNPCTemplateDropsQuery; }
         }
 
-        public DeleteUserEquippedQuery DeleteUserEquipped
+        public DeleteCharacterEquippedItemQuery DeleteCharacterEquippedItem
         {
-            get { return _deleteUserEquipQuery; }
+            get { return _deleteCharacterEquippedItemQuery; }
         }
 
-        public DeleteUserItemQuery DeleteUserItem
+        public DeleteCharacterInventoryItemQuery DeleteCharacterInventoryItem
         {
-            get { return _deleteUserItemQuery; }
+            get { return _deleteCharacterInventoryItemQuery; }
         }
 
         public InsertUserQuery InsertUser
@@ -69,14 +70,14 @@ namespace DemoGame.Server
             get { return _insertUserQuery; }
         }
 
-        public InsertUserEquippedQuery InsertUserEquipped
+        public InsertCharacterEquippedItemQuery InsertCharacterEquippedItem
         {
-            get { return _insertUserEquipQuery; }
+            get { return _insertCharacterEquippedItemQuery; }
         }
 
-        public InsertUserItemQuery InsertUserItem
+        public InsertCharacterInventoryItemQuery InsertCharacterInventoryItem
         {
-            get { return _insertUserItemQuery; }
+            get { return _insertCharacterInventoryItemQuery; }
         }
 
         public ItemGuidCreator ItemGuidCreator
@@ -114,19 +115,24 @@ namespace DemoGame.Server
             get { return _selectNPCTemplateQuery; }
         }
 
-        public SelectUserQuery SelectUser
+        public SelectCharacterQuery SelectCharacter
         {
-            get { return _selectUserQuery; }
+            get { return _selectCharacterQuery; }
         }
 
-        public SelectUserEquippedItemsQuery SelectUserEquippedItems
+        public SelectCharacterByIDQuery SelectCharacterByID
         {
-            get { return _selectUserEquippedItemsQuery; }
+            get { return _selectCharacterByIDQuery; }
         }
 
-        public SelectUserInventoryItemsQuery SelectUserInventoryItems
+        public SelectCharacterEquippedItemsQuery SelectCharacterEquippedItems
         {
-            get { return _selectUserInventoryItemsQuery; }
+            get { return _selectCharacterEquippedItemsQuery; }
+        }
+
+        public SelectCharacterInventoryItemsQuery SelectCharacterInventoryItems
+        {
+            get { return _selectCharacterInventoryItemsQuery; }
         }
 
         public SelectUserPasswordQuery SelectUserPassword
@@ -139,9 +145,9 @@ namespace DemoGame.Server
             get { return _updateItemFieldQuery; }
         }
 
-        public UpdateUserQuery UpdateUser
+        public UpdateCharacterQuery UpdateCharacter
         {
-            get { return _updateUserQuery; }
+            get { return _updateCharacterQuery; }
         }
 
         public UserExistsQuery UserExistsQuery
@@ -155,7 +161,19 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("connectionString");
 
             // Create the connection pool
-            _connectionPool = new MySqlDbConnectionPool(connectionString);
+            try
+            {
+                _connectionPool = new MySqlDbConnectionPool(connectionString);
+            }
+            catch (Exception ex)
+            {
+                const string msg = "Failed to create connection to MySql database.";
+                Debug.Fail(msg);
+                if (log.IsFatalEnabled)
+                    log.Fatal(msg, ex);
+                Dispose();
+                return;
+            }
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Database connection pool created.");
@@ -165,23 +183,23 @@ namespace DemoGame.Server
             _insertUserQuery = new InsertUserQuery(_connectionPool);
             _disposableQueries.Add(_insertUserQuery);
 
-            _updateUserQuery = new UpdateUserQuery(_connectionPool);
-            _disposableQueries.Add(_updateUserQuery);
+            _updateCharacterQuery = new UpdateCharacterQuery(_connectionPool);
+            _disposableQueries.Add(_updateCharacterQuery);
 
-            _insertUserEquipQuery = new InsertUserEquippedQuery(_connectionPool);
-            _disposableQueries.Add(_insertUserEquipQuery);
+            _insertCharacterEquippedItemQuery = new InsertCharacterEquippedItemQuery(_connectionPool);
+            _disposableQueries.Add(_insertCharacterEquippedItemQuery);
 
-            _deleteUserEquipQuery = new DeleteUserEquippedQuery(_connectionPool);
-            _disposableQueries.Add(_deleteUserEquipQuery);
+            _deleteCharacterEquippedItemQuery = new DeleteCharacterEquippedItemQuery(_connectionPool);
+            _disposableQueries.Add(_deleteCharacterEquippedItemQuery);
 
             _selectItemQuery = new SelectItemQuery(_connectionPool);
             _disposableQueries.Add(_selectItemQuery);
 
-            _insertUserItemQuery = new InsertUserItemQuery(_connectionPool);
-            _disposableQueries.Add(_insertUserItemQuery);
+            _insertCharacterInventoryItemQuery = new InsertCharacterInventoryItemQuery(_connectionPool);
+            _disposableQueries.Add(_insertCharacterInventoryItemQuery);
 
-            _deleteUserItemQuery = new DeleteUserItemQuery(_connectionPool);
-            _disposableQueries.Add(_deleteUserItemQuery);
+            _deleteCharacterInventoryItemQuery = new DeleteCharacterInventoryItemQuery(_connectionPool);
+            _disposableQueries.Add(_deleteCharacterInventoryItemQuery);
 
             _deleteItemQuery = new DeleteItemQuery(_connectionPool);
             _disposableQueries.Add(_deleteItemQuery);
@@ -195,17 +213,20 @@ namespace DemoGame.Server
             _selectItemsQuery = new SelectItemsQuery(_connectionPool);
             _disposableQueries.Add(_selectItemsQuery);
 
-            _selectUserEquippedItemsQuery = new SelectUserEquippedItemsQuery(_connectionPool);
-            _disposableQueries.Add(_selectUserEquippedItemsQuery);
+            _selectCharacterEquippedItemsQuery = new SelectCharacterEquippedItemsQuery(_connectionPool);
+            _disposableQueries.Add(_selectCharacterEquippedItemsQuery);
 
-            _selectUserInventoryItemsQuery = new SelectUserInventoryItemsQuery(_connectionPool);
-            _disposableQueries.Add(_selectUserInventoryItemsQuery);
+            _selectCharacterInventoryItemsQuery = new SelectCharacterInventoryItemsQuery(_connectionPool);
+            _disposableQueries.Add(_selectCharacterInventoryItemsQuery);
 
             _selectAlliancesQuery = new SelectAlliancesQuery(_connectionPool);
             _disposableQueries.Add(_selectAlliancesQuery);
 
-            _selectUserQuery = new SelectUserQuery(_connectionPool);
-            _disposableQueries.Add(_selectUserQuery);
+            _selectCharacterQuery = new SelectCharacterQuery(_connectionPool);
+            _disposableQueries.Add(_selectCharacterQuery);
+
+            _selectCharacterByIDQuery = new SelectCharacterByIDQuery(_connectionPool);
+            _disposableQueries.Add(_selectCharacterByIDQuery);
 
             _selectUserPasswordQuery = new SelectUserPasswordQuery(_connectionPool);
             _disposableQueries.Add(_selectUserPasswordQuery);
@@ -223,6 +244,9 @@ namespace DemoGame.Server
             _disposableQueries.Add(_userExistsQuery);
 
             _itemGuidCreator = new ItemGuidCreator(_connectionPool);
+
+            if (log.IsInfoEnabled)
+                log.Info("DBController successfully initialized all queries.");
         }
 
         #region IDisposable Members

@@ -9,11 +9,11 @@ using NetGore.Db;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// A query that checks if a user with the specified name exists.
+    /// A query that checks if a User with the specified name exists.
     /// </summary>
     public class UserExistsQuery : DbQueryReader<string>
     {
-        const string _queryString = "SELECT COUNT(*) FROM `users` WHERE `name`=@name";
+        const string _queryString = "SELECT COUNT(*) FROM `characters` WHERE `name`=@name";
 
         /// <summary>
         /// UserExistsQuery constructor.

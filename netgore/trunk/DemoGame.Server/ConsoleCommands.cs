@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
+// NOTE: Wow, even I forgot how this works. Lack attributes much?
 
 namespace DemoGame.Server
 {

@@ -44,13 +44,17 @@ namespace NetGore
         public event EntityEventHandler<Vector2> OnResize;
 
         /// <summary>
-        /// Gets or sets the collision box for the entity
+        /// Gets or sets the collision box for the entity.
         /// </summary>
         [Browsable(false)]
         public CollisionBox CB
         {
             get { return _collisionBox; }
-            set { _collisionBox = value; }
+            set 
+            { 
+                // TODO: The setter on this should be private.
+                _collisionBox = value; 
+            }
         }
 
         /// <summary>
@@ -216,6 +220,7 @@ namespace NetGore
         /// </summary>
         protected virtual void HandleDispose()
         {
+            // NOTE: I need to re-check this and make sure that having this, in Entity, is actually what I want.
         }
 
         /// <summary>

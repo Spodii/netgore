@@ -70,6 +70,15 @@ namespace DemoGame.Server
         Alliance _alliance;
 
         /// <summary>
+        /// Gets if this Character's existant is persistent. If true, the Character's state will be synchronized
+        /// into the database. If false, the Character's state will only exist in the Character object and cannot
+        /// be restored after object is lost (such as a server reset).
+        /// </summary>
+        public bool IsPersistent { get { return _isPersistent; } }
+
+        readonly bool _isPersistent;
+
+        /// <summary>
         /// If the character is alive or not.
         /// </summary>
         bool _isAlive = false;
@@ -159,6 +168,12 @@ namespace DemoGame.Server
         /// </summary>
         public abstract Inventory Inventory { get; }
 
+
+        /// <summary>
+        /// Gets the Character's equipped items.
+        /// </summary>
+        public abstract CharacterEquipped Equipped { get; }
+
         /// <summary>
         /// Gets or sets (protected) if the Character is currently alive.
         /// </summary>
@@ -173,7 +188,7 @@ namespace DemoGame.Server
         /// that changes to stats are because the Character is being loaded, and not that their stats have
         /// changed, and thus will be handled differently.
         /// </summary>
-        public bool IsLoaded
+        protected bool IsLoaded
         {
             get { return _isLoaded; }
         }
@@ -232,13 +247,111 @@ namespace DemoGame.Server
                                             "server never needs to deserialize a DynamicEntity.");
         }
 
+
+        public DBController DBController
+        {
+            get { return World.Server.DBController; }
+        }
+
+        uint _guid;
+
+        public uint Guid
+        {
+            get
+            {
+                return _guid;
+            }
+        }
+
+        void InternalLoad(SelectCharacterQueryValues characterValues)
+        {
+            Name = characterValues.Name;
+            _guid = characterValues.Guid;
+
+            BodyInfo = GameData.Body(characterValues.BodyIndex);
+            CB = new CollisionBox(characterValues.Position, BodyInfo.Width, BodyInfo.Height);
+
+            // Set the Map and, if a User, add them to the World
+            Map m = World.GetMap(characterValues.MapIndex);
+            // TODO: We can recover when a NPC's map is invalid at least...
+            if (m == null)
+                throw new Exception(string.Format("Unable to get Map with index `{0}`.", characterValues.MapIndex));
+
+            User asUser = this as User;
+            if (asUser != null)
+                World.AddUser(asUser);
+
+            // HACK: Ugh... horrible place to set the RespawnMap
+            if (this is NPC)
+                ((NPC)this).RespawnMap = m;
+
+            ChangeMap(m);
+
+            // Load the Character's items
+            Inventory.Load();
+            Equipped.Load();
+
+            // Mark the Character as loaded
+            SetAsLoaded();
+        }
+
+
+        /// <summary>
+        /// Lets us know if we have saved the Character since they have been updated. Used to ensure saves aren't
+        /// called back-to-back without any values changing in-between.
+        /// </summary>
+        bool _saved = false;
+
+        /// <summary>
+        /// Saves the Character's information. If IsPersistent is false, this will do nothing, but will not
+        /// raise any Exceptions.
+        /// </summary>
+        public void Save()
+        {
+            if (!IsPersistent)
+                return;
+
+            // Do not save if the user is already saved
+            if (_saved)
+                return;
+
+            // Set the user as saved
+            _saved = true;
+
+            // Execute the user save query
+            DBController.UpdateCharacter.Execute(this);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Saved Character `{0}`.", this);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("{0} [ID: {1}, Type: {2}]", Name, Guid, GetType().Name);
+        }
+
+        protected void Load(uint characterID)
+        {
+            var values = DBController.SelectCharacterByID.Execute(characterID, Stats);
+            InternalLoad(values);
+        }
+
+        protected void Load(string characterName)
+        {
+            var values = DBController.SelectCharacter.Execute(characterName, Stats);
+            InternalLoad(values);
+        }
+
         /// <summary>
         /// Character constructor.
         /// </summary>
         /// <param name="world">World that the character belongs to.</param>
-        protected Character(World world)
+        /// <param name="isPersistent">If the Character's state is persistent. If true, Load() MUST be called
+        /// at some point during the Character's constructor!</param>
+        protected Character(World world, bool isPersistent)
         {
             _world = world;
+            _isPersistent = isPersistent;
         }
 
         /// <summary>
@@ -632,7 +745,18 @@ namespace DemoGame.Server
                 return;
             }
 
+            // Set the Character as not saved
+            _saved = false;
+
             base.Update(imap, deltaTime);
+        }
+
+        protected override void HandleDispose()
+        {
+            // Make sure the Character was saved
+            Save();
+
+            base.HandleDispose();
         }
 
         bool UseEquipment(ItemEntity item, byte? inventorySlot)

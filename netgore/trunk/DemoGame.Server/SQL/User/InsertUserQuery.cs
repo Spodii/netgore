@@ -15,7 +15,7 @@ namespace DemoGame.Server
         public InsertUserQuery(DbConnectionPool connectionPool)
             : base(
                 connectionPool,
-                string.Format("INSERT INTO {0} SET `password`=@password,`guid`=@guid,{1}", UsersTableName, QueryFieldsStr))
+                string.Format("INSERT INTO `characters` SET `password`=@password,`guid`=@guid,{0}", QueryFieldsStr))
         {
         }
 
@@ -25,10 +25,10 @@ namespace DemoGame.Server
             return base.InitializeParameters();
         }
 
-        protected override void SetParameters(DbParameterValues p, User user)
+        protected override void SetParameters(DbParameterValues p, Character character)
         {
             // TODO: Set the password parameter
-            base.SetParameters(p, user);
+            base.SetParameters(p, character);
         }
     }
 }

@@ -25,19 +25,10 @@ namespace DemoGame.Server
         readonly IIPSocket _conn;
 
         readonly UserEquipped _equipped;
-
         readonly UserInventory _inventory;
-
         readonly UserStats _stats;
 
-        ushort _id;
         int _nextLevelExp = int.MaxValue;
-
-        /// <summary>
-        /// Lets us know if we have saved the user since they have been
-        /// updated. Used to ensure saves aren't called back-to-back.
-        /// </summary>
-        bool _saved = false;
 
         /// <summary>
         /// Gets the socket connection info for the user
@@ -47,25 +38,9 @@ namespace DemoGame.Server
             get { return _conn; }
         }
 
-        public DBController DBController
-        {
-            get { return World.Server.DBController; }
-        }
-
-        /// <summary>
-        /// Gets the equipped item handler for the User.
-        /// </summary>
-        public UserEquipped Equipped
+        public override CharacterEquipped Equipped
         {
             get { return _equipped; }
-        }
-
-        /// <summary>
-        /// Gets the unique User ID for this User
-        /// </summary>
-        public ushort Guid
-        {
-            get { return _id; }
         }
 
         /// <summary>
@@ -95,7 +70,7 @@ namespace DemoGame.Server
         /// <param name="conn">Connection to the user's client.</param>
         /// <param name="world">World the user belongs to.</param>
         /// <param name="name">User's name.</param>
-        public User(IIPSocket conn, World world, string name) : base(world)
+        public User(IIPSocket conn, World world, string name) : base(world, true)
         {
             if (log.IsInfoEnabled)
                 log.InfoFormat("User {0} logged in", name);
@@ -104,24 +79,24 @@ namespace DemoGame.Server
             _conn = conn;
             _conn.Tag = this;
 
-            // Set up the inventory and equipped items
+            // Create some objects
             _inventory = new UserInventory(this);
             _equipped = new UserEquipped(this);
-
-            // Create the stats and attach the stat listeners
             _stats = new UserStats(this);
+
+            // Load the character data
+            Load(name);
+
+            // Ensure the correct Alliance is being used
+            Alliance = World.Server.AllianceManager["user"];
+
+            // Attach to some events
             _stats.GetStat(StatType.Exp).OnChange += Exp_OnChange;
             _stats.GetStat(StatType.Level).OnChange += Level_OnChange;
+            OnKillCharacter += User_OnKillCharacter;
 
             // Activate the user
             IsAlive = true;
-
-            // Load the user
-            Alliance = World.Server.AllianceManager["user"];
-            Load(name, world);
-
-            // Attach to some events
-            OnKillCharacter += User_OnKillCharacter;
         }
 
         /// <summary>
@@ -139,8 +114,6 @@ namespace DemoGame.Server
             //ushort uniqueID = GetNextUniqueIndex(conn);
 
             insertUserQuery.Execute(null);
-
-            // TODO: When a user is created, create an entry for them in the user_equipped table
 
             return true;
         }
@@ -225,9 +198,11 @@ namespace DemoGame.Server
         /// <returns>Next free unique index</returns>
         static ushort GetNextUniqueIndex(MySqlConnection conn)
         {
+            // TODO: This is worthless. Implement a proper ID stack using GuidCreatorBase.
+
             using (MySqlCommand cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "SELECT `unique_id` FROM `users` ORDER BY `unique_id` ASC";
+                cmd.CommandText = "SELECT `unique_id` FROM `characters` ORDER BY `unique_id` ASC";
                 using (MySqlDataReader r = cmd.ExecuteReader())
                 {
                     // No Users, so return the first index
@@ -306,9 +281,6 @@ namespace DemoGame.Server
 
         protected override void HandleDispose()
         {
-            // Make sure the user was saved
-            Save();
-
             // Close the user's connection
             if (_conn != null)
                 _conn.Dispose();
@@ -348,39 +320,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Loads the user information and returns the index of the map they are on
-        /// </summary>
-        /// <param name="userName">Name of the user</param>
-        /// <param name="world">World that the user is a part of</param>
-        /// <returns>Index of the map the user is on</returns>
-        void Load(string userName, World world)
-        {
-            Name = userName;
-
-            // Get the user information from the database
-            SelectUserQueryValues userValues = DBController.SelectUser.Execute(userName, Stats);
-            _id = userValues.Guid;
-
-            // Use the retreived values
-            BodyInfo = GameData.Body(userValues.BodyIndex);
-            CB = new CollisionBox(userValues.Position, BodyInfo.Width, BodyInfo.Height);
-
-            // Create the user in the world
-            Map m = world.GetMap(userValues.MapIndex);
-            if (m == null)
-                throw new Exception("Unable to get Map with index " + userValues.MapIndex);
-            world.AddUser(this);
-            ChangeMap(m);
-
-            // Load the User's items
-            _inventory.Load();
-            _equipped.Load();
-
-            // Mark the User as loaded
-            SetAsLoaded();
-        }
-
-        /// <summary>
         /// Makes the User raise their Stat of the corresponding type by one point, assuming they have enough
         /// points available to raise the Stat, and lowers the amount of spendable points accordingly.
         /// </summary>
@@ -398,25 +337,6 @@ namespace DemoGame.Server
 
             Stats[st]++;
             Stats[StatType.ExpSpent] += cost;
-        }
-
-        /// <summary>
-        /// Saves the user information
-        /// </summary>
-        public void Save()
-        {
-            // Do not save if the user is already saved
-            if (_saved)
-                return;
-
-            // Set the user as saved
-            _saved = true;
-
-            // Execute the user save query
-            DBController.UpdateUser.Execute(this);
-
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Saved user `{0}`", this);
         }
 
         /// <summary>
@@ -538,11 +458,6 @@ namespace DemoGame.Server
             }
         }
 
-        public override string ToString()
-        {
-            return Name;
-        }
-
         /// <summary>
         /// Updates the user
         /// </summary>
@@ -556,16 +471,14 @@ namespace DemoGame.Server
 
             // Synchronize the inventory
             _inventory.UpdateClient();
-
-            // Set the user as not saved
-            _saved = false;
         }
 
         /// <summary>
-        /// Updates the user's stats
+        /// Updates the User's stats.
         /// </summary>
         void UpdateStats()
         {
+            // NOTE: Doesn't the NPC need to update their stats, too? So shouldn't this be in Character?
             foreach (IUpdateableStat stat in _stats.UpdateableStats)
             {
                 stat.Update();

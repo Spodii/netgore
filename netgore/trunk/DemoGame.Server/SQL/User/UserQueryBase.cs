@@ -8,9 +8,8 @@ using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public abstract class UserQueryBase : DbQueryNonReader<User>
+    public abstract class UserQueryBase : DbQueryNonReader<Character>
     {
-        public const string UsersTableName = "users";
         static readonly IEnumerable<string> _otherFields = new string[] { "@body", "@guid", "@map", "@name", "@x", "@y" };
 
         static readonly IEnumerable<string> _statFields =
@@ -54,16 +53,16 @@ namespace DemoGame.Server
             return CreateParameters(GetAllFields());
         }
 
-        protected override void SetParameters(DbParameterValues p, User user)
+        protected override void SetParameters(DbParameterValues p, Character character)
         {
-            p["@guid"] = user.Guid;
-            p["@map"] = user.Map.Index;
-            p["@x"] = user.Position.X;
-            p["@y"] = user.Position.Y;
-            p["@body"] = user.BodyInfo.Index;
-            p["@name"] = user.Name;
+            p["@guid"] = character.Guid;
+            p["@map"] = character.Map.Index;
+            p["@x"] = character.Position.X;
+            p["@y"] = character.Position.Y;
+            p["@body"] = character.BodyInfo.Index;
+            p["@name"] = character.Name;
 
-            foreach (IStat stat in user.Stats)
+            foreach (IStat stat in character.Stats)
             {
                 string fieldName = stat.StatType.GetDatabaseField();
                 string key = "@" + fieldName;
