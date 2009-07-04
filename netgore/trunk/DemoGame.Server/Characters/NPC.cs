@@ -17,9 +17,9 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// NPC's AI module
+        /// Gets or sets the NPC's AI. Can be null.
         /// </summary>
-        readonly AIBase _ai;
+        public AIBase AI { get; set; }
 
         readonly List<NPCDrop> _drops;
         readonly NPCInventory _inventory;
@@ -53,6 +53,11 @@ namespace DemoGame.Server
         public override Inventory Inventory
         {
             get { return _inventory; }
+        }
+
+        public override CharacterEquipped Equipped
+        {
+            get { return _equipped; }
         }
 
         public Map RespawnMap { get; set; }
@@ -89,20 +94,39 @@ namespace DemoGame.Server
         {
         }
 
-        /// <summary>
-        /// NPC constructor
-        /// </summary>
-        /// <param name="parent">World that the NPC belongs to.</param>
-        /// <param name="template">NPCTemplate used to create the NPC.</param>
-        public NPC(World parent, NPCTemplate template) : base(parent)
+        readonly NPCEquipped _equipped;
+
+        public NPC(World parent, uint characterID) : base(parent, true)
         {
-            if (template == null)
-                throw new ArgumentNullException("template");
+            // HACK: This whole constructor is uber hax
             if (parent == null)
                 throw new ArgumentNullException("parent");
 
             // Set up the inventory
             _inventory = new NPCInventory(this);
+            _equipped = new NPCEquipped(this);
+            _stats = new NPCStats(this);
+
+            Alliance = parent.Server.AllianceManager["monster"];
+
+            Load(characterID);
+        }
+
+        /// <summary>
+        /// NPC constructor
+        /// </summary>
+        /// <param name="parent">World that the NPC belongs to.</param>
+        /// <param name="template">NPCTemplate used to create the NPC.</param>
+        public NPC(World parent, NPCTemplate template) : base(parent, false)
+        {
+            if (parent == null)
+                throw new ArgumentNullException("parent");
+            if (template == null)
+                throw new ArgumentNullException("template");
+
+            // Set up the inventory
+            _inventory = new NPCInventory(this);
+            _equipped = new NPCEquipped(this);
 
             // Set up the NPC
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
@@ -114,7 +138,7 @@ namespace DemoGame.Server
 
             // Create the AI
             if (!string.IsNullOrEmpty(template.AIName))
-                _ai = AIFactory.Create(template.AIName, this);
+                AI = AIFactory.Create(template.AIName, this);
 
             // Create and copy over the stats
             _stats = new NPCStats(this);
@@ -205,8 +229,9 @@ namespace DemoGame.Server
                 return;
 
             // Update the AI
-            if (_ai != null)
-                _ai.Update();
+            var ai = AI;
+            if (ai != null)
+                ai.Update();
 
             // Perform the base update of the character
             base.Update(imap, deltaTime);

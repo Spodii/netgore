@@ -8,23 +8,24 @@ using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public class InsertUserItemQuery : DbQueryNonReader<InsertUserItemQuery.QueryArgs>
+    public class InsertCharacterInventoryItemQuery : DbQueryNonReader<InsertCharacterInventoryItemQuery.QueryArgs>
     {
-        const string _queryString = "INSERT INTO `user_inventory` SET `user_guid`=@user_guid,`item_guid`=@item_guid";
+        const string _queryString = "INSERT INTO `character_inventory`"
+            + " SET `character_guid`=@characterID,`item_guid`=@itemID";
 
-        public InsertUserItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public InsertCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@item_guid", "@user_guid");
+            return CreateParameters("@itemID", "@characterID");
         }
 
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@item_guid"] = item.ItemGuid;
-            p["@user_guid"] = item.UserGuid;
+            p["@itemID"] = item.ItemGuid;
+            p["@characterID"] = item.UserGuid;
         }
 
         /// <summary>
@@ -33,9 +34,9 @@ namespace DemoGame.Server
         public struct QueryArgs
         {
             public readonly int ItemGuid;
-            public readonly ushort UserGuid;
+            public readonly uint UserGuid;
 
-            public QueryArgs(ushort userGuid, int itemGuid)
+            public QueryArgs(uint userGuid, int itemGuid)
             {
                 UserGuid = userGuid;
                 ItemGuid = itemGuid;

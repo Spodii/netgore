@@ -127,20 +127,8 @@ namespace DemoGame.Server
             ServerSettings settings = new ServerSettings(settingsPath);
 
             // Open the database connection
-            try
-            {
-                _dbController = new DBController(settings.SqlConnectionString());
-            }
-            catch (Exception ex)
-            {
-                const string msg = "Failed to create connection to MySql database.";
-                Debug.Fail(msg);
-                if (log.IsFatalEnabled)
-                    log.Fatal(msg, ex);
-                Dispose();
-                return;
-            }
-
+            _dbController = new DBController(settings.SqlConnectionString());
+            
             // Load the game data and such
             GameData.Load();
             ItemEntity.Initialize(DBController);
@@ -153,8 +141,15 @@ namespace DemoGame.Server
             _world = new World(this);
             _sockets = new ServerSockets(this);
 
-            // Start the input thread
             _inputThread = new Thread(HandleInput) { Name = "Input Handler" };
+        }
+
+        /// <summary>
+        /// Starts the Server loop.
+        /// </summary>
+        public void Start()
+        {
+            // Start the input thread
             _inputThread.Start();
 
             // Start the main game loop
@@ -318,6 +313,8 @@ namespace DemoGame.Server
             _isRunning = false;
         }
 
+        public bool IsDisposed { get { return _disposed; } }
+
         #region IDisposable Members
 
         /// <summary>
@@ -325,7 +322,7 @@ namespace DemoGame.Server
         /// </summary>
         public void Dispose()
         {
-            if (_disposed)
+            if (IsDisposed)
                 return;
 
             _disposed = true;

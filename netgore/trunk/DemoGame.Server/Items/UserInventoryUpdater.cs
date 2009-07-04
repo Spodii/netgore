@@ -23,7 +23,7 @@ namespace DemoGame.Server
         /// </summary>
         User OwnerUser
         {
-            get { return UserInventory.User; }
+            get { return UserInventory.Character as User; }
         }
 
         /// <summary>
@@ -60,6 +60,7 @@ namespace DemoGame.Server
         /// </summary>
         public void Update()
         {
+            // TODO: Recycle the PacketWriter instead of grabbing from the pool every time
             // Loop through all slots
             for (int slot = 0; slot < Inventory.MaxInventorySize; slot++)
             {

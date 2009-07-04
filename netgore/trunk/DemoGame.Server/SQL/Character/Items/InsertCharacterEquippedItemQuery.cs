@@ -8,27 +8,25 @@ using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public class InsertUserEquippedQuery : DbQueryNonReader<InsertUserEquippedQuery.QueryArgs>
+    public class InsertCharacterEquippedItemQuery : DbQueryNonReader<InsertCharacterEquippedItemQuery.QueryArgs>
     {
-        public const string UserEquippedTable = "user_equipped";
-
         const string _queryString =
-            "INSERT INTO `" + UserEquippedTable + "` SET `user_guid`=@userGuid,`item_guid`=@itemGuid,`slot`=@slot";
+            "INSERT INTO `character_equipped` SET `character_guid`=@characterID,`item_guid`=@itemID,`slot`=@slot";
 
-        public InsertUserEquippedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public InsertCharacterEquippedItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@itemGuid", "@slot", "@userGuid");
+            return CreateParameters("@itemID", "@slot", "@userID");
         }
 
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@itemGuid"] = item.ItemGuid;
+            p["@itemID"] = item.ItemGuid;
             p["@slot"] = item.Slot;
-            p["@userGuid"] = item.UserGuid;
+            p["@userID"] = item.UserGuid;
         }
 
         /// <summary>
@@ -49,7 +47,7 @@ namespace DemoGame.Server
             /// <summary>
             /// The guid of the user that this equipment belongs to.
             /// </summary>
-            public readonly ushort UserGuid;
+            public readonly uint UserGuid;
 
             /// <summary>
             /// UpdateUserEquipValues constructor.
@@ -58,7 +56,7 @@ namespace DemoGame.Server
             /// <param name="itemGuid">The item's guid for the equipment slot, or null if the slot is to be set
             /// to empty.</param>
             /// <param name="slot">The EquipmentSlot to be updated.</param>
-            public QueryArgs(ushort userGuid, int? itemGuid, EquipmentSlot slot)
+            public QueryArgs(uint userGuid, int? itemGuid, EquipmentSlot slot)
             {
                 UserGuid = userGuid;
                 ItemGuid = itemGuid;

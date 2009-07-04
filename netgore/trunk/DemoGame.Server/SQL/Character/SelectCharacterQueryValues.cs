@@ -8,16 +8,18 @@ using NetGore;
 
 namespace DemoGame.Server
 {
-    public class SelectUserQueryValues
+    public class SelectCharacterQueryValues
     {
+        public readonly string Name;
         public readonly int BodyIndex;
-        public readonly ushort Guid;
+        public readonly uint Guid;
         public readonly MapIndex MapIndex;
         public readonly Vector2 Position;
         public readonly CharacterStatsBase Stats;
 
-        public SelectUserQueryValues(ushort guid, MapIndex mapIndex, Vector2 position, int bodyIndex, CharacterStatsBase stats)
+        public SelectCharacterQueryValues(uint guid, string name, MapIndex mapIndex, Vector2 position, int bodyIndex, CharacterStatsBase stats)
         {
+            Name = name;
             Guid = guid;
             MapIndex = mapIndex;
             Position = position;
