@@ -5,7 +5,6 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-
 using log4net;
 using NetGore.Db;
 
@@ -74,31 +73,6 @@ namespace DemoGame.Server
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return CreateParameters("@guid");
-        }
-
-        static List<int> ParseNPCDropsString(int guid, string npcDropsString)
-        {
-            var dropsStr = npcDropsString.Split(',');
-            var drops = new List<int>(dropsStr.Length);
-
-            foreach (string d in dropsStr)
-            {
-                if (d.Length == 0)
-                    continue;
-
-                int value;
-                if (!int.TryParse(d, out value))
-                {
-                    const string errmsg = "Failed to parse NPCDrop index `{0}` for NPCTemplate `{1}`.";
-                    Debug.Fail(string.Format(errmsg, d, guid));
-                    if (log.IsWarnEnabled)
-                        log.WarnFormat(errmsg, d, guid);
-                }
-
-                drops.Add(value);
-            }
-
-            return drops;
         }
 
         protected override void SetParameters(DbParameterValues p, int guid)
