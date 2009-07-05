@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 
 
-namespace DemoGame.Server
+namespace DemoGame.Server.Queries
 {
     public class SelectNPCTemplateQueryValues
     {

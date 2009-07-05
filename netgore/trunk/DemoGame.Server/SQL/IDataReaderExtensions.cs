@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 
 
-namespace DemoGame.Server
+namespace DemoGame.Server.Queries
 {
     /// <summary>
     /// Extensions for the IDataReader for reading special data types unique to the game.

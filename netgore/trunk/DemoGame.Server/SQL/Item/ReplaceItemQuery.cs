@@ -7,7 +7,7 @@ using System.Text;
 
 using NetGore.Db;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.Queries
 {
     public class ReplaceItemQuery : DbQueryNonReader<ItemValues>
     {

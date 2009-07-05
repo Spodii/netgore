@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using NetGore.Db;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.Queries
 {
     /// <summary>
     /// A query that checks if a User with the specified name exists.

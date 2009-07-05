@@ -8,7 +8,7 @@ using System.Reflection;
 using log4net;
 using NetGore.Db;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.Queries
 {
     public class SelectNPCTemplateQuery : DbQueryReader<int>
     {

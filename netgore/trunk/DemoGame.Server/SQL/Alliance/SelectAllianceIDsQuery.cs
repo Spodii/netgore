@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using NetGore.Db;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.Queries
 {
     public class SelectAllianceIDsQuery : DbQueryReader
     {

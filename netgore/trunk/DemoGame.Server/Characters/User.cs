@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
+using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
 using MySql.Data.MySqlClient;

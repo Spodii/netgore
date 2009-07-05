@@ -1,4 +1,5 @@
 using System;
+using DemoGame.Server.Queries;
 using NetGore.Collections;
 
 namespace DemoGame.Server
