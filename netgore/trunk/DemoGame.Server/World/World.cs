@@ -121,8 +121,8 @@ namespace DemoGame.Server
 #endif
 
             // HACK: This is just for testing the persistent NPCs
-            var a = new NPC(this, 2);
-            var b = new NPC(this, 3);
+            NPC a = new NPC(this, 2);
+            NPC b = new NPC(this, 3);
 
             a.SetAI("testAI");
             b.SetAI("testAI");
@@ -149,31 +149,6 @@ namespace DemoGame.Server
 
             // NOTE: If the user is already logged in, this will throw an exception. Will have to determine how to handle this scenario.
             _users.Add(user.Name, user);
-        }
-
-        /// <summary>
-        /// Disposes of the World and everything in it.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-            {
-                Debug.Fail("World is already disposed.");
-                return;
-            }
-
-            // Set the World as disposed
-            _disposed = true;
-
-            // Dispose of the maps
-            foreach (Map map in Maps)
-                map.Dispose();
-
-            // Process the dispose stack
-            while (_disposeStack.Count > 0)
-            {
-                ProcessDisposeStack();
-            }
         }
 
         /// <summary>
@@ -379,5 +354,36 @@ namespace DemoGame.Server
             if (respawned.Count > 0)
                 _respawnables.RemoveAll(respawned.Contains);
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Disposes of the World and everything in it.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+            {
+                Debug.Fail("World is already disposed.");
+                return;
+            }
+
+            // Set the World as disposed
+            _disposed = true;
+
+            // Dispose of the maps
+            foreach (Map map in Maps)
+            {
+                map.Dispose();
+            }
+
+            // Process the dispose stack
+            while (_disposeStack.Count > 0)
+            {
+                ProcessDisposeStack();
+            }
+        }
+
+        #endregion
     }
 }
