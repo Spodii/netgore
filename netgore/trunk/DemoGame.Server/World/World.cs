@@ -124,8 +124,8 @@ namespace DemoGame.Server
             var a = new NPC(this, 2);
             var b = new NPC(this, 3);
 
-            a.AI = AIFactory.Create("testAI", a);
-            b.AI = AIFactory.Create("testAI", b);
+            a.SetAI("testAI");
+            b.SetAI("testAI");
         }
 
         /// <summary>
