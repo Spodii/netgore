@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using log4net;
+using NetGore.Collections;
 
 namespace DemoGame.Server
 {
@@ -15,7 +16,12 @@ namespace DemoGame.Server
         /// <summary>
         /// Dictionary of alliances stored by their name.
         /// </summary>
-        readonly Dictionary<string, Alliance> _alliances = new Dictionary<string, Alliance>();
+        readonly Dictionary<string, Alliance> _allianceFromName = new Dictionary<string, Alliance>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Array of alliances stored by their ID.
+        /// </summary>
+        readonly DArray<Alliance> _alliance = new DArray<Alliance>(false);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -33,10 +39,31 @@ namespace DemoGame.Server
         /// Gets the Alliance by the given name.
         /// </summary>
         /// <param name="allianceName">Name of the Alliance to get.</param>
-        /// <returns>The Alliance by the given name.</returns>
+        /// <returns>The Alliance by the given name, or null if none found.</returns>
         public Alliance this[string allianceName]
         {
-            get { return _alliances[allianceName]; }
+            get 
+            {
+                Alliance ret;
+                if (_allianceFromName.TryGetValue(allianceName, out ret))
+                    return ret;
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the Alliance by the specified AllianceID.
+        /// </summary>
+        /// <param name="allianceID">ID of the Alliance.</param>
+        /// <returns>The Alliance with the given ID, or null if none found.</returns>
+        public Alliance this[byte allianceID]
+        {
+            get 
+            {
+                if (!_alliance.CanGet(allianceID))
+                    return null;
+                return _alliance[allianceID]; 
+            }
         }
 
         /// <summary>
@@ -62,7 +89,7 @@ namespace DemoGame.Server
         /// else false.</returns>
         public bool Contains(string allianceName)
         {
-            return _alliances.ContainsKey(allianceName);
+            return _allianceFromName.ContainsKey(allianceName);
         }
 
         /// <summary>
@@ -89,12 +116,44 @@ namespace DemoGame.Server
             return alliance;
         }
 
+        /// <summary>
+        /// Adds an Alliance to this AllianceManager.
+        /// </summary>
+        /// <param name="alliance">Alliance to add.</param>
         void Add(Alliance alliance)
         {
             if (alliance == null)
                 throw new ArgumentNullException("alliance");
+            
+#if DEBUG
+            // Ensure the ID is free
+            if (_alliance.CanGet(alliance.ID))
+            {
+                var a = _alliance[alliance.ID];
+                if (a != null)
+                {
+                    const string errmsg = "Failed to add Alliance `{0}` - ID `{1}` is already occupied by `{2}`!";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, alliance, alliance.ID, a);
+                    Debug.Fail(string.Format(errmsg, alliance, alliance.ID, a));
+                    return;
+                }
+            }
 
-            _alliances.Add(alliance.Name, alliance);
+            // Make sure we don't already have this Alliance in the collection somehow
+            if (_alliance.Contains(alliance))
+            {
+                const string errmsg = "Failed to add Alliance `{0}` - it is already in the AllianceManager!";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, alliance);
+                Debug.Fail(string.Format(errmsg, alliance));
+                return;
+            }
+#endif
+
+            // Add it
+            _allianceFromName.Add(alliance.Name, alliance);
+            _alliance.Insert(alliance.ID, alliance);
         }
 
         /// <summary>
@@ -102,13 +161,17 @@ namespace DemoGame.Server
         /// </summary>
         void LoadAll()
         {
+            // Grab all IDs
             var allianceIDs = DBController.SelectAllianceIDs.Execute();
 
+            // Load each alliance
             foreach (var allianceID in allianceIDs)
             {
                 var alliance = Load(DBController, allianceID);
                 Add(alliance);
             }
+
+            _alliance.Trim();
         }
 
         #region IEnumerable<Alliance> Members
@@ -123,7 +186,7 @@ namespace DemoGame.Server
         ///<filterpriority>1</filterpriority>
         public IEnumerator<Alliance> GetEnumerator()
         {
-            foreach (Alliance alliance in _alliances.Values)
+            foreach (Alliance alliance in _allianceFromName.Values)
             {
                 yield return alliance;
             }
