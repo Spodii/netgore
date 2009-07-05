@@ -4,7 +4,7 @@ Source Host: localhost
 Source Database: demogame
 Target Host: localhost
 Target Database: demogame
-Date: 7/5/2009 1:39:28 PM
+Date: 7/5/2009 2:09:54 PM
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -108,7 +108,7 @@ CREATE TABLE `character_inventory` (
 -- ----------------------------
 CREATE TABLE `character_template` (
   `id` smallint(5) unsigned NOT NULL,
-  `alliance` varchar(255) NOT NULL,
+  `alliance_id` tinyint(3) unsigned NOT NULL,
   `name` varchar(50) NOT NULL DEFAULT 'New NPC',
   `ai` varchar(255) NOT NULL,
   `body` smallint(5) unsigned NOT NULL DEFAULT '1',
@@ -132,7 +132,9 @@ CREATE TABLE `character_template` (
   `regen` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `tact` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `ws` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `alliance_id` (`alliance_id`),
+  CONSTRAINT `character_template_ibfk_1` FOREIGN KEY (`alliance_id`) REFERENCES `alliance` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -236,11 +238,11 @@ INSERT INTO `alliance_attackable` VALUES ('0', '1');
 INSERT INTO `alliance_attackable` VALUES ('1', '0');
 INSERT INTO `alliance_hostile` VALUES ('0', '1');
 INSERT INTO `alliance_hostile` VALUES ('1', '0');
-INSERT INTO `character` VALUES ('1', 'Spodi', 'asdf', '2', '354.4', '338', '1', '3012', '12', '810', '527', '5', '50', '75', '50', '8', '7', '2', '1', '1', '4', '1', '2', '1', '1', '1', '1', '1', '1');
-INSERT INTO `character` VALUES ('2', 'Test A', '', '2', '660.799', '445.2', '1', '3012', '12', '810', '527', '50', '50', '50', '50', '8', '7', '2', '1', '1', '4', '1', '2', '1', '1', '1', '1', '1', '1');
-INSERT INTO `character` VALUES ('3', 'Test B', '', '2', '675.199', '470.4', '1', '3012', '12', '810', '527', '50', '50', '50', '50', '8', '7', '2', '1', '1', '4', '1', '2', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('1', 'Spodi', 'asdf', '2', '372.4', '338', '1', '3012', '12', '810', '527', '5', '50', '75', '50', '8', '7', '2', '1', '1', '4', '1', '2', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('2', 'Test A', '', '2', '574', '402', '1', '3012', '12', '810', '527', '50', '50', '50', '50', '8', '7', '2', '1', '1', '4', '1', '2', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('3', 'Test B', '', '2', '736', '530', '1', '3012', '12', '810', '527', '50', '50', '50', '50', '8', '7', '2', '1', '1', '4', '1', '2', '1', '1', '1', '1', '1', '1');
 INSERT INTO `character_inventory` VALUES ('1', '60');
-INSERT INTO `character_template` VALUES ('1', 'monster', 'A Test NPC', 'TestAI', '1', '2', '1', '1', '5', '5', '1', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', '1', '2', '1', '1', '5', '5', '1', '1', '1', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 INSERT INTO `character_template_drops` VALUES ('1', '1', '0', '2', '10');
 INSERT INTO `character_template_drops` VALUES ('1', '2', '2', '5', '25');
 INSERT INTO `character_template_drops` VALUES ('1', '3', '1', '1', '50');
@@ -327,6 +329,7 @@ INSERT INTO `item` VALUES ('77', '1', '9', '16', 'Mana Potion', 'A mana potion',
 INSERT INTO `item` VALUES ('78', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 INSERT INTO `item` VALUES ('79', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 INSERT INTO `item` VALUES ('80', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('89', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 INSERT INTO `item` VALUES ('225', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 INSERT INTO `item` VALUES ('845', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 INSERT INTO `item` VALUES ('875', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '44', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
