@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using log4net;
 
@@ -12,9 +13,9 @@ namespace DemoGame.Server
     public class AllianceManager : IEnumerable<Alliance>
     {
         /// <summary>
-        /// Dictionary of alliances by their name
+        /// Dictionary of alliances stored by their name.
         /// </summary>
-        static readonly Dictionary<string, Alliance> _alliances = new Dictionary<string, Alliance>();
+        readonly Dictionary<string, Alliance> _alliances = new Dictionary<string, Alliance>();
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -65,37 +66,48 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Loads the Alliance information for all Alliances.
+        /// Loads a single Alliance.
+        /// </summary>
+        /// <param name="dbController">DBController used to communicate with the database.</param>
+        /// <param name="id">ID of the Alliance to load.</param>
+        /// <returns>The loaded Alliance.</returns>
+        public static Alliance Load(DBController dbController, byte id)
+        {
+            var values = dbController.SelectAlliance.Execute(id);
+            var attackableIDs = dbController.SelectAllianceAttackable.Execute(id);
+            var hostileIDs = dbController.SelectAllianceHostile.Execute(id);
+
+            Debug.Assert(id == values.ID);
+            Debug.Assert(id == attackableIDs.AllianceID);
+            Debug.Assert(id == hostileIDs.AllianceID);
+
+            var alliance = new Alliance(id, values.Name, attackableIDs.AttackableIDs, hostileIDs.HostileIDs);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Loaded Alliance `{0}`.", alliance);
+
+            return alliance;
+        }
+
+        void Add(Alliance alliance)
+        {
+            if (alliance == null)
+                throw new ArgumentNullException("alliance");
+
+            _alliances.Add(alliance.Name, alliance);
+        }
+
+        /// <summary>
+        /// Loads the Alliance information for all Alliances and binds them to this AllianceManager.
         /// </summary>
         void LoadAll()
         {
-            var allianceData = DBController.SelectAlliances.Execute();
+            var allianceIDs = DBController.SelectAllianceIDs.Execute();
 
-            // Create the alliance objects and store them by their name
-            foreach (var data in allianceData)
+            foreach (var allianceID in allianceIDs)
             {
-                string name = (string)data["name"];
-
-                if (Contains(name))
-                    throw new Exception(string.Format("Duplicate alliance name found: {0}", name));
-
-                Alliance a = new Alliance(this, name);
-                _alliances.Add(name, a);
-
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Loaded alliance `{0}`", name);
-            }
-
-            // Add the information for each alliance
-            foreach (var data in allianceData)
-            {
-                string name = (string)data["name"];
-                Alliance alliance = this[name];
-
-                if (alliance == null)
-                    throw new Exception(string.Format("Failed to find Alliance `{0}`", name));
-
-                alliance.Load(data);
+                var alliance = Load(DBController, allianceID);
+                Add(alliance);
             }
         }
 
