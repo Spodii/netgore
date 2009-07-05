@@ -14,34 +14,29 @@ namespace DemoGame.Server
     /// </summary>
     public class Alliance
     {
-        static readonly string[] _splitStr = new string[] { "\r\n" };
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly AllianceManager _allianceManager;
-        readonly List<Alliance> _attackable = new List<Alliance>();
-        readonly List<Alliance> _hostile = new List<Alliance>();
+        readonly byte[] _attackable;
+        readonly byte[] _hostile;
         readonly string _name;
-        bool _loaded;
+        readonly byte _id;
 
         /// <summary>
-        /// Gets the AllianceManager that manages this Alliance.
+        /// Gets the list of Alliance IDs that this Alliance can attack
         /// </summary>
-        public AllianceManager AllianceManager
-        {
-            get { return _allianceManager; }
-        }
-
-        /// <summary>
-        /// Gets the list of Alliances that this Alliance can attack
-        /// </summary>
-        public IEnumerable<Alliance> Attackable
+        public IEnumerable<byte> Attackable
         {
             get { return _attackable; }
         }
 
         /// <summary>
-        /// Gets the list of Alliances that this Alliance is hostile towards
+        /// Gets the ID of this Alliance.
         /// </summary>
-        public IEnumerable<Alliance> Hostile
+        public byte ID { get { return _id; } }
+
+        /// <summary>
+        /// Gets the list of Alliance IDs that this Alliance is hostile towards
+        /// </summary>
+        public IEnumerable<byte> Hostile
         {
             get { return _hostile; }
         }
@@ -57,94 +52,89 @@ namespace DemoGame.Server
         /// <summary>
         /// Alliance constructor
         /// </summary>
-        /// <param name="allianceManager">AllianceManager that this Alliance will belong to.</param>
+        /// <param name="id">The ID of this Alliance.</param>
         /// <param name="name">Name of the Alliance.</param>
-        public Alliance(AllianceManager allianceManager, string name)
+        /// <param name="attackable">Alliance IDs that this Alliance can attack.</param>
+        /// <param name="hostile">Alliance IDs that this Alliance is hostile towards.</param>
+        public Alliance(byte id, string name, IEnumerable<byte> attackable, IEnumerable<byte> hostile)
         {
-            if (allianceManager == null)
-                throw new ArgumentNullException("allianceManager");
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
 
-            _allianceManager = allianceManager;
+            _id = id;
             _name = name;
+            _attackable = attackable.ToArray();
+            _hostile = hostile.ToArray();
         }
 
         /// <summary>
-        /// Checks this alliance can attack the given alliance
+        /// Checks this alliance can attack the given alliance.
         /// </summary>
-        /// <param name="alliance">Alliance to check against</param>
-        /// <returns>True if can attack the given alliance, else false</returns>
+        /// <param name="alliance">Alliance to check against.</param>
+        /// <returns>True if can attack the given alliance, else false.</returns>
         public bool CanAttack(Alliance alliance)
         {
             if (alliance == null)
             {
-                Debug.Fail("alliance is null.");
+                const string errmsg = "Parameter `alliance` is null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
                 return false;
             }
 
-            return Attackable.Contains(alliance);
+            return CanAttack(alliance.ID);
         }
 
         /// <summary>
-        /// Checks this alliance is hostile towards the given alliance
+        /// Checks this alliance can attack the given alliance.
         /// </summary>
-        /// <param name="alliance">Alliance to check against</param>
-        /// <returns>True if hostile towards the given alliance, else false</returns>
+        /// <param name="allianceID">Alliance ID to check against.</param>
+        /// <returns>True if can attack the given alliance, else false.</returns>
+        public bool CanAttack(byte allianceID)
+        {
+            return Attackable.Contains(allianceID);
+        }
+
+        /// <summary>
+        /// Checks this Alliance is hostile towards the given Alliance.
+        /// </summary>
+        /// <param name="alliance">Alliance to check against.</param>
+        /// <returns>True if hostile towards the given Alliance, else false.</returns>
         public bool IsHostile(Alliance alliance)
         {
             if (alliance == null)
             {
-                Debug.Fail("alliance is null.");
-                if (log.IsWarnEnabled)
-                    log.Warn("alliance is null.");
+                const string errmsg = "Parameter `alliance` is null.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
                 return false;
             }
 
-            return Hostile.Contains(alliance);
+            return IsHostile(alliance.ID);
         }
 
         /// <summary>
-        /// Loads the Alliance's data. This must be called once, and only once, before the Alliance is used.
+        /// Checks this Alliance is hostile towards the given Alliance.
         /// </summary>
-        /// <param name="data">Dictionary containing the alliance data.</param>
-        public void Load(IDictionary<string, object> data)
+        /// <param name="allianceID">Alliance ID to check against.</param>
+        /// <returns>True if hostile towards the given Alliance, else false.</returns>
+        public bool IsHostile(byte allianceID)
         {
-            if (data == null)
-                throw new ArgumentNullException("data");
-            if (_loaded)
-                throw new MethodAccessException("Alliance data has already been loaded.");
+            return Hostile.Contains(allianceID);
+        }
 
-            _loaded = true;
-
-            // Grab the data values
-            string fieldName = (string)data["name"];
-            string fieldHostile = (string)data["hostile"];
-            string fieldAttackable = (string)data["attackable"];
-
-            // Ensure that this data is even for us, and that this AllianceManager knows about us
-            if (AllianceManager[fieldName] != this)
-                throw new DataException("Alliance name reference mismatch.");
-
-            // Add the hostile alliances
-            var hostile = fieldHostile.Split(_splitStr, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (string otherName in hostile)
-            {
-                _hostile.Add(AllianceManager[otherName]);
-            }
-
-            _hostile.TrimExcess();
-
-            // Add the attackable alliances
-            var attackable = fieldAttackable.Split(_splitStr, StringSplitOptions.RemoveEmptyEntries);
-
-            foreach (string otherName in attackable)
-            {
-                _attackable.Add(AllianceManager[otherName]);
-            }
-
-            _hostile.TrimExcess();
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override string ToString()
+        {
+            return string.Format("{0} [{1}]", Name, ID);
         }
     }
 }

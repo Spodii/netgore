@@ -131,6 +131,13 @@
     <Compile Include="Say\SayHandler.cs" />
     <Compile Include="Networking\ServerPacket.cs" />
     <Compile Include="Networking\ServerPacketHandler.cs" />
+    <Compile Include="SQL\Alliance\SelectAllianceAttackableQuery.cs" />
+    <Compile Include="SQL\Alliance\SelectAllianceAttackableQueryValues.cs" />
+    <Compile Include="SQL\Alliance\SelectAllianceHostileQuery.cs" />
+    <Compile Include="SQL\Alliance\SelectAllianceHostileQueryValues.cs" />
+    <Compile Include="SQL\Alliance\SelectAllianceIDsQuery.cs" />
+    <Compile Include="SQL\Alliance\SelectAllianceQuery.cs" />
+    <Compile Include="SQL\Alliance\SelectAllianceQueryValues.cs" />
     <Compile Include="SQL\Character\SelectCharacterByIDQuery.cs" />
     <Compile Include="SQL\DBController.cs" />
     <Compile Include="SQL\DBTables.cs" />
@@ -141,7 +148,6 @@
     <Compile Include="SQL\Character\Items\SelectCharacterEquippedItemsQuery.cs" />
     <Compile Include="SQL\Character\Items\SelectCharacterInventoryItemsQuery.cs" />
     <Compile Include="SQL\Item\UpdateItemFieldQuery.cs" />
-    <Compile Include="SQL\Misc\SelectAlliancesQuery.cs" />
     <Compile Include="SQL\Character\SelectNPCTemplateDropsQuery.cs" />
     <Compile Include="SQL\Character\SelectNPCTemplateDropsQueryValues.cs" />
     <Compile Include="SQL\Character\SelectNPCTemplateQuery.cs" />

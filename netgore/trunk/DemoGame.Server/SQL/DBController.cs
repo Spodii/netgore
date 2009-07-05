@@ -28,7 +28,6 @@ namespace DemoGame.Server
         readonly InsertUserQuery _insertUserQuery;
         readonly ItemIDCreator _itemIDCreator;
         readonly ReplaceItemQuery _replaceItemQuery;
-        readonly SelectAlliancesQuery _selectAlliancesQuery;
         readonly SelectItemQuery _selectItemQuery;
         readonly SelectItemsQuery _selectItemsQuery;
         readonly SelectItemTemplatesQuery _selectItemTemplatesQuery;
@@ -42,8 +41,17 @@ namespace DemoGame.Server
         readonly UpdateItemFieldQuery _updateItemFieldQuery;
         readonly UpdateCharacterQuery _updateCharacterQuery;
         readonly UserExistsQuery _userExistsQuery;
+        readonly SelectAllianceIDsQuery _selectAllianceIDsQuery;
+        readonly SelectAllianceQuery _selectAllianceQuery;
+        readonly SelectAllianceHostileQuery _selectAllianceHostileQuery;
+        readonly SelectAllianceAttackableQuery _selectAllianceAttackableQuery;
 
         bool _disposed;
+
+        public SelectAllianceIDsQuery SelectAllianceIDs { get { return _selectAllianceIDsQuery; } }
+        public SelectAllianceQuery SelectAlliance { get { return _selectAllianceQuery; } }
+        public SelectAllianceHostileQuery SelectAllianceHostile { get { return _selectAllianceHostileQuery; } }
+        public SelectAllianceAttackableQuery SelectAllianceAttackable { get { return _selectAllianceAttackableQuery; } }
 
         public DeleteItemQuery DeleteItem
         {
@@ -88,11 +96,6 @@ namespace DemoGame.Server
         public ReplaceItemQuery ReplaceItem
         {
             get { return _replaceItemQuery; }
-        }
-
-        public SelectAlliancesQuery SelectAlliances
-        {
-            get { return _selectAlliancesQuery; }
         }
 
         public SelectItemQuery SelectItem
@@ -219,9 +222,6 @@ namespace DemoGame.Server
             _selectCharacterInventoryItemsQuery = new SelectCharacterInventoryItemsQuery(_connectionPool);
             _disposableQueries.Add(_selectCharacterInventoryItemsQuery);
 
-            _selectAlliancesQuery = new SelectAlliancesQuery(_connectionPool);
-            _disposableQueries.Add(_selectAlliancesQuery);
-
             _selectCharacterQuery = new SelectCharacterQuery(_connectionPool);
             _disposableQueries.Add(_selectCharacterQuery);
 
@@ -242,6 +242,18 @@ namespace DemoGame.Server
 
             _userExistsQuery = new UserExistsQuery(_connectionPool);
             _disposableQueries.Add(_userExistsQuery);
+
+            _selectAllianceIDsQuery = new SelectAllianceIDsQuery(_connectionPool);
+            _disposableQueries.Add(_selectAllianceIDsQuery);
+
+            _selectAllianceQuery = new SelectAllianceQuery(_connectionPool);
+            _disposableQueries.Add(_selectAllianceQuery);
+
+            _selectAllianceHostileQuery = new SelectAllianceHostileQuery(_connectionPool);
+            _disposableQueries.Add(_selectAllianceHostileQuery);
+            
+            _selectAllianceAttackableQuery = new SelectAllianceAttackableQuery(_connectionPool);
+            _disposableQueries.Add(_selectAllianceAttackableQuery);
 
             _itemIDCreator = new ItemIDCreator(_connectionPool);
 
