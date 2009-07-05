@@ -1,42 +1,53 @@
+﻿/*
+Template for a custom value type that is handled externally as an Int32, but handled internally as whatever value type
+you want. This is provided as a template for creating custom Structs for game values. The reason they are exposed externally
+as an Int32 is to prevent having to ever change any external code when the internal value type changes.
+
+Copy all of this text into a new code file, follow the TODOs, and it should be fully functional and ready when done.
+
+Won't work with a non-integral value types, UInt, or 64+ bit value types as the internal value type.
+*/
+
 using System;
 using System.Data;
 using System.Runtime.InteropServices;
 using NetGore.IO;
 
-namespace NetGore
+// TODO: Replace string "UnderlyingValueType" with the name of the underlying value type.
+// TODO: Replace string "CustomValueTypeName" with the name of this value type.
+
+namespace NetGore // TODO: Ensure this is the namespace you want
 {
-    /// <summary>
-    /// A numeric value that represents the index of Map.
-    /// </summary>
+	// TODO: Add comments for the struct.
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct MapIndex : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    public struct CustomValueTypeName : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
         /// The maximum value.
         /// </summary>
-        const int _maxValue = ushort.MaxValue;
+        const int _maxValue = UnderlyingValueType.MaxValue;
 
         /// <summary>
         /// The minimum value.
         /// </summary>
-        const int _minValue = ushort.MinValue;
+        const int _minValue = UnderlyingValueType.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
         /// </summary>
-        readonly ushort _value;
+        readonly UnderlyingValueType _value;
 
         /// <summary>
-        /// MapIndex constructor.
+        /// CustomValueTypeName constructor.
         /// </summary>
-        /// <param name="value">Value to assign to the new MapIndex.</param>
-        public MapIndex(int value)
+        /// <param name="value">Value to assign to the new CustomValueTypeName.</param>
+        public CustomValueTypeName(int value)
         {
             if (value < _minValue || value > _maxValue)
                 throw new ArgumentOutOfRangeException("value");
 
-            _value = (ushort)value;
+            _value = (UnderlyingValueType)value;
         }
 
         /// <summary>
@@ -47,7 +58,7 @@ namespace NetGore
         /// </returns>
         /// <param name="other">Another object to compare to. 
         /// </param><filterpriority>2</filterpriority>
-        public bool Equals(MapIndex other)
+        public bool Equals(CustomValueTypeName other)
         {
             return other._value == _value;
         }
@@ -64,9 +75,9 @@ namespace NetGore
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            if (obj.GetType() != typeof(MapIndex))
+            if (obj.GetType() != typeof(CustomValueTypeName))
                 return false;
-            return Equals((MapIndex)obj);
+            return Equals((CustomValueTypeName)obj);
         }
 
         /// <summary>
@@ -82,62 +93,62 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the raw internal value of this MapIndex.
+        /// Gets the raw internal value of this CustomValueTypeName.
         /// </summary>
         /// <returns>The raw internal value.</returns>
-        public ushort GetRawValue()
+        public UnderlyingValueType GetRawValue()
         {
             return _value;
         }
 
         /// <summary>
-        /// Reads an MapIndex from an IValueReader.
+        /// Reads an CustomValueTypeName from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The MapIndex read from the IValueReader.</returns>
-        public static MapIndex Read(IValueReader reader, string name)
+        /// <returns>The CustomValueTypeName read from the IValueReader.</returns>
+        public static CustomValueTypeName Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
-            return new MapIndex(value);
+            UnderlyingValueType value = reader.ReadXXXX(name); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
+            return new CustomValueTypeName(value);
         }
 
         /// <summary>
-        /// Reads an MapIndex from an IDataReader.
+        /// Reads an CustomValueTypeName from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The MapIndex read from the IDataReader.</returns>
-        public static MapIndex Read(IDataReader reader, int i)
+        /// <returns>The CustomValueTypeName read from the IDataReader.</returns>
+        public static CustomValueTypeName Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
-            if (value is ushort)
-                return new MapIndex((ushort)value);
+            if (value is UnderlyingValueType)
+                return new CustomValueTypeName((UnderlyingValueType)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
-            return new MapIndex(convertedValue);
+            UnderlyingValueType convertedValue = Convert.ToXXXX(value); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
+            return new CustomValueTypeName(convertedValue); 
         }
 
         /// <summary>
-        /// Reads an MapIndex from an IDataReader.
+        /// Reads an CustomValueTypeName from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The MapIndex read from the IDataReader.</returns>
-        public static MapIndex Read(IDataReader reader, string name)
+        /// <returns>The CustomValueTypeName read from the IDataReader.</returns>
+        public static CustomValueTypeName Read(IDataReader reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an MapIndex from an IValueReader.
+        /// Reads an CustomValueTypeName from an IValueReader.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>The MapIndex read from the BitStream.</returns>
-        public static MapIndex Read(BitStream bitStream)
+        /// <returns>The CustomValueTypeName read from the BitStream.</returns>
+        public static CustomValueTypeName Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
-            return new MapIndex(value);
+            UnderlyingValueType value = bitStream.ReadXXXX(); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
+            return new CustomValueTypeName(value);
         }
 
         /// <summary>
@@ -153,10 +164,10 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Writes the MapIndex to an IValueWriter.
+        /// Writes the CustomValueTypeName to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the MapIndex that will be used to distinguish it
+        /// <param name="name">Unique name of the CustomValueTypeName that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
         {
@@ -164,7 +175,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Writes the MapIndex to an IValueWriter.
+        /// Writes the CustomValueTypeName to an IValueWriter.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         public void Write(BitStream bitStream)
@@ -493,9 +504,9 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side plus the right side.</returns>
-        public static MapIndex operator +(MapIndex left, MapIndex right)
+        public static CustomValueTypeName operator +(CustomValueTypeName left, CustomValueTypeName right)
         {
-            return new MapIndex(left._value + right._value);
+            return new CustomValueTypeName(left._value + right._value);
         }
 
         /// <summary>
@@ -504,9 +515,9 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side minus the right side.</returns>
-        public static MapIndex operator -(MapIndex left, MapIndex right)
+        public static CustomValueTypeName operator -(CustomValueTypeName left, CustomValueTypeName right)
         {
-            return new MapIndex(left._value - right._value);
+            return new CustomValueTypeName(left._value - right._value);
         }
 
         /// <summary>
@@ -515,7 +526,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(MapIndex left, int right)
+        public static bool operator ==(CustomValueTypeName left, int right)
         {
             return left._value == right;
         }
@@ -526,7 +537,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(MapIndex left, int right)
+        public static bool operator !=(CustomValueTypeName left, int right)
         {
             return left._value != right;
         }
@@ -537,7 +548,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(int left, MapIndex right)
+        public static bool operator ==(int left, CustomValueTypeName right)
         {
             return left == right._value;
         }
@@ -548,29 +559,29 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(int left, MapIndex right)
+        public static bool operator !=(int left, CustomValueTypeName right)
         {
             return left != right._value;
         }
 
         /// <summary>
-        /// Casts a MapIndex to an Int32.
+        /// Casts a CustomValueTypeName to an Int32.
         /// </summary>
-        /// <param name="MapIndex">MapIndex to cast.</param>
+        /// <param name="CustomValueTypeName">CustomValueTypeName to cast.</param>
         /// <returns>The Int32.</returns>
-        public static explicit operator int(MapIndex MapIndex)
+        public static explicit operator int(CustomValueTypeName CustomValueTypeName)
         {
-            return MapIndex._value;
+            return CustomValueTypeName._value;
         }
 
         /// <summary>
-        /// Casts an Int32 to a MapIndex.
+        /// Casts an Int32 to a CustomValueTypeName.
         /// </summary>
         /// <param name="value">Int32 to cast.</param>
-        /// <returns>The MapIndex.</returns>
-        public static explicit operator MapIndex(int value)
+        /// <returns>The CustomValueTypeName.</returns>
+        public static explicit operator CustomValueTypeName(int value)
         {
-            return new MapIndex(value);
+            return new CustomValueTypeName(value);
         }
 
         /// <summary>
@@ -579,18 +590,18 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(int left, MapIndex right)
+        public static bool operator >(int left, CustomValueTypeName right)
         {
             return left > right._value;
         }
 
         /// <summary>
-        /// Implements operator <
+        /// Implements operator <.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, MapIndex right)
+        public static bool operator <(int left, CustomValueTypeName right)
         {
             return left < right._value;
         }
@@ -601,7 +612,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(MapIndex left, int right)
+        public static bool operator >(CustomValueTypeName left, int right)
         {
             return left._value > right;
         }
@@ -612,7 +623,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(MapIndex left, int right)
+        public static bool operator <(CustomValueTypeName left, int right)
         {
             return left._value < right;
         }
@@ -623,7 +634,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(int left, MapIndex right)
+        public static bool operator >=(int left, CustomValueTypeName right)
         {
             return left >= right._value;
         }
@@ -634,7 +645,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(int left, MapIndex right)
+        public static bool operator <=(int left, CustomValueTypeName right)
         {
             return left <= right._value;
         }
@@ -645,18 +656,18 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(MapIndex left, int right)
+        public static bool operator >=(CustomValueTypeName left, int right)
         {
             return left._value >= right;
         }
 
         /// <summary>
-        /// Implements operator <=
+        /// Implements operator <=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(MapIndex left, int right)
+        public static bool operator <=(CustomValueTypeName left, int right)
         {
             return left._value <= right;
         }
@@ -667,7 +678,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(MapIndex left, MapIndex right)
+        public static bool operator !=(CustomValueTypeName left, CustomValueTypeName right)
         {
             return left._value != right._value;
         }
@@ -678,7 +689,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(MapIndex left, MapIndex right)
+        public static bool operator ==(CustomValueTypeName left, CustomValueTypeName right)
         {
             return left._value == right._value;
         }

@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using NetGore.IO;
 
@@ -15,18 +12,25 @@ namespace NetGore
     [StructLayout(LayoutKind.Sequential)]
     public struct MapEntityIndex : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
+        /// <summary>
+        /// The maximum value.
+        /// </summary>
         const int _maxValue = ushort.MaxValue;
-        const int _minValue = 0;
 
         /// <summary>
-        /// Underlying value.
+        /// The minimum value.
+        /// </summary>
+        const int _minValue = ushort.MinValue;
+
+        /// <summary>
+        /// The underlying value. This contains the actual value of the struct instance.
         /// </summary>
         readonly ushort _value;
 
         /// <summary>
         /// MapEntityIndex constructor.
         /// </summary>
-        /// <param name="value">Value for the MapEntityIndex.</param>
+        /// <param name="value">Value to assign to the new MapEntityIndex.</param>
         public MapEntityIndex(int value)
         {
             if (value < _minValue || value > _maxValue)
@@ -110,7 +114,8 @@ namespace NetGore
             if (value is ushort)
                 return new MapEntityIndex((ushort)value);
 
-            return new MapEntityIndex(Convert.ToUInt16(value));
+            ushort convertedValue = Convert.ToUInt16(value);
+            return new MapEntityIndex(convertedValue);
         }
 
         /// <summary>
@@ -527,28 +532,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Implements operator !=.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(MapEntityIndex left, MapEntityIndex right)
-        {
-            return left._value != right._value;
-        }
-
-        /// <summary>
-        /// Implements operator ==.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(MapEntityIndex left, MapEntityIndex right)
-        {
-            return left._value == right._value;
-        }
-
-        /// <summary>
         /// Implements operator ==.
         /// </summary>
         /// <param name="left">Left side argument.</param>
@@ -568,6 +551,26 @@ namespace NetGore
         public static bool operator !=(int left, MapEntityIndex right)
         {
             return left != right._value;
+        }
+
+        /// <summary>
+        /// Casts a MapEntityIndex to an Int32.
+        /// </summary>
+        /// <param name="MapEntityIndex">MapEntityIndex to cast.</param>
+        /// <returns>The Int32.</returns>
+        public static explicit operator int(MapEntityIndex MapEntityIndex)
+        {
+            return MapEntityIndex._value;
+        }
+
+        /// <summary>
+        /// Casts an Int32 to a MapEntityIndex.
+        /// </summary>
+        /// <param name="value">Int32 to cast.</param>
+        /// <returns>The MapEntityIndex.</returns>
+        public static explicit operator MapEntityIndex(int value)
+        {
+            return new MapEntityIndex(value);
         }
 
         /// <summary>
@@ -604,7 +607,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Implements operator <
+        /// Implements operator <.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -648,7 +651,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Implements operator <=.
+        /// Implements operator <=
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -659,23 +662,25 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Casts a MapEntityIndex to an Int32.
+        /// Implements operator !=.
         /// </summary>
-        /// <param name="mapEntityIndex">MapEntityIndex to cast.</param>
-        /// <returns>The Int32.</returns>
-        public static explicit operator int(MapEntityIndex mapEntityIndex)
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the two arguments are not equal.</returns>
+        public static bool operator !=(MapEntityIndex left, MapEntityIndex right)
         {
-            return mapEntityIndex._value;
+            return left._value != right._value;
         }
 
         /// <summary>
-        /// Casts an Int32 to a MapEntityIndex.
+        /// Implements operator ==.
         /// </summary>
-        /// <param name="value">Int32 to cast.</param>
-        /// <returns>The MapEntityIndex.</returns>
-        public static explicit operator MapEntityIndex(int value)
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the two arguments are equal.</returns>
+        public static bool operator ==(MapEntityIndex left, MapEntityIndex right)
         {
-            return new MapEntityIndex(value);
+            return left._value == right._value;
         }
     }
 }
