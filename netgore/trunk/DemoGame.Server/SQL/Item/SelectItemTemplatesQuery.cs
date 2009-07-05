@@ -10,7 +10,7 @@ namespace DemoGame.Server
 {
     public class SelectItemTemplatesQuery : DbQueryReader
     {
-        const string _queryString = "SELECT * FROM `item_template`";
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}`", DBTables.ItemTemplate);
 
         public SelectItemTemplatesQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

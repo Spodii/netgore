@@ -9,8 +9,10 @@ namespace DemoGame.Server
 {
     public class UpdateCharacterQuery : UserQueryBase
     {
+        static readonly string _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", DBTables.Character, QueryFieldsStr);
+
         public UpdateCharacterQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, string.Format("UPDATE `character` SET {0} WHERE `id`=@id", QueryFieldsStr))
+            : base(connectionPool, _queryString)
         {
         }
     }

@@ -10,7 +10,7 @@ namespace DemoGame.Server
 {
     public class SelectCharacterByIDQuery : DbQueryReader<uint>
     {
-        const string _queryString = "SELECT * FROM `character` WHERE `id`=@characterID";
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@characterID", DBTables.Character);
 
         public SelectCharacterByIDQuery(DbConnectionPool connectionPool)
             : base(connectionPool, _queryString)

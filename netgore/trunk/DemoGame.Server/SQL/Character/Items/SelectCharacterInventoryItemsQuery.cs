@@ -1,19 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Diagnostics;
-using System.Linq;
-
 using NetGore.Db;
 
 namespace DemoGame.Server
 {
     public class SelectCharacterInventoryItemsQuery : SelectItemQueryBase<uint>
     {
-        const string _queryString =
-            "SELECT item.* FROM `item`,`character_inventory` " + "WHERE character_inventory.character_id = @characterID " +
-            "AND item.id = character_inventory.item_id";
+        static readonly string _queryString =
+            string.Format("SELECT {0}.* FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
+                          DBTables.Item, DBTables.CharacterInventory);
 
         public SelectCharacterInventoryItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

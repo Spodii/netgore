@@ -11,7 +11,7 @@ namespace DemoGame.Server
 {
     public class SelectItemQuery : SelectItemQueryBase<int>
     {
-        const string _queryString = "SELECT * FROM `item` WHERE `id`=@id";
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", DBTables.Item);
 
         public SelectItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

@@ -12,7 +12,7 @@ namespace DemoGame.Server
 {
     public class SelectCharacterQuery : DbQueryReader<string>
     {
-        const string _queryString = "SELECT * FROM `character` WHERE `name`=@name";
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `name`=@name", DBTables.Character);
 
         public SelectCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

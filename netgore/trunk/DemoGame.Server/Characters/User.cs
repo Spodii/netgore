@@ -202,7 +202,7 @@ namespace DemoGame.Server
 
             using (MySqlCommand cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "SELECT `unique_id` FROM `character` ORDER BY `unique_id` ASC";
+                cmd.CommandText = string.Format("SELECT `unique_id` FROM `{0}` ORDER BY `unique_id` ASC", DBTables.Character);
                 using (MySqlDataReader r = cmd.ExecuteReader())
                 {
                     // No Users, so return the first index
