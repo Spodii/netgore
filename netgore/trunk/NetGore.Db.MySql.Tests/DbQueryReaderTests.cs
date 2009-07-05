@@ -106,6 +106,8 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void SelectTest()
         {
+            var testValues = new QueryTestValues(5, 10, 15);
+
             using (MyReader reader = CreateReader())
             {
                 DbConnectionPool cp = reader.ConnectionPool;
@@ -113,7 +115,7 @@ namespace NetGore.Db.MySql.Tests
                 for (int i = 0; i < 100; i++)
                 {
                     Assert.AreEqual(0, cp.Count);
-                    using (IDataReader r = reader.ExecuteReader(new QueryTestValues(5, 10, 15)))
+                    using (IDataReader r = ((IDbQueryReader<QueryTestValues>)reader).ExecuteReader(testValues))
                     {
                         Assert.AreEqual(1, cp.Count);
                         Assert.IsTrue(r.Read());

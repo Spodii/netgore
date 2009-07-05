@@ -139,7 +139,7 @@ namespace DemoGame.Server
             int lastValue = -1;
 
             // Execute the reader
-            using (IDataReader r = _selectIDQuery.ExecuteReader())
+            using (IDataReader r = ((IDbQueryReader)_selectIDQuery).ExecuteReader())
             {
                 // Read until we run out of rows
                 while (r.Read())
