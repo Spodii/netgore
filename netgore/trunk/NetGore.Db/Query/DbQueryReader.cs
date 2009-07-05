@@ -18,9 +18,24 @@ namespace NetGore.Db
         {
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+        /// </summary>
+        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
+        /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return null;
+        }
+
+        /// <summary>
+        /// Executes the query on the database.
+        /// </summary>
+        /// <returns>IDataReader used to read the results of the query.</returns>
+        protected IDataReader ExecuteReader()
+        {
+            // Little hack that allows us to have IDbQueryReader<T>.ExecuteReader exposed protected instead of public 
+            return ((IDbQueryReader)this).ExecuteReader();
         }
 
         #region IDbQueryReader Members
@@ -29,7 +44,7 @@ namespace NetGore.Db
         /// Executes the query on the database.
         /// </summary>
         /// <returns>IDataReader used to read the results of the query.</returns>
-        public IDataReader ExecuteReader()
+        IDataReader IDbQueryReader.ExecuteReader()
         {
             // Get the connection to use
             IPoolableDbConnection pooledConn = GetPoolableConnection();
@@ -72,6 +87,17 @@ namespace NetGore.Db
         /// <param name="item">Item used to execute the query.</param>
         protected abstract void SetParameters(DbParameterValues p, T item);
 
+        /// <summary>
+        /// Executes the query on the database using the specified <paramref name="item"/>.
+        /// </summary>
+        /// <param name="item">Item containing the value or values used for executing the query.</param>
+        /// <returns>IDataReader used to read the results of the query.</returns>
+        protected IDataReader ExecuteReader(T item)
+        {
+            // Little hack that allows us to have IDbQueryReader<T>.ExecuteReader exposed protected instead of public 
+            return ((IDbQueryReader<T>)this).ExecuteReader(item);
+        }
+
         #region IDbQueryReader<T> Members
 
         /// <summary>
@@ -79,7 +105,7 @@ namespace NetGore.Db
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
         /// <returns>IDataReader used to read the results of the query.</returns>
-        public IDataReader ExecuteReader(T item)
+        IDataReader IDbQueryReader<T>.ExecuteReader(T item)
         {
             // Get the connection to use
             IPoolableDbConnection pooledConn = GetPoolableConnection();
