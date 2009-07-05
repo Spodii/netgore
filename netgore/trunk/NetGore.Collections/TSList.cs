@@ -98,7 +98,7 @@ namespace NetGore.Collections
         public List<T> FindAll(Predicate<T> match)
         {
             _lock.EnterReadLock();
-            List<T> ret = _list.FindAll(match);
+            var ret = _list.FindAll(match);
             _lock.ExitReadLock();
 
             return ret;
@@ -199,7 +199,7 @@ namespace NetGore.Collections
         public T[] ToArray()
         {
             _lock.EnterReadLock();
-            T[] ret = _list.ToArray();
+            var ret = _list.ToArray();
             _lock.ExitReadLock();
 
             return ret;

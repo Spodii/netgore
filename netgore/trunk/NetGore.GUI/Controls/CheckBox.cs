@@ -360,7 +360,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             // Find the text offset
-            var textOffset = new Vector2(sprite.Source.Width + _textXAdjust, 0);
+            Vector2 textOffset = new Vector2(sprite.Source.Width + _textXAdjust, 0);
 
             // Draw the checkbox
             if (sprite.Texture != null)

@@ -51,12 +51,12 @@ namespace NetGore.EditorTools
             // Open the texture file we saved
             try
             {
-                using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+                using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
                 {
                     using (Image tmp = Image.FromStream(fileStream))
                     {
                         // Create the bitmap
-                        using (var bmp = new Bitmap(destWidth, destHeight, PixelFormat.Format32bppArgb))
+                        using (Bitmap bmp = new Bitmap(destWidth, destHeight, PixelFormat.Format32bppArgb))
                         {
                             bmp.SetResolution(72, 72);
 
@@ -72,15 +72,15 @@ namespace NetGore.EditorTools
                                 g.InterpolationMode = InterpolationMode.HighQualityBilinear;
 
                                 // Draw the texture image onto the bitmap
-                                var srcRect = new Rectangle(x, y, width, height);
-                                var destRect = new Rectangle(0, 0, Math.Min(destWidth, width), Math.Min(destHeight, height));
+                                Rectangle srcRect = new Rectangle(x, y, width, height);
+                                Rectangle destRect = new Rectangle(0, 0, Math.Min(destWidth, width), Math.Min(destHeight, height));
                                 g.DrawImage(tmp, destRect, srcRect, GraphicsUnit.Pixel);
                             }
 
                             // Save the bitmap into a memory stream, then use that stream to load the image
                             // Keep in mind we do not dispose of the bitmapStream since that will be used by the
                             // image we return, so we need it to live
-                            var bitmapStream = new MemoryStream();
+                            MemoryStream bitmapStream = new MemoryStream();
                             bmp.Save(bitmapStream, ImageFormat.Png);
                             ret = Image.FromStream(bitmapStream);
                         }
@@ -105,7 +105,7 @@ namespace NetGore.EditorTools
         /// <returns>Image filled with the specified color.</returns>
         public static Image CreateSolid(int width, int height, Color color)
         {
-            var bmp = new Bitmap(width, height);
+            Bitmap bmp = new Bitmap(width, height);
             bmp.SetResolution(72, 72);
             System.Drawing.Graphics g = System.Drawing.Graphics.FromImage(bmp);
             g.DrawRectangle(new Pen(color, width * 2), 0, 0, width, height);

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,12 +7,12 @@ namespace DemoGame.Server
 {
     public class SelectNPCTemplateDropsQueryValues
     {
-        public int ItemGuid { get; private set; }
+        public int ItemID { get; private set; }
         public NPCDropChance DropChance { get; private set; }
 
-        public SelectNPCTemplateDropsQueryValues(int itemGuid, NPCDropChance dropChance)
+        public SelectNPCTemplateDropsQueryValues(int itemID, NPCDropChance dropChance)
         {
-            ItemGuid = itemGuid;
+            ItemID = itemID;
             DropChance = dropChance;
         }
     }

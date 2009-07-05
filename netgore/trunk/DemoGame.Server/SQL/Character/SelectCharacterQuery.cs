@@ -12,7 +12,7 @@ namespace DemoGame.Server
 {
     public class SelectCharacterQuery : DbQueryReader<string>
     {
-        const string _queryString = "SELECT * FROM `characters` WHERE `name`=@name";
+        const string _queryString = "SELECT * FROM `character` WHERE `name`=@name";
 
         public SelectCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
@@ -41,7 +41,7 @@ namespace DemoGame.Server
                 throw new ArgumentException("Could not find user.");
 
             // Read the general user values
-            ushort guid = r.GetUInt16("guid");
+            ushort id = r.GetUInt16("id");
             string name = r.GetString("name");
             MapIndex mapIndex = r.GetMapIndex("map");
             float x = r.GetFloat("x");
@@ -62,7 +62,7 @@ namespace DemoGame.Server
             }
 
             // Create the return object
-            var ret = new SelectCharacterQueryValues(guid, name, mapIndex, pos, body, stats);
+            var ret = new SelectCharacterQueryValues(id, name, mapIndex, pos, body, stats);
             return ret;
         }
 

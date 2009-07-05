@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 
@@ -31,7 +30,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ConstructorTest()
         {
-            var b = new BoolArray(1);
+            BoolArray b = new BoolArray(1);
             b = new BoolArray(7);
             b = new BoolArray(8);
             b = new BoolArray(9);
@@ -70,7 +69,7 @@ namespace NetGore.Collections.Tests
         {
             const int iterations = 1024;
 
-            var b = new BoolArray(iterations);
+            BoolArray b = new BoolArray(iterations);
 
             for (int i = 0; i < iterations; i++)
             {
@@ -95,12 +94,12 @@ namespace NetGore.Collections.Tests
         public void IEnumerableTest()
         {
             const int size = 100;
-            var b = new BoolArray(size);
+            BoolArray b = new BoolArray(size);
 
             // Tests on an all-false collection
             b.SetAll(false);
 
-            IEnumerable<bool> values = b.Where(value => value);
+            var values = b.Where(value => value);
             Assert.AreEqual(0, values.Count());
 
             values = b.Where(value => !value);
@@ -143,7 +142,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void IndexOutOfRangeExceptionTest()
         {
-            var b = new BoolArray(8);
+            BoolArray b = new BoolArray(8);
             var testValues = new int[] { -10000, -100, -1, 8, 9, 100, 1000, 100000 };
 
             foreach (int value in testValues)
@@ -163,7 +162,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ModifiedCollectionTest()
         {
-            var b = new BoolArray(100);
+            BoolArray b = new BoolArray(100);
 
             foreach (bool value in b)
             {
@@ -185,7 +184,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ResizeTest()
         {
-            var b = new BoolArray(1);
+            BoolArray b = new BoolArray(1);
 
             // Validate the length
             b.Resize(10);
@@ -210,7 +209,7 @@ namespace NetGore.Collections.Tests
         public void SetAllTest()
         {
             const int size = 100;
-            var b = new BoolArray(size);
+            BoolArray b = new BoolArray(size);
 
             for (int loops = 0; loops < 3; loops++)
             {
@@ -231,7 +230,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void SizeOneTest()
         {
-            var b = new BoolArray(1);
+            BoolArray b = new BoolArray(1);
             b[0] = true;
             b[0] = b[0];
 
@@ -249,10 +248,10 @@ namespace NetGore.Collections.Tests
         public void ToArrayTest()
         {
             const int size = 99;
-            var b = new BoolArray(size);
+            BoolArray b = new BoolArray(size);
             b.SetAll(true);
 
-            bool[] a = b.ToArray();
+            var a = b.ToArray();
 
             // Validate length
             Assert.AreEqual(b.Length, a.Length);

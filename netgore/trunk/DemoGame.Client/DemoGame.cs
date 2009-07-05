@@ -88,9 +88,9 @@ namespace DemoGame.Client
             GrhInfo.Load(ContentPaths.Build.Data.Join("grhdata.xml"), screenManager.MapContent);
 
             // Build the texture atlases
-            var atlasChars = new TextureAtlas();
-            var atlasGUI = new TextureAtlas();
-            var atlasMisc = new TextureAtlas();
+            TextureAtlas atlasChars = new TextureAtlas();
+            TextureAtlas atlasGUI = new TextureAtlas();
+            TextureAtlas atlasMisc = new TextureAtlas();
 
             foreach (GrhData gd in GrhInfo.GrhDatas)
             {
@@ -128,7 +128,7 @@ namespace DemoGame.Client
             if (log.IsInfoEnabled)
                 log.Info("Starting client...");
 
-            using (var game = new DemoGame())
+            using (DemoGame game = new DemoGame())
             {
                 game.Run();
             }

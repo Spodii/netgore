@@ -79,7 +79,7 @@ namespace NetGore.Graphics.GUI
             get
             {
                 ControlBorder border = Border;
-                var v = new Vector2(_borderOffsetBonus);
+                Vector2 v = new Vector2(_borderOffsetBonus);
                 if (border != null)
                     v += new Vector2(border.LeftWidth, border.TopHeight);
                 return v;
@@ -128,7 +128,7 @@ namespace NetGore.Graphics.GUI
         {
             get
             {
-                var sb = new StringBuilder(2048);
+                StringBuilder sb = new StringBuilder(2048);
                 foreach (TextBoxLine line in _lines)
                 {
                     foreach (StyledText t in line.Text)
@@ -185,7 +185,7 @@ namespace NetGore.Graphics.GUI
             int startBufferOffset = BufferOffset;
 
             // Break up the text into the new lines
-            IEnumerable<TextBoxLine> newLines = BreakString(text);
+            var newLines = BreakString(text);
             int count = newLines.Count();
 
             // Make room in the buffer if needed
@@ -233,7 +233,7 @@ namespace NetGore.Graphics.GUI
         IEnumerable<TextBoxLine> BreakString(List<StyledText> text)
         {
             var ret = new List<TextBoxLine>(2);
-            var totalSB = new StringBuilder(256); // StringBuilder used for building the complete string
+            StringBuilder totalSB = new StringBuilder(256); // StringBuilder used for building the complete string
 
             // Loop until our list is empty
             while (text.Count > 0)
@@ -257,7 +257,7 @@ namespace NetGore.Graphics.GUI
                     int splitAt = FindIndexToSplitAt(totalText, lastFit);
 
                     // Perform the split and rebuild the string as StyledText
-                    List<StyledText> line = SplitStyledText(text, splitAt);
+                    var line = SplitStyledText(text, splitAt);
 
                     // Return the new line
                     ret.Add(new TextBoxLine(line));

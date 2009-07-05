@@ -36,7 +36,7 @@ namespace NetGore.Scripting
         /// <returns>Every Type that satisfies the given conditions.</returns>
         public static IEnumerable<Type> GetTypes(Type subclassType, Type[] constructorParams)
         {
-            IEnumerable<Type> allTypes = FilterInstanceable(AllTypes());
+            var allTypes = FilterInstanceable(AllTypes());
 
             if (subclassType != null)
                 allTypes = allTypes.Where(x => x.IsSubclassOf(subclassType));

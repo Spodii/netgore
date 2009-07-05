@@ -13,7 +13,7 @@ namespace DemoGame.Server
     /// </summary>
     public class UserExistsQuery : DbQueryReader<string>
     {
-        const string _queryString = "SELECT COUNT(*) FROM `characters` WHERE `name`=@name";
+        const string _queryString = "SELECT COUNT(*) FROM `character` WHERE `name`=@name";
 
         /// <summary>
         /// UserExistsQuery constructor.

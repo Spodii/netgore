@@ -198,11 +198,11 @@ namespace DemoGame.Server
         /// <returns>Next free unique index</returns>
         static ushort GetNextUniqueIndex(MySqlConnection conn)
         {
-            // TODO: This is worthless. Implement a proper ID stack using GuidCreatorBase.
+            // TODO: This is worthless. Implement a proper ID stack using IDCreatorBase.
 
             using (MySqlCommand cmd = conn.CreateCommand())
             {
-                cmd.CommandText = "SELECT `unique_id` FROM `characters` ORDER BY `unique_id` ASC";
+                cmd.CommandText = "SELECT `unique_id` FROM `character` ORDER BY `unique_id` ASC";
                 using (MySqlDataReader r = cmd.ExecuteReader())
                 {
                     // No Users, so return the first index

@@ -25,7 +25,7 @@ namespace DemoGame.Server
             }
 
             // General
-            int guid = r.GetInt32("guid");
+            int id = r.GetInt32("id");
             byte width = r.GetByte("width");
             byte height = r.GetByte("height");
             string name = r.GetString("name");
@@ -37,9 +37,9 @@ namespace DemoGame.Server
 
             // FUTURE: Recover from this error by just not creating an item
             if (!type.IsDefined())
-                throw new InvalidCastException(string.Format("Invalid ItemType `{0}` for ItemEntity guid `{1}`", type, guid));
+                throw new InvalidCastException(string.Format("Invalid ItemType `{0}` for ItemEntity ID `{1}`", type, id));
 
-            return new ItemValues(guid, width, height, name, description, type, graphicIndex, amount, value, stats);
+            return new ItemValues(id, width, height, name, description, type, graphicIndex, amount, value, stats);
         }
     }
 }

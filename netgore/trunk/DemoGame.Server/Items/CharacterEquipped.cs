@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -44,7 +44,7 @@ namespace DemoGame.Server
             if (!Character.IsPersistent)
                 throw new Exception("Cannot call Load() when the Character's state is not persistent!");
 
-            var items = DBController.SelectCharacterEquippedItems.Execute(Character.Guid);
+            var items = DBController.SelectCharacterEquippedItems.Execute(Character.ID);
 
             // Remove the listeners since we don't want to update the database when loading
             RemoveListeners();
@@ -87,7 +87,7 @@ namespace DemoGame.Server
 
             if (Character.IsPersistent)
             {
-                var values = new InsertCharacterEquippedItemQuery.QueryArgs(Character.Guid, item.Guid, slot);
+                var values = new InsertCharacterEquippedItemQuery.QueryArgs(Character.ID, item.ID, slot);
                 DBController.InsertCharacterEquippedItem.Execute(values); //!! InsertCharacterEquipped
             }
 
@@ -98,7 +98,7 @@ namespace DemoGame.Server
         {
             if (Character.IsPersistent)
             {
-                DBController.DeleteCharacterEquippedItem.Execute(item.Guid); //!! DeleteCharacterEquipped
+                DBController.DeleteCharacterEquippedItem.Execute(item.ID); //!! DeleteCharacterEquipped
             }
 
             ItemEntity remainder = Character.Inventory.Add(item);

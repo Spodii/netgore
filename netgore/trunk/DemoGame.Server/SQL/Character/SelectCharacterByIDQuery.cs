@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -10,7 +10,7 @@ namespace DemoGame.Server
 {
     public class SelectCharacterByIDQuery : DbQueryReader<uint>
     {
-        const string _queryString = "SELECT * FROM `characters` WHERE `guid`=@characterID";
+        const string _queryString = "SELECT * FROM `character` WHERE `id`=@characterID";
 
         public SelectCharacterByIDQuery(DbConnectionPool connectionPool)
             : base(connectionPool, _queryString)

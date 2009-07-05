@@ -18,7 +18,7 @@ namespace NetGore
         /// <returns>All items in an IEnumerable together into a delimited string.</returns>
         public static string Implode(this IEnumerable source, char delimiter)
         {
-            var sb = new StringBuilder(128);
+            StringBuilder sb = new StringBuilder(128);
 
             // Add all to the StringBuilder
             foreach (object item in source)
@@ -42,7 +42,7 @@ namespace NetGore
         /// <returns>All items in an IEnumerable together into a delimited string.</returns>
         public static string Implode(this IEnumerable source, string delimiter)
         {
-            var sb = new StringBuilder(128);
+            StringBuilder sb = new StringBuilder(128);
 
             // Add all to the StringBuilder
             foreach (object item in source)
@@ -68,7 +68,7 @@ namespace NetGore
         public static string Implode<T>(this IEnumerable<T> source, char delimiter)
         {
             // Allocate 16 characters for each value, plus room for the delimiter
-            var sb = new StringBuilder(source.Count() * (8 + 1));
+            StringBuilder sb = new StringBuilder(source.Count() * (8 + 1));
 
             // Add all to the StringBuilder
             foreach (T item in source)
@@ -94,7 +94,7 @@ namespace NetGore
         public static string Implode<T>(this IEnumerable<T> source, string delimiter)
         {
             // Allocate 8 characters for each value, plus room for the delimiter
-            var sb = new StringBuilder(source.Count() * (8 + delimiter.Length));
+            StringBuilder sb = new StringBuilder(source.Count() * (8 + delimiter.Length));
 
             // Add all to the StringBuilder
             foreach (T item in source)

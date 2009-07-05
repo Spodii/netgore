@@ -76,13 +76,13 @@ namespace NetGore.EditorTools
         static string GetFileHash(string filePath)
         {
             byte[] hash;
-            using (var fs = new FileStream(filePath, FileMode.Open))
+            using (FileStream fs = new FileStream(filePath, FileMode.Open))
             {
                 MD5 md5 = new MD5CryptoServiceProvider();
                 hash = md5.ComputeHash(fs);
             }
 
-            var sb = new StringBuilder(hash.Length);
+            StringBuilder sb = new StringBuilder(hash.Length);
             foreach (byte hex in hash)
             {
                 sb.Append(Convert.ToString(hex, 16));
@@ -93,7 +93,7 @@ namespace NetGore.EditorTools
 
         static void GetFileSizeAndLastModified(string filePath, out int size, out long lastMod)
         {
-            var fi = new FileInfo(filePath);
+            FileInfo fi = new FileInfo(filePath);
             size = (int)fi.Length;
             lastMod = fi.LastWriteTime.ToBinary();
         }
@@ -108,7 +108,7 @@ namespace NetGore.EditorTools
 
             using (FileStream fs = File.Open(_dataFile, FileMode.Open, FileAccess.Read))
             {
-                using (var r = new BinaryReader(fs))
+                using (BinaryReader r = new BinaryReader(fs))
                 {
                     int entries = r.ReadInt32();
                     for (int i = 0; i < entries; i++)
@@ -133,7 +133,7 @@ namespace NetGore.EditorTools
         {
             using (FileStream fs = File.Open(_dataFile, FileMode.Create, FileAccess.Write))
             {
-                using (var w = new BinaryWriter(fs))
+                using (BinaryWriter w = new BinaryWriter(fs))
                 {
                     w.Write(_textureHash.Count);
                     foreach (var kvp in _textureHash)
@@ -157,7 +157,7 @@ namespace NetGore.EditorTools
         /// </summary>
         void UpdateHashes()
         {
-            string[] files = Directory.GetFiles(_rootTextureDir, "*.xnb", SearchOption.AllDirectories);
+            var files = Directory.GetFiles(_rootTextureDir, "*.xnb", SearchOption.AllDirectories);
             foreach (string file in files)
             {
                 // Get the current info

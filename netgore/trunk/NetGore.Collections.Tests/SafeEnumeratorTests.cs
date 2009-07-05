@@ -120,7 +120,7 @@ namespace NetGore.Collections.Tests
         /// <returns>An IEnumerable of IEnumerables of objects.</returns>
         static IEnumerable<IEnumerable<object>> GetObjectEnumerables()
         {
-            var r = new Random();
+            Random r = new Random();
 
             for (int i = 0; i < 100; i++)
             {

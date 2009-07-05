@@ -449,7 +449,7 @@ namespace NetGore.IO
             // FUTURE: I can probably make the WorkBuffer not flush by just copying it over to the buffer copy
 
             // Get the buffer
-            byte[] buffer = GetBuffer();
+            var buffer = GetBuffer();
 
             // Create the byte array to hold the copy and transfer over the data
             var ret = new byte[buffer.Length];
@@ -2377,7 +2377,7 @@ namespace NetGore.IO
                 throw new ArgumentOutOfRangeException("value", "String length exceeds maximum length.");
 
             WriteUnsigned(value.Length, GetStringLengthBits(maxLength));
-            byte[] b = ToByteArray(value);
+            var b = ToByteArray(value);
             Write(b, 0, b.Length);
         }
 

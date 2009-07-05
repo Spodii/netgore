@@ -623,7 +623,7 @@ namespace NetGore.Graphics.GUI
 
             // First root control to contain the mouse position is set as the focused root
             // Controls are iterated in reverse to respect the order they were drawn
-            var screenPos = new Vector2(MouseState.X, MouseState.Y);
+            Vector2 screenPos = new Vector2(MouseState.X, MouseState.Y);
 
             foreach (Control control in Controls.Reverse())
             {

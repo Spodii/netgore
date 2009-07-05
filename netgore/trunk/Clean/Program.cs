@@ -80,7 +80,7 @@ namespace Clean
             }
 
             // Split the individual directories
-            string[] dirs = dir.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
+            var dirs = dir.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar });
 
             if (dirs.Length < 1)
                 return;

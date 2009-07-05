@@ -127,7 +127,7 @@ namespace NetGore.Db
         void HandleIDbCommandDisposed(object sender, EventArgs e)
         {
             // Get the connection for the IDbCommand
-            var cmd = (IDbCommand)sender;
+            IDbCommand cmd = (IDbCommand)sender;
             IDbConnection conn = cmd.Connection;
 
             // Get the IPoolableDbConnection for the connection
@@ -151,7 +151,7 @@ namespace NetGore.Db
             {
                 for (int i = _connToPoolableConn.Count - 1; i >= 0; i--)
                 {
-                    KeyValuePair<IDbConnection, IPoolableDbConnection> item = _connToPoolableConn[i];
+                    var item = _connToPoolableConn[i];
                     if (item.Key == conn)
                     {
                         poolableConn = item.Value;

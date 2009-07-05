@@ -276,10 +276,10 @@ namespace NetGore.Graphics.GUI
 
             // Set some values we will be using extensively
             Vector2 sp = c.ScreenPosition;
-            var cX = (int)sp.X;
-            var cY = (int)sp.Y;
-            var cW = (int)c.Size.X;
-            var cH = (int)c.Size.Y;
+            int cX = (int)sp.X;
+            int cY = (int)sp.Y;
+            int cW = (int)c.Size.X;
+            int cH = (int)c.Size.Y;
 
             Rectangle r;
 

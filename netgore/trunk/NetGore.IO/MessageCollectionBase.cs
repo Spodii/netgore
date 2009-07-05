@@ -104,7 +104,7 @@ namespace NetGore.IO
             bool valid;
             try
             {
-                IEnumerable<string> subArgs = args.Take(args.Length - 1);
+                var subArgs = args.Take(args.Length - 1);
                 string parsed2 = (subArgs.Count() > 0) ? string.Format(ret, subArgs) : ret;
                 valid = (parsed2 != parsed);
             }
@@ -139,7 +139,7 @@ namespace NetGore.IO
             var loadedMessages = new Dictionary<T, string>();
 
             // Load all the lines in the file
-            string[] lines = File.ReadAllLines(filePath);
+            var lines = File.ReadAllLines(filePath);
 
             // Parse the lines
             foreach (string fileLine in lines)

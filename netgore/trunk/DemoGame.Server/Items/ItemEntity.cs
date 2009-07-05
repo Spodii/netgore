@@ -24,7 +24,7 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static DBController _dbController;
 
-        readonly int _guid;
+        readonly int _id;
         readonly ItemStats _stats;
 
         byte _amount = 1;
@@ -49,9 +49,9 @@ namespace DemoGame.Server
             get { return _dbController.DeleteItem; }
         }
 
-        static ItemGuidCreator GuidCreator
+        static ItemIDCreator IDCreator
         {
-            get { return _dbController.ItemGuidCreator; }
+            get { return _dbController.ItemIDCreator; }
         }
 
         static ReplaceItemQuery ReplaceItem
@@ -124,9 +124,9 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the unique ID for this ItemEntity.
         /// </summary>
-        public int Guid
+        public int ID
         {
-            get { return _guid; }
+            get { return _id; }
         }
 
         /// <summary>
@@ -196,13 +196,13 @@ namespace DemoGame.Server
 
         public ItemEntity()
         {
-            _guid = GuidCreator.GetNext();
+            _id = IDCreator.GetNext();
         }
 
         public ItemEntity(ItemValues iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
         {
             // NOTE: Can I get rid of this constructor?
-            _guid = iv.Guid;
+            _id = iv.ID;
 
             _name = iv.Name;
             _description = iv.Description;
@@ -220,7 +220,7 @@ namespace DemoGame.Server
                    IEnumerable<IStat> stats) : base(pos, size)
         {
             // NOTE: Can I get rid of this constructor?
-            _guid = GuidCreator.GetNext();
+            _id = IDCreator.GetNext();
 
             _name = name;
             _description = desc;
@@ -232,7 +232,7 @@ namespace DemoGame.Server
             if (stats != null)
                 _stats = NewItemStats(stats);
 
-            ReplaceItem.Execute(new ItemValues(this, Guid));
+            ReplaceItem.Execute(new ItemValues(this, ID));
 
             OnResize += ItemEntity_OnResize;
         }
@@ -306,16 +306,16 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Disposes of the ItemEntity, freeing its guid and existance in the database. Once disposed, an ItemEntity
+        /// Disposes of the ItemEntity, freeing its ID and existance in the database. Once disposed, an ItemEntity
         /// should never be used again.
         /// </summary>
         protected override void HandleDispose()
         {
             // Delete the item from the database
-            DeleteItem.Execute(Guid);
+            DeleteItem.Execute(ID);
 
-            // Free the item's GUID
-            GuidCreator.FreeGuid(Guid);
+            // Free the item's ID
+            IDCreator.FreeID(ID);
 
             base.HandleDispose();
         }
@@ -465,7 +465,7 @@ namespace DemoGame.Server
         /// <param name="value">New value for the field.</param>
         void SynchronizeField(string field, object value)
         {
-            UpdateItemField.Execute(_guid, field, value);
+            UpdateItemField.Execute(_id, field, value);
         }
     }
 }

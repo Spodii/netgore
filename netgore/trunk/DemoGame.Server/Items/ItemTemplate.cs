@@ -11,7 +11,7 @@ namespace DemoGame.Server
     {
         readonly string _desc;
         readonly ushort _graphic;
-        readonly ushort _guid;
+        readonly ushort _id;
         readonly byte _height;
         readonly string _name;
         readonly ItemStats _stats;
@@ -29,9 +29,9 @@ namespace DemoGame.Server
             get { return _graphic; }
         }
 
-        public ushort Guid
+        public ushort ID
         {
-            get { return _guid; }
+            get { return _id; }
         }
 
         public byte Height
@@ -69,10 +69,10 @@ namespace DemoGame.Server
             get { return _width; }
         }
 
-        public ItemTemplate(ushort guid, string name, string desc, ItemType type, ushort graphic, int value, byte width,
+        public ItemTemplate(ushort id, string name, string desc, ItemType type, ushort graphic, int value, byte width,
                             byte height, ItemStats stats)
         {
-            _guid = guid;
+            _id = id;
             _name = name;
             _desc = desc;
             _type = type;
@@ -85,14 +85,14 @@ namespace DemoGame.Server
             // Make sure the ItemType is defined
             if (!type.IsDefined())
             {
-                const string errmsg = "Invalid ItemType `{0}` for ItemTemplate guid `{1}`.";
-                throw new InvalidCastException(string.Format(errmsg, type, guid));
+                const string errmsg = "Invalid ItemType `{0}` for ItemTemplate ID `{1}`.";
+                throw new InvalidCastException(string.Format(errmsg, type, id));
             }
         }
 
         public override string ToString()
         {
-            return string.Format("{0} [{1}]", Name, Guid);
+            return string.Format("{0} [{1}]", Name, ID);
         }
     }
 }

@@ -120,7 +120,7 @@ namespace NetGore.Graphics.GUI
                 if (Border != null)
                     max -= new Vector2(Border.LeftWidth + Border.RightWidth, Border.TopHeight - Border.BottomHeight);
                 Vector2 s = max - min;
-                var dest = new Rectangle((int)min.X, (int)min.Y, (int)s.X, (int)s.Y);
+                Rectangle dest = new Rectangle((int)min.X, (int)min.Y, (int)s.X, (int)s.Y);
                 _sprite.Draw(spriteBatch, dest, Color.White);
             }
             else

@@ -53,19 +53,19 @@ namespace NetGore.IO.Tests
             string path = Path.GetTempFileName();
             try
             {
-                var t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
-                var t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
+                InterfaceTester t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
+                InterfaceTester t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
 
-                using (var w = new SimpleXmlWriter(path, "Tester"))
+                using (SimpleXmlWriter w = new SimpleXmlWriter(path, "Tester"))
                 {
                     w.Write("t1", t1);
                     w.Write("t2", t2);
                 }
 
-                var newT1 = new InterfaceTester();
-                var newT2 = new InterfaceTester();
+                InterfaceTester newT1 = new InterfaceTester();
+                InterfaceTester newT2 = new InterfaceTester();
 
-                var r = new SimpleXmlReader(path);
+                SimpleXmlReader r = new SimpleXmlReader(path);
                 foreach (NodeItems item in r.Items)
                 {
                     if (item.Name == "t1")
@@ -118,7 +118,7 @@ namespace NetGore.IO.Tests
                            };
 
                 // Write values
-                using (var w = new SimpleXmlWriter(path, "RootTestNode"))
+                using (SimpleXmlWriter w = new SimpleXmlWriter(path, "RootTestNode"))
                 {
                     foreach (var pair in dict)
                     {
@@ -127,10 +127,10 @@ namespace NetGore.IO.Tests
                 }
 
                 // Read values
-                var r = new SimpleXmlReader(path);
+                SimpleXmlReader r = new SimpleXmlReader(path);
                 Assert.AreEqual("RootTestNode", r.RootNodeName);
 
-                NodeItems[] items = r.Items.ToArray();
+                var items = r.Items.ToArray();
 
                 int i = 0;
                 foreach (var pair in dict)

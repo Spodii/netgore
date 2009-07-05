@@ -79,7 +79,7 @@ namespace DemoGame.Client
             ControlBorder cbButtonPressed = CreateBorder(GrhInfo.GetDatas(root + "Button.Pressed"));
             ControlBorder cbButtonOver = CreateBorder(GrhInfo.GetDatas(root + "Button.MouseOver"));
 
-            Dictionary<string, GrhData> dic = GrhInfo.GetDatas(root + "CheckBox");
+            var dic = GrhInfo.GetDatas(root + "CheckBox");
             ISprite ut = new Grh(dic["Unticked"]);
             ISprite utOver = new Grh(dic["UntickedMouseOver"]);
             ISprite utPressed = new Grh(dic["UntickedPressed"]);

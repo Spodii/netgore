@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -249,11 +248,11 @@ namespace NetGore.Graphics.GUI
                 return;
             }
 
-            IEnumerable<Keys> keysDown = GUIManager.KeysDown;
+            var keysDown = GUIManager.KeysDown;
             if (keysDown == null || keysDown.Count() <= 0)
             {
                 // If no keys were recently pressed, check if the LastKey was held
-                IEnumerable<Keys> keysHeld = GUIManager.KeysPressed;
+                var keysHeld = GUIManager.KeysPressed;
                 if (LastKey == Keys.None || keysHeld == null || !keysHeld.Contains(LastKey))
                 {
                     LastKey = Keys.None;

@@ -29,7 +29,7 @@ namespace DemoGame.Server
             var itemTemplates = query.Execute();
             foreach (ItemTemplate it in itemTemplates)
             {
-                _itemTemplates[it.Guid] = it;
+                _itemTemplates[it.ID] = it;
 
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Loaded ItemTemplate `{0}`", it);

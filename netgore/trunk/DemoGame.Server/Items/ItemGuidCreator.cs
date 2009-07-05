@@ -8,15 +8,15 @@ using NetGore.Db;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// A thread-safe collection of available guids for items.
+    /// A thread-safe collection of available IDs for items.
     /// </summary>
-    public class ItemGuidCreator : GuidCreatorBase
+    public class ItemIDCreator : IDCreatorBase
     {
         /// <summary>
-        /// ItemGuidCreator constructor.
+        /// ItemIDCreator constructor.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use to communicate with the database.</param>
-        public ItemGuidCreator(DbConnectionPool connectionPool) : base(connectionPool, "items", "guid", 2048, 128)
+        public ItemIDCreator(DbConnectionPool connectionPool) : base(connectionPool, "item", "id", 2048, 128)
         {
         }
     }

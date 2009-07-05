@@ -10,7 +10,7 @@ namespace NetGore.IO.Tests
     {
         static XmlReader GetTestXmlValueReaderReader()
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.AppendLine("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 
             sb.AppendLine("<TestValues>");
@@ -35,8 +35,8 @@ namespace NetGore.IO.Tests
             }
             sb.AppendLine("</TestValues>");
 
-            byte[] bytes = ASCIIEncoding.UTF8.GetBytes(sb.ToString());
-            var ms = new MemoryStream(bytes, false);
+            var bytes = ASCIIEncoding.UTF8.GetBytes(sb.ToString());
+            MemoryStream ms = new MemoryStream(bytes, false);
 
             return XmlReader.Create(ms);
         }
@@ -62,7 +62,7 @@ namespace NetGore.IO.Tests
             XmlReader xmlReader = GetTestXmlValueReaderReader();
             MoveXmlReaderToNode(xmlReader, "Values");
 
-            var r = new XmlValueReader(xmlReader, "Values");
+            XmlValueReader r = new XmlValueReader(xmlReader, "Values");
             TestXmlValueReader(r);
         }
 
@@ -73,7 +73,7 @@ namespace NetGore.IO.Tests
             XmlReader xmlReader = GetTestXmlValueReaderReader();
             MoveXmlReaderToNode(xmlReader, "MyInt");
 
-            var r = new XmlValueReader(xmlReader, "Values");
+            XmlValueReader r = new XmlValueReader(xmlReader, "Values");
             TestXmlValueReader(r);
         }
     }

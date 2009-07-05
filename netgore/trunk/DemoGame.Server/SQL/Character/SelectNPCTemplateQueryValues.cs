@@ -13,16 +13,16 @@ namespace DemoGame.Server
         public readonly ushort BodyIndex;
         public readonly ushort GiveCash;
         public readonly ushort GiveExp;
-        public readonly int Guid;
+        public readonly int ID;
         public readonly string Name;
         public readonly ushort Respawn;
         public readonly IEnumerable<IStat> Stats;
 
-        public SelectNPCTemplateQueryValues(int guid, string name, ushort bodyIndex, string aiName, string alliance,
+        public SelectNPCTemplateQueryValues(int id, string name, ushort bodyIndex, string aiName, string alliance,
                                             ushort respawn, ushort giveExp, ushort giveCash,
                                             IEnumerable<IStat> stats)
         {
-            Guid = guid;
+            ID = id;
             Name = name;
             BodyIndex = bodyIndex;
             AIName = aiName;

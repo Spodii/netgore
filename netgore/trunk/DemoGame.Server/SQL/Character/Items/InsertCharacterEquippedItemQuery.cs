@@ -11,7 +11,7 @@ namespace DemoGame.Server
     public class InsertCharacterEquippedItemQuery : DbQueryNonReader<InsertCharacterEquippedItemQuery.QueryArgs>
     {
         const string _queryString =
-            "INSERT INTO `character_equipped` SET `character_guid`=@characterID,`item_guid`=@itemID,`slot`=@slot";
+            "INSERT INTO `character_equipped` SET `character_id`=@characterID,`item_id`=@itemID,`slot`=@slot";
 
         public InsertCharacterEquippedItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
@@ -24,9 +24,9 @@ namespace DemoGame.Server
 
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@itemID"] = item.ItemGuid;
+            p["@itemID"] = item.ItemID;
             p["@slot"] = item.Slot;
-            p["@userID"] = item.UserGuid;
+            p["@userID"] = item.UserID;
         }
 
         /// <summary>
@@ -35,9 +35,9 @@ namespace DemoGame.Server
         public struct QueryArgs
         {
             /// <summary>
-            /// The item's guid for the equipment slot, or null if the slot is to be set to empty.
+            /// The item's ID for the equipment slot, or null if the slot is to be set to empty.
             /// </summary>
-            public readonly int? ItemGuid;
+            public readonly int? ItemID;
 
             /// <summary>
             /// The EquipmentSlot to be updated.
@@ -45,21 +45,21 @@ namespace DemoGame.Server
             public readonly EquipmentSlot Slot;
 
             /// <summary>
-            /// The guid of the user that this equipment belongs to.
+            /// The ID of the user that this equipment belongs to.
             /// </summary>
-            public readonly uint UserGuid;
+            public readonly uint UserID;
 
             /// <summary>
             /// UpdateUserEquipValues constructor.
             /// </summary>
-            /// <param name="userGuid">The guid of the user that this equipment belongs to.</param>
-            /// <param name="itemGuid">The item's guid for the equipment slot, or null if the slot is to be set
+            /// <param name="userID">The ID of the user that this equipment belongs to.</param>
+            /// <param name="itemID">The item's ID for the equipment slot, or null if the slot is to be set
             /// to empty.</param>
             /// <param name="slot">The EquipmentSlot to be updated.</param>
-            public QueryArgs(uint userGuid, int? itemGuid, EquipmentSlot slot)
+            public QueryArgs(uint userID, int? itemID, EquipmentSlot slot)
             {
-                UserGuid = userGuid;
-                ItemGuid = itemGuid;
+                UserID = userID;
+                ItemID = itemID;
                 Slot = slot;
             }
         }
