@@ -117,7 +117,7 @@ namespace DemoGame.Server
             _aiName = values.AIName;
             _giveExp = values.GiveExp;
             _giveCash = values.GiveCash;
-            _alliance = allianceManager[values.Alliance];
+            _alliance = allianceManager[values.AllianceID];
 
             // Get the drops
             var drops = GetNPCDrops(dropsQuery, id, itemTemplates);

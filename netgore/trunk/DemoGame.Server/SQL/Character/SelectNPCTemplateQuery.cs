@@ -45,7 +45,7 @@ namespace DemoGame.Server
                 // Load the general NPC template values
                 string name = r.GetString("name");
                 string ai = r.GetString("ai");
-                string alliance = r.GetString("alliance");
+                byte allianceID = r.GetByte("alliance_id");
                 ushort bodyIndex = r.GetUInt16("body");
                 ushort respawn = r.GetUInt16("respawn");
                 ushort giveExp = r.GetUInt16("give_exp");
@@ -67,7 +67,7 @@ namespace DemoGame.Server
                     stat.Read(r, ordinal);
                 }
 
-                ret = new SelectNPCTemplateQueryValues(templateID, name, bodyIndex, ai, alliance, respawn, giveExp, giveCash, stats);
+                ret = new SelectNPCTemplateQueryValues(templateID, name, bodyIndex, ai, allianceID, respawn, giveExp, giveCash, stats);
             }
 
             return ret;
