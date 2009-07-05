@@ -10,7 +10,7 @@ namespace DemoGame.Server
 {
     public class DeleteCharacterInventoryItemQuery : DbQueryNonReader<int>
     {
-        const string _queryString = "DELETE QUICK FROM `character_inventory` WHERE `item_id`=@itemID LIMIT 1";
+        static readonly string _queryString = string.Format("DELETE FROM `{0}` WHERE `item_id`=@itemID LIMIT 1", DBTables.CharacterInventory);
 
         public DeleteCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

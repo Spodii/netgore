@@ -11,7 +11,7 @@ namespace DemoGame.Server
 {
     public class SelectUserPasswordQuery : DbQueryReader<string>
     {
-        const string _queryString = "SELECT `password` FROM `character` WHERE `name`=@name";
+        static readonly string _queryString = string.Format("SELECT `password` FROM `{0}` WHERE `name`=@name", DBTables.Character);
 
         public SelectUserPasswordQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

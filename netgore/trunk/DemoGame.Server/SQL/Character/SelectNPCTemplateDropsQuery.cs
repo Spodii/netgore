@@ -13,7 +13,8 @@ namespace DemoGame.Server
     public class SelectNPCTemplateDropsQuery : DbQueryReader<int>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        const string _queryString = "SELECT * FROM `character_template_drops` WHERE `character_id`=@characterID";
+        static readonly string _queryString = string.Format(
+            "SELECT * FROM `{0}` WHERE `character_id`=@characterID", DBTables.CharacterTemplateDrops);
 
         public SelectNPCTemplateDropsQuery(DbConnectionPool connectionPool)
             : base(connectionPool, _queryString)

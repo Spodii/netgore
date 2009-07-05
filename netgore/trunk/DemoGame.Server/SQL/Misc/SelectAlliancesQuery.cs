@@ -10,7 +10,7 @@ namespace DemoGame.Server
 {
     public class SelectAlliancesQuery : DbQueryReader
     {
-        const string _queryString = "SELECT * FROM `alliance`";
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}`", DBTables.Alliance);
 
         public SelectAlliancesQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

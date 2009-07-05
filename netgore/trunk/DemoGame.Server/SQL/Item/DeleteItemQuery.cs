@@ -10,7 +10,7 @@ namespace DemoGame.Server
 {
     public class DeleteItemQuery : DbQueryNonReader<int>
     {
-        const string _queryString = "DELETE FROM `item` WHERE `id`=@id LIMIT 1";
+        static readonly string _queryString = string.Format("DELETE FROM `{0}` WHERE `id`=@id LIMIT 1", DBTables.Item);
 
         public DeleteItemQuery(DbConnectionPool conn) : base(conn, _queryString)
         {

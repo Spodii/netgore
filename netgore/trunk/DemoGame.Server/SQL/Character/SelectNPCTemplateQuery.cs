@@ -12,7 +12,7 @@ namespace DemoGame.Server
 {
     public class SelectNPCTemplateQuery : DbQueryReader<int>
     {
-        const string _queryString = "SELECT * FROM `character_template` WHERE `id`=@id";
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", DBTables.CharacterTemplate);
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public SelectNPCTemplateQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)

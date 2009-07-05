@@ -11,7 +11,7 @@ namespace DemoGame.Server
 {
     public class SelectItemsQuery : SelectItemQueryBase<SelectItemsQueryValues>
     {
-        const string _queryString = "SELECT * FROM `item` WHERE `id` BETWEEN @low AND @high";
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id` BETWEEN @low AND @high", DBTables.Item);
 
         public SelectItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

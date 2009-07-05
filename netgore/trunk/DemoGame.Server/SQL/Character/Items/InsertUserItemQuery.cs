@@ -10,8 +10,7 @@ namespace DemoGame.Server
 {
     public class InsertCharacterInventoryItemQuery : DbQueryNonReader<InsertCharacterInventoryItemQuery.QueryArgs>
     {
-        const string _queryString = "INSERT INTO `character_inventory`"
-            + " SET `character_id`=@characterID,`item_id`=@itemID";
+        static readonly string _queryString = string.Format("INSERT INTO `{0}` SET `character_id`=@characterID,`item_id`=@itemID", DBTables.CharacterInventory);
 
         public InsertCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
