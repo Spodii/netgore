@@ -17,9 +17,11 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Gets or sets the NPC's AI. Can be null.
+        /// Gets the NPC's AI. Can be null.
         /// </summary>
-        public AIBase AI { get; set; }
+        public AIBase AI { get { return _ai; } }
+
+        AIBase _ai;
 
         readonly List<NPCDrop> _drops;
         readonly NPCInventory _inventory;
@@ -138,7 +140,7 @@ namespace DemoGame.Server
 
             // Create the AI
             if (!string.IsNullOrEmpty(template.AIName))
-                AI = AIFactory.Create(template.AIName, this);
+                SetAI(template.AIName);
 
             // Create and copy over the stats
             _stats = new NPCStats(this);
@@ -155,6 +157,37 @@ namespace DemoGame.Server
 
             // Done loading
             SetAsLoaded();
+        }
+
+        /// <summary>
+        /// Sets the NPC's AI.
+        /// </summary>
+        /// <param name="aiName">Name of the AI to change to. Use a null or empty string to set the AI to null.</param>
+        public void SetAI(string aiName)
+        {
+            if (string.IsNullOrEmpty(aiName))
+            {
+                _ai = null;
+            }
+            else
+            {
+                AIBase newAI;
+                try
+                {
+                    newAI = AIFactory.Create(aiName, this);
+                }
+                catch (KeyNotFoundException)
+                {
+                    const string errmsg = "Failed to change to AI to `{0}` for NPC `{1}` - AI not found.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, aiName, this);
+                    Debug.Fail(string.Format(errmsg, aiName, this));
+                    return;
+                }
+
+                Debug.Assert(newAI.Actor == this);
+                _ai = newAI;
+            }
         }
 
         /// <summary>
