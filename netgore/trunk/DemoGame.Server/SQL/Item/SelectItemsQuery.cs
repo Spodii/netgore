@@ -7,7 +7,7 @@ using System.Linq;
 
 using NetGore.Db;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.Queries
 {
     public class SelectItemsQuery : SelectItemQueryBase<SelectItemsQueryValues>
     {

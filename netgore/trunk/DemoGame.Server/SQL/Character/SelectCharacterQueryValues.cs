@@ -6,7 +6,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.Queries
 {
     public class SelectCharacterQueryValues
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.Queries;
 using log4net;
 
 // TODO: Rename to CharacterInventory

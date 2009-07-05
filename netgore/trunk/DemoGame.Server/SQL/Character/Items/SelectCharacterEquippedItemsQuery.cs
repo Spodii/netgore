@@ -3,7 +3,7 @@ using System.Data;
 using System.Data.Common;
 using NetGore.Db;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.Queries
 {
     public class SelectCharacterEquippedItemsQuery : SelectItemQueryBase<uint>
     {

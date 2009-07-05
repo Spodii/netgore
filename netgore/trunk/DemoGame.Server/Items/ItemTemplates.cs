@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-
+using DemoGame.Server.Queries;
 using log4net;
 using NetGore.Collections;
 
@@ -47,7 +47,7 @@ namespace DemoGame.Server
         /// <returns>A System.Collections.Generic.IEnumerator<T> that can be used to iterate through the collection.</returns>
         public IEnumerator<ItemTemplate> GetEnumerator()
         {
-            return (IEnumerator<ItemTemplate>)_itemTemplates;
+            return ((IEnumerable<ItemTemplate>)_itemTemplates).GetEnumerator();
         }
 
         /// <summary>
