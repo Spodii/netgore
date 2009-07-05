@@ -206,7 +206,7 @@ namespace NetGore.Collections
             }
 
             // Load all the Types from the Assembly
-            IEnumerable<Type> newTypes = assembly.GetTypes().Where(_typeFilter);
+            var newTypes = assembly.GetTypes().Where(_typeFilter);
             foreach (Type type in newTypes)
             {
                 string typeName = GetTypeName(type);

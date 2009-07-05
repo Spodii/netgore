@@ -89,8 +89,8 @@ namespace NetGore.Scripting
 
             _name = name;
 
-            IEnumerable<string> csFiles = sourceFiles.Where(x => x.EndsWith(".cs", StringComparison.OrdinalIgnoreCase));
-            IEnumerable<string> vbFiles = sourceFiles.Where(x => x.EndsWith(".vb", StringComparison.OrdinalIgnoreCase));
+            var csFiles = sourceFiles.Where(x => x.EndsWith(".cs", StringComparison.OrdinalIgnoreCase));
+            var vbFiles = sourceFiles.Where(x => x.EndsWith(".vb", StringComparison.OrdinalIgnoreCase));
 
             CompilerErrorCollection csErrors = AddScriptFiles(csFiles, ScriptLanguage.CS);
             CompilerErrorCollection vbErrors = AddScriptFiles(vbFiles, ScriptLanguage.VB);
@@ -123,7 +123,7 @@ namespace NetGore.Scripting
             else
             {
                 // Add the new types
-                Type[] newTypes = asm.GetExportedTypes();
+                var newTypes = asm.GetExportedTypes();
                 foreach (Type newType in newTypes)
                 {
                     _types.Add(newType.Name, newType);
@@ -165,13 +165,13 @@ namespace NetGore.Scripting
             CompilerResults result;
             using (codeDomProvider)
             {
-                var options = new CompilerParameters
-                              {
-                                  GenerateExecutable = false, GenerateInMemory = false,
-                                  OutputAssembly = Name + "." + language + ".dll"
-                              };
+                CompilerParameters options = new CompilerParameters
+                                             {
+                                                 GenerateExecutable = false, GenerateInMemory = false,
+                                                 OutputAssembly = Name + "." + language + ".dll"
+                                             };
 
-                Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
+                var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 options.ReferencedAssemblies.AddRange(assemblies.Select(x => x.Location).ToArray());
 
                 result = codeDomProvider.CompileAssemblyFromFile(options, files.ToArray());

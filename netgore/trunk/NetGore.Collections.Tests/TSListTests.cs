@@ -13,7 +13,7 @@ namespace NetGore.Collections.Tests
         /// </summary>
         static void DummyEnumerator(object obj)
         {
-            var e = (IEnumerable)obj;
+            IEnumerable e = (IEnumerable)obj;
 
             foreach (object item in e)
             {
@@ -28,7 +28,7 @@ namespace NetGore.Collections.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -45,7 +45,7 @@ namespace NetGore.Collections.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -62,7 +62,7 @@ namespace NetGore.Collections.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -81,7 +81,7 @@ namespace NetGore.Collections.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -99,7 +99,7 @@ namespace NetGore.Collections.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -116,7 +116,7 @@ namespace NetGore.Collections.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -133,7 +133,7 @@ namespace NetGore.Collections.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
@@ -150,13 +150,13 @@ namespace NetGore.Collections.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
             for (int i = 0; i < 10; i++)
             {
-                int[] x = l.ToArray();
+                var x = l.ToArray();
             }
         }
 
@@ -167,7 +167,7 @@ namespace NetGore.Collections.Tests
 
             for (int i = 0; i < 10; i++)
             {
-                var t = new Thread(DummyEnumerator);
+                Thread t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 

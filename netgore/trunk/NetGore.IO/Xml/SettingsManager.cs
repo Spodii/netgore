@@ -153,7 +153,7 @@ namespace NetGore.IO
             if (index >= 0)
             {
                 // Restore the settings and remove from the collection
-                IDictionary<string, string> loadDict = _loadedNodeItems[index].ToDictionary();
+                var loadDict = _loadedNodeItems[index].ToDictionary();
                 _loadedNodeItems.RemoveAt(index);
                 obj.Load(loadDict);
             }
@@ -200,7 +200,7 @@ namespace NetGore.IO
 
             try
             {
-                var r = new SimpleXmlReader(path);
+                SimpleXmlReader r = new SimpleXmlReader(path);
                 if (r.RootNodeName != _rootNode)
                     return Enumerable.Empty<NodeItems>();
                 return r.Items;
@@ -218,7 +218,7 @@ namespace NetGore.IO
         {
             lock (_syncRoot)
             {
-                using (var w = new SimpleXmlWriter(_filePath, _rootNode))
+                using (SimpleXmlWriter w = new SimpleXmlWriter(_filePath, _rootNode))
                 {
                     foreach (var pair in _objs)
                     {

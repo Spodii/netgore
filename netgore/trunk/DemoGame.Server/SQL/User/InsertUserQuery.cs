@@ -15,7 +15,7 @@ namespace DemoGame.Server
         public InsertUserQuery(DbConnectionPool connectionPool)
             : base(
                 connectionPool,
-                string.Format("INSERT INTO `characters` SET `password`=@password,`guid`=@guid,{0}", QueryFieldsStr))
+                string.Format("INSERT INTO `character` SET `password`=@password,`id`=@id,{0}", QueryFieldsStr))
         {
         }
 

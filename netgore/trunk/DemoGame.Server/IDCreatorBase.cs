@@ -10,30 +10,30 @@ using NetGore.Db;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// A thread-safe object that is used to get and track free guids. It makes use of the database
-    /// to find the free guids when needed.
+    /// A thread-safe object that is used to get and track free IDs. It makes use of the database
+    /// to find the free IDs when needed.
     /// </summary>
-    public abstract class GuidCreatorBase : IDisposable
+    public abstract class IDCreatorBase : IDisposable
     {
         readonly int _criticalSize;
         // FUTURE: Use the CriticalSize, which will automatically get the next free values asynchronously in the background
 
         readonly Stack<int> _freeIndices;
-        readonly SelectGuidQuery _selectGuidQuery;
+        readonly SelectIDQuery _selectIDQuery;
         readonly object _stackLock = new object();
         bool _isRefilling;
 
         /// <summary>
-        /// GuidCreatorBase constructor.
+        /// IDCreatorBase constructor.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use to communicate with the database.</param>
         /// <param name="table">Table containing the column to track the values in.</param>
-        /// <param name="column">Column containing the guids to track.</param>
-        /// <param name="stackSize">Maximum size of the free guid stack.</param>
-        /// <param name="criticalSize">When there is less than this many guids available, the free guid
-        /// stack will be replenished. If this is non-zero, the free guid stack will attempt to replenish
+        /// <param name="column">Column containing the IDs to track.</param>
+        /// <param name="stackSize">Maximum size of the free ID stack.</param>
+        /// <param name="criticalSize">When there is less than this many IDs available, the free ID
+        /// stack will be replenished. If this is non-zero, the free ID stack will attempt to replenish
         /// asynchronously. If this is zero, the stack will only replenish on when it is empty.</param>
-        protected GuidCreatorBase(DbConnectionPool connectionPool, string table, string column, int stackSize, int criticalSize)
+        protected IDCreatorBase(DbConnectionPool connectionPool, string table, string column, int stackSize, int criticalSize)
         {
             if (connectionPool == null)
                 throw new ArgumentNullException("connectionPool");
@@ -48,7 +48,7 @@ namespace DemoGame.Server
 
             _freeIndices = new Stack<int>(stackSize);
             _criticalSize = criticalSize;
-            _selectGuidQuery = new SelectGuidQuery(connectionPool, table, column);
+            _selectIDQuery = new SelectIDQuery(connectionPool, table, column);
 
             // Perform the initial fill
             BeginRefill();
@@ -65,21 +65,21 @@ namespace DemoGame.Server
                 _isRefilling = true;
 
                 // Start the refill thread
-                Thread refillThread = new Thread(Refill) { Name = "Guid Refiller" };
+                Thread refillThread = new Thread(Refill) { Name = "ID Refiller" };
                 refillThread.Start();
             }
         }
 
         /// <summary>
-        /// Returns a guid to the collection to be reused. Only call this if you are positive the guid is free.
-        /// Not every guid has to be freed, and it is assumed at least some will be lost.
+        /// Returns an ID to the collection to be reused. Only call this if you are positive the ID is free.
+        /// Not every ID has to be freed, and it is assumed at least some will be lost.
         /// </summary>
-        /// <param name="guid">Guid value to free.</param>
-        public virtual void FreeGuid(int guid)
+        /// <param name="id">ID value to freed.</param>
+        public virtual void FreeID(int id)
         {
             lock (_stackLock)
             {
-                _freeIndices.Push(guid);
+                _freeIndices.Push(id);
             }
         }
 
@@ -102,9 +102,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the next free guid.
+        /// Gets the next free ID.
         /// </summary>
-        /// <returns>The next free guid.</returns>
+        /// <returns>The next free ID.</returns>
         public virtual int GetNext()
         {
             // Just keep looping until we return something
@@ -139,7 +139,7 @@ namespace DemoGame.Server
             int lastValue = -1;
 
             // Execute the reader
-            using (IDataReader r = _selectGuidQuery.ExecuteReader())
+            using (IDataReader r = _selectIDQuery.ExecuteReader())
             {
                 // Read until we run out of rows
                 while (r.Read())
@@ -197,7 +197,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// A blocking, thread-safe method that will refill the free guid stack.
+        /// A blocking, thread-safe method that will refill the free ID stack.
         /// </summary>
         void Refill()
         {
@@ -229,17 +229,17 @@ namespace DemoGame.Server
             Debug.Fail(
                 "If you see this message, that means this is being disposed of and you can delete this line and the NOTE above.");
 
-            if (_selectGuidQuery != null)
-                _selectGuidQuery.Dispose();
+            if (_selectIDQuery != null)
+                _selectIDQuery.Dispose();
         }
 
         #endregion
 
-        class SelectGuidQuery : DbQueryReader
+        class SelectIDQuery : DbQueryReader
         {
             const string _queryString = "SELECT `{0}` FROM `{1}` ORDER BY `{0}` ASC";
 
-            public SelectGuidQuery(DbConnectionPool connectionPool, string table, string column)
+            public SelectIDQuery(DbConnectionPool connectionPool, string table, string column)
                 : base(connectionPool, string.Format(_queryString, column, table))
             {
             }

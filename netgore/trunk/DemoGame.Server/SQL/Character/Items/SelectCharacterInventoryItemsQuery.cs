@@ -12,8 +12,8 @@ namespace DemoGame.Server
     public class SelectCharacterInventoryItemsQuery : SelectItemQueryBase<uint>
     {
         const string _queryString =
-            "SELECT items.* FROM `items`,`character_inventory` " + "WHERE character_inventory.character_guid = @characterID " +
-            "AND items.guid = character_inventory.item_guid";
+            "SELECT item.* FROM `item`,`character_inventory` " + "WHERE character_inventory.character_id = @characterID " +
+            "AND item.id = character_inventory.item_id";
 
         public SelectCharacterInventoryItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

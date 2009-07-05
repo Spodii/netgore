@@ -10,7 +10,7 @@ namespace DemoGame.Server
 {
     public abstract class UserQueryBase : DbQueryNonReader<Character>
     {
-        static readonly IEnumerable<string> _otherFields = new string[] { "@body", "@guid", "@map", "@name", "@x", "@y" };
+        static readonly IEnumerable<string> _otherFields = new string[] { "@body", "@id", "@map", "@name", "@x", "@y" };
 
         static readonly IEnumerable<string> _statFields =
             UserStats.DatabaseStats.Select(statType => "@" + statType.GetDatabaseField());
@@ -18,11 +18,11 @@ namespace DemoGame.Server
         static string _queryFieldsStr;
 
         /// <summary>
-        /// Gets an IEnumerable of the name of each field, except for the guid, without the parameter prefix.
+        /// Gets an IEnumerable of the name of each field, except for the ID, without the parameter prefix.
         /// </summary>
         protected static IEnumerable<string> FieldNames
         {
-            get { return GetAllFields().Where(x => x != "@guid").Select(x => GetParameterNameWithoutPrefix(x)); }
+            get { return GetAllFields().Where(x => x != "@id").Select(x => GetParameterNameWithoutPrefix(x)); }
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace DemoGame.Server
 
         protected override void SetParameters(DbParameterValues p, Character character)
         {
-            p["@guid"] = character.Guid;
+            p["@id"] = character.ID;
             p["@map"] = character.Map.Index;
             p["@x"] = character.Position.X;
             p["@y"] = character.Position.Y;

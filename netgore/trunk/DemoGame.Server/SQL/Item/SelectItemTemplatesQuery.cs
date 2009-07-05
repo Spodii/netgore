@@ -10,7 +10,7 @@ namespace DemoGame.Server
 {
     public class SelectItemTemplatesQuery : DbQueryReader
     {
-        const string _queryString = "SELECT * FROM `item_templates`";
+        const string _queryString = "SELECT * FROM `item_template`";
 
         public SelectItemTemplatesQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
@@ -25,7 +25,7 @@ namespace DemoGame.Server
                 while (r.Read())
                 {
                     // Read the general stat values
-                    ushort guid = r.GetUInt16("guid");
+                    ushort id = r.GetUInt16("id");
                     string name = r.GetString("name");
                     string description = r.GetString("description");
                     ushort graphic = r.GetUInt16("graphic");
@@ -44,7 +44,7 @@ namespace DemoGame.Server
                     }
 
                     // Create the template and enqueue it for returning
-                    ItemTemplate values = new ItemTemplate(guid, name, description, type, graphic, value, width, height, stats);
+                    ItemTemplate values = new ItemTemplate(id, name, description, type, graphic, value, width, height, stats);
                     ret.Add(values);
                 }
             }

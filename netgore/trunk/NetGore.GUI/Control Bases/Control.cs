@@ -861,7 +861,7 @@ namespace NetGore.Graphics.GUI
             // KeyPress event
             if (OnKeyPress != null)
             {
-                IEnumerable<Keys> pressedKeys = GUIManager.KeysPressed;
+                var pressedKeys = GUIManager.KeysPressed;
                 if (pressedKeys != null && pressedKeys.Count() > 0)
                     OnKeyPress(this, new KeyboardEventArgs(pressedKeys, keyboardState));
             }
@@ -869,7 +869,7 @@ namespace NetGore.Graphics.GUI
             // KeyDown event
             if (OnKeyDown != null)
             {
-                IEnumerable<Keys> keysDown = GUIManager.KeysDown;
+                var keysDown = GUIManager.KeysDown;
                 if (keysDown != null && keysDown.Count() > 0)
                     OnKeyDown(this, new KeyboardEventArgs(keysDown, keyboardState));
             }
@@ -877,7 +877,7 @@ namespace NetGore.Graphics.GUI
             // KeyUp event
             if (OnKeyUp != null)
             {
-                IEnumerable<Keys> keysUp = GUIManager.KeysUp;
+                var keysUp = GUIManager.KeysUp;
                 if (keysUp != null && keysUp.Count() > 0)
                     OnKeyUp(this, new KeyboardEventArgs(keysUp, keyboardState));
             }
@@ -935,7 +935,7 @@ namespace NetGore.Graphics.GUI
                 }
             }
 
-            var currCursorPos = new Vector2(mouseState.X, mouseState.Y);
+            Vector2 currCursorPos = new Vector2(mouseState.X, mouseState.Y);
             Vector2 sp = ScreenPosition;
 
             // Check if this is the Control being pointed at

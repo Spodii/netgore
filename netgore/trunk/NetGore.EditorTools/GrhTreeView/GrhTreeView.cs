@@ -229,8 +229,8 @@ namespace NetGore.EditorTools
             else if (gd.Frames != null)
             {
                 // Grh does not contain a valid texture, but it does have frames, so it must be animated
-                var nodeGrh = new Grh(gd.GrhIndex, AnimType.Loop, Time);
-                var treeNode = new GrhTreeNode(node, nodeGrh);
+                Grh nodeGrh = new Grh(gd.GrhIndex, AnimType.Loop, Time);
+                GrhTreeNode treeNode = new GrhTreeNode(node, nodeGrh);
                 _animTreeNodes.Add(treeNode);
             }
 
@@ -242,17 +242,17 @@ namespace NetGore.EditorTools
         {
             // We must create the hash collection since its constructor has the updating goodies, and we want
             // to make sure that is called
-            var hashCollection = new TextureHashCollection();
+            TextureHashCollection hashCollection = new TextureHashCollection();
 
             // Get the GrhDatas with missing textures
-            IEnumerable<GrhData> missing = GrhInfo.FindMissingTextures();
+            var missing = GrhInfo.FindMissingTextures();
             if (missing.Count() == 0)
                 return;
 
             // Display a form showing which textures need to be fixed
             // The GrhTreeView will be disabled until the MissingTexturesForm is closed
             Enabled = false;
-            var frm = new MissingTexturesForm(hashCollection, missing, cm);
+            MissingTexturesForm frm = new MissingTexturesForm(hashCollection, missing, cm);
             frm.FormClosed += delegate
                               {
                                   RebuildTree();
@@ -272,7 +272,7 @@ namespace NetGore.EditorTools
         TreeNode CreateNode(string name, string path, char separator)
         {
             // Split up the category by the separator
-            string[] cats = path.Split(separator);
+            var cats = path.Split(separator);
 
             // Recursively add the category and all subcategories
             TreeNodeCollection nodeColl = Nodes;
@@ -462,7 +462,7 @@ namespace NetGore.EditorTools
         /// <returns>The tooltip text to use for a GrhData.</returns>
         static string GetToolTipText(GrhData gd)
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             try
             {
@@ -575,7 +575,7 @@ namespace NetGore.EditorTools
 
         void GrhTreeView_DragDrop(object sender, DragEventArgs e)
         {
-            var srcView = (TreeView)sender;
+            TreeView srcView = (TreeView)sender;
 
             foreach (TreeNode child in Nodes)
             {
@@ -587,7 +587,7 @@ namespace NetGore.EditorTools
 
             Point pt = srcView.PointToClient(new Point(e.X, e.Y));
             TreeNode destNode = srcView.GetNodeAt(pt);
-            var newNode = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
+            TreeNode newNode = (TreeNode)e.Data.GetData("System.Windows.Forms.TreeNode");
             TreeNode addedNode;
 
             // Don't allow dropping onto itself
@@ -750,7 +750,7 @@ namespace NetGore.EditorTools
             if (cm == null)
                 throw new Exception("Failed to find a ContentManager to use.");
 
-            IEnumerable<GrhData> newGDs = AutomaticGrhUpdater.UpdateAll(cm, ContentPaths.Dev.Grhs);
+            var newGDs = AutomaticGrhUpdater.UpdateAll(cm, ContentPaths.Dev.Grhs);
             int newCount = newGDs.Count();
 
             if (newCount > 0)
@@ -1054,8 +1054,8 @@ namespace NetGore.EditorTools
         /// <returns>-1 if a is first, 1 if b is first, or 0 for no preference</returns>
         int IComparer.Compare(object a, object b)
         {
-            var x = (TreeNode)a;
-            var y = (TreeNode)b;
+            TreeNode x = (TreeNode)a;
+            TreeNode y = (TreeNode)b;
 
             // Folders take priority
             if (!IsGrhNode(x) && IsGrhNode(y))

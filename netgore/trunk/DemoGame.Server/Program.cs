@@ -1,8 +1,5 @@
-using System;
-using System.Diagnostics;
 using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Threading;
 using log4net;
 
 namespace DemoGame.Server
@@ -11,26 +8,8 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        static Server _server;
         static ConsoleCtrlHandler _handler;
-
-        delegate bool ConsoleCtrlHandler(CtrlTypes ctrlType);
-
-        static void Main()
-        {
-            if (log.IsInfoEnabled)
-                log.Info("Starting server...");
-
-            // Hack in a callback that will allow us to dispose of the server if the console is closed in any way
-            // Ideally, people would type "quit" or "close" when they want to close it, but hell, not even I do that
-            _handler += ConsoleCtrlCheck;
-            SetConsoleCtrlHandler(_handler, true);
-
-            // Create and start the server
-            _server = new Server();
-            _server.Start();
-            _server.Dispose();
-        }
+        static Server _server;
 
         static bool ConsoleCtrlCheck(CtrlTypes ctrlType)
         {
@@ -49,8 +28,26 @@ namespace DemoGame.Server
             return true;
         }
 
+        static void Main()
+        {
+            if (log.IsInfoEnabled)
+                log.Info("Starting server...");
+
+            // Hack in a callback that will allow us to dispose of the server if the console is closed in any way
+            // Ideally, people would type "quit" or "close" when they want to close it, but hell, not even I do that
+            _handler += ConsoleCtrlCheck;
+            SetConsoleCtrlHandler(_handler, true);
+
+            // Create and start the server
+            _server = new Server();
+            _server.Start();
+            _server.Dispose();
+        }
+
         [DllImport("Kernel32")]
         static extern bool SetConsoleCtrlHandler(ConsoleCtrlHandler handler, bool add);
+
+        delegate bool ConsoleCtrlHandler(CtrlTypes ctrlType);
 
         enum CtrlTypes
         {

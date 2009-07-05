@@ -44,7 +44,7 @@ namespace NetGore.EditorTools
                 return;
 
             // Find the selected item
-            var selectedItem = TextureList.SelectedItem as TextureListItem;
+            TextureListItem selectedItem = TextureList.SelectedItem as TextureListItem;
             if (selectedItem == null)
                 return;
 
@@ -67,7 +67,7 @@ namespace NetGore.EditorTools
 
         void BadGrhDatasList_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var selectedItem = TextureList.SelectedItem as TextureListItem;
+            TextureListItem selectedItem = TextureList.SelectedItem as TextureListItem;
             if (selectedItem == null)
             {
                 NewTxt.Enabled = false;
@@ -116,7 +116,7 @@ namespace NetGore.EditorTools
         void DeleteBtn_Click(object sender, EventArgs e)
         {
             // Find the selected item
-            var selectedItem = TextureList.SelectedItem as TextureListItem;
+            TextureListItem selectedItem = TextureList.SelectedItem as TextureListItem;
             if (selectedItem == null)
                 return;
 
@@ -135,7 +135,7 @@ namespace NetGore.EditorTools
             TextureList.Items.Clear();
             foreach (var item in _missingTextures)
             {
-                var listItem = new TextureListItem(item.Key, item.Value);
+                TextureListItem listItem = new TextureListItem(item.Key, item.Value);
                 TextureList.Items.Add(listItem);
             }
         }
@@ -148,7 +148,7 @@ namespace NetGore.EditorTools
             {
                 NewTxt.BackColor = EditorColors.Normal;
 
-                var texture = _cm.Load<Texture2D>("Grh/" + textureName);
+                Texture2D texture = _cm.Load<Texture2D>("Grh/" + textureName);
                 int w = texture.Width;
                 int h = texture.Height;
 

@@ -26,7 +26,7 @@ namespace DemoGame.Server
         readonly InsertCharacterEquippedItemQuery _insertCharacterEquippedItemQuery;
         readonly InsertCharacterInventoryItemQuery _insertCharacterInventoryItemQuery;
         readonly InsertUserQuery _insertUserQuery;
-        readonly ItemGuidCreator _itemGuidCreator;
+        readonly ItemIDCreator _itemIDCreator;
         readonly ReplaceItemQuery _replaceItemQuery;
         readonly SelectAlliancesQuery _selectAlliancesQuery;
         readonly SelectItemQuery _selectItemQuery;
@@ -80,9 +80,9 @@ namespace DemoGame.Server
             get { return _insertCharacterInventoryItemQuery; }
         }
 
-        public ItemGuidCreator ItemGuidCreator
+        public ItemIDCreator ItemIDCreator
         {
-            get { return _itemGuidCreator; }
+            get { return _itemIDCreator; }
         }
 
         public ReplaceItemQuery ReplaceItem
@@ -243,7 +243,7 @@ namespace DemoGame.Server
             _userExistsQuery = new UserExistsQuery(_connectionPool);
             _disposableQueries.Add(_userExistsQuery);
 
-            _itemGuidCreator = new ItemGuidCreator(_connectionPool);
+            _itemIDCreator = new ItemIDCreator(_connectionPool);
 
             if (log.IsInfoEnabled)
                 log.Info("DBController successfully initialized all queries.");

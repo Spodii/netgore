@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -13,28 +13,28 @@ namespace DemoGame.Server
     public class SelectNPCTemplateDropsQuery : DbQueryReader<int>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        const string _queryString = "SELECT * FROM `npc_templates_drops` WHERE `npc_guid`=@npcGuid";
+        const string _queryString = "SELECT * FROM `character_template_drops` WHERE `character_id`=@characterID";
 
         public SelectNPCTemplateDropsQuery(DbConnectionPool connectionPool)
             : base(connectionPool, _queryString)
         {
         }
 
-        public IEnumerable<SelectNPCTemplateDropsQueryValues> Execute(int npcGuid)
+        public IEnumerable<SelectNPCTemplateDropsQueryValues> Execute(int characterID)
         {
             var ret = new List<SelectNPCTemplateDropsQueryValues>();
 
-            using (IDataReader r = ExecuteReader(npcGuid))
+            using (IDataReader r = ExecuteReader(characterID))
             {
                 while (r.Read())
                 {
-                    ushort itemGuid = r.GetUInt16("item_guid");
+                    ushort itemID = r.GetUInt16("item_id");
                     byte min = r.GetByte("min");
                     byte max = r.GetByte("max");
                     ushort chance = r.GetUInt16("chance");
 
                     NPCDropChance dropChance = new NPCDropChance(min, max, chance);
-                    var value = new SelectNPCTemplateDropsQueryValues(itemGuid, dropChance);
+                    var value = new SelectNPCTemplateDropsQueryValues(itemID, dropChance);
                     ret.Add(value);
                 }
             }
@@ -44,12 +44,12 @@ namespace DemoGame.Server
 
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@npcGuid");
+            return CreateParameters("@characterID");
         }
 
         protected override void SetParameters(DbParameterValues p, int item)
         {
-            p["@npcGuid"] = item;
+            p["@characterID"] = item;
         }
     }
 }

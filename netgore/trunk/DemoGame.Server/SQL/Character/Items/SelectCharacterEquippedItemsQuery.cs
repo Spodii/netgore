@@ -12,19 +12,19 @@ namespace DemoGame.Server
     public class SelectCharacterEquippedItemsQuery : SelectItemQueryBase<uint>
     {
         const string _queryString =
-            "SELECT items.*,character_equipped.slot FROM `items`,`character_equipped` " + 
-            "WHERE character_equipped.character_guid = @characterID " +
-            "AND items.guid = character_equipped.item_guid";
+            "SELECT item.*,character_equipped.slot FROM `item`,`character_equipped` " + 
+            "WHERE character_equipped.character_id = @characterID " +
+            "AND item.id = character_equipped.item_id";
 
         public SelectCharacterEquippedItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
-        public IDictionary<EquipmentSlot, ItemValues> Execute(uint userGuid)
+        public IDictionary<EquipmentSlot, ItemValues> Execute(uint characterID)
         {
             var retValues = new Dictionary<EquipmentSlot, ItemValues>();
 
-            using (IDataReader r = ExecuteReader(userGuid))
+            using (IDataReader r = ExecuteReader(characterID))
             {
                 while (r.Read())
                 {

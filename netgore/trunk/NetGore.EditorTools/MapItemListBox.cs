@@ -215,13 +215,13 @@ namespace NetGore.EditorTools
             if (Map == null || Camera == null)
                 return;
 
-            IEnumerable<TItem> allItems = GetItems();
+            var allItems = GetItems();
             if (allItems == null || allItems.Count() == 0)
                 return;
 
-            IEnumerable<TItem> existingItems = Items.OfType<TItem>();
-            TItem[] toAdd = allItems.Except(existingItems).ToArray();
-            TItem[] toRemove = allItems.Except(existingItems).ToArray();
+            var existingItems = Items.OfType<TItem>();
+            var toAdd = allItems.Except(existingItems).ToArray();
+            var toRemove = allItems.Except(existingItems).ToArray();
 
             try
             {

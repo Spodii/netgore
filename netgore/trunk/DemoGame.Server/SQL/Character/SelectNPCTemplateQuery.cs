@@ -12,28 +12,31 @@ namespace DemoGame.Server
 {
     public class SelectNPCTemplateQuery : DbQueryReader<int>
     {
-        const string _queryString = "SELECT * FROM `npc_templates` WHERE `guid`=@guid";
+        const string _queryString = "SELECT * FROM `character_template` WHERE `id`=@id";
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public SelectNPCTemplateQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
-        public SelectNPCTemplateQueryValues Execute(int guid)
+        public SelectNPCTemplateQueryValues Execute(int templateID)
         {
             SelectNPCTemplateQueryValues ret;
 
-            using (IDataReader r = ExecuteReader(guid))
+            using (IDataReader r = ExecuteReader(templateID))
             {
                 if (!r.Read())
-                    throw new ArgumentException(string.Format("No NPCTemplate found for guid `{0}`", guid), "guid");
+                {
+                    const string errmsg = "No NPCTemplate found for ID `{0}`.";
+                    throw new ArgumentException(string.Format(errmsg, templateID), "templateID");
+                }
 
                 // Check that the correct record was grabbed
-                int dbGuid = r.GetInt32("guid");
-                if (dbGuid != guid)
+                int dbID = r.GetInt32("id");
+                if (dbID != templateID)
                 {
-                    const string errmsg = "Performed SELECT for NPC Template with guid `{0}`, but got guid `{1}`!";
-                    string err = string.Format(errmsg, guid, dbGuid);
+                    const string errmsg = "Performed SELECT for NPC Template with id `{0}`, but got id `{1}`.";
+                    string err = string.Format(errmsg, templateID, dbID);
                     log.Fatal(err);
                     Debug.Fail(err);
                     throw new DataException(err);
@@ -64,7 +67,7 @@ namespace DemoGame.Server
                     stat.Read(r, ordinal);
                 }
 
-                ret = new SelectNPCTemplateQueryValues(guid, name, bodyIndex, ai, alliance, respawn, giveExp, giveCash, stats);
+                ret = new SelectNPCTemplateQueryValues(templateID, name, bodyIndex, ai, alliance, respawn, giveExp, giveCash, stats);
             }
 
             return ret;
@@ -72,12 +75,12 @@ namespace DemoGame.Server
 
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@guid");
+            return CreateParameters("@id");
         }
 
-        protected override void SetParameters(DbParameterValues p, int guid)
+        protected override void SetParameters(DbParameterValues p, int templateID)
         {
-            p["@guid"] = guid;
+            p["@id"] = templateID;
         }
     }
 }

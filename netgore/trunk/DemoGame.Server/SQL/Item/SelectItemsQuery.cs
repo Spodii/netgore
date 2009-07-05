@@ -11,7 +11,7 @@ namespace DemoGame.Server
 {
     public class SelectItemsQuery : SelectItemQueryBase<SelectItemsQueryValues>
     {
-        const string _queryString = "SELECT * FROM `items` WHERE `guid` BETWEEN @low AND @high";
+        const string _queryString = "SELECT * FROM `item` WHERE `id` BETWEEN @low AND @high";
 
         public SelectItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
@@ -31,7 +31,7 @@ namespace DemoGame.Server
                 while (r.Read())
                 {
                     if (!r.Read())
-                        throw new DataException("Query contained no results for the specified item guid range.");
+                        throw new DataException("Query contained no results for the specified Item ID range.");
 
                     ItemValues tempValues = GetItemValues(r);
                     retValues.Add(tempValues);

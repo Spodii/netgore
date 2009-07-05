@@ -10,7 +10,7 @@ namespace NetGore.Tests
         [Test]
         public void ImplodeCharTest()
         {
-            var rnd = new Random();
+            Random rnd = new Random();
             var l = new List<int>(50);
             for (int i = 0; i < 50; i++)
             {
@@ -19,7 +19,7 @@ namespace NetGore.Tests
 
             string implode = l.Implode(',');
 
-            string[] elements = implode.Split(',');
+            var elements = implode.Split(',');
 
             Assert.AreEqual(l.Count, elements.Length);
 
@@ -32,7 +32,7 @@ namespace NetGore.Tests
         [Test]
         public void ImplodeStringTest()
         {
-            var rnd = new Random();
+            Random rnd = new Random();
             var l = new List<int>(50);
             for (int i = 0; i < 50; i++)
             {
@@ -41,7 +41,7 @@ namespace NetGore.Tests
 
             string implode = l.Implode(",");
 
-            string[] elements = implode.Split(',');
+            var elements = implode.Split(',');
 
             Assert.AreEqual(l.Count, elements.Length);
 

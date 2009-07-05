@@ -189,7 +189,7 @@ namespace NetGore
         static string GetDevContentPath(string rootPath)
         {
             // Check if this directory contains the content directory
-            string[] subDirectories = Directory.GetDirectories(rootPath, "*", SearchOption.AllDirectories);
+            var subDirectories = Directory.GetDirectories(rootPath, "*", SearchOption.AllDirectories);
             foreach (string subDirectory in subDirectories)
             {
                 if (IsDevContentDirectory(subDirectory))
@@ -230,16 +230,16 @@ namespace NetGore
             // and contain the Data and Grh folders
 
             // Check for the *.contentproj file
-            string[] files = Directory.GetFiles(path, "*.contentproj", SearchOption.TopDirectoryOnly);
+            var files = Directory.GetFiles(path, "*.contentproj", SearchOption.TopDirectoryOnly);
             if (files.Count() == 0)
                 return false;
 
             // Check for the required child directories
             var reqFolders = new List<string> { _dataFolder, _grhsFolder };
-            IEnumerable<string> req = reqFolders.Select(d => Path.GetFileNameWithoutExtension(d).ToLower());
+            var req = reqFolders.Select(d => Path.GetFileNameWithoutExtension(d).ToLower());
 
-            string[] dirs = Directory.GetDirectories(path);
-            IEnumerable<string> dirNames = dirs.Select(d => Path.GetFileNameWithoutExtension(d).ToLower());
+            var dirs = Directory.GetDirectories(path);
+            var dirNames = dirs.Select(d => Path.GetFileNameWithoutExtension(d).ToLower());
 
             if (dirNames.Intersect(req).Count() != req.Count())
                 return false;

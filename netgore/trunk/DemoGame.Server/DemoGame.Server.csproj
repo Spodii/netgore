@@ -108,7 +108,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Characters\NPCDropChance.cs" />
-    <Compile Include="GuidCreatorBase.cs" />
+    <Compile Include="IDCreatorBase.cs" />
     <Compile Include="Items\CharacterEquipped.cs" />
     <Compile Include="Items\Inventory.cs" />
     <Compile Include="Items\InventoryChangeInfo.cs" />

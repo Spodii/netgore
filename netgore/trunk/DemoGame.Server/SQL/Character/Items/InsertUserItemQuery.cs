@@ -11,7 +11,7 @@ namespace DemoGame.Server
     public class InsertCharacterInventoryItemQuery : DbQueryNonReader<InsertCharacterInventoryItemQuery.QueryArgs>
     {
         const string _queryString = "INSERT INTO `character_inventory`"
-            + " SET `character_guid`=@characterID,`item_guid`=@itemID";
+            + " SET `character_id`=@characterID,`item_id`=@itemID";
 
         public InsertCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
@@ -24,8 +24,8 @@ namespace DemoGame.Server
 
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@itemID"] = item.ItemGuid;
-            p["@characterID"] = item.UserGuid;
+            p["@itemID"] = item.ItemID;
+            p["@characterID"] = item.UserID;
         }
 
         /// <summary>
@@ -33,13 +33,13 @@ namespace DemoGame.Server
         /// </summary>
         public struct QueryArgs
         {
-            public readonly int ItemGuid;
-            public readonly uint UserGuid;
+            public readonly int ItemID;
+            public readonly uint UserID;
 
-            public QueryArgs(uint userGuid, int itemGuid)
+            public QueryArgs(uint userID, int itemID)
             {
-                UserGuid = userGuid;
-                ItemGuid = itemGuid;
+                UserID = userID;
+                ItemID = itemID;
             }
         }
     }

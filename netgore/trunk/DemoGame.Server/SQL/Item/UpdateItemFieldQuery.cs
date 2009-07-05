@@ -10,7 +10,7 @@ namespace DemoGame.Server
 {
     public class UpdateItemFieldQuery : IDisposable
     {
-        const string _queryString = "UPDATE `" + ReplaceItemQuery.ItemsTableName + "` SET `{0}`=@value WHERE `guid`=@itemGuid";
+        const string _queryString = "UPDATE `" + ReplaceItemQuery.ItemsTableName + "` SET `{0}`=@value WHERE `id`=@itemID";
         readonly DbConnectionPool _connectionPool;
 
         readonly Dictionary<string, InternalUpdateItemFieldQuery> _fieldQueries =
@@ -26,7 +26,7 @@ namespace DemoGame.Server
             _connectionPool = connectionPool;
         }
 
-        public void Execute(int itemGuid, string field, object value)
+        public void Execute(int itemID, string field, object value)
         {
             InternalUpdateItemFieldQuery fieldQuery;
             if (!_fieldQueries.TryGetValue(field, out fieldQuery))
@@ -36,7 +36,7 @@ namespace DemoGame.Server
                 _fieldQueries.Add(field, fieldQuery);
             }
 
-            QueryArgs values = new QueryArgs(itemGuid, value);
+            QueryArgs values = new QueryArgs(itemID, value);
             fieldQuery.Execute(values);
         }
 
@@ -66,12 +66,12 @@ namespace DemoGame.Server
 
             protected override IEnumerable<DbParameter> InitializeParameters()
             {
-                return CreateParameters("@itemGuid", "@value");
+                return CreateParameters("@itemID", "@value");
             }
 
             protected override void SetParameters(DbParameterValues p, QueryArgs item)
             {
-                p["@itemGuid"] = item.ItemGuid;
+                p["@itemID"] = item.ItemID;
                 p["@value"] = item.Value;
             }
         }
@@ -81,12 +81,12 @@ namespace DemoGame.Server
         /// </summary>
         public struct QueryArgs
         {
-            public readonly int ItemGuid;
+            public readonly int ItemID;
             public readonly object Value;
 
-            public QueryArgs(int itemGuid, object value)
+            public QueryArgs(int itemID, object value)
             {
-                ItemGuid = itemGuid;
+                ItemID = itemID;
                 Value = value;
             }
         }

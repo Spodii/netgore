@@ -12,7 +12,7 @@ namespace NetGore.IO.Tests
             const string errDetails = "Value: {0}    Type: {1}";
             const int testIterations = 1000;
 
-            var rnd = new Random();
+            Random rnd = new Random();
 
             for (int test = 0; test < testIterations; test++)
             {
@@ -238,49 +238,49 @@ namespace NetGore.IO.Tests
 
             for (int i = 1; i < 7; i++)
             {
-                var value = (sbyte)Math.Pow(2, i);
+                sbyte value = (sbyte)Math.Pow(2, i);
                 Assert.IsTrue(BitOps.IsPowerOf2(value), string.Format(errDetails, i, value, value.GetType()));
             }
 
             for (int i = 1; i < 8; i++)
             {
-                var value = (byte)Math.Pow(2, i);
+                byte value = (byte)Math.Pow(2, i);
                 Assert.IsTrue(BitOps.IsPowerOf2(value), string.Format(errDetails, i, value, value.GetType()));
             }
 
             for (int i = 1; i < 15; i++)
             {
-                var value = (short)Math.Pow(2, i);
+                short value = (short)Math.Pow(2, i);
                 Assert.IsTrue(BitOps.IsPowerOf2(value), string.Format(errDetails, i, value, value.GetType()));
             }
 
             for (int i = 1; i < 16; i++)
             {
-                var value = (ushort)Math.Pow(2, i);
+                ushort value = (ushort)Math.Pow(2, i);
                 Assert.IsTrue(BitOps.IsPowerOf2(value), string.Format(errDetails, i, value, value.GetType()));
             }
 
             for (int i = 1; i < 31; i++)
             {
-                var value = (int)Math.Pow(2, i);
+                int value = (int)Math.Pow(2, i);
                 Assert.IsTrue(BitOps.IsPowerOf2(value), string.Format(errDetails, i, value, value.GetType()));
             }
 
             for (int i = 1; i < 32; i++)
             {
-                var value = (uint)Math.Pow(2, i);
+                uint value = (uint)Math.Pow(2, i);
                 Assert.IsTrue(BitOps.IsPowerOf2(value), string.Format(errDetails, i, value, value.GetType()));
             }
 
             for (int i = 1; i < 63; i++)
             {
-                var value = (long)Math.Pow(2, i);
+                long value = (long)Math.Pow(2, i);
                 Assert.IsTrue(BitOps.IsPowerOf2(value), string.Format(errDetails, i, value, value.GetType()));
             }
 
             for (int i = 1; i < 64; i++)
             {
-                var value = (ulong)Math.Pow(2, i);
+                ulong value = (ulong)Math.Pow(2, i);
                 Assert.IsTrue(BitOps.IsPowerOf2(value), string.Format(errDetails, i, value, value.GetType()));
             }
         }

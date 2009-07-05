@@ -11,7 +11,7 @@ namespace DemoGame.Server
         readonly byte _amount;
         readonly string _description;
         readonly ushort _graphicIndex;
-        readonly int _guid;
+        readonly int _id;
         readonly byte _height;
         readonly string _name;
         readonly ItemStats _stats;
@@ -34,9 +34,9 @@ namespace DemoGame.Server
             get { return _graphicIndex; }
         }
 
-        public int Guid
+        public int ID
         {
-            get { return _guid; }
+            get { return _id; }
         }
 
         public byte Height
@@ -69,7 +69,7 @@ namespace DemoGame.Server
             get { return _width; }
         }
 
-        public ItemValues(int guid, byte width, byte height, string name, string description, ItemType type, ushort graphicIndex,
+        public ItemValues(int id, byte width, byte height, string name, string description, ItemType type, ushort graphicIndex,
                           byte amount, int value, ItemStats stats)
         {
             if (stats == null)
@@ -79,7 +79,7 @@ namespace DemoGame.Server
             if (description == null)
                 throw new ArgumentNullException("description");
 
-            _guid = guid;
+            _id = id;
             _width = width;
             _height = height;
             _name = name;
@@ -91,9 +91,9 @@ namespace DemoGame.Server
             _stats = stats;
         }
 
-        public ItemValues(ItemEntity ie, int guid)
+        public ItemValues(ItemEntity ie, int id)
             : this(
-                guid, (byte)ie.CB.Width, (byte)ie.CB.Height, ie.Name, ie.Description, ie.Type, ie.GraphicIndex, ie.Amount,
+                id, (byte)ie.CB.Width, (byte)ie.CB.Height, ie.Name, ie.Description, ie.Type, ie.GraphicIndex, ie.Amount,
                 ie.Value, new ItemStats(ie.Stats))
         {
             if (ie == null)

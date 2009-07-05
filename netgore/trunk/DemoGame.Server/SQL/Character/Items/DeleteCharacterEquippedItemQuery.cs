@@ -11,7 +11,7 @@ namespace DemoGame.Server
     public class DeleteCharacterEquippedItemQuery : DbQueryNonReader<int>
     {
         const string _queryString =
-            "DELETE FROM `character_equipped` WHERE `item_guid`=@itemID LIMIT 1";
+            "DELETE FROM `character_equipped` WHERE `item_id`=@itemID LIMIT 1";
 
         public DeleteCharacterEquippedItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

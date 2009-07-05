@@ -11,11 +11,11 @@ namespace DemoGame.Server
 {
     public class ReplaceItemQuery : DbQueryNonReader<ItemValues>
     {
-        public const string ItemsTableName = "items";
+        public const string ItemsTableName = "item";
 
         static readonly IEnumerable<string> _otherFields = new string[]
                                                            {
-                                                               "amount", "description", "graphic", "guid", "height", "name", "type",
+                                                               "amount", "description", "graphic", "id", "height", "name", "type",
                                                                "value", "width"
                                                            };
 
@@ -79,7 +79,7 @@ namespace DemoGame.Server
 
         protected override void SetParameters(DbParameterValues p, ItemValues item)
         {
-            p["@guid"] = item.Guid;
+            p["@id"] = item.ID;
             p["@name"] = item.Name;
             p["@description"] = item.Description;
             p["@type"] = item.Type;

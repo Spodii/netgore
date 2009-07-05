@@ -32,13 +32,13 @@ namespace NetGore.Tests
         [Test]
         public void IsBetweenDateTimeTest()
         {
-            var i = new DateTime(0);
+            DateTime i = new DateTime(0);
             while ((i = i.AddTicks(1)) < new DateTime(40))
             {
-                var j = new DateTime(0);
+                DateTime j = new DateTime(0);
                 while ((j = j.AddTicks(1)) < new DateTime(40))
                 {
-                    var k = new DateTime(0);
+                    DateTime k = new DateTime(0);
                     while ((k = k.AddTicks(1)) < new DateTime(60))
                     {
                         bool b = k.IsBetween(i, j);

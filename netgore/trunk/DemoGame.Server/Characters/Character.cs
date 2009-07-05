@@ -253,20 +253,20 @@ namespace DemoGame.Server
             get { return World.Server.DBController; }
         }
 
-        uint _guid;
+        uint _id;
 
-        public uint Guid
+        public uint ID
         {
             get
             {
-                return _guid;
+                return _id;
             }
         }
 
         void InternalLoad(SelectCharacterQueryValues characterValues)
         {
             Name = characterValues.Name;
-            _guid = characterValues.Guid;
+            _id = characterValues.ID;
 
             BodyInfo = GameData.Body(characterValues.BodyIndex);
             CB = new CollisionBox(characterValues.Position, BodyInfo.Width, BodyInfo.Height);
@@ -327,7 +327,7 @@ namespace DemoGame.Server
 
         public override string ToString()
         {
-            return string.Format("{0} [ID: {1}, Type: {2}]", Name, Guid, GetType().Name);
+            return string.Format("{0} [ID: {1}, Type: {2}]", Name, ID, GetType().Name);
         }
 
         protected void Load(uint characterID)

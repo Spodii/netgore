@@ -257,8 +257,8 @@ namespace NetGore.Collections.Tests
 
         static void AddTestSub(bool trackFree)
         {
-            var o1 = new object();
-            var o2 = new object();
+            object o1 = new object();
+            object o2 = new object();
             var d = new DArray<object>(trackFree) { o1, o2 };
 
             Assert.IsTrue(d.Contains(o1), "TrackFree = " + trackFree);
