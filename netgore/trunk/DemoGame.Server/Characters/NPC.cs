@@ -16,16 +16,11 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// Gets the NPC's AI. Can be null.
-        /// </summary>
-        public AIBase AI { get { return _ai; } }
-
-        AIBase _ai;
-
         readonly List<NPCDrop> _drops;
+        readonly NPCEquipped _equipped;
         readonly NPCInventory _inventory;
         readonly NPCStats _stats;
+        AIBase _ai;
 
         ushort _giveCash;
         ushort _giveExp;
@@ -36,6 +31,19 @@ namespace DemoGame.Server
         /// The game time at which the NPC will respawn.
         /// </summary>
         int _respawnTime = 0;
+
+        /// <summary>
+        /// Gets the NPC's AI. Can be null.
+        /// </summary>
+        public AIBase AI
+        {
+            get { return _ai; }
+        }
+
+        public override CharacterEquipped Equipped
+        {
+            get { return _equipped; }
+        }
 
         public ushort GiveCash
         {
@@ -55,11 +63,6 @@ namespace DemoGame.Server
         public override Inventory Inventory
         {
             get { return _inventory; }
-        }
-
-        public override CharacterEquipped Equipped
-        {
-            get { return _equipped; }
         }
 
         public Map RespawnMap { get; set; }
@@ -85,8 +88,7 @@ namespace DemoGame.Server
         /// Gets if this NPC will respawn after dieing.
         /// </summary>
 // ReSharper disable MemberCanBeMadeStatic.Global
-        public bool WillRespawn
-// ReSharper restore MemberCanBeMadeStatic.Global
+        public bool WillRespawn // ReSharper restore MemberCanBeMadeStatic.Global
         {
             get { return true; }
         }
@@ -95,8 +97,6 @@ namespace DemoGame.Server
         public NPC()
         {
         }
-
-        readonly NPCEquipped _equipped;
 
         public NPC(World parent, uint characterID) : base(parent, true)
         {
@@ -157,37 +157,6 @@ namespace DemoGame.Server
 
             // Done loading
             SetAsLoaded();
-        }
-
-        /// <summary>
-        /// Sets the NPC's AI.
-        /// </summary>
-        /// <param name="aiName">Name of the AI to change to. Use a null or empty string to set the AI to null.</param>
-        public void SetAI(string aiName)
-        {
-            if (string.IsNullOrEmpty(aiName))
-            {
-                _ai = null;
-            }
-            else
-            {
-                AIBase newAI;
-                try
-                {
-                    newAI = AIFactory.Create(aiName, this);
-                }
-                catch (KeyNotFoundException)
-                {
-                    const string errmsg = "Failed to change to AI to `{0}` for NPC `{1}` - AI not found.";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, aiName, this);
-                    Debug.Fail(string.Format(errmsg, aiName, this));
-                    return;
-                }
-
-                Debug.Assert(newAI.Actor == this);
-                _ai = newAI;
-            }
         }
 
         /// <summary>
@@ -253,6 +222,35 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Sets the NPC's AI.
+        /// </summary>
+        /// <param name="aiName">Name of the AI to change to. Use a null or empty string to set the AI to null.</param>
+        public void SetAI(string aiName)
+        {
+            if (string.IsNullOrEmpty(aiName))
+                _ai = null;
+            else
+            {
+                AIBase newAI;
+                try
+                {
+                    newAI = AIFactory.Create(aiName, this);
+                }
+                catch (KeyNotFoundException)
+                {
+                    const string errmsg = "Failed to change to AI to `{0}` for NPC `{1}` - AI not found.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, aiName, this);
+                    Debug.Fail(string.Format(errmsg, aiName, this));
+                    return;
+                }
+
+                Debug.Assert(newAI.Actor == this);
+                _ai = newAI;
+            }
+        }
+
+        /// <summary>
         /// Updates the NPC
         /// </summary>
         public override void Update(IMap imap, float deltaTime)
@@ -262,7 +260,7 @@ namespace DemoGame.Server
                 return;
 
             // Update the AI
-            var ai = AI;
+            AIBase ai = AI;
             if (ai != null)
                 ai.Update();
 
