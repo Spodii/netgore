@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
-using System.Linq;
 using System.Runtime.InteropServices;
 using NetGore.IO;
 
@@ -15,18 +12,25 @@ namespace NetGore
     [StructLayout(LayoutKind.Sequential)]
     public struct MapIndex : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
+        /// <summary>
+        /// The maximum value.
+        /// </summary>
         const int _maxValue = ushort.MaxValue;
-        const int _minValue = 0;
 
         /// <summary>
-        /// Underlying value.
+        /// The minimum value.
+        /// </summary>
+        const int _minValue = ushort.MinValue;
+
+        /// <summary>
+        /// The underlying value. This contains the actual value of the struct instance.
         /// </summary>
         readonly ushort _value;
 
         /// <summary>
         /// MapIndex constructor.
         /// </summary>
-        /// <param name="value">Value for the MapIndex.</param>
+        /// <param name="value">Value to assign to the new MapIndex.</param>
         public MapIndex(int value)
         {
             if (value < _minValue || value > _maxValue)
@@ -110,7 +114,8 @@ namespace NetGore
             if (value is ushort)
                 return new MapIndex((ushort)value);
 
-            return new MapIndex(Convert.ToUInt16(value));
+            ushort convertedValue = Convert.ToUInt16(value);
+            return new MapIndex(convertedValue);
         }
 
         /// <summary>
