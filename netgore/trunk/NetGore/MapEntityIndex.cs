@@ -6,7 +6,7 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// A numeric value that represents an Entity's unique index on a map.
+    /// Represents the integral value of the index of an Entity in respect to the Map it is on.
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
@@ -585,7 +585,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Implements operator <
+        /// Implements operator <.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -651,7 +651,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Implements operator <=
+        /// Implements operator <=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -681,6 +681,80 @@ namespace NetGore
         public static bool operator ==(MapEntityIndex left, MapEntityIndex right)
         {
             return left._value == right._value;
+        }
+    }
+
+    /// <summary>
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the MapEntityIndex.
+    /// All of the operations are implemented in the MapEntityIndex struct. These extensions are provided
+    /// purely for the convenience of accessing all the I/O operations from the same place.
+    /// </summary>
+    public static class MapEntityIndexReadWriteExtensions
+    {
+        /// <summary>
+        /// Reads the CustomValueType from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
+        /// <returns>The CustomValueType read from the BitStream.</returns>
+        public static MapEntityIndex ReadMapEntityIndex(this BitStream bitStream)
+        {
+            return MapEntityIndex.Read(bitStream);
+        }
+
+        /// <summary>
+        /// Reads the CustomValueType from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
+        /// <param name="i">The field index to read.</param>
+        /// <returns>The CustomValueType read from the IDataReader.</returns>
+        public static MapEntityIndex GetMapEntityIndex(this IDataReader dataReader, int i)
+        {
+            return MapEntityIndex.Read(dataReader, i);
+        }
+
+        /// <summary>
+        /// Reads the CustomValueType from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
+        /// <param name="name">The name of the field to read the value from.</param>
+        /// <returns>The CustomValueType read from the IDataReader.</returns>
+        public static MapEntityIndex GetMapEntityIndex(this IDataReader dataReader, string name)
+        {
+            return MapEntityIndex.Read(dataReader, name);
+        }
+
+
+        /// <summary>
+        /// Reads the CustomValueType from an IValueReader.
+        /// </summary>
+        /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
+        /// <param name="name">The unique name of the value to read.</param>
+        /// <returns>The CustomValueType read from the IValueReader.</returns>
+        public static MapEntityIndex ReadMapEntityIndex(this IValueReader valueReader, string name)
+        {
+            return MapEntityIndex.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Writes a MapEntityIndex to a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="value">MapEntityIndex to write.</param>
+        public static void Write(this BitStream bitStream, MapEntityIndex value)
+        {
+            value.Write(bitStream);
+        }
+
+        /// <summary>
+        /// Writes a MapEntityIndex to a IValueWriter.
+        /// </summary>
+        /// <param name="valueWriter">IValueWriter to write to.</param>
+        /// <param name="name">Unique name of the MapEntityIndex that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">MapEntityIndex to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, MapEntityIndex value)
+        {
+            value.Write(valueWriter, name);
         }
     }
 }
