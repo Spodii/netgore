@@ -62,19 +62,19 @@ namespace DemoGame.Server
         {
             // TODO: Recycle the PacketWriter instead of grabbing from the pool every time
             // Loop through all slots
-            for (int slot = 0; slot < Inventory.MaxInventorySize; slot++)
+            for (InventorySlot slot = new InventorySlot(0); slot < Inventory.MaxInventorySize; slot++)
             {
                 // Skip unchanged slots
-                if (!_slotChanged[slot])
+                if (!_slotChanged[(int)slot])
                     continue;
 
                 // Get the item in the slot
-                ItemEntity item = UserInventory[new InventorySlot(slot)];
+                ItemEntity item = UserInventory[slot];
 
                 if (item == null)
                 {
                     // Remove the item
-                    using (PacketWriter pw = ServerPacket.SetInventorySlot(new InventorySlot(slot), new GrhIndex(0), 0))
+                    using (PacketWriter pw = ServerPacket.SetInventorySlot(slot, new GrhIndex(0), 0))
                     {
                         OwnerUser.Send(pw);
                     }
@@ -82,7 +82,7 @@ namespace DemoGame.Server
                 else
                 {
                     // Update the item
-                    using (PacketWriter pw = ServerPacket.SetInventorySlot(new InventorySlot(slot), item.GraphicIndex, item.Amount))
+                    using (PacketWriter pw = ServerPacket.SetInventorySlot(slot, item.GraphicIndex, item.Amount))
                     {
                         OwnerUser.Send(pw);
                     }
