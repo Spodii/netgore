@@ -6,7 +6,7 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// A numeric value that represents the index of Map.
+    /// Represents the integral value of a Map's index.
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
@@ -585,7 +585,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Implements operator <
+        /// Implements operator <.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -651,7 +651,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Implements operator <=
+        /// Implements operator <=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
@@ -681,6 +681,80 @@ namespace NetGore
         public static bool operator ==(MapIndex left, MapIndex right)
         {
             return left._value == right._value;
+        }
+    }
+
+    /// <summary>
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the MapIndex.
+    /// All of the operations are implemented in the MapIndex struct. These extensions are provided
+    /// purely for the convenience of accessing all the I/O operations from the same place.
+    /// </summary>
+    public static class MapIndexReadWriteExtensions
+    {
+        /// <summary>
+        /// Reads the CustomValueType from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
+        /// <returns>The CustomValueType read from the BitStream.</returns>
+        public static MapIndex ReadMapIndex(this BitStream bitStream)
+        {
+            return MapIndex.Read(bitStream);
+        }
+
+        /// <summary>
+        /// Reads the CustomValueType from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
+        /// <param name="i">The field index to read.</param>
+        /// <returns>The CustomValueType read from the IDataReader.</returns>
+        public static MapIndex GetMapIndex(this IDataReader dataReader, int i)
+        {
+            return MapIndex.Read(dataReader, i);
+        }
+
+        /// <summary>
+        /// Reads the CustomValueType from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
+        /// <param name="name">The name of the field to read the value from.</param>
+        /// <returns>The CustomValueType read from the IDataReader.</returns>
+        public static MapIndex GetMapIndex(this IDataReader dataReader, string name)
+        {
+            return MapIndex.Read(dataReader, name);
+        }
+
+
+        /// <summary>
+        /// Reads the CustomValueType from an IValueReader.
+        /// </summary>
+        /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
+        /// <param name="name">The unique name of the value to read.</param>
+        /// <returns>The CustomValueType read from the IValueReader.</returns>
+        public static MapIndex ReadMapIndex(this IValueReader valueReader, string name)
+        {
+            return MapIndex.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Writes a MapIndex to a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="value">MapIndex to write.</param>
+        public static void Write(this BitStream bitStream, MapIndex value)
+        {
+            value.Write(bitStream);
+        }
+
+        /// <summary>
+        /// Writes a MapIndex to a IValueWriter.
+        /// </summary>
+        /// <param name="valueWriter">IValueWriter to write to.</param>
+        /// <param name="name">Unique name of the MapIndex that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">MapIndex to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, MapIndex value)
+        {
+            value.Write(valueWriter, name);
         }
     }
 }

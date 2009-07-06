@@ -96,6 +96,7 @@
     <Compile Include="Characters\Alliance.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Characters\AllianceID.cs" />
     <Compile Include="Characters\AllianceManager.cs" />
     <Compile Include="Characters\Character.cs">
       <SubType>Code</SubType>

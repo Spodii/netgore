@@ -1,42 +1,42 @@
-using System;
+﻿using System;
 using System.Data;
 using System.Runtime.InteropServices;
 using NetGore.IO;
 
-namespace NetGore
+namespace DemoGame.Server
 {
     /// <summary>
-    /// Represents the integral value of the index of an Entity in respect to the Map it is on.
+    /// Represents the integral value of an Alliance's index.
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct MapEntityIndex : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    public struct AllianceID : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
         /// The maximum value.
         /// </summary>
-        const int _maxValue = ushort.MaxValue;
+        const int _maxValue = byte.MaxValue;
 
         /// <summary>
         /// The minimum value.
         /// </summary>
-        const int _minValue = ushort.MinValue;
+        const int _minValue = byte.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
         /// </summary>
-        readonly ushort _value;
+        readonly byte _value;
 
         /// <summary>
-        /// MapEntityIndex constructor.
+        /// AllianceID constructor.
         /// </summary>
-        /// <param name="value">Value to assign to the new MapEntityIndex.</param>
-        public MapEntityIndex(int value)
+        /// <param name="value">Value to assign to the new AllianceID.</param>
+        public AllianceID(int value)
         {
             if (value < _minValue || value > _maxValue)
                 throw new ArgumentOutOfRangeException("value");
 
-            _value = (ushort)value;
+            _value = (byte)value;
         }
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace NetGore
         /// </returns>
         /// <param name="other">Another object to compare to. 
         /// </param><filterpriority>2</filterpriority>
-        public bool Equals(MapEntityIndex other)
+        public bool Equals(AllianceID other)
         {
             return other._value == _value;
         }
@@ -64,9 +64,9 @@ namespace NetGore
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            if (obj.GetType() != typeof(MapEntityIndex))
+            if (obj.GetType() != typeof(AllianceID))
                 return false;
-            return Equals((MapEntityIndex)obj);
+            return Equals((AllianceID)obj);
         }
 
         /// <summary>
@@ -82,62 +82,62 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the raw internal value of this MapEntityIndex.
+        /// Gets the raw internal value of this AllianceID.
         /// </summary>
         /// <returns>The raw internal value.</returns>
-        public ushort GetRawValue()
+        public byte GetRawValue()
         {
             return _value;
         }
 
         /// <summary>
-        /// Reads an MapEntityIndex from an IValueReader.
+        /// Reads an AllianceID from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The MapEntityIndex read from the IValueReader.</returns>
-        public static MapEntityIndex Read(IValueReader reader, string name)
+        /// <returns>The AllianceID read from the IValueReader.</returns>
+        public static AllianceID Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
-            return new MapEntityIndex(value);
+            byte value = reader.ReadByte(name);
+            return new AllianceID(value);
         }
 
         /// <summary>
-        /// Reads an MapEntityIndex from an IDataReader.
+        /// Reads an AllianceID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The MapEntityIndex read from the IDataReader.</returns>
-        public static MapEntityIndex Read(IDataReader reader, int i)
+        /// <returns>The AllianceID read from the IDataReader.</returns>
+        public static AllianceID Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
-            if (value is ushort)
-                return new MapEntityIndex((ushort)value);
+            if (value is byte)
+                return new AllianceID((byte)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
-            return new MapEntityIndex(convertedValue);
+            byte convertedValue = Convert.ToByte(value);
+            return new AllianceID(convertedValue);
         }
 
         /// <summary>
-        /// Reads an MapEntityIndex from an IDataReader.
+        /// Reads an AllianceID from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The MapEntityIndex read from the IDataReader.</returns>
-        public static MapEntityIndex Read(IDataReader reader, string name)
+        /// <returns>The AllianceID read from the IDataReader.</returns>
+        public static AllianceID Read(IDataReader reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an MapEntityIndex from an IValueReader.
+        /// Reads an AllianceID from an IValueReader.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>The MapEntityIndex read from the BitStream.</returns>
-        public static MapEntityIndex Read(BitStream bitStream)
+        /// <returns>The AllianceID read from the BitStream.</returns>
+        public static AllianceID Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
-            return new MapEntityIndex(value);
+            byte value = bitStream.ReadByte();
+            return new AllianceID(value);
         }
 
         /// <summary>
@@ -153,10 +153,10 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Writes the MapEntityIndex to an IValueWriter.
+        /// Writes the AllianceID to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the MapEntityIndex that will be used to distinguish it
+        /// <param name="name">Unique name of the AllianceID that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
         {
@@ -164,7 +164,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Writes the MapEntityIndex to an IValueWriter.
+        /// Writes the AllianceID to an IValueWriter.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         public void Write(BitStream bitStream)
@@ -493,9 +493,9 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side plus the right side.</returns>
-        public static MapEntityIndex operator +(MapEntityIndex left, MapEntityIndex right)
+        public static AllianceID operator +(AllianceID left, AllianceID right)
         {
-            return new MapEntityIndex(left._value + right._value);
+            return new AllianceID(left._value + right._value);
         }
 
         /// <summary>
@@ -504,9 +504,9 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side minus the right side.</returns>
-        public static MapEntityIndex operator -(MapEntityIndex left, MapEntityIndex right)
+        public static AllianceID operator -(AllianceID left, AllianceID right)
         {
-            return new MapEntityIndex(left._value - right._value);
+            return new AllianceID(left._value - right._value);
         }
 
         /// <summary>
@@ -515,7 +515,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(MapEntityIndex left, int right)
+        public static bool operator ==(AllianceID left, int right)
         {
             return left._value == right;
         }
@@ -526,7 +526,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(MapEntityIndex left, int right)
+        public static bool operator !=(AllianceID left, int right)
         {
             return left._value != right;
         }
@@ -537,7 +537,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(int left, MapEntityIndex right)
+        public static bool operator ==(int left, AllianceID right)
         {
             return left == right._value;
         }
@@ -548,29 +548,29 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(int left, MapEntityIndex right)
+        public static bool operator !=(int left, AllianceID right)
         {
             return left != right._value;
         }
 
         /// <summary>
-        /// Casts a MapEntityIndex to an Int32.
+        /// Casts a AllianceID to an Int32.
         /// </summary>
-        /// <param name="MapEntityIndex">MapEntityIndex to cast.</param>
+        /// <param name="AllianceID">AllianceID to cast.</param>
         /// <returns>The Int32.</returns>
-        public static explicit operator int(MapEntityIndex MapEntityIndex)
+        public static explicit operator int(AllianceID AllianceID)
         {
-            return MapEntityIndex._value;
+            return AllianceID._value;
         }
 
         /// <summary>
-        /// Casts an Int32 to a MapEntityIndex.
+        /// Casts an Int32 to a AllianceID.
         /// </summary>
         /// <param name="value">Int32 to cast.</param>
-        /// <returns>The MapEntityIndex.</returns>
-        public static explicit operator MapEntityIndex(int value)
+        /// <returns>The AllianceID.</returns>
+        public static explicit operator AllianceID(int value)
         {
-            return new MapEntityIndex(value);
+            return new AllianceID(value);
         }
 
         /// <summary>
@@ -579,7 +579,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(int left, MapEntityIndex right)
+        public static bool operator >(int left, AllianceID right)
         {
             return left > right._value;
         }
@@ -590,7 +590,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, MapEntityIndex right)
+        public static bool operator <(int left, AllianceID right)
         {
             return left < right._value;
         }
@@ -601,7 +601,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(MapEntityIndex left, int right)
+        public static bool operator >(AllianceID left, int right)
         {
             return left._value > right;
         }
@@ -612,7 +612,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(MapEntityIndex left, int right)
+        public static bool operator <(AllianceID left, int right)
         {
             return left._value < right;
         }
@@ -623,7 +623,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(int left, MapEntityIndex right)
+        public static bool operator >=(int left, AllianceID right)
         {
             return left >= right._value;
         }
@@ -634,7 +634,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(int left, MapEntityIndex right)
+        public static bool operator <=(int left, AllianceID right)
         {
             return left <= right._value;
         }
@@ -645,7 +645,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(MapEntityIndex left, int right)
+        public static bool operator >=(AllianceID left, int right)
         {
             return left._value >= right;
         }
@@ -656,7 +656,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(MapEntityIndex left, int right)
+        public static bool operator <=(AllianceID left, int right)
         {
             return left._value <= right;
         }
@@ -667,7 +667,7 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(MapEntityIndex left, MapEntityIndex right)
+        public static bool operator !=(AllianceID left, AllianceID right)
         {
             return left._value != right._value;
         }
@@ -678,27 +678,27 @@ namespace NetGore
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(MapEntityIndex left, MapEntityIndex right)
+        public static bool operator ==(AllianceID left, AllianceID right)
         {
             return left._value == right._value;
         }
     }
 
     /// <summary>
-    /// Adds extensions to some data I/O objects for performing Read and Write operations for the MapEntityIndex.
-    /// All of the operations are implemented in the MapEntityIndex struct. These extensions are provided
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the AllianceID.
+    /// All of the operations are implemented in the AllianceID struct. These extensions are provided
     /// purely for the convenience of accessing all the I/O operations from the same place.
     /// </summary>
-    public static class MapEntityIndexReadWriteExtensions
+    public static class AllianceIDReadWriteExtensions
     {
         /// <summary>
         /// Reads the CustomValueType from a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
         /// <returns>The CustomValueType read from the BitStream.</returns>
-        public static MapEntityIndex ReadMapEntityIndex(this BitStream bitStream)
+        public static AllianceID ReadAllianceID(this BitStream bitStream)
         {
-            return MapEntityIndex.Read(bitStream);
+            return AllianceID.Read(bitStream);
         }
 
         /// <summary>
@@ -707,9 +707,9 @@ namespace NetGore
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
         /// <param name="i">The field index to read.</param>
         /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static MapEntityIndex GetMapEntityIndex(this IDataReader dataReader, int i)
+        public static AllianceID GetAllianceID(this IDataReader dataReader, int i)
         {
-            return MapEntityIndex.Read(dataReader, i);
+            return AllianceID.Read(dataReader, i);
         }
 
         /// <summary>
@@ -718,9 +718,9 @@ namespace NetGore
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
         /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static MapEntityIndex GetMapEntityIndex(this IDataReader dataReader, string name)
+        public static AllianceID GetAllianceID(this IDataReader dataReader, string name)
         {
-            return MapEntityIndex.Read(dataReader, name);
+            return AllianceID.Read(dataReader, name);
         }
 
 
@@ -730,29 +730,29 @@ namespace NetGore
         /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
         /// <param name="name">The unique name of the value to read.</param>
         /// <returns>The CustomValueType read from the IValueReader.</returns>
-        public static MapEntityIndex ReadMapEntityIndex(this IValueReader valueReader, string name)
+        public static AllianceID ReadAllianceID(this IValueReader valueReader, string name)
         {
-            return MapEntityIndex.Read(valueReader, name);
+            return AllianceID.Read(valueReader, name);
         }
 
         /// <summary>
-        /// Writes a MapEntityIndex to a BitStream.
+        /// Writes a AllianceID to a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="value">MapEntityIndex to write.</param>
-        public static void Write(this BitStream bitStream, MapEntityIndex value)
+        /// <param name="value">AllianceID to write.</param>
+        public static void Write(this BitStream bitStream, AllianceID value)
         {
             value.Write(bitStream);
         }
 
         /// <summary>
-        /// Writes a MapEntityIndex to a IValueWriter.
+        /// Writes a AllianceID to a IValueWriter.
         /// </summary>
         /// <param name="valueWriter">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the MapEntityIndex that will be used to distinguish it
+        /// <param name="name">Unique name of the AllianceID that will be used to distinguish it
         /// from other values when reading.</param>
-        /// <param name="value">MapEntityIndex to write.</param>
-        public static void Write(this IValueWriter valueWriter, string name, MapEntityIndex value)
+        /// <param name="value">AllianceID to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, AllianceID value)
         {
             value.Write(valueWriter, name);
         }

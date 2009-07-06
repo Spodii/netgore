@@ -81,28 +81,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads a MapEntityIndex.
-        /// </summary>
-        /// <param name="reader">IValueReader to read from.</param>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public static MapEntityIndex ReadMapEntityIndex(this IValueReader reader, string name)
-        {
-            return MapEntityIndex.Read(reader, name);
-        }
-
-        /// <summary>
-        /// Reads a MapIndex.
-        /// </summary>
-        /// <param name="reader">IValueReader to read from.</param>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public static MapIndex ReadMapIndex(this IValueReader reader, string name)
-        {
-            return MapIndex.Read(reader, name);
-        }
-
-        /// <summary>
         /// Reads an unsigned integer with the specified range from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the value from.</param>
