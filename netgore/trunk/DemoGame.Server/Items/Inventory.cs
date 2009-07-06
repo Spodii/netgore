@@ -115,6 +115,10 @@ namespace DemoGame.Server
                 SendSlotUpdate(slot);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, notifies the Client that a slot in the Inventory has changed.
+        /// </summary>
+        /// <param name="slot">The slot that changed.</param>
         protected virtual void SendSlotUpdate(InventorySlot slot)
         {
         }
