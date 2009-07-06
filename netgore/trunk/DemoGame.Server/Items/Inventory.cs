@@ -201,19 +201,19 @@ namespace DemoGame.Server
             _isLoading = true;
 
             // TODO: Need to track the slots, too, I guess
-            int slot = 0;
+            InventorySlot slot = new InventorySlot(0);
             var queryResults = DbController.SelectCharacterInventoryItems.Execute(Character.ID); //!! SelectCharacterInventoryItems
             foreach (ItemValues values in queryResults) 
             {
                 // Make sure no item is already in the slot... just in case
-                if (this[new InventorySlot(slot)] != null)
+                if (this[slot] != null)
                 {
                     Debug.Fail("An item is already in this slot.");
-                    this[new InventorySlot(slot)].Dispose();
+                    this[slot].Dispose();
                 }
 
                 // Set the item into the slot
-                this[new InventorySlot(slot)] = new ItemEntity(values);
+                this[slot] = new ItemEntity(values);
                 slot++;
             }
 
