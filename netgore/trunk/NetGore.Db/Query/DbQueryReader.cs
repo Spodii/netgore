@@ -19,16 +19,6 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
-        /// </summary>
-        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
-        /// no parameters will be used.</returns>
-        protected override IEnumerable<DbParameter> InitializeParameters()
-        {
-            return null;
-        }
-
-        /// <summary>
         /// Executes the query on the database.
         /// </summary>
         /// <returns>IDataReader used to read the results of the query.</returns>
@@ -36,6 +26,16 @@ namespace NetGore.Db
         {
             // Little hack that allows us to have IDbQueryReader<T>.ExecuteReader exposed protected instead of public 
             return ((IDbQueryReader)this).ExecuteReader();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+        /// </summary>
+        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
+        /// no parameters will be used.</returns>
+        protected override IEnumerable<DbParameter> InitializeParameters()
+        {
+            return null;
         }
 
         #region IDbQueryReader Members
@@ -80,14 +80,6 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified item.
-        /// </summary>
-        /// <typeparam name="T">Type of the object containing the values to set.</typeparam>
-        /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="item">Item used to execute the query.</param>
-        protected abstract void SetParameters(DbParameterValues p, T item);
-
-        /// <summary>
         /// Executes the query on the database using the specified <paramref name="item"/>.
         /// </summary>
         /// <param name="item">Item containing the value or values used for executing the query.</param>
@@ -97,6 +89,14 @@ namespace NetGore.Db
             // Little hack that allows us to have IDbQueryReader<T>.ExecuteReader exposed protected instead of public 
             return ((IDbQueryReader<T>)this).ExecuteReader(item);
         }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the database parameters based on the specified item.
+        /// </summary>
+        /// <typeparam name="T">Type of the object containing the values to set.</typeparam>
+        /// <param name="p">Collection of database parameters to set the values for.</param>
+        /// <param name="item">Item used to execute the query.</param>
+        protected abstract void SetParameters(DbParameterValues p, T item);
 
         #region IDbQueryReader<T> Members
 

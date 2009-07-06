@@ -72,7 +72,7 @@ namespace DemoGame.Client
         ToolbarItem[] CreateToolbarItems()
         {
             // Get the values
-            IEnumerable<int> values = Enum.GetValues(typeof(ToolbarItemType)).Cast<int>();
+            var values = Enum.GetValues(typeof(ToolbarItemType)).Cast<int>();
 
             // Find the largest value, and create the array
             int max = values.Max();
@@ -84,7 +84,7 @@ namespace DemoGame.Client
                 Vector2 pos = GetItemPosition(index);
                 ISprite sprite = GetItemSprite(index);
 
-                var item = new ToolbarItem(this, (ToolbarItemType)index, pos, sprite);
+                ToolbarItem item = new ToolbarItem(this, (ToolbarItemType)index, pos, sprite);
                 items[index] = item;
                 item.OnClick += ToolbarItem_OnClick;
             }
@@ -98,7 +98,7 @@ namespace DemoGame.Client
         /// <returns>ClientSize needed for the Toolbar</returns>
         Vector2 FindNeededClientSize()
         {
-            IEnumerable<ToolbarItem> allItems = _items.Where(x => x != null);
+            var allItems = _items.Where(x => x != null);
             float maxWidth = allItems.Max(x => x.Position.X + x.Size.X);
             float maxHeight = allItems.Max(x => x.Position.Y + x.Size.Y);
             return new Vector2(maxWidth, maxHeight) + new Vector2(_padding);
@@ -132,7 +132,7 @@ namespace DemoGame.Client
             if (OnClickItem == null)
                 return;
 
-            var item = (ToolbarItem)sender;
+            ToolbarItem item = (ToolbarItem)sender;
             OnClickItem(this, item.ToolbarItemType, item);
         }
 
@@ -141,7 +141,7 @@ namespace DemoGame.Client
         /// </summary>
         static void UpdateSize(Control sender)
         {
-            var toolbar = (Toolbar)sender;
+            Toolbar toolbar = (Toolbar)sender;
             toolbar.ClientSize = toolbar._neededClientSize;
         }
 

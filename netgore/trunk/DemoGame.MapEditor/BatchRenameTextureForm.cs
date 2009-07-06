@@ -43,7 +43,7 @@ namespace DemoGame.MapEditor
             if (lstTextures.SelectedItem == null)
                 return;
 
-            var oldTexture = (string)lstTextures.SelectedItem;
+            string oldTexture = (string)lstTextures.SelectedItem;
             if (string.IsNullOrEmpty(oldTexture))
                 return;
 

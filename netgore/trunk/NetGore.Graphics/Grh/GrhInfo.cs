@@ -122,8 +122,8 @@ namespace NetGore.Graphics
             return CreateGrhData(index, contentManager, category, title, string.Empty, Vector2.Zero, Vector2.Zero);
         }
 
-        static GrhData CreateGrhData(GrhIndex grhIndex, ContentManager contentManager, string category, string title, string texture,
-                                     Vector2 pos, Vector2 size)
+        static GrhData CreateGrhData(GrhIndex grhIndex, ContentManager contentManager, string category, string title,
+                                     string texture, Vector2 pos, Vector2 size)
         {
             if (category == null)
                 category = string.Empty;
