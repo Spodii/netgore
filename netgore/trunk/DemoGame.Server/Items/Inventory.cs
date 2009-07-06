@@ -173,8 +173,7 @@ namespace DemoGame.Server
         /// <param name="item">Item that has changed.</param>
         void ItemGraphicOrAmountChangeHandler(ItemEntity item)
         {
-            // NOTE: Somehow, this assert actually can fail. Find out why!
-            Debug.Assert(!_isPersistent, "This should NEVER be called when IsPersistent == false!");
+            Debug.Assert(_isPersistent, "This should NEVER be called when IsPersistent == false!");
 
             InventorySlot slot;
 
