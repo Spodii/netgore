@@ -23,7 +23,7 @@ namespace DemoGame
         /// <summary>
         /// Index of the body info
         /// </summary>
-        public readonly ushort Index;
+        public readonly BodyIndex Index;
 
         public readonly string Jump;
         public readonly string Punch;
@@ -42,7 +42,7 @@ namespace DemoGame
         /// <param name="index">Index of the BodyInfo</param>
         /// <param name="width">Width of the body collision area in pixels</param>
         /// <param name="height">Height of the body collision area in pixels</param>
-        public BodyInfo(ushort index, float width, float height, string body, string stand, string walk, string jump, string fall,
+        public BodyInfo(BodyIndex index, float width, float height, string body, string stand, string walk, string jump, string fall,
                         string punch, Rectangle punchRect)
         {
             Index = index;
@@ -59,7 +59,7 @@ namespace DemoGame
             PunchRect = punchRect;
         }
 
-        public Rectangle GetHitRect(CharacterEntity c, Rectangle rect)
+        public static Rectangle GetHitRect(CharacterEntity c, Rectangle rect)
         {
             if (c.Heading == Direction.East)
             {
@@ -86,20 +86,20 @@ namespace DemoGame
             var results = XmlInfoReader.ReadFile(filePath, true);
 
             // Find the highest index
-            ushort highestIndex = 0;
+            BodyIndex highestIndex = new BodyIndex(0);
             foreach (var d in results)
             {
-                if (highestIndex < ushort.Parse(d["Body.Index"]))
-                    highestIndex = ushort.Parse(d["Body.Index"]);
+                if (highestIndex < BodyIndex.Parse(d["Body.Index"]))
+                    highestIndex = BodyIndex.Parse(d["Body.Index"]);
             }
 
             // Create the return array
-            var ret = new BodyInfo[highestIndex + 1];
+            var ret = new BodyInfo[(int)highestIndex + 1];
 
             // Create the return values
             foreach (var d in results)
             {
-                ushort index = ushort.Parse(d["Body.Index"]);
+                BodyIndex index = BodyIndex.Parse(d["Body.Index"]);
                 float width = float.Parse(d["Body.Size.Width"]);
                 float height = float.Parse(d["Body.Size.Height"]);
 
@@ -121,7 +121,7 @@ namespace DemoGame
                 int punchHeight = (int)ms.Parse((d["Body.Punch.Height"]));
                 Rectangle punchRect = new Rectangle(punchX, punchY, punchWidth, punchHeight);
 
-                ret[index] = new BodyInfo(index, width, height, body, stand, walk, jump, fall, punch, punchRect);
+                ret[(int)index] = new BodyInfo(index, width, height, body, stand, walk, jump, fall, punch, punchRect);
             }
 
             return ret;

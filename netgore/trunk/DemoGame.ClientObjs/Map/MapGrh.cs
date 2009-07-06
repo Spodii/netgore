@@ -82,7 +82,7 @@ namespace DemoGame.Client
                 throw new ArgumentNullException("reader");
 
             _destination = reader.ReadVector2("Position");
-            ushort grhIndex = reader.ReadUShort("GrhIndex");
+            GrhIndex grhIndex = reader.ReadGrhIndex("GrhIndex");
             _isForeground = reader.ReadBool("IsForeground");
 
             _grh = new Grh(grhIndex, AnimType.Loop, currentTime);

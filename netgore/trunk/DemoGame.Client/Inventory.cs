@@ -5,6 +5,8 @@ using System.Linq;
 using System.Reflection;
 
 using log4net;
+using NetGore;
+using NetGore.Graphics;
 using NetGore.Network;
 
 namespace DemoGame.Client
@@ -90,7 +92,7 @@ namespace DemoGame.Client
         /// <param name="graphic">New graphic index</param>
         /// <param name="amount">New item amount</param>
         /// <param name="time">Current time</param>
-        public void Update(InventorySlot slot, ushort graphic, byte amount, int time)
+        public void Update(InventorySlot slot, GrhIndex graphic, byte amount, int time)
         {
             // If we get an amount of 0, just use UpdateEmpty()
             if (amount == 0)
@@ -123,7 +125,7 @@ namespace DemoGame.Client
                 return;
 
             // Only need to clear the item if one already exists in the slot
-            item.GraphicIndex = 0;
+            item.GraphicIndex = new GrhIndex(0);
             item.Amount = 0;
         }
 

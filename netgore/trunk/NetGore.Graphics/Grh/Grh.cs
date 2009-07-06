@@ -136,7 +136,7 @@ namespace NetGore.Graphics
         /// Creates a stationary Grh.
         /// </summary>
         /// <param name="grhIndex">Index of the stationary Grh.</param>
-        public Grh(ushort grhIndex)
+        public Grh(GrhIndex grhIndex)
         {
             SetGrh(grhIndex);
         }
@@ -156,7 +156,7 @@ namespace NetGore.Graphics
         /// <param name="grhIndex">Index of the Grh.</param>
         /// <param name="anim">Animation type.</param>
         /// <param name="currentTime">Current time.</param>
-        public Grh(ushort grhIndex, AnimType anim, int currentTime)
+        public Grh(GrhIndex grhIndex, AnimType anim, int currentTime)
         {
             SetGrh(grhIndex, anim, currentTime);
         }
@@ -315,7 +315,7 @@ namespace NetGore.Graphics
         /// Sets the Grh to a new index.
         /// </summary>
         /// <param name="grhIndex">New Grh index to use for the stationary Grh.</param>
-        public void SetGrh(ushort grhIndex)
+        public void SetGrh(GrhIndex grhIndex)
         {
             SetGrh(grhIndex, AnimType.None, 0);
         }
@@ -353,7 +353,7 @@ namespace NetGore.Graphics
         /// <param name="grhIndex">New Grh index to use.</param>
         /// <param name="anim">Type of animation.</param>
         /// <param name="currentTime">Current time.</param>
-        public void SetGrh(ushort grhIndex, AnimType anim, int currentTime)
+        public void SetGrh(GrhIndex grhIndex, AnimType anim, int currentTime)
         {
             GrhData grhData = GrhInfo.GetData(grhIndex);
             if (grhData == null && grhIndex != 0)

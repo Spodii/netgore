@@ -26,7 +26,7 @@ namespace DemoGame
         [SyncValue("BodyIndex")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         // ReSharper disable UnusedMember.Local
-            protected internal ushort BodyInfoIndex // ReSharper restore UnusedMember.Local
+        protected internal BodyIndex BodyInfoIndex // ReSharper restore UnusedMember.Local
         {
             get { return BodyInfo.Index; }
             set { BodyInfo = GameData.Body(value); }

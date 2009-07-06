@@ -220,7 +220,7 @@ namespace DemoGame.Client
                     continue;
 
                 // Convert the index to a ushort and get the GrhData for it
-                ushort index = ushort.Parse(s);
+                GrhIndex index = new GrhIndex(int.Parse(s));
                 GrhData gd = GrhInfo.GetData(index);
 
                 // Every frame of the GrhData gets added
@@ -482,12 +482,12 @@ namespace DemoGame.Client
             StringBuilder sb = new StringBuilder(32);
 
             // List containing each index added to the StringBuilder to prevent duplicates
-            var grhIndices = new List<ushort>(32);
+            var grhIndices = new List<GrhIndex>(32);
 
             // Check through every MapGrh, adding all unique values to the grhIndices list
             foreach (MapGrh mg in _mapGrhs)
             {
-                ushort grhIndex = mg.Grh.GrhData.GrhIndex;
+                GrhIndex grhIndex = mg.Grh.GrhData.GrhIndex;
 
                 // If the list does not contain the value, add it to both the list and string
                 if (!grhIndices.Contains(grhIndex))

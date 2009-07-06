@@ -61,7 +61,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets or sets the index of the graphic that is used for this item
         /// </summary>
-        public override ushort GraphicIndex
+        public override GrhIndex GraphicIndex
         {
             get { return _grh.GrhData.GrhIndex; }
             set { _grh.SetGrh(value); }
@@ -107,7 +107,8 @@ namespace DemoGame.Client
             _grh = new Grh(null);
         }
 
-        public ItemEntity(ushort graphicIndex, byte amount, int currentTime) : base(Vector2.Zero, Vector2.Zero)
+        public ItemEntity(GrhIndex graphicIndex, byte amount, int currentTime)
+            : base(Vector2.Zero, Vector2.Zero)
         {
             // NOTE: Can I get rid of this constructor?
             _amount = amount;
@@ -119,7 +120,7 @@ namespace DemoGame.Client
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
 
-        public ItemEntity(MapEntityIndex mapEntityIndex, Vector2 pos, Vector2 size, ushort graphicIndex, int currentTime)
+        public ItemEntity(MapEntityIndex mapEntityIndex, Vector2 pos, Vector2 size, GrhIndex graphicIndex, int currentTime)
             : base(pos, size)
         {
             // NOTE: Can I get rid of this constructor?

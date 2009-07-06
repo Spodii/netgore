@@ -15,7 +15,7 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly string _aiName;
         readonly Alliance _alliance;
-        readonly ushort _bodyIndex;
+        readonly BodyIndex _bodyIndex;
         readonly IEnumerable<NPCDrop> _drops;
         readonly ushort _giveCash;
         readonly ushort _giveExp;
@@ -24,26 +24,17 @@ namespace DemoGame.Server
         readonly ushort _respawnSecs;
         readonly IEnumerable<IStat> _stats;
 
-        /// <summary>
-        /// Gets the default AI module's name
-        /// </summary>
         public string AIName
         {
             get { return _aiName; }
         }
 
-        /// <summary>
-        /// Gets the default alliance name
-        /// </summary>
         public Alliance Alliance
         {
             get { return _alliance; }
         }
 
-        /// <summary>
-        /// Gets the default BodyIndex
-        /// </summary>
-        public ushort BodyIndex
+        public BodyIndex BodyIndex
         {
             get { return _bodyIndex; }
         }

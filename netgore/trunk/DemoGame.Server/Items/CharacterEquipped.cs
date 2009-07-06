@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Text;
 using DemoGame.Server.Queries;
 using log4net;
+using NetGore;
 
 namespace DemoGame.Server
 {
@@ -74,7 +75,7 @@ namespace DemoGame.Server
             OnRemove -= CharacterEquipped_OnRemove;
         }
 
-        protected virtual void SendSlotUpdate(EquipmentSlot slot, ushort? graphicIndex)
+        protected virtual void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)
         {
         }
 

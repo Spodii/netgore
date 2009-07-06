@@ -22,7 +22,7 @@ namespace NetGore.Graphics
         string _category;
         ContentManager _cm;
         GrhData[] _frames;
-        ushort _grhIndex;
+        GrhIndex _grhIndex;
         bool _isUsingAtlas;
         Rectangle _sourceRect;
         float _speed;
@@ -87,11 +87,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// GrhIndex of the Grh. If stationary, this is the same Grh as the first frame. If animated,
+        /// Gets the index of the GrhData. If stationary, this is the same GrhIndex as the first frame. If animated,
         /// this is the index that represents the series of Grhs under it. This is the same index as
         /// used in the GrhInfo.Data[] array.
         /// </summary>
-        public ushort GrhIndex
+        public GrhIndex GrhIndex
         {
             get { return _grhIndex; }
         }
@@ -230,7 +230,7 @@ namespace NetGore.Graphics
         /// <returns>Deep copy of the GrhData</returns>
         public GrhData Duplicate(string newCategory, string newTitle)
         {
-            ushort index = GrhInfo.NextFreeIndex();
+            GrhIndex index = GrhInfo.NextFreeIndex();
 
             Debug.Assert(GrhInfo.GetData(index) == null, "Slot to use is already in use!");
 
@@ -266,7 +266,7 @@ namespace NetGore.Graphics
         /// <param name="height">Pixel height of the source texture</param>
         /// <param name="category">Period-delimited category</param>
         /// <param name="title">Title of the GrhData. Must be unique for the supplied category.</param>
-        public void Load(ContentManager cm, ushort grhIndex, string textureName, int x, int y, int width, int height,
+        public void Load(ContentManager cm, GrhIndex grhIndex, string textureName, int x, int y, int width, int height,
                          string category, string title)
         {
             if (cm == null)
@@ -299,7 +299,7 @@ namespace NetGore.Graphics
         /// <param name="speed">Array where the indices are the frames and elements are the GrhIndexes</param>
         /// <param name="category">Period-delimited category</param>
         /// <param name="title">Title of the GrhData. Must be unique for the supplied category.</param>
-        public void Load(ushort grhIndex, ushort[] frames, float speed, string category, string title)
+        public void Load(GrhIndex grhIndex, GrhIndex[] frames, float speed, string category, string title)
         {
             // Create the frames
             _frames = new GrhData[frames.Length];

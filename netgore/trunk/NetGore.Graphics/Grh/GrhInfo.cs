@@ -54,11 +54,11 @@ namespace NetGore.Graphics
             if (gd == null)
                 throw new ArgumentNullException("gd");
 
-            int index = gd.GrhIndex;
+            GrhIndex index = gd.GrhIndex;
 
 #if DEBUG
             // Check if a GrhData will be overwritten
-            if (_grhDatas.CanGet(index))
+            if (_grhDatas.CanGet((int)index))
             {
                 GrhData currentGD = GetData(index);
                 if (currentGD != null && currentGD != gd)
@@ -66,7 +66,7 @@ namespace NetGore.Graphics
             }
 #endif
 
-            _grhDatas[index] = gd;
+            _grhDatas[(int)index] = gd;
 
             // Make sure the GrhData is only in the list once
             Debug.Assert(GrhDatas.Where(x => x == gd).Count() == 1,
@@ -93,7 +93,7 @@ namespace NetGore.Graphics
             titleDic.Add(gd.Title, gd);
         }
 
-        public static GrhData CreateGrhData(ushort[] frames, float speed, string category, string title)
+        public static GrhData CreateGrhData(GrhIndex[] frames, float speed, string category, string title)
         {
             if (category == null)
                 category = string.Empty;
@@ -102,7 +102,7 @@ namespace NetGore.Graphics
 
             category = SanitizeCategory(category);
 
-            ushort grhIndex = NextFreeIndex();
+            GrhIndex grhIndex = NextFreeIndex();
             GrhData gd = new GrhData();
             gd.Load(grhIndex, frames, speed, category, title);
             AddGrhData(gd);
@@ -117,12 +117,12 @@ namespace NetGore.Graphics
 
         public static GrhData CreateGrhData(ContentManager contentManager, string category)
         {
-            ushort index = NextFreeIndex();
+            GrhIndex index = NextFreeIndex();
             string title = "tmp" + index;
-            return CreateGrhData(NextFreeIndex(), contentManager, category, title, string.Empty, Vector2.Zero, Vector2.Zero);
+            return CreateGrhData(index, contentManager, category, title, string.Empty, Vector2.Zero, Vector2.Zero);
         }
 
-        static GrhData CreateGrhData(ushort grhIndex, ContentManager contentManager, string category, string title, string texture,
+        static GrhData CreateGrhData(GrhIndex grhIndex, ContentManager contentManager, string category, string title, string texture,
                                      Vector2 pos, Vector2 size)
         {
             if (category == null)
@@ -154,12 +154,12 @@ namespace NetGore.Graphics
         /// Deletes a GrhData.
         /// </summary>
         /// <param name="grhIndex">Index of the GrhData to delete.</param>
-        public static void Delete(int grhIndex)
+        public static void Delete(GrhIndex grhIndex)
         {
-            if (!_grhDatas.CanGet(grhIndex))
+            if (!_grhDatas.CanGet((int)grhIndex))
                 return;
 
-            _grhDatas.RemoveAt(grhIndex);
+            _grhDatas.RemoveAt((int)grhIndex);
         }
 
         /// <summary>
@@ -221,10 +221,10 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="grhIndex">GrhIndex of the GrhData</param>
         /// <returns>GrhData matching the given information if found, or null if no matches</returns>
-        public static GrhData GetData(int grhIndex)
+        public static GrhData GetData(GrhIndex grhIndex)
         {
-            if (_grhDatas.CanGet(grhIndex))
-                return _grhDatas[grhIndex];
+            if (_grhDatas.CanGet((int)grhIndex))
+                return _grhDatas[(int)grhIndex];
             else
                 return null;
         }
@@ -325,14 +325,14 @@ namespace NetGore.Graphics
             // Go through once to create all the objects to avoid reference conflicts
             foreach (var dic in grhDataFile)
             {
-                ushort currGrhIndex = ushort.Parse(dic["Grh.Index"]);
-                _grhDatas[currGrhIndex] = new GrhData();
+                GrhIndex currGrhIndex = GrhIndex.Parse(dic["Grh.Index"]);
+                _grhDatas[(int)currGrhIndex] = new GrhData();
             }
 
             // Load the information into the objects
             foreach (var dic in grhDataFile)
             {
-                ushort currGrhIndex = ushort.Parse(dic["Grh.Index"]);
+                GrhIndex currGrhIndex = GrhIndex.Parse(dic["Grh.Index"]);
                 GrhData currGrh = GetData(currGrhIndex);
                 int numFrames = int.Parse(dic["Grh.Frames.Count"]);
 
@@ -359,10 +359,10 @@ namespace NetGore.Graphics
                 {
                     // Multiple frames
                     float speed = float.Parse(dic["Grh.Anim.Speed"]);
-                    var frames = new ushort[numFrames];
-                    for (ushort i = 0; i < frames.Length; i++)
+                    var frames = new GrhIndex[numFrames];
+                    for (int i = 0; i < frames.Length; i++)
                     {
-                        frames[i] = ushort.Parse(dic["Grh.Frames.F" + (i + 1)]);
+                        frames[i] = GrhIndex.Parse(dic["Grh.Frames.F" + (i + 1)]);
                     }
                     currGrh.Load(currGrhIndex, frames, 1f / speed, category, title);
                 }
@@ -376,13 +376,13 @@ namespace NetGore.Graphics
         /// Finds the next free GrhData
         /// </summary>
         /// <returns>Next free GrhData index</returns>
-        public static ushort NextFreeIndex()
+        public static GrhIndex NextFreeIndex()
         {
             if (_grhDatas.TrackFree)
-                return (ushort)_grhDatas.NextFreeIndex();
+                return new GrhIndex(_grhDatas.NextFreeIndex());
 
             // Start at the first index
-            ushort i = 1;
+            int i = 1;
 
             // Just loop through the indicies until we find one thats not in use or
             // passes the length of the GrhDatas array (which means its obviously not in use)
@@ -391,7 +391,7 @@ namespace NetGore.Graphics
                 i++;
             }
 
-            return i;
+            return new GrhIndex(i);
         }
 
         /// <summary>

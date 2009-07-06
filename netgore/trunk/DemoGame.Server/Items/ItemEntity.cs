@@ -29,7 +29,7 @@ namespace DemoGame.Server
 
         byte _amount = 1;
         string _description;
-        ushort _graphicIndex;
+        GrhIndex _graphicIndex;
         string _name;
         ItemType _type;
         int _value;
@@ -104,7 +104,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets or sets the index of the graphic that is used for this item.
         /// </summary>
-        public override ushort GraphicIndex
+        public override GrhIndex GraphicIndex
         {
             get { return _graphicIndex; }
             set
@@ -216,7 +216,7 @@ namespace DemoGame.Server
             OnResize += ItemEntity_OnResize;
         }
 
-        ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, ushort graphic, int value, byte amount,
+        ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
                    IEnumerable<IStat> stats) : base(pos, size)
         {
             // NOTE: Can I get rid of this constructor?

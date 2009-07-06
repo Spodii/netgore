@@ -194,7 +194,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SetInventorySlot(InventorySlot slot, ushort graphic, byte amount)
+        public static PacketWriter SetInventorySlot(InventorySlot slot, GrhIndex graphic, byte amount)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetInventorySlot);
             pw.Write(slot);
@@ -241,7 +241,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter UpdateEquipmentSlot(EquipmentSlot slot, ushort? graphic)
+        public static PacketWriter UpdateEquipmentSlot(EquipmentSlot slot, GrhIndex? graphic)
         {
             PacketWriter pw = GetWriter(ServerPacketID.UpdateEquipmentSlot);
             pw.Write(slot);

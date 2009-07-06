@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using NetGore;
 using NetGore.Network;
 
 namespace DemoGame.Server
@@ -75,7 +75,7 @@ namespace DemoGame.Server
                 if (item == null)
                 {
                     // Remove the item
-                    using (PacketWriter pw = ServerPacket.SetInventorySlot(new InventorySlot(slot), 0, 0))
+                    using (PacketWriter pw = ServerPacket.SetInventorySlot(new InventorySlot(slot), new GrhIndex(0), 0))
                     {
                         OwnerUser.Send(pw);
                     }

@@ -1,55 +1,42 @@
-﻿/*
-Template for a custom value type that is handled externally as an Int32, but handled internally as whatever value type
-you want. This is provided as a template for creating custom Structs for game values. The reason they are exposed externally
-as an Int32 is to prevent having to ever change any external code when the internal value type changes.
-
-Copy all of this text into a new code file, follow the TODOs, and it should be fully functional and ready when done.
-
-Won't work with a non-integral value types, UInt, or 64+ bit value types as the internal value type.
-*/
-
-using System;
+﻿using System;
 using System.Data;
-using System.Globalization;
-using System.IO;
 using System.Runtime.InteropServices;
 using NetGore.IO;
 
-// TODO: Replace string "UnderlyingValueType" with the name of the underlying value type.
-// TODO: Replace string "CustomValueTypeName" with the name of this value type.
-
-namespace NetGore // TODO: Ensure this is the namespace you want
+namespace DemoGame
 {
-    // TODO: Add comments for the struct.
+    /// <summary>
+    /// Represents the index of a BodyInfo.
+    /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    public struct CustomValueTypeName : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
+    public struct BodyIndex : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
-        /// Represents the largest possible value of CustomValueTypeName. This field is constant.
+        /// The maximum value.
         /// </summary>
-        public const int MaxValue = UnderlyingValueType.MaxValue;
+        const int _maxValue = ushort.MaxValue;
 
         /// <summary>
-        /// Represents the smallest possible value of CustomValueTypeName. This field is constant.
+        /// The minimum value.
         /// </summary>
-        public const int MinValue = UnderlyingValueType.MinValue;
+        const int _minValue = ushort.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
         /// </summary>
-        readonly UnderlyingValueType _value;
+        readonly ushort _value;
 
         /// <summary>
-        /// CustomValueTypeName constructor.
+        /// BodyIndex constructor.
         /// </summary>
-        /// <param name="value">Value to assign to the new CustomValueTypeName.</param>
-        public CustomValueTypeName(int value)
+        /// <param name="value">Value to assign to the new BodyIndex.</param>
+        public BodyIndex(int value)
         {
-            if (value < MinValue || value > MaxValue)
+            if (value < _minValue || value > _maxValue)
                 throw new ArgumentOutOfRangeException("value");
 
-            _value = (UnderlyingValueType)value;
+            _value = (ushort)value;
         }
 
         /// <summary>
@@ -60,9 +47,22 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// </returns>
         /// <param name="other">Another object to compare to. 
         /// </param><filterpriority>2</filterpriority>
-        public bool Equals(CustomValueTypeName other)
+        public bool Equals(BodyIndex other)
         {
             return other._value == _value;
+        }
+
+        public static bool TryParse(string value, out BodyIndex grhIndex)
+        {
+            ushort outValue;
+            bool success = ushort.TryParse(value, out outValue);
+            grhIndex = new BodyIndex(outValue);
+            return success;
+        }
+
+        public static BodyIndex Parse(string value)
+        {
+            return new BodyIndex(ushort.Parse(value));
         }
 
         /// <summary>
@@ -77,9 +77,9 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         {
             if (ReferenceEquals(null, obj))
                 return false;
-            if (obj.GetType() != typeof(CustomValueTypeName))
+            if (obj.GetType() != typeof(BodyIndex))
                 return false;
-            return Equals((CustomValueTypeName)obj);
+            return Equals((BodyIndex)obj);
         }
 
         /// <summary>
@@ -95,164 +95,81 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         }
 
         /// <summary>
-        /// Gets the raw internal value of this CustomValueTypeName.
+        /// Gets the raw internal value of this BodyIndex.
         /// </summary>
         /// <returns>The raw internal value.</returns>
-        public UnderlyingValueType GetRawValue()
+        public ushort GetRawValue()
         {
             return _value;
         }
 
         /// <summary>
-        /// Converts the string representation of a number to its CustomValueTypeName equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed CustomValueTypeName.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out CustomValueTypeName parsedValue)
-        {
-            UnderlyingValueType outValue;
-            bool success = UnderlyingValueType.TryParse(s, style, provider, out outValue);
-            parsedValue = new CustomValueTypeName(outValue);
-            return success;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its CustomValueTypeName equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed CustomValueTypeName.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, out CustomValueTypeName parsedValue)
-        {
-            UnderlyingValueType outValue;
-            bool success = UnderlyingValueType.TryParse(s, out outValue);
-            parsedValue = new CustomValueTypeName(outValue);
-            return success;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its CustomValueTypeName equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <returns>The parsed CustomValueTypeName.</returns>
-        public static CustomValueTypeName Parse(string s)
-        {
-            return new CustomValueTypeName(UnderlyingValueType.Parse(s));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its CustomValueTypeName equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <returns>The parsed CustomValueTypeName.</returns>
-        public static CustomValueTypeName Parse(string s, NumberStyles style)
-        {
-            return new CustomValueTypeName(UnderlyingValueType.Parse(s, style));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its CustomValueTypeName equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <returns>The parsed CustomValueTypeName.</returns>
-        public static CustomValueTypeName Parse(string s, IFormatProvider provider)
-        {
-            return new CustomValueTypeName(UnderlyingValueType.Parse(s, provider));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its CustomValueTypeName equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <returns>The parsed CustomValueTypeName.</returns>
-        public static CustomValueTypeName Parse(string s, NumberStyles style, IFormatProvider provider)
-        {
-            return new CustomValueTypeName(UnderlyingValueType.Parse(s, style, provider));
-        }
-
-        /// <summary>
-        /// Reads an CustomValueTypeName from an IValueReader.
+        /// Reads an BodyIndex from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>The CustomValueTypeName read from the IValueReader.</returns>
-        public static CustomValueTypeName Read(IValueReader reader, string name)
+        /// <returns>The BodyIndex read from the IValueReader.</returns>
+        public static BodyIndex Read(IValueReader reader, string name)
         {
-            UnderlyingValueType value = reader.ReadXXXX(name); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
-            return new CustomValueTypeName(value);
+            ushort value = reader.ReadUShort(name);
+            return new BodyIndex(value);
         }
 
         /// <summary>
-        /// Reads an CustomValueTypeName from an IDataReader.
+        /// Reads an BodyIndex from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="i">The index of the field to find.</param>
-        /// <returns>The CustomValueTypeName read from the IDataReader.</returns>
-        public static CustomValueTypeName Read(IDataReader reader, int i)
+        /// <returns>The BodyIndex read from the IDataReader.</returns>
+        public static BodyIndex Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
-            if (value is UnderlyingValueType)
-                return new CustomValueTypeName((UnderlyingValueType)value);
+            if (value is ushort)
+                return new BodyIndex((ushort)value);
 
-            UnderlyingValueType convertedValue = Convert.ToXXXX(value); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
-            return new CustomValueTypeName(convertedValue);
+            ushort convertedValue = Convert.ToUInt16(value);
+            return new BodyIndex(convertedValue);
         }
 
         /// <summary>
-        /// Reads an CustomValueTypeName from an IDataReader.
+        /// Reads an BodyIndex from an IDataReader.
         /// </summary>
         /// <param name="reader">IDataReader to get the value from.</param>
         /// <param name="name">The name of the field to find.</param>
-        /// <returns>The CustomValueTypeName read from the IDataReader.</returns>
-        public static CustomValueTypeName Read(IDataReader reader, string name)
+        /// <returns>The BodyIndex read from the IDataReader.</returns>
+        public static BodyIndex Read(IDataReader reader, string name)
         {
             return Read(reader, reader.GetOrdinal(name));
         }
 
         /// <summary>
-        /// Reads an CustomValueTypeName from an IValueReader.
+        /// Reads an BodyIndex from an IValueReader.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>The CustomValueTypeName read from the BitStream.</returns>
-        public static CustomValueTypeName Read(BitStream bitStream)
+        /// <returns>The BodyIndex read from the BitStream.</returns>
+        public static BodyIndex Read(BitStream bitStream)
         {
-            UnderlyingValueType value = bitStream.ReadXXXX(); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
-            return new CustomValueTypeName(value);
+            ushort value = bitStream.ReadUShort();
+            return new BodyIndex(value);
         }
 
         /// <summary>
-        /// Converts the numeric value of this instance to its equivalent string representation.
+        /// Returns the fully qualified type name of this instance.
         /// </summary>
-        /// <returns>The string representation of the value of this instance, consisting of a sequence
-        /// of digits ranging from 0 to 9, without leading zeroes.</returns>
+        /// <returns>
+        /// A <see cref="T:System.String"/> containing a fully qualified type name.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
             return _value.ToString();
         }
 
         /// <summary>
-        /// Writes the CustomValueTypeName to an IValueWriter.
+        /// Writes the BodyIndex to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the CustomValueTypeName that will be used to distinguish it
+        /// <param name="name">Unique name of the BodyIndex that will be used to distinguish it
         /// from other values when reading.</param>
         public void Write(IValueWriter writer, string name)
         {
@@ -260,7 +177,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         }
 
         /// <summary>
-        /// Writes the CustomValueTypeName to an IValueWriter.
+        /// Writes the BodyIndex to an IValueWriter.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         public void Write(BitStream bitStream)
@@ -523,7 +440,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
         ///                 </param><filterpriority>2</filterpriority>
-        public string ToString(IFormatProvider provider)
+        string IConvertible.ToString(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToString(provider);
         }
@@ -582,26 +499,6 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         }
 
         #endregion
-        
-        /// <summary>
-        /// Implements operator ++.
-        /// </summary>
-        /// <param name="l">The CustomValueTypeName to increment.</param>
-        /// <returns>The incremented CustomValueTypeName.</returns>
-        public static CustomValueTypeName operator ++(CustomValueTypeName l)
-        {
-            return new CustomValueTypeName(l._value + 1);
-        }
-        
-        /// <summary>
-        /// Implements operator --.
-        /// </summary>
-        /// <param name="l">The CustomValueTypeName to decrement.</param>
-        /// <returns>The decremented CustomValueTypeName.</returns>
-        public static CustomValueTypeName operator --(CustomValueTypeName l)
-        {
-            return new CustomValueTypeName(l._value - 1);
-        }
 
         /// <summary>
         /// Implements operator +.
@@ -609,9 +506,9 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side plus the right side.</returns>
-        public static CustomValueTypeName operator +(CustomValueTypeName left, CustomValueTypeName right)
+        public static BodyIndex operator +(BodyIndex left, BodyIndex right)
         {
-            return new CustomValueTypeName(left._value + right._value);
+            return new BodyIndex(left._value + right._value);
         }
 
         /// <summary>
@@ -620,9 +517,9 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>Result of the left side minus the right side.</returns>
-        public static CustomValueTypeName operator -(CustomValueTypeName left, CustomValueTypeName right)
+        public static BodyIndex operator -(BodyIndex left, BodyIndex right)
         {
-            return new CustomValueTypeName(left._value - right._value);
+            return new BodyIndex(left._value - right._value);
         }
 
         /// <summary>
@@ -631,7 +528,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(CustomValueTypeName left, int right)
+        public static bool operator ==(BodyIndex left, int right)
         {
             return left._value == right;
         }
@@ -642,7 +539,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(CustomValueTypeName left, int right)
+        public static bool operator !=(BodyIndex left, int right)
         {
             return left._value != right;
         }
@@ -653,7 +550,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(int left, CustomValueTypeName right)
+        public static bool operator ==(int left, BodyIndex right)
         {
             return left == right._value;
         }
@@ -664,29 +561,29 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(int left, CustomValueTypeName right)
+        public static bool operator !=(int left, BodyIndex right)
         {
             return left != right._value;
         }
 
         /// <summary>
-        /// Casts a CustomValueTypeName to an Int32.
+        /// Casts a BodyIndex to an Int32.
         /// </summary>
-        /// <param name="CustomValueTypeName">CustomValueTypeName to cast.</param>
+        /// <param name="BodyIndex">BodyIndex to cast.</param>
         /// <returns>The Int32.</returns>
-        public static explicit operator int(CustomValueTypeName CustomValueTypeName)
+        public static explicit operator int(BodyIndex BodyIndex)
         {
-            return CustomValueTypeName._value;
+            return BodyIndex._value;
         }
 
         /// <summary>
-        /// Casts an Int32 to a CustomValueTypeName.
+        /// Casts an Int32 to a BodyIndex.
         /// </summary>
         /// <param name="value">Int32 to cast.</param>
-        /// <returns>The CustomValueTypeName.</returns>
-        public static explicit operator CustomValueTypeName(int value)
+        /// <returns>The BodyIndex.</returns>
+        public static explicit operator BodyIndex(int value)
         {
-            return new CustomValueTypeName(value);
+            return new BodyIndex(value);
         }
 
         /// <summary>
@@ -695,7 +592,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(int left, CustomValueTypeName right)
+        public static bool operator >(int left, BodyIndex right)
         {
             return left > right._value;
         }
@@ -706,7 +603,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, CustomValueTypeName right)
+        public static bool operator <(int left, BodyIndex right)
         {
             return left < right._value;
         }
@@ -717,7 +614,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(CustomValueTypeName left, CustomValueTypeName right)
+        public static bool operator >(BodyIndex left, BodyIndex right)
         {
             return left._value > right._value;
         }
@@ -728,7 +625,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(CustomValueTypeName left, CustomValueTypeName right)
+        public static bool operator <(BodyIndex left, BodyIndex right)
         {
             return left._value < right._value;
         }
@@ -739,7 +636,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
-        public static bool operator >(CustomValueTypeName left, int right)
+        public static bool operator >(BodyIndex left, int right)
         {
             return left._value > right;
         }
@@ -750,7 +647,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(CustomValueTypeName left, int right)
+        public static bool operator <(BodyIndex left, int right)
         {
             return left._value < right;
         }
@@ -761,7 +658,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(int left, CustomValueTypeName right)
+        public static bool operator >=(int left, BodyIndex right)
         {
             return left >= right._value;
         }
@@ -772,7 +669,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(int left, CustomValueTypeName right)
+        public static bool operator <=(int left, BodyIndex right)
         {
             return left <= right._value;
         }
@@ -783,7 +680,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(CustomValueTypeName left, int right)
+        public static bool operator >=(BodyIndex left, int right)
         {
             return left._value >= right;
         }
@@ -794,7 +691,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(CustomValueTypeName left, int right)
+        public static bool operator <=(BodyIndex left, int right)
         {
             return left._value <= right;
         }
@@ -805,7 +702,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(CustomValueTypeName left, CustomValueTypeName right)
+        public static bool operator >=(BodyIndex left, BodyIndex right)
         {
             return left._value >= right._value;
         }
@@ -816,7 +713,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(CustomValueTypeName left, CustomValueTypeName right)
+        public static bool operator <=(BodyIndex left, BodyIndex right)
         {
             return left._value <= right._value;
         }
@@ -827,7 +724,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are not equal.</returns>
-        public static bool operator !=(CustomValueTypeName left, CustomValueTypeName right)
+        public static bool operator !=(BodyIndex left, BodyIndex right)
         {
             return left._value != right._value;
         }
@@ -838,27 +735,27 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the two arguments are equal.</returns>
-        public static bool operator ==(CustomValueTypeName left, CustomValueTypeName right)
+        public static bool operator ==(BodyIndex left, BodyIndex right)
         {
             return left._value == right._value;
         }
     }
 
     /// <summary>
-    /// Adds extensions to some data I/O objects for performing Read and Write operations for the CustomValueTypeName.
-    /// All of the operations are implemented in the CustomValueTypeName struct. These extensions are provided
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the BodyIndex.
+    /// All of the operations are implemented in the BodyIndex struct. These extensions are provided
     /// purely for the convenience of accessing all the I/O operations from the same place.
     /// </summary>
-    public static class CustomValueTypeNameReadWriteExtensions
+    public static class BodyIndexReadWriteExtensions
     {
         /// <summary>
         /// Reads the CustomValueType from a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
         /// <returns>The CustomValueType read from the BitStream.</returns>
-        public static CustomValueTypeName ReadCustomValueTypeName(this BitStream bitStream)
+        public static BodyIndex ReadBodyIndex(this BitStream bitStream)
         {
-            return CustomValueTypeName.Read(bitStream);
+            return BodyIndex.Read(bitStream);
         }
 
         /// <summary>
@@ -867,9 +764,9 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
         /// <param name="i">The field index to read.</param>
         /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static CustomValueTypeName GetCustomValueTypeName(this IDataReader dataReader, int i)
+        public static BodyIndex GetBodyIndex(this IDataReader dataReader, int i)
         {
-            return CustomValueTypeName.Read(dataReader, i);
+            return BodyIndex.Read(dataReader, i);
         }
 
         /// <summary>
@@ -878,10 +775,11 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
         /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static CustomValueTypeName GetCustomValueTypeName(this IDataReader dataReader, string name)
+        public static BodyIndex GetBodyIndex(this IDataReader dataReader, string name)
         {
-            return CustomValueTypeName.Read(dataReader, name);
+            return BodyIndex.Read(dataReader, name);
         }
+
 
         /// <summary>
         /// Reads the CustomValueType from an IValueReader.
@@ -889,29 +787,29 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
         /// <param name="name">The unique name of the value to read.</param>
         /// <returns>The CustomValueType read from the IValueReader.</returns>
-        public static CustomValueTypeName ReadCustomValueTypeName(this IValueReader valueReader, string name)
+        public static BodyIndex ReadBodyIndex(this IValueReader valueReader, string name)
         {
-            return CustomValueTypeName.Read(valueReader, name);
+            return BodyIndex.Read(valueReader, name);
         }
 
         /// <summary>
-        /// Writes a CustomValueTypeName to a BitStream.
+        /// Writes a BodyIndex to a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="value">CustomValueTypeName to write.</param>
-        public static void Write(this BitStream bitStream, CustomValueTypeName value)
+        /// <param name="value">BodyIndex to write.</param>
+        public static void Write(this BitStream bitStream, BodyIndex value)
         {
             value.Write(bitStream);
         }
 
         /// <summary>
-        /// Writes a CustomValueTypeName to a IValueWriter.
+        /// Writes a BodyIndex to a IValueWriter.
         /// </summary>
         /// <param name="valueWriter">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the CustomValueTypeName that will be used to distinguish it
+        /// <param name="name">Unique name of the BodyIndex that will be used to distinguish it
         /// from other values when reading.</param>
-        /// <param name="value">CustomValueTypeName to write.</param>
-        public static void Write(this IValueWriter valueWriter, string name, CustomValueTypeName value)
+        /// <param name="value">BodyIndex to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, BodyIndex value)
         {
             value.Write(valueWriter, name);
         }

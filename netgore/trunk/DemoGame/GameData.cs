@@ -127,11 +127,11 @@ namespace DemoGame
         /// </summary>
         /// <param name="index">Index of the body.</param>
         /// <returns>Body information for the index.</returns>
-        public static BodyInfo Body(int index)
+        public static BodyInfo Body(BodyIndex index)
         {
             // TODO: Move this crap out of GameData. Body data should be with the BodyInfo class.
             if (index < _bodyInfo.Length)
-                return _bodyInfo[index];
+                return _bodyInfo[(int)index];
             else
                 return null;
         }

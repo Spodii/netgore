@@ -33,7 +33,7 @@ namespace DemoGame
         /// Gets or sets the index of the graphic that is used for this item.
         /// </summary>
         [SyncValue]
-        public abstract ushort GraphicIndex { get; set; }
+        public abstract GrhIndex GraphicIndex { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the item.

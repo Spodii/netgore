@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -25,10 +25,10 @@ namespace DemoGame.Server.Queries
                 while (r.Read())
                 {
                     // Read the general stat values
-                    ushort id = r.GetUInt16("id");
+                    ItemTemplateID id = r.GetItemTemplateID("id");
                     string name = r.GetString("name");
                     string description = r.GetString("description");
-                    ushort graphic = r.GetUInt16("graphic");
+                    GrhIndex graphic = r.GetGrhIndex("graphic");
                     int value = r.GetInt32("value");
                     byte width = r.GetByte("width");
                     byte height = r.GetByte("height");
