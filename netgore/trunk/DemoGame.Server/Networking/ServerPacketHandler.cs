@@ -71,7 +71,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.DropInventoryItem)]
         void RecvDropInventoryItem(IIPSocket conn, BitStream r)
         {
-            byte slot = r.ReadByte();
+            InventorySlot slot = r.ReadInventorySlot();
 
             User user;
             if (!TryGetUser(conn, out user))
@@ -93,7 +93,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.GetInventoryItemInfo)]
         void RecvGetInventoryItemInfo(IIPSocket conn, BitStream r)
         {
-            byte slot = r.ReadByte();
+            InventorySlot slot = r.ReadInventorySlot();
 
             User user;
             if (TryGetUser(conn, out user))
@@ -242,7 +242,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.UseInventoryItem)]
         void RecvUseInventoryItem(IIPSocket conn, BitStream r)
         {
-            byte slot = r.ReadByte();
+            InventorySlot slot = r.ReadInventorySlot();
 
             User user;
             if (!TryGetUser(conn, out user))

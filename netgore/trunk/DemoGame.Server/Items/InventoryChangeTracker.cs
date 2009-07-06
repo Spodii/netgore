@@ -32,7 +32,7 @@ namespace DemoGame.Server
             // Iterate through every slot
             for (int i = 0; i < _buffer.Length; i++)
             {
-                ItemEntity invItem = _inventory[i];
+                ItemEntity invItem = _inventory[new InventorySlot(i)];
                 ItemValueTracker tracker = _buffer[i];
 
                 // If the values are already equal, skip it
@@ -40,7 +40,7 @@ namespace DemoGame.Server
                     continue;
 
                 // Yield return the changed item results
-                yield return new InventoryChangeInfo(invItem, tracker, (byte)i);
+                yield return new InventoryChangeInfo(invItem, tracker, new InventorySlot(i));
 
                 // Update the item with the new values, creating the tracker if needed
                 if (tracker == null)

@@ -10,7 +10,7 @@ namespace DemoGame.Server
     {
         readonly ItemEntity _item;
         readonly ItemValueTracker _oldValues;
-        readonly byte _slot;
+        readonly InventorySlot _slot;
 
         /// <summary>
         /// Gets the current item that has changed. If null, this means that the item has changed
@@ -29,12 +29,12 @@ namespace DemoGame.Server
             get { return _oldValues; }
         }
 
-        public byte Slot
+        public InventorySlot Slot
         {
             get { return _slot; }
         }
 
-        public InventoryChangeInfo(ItemEntity item, ItemValueTracker oldValues, byte slot)
+        public InventoryChangeInfo(ItemEntity item, ItemValueTracker oldValues, InventorySlot slot)
         {
             _slot = slot;
             _item = item;

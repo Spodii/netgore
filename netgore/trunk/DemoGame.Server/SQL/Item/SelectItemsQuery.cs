@@ -4,7 +4,6 @@ using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
-
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -17,7 +16,7 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IEnumerable<ItemValues> Execute(int low, int high)
+        public IEnumerable<ItemValues> Execute(ItemID low, ItemID high)
         {
             return Execute(new SelectItemsQueryValues(low, high));
         }
@@ -55,17 +54,17 @@ namespace DemoGame.Server.Queries
 
     public struct SelectItemsQueryValues
     {
-        public readonly int High;
-        public readonly int Low;
+        public readonly ItemID High;
+        public readonly ItemID Low;
 
-        public SelectItemsQueryValues(int low, int high)
+        public SelectItemsQueryValues(ItemID low, ItemID high)
         {
             if (low > high)
             {
                 Debug.Fail("low is greater than high. Can be fixed, but this is often the indication of a bigger problem.");
 
                 // Swap values
-                int tmp = low;
+                ItemID tmp = low;
                 low = high;
                 high = tmp;
             }

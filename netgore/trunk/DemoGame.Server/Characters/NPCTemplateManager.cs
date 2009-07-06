@@ -43,19 +43,19 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="id">Unique ID of the template to load.</param>
         /// <returns>NPCTemplate by the given ID</returns>
-        public NPCTemplate GetTemplate(int id)
+        public NPCTemplate GetTemplate(CharacterTemplateID id)
         {
             NPCTemplate ret = null;
 
             // Grab from cache if possible
-            if (_templates.CanGet(id))
-                ret = _templates[id];
+            if (_templates.CanGet((int)id))
+                ret = _templates[(int)id];
 
             // If not cached, load it and place a copy in the cache
             if (ret == null)
             {
                 ret = new NPCTemplate(id, _query, _dropsQuery, _allianceManager, _itemTemplates);
-                _templates[id] = ret;
+                _templates[(int)id] = ret;
             }
 
             return ret;

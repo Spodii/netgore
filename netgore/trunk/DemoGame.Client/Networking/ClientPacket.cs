@@ -20,7 +20,7 @@ namespace DemoGame.Client
             return GetWriter(ClientPacketID.Attack);
         }
 
-        public static PacketWriter DropInventoryItem(byte slot)
+        public static PacketWriter DropInventoryItem(InventorySlot slot)
         {
             PacketWriter pw = GetWriter(ClientPacketID.DropInventoryItem);
             pw.Write(slot);
@@ -34,7 +34,7 @@ namespace DemoGame.Client
             return pw;
         }
 
-        public static PacketWriter GetInventoryItemInfo(byte slot)
+        public static PacketWriter GetInventoryItemInfo(InventorySlot slot)
         {
             PacketWriter pw = GetWriter(ClientPacketID.GetInventoryItemInfo);
             pw.Write(slot);
@@ -116,7 +116,7 @@ namespace DemoGame.Client
             return pw;
         }
 
-        public static PacketWriter UseInventoryItem(byte slot)
+        public static PacketWriter UseInventoryItem(InventorySlot slot)
         {
             PacketWriter pw = GetWriter(ClientPacketID.UseInventoryItem);
             pw.Write(slot);

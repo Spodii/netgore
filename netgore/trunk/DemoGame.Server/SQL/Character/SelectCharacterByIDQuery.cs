@@ -8,7 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    public class SelectCharacterByIDQuery : DbQueryReader<uint>
+    public class SelectCharacterByIDQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@characterID", DBTables.Character);
 
@@ -17,7 +17,7 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public SelectCharacterQueryValues Execute(uint characterID, CharacterStatsBase stats)
+        public SelectCharacterQueryValues Execute(CharacterID characterID, CharacterStatsBase stats)
         {
             if (stats == null)
                 throw new ArgumentNullException("stats");
@@ -37,7 +37,7 @@ namespace DemoGame.Server.Queries
             return CreateParameters("@characterID");
         }
 
-        protected override void SetParameters(DbParameterValues p, uint characterID)
+        protected override void SetParameters(DbParameterValues p, CharacterID characterID)
         {
             p["@characterID"] = characterID;
         }

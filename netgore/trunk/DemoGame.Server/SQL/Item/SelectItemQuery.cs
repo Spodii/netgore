@@ -4,12 +4,11 @@ using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
-
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    public class SelectItemQuery : SelectItemQueryBase<int>
+    public class SelectItemQuery : SelectItemQueryBase<ItemID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", DBTables.Item);
 
@@ -17,7 +16,7 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public ItemValues Execute(int id)
+        public ItemValues Execute(ItemID id)
         {
             if (id <= 0)
                 throw new ArgumentOutOfRangeException("id");
@@ -40,7 +39,7 @@ namespace DemoGame.Server.Queries
             return CreateParameters("@id");
         }
 
-        protected override void SetParameters(DbParameterValues p, int id)
+        protected override void SetParameters(DbParameterValues p, ItemID id)
         {
             p["@id"] = id;
         }

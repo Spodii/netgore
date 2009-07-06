@@ -24,7 +24,7 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static DBController _dbController;
 
-        readonly int _id;
+        readonly ItemID _id;
         readonly ItemStats _stats;
 
         byte _amount = 1;
@@ -124,7 +124,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the unique ID for this ItemEntity.
         /// </summary>
-        public int ID
+        public ItemID ID
         {
             get { return _id; }
         }
@@ -196,7 +196,7 @@ namespace DemoGame.Server
 
         public ItemEntity()
         {
-            _id = IDCreator.GetNext();
+            _id = new ItemID(IDCreator.GetNext());
         }
 
         public ItemEntity(ItemValues iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
@@ -220,7 +220,7 @@ namespace DemoGame.Server
                    IEnumerable<IStat> stats) : base(pos, size)
         {
             // NOTE: Can I get rid of this constructor?
-            _id = IDCreator.GetNext();
+            _id = new ItemID(IDCreator.GetNext());
 
             _name = name;
             _description = desc;
@@ -315,7 +315,7 @@ namespace DemoGame.Server
             DeleteItem.Execute(ID);
 
             // Free the item's ID
-            IDCreator.FreeID(ID);
+            IDCreator.FreeID((int)ID);
 
             base.HandleDispose();
         }

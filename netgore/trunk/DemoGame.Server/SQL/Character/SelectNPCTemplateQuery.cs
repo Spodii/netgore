@@ -10,7 +10,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    public class SelectNPCTemplateQuery : DbQueryReader<int>
+    public class SelectNPCTemplateQuery : DbQueryReader<CharacterTemplateID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", DBTables.CharacterTemplate);
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -19,7 +19,7 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public SelectNPCTemplateQueryValues Execute(int templateID)
+        public SelectNPCTemplateQueryValues Execute(CharacterTemplateID templateID)
         {
             SelectNPCTemplateQueryValues ret;
 
@@ -32,10 +32,10 @@ namespace DemoGame.Server.Queries
                 }
 
                 // Check that the correct record was grabbed
-                int dbID = r.GetInt32("id");
+                CharacterTemplateID dbID = r.GetCharacterTemplateID("id");
                 if (dbID != templateID)
                 {
-                    const string errmsg = "Performed SELECT for NPC Template with id `{0}`, but got id `{1}`.";
+                    const string errmsg = "Performed SELECT for Character template with id `{0}`, but got id `{1}`.";
                     string err = string.Format(errmsg, templateID, dbID);
                     log.Fatal(err);
                     Debug.Fail(err);
@@ -78,7 +78,7 @@ namespace DemoGame.Server.Queries
             return CreateParameters("@id");
         }
 
-        protected override void SetParameters(DbParameterValues p, int templateID)
+        protected override void SetParameters(DbParameterValues p, CharacterTemplateID templateID)
         {
             p["@id"] = templateID;
         }

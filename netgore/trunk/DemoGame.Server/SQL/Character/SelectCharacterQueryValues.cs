@@ -12,12 +12,12 @@ namespace DemoGame.Server.Queries
     {
         public readonly string Name;
         public readonly int BodyIndex;
-        public readonly uint ID;
+        public readonly CharacterID ID;
         public readonly MapIndex MapIndex;
         public readonly Vector2 Position;
         public readonly CharacterStatsBase Stats;
 
-        public SelectCharacterQueryValues(uint id, string name, MapIndex mapIndex, Vector2 position, int bodyIndex, CharacterStatsBase stats)
+        public SelectCharacterQueryValues(CharacterID id, string name, MapIndex mapIndex, Vector2 position, int bodyIndex, CharacterStatsBase stats)
         {
             Name = name;
             ID = id;

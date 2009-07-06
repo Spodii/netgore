@@ -11,7 +11,7 @@ namespace DemoGame.Server
         readonly byte _amount;
         readonly string _description;
         readonly ushort _graphicIndex;
-        readonly int _id;
+        readonly ItemID _id;
         readonly byte _height;
         readonly string _name;
         readonly ItemStats _stats;
@@ -34,7 +34,7 @@ namespace DemoGame.Server
             get { return _graphicIndex; }
         }
 
-        public int ID
+        public ItemID ID
         {
             get { return _id; }
         }
@@ -69,7 +69,7 @@ namespace DemoGame.Server
             get { return _width; }
         }
 
-        public ItemValues(int id, byte width, byte height, string name, string description, ItemType type, ushort graphicIndex,
+        public ItemValues(ItemID id, byte width, byte height, string name, string description, ItemType type, ushort graphicIndex,
                           byte amount, int value, ItemStats stats)
         {
             if (stats == null)
@@ -91,7 +91,7 @@ namespace DemoGame.Server
             _stats = stats;
         }
 
-        public ItemValues(ItemEntity ie, int id)
+        public ItemValues(ItemEntity ie, ItemID id)
             : this(
                 id, (byte)ie.CB.Width, (byte)ie.CB.Height, ie.Name, ie.Description, ie.Type, ie.GraphicIndex, ie.Amount,
                 ie.Value, new ItemStats(ie.Stats))

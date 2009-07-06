@@ -119,7 +119,7 @@ namespace DemoGame.Server
             return true;
         }
 
-        public bool DropInventoryItem(byte slot)
+        public bool DropInventoryItem(InventorySlot slot)
         {
             return Inventory.Drop(slot);
         }
@@ -129,7 +129,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="inventorySlot">Index of the slot containing the item to equip.</param>
         /// <returns>True if the item was successfully equipped, else false.</returns>
-        public bool Equip(byte inventorySlot)
+        public bool Equip(InventorySlot inventorySlot)
         {
             // Get the item from the inventory
             ItemEntity item = _inventory[inventorySlot];
@@ -430,7 +430,7 @@ namespace DemoGame.Server
         /// Sends the item information for an item in a given inventory slot to the client.
         /// </summary>
         /// <param name="slot">Inventory slot of the item to send the info for</param>
-        public void SendInventoryItemStats(byte slot)
+        public void SendInventoryItemStats(InventorySlot slot)
         {
             // Check for a valid slot
             if (slot >= InventoryBase.MaxInventorySize)
@@ -486,7 +486,7 @@ namespace DemoGame.Server
             }
         }
 
-        public void UseInventoryItem(byte slot)
+        public void UseInventoryItem(InventorySlot slot)
         {
             // Get the item to use
             ItemEntity item = _inventory[slot];

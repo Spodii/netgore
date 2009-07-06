@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -25,7 +24,7 @@ namespace DemoGame.Server.Queries
             }
 
             // General
-            int id = r.GetInt32("id");
+            ItemID id = r.GetItemID("id");
             byte width = r.GetByte("width");
             byte height = r.GetByte("height");
             string name = r.GetString("name");

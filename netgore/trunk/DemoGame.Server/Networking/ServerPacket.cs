@@ -12,7 +12,7 @@ using NetGore.Network;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Packets going out from the server / in to the client
+    /// Packets going out from the server / in to the client.
     /// </summary>
     static class ServerPacket
     {
@@ -194,7 +194,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SetInventorySlot(byte slot, ushort graphic, byte amount)
+        public static PacketWriter SetInventorySlot(InventorySlot slot, ushort graphic, byte amount)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetInventorySlot);
             pw.Write(slot);

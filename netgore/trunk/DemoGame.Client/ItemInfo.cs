@@ -130,13 +130,13 @@ namespace DemoGame.Client
         /// Sends a request through the Socket to get the item information for a given user inventory slot.
         /// </summary>
         /// <param name="slot">Inventory slot to get the item information for.</param>
-        public void GetInventoryItemInfo(byte slot)
+        public void GetInventoryItemInfo(InventorySlot slot)
         {
             StartRequest();
 
             // Set the source
-            _source = ItemInfoSource.Equipped;
-            _slot = slot;
+            _source = ItemInfoSource.Inventory;
+            _slot = (int)slot;
 
             // Check for a valid slot
             if (slot >= Inventory.MaxInventorySize)

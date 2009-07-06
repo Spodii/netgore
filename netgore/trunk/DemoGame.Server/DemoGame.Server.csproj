@@ -101,6 +101,8 @@
     <Compile Include="Characters\Character.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Characters\CharacterID.cs" />
+    <Compile Include="Characters\CharacterTemplateID.cs" />
     <Compile Include="Characters\IRespawnable.cs" />
     <Compile Include="Characters\NPC.cs">
       <SubType>Code</SubType>
@@ -114,9 +116,10 @@
     <Compile Include="Items\Inventory.cs" />
     <Compile Include="Items\InventoryChangeInfo.cs" />
     <Compile Include="Items\InventoryChangeTracker.cs" />
-    <Compile Include="Items\InventoryUpdateTracker.cs" />
     <Compile Include="Items\ItemGuidCreator.cs" />
+    <Compile Include="Items\ItemID.cs" />
     <Compile Include="Items\ItemStats.cs" />
+    <Compile Include="Items\ItemTemplateID.cs" />
     <Compile Include="Items\ItemTemplates.cs" />
     <Compile Include="Items\ItemValueTracker.cs" />
     <Compile Include="Items\NPCEquipped.cs" />

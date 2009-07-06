@@ -24,20 +24,20 @@ namespace DemoGame.Server.Queries
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
             p["@itemID"] = item.ItemID;
-            p["@characterID"] = item.UserID;
+            p["@characterID"] = item.CharacterID;
         }
 
         /// <summary>
-        /// Arguments for the InsertUserItemQuery.
+        /// Arguments for the InsertCharacterInventoryItemQuery.
         /// </summary>
         public struct QueryArgs
         {
-            public readonly int ItemID;
-            public readonly uint UserID;
+            public readonly ItemID ItemID;
+            public readonly CharacterID CharacterID;
 
-            public QueryArgs(uint userID, int itemID)
+            public QueryArgs(CharacterID characterID, ItemID itemID)
             {
-                UserID = userID;
+                CharacterID = characterID;
                 ItemID = itemID;
             }
         }

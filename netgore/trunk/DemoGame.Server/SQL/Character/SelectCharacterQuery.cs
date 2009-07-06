@@ -41,7 +41,7 @@ namespace DemoGame.Server.Queries
                 throw new ArgumentException("Could not find user.");
 
             // Read the general user values
-            ushort id = r.GetUInt16("id");
+            CharacterID id = r.GetCharacterID("id");
             string name = r.GetString("name");
             MapIndex mapIndex = r.GetMapIndex("map");
             float x = r.GetFloat("x");

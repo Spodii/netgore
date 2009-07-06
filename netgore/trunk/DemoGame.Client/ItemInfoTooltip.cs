@@ -21,7 +21,7 @@ namespace DemoGame.Client
         object _hoverObject = null;
         int _hoverStartTime = int.MinValue;
         bool _sentItemInfoRequest;
-        byte _slot;
+        int _slot;
         ItemInfoSource _source;
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace DemoGame.Client
             return Environment.TickCount;
         }
 
-        public void HandleMouseEnter(object sender, ItemInfoSource source, byte slot)
+        public void HandleMouseEnter(object sender, ItemInfoSource source, int slot)
         {
             if (_hoverObject == sender)
                 return;
@@ -137,7 +137,7 @@ namespace DemoGame.Client
         }
 
 // ReSharper disable UnusedParameter.Global
-        public void HandleMouseLeave(object sender, ItemInfoSource source, byte slot)
+        public void HandleMouseLeave(object sender, ItemInfoSource source, int slot)
         {
 // ReSharper restore UnusedParameter.Global
             // Only set the hoverObject to null if it came from the sender
@@ -149,7 +149,7 @@ namespace DemoGame.Client
         }
 
 // ReSharper disable UnusedParameter.Global
-        public void HandleMouseMove(object sender, ItemInfoSource source, byte slot)
+        public void HandleMouseMove(object sender, ItemInfoSource source, int slot)
         {
 // ReSharper restore UnusedParameter.Global
             _hoverStartTime = GetTime();
@@ -176,7 +176,7 @@ namespace DemoGame.Client
                     break;
 
                 case ItemInfoSource.Inventory:
-                    ItemInfo.GetInventoryItemInfo(_slot);
+                    ItemInfo.GetInventoryItemInfo(new InventorySlot(_slot));
                     break;
             }
         }
