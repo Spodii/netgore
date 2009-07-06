@@ -88,7 +88,7 @@ namespace DemoGame.Server
 
                 // Update the database
                 if (!_isLoading)
-                    DbController.DeleteCharacterInventoryItem.Execute(oldItem.ID); //!! DeleteCharacterItem
+                    DbController.DeleteCharacterInventoryItem.Execute(oldItem.ID);
 
                 // Stop listening for changes
                 if (_isPersistent)
@@ -101,7 +101,7 @@ namespace DemoGame.Server
                 // Update the database
                 if (!_isLoading)
                 {
-                    var args = new InsertCharacterInventoryItemQuery.QueryArgs(Character.ID, newItem.ID); //!! InsertCharacterItem
+                    var args = new InsertCharacterInventoryItemQuery.QueryArgs(Character.ID, newItem.ID);
                     DbController.InsertCharacterInventoryItem.Execute(args); 
                 }
 
@@ -202,7 +202,7 @@ namespace DemoGame.Server
 
             // TODO: Need to track the slots, too, I guess
             InventorySlot slot = new InventorySlot(0);
-            var queryResults = DbController.SelectCharacterInventoryItems.Execute(Character.ID); //!! SelectCharacterInventoryItems
+            var queryResults = DbController.SelectCharacterInventoryItems.Execute(Character.ID);
             foreach (ItemValues values in queryResults) 
             {
                 // Make sure no item is already in the slot... just in case
