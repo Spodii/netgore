@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
@@ -201,66 +199,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the index of the first unused Inventory slot.
-        /// </summary>
-        /// <param name="emptySlot">If function returns true, contains the index of the first unused Inventory slot.</param>
-        /// <returns>True if an empty slot was found, otherwise false.</returns>
-        protected bool TryFindEmptySlot(out InventorySlot emptySlot)
-        {
-            // Iterate through each slot
-            for (int i = 0; i < MaxInventorySize; i++)
-            {
-                // Return on the first null item
-                if (this[new InventorySlot(i)] == null)
-                {
-                    emptySlot = new InventorySlot(i);
-                    return true;
-                }
-            }
-
-            // All slots are in use
-            emptySlot = new InventorySlot(0);
-            return false;
-        }
-
-        /// <summary>
-        /// Gets the first slot that the given <paramref name="item"/> can be stacked on.
-        /// </summary>
-        /// <param name="item">Item that will try to stack on existing items.</param>
-        /// <param name="stackableSlot">If function returns true, contains the index of the first slot that
-        /// the <paramref name="item"/> can be stacked on. This slot is not guaranteed to be able to hold 
-        /// all of the item, but it does guarantee to be able to hold at least one unit of the item.</param>
-        /// <returns>True if a stackable slot was found, otherwise false.</returns>
-        protected bool TryFindStackableSlot(ItemEntityBase item, out InventorySlot stackableSlot)
-        {
-            // Iterate through each slot
-            for (int i = 0; i < MaxInventorySize; i++)
-            {
-                T invItem = this[new InventorySlot(i)];
-
-                // Skip empty slots
-                if (invItem == null)
-                    continue;
-
-                // Make sure the item isn't already at the stacking limit
-                if (invItem.Amount >= ItemEntityBase.MaxStackSize)
-                    continue;
-
-                // Check if the item can stack with our item
-                if (!invItem.CanStack(item))
-                    continue;
-
-                // Stackable slot found
-                stackableSlot = new InventorySlot(i);
-                return true;
-            }
-
-            // No stackable slot found
-            stackableSlot = new InventorySlot(0);
-            return false;
-        }
-
-        /// <summary>
         /// Gets the slot for the specified <paramref name="item"/>.
         /// </summary>
         /// <param name="item">Item to find the slot for.</param>
@@ -331,6 +269,66 @@ namespace DemoGame
         public void RemoveAt(InventorySlot slot)
         {
             ClearSlot(slot, false);
+        }
+
+        /// <summary>
+        /// Gets the index of the first unused Inventory slot.
+        /// </summary>
+        /// <param name="emptySlot">If function returns true, contains the index of the first unused Inventory slot.</param>
+        /// <returns>True if an empty slot was found, otherwise false.</returns>
+        protected bool TryFindEmptySlot(out InventorySlot emptySlot)
+        {
+            // Iterate through each slot
+            for (int i = 0; i < MaxInventorySize; i++)
+            {
+                // Return on the first null item
+                if (this[new InventorySlot(i)] == null)
+                {
+                    emptySlot = new InventorySlot(i);
+                    return true;
+                }
+            }
+
+            // All slots are in use
+            emptySlot = new InventorySlot(0);
+            return false;
+        }
+
+        /// <summary>
+        /// Gets the first slot that the given <paramref name="item"/> can be stacked on.
+        /// </summary>
+        /// <param name="item">Item that will try to stack on existing items.</param>
+        /// <param name="stackableSlot">If function returns true, contains the index of the first slot that
+        /// the <paramref name="item"/> can be stacked on. This slot is not guaranteed to be able to hold 
+        /// all of the item, but it does guarantee to be able to hold at least one unit of the item.</param>
+        /// <returns>True if a stackable slot was found, otherwise false.</returns>
+        protected bool TryFindStackableSlot(ItemEntityBase item, out InventorySlot stackableSlot)
+        {
+            // Iterate through each slot
+            for (int i = 0; i < MaxInventorySize; i++)
+            {
+                T invItem = this[new InventorySlot(i)];
+
+                // Skip empty slots
+                if (invItem == null)
+                    continue;
+
+                // Make sure the item isn't already at the stacking limit
+                if (invItem.Amount >= ItemEntityBase.MaxStackSize)
+                    continue;
+
+                // Check if the item can stack with our item
+                if (!invItem.CanStack(item))
+                    continue;
+
+                // Stackable slot found
+                stackableSlot = new InventorySlot(i);
+                return true;
+            }
+
+            // No stackable slot found
+            stackableSlot = new InventorySlot(0);
+            return false;
         }
     }
 }

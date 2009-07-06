@@ -106,7 +106,7 @@ namespace NetGore.Db.MySql.Tests
         [Test]
         public void SelectTest()
         {
-            var testValues = new QueryTestValues(5, 10, 15);
+            QueryTestValues testValues = new QueryTestValues(5, 10, 15);
 
             using (MyReader reader = CreateReader())
             {

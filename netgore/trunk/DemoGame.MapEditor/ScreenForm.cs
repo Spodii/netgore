@@ -349,7 +349,7 @@ namespace DemoGame.MapEditor
             _editGrhCamera.Zoom(pos, GameData.ScreenSize, 4f);
             _editGrh = new Grh(_editGrhData.GrhIndex, AnimType.Loop, GetTime());
 
-            var f = new EditGrhForm(gd, _mapGrhWalls) { Location = new Point(0, 0) };
+            EditGrhForm f = new EditGrhForm(gd, _mapGrhWalls) { Location = new Point(0, 0) };
             f.FormClosed += EditGrhForm_Close;
             AddOwnedForm(f);
             f.Show();
@@ -358,7 +358,7 @@ namespace DemoGame.MapEditor
 
         void btnNewBGLayer_Click(object sender, EventArgs e)
         {
-            var bgLayer = new BackgroundLayer();
+            BackgroundLayer bgLayer = new BackgroundLayer();
             Map.AddBackgroundImage(bgLayer);
         }
 
@@ -368,16 +368,16 @@ namespace DemoGame.MapEditor
                 return;
 
             // Get the selected type
-            var selectedType = cmbEntityTypes.SelectedItem as Type;
+            Type selectedType = cmbEntityTypes.SelectedItem as Type;
             if (selectedType == null)
                 return;
 
             // Create the Entity
-            var entity = (Entity)Activator.CreateInstance(selectedType);
+            Entity entity = (Entity)Activator.CreateInstance(selectedType);
             Map.AddEntity(entity);
 
             // Move to the center of the screen
-            var size = new Vector2(64);
+            Vector2 size = new Vector2(64);
             entity.Position = Camera.Min + (Camera.Size / 2) - (size / 2);
             entity.Size = size;
         }
@@ -468,7 +468,7 @@ namespace DemoGame.MapEditor
             Enabled = false;
 
             // Add the MapGrh-bound walls
-            List<WallEntityBase> extraWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
+            var extraWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
             foreach (WallEntityBase wall in extraWalls)
             {
                 Map.AddEntity(wall);
@@ -517,7 +517,7 @@ namespace DemoGame.MapEditor
                     if (!_camera.InView(mg.Grh, mg.Destination))
                         continue;
 
-                    List<WallEntityBase> boundWalls = _mapGrhWalls[mg.Grh.GrhData];
+                    var boundWalls = _mapGrhWalls[mg.Grh.GrhData];
                     if (boundWalls == null)
                         continue;
 
@@ -577,7 +577,7 @@ namespace DemoGame.MapEditor
             _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
 
             // Cursor position
-            var cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
+            Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
             cursorPosText -= new Vector2(100, 30);
             DrawShadedText(cursorPosText, _cursorPos.ToString(), Microsoft.Xna.Framework.Graphics.Color.White);
 
@@ -607,7 +607,7 @@ namespace DemoGame.MapEditor
             // Walls
             foreach (object o in _editGrhWallItems)
             {
-                var wall = o as WallEntity;
+                WallEntity wall = o as WallEntity;
                 if (wall != null)
                     EntityDrawer.Draw(_sb, wall);
             }
@@ -853,7 +853,7 @@ namespace DemoGame.MapEditor
             if (!File.Exists("MapEditorSettings.xml"))
                 return;
 
-            List<Dictionary<string, string>> data = XmlInfoReader.ReadFile("MapEditorSettings.xml");
+            var data = XmlInfoReader.ReadFile("MapEditorSettings.xml");
             if (data == null)
                 return;
 
@@ -934,7 +934,7 @@ namespace DemoGame.MapEditor
             if (focusControl != null && focusControl.GetType() == typeof(TextBox))
                 return;
 
-            var startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);
+            Vector2 startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);
 
             switch (e.KeyCode)
             {
@@ -975,7 +975,7 @@ namespace DemoGame.MapEditor
 
         protected override void OnKeyUp(KeyEventArgs e)
         {
-            var startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);
+            Vector2 startMoveCamera = new Vector2(_moveCamera.X, _moveCamera.Y);
 
             switch (e.KeyCode)
             {
@@ -1020,9 +1020,9 @@ namespace DemoGame.MapEditor
         /// </summary>
         void SaveSettings()
         {
-            using (var stream = new FileStream("MapEditorSettings.xml", FileMode.Create))
+            using (FileStream stream = new FileStream("MapEditorSettings.xml", FileMode.Create))
             {
-                var settings = new XmlWriterSettings { Indent = true };
+                XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
                 using (XmlWriter w = XmlWriter.Create(stream, settings))
                 {
                     if (w == null)
@@ -1091,8 +1091,8 @@ namespace DemoGame.MapEditor
             Map.Load(ContentPaths.Dev, true);
 
             // Remove all of the walls previously created from the MapGrhs
-            List<WallEntityBase> grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
-            List<WallEntityBase> dupeWalls = Map.FindDuplicateWalls(grhWalls);
+            var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
+            var dupeWalls = Map.FindDuplicateWalls(grhWalls);
             foreach (WallEntityBase dupeWall in dupeWalls)
             {
                 Map.RemoveEntity(dupeWall);
@@ -1129,7 +1129,7 @@ namespace DemoGame.MapEditor
                 pic.BorderStyle = BorderStyle.None;
             }
 
-            var src = (PictureBox)sender;
+            PictureBox src = (PictureBox)sender;
             if (src == null)
                 return;
 
@@ -1167,7 +1167,7 @@ namespace DemoGame.MapEditor
                 return;
 
             // Show the new form
-            var frm = new BatchRenameTextureForm(node, _content);
+            BatchRenameTextureForm frm = new BatchRenameTextureForm(node, _content);
 
             // Disable this form until the rename one closes
             Enabled = false;
@@ -1218,7 +1218,7 @@ namespace DemoGame.MapEditor
             treeGrhs.UpdateGrhData(gd);
 
             // Begin edit
-            TreeNode[] nodes = treeGrhs.Nodes.Find(gd.GrhIndex.ToString(), true);
+            var nodes = treeGrhs.Nodes.Find(gd.GrhIndex.ToString(), true);
             if (nodes.Length == 0)
             {
                 Debug.Fail("Failed to find node.");
@@ -1307,7 +1307,7 @@ namespace DemoGame.MapEditor
         public void UpdateGame()
         {
             // Update the time
-            var currTime = (int)_stopWatch.ElapsedMilliseconds;
+            int currTime = (int)_stopWatch.ElapsedMilliseconds;
             int deltaTime = currTime - _currentTime;
             _currentTime = (int)_stopWatch.ElapsedMilliseconds;
 

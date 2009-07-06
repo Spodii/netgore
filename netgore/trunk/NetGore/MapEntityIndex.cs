@@ -1,7 +1,6 @@
 using System;
 using System.Data;
 using System.Globalization;
-using System.IO;
 using System.Runtime.InteropServices;
 using NetGore.IO;
 
@@ -93,41 +92,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Converts the string representation of a number to its MapEntityIndex equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed MapEntityIndex.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out MapEntityIndex parsedValue)
-        {
-            ushort outValue;
-            bool success = ushort.TryParse(s, style, provider, out outValue);
-            parsedValue = new MapEntityIndex(outValue);
-            return success;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its MapEntityIndex equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed MapEntityIndex.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, out MapEntityIndex parsedValue)
-        {
-            ushort outValue;
-            bool success = ushort.TryParse(s, out outValue);
-            parsedValue = new MapEntityIndex(outValue);
-            return success;
-        }
-
-        /// <summary>
         /// Converts the string representation of a number to its MapEntityIndex equivalent.
         /// </summary>
         /// <param name="s">A string representing the number to convert.</param>
@@ -201,7 +165,7 @@ namespace NetGore
             if (value is ushort)
                 return new MapEntityIndex((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value); 
+            ushort convertedValue = Convert.ToUInt16(value);
             return new MapEntityIndex(convertedValue);
         }
 
@@ -235,6 +199,41 @@ namespace NetGore
         public override string ToString()
         {
             return _value.ToString();
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its MapEntityIndex equivalent. A return value 
+        /// indicates whether the conversion succeeded or failed.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
+        /// permitted format of <paramref name="s"/>. A typical value to specify is
+        /// System.Globalization.NumberStyles.Integer.</param>
+        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
+        /// about <paramref name="s"/>.</param>
+        /// <param name="parsedValue">If the parsing was successful, contains the parsed MapEntityIndex.</param>
+        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
+        public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out MapEntityIndex parsedValue)
+        {
+            ushort outValue;
+            bool success = ushort.TryParse(s, style, provider, out outValue);
+            parsedValue = new MapEntityIndex(outValue);
+            return success;
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its MapEntityIndex equivalent. A return value 
+        /// indicates whether the conversion succeeded or failed.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="parsedValue">If the parsing was successful, contains the parsed MapEntityIndex.</param>
+        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
+        public static bool TryParse(string s, out MapEntityIndex parsedValue)
+        {
+            ushort outValue;
+            bool success = ushort.TryParse(s, out outValue);
+            parsedValue = new MapEntityIndex(outValue);
+            return success;
         }
 
         /// <summary>
@@ -841,16 +840,6 @@ namespace NetGore
     public static class MapEntityIndexReadWriteExtensions
     {
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
-        public static MapEntityIndex ReadMapEntityIndex(this BitStream bitStream)
-        {
-            return MapEntityIndex.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the CustomValueType from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
@@ -870,6 +859,16 @@ namespace NetGore
         public static MapEntityIndex GetMapEntityIndex(this IDataReader dataReader, string name)
         {
             return MapEntityIndex.Read(dataReader, name);
+        }
+
+        /// <summary>
+        /// Reads the CustomValueType from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
+        /// <returns>The CustomValueType read from the BitStream.</returns>
+        public static MapEntityIndex ReadMapEntityIndex(this BitStream bitStream)
+        {
+            return MapEntityIndex.Read(bitStream);
         }
 
         /// <summary>

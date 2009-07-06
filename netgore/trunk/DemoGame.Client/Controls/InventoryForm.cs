@@ -51,7 +51,7 @@ namespace DemoGame.Client
 
         void CreateItemSlots()
         {
-            var offset = new Vector2(_sepX, _sepY);
+            Vector2 offset = new Vector2(_sepX, _sepY);
 
             for (int i = 0; i < Inventory.MaxInventorySize; i++)
             {
@@ -95,7 +95,7 @@ namespace DemoGame.Client
 
         void InventoryItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
         {
-            var itemPB = (InventoryItemPB)sender;
+            InventoryItemPB itemPB = (InventoryItemPB)sender;
 
             if (e.Button == MouseButtons.Right)
             {
@@ -173,7 +173,7 @@ namespace DemoGame.Client
                     return;
 
                 // Draw the item in the center of the slot
-                var offset = new Vector2(_itemWidth, _itemHeight);
+                Vector2 offset = new Vector2(_itemWidth, _itemHeight);
                 offset -= item.Grh.Size;
                 offset /= 2;
 

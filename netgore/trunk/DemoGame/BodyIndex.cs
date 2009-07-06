@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Data;
 using System.Runtime.InteropServices;
 using NetGore.IO;
@@ -52,19 +52,6 @@ namespace DemoGame
             return other._value == _value;
         }
 
-        public static bool TryParse(string value, out BodyIndex grhIndex)
-        {
-            ushort outValue;
-            bool success = ushort.TryParse(value, out outValue);
-            grhIndex = new BodyIndex(outValue);
-            return success;
-        }
-
-        public static BodyIndex Parse(string value)
-        {
-            return new BodyIndex(ushort.Parse(value));
-        }
-
         /// <summary>
         /// Indicates whether this instance and a specified object are equal.
         /// </summary>
@@ -101,6 +88,11 @@ namespace DemoGame
         public ushort GetRawValue()
         {
             return _value;
+        }
+
+        public static BodyIndex Parse(string value)
+        {
+            return new BodyIndex(ushort.Parse(value));
         }
 
         /// <summary>
@@ -163,6 +155,14 @@ namespace DemoGame
         public override string ToString()
         {
             return _value.ToString();
+        }
+
+        public static bool TryParse(string value, out BodyIndex grhIndex)
+        {
+            ushort outValue;
+            bool success = ushort.TryParse(value, out outValue);
+            grhIndex = new BodyIndex(outValue);
+            return success;
         }
 
         /// <summary>
@@ -749,16 +749,6 @@ namespace DemoGame
     public static class BodyIndexReadWriteExtensions
     {
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
-        public static BodyIndex ReadBodyIndex(this BitStream bitStream)
-        {
-            return BodyIndex.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the CustomValueType from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
@@ -780,6 +770,15 @@ namespace DemoGame
             return BodyIndex.Read(dataReader, name);
         }
 
+        /// <summary>
+        /// Reads the CustomValueType from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
+        /// <returns>The CustomValueType read from the BitStream.</returns>
+        public static BodyIndex ReadBodyIndex(this BitStream bitStream)
+        {
+            return BodyIndex.Read(bitStream);
+        }
 
         /// <summary>
         /// Reads the CustomValueType from an IValueReader.

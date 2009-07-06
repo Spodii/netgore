@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Globalization;
-using System.IO;
 using System.Runtime.InteropServices;
 using NetGore.IO;
 
@@ -90,41 +89,6 @@ namespace DemoGame
         public byte GetRawValue()
         {
             return _value;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its InventorySlot equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed InventorySlot.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out InventorySlot parsedValue)
-        {
-            byte outValue;
-            bool success = byte.TryParse(s, style, provider, out outValue);
-            parsedValue = new InventorySlot(outValue);
-            return success;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its InventorySlot equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed InventorySlot.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, out InventorySlot parsedValue)
-        {
-            byte outValue;
-            bool success = byte.TryParse(s, out outValue);
-            parsedValue = new InventorySlot(outValue);
-            return success;
         }
 
         /// <summary>
@@ -235,6 +199,41 @@ namespace DemoGame
         public override string ToString()
         {
             return _value.ToString();
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its InventorySlot equivalent. A return value 
+        /// indicates whether the conversion succeeded or failed.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
+        /// permitted format of <paramref name="s"/>. A typical value to specify is
+        /// System.Globalization.NumberStyles.Integer.</param>
+        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
+        /// about <paramref name="s"/>.</param>
+        /// <param name="parsedValue">If the parsing was successful, contains the parsed InventorySlot.</param>
+        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
+        public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out InventorySlot parsedValue)
+        {
+            byte outValue;
+            bool success = byte.TryParse(s, style, provider, out outValue);
+            parsedValue = new InventorySlot(outValue);
+            return success;
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its InventorySlot equivalent. A return value 
+        /// indicates whether the conversion succeeded or failed.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="parsedValue">If the parsing was successful, contains the parsed InventorySlot.</param>
+        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
+        public static bool TryParse(string s, out InventorySlot parsedValue)
+        {
+            byte outValue;
+            bool success = byte.TryParse(s, out outValue);
+            parsedValue = new InventorySlot(outValue);
+            return success;
         }
 
         /// <summary>
@@ -841,16 +840,6 @@ namespace DemoGame
     public static class InventorySlotReadWriteExtensions
     {
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
-        public static InventorySlot ReadInventorySlot(this BitStream bitStream)
-        {
-            return InventorySlot.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the CustomValueType from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
@@ -870,6 +859,16 @@ namespace DemoGame
         public static InventorySlot GetInventorySlot(this IDataReader dataReader, string name)
         {
             return InventorySlot.Read(dataReader, name);
+        }
+
+        /// <summary>
+        /// Reads the CustomValueType from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
+        /// <returns>The CustomValueType read from the BitStream.</returns>
+        public static InventorySlot ReadInventorySlot(this BitStream bitStream)
+        {
+            return InventorySlot.Read(bitStream);
         }
 
         /// <summary>
