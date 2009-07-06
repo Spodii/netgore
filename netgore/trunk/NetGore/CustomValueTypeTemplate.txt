@@ -26,17 +26,17 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <summary>
         /// The maximum value.
         /// </summary>
-        const int _maxValue = UInt16.MaxValue;
+        const int _maxValue = UnderlyingValueType.MaxValue;
 
         /// <summary>
         /// The minimum value.
         /// </summary>
-        const int _minValue = UInt16.MinValue;
+        const int _minValue = UnderlyingValueType.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
         /// </summary>
-        readonly UInt16 _value;
+        readonly UnderlyingValueType _value;
 
         /// <summary>
         /// CustomValueTypeName constructor.
@@ -47,7 +47,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
             if (value < _minValue || value > _maxValue)
                 throw new ArgumentOutOfRangeException("value");
 
-            _value = (UInt16)value;
+            _value = (UnderlyingValueType)value;
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// Gets the raw internal value of this CustomValueTypeName.
         /// </summary>
         /// <returns>The raw internal value.</returns>
-        public UInt16 GetRawValue()
+        public UnderlyingValueType GetRawValue()
         {
             return _value;
         }
@@ -109,7 +109,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <returns>The CustomValueTypeName read from the IValueReader.</returns>
         public static CustomValueTypeName Read(IValueReader reader, string name)
         {
-            UInt16 value = reader.ReadXXXX(name); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
+            UnderlyingValueType value = reader.ReadXXXX(name); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
             return new CustomValueTypeName(value);
         }
 
@@ -122,10 +122,10 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         public static CustomValueTypeName Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
-            if (value is UInt16)
-                return new CustomValueTypeName((UInt16)value);
+            if (value is UnderlyingValueType)
+                return new CustomValueTypeName((UnderlyingValueType)value);
 
-            UInt16 convertedValue = Convert.ToXXXX(value); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
+            UnderlyingValueType convertedValue = Convert.ToXXXX(value); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
             return new CustomValueTypeName(convertedValue);
         }
 
@@ -147,7 +147,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// <returns>The CustomValueTypeName read from the BitStream.</returns>
         public static CustomValueTypeName Read(BitStream bitStream)
         {
-            UInt16 value = bitStream.ReadXXXX(); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
+            UnderlyingValueType value = bitStream.ReadXXXX(); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
             return new CustomValueTypeName(value);
         }
 
@@ -596,6 +596,17 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         }
 
         /// <summary>
+        /// Implements operator <.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than the left.</returns>
+        public static bool operator <(int left, CustomValueTypeName right)
+        {
+            return left < right._value;
+        }
+
+        /// <summary>
         /// Implements operator >.
         /// </summary>
         /// <param name="left">Left side argument.</param>
@@ -611,43 +622,10 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         /// </summary>
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than the right.</returns>
+        /// <returns>If the right argument is greater than the left.</returns>
         public static bool operator <(CustomValueTypeName left, CustomValueTypeName right)
         {
             return left._value < right._value;
-        }
-
-        /// <summary>
-        /// Implements operator >=.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the left argument is greater than or equal to the right.</returns>
-        public static bool operator >=(CustomValueTypeName left, CustomValueTypeName right)
-        {
-            return left >= right._value;
-        }
-
-        /// <summary>
-        /// Implements operator <=.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than or equal to the left.</returns>
-        public static bool operator <=(CustomValueTypeName left, CustomValueTypeName right)
-        {
-            return left <= right._value;
-        }
-
-        /// <summary>
-        /// Implements operator <.
-        /// </summary>
-        /// <param name="left">Left side argument.</param>
-        /// <param name="right">Right side argument.</param>
-        /// <returns>If the right argument is greater than the left.</returns>
-        public static bool operator <(int left, CustomValueTypeName right)
-        {
-            return left < right._value;
         }
 
         /// <summary>
@@ -717,6 +695,28 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         }
 
         /// <summary>
+        /// Implements operator >=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the left argument is greater than or equal to the right.</returns>
+        public static bool operator >=(CustomValueTypeName left, CustomValueTypeName right)
+        {
+            return left._value >= right._value;
+        }
+
+        /// <summary>
+        /// Implements operator <=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        public static bool operator <=(CustomValueTypeName left, CustomValueTypeName right)
+        {
+            return left._value <= right._value;
+        }
+
+        /// <summary>
         /// Implements operator !=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
@@ -747,6 +747,16 @@ namespace NetGore // TODO: Ensure this is the namespace you want
     public static class CustomValueTypeNameReadWriteExtensions
     {
         /// <summary>
+        /// Reads the CustomValueType from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
+        /// <returns>The CustomValueType read from the BitStream.</returns>
+        public static CustomValueTypeName ReadCustomValueTypeName(this BitStream bitStream)
+        {
+            return CustomValueTypeName.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the CustomValueType from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
@@ -768,15 +778,6 @@ namespace NetGore // TODO: Ensure this is the namespace you want
             return CustomValueTypeName.Read(dataReader, name);
         }
 
-        /// <summary>
-        /// Reads the CustomValueType from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
-        public static CustomValueTypeName ReadCustomValueTypeName(this BitStream bitStream)
-        {
-            return CustomValueTypeName.Read(bitStream);
-        }
 
         /// <summary>
         /// Reads the CustomValueType from an IValueReader.
