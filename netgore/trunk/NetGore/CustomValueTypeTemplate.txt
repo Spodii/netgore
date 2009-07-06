@@ -18,7 +18,7 @@ using NetGore.IO;
 
 namespace NetGore // TODO: Ensure this is the namespace you want
 {
-	// TODO: Add comments for the struct.
+    // TODO: Add comments for the struct.
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct CustomValueTypeName : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
@@ -126,7 +126,7 @@ namespace NetGore // TODO: Ensure this is the namespace you want
                 return new CustomValueTypeName((UnderlyingValueType)value);
 
             UnderlyingValueType convertedValue = Convert.ToXXXX(value); // TODO: Replace "XXXX" with the correct conversion to UnderlyingValueType 
-            return new CustomValueTypeName(convertedValue); 
+            return new CustomValueTypeName(convertedValue);
         }
 
         /// <summary>
@@ -692,6 +692,80 @@ namespace NetGore // TODO: Ensure this is the namespace you want
         public static bool operator ==(CustomValueTypeName left, CustomValueTypeName right)
         {
             return left._value == right._value;
+        }
+    }
+    
+    /// <summary>
+    /// Adds extensions to some data I/O objects for performing Read and Write operations for the CustomValueTypeName.
+    /// All of the operations are implemented in the CustomValueTypeName struct. These extensions are provided
+    /// purely for the convenience of accessing all the I/O operations from the same place.
+    /// </summary>
+    public static class CustomValueTypeNameReadWriteExtensions
+    {
+        /// <summary>
+        /// Reads the CustomValueType from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
+        /// <returns>The CustomValueType read from the BitStream.</returns>
+        public static CustomValueTypeName ReadCustomValueTypeName(this BitStream bitStream)
+        {
+            return CustomValueTypeName.Read(bitStream);
+        }
+
+        /// <summary>
+        /// Reads the CustomValueType from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
+        /// <param name="i">The field index to read.</param>
+        /// <returns>The CustomValueType read from the IDataReader.</returns>
+        public static CustomValueTypeName GetCustomValueTypeName(this IDataReader dataReader, int i)
+        {
+            return CustomValueTypeName.Read(dataReader, i);
+        }
+
+        /// <summary>
+        /// Reads the CustomValueType from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
+        /// <param name="name">The name of the field to read the value from.</param>
+        /// <returns>The CustomValueType read from the IDataReader.</returns>
+        public static CustomValueTypeName GetCustomValueTypeName(this IDataReader dataReader, string name)
+        {
+            return CustomValueTypeName.Read(dataReader, name);
+        }
+
+
+        /// <summary>
+        /// Reads the CustomValueType from an IValueReader.
+        /// </summary>
+        /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
+        /// <param name="name">The unique name of the value to read.</param>
+        /// <returns>The CustomValueType read from the IValueReader.</returns>
+        public static CustomValueTypeName ReadCustomValueTypeName(this IValueReader valueReader, string name)
+        {
+            return CustomValueTypeName.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Writes a CustomValueTypeName to a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="value">CustomValueTypeName to write.</param>
+        public static void Write(this BitStream bitStream, CustomValueTypeName value)
+        {
+            value.Write(bitStream);
+        }
+
+        /// <summary>
+        /// Writes a CustomValueTypeName to a IValueWriter.
+        /// </summary>
+        /// <param name="valueWriter">IValueWriter to write to.</param>
+        /// <param name="name">Unique name of the CustomValueTypeName that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">CustomValueTypeName to write.</param>
+        public static void Write(this IValueWriter valueWriter, string name, CustomValueTypeName value)
+        {
+            value.Write(valueWriter, name);
         }
     }
 }
