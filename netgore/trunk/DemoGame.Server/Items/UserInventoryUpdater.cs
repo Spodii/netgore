@@ -60,33 +60,52 @@ namespace DemoGame.Server
         /// </summary>
         public void Update()
         {
-            // TODO: Recycle the PacketWriter instead of grabbing from the pool every time
-            // Loop through all slots
-            for (InventorySlot slot = new InventorySlot(0); slot < Inventory.MaxInventorySize; slot++)
+            // Don't actually grab the PacketWriter from the pool until we know we will need it
+            PacketWriter pw = null;
+
+            try
             {
-                // Skip unchanged slots
-                if (!_slotChanged[(int)slot])
-                    continue;
-
-                // Get the item in the slot
-                ItemEntity item = UserInventory[slot];
-
-                if (item == null)
+                // Loop through all slots
+                for (InventorySlot slot = new InventorySlot(0); slot < Inventory.MaxInventorySize; slot++)
                 {
-                    // Remove the item
-                    using (PacketWriter pw = ServerPacket.SetInventorySlot(slot, new GrhIndex(0), 0))
+                    // Skip unchanged slots
+                    if (!_slotChanged[(int)slot])
+                        continue;
+
+                    // Get the item in the slot
+                    ItemEntity item = UserInventory[slot];
+
+                    // Get the values to send, which depends on if the slot is empty (item == null) or not
+                    GrhIndex sendItemGraphic;
+                    byte sendItemAmount;
+
+                    if (item == null)
                     {
-                        OwnerUser.Send(pw);
+                        sendItemGraphic = new GrhIndex(0);
+                        sendItemAmount = 0;
                     }
-                }
-                else
-                {
-                    // Update the item
-                    using (PacketWriter pw = ServerPacket.SetInventorySlot(slot, item.GraphicIndex, item.Amount))
+                    else
                     {
-                        OwnerUser.Send(pw);
+                        sendItemGraphic = item.GraphicIndex;
+                        sendItemAmount = item.Amount;
                     }
+
+                    // Grab the PacketWriter if we have not already, or clear it if we have
+                    if (pw == null)
+                        pw = ServerPacket.GetWriter();
+                    else
+                        pw.Reset();
+
+                    // Pack the data and send it
+                    ServerPacket.SetInventorySlot(pw, slot, sendItemGraphic, sendItemAmount);
+                    OwnerUser.Send(pw);
                 }
+            }
+            finally
+            {
+                // If we grabbed a PacketWriter, make sure we dispose of it!
+                if (pw != null)
+                    pw.Dispose();
             }
 
             // Changes complete

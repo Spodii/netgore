@@ -1627,7 +1627,8 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Resets the bit stream content and variables to a "like-new" state
+        /// Resets the BitStream content and variables to a "like-new" state. The read/write buffer modes, along
+        /// with the Mode are not altered by this.
         /// </summary>
         public void Reset()
         {
