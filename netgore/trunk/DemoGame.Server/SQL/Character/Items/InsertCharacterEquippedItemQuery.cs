@@ -26,7 +26,7 @@ namespace DemoGame.Server.Queries
         {
             p["@itemID"] = item.ItemID;
             p["@slot"] = item.Slot;
-            p["@userID"] = item.UserID;
+            p["@userID"] = item.CharacterID;
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace DemoGame.Server.Queries
             /// <summary>
             /// The item's ID for the equipment slot, or null if the slot is to be set to empty.
             /// </summary>
-            public readonly int? ItemID;
+            public readonly ItemID? ItemID;
 
             /// <summary>
             /// The EquipmentSlot to be updated.
@@ -45,20 +45,20 @@ namespace DemoGame.Server.Queries
             public readonly EquipmentSlot Slot;
 
             /// <summary>
-            /// The ID of the user that this equipment belongs to.
+            /// The ID of the Character that this equipment belongs to.
             /// </summary>
-            public readonly uint UserID;
+            public readonly CharacterID CharacterID;
 
             /// <summary>
-            /// UpdateUserEquipValues constructor.
+            /// InsertUserEquippedQuery constructor.
             /// </summary>
-            /// <param name="userID">The ID of the user that this equipment belongs to.</param>
+            /// <param name="characterID">The ID of the Character that this equipment belongs to.</param>
             /// <param name="itemID">The item's ID for the equipment slot, or null if the slot is to be set
             /// to empty.</param>
             /// <param name="slot">The EquipmentSlot to be updated.</param>
-            public QueryArgs(uint userID, int? itemID, EquipmentSlot slot)
+            public QueryArgs(CharacterID characterID, ItemID? itemID, EquipmentSlot slot)
             {
-                UserID = userID;
+                CharacterID = characterID;
                 ItemID = itemID;
                 Slot = slot;
             }

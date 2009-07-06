@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-
 namespace DemoGame.Server.Queries
 {
     public class SelectNPCTemplateQueryValues
@@ -13,12 +12,12 @@ namespace DemoGame.Server.Queries
         public readonly ushort BodyIndex;
         public readonly ushort GiveCash;
         public readonly ushort GiveExp;
-        public readonly int ID;
+        public readonly CharacterTemplateID ID;
         public readonly string Name;
         public readonly ushort Respawn;
         public readonly IEnumerable<IStat> Stats;
 
-        public SelectNPCTemplateQueryValues(int id, string name, ushort bodyIndex, string aiName, AllianceID allianceID,
+        public SelectNPCTemplateQueryValues(CharacterTemplateID id, string name, ushort bodyIndex, string aiName, AllianceID allianceID,
                                             ushort respawn, ushort giveExp, ushort giveCash,
                                             IEnumerable<IStat> stats)
         {

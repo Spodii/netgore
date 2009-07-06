@@ -59,38 +59,38 @@ namespace DemoGame.Client
                 int y = i / _columns;
                 Vector2 pos = offset + new Vector2(x * (_itemWidth + _sepX), y * (_itemHeight + _sepY));
 
-                new InventoryItemPB(this, pos, (byte)i);
+                new InventoryItemPB(this, pos, new InventorySlot(i));
             }
         }
 
         void InventoryItemPB_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            byte slot = ((InventoryItemPB)sender).Slot;
+            InventorySlot slot = ((InventoryItemPB)sender).Slot;
 
             if (Inventory[slot] == null)
                 return;
 
-            ItemInfoTooltip.HandleMouseEnter(sender, ItemInfoSource.Inventory, slot);
+            ItemInfoTooltip.HandleMouseEnter(sender, ItemInfoSource.Inventory, (int)slot);
         }
 
         void InventoryItemPB_OnMouseLeave(object sender, MouseEventArgs e)
         {
-            byte slot = ((InventoryItemPB)sender).Slot;
+            InventorySlot slot = ((InventoryItemPB)sender).Slot;
 
             if (Inventory[slot] == null)
                 return;
 
-            ItemInfoTooltip.HandleMouseLeave(sender, ItemInfoSource.Inventory, slot);
+            ItemInfoTooltip.HandleMouseLeave(sender, ItemInfoSource.Inventory, (int)slot);
         }
 
         void InventoryItemPB_OnMouseMove(object sender, MouseEventArgs e)
         {
-            byte slot = ((InventoryItemPB)sender).Slot;
+            InventorySlot slot = ((InventoryItemPB)sender).Slot;
 
             if (Inventory[slot] == null)
                 return;
 
-            ItemInfoTooltip.HandleMouseMove(sender, ItemInfoSource.Inventory, slot);
+            ItemInfoTooltip.HandleMouseMove(sender, ItemInfoSource.Inventory, (int)slot);
         }
 
         void InventoryItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
@@ -132,14 +132,14 @@ namespace DemoGame.Client
         {
             readonly InventoryForm _invForm;
 
-            readonly byte _slot;
+            readonly InventorySlot _slot;
 
-            public byte Slot
+            public InventorySlot Slot
             {
                 get { return _slot; }
             }
 
-            public InventoryItemPB(InventoryForm parent, Vector2 pos, byte slot)
+            public InventoryItemPB(InventoryForm parent, Vector2 pos, InventorySlot slot)
                 : base(pos, null, new Vector2(_itemWidth, _itemHeight), parent)
             {
                 if (parent == null)

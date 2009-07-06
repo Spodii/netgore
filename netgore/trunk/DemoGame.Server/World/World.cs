@@ -106,14 +106,14 @@ namespace DemoGame.Server
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    NPC npc = new NPC(this, NPCTemplates.GetTemplate(1)) { RespawnMap = m };
+                    NPC npc = new NPC(this, NPCTemplates.GetTemplate(new CharacterTemplateID(1))) { RespawnMap = m };
                     npc.ChangeMap(m);
                 }
                 for (int i = 0; i < 5; i++)
                 {
                     float x = rand.Next(128, (int)m.Width - 256);
                     float y = rand.Next(128, (int)m.Height - 256);
-                    int id = rand.Next(1, Server.ItemTemplates.Count);
+                    ItemID id = new ItemID(rand.Next(1, Server.ItemTemplates.Count));
                     ItemEntity item = new ItemEntity(Server.ItemTemplates[id], new Vector2(x, y), 1);
                     m.AddEntity(item);
                 }
@@ -121,8 +121,8 @@ namespace DemoGame.Server
 #endif
 
             // HACK: This is just for testing the persistent NPCs
-            NPC a = new NPC(this, 2);
-            NPC b = new NPC(this, 3);
+            NPC a = new NPC(this, new CharacterID(2));
+            NPC b = new NPC(this, new CharacterID(3));
 
             a.SetAI("testAI");
             b.SetAI("testAI");

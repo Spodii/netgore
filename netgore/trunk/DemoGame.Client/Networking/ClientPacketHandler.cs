@@ -358,7 +358,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetInventorySlot)]
         void RecvSetInventorySlot(IIPSocket conn, BitStream r)
         {
-            byte slot = r.ReadByte();
+            InventorySlot slot = r.ReadInventorySlot();
             ushort graphic = r.ReadUShort();
             byte amount = r.ReadByte();
 

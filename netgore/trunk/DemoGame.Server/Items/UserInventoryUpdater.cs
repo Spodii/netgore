@@ -50,9 +50,10 @@ namespace DemoGame.Server
         /// Lets the UserInventoryUpdater know that an Inventory slot has changed and needs to be updated.
         /// </summary>
         /// <param name="slot">Slot that changed.</param>
-        public void SlotChanged(int slot)
+        public void SlotChanged(InventorySlot slot)
         {
-            _slotChanged[slot] = true;
+            // NOTE: Why is this method unused? Isn't it like... required to be called for this to work?
+            _slotChanged[(int)slot] = true;
         }
 
         /// <summary>
@@ -69,12 +70,12 @@ namespace DemoGame.Server
                     continue;
 
                 // Get the item in the slot
-                ItemEntity item = UserInventory[slot];
+                ItemEntity item = UserInventory[new InventorySlot(slot)];
 
                 if (item == null)
                 {
                     // Remove the item
-                    using (PacketWriter pw = ServerPacket.SetInventorySlot((byte)slot, 0, 0))
+                    using (PacketWriter pw = ServerPacket.SetInventorySlot(new InventorySlot(slot), 0, 0))
                     {
                         OwnerUser.Send(pw);
                     }
@@ -82,7 +83,7 @@ namespace DemoGame.Server
                 else
                 {
                     // Update the item
-                    using (PacketWriter pw = ServerPacket.SetInventorySlot((byte)slot, item.GraphicIndex, item.Amount))
+                    using (PacketWriter pw = ServerPacket.SetInventorySlot(new InventorySlot(slot), item.GraphicIndex, item.Amount))
                     {
                         OwnerUser.Send(pw);
                     }

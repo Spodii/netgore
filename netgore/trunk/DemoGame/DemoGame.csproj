@@ -93,6 +93,7 @@
     <Compile Include="GameMessages.cs" />
     <Compile Include="IDataReaderExtensions.cs" />
     <Compile Include="InventoryBase.cs" />
+    <Compile Include="InventorySlot.cs" />
     <Compile Include="ItemType.cs" />
     <Compile Include="ItemTypeExtensions.cs" />
     <Compile Include="IValueReaderExtensions.cs" />

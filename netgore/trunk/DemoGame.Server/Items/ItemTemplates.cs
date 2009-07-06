@@ -161,12 +161,23 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <returns>The element at the specified index.</returns>
-        public ItemTemplate this[int index]
+        ItemTemplate IList<ItemTemplate>.this[int index]
         {
             get { return _itemTemplates[index]; }
             set { throw new MethodAccessException(_isReadonlyMessage); }
         }
 
         #endregion
+
+        /// <summary>
+        /// Gets or sets the element at the specified index.
+        /// </summary>
+        /// <param name="index">The ID of the Item to get or set.</param>
+        /// <returns>The element at the specified index.</returns>
+        public ItemTemplate this[ItemID index]
+        {
+            get { return _itemTemplates[(int)index]; }
+            set { throw new MethodAccessException(_isReadonlyMessage); }
+        }
     }
 }

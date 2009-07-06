@@ -10,7 +10,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    public class SelectNPCTemplateDropsQuery : DbQueryReader<int>
+    public class SelectNPCTemplateDropsQuery : DbQueryReader<CharacterTemplateID>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static readonly string _queryString = string.Format(
@@ -21,7 +21,7 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IEnumerable<SelectNPCTemplateDropsQueryValues> Execute(int characterID)
+        public IEnumerable<SelectNPCTemplateDropsQueryValues> Execute(CharacterTemplateID characterID)
         {
             var ret = new List<SelectNPCTemplateDropsQueryValues>();
 
@@ -29,7 +29,7 @@ namespace DemoGame.Server.Queries
             {
                 while (r.Read())
                 {
-                    ushort itemID = r.GetUInt16("item_id");
+                    ItemID itemID = r.GetItemID("item_id");
                     byte min = r.GetByte("min");
                     byte max = r.GetByte("max");
                     ushort chance = r.GetUInt16("chance");
@@ -48,9 +48,9 @@ namespace DemoGame.Server.Queries
             return CreateParameters("@characterID");
         }
 
-        protected override void SetParameters(DbParameterValues p, int item)
+        protected override void SetParameters(DbParameterValues p, CharacterTemplateID characterID)
         {
-            p["@characterID"] = item;
+            p["@characterID"] = characterID;
         }
     }
 }

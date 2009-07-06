@@ -31,7 +31,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="slot">Index of the slot to get the Item from.</param>
         /// <returns>Item in the specified Inventory slot, or null if the slot is empty or invalid.</returns>
-        public T this[int slot]
+        public T this[InventorySlot slot]
         {
             get
             {
@@ -45,7 +45,7 @@ namespace DemoGame
                     return null;
                 }
 
-                return _buffer[slot];
+                return _buffer[(int)slot];
             }
 
             protected set
@@ -84,7 +84,7 @@ namespace DemoGame
                     value.OnDispose += ItemDisposeHandler;
 
                 // Change the ItemEntity reference
-                _buffer[slot] = value;
+                _buffer[(int)slot] = value;
 
                 // Allow for additional processing
                 HandleSlotChanged(slot, value, oldItem);
@@ -103,7 +103,7 @@ namespace DemoGame
         public T Add(T item)
         {
             // Try to stack the item in as many slots as possible until it runs out or we run out of slots
-            int stackSlot;
+            InventorySlot stackSlot;
             while ((stackSlot = FindStackableSlot(item)) >= 0)
             {
                 T invItem = this[stackSlot];
@@ -128,7 +128,7 @@ namespace DemoGame
             }
 
             // Could not stack, or only some of the item was stacked, so add item to empty slots
-            int emptySlot;
+            InventorySlot emptySlot;
             while ((emptySlot = FindEmptySlot()) >= 0)
             {
                 // Deep-copy the item and set it in the inventory
@@ -176,7 +176,7 @@ namespace DemoGame
         /// <param name="slot">Slot of the item to remove.</param>
         /// <param name="dispose">If true, the item in the slot will also be disposed. If false, the item
         /// will be removed from the Inventory, but not disposed.</param>
-        protected void ClearSlot(int slot, bool dispose)
+        protected void ClearSlot(InventorySlot slot, bool dispose)
         {
             // Get the item at the slot
             T item = this[slot];
@@ -203,18 +203,18 @@ namespace DemoGame
         /// Gets the index of the first unused Inventory slot.
         /// </summary>
         /// <returns>Index of the first unused Inventory slot, or -1 if all Inventory slots are in use.</returns>
-        protected int FindEmptySlot()
+        protected InventorySlot FindEmptySlot()
         {
             // Iterate through each slot
             for (int i = 0; i < MaxInventorySize; i++)
             {
                 // Return on the first null item
-                if (this[i] == null)
-                    return i;
+                if (this[new InventorySlot(i)] == null)
+                    return new InventorySlot(i);
             }
-
+            // TODO: Don't have -1 be the "no free slots". Instead, have it return a bool stating if a slot was found, and the actual slot an "out" parameter.
             // All slots are in use
-            return -1;
+            return new InventorySlot(-1);
         }
 
         /// <summary>
@@ -225,12 +225,12 @@ namespace DemoGame
         /// -1 if no slots could be found to stack the item on. The returned slot is not guarenteed
         /// to be able to hold all of the item, but it does guarentee to be able to hold at least
         /// one unit of the item.</returns>
-        protected int FindStackableSlot(ItemEntityBase item)
+        protected InventorySlot FindStackableSlot(ItemEntityBase item)
         {
             // Iterate through each slot
             for (int i = 0; i < MaxInventorySize; i++)
             {
-                T invItem = this[i];
+                T invItem = this[new InventorySlot(i)];
 
                 // Skip empty slots
                 if (invItem == null)
@@ -245,11 +245,12 @@ namespace DemoGame
                     continue;
 
                 // Stackable slot found
-                return i;
+                return new InventorySlot(i);
             }
 
             // No stackable slot found
-            return -1;
+            // TODO: Don't have -1 be the "no free slots". Instead, have it return a bool stating if a slot was found, and the actual slot an "out" parameter.
+            return new InventorySlot(-1);
         }
 
         /// <summary>
@@ -259,15 +260,15 @@ namespace DemoGame
         /// <returns>Slot for the specified <paramref name="item"/>.</returns>
         /// <exception cref="ArgumentException">The specified item is not in the Inventory.</exception>
         /// <exception cref="ArgumentNullException"><paramref name="item"/> was null.</exception>
-        public int GetSlot(T item)
+        public InventorySlot GetSlot(T item)
         {
             if (item == null)
                 throw new ArgumentNullException("item");
 
             for (int i = 0; i < MaxInventorySize; i++)
             {
-                if (this[i] == item)
-                    return i;
+                if (this[new InventorySlot(i)] == item)
+                    return new InventorySlot(i);
             }
 
             throw new ArgumentException("The specified item is not in the Inventory.", "item");
@@ -283,7 +284,7 @@ namespace DemoGame
         /// <param name="newItem">The item that was added to the <paramref name="slot"/>.</param>
         /// <param name="oldItem">The item that used to be in the <paramref name="slot"/>,
         /// or null if the slot used to be empty.</param>
-        protected virtual void HandleSlotChanged(int slot, T newItem, T oldItem)
+        protected virtual void HandleSlotChanged(InventorySlot slot, T newItem, T oldItem)
         {
         }
 
@@ -296,7 +297,7 @@ namespace DemoGame
             T item = (T)entity;
 
             // Try to get the slot
-            int slot;
+            InventorySlot slot;
             try
             {
                 slot = GetSlot(item);
@@ -320,7 +321,7 @@ namespace DemoGame
         /// sure to dispose of it!
         /// </summary>
         /// <param name="slot">Slot of the item to remove.</param>
-        public void RemoveAt(int slot)
+        public void RemoveAt(InventorySlot slot)
         {
             ClearSlot(slot, false);
         }

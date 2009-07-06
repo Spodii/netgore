@@ -8,7 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    public class DeleteCharacterEquippedItemQuery : DbQueryNonReader<int>
+    public class DeleteCharacterEquippedItemQuery : DbQueryNonReader<ItemID>
     {
         static readonly string _queryString =
             string.Format("DELETE FROM `{0}` WHERE `item_id`=@itemID LIMIT 1", DBTables.CharacterEquipped);
@@ -22,7 +22,7 @@ namespace DemoGame.Server.Queries
             return CreateParameters("@itemID");
         }
 
-        protected override void SetParameters(DbParameterValues p, int itemID)
+        protected override void SetParameters(DbParameterValues p, ItemID itemID)
         {
             p["@itemID"] = itemID;
         }

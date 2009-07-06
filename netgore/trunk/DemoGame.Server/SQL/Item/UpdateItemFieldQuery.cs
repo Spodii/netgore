@@ -26,7 +26,7 @@ namespace DemoGame.Server.Queries
             _connectionPool = connectionPool;
         }
 
-        public void Execute(int itemID, string field, object value)
+        public void Execute(ItemID itemID, string field, object value)
         {
             InternalUpdateItemFieldQuery fieldQuery;
             if (!_fieldQueries.TryGetValue(field, out fieldQuery))
@@ -81,10 +81,10 @@ namespace DemoGame.Server.Queries
         /// </summary>
         public struct QueryArgs
         {
-            public readonly int ItemID;
+            public readonly ItemID ItemID;
             public readonly object Value;
 
-            public QueryArgs(int itemID, object value)
+            public QueryArgs(ItemID itemID, object value)
             {
                 ItemID = itemID;
                 Value = value;

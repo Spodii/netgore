@@ -98,7 +98,8 @@ namespace DemoGame.Server
         {
         }
 
-        public NPC(World parent, uint characterID) : base(parent, true)
+        public NPC(World parent, CharacterID characterID)
+            : base(parent, true)
         {
             // HACK: This whole constructor is uber hax
             if (parent == null)

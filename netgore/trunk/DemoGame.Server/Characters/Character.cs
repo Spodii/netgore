@@ -254,9 +254,9 @@ namespace DemoGame.Server
             get { return World.Server.DBController; }
         }
 
-        uint _id;
+        CharacterID _id;
 
-        public uint ID
+        public CharacterID ID
         {
             get
             {
@@ -331,7 +331,7 @@ namespace DemoGame.Server
             return string.Format("{0} [ID: {1}, Type: {2}]", Name, ID, GetType().Name);
         }
 
-        protected void Load(uint characterID)
+        protected void Load(CharacterID characterID)
         {
             var values = DBController.SelectCharacterByID.Execute(characterID, Stats);
             InternalLoad(values);
@@ -760,7 +760,7 @@ namespace DemoGame.Server
             base.HandleDispose();
         }
 
-        bool UseEquipment(ItemEntity item, byte? inventorySlot)
+        bool UseEquipment(ItemEntity item, InventorySlot? inventorySlot)
         {
             // Only allow users to equip items
             var user = this as User;
@@ -785,7 +785,7 @@ namespace DemoGame.Server
         /// <param name="item">Item to use.</param>
         /// <param name="inventorySlot">Inventory slot of the item being used, or null if not used from the inventory.</param>
         /// <returns>True if the item was successfully used, else false.</returns>
-        public bool UseItem(ItemEntity item, byte? inventorySlot)
+        public bool UseItem(ItemEntity item, InventorySlot? inventorySlot)
         {
             // Check for a valid amount
             if (item.Amount <= 0)

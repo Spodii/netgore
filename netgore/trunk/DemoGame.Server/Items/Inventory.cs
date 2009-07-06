@@ -27,7 +27,7 @@ namespace DemoGame.Server
             _isPersistent = character.IsPersistent;
         }
 
-        public void DecreaseItemAmount(byte slot)
+        public void DecreaseItemAmount(InventorySlot slot)
         {
             // TODO: It would be preferred that I hook to the Item to listen to the amount's changes instead
 
@@ -77,7 +77,7 @@ namespace DemoGame.Server
         /// <param name="newItem">The ItemEntity that was added to the <paramref name="slot"/>.</param>
         /// <param name="oldItem">The ItemEntity that used to be in the <paramref name="slot"/>,
         /// or null if the slot used to be empty.</param>
-        protected override void HandleSlotChanged(int slot, ItemEntity newItem, ItemEntity oldItem)
+        protected override void HandleSlotChanged(InventorySlot slot, ItemEntity newItem, ItemEntity oldItem)
         {
             // If we are loading the Inventory, we do not want to do database updates since that would be redundant
             // and likely cause problems
@@ -115,7 +115,7 @@ namespace DemoGame.Server
                 SendSlotUpdate(slot);
         }
 
-        protected virtual void SendSlotUpdate(int slot)
+        protected virtual void SendSlotUpdate(InventorySlot slot)
         {
         }
 
@@ -143,7 +143,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="slot">Slot of the item to drop.</param>
         /// <returns>True if the item was successfully dropped, else false.</returns>
-        public bool Drop(int slot)
+        public bool Drop(InventorySlot slot)
         {
             // Get the item to drop
             ItemEntity dropItem = this[slot];
@@ -173,9 +173,10 @@ namespace DemoGame.Server
         /// <param name="item">Item that has changed.</param>
         void ItemGraphicOrAmountChangeHandler(ItemEntity item)
         {
+            // NOTE: Somehow, this assert actually can fail. Find out why!
             Debug.Assert(!_isPersistent, "This should NEVER be called when IsPersistent == false!");
 
-            int slot;
+            InventorySlot slot;
 
             // Try to get the slot
             try
@@ -205,14 +206,14 @@ namespace DemoGame.Server
             foreach (ItemValues values in queryResults) 
             {
                 // Make sure no item is already in the slot... just in case
-                if (this[slot] != null)
+                if (this[new InventorySlot(slot)] != null)
                 {
                     Debug.Fail("An item is already in this slot.");
-                    this[slot].Dispose();
+                    this[new InventorySlot(slot)].Dispose();
                 }
 
                 // Set the item into the slot
-                this[slot] = new ItemEntity(values);
+                this[new InventorySlot(slot)] = new ItemEntity(values);
                 slot++;
             }
 

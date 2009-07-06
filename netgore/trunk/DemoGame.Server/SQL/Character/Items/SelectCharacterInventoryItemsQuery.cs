@@ -5,7 +5,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    public class SelectCharacterInventoryItemsQuery : SelectItemQueryBase<uint>
+    public class SelectCharacterInventoryItemsQuery : SelectItemQueryBase<CharacterID>
     {
         static readonly string _queryString =
             string.Format("SELECT {0}.* FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
@@ -15,7 +15,7 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IEnumerable<ItemValues> Execute(uint characterID)
+        public IEnumerable<ItemValues> Execute(CharacterID characterID)
         {
             var retValues = new List<ItemValues>();
 
@@ -36,7 +36,7 @@ namespace DemoGame.Server.Queries
             return CreateParameters("@characterID");
         }
 
-        protected override void SetParameters(DbParameterValues p, uint characterID)
+        protected override void SetParameters(DbParameterValues p, CharacterID characterID)
         {
             p["@characterID"] = characterID;
         }

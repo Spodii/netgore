@@ -19,7 +19,7 @@ namespace DemoGame.Server
         readonly IEnumerable<NPCDrop> _drops;
         readonly ushort _giveCash;
         readonly ushort _giveExp;
-        readonly int _id;
+        readonly CharacterTemplateID _id;
         readonly string _name;
         readonly ushort _respawnSecs;
         readonly IEnumerable<IStat> _stats;
@@ -63,10 +63,7 @@ namespace DemoGame.Server
             get { return _giveExp; }
         }
 
-        /// <summary>
-        /// Gets the ID of the NPCTemplate.
-        /// </summary>
-        public int ID
+        public CharacterTemplateID ID
         {
             get { return _id; }
         }
@@ -99,11 +96,11 @@ namespace DemoGame.Server
         /// <summary>
         /// NPCTemplate constructor
         /// </summary>
-        /// <param name="id">Unique ID of the NPC template.</param>
+        /// <param name="id">Unique ID of the Character template.</param>
         /// <param name="query">SelectNPCTemplateQuery to load the information from.</param>
         /// <param name="allianceManager">AllianceManager containing the alliances used by the NPCs.</param>
         /// <param name="itemTemplates">ItemTemplates containing the templates for items the NPCs will drop.</param>
-        public NPCTemplate(int id, SelectNPCTemplateQuery query, SelectNPCTemplateDropsQuery dropsQuery,
+        public NPCTemplate(CharacterTemplateID id, SelectNPCTemplateQuery query, SelectNPCTemplateDropsQuery dropsQuery,
             AllianceManager allianceManager, ItemTemplates itemTemplates)
         {
             if (allianceManager == null)
@@ -121,7 +118,7 @@ namespace DemoGame.Server
             _alliance = allianceManager[values.AllianceID];
 
             // Get the drops
-            var drops = GetNPCDrops(dropsQuery, id, itemTemplates);
+            var drops = GetTemplateDrops(dropsQuery, id, itemTemplates);
             _drops = drops.ToArray();
 
             // Only store stats that have a non-zero value, and assume the rest are zero
@@ -131,7 +128,7 @@ namespace DemoGame.Server
                 log.InfoFormat("Loaded NPCTemplate `{0}` [{1}]", ID, Name);
         }
 
-        public static IEnumerable<NPCDrop> GetNPCDrops(SelectNPCTemplateDropsQuery dropsQuery, int characterID, ItemTemplates itemTemplates)
+        public static IEnumerable<NPCDrop> GetTemplateDrops(SelectNPCTemplateDropsQuery dropsQuery, CharacterTemplateID characterID, ItemTemplates itemTemplates)
         {
             var dropValues = dropsQuery.Execute(characterID);
 
