@@ -35,17 +35,17 @@ namespace DemoGame.MapEditor
             if (!ValidateCategorization(true))
                 return;
 
-            ushort[] frames = null;
+            GrhIndex[] frames = null;
 
             if (radioAnimated.Checked)
             {
                 // Generate the frames
                 string[] framesText = txtFrames.Text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
-                frames = new ushort[framesText.Length];
+                frames = new GrhIndex[framesText.Length];
                 for (int i = 0; i < framesText.Length; i++)
                 {
                     // First check if it was entered as by the index
-                    if (!ushort.TryParse(framesText[i], out frames[i]))
+                    if (!GrhIndex.TryParse(framesText[i], out frames[i]))
                     {
                         // Support it being entered by category
                         int lastPeriod = framesText[i].LastIndexOf('.');
@@ -58,7 +58,7 @@ namespace DemoGame.MapEditor
                 }
 
                 // Check that all the frames are valid
-                foreach (ushort frame in frames)
+                foreach (GrhIndex frame in frames)
                 {
                     if (GrhInfo.GetData(frame) == null)
                     {
@@ -69,8 +69,8 @@ namespace DemoGame.MapEditor
             }
 
             // Validate the strings
-            ushort newIndex;
-            if (ushort.TryParse(txtIndex.Text, out newIndex))
+            GrhIndex newIndex;
+            if (GrhIndex.TryParse(txtIndex.Text, out newIndex))
             {
                 if (newIndex != _gd.GrhIndex)
                 {

@@ -29,15 +29,15 @@ namespace DemoGame.MapEditor
         /// <param name="index">Index of the GrhData to get/set the walls for</param>
         /// <returns>List of the WallEntities for the given GrhData, or null if the GrhData is
         /// invalid or no bound walls exist for it</returns>
-        public List<WallEntityBase> this[int index]
+        public List<WallEntityBase> this[GrhIndex index]
         {
             get
             {
-                if (!_walls.CanGet(index))
+                if (!_walls.CanGet((int)index))
                     return null;
-                return _walls[index];
+                return _walls[(int)index];
             }
-            set { _walls[index] = value; }
+            set { _walls[(int)index] = value; }
         }
 
         /// <summary>
@@ -111,10 +111,10 @@ namespace DemoGame.MapEditor
             foreach (var wallInfo in wallInfoFile)
             {
                 // Get the list information
-                ushort grhIndex = ushort.Parse(wallInfo["Wall.GrhData"]);
+                GrhIndex grhIndex = GrhIndex.Parse(wallInfo["Wall.GrhData"]);
                 int wallCount = int.Parse(wallInfo["Wall.WallCount"]);
                 var walls = new List<WallEntityBase>(wallCount);
-                _walls[grhIndex] = walls;
+                _walls[(int)grhIndex] = walls;
 
                 // Create the individual walls
                 for (int i = 0; i < wallCount; i++)

@@ -82,6 +82,7 @@
     <Compile Include="Entities\DynamicEntityFactory.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityEventHandler.cs" />
+    <Compile Include="GrhIndex.cs" />
     <Compile Include="IDataRecordExtensions.cs" />
     <Compile Include="IEnumerableExtensions.cs" />
     <Compile Include="IsBetweenExtensions.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="PropertySync\PropertySyncBool.cs" />
     <Compile Include="PropertySync\PropertySyncCollisionType.cs" />
     <Compile Include="PropertySync\PropertySyncColor.cs" />
+    <Compile Include="PropertySync\PropertySyncGrhIndex.cs" />
     <Compile Include="PropertySync\PropertySyncMapEntityIndex.cs" />
     <Compile Include="PropertySync\PropertySyncMapIndex.cs" />
     <Compile Include="PropertySync\PropertySyncSByte.cs" />

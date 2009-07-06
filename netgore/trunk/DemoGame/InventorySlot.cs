@@ -1,26 +1,28 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
+using System.IO;
 using System.Runtime.InteropServices;
 using NetGore.IO;
 
 namespace DemoGame
 {
     /// <summary>
-    /// Represents the index of an Inventory slot.
+    /// Represents the index of a slot in the Inventory.
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
     public struct InventorySlot : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
-        /// The maximum value.
+        /// Represents the largest possible value of InventorySlot. This field is constant.
         /// </summary>
-        const int _maxValue = byte.MaxValue;
+        public const int MaxValue = byte.MaxValue;
 
         /// <summary>
-        /// The minimum value.
+        /// Represents the smallest possible value of InventorySlot. This field is constant.
         /// </summary>
-        const int _minValue = byte.MinValue;
+        public const int MinValue = byte.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
@@ -33,7 +35,7 @@ namespace DemoGame
         /// <param name="value">Value to assign to the new InventorySlot.</param>
         public InventorySlot(int value)
         {
-            if (value < _minValue || value > _maxValue)
+            if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
 
             _value = (byte)value;
@@ -91,6 +93,91 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Converts the string representation of a number to its InventorySlot equivalent. A return value 
+        /// indicates whether the conversion succeeded or failed.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
+        /// permitted format of <paramref name="s"/>. A typical value to specify is
+        /// System.Globalization.NumberStyles.Integer.</param>
+        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
+        /// about <paramref name="s"/>.</param>
+        /// <param name="parsedValue">If the parsing was successful, contains the parsed InventorySlot.</param>
+        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
+        public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out InventorySlot parsedValue)
+        {
+            byte outValue;
+            bool success = byte.TryParse(s, style, provider, out outValue);
+            parsedValue = new InventorySlot(outValue);
+            return success;
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its InventorySlot equivalent. A return value 
+        /// indicates whether the conversion succeeded or failed.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="parsedValue">If the parsing was successful, contains the parsed InventorySlot.</param>
+        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
+        public static bool TryParse(string s, out InventorySlot parsedValue)
+        {
+            byte outValue;
+            bool success = byte.TryParse(s, out outValue);
+            parsedValue = new InventorySlot(outValue);
+            return success;
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its InventorySlot equivalent.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <returns>The parsed InventorySlot.</returns>
+        public static InventorySlot Parse(string s)
+        {
+            return new InventorySlot(byte.Parse(s));
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its InventorySlot equivalent.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
+        /// permitted format of <paramref name="s"/>. A typical value to specify is
+        /// System.Globalization.NumberStyles.Integer.</param>
+        /// <returns>The parsed InventorySlot.</returns>
+        public static InventorySlot Parse(string s, NumberStyles style)
+        {
+            return new InventorySlot(byte.Parse(s, style));
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its InventorySlot equivalent.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
+        /// about <paramref name="s"/>.</param>
+        /// <returns>The parsed InventorySlot.</returns>
+        public static InventorySlot Parse(string s, IFormatProvider provider)
+        {
+            return new InventorySlot(byte.Parse(s, provider));
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its InventorySlot equivalent.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
+        /// permitted format of <paramref name="s"/>. A typical value to specify is
+        /// System.Globalization.NumberStyles.Integer.</param>
+        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
+        /// about <paramref name="s"/>.</param>
+        /// <returns>The parsed InventorySlot.</returns>
+        public static InventorySlot Parse(string s, NumberStyles style, IFormatProvider provider)
+        {
+            return new InventorySlot(byte.Parse(s, style, provider));
+        }
+
+        /// <summary>
         /// Reads an InventorySlot from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
@@ -141,12 +228,10 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Returns the fully qualified type name of this instance.
+        /// Converts the numeric value of this instance to its equivalent string representation.
         /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> containing a fully qualified type name.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
+        /// <returns>The string representation of the value of this instance, consisting of a sequence
+        /// of digits ranging from 0 to 9, without leading zeroes.</returns>
         public override string ToString()
         {
             return _value.ToString();
@@ -427,7 +512,7 @@ namespace DemoGame
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
         ///                 </param><filterpriority>2</filterpriority>
-        string IConvertible.ToString(IFormatProvider provider)
+        public string ToString(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToString(provider);
         }
@@ -486,6 +571,26 @@ namespace DemoGame
         }
 
         #endregion
+
+        /// <summary>
+        /// Implements operator ++.
+        /// </summary>
+        /// <param name="l">The InventorySlot to increment.</param>
+        /// <returns>The incremented InventorySlot.</returns>
+        public static InventorySlot operator ++(InventorySlot l)
+        {
+            return new InventorySlot(l._value + 1);
+        }
+
+        /// <summary>
+        /// Implements operator --.
+        /// </summary>
+        /// <param name="l">The InventorySlot to decrement.</param>
+        /// <returns>The decremented InventorySlot.</returns>
+        public static InventorySlot operator --(InventorySlot l)
+        {
+            return new InventorySlot(l._value - 1);
+        }
 
         /// <summary>
         /// Implements operator +.
@@ -601,6 +706,28 @@ namespace DemoGame
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
+        public static bool operator >(InventorySlot left, InventorySlot right)
+        {
+            return left._value > right._value;
+        }
+
+        /// <summary>
+        /// Implements operator <.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than the left.</returns>
+        public static bool operator <(InventorySlot left, InventorySlot right)
+        {
+            return left._value < right._value;
+        }
+
+        /// <summary>
+        /// Implements operator >.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the left argument is greater than the right.</returns>
         public static bool operator >(InventorySlot left, int right)
         {
             return left._value > right;
@@ -659,6 +786,28 @@ namespace DemoGame
         public static bool operator <=(InventorySlot left, int right)
         {
             return left._value <= right;
+        }
+
+        /// <summary>
+        /// Implements operator >=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the left argument is greater than or equal to the right.</returns>
+        public static bool operator >=(InventorySlot left, InventorySlot right)
+        {
+            return left._value >= right._value;
+        }
+
+        /// <summary>
+        /// Implements operator <=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        public static bool operator <=(InventorySlot left, InventorySlot right)
+        {
+            return left._value <= right._value;
         }
 
         /// <summary>
@@ -722,7 +871,6 @@ namespace DemoGame
         {
             return InventorySlot.Read(dataReader, name);
         }
-
 
         /// <summary>
         /// Reads the CustomValueType from an IValueReader.

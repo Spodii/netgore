@@ -46,7 +46,7 @@ namespace DemoGame.Server.Queries
             MapIndex mapIndex = r.GetMapIndex("map");
             float x = r.GetFloat("x");
             float y = r.GetFloat("y");
-            ushort body = r.GetUInt16("body");
+            BodyIndex body = r.GetBodyIndex("body");
 
             Vector2 pos = new Vector2(x, y);
 

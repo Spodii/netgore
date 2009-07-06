@@ -4,14 +4,15 @@ using System.Diagnostics;
 using System.Linq;
 
 using Microsoft.Xna.Framework;
+using NetGore;
 
 namespace DemoGame.Server
 {
     public class ItemTemplate
     {
         readonly string _desc;
-        readonly ushort _graphic;
-        readonly ushort _id;
+        readonly GrhIndex _graphic;
+        readonly ItemTemplateID _id;
         readonly byte _height;
         readonly string _name;
         readonly ItemStats _stats;
@@ -24,12 +25,12 @@ namespace DemoGame.Server
             get { return _desc; }
         }
 
-        public ushort Graphic
+        public GrhIndex Graphic
         {
             get { return _graphic; }
         }
 
-        public ushort ID
+        public ItemTemplateID ID
         {
             get { return _id; }
         }
@@ -69,7 +70,7 @@ namespace DemoGame.Server
             get { return _width; }
         }
 
-        public ItemTemplate(ushort id, string name, string desc, ItemType type, ushort graphic, int value, byte width,
+        public ItemTemplate(ItemTemplateID id, string name, string desc, ItemType type, GrhIndex graphic, int value, byte width,
                             byte height, ItemStats stats)
         {
             _id = id;

@@ -136,8 +136,9 @@ namespace DemoGame.SkeletonEditor
         void btnAdd_Click(object sender, EventArgs e)
         {
             Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length + 1);
-            SkeletonBody.BodyItems[SkeletonBody.BodyItems.Length - 1] =
-                new SkeletonBodyItem(new SkeletonBodyItemInfo(0, _skeleton.RootNode.Name, string.Empty, Vector2.Zero, Vector2.Zero));
+            var bodyItemInfo = new SkeletonBodyItemInfo(new GrhIndex(0), _skeleton.RootNode.Name, string.Empty, Vector2.Zero, Vector2.Zero);
+            var bodyItem = new SkeletonBodyItem(bodyItemInfo);
+            SkeletonBody.BodyItems[SkeletonBody.BodyItems.Length - 1] = bodyItem;
             UpdateBodyList();
         }
 
@@ -877,7 +878,7 @@ namespace DemoGame.SkeletonEditor
         {
             try
             {
-                ushort grhIndex = ushort.Parse(txtGrhIndex.Text);
+                GrhIndex grhIndex = GrhIndex.Parse(txtGrhIndex.Text);
                 SelectedDSI.Grh = new Grh(grhIndex, AnimType.Loop, (int)_watch.ElapsedMilliseconds);
                 txtGrhIndex.BackColor = ColorNormal;
                 UpdateSelectedDSI();

@@ -359,7 +359,7 @@ namespace DemoGame.Client
         void RecvSetInventorySlot(IIPSocket conn, BitStream r)
         {
             InventorySlot slot = r.ReadInventorySlot();
-            ushort graphic = r.ReadUShort();
+            GrhIndex graphic = r.ReadGrhIndex();
             byte amount = r.ReadByte();
 
             UserInventory.Update(slot, graphic, amount, GetTime());
@@ -396,7 +396,7 @@ namespace DemoGame.Client
 
             if (hasValue)
             {
-                ushort graphic = r.ReadUShort();
+                GrhIndex graphic = r.ReadGrhIndex();
                 UserEquipped.SetSlot(slot, graphic);
             }
             else

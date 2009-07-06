@@ -83,7 +83,7 @@ namespace DemoGame.Server
         /// <returns>A Rectangle defining the melee hit area for the Actor.</returns>
         Rectangle GetMeleeRect()
         {
-            return Actor.BodyInfo.GetHitRect(Actor, Actor.BodyInfo.PunchRect);
+            return BodyInfo.GetHitRect(Actor, Actor.BodyInfo.PunchRect);
         }
 
         /// <summary>

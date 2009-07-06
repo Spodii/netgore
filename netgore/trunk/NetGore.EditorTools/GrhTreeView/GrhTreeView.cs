@@ -437,8 +437,8 @@ namespace NetGore.EditorTools
                 return null;
 
             // Get the index
-            ushort grhIndex;
-            if (!ushort.TryParse(node.Name, out grhIndex))
+            GrhIndex grhIndex;
+            if (!GrhIndex.TryParse(node.Name, out grhIndex))
             {
                 Debug.Fail("Failed to parse GrhIndex of the node.");
                 return null;
@@ -887,8 +887,8 @@ namespace NetGore.EditorTools
             }
 
             // Get the index
-            ushort grhIndex;
-            if (!ushort.TryParse(node.Name, out grhIndex))
+            GrhIndex grhIndex;
+            if (!GrhIndex.TryParse(node.Name, out grhIndex))
             {
                 Debug.Fail("Failed to parse GrhIndex of the node.");
                 gd = null;
@@ -920,8 +920,8 @@ namespace NetGore.EditorTools
                 return false;
 
             // Get the index
-            ushort grhIndex;
-            if (!ushort.TryParse(node.Name, out grhIndex))
+            GrhIndex grhIndex;
+            if (!GrhIndex.TryParse(node.Name, out grhIndex))
             {
                 Debug.Fail("Failed to parse GrhIndex of the node.");
                 return false;
@@ -951,7 +951,7 @@ namespace NetGore.EditorTools
                     continue;
 
                 // Store the GrhIndex of the animation before updating it to compare if there was a change
-                int oldGrhIndex = atn.Grh.CurrentGrhData.GrhIndex;
+                GrhIndex oldGrhIndex = atn.Grh.CurrentGrhData.GrhIndex;
 
                 // Update the Grh
                 atn.Grh.Update(Time);
@@ -985,7 +985,7 @@ namespace NetGore.EditorTools
         /// Updates a GrhData's information in the tree
         /// </summary>
         /// <param name="grhIndex">Index of the GrhData to update</param>
-        public void UpdateGrhData(ushort grhIndex)
+        public void UpdateGrhData(GrhIndex grhIndex)
         {
             UpdateGrhData(GrhInfo.GetData(grhIndex));
         }

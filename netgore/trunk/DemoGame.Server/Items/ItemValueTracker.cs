@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using NetGore;
 
 namespace DemoGame.Server
 {
@@ -10,7 +10,7 @@ namespace DemoGame.Server
     {
         byte _amount;
         string _description;
-        ushort _graphicIndex;
+        GrhIndex _graphicIndex;
         bool _isNull;
         string _name;
         int _value;
@@ -25,7 +25,7 @@ namespace DemoGame.Server
             get { return _description; }
         }
 
-        public ushort GraphicIndex
+        public GrhIndex GraphicIndex
         {
             get { return _graphicIndex; }
         }

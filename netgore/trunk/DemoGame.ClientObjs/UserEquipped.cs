@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using NetGore;
 
 namespace DemoGame.Client
 {
@@ -24,7 +24,7 @@ namespace DemoGame.Client
                 Debug.Fail("Failed to unset the slot for some reason.");
         }
 
-        public void SetSlot(EquipmentSlot slot, ushort graphicIndex)
+        public void SetSlot(EquipmentSlot slot, GrhIndex graphicIndex)
         {
             if (!TrySetSlot(slot, new ItemEntity(graphicIndex, 1, 0)))
                 Debug.Fail("Failed to set the slot for some reason.");

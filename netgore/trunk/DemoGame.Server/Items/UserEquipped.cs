@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.Network;
 
 namespace DemoGame.Server
@@ -30,7 +31,7 @@ namespace DemoGame.Server
             _user = user;
         }
 
-        protected override void SendSlotUpdate(EquipmentSlot slot, ushort? graphicIndex)
+        protected override void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)
         {
             using (PacketWriter msg = ServerPacket.UpdateEquipmentSlot(slot, graphicIndex))
             {

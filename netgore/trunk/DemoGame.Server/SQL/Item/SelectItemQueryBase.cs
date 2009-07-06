@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -29,7 +30,7 @@ namespace DemoGame.Server.Queries
             byte height = r.GetByte("height");
             string name = r.GetString("name");
             string description = r.GetString("description");
-            ushort graphicIndex = r.GetUInt16("graphic");
+            GrhIndex graphicIndex = r.GetGrhIndex("graphic");
             byte amount = r.GetByte("amount");
             int value = r.GetInt32("value");
             ItemType type = r.GetItemType("type");

@@ -552,8 +552,7 @@ namespace DemoGame.Server
         {
             return left != right._value;
         }
-        /* 
-         * // TODO: Add back
+
         /// <summary>
         /// Casts a ItemTemplateID to an Int32.
         /// </summary>
@@ -573,7 +572,7 @@ namespace DemoGame.Server
         {
             return new ItemTemplateID(value);
         }
-        */
+
         /// <summary>
         /// Implements operator >.
         /// </summary>

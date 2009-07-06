@@ -46,7 +46,7 @@ namespace DemoGame.Server.Queries
                 string name = r.GetString("name");
                 string ai = r.GetString("ai");
                 AllianceID allianceID = r.GetAllianceID("alliance_id");
-                ushort bodyIndex = r.GetUInt16("body");
+                BodyIndex bodyIndex = r.GetBodyIndex("body");
                 ushort respawn = r.GetUInt16("respawn");
                 ushort giveExp = r.GetUInt16("give_exp");
                 ushort giveCash = r.GetUInt16("give_cash");

@@ -63,7 +63,7 @@ namespace NetGore.EditorTools
         /// <param name="dir">Directory containing the textures to find the GrhDatas for.</param>
         /// <returns>Indices of the GrhDatas for the textures in the specified <paramref name="dir"/>, ordered
         /// by their filename parsed as an int.</returns>
-        static ushort[] FindFrameIndices(int trimLen, string dir)
+        static GrhIndex[] FindFrameIndices(int trimLen, string dir)
         {
             // Get all of the texture files
             string[] files = Directory.GetFiles(dir, "*.png", SearchOption.TopDirectoryOnly);
@@ -88,7 +88,7 @@ namespace NetGore.EditorTools
             IEnumerable<string> goodFiles = fileInts.OrderBy(x => x.Key).Select(x => x.Value);
 
             // Find the corresponding GrhDatas
-            var ret = new List<ushort>();
+            var ret = new List<GrhIndex>();
 
             foreach (string file in goodFiles)
             {
@@ -245,7 +245,7 @@ namespace NetGore.EditorTools
                 string title = frameDirInfo.Title;
 
                 // Get the GrhIndices of the frames for the animation
-                ushort[] indices = FindFrameIndices(trimLen, frameDirInfo.Dir);
+                GrhIndex[] indices = FindFrameIndices(trimLen, frameDirInfo.Dir);
                 if (indices == null)
                     continue;
 

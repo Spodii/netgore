@@ -129,7 +129,7 @@ namespace NetGore.Graphics
             Depth = reader.ReadFloat("Depth");
             Offset = reader.ReadVector2("Offset");
 
-            int grhIndex = reader.ReadInt("GrhIndex");
+            GrhIndex grhIndex = reader.ReadGrhIndex("GrhIndex");
             GrhData grhData = GrhInfo.GetData(grhIndex);
             Grh grh = new Grh(grhData, AnimType.Loop, currentTime);
 
@@ -275,7 +275,7 @@ namespace NetGore.Graphics
             writer.Write("Depth", Depth);
             writer.Write("Offset", Offset);
 
-            int grhIndex = 0;
+            GrhIndex grhIndex = new GrhIndex(0);
             if (Sprite != null && Sprite.GrhData != null)
                 grhIndex = Sprite.GrhData.GrhIndex;
 

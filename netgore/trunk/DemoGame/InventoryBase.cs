@@ -104,12 +104,12 @@ namespace DemoGame
         {
             // Try to stack the item in as many slots as possible until it runs out or we run out of slots
             InventorySlot stackSlot;
-            while ((stackSlot = FindStackableSlot(item)) >= 0)
+            while (TryFindStackableSlot(item, out stackSlot))
             {
                 T invItem = this[stackSlot];
                 if (invItem == null)
                 {
-                    const string errmsg = "This should never be a null item. If it is, GetStackableSlot() may be broken.";
+                    const string errmsg = "This should never be a null item. If it is, TryFindStackableSlot() may be broken.";
                     Debug.Fail(errmsg);
                     if (log.IsErrorEnabled)
                         log.Error(errmsg);
@@ -129,7 +129,7 @@ namespace DemoGame
 
             // Could not stack, or only some of the item was stacked, so add item to empty slots
             InventorySlot emptySlot;
-            while ((emptySlot = FindEmptySlot()) >= 0)
+            while (TryFindEmptySlot(out emptySlot))
             {
                 // Deep-copy the item and set it in the inventory
                 T copy = (T)item.DeepCopy();
@@ -162,7 +162,8 @@ namespace DemoGame
                 return true;
 
             // If there are any free slots, we know it can be added
-            if (FindEmptySlot() >= 0)
+            InventorySlot emptySlot;
+            if (TryFindEmptySlot(out emptySlot))
                 return true;
 
             // FUTURE: Add support for returning true if the item can be stacked
@@ -202,30 +203,35 @@ namespace DemoGame
         /// <summary>
         /// Gets the index of the first unused Inventory slot.
         /// </summary>
-        /// <returns>Index of the first unused Inventory slot, or -1 if all Inventory slots are in use.</returns>
-        protected InventorySlot FindEmptySlot()
+        /// <param name="emptySlot">If function returns true, contains the index of the first unused Inventory slot.</param>
+        /// <returns>True if an empty slot was found, otherwise false.</returns>
+        protected bool TryFindEmptySlot(out InventorySlot emptySlot)
         {
             // Iterate through each slot
             for (int i = 0; i < MaxInventorySize; i++)
             {
                 // Return on the first null item
                 if (this[new InventorySlot(i)] == null)
-                    return new InventorySlot(i);
+                {
+                    emptySlot = new InventorySlot(i);
+                    return true;
+                }
             }
-            // TODO: Don't have -1 be the "no free slots". Instead, have it return a bool stating if a slot was found, and the actual slot an "out" parameter.
+
             // All slots are in use
-            return new InventorySlot(-1);
+            emptySlot = new InventorySlot(0);
+            return false;
         }
 
         /// <summary>
         /// Gets the first slot that the given <paramref name="item"/> can be stacked on.
         /// </summary>
         /// <param name="item">Item that will try to stack on existing items.</param>
-        /// <returns>Index of the first slot that the <paramref name="item"/> can be stacked on, or
-        /// -1 if no slots could be found to stack the item on. The returned slot is not guarenteed
-        /// to be able to hold all of the item, but it does guarentee to be able to hold at least
-        /// one unit of the item.</returns>
-        protected InventorySlot FindStackableSlot(ItemEntityBase item)
+        /// <param name="stackableSlot">If function returns true, contains the index of the first slot that
+        /// the <paramref name="item"/> can be stacked on. This slot is not guaranteed to be able to hold 
+        /// all of the item, but it does guarantee to be able to hold at least one unit of the item.</param>
+        /// <returns>True if a stackable slot was found, otherwise false.</returns>
+        protected bool TryFindStackableSlot(ItemEntityBase item, out InventorySlot stackableSlot)
         {
             // Iterate through each slot
             for (int i = 0; i < MaxInventorySize; i++)
@@ -245,12 +251,13 @@ namespace DemoGame
                     continue;
 
                 // Stackable slot found
-                return new InventorySlot(i);
+                stackableSlot = new InventorySlot(i);
+                return true;
             }
 
             // No stackable slot found
-            // TODO: Don't have -1 be the "no free slots". Instead, have it return a bool stating if a slot was found, and the actual slot an "out" parameter.
-            return new InventorySlot(-1);
+            stackableSlot = new InventorySlot(0);
+            return false;
         }
 
         /// <summary>

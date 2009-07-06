@@ -154,11 +154,11 @@ namespace NetGore.Graphics
     public class SkeletonBodyItemInfo
     {
         readonly string _destName;
-        readonly ushort _grhIndex;
+        readonly GrhIndex _grhIndex;
         readonly string _sourceName;
 
         /// <summary>
-        /// Gets the name of the destination node
+        /// Gets the name of the destination node.
         /// </summary>
         public string DestName
         {
@@ -166,25 +166,25 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the GrhIndex to use
+        /// Gets the GrhIndex to use.
         /// </summary>
-        public ushort GrhIndex
+        public GrhIndex GrhIndex
         {
             get { return _grhIndex; }
         }
 
         /// <summary>
-        /// Gets or sets the Grh drawing offset
+        /// Gets or sets the Grh drawing offset.
         /// </summary>
         public Vector2 Offset { get; set; }
 
         /// <summary>
-        /// Gets or sets the Grh drawing origin
+        /// Gets or sets the Grh drawing origin.
         /// </summary>
         public Vector2 Origin { get; set; }
 
         /// <summary>
-        /// Gets the name of the source node
+        /// Gets the name of the source node.
         /// </summary>
         public string SourceName
         {
@@ -192,14 +192,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// SkeletonBodyItemInfo constructor
+        /// SkeletonBodyItemInfo constructor.
         /// </summary>
-        /// <param name="grhIndex">GrhIndex of the body item</param>
-        /// <param name="sourceName">Name of the source node</param>
-        /// <param name="destName">Name of the destination node (String.Empty for no destination)</param>
-        /// <param name="offset">Grh drawing offset</param>
-        /// <param name="origin">Grh drawing origin</param>
-        public SkeletonBodyItemInfo(ushort grhIndex, string sourceName, string destName, Vector2 offset, Vector2 origin)
+        /// <param name="grhIndex">GrhIndex of the body item.</param>
+        /// <param name="sourceName">Name of the source node.</param>
+        /// <param name="destName">Name of the destination node (String.Empty for no destination).</param>
+        /// <param name="offset">Grh drawing offset.</param>
+        /// <param name="origin">Grh drawing origin.</param>
+        public SkeletonBodyItemInfo(GrhIndex grhIndex, string sourceName, string destName, Vector2 offset, Vector2 origin)
         {
             _grhIndex = grhIndex;
             _sourceName = sourceName;
@@ -209,13 +209,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Loads a SkeletonBodyItemInfo from a XmlReader
+        /// Loads a SkeletonBodyItemInfo from a XmlReader.
         /// </summary>
-        /// <param name="r">XmlReader to read from</param>
-        /// <returns>New SkeletonBodyItemInfo</returns>
+        /// <param name="r">XmlReader to read from.</param>
+        /// <returns>New SkeletonBodyItemInfo.</returns>
         public static SkeletonBodyItemInfo Load(XmlReader r)
         {
-            ushort grhIndex = 0;
+            GrhIndex grhIndex = new GrhIndex(0);
             string srcName = string.Empty;
             string destName = string.Empty;
             Vector2 offset = Vector2.Zero;
@@ -226,7 +226,7 @@ namespace NetGore.Graphics
                 if (r.NodeType == XmlNodeType.Element)
                 {
                     if (r.Name == "GrhIndex")
-                        grhIndex = (ushort)r.ReadElementContentAsInt();
+                        grhIndex = new GrhIndex(r.ReadElementContentAsInt());
                     else if (r.Name == "Source")
                         srcName = r.ReadElementContentAsString();
                     else if (r.Name == "Dest")
