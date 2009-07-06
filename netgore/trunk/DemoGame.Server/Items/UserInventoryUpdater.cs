@@ -52,7 +52,6 @@ namespace DemoGame.Server
         /// <param name="slot">Slot that changed.</param>
         public void SlotChanged(InventorySlot slot)
         {
-            // NOTE: Why is this method unused? Isn't it like... required to be called for this to work?
             _slotChanged[(int)slot] = true;
         }
 

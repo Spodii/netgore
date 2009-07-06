@@ -14,7 +14,6 @@ namespace DemoGame.Server
     /// </summary>
     class UserInventory : Inventory
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly UserInventoryUpdater _inventoryUpdater;
 
         /// <summary>
@@ -33,6 +32,15 @@ namespace DemoGame.Server
         public void UpdateClient()
         {
             _inventoryUpdater.Update();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, notifies the Client that a slot in the Inventory has changed.
+        /// </summary>
+        /// <param name="slot">The slot that changed.</param>
+        protected override void SendSlotUpdate(InventorySlot slot)
+        {
+            _inventoryUpdater.SlotChanged(slot);
         }
     }
 }
