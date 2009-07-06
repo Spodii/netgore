@@ -7,10 +7,10 @@ namespace DemoGame.Server.Queries
 {
     public struct SelectAllianceQueryValues
     {
-        public readonly byte ID;
+        public readonly AllianceID ID;
         public readonly string Name;
 
-        public SelectAllianceQueryValues(byte id, string name)
+        public SelectAllianceQueryValues(AllianceID id, string name)
         {
             ID = id;
             Name = name;

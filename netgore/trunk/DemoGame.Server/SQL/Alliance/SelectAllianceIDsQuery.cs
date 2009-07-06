@@ -16,15 +16,15 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IEnumerable<byte> Execute()
+        public IEnumerable<AllianceID> Execute()
         {
-            var ret = new List<byte>();
+            var ret = new List<AllianceID>();
 
             using (var r = ExecuteReader())
             {
                 while (r.Read())
                 {
-                    byte allianceID = r.GetByte("id");
+                    AllianceID allianceID = r.GetAllianceID("id");
                     ret.Add(allianceID);
                 }
             }

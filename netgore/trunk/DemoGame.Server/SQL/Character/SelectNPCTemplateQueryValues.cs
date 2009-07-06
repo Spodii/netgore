@@ -9,7 +9,7 @@ namespace DemoGame.Server.Queries
     public class SelectNPCTemplateQueryValues
     {
         public readonly string AIName;
-        public readonly byte AllianceID;
+        public readonly AllianceID AllianceID;
         public readonly ushort BodyIndex;
         public readonly ushort GiveCash;
         public readonly ushort GiveExp;
@@ -18,7 +18,7 @@ namespace DemoGame.Server.Queries
         public readonly ushort Respawn;
         public readonly IEnumerable<IStat> Stats;
 
-        public SelectNPCTemplateQueryValues(int id, string name, ushort bodyIndex, string aiName, byte allianceID,
+        public SelectNPCTemplateQueryValues(int id, string name, ushort bodyIndex, string aiName, AllianceID allianceID,
                                             ushort respawn, ushort giveExp, ushort giveCash,
                                             IEnumerable<IStat> stats)
         {
