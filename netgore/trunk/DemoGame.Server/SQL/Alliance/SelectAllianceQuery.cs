@@ -7,7 +7,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    public class SelectAllianceQuery : DbQueryReader<byte>
+    public class SelectAllianceQuery : DbQueryReader<AllianceID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", DBTables.Alliance);
 
@@ -16,7 +16,7 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public SelectAllianceQueryValues Execute(byte id)
+        public SelectAllianceQueryValues Execute(AllianceID id)
         {
             SelectAllianceQueryValues ret;
 
@@ -38,7 +38,7 @@ namespace DemoGame.Server.Queries
             return CreateParameters("@id");
         }
 
-        protected override void SetParameters(DbParameterValues p, byte id)
+        protected override void SetParameters(DbParameterValues p, AllianceID id)
         {
             p["@id"] = id;
         }

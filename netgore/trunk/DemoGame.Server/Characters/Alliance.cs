@@ -15,15 +15,15 @@ namespace DemoGame.Server
     public class Alliance
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly byte[] _attackable;
-        readonly byte[] _hostile;
+        readonly AllianceID[] _attackable;
+        readonly AllianceID[] _hostile;
         readonly string _name;
-        readonly byte _id;
+        readonly AllianceID _id;
 
         /// <summary>
         /// Gets the list of Alliance IDs that this Alliance can attack
         /// </summary>
-        public IEnumerable<byte> Attackable
+        public IEnumerable<AllianceID> Attackable
         {
             get { return _attackable; }
         }
@@ -31,12 +31,12 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the ID of this Alliance.
         /// </summary>
-        public byte ID { get { return _id; } }
+        public AllianceID ID { get { return _id; } }
 
         /// <summary>
         /// Gets the list of Alliance IDs that this Alliance is hostile towards
         /// </summary>
-        public IEnumerable<byte> Hostile
+        public IEnumerable<AllianceID> Hostile
         {
             get { return _hostile; }
         }
@@ -56,7 +56,7 @@ namespace DemoGame.Server
         /// <param name="name">Name of the Alliance.</param>
         /// <param name="attackable">Alliance IDs that this Alliance can attack.</param>
         /// <param name="hostile">Alliance IDs that this Alliance is hostile towards.</param>
-        public Alliance(byte id, string name, IEnumerable<byte> attackable, IEnumerable<byte> hostile)
+        public Alliance(AllianceID id, string name, IEnumerable<AllianceID> attackable, IEnumerable<AllianceID> hostile)
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
@@ -91,7 +91,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="allianceID">Alliance ID to check against.</param>
         /// <returns>True if can attack the given alliance, else false.</returns>
-        public bool CanAttack(byte allianceID)
+        public bool CanAttack(AllianceID allianceID)
         {
             return Attackable.Contains(allianceID);
         }
@@ -120,7 +120,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="allianceID">Alliance ID to check against.</param>
         /// <returns>True if hostile towards the given Alliance, else false.</returns>
-        public bool IsHostile(byte allianceID)
+        public bool IsHostile(AllianceID allianceID)
         {
             return Hostile.Contains(allianceID);
         }

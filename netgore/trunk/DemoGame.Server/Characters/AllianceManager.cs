@@ -56,13 +56,13 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="allianceID">ID of the Alliance.</param>
         /// <returns>The Alliance with the given ID, or null if none found.</returns>
-        public Alliance this[byte allianceID]
+        public Alliance this[AllianceID allianceID]
         {
             get 
             {
-                if (!_alliance.CanGet(allianceID))
+                if (!_alliance.CanGet((int)allianceID))
                     return null;
-                return _alliance[allianceID]; 
+                return _alliance[(int)allianceID]; 
             }
         }
 
@@ -98,7 +98,7 @@ namespace DemoGame.Server
         /// <param name="dbController">DBController used to communicate with the database.</param>
         /// <param name="id">ID of the Alliance to load.</param>
         /// <returns>The loaded Alliance.</returns>
-        public static Alliance Load(DBController dbController, byte id)
+        public static Alliance LoadAlliance(DBController dbController, AllianceID id)
         {
             var values = dbController.SelectAlliance.Execute(id);
             var attackableIDs = dbController.SelectAllianceAttackable.Execute(id);
@@ -127,9 +127,9 @@ namespace DemoGame.Server
             
 #if DEBUG
             // Ensure the ID is free
-            if (_alliance.CanGet(alliance.ID))
+            if (_alliance.CanGet((int)alliance.ID))
             {
-                var a = _alliance[alliance.ID];
+                var a = _alliance[(int)alliance.ID];
                 if (a != null)
                 {
                     const string errmsg = "Failed to add Alliance `{0}` - ID `{1}` is already occupied by `{2}`!";
@@ -153,7 +153,7 @@ namespace DemoGame.Server
 
             // Add it
             _allianceFromName.Add(alliance.Name, alliance);
-            _alliance.Insert(alliance.ID, alliance);
+            _alliance.Insert((int)alliance.ID, alliance);
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace DemoGame.Server
             // Load each alliance
             foreach (var allianceID in allianceIDs)
             {
-                var alliance = Load(DBController, allianceID);
+                var alliance = LoadAlliance(DBController, allianceID);
                 Add(alliance);
             }
 

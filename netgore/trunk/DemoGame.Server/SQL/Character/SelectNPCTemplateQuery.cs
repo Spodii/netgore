@@ -45,7 +45,7 @@ namespace DemoGame.Server.Queries
                 // Load the general NPC template values
                 string name = r.GetString("name");
                 string ai = r.GetString("ai");
-                byte allianceID = r.GetByte("alliance_id");
+                AllianceID allianceID = r.GetAllianceID("alliance_id");
                 ushort bodyIndex = r.GetUInt16("body");
                 ushort respawn = r.GetUInt16("respawn");
                 ushort giveExp = r.GetUInt16("give_exp");

@@ -7,10 +7,10 @@ namespace DemoGame.Server.Queries
 {
     public struct SelectAllianceAttackableQueryValues
     {
-        public readonly byte AllianceID;
-        public readonly IEnumerable<byte> AttackableIDs;
+        public readonly AllianceID AllianceID;
+        public readonly IEnumerable<AllianceID> AttackableIDs;
 
-        public SelectAllianceAttackableQueryValues(byte allianceID, IEnumerable<byte> attackableIDs)
+        public SelectAllianceAttackableQueryValues(AllianceID allianceID, IEnumerable<AllianceID> attackableIDs)
         {
             AllianceID = allianceID;
             AttackableIDs = attackableIDs;
