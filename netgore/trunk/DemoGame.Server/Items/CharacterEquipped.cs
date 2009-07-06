@@ -90,7 +90,7 @@ namespace DemoGame.Server
             if (Character.IsPersistent)
             {
                 var values = new InsertCharacterEquippedItemQuery.QueryArgs(Character.ID, item.ID, slot);
-                DBController.InsertCharacterEquippedItem.Execute(values); //!! InsertCharacterEquipped
+                DBController.InsertCharacterEquippedItem.Execute(values);
             }
 
             SendSlotUpdate(slot, item.GraphicIndex);
@@ -100,7 +100,7 @@ namespace DemoGame.Server
         {
             if (Character.IsPersistent)
             {
-                DBController.DeleteCharacterEquippedItem.Execute(item.ID); //!! DeleteCharacterEquipped
+                DBController.DeleteCharacterEquippedItem.Execute(item.ID);
             }
 
             ItemEntity remainder = Character.Inventory.Add(item);
