@@ -7,6 +7,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     public class SelectAllianceQuery : DbQueryReader<AllianceID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", DBTables.Alliance);

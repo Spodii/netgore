@@ -8,6 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     public class InsertCharacterInventoryItemQuery : DbQueryNonReader<InsertCharacterInventoryItemQuery.QueryArgs>
     {
         static readonly string _queryString = string.Format("INSERT INTO `{0}` SET `character_id`=@characterID,`item_id`=@itemID", DBTables.CharacterInventory);

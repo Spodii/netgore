@@ -8,6 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     public class InsertCharacterEquippedItemQuery : DbQueryNonReader<InsertCharacterEquippedItemQuery.QueryArgs>
     {
         static readonly string _queryString =

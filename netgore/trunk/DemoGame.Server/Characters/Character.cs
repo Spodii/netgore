@@ -320,7 +320,7 @@ namespace DemoGame.Server
             _saved = true;
 
             // Execute the user save query
-            DBController.UpdateCharacter.Execute(this);
+            DBController.GetQuery<UpdateCharacterQuery>().Execute(this);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Saved Character `{0}`.", this);
@@ -333,13 +333,13 @@ namespace DemoGame.Server
 
         protected void Load(CharacterID characterID)
         {
-            var values = DBController.SelectCharacterByID.Execute(characterID, Stats);
+            var values = DBController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID, Stats);
             InternalLoad(values);
         }
 
         protected void Load(string characterName)
         {
-            var values = DBController.SelectCharacter.Execute(characterName, Stats);
+            var values = DBController.GetQuery<SelectCharacterQuery>().Execute(characterName, Stats);
             InternalLoad(values);
         }
 

@@ -8,6 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     public class DeleteCharacterEquippedItemQuery : DbQueryNonReader<ItemID>
     {
         static readonly string _queryString =

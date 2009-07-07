@@ -10,6 +10,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     public class SelectNPCTemplateDropsQuery : DbQueryReader<CharacterTemplateID>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);

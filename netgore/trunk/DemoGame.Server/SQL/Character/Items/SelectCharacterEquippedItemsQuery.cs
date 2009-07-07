@@ -5,6 +5,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     public class SelectCharacterEquippedItemsQuery : SelectItemQueryBase<CharacterID>
     {
         static readonly string _queryString =

@@ -8,6 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     public class UpdateItemFieldQuery : IDisposable
     {
         const string _queryString = "UPDATE `" + ReplaceItemQuery.ItemsTableName + "` SET `{0}`=@value WHERE `id`=@itemID";

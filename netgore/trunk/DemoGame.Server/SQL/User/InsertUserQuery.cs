@@ -8,6 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     public class InsertUserQuery : UserQueryBase
     {
         // TODO: This won't even work because the password is never set... but its not like new users even work yet

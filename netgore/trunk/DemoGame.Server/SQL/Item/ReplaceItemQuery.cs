@@ -4,11 +4,11 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
-
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     public class ReplaceItemQuery : DbQueryNonReader<ItemValues>
     {
         public const string ItemsTableName = "item";

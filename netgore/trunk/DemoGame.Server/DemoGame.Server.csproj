@@ -116,7 +116,7 @@
     <Compile Include="Items\Inventory.cs" />
     <Compile Include="Items\InventoryChangeInfo.cs" />
     <Compile Include="Items\InventoryChangeTracker.cs" />
-    <Compile Include="Items\ItemGuidCreator.cs" />
+    <Compile Include="Items\ItemIDCreator.cs" />
     <Compile Include="Items\ItemID.cs" />
     <Compile Include="Items\ItemStats.cs" />
     <Compile Include="Items\ItemTemplateID.cs" />
@@ -144,6 +144,7 @@
     <Compile Include="SQL\Alliance\SelectAllianceQueryValues.cs" />
     <Compile Include="SQL\Character\SelectCharacterByIDQuery.cs" />
     <Compile Include="SQL\DBController.cs" />
+    <Compile Include="SQL\DBControllerQueryAttribute.cs" />
     <Compile Include="SQL\DBTables.cs" />
     <Compile Include="SQL\IDataReaderExtensions.cs" />
     <Compile Include="SQL\Item\SelectItemQueryBase.cs" />

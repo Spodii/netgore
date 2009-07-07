@@ -8,6 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     /// <summary>
     /// A query that checks if a User with the specified name exists.
     /// </summary>
