@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.Queries;
 
 // NOTE: Wow, even I forgot how this works. Lack attributes much?
 
@@ -58,7 +59,7 @@ namespace DemoGame.Server
             if (!Character.IsValidPassword(password))
                 return "Invalid password";
 
-            if (!User.AddNewUser(_server.DBController.InsertUser, name, password))
+            if (!User.AddNewUser(_server.DBController.GetQuery<InsertUserQuery>(), name, password))
                 return "Unknown error";
 
             return "New user successfully created.";

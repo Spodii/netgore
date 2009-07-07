@@ -9,6 +9,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     public class SelectUserPasswordQuery : DbQueryReader<string>
     {
         static readonly string _queryString = string.Format("SELECT `password` FROM `{0}` WHERE `name`=@name", DBTables.Character);

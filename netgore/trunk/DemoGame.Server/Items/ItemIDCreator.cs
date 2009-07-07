@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
 using NetGore.Db;
 
-namespace DemoGame.Server
+namespace DemoGame.Server.Queries
 {
+    [DBControllerQuery]
     /// <summary>
     /// A thread-safe collection of available IDs for items.
     /// </summary>

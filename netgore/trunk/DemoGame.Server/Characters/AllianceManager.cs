@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using DemoGame.Server.Queries;
 using log4net;
 using NetGore.Collections;
 
@@ -100,9 +101,9 @@ namespace DemoGame.Server
         /// <returns>The loaded Alliance.</returns>
         public static Alliance LoadAlliance(DBController dbController, AllianceID id)
         {
-            var values = dbController.SelectAlliance.Execute(id);
-            var attackableIDs = dbController.SelectAllianceAttackable.Execute(id);
-            var hostileIDs = dbController.SelectAllianceHostile.Execute(id);
+            var values = dbController.GetQuery<SelectAllianceQuery>().Execute(id);
+            var attackableIDs = dbController.GetQuery<SelectAllianceAttackableQuery>().Execute(id);
+            var hostileIDs = dbController.GetQuery<SelectAllianceHostileQuery>().Execute(id);
 
             Debug.Assert(id == values.ID);
             Debug.Assert(id == attackableIDs.AllianceID);
@@ -162,7 +163,7 @@ namespace DemoGame.Server
         void LoadAll()
         {
             // Grab all IDs
-            var allianceIDs = DBController.SelectAllianceIDs.Execute();
+            var allianceIDs = DBController.GetQuery<SelectAllianceIDsQuery>().Execute();
 
             // Load each alliance
             foreach (var allianceID in allianceIDs)

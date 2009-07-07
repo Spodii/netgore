@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Network;
@@ -133,8 +134,8 @@ namespace DemoGame.Server
             GameData.Load();
             ItemEntity.Initialize(DBController);
             _allianceManager = new AllianceManager(DBController);
-            _itemTemplates = new ItemTemplates(DBController.SelectItemTemplates);
-            _npcManager = new NPCTemplateManager(DBController.SelectNPCTemplate, DBController.SelectNPCTemplateDrops, AllianceManager, _itemTemplates);
+            _itemTemplates = new ItemTemplates(DBController.GetQuery<SelectItemTemplatesQuery>());
+            _npcManager = new NPCTemplateManager(DBController.GetQuery<SelectNPCTemplateQuery>(), DBController.GetQuery<SelectNPCTemplateDropsQuery>(), AllianceManager, _itemTemplates);
             InitializeScripts();
 
             // Create the world and sockets
@@ -268,7 +269,7 @@ namespace DemoGame.Server
             }
 
             // Check that the account is valid, and a valid password was specified
-            if (!User.IsValidAccount(DBController.SelectUserPassword, name, password))
+            if (!User.IsValidAccount(DBController.GetQuery<SelectUserPasswordQuery>(), name, password))
             {
                 if (log.IsInfoEnabled)
                     log.InfoFormat("Login for user `{0}` failed due to invalid name or password.", name);

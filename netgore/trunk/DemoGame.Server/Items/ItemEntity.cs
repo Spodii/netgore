@@ -46,22 +46,22 @@ namespace DemoGame.Server
 
         static DeleteItemQuery DeleteItem
         {
-            get { return _dbController.DeleteItem; }
+            get { return _dbController.GetQuery<DeleteItemQuery>(); }
         }
 
         static ItemIDCreator IDCreator
         {
-            get { return _dbController.ItemIDCreator; }
+            get { return _dbController.GetQuery<ItemIDCreator>(); }
         }
 
         static ReplaceItemQuery ReplaceItem
         {
-            get { return _dbController.ReplaceItem; }
+            get { return _dbController.GetQuery<ReplaceItemQuery>(); }
         }
 
         static UpdateItemFieldQuery UpdateItemField
         {
-            get { return _dbController.UpdateItemField; }
+            get { return _dbController.GetQuery<UpdateItemFieldQuery>(); }
         }
 
         /// <summary>
