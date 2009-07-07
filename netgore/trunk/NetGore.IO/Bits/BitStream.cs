@@ -440,8 +440,7 @@ namespace NetGore.IO
         /// <summary>
         /// Gets a deep copy of the data in the BitStream's buffer. When called in Write mode, 
         /// this will flush out the working buffer (if one exists), so do not call this until 
-        /// you are sure you are done writing! The buffer may contain empty indices unless 
-        /// you call TrimExcess first.
+        /// you are sure you are done writing!
         /// </summary>
         /// <returns>Byte buffer containing a copy of BitStream's buffer.</returns>
         public byte[] GetBufferCopy()
@@ -452,8 +451,9 @@ namespace NetGore.IO
             var buffer = GetBuffer();
 
             // Create the byte array to hold the copy and transfer over the data
-            var ret = new byte[buffer.Length];
-            Buffer.BlockCopy(buffer, 0, ret, 0, buffer.Length);
+            int length = Length;
+            var ret = new byte[length];
+            Buffer.BlockCopy(buffer, 0, ret, 0, length);
 
             // Return the copy
             return ret;

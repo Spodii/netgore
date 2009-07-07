@@ -50,15 +50,12 @@ namespace NetGore.Network
         /// </summary>
         public const int SizeHeaderLength = 2;
 
+        readonly SocketSendQueue _socketSendQueue = new SocketSendQueue(MaxSendSize);
+
         /// <summary>
         /// Initial size of the receive queue 
         /// </summary>
         const int RecvQueueStartSize = 4;
-
-        /// <summary>
-        /// Initial size of the send queue
-        /// </summary>
-        const int SendQueueStartSize = 1;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -129,17 +126,6 @@ namespace NetGore.Network
         SocketAsyncEventArgs _sendEventArgs;
 
         /// <summary>
-        /// Queue of messages that have surpassed the maximum size of the _sendStream. Anything
-        /// in this queue needs to be sent before the _sendStream is sent.
-        /// </summary>
-        Queue<byte[]> _sendQueue;
-
-        /// <summary>
-        /// Stream used to hold the messages currently ready to be sent.
-        /// </summary>
-        BitStream _sendStream;
-
-        /// <summary>
         /// Socket used for the connection
         /// </summary>
         Socket _socket;
@@ -150,49 +136,6 @@ namespace NetGore.Network
         public int TimeCreated
         {
             get { return _timeCreated; }
-        }
-
-        void AddToSendStream(BitStream sourceStream)
-        {
-            int buildStreamLenBits = sourceStream.LengthBits;
-
-            // Check for data in the stream
-            if (buildStreamLenBits == 0)
-            {
-                const string errmsg = "Send() call contained no data to be sent.";
-                if (log.IsWarnEnabled)
-                    log.Warn(errmsg);
-                Debug.Fail(errmsg);
-                return;
-            }
-
-            // Check for too much data in the stream
-            if (buildStreamLenBits > MaxSendSize * 8)
-            {
-                const string errmsg = "Send() call contained too much data [`{0}` bytes] to be sent! Unable to send.";
-                if (log.IsFatalEnabled)
-                    log.FatalFormat(errmsg, buildStreamLenBits);
-                Debug.Fail(string.Format(errmsg, buildStreamLenBits));
-                return;
-            }
-
-            // Check if the temporary stream can fit into the primary stream
-            if (_sendStream.LengthBits + buildStreamLenBits > MaxSendSize * 8)
-            {
-                // Did not fit, so we have to dump the primary stream's contents first
-                _sendQueue.Enqueue(_sendStream.GetBufferCopy());
-                _sendStream.Reset();
-            }
-
-            // Add the build stream's contents to the primary stream
-            _sendStream.Write(sourceStream);
-
-            // Now that we have the message constructed and ready, check if we can send it right now
-            if (!_isSending)
-            {
-                _isSending = true;
-                BeginSend();
-            }
         }
 
         /// <summary>
@@ -222,73 +165,60 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Wrapper for the socket BeginSend method that will either grab from the _sendQueue if
-        /// anything is in it, or from the _sendBuffer if the queue is empty. This is NOT thread safe,
-        /// so only call while locked with the _sendLock!
+        /// Wrapper for the socket BeginSend method. When this is called, make sure _isSending is true!
         /// </summary>
-        void BeginSend()
+        void BeginSend(byte[] dataToSend)
         {
-            if (!_isSending)
+#if DEBUG
+            // Ensure _isSending was set properly... just in case
+            bool debugIsSending;
+            lock (_sendLock)
+            {
+                debugIsSending = _isSending;
+            }
+
+            if (!debugIsSending)
             {
                 const string errmsg = "Called BeginSend() while _isSending == False. This should never happen!";
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
+                if (log.IsFatalEnabled)
+                    log.Fatal(errmsg);
                 Debug.Fail(errmsg);
                 _isSending = false;
                 return;
             }
+#endif
 
             if (_socket == null)
             {
-                const string errmsg = "BeginSend() failed since the socket is null (Disposed = `{0}`).";
+                const string errmsg = "BeginSend() failed since the socket is null (this.Disposed == `{0}`).";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, _disposed);
-                _isSending = false;
+                lock (_sendLock)
+                    _isSending = false;
                 return;
             }
 
-            bool fromStream;
-            byte[] msg;
-            int msgLength;
-
-            // Get the message to send
-            if (_sendQueue.Count > 0)
-            {
-                // Get the message from the backlog queue
-                fromStream = false;
-                msg = _sendQueue.Dequeue();
-                msgLength = msg.Length;
-            }
-            else
-            {
-                // Get the message from the sending stream
-                fromStream = true;
-                msg = _sendStream.GetBuffer();
-                msgLength = _sendStream.Length;
-            }
-
-            if (msgLength <= 0)
+            if (dataToSend == null)
             {
                 const string errmsg = "Sending failed since there is no message!";
                 if (log.IsErrorEnabled)
                     log.Error(errmsg);
                 Debug.Fail(errmsg);
-                _isSending = false;
+                lock (_sendLock)
+                    _isSending = false;
                 return;
             }
 
+            int msgLength = dataToSend.Length;
+
             // Copy over the contents of the message into the send buffer, along with the
             // 2 byte prefix that states the length of the message
-            Buffer.BlockCopy(msg, 0, _sendBuffer, SizeHeaderLength, msgLength);
+            Buffer.BlockCopy(dataToSend, 0, _sendBuffer, SizeHeaderLength, msgLength);
             _sendBuffer[0] = (byte)((msgLength >> 8) & 255);
             _sendBuffer[1] = (byte)(msgLength & 255);
 
             // From now on, we will include the header size into the message length
             msgLength += SizeHeaderLength;
-
-            // If we were sending from the stream, we have to clear the stream
-            if (fromStream)
-                _sendStream.Reset();
 
             try
             {
@@ -301,11 +231,12 @@ namespace NetGore.Network
             }
             catch (Exception ex)
             {
-                const string errmsg = "Failed to begin send.";
+                const string errmsg = "Failed to begin send. Socket will now close.";
                 if (log.IsFatalEnabled)
                     log.Fatal(errmsg, ex);
                 Debug.Fail(errmsg + ex);
                 Dispose();
+                return;
             }
 
             if (log.IsInfoEnabled)
@@ -392,19 +323,28 @@ namespace NetGore.Network
         /// <returns>Length of the data sent</returns>
         void EndSend(object sender, SocketAsyncEventArgs e)
         {
-            // Check if we can begin sending again right away
+#if DEBUG
             lock (_sendLock)
             {
-                if (_sendQueue.Count > 0 || _sendStream.LengthBits > 0)
-                {
-                    // The queue or send stream contain data to send, so start sending again right away
-                    BeginSend();
-                }
-                else
-                {
-                    // Nothing to send
-                    _isSending = false;
-                }
+                Debug.Assert(_isSending, "How the hell did EndSend() get called with _isSending = false? This is bad...");
+            }
+#endif
+
+            // _isSending should be true, and this should be the only place that it can be set to false (except for when
+            // BeginSend() fails, but BeginSend() should never be called until this sets _isSending to false anyways), so
+            // we can assume it is safe to avoid locking since _isSending should NOT change
+            
+            // Check if we can begin sending again right away
+            byte[] dataToSend = _socketSendQueue.Dequeue();
+            if (dataToSend != null)
+            {
+                // Data was enqueued, so we can send it
+                BeginSend(dataToSend);
+            }
+            else
+            {
+                // Nothing enqueued or not allowed to send again, so do not start sending again
+                _isSending = false;
             }
         }
 
@@ -424,11 +364,7 @@ namespace NetGore.Network
 
             _socket.LingerState = new LingerOption(true, 2);
             _socket.NoDelay = true;
-            _sendQueue = new Queue<byte[]>(SendQueueStartSize);
             _recvQueue = new Queue<byte[]>(RecvQueueStartSize);
-
-            _sendStream = new BitStream(new byte[MaxSendSize])
-                          { WriteMode = BitStreamBufferMode.Static, Mode = BitStreamMode.Write };
 
             _recvBuffer = new byte[(MaxRecvSize + SizeHeaderLength) * 2];
             _sendBuffer = new byte[MaxSendSize + SizeHeaderLength];
@@ -616,26 +552,30 @@ namespace NetGore.Network
         /// will be safe from the TCPSocket's control.</param>
         public void Send(BitStream sourceStream)
         {
-            if (sourceStream == null)
-                throw new ArgumentNullException("sourceStream");
-
-            if (sourceStream.Mode == BitStreamMode.Read)
-            {
-                const string errmsg = "The sourceStream should already be in Write mode.";
-                Debug.Fail(errmsg);
-                if (log.IsWarnEnabled)
-                    log.Warn(errmsg);
-
-                sourceStream.Mode = BitStreamMode.Write;
-            }
-
             if (!_isInitialized && !_disposed)
                 throw new Exception("Called Send() before Initialize()");
 
+            bool willSend;
+
+            // Determine if we will send the data now, or enqueue it for later
             lock (_sendLock)
             {
-                AddToSendStream(sourceStream);
+                if (_isSending)
+                {
+                    willSend = false;
+                }
+                else
+                {
+                    willSend = true;
+                    _isSending = true; // We must set to true now while we have the lock
+                }
             }
+
+            // Actually send the data or enqueue it
+            if (!willSend)
+                _socketSendQueue.Enqueue(sourceStream);
+            else
+                BeginSend(sourceStream.GetBufferCopy());
         }
 
         /// <summary>
@@ -665,11 +605,6 @@ namespace NetGore.Network
             }
 
             // Clear out the queues
-            lock (_sendLock)
-            {
-                if (_sendQueue != null)
-                    _sendQueue.Clear();
-            }
             lock (_recvLock)
             {
                 if (_recvQueue != null)
