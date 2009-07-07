@@ -44,7 +44,7 @@ namespace NetGore
         public event EntityEventHandler<Vector2> OnResize;
 
         /// <summary>
-        /// Gets or sets the collision box for the entity.
+        /// Gets or sets the collision box for the Entity.
         /// </summary>
         [Browsable(false)]
         public CollisionBox CB
@@ -58,7 +58,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the center of the entity.
+        /// Gets the position of the center of the Entity.
         /// </summary>
         [Browsable(false)]
         public Vector2 Center
