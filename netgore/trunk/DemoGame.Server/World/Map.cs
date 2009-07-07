@@ -201,6 +201,10 @@ namespace DemoGame.Server
         {
             base.EntityAdded(entity);
 
+            // When a User enters the Map, reset the inactivity counter
+            if (entity is User)
+                _inactiveCounter = _emptyMapNoUpdateDelay;
+
             // Create the DynamicEntity for everyone on the map
             if (_users.Count > 0)
             {
@@ -394,11 +398,33 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// How long, in milliseconds, it takes from when the last User in a Map leaves it for the Map to stop
+        /// updating all-together until a User enters the Map again.
+        /// </summary>
+        const int _emptyMapNoUpdateDelay = 60000;
+
+        /// <summary>
+        /// How much time, in milliseconds, remaining until the Map goes inactive. When this value is less than
+        /// or equal to 0, the Map should be considered inactive.
+        /// </summary>
+        int _inactiveCounter;
+
+        /// <summary>
+        /// Gets if the Map is currently inactive.
+        /// </summary>
+        bool IsInactive { get { return _inactiveCounter <= 0; } }
+
         public override void Update(int deltaTime)
         {
-            // Skip updating maps with no users
+            // If there are no Users on the Map, update the inactive counter or skip updating if already inactive
             if (_users.Count == 0)
-                return;
+            {
+                if (IsInactive)
+                    return;
+
+                _inactiveCounter -= deltaTime;
+            }
 
             base.Update(deltaTime);
 
