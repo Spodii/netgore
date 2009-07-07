@@ -191,7 +191,6 @@ namespace DemoGame.Server
         public ItemEntity(ItemTemplate t, Vector2 pos, byte amount)
             : this(pos, t.Size, t.Name, t.Description, t.Type, t.Graphic, t.Value, amount, t.Stats)
         {
-            // NOTE: Can I get rid of this constructor?
         }
 
         public ItemEntity()
@@ -201,7 +200,6 @@ namespace DemoGame.Server
 
         public ItemEntity(ItemValues iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
         {
-            // NOTE: Can I get rid of this constructor?
             _id = iv.ID;
 
             _name = iv.Name;
@@ -219,7 +217,6 @@ namespace DemoGame.Server
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
                    IEnumerable<IStat> stats) : base(pos, size)
         {
-            // NOTE: Can I get rid of this constructor?
             _id = new ItemID(IDCreator.GetNext());
 
             _name = name;
@@ -240,11 +237,6 @@ namespace DemoGame.Server
         ItemEntity(ItemEntity s)
             : this(s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.Stats)
         {
-            // NOTE: Can I get rid of this constructor?
-            // Do we actually need to copy over the map? Even if we do, the map doesn't know about the ItemEntity,
-            // and that doesn't really seem like what we will ever want.
-
-            // _map = s.Map;
         }
 
         /// <summary>
