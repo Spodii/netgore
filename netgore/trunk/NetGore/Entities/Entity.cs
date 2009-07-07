@@ -52,7 +52,7 @@ namespace NetGore
             get { return _collisionBox; }
             set
             {
-                // TODO: The setter on this should be private.
+                // TODO: The setter on this should be private, and the CollisionBox object should never be changed.
                 _collisionBox = value;
             }
         }
@@ -132,11 +132,6 @@ namespace NetGore
         public Vector2 Velocity
         {
             get { return _velocity; }
-            internal set
-            {
-                // NOTE: Temporary setter - do not actually use!
-                SetVelocity(value);
-            }
         }
 
         /// <summary>
@@ -144,9 +139,8 @@ namespace NetGore
         /// </summary>
         [Category("Entity")]
         [DisplayName("Weight")]
-        [Description(
-            "The weight of the Entity. Higher the weight, the greater the effects of the gravity, where 0 is unaffected by gravity."
-            )]
+        [Description("The weight of the Entity. Higher the weight, the greater the effects of the gravity,"
+            + " where 0 is unaffected by gravity.")]
         [DefaultValue(0.0f)]
         [Browsable(true)]
         public float Weight
@@ -220,7 +214,6 @@ namespace NetGore
         /// </summary>
         protected virtual void HandleDispose()
         {
-            // NOTE: I need to re-check this and make sure that having this, in Entity, is actually what I want.
         }
 
         /// <summary>
