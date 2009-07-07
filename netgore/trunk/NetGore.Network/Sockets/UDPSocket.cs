@@ -62,18 +62,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Prefixes the header to a packet.
-        /// </summary>
-        /// <param name="data">Packet to add the header to.</param>
-        /// <param name="length">Length of the packet in bytes.</param>
-        /// <returns>Byte array containing the <paramref name="data"/> with the packet header prefixed.</returns>
-        static byte[] AddHeader(byte[] data, ushort length)
-        {
-            // No headers needed right now
-            return data;
-        }
-
-        /// <summary>
         /// Starts the receiving.
         /// </summary>
         void BeginReceiveFrom()
@@ -200,7 +188,6 @@ namespace NetGore.Network
             if (length > _maxPacketSize)
                 throw new ArgumentOutOfRangeException("data", "Data is too large to send.");
 
-            data = AddHeader(data, (ushort)length);
             _socket.SendTo(data, length + _headerSize, SocketFlags.None, endPoint);
 
             if (log.IsInfoEnabled)
