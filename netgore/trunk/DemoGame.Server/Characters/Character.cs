@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -62,6 +61,7 @@ namespace DemoGame.Server
         static readonly Random _rand = new Random();
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly bool _isPersistent;
 
         readonly World _world;
 
@@ -70,14 +70,7 @@ namespace DemoGame.Server
         /// </summary>
         Alliance _alliance;
 
-        /// <summary>
-        /// Gets if this Character's existant is persistent. If true, the Character's state will be synchronized
-        /// into the database. If false, the Character's state will only exist in the Character object and cannot
-        /// be restored after object is lost (such as a server reset).
-        /// </summary>
-        public bool IsPersistent { get { return _isPersistent; } }
-
-        readonly bool _isPersistent;
+        CharacterID _id;
 
         /// <summary>
         /// If the character is alive or not.
@@ -102,6 +95,12 @@ namespace DemoGame.Server
         string _name;
 
         /// <summary>
+        /// Lets us know if we have saved the Character since they have been updated. Used to ensure saves aren't
+        /// called back-to-back without any values changing in-between.
+        /// </summary>
+        bool _saved = false;
+
+        /// <summary>
         /// Notifies listeners when the Character performs an attack. The attack does not have to actually hit
         /// anything for this event to be raised. This will be raised before <see cref="OnAttackCharacter"/>.
         /// </summary>
@@ -118,11 +117,6 @@ namespace DemoGame.Server
         public event CharacterAttackCharacterEventHandler OnAttackedByCharacter;
 
         /// <summary>
-        /// Notifies listeners when this Character has killed another Character.
-        /// </summary>
-        public event CharacterKillEventHandler OnKillCharacter;
-
-        /// <summary>
         /// Notifies listeners when this Character has dropped an item.
         /// </summary>
         public event CharacterItemEventHandler OnDropItem;
@@ -130,12 +124,13 @@ namespace DemoGame.Server
         /// <summary>
         /// Notifies listeners when this Character has received an item.
         /// </summary>
-        public event CharacterItemEventHandler OnGetItem; // TODO: Implement. Difficulty implementing is due to the inventory system making a deep copy of things. Should probably add some events to the InventoryBase.
+        public event CharacterItemEventHandler OnGetItem;
+            // TODO: Implement. Difficulty implementing is due to the inventory system making a deep copy of things. Should probably add some events to the InventoryBase.
 
         /// <summary>
-        /// Notifies listeners when this Character uses an item.
+        /// Notifies listeners when this Character has killed another Character.
         /// </summary>
-        public event CharacterItemEventHandler OnUseItem;
+        public event CharacterKillEventHandler OnKillCharacter;
 
         /// <summary>
         /// Notifies listeners when this Character has been killed in any way, no matter who did it or how it happened.
@@ -146,6 +141,11 @@ namespace DemoGame.Server
         /// Notifies listeners when this Character has been killed by another Character.
         /// </summary>
         public event CharacterKillEventHandler OnKilledByCharacter;
+
+        /// <summary>
+        /// Notifies listeners when this Character uses an item.
+        /// </summary>
+        public event CharacterItemEventHandler OnUseItem;
 
         /// <summary>
         /// Gets a random number generator to be used for Characters.
@@ -164,16 +164,25 @@ namespace DemoGame.Server
             protected set { _alliance = value; }
         }
 
-        /// <summary>
-        /// Gets the Character's Inventory.
-        /// </summary>
-        public abstract CharacterInventory Inventory { get; }
-
+        public DBController DBController
+        {
+            get { return World.Server.DBController; }
+        }
 
         /// <summary>
         /// Gets the Character's equipped items.
         /// </summary>
         public abstract CharacterEquipped Equipped { get; }
+
+        public CharacterID ID
+        {
+            get { return _id; }
+        }
+
+        /// <summary>
+        /// Gets the Character's Inventory.
+        /// </summary>
+        public abstract CharacterInventory Inventory { get; }
 
         /// <summary>
         /// Gets or sets (protected) if the Character is currently alive.
@@ -192,6 +201,16 @@ namespace DemoGame.Server
         protected bool IsLoaded
         {
             get { return _isLoaded; }
+        }
+
+        /// <summary>
+        /// Gets if this Character's existant is persistent. If true, the Character's state will be synchronized
+        /// into the database. If false, the Character's state will only exist in the Character object and cannot
+        /// be restored after object is lost (such as a server reset).
+        /// </summary>
+        public bool IsPersistent
+        {
+            get { return _isPersistent; }
         }
 
         /// <summary>
@@ -248,101 +267,6 @@ namespace DemoGame.Server
                                             "server never needs to deserialize a DynamicEntity.");
         }
 
-
-        public DBController DBController
-        {
-            get { return World.Server.DBController; }
-        }
-
-        CharacterID _id;
-
-        public CharacterID ID
-        {
-            get
-            {
-                return _id;
-            }
-        }
-
-        void InternalLoad(SelectCharacterQueryValues characterValues)
-        {
-            Name = characterValues.Name;
-            _id = characterValues.ID;
-
-            BodyInfo = GameData.Body(characterValues.BodyIndex);
-            CB = new CollisionBox(characterValues.Position, BodyInfo.Width, BodyInfo.Height);
-
-            // Set the Map and, if a User, add them to the World
-            Map m = World.GetMap(characterValues.MapIndex);
-            // TODO: We can recover when a NPC's map is invalid at least...
-            if (m == null)
-                throw new Exception(string.Format("Unable to get Map with index `{0}`.", characterValues.MapIndex));
-
-            User asUser = this as User;
-            if (asUser != null)
-                World.AddUser(asUser);
-
-            // HACK: Ugh... horrible place to set the RespawnMap
-            if (this is NPC)
-                ((NPC)this).RespawnMap = m;
-
-            ChangeMap(m);
-
-            // Load the Character's items
-            Inventory.Load();
-            Equipped.Load();
-
-            // Mark the Character as loaded
-            SetAsLoaded();
-        }
-
-
-        /// <summary>
-        /// Lets us know if we have saved the Character since they have been updated. Used to ensure saves aren't
-        /// called back-to-back without any values changing in-between.
-        /// </summary>
-        bool _saved = false;
-
-        /// <summary>
-        /// Saves the Character's information. If IsPersistent is false, this will do nothing, but will not
-        /// raise any Exceptions.
-        /// </summary>
-        public void Save()
-        {
-            if (!IsPersistent)
-                return;
-
-            // Do not save if the user is already saved
-            if (_saved)
-                return;
-
-            // Set the user as saved
-            _saved = true;
-
-            // Execute the user save query
-            DBController.GetQuery<UpdateCharacterQuery>().Execute(this);
-
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Saved Character `{0}`.", this);
-        }
-
-        public override string ToString()
-        {
-            return string.Format("{0} [ID: {1}, Type: {2}]", Name, ID, GetType().Name);
-        }
-
-        protected void Load(CharacterID characterID)
-        {
-            var values = DBController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID, Stats);
-            InternalLoad(values);
-        }
-
-        protected void Load(string characterName)
-        {
-            var values = DBController.GetQuery<SelectCharacterQuery>().Execute(characterName, Stats);
-            InternalLoad(values);
-        }
-
         /// <summary>
         /// Character constructor.
         /// </summary>
@@ -380,7 +304,7 @@ namespace DemoGame.Server
 
             // Damage all hit characters
             Rectangle hitRect = BodyInfo.GetHitRect(this, BodyInfo.PunchRect);
-            List<Character> hitChars = Map.GetEntities<Character>(hitRect);
+            var hitChars = Map.GetEntities<Character>(hitRect);
             foreach (Character c in hitChars)
             {
                 Attack(c);
@@ -469,7 +393,7 @@ namespace DemoGame.Server
             {
                 if (source != null)
                 {
-                    var sourceCharacter = source as Character;
+                    Character sourceCharacter = source as Character;
                     if (sourceCharacter != null)
                     {
                         if (sourceCharacter.OnKillCharacter != null)
@@ -489,7 +413,7 @@ namespace DemoGame.Server
         /// </summary>
         public void DelayedDispose()
         {
-            Stack<IDisposable> stack = Map.World.DisposeStack;
+            var stack = Map.World.DisposeStack;
             if (!stack.Contains(this))
                 stack.Push(this);
         }
@@ -523,8 +447,8 @@ namespace DemoGame.Server
             Vector2 dropPos = GetDropPos();
 
             // Create the item on the map
-            var droppedItem = Map.CreateItem(itemTemplate, dropPos, amount);
-            
+            ItemEntity droppedItem = Map.CreateItem(itemTemplate, dropPos, amount);
+
             if (OnDropItem != null)
                 OnDropItem(this, droppedItem);
         }
@@ -585,6 +509,21 @@ namespace DemoGame.Server
         /// item was added.</returns>
         public abstract ItemEntity GiveItem(ItemEntity item);
 
+        protected override void HandleDispose()
+        {
+            // Make sure the Character was saved
+            Save();
+
+            // Dispose of disposable stuff
+            if (Inventory != null)
+                Inventory.Dispose();
+
+            if (Equipped != null)
+                Equipped.Dispose();
+
+            base.HandleDispose();
+        }
+
         /// <summary>
         /// Handles when the Character's HP changes.
         /// </summary>
@@ -604,6 +543,38 @@ namespace DemoGame.Server
                 // No more HP, no more living
                 Kill();
             }
+        }
+
+        void InternalLoad(SelectCharacterQueryValues characterValues)
+        {
+            Name = characterValues.Name;
+            _id = characterValues.ID;
+
+            BodyInfo = GameData.Body(characterValues.BodyIndex);
+            CB = new CollisionBox(characterValues.Position, BodyInfo.Width, BodyInfo.Height);
+
+            // Set the Map and, if a User, add them to the World
+            Map m = World.GetMap(characterValues.MapIndex);
+            // TODO: We can recover when a NPC's map is invalid at least...
+            if (m == null)
+                throw new Exception(string.Format("Unable to get Map with index `{0}`.", characterValues.MapIndex));
+
+            User asUser = this as User;
+            if (asUser != null)
+                World.AddUser(asUser);
+
+            // HACK: Ugh... horrible place to set the RespawnMap
+            if (this is NPC)
+                ((NPC)this).RespawnMap = m;
+
+            ChangeMap(m);
+
+            // Load the Character's items
+            Inventory.Load();
+            Equipped.Load();
+
+            // Mark the Character as loaded
+            SetAsLoaded();
         }
 
         /// <summary>
@@ -648,6 +619,18 @@ namespace DemoGame.Server
                 OnKilled(this);
         }
 
+        protected void Load(CharacterID characterID)
+        {
+            SelectCharacterQueryValues values = DBController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID, Stats);
+            InternalLoad(values);
+        }
+
+        protected void Load(string characterName)
+        {
+            SelectCharacterQueryValues values = DBController.GetQuery<SelectCharacterQuery>().Execute(characterName, Stats);
+            InternalLoad(values);
+        }
+
         /// <summary>
         /// Starts moving the character to the left
         /// </summary>
@@ -683,6 +666,29 @@ namespace DemoGame.Server
                 Stats[StatType.MP] = maxMP;
             else if (mp < 0)
                 Stats[StatType.MP] = 0;
+        }
+
+        /// <summary>
+        /// Saves the Character's information. If IsPersistent is false, this will do nothing, but will not
+        /// raise any Exceptions.
+        /// </summary>
+        public void Save()
+        {
+            if (!IsPersistent)
+                return;
+
+            // Do not save if the user is already saved
+            if (_saved)
+                return;
+
+            // Set the user as saved
+            _saved = true;
+
+            // Execute the user save query
+            DBController.GetQuery<UpdateCharacterQuery>().Execute(this);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Saved Character `{0}`.", this);
         }
 
         /// <summary>
@@ -728,6 +734,11 @@ namespace DemoGame.Server
             base.Teleport(position);
         }
 
+        public override string ToString()
+        {
+            return string.Format("{0} [ID: {1}, Type: {2}]", Name, ID, GetType().Name);
+        }
+
         /// <summary>
         /// Updates the character and their state.
         /// </summary>
@@ -752,18 +763,10 @@ namespace DemoGame.Server
             base.Update(imap, deltaTime);
         }
 
-        protected override void HandleDispose()
-        {
-            // Make sure the Character was saved
-            Save();
-
-            base.HandleDispose();
-        }
-
         bool UseEquipment(ItemEntity item, InventorySlot? inventorySlot)
         {
             // Only allow users to equip items
-            var user = this as User;
+            User user = this as User;
             if (user == null)
                 return false;
 
@@ -834,7 +837,7 @@ namespace DemoGame.Server
 
         bool UseItemUseOnce(ItemEntity item)
         {
-            IEnumerable<IStat> useBonuses = item.Stats.Where(stat => stat.Value != 0);
+            var useBonuses = item.Stats.Where(stat => stat.Value != 0);
             foreach (IStat stat in useBonuses)
             {
                 Stats[stat.StatType] += stat.Value;

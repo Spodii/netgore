@@ -10,13 +10,11 @@ namespace DemoGame.Server
     {
         public ItemTemplate ItemTemplate { get; private set; }
         public ItemChance Chance { get; private set; }
-        public EquipmentSlot Slot { get; private set; }
 
-        public CharacterTemplateEquipmentItem(ItemTemplate itemTemplate, ItemChance chance, EquipmentSlot slot)
+        public CharacterTemplateEquipmentItem(ItemTemplate itemTemplate, ItemChance chance)
         {
             ItemTemplate = itemTemplate;
             Chance = chance;
-            Slot = slot;
         }
 
         /// <summary>

@@ -27,10 +27,9 @@ namespace DemoGame.Server.Queries
                 {
                     CharacterTemplateID character = r.GetCharacterTemplateID("character_id");
                     ItemTemplateID item = r.GetItemTemplateID("item_id");
-                    EquipmentSlot slot = r.GetEquipmentSlot("slot");
                     ItemChance chance = r.GetItemChance("chance");
 
-                    var v = new SelectCharacterTemplateEquippedQueryValues(character, item, slot, chance);
+                    var v = new SelectCharacterTemplateEquippedQueryValues(character, item, chance);
                     ret.Add(v);
                 }
             }

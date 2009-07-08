@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using log4net;
@@ -18,7 +20,7 @@ namespace DemoGame
     /// <summary>
     /// Base class for an Inventory that contains ItemEntities.
     /// </summary>
-    public abstract class InventoryBase<T> : InventoryBase where T : ItemEntityBase
+    public abstract class InventoryBase<T> : InventoryBase, IEnumerable<T> where T : ItemEntityBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -329,6 +331,18 @@ namespace DemoGame
             // No stackable slot found
             stackableSlot = new InventorySlot(0);
             return false;
+        }
+
+        public IEnumerator<T> GetEnumerator()
+        {
+            foreach (var item in _buffer)
+                if (item != null)
+                    yield return item;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }
