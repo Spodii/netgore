@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
 
@@ -26,7 +24,7 @@ namespace DemoGame
         [SyncValue("BodyIndex")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         // ReSharper disable UnusedMember.Local
-        protected internal BodyIndex BodyInfoIndex // ReSharper restore UnusedMember.Local
+            protected internal BodyIndex BodyInfoIndex // ReSharper restore UnusedMember.Local
         {
             get { return BodyInfo.Index; }
             set { BodyInfo = GameData.Body(value); }

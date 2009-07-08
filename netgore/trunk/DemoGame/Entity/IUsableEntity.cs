@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using NetGore;
 
 namespace DemoGame
@@ -12,19 +8,19 @@ namespace DemoGame
     public interface IUsableEntity
     {
         /// <summary>
+        /// Notifies the listeners when the IUsableEntity was used, and the DynamicEntity that used it. On the Client, this
+        /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
+        /// that used this IUsableEntity may be null.
+        /// </summary>
+        event EntityEventHandler<DynamicEntity> OnUse;
+
+        /// <summary>
         /// Gets if the Client should be notified when this IUsableEntity is used. If true, when this IUsableEntity is
         /// used on the Server, every Client in the Map will be notified of the usage. As a result, Use() will be called
         /// on each Client. If false, this message will never be sent. Only set to true if any code is placed in
         /// Use() on the Client implementation of the IUsableEntity, or there are expected to be listeners to OnUse.
         /// </summary>
         bool NotifyClientsOfUsage { get; }
-
-        /// <summary>
-        /// Notifies the listeners when the IUsableEntity was used, and the DynamicEntity that used it. On the Client, this
-        /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
-        /// that used this IUsableEntity may be null.
-        /// </summary>
-        event EntityEventHandler<DynamicEntity> OnUse;
 
         /// <summary>
         /// Client: 
