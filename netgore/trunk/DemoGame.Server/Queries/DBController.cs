@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Db;
 using NetGore.Db.MySql;
-using DemoGame.Server.Queries;
 
 namespace DemoGame.Server
 {
@@ -18,15 +18,10 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly Dictionary<Type, object> _queryObjects = new Dictionary<Type, object>();
         readonly DbConnectionPool _connectionPool;
+        readonly Dictionary<Type, object> _queryObjects = new Dictionary<Type, object>();
 
         bool _disposed;
-
-        public T GetQuery<T>()
-        {
-            return (T)_queryObjects[typeof(T)];
-        }
 
         public DBController(string connectionString)
         {
@@ -52,11 +47,11 @@ namespace DemoGame.Server
                 log.InfoFormat("Database connection pool created.");
 
             // Find the classes marked with our attribute
-            Type[] requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
+            var requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
             var types = TypeHelper.FindTypesWithAttribute(typeof(DBControllerQueryAttribute), requiredConstructorParams);
 
             // Create an instance of each of the types
-            foreach (var type in types)
+            foreach (Type type in types)
             {
                 object instance = Activator.CreateInstance(type, _connectionPool);
                 if (instance == null)
@@ -78,6 +73,11 @@ namespace DemoGame.Server
 
             if (log.IsInfoEnabled)
                 log.Info("DBController successfully initialized all queries.");
+        }
+
+        public T GetQuery<T>()
+        {
+            return (T)_queryObjects[typeof(T)];
         }
 
         #region IDisposable Members
