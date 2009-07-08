@@ -11,37 +11,39 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class SelectNPCTemplateQuery : DbQueryReader<CharacterTemplateID>
+    public class SelectCharacterTemplateQuery : DbQueryReader<CharacterTemplateID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", DBTables.CharacterTemplate);
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public SelectNPCTemplateQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
+        public SelectCharacterTemplateQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
-        public SelectNPCTemplateQueryValues Execute(CharacterTemplateID templateID)
+        public SelectCharacterTemplateQueryValues Execute(CharacterTemplateID templateID)
         {
-            SelectNPCTemplateQueryValues ret;
+            SelectCharacterTemplateQueryValues ret;
 
             using (IDataReader r = ExecuteReader(templateID))
             {
                 if (!r.Read())
                 {
-                    const string errmsg = "No NPCTemplate found for ID `{0}`.";
+                    const string errmsg = "No CharacterTemplate found for ID `{0}`.";
                     throw new ArgumentException(string.Format(errmsg, templateID), "templateID");
                 }
 
-                // Check that the correct record was grabbed
+#if DEBUG
+                // Check that the correct record was grabbed (insanely unlikely this will ever happen)
                 CharacterTemplateID dbID = r.GetCharacterTemplateID("id");
                 if (dbID != templateID)
                 {
-                    const string errmsg = "Performed SELECT for Character template with id `{0}`, but got id `{1}`.";
+                    const string errmsg = "Performed SELECT for CharacterTemplate with id `{0}`, but got id `{1}`.";
                     string err = string.Format(errmsg, templateID, dbID);
                     log.Fatal(err);
                     Debug.Fail(err);
                     throw new DataException(err);
                 }
+#endif
 
                 // Load the general NPC template values
                 string name = r.GetString("name");
@@ -52,7 +54,7 @@ namespace DemoGame.Server.Queries
                 ushort giveExp = r.GetUInt16("give_exp");
                 ushort giveCash = r.GetUInt16("give_cash");
 
-                // Get the NPCStats
+                // Get the stats
                 NPCStats stats = new NPCStats();
                 foreach (StatType statType in NPCStats.NonModStats)
                 {
@@ -68,7 +70,7 @@ namespace DemoGame.Server.Queries
                     stat.Read(r, ordinal);
                 }
 
-                ret = new SelectNPCTemplateQueryValues(templateID, name, bodyIndex, ai, allianceID, respawn, giveExp, giveCash, stats);
+                ret = new SelectCharacterTemplateQueryValues(templateID, name, bodyIndex, ai, allianceID, respawn, giveExp, giveCash, stats);
             }
 
             return ret;

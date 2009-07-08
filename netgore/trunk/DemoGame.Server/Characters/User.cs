@@ -48,7 +48,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the Character's Inventory.
         /// </summary>
-        public override Inventory Inventory
+        public override CharacterInventory Inventory
         {
             get { return _inventory; }
         }

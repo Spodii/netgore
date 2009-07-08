@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DemoGame.Server.Queries
 {
-    public class SelectNPCTemplateQueryValues
+    public class SelectCharacterTemplateQueryValues
     {
         public readonly string AIName;
         public readonly AllianceID AllianceID;
@@ -17,7 +17,7 @@ namespace DemoGame.Server.Queries
         public readonly ushort Respawn;
         public readonly IEnumerable<IStat> Stats;
 
-        public SelectNPCTemplateQueryValues(CharacterTemplateID id, string name, BodyIndex bodyIndex, string aiName, AllianceID allianceID,
+        public SelectCharacterTemplateQueryValues(CharacterTemplateID id, string name, BodyIndex bodyIndex, string aiName, AllianceID allianceID,
                                             ushort respawn, ushort giveExp, ushort giveCash,
                                             IEnumerable<IStat> stats)
         {

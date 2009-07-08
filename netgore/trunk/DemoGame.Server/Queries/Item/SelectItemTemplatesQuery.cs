@@ -6,6 +6,8 @@ using System.Linq;
 using NetGore;
 using NetGore.Db;
 
+// TODO: Make this a query to just select ONE ItemTemplate, then add a new query to get all ItemTemplateIDs
+
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]

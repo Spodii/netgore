@@ -11,7 +11,7 @@ namespace DemoGame.Server
     /// </summary>
     class UserInventoryUpdater
     {
-        readonly BitArray _slotChanged = new BitArray(Inventory.MaxInventorySize);
+        readonly BitArray _slotChanged = new BitArray(CharacterInventory.MaxInventorySize);
 
         readonly UserInventory _userInventory;
 
@@ -63,7 +63,7 @@ namespace DemoGame.Server
             try
             {
                 // Loop through all slots
-                for (InventorySlot slot = new InventorySlot(0); slot < Inventory.MaxInventorySize; slot++)
+                for (InventorySlot slot = new InventorySlot(0); slot < CharacterInventory.MaxInventorySize; slot++)
                 {
                     // Skip unchanged slots
                     if (!_slotChanged[(int)slot])

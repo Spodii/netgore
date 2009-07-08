@@ -167,7 +167,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the Character's Inventory.
         /// </summary>
-        public abstract Inventory Inventory { get; }
+        public abstract CharacterInventory Inventory { get; }
 
 
         /// <summary>

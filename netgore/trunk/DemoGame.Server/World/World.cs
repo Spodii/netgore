@@ -55,11 +55,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the server's NPCTemplateManager
+        /// Gets the server's CharacterTemplateManager
         /// </summary>
-        public NPCTemplateManager NPCTemplates
+        public CharacterTemplateManager NPCTemplates
         {
-            get { return _server.NPCTemplateManager; }
+            get { return _server.CharacterTemplateManager; }
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace DemoGame.Server
                 {
                     float x = rand.Next(128, (int)m.Width - 256);
                     float y = rand.Next(128, (int)m.Height - 256);
-                    ItemID id = new ItemID(rand.Next(1, Server.ItemTemplates.Count));
+                    ItemTemplateID id = new ItemTemplateID(rand.Next(1, Server.ItemTemplates.Count));
                     ItemEntity item = new ItemEntity(Server.ItemTemplates[id], new Vector2(x, y), 1);
                     m.AddEntity(item);
                 }

@@ -6,11 +6,9 @@ using System.Reflection;
 using DemoGame.Server.Queries;
 using log4net;
 
-// TODO: Rename to CharacterInventory
-
 namespace DemoGame.Server
 {
-    public abstract class Inventory : InventoryBase<ItemEntity>
+    public abstract class CharacterInventory : InventoryBase<ItemEntity>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -18,7 +16,7 @@ namespace DemoGame.Server
 
         readonly bool _isPersistent;
 
-        protected Inventory(Character character)
+        protected CharacterInventory(Character character)
         {
             if (character == null)
                 throw new ArgumentNullException("character");
