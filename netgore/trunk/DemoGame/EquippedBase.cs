@@ -14,7 +14,7 @@ namespace DemoGame
     /// <summary>
     /// Base class for keeping track of a collection of equipped items.
     /// </summary>
-    public abstract class EquippedBase<T> : IEnumerable<T> where T : ItemEntityBase
+    public abstract class EquippedBase<T> : IEnumerable<KeyValuePair<EquipmentSlot, T>> where T : ItemEntityBase
     {
         /// <summary>
         /// Greatest index of all the EquipmentSlots.
@@ -293,6 +293,25 @@ namespace DemoGame
             return true;
         }
 
+        /// <summary>
+        /// Removes all items from the EquippedBase.
+        /// </summary>
+        /// <param name="dispose">If true, then all of the items in the EquippedBase will be disposed of. If false,
+        /// they will only be removed from the EquippedBase, but could still referenced by other objects.</param>
+        public void RemoveAll(bool dispose)
+        {
+            for (int i = 0; i < _equipped.Length; i++)
+            {
+                var item = this[i];
+                if (item != null)
+                {
+                    RemoveAt((EquipmentSlot)i);
+                    if (dispose)
+                        item.Dispose();
+                }
+            }
+        }
+
         #region IEnumerable<T> Members
 
         ///<summary>
@@ -303,12 +322,13 @@ namespace DemoGame
         ///A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         ///</returns>
         ///<filterpriority>1</filterpriority>
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<KeyValuePair<EquipmentSlot, T>> GetEnumerator()
         {
-            foreach (T item in _equipped)
+            for (int i = 0; i < _equipped.Length; i++)
             {
+                var item = this[i];
                 if (item != null)
-                    yield return item;
+                    yield return new KeyValuePair<EquipmentSlot, T>((EquipmentSlot)i, item);
             }
         }
 

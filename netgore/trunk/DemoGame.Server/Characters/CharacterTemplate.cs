@@ -74,31 +74,6 @@ namespace DemoGame.Server
         public NPC CreateNPCInstance(World world)
         {
             NPC ret = new NPC(world, this);
-
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Created NPC instance from template `{0}`.", this);
-
-            foreach (var inventoryItem in Inventory)
-            {
-                var item = inventoryItem.CreateInstance();
-                if (item == null)
-                    continue;
-
-                var extraItems = ret.Inventory.Add(item);
-                if (extraItems != null)
-                    extraItems.Dispose();
-            }
-
-            foreach (var equippedItem in Equipment)
-            {
-                var item = equippedItem.CreateInstance();
-                if (item == null)
-                    continue;
-
-                if (!ret.Equipped.Equip(item))
-                    item.Dispose();
-            }
-
             return ret;
         }
 

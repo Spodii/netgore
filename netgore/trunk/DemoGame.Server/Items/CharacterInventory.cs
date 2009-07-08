@@ -233,10 +233,7 @@ namespace DemoGame.Server
             // database as garbage
             if (!_isPersistent)
             {
-                foreach (var item in this)
-                {
-                    item.Dispose();
-                }
+                RemoveAll(true);
             }
         }
     }

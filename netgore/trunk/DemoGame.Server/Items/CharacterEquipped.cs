@@ -114,8 +114,8 @@ namespace DemoGame.Server
 
         public int GetStatBonus(StatType statType)
         {
-            var contains = this.Where(item => item.Stats.Contains(statType));
-            int sum = contains.Sum(item => item.Stats[statType]);
+            var contains = this.Where(item => item.Value.Stats.Contains(statType));
+            int sum = contains.Sum(item => item.Value.Stats[statType]);
             return sum;
         }
 
@@ -176,7 +176,7 @@ namespace DemoGame.Server
             {
                 foreach (var item in this)
                 {
-                    item.Dispose();
+                    item.Value.Dispose();
                 }
             }
         }

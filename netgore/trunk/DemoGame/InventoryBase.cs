@@ -20,7 +20,7 @@ namespace DemoGame
     /// <summary>
     /// Base class for an Inventory that contains ItemEntities.
     /// </summary>
-    public abstract class InventoryBase<T> : InventoryBase, IEnumerable<T> where T : ItemEntityBase
+    public abstract class InventoryBase<T> : InventoryBase, IEnumerable<KeyValuePair<InventorySlot, T>> where T : ItemEntityBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -169,6 +169,20 @@ namespace DemoGame
             // FUTURE: Add support for returning true if the item can be stacked
 
             return false;
+        }
+
+        /// <summary>
+        /// Removes all items from the InventoryBase.
+        /// </summary>
+        /// <param name="dispose">If true, then all of the items in the InventoryBase will be disposed of. If false,
+        /// they will only be removed from the InventoryBase, but could still referenced by other objects.</param>
+        public void RemoveAll(bool dispose)
+        {
+            for (InventorySlot i = new InventorySlot(0); i < _buffer.Length; i++)
+            {
+                if (this[i] != null)
+                    ClearSlot(i, dispose);
+            }
         }
 
         /// <summary>
@@ -333,11 +347,14 @@ namespace DemoGame
             return false;
         }
 
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<KeyValuePair<InventorySlot, T>> GetEnumerator()
         {
-            foreach (var item in _buffer)
+            for (InventorySlot i = new InventorySlot(0); i < _buffer.Length; i++)
+            {
+                var item = this[i];
                 if (item != null)
-                    yield return item;
+                    yield return new KeyValuePair<InventorySlot, T>(i, item);
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
