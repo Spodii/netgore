@@ -20,14 +20,14 @@ namespace DemoGame.Server.Queries
 
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@itemID", "@slot", "@userID");
+            return CreateParameters("@itemID", "@slot", "@characterID");
         }
 
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
             p["@itemID"] = item.ItemID;
             p["@slot"] = item.Slot;
-            p["@userID"] = item.CharacterID;
+            p["@characterID"] = item.CharacterID;
         }
 
         /// <summary>
