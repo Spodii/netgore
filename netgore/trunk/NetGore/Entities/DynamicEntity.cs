@@ -428,6 +428,19 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Sets the Position and Velocity to not needing be synchronized anymore without actually performing
+        /// the serialization. This is intended to be used when NeedSyncPositionAndVelocity() returns true,
+        /// but the DynamicEntity is not in range of anyone to serialize the changes to.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
+        public void BypassPositionAndVelocitySync(int currentTime)
+        {
+            _lastSentPosition = Position;
+            _lastSentVelocity = Velocity;
+            _syncPnVLastTime = currentTime;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, allows for additional handling of a property that is
         /// being serialized, immediately after the value has been written to the <paramref name="writer"/>.
         /// </summary>

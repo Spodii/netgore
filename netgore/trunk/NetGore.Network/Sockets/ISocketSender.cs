@@ -21,5 +21,11 @@ namespace NetGore.Network
         /// </summary>
         /// <param name="sourceStream">BitStream containing the data to send.</param>
         void Send(BitStream sourceStream);
+
+        /// <summary>
+        /// Asynchronously sends data to the socket.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        void Send(byte[] data);
     }
 }

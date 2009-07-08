@@ -17,6 +17,12 @@ namespace DemoGame.Server
     /// </summary>
     public class Map : MapBase, IDisposable
     {
+        /// <summary>
+        /// How long, in milliseconds, it takes from when the last User in a Map leaves it for the Map to stop
+        /// updating all-together until a User enters the Map again.
+        /// </summary>
+        const int _emptyMapNoUpdateDelay = 60000;
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly SafeEnumerator<NPC> _npcEnumerator;
         readonly List<NPC> _npcs;
@@ -26,11 +32,25 @@ namespace DemoGame.Server
         bool _disposed;
 
         /// <summary>
+        /// How much time, in milliseconds, remaining until the Map goes inactive. When this value is less than
+        /// or equal to 0, the Map should be considered inactive.
+        /// </summary>
+        int _inactiveCounter;
+
+        /// <summary>
         /// Gets the DBController used by this Map.
         /// </summary>
         public DBController DBController
         {
             get { return World.DBController; }
+        }
+
+        /// <summary>
+        /// Gets if the Map is currently inactive.
+        /// </summary>
+        bool IsInactive
+        {
+            get { return _inactiveCounter <= 0; }
         }
 
         /// <summary>
@@ -249,6 +269,31 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Finds the Users close enough to the <paramref name="entityToSynchronize"/> to synchronize their
+        /// Position and Velocity to.
+        /// </summary>
+        /// <param name="entityToSynchronize">The DyanmicEntity to synchronize.</param>
+        /// <returns>An IEnumerable of Users close enough to the <paramref name="entityToSynchronize"/> that they
+        /// need to have the <paramref name="entityToSynchronize"/>'s Position and Velocity synchronized.</returns>
+// ReSharper disable SuggestBaseTypeForParameter
+        IEnumerable<User> GetUsersToSyncPandVTo(DynamicEntity entityToSynchronize)
+            // ReSharper restore SuggestBaseTypeForParameter
+        {
+            int xPad = (int)GameData.ScreenSize.X;
+            int yPad = (int)GameData.ScreenSize.Y;
+
+            Rectangle r = entityToSynchronize.CB.ToRectangle();
+            Rectangle syncRegion = new Rectangle(r.X - xPad, r.Y - yPad, r.Width + xPad * 2, r.Height + xPad * 2);
+
+            foreach (User user in Users)
+            {
+                Rectangle userRegion = user.CB.ToRectangle();
+                if (syncRegion.Intersects(userRegion))
+                    yield return user;
+            }
+        }
+
+        /// <summary>
         /// Send a message to every user in the map. This method is thread-safe.
         /// </summary>
         /// <param name="data">BitStream containing the data to send.</param>
@@ -375,45 +420,50 @@ namespace DemoGame.Server
         /// </summary>
         void SynchronizeDynamicEntities()
         {
+            // Don't need to synchronize a map that has no Users on it since there would be nobody to synchronize to!
+            if (_users.Count == 0)
+                return;
+
             int currentTime = GetTime();
 
-            foreach (DynamicEntity dynamicEntity in DynamicEntities)
+            using (PacketWriter pw = ServerPacket.GetWriter())
             {
-                if (!dynamicEntity.IsSynchronized)
+                // Loop through each DynamicEntity
+                foreach (DynamicEntity dynamicEntity in DynamicEntities)
                 {
-                    using (PacketWriter pw = ServerPacket.SynchronizeDynamicEntity(dynamicEntity))
+                    // Check to synchronize everything but the Position and Velocity
+                    if (!dynamicEntity.IsSynchronized)
                     {
+                        // Write the data into the PacketWriter, then send it to everyone on the map
+                        pw.Reset();
+                        ServerPacket.SynchronizeDynamicEntity(pw, dynamicEntity);
                         Send(pw);
                     }
-                }
 
-                if (dynamicEntity.NeedSyncPositionAndVelocity(currentTime))
-                {
-                    using (PacketWriter pw = ServerPacket.UpdateVelocityAndPosition(dynamicEntity, currentTime))
+                    // Check to synchronize the Position and Velocity
+                    if (dynamicEntity.NeedSyncPositionAndVelocity(currentTime))
                     {
-                        // TODO: Send to visual area, plus a little more
-                        Send(pw, false);
+                        // Make sure there are users in range since, if there isn't, we don't even need to synchronize
+                        var usersToSyncTo = GetUsersToSyncPandVTo(dynamicEntity);
+                        if (usersToSyncTo.IsEmpty())
+                            dynamicEntity.BypassPositionAndVelocitySync(currentTime);
+                        else
+                        {
+                            pw.Reset();
+                            ServerPacket.UpdateVelocityAndPosition(pw, dynamicEntity, currentTime);
+                            foreach (User user in usersToSyncTo)
+                            {
+                                user.SendUnreliableBuffered(pw);
+                            }
+                        }
                     }
                 }
             }
+
+            // Flush the unreliable buffers for all of the users
+            foreach (User user in Users)
+                user.FlushUnreliableBuffer();
         }
-
-        /// <summary>
-        /// How long, in milliseconds, it takes from when the last User in a Map leaves it for the Map to stop
-        /// updating all-together until a User enters the Map again.
-        /// </summary>
-        const int _emptyMapNoUpdateDelay = 60000;
-
-        /// <summary>
-        /// How much time, in milliseconds, remaining until the Map goes inactive. When this value is less than
-        /// or equal to 0, the Map should be considered inactive.
-        /// </summary>
-        int _inactiveCounter;
-
-        /// <summary>
-        /// Gets if the Map is currently inactive.
-        /// </summary>
-        bool IsInactive { get { return _inactiveCounter <= 0; } }
 
         public override void Update(int deltaTime)
         {

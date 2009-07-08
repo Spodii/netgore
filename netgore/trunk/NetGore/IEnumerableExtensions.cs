@@ -11,6 +11,17 @@ namespace NetGore
     public static class IEnumerableExtensions
     {
         /// <summary>
+        /// Checks if an IEnumerable is empty.
+        /// </summary>
+        /// <typeparam name="T">The type of objects to enumerate.</typeparam>
+        /// <param name="source">The IEnumerable to check if empty.</param>
+        /// <returns>True if the <paramref name="source"/> is empty; otherwise false.</returns>
+        public static bool IsEmpty<T>(this IEnumerable<T> source)
+        {
+            return !source.Any();
+        }
+
+        /// <summary>
         /// Combines all items in an IEnumerable together into a delimited string.
         /// </summary>
         /// <param name="source">A sequence that contains elements to be imploded.</param>

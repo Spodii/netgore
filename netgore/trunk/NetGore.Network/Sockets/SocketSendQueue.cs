@@ -9,7 +9,9 @@ namespace NetGore.Network
 {
     /// <summary>
     /// Queues data to be sent on a socket, concatenating as much as possible while preserving the data
-    /// and ordering, then returning the data to the socket when dequeued. This class is thread-safe.
+    /// and ordering, then returning the data to the socket when dequeued. Like a normal queue, messages
+    /// are guarenteed to be dequeued in the same order they are enqueued. Unlike a normal queue, messages
+    /// may be concatenated when dequeued. This class is thread-safe.
     /// </summary>
     public class SocketSendQueue
     {
@@ -130,9 +132,28 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Enqueues data into the SocketSendQueue. This is internal due to the fact that its usage should be
+        /// avoided whenever possible since it pretty much destroys the buffering.
+        /// </summary>
+        /// <param name="data">A byte[] containing the data to be enqueued.</param>
+        internal void Enqueue(byte[] data)
+        {
+            // Empty the _sendStream if it contains anything
+            if (_sendStream.LengthBits > 0)
+            {
+                var bufferCopy = _sendStream.GetBufferCopy();
+                _sendQueue.Enqueue(bufferCopy);
+                _sendStream.Reset();
+            }
+
+            // Enqueue the data
+            _sendQueue.Enqueue(data);
+        }
+
+        /// <summary>
         /// Enqueues data into the SocketSendQueue.
         /// </summary>
-        /// <param name="bitStream">A BitStream containing the data to be sent.</param>
+        /// <param name="bitStream">A BitStream containing the data to be enqueued.</param>
         public void Enqueue(BitStream bitStream)
         {
             if (bitStream == null)

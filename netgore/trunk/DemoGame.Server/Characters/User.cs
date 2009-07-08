@@ -28,6 +28,7 @@ namespace DemoGame.Server
         readonly UserEquipped _equipped;
         readonly UserInventory _inventory;
         readonly UserStats _stats;
+        readonly SocketSendQueue _unreliableBuffer;
 
         int _nextLevelExp = int.MaxValue;
 
@@ -81,6 +82,7 @@ namespace DemoGame.Server
             _conn.Tag = this;
 
             // Create some objects
+            _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
             _inventory = new UserInventory(this);
             _equipped = new UserEquipped(this);
             _stats = new UserStats(this);
@@ -189,6 +191,28 @@ namespace DemoGame.Server
             using (PacketWriter pw = ServerPacket.NotifyLevel(MapEntityIndex))
             {
                 Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// Sends all the data buffered for the unreliable channel by SendUnreliableBuffered() to the User.
+        /// </summary>
+        public void FlushUnreliableBuffer()
+        {
+            if (_conn == null || !_conn.IsConnected)
+            {
+                const string errmsg = "Send to `{0}` failed - Conn is null or not connected. Disposing User...";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                DelayedDispose();
+                return;
+            }
+
+            byte[] data;
+            while ((data = _unreliableBuffer.Dequeue()) != null)
+            {
+                _conn.Send(data, false);
             }
         }
 
@@ -356,16 +380,17 @@ namespace DemoGame.Server
         /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
         public void Send(BitStream data, bool reliable)
         {
-            if (data == null)
+            if (_conn == null || !_conn.IsConnected)
             {
-                Debug.Fail("data is null.");
+                const string errmsg = "Send to `{0}` failed - Conn is null or not connected. Disposing User...";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                DelayedDispose();
                 return;
             }
 
-            if (_conn != null && _conn.IsConnected)
-                _conn.Send(data, reliable);
-            else
-                DelayedDispose();
+            _conn.Send(data, reliable);
         }
 
         /// <summary>
@@ -460,6 +485,16 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Sends data to the User. The data is actually buffered indefinately until FlushUnreliableBuffer() is
+        /// called. This method is thread-safe.
+        /// </summary>
+        /// <param name="data">BitStream containing the data to send to the User.</param>
+        public void SendUnreliableBuffered(BitStream data)
+        {
+            _unreliableBuffer.Enqueue(data);
+        }
+
+        /// <summary>
         /// Updates the user
         /// </summary>
         public override void Update(IMap imap, float deltaTime)
@@ -527,7 +562,7 @@ namespace DemoGame.Server
             Debug.Assert(killer == this);
             Debug.Assert(killed != null);
 
-            var killedNPC = killed as NPC;
+            NPC killedNPC = killed as NPC;
 
             // Handle killing a NPC
             if (killedNPC != null)

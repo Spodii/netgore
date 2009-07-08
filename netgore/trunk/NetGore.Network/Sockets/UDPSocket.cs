@@ -22,7 +22,7 @@ namespace NetGore.Network
         /// <summary>
         /// Length of the maximum packet size in bytes.
         /// </summary>
-        const int _maxPacketSize = 1024 - _headerSize;
+        public const int MaxPacketSize = 1024 - _headerSize;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -56,7 +56,7 @@ namespace NetGore.Network
         /// </summary>
         public UDPSocket()
         {
-            _receiveBuffer = new byte[_maxPacketSize + _headerSize];
+            _receiveBuffer = new byte[MaxPacketSize + _headerSize];
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
         }
 
@@ -184,7 +184,7 @@ namespace NetGore.Network
                 throw new ArgumentNullException("endPoint");
             if (data == null || data.Length == 0)
                 throw new ArgumentNullException("data");
-            if (length > _maxPacketSize)
+            if (length > MaxPacketSize)
                 throw new ArgumentOutOfRangeException("data", "Data is too large to send.");
 
             _socket.SendTo(data, length + _headerSize, SocketFlags.None, endPoint);
