@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
@@ -50,8 +49,6 @@ namespace NetGore.Network
         /// </summary>
         public const int SizeHeaderLength = 2;
 
-        readonly SocketSendQueue _socketSendQueue = new SocketSendQueue(MaxSendSize);
-
         /// <summary>
         /// Initial size of the receive queue 
         /// </summary>
@@ -68,6 +65,8 @@ namespace NetGore.Network
         /// Object used to lock sends
         /// </summary>
         readonly object _sendLock = new object();
+
+        readonly SocketSendQueue _sendQueue = new SocketSendQueue(MaxSendSize);
 
         readonly int _timeCreated = Environment.TickCount;
 
@@ -333,9 +332,9 @@ namespace NetGore.Network
             // _isSending should be true, and this should be the only place that it can be set to false (except for when
             // BeginSend() fails, but BeginSend() should never be called until this sets _isSending to false anyways), so
             // we can assume it is safe to avoid locking since _isSending should NOT change
-            
+
             // Check if we can begin sending again right away
-            byte[] dataToSend = _socketSendQueue.Dequeue();
+            var dataToSend = _sendQueue.Dequeue();
             if (dataToSend != null)
             {
                 // Data was enqueued, so we can send it
@@ -561,9 +560,7 @@ namespace NetGore.Network
             lock (_sendLock)
             {
                 if (_isSending)
-                {
                     willSend = false;
-                }
                 else
                 {
                     willSend = true;
@@ -573,7 +570,7 @@ namespace NetGore.Network
 
             // Actually send the data or enqueue it
             if (!willSend)
-                _socketSendQueue.Enqueue(sourceStream);
+                _sendQueue.Enqueue(sourceStream);
             else
                 BeginSend(sourceStream.GetBufferCopy());
         }
