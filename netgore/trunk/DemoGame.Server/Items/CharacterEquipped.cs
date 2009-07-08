@@ -8,11 +8,13 @@ using NetGore;
 
 namespace DemoGame.Server
 {
-    public abstract class CharacterEquipped : EquippedBase<ItemEntity>
+    public abstract class CharacterEquipped : EquippedBase<ItemEntity>, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly Character _character;
+
+        readonly bool _isPersistent;
 
         /// <summary>
         /// Gets the Character that this UserEquipped belongs to.
@@ -33,6 +35,7 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("character");
 
             _character = character;
+            _isPersistent = character.IsPersistent;
 
             AddListeners();
         }
@@ -77,7 +80,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            if (Character.IsPersistent)
+            if (_isPersistent)
             {
                 InsertCharacterEquippedItemQuery.QueryArgs values = new InsertCharacterEquippedItemQuery.QueryArgs(Character.ID,
                                                                                                                    item.ID, slot);
@@ -89,7 +92,7 @@ namespace DemoGame.Server
 
         void CharacterEquipped_OnRemove(EquippedBase<ItemEntity> equippedBase, ItemEntity item, EquipmentSlot slot)
         {
-            if (Character.IsPersistent)
+            if (_isPersistent)
                 DBController.GetQuery<DeleteCharacterEquippedItemQuery>().Execute(item.ID);
 
             ItemEntity remainder = Character.Inventory.Add(item);
@@ -117,12 +120,19 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Loads the User's equipped items.
+        /// Loads the Character's equipped items. The Character that this CharacterEquipped belongs to
+        /// must be persistent since there is nothing for a non-persistent Character to load.
         /// </summary>
         public void Load()
         {
-            if (!Character.IsPersistent)
-                throw new Exception("Cannot call Load() when the Character's state is not persistent!");
+            if (!_isPersistent)
+            {
+                const string errmsg = "Don't call Load() when the Character's state is not persistent!";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                return;
+            }
 
             var items = DBController.GetQuery<SelectCharacterEquippedItemsQuery>().Execute(Character.ID);
 
@@ -149,6 +159,26 @@ namespace DemoGame.Server
 
         protected virtual void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)
         {
+        }
+
+        bool _disposed = false;
+
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+
+            // If the Character is not persistent, we want to dispose of every item so it doesn't sit in the
+            // database as garbage
+            if (!_isPersistent)
+            {
+                foreach (var item in this)
+                {
+                    item.Dispose();
+                }
+            }
         }
     }
 }

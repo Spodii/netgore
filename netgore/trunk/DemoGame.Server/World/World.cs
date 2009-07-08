@@ -102,20 +102,22 @@ namespace DemoGame.Server
             // Create some test NPCs and items
 #if true
             Random rand = new Random();
+            CharacterTemplate npcTemplate = NPCTemplates.GetTemplate(new CharacterTemplateID(1));
             foreach (Map m in Maps)
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    NPC npc = new NPC(this, NPCTemplates.GetTemplate(new CharacterTemplateID(1))) { RespawnMap = m };
-                    npc.ChangeMap(m);
+                    npcTemplate.CreateNPCInstance(m);
                 }
+
                 for (int i = 0; i < 5; i++)
                 {
                     float x = rand.Next(128, (int)m.Width - 256);
                     float y = rand.Next(128, (int)m.Height - 256);
                     ItemTemplateID id = new ItemTemplateID(rand.Next(1, Server.ItemTemplates.Count));
-                    ItemEntity item = new ItemEntity(Server.ItemTemplates[id], new Vector2(x, y), 1);
-                    m.AddEntity(item);
+                    var template = Server.ItemTemplates[id];
+
+                    template.CreateInstance(m, new Vector2(x, y), 1);
                 }
             }
 #endif

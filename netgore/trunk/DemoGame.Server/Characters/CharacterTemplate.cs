@@ -75,6 +75,9 @@ namespace DemoGame.Server
         {
             NPC ret = new NPC(world, this);
 
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Created NPC instance from template `{0}`.", this);
+
             foreach (var inventoryItem in Inventory)
             {
                 var item = inventoryItem.CreateInstance();
@@ -107,6 +110,7 @@ namespace DemoGame.Server
         public NPC CreateNPCInstance(Map map)
         {
             NPC ret = CreateNPCInstance(map.World);
+            ret.RespawnMap = map;
             ret.ChangeMap(map);
             return ret;
         }

@@ -91,6 +91,19 @@ namespace DemoGame.Server
             }
         }
 
+        public ItemEntity CreateInstance(byte amount)
+        {
+            var instance = new ItemEntity(this, Vector2.Zero, amount);
+            return instance;
+        }
+
+        public ItemEntity CreateInstance(Map map, Vector2 position, byte amount)
+        {
+            var instance = new ItemEntity(this, position, amount);
+            map.AddEntity(instance);
+            return instance;
+        }
+
         public override string ToString()
         {
             return string.Format("{0} [{1}]", Name, ID);

@@ -8,7 +8,7 @@ using log4net;
 
 namespace DemoGame.Server
 {
-    public abstract class CharacterInventory : InventoryBase<ItemEntity>
+    public abstract class CharacterInventory : InventoryBase<ItemEntity>, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -79,6 +79,8 @@ namespace DemoGame.Server
         {
             // If we are loading the Inventory, we do not want to do database updates since that would be redundant
             // and likely cause problems
+            if (!_isPersistent)
+                return;
 
             if (newItem == null)
             {
@@ -89,8 +91,7 @@ namespace DemoGame.Server
                     DbController.GetQuery<DeleteCharacterInventoryItemQuery>().Execute(oldItem.ID);
 
                 // Stop listening for changes
-                if (_isPersistent)
-                    oldItem.OnChangeGraphicOrAmount -= ItemGraphicOrAmountChangeHandler;
+                oldItem.OnChangeGraphicOrAmount -= ItemGraphicOrAmountChangeHandler;
             }
             else
             {
@@ -104,13 +105,11 @@ namespace DemoGame.Server
                 }
 
                 // Listen to the item for changes
-                if (_isPersistent)
-                    newItem.OnChangeGraphicOrAmount += ItemGraphicOrAmountChangeHandler;
+                newItem.OnChangeGraphicOrAmount += ItemGraphicOrAmountChangeHandler;
             }
 
             // Prepare the slot for updating
-            if (_isPersistent)
-                SendSlotUpdate(slot);
+            SendSlotUpdate(slot);
         }
 
         /// <summary>
@@ -219,6 +218,26 @@ namespace DemoGame.Server
             }
 
             _isLoading = false;
+        }
+
+        bool _disposed = false;
+
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+
+            _disposed = true;
+
+            // If the Character is not persistent, we want to dispose of every item so it doesn't sit in the
+            // database as garbage
+            if (!_isPersistent)
+            {
+                foreach (var item in this)
+                {
+                    item.Dispose();
+                }
+            }
         }
     }
 }
