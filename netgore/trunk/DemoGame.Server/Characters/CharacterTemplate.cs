@@ -66,6 +66,51 @@ namespace DemoGame.Server
                 log.InfoFormat("Loaded CharacterTemplate `{0}`.", this);
         }
 
+        /// <summary>
+        /// Creates an instance of the CharacterTemplate as a NPC.
+        /// </summary>
+        /// <param name="world">World to place the NPC in.</param>
+        /// <returns>An instance of the CharacterTemplate as a NPC.</returns>
+        public NPC CreateNPCInstance(World world)
+        {
+            NPC ret = new NPC(world, this);
+
+            foreach (var inventoryItem in Inventory)
+            {
+                var item = inventoryItem.CreateInstance();
+                if (item == null)
+                    continue;
+
+                var extraItems = ret.Inventory.Add(item);
+                if (extraItems != null)
+                    extraItems.Dispose();
+            }
+
+            foreach (var equippedItem in Equipment)
+            {
+                var item = equippedItem.CreateInstance();
+                if (item == null)
+                    continue;
+
+                if (!ret.Equipped.Equip(item))
+                    item.Dispose();
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Creates an instance of the CharacterTemplate as a NPC.
+        /// </summary>
+        /// <param name="map">Map to place the NPC on.</param>
+        /// <returns>An instance of the CharacterTemplate as a NPC.</returns>
+        public NPC CreateNPCInstance(Map map)
+        {
+            NPC ret = CreateNPCInstance(map.World);
+            ret.ChangeMap(map);
+            return ret;
+        }
+
         public override string ToString()
         {
             return string.Format("{0} [{1}]", Name, ID);
