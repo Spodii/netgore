@@ -63,7 +63,10 @@ namespace DemoGame.Server
         {
             get { return _inventory; }
         }
-
+        
+        /// <summary>
+        /// Gets or sets the Map the NPC will respawn on after dying.
+        /// </summary>
         public Map RespawnMap { get; set; }
 
         /// <summary>
@@ -89,7 +92,7 @@ namespace DemoGame.Server
 // ReSharper disable MemberCanBeMadeStatic.Global
         public bool WillRespawn // ReSharper restore MemberCanBeMadeStatic.Global
         {
-            get { return true; }
+            get { return RespawnMap != null; }
         }
 
         [Obsolete("Do not use this empty constructor on the Server!")]
@@ -112,6 +115,9 @@ namespace DemoGame.Server
             Alliance = parent.Server.AllianceManager["monster"];
 
             Load(characterID);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Created persistent NPC `{0}` from CharacterID `{1}`.", this, characterID);
         }
 
         /// <summary>
@@ -138,6 +144,9 @@ namespace DemoGame.Server
             BodyInfo = GameData.Body(template.BodyIndex);
             CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
 
+            _spawnInventory = template.Inventory;
+            _spawnEquipment = template.Equipment;
+
             // Create the AI
             if (!string.IsNullOrEmpty(template.AIName))
                 SetAI(template.AIName);
@@ -154,8 +163,13 @@ namespace DemoGame.Server
             _giveExp = template.GiveExp;
             _giveCash = template.GiveCash;
 
+            LoadSpawnItems();
+
             // Done loading
             SetAsLoaded();
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Created NPC instance from template `{0}`.", template);
         }
 
         /// <summary>
@@ -196,7 +210,16 @@ namespace DemoGame.Server
             }
 
             // Drop items
-            // TODO: Drop items on death
+            foreach (var item in Inventory)
+            {
+                Inventory.RemoveAt(item.Key);
+                DropItem(item.Value);
+            }
+
+            foreach (var item in Equipped)
+            {
+                Equipped.RemoveAt(item.Key);
+            }
 
             // Check to respawn
             if (WillRespawn)
@@ -205,6 +228,8 @@ namespace DemoGame.Server
                 IsAlive = false;
                 _respawnTime = GetTime() + (RespawnSecs * 1000);
 
+                LoadSpawnItems();
+
                 ChangeMap(null);
                 RespawnMap.AddToRespawn(this);
             }
@@ -212,6 +237,55 @@ namespace DemoGame.Server
             {
                 // No respawning, so just dispose
                 DelayedDispose();
+            }
+        }
+
+        /// <summary>
+        /// IEnumerable of CharacterTemplateInventoryItems that define what Items the NPC will spawn with.
+        /// </summary>
+        readonly IEnumerable<CharacterTemplateInventoryItem> _spawnInventory;
+
+        /// <summary>
+        /// IEnumerable of CharacterTemplateEquipmentItems that define what Items the NPC will spawn with.
+        /// </summary>
+        readonly IEnumerable<CharacterTemplateEquipmentItem> _spawnEquipment;
+
+        /// <summary>
+        /// Reloads the Inventory and Equipment items the NPC spawns with.
+        /// </summary>
+        void LoadSpawnItems()
+        {
+            // All items remaining in the inventory or equipment should NOT be referenced!
+            // Items that were dropped should have been removed when dropping
+            _inventory.RemoveAll(true);
+            _equipped.RemoveAll(true);
+
+            // Create the items
+            if (_spawnInventory != null)
+            {
+                foreach (var inventoryItem in _spawnInventory)
+                {
+                    var item = inventoryItem.CreateInstance();
+                    if (item == null)
+                        continue;
+
+                    var extraItems = Inventory.Add(item);
+                    if (extraItems != null)
+                        extraItems.Dispose();
+                }
+            }
+
+            if (_spawnEquipment != null)
+            {
+                foreach (var equippedItem in _spawnEquipment)
+                {
+                    var item = equippedItem.CreateInstance();
+                    if (item == null)
+                        continue;
+
+                    if (!Equipped.Equip(item))
+                        item.Dispose();
+                }
             }
         }
 
