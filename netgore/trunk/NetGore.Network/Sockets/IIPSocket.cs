@@ -13,6 +13,16 @@ namespace NetGore.Network
     public interface IIPSocket : IDisposable
     {
         /// <summary>
+        /// Gets the maximum size of a message to the unreliable channel.
+        /// </summary>
+        int MaxUnreliableMessageSize { get; }
+
+        /// <summary>
+        /// Gets the maximum size of a message to the reliable channel.
+        /// </summary>
+        int MaxReliableMessageSize { get; }
+
+        /// <summary>
         /// Gets the IP address string that this IIPSocket is connected to.
         /// </summary>
         string Address { get; }
@@ -53,6 +63,21 @@ namespace NetGore.Network
         /// the data may be received out of order, or not at all. All data is guarenteed to be received in full if
         /// it is received.</param>
         void Send(BitStream data, bool reliable);
+
+        /// <summary>
+        /// Sends data over the reliable stream.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        void Send(byte[] data);
+
+        /// <summary>
+        /// Sends data over a stream.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        /// <param name="reliable">If true, the data is guarenteed to be received completely and in order. If false,
+        /// the data may be received out of order, or not at all. All data is guarenteed to be received in full if
+        /// it is received.</param>
+        void Send(byte[] data, bool reliable);
 
         /// <summary>
         /// Sets the port used to communicate with the remote connection over an unreliable stream.

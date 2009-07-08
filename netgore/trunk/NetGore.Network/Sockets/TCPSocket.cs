@@ -576,6 +576,18 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Asynchronously sends data to the socket.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        public void Send(byte[] data)
+        {
+            Debug.Fail("Try to avoid using this whenever possible. Despite how it may seem, it actually performs MUCH worse"
+                + " than if you were to send a BitStream.");
+
+            _sendQueue.Enqueue(data);
+        }
+
+        /// <summary>
         /// Disposes all resources used by the TCPSocket.
         /// </summary>
         public void Dispose()

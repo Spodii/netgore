@@ -164,12 +164,63 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Sends data over a stream.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        /// <param name="reliable">If true, the data is guarenteed to be received completely and in order. If false,
+        /// the data may be received out of order, or not at all. All data is guarenteed to be received in full if
+        /// it is received.</param>
+        public void Send(byte[] data, bool reliable)
+        {
+            // Send reliable data over TCP
+            if (reliable)
+            {
+                _tcpSocket.Send(data);
+                return;
+            }
+
+            // If the remote UDP port hasn't been set yet, we can still fall back on TCP at least instead of just
+            // dropping the send completely
+            if (_remoteUDPPort == _unsetRemoteUDPPortValue)
+            {
+                const string errmsg = "Tried sending over unreliable stream before setting the port.";
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                Debug.Fail(errmsg);
+                Send(data, true);
+                return;
+            }
+
+            // Create the EndPoint if it has not already been created
+            if (_udpEndPoint == null)
+                _udpEndPoint = CreateEndPoint(Address.Split(':')[0], _remoteUDPPort);
+
+            _udpSocket.Send(data, data.Length, _udpEndPoint);
+        }
+
+        /// <summary>
         /// Sets the port used to communicate with the remote connection over an unreliable stream.
         /// </summary>
         /// <param name="port">Port for the unreliable stream.</param>
         public void SetRemoteUnreliablePort(int port)
         {
             _remoteUDPPort = port;
+        }
+
+        /// <summary>
+        /// Gets the maximum size of a message to the unreliable channel.
+        /// </summary>
+        public int MaxUnreliableMessageSize
+        {
+            get { return UDPSocket.MaxPacketSize; }
+        }
+
+        /// <summary>
+        /// Gets the maximum size of a message to the reliable channel.
+        /// </summary>
+        public int MaxReliableMessageSize
+        {
+            get { return TCPSocket.MaxSendSize; }
         }
 
         /// <summary>
@@ -193,9 +244,9 @@ namespace NetGore.Network
             if (_remoteUDPPort == _unsetRemoteUDPPortValue)
             {
                 const string errmsg = "Tried sending over unreliable stream before setting the port.";
-                Debug.Fail(errmsg);
                 if (log.IsErrorEnabled)
                     log.Error(errmsg);
+                Debug.Fail(errmsg);
                 Send(data, true);
                 return;
             }
@@ -205,6 +256,15 @@ namespace NetGore.Network
                 _udpEndPoint = CreateEndPoint(Address.Split(':')[0], _remoteUDPPort);
 
             _udpSocket.Send(data.GetBuffer(), data.Length, _udpEndPoint);
+        }
+
+        /// <summary>
+        /// Sends data over the reliable stream.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        public void Send(byte[] data)
+        {
+            Send(data, true);
         }
 
         /// <summary>

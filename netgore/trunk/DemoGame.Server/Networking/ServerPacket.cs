@@ -239,11 +239,17 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SynchronizeDynamicEntity(DynamicEntity dynamicEntity)
+        public static void SynchronizeDynamicEntity(PacketWriter pw, DynamicEntity dynamicEntity)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.CreateDynamicEntity);
+            pw.Write(ServerPacketID.CreateDynamicEntity);
             pw.Write(dynamicEntity.MapEntityIndex);
             dynamicEntity.Serialize(pw);
+        }
+
+        public static PacketWriter SynchronizeDynamicEntity(DynamicEntity dynamicEntity)
+        {
+            PacketWriter pw = GetWriter();
+            SynchronizeDynamicEntity(pw, dynamicEntity);
             return pw;
         }
 
@@ -267,11 +273,17 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter UpdateVelocityAndPosition(DynamicEntity dynamicEntity, int currentTime)
+        public static void UpdateVelocityAndPosition(PacketWriter pw, DynamicEntity dynamicEntity, int currentTime)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.UpdateVelocityAndPosition);
+            pw.Write(ServerPacketID.UpdateVelocityAndPosition);
             pw.Write(dynamicEntity.MapEntityIndex);
             dynamicEntity.SerializePositionAndVelocity(pw, currentTime);
+        }
+
+        public static PacketWriter UpdateVelocityAndPosition(DynamicEntity dynamicEntity, int currentTime)
+        {
+            PacketWriter pw = GetWriter();
+            UpdateVelocityAndPosition(pw, dynamicEntity, currentTime);
             return pw;
         }
     }

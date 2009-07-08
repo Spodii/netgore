@@ -143,10 +143,19 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Sends data to the server
+        /// Sends data to the server.
         /// </summary>
-        /// <param name="data">BitStream containing the data to send</param>
+        /// <param name="data">BitStream containing the data to send.</param>
         public void Send(BitStream data)
+        {
+            _conn.Send(data);
+        }
+
+        /// <summary>
+        /// Asynchronously sends data to the socket.
+        /// </summary>
+        /// <param name="data">Data to send.</param>
+        public void Send(byte[] data)
         {
             _conn.Send(data);
         }
