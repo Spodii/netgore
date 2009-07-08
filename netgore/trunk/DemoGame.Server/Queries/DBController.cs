@@ -73,7 +73,7 @@ namespace DemoGame.Server
                 _queryObjects.Add(type, instance);
 
                 if (log.IsInfoEnabled)
-                    log.InfoFormat("Created instance of query class Type `{0}`.", type);
+                    log.InfoFormat("Created instance of query class Type `{0}`.", type.Name);
             }
 
             if (log.IsInfoEnabled)
