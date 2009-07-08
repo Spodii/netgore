@@ -11,7 +11,7 @@ namespace NetGore.Network
     /// Queues data to be sent on a socket, concatenating as much as possible while preserving the data
     /// and ordering, then returning the data to the socket when dequeued. This class is thread-safe.
     /// </summary>
-    class SocketSendQueue
+    public class SocketSendQueue
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
