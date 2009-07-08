@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-
 using Microsoft.Xna.Framework;
 using NetGore;
 
@@ -12,8 +8,8 @@ namespace DemoGame.Server
     {
         readonly string _desc;
         readonly GrhIndex _graphic;
-        readonly ItemTemplateID _id;
         readonly byte _height;
+        readonly ItemTemplateID _id;
         readonly string _name;
         readonly ItemStats _stats;
         readonly ItemType _type;
@@ -30,14 +26,14 @@ namespace DemoGame.Server
             get { return _graphic; }
         }
 
-        public ItemTemplateID ID
-        {
-            get { return _id; }
-        }
-
         public byte Height
         {
             get { return _height; }
+        }
+
+        public ItemTemplateID ID
+        {
+            get { return _id; }
         }
 
         public string Name
@@ -93,13 +89,13 @@ namespace DemoGame.Server
 
         public ItemEntity CreateInstance(byte amount)
         {
-            var instance = new ItemEntity(this, Vector2.Zero, amount);
+            ItemEntity instance = new ItemEntity(this, Vector2.Zero, amount);
             return instance;
         }
 
         public ItemEntity CreateInstance(Map map, Vector2 position, byte amount)
         {
-            var instance = new ItemEntity(this, position, amount);
+            ItemEntity instance = new ItemEntity(this, position, amount);
             map.AddEntity(instance);
             return instance;
         }

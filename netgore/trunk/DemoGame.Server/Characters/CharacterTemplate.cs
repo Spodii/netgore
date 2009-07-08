@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.Server.Queries;
 using log4net;
 
 namespace DemoGame.Server
@@ -20,12 +18,14 @@ namespace DemoGame.Server
         public Alliance Alliance { get; private set; }
 
         public BodyIndex BodyIndex { get; private set; }
+        public IEnumerable<CharacterTemplateEquipmentItem> Equipment { get; private set; }
 
         public ushort GiveCash { get; private set; }
 
         public ushort GiveExp { get; private set; }
 
         public CharacterTemplateID ID { get; private set; }
+        public IEnumerable<CharacterTemplateInventoryItem> Inventory { get; private set; }
 
         public string Name { get; private set; }
 
@@ -37,13 +37,10 @@ namespace DemoGame.Server
         /// </summary>
         public IEnumerable<IStat> Stats { get; private set; }
 
-        public IEnumerable<CharacterTemplateInventoryItem> Inventory { get; private set; }
-
-        public IEnumerable<CharacterTemplateEquipmentItem> Equipment { get; private set; }
-
         public CharacterTemplate(CharacterTemplateID id, string name, string aiName, Alliance alliance, BodyIndex body,
-            ushort respawnSecs, ushort giveExp, ushort giveCash, IEnumerable<IStat> stats,
-            IEnumerable<CharacterTemplateInventoryItem> inventory, IEnumerable<CharacterTemplateEquipmentItem> equipment)
+                                 ushort respawnSecs, ushort giveExp, ushort giveCash, IEnumerable<IStat> stats,
+                                 IEnumerable<CharacterTemplateInventoryItem> inventory,
+                                 IEnumerable<CharacterTemplateEquipmentItem> equipment)
         {
             Debug.Assert(!stats.Any(x => x == null));
             Debug.Assert(!inventory.Any(x => x == null));

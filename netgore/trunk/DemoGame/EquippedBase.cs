@@ -185,6 +185,25 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Removes all items from the EquippedBase.
+        /// </summary>
+        /// <param name="dispose">If true, then all of the items in the EquippedBase will be disposed of. If false,
+        /// they will only be removed from the EquippedBase, but could still referenced by other objects.</param>
+        public void RemoveAll(bool dispose)
+        {
+            for (int i = 0; i < _equipped.Length; i++)
+            {
+                T item = this[i];
+                if (item != null)
+                {
+                    RemoveAt((EquipmentSlot)i);
+                    if (dispose)
+                        item.Dispose();
+                }
+            }
+        }
+
+        /// <summary>
         /// Removes an item from the specified <paramref name="slot"/>.
         /// </summary>
         /// <param name="slot">Slot to remove the item from.</param>
@@ -293,26 +312,7 @@ namespace DemoGame
             return true;
         }
 
-        /// <summary>
-        /// Removes all items from the EquippedBase.
-        /// </summary>
-        /// <param name="dispose">If true, then all of the items in the EquippedBase will be disposed of. If false,
-        /// they will only be removed from the EquippedBase, but could still referenced by other objects.</param>
-        public void RemoveAll(bool dispose)
-        {
-            for (int i = 0; i < _equipped.Length; i++)
-            {
-                var item = this[i];
-                if (item != null)
-                {
-                    RemoveAt((EquipmentSlot)i);
-                    if (dispose)
-                        item.Dispose();
-                }
-            }
-        }
-
-        #region IEnumerable<T> Members
+        #region IEnumerable<KeyValuePair<EquipmentSlot,T>> Members
 
         ///<summary>
         ///Returns an enumerator that iterates through the collection.
@@ -326,7 +326,7 @@ namespace DemoGame
         {
             for (int i = 0; i < _equipped.Length; i++)
             {
-                var item = this[i];
+                T item = this[i];
                 if (item != null)
                     yield return new KeyValuePair<EquipmentSlot, T>((EquipmentSlot)i, item);
             }

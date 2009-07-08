@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 
 namespace DemoGame
@@ -11,16 +9,6 @@ namespace DemoGame
     public static class ItemTypeExtensions
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// Checks if a specified ItemType value is defined by the ItemType enum.
-        /// </summary>
-        /// <param name="itemType">ItemType value to check.</param>
-        /// <returns>True if the <paramref name="itemType"/> is defined in the ItemType enum, else false.</returns>
-        public static bool IsDefined(this ItemType itemType)
-        {
-            return Enum.IsDefined(typeof(ItemType), itemType);
-        }
 
         public static IEnumerable<EquipmentSlot> GetPossibleSlots(this ItemType itemType)
         {
@@ -49,6 +37,16 @@ namespace DemoGame
 
                     return null;
             }
+        }
+
+        /// <summary>
+        /// Checks if a specified ItemType value is defined by the ItemType enum.
+        /// </summary>
+        /// <param name="itemType">ItemType value to check.</param>
+        /// <returns>True if the <paramref name="itemType"/> is defined in the ItemType enum, else false.</returns>
+        public static bool IsDefined(this ItemType itemType)
+        {
+            return Enum.IsDefined(typeof(ItemType), itemType);
         }
     }
 }

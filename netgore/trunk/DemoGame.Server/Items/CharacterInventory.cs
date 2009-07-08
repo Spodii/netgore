@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using DemoGame.Server.Queries;
 using log4net;
@@ -15,6 +13,25 @@ namespace DemoGame.Server
         readonly Character _character;
 
         readonly bool _isPersistent;
+        bool _disposed = false;
+
+        bool _isLoading;
+
+        /// <summary>
+        /// Gets the Character that this Inventory belongs to.
+        /// </summary>
+        public Character Character
+        {
+            get { return _character; }
+        }
+
+        /// <summary>
+        /// Gets the DBController used by this CharacterInventory.
+        /// </summary>
+        public DBController DbController
+        {
+            get { return Character.DBController; }
+        }
 
         protected CharacterInventory(Character character)
         {
@@ -63,7 +80,33 @@ namespace DemoGame.Server
             }
         }
 
-        bool _isLoading;
+        /// <summary>
+        /// Makes the Character drop the item from their Inventory.
+        /// </summary>
+        /// <param name="slot">Slot of the item to drop.</param>
+        /// <returns>True if the item was successfully dropped, else false.</returns>
+        public bool Drop(InventorySlot slot)
+        {
+            // Get the item to drop
+            ItemEntity dropItem = this[slot];
+
+            // Check for an invalid item
+            if (dropItem == null)
+            {
+                const string errmsg = "Could not drop item since no item exists at slot `{0}`.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, slot);
+                return false;
+            }
+
+            // Remove the item from the inventory
+            RemoveAt(slot);
+
+            // Drop the item
+            Character.DropItem(dropItem);
+
+            return true;
+        }
 
         /// <summary>
         /// When overridden in the derived class, performs additional processing to handle an inventory slot
@@ -100,8 +143,9 @@ namespace DemoGame.Server
                 // Update the database
                 if (!_isLoading)
                 {
-                    var args = new InsertCharacterInventoryItemQuery.QueryArgs(Character.ID, newItem.ID);
-                    DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(args); 
+                    InsertCharacterInventoryItemQuery.QueryArgs args =
+                        new InsertCharacterInventoryItemQuery.QueryArgs(Character.ID, newItem.ID);
+                    DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(args);
                 }
 
                 // Listen to the item for changes
@@ -110,61 +154,6 @@ namespace DemoGame.Server
 
             // Prepare the slot for updating
             SendSlotUpdate(slot);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, notifies the Client that a slot in the Inventory has changed.
-        /// </summary>
-        /// <param name="slot">The slot that changed.</param>
-        protected virtual void SendSlotUpdate(InventorySlot slot)
-        {
-        }
-
-        /// <summary>
-        /// Gets the Character that this Inventory belongs to.
-        /// </summary>
-        public Character Character
-        {
-            get
-            {
-                return _character;
-            }
-        }
-
-        /// <summary>
-        /// Gets the DBController used by this CharacterInventory.
-        /// </summary>
-        public DBController DbController
-        {
-            get { return Character.DBController; }
-        }
-
-        /// <summary>
-        /// Makes the Character drop the item from their Inventory.
-        /// </summary>
-        /// <param name="slot">Slot of the item to drop.</param>
-        /// <returns>True if the item was successfully dropped, else false.</returns>
-        public bool Drop(InventorySlot slot)
-        {
-            // Get the item to drop
-            ItemEntity dropItem = this[slot];
-
-            // Check for an invalid item
-            if (dropItem == null)
-            {
-                const string errmsg = "Could not drop item since no item exists at slot `{0}`.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, slot);
-                return false;
-            }
-
-            // Remove the item from the inventory
-            RemoveAt(slot);
-
-            // Drop the item
-            Character.DropItem(dropItem);
-
-            return true;
         }
 
         /// <summary>
@@ -203,7 +192,7 @@ namespace DemoGame.Server
             // TODO: Need to track the slots, too, I guess
             InventorySlot slot = new InventorySlot(0);
             var queryResults = DbController.GetQuery<SelectCharacterInventoryItemsQuery>().Execute(Character.ID);
-            foreach (ItemValues values in queryResults) 
+            foreach (ItemValues values in queryResults)
             {
                 // Make sure no item is already in the slot... just in case
                 if (this[slot] != null)
@@ -220,7 +209,15 @@ namespace DemoGame.Server
             _isLoading = false;
         }
 
-        bool _disposed = false;
+        /// <summary>
+        /// When overridden in the derived class, notifies the Client that a slot in the Inventory has changed.
+        /// </summary>
+        /// <param name="slot">The slot that changed.</param>
+        protected virtual void SendSlotUpdate(InventorySlot slot)
+        {
+        }
+
+        #region IDisposable Members
 
         public void Dispose()
         {
@@ -232,9 +229,9 @@ namespace DemoGame.Server
             // If the Character is not persistent, we want to dispose of every item so it doesn't sit in the
             // database as garbage
             if (!_isPersistent)
-            {
                 RemoveAll(true);
-            }
         }
+
+        #endregion
     }
 }
