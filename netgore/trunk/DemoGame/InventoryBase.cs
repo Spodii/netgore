@@ -172,20 +172,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Removes all items from the InventoryBase.
-        /// </summary>
-        /// <param name="dispose">If true, then all of the items in the InventoryBase will be disposed of. If false,
-        /// they will only be removed from the InventoryBase, but could still referenced by other objects.</param>
-        public void RemoveAll(bool dispose)
-        {
-            for (InventorySlot i = new InventorySlot(0); i < _buffer.Length; i++)
-            {
-                if (this[i] != null)
-                    ClearSlot(i, dispose);
-            }
-        }
-
-        /// <summary>
         /// Completely removes the item in a given slot, including optionally disposing it.
         /// </summary>
         /// <param name="slot">Slot of the item to remove.</param>
@@ -277,6 +263,20 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Removes all items from the InventoryBase.
+        /// </summary>
+        /// <param name="dispose">If true, then all of the items in the InventoryBase will be disposed of. If false,
+        /// they will only be removed from the InventoryBase, but could still referenced by other objects.</param>
+        public void RemoveAll(bool dispose)
+        {
+            for (InventorySlot i = new InventorySlot(0); i < _buffer.Length; i++)
+            {
+                if (this[i] != null)
+                    ClearSlot(i, dispose);
+            }
+        }
+
+        /// <summary>
         /// Removes the ItemEntity in the given <paramref name="slot"/> from the Inventory. The removed item is
         /// not disposed, so if the ItemEntity must be disposed (that is, it won't be used anywhere else), be
         /// sure to dispose of it!
@@ -347,11 +347,13 @@ namespace DemoGame
             return false;
         }
 
+        #region IEnumerable<KeyValuePair<InventorySlot,T>> Members
+
         public IEnumerator<KeyValuePair<InventorySlot, T>> GetEnumerator()
         {
             for (InventorySlot i = new InventorySlot(0); i < _buffer.Length; i++)
             {
-                var item = this[i];
+                T item = this[i];
                 if (item != null)
                     yield return new KeyValuePair<InventorySlot, T>(i, item);
             }
@@ -361,5 +363,7 @@ namespace DemoGame
         {
             return GetEnumerator();
         }
+
+        #endregion
     }
 }

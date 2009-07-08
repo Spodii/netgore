@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -18,6 +17,17 @@ namespace DemoGame.Server
 
         readonly NPCEquipped _equipped;
         readonly NPCInventory _inventory;
+
+        /// <summary>
+        /// IEnumerable of CharacterTemplateEquipmentItems that define what Items the NPC will spawn with.
+        /// </summary>
+        readonly IEnumerable<CharacterTemplateEquipmentItem> _spawnEquipment;
+
+        /// <summary>
+        /// IEnumerable of CharacterTemplateInventoryItems that define what Items the NPC will spawn with.
+        /// </summary>
+        readonly IEnumerable<CharacterTemplateInventoryItem> _spawnInventory;
+
         readonly NPCStats _stats;
         AIBase _ai;
 
@@ -63,7 +73,7 @@ namespace DemoGame.Server
         {
             get { return _inventory; }
         }
-        
+
         /// <summary>
         /// Gets or sets the Map the NPC will respawn on after dying.
         /// </summary>
@@ -100,8 +110,7 @@ namespace DemoGame.Server
         {
         }
 
-        public NPC(World parent, CharacterID characterID)
-            : base(parent, true)
+        public NPC(World parent, CharacterID characterID) : base(parent, true)
         {
             // HACK: This whole constructor is uber hax
             if (parent == null)
@@ -241,16 +250,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// IEnumerable of CharacterTemplateInventoryItems that define what Items the NPC will spawn with.
-        /// </summary>
-        readonly IEnumerable<CharacterTemplateInventoryItem> _spawnInventory;
-
-        /// <summary>
-        /// IEnumerable of CharacterTemplateEquipmentItems that define what Items the NPC will spawn with.
-        /// </summary>
-        readonly IEnumerable<CharacterTemplateEquipmentItem> _spawnEquipment;
-
-        /// <summary>
         /// Reloads the Inventory and Equipment items the NPC spawns with.
         /// </summary>
         void LoadSpawnItems()
@@ -263,13 +262,13 @@ namespace DemoGame.Server
             // Create the items
             if (_spawnInventory != null)
             {
-                foreach (var inventoryItem in _spawnInventory)
+                foreach (CharacterTemplateInventoryItem inventoryItem in _spawnInventory)
                 {
-                    var item = inventoryItem.CreateInstance();
+                    ItemEntity item = inventoryItem.CreateInstance();
                     if (item == null)
                         continue;
 
-                    var extraItems = Inventory.Add(item);
+                    ItemEntity extraItems = Inventory.Add(item);
                     if (extraItems != null)
                         extraItems.Dispose();
                 }
@@ -277,9 +276,9 @@ namespace DemoGame.Server
 
             if (_spawnEquipment != null)
             {
-                foreach (var equippedItem in _spawnEquipment)
+                foreach (CharacterTemplateEquipmentItem equippedItem in _spawnEquipment)
                 {
-                    var item = equippedItem.CreateInstance();
+                    ItemEntity item = equippedItem.CreateInstance();
                     if (item == null)
                         continue;
 

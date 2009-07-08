@@ -15,6 +15,7 @@ namespace DemoGame.Server
         readonly Character _character;
 
         readonly bool _isPersistent;
+        bool _disposed = false;
 
         /// <summary>
         /// Gets the Character that this UserEquipped belongs to.
@@ -161,7 +162,7 @@ namespace DemoGame.Server
         {
         }
 
-        bool _disposed = false;
+        #region IDisposable Members
 
         public void Dispose()
         {
@@ -180,5 +181,7 @@ namespace DemoGame.Server
                 }
             }
         }
+
+        #endregion
     }
 }

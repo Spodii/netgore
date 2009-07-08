@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
 
@@ -42,8 +38,8 @@ namespace DemoGame
         /// <param name="index">Index of the BodyInfo</param>
         /// <param name="width">Width of the body collision area in pixels</param>
         /// <param name="height">Height of the body collision area in pixels</param>
-        public BodyInfo(BodyIndex index, float width, float height, string body, string stand, string walk, string jump, string fall,
-                        string punch, Rectangle punchRect)
+        public BodyInfo(BodyIndex index, float width, float height, string body, string stand, string walk, string jump,
+                        string fall, string punch, Rectangle punchRect)
         {
             Index = index;
 
