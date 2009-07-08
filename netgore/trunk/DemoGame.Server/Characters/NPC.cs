@@ -16,7 +16,6 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly List<NPCDrop> _drops;
         readonly NPCEquipped _equipped;
         readonly NPCInventory _inventory;
         readonly NPCStats _stats;
@@ -60,7 +59,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the Character's Inventory.
         /// </summary>
-        public override Inventory Inventory
+        public override CharacterInventory Inventory
         {
             get { return _inventory; }
         }
@@ -120,7 +119,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="parent">World that the NPC belongs to.</param>
         /// <param name="template">NPCTemplate used to create the NPC.</param>
-        public NPC(World parent, NPCTemplate template) : base(parent, false)
+        public NPC(World parent, CharacterTemplate template) : base(parent, false)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");
@@ -154,7 +153,6 @@ namespace DemoGame.Server
             _respawnSecs = template.RespawnSecs;
             _giveExp = template.GiveExp;
             _giveCash = template.GiveCash;
-            _drops = template.Drops.ToList();
 
             // Done loading
             SetAsLoaded();
@@ -198,12 +196,7 @@ namespace DemoGame.Server
             }
 
             // Drop items
-            foreach (NPCDrop drop in _drops)
-            {
-                byte amount = drop.GetDropAmount();
-                if (amount > 0)
-                    DropItem(drop.ItemTemplate, amount);
-            }
+            // TODO: Drop items on death
 
             // Check to respawn
             if (WillRespawn)

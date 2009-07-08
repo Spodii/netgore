@@ -12,7 +12,7 @@ namespace DemoGame.Server
     /// <summary>
     /// An inventory for a single User on the Server
     /// </summary>
-    class UserInventory : Inventory
+    class UserInventory : CharacterInventory
     {
         readonly UserInventoryUpdater _inventoryUpdater;
 

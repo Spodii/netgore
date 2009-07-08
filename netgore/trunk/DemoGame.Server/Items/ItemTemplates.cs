@@ -174,7 +174,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="index">The ID of the Item to get or set.</param>
         /// <returns>The element at the specified index.</returns>
-        public ItemTemplate this[ItemID index]
+        public ItemTemplate this[ItemTemplateID index]
         {
             get { return _itemTemplates[(int)index]; }
             set { throw new MethodAccessException(_isReadonlyMessage); }

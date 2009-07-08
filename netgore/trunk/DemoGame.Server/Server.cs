@@ -51,7 +51,7 @@ namespace DemoGame.Server
         /// </summary>
         readonly object _loginLock = new object();
 
-        readonly NPCTemplateManager _npcManager;
+        readonly CharacterTemplateManager _npcManager;
         readonly ServerSockets _sockets;
 
         readonly int _startupTime = Environment.TickCount;
@@ -90,9 +90,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the global NPCTemplateManager
+        /// Gets the global CharacterTemplateManager
         /// </summary>
-        public NPCTemplateManager NPCTemplateManager
+        public CharacterTemplateManager CharacterTemplateManager
         {
             get { return _npcManager; }
         }
@@ -135,7 +135,7 @@ namespace DemoGame.Server
             ItemEntity.Initialize(DBController);
             _allianceManager = new AllianceManager(DBController);
             _itemTemplates = new ItemTemplates(DBController.GetQuery<SelectItemTemplatesQuery>());
-            _npcManager = new NPCTemplateManager(DBController.GetQuery<SelectNPCTemplateQuery>(), DBController.GetQuery<SelectNPCTemplateDropsQuery>(), AllianceManager, _itemTemplates);
+            _npcManager = new CharacterTemplateManager(DBController, AllianceManager, _itemTemplates);
             InitializeScripts();
 
             // Create the world and sockets

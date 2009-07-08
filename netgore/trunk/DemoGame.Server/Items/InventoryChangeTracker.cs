@@ -8,21 +8,21 @@ namespace DemoGame.Server
 {
     class InventoryChangeTracker
     {
-        readonly ItemValueTracker[] _buffer = new ItemValueTracker[Inventory.MaxInventorySize];
+        readonly ItemValueTracker[] _buffer = new ItemValueTracker[CharacterInventory.MaxInventorySize];
 
-        readonly Inventory _inventory;
+        readonly CharacterInventory _inventory;
 
         /// <summary>
         /// Gets the Inventory that this InventoryChangeTracker is tracking
         /// </summary>
-        public Inventory Inventory
+        public CharacterInventory Inventory
         {
             get { return _inventory; }
         }
 
-        public InventoryChangeTracker(Inventory inventory)
+        public InventoryChangeTracker(CharacterInventory inventory)
         {
-            Debug.Assert(Inventory.MaxInventorySize <= byte.MaxValue, "Too many inventory slots to index them with a byte.");
+            Debug.Assert(CharacterInventory.MaxInventorySize <= byte.MaxValue, "Too many inventory slots to index them with a byte.");
 
             _inventory = inventory;
         }
