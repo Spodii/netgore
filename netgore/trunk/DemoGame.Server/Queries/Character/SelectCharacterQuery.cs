@@ -43,6 +43,7 @@ namespace DemoGame.Server.Queries
 
             // Read the general user values
             CharacterID id = r.GetCharacterID("id");
+            CharacterTemplateID? templateID = r.GetCharacterTemplateIDNullable("template_id");
             string name = r.GetString("name");
             MapIndex mapIndex = r.GetMapIndex("map");
             float x = r.GetFloat("x");
@@ -63,7 +64,7 @@ namespace DemoGame.Server.Queries
             }
 
             // Create the return object
-            var ret = new SelectCharacterQueryValues(id, name, mapIndex, pos, body, stats);
+            var ret = new SelectCharacterQueryValues(id, templateID, name, mapIndex, pos, body, stats);
             return ret;
         }
 

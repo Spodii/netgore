@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Globalization;
 using System.Runtime.InteropServices;
 using NetGore.IO;
 
@@ -13,14 +14,14 @@ namespace DemoGame.Server
     public struct CharacterTemplateID : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
-        /// The maximum value.
+        /// Represents the largest possible value of CharacterTemplateID. This field is constant.
         /// </summary>
-        const int _maxValue = int.MaxValue;
+        public const int MaxValue = int.MaxValue;
 
         /// <summary>
-        /// The minimum value.
+        /// Represents the smallest possible value of CharacterTemplateID. This field is constant.
         /// </summary>
-        const int _minValue = int.MinValue;
+        public const int MinValue = int.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
@@ -33,7 +34,7 @@ namespace DemoGame.Server
         /// <param name="value">Value to assign to the new CharacterTemplateID.</param>
         public CharacterTemplateID(int value)
         {
-            if (value < _minValue || value > _maxValue)
+            if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
 
             _value = value;
@@ -91,6 +92,56 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Converts the string representation of a number to its CharacterTemplateID equivalent.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <returns>The parsed CharacterTemplateID.</returns>
+        public static CharacterTemplateID Parse(string s)
+        {
+            return new CharacterTemplateID(int.Parse(s));
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its CharacterTemplateID equivalent.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
+        /// permitted format of <paramref name="s"/>. A typical value to specify is
+        /// System.Globalization.NumberStyles.Integer.</param>
+        /// <returns>The parsed CharacterTemplateID.</returns>
+        public static CharacterTemplateID Parse(string s, NumberStyles style)
+        {
+            return new CharacterTemplateID(int.Parse(s, style));
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its CharacterTemplateID equivalent.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
+        /// about <paramref name="s"/>.</param>
+        /// <returns>The parsed CharacterTemplateID.</returns>
+        public static CharacterTemplateID Parse(string s, IFormatProvider provider)
+        {
+            return new CharacterTemplateID(int.Parse(s, provider));
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its CharacterTemplateID equivalent.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
+        /// permitted format of <paramref name="s"/>. A typical value to specify is
+        /// System.Globalization.NumberStyles.Integer.</param>
+        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
+        /// about <paramref name="s"/>.</param>
+        /// <returns>The parsed CharacterTemplateID.</returns>
+        public static CharacterTemplateID Parse(string s, NumberStyles style, IFormatProvider provider)
+        {
+            return new CharacterTemplateID(int.Parse(s, style, provider));
+        }
+
+        /// <summary>
         /// Reads an CharacterTemplateID from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
@@ -141,15 +192,48 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Returns the fully qualified type name of this instance.
+        /// Converts the numeric value of this instance to its equivalent string representation.
         /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> containing a fully qualified type name.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
+        /// <returns>The string representation of the value of this instance, consisting of a sequence
+        /// of digits ranging from 0 to 9, without leading zeroes.</returns>
         public override string ToString()
         {
             return _value.ToString();
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its CharacterTemplateID equivalent. A return value 
+        /// indicates whether the conversion succeeded or failed.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
+        /// permitted format of <paramref name="s"/>. A typical value to specify is
+        /// System.Globalization.NumberStyles.Integer.</param>
+        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
+        /// about <paramref name="s"/>.</param>
+        /// <param name="parsedValue">If the parsing was successful, contains the parsed CharacterTemplateID.</param>
+        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
+        public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out CharacterTemplateID parsedValue)
+        {
+            int outValue;
+            bool success = int.TryParse(s, style, provider, out outValue);
+            parsedValue = new CharacterTemplateID(outValue);
+            return success;
+        }
+
+        /// <summary>
+        /// Converts the string representation of a number to its CharacterTemplateID equivalent. A return value 
+        /// indicates whether the conversion succeeded or failed.
+        /// </summary>
+        /// <param name="s">A string representing the number to convert.</param>
+        /// <param name="parsedValue">If the parsing was successful, contains the parsed CharacterTemplateID.</param>
+        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
+        public static bool TryParse(string s, out CharacterTemplateID parsedValue)
+        {
+            int outValue;
+            bool success = int.TryParse(s, out outValue);
+            parsedValue = new CharacterTemplateID(outValue);
+            return success;
         }
 
         /// <summary>
@@ -427,7 +511,7 @@ namespace DemoGame.Server
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
         ///                 </param><filterpriority>2</filterpriority>
-        string IConvertible.ToString(IFormatProvider provider)
+        public string ToString(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToString(provider);
         }
@@ -486,6 +570,26 @@ namespace DemoGame.Server
         }
 
         #endregion
+
+        /// <summary>
+        /// Implements operator ++.
+        /// </summary>
+        /// <param name="l">The CharacterTemplateID to increment.</param>
+        /// <returns>The incremented CharacterTemplateID.</returns>
+        public static CharacterTemplateID operator ++(CharacterTemplateID l)
+        {
+            return new CharacterTemplateID(l._value + 1);
+        }
+
+        /// <summary>
+        /// Implements operator --.
+        /// </summary>
+        /// <param name="l">The CharacterTemplateID to decrement.</param>
+        /// <returns>The decremented CharacterTemplateID.</returns>
+        public static CharacterTemplateID operator --(CharacterTemplateID l)
+        {
+            return new CharacterTemplateID(l._value - 1);
+        }
 
         /// <summary>
         /// Implements operator +.
@@ -601,6 +705,28 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
+        public static bool operator >(CharacterTemplateID left, CharacterTemplateID right)
+        {
+            return left._value > right._value;
+        }
+
+        /// <summary>
+        /// Implements operator <.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than the left.</returns>
+        public static bool operator <(CharacterTemplateID left, CharacterTemplateID right)
+        {
+            return left._value < right._value;
+        }
+
+        /// <summary>
+        /// Implements operator >.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the left argument is greater than the right.</returns>
         public static bool operator >(CharacterTemplateID left, int right)
         {
             return left._value > right;
@@ -662,6 +788,28 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Implements operator >=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the left argument is greater than or equal to the right.</returns>
+        public static bool operator >=(CharacterTemplateID left, CharacterTemplateID right)
+        {
+            return left._value >= right._value;
+        }
+
+        /// <summary>
+        /// Implements operator <=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        public static bool operator <=(CharacterTemplateID left, CharacterTemplateID right)
+        {
+            return left._value <= right._value;
+        }
+
+        /// <summary>
         /// Implements operator !=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
@@ -692,43 +840,56 @@ namespace DemoGame.Server
     public static class CharacterTemplateIDReadWriteExtensions
     {
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
+        /// Reads the CharacterTemplateID from an IDataReader.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
-        public static CharacterTemplateID ReadCharacterTemplateID(this BitStream bitStream)
-        {
-            return CharacterTemplateID.Read(bitStream);
-        }
-
-        /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
-        /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
+        /// <param name="dataReader">IDataReader to read the CharacterTemplateID from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
+        /// <returns>The CharacterTemplateID read from the IDataReader.</returns>
         public static CharacterTemplateID GetCharacterTemplateID(this IDataReader dataReader, int i)
         {
             return CharacterTemplateID.Read(dataReader, i);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
+        /// Reads the CharacterTemplateID from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
+        /// <param name="dataReader">IDataReader to read the CharacterTemplateID from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
+        /// <returns>The CharacterTemplateID read from the IDataReader.</returns>
         public static CharacterTemplateID GetCharacterTemplateID(this IDataReader dataReader, string name)
         {
             return CharacterTemplateID.Read(dataReader, name);
         }
 
+        public static CharacterTemplateID? GetCharacterTemplateIDNullable(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return GetCharacterTemplateIDNullable(dataReader, i);
+        }
+
+        public static CharacterTemplateID? GetCharacterTemplateIDNullable(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+            return CharacterTemplateID.Read(dataReader, i);
+        }
+
         /// <summary>
-        /// Reads the CustomValueType from an IValueReader.
+        /// Reads the CharacterTemplateID from a BitStream.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
+        /// <param name="bitStream">BitStream to read the CharacterTemplateID from.</param>
+        /// <returns>The CharacterTemplateID read from the BitStream.</returns>
+        public static CharacterTemplateID ReadCharacterTemplateID(this BitStream bitStream)
+        {
+            return CharacterTemplateID.Read(bitStream);
+        }
+
+        /// <summary>
+        /// Reads the CharacterTemplateID from an IValueReader.
+        /// </summary>
+        /// <param name="valueReader">IValueReader to read the CharacterTemplateID from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The CustomValueType read from the IValueReader.</returns>
+        /// <returns>The CharacterTemplateID read from the IValueReader.</returns>
         public static CharacterTemplateID ReadCharacterTemplateID(this IValueReader valueReader, string name)
         {
             return CharacterTemplateID.Read(valueReader, name);

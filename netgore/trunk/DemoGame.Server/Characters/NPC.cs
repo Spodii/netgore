@@ -18,16 +18,6 @@ namespace DemoGame.Server
         readonly NPCEquipped _equipped;
         readonly NPCInventory _inventory;
 
-        /// <summary>
-        /// IEnumerable of CharacterTemplateEquipmentItems that define what Items the NPC will spawn with.
-        /// </summary>
-        readonly IEnumerable<CharacterTemplateEquipmentItem> _spawnEquipment;
-
-        /// <summary>
-        /// IEnumerable of CharacterTemplateInventoryItems that define what Items the NPC will spawn with.
-        /// </summary>
-        readonly IEnumerable<CharacterTemplateInventoryItem> _spawnInventory;
-
         readonly NPCStats _stats;
         AIBase _ai;
 
@@ -154,9 +144,6 @@ namespace DemoGame.Server
             TemplateID = template.ID;
             CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
 
-            _spawnInventory = template.Inventory;
-            _spawnEquipment = template.Equipment;
-
             // Create the AI
             if (!string.IsNullOrEmpty(template.AIName))
                 SetAI(template.AIName);
@@ -260,10 +247,22 @@ namespace DemoGame.Server
             _inventory.RemoveAll(true);
             _equipped.RemoveAll(true);
 
+            // Grab the respawn items from the template
+            var templateID = TemplateID;
+            if (!templateID.HasValue)
+                return;
+
+            CharacterTemplate template = Map.World.NPCTemplates[templateID.Value];
+            if (template == null)
+                return;
+
+            var spawnInventory = template.Inventory;
+            var spawnEquipment = template.Equipment;
+
             // Create the items
-            if (_spawnInventory != null)
+            if (spawnInventory != null)
             {
-                foreach (CharacterTemplateInventoryItem inventoryItem in _spawnInventory)
+                foreach (CharacterTemplateInventoryItem inventoryItem in spawnInventory)
                 {
                     ItemEntity item = inventoryItem.CreateInstance();
                     if (item == null)
@@ -275,9 +274,9 @@ namespace DemoGame.Server
                 }
             }
 
-            if (_spawnEquipment != null)
+            if (spawnEquipment != null)
             {
-                foreach (CharacterTemplateEquipmentItem equippedItem in _spawnEquipment)
+                foreach (CharacterTemplateEquipmentItem equippedItem in spawnEquipment)
                 {
                     ItemEntity item = equippedItem.CreateInstance();
                     if (item == null)

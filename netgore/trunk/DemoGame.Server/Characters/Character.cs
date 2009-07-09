@@ -577,6 +577,7 @@ namespace DemoGame.Server
         {
             Name = characterValues.Name;
             _id = characterValues.ID;
+            _templateID = characterValues.TemplateID;
 
             BodyInfo = GameData.Body(characterValues.BodyIndex);
             CB = new CollisionBox(characterValues.Position, BodyInfo.Width, BodyInfo.Height);

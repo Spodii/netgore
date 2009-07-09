@@ -16,11 +16,13 @@ namespace DemoGame.Server.Queries
         public readonly MapIndex MapIndex;
         public readonly Vector2 Position;
         public readonly CharacterStatsBase Stats;
+        public readonly CharacterTemplateID? TemplateID;
 
-        public SelectCharacterQueryValues(CharacterID id, string name, MapIndex mapIndex, Vector2 position, BodyIndex bodyIndex, CharacterStatsBase stats)
+        public SelectCharacterQueryValues(CharacterID id, CharacterTemplateID? templateID, string name, MapIndex mapIndex, Vector2 position, BodyIndex bodyIndex, CharacterStatsBase stats)
         {
             Name = name;
             ID = id;
+            TemplateID = templateID;
             MapIndex = mapIndex;
             Position = position;
             BodyIndex = bodyIndex;

@@ -852,43 +852,43 @@ namespace NetGore // TODO: Ensure this is the namespace you want
     public static class CustomValueTypeNameReadWriteExtensions
     {
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
+        /// Reads the CustomValueTypeName from a BitStream.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
+        /// <param name="bitStream">BitStream to read the CustomValueTypeName from.</param>
+        /// <returns>The CustomValueTypeName read from the BitStream.</returns>
         public static CustomValueTypeName ReadCustomValueTypeName(this BitStream bitStream)
         {
             return CustomValueTypeName.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
+        /// Reads the CustomValueTypeName from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
+        /// <param name="dataReader">IDataReader to read the CustomValueTypeName from.</param>
         /// <param name="i">The field index to read.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
+        /// <returns>The CustomValueTypeName read from the IDataReader.</returns>
         public static CustomValueTypeName GetCustomValueTypeName(this IDataReader dataReader, int i)
         {
             return CustomValueTypeName.Read(dataReader, i);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
+        /// Reads the CustomValueTypeName from an IDataReader.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
+        /// <param name="dataReader">IDataReader to read the CustomValueTypeName from.</param>
         /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
+        /// <returns>The CustomValueTypeName read from the IDataReader.</returns>
         public static CustomValueTypeName GetCustomValueTypeName(this IDataReader dataReader, string name)
         {
             return CustomValueTypeName.Read(dataReader, name);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IValueReader.
+        /// Reads the CustomValueTypeName from an IValueReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
+        /// <param name="valueReader">IValueReader to read the CustomValueTypeName from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The CustomValueType read from the IValueReader.</returns>
+        /// <returns>The CustomValueTypeName read from the IValueReader.</returns>
         public static CustomValueTypeName ReadCustomValueTypeName(this IValueReader valueReader, string name)
         {
             return CustomValueTypeName.Read(valueReader, name);
