@@ -14,7 +14,7 @@ namespace NetGore.EditorTools
     /// <summary>
     /// Handles the automatic GrhData generation.
     /// </summary>
-    public static class AutomaticGrhUpdater
+    public static class AutomaticGrhDataUpdater
     {
         /// <summary>
         /// The default speed of a new animation when no speed is specified.

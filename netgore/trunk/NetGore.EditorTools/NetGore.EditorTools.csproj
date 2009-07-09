@@ -72,7 +72,7 @@
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutomaticGrhUpdater.cs" />
+    <Compile Include="AutomaticGrhDataUpdater.cs" />
     <Compile Include="EditorColors.cs" />
     <Compile Include="MapItemListBox.cs">
       <SubType>Component</SubType>

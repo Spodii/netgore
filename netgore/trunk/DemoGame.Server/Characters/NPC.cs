@@ -151,6 +151,7 @@ namespace DemoGame.Server
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
             Alliance = template.Alliance;
             BodyInfo = GameData.Body(template.BodyIndex);
+            TemplateID = template.ID;
             CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
 
             _spawnInventory = template.Inventory;
