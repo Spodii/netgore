@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
 {
     public abstract class UserQueryBase : DbQueryNonReader<Character>
     {
-        static readonly IEnumerable<string> _otherFields = new string[] { "@body", "@id", "@map", "@name", "@x", "@y" };
+        static readonly IEnumerable<string> _otherFields = new string[] { "@body", "@id", "@template_id", "@map", "@name", "@x", "@y" };
 
         static readonly IEnumerable<string> _statFields =
             UserStats.DatabaseStats.Select(statType => "@" + statType.GetDatabaseField());
@@ -56,6 +56,7 @@ namespace DemoGame.Server.Queries
         protected override void SetParameters(DbParameterValues p, Character character)
         {
             p["@id"] = character.ID;
+            p["@template_id"] = character.TemplateID;
             p["@map"] = character.Map.Index;
             p["@x"] = character.Position.X;
             p["@y"] = character.Position.Y;

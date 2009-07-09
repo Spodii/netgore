@@ -16,6 +16,7 @@ namespace DemoGame.Server
         {
             get
             {
+                // TODO: This should be in CharacterStatsBase, seeing as all characters have the same stats in the DB
                 if (_dbStats == null)
                     _dbStats = from stat in new UserStats() where stat.CanWrite select stat.StatType;
 
