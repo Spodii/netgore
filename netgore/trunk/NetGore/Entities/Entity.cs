@@ -267,11 +267,14 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Translates the entity from its current position
+        /// Translates the entity from its current position.
         /// </summary>
-        /// <param name="adjustment">Amount to move</param>
+        /// <param name="adjustment">Amount to move.</param>
         public virtual void Move(Vector2 adjustment)
         {
+            if (adjustment == Vector2.Zero)
+                return;
+
             Vector2 oldPos = _collisionBox.Min;
 
             _collisionBox.Move(adjustment);
@@ -379,8 +382,6 @@ namespace NetGore
             if (_onGround && Velocity == Vector2.Zero)
                 return;
 
-            Vector2 oldPos = _collisionBox.Min;
-
             // Increase the velocity by the gravity
             _velocity += WorldSettings.Gravity * (Weight * deltaTime);
 
@@ -397,10 +398,6 @@ namespace NetGore
 
             // Move according to the velocity
             Move(_velocity * deltaTime);
-
-            // Notify of movement
-            if (OnMove != null)
-                OnMove(this, oldPos);
         }
 
         #region IDisposable Members
