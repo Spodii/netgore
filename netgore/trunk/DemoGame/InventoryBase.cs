@@ -142,7 +142,10 @@ namespace DemoGame
 
                 // If we took all of the item, we are done
                 if (item.Amount == 0)
+                {
+                    item.Dispose();
                     return null;
+                }
             }
 
             // Failed to add all of the item

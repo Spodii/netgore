@@ -166,8 +166,8 @@ namespace DemoGame.Server
                 ItemEntity remainder = GiveItem(item);
                 if (remainder != null)
                 {
-                    Debug.Fail("What the hell just happened?");
-                    DropItem(item);
+                    Debug.Fail("What the hell just happened? Failed to equip the item, and failed to add back to inventory?");
+                    DropItem(remainder);
                 }
             }
 
