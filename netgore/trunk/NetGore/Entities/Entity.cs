@@ -414,13 +414,7 @@ namespace NetGore
             lock (_disposeLock)
             {
                 if (IsDisposed)
-                {
-                    const string errmsg = "Attempted to dispose Entity `{0}`, but it has already been disposed.";
-                    Debug.Fail(string.Format(errmsg, this));
-                    if (log.IsWarnEnabled)
-                        log.WarnFormat(errmsg, this);
                     return;
-                }
 
                 _isDisposed = true;
             }
