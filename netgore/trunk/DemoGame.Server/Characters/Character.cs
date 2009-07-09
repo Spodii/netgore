@@ -72,6 +72,33 @@ namespace DemoGame.Server
 
         CharacterID _id;
 
+        CharacterTemplateID? _templateID;
+
+        /// <summary>
+        /// Notifies listeners when the Character's TemplateID has changed.
+        /// </summary>
+        public event CharacterEventHandler OnChangeTemplateID;
+
+        /// <summary>
+        /// Gets or sets the ID of the CharacterTemplate that this Character was created from.
+        /// This will not alter the Character in any way except for functions that make use of the
+        /// CharacterTemplateID, such as Equipment and Inventory Items a NPC spawns with.
+        /// </summary>
+        public CharacterTemplateID? TemplateID
+        {
+            get { return _templateID; }
+            set
+            {
+                if (_templateID == value)
+                    return;
+
+                _templateID = value;
+
+                if (OnChangeTemplateID != null)
+                    OnChangeTemplateID(this);
+            }
+        }
+
         /// <summary>
         /// If the character is alive or not.
         /// </summary>
