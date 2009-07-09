@@ -50,7 +50,7 @@ namespace NetGore
             if (types == null)
                 throw new ArgumentNullException("types");
 
-            var methods = MethodInfoHelper.FindStaticMethodsWithAttribute<T>(types);
+            var methods = MethodInfoHelper.FindMethodsWithAttribute<T>(types);
 
             // Create the dictionary for building the commands
             var dict = new Dictionary<string, List<MethodInfo>>(StringComparer.OrdinalIgnoreCase);
@@ -59,8 +59,7 @@ namespace NetGore
             foreach (MethodInfo method in methods)
             {
                 // Get the StringCommandBaseAttributes
-                var attributes =
-                    method.GetCustomAttributes(typeof(StringCommandBaseAttribute), true).Cast<StringCommandBaseAttribute>();
+                var attributes = method.GetCustomAttributes(typeof(T), true).Cast<T>();
                 if (attributes.IsEmpty())
                 {
                     // This should never happen, but just in case...
@@ -87,7 +86,7 @@ namespace NetGore
                 }
 
                 // Add the commands
-                foreach (StringCommandBaseAttribute attrib in attributes)
+                foreach (T attrib in attributes)
                 {
                     Add(dict, attrib.Command, method);
                 }
@@ -317,7 +316,7 @@ namespace NetGore
         /// the <paramref name="method"/>. If unsuccessfully invoked, or the <paramref name="method"/> has
         /// a void return type, this will be an empty string.</param>
         /// <returns>True if the <paramref name="method"/> was invoked successfully; otherwise false.</returns>
-        static bool TryInvokeMethod(MethodInfo method, string[] args, out string result)
+        static bool TryInvokeMethod(object binder, MethodInfo method, string[] args, out string result)
         {
             var parameters = method.GetParameters();
 
@@ -364,9 +363,9 @@ namespace NetGore
             object methodOutput;
             try
             {
-                methodOutput = method.Invoke(null, convertedArgs);
+                methodOutput = method.Invoke(binder, convertedArgs);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 result = string.Empty;
                 return false;
@@ -391,7 +390,7 @@ namespace NetGore
         /// empty string. If the specified arguments were invalid, or the command did not exist, this
         /// will contain an error message stating what went wrong.</param>
         /// <returns>True if the command was successfully parsed; otherwise false.</returns>
-        public bool TryParse(string commandString, out string result)
+        public bool TryParse(object binder, string commandString, out string result)
         {
             // Split up the command and arguments
             string command;
@@ -410,7 +409,7 @@ namespace NetGore
             // one that was invoked successfully
             foreach (MethodInfo method in methods)
             {
-                if (TryInvokeMethod(method, args, out result))
+                if (TryInvokeMethod(binder, method, args, out result))
                     return true;
             }
 
