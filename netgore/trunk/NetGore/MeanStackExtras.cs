@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework;
 
 namespace NetGore
 {
+    /// <summary>
+    /// Provides support for extra types for the MeanStack.
+    /// </summary>
     public static class MeanStackExtras
     {
         /// <summary>

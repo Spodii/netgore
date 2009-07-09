@@ -74,7 +74,7 @@
   <ItemGroup>
     <Compile Include="Alignment.cs" />
     <Compile Include="AlignmentHelper.cs" />
-    <Compile Include="ClampExtensions.cs" />
+    <Compile Include="Extensions\ClampExtensions.cs" />
     <Compile Include="Entities\BoxSide.cs" />
     <Compile Include="Entities\CollisionBox.cs" />
     <Compile Include="Entities\CollisionType.cs" />
@@ -83,11 +83,11 @@
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityEventHandler.cs" />
     <Compile Include="GrhIndex.cs" />
-    <Compile Include="IDataRecordExtensions.cs" />
-    <Compile Include="IEnumerableExtensions.cs" />
-    <Compile Include="IsBetweenExtensions.cs" />
-    <Compile Include="IValueReaderExtensions.cs" />
-    <Compile Include="IValueWriterExtensions.cs" />
+    <Compile Include="Extensions\IDataRecordExtensions.cs" />
+    <Compile Include="Extensions\IEnumerableExtensions.cs" />
+    <Compile Include="Extensions\IsBetweenExtensions.cs" />
+    <Compile Include="Extensions\IValueReaderExtensions.cs" />
+    <Compile Include="Extensions\IValueWriterExtensions.cs" />
     <Compile Include="MapEntityAttribute.cs" />
     <Compile Include="MapEntityIndex.cs" />
     <Compile Include="MapIndex.cs" />
@@ -118,9 +118,9 @@
     <Compile Include="PropertySync\SyncValueAttribute.cs" />
     <Compile Include="Converters\SimpleMemberDescriptor.cs" />
     <Compile Include="Converters\TypeConverterBase.cs" />
-    <Compile Include="StackExtensions.cs" />
+    <Compile Include="Extensions\StackExtensions.cs" />
     <Compile Include="TypeHelper.cs" />
-    <Compile Include="Vector2Extensions.cs" />
+    <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="WorldSettings.cs" />
   </ItemGroup>
   <ItemGroup>
