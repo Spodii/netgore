@@ -73,6 +73,7 @@
     <Compile Include="MathStringTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StackTests.cs" />
+    <Compile Include="StringCommandParserTests.cs" />
     <Compile Include="Vector2Tests.cs" />
   </ItemGroup>
   <ItemGroup>
