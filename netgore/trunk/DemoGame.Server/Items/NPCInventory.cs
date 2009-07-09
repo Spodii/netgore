@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DemoGame.Server
 {
-    class NPCInventory : CharacterInventory
+    public class NPCInventory : CharacterInventory
     {
 // ReSharper disable SuggestBaseTypeForParameter
         public NPCInventory(NPC npc) : base(npc)
