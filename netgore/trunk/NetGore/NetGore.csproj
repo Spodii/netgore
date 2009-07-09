@@ -91,6 +91,7 @@
     <Compile Include="MapEntityAttribute.cs" />
     <Compile Include="MapEntityIndex.cs" />
     <Compile Include="MapIndex.cs" />
+    <Compile Include="MethodInfoHelper.cs" />
     <Compile Include="PropertySync\PropertySyncAlignment.cs" />
     <Compile Include="PropertySync\PropertySyncBool.cs" />
     <Compile Include="PropertySync\PropertySyncCollisionType.cs" />
@@ -119,6 +120,9 @@
     <Compile Include="Converters\SimpleMemberDescriptor.cs" />
     <Compile Include="Converters\TypeConverterBase.cs" />
     <Compile Include="Extensions\StackExtensions.cs" />
+    <Compile Include="StringCommandBaseAttribute.cs" />
+    <Compile Include="StringCommandParser.cs" />
+    <Compile Include="StringParser.cs" />
     <Compile Include="TypeHelper.cs" />
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="WorldSettings.cs" />
