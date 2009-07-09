@@ -458,5 +458,10 @@ namespace DemoGame.Server
         {
             UpdateItemField.Execute(_id, field, value);
         }
+
+        public override string ToString()
+        {
+            return string.Format("{0} [{1}]", Name, ID);
+        }
     }
 }

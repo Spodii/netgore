@@ -543,11 +543,11 @@ namespace DemoGame.Server
             Save();
 
             // Dispose of disposable stuff
-            if (Inventory != null)
-                Inventory.Dispose();
-
             if (Equipped != null)
                 Equipped.Dispose();
+
+            if (Inventory != null)
+                Inventory.Dispose();
 
             base.HandleDispose();
         }

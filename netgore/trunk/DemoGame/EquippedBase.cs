@@ -158,10 +158,10 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Handles when an item being handled by this EquippedBase is disposed while still equipped.
+        /// Handles when an ItemEntity being handled by this EquippedBase is disposed while still equipped.
         /// </summary>
         /// <param name="entity">Item that was disposed.</param>
-        void ItemDisposeHandler(Entity entity)
+        protected virtual void ItemDisposeHandler(Entity entity)
         {
             T item = (T)entity;
 
@@ -270,7 +270,7 @@ namespace DemoGame
                         return false;
                 }
 
-                // If the slot is already in use, remove the item, aborting it removal failed
+                // If the slot is already in use, remove the item, aborting if removal failed
                 if (currentItem != null)
                 {
                     if (!RemoveAt(slot))
@@ -333,11 +333,11 @@ namespace DemoGame
         }
 
         ///<summary>
-        ///Returns an enumerator that iterates through a collection.
+        /// Returns an enumerator that iterates through a collection.
         ///</summary>
         ///
         ///<returns>
-        ///An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
+        /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
         ///</returns>
         ///<filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator()

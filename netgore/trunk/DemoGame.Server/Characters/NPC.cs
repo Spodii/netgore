@@ -282,7 +282,7 @@ namespace DemoGame.Server
                     ItemEntity item = equippedItem.CreateInstance();
                     if (item == null)
                         continue;
-
+                    
                     if (!Equipped.Equip(item))
                         item.Dispose();
                 }

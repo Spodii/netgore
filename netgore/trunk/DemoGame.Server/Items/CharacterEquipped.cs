@@ -15,7 +15,6 @@ namespace DemoGame.Server
         readonly Character _character;
 
         readonly bool _isPersistent;
-        bool _disposed = false;
 
         /// <summary>
         /// Gets the Character that this UserEquipped belongs to.
@@ -75,11 +74,7 @@ namespace DemoGame.Server
 
         void CharacterEquipped_OnEquip(EquippedBase<ItemEntity> equippedBase, ItemEntity item, EquipmentSlot slot)
         {
-            if (item == null)
-            {
-                Debug.Fail("Parameter `item` should never be null.");
-                return;
-            }
+            Debug.Assert(item != null);
 
             if (_isPersistent)
             {
@@ -93,8 +88,14 @@ namespace DemoGame.Server
 
         void CharacterEquipped_OnRemove(EquippedBase<ItemEntity> equippedBase, ItemEntity item, EquipmentSlot slot)
         {
+            Debug.Assert(item != null);
+
             if (_isPersistent)
                 DBController.GetQuery<DeleteCharacterEquippedItemQuery>().Execute(item.ID);
+
+            // Do not try working with a disposed item! Instead, just let it die off.
+            if (item.IsDisposed)
+                return;
 
             ItemEntity remainder = Character.Inventory.Add(item);
 
@@ -162,6 +163,8 @@ namespace DemoGame.Server
         {
         }
 
+        bool _disposed = false;
+
         #region IDisposable Members
 
         public void Dispose()
@@ -175,9 +178,9 @@ namespace DemoGame.Server
             // database as garbage
             if (!_isPersistent)
             {
-                foreach (var item in this)
+                foreach (var item in this.Select(x => x.Value))
                 {
-                    item.Value.Dispose();
+                    item.Dispose();
                 }
             }
         }
