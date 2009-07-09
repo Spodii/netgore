@@ -252,7 +252,7 @@ namespace DemoGame.Server
             if (!templateID.HasValue)
                 return;
 
-            CharacterTemplate template = Map.World.NPCTemplates[templateID.Value];
+            CharacterTemplate template = World.NPCTemplates[templateID.Value];
             if (template == null)
                 return;
 
@@ -273,7 +273,8 @@ namespace DemoGame.Server
                         extraItems.Dispose();
                 }
             }
-
+            
+            
             if (spawnEquipment != null)
             {
                 foreach (CharacterTemplateEquipmentItem equippedItem in spawnEquipment)
