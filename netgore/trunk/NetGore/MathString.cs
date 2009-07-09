@@ -320,7 +320,10 @@ namespace NetGore
             {
                 value = double.Parse(text);
             }
-            catch
+            catch (FormatException)
+            {
+            }
+            catch (OverflowException)
             {
             }
 
