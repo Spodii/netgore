@@ -109,6 +109,7 @@
     <Compile Include="Characters\NPC.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ConsoleCommandAttribute.cs" />
     <Compile Include="ItemChance.cs" />
     <Compile Include="IDCreatorBase.cs" />
     <Compile Include="Items\CharacterEquipped.cs" />
