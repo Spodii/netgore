@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace NetGore.Collections.Tests
+namespace NetGore.Tests
 {
     [TestFixture]
     public class StringCommandParserTests
