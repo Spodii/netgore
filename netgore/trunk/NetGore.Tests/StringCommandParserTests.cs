@@ -34,6 +34,14 @@ namespace NetGore.Collections.Tests
                 Assert.IsTrue(successful);
                 Assert.AreEqual(expected, actual);
             }
+
+            public void TestParseInvalid(StringCommandParserTests binder, string command, params object[] objs)
+            {
+                string expected = Implode(objs);
+                string actual;
+                bool successful = TryParse(binder, command + " " + expected, out actual);
+                Assert.IsFalse(successful);
+            }
         }
 
         [SetUp]
@@ -63,8 +71,20 @@ namespace NetGore.Collections.Tests
             return Implode(a, b);
         }
 
+        [TestCommandAttribute("StaticSimpleA")]
+        public string StaticSimpleA(string a, string b)
+        {
+            return Implode(a, b);
+        }
+
         [TestCommandAttribute("SimpleB")]
         public string SimpleB(float a, string b, int c)
+        {
+            return Implode(a, b, c);
+        }
+
+        [TestCommandAttribute("StaticSimpleB")]
+        public string StaticSimpleB(float a, string b, int c)
         {
             return Implode(a, b, c);
         }
@@ -73,6 +93,20 @@ namespace NetGore.Collections.Tests
         public void TestSimpleValid()
         {
             _parser.TestParse(this, "SimpleA", "abcd", "efgh");
+            _parser.TestParse(this, "SimpleB", 10.0, "woot", 1005);
+
+            _parser.TestParse(this, "StaticSimpleA", "abcd", "efgh");
+            _parser.TestParse(this, "StaticSimpleB", 10.0, "woot", 1005);
+        }
+
+        [Test]
+        public void TestSimpleTooFewParameters()
+        {
+            _parser.TestParseInvalid(this, "SimpleA", "abcd");
+            _parser.TestParseInvalid(this, "SimpleB", 10.0, "woot");
+
+            _parser.TestParseInvalid(this, "StaticSimpleA", "abcd");
+            _parser.TestParseInvalid(this, "StaticSimpleB", 10.0, "woot", 1005, 10);
         }
     }
 }
