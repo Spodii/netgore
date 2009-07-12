@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using log4net;
-using NetGore.Collections;
 
 namespace NetGore
 {
@@ -22,6 +21,7 @@ namespace NetGore
         /// Sorter used for the MethodInfos.
         /// </summary>
         static readonly MethodInfoSorter _methodInfoSorter = new MethodInfoSorter();
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -94,7 +94,9 @@ namespace NetGore
 
             // Add the commands to the main dictionary, converting them to an array to reduce the memory footprint
             foreach (var item in dict)
+            {
                 _commands.Add(item.Key, item.Value.ToArray());
+            }
         }
 
         /// <summary>
@@ -111,7 +113,7 @@ namespace NetGore
                 throw new ArgumentNullException("methodInfo");
             if (dict == null)
                 throw new ArgumentNullException("dict");
-            
+
             // Grab the List for this commandName
             List<MethodInfo> methods;
             if (!dict.TryGetValue(commandName, out methods))
@@ -322,6 +324,8 @@ namespace NetGore
         /// <summary>
         /// Tries to invoke a method.
         /// </summary>
+        /// <param name="binder">The object to invoke the <paramref name="method"/> on. If <paramref name="method"/>
+        /// is static, this is ignored and can be null.</param>
         /// <param name="method">MethodInfo to invoke.</param>
         /// <param name="args">Arguments to send to the method.</param>
         /// <param name="result">If successfully invoked, this will contain the string returned from
@@ -377,7 +381,7 @@ namespace NetGore
             {
                 methodOutput = method.Invoke(binder, convertedArgs);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 result = string.Empty;
                 return false;
@@ -395,6 +399,8 @@ namespace NetGore
         /// <summary>
         /// Tries to parse a command from the given <paramref name="commandString"/>.
         /// </summary>
+        /// <param name="binder">The object to invoke the method on. If the method handling the command is static,
+        /// this is ignored and can be null.</param>
         /// <param name="commandString">The string for the command. This should start with the name of the
         /// command followed by all of the space-delimited arguments.</param>
         /// <param name="result">If the parsing was successful, this will contain the return value from the
