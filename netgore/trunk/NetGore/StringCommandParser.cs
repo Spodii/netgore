@@ -144,14 +144,21 @@ namespace NetGore
             methods.Sort(_methodInfoSorter);
         }
 
-        static bool AreTypesSame(ICollection<object> a, ICollection<object> b)
+        /// <summary>
+        /// Checks if the objects in two lists are of the same Type. Length and order must also be same.
+        /// </summary>
+        /// <param name="a">First collection.</param>
+        /// <param name="b">Second collection.</param>
+        /// <returns>True if <paramref name="a"/> contains the same number of objects as <paramref name="b"/>, and
+        /// the Type of each object is the same for each index.</returns>
+        static bool AreTypesSame(IList<object> a, IList<object> b)
         {
             if (a.Count != b.Count)
                 return false;
 
             for (int i = 0; i < a.Count; i++)
             {
-                if (a.GetType() != b.GetType())
+                if (a[i].GetType() != b[i].GetType())
                     return false;
             }
 
@@ -181,6 +188,11 @@ namespace NetGore
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the parameter information for a method.
+        /// </summary>
+        /// <param name="method">Method to get the parameter information for.</param>
+        /// <returns>The parameter information for the <paramref name="method"/>.</returns>
         static string GetParameterInfo(MethodInfo method)
         {
             var parameters = method.GetParameters();
