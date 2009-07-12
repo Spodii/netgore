@@ -8,6 +8,9 @@ using NetGore;
 
 namespace DemoGame.Server
 {
+    /// <summary>
+    /// Handles commands entered into the console.
+    /// </summary>
     class ConsoleCommands
     {
         class ConsoleCommandParser : StringCommandParser<ConsoleCommandAttribute>
@@ -30,6 +33,9 @@ namespace DemoGame.Server
         [ConsoleCommand("AddUser")]
         public string AddUser(string name, string password)
         {
+            return "Function not implemented";
+
+            /*
             if (!Character.IsValidName(name))
                 return "Invalid name";
 
@@ -40,6 +46,7 @@ namespace DemoGame.Server
                 return "Unknown error";
 
             return "New user successfully created.";
+            */
         }
 
         [ConsoleCommand("FindItem")]
