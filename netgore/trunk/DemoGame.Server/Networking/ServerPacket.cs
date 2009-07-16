@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-
 using log4net;
 using NetGore;
 using NetGore.IO;
@@ -23,14 +22,6 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter(ServerPacketID.CharAttack);
             pw.Write(mapEntityIndex);
-            return pw;
-        }
-
-        public static PacketWriter UseEntity(MapEntityIndex usedEntity, MapEntityIndex usedBy)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.UseEntity);
-            pw.Write(usedEntity);
-            pw.Write(usedBy);
             return pw;
         }
 
@@ -76,6 +67,16 @@ namespace DemoGame.Server
         /// Gets a PacketWriter to use from the internal pool. It is important that this
         /// PacketWriter is disposed of properly when done.
         /// </summary>
+        /// <returns>PacketWriter to use.</returns>
+        public static PacketWriter GetWriter()
+        {
+            return _writerPool.Create();
+        }
+
+        /// <summary>
+        /// Gets a PacketWriter to use from the internal pool. It is important that this
+        /// PacketWriter is disposed of properly when done.
+        /// </summary>
         /// <param name="id">ServerPacketID that this PacketWriter will be writing.</param>
         /// <returns>PacketWriter to use.</returns>
         static PacketWriter GetWriter(ServerPacketID id)
@@ -83,16 +84,6 @@ namespace DemoGame.Server
             PacketWriter pw = _writerPool.Create();
             pw.Write(id);
             return pw;
-        }
-
-        /// <summary>
-        /// Gets a PacketWriter to use from the internal pool. It is important that this
-        /// PacketWriter is disposed of properly when done.
-        /// </summary>
-        /// <returns>PacketWriter to use.</returns>
-        public static PacketWriter GetWriter()
-        {
-            return _writerPool.Create();
         }
 
         /// <summary>
@@ -126,7 +117,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter NotifyExpCash(int exp, int cash)
+        public static PacketWriter NotifyExpCash(uint exp, uint cash)
         {
             PacketWriter pw = GetWriter(ServerPacketID.NotifyExpCash);
             pw.Write(exp);
@@ -176,7 +167,8 @@ namespace DemoGame.Server
             pw.Write(item.Name);
             pw.Write(item.Description);
             pw.Write(item.Value);
-            pw.Write(item.Stats);
+            pw.Write(item.BaseStats);
+            pw.Write(item.ReqStats);
             return pw;
         }
 
@@ -265,11 +257,20 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter UpdateStat(IStat stat)
+        public static void UpdateStat(PacketWriter pw, IStat stat, StatCollectionType statCollectionType)
         {
-            PacketWriter pw = GetWriter(ServerPacketID.UpdateStat);
+            bool isBaseStat = (statCollectionType == StatCollectionType.Base);
+
+            pw.Write(ServerPacketID.UpdateStat);
+            pw.Write(isBaseStat);
             pw.Write(stat.StatType);
             stat.Write(pw);
+        }
+
+        public static PacketWriter UpdateStat(IStat stat, StatCollectionType statCollectionType)
+        {
+            PacketWriter pw = GetWriter();
+            UpdateStat(pw, stat, statCollectionType);
             return pw;
         }
 
@@ -284,6 +285,14 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter();
             UpdateVelocityAndPosition(pw, dynamicEntity, currentTime);
+            return pw;
+        }
+
+        public static PacketWriter UseEntity(MapEntityIndex usedEntity, MapEntityIndex usedBy)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.UseEntity);
+            pw.Write(usedEntity);
+            pw.Write(usedBy);
             return pw;
         }
     }

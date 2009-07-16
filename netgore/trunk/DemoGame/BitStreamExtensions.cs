@@ -112,7 +112,7 @@ namespace DemoGame
         public static void ReadStatCollection(this BitStream bitStream, IStatCollection statCollection)
         {
             // Set all current stats to zero
-            var stats = statCollection.Where(stat => stat.CanWrite);
+            var stats = statCollection;
             foreach (IStat stat in stats)
             {
                 stat.Value = 0;

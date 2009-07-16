@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -45,6 +46,12 @@ namespace DemoGame.Server
     /// <param name="item">The ItemEntity related to the event.</param>
     public delegate void CharacterItemEventHandler(Character character, ItemEntity item);
 
+    public delegate void CharacterExpEventHandler(Character character, uint oldExp, uint exp);
+
+    public delegate void CharacterLevelEventHandler(Character character, byte oldLevel, byte level);
+
+    public delegate void CharacterCashEventHandler(Character character, uint oldCash, uint cash);
+
     /// <summary>
     /// A game character
     /// </summary>
@@ -70,34 +77,10 @@ namespace DemoGame.Server
         /// </summary>
         Alliance _alliance;
 
+        uint _cash;
+        uint _exp;
+        uint _expSpent;
         CharacterID _id;
-
-        CharacterTemplateID? _templateID;
-
-        /// <summary>
-        /// Notifies listeners when the Character's TemplateID has changed.
-        /// </summary>
-        public event CharacterEventHandler OnChangeTemplateID;
-
-        /// <summary>
-        /// Gets or sets the ID of the CharacterTemplate that this Character was created from.
-        /// This will not alter the Character in any way except for functions that make use of the
-        /// CharacterTemplateID, such as Equipment and Inventory Items a NPC spawns with.
-        /// </summary>
-        public CharacterTemplateID? TemplateID
-        {
-            get { return _templateID; }
-            set
-            {
-                if (_templateID == value)
-                    return;
-
-                _templateID = value;
-
-                if (OnChangeTemplateID != null)
-                    OnChangeTemplateID(this);
-            }
-        }
 
         /// <summary>
         /// If the character is alive or not.
@@ -111,6 +94,8 @@ namespace DemoGame.Server
         /// </summary>
         int _lastAttackTime;
 
+        byte _level;
+
         /// <summary>
         /// Map the character is currently on.
         /// </summary>
@@ -121,11 +106,15 @@ namespace DemoGame.Server
         /// </summary>
         string _name;
 
+        uint _nextLevelExp;
+
         /// <summary>
         /// Lets us know if we have saved the Character since they have been updated. Used to ensure saves aren't
         /// called back-to-back without any values changing in-between.
         /// </summary>
         bool _saved = false;
+
+        CharacterTemplateID? _templateID;
 
         /// <summary>
         /// Notifies listeners when the Character performs an attack. The attack does not have to actually hit
@@ -143,6 +132,16 @@ namespace DemoGame.Server
         /// </summary>
         public event CharacterAttackCharacterEventHandler OnAttackedByCharacter;
 
+        public event CharacterCashEventHandler OnChangeCash;
+        public event CharacterExpEventHandler OnChangeExp;
+        public event CharacterExpEventHandler OnChangeExpSpent;
+        public event CharacterLevelEventHandler OnChangeLevel;
+
+        /// <summary>
+        /// Notifies listeners when the Character's TemplateID has changed.
+        /// </summary>
+        public event CharacterEventHandler OnChangeTemplateID;
+
         /// <summary>
         /// Notifies listeners when this Character has dropped an item.
         /// </summary>
@@ -153,7 +152,7 @@ namespace DemoGame.Server
         /// </summary>
         public event CharacterItemEventHandler OnGetItem;
 
-        // TODO: Implement. Difficulty implementing is due to the inventory system making a deep copy of things. Should probably add some events to the InventoryBase.
+        // TODO: Implement OnGetItem. Difficulty implementing is due to the inventory system making a deep copy of things. Should probably add some events to the InventoryBase.
 
         /// <summary>
         /// Notifies listeners when this Character has killed another Character.
@@ -192,6 +191,26 @@ namespace DemoGame.Server
             protected set { _alliance = value; }
         }
 
+        readonly CharacterStatsBase _baseStats;
+
+        public CharacterStatsBase BaseStats { get { return _baseStats; } }
+
+        public uint Cash
+        {
+            get { return _cash; }
+            private set
+            {
+                if (_cash == value)
+                    return;
+
+                uint oldValue = _cash;
+                _cash = value;
+
+                if (OnChangeCash != null)
+                    OnChangeCash(this, oldValue, _cash);
+            }
+        }
+
         public DBController DBController
         {
             get { return World.Server.DBController; }
@@ -201,6 +220,38 @@ namespace DemoGame.Server
         /// Gets the Character's equipped items.
         /// </summary>
         public abstract CharacterEquipped Equipped { get; }
+
+        public uint Exp
+        {
+            get { return _exp; }
+            private set
+            {
+                if (_exp == value)
+                    return;
+
+                uint oldValue = _exp;
+                _exp = value;
+
+                if (OnChangeExp != null)
+                    OnChangeExp(this, oldValue, _exp);
+            }
+        }
+
+        public uint ExpSpent
+        {
+            get { return _expSpent; }
+            private set
+            {
+                if (_expSpent == value)
+                    return;
+
+                uint oldValue = _expSpent;
+                _expSpent = value;
+
+                if (OnChangeExpSpent != null)
+                    OnChangeExpSpent(this, oldValue, _expSpent);
+            }
+        }
 
         public CharacterID ID
         {
@@ -241,6 +292,23 @@ namespace DemoGame.Server
             get { return _isPersistent; }
         }
 
+        public byte Level
+        {
+            get { return _level; }
+            private set
+            {
+                if (_level == value)
+                    return;
+
+                byte oldValue = _level;
+                _level = value;
+                _nextLevelExp = GameData.LevelCost(_level);
+
+                if (OnChangeLevel != null)
+                    OnChangeLevel(this, oldValue, _level);
+            }
+        }
+
         /// <summary>
         /// Gets or sets the map the character is currently on.
         /// </summary>
@@ -249,6 +317,10 @@ namespace DemoGame.Server
             get { return _map; }
             internal set { _map = value; }
         }
+
+        readonly CharacterStatsBase _modStats;
+
+        public CharacterStatsBase ModStats { get { return _modStats; } }
 
         /// <summary>
         /// Gets or sets the name of the character.
@@ -276,10 +348,30 @@ namespace DemoGame.Server
             }
         }
 
+        public uint StatPoints
+        {
+            get { return Exp - ExpSpent; }
+        }
+
         /// <summary>
-        /// Gets the CharacterStatsBase used for this Character's stats.
+        /// Gets or sets the ID of the CharacterTemplate that this Character was created from.
+        /// This will not alter the Character in any way except for functions that make use of the
+        /// CharacterTemplateID, such as Equipment and Inventory Items a NPC spawns with.
         /// </summary>
-        public abstract CharacterStatsBase Stats { get; }
+        public CharacterTemplateID? TemplateID
+        {
+            get { return _templateID; }
+            set
+            {
+                if (_templateID == value)
+                    return;
+
+                _templateID = value;
+
+                if (OnChangeTemplateID != null)
+                    OnChangeTemplateID(this);
+            }
+        }
 
         /// <summary>
         /// Gets the world the NPC belongs to.
@@ -305,6 +397,11 @@ namespace DemoGame.Server
         {
             _world = world;
             _isPersistent = isPersistent;
+
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            _baseStats = CreateStats(StatCollectionType.Base);
+            _modStats = CreateStats(StatCollectionType.Modified);
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
@@ -414,10 +511,10 @@ namespace DemoGame.Server
             {
                 Map.SendToArea(Position, pw);
             }
-            Stats[StatType.HP] -= damage;
+            BaseStats[StatType.HP] -= damage;
 
             // Check if the character died
-            if (Stats[StatType.HP] <= 0)
+            if (BaseStats[StatType.HP] <= 0)
             {
                 if (source != null)
                 {
@@ -491,11 +588,11 @@ namespace DemoGame.Server
             if (target == null)
                 throw new ArgumentNullException("target");
 
-            int damage = Rand.Next(Stats[StatType.MinHit], Stats[StatType.MaxHit]);
+            int damage = Rand.Next(ModStats[StatType.MinHit], ModStats[StatType.MaxHit]);
 
             // Apply the defence, and ensure the damage is in a valid range
             int defence;
-            if (!target.Stats.TryGetStatValue(StatType.Defence, out defence))
+            if (!target.ModStats.TryGetStatValue(StatType.Defence, out defence))
                 defence = 0;
 
             damage -= defence / 2;
@@ -537,6 +634,12 @@ namespace DemoGame.Server
         /// item was added.</returns>
         public abstract ItemEntity GiveItem(ItemEntity item);
 
+        protected virtual void GiveKillReward(uint exp, uint cash)
+        {
+            Exp += exp;
+            Cash += cash;
+        }
+
         protected override void HandleDispose()
         {
             // Make sure the Character was saved
@@ -558,13 +661,13 @@ namespace DemoGame.Server
         /// <param name="stat">Stat that changed.</param>
         void HP_OnChange(IStat stat)
         {
-            int hp = Stats[StatType.HP];
-            int maxHP = Stats[StatType.MaxHP];
+            int hp = BaseStats[StatType.HP];
+            int maxHP = BaseStats[StatType.MaxHP];
 
             if (hp > maxHP)
             {
                 // Keep the HP in a valid range
-                Stats[StatType.HP] = maxHP;
+                BaseStats[StatType.HP] = maxHP;
             }
             else if (hp <= 0)
             {
@@ -573,26 +676,55 @@ namespace DemoGame.Server
             }
         }
 
-        void InternalLoad(SelectCharacterQueryValues characterValues)
+        /// <summary>
+        /// Makes the Character raise their base Stat of the corresponding type by one point, assuming they have enough
+        /// points available to raise the Stat, and lowers the amount of spendable points accordingly.
+        /// </summary>
+        /// <param name="st">StatType of the stat to raise.</param>
+        public void RaiseStat(StatType st)
         {
-            Name = characterValues.Name;
-            _id = characterValues.ID;
-            _templateID = characterValues.TemplateID;
+            int cost = GameData.StatCost(BaseStats[st]);
 
-            BodyInfo = GameData.Body(characterValues.BodyIndex);
-            CB = new CollisionBox(characterValues.Position, BodyInfo.Width, BodyInfo.Height);
+            if (StatPoints <= cost)
+            {
+                const string errmsg = "User `{0}` tried to raise stat `{1}`, but only has {2} of {3} points needed.";
+                Debug.Fail(string.Format(errmsg, this, st, StatPoints, cost));
+                return;
+            }
+
+            BaseStats[st]++;
+            _expSpent += (uint)cost;
+        }
+
+        void InternalLoad(SelectCharacterQueryValues v)
+        {
+            Name = v.Name;
+            _id = v.ID;
+            _templateID = v.TemplateID;
+
+            BodyInfo = GameData.Body(v.BodyIndex);
+            CB = new CollisionBox(v.Position, BodyInfo.Width, BodyInfo.Height);
+
+            // Set the character information
+            _level = v.Level;
+            _expSpent = v.ExpSpent;
+            _exp = v.Exp;
+            _cash = v.Cash;
+
+            // Load the stats
+            _baseStats.CopyStatValuesFrom(v.Stats, true);
 
             // Set the Map and, if a User, add them to the World
-            Map m = World.GetMap(characterValues.MapIndex);
+            Map m = World.GetMap(v.MapIndex);
             // TODO: We can recover when a NPC's map is invalid at least...
             if (m == null)
-                throw new Exception(string.Format("Unable to get Map with index `{0}`.", characterValues.MapIndex));
+                throw new Exception(string.Format("Unable to get Map with index `{0}`.", v.MapIndex));
 
             User asUser = this as User;
             if (asUser != null)
                 World.AddUser(asUser);
 
-            // HACK: Ugh... horrible place to set the RespawnMap
+            // HACK: The Respawn Map should be coming from the SelectCharacterQueryValues
             if (this is NPC)
                 ((NPC)this).RespawnMap = m;
 
@@ -602,9 +734,14 @@ namespace DemoGame.Server
             Inventory.Load();
             Equipped.Load();
 
+            // Update the mod stats
+            UpdateModStats();
+
             // Mark the Character as loaded
             SetAsLoaded();
         }
+
+        protected abstract CharacterStatsBase CreateStats(StatCollectionType statCollectionType);
 
         /// <summary>
         /// Checks if a username is valid
@@ -650,13 +787,13 @@ namespace DemoGame.Server
 
         protected void Load(CharacterID characterID)
         {
-            SelectCharacterQueryValues values = DBController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID, Stats);
+            SelectCharacterQueryValues values = DBController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
             InternalLoad(values);
         }
 
         protected void Load(string characterName)
         {
-            SelectCharacterQueryValues values = DBController.GetQuery<SelectCharacterQuery>().Execute(characterName, Stats);
+            SelectCharacterQueryValues values = DBController.GetQuery<SelectCharacterQuery>().Execute(characterName);
             InternalLoad(values);
         }
 
@@ -688,13 +825,13 @@ namespace DemoGame.Server
         /// <param name="stat">Stat that changed.</param>
         void MP_OnChange(IStat stat)
         {
-            int mp = Stats[StatType.MP];
-            int maxMP = Stats[StatType.MaxMP];
+            int mp = BaseStats[StatType.MP];
+            int maxMP = BaseStats[StatType.MaxMP];
 
             if (mp > maxMP)
-                Stats[StatType.MP] = maxMP;
+                BaseStats[StatType.MP] = maxMP;
             else if (mp < 0)
-                Stats[StatType.MP] = 0;
+                BaseStats[StatType.MP] = 0;
         }
 
         /// <summary>
@@ -729,8 +866,8 @@ namespace DemoGame.Server
             _isLoaded = true;
 
             // Hook some event listeners
-            Stats.GetStat(StatType.HP).OnChange += HP_OnChange;
-            Stats.GetStat(StatType.MP).OnChange += MP_OnChange;
+            BaseStats.GetStat(StatType.HP).OnChange += HP_OnChange;
+            BaseStats.GetStat(StatType.MP).OnChange += MP_OnChange;
         }
 
         /// <summary>
@@ -789,7 +926,18 @@ namespace DemoGame.Server
             // Set the Character as not saved
             _saved = false;
 
+            UpdateModStats();
+
             base.Update(imap, deltaTime);
+        }
+
+        void UpdateModStats()
+        {
+            // FUTURE: This is called every goddamn Update(). That is WAY too much...
+            foreach (IStat modStat in ModStats)
+            {
+                modStat.Value = CharacterModStatCalculator.Calculate(BaseStats, modStat.StatType, Equipped);
+            }
         }
 
         bool UseEquipment(ItemEntity item, InventorySlot? inventorySlot)
@@ -866,10 +1014,10 @@ namespace DemoGame.Server
 
         bool UseItemUseOnce(ItemEntity item)
         {
-            var useBonuses = item.Stats.Where(stat => stat.Value != 0);
+            var useBonuses = item.BaseStats.Where(stat => stat.Value != 0);
             foreach (IStat stat in useBonuses)
             {
-                Stats[stat.StatType] += stat.Value;
+                BaseStats[stat.StatType] += stat.Value;
             }
 
             return true;

@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-
 namespace DemoGame.Server
 {
-    public class NPCStats : CharacterStatsBase
+    public class NPCStats : CharacterStats
     {
         readonly NPC _npc;
 
@@ -15,26 +14,10 @@ namespace DemoGame.Server
             get { return _npc; }
         }
 
-        public NPCStats()
-        {
-            CreateStats();
-        }
-
-        public NPCStats(NPC npc)
+        public NPCStats(NPC npc, StatCollectionType statCollectionType)
+            : base(npc, statCollectionType)
         {
             _npc = npc;
-            CreateStats();
-        }
-
-        protected override IStat CreateBaseStat<T>(StatType statType)
-        {
-            return new Stat<T>(statType);
-        }
-
-        protected override IStat CreateModStat<T>(StatType statType)
-        {
-            ModStatHandler modStatHandler = GetModStatHandler(statType);
-            return new ModStat<T>(statType, modStatHandler);
         }
     }
 }

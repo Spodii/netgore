@@ -32,45 +32,19 @@ namespace DemoGame.Server.Queries
                     throw new ArgumentException(string.Format(errmsg, templateID), "templateID");
                 }
 
+                ret = CharacterTemplateQueryHelper.ReadCharacterTemplateValues(r);
+
 #if DEBUG
                 // Check that the correct record was grabbed (insanely unlikely this will ever happen)
-                CharacterTemplateID dbID = r.GetCharacterTemplateID("id");
-                if (dbID != templateID)
+                if (ret.ID != templateID)
                 {
                     const string errmsg = "Performed SELECT for CharacterTemplate with id `{0}`, but got id `{1}`.";
-                    string err = string.Format(errmsg, templateID, dbID);
+                    string err = string.Format(errmsg, templateID, ret.ID);
                     log.Fatal(err);
                     Debug.Fail(err);
                     throw new DataException(err);
                 }
 #endif
-
-                // Load the general NPC template values
-                string name = r.GetString("name");
-                string ai = r.GetString("ai");
-                AllianceID allianceID = r.GetAllianceID("alliance_id");
-                BodyIndex bodyIndex = r.GetBodyIndex("body");
-                ushort respawn = r.GetUInt16("respawn");
-                ushort giveExp = r.GetUInt16("give_exp");
-                ushort giveCash = r.GetUInt16("give_cash");
-
-                // Get the stats
-                NPCStats stats = new NPCStats();
-                foreach (StatType statType in NPCStats.NonModStats)
-                {
-                    IStat stat;
-                    if (!stats.TryGetStat(statType, out stat))
-                        continue;
-
-                    string columnName = statType.GetDatabaseField();
-                    int ordinal;
-                    if (!r.ContainsField(columnName, out ordinal))
-                        continue;
-
-                    stat.Read(r, ordinal);
-                }
-
-                ret = new SelectCharacterTemplateQueryValues(templateID, name, bodyIndex, ai, allianceID, respawn, giveExp, giveCash, stats);
             }
 
             return ret;

@@ -12,9 +12,25 @@ namespace DemoGame
         /// </summary>
         /// <param name="statType">StatType to get the database field name for.</param>
         /// <returns>The Database field name for the <paramref name="statType"/>.</returns>
-        public static string GetDatabaseField(this StatType statType)
+        public static string GetDatabaseField(this StatType statType, StatCollectionType statCollectionType)
         {
-            return statType.ToString().ToLower();
+            switch (statCollectionType)
+            {
+                case StatCollectionType.Base:
+                    return statType.ToString().ToLower();
+                case StatCollectionType.Modified:
+                    throw new ArgumentException("StatCollectionType.Modified is not allowed in the database.",
+                                                "statCollectionType");
+                case StatCollectionType.Requirement:
+                    return "req" + statType.GetDatabaseField(StatCollectionType.Base);
+                default:
+                    throw new ArgumentOutOfRangeException("statCollectionType");
+            }
+        }
+
+        public static byte GetValue(this StatType statType)
+        {
+            return (byte)statType;
         }
 
         /// <summary>

@@ -2,79 +2,85 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
+using NetGore;
 
 namespace DemoGame.Server
 {
-    public class UserStats : CharacterStatsBase
+    class ChangedStatsTracker
     {
-        static IEnumerable<StatType> _dbStats;
-        readonly List<IUpdateableStat> _updateableStats = new List<IUpdateableStat>();
-        readonly User _user;
+        // TODO: [STATS] This totally sucks, fix it up
 
-        public static IEnumerable<StatType> DatabaseStats
+        readonly int[] _lastValues;
+        readonly IStatCollection _statCollection;
+
+        public ChangedStatsTracker(IStatCollection statCollection)
         {
-            get
-            {
-                // TODO: This should be in CharacterStatsBase, seeing as all characters have the same stats in the DB
-                if (_dbStats == null)
-                    _dbStats = from stat in new UserStats() where stat.CanWrite select stat.StatType;
+            _statCollection = statCollection;
+            int size = _statCollection.Select(x => x.StatType.GetValue()).Max() + 1;
+            _lastValues = new int[size];
 
-                return _dbStats;
+            foreach (var istat in statCollection)
+            {
+                _lastValues[istat.StatType.GetValue()] = istat.Value;
             }
         }
 
-        public IEnumerable<IUpdateableStat> UpdateableStats
+        public IEnumerable<IStat> GetChangedStats()
         {
-            get { return _updateableStats; }
+            List<IStat> changed = new List<IStat>();
+
+            foreach (var istat in _statCollection)
+            {
+                var i = istat.StatType.GetValue();
+                var v = istat.Value;
+                if (_lastValues[i] != v)
+                {
+                    _lastValues[i] = v;
+                    changed.Add(istat);
+                }
+            }
+
+            return changed;
         }
+    }
+
+    public class UserStats : CharacterStats
+    {
+        readonly ChangedStatsTracker _changedStats;
+        readonly User _user;
 
         public User User
         {
             get { return _user; }
         }
 
-        public UserStats(User user)
+        public UserStats(User user, StatCollectionType statCollectionType) : base(user, statCollectionType)
         {
             if (user == null)
                 throw new ArgumentNullException("user");
 
             _user = user;
-            CreateStats();
+            _changedStats = new ChangedStatsTracker(this);
         }
 
-        internal UserStats()
+        /// <summary>
+        /// Synchronizes the User's stat values to the client.
+        /// </summary>
+        public void UpdateClient()
         {
-            CreateStats();
-        }
+            var statsToUpdate = _changedStats.GetChangedStats();
+            if (statsToUpdate.IsEmpty())
+                return;
 
-        protected override IStat CreateBaseStat<T>(StatType statType)
-        {
-            StatUpdateHandler updateHandler = StatUpdateHandlers.UpdateOwner;
-            if (User == null)
-                updateHandler = null;
-
-            var stat = new UserStat<T>(User, updateHandler, statType);
-            _updateableStats.Add(stat);
-            return stat;
-        }
-
-        protected override IStat CreateModStat<T>(StatType statType)
-        {
-            if (User == null)
-                return null;
-
-            StatUpdateHandler updateHandler = StatUpdateHandlers.UpdateOwner;
-            ModStatHandler modHandler = GetModStatHandler(statType);
-
-            var stat = new ModUserStat<T>(User, updateHandler, modHandler, statType);
-            _updateableStats.Add(stat);
-            return stat;
-        }
-
-        protected override int GetEquipmentBonus(StatType statType)
-        {
-            return User.Equipped.GetStatBonus(statType);
+            using (var pw = ServerPacket.GetWriter())
+            {
+                foreach (var stat in statsToUpdate)
+                {
+                    pw.Reset();
+                    ServerPacket.UpdateStat(pw, stat, StatCollectionType);
+                    User.Send(pw);
+                }
+            }
         }
     }
 }

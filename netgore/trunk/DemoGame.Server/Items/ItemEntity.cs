@@ -6,6 +6,7 @@ using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using System.Linq;
 
 namespace DemoGame.Server
 {
@@ -24,7 +25,8 @@ namespace DemoGame.Server
         static DBController _dbController;
 
         readonly ItemID _id;
-        readonly ItemStats _stats;
+        readonly ItemStats _baseStats;
+        readonly ItemStats _reqStats;
 
         byte _amount = 1;
         string _description;
@@ -145,12 +147,14 @@ namespace DemoGame.Server
             }
         }
 
-        /// <summary>
-        /// Gets the stats for the item.
-        /// </summary>
-        public ItemStats Stats
+        public ItemStats BaseStats
         {
-            get { return _stats; }
+            get { return _baseStats; }
+        }
+
+        public ItemStats ReqStats
+        {
+            get { return _reqStats; }
         }
 
         /// <summary>
@@ -188,7 +192,7 @@ namespace DemoGame.Server
         }
 
         public ItemEntity(ItemTemplate t, Vector2 pos, byte amount)
-            : this(pos, t.Size, t.Name, t.Description, t.Type, t.Graphic, t.Value, amount, t.Stats)
+            : this(pos, t.Size, t.Name, t.Description, t.Type, t.Graphic, t.Value, amount, t.BaseStats, t.ReqStats)
         {
         }
 
@@ -208,13 +212,15 @@ namespace DemoGame.Server
             _amount = iv.Amount;
             _type = iv.Type;
 
-            _stats = NewItemStats(iv.Stats);
+            _baseStats = NewItemStats(iv.BaseStats, StatCollectionType.Base);
+            _reqStats = NewItemStats(iv.ReqStats, StatCollectionType.Requirement);
 
             OnResize += ItemEntity_OnResize;
         }
 
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
-                   IEnumerable<IStat> stats) : base(pos, size)
+                   IEnumerable<StatTypeValue> baseStats, IEnumerable<StatTypeValue> reqStats)
+            : base(pos, size)
         {
             _id = new ItemID(IDCreator.GetNext());
 
@@ -225,8 +231,8 @@ namespace DemoGame.Server
             _amount = amount;
             _type = type;
 
-            if (stats != null)
-                _stats = NewItemStats(stats);
+            _baseStats = NewItemStats(baseStats, StatCollectionType.Base);
+            _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
 
             ReplaceItem.Execute(new ItemValues(this, ID));
 
@@ -234,7 +240,7 @@ namespace DemoGame.Server
         }
 
         ItemEntity(ItemEntity s)
-            : this(s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.Stats)
+            : this(s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.BaseStats.ToStatTypeValues(), s.ReqStats.ToStatTypeValues())
         {
         }
 
@@ -279,7 +285,7 @@ namespace DemoGame.Server
 
             // Check for non-equal stats
             ItemEntity itemEntity = (ItemEntity)source;
-            if (!Stats.HasEqualValues(itemEntity.Stats))
+            if (!BaseStats.HasEqualValues(itemEntity.BaseStats) || !ReqStats.HasEqualValues(itemEntity.ReqStats))
                 return false;
 
             // Everything important is equal, so they can be stacked
@@ -352,10 +358,24 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="statValues">IStats to create the ItemStats from.</param>
         /// <returns>An ItemStats from the given collection of IStats.</returns>
-        ItemStats NewItemStats(IEnumerable<IStat> statValues)
+        ItemStats NewItemStats(IEnumerable<StatTypeValue> statValues, StatCollectionType statCollectionType)
         {
-            ItemStats ret = new ItemStats(statValues);
-            ret.OnStatChange += StatChangeReceiver;
+            ItemStats ret = new ItemStats(statValues, statCollectionType);
+
+            switch (statCollectionType)
+            {
+                case StatCollectionType.Base:
+                    ret.OnStatChange += BaseStatChangeReceiver;
+                    break;
+                case StatCollectionType.Requirement:
+                    ret.OnStatChange += BaseStatChangeReceiver;
+                    break;
+                case StatCollectionType.Modified:
+                    throw new ArgumentException("ItemEntity does not use StatCollectionType.Modified.", "statCollectionType");
+                default:
+                    throw new ArgumentOutOfRangeException("statCollectionType");
+            }
+
             return ret;
         }
 
@@ -440,13 +460,16 @@ namespace DemoGame.Server
             return child;
         }
 
-        /// <summary>
-        /// Handles changes to the item's stats, forwarding it to the OnItemChange event.
-        /// </summary>
-        /// <param name="stat">Stats collection that changed.</param>
-        void StatChangeReceiver(IStat stat)
+        void BaseStatChangeReceiver(IStat stat)
         {
-            SynchronizeField(stat.StatType.GetDatabaseField(), stat.Value);
+            var field = stat.StatType.GetDatabaseField(StatCollectionType.Base);
+            SynchronizeField(field, stat.Value);
+        }
+
+        void ReqStatChangeReceiver(IStat stat)
+        {
+            var field = stat.StatType.GetDatabaseField(StatCollectionType.Requirement);
+            SynchronizeField(field, stat.Value);
         }
 
         /// <summary>

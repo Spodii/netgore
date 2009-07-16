@@ -9,7 +9,7 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class SelectItemsQuery : SelectItemQueryBase<SelectItemsQueryValues>
+    public class SelectItemsQuery : DbQueryReader<SelectItemsQueryValues>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id` BETWEEN @low AND @high", DBTables.Item);
 
@@ -33,7 +33,7 @@ namespace DemoGame.Server.Queries
                     if (!r.Read())
                         throw new DataException("Query contained no results for the specified Item ID range.");
 
-                    ItemValues tempValues = GetItemValues(r);
+                    ItemValues tempValues = ItemQueryHelper.ReadItemValues(r);
                     retValues.Add(tempValues);
                 }
             }

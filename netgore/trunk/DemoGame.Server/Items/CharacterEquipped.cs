@@ -8,7 +8,7 @@ using NetGore;
 
 namespace DemoGame.Server
 {
-    public abstract class CharacterEquipped : EquippedBase<ItemEntity>, IDisposable
+    public abstract class CharacterEquipped : EquippedBase<ItemEntity>, IDisposable, IModStatContainer
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -114,13 +114,6 @@ namespace DemoGame.Server
             }
         }
 
-        public int GetStatBonus(StatType statType)
-        {
-            var contains = this.Where(item => item.Value.Stats.Contains(statType));
-            int sum = contains.Sum(item => item.Value.Stats[statType]);
-            return sum;
-        }
-
         /// <summary>
         /// Loads the Character's equipped items. The Character that this CharacterEquipped belongs to
         /// must be persistent since there is nothing for a non-persistent Character to load.
@@ -186,5 +179,11 @@ namespace DemoGame.Server
         }
 
         #endregion
+
+        public int GetStatModBonus(StatType statType)
+        {
+            // TODO: [STATS] This totally sucks. Add some kind of cache.
+            return this.SelectMany(x => x.Value.BaseStats).Where(x => x.StatType == statType).Select(x => x.Value).Sum();
+        }
     }
 }

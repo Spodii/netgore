@@ -6,6 +6,8 @@ namespace DemoGame
     {
         int this[StatType statType] { get; set; }
 
+        StatCollectionType StatCollectionType { get; }
+
         bool Contains(StatType statType);
 
         IStat GetStat(StatType statType);

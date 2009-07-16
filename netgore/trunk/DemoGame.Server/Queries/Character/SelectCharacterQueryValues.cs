@@ -15,10 +15,14 @@ namespace DemoGame.Server.Queries
         public readonly CharacterID ID;
         public readonly MapIndex MapIndex;
         public readonly Vector2 Position;
-        public readonly CharacterStatsBase Stats;
+        public readonly IEnumerable<StatTypeValue> Stats;
         public readonly CharacterTemplateID? TemplateID;
+        public readonly byte Level;
+        public readonly uint Exp;
+        public readonly uint ExpSpent;
+        public readonly uint Cash;
 
-        public SelectCharacterQueryValues(CharacterID id, CharacterTemplateID? templateID, string name, MapIndex mapIndex, Vector2 position, BodyIndex bodyIndex, CharacterStatsBase stats)
+        public SelectCharacterQueryValues(CharacterID id, CharacterTemplateID? templateID, string name, MapIndex mapIndex, Vector2 position, BodyIndex bodyIndex, byte level, uint exp, uint expSpent, uint cash, IEnumerable<StatTypeValue> stats)
         {
             Name = name;
             ID = id;
@@ -27,6 +31,10 @@ namespace DemoGame.Server.Queries
             Position = position;
             BodyIndex = bodyIndex;
             Stats = stats;
+            Level = level;
+            Exp = exp;
+            ExpSpent = expSpent;
+            Cash = cash;
         }
     }
 }

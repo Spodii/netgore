@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -46,6 +47,8 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.InfoFormat("Database connection pool created.");
 
+            DBTableStatTypes.Initialize(this);
+
             // Find the classes marked with our attribute
             var requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
             var types = TypeHelper.FindTypesWithAttribute(typeof(DBControllerQueryAttribute), requiredConstructorParams);
@@ -78,6 +81,30 @@ namespace DemoGame.Server
         public T GetQuery<T>()
         {
             return (T)_queryObjects[typeof(T)];
+        }
+
+        public IEnumerable<string> GetTableColumns(string table)
+        {
+            List<string> ret = new List<string>();
+
+            using (var conn = _connectionPool.Create())
+            {
+                using (var cmd = conn.Connection.CreateCommand())
+                {
+                    cmd.CommandText = string.Format("SELECT * FROM `{0}` WHERE 0=1", table);
+                    using (var r = cmd.ExecuteReader())
+                    {
+                        int fields = r.FieldCount;
+                        for (int i = 0; i < fields; i++)
+                        {
+                            string fieldName = r.GetName(i);
+                            ret.Add(fieldName);
+                        }
+                    }
+                }
+            }
+
+            return ret;
         }
 
         #region IDisposable Members

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-
 using log4net;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -69,6 +68,11 @@ namespace DemoGame.Client
             get { return GameplayScreen.UserChar; }
         }
 
+        public CharacterStats UserBaseStats
+        {
+            get { return GameplayScreen.UserBaseStats; }
+        }
+
         public UserEquipped UserEquipped
         {
             get { return GameplayScreen.UserEquipped; }
@@ -82,12 +86,9 @@ namespace DemoGame.Client
             get { return GameplayScreen.Inventory; }
         }
 
-        /// <summary>
-        /// Gets the user's CharacterStats
-        /// </summary>
-        public CharacterStats UserStats
+        public CharacterStats UserModStats
         {
-            get { return GameplayScreen.UserStats; }
+            get { return GameplayScreen.UserModStats; }
         }
 
         /// <summary>
@@ -209,54 +210,11 @@ namespace DemoGame.Client
                 OnLoginUnsuccessful(conn, message);
         }
 
-        [MessageHandler((byte)ServerPacketID.UseEntity)]
-        void RecvUseEntity(IIPSocket conn, BitStream r)
-        {
-            MapEntityIndex usedEntityIndex = r.ReadMapEntityIndex();
-            MapEntityIndex usedByIndex = r.ReadMapEntityIndex();
-
-            // Grab the used DynamicEntity
-            DynamicEntity usedEntity = Map.GetDynamicEntity(usedEntityIndex);
-            if (usedEntity == null)
-            {
-                const string errmsg = "UseEntity received but usedEntityIndex `{0}` is not a valid DynamicEntity.";
-                Debug.Fail(string.Format(errmsg, usedEntityIndex));
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, usedEntityIndex);
-                return;
-            }
-
-            // Grab the one who used this DynamicEntity (we can still use it, we'll just pass null)
-            DynamicEntity usedBy = Map.GetDynamicEntity(usedEntityIndex);
-            if (usedBy == null)
-            {
-                const string errmsg = "UseEntity received but usedByIndex `{0}` is not a valid DynamicEntity.";
-                Debug.Fail(string.Format(errmsg, usedEntityIndex));
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, usedEntityIndex);
-            }
-
-            // Ensure the used DynamicEntity is even usable
-            IUsableEntity asUsable = usedEntity as IUsableEntity;
-            if (asUsable == null)
-            {
-                const string errmsg = "UseEntity received but usedByIndex `{0}` refers to DynamicEntity `{1}` which does " +
-                    "not implement IUsableEntity.";
-                Debug.Fail(string.Format(errmsg, usedEntityIndex, usedEntity));
-                if (log.IsErrorEnabled)
-                    log.WarnFormat(errmsg, usedEntityIndex, usedEntity);
-                return;
-            }
-
-            // Use it
-            asUsable.Use(usedBy);
-        }
-
         [MessageHandler((byte)ServerPacketID.NotifyExpCash)]
         void RecvNotifyExpCash(IIPSocket conn, BitStream r)
         {
-            int exp = r.ReadInt();
-            int cash = r.ReadInt();
+            uint exp = r.ReadUInt();
+            uint cash = r.ReadUInt();
 
             Character userChar = World.UserChar;
             if (userChar == null)
@@ -334,7 +292,8 @@ namespace DemoGame.Client
             ItemInfo itemInfo = ItemInfoTooltip.ItemInfo;
 
             itemInfo.SetItemInfo(name, desc, value);
-            r.ReadStatCollection(itemInfo.Stats);
+            r.ReadStatCollection(itemInfo.BaseStats);
+            r.ReadStatCollection(itemInfo.ReqStats);
 
             itemInfo.SetAsUpdated();
         }
@@ -406,7 +365,9 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.UpdateStat)]
         void RecvUpdateStat(IIPSocket conn, BitStream r)
         {
-            r.ReadStat(UserStats);
+            bool isBaseStat = r.ReadBool();
+            var statCollectionToUpdate = isBaseStat ? UserBaseStats : UserModStats;
+            r.ReadStat(statCollectionToUpdate);
         }
 
         [MessageHandler((byte)ServerPacketID.UpdateVelocityAndPosition)]
@@ -438,6 +399,50 @@ namespace DemoGame.Client
                 // Just flush the values from the reader
                 DynamicEntity.FlushPositionAndVelocity(valueReader);
             }
+        }
+
+        [MessageHandler((byte)ServerPacketID.UseEntity)]
+        void RecvUseEntity(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex usedEntityIndex = r.ReadMapEntityIndex();
+            MapEntityIndex usedByIndex = r.ReadMapEntityIndex();
+
+            // Grab the used DynamicEntity
+            DynamicEntity usedEntity = Map.GetDynamicEntity(usedEntityIndex);
+            if (usedEntity == null)
+            {
+                const string errmsg = "UseEntity received but usedEntityIndex `{0}` is not a valid DynamicEntity.";
+                Debug.Fail(string.Format(errmsg, usedEntityIndex));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, usedEntityIndex);
+                return;
+            }
+
+            // Grab the one who used this DynamicEntity (we can still use it, we'll just pass null)
+            DynamicEntity usedBy = Map.GetDynamicEntity(usedEntityIndex);
+            if (usedBy == null)
+            {
+                const string errmsg = "UseEntity received but usedByIndex `{0}` is not a valid DynamicEntity.";
+                Debug.Fail(string.Format(errmsg, usedEntityIndex));
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, usedEntityIndex);
+            }
+
+            // Ensure the used DynamicEntity is even usable
+            IUsableEntity asUsable = usedEntity as IUsableEntity;
+            if (asUsable == null)
+            {
+                const string errmsg =
+                    "UseEntity received but usedByIndex `{0}` refers to DynamicEntity `{1}` which does " +
+                    "not implement IUsableEntity.";
+                Debug.Fail(string.Format(errmsg, usedEntityIndex, usedEntity));
+                if (log.IsErrorEnabled)
+                    log.WarnFormat(errmsg, usedEntityIndex, usedEntity);
+                return;
+            }
+
+            // Use it
+            asUsable.Use(usedBy);
         }
 
         #region IGetTime Members

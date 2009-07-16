@@ -1,5 +1,8 @@
+using System;
 using System.Data;
 using NetGore.IO;
+
+// TODO: [STATS] Split into separate files
 
 namespace DemoGame
 {
@@ -64,6 +67,11 @@ namespace DemoGame
         }
 
         #endregion
+
+        public static implicit operator int(StatValueByte v)
+        {
+            return v.GetValue();
+        }
     }
 
     public class StatValueSByte : IStatValueType
@@ -247,7 +255,8 @@ namespace DemoGame
 
         public void Read(IDataRecord dataRecord, int ordinal)
         {
-            _value = (ushort)dataRecord.GetValue(ordinal);
+            object v = dataRecord.GetValue(ordinal);
+            _value = Convert.ToUInt16(v);
         }
 
         public IStatValueType DeepCopy()
@@ -256,5 +265,11 @@ namespace DemoGame
         }
 
         #endregion
+
+        public static implicit operator int(StatValueUShort v)
+        {
+            // TODO: Have to decide if I want to do this implicit operator to int on all of these...
+            return v.GetValue();
+        }
     }
 }

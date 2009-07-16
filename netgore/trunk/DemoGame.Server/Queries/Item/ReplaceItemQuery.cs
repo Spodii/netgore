@@ -11,8 +11,6 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class ReplaceItemQuery : DbQueryNonReader<ItemValues>
     {
-        public const string ItemsTableName = "item";
-
         static readonly IEnumerable<string> _otherFields = new string[]
                                                            {
                                                                "amount", "description", "graphic", "id", "height", "name", "type",
@@ -21,11 +19,9 @@ namespace DemoGame.Server.Queries
 
         static readonly string _queryString;
 
-        static readonly IEnumerable<string> _statFields = ItemStats.DatabaseStats.Select(statType => statType.GetDatabaseField());
-
         static ReplaceItemQuery()
         {
-            _queryString = BuildQueryString(GetFields());
+            _queryString = BuildQueryString(ItemQueryHelper.AllDBFields);
         }
 
         public ReplaceItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
@@ -39,10 +35,10 @@ namespace DemoGame.Server.Queries
         /// <returns>A string to be used for the query</returns>
         static string BuildQueryString(IEnumerable<string> fields)
         {
-            StringBuilder sb = new StringBuilder(256 + ItemStats.DatabaseStats.Count() * 8);
+            StringBuilder sb = new StringBuilder();
 
             // Header
-            sb.AppendFormat("REPLACE INTO `{0}` (", ItemsTableName);
+            sb.AppendFormat("REPLACE INTO `{0}` (", DBTables.Item);
 
             // Field names
             foreach (string field in fields)
@@ -67,14 +63,9 @@ namespace DemoGame.Server.Queries
             return sb.ToString();
         }
 
-        static IEnumerable<string> GetFields()
-        {
-            return _statFields.Concat(_otherFields);
-        }
-
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(GetFields());
+            return CreateParameters(ItemQueryHelper.AllDBFields);
         }
 
         protected override void SetParameters(DbParameterValues p, ItemValues item)
@@ -89,12 +80,31 @@ namespace DemoGame.Server.Queries
             p["@width"] = item.Width;
             p["@height"] = item.Height;
 
-            foreach (StatType statType in ItemStats.DatabaseStats)
+            foreach (var statField in ItemQueryHelper.BaseDBStatFields)
             {
-                string paramName = "@" + statType.GetDatabaseField();
-                IStat stat = item.Stats.GetStat(statType);
-                p[paramName] = stat.Value;
+                string paramName = "@" + statField.Field;
+                int statValue = GetStatValue(item.BaseStats, statField.StatType);
+                p[paramName] = statValue;
+                
             }
+
+            foreach (var statField in ItemQueryHelper.ReqDBStatFields)
+            {
+                string paramName = "@" + statField.Field;
+                int statValue = GetStatValue(item.ReqStats, statField.StatType);
+                p[paramName] = statValue;
+            }
+        }
+
+        static int GetStatValue(IEnumerable<StatTypeValue> e, StatType statType)
+        {
+            foreach (var pair in e)
+            {
+                if (pair.StatType == statType)
+                    return pair.Value;
+            }
+
+            return 0;
         }
     }
 }

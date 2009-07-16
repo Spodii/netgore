@@ -18,7 +18,8 @@ namespace DemoGame.Client
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly ItemStats _stats = new ItemStats();
+        readonly ItemStats _baseStats = new ItemStats(StatCollectionType.Base);
+        readonly ItemStats _reqStats = new ItemStats(StatCollectionType.Requirement);
         string _description;
         bool _isUpdated;
         string _name;
@@ -75,9 +76,14 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the stats of the item.
         /// </summary>
-        public ItemStats Stats
+        public ItemStats BaseStats
         {
-            get { return _stats; }
+            get { return _baseStats; }
+        }
+
+        public ItemStats ReqStats
+        {
+            get { return _reqStats; }
         }
 
         /// <summary>

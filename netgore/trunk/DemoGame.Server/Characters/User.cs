@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using DemoGame.Server.Queries;
@@ -27,10 +28,7 @@ namespace DemoGame.Server
 
         readonly UserEquipped _equipped;
         readonly UserInventory _inventory;
-        readonly UserStats _stats;
         readonly SocketSendQueue _unreliableBuffer;
-
-        int _nextLevelExp = int.MaxValue;
 
         /// <summary>
         /// Gets the socket connection info for the user
@@ -53,17 +51,14 @@ namespace DemoGame.Server
             get { return _inventory; }
         }
 
-        /// <summary>
-        /// Gets the CharacterStatsBase used for this Character's stats.
-        /// </summary>
-        public override CharacterStatsBase Stats
-        {
-            get { return _stats; }
-        }
-
         [Obsolete("Do not use this empty constructor on the Server!")]
         public User()
         {
+        }
+
+        protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
+        {
+            return new UserStats(this, statCollectionType);
         }
 
         /// <summary>
@@ -81,12 +76,14 @@ namespace DemoGame.Server
             _conn = conn;
             _conn.Tag = this;
 
+            _userStatsBase = (UserStats)BaseStats;
+            _userStatsMod = (UserStats)ModStats;
+
             // Create some objects
             _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
             _inventory = new UserInventory(this);
             _equipped = new UserEquipped(this);
-            _stats = new UserStats(this);
-
+ 
             // Load the character data
             Load(name);
 
@@ -94,31 +91,11 @@ namespace DemoGame.Server
             Alliance = World.Server.AllianceManager["user"];
 
             // Attach to some events
-            _stats.GetStat(StatType.Exp).OnChange += Exp_OnChange;
-            _stats.GetStat(StatType.Level).OnChange += Level_OnChange;
+            OnChangeExp += Exp_OnChange;
             OnKillCharacter += User_OnKillCharacter;
 
             // Activate the user
             IsAlive = true;
-        }
-
-        /// <summary>
-        /// Adds a new User to the database. Assumes all parameters are valid.
-        /// </summary>
-        /// <param name="insertUserQuery">InsertUserQuery used to create the new User</param>
-        /// <param name="name">Name of the new User</param>
-        /// <param name="password">Password for the new User</param>
-        /// <returns>True if the User was successfully created, else false</returns>
-        public static bool AddNewUser(InsertUserQuery insertUserQuery, string name, string password)
-        {
-            // TODO: Have to add back in support for creating a new user
-            throw new ArgumentException("Have to add back in support for new users");
-
-            //ushort uniqueID = GetNextUniqueIndex(conn);
-
-            insertUserQuery.Execute(null);
-
-            return true;
         }
 
         public bool DropInventoryItem(InventorySlot slot)
@@ -174,18 +151,21 @@ namespace DemoGame.Server
             return successful;
         }
 
-        void Exp_OnChange(IStat stat)
+        void Exp_OnChange(Character character, uint oldExp, uint exp)
         {
+            // TODO: [STATS] Move the level calculation to Character
+            /*
             // If the current level is 0, we probably haven't even set the level yet
-            if (Stats[StatType.Level] == 0)
+            if (Level == 0)
                 return;
 
             // Check if we have enough experience to move to the next level
-            if (Stats[StatType.Exp] < _nextLevelExp)
+            if (exp < _nextLevelExp)
                 return;
 
             // Increase the level
-            Stats[StatType.Level]++;
+            BaseStats[StatType.Level]++;
+            */
 
             // Notify users on the map of the level-up
             using (PacketWriter pw = ServerPacket.NotifyLevel(MapEntityIndex))
@@ -199,13 +179,17 @@ namespace DemoGame.Server
         /// </summary>
         public void FlushUnreliableBuffer()
         {
+            if (IsDisposed)
+                return;
+
             if (_conn == null || !_conn.IsConnected)
             {
-                const string errmsg = "Send to `{0}` failed - Conn is null or not connected. Disposing User...";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
+                const string errmsg = "Send to `{0}` failed - Conn is null or not connected."
+                    + " Connection by client was probably not closed properly. Usually not a big deal. Disposing User...";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this);
                 DelayedDispose();
+
                 return;
             }
 
@@ -288,22 +272,6 @@ namespace DemoGame.Server
             return remainder;
         }
 
-        /// <summary>
-        /// Raises the user's exp and cash along with notifies them of the amounts.
-        /// </summary>
-        /// <param name="exp">Amount of exp to give.</param>
-        /// <param name="cash">Amount of cash to give.</param>
-        void GiveKillReward(int exp, int cash)
-        {
-            using (PacketWriter pw = ServerPacket.NotifyExpCash(exp, cash))
-            {
-                Send(pw);
-            }
-
-            Stats[StatType.Exp] += exp;
-            Stats[StatType.Cash] += cash;
-        }
-
         protected override void HandleDispose()
         {
             // Close the user's connection
@@ -311,6 +279,16 @@ namespace DemoGame.Server
                 _conn.Dispose();
 
             base.HandleDispose();
+        }
+
+        protected override void GiveKillReward(uint exp, uint cash)
+        {
+            base.GiveKillReward(exp, cash);
+
+            using (PacketWriter pw = ServerPacket.NotifyExpCash(exp, cash))
+            {
+                Send(pw);
+            }
         }
 
         /// <summary>
@@ -335,33 +313,8 @@ namespace DemoGame.Server
             base.Kill();
 
             Teleport(new Vector2(100, 100));
-            Stats[StatType.HP] = Stats[StatType.MaxHP];
-            Stats[StatType.MP] = Stats[StatType.MaxMP];
-        }
-
-        void Level_OnChange(IStat stat)
-        {
-            _nextLevelExp = GameData.LevelCost(Stats[StatType.Level]);
-        }
-
-        /// <summary>
-        /// Makes the User raise their Stat of the corresponding type by one point, assuming they have enough
-        /// points available to raise the Stat, and lowers the amount of spendable points accordingly.
-        /// </summary>
-        /// <param name="st">StatType of the stat to raise.</param>
-        public void RaiseStat(StatType st)
-        {
-            int cost = GameData.StatCost(Stats[st]);
-
-            if (Stats.Points <= cost)
-            {
-                const string errmsg = "User `{0}` tried to raise stat `{1}`, but only has {2} of {3} points needed.";
-                Debug.Fail(string.Format(errmsg, this, st, Stats.Points, cost));
-                return;
-            }
-
-            Stats[st]++;
-            Stats[StatType.ExpSpent] += cost;
+            BaseStats[StatType.HP] = BaseStats[StatType.MaxHP];
+            BaseStats[StatType.MP] = BaseStats[StatType.MaxMP];
         }
 
         /// <summary>
@@ -380,6 +333,14 @@ namespace DemoGame.Server
         /// <param name="reliable">Whether or not the data should be sent over a reliable stream.</param>
         public void Send(BitStream data, bool reliable)
         {
+            if (IsDisposed)
+            {
+                const string errmsg = "Tried to send data to disposed User `{0}` [reliable = `{1}`]";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, this, reliable);
+                return;
+            }
+
             if (_conn == null || !_conn.IsConnected)
             {
                 const string errmsg = "Send to `{0}` failed - Conn is null or not connected. Disposing User...";
@@ -387,6 +348,7 @@ namespace DemoGame.Server
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
                 DelayedDispose();
+
                 return;
             }
 
@@ -494,6 +456,9 @@ namespace DemoGame.Server
             _unreliableBuffer.Enqueue(data);
         }
 
+        readonly UserStats _userStatsBase;
+        readonly UserStats _userStatsMod;
+
         /// <summary>
         /// Updates the user
         /// </summary>
@@ -502,23 +467,12 @@ namespace DemoGame.Server
             // Perform the general character updating
             base.Update(imap, deltaTime);
 
-            // Update the user's stats
-            UpdateStats();
+            // Synchronize the User's stats
+            _userStatsBase.UpdateClient();
+            _userStatsMod.UpdateClient();
 
-            // Synchronize the inventory
+            // Synchronize the Inventory
             _inventory.UpdateClient();
-        }
-
-        /// <summary>
-        /// Updates the User's stats.
-        /// </summary>
-        void UpdateStats()
-        {
-            // NOTE: Doesn't the NPC need to update their stats, too? So shouldn't this be in Character?
-            foreach (IUpdateableStat stat in _stats.UpdateableStats)
-            {
-                stat.Update();
-            }
         }
 
         public void UseInventoryItem(InventorySlot slot)

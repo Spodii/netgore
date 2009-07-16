@@ -182,11 +182,11 @@ namespace DemoGame
         /// </summary>
         /// <param name="x">Level to check (current level)</param>
         /// <returns>Experience required for the given level</returns>
-        public static int LevelCost(int x)
+        public static uint LevelCost(uint x)
         {
-            float z = x + 1;
-            float y = 25f * z + 75f * (float)Math.Pow(z, 2.1f + z * 0.003f);
-            return (int)y;
+            uint z = x + 1;
+            uint y = 25 * z + 75 * (uint)Math.Pow(z, 2.1f + z * 0.003f);
+            return y;
         }
 
         /// <summary>

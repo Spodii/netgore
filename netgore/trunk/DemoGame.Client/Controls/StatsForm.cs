@@ -8,8 +8,6 @@ using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 
-// FUTURE: This is very ineffeciently and poorly done
-
 namespace DemoGame.Client
 {
     /// <summary>
@@ -23,7 +21,8 @@ namespace DemoGame.Client
     {
         const float _xOffset = 21;
         readonly Grh _addStatGrh = new Grh(GrhInfo.GetData("GUI", "AddStat"));
-        readonly CharacterStats _charStats;
+        readonly CharacterStats _baseStats;
+        readonly CharacterStats _modStats;
         float _yOffset = 0;
 
         /// <summary>
@@ -31,54 +30,56 @@ namespace DemoGame.Client
         /// </summary>
         public event RaiseStatHandler OnRaiseStat;
 
-        /// <summary>
-        /// Gets the CharacterStats displayed.
-        /// </summary>
-        public CharacterStats CharacterStats
+        public CharacterStats CharacterBaseStats
         {
-            get { return _charStats; }
+            get { return _baseStats; }
         }
 
-        public StatsForm(CharacterStats charStats, Control parent)
+        public CharacterStats CharacterModStats
+        {
+            get { return _modStats; }
+        }
+
+        public StatsForm(CharacterStats baseStats, CharacterStats modStats, Control parent)
             : base(parent.GUIManager, "Stats", Vector2.Zero, new Vector2(225, 425), parent)
         {
-            if (charStats == null)
-                throw new ArgumentNullException("charStats");
+            if (baseStats == null)
+                throw new ArgumentNullException("baseStats");
 
-            _charStats = charStats;
+            _baseStats = baseStats;
+            _modStats = modStats;
 
             _yOffset = 2;
 
-            NewStatLabel(charStats.GetStat(StatType.Level));
-            NewStatLabel(charStats.GetStat(StatType.Cash));
-            NewStatLabel(charStats.GetStat(StatType.Exp));
-            NewPointsLabel();
+            //NewStatLabel(charStats.GetStat(StatType.Level));
+            //NewStatLabel(charStats.GetStat(StatType.Cash));
+            //NewStatLabel(charStats.GetStat(StatType.Exp));
 
             AddLine();
 
-            NewStatLabel(charStats.GetStat(StatType.MinHit));
-            NewStatLabel(charStats.GetStat(StatType.MaxHit));
-            NewStatLabel(charStats.GetStat(StatType.Defence));
+            NewStatLabel(StatType.MinHit);
+            NewStatLabel(StatType.MaxHit);
+            NewStatLabel(StatType.Defence);
 
             AddLine();
 
-            NewStatLabel(charStats.GetStat(StatType.Str));
-            NewStatLabel(charStats.GetStat(StatType.Agi));
-            NewStatLabel(charStats.GetStat(StatType.Dex));
-            NewStatLabel(charStats.GetStat(StatType.Int));
-            NewStatLabel(charStats.GetStat(StatType.Bra));
+            NewStatLabel(StatType.Str);
+            NewStatLabel(StatType.Agi);
+            NewStatLabel(StatType.Dex);
+            NewStatLabel(StatType.Int);
+            NewStatLabel(StatType.Bra);
 
             AddLine();
 
-            NewStatLabel(charStats.GetStat(StatType.WS));
-            NewStatLabel(charStats.GetStat(StatType.Armor));
-            NewStatLabel(charStats.GetStat(StatType.Acc));
-            NewStatLabel(charStats.GetStat(StatType.Evade));
-            NewStatLabel(charStats.GetStat(StatType.Perc));
-            NewStatLabel(charStats.GetStat(StatType.Regen));
-            NewStatLabel(charStats.GetStat(StatType.Recov));
-            NewStatLabel(charStats.GetStat(StatType.Tact));
-            NewStatLabel(charStats.GetStat(StatType.Imm));
+            NewStatLabel(StatType.WS);
+            NewStatLabel(StatType.Armor);
+            NewStatLabel(StatType.Acc);
+            NewStatLabel(StatType.Evade);
+            NewStatLabel(StatType.Perc);
+            NewStatLabel(StatType.Regen);
+            NewStatLabel(StatType.Recov);
+            NewStatLabel(StatType.Tact);
+            NewStatLabel(StatType.Imm);
         }
 
         void AddLine()
@@ -93,27 +94,18 @@ namespace DemoGame.Client
             new PointsLabel(pos, this);
         }
 
-        void NewStatLabel(IStat stat)
+        void NewStatLabel(StatType statType)
         {
             AddLine();
-
+            
+            // Create the stat label
             Vector2 pos = new Vector2(_xOffset, _yOffset);
-            new StatLabel(pos, stat, this);
-
-            // Add the mod stat where applicable
-            try
-            {
-                StatType modStat = stat.StatType.GetMod();
-                new StatLabel(new Vector2(pos.X + 70, pos.Y), CharacterStats.GetStat(modStat), this);
-            }
-            catch (ArgumentException)
-            {
-            }
+            new StatLabel(this, statType, pos);
 
             // Add the stat raise button
-            if (CharacterStats.RaiseableStats.Contains(stat.StatType))
+            if (StatFactory.RaisableStats.Contains(statType))
             {
-                RaiseStatPB statPB = new RaiseStatPB(pos - new Vector2(22, 0), _addStatGrh, this, stat.StatType);
+                RaiseStatPB statPB = new RaiseStatPB(pos - new Vector2(22, 0), _addStatGrh, this, statType);
                 statPB.OnClick += StatPB_OnClick;
             }
         }
@@ -139,7 +131,7 @@ namespace DemoGame.Client
             if (!IsVisible)
                 return;
 
-            if (CharacterStats == null)
+            if (CharacterBaseStats == null)
             {
                 Debug.Fail("CharacterStats is null.");
                 return;
@@ -168,7 +160,12 @@ namespace DemoGame.Client
 
             int Points
             {
-                get { return _statsForm.CharacterStats.Points; }
+                get
+                {
+                    // TODO: [STATS] Return the correct number of points
+                    return 0;
+                    //return _statsForm.CharacterStats.Points; 
+                }
             }
 
             public PointsLabel(Vector2 pos, StatsForm parent) : base(string.Empty, pos, parent)
@@ -195,7 +192,12 @@ namespace DemoGame.Client
 
             int Points
             {
-                get { return Stats.Points; }
+                get
+                {
+                    // TODO: [STATS] Return the correct number of points
+                    return 0;
+                    //return Stats.Points; 
+                }
             }
 
             int StatCost
@@ -210,7 +212,7 @@ namespace DemoGame.Client
 
             CharacterStats Stats
             {
-                get { return _statsForm.CharacterStats; }
+                get { return _statsForm.CharacterBaseStats; }
             }
 
             public StatType StatType
@@ -239,18 +241,37 @@ namespace DemoGame.Client
 
         class StatLabel : Label
         {
-            public StatLabel(Vector2 pos, IStat stat, Control parent) : base(string.Empty, pos, parent)
-            {
-                if (stat == null)
-                    throw new ArgumentNullException("stat");
+            readonly StatType _statType;
+            readonly StatsForm _statsForm;
 
-                Tag = stat;
+            public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos, Control parent)
+                : base(string.Empty, pos, parent)
+            {
+                if (statsForm == null)
+                    throw new ArgumentNullException("statsForm");
+
+                _statsForm = statsForm;
+                _statType = statType;
+            }
+
+            public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos)
+                : this(statsForm, statType, pos, statsForm)
+            {
             }
 
             protected override void DrawControl(SpriteBatch spriteBatch)
             {
                 base.DrawControl(spriteBatch);
-                Text = Tag.ToString();
+
+                int baseValue;
+                if (!_statsForm.CharacterBaseStats.TryGetStatValue(_statType, out baseValue))
+                    baseValue = 0;
+
+                int modValue;
+                if (!_statsForm.CharacterModStats.TryGetStatValue(_statType, out modValue))
+                    modValue = 0;
+
+                Text = _statType + ": " + baseValue + " (" + modValue + ")";
             }
         }
     }

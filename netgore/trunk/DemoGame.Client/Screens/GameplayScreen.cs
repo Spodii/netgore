@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -55,9 +54,9 @@ namespace DemoGame.Client
         /// </summary>
         readonly SkeletonManager _skelManager = new SkeletonManager(ContentPaths.Build.Skeletons);
 
+        readonly CharacterStats _userBaseStats = new CharacterStats(StatCollectionType.Base);
         readonly UserEquipped _userEquipped = new UserEquipped();
-
-        readonly CharacterStats _userStats = new CharacterStats();
+        readonly CharacterStats _userModStats = new CharacterStats(StatCollectionType.Modified);
         ChatForm _chatForm;
 
         /// <summary>
@@ -214,6 +213,11 @@ namespace DemoGame.Client
             get { return _socket; }
         }
 
+        public CharacterStats UserBaseStats
+        {
+            get { return _userBaseStats; }
+        }
+
         /// <summary>
         /// Gets the user's character
         /// </summary>
@@ -227,9 +231,9 @@ namespace DemoGame.Client
             get { return _userEquipped; }
         }
 
-        public CharacterStats UserStats
+        public CharacterStats UserModStats
         {
-            get { return _userStats; }
+            get { return _userModStats; }
         }
 
         /// <summary>
@@ -377,7 +381,7 @@ namespace DemoGame.Client
             _gui = new GUIManager(_guiFont);
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
-            _statsForm = new StatsForm(_userStats, cScreen);
+            _statsForm = new StatsForm(_userBaseStats, _userModStats, cScreen);
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 
             _inventoryForm = new InventoryForm(ItemInfoTooltip, new Vector2(250, 0), cScreen);
@@ -427,7 +431,10 @@ namespace DemoGame.Client
         /// <param name="statType">StatType requested to be raised.</param>
         void StatsForm_OnRaiseStat(StatsForm statsForm, StatType statType)
         {
-            Socket.Send(ClientPacket.RaiseStat(statType));
+            using (var pw = ClientPacket.RaiseStat(statType))
+            {
+                Socket.Send(pw);
+            }
         }
 
         /// <summary>

@@ -11,41 +11,29 @@ namespace DemoGame
         /// </summary>
         public event StatChangeHandler OnStatChange;
 
-        protected ItemStatsBase(IEnumerable<IStat> copyStatValuesFrom) : this()
+        protected ItemStatsBase(IEnumerable<IStat> copyStatValuesFrom, StatCollectionType statCollectionType)
+            : this(statCollectionType)
         {
+            // NOTE: Can I get rid of this constructor?
             CopyStatValuesFrom(copyStatValuesFrom, true);
         }
 
-        protected ItemStatsBase()
+        protected ItemStatsBase(IEnumerable<StatTypeValue> src, StatCollectionType statCollectionType) : this(statCollectionType)
         {
-            Add<StatValueUShort>(StatType.Agi);
-            Add<StatValueUShort>(StatType.Armor);
-            Add<StatValueUShort>(StatType.Bra);
-            Add<StatValueUShort>(StatType.Defence);
-            Add<StatValueUShort>(StatType.Dex);
-            Add<StatValueUShort>(StatType.Evade);
-            Add<StatValueShort>(StatType.HP);
-            Add<StatValueUShort>(StatType.Imm);
-            Add<StatValueUShort>(StatType.Int);
-            Add<StatValueUShort>(StatType.MaxHit);
-            Add<StatValueShort>(StatType.MaxMP);
-            Add<StatValueShort>(StatType.MaxHP);
-            Add<StatValueUShort>(StatType.MinHit);
-            Add<StatValueShort>(StatType.MP);
-            Add<StatValueUShort>(StatType.Perc);
-            Add<StatValueByte>(StatType.ReqAcc);
-            Add<StatValueByte>(StatType.ReqAgi);
-            Add<StatValueByte>(StatType.ReqArmor);
-            Add<StatValueByte>(StatType.ReqBra);
-            Add<StatValueByte>(StatType.ReqDex);
-            Add<StatValueByte>(StatType.ReqEvade);
-            Add<StatValueByte>(StatType.ReqImm);
-            Add<StatValueByte>(StatType.ReqInt);
+            foreach (var statInfo in src)
+            {
+                IStat stat = StatFactory.CreateStat(statInfo.StatType, statCollectionType, statInfo.Value);
+                Add(stat);
+            }
         }
 
-        void Add<T>(StatType statType) where T : IStatValueType, new()
+        protected ItemStatsBase(StatCollectionType statCollectionType) : base(statCollectionType)
         {
-            Add(NewStat<T>(statType));
+        }
+
+        public override IStat GetStat(StatType statType)
+        {
+            return InternalGetStat(statType, true);
         }
 
         /// <summary>
@@ -74,9 +62,9 @@ namespace DemoGame
         /// <typeparam name="T">Internal stat value type</typeparam>
         /// <param name="statType">Type of the Stat</param>
         /// <returns>The new Stat</returns>
-        Stat<T> NewStat<T>(StatType statType) where T : IStatValueType, new()
+        BaseStat<T> NewStat<T>(StatType statType) where T : IStatValueType, new()
         {
-            var stat = new Stat<T>(statType);
+            var stat = new BaseStat<T>(statType);
             stat.OnChange += StatChanged;
             return stat;
         }

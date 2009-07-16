@@ -33,7 +33,7 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.Info("Starting server...");
 
-            // Hack in a callback that will allow us to dispose of the server if the console is closed in any way
+            // This hacks in a callback that will allow us to dispose of the server if the console is closed in any way
             // Ideally, people would type "quit" or "close" when they want to close it, but hell, not even I do that
             _handler += ConsoleCtrlCheck;
             SetConsoleCtrlHandler(_handler, true);

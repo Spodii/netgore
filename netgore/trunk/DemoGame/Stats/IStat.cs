@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 using NetGore.IO;
 
@@ -15,18 +16,12 @@ namespace DemoGame
         event StatChangeHandler OnChange;
 
         /// <summary>
-        /// Gets if this IStat may be written to. If false, this IStat is read-only, and the Value property setter
-        /// will throw an exception when used.
-        /// </summary>
-        bool CanWrite { get; }
-
-        /// <summary>
         /// Gets the StatType of this IStat.
         /// </summary>
         StatType StatType { get; }
 
         /// <summary>
-        /// Gets or sets the value of this stat as an integer.
+        /// Gets or sets the value of this IStat as an integer.
         /// </summary>
         int Value { get; set; }
 

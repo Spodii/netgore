@@ -6,7 +6,7 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class SelectCharacterInventoryItemsQuery : SelectItemQueryBase<CharacterID>
+    public class SelectCharacterInventoryItemsQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryString =
             string.Format("SELECT {0}.* FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
@@ -24,7 +24,7 @@ namespace DemoGame.Server.Queries
             {
                 while (r.Read())
                 {
-                    ItemValues values = GetItemValues(r);
+                    ItemValues values = ItemQueryHelper.ReadItemValues(r);
                     retValues.Add(values);
                 }
             }

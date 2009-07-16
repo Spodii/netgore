@@ -19,52 +19,18 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public SelectCharacterQueryValues Execute(string userName, CharacterStatsBase stats)
+        public SelectCharacterQueryValues Execute(string characterName)
         {
-            if (stats == null)
-                throw new ArgumentNullException("stats");
-
             SelectCharacterQueryValues ret;
 
-            using (IDataReader r = ExecuteReader(userName))
+            using (IDataReader r = ExecuteReader(characterName))
             {
-                ret = ReadQueryValues(r, stats);
+                if (!r.Read())
+                    throw new ArgumentException(string.Format("Could not find character `{0}`.", characterName), characterName);
+
+                ret = CharacterQueryHelper.ReadCharacterQueryValues(r);
             }
 
-            return ret;
-        }
-
-        public static SelectCharacterQueryValues ReadQueryValues(IDataReader r, CharacterStatsBase stats)
-        {
-            // HACK: I know this method is a horrible, horrible design, but SelectCharacterQuery wont be around much longer
-
-            if (!r.Read())
-                throw new ArgumentException("Could not find user.");
-
-            // Read the general user values
-            CharacterID id = r.GetCharacterID("id");
-            CharacterTemplateID? templateID = r.GetCharacterTemplateIDNullable("template_id");
-            string name = r.GetString("name");
-            MapIndex mapIndex = r.GetMapIndex("map");
-            float x = r.GetFloat("x");
-            float y = r.GetFloat("y");
-            BodyIndex body = r.GetBodyIndex("body");
-
-            Vector2 pos = new Vector2(x, y);
-
-            // Read the user's stats
-            foreach (StatType statType in UserStats.DatabaseStats)
-            {
-                IStat stat;
-                if (!stats.TryGetStat(statType, out stat))
-                    continue;
-
-                string columnName = statType.GetDatabaseField();
-                stat.Read(r, columnName);
-            }
-
-            // Create the return object
-            var ret = new SelectCharacterQueryValues(id, templateID, name, mapIndex, pos, body, stats);
             return ret;
         }
 
