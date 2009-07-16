@@ -87,22 +87,16 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets an IStat.
+        /// Gets an IStat from this StatCollectionBase, or creates the IStat for the <paramref name="statType"/>
+        /// if the IStat did not already exist in the collection.
         /// </summary>
-        /// <param name="statType">StatType of the IStat to get.</param>
-        /// <param name="createIfNotExists">If true, the IStat will be created if it does not already exist. Default
-        /// is false.</param>
-        /// <returns>The IStat for the <paramref name="statType"/>, or null if the stat could not be found and
-        /// <paramref name="createIfNotExists"/> is false.</returns>
-        protected IStat InternalGetStat(StatType statType, bool createIfNotExists)
+        /// <param name="statType">Type of stat to get.</param>
+        /// <returns>The IStat in this StatCollectionBase for Stat type <param name="statType"</returns>
+        protected IStat GetStatOrCreate(StatType statType)
         {
-            // NOTE: Stupid method name.
             IStat stat;
             if (!_stats.TryGetValue(statType, out stat))
             {
-                if (!createIfNotExists)
-                    return null;
-
                 stat = StatFactory.CreateStat(statType, StatCollectionType);
                 _stats.Add(statType, stat);
             }
