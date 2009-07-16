@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
@@ -99,7 +100,7 @@ namespace DemoGame.Server
 
             // NOTE: Just temporary until we get real NPC creation going on
             // Create some test NPCs and items
-#if false
+#if true
             Random rand = new Random();
             CharacterTemplate npcTemplate = NPCTemplates.GetTemplate(new CharacterTemplateID(1));
             foreach (Map m in Maps)

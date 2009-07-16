@@ -11,13 +11,6 @@ namespace DemoGame
         /// </summary>
         public event StatChangeHandler OnStatChange;
 
-        protected ItemStatsBase(IEnumerable<IStat> copyStatValuesFrom, StatCollectionType statCollectionType)
-            : this(statCollectionType)
-        {
-            // NOTE: Can I get rid of this constructor?
-            CopyStatValuesFrom(copyStatValuesFrom, true);
-        }
-
         protected ItemStatsBase(IEnumerable<StatTypeValue> src, StatCollectionType statCollectionType) : this(statCollectionType)
         {
             foreach (var statInfo in src)
