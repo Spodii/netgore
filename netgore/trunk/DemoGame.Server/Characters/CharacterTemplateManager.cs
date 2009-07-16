@@ -64,7 +64,7 @@ namespace DemoGame.Server
             var euipped = equippedValues.Select(x => new CharacterTemplateEquipmentItem(itemTemplates[x.ItemTemplateID], x.Chance));
             
             CharacterTemplate template = new CharacterTemplate(id, v.Name, v.AIName, alliance, v.BodyIndex, v.Respawn,
-                v.GiveExp, v.GiveCash, v.Stats, items, euipped);
+                v.GiveExp, v.GiveCash, v.StatValues, items, euipped);
 
             return template;
         }

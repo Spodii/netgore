@@ -18,7 +18,6 @@ namespace DemoGame.Server
         readonly NPCEquipped _equipped;
         readonly NPCInventory _inventory;
 
-        readonly NPCStats _stats;
         AIBase _ai;
 
         ushort _giveCash;
@@ -79,14 +78,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the CharacterStatsBase used for this Character's stats.
-        /// </summary>
-        public override CharacterStatsBase Stats
-        {
-            get { return _stats; }
-        }
-
-        /// <summary>
         /// Gets if this NPC will respawn after dieing.
         /// </summary>
 // ReSharper disable MemberCanBeMadeStatic.Global
@@ -109,7 +100,6 @@ namespace DemoGame.Server
             // Set up the inventory
             _inventory = new NPCInventory(this);
             _equipped = new NPCEquipped(this);
-            _stats = new NPCStats(this);
 
             Alliance = parent.Server.AllianceManager["monster"];
 
@@ -149,11 +139,10 @@ namespace DemoGame.Server
                 SetAI(template.AIName);
 
             // Create and copy over the stats
-            _stats = new NPCStats(this);
-            _stats.CopyStatValuesFrom(template.Stats, false);
+            BaseStats.CopyStatValuesFrom(template.StatValues, true);
 
-            _stats[StatType.HP] = _stats[StatType.MaxHP];
-            _stats[StatType.MP] = _stats[StatType.MaxMP];
+            BaseStats[StatType.HP] = BaseStats[StatType.MaxHP];
+            BaseStats[StatType.MP] = BaseStats[StatType.MaxMP];
 
             // Set the rest of the template stuff
             _respawnSecs = template.RespawnSecs;
@@ -178,6 +167,11 @@ namespace DemoGame.Server
         public override ItemEntity GiveItem(ItemEntity item)
         {
             return _inventory.Add(item);
+        }
+
+        protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
+        {
+            return new NPCStats(this, statCollectionType);
         }
 
         /// <summary>
@@ -233,6 +227,7 @@ namespace DemoGame.Server
             else
             {
                 // No respawning, so just dispose
+                Debug.Assert(!IsDisposed);
                 DelayedDispose();
             }
         }
@@ -346,8 +341,8 @@ namespace DemoGame.Server
         void IRespawnable.Respawn()
         {
             // Restore the NPC's stats
-            Stats[StatType.HP] = Stats[StatType.MaxHP];
-            Stats[StatType.MP] = Stats[StatType.MaxMP];
+            BaseStats[StatType.HP] = BaseStats[StatType.MaxHP];
+            BaseStats[StatType.MP] = BaseStats[StatType.MaxMP];
 
             // Set the NPC's new location
             Teleport(new Vector2(560f, 400f)); // HACK: Hard-coded spawn location
@@ -363,6 +358,8 @@ namespace DemoGame.Server
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
+
+                Debug.Assert(!IsDisposed);
                 DelayedDispose();
             }
             else

@@ -5,24 +5,17 @@ namespace DemoGame.Server
 {
     public class ItemStats : ItemStatsBase
     {
-        static IEnumerable<StatType> _databaseStats;
-
-        public static IEnumerable<StatType> DatabaseStats
-        {
-            get
-            {
-                if (_databaseStats == null)
-                    _databaseStats = new ItemStats().Where(x => x.CanWrite).Select(x => x.StatType);
-
-                return _databaseStats;
-            }
-        }
-
-        public ItemStats()
+        public ItemStats(StatCollectionType statCollectionType) : base(statCollectionType)
         {
         }
 
-        public ItemStats(IEnumerable<IStat> copyStatValuesFrom) : base(copyStatValuesFrom)
+        public ItemStats(IEnumerable<IStat> copyStatValuesFrom, StatCollectionType statCollectionType)
+            : base(copyStatValuesFrom, statCollectionType)
+        {
+        }
+
+        public ItemStats(IEnumerable<StatTypeValue> src, StatCollectionType statCollectionType)
+            : base(src, statCollectionType)
         {
         }
     }

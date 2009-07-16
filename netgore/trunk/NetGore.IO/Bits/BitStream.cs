@@ -1632,6 +1632,8 @@ namespace NetGore.IO
         /// </summary>
         public void Reset()
         {
+            // FUTURE: I can probably avoid clearing the array when in write mode since it will just be overwritten. Could use something like an IsDirty bool, which would clear the buffer if the mode changes.
+
             // We have to check if anything was even written to the buffer since, if nothing was,
             // _highestWrittenIndex will be -1
             if (HighestWrittenIndex >= 0)

@@ -35,14 +35,14 @@ namespace DemoGame.Server
         /// Gets the default stat values for the CharacterTemplate. This IEnumerable will only contain
         /// IStats that have a non-zero value and exist in the CharacterTemplate database.
         /// </summary>
-        public IEnumerable<IStat> Stats { get; private set; }
+        public IEnumerable<StatTypeValue> StatValues { get; private set; }
 
         public CharacterTemplate(CharacterTemplateID id, string name, string aiName, Alliance alliance, BodyIndex body,
-                                 ushort respawnSecs, ushort giveExp, ushort giveCash, IEnumerable<IStat> stats,
+                                 ushort respawnSecs, ushort giveExp, ushort giveCash,
+                                 IEnumerable<StatTypeValue> statValues,
                                  IEnumerable<CharacterTemplateInventoryItem> inventory,
                                  IEnumerable<CharacterTemplateEquipmentItem> equipment)
         {
-            Debug.Assert(!stats.Any(x => x == null));
             Debug.Assert(!inventory.Any(x => x == null));
             Debug.Assert(!equipment.Any(x => x == null));
 
@@ -55,7 +55,7 @@ namespace DemoGame.Server
             GiveExp = giveExp;
             GiveCash = giveCash;
 
-            Stats = stats.Where(x => x.Value != 0).ToArray();
+            StatValues = statValues.Where(x => x.Value != 0).ToArray();
             Inventory = inventory.ToArray();
             Equipment = equipment.ToArray();
 

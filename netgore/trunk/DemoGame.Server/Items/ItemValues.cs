@@ -14,7 +14,8 @@ namespace DemoGame.Server
         readonly ItemID _id;
         readonly byte _height;
         readonly string _name;
-        readonly ItemStats _stats;
+        readonly IEnumerable<StatTypeValue> _baseStats;
+        readonly IEnumerable<StatTypeValue> _reqStats;
         readonly ItemType _type;
         readonly int _value;
         readonly byte _width;
@@ -49,9 +50,14 @@ namespace DemoGame.Server
             get { return _name; }
         }
 
-        public ItemStats Stats
+        public IEnumerable<StatTypeValue> BaseStats
         {
-            get { return _stats; }
+            get { return _baseStats; }
+        }
+
+        public IEnumerable<StatTypeValue> ReqStats
+        {
+            get { return _reqStats; }
         }
 
         public ItemType Type
@@ -70,14 +76,15 @@ namespace DemoGame.Server
         }
 
         public ItemValues(ItemID id, byte width, byte height, string name, string description, ItemType type, GrhIndex graphicIndex,
-                          byte amount, int value, ItemStats stats)
+                          byte amount, int value, IEnumerable<StatTypeValue> baseStats
+            , IEnumerable<StatTypeValue> reqStats)
         {
-            if (stats == null)
-                throw new ArgumentNullException("stats");
             if (name == null)
                 throw new ArgumentNullException("name");
             if (description == null)
                 throw new ArgumentNullException("description");
+            if (!type.IsDefined())
+                throw new InvalidCastException(string.Format("Invalid ItemType `{0}` for ItemEntity ID `{1}`", type, id));
 
             _id = id;
             _width = width;
@@ -88,13 +95,15 @@ namespace DemoGame.Server
             _graphicIndex = graphicIndex;
             _amount = amount;
             _value = value;
-            _stats = stats;
+
+            _baseStats = baseStats.ToArray();
+            _reqStats = reqStats.ToArray();
         }
 
         public ItemValues(ItemEntity ie, ItemID id)
             : this(
                 id, (byte)ie.CB.Width, (byte)ie.CB.Height, ie.Name, ie.Description, ie.Type, ie.GraphicIndex, ie.Amount,
-                ie.Value, new ItemStats(ie.Stats))
+                ie.Value, ie.BaseStats.ToStatTypeValues(), ie.ReqStats.ToStatTypeValues())
         {
             if (ie == null)
                 throw new ArgumentNullException("ie");

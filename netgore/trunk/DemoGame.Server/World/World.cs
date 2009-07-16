@@ -100,7 +100,7 @@ namespace DemoGame.Server
 
             // NOTE: Just temporary until we get real NPC creation going on
             // Create some test NPCs and items
-#if true
+#if false
             Random rand = new Random();
             CharacterTemplate npcTemplate = NPCTemplates.GetTemplate(new CharacterTemplateID(1));
             foreach (Map m in Maps)
@@ -120,7 +120,6 @@ namespace DemoGame.Server
                     template.CreateInstance(m, new Vector2(x, y), 1);
                 }
             }
-#endif
 
             // HACK: This is just for testing the persistent NPCs
             NPC a = new NPC(this, new CharacterID(2));
@@ -128,6 +127,7 @@ namespace DemoGame.Server
 
             a.SetAI("testAI");
             b.SetAI("testAI");
+#endif
         }
 
         /// <summary>

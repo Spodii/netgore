@@ -106,18 +106,23 @@
     <Compile Include="PropertySyncBodyIndex.cs" />
     <Compile Include="PropertySyncItemType.cs" />
     <Compile Include="PropertySyncStatType.cs" />
+    <Compile Include="Stats\BaseStatValueType.cs" />
     <Compile Include="Stats\CharacterStatsBase.cs" />
-    <Compile Include="Stats\ConstStat.cs" />
+    <Compile Include="Stats\IModStatContainer.cs" />
     <Compile Include="Stats\IStat.cs" />
     <Compile Include="Stats\IStatCollection.cs" />
     <Compile Include="Stats\IStatValueType.cs" />
     <Compile Include="Stats\ItemStatsBase.cs" />
-    <Compile Include="Stats\ModStat.cs" />
-    <Compile Include="Stats\ModStatHandler.cs" />
-    <Compile Include="Stats\Stat.cs" />
+    <Compile Include="Stats\BaseStat.cs" />
+    <Compile Include="Stats\CharacterModStatCalculator.cs" />
+    <Compile Include="Stats\ModStatValueType.cs" />
+    <Compile Include="Stats\ReqStatValueType.cs" />
     <Compile Include="Stats\StatChangeHandler.cs" />
     <Compile Include="Stats\StatCollectionBase.cs" />
+    <Compile Include="Stats\StatFactory.cs" />
+    <Compile Include="Stats\StatCollectionType.cs" />
     <Compile Include="Stats\StatType.cs" />
+    <Compile Include="Stats\StatTypeValue.cs" />
     <Compile Include="StatTypeExtensions.cs" />
     <Compile Include="WorldBase.cs" />
   </ItemGroup>

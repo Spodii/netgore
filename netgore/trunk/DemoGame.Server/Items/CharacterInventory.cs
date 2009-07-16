@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using DemoGame.Server.Queries;
+using System.Linq;
 using log4net;
 
 namespace DemoGame.Server
@@ -44,8 +45,6 @@ namespace DemoGame.Server
 
         public void DecreaseItemAmount(InventorySlot slot)
         {
-            // TODO: It would be preferred that I hook to the Item to listen to the amount's changes instead
-
             // Get the item
             ItemEntity item = this[slot];
             if (item == null)

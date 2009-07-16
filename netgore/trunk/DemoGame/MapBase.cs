@@ -920,7 +920,8 @@ namespace DemoGame
             }
             if (maxY > _entityGrid.GetLength(1) - 1)
             {
-                // TODO: Debug.Fail("Invalid entity position.");
+                // TODO: For some reason this likes to fail a lot. I think it is because gravity pushes an Entity out of the map temporarily when they are down low. Ideally, this condition is NEVER reached.
+                // Debug.Fail("Invalid entity position.");
                 maxY = _entityGrid.GetLength(1) - 1;
             }
 

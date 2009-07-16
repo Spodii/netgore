@@ -6,7 +6,7 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class SelectCharacterEquippedItemsQuery : SelectItemQueryBase<CharacterID>
+    public class SelectCharacterEquippedItemsQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryString =
             string.Format(
@@ -26,7 +26,7 @@ namespace DemoGame.Server.Queries
                 while (r.Read())
                 {
                     EquipmentSlot slot = r.GetEquipmentSlot("slot");
-                    ItemValues values = GetItemValues(r);
+                    ItemValues values = ItemQueryHelper.ReadItemValues(r);
                     retValues.Add(slot, values);
                 }
             }

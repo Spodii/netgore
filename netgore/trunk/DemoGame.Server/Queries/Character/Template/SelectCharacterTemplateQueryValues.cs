@@ -15,11 +15,11 @@ namespace DemoGame.Server.Queries
         public readonly CharacterTemplateID ID;
         public readonly string Name;
         public readonly ushort Respawn;
-        public readonly IEnumerable<IStat> Stats;
+        public readonly IEnumerable<StatTypeValue> StatValues;
 
         public SelectCharacterTemplateQueryValues(CharacterTemplateID id, string name, BodyIndex bodyIndex, string aiName, AllianceID allianceID,
                                             ushort respawn, ushort giveExp, ushort giveCash,
-                                            IEnumerable<IStat> stats)
+                                            IEnumerable<StatTypeValue> statValues)
         {
             ID = id;
             Name = name;
@@ -29,7 +29,7 @@ namespace DemoGame.Server.Queries
             Respawn = respawn;
             GiveExp = giveExp;
             GiveCash = giveCash;
-            Stats = stats;
+            StatValues = statValues;
         }
     }
 }

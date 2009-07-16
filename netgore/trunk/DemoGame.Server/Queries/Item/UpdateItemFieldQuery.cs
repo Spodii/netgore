@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class UpdateItemFieldQuery : IDisposable
     {
-        const string _queryString = "UPDATE `" + ReplaceItemQuery.ItemsTableName + "` SET `{0}`=@value WHERE `id`=@itemID";
+        const string _queryString = "UPDATE `" + DBTables.Item + "` SET `{0}`=@value WHERE `id`=@itemID";
         readonly DbConnectionPool _connectionPool;
 
         readonly Dictionary<string, InternalUpdateItemFieldQuery> _fieldQueries =
@@ -29,6 +29,7 @@ namespace DemoGame.Server.Queries
 
         public void Execute(ItemID itemID, string field, object value)
         {
+            // TODO: Generate all field queries at construction so we never have to worry about threading conflicts
             InternalUpdateItemFieldQuery fieldQuery;
             if (!_fieldQueries.TryGetValue(field, out fieldQuery))
             {

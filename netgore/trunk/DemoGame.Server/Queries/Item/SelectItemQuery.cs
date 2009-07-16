@@ -9,7 +9,7 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class SelectItemQuery : SelectItemQueryBase<ItemID>
+    public class SelectItemQuery : DbQueryReader<ItemID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", DBTables.Item);
 
@@ -29,7 +29,7 @@ namespace DemoGame.Server.Queries
                 if (!r.Read())
                     throw new DataException(string.Format("Query contained no results for id `{0}`.", id));
 
-                retValues = GetItemValues(r);
+                retValues = ItemQueryHelper.ReadItemValues(r);
             }
 
             return retValues;

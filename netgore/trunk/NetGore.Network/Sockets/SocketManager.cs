@@ -7,8 +7,6 @@ using System.Reflection;
 using System.Threading;
 using log4net;
 
-// TODO: Need to be able to type "quit" on the server when the client is connected without having it crash
-
 namespace NetGore.Network
 {
     /// <summary>

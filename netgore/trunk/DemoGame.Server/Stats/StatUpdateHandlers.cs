@@ -2,24 +2,26 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
 using NetGore.Network;
+
+// TODO: Rename to StatSynchronizeHandler
 
 namespace DemoGame.Server
 {
-    public delegate void StatUpdateHandler(IUserStat userStat);
+    public delegate void StatUpdateHandler(UserStats userStats, IStat stat);
 
     static class StatUpdateHandlers
     {
         /// <summary>
-        /// Updates only the owner of the UserStat, using ServerPacket.UpdateStat 
+        /// Updates only the owner of the IStat, using ServerPacket.UpdateStat().
         /// </summary>
-        /// <param name="userStat">UserStat to use for the update</param>
-        public static void UpdateOwner(IUserStat userStat)
+        /// <param name="userStats">Stat collection that the <paramref name="stat"/> came from.</param>
+        /// <param name="stat">IStat to use for the update.</param>
+        public static void UpdateOwner(UserStats userStats, IStat stat)
         {
-            using (PacketWriter statPacket = ServerPacket.UpdateStat(userStat))
+            using (PacketWriter statPacket = ServerPacket.UpdateStat(stat, userStats.StatCollectionType))
             {
-                userStat.User.Send(statPacket);
+                userStats.User.Send(statPacket);
             }
         }
     }

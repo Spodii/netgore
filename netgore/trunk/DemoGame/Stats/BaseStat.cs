@@ -1,16 +1,29 @@
+using System;
 using System.Data;
 using NetGore.IO;
+using System.Linq;
 
 namespace DemoGame
 {
-    public class Stat<T> : IStat where T : IStatValueType, new()
+    class BaseStat<T> : IStat where T : IStatValueType, new()
     {
         readonly StatType _statType;
         readonly T _value = new T();
 
-        public Stat(StatType statType)
+        public bool CanWrite
+        {
+            get { return true; }
+        }
+
+        internal BaseStat(StatType statType)
         {
             _statType = statType;
+        }
+
+        internal BaseStat(StatType statType, int initialValue)
+        {
+            _statType = statType;
+            Value = initialValue;
         }
 
         public override string ToString()
@@ -19,11 +32,6 @@ namespace DemoGame
         }
 
         #region IStat Members
-
-        public bool CanWrite
-        {
-            get { return true; }
-        }
 
         public StatType StatType
         {
@@ -72,9 +80,14 @@ namespace DemoGame
             return _value.DeepCopy();
         }
 
+        public bool IsModStat
+        {
+            get { return false; }
+        }
+
         public IStat DeepCopy()
         {
-            var copy = new Stat<T>(_statType);
+            var copy = new BaseStat<T>(_statType);
             copy._value.SetValue(_value.GetValue());
             return copy;
         }

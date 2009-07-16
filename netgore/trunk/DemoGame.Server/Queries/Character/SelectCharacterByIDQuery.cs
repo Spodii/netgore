@@ -18,16 +18,16 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public SelectCharacterQueryValues Execute(CharacterID characterID, CharacterStatsBase stats)
+        public SelectCharacterQueryValues Execute(CharacterID characterID)
         {
-            if (stats == null)
-                throw new ArgumentNullException("stats");
-
             SelectCharacterQueryValues ret;
 
             using (IDataReader r = ExecuteReader(characterID))
             {
-                ret = SelectCharacterQuery.ReadQueryValues(r, stats);
+                if (!r.Read())
+                    throw new ArgumentException(string.Format("Could not find character with ID `{0}`.", characterID), characterID.ToString());
+
+                ret = CharacterQueryHelper.ReadCharacterQueryValues(r);
             }
 
             return ret;

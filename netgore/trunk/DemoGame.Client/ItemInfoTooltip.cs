@@ -48,8 +48,10 @@ namespace DemoGame.Client
             if (!_sentItemInfoRequest || ItemInfo == null || !ItemInfo.IsUpdated)
                 return;
 
+            // TODO: Display requirements
+
             // Get all the non-zero stats and count them
-            var nonZeroStats = ItemInfo.Stats.Where(stat => stat.Value != 0);
+            var nonZeroStats = ItemInfo.BaseStats.Where(stat => stat.Value != 0);
             int numNonZeroStats = nonZeroStats.Count();
 
             // Basic item information
