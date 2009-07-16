@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,6 +9,16 @@ namespace NetGore.Tests
     [TestFixture]
     public class StringCommandParserTests
     {
+        #region Setup/Teardown
+
+        [SetUp]
+        public void Setup()
+        {
+            _parser = new TestParser();
+        }
+
+        #endregion
+
         TestParser _parser;
 
         class TestCommandAttribute : StringCommandBaseAttribute
@@ -20,8 +30,7 @@ namespace NetGore.Tests
 
         class TestParser : StringCommandParser<TestCommandAttribute>
         {
-            public TestParser()
-                : base(typeof(StringCommandParserTests))
+            public TestParser() : base(typeof(StringCommandParserTests))
             {
             }
 
@@ -44,12 +53,6 @@ namespace NetGore.Tests
             }
         }
 
-        [SetUp]
-        public void Setup()
-        {
-            _parser = new TestParser();
-        }
-
         static string Implode(params object[] args)
         {
             if (args.Length == 0)
@@ -65,38 +68,28 @@ namespace NetGore.Tests
             return sb.ToString();
         }
 
-        [TestCommandAttribute("SimpleA")]
+        [TestCommand("SimpleA")]
         public string SimpleA(string a, string b)
         {
             return Implode(a, b);
         }
 
-        [TestCommandAttribute("StaticSimpleA")]
+        [TestCommand("StaticSimpleA")]
         public string StaticSimpleA(string a, string b)
         {
             return Implode(a, b);
         }
 
-        [TestCommandAttribute("SimpleB")]
+        [TestCommand("SimpleB")]
         public string SimpleB(float a, string b, int c)
         {
             return Implode(a, b, c);
         }
 
-        [TestCommandAttribute("StaticSimpleB")]
+        [TestCommand("StaticSimpleB")]
         public string StaticSimpleB(float a, string b, int c)
         {
             return Implode(a, b, c);
-        }
-
-        [Test]
-        public void TestSimpleValid()
-        {
-            _parser.TestParse(this, "SimpleA", "abcd", "efgh");
-            _parser.TestParse(this, "SimpleB", 10.0, "woot", 1005);
-
-            _parser.TestParse(this, "StaticSimpleA", "abcd", "efgh");
-            _parser.TestParse(this, "StaticSimpleB", 10.0, "woot", 1005);
         }
 
         [Test]
@@ -107,6 +100,16 @@ namespace NetGore.Tests
 
             _parser.TestParseInvalid(this, "StaticSimpleA", "abcd");
             _parser.TestParseInvalid(this, "StaticSimpleB", 10.0, "woot", 1005, 10);
+        }
+
+        [Test]
+        public void TestSimpleValid()
+        {
+            _parser.TestParse(this, "SimpleA", "abcd", "efgh");
+            _parser.TestParse(this, "SimpleB", 10.0, "woot", 1005);
+
+            _parser.TestParse(this, "StaticSimpleA", "abcd", "efgh");
+            _parser.TestParse(this, "StaticSimpleB", 10.0, "woot", 1005);
         }
     }
 }

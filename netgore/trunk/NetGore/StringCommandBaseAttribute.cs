@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,7 +16,10 @@ namespace NetGore
         /// <summary>
         /// Gets the name of the command, which is also the string entered to invoke the command.
         /// </summary>
-        public string Command { get { return _command; } }
+        public string Command
+        {
+            get { return _command; }
+        }
 
         /// <summary>
         /// StringCommandBaseAttribute constructor.
