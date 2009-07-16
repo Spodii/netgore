@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Text;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
     public static class CharacterTemplateQueryHelper
     {
-        public static IEnumerable<StatTypeField> StatDBFields { get; private set; }
-        public static IEnumerable<string> NonStatDBFields { get; private set; }
         public static IEnumerable<string> AllDBFields { get; private set; }
+        public static IEnumerable<string> NonStatDBFields { get; private set; }
+        public static IEnumerable<StatTypeField> StatDBFields { get; private set; }
 
         static CharacterTemplateQueryHelper()
         {
@@ -36,7 +34,9 @@ namespace DemoGame.Server.Queries
 
             var stats = StatsQueryHelper.ReadStatValues(r, StatDBFields);
 
-            var ret = new SelectCharacterTemplateQueryValues(templateID, name, bodyIndex, ai, allianceID, respawn, giveExp, giveCash, stats);
+            SelectCharacterTemplateQueryValues ret = new SelectCharacterTemplateQueryValues(templateID, name, bodyIndex, ai,
+                                                                                            allianceID, respawn, giveExp, giveCash,
+                                                                                            stats);
 
             return ret;
         }

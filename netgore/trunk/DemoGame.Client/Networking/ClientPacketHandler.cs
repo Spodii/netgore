@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework.Graphics;
@@ -366,7 +365,7 @@ namespace DemoGame.Client
         void RecvUpdateStat(IIPSocket conn, BitStream r)
         {
             bool isBaseStat = r.ReadBool();
-            var statCollectionToUpdate = isBaseStat ? UserBaseStats : UserModStats;
+            CharacterStats statCollectionToUpdate = isBaseStat ? UserBaseStats : UserModStats;
             r.ReadStat(statCollectionToUpdate);
         }
 

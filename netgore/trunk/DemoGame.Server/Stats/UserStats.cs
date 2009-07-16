@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using NetGore;
+using NetGore.Network;
 
 namespace DemoGame.Server
 {
@@ -19,7 +19,7 @@ namespace DemoGame.Server
             int size = _statCollection.Select(x => x.StatType.GetValue()).Max() + 1;
             _lastValues = new int[size];
 
-            foreach (var istat in statCollection)
+            foreach (IStat istat in statCollection)
             {
                 _lastValues[istat.StatType.GetValue()] = istat.Value;
             }
@@ -27,12 +27,12 @@ namespace DemoGame.Server
 
         public IEnumerable<IStat> GetChangedStats()
         {
-            List<IStat> changed = new List<IStat>();
+            var changed = new List<IStat>();
 
-            foreach (var istat in _statCollection)
+            foreach (IStat istat in _statCollection)
             {
-                var i = istat.StatType.GetValue();
-                var v = istat.Value;
+                byte i = istat.StatType.GetValue();
+                int v = istat.Value;
                 if (_lastValues[i] != v)
                 {
                     _lastValues[i] = v;
@@ -72,9 +72,9 @@ namespace DemoGame.Server
             if (statsToUpdate.IsEmpty())
                 return;
 
-            using (var pw = ServerPacket.GetWriter())
+            using (PacketWriter pw = ServerPacket.GetWriter())
             {
-                foreach (var stat in statsToUpdate)
+                foreach (IStat stat in statsToUpdate)
                 {
                     pw.Reset();
                     ServerPacket.UpdateStat(pw, stat, StatCollectionType);

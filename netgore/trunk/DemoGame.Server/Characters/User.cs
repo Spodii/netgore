@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using DemoGame.Server.Queries;
@@ -29,6 +28,8 @@ namespace DemoGame.Server
         readonly UserEquipped _equipped;
         readonly UserInventory _inventory;
         readonly SocketSendQueue _unreliableBuffer;
+        readonly UserStats _userStatsBase;
+        readonly UserStats _userStatsMod;
 
         /// <summary>
         /// Gets the socket connection info for the user
@@ -56,11 +57,6 @@ namespace DemoGame.Server
         {
         }
 
-        protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
-        {
-            return new UserStats(this, statCollectionType);
-        }
-
         /// <summary>
         /// User constructor.
         /// </summary>
@@ -83,7 +79,7 @@ namespace DemoGame.Server
             _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
             _inventory = new UserInventory(this);
             _equipped = new UserEquipped(this);
- 
+
             // Load the character data
             Load(name);
 
@@ -96,6 +92,11 @@ namespace DemoGame.Server
 
             // Activate the user
             IsAlive = true;
+        }
+
+        protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
+        {
+            return new UserStats(this, statCollectionType);
         }
 
         public bool DropInventoryItem(InventorySlot slot)
@@ -184,8 +185,9 @@ namespace DemoGame.Server
 
             if (_conn == null || !_conn.IsConnected)
             {
-                const string errmsg = "Send to `{0}` failed - Conn is null or not connected."
-                    + " Connection by client was probably not closed properly. Usually not a big deal. Disposing User...";
+                const string errmsg =
+                    "Send to `{0}` failed - Conn is null or not connected." +
+                    " Connection by client was probably not closed properly. Usually not a big deal. Disposing User...";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, this);
                 DelayedDispose();
@@ -272,15 +274,6 @@ namespace DemoGame.Server
             return remainder;
         }
 
-        protected override void HandleDispose()
-        {
-            // Close the user's connection
-            if (_conn != null)
-                _conn.Dispose();
-
-            base.HandleDispose();
-        }
-
         protected override void GiveKillReward(uint exp, uint cash)
         {
             base.GiveKillReward(exp, cash);
@@ -289,6 +282,15 @@ namespace DemoGame.Server
             {
                 Send(pw);
             }
+        }
+
+        protected override void HandleDispose()
+        {
+            // Close the user's connection
+            if (_conn != null)
+                _conn.Dispose();
+
+            base.HandleDispose();
         }
 
         /// <summary>
@@ -455,9 +457,6 @@ namespace DemoGame.Server
         {
             _unreliableBuffer.Enqueue(data);
         }
-
-        readonly UserStats _userStatsBase;
-        readonly UserStats _userStatsMod;
 
         /// <summary>
         /// Updates the user

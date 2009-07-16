@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace DemoGame
 {
     public static class CharacterModStatCalculator
@@ -14,7 +9,7 @@ namespace DemoGame
 
             value += baseStats[statType];
 
-            foreach (var modder in modders)
+            foreach (IModStatContainer modder in modders)
             {
                 value += modder.GetStatModBonus(statType);
             }
