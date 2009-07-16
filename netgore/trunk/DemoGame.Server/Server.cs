@@ -129,7 +129,8 @@ namespace DemoGame.Server
 
             // Open the database connection
             _dbController = new DBController(settings.SqlConnectionString());
-            
+            DBTableValidator.ValidateTables(_dbController);
+
             // Load the game data and such
             GameData.Load();
             ItemEntity.Initialize(DBController);

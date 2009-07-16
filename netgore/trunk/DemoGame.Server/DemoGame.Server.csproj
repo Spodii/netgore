@@ -135,6 +135,7 @@
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateInventoryQuery.cs" />
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateInventoryQueryValues.cs" />
     <Compile Include="Queries\DBTableStatTypes.cs" />
+    <Compile Include="Queries\DBTableValidator.cs" />
     <Compile Include="Queries\Item\ItemQueryHelper.cs" />
     <Compile Include="Queries\Item\Template\ItemTemplateQueryHelper.cs" />
     <Compile Include="Queries\StatsQueryHelper.cs" />
