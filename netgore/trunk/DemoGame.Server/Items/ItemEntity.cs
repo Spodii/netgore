@@ -368,7 +368,7 @@ namespace DemoGame.Server
                     ret.OnStatChange += BaseStatChangeReceiver;
                     break;
                 case StatCollectionType.Requirement:
-                    ret.OnStatChange += BaseStatChangeReceiver;
+                    ret.OnStatChange += ReqStatChangeReceiver;
                     break;
                 case StatCollectionType.Modified:
                     throw new ArgumentException("ItemEntity does not use StatCollectionType.Modified.", "statCollectionType");

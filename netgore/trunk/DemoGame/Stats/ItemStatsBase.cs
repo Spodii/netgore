@@ -56,24 +56,17 @@ namespace DemoGame
             return true;
         }
 
-        /// <summary>
-        /// Wrapper for creating a new Stat
-        /// </summary>
-        /// <typeparam name="T">Internal stat value type</typeparam>
-        /// <param name="statType">Type of the Stat</param>
-        /// <returns>The new Stat</returns>
-        BaseStat<T> NewStat<T>(StatType statType) where T : IStatValueType, new()
+        protected override void HandleStatAdded(IStat stat)
         {
-            var stat = new BaseStat<T>(statType);
-            stat.OnChange += StatChanged;
-            return stat;
+            // Attach a listener to every stat to listen for changes
+            stat.OnChange += HandleStatChanged;
         }
 
         /// <summary>
         /// Handler for listening to all of the stats and forwarding to the OnStatChange
         /// </summary>
         /// <param name="stat">Stat that changed</param>
-        void StatChanged(IStat stat)
+        void HandleStatChanged(IStat stat)
         {
             if (OnStatChange != null)
                 OnStatChange(stat);

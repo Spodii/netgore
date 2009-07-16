@@ -25,10 +25,16 @@ namespace DemoGame
 
         protected void Add(IStat stat)
         {
-            if (stat == null)
-                return;
-
             _stats.Add(stat.StatType, stat);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when an IStat is added to this StatCollectionBase. This will
+        /// be invoked once and only once for every IStat added to this StatCollectionBase.
+        /// </summary>
+        /// <param name="stat">The IStat that was added to this StatCollectionBase.</param>
+        protected virtual void HandleStatAdded(IStat stat)
+        {
         }
 
         protected void Add(IEnumerable<IStat> stats)
@@ -98,7 +104,7 @@ namespace DemoGame
             if (!_stats.TryGetValue(statType, out stat))
             {
                 stat = StatFactory.CreateStat(statType, StatCollectionType);
-                _stats.Add(statType, stat);
+                Add(stat);
             }
 
             return stat;
@@ -113,10 +119,7 @@ namespace DemoGame
 
         public IEnumerator<IStat> GetEnumerator()
         {
-            foreach (IStat stat in _stats.Values)
-            {
-                yield return stat;
-            }
+            return _stats.Values.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
