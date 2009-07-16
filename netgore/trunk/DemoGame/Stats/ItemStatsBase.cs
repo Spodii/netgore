@@ -33,7 +33,7 @@ namespace DemoGame
 
         public override IStat GetStat(StatType statType)
         {
-            return InternalGetStat(statType, true);
+            return GetStatOrCreate(statType);
         }
 
         /// <summary>
