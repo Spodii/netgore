@@ -18,8 +18,7 @@ namespace NetGore
         /// </summary>
         /// <param name="bindObject">Object to bind to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncGrhIndex(object bindObject, PropertyInfo p)
-            : base(bindObject, p)
+        public PropertySyncGrhIndex(object bindObject, PropertyInfo p) : base(bindObject, p)
         {
         }
 
