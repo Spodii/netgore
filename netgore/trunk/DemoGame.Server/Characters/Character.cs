@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -68,7 +67,9 @@ namespace DemoGame.Server
         static readonly Random _rand = new Random();
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly CharacterStatsBase _baseStats;
         readonly bool _isPersistent;
+        readonly CharacterStatsBase _modStats;
 
         readonly World _world;
 
@@ -191,9 +192,10 @@ namespace DemoGame.Server
             protected set { _alliance = value; }
         }
 
-        readonly CharacterStatsBase _baseStats;
-
-        public CharacterStatsBase BaseStats { get { return _baseStats; } }
+        public CharacterStatsBase BaseStats
+        {
+            get { return _baseStats; }
+        }
 
         public uint Cash
         {
@@ -318,9 +320,10 @@ namespace DemoGame.Server
             internal set { _map = value; }
         }
 
-        readonly CharacterStatsBase _modStats;
-
-        public CharacterStatsBase ModStats { get { return _modStats; } }
+        public CharacterStatsBase ModStats
+        {
+            get { return _modStats; }
+        }
 
         /// <summary>
         /// Gets or sets the name of the character.
@@ -497,6 +500,8 @@ namespace DemoGame.Server
             if (newMap != null)
                 newMap.AddEntity(this);
         }
+
+        protected abstract CharacterStatsBase CreateStats(StatCollectionType statCollectionType);
 
         /// <summary>
         /// Applies damage to the Character.
@@ -676,26 +681,6 @@ namespace DemoGame.Server
             }
         }
 
-        /// <summary>
-        /// Makes the Character raise their base Stat of the corresponding type by one point, assuming they have enough
-        /// points available to raise the Stat, and lowers the amount of spendable points accordingly.
-        /// </summary>
-        /// <param name="st">StatType of the stat to raise.</param>
-        public void RaiseStat(StatType st)
-        {
-            int cost = GameData.StatCost(BaseStats[st]);
-
-            if (StatPoints <= cost)
-            {
-                const string errmsg = "User `{0}` tried to raise stat `{1}`, but only has {2} of {3} points needed.";
-                Debug.Fail(string.Format(errmsg, this, st, StatPoints, cost));
-                return;
-            }
-
-            BaseStats[st]++;
-            _expSpent += (uint)cost;
-        }
-
         void InternalLoad(SelectCharacterQueryValues v)
         {
             Name = v.Name;
@@ -740,8 +725,6 @@ namespace DemoGame.Server
             // Mark the Character as loaded
             SetAsLoaded();
         }
-
-        protected abstract CharacterStatsBase CreateStats(StatCollectionType statCollectionType);
 
         /// <summary>
         /// Checks if a username is valid
@@ -832,6 +815,26 @@ namespace DemoGame.Server
                 BaseStats[StatType.MP] = maxMP;
             else if (mp < 0)
                 BaseStats[StatType.MP] = 0;
+        }
+
+        /// <summary>
+        /// Makes the Character raise their base Stat of the corresponding type by one point, assuming they have enough
+        /// points available to raise the Stat, and lowers the amount of spendable points accordingly.
+        /// </summary>
+        /// <param name="st">StatType of the stat to raise.</param>
+        public void RaiseStat(StatType st)
+        {
+            int cost = GameData.StatCost(BaseStats[st]);
+
+            if (StatPoints <= cost)
+            {
+                const string errmsg = "User `{0}` tried to raise stat `{1}`, but only has {2} of {3} points needed.";
+                Debug.Fail(string.Format(errmsg, this, st, StatPoints, cost));
+                return;
+            }
+
+            BaseStats[st]++;
+            _expSpent += (uint)cost;
         }
 
         /// <summary>

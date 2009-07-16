@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -85,14 +85,14 @@ namespace DemoGame.Server
 
         public IEnumerable<string> GetTableColumns(string table)
         {
-            List<string> ret = new List<string>();
+            var ret = new List<string>();
 
-            using (var conn = _connectionPool.Create())
+            using (PooledDbConnection conn = _connectionPool.Create())
             {
-                using (var cmd = conn.Connection.CreateCommand())
+                using (DbCommand cmd = conn.Connection.CreateCommand())
                 {
                     cmd.CommandText = string.Format("SELECT * FROM `{0}` WHERE 0=1", table);
-                    using (var r = cmd.ExecuteReader())
+                    using (DbDataReader r = cmd.ExecuteReader())
                     {
                         int fields = r.FieldCount;
                         for (int i = 0; i < fields; i++)
