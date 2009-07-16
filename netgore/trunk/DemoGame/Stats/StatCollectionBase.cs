@@ -13,8 +13,6 @@ namespace DemoGame
     /// </summary>
     public abstract class StatCollectionBase : IStatCollection
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         readonly StatCollectionType _statCollectionType;
         readonly Dictionary<StatType, IStat> _stats = new Dictionary<StatType, IStat>();
 

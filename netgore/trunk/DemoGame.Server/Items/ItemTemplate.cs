@@ -85,8 +85,8 @@ namespace DemoGame.Server
             _value = value;
             _width = width;
             _height = height;
-            _baseStats = baseStats.ToArray();
-            _reqStats = reqStats.ToArray();
+            _baseStats = baseStats.Where(x => x.Value != 0).ToArray();
+            _reqStats = reqStats.Where(x => x.Value != 0).ToArray();
 
             // Make sure the ItemType is defined
             if (!type.IsDefined())

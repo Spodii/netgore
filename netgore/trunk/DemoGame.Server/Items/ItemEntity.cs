@@ -357,6 +357,7 @@ namespace DemoGame.Server
         /// Creates an ItemStats from the given collection of IStats.
         /// </summary>
         /// <param name="statValues">IStats to create the ItemStats from.</param>
+        /// <param name="statCollectionType">The StatCollectionType for the new ItemStats.</param>
         /// <returns>An ItemStats from the given collection of IStats.</returns>
         ItemStats NewItemStats(IEnumerable<StatTypeValue> statValues, StatCollectionType statCollectionType)
         {

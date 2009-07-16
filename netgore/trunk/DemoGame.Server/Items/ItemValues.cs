@@ -96,8 +96,8 @@ namespace DemoGame.Server
             _amount = amount;
             _value = value;
 
-            _baseStats = baseStats.ToArray();
-            _reqStats = reqStats.ToArray();
+            _baseStats = baseStats.Where(x => x.Value != 0).ToArray();
+            _reqStats = reqStats.Where(x => x.Value != 0).ToArray();
         }
 
         public ItemValues(ItemEntity ie, ItemID id)
