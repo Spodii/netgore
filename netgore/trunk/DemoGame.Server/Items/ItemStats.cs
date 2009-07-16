@@ -9,11 +9,6 @@ namespace DemoGame.Server
         {
         }
 
-        public ItemStats(IEnumerable<IStat> copyStatValuesFrom, StatCollectionType statCollectionType)
-            : base(copyStatValuesFrom, statCollectionType)
-        {
-        }
-
         public ItemStats(IEnumerable<StatTypeValue> src, StatCollectionType statCollectionType)
             : base(src, statCollectionType)
         {
