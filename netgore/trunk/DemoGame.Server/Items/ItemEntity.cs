@@ -34,6 +34,8 @@ namespace DemoGame.Server
         string _name;
         ItemType _type;
         int _value;
+        SPValueType _hp;
+        SPValueType _mp;
 
         /// <summary>
         /// Notifies listeners that the item's Amount or GraphicIndex have changed.
@@ -99,6 +101,39 @@ namespace DemoGame.Server
                 _description = value;
 
                 SynchronizeField("description", _description);
+            }
+        }
+
+        public SPValueType HP
+        {
+            get
+            {
+                return _hp;
+            }
+            set
+            {
+                if (_hp == value)
+                    return;
+
+                _hp = value;
+
+                SynchronizeField("hp", _hp);
+            }
+        }
+        public SPValueType MP
+        {
+            get
+            {
+                return _mp;
+            }
+            set
+            {
+                if (_mp == value)
+                    return;
+
+                _mp = value;
+
+                SynchronizeField("mp", _mp);
             }
         }
 
@@ -192,7 +227,7 @@ namespace DemoGame.Server
         }
 
         public ItemEntity(ItemTemplate t, Vector2 pos, byte amount)
-            : this(pos, t.Size, t.Name, t.Description, t.Type, t.Graphic, t.Value, amount, t.BaseStats, t.ReqStats)
+            : this(pos, t.Size, t.Name, t.Description, t.Type, t.Graphic, t.Value, amount, t.HP, t.MP, t.BaseStats, t.ReqStats)
         {
         }
 
@@ -219,7 +254,7 @@ namespace DemoGame.Server
         }
 
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
-                   IEnumerable<StatTypeValue> baseStats, IEnumerable<StatTypeValue> reqStats)
+                   SPValueType hp, SPValueType mp, IEnumerable<StatTypeValue> baseStats, IEnumerable<StatTypeValue> reqStats)
             : base(pos, size)
         {
             _id = new ItemID(IDCreator.GetNext());
@@ -230,6 +265,8 @@ namespace DemoGame.Server
             _value = value;
             _amount = amount;
             _type = type;
+            _hp = hp;
+            _mp = mp;
 
             _baseStats = NewItemStats(baseStats, StatCollectionType.Base);
             _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
@@ -240,7 +277,7 @@ namespace DemoGame.Server
         }
 
         ItemEntity(ItemEntity s)
-            : this(s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.BaseStats.ToStatTypeValues(), s.ReqStats.ToStatTypeValues())
+            : this(s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP, s.BaseStats.ToStatTypeValues(), s.ReqStats.ToStatTypeValues())
         {
         }
 

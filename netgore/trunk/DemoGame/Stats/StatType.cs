@@ -2,8 +2,6 @@ namespace DemoGame
 {
     public enum StatType : byte
     {
-        HP,
-        MP,
         MaxHP,
         MaxMP,
 

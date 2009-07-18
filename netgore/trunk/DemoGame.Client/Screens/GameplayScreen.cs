@@ -54,9 +54,6 @@ namespace DemoGame.Client
         /// </summary>
         readonly SkeletonManager _skelManager = new SkeletonManager(ContentPaths.Build.Skeletons);
 
-        readonly CharacterStats _userBaseStats = new CharacterStats(StatCollectionType.Base);
-        readonly UserEquipped _userEquipped = new UserEquipped();
-        readonly CharacterStats _userModStats = new CharacterStats(StatCollectionType.Modified);
         ChatForm _chatForm;
 
         /// <summary>
@@ -89,8 +86,6 @@ namespace DemoGame.Client
         /// Information box
         /// </summary>
         InfoBox _infoBox;
-
-        Inventory _inventory;
 
         InventoryForm _inventoryForm;
         ItemInfoTooltip _itemInfoTooltip;
@@ -179,14 +174,6 @@ namespace DemoGame.Client
             get { return _infoBox; }
         }
 
-        /// <summary>
-        /// Gets the User's Inventory
-        /// </summary>
-        public Inventory Inventory
-        {
-            get { return _inventory; }
-        }
-
         public ItemInfoTooltip ItemInfoTooltip
         {
             get { return _itemInfoTooltip; }
@@ -213,27 +200,12 @@ namespace DemoGame.Client
             get { return _socket; }
         }
 
-        public CharacterStats UserBaseStats
-        {
-            get { return _userBaseStats; }
-        }
-
         /// <summary>
         /// Gets the user's character
         /// </summary>
         public Character UserChar
         {
             get { return World.UserChar; }
-        }
-
-        public UserEquipped UserEquipped
-        {
-            get { return _userEquipped; }
-        }
-
-        public CharacterStats UserModStats
-        {
-            get { return _userModStats; }
         }
 
         /// <summary>
@@ -356,6 +328,10 @@ namespace DemoGame.Client
             }
         }
 
+        UserInfo _userInfo;
+
+        public UserInfo UserInfo { get { return _userInfo; } }
+
         public override void Initialize()
         {
             _world = new World(this, _camera);
@@ -365,8 +341,8 @@ namespace DemoGame.Client
             Socket.OnDisconnect += OnDisconnect;
 
             // Create some misc goodies that require a reference to the Socket
+            _userInfo = new UserInfo(Socket);
             _itemInfoTooltip = new ItemInfoTooltip(Socket);
-            _inventory = new Inventory(Socket);
 
             // Create the GUI
             InitializeGUI();
@@ -381,7 +357,7 @@ namespace DemoGame.Client
             _gui = new GUIManager(_guiFont);
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
-            _statsForm = new StatsForm(_userBaseStats, _userModStats, cScreen);
+            _statsForm = new StatsForm(UserInfo.BaseStats, UserInfo.ModStats, cScreen);
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 
             _inventoryForm = new InventoryForm(ItemInfoTooltip, new Vector2(250, 0), cScreen);
@@ -472,8 +448,8 @@ namespace DemoGame.Client
             if (UserChar == null)
                 return;
 
-            _inventoryForm.Inventory = Inventory;
-            _equippedForm.UserEquipped = UserEquipped;
+            _inventoryForm.Inventory = UserInfo.Inventory;
+            _equippedForm.UserEquipped = UserInfo.Equipped;
 
             // Update some other goodies
             World.Update();

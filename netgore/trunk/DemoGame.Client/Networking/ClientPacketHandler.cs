@@ -67,28 +67,7 @@ namespace DemoGame.Client
             get { return GameplayScreen.UserChar; }
         }
 
-        public CharacterStats UserBaseStats
-        {
-            get { return GameplayScreen.UserBaseStats; }
-        }
-
-        public UserEquipped UserEquipped
-        {
-            get { return GameplayScreen.UserEquipped; }
-        }
-
-        /// <summary>
-        /// Gets the user's inventory
-        /// </summary>
-        public Inventory UserInventory
-        {
-            get { return GameplayScreen.Inventory; }
-        }
-
-        public CharacterStats UserModStats
-        {
-            get { return GameplayScreen.UserModStats; }
-        }
+        public UserInfo UserInfo { get { return GameplayScreen.UserInfo; } }
 
         /// <summary>
         /// Gets the world used by the game (Parent.World)
@@ -172,6 +151,56 @@ namespace DemoGame.Client
             // TODO: Should use a GameMessage so we don't have the constant "says"
             var chatText = CreateChatText(name, "says", text);
             GameplayScreen.AppendToChatOutput(chatText);
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetHP)]
+        void RecvSetHP(IIPSocket conn, BitStream r)
+        {
+            SPValueType value = r.ReadSPValueType();
+            UserInfo.HP = value;
+
+            if (User == null)
+                return;
+
+            User.HPPercent = UserInfo.HPPercent;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetMP)]
+        void RecvSetMP(IIPSocket conn, BitStream r)
+        {
+            SPValueType value = r.ReadSPValueType();
+            UserInfo.MP = value;
+
+            if (User == null)
+                return;
+
+            User.MPPercent = UserInfo.MPPercent;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetCharacterHPPercent)]
+        void RecvSetCharacterHPPercent(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
+            byte percent = r.ReadByte();
+
+            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            if (character == null)
+                return;
+
+            character.HPPercent = percent;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetCharacterMPPercent)]
+        void RecvSetCharacterMPPercent(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
+            byte percent = r.ReadByte();
+
+            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            if (character == null)
+                return;
+
+            character.MPPercent = percent;
         }
 
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
@@ -320,7 +349,7 @@ namespace DemoGame.Client
             GrhIndex graphic = r.ReadGrhIndex();
             byte amount = r.ReadByte();
 
-            UserInventory.Update(slot, graphic, amount, GetTime());
+            UserInfo.Inventory.Update(slot, graphic, amount, GetTime());
         }
 
         [MessageHandler((byte)ServerPacketID.SetMap)]
@@ -355,17 +384,17 @@ namespace DemoGame.Client
             if (hasValue)
             {
                 GrhIndex graphic = r.ReadGrhIndex();
-                UserEquipped.SetSlot(slot, graphic);
+                UserInfo.Equipped.SetSlot(slot, graphic);
             }
             else
-                UserEquipped.ClearSlot(slot);
+                UserInfo.Equipped.ClearSlot(slot);
         }
 
         [MessageHandler((byte)ServerPacketID.UpdateStat)]
         void RecvUpdateStat(IIPSocket conn, BitStream r)
         {
             bool isBaseStat = r.ReadBool();
-            CharacterStats statCollectionToUpdate = isBaseStat ? UserBaseStats : UserModStats;
+            CharacterStats statCollectionToUpdate = isBaseStat ? UserInfo.BaseStats : UserInfo.ModStats;
             r.ReadStat(statCollectionToUpdate);
         }
 

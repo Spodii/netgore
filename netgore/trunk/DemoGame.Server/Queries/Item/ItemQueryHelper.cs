@@ -19,7 +19,7 @@ namespace DemoGame.Server.Queries
             BaseDBStatFields = StatsQueryHelper.GetStatTypeFields(DBTables.Item, StatCollectionType.Base);
             ReqDBStatFields = StatsQueryHelper.GetStatTypeFields(DBTables.Item, StatCollectionType.Requirement);
 
-            NonStatFields = new string[] { "amount", "description", "graphic", "id", "height", "name", "type", "value", "width" };
+            NonStatFields = new string[] { "amount", "description", "graphic", "id", "height", "name", "type", "value", "width", "hp", "mp" };
 
             AllDBFields = (BaseDBStatFields.Concat(ReqDBStatFields)).Select(x => x.Field).Concat(NonStatFields).ToArray();
         }
@@ -40,8 +40,10 @@ namespace DemoGame.Server.Queries
             byte amount = r.GetByte("amount");
             int value = r.GetInt32("value");
             ItemType type = r.GetItemType("type");
+            SPValueType hp = r.GetSPValueType("hp");
+            SPValueType mp = r.GetSPValueType("mp");
 
-            return new ItemValues(id, width, height, name, description, type, graphicIndex, amount, value, baseStats, reqStats);
+            return new ItemValues(id, width, height, name, description, type, graphicIndex, amount, value, hp,mp, baseStats, reqStats);
         }
     }
 }

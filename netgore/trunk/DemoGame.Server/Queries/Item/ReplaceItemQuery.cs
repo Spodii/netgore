@@ -11,12 +11,6 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class ReplaceItemQuery : DbQueryNonReader<ItemValues>
     {
-        static readonly IEnumerable<string> _otherFields = new string[]
-                                                           {
-                                                               "amount", "description", "graphic", "id", "height", "name", "type",
-                                                               "value", "width"
-                                                           };
-
         static readonly string _queryString;
 
         static ReplaceItemQuery()
@@ -79,6 +73,8 @@ namespace DemoGame.Server.Queries
             p["@value"] = item.Value;
             p["@width"] = item.Width;
             p["@height"] = item.Height;
+            p["@hp"] = (int)item.HP;
+            p["@mp"] = (int)item.MP;
 
             foreach (var statField in ItemQueryHelper.BaseDBStatFields)
             {

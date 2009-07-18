@@ -19,6 +19,11 @@ namespace DemoGame.Server
         readonly ItemType _type;
         readonly int _value;
         readonly byte _width;
+        readonly SPValueType _hp;
+        readonly SPValueType _mp;
+
+        public SPValueType HP { get { return _hp; } }
+        public SPValueType MP { get { return _mp; } }
 
         public byte Amount
         {
@@ -76,7 +81,7 @@ namespace DemoGame.Server
         }
 
         public ItemValues(ItemID id, byte width, byte height, string name, string description, ItemType type, GrhIndex graphicIndex,
-                          byte amount, int value, IEnumerable<StatTypeValue> baseStats
+                          byte amount, int value, SPValueType hp, SPValueType mp, IEnumerable<StatTypeValue> baseStats
             , IEnumerable<StatTypeValue> reqStats)
         {
             if (name == null)
@@ -95,6 +100,8 @@ namespace DemoGame.Server
             _graphicIndex = graphicIndex;
             _amount = amount;
             _value = value;
+            _hp = hp;
+            _mp = mp;
 
             _baseStats = baseStats.Where(x => x.Value != 0).ToArray();
             _reqStats = reqStats.Where(x => x.Value != 0).ToArray();
@@ -103,7 +110,7 @@ namespace DemoGame.Server
         public ItemValues(ItemEntity ie, ItemID id)
             : this(
                 id, (byte)ie.CB.Width, (byte)ie.CB.Height, ie.Name, ie.Description, ie.Type, ie.GraphicIndex, ie.Amount,
-                ie.Value, ie.BaseStats.ToStatTypeValues(), ie.ReqStats.ToStatTypeValues())
+                ie.Value, ie.HP, ie.MP, ie.BaseStats.ToStatTypeValues(), ie.ReqStats.ToStatTypeValues())
         {
             if (ie == null)
                 throw new ArgumentNullException("ie");
