@@ -4,7 +4,7 @@ Source Host: localhost
 Source Database: demogame
 Target Host: localhost
 Target Database: demogame
-Date: 7/16/2009 11:38:02 AM
+Date: 7/18/2009 3:21:09 PM
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -58,8 +58,8 @@ CREATE TABLE `character` (
   `exp` int(10) unsigned NOT NULL DEFAULT '0',
   `expspent` int(10) unsigned NOT NULL DEFAULT '0',
   `hp` smallint(5) unsigned NOT NULL DEFAULT '50',
-  `maxhp` smallint(5) unsigned NOT NULL DEFAULT '50',
   `mp` smallint(5) unsigned NOT NULL DEFAULT '50',
+  `maxhp` smallint(5) unsigned NOT NULL DEFAULT '50',
   `maxmp` smallint(5) unsigned NOT NULL DEFAULT '50',
   `minhit` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `maxhit` tinyint(3) unsigned NOT NULL DEFAULT '1',
@@ -77,7 +77,7 @@ CREATE TABLE `character` (
   `regen` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `str` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `tact` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `ws` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `ws` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_name` (`name`),
   KEY `template_id` (`template_id`),
@@ -122,9 +122,7 @@ CREATE TABLE `character_template` (
   `level` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `give_exp` smallint(5) unsigned NOT NULL DEFAULT '0',
   `give_cash` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `hp` smallint(5) unsigned NOT NULL DEFAULT '50',
   `maxhp` smallint(5) unsigned NOT NULL DEFAULT '50',
-  `mp` smallint(5) unsigned NOT NULL DEFAULT '50',
   `maxmp` smallint(5) unsigned NOT NULL DEFAULT '50',
   `defence` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `minhit` tinyint(3) unsigned NOT NULL DEFAULT '1',
@@ -262,10 +260,10 @@ INSERT INTO `alliance_attackable` VALUES ('0', '1');
 INSERT INTO `alliance_attackable` VALUES ('1', '0');
 INSERT INTO `alliance_hostile` VALUES ('0', '1');
 INSERT INTO `alliance_hostile` VALUES ('1', '0');
-INSERT INTO `character` VALUES ('1', null, 'Spodi', 'asdf', '2', '372.4', '338', '1', '3027', '12', '825', '527', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
-INSERT INTO `character` VALUES ('2', '1', 'Test A', '', '2', '550.4', '530', '1', '3012', '12', '810', '527', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `character` VALUES ('3', '1', 'Test B', '', '2', '610', '530', '1', '3012', '12', '810', '527', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', '1', '2', '0', '1', '1', '0', '5', '0', '5', '0', '0', '0', '0', '1', '0', '1', '1', '0', '0', '1', '0', '0', '0', '1', '0', '0');
+INSERT INTO `character` VALUES ('1', null, 'Spodi', 'asdf', '2', '448', '434', '1', '3027', '12', '825', '527', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('2', '1', 'Test A', '', '2', '736', '530', '1', '3012', '12', '810', '527', '4', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', '1', 'Test B', '', '2', '559.6', '368', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', '1', '2', '0', '1', '1', '5', '5', '0', '0', '0', '0', '1', '0', '1', '1', '0', '0', '1', '0', '0', '0', '1', '0', '0');
 INSERT INTO `character_template_equipped` VALUES ('1', '3', '10000');
 INSERT INTO `character_template_equipped` VALUES ('1', '4', '5000');
 INSERT INTO `character_template_equipped` VALUES ('1', '5', '5000');
