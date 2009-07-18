@@ -56,8 +56,8 @@ namespace DemoGame.Server
                 return;
             }
 
-            byte newHPPercent = (byte)((_character.HP / maxHP) * 100);
-            byte newMPPercent = (byte)((_character.MP / maxMP) * 100);
+            byte newHPPercent = (byte)(((float)_character.HP / maxHP) * 100.0f);
+            byte newMPPercent = (byte)(((float)_character.MP / maxMP) * 100.0f);
 
             bool updateHP = Math.Abs(newHPPercent - _lastSentHPPercent) >= _updatePercentDiff;
             bool updateMP = Math.Abs(newMPPercent - _lastSentMPPercent) >= _updatePercentDiff;
