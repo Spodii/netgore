@@ -68,6 +68,11 @@ namespace DemoGame
             return Read(reader, reader.GetOrdinal(name));
         }
 
+        public override string ToString()
+        {
+            return _value.ToString();
+        }
+
         /// <summary>
         /// Reads an SPValueType from an IValueReader.
         /// </summary>

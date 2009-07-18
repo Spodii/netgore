@@ -316,10 +316,12 @@ namespace DemoGame.Client
             string name = r.ReadString();
             string desc = r.ReadString();
             int value = r.ReadInt();
+            SPValueType hp = r.ReadSPValueType();
+            SPValueType mp = r.ReadSPValueType();
 
             ItemInfo itemInfo = ItemInfoTooltip.ItemInfo;
 
-            itemInfo.SetItemInfo(name, desc, value);
+            itemInfo.SetItemInfo(name, desc, value, hp, mp);
             r.ReadStatCollection(itemInfo.BaseStats);
             r.ReadStatCollection(itemInfo.ReqStats);
 
