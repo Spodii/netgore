@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using NetGore.Network;
 
 namespace DemoGame.Server
 {
@@ -11,10 +8,15 @@ namespace DemoGame.Server
         SPValueType _lastSentHP;
         SPValueType _lastSentMP;
 
-        public UserSPSynchronizer(User user)
-            : base(user)
+        public UserSPSynchronizer(User user) : base(user)
         {
             _user = user;
+        }
+
+        public override void Synchronize()
+        {
+            base.Synchronize();
+            SynchronizeSelf();
         }
 
         void SynchronizeSelf()
@@ -27,24 +29,22 @@ namespace DemoGame.Server
 
             if (updateHP)
             {
-                using (var pw = ServerPacket.SetHP(hp))
+                using (PacketWriter pw = ServerPacket.SetHP(hp))
+                {
                     _user.Send(pw);
+                }
             }
 
             if (updateMP)
             {
-                using (var pw = ServerPacket.SetMP(mp))
+                using (PacketWriter pw = ServerPacket.SetMP(mp))
+                {
                     _user.Send(pw);
+                }
             }
 
             _lastSentHP = hp;
             _lastSentMP = mp;
-        }
-
-        public override void Synchronize()
-        {
-            base.Synchronize();
-            SynchronizeSelf();
         }
     }
 }

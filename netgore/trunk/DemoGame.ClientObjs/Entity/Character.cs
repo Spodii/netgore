@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -37,12 +33,13 @@ namespace DemoGame.Client
             get { return Interpolator.DrawPosition; }
         }
 
+        public byte HPPercent { get; set; }
+
         public EntityInterpolator Interpolator
         {
             get { return _interpolator; }
         }
 
-        public byte HPPercent { get; set; }
         public byte MPPercent { get; set; }
 
         /// <summary>
@@ -104,6 +101,21 @@ namespace DemoGame.Client
 
             _skelAnim.ChangeSet(_skelManager.LoadSet(setName));
             _currSkelSet = setName;
+        }
+
+        void DrawSPBar(SpriteBatch sb, byte percent, byte index, Color color)
+        {
+            const float spBarWidth = 55;
+            const float spBarHeight = 6;
+
+            Vector2 pos = new Vector2(Center.X - spBarWidth / 2f, Position.Y + CB.Height + (spBarHeight * index));
+
+            Rectangle border = new Rectangle((int)pos.X, (int)pos.Y, (int)spBarWidth, (int)spBarHeight);
+            Rectangle bar = border;
+            bar.Width = (int)((spBarWidth * (percent / 100.0f))).Clamp(0, spBarWidth);
+
+            XNARectangle.Draw(sb, border, new Color(0, 0, 0, 0), Color.Black);
+            XNARectangle.Draw(sb, bar, color);
         }
 
         /// <summary>
@@ -196,21 +208,6 @@ namespace DemoGame.Client
             }
         }
 
-        void DrawSPBar(SpriteBatch sb, byte percent, byte index, Color color)
-        {
-            const float spBarWidth = 55;
-            const float spBarHeight = 6;
-
-            Vector2 pos = new Vector2(Center.X - spBarWidth / 2f, Position.Y + CB.Height + (spBarHeight * index));
-
-            Rectangle border = new Rectangle((int)pos.X, (int)pos.Y, (int)spBarWidth, (int)spBarHeight);
-            Rectangle bar = border;
-            bar.Width = (int)((spBarWidth * (percent / 100.0f))).Clamp(0, spBarWidth);
-
-            XNARectangle.Draw(sb, border, new Color(0, 0, 0, 0), Color.Black);
-            XNARectangle.Draw(sb, bar, color);
-        }
-
         #region IDrawableEntity Members
 
         /// <summary>
@@ -219,7 +216,6 @@ namespace DemoGame.Client
         /// <param name="sb">SpriteBatch to draw the character with</param>
         public void Draw(SpriteBatch sb)
         {
-
             if (_skelAnim == null)
                 return;
 
@@ -242,8 +238,8 @@ namespace DemoGame.Client
             _skelAnim.Draw(sb, p, se);
 
             // Draw the HP/MP
-            DrawSPBar(sb, HPPercent, 0, new Color(255,0,0,175));
-            DrawSPBar(sb, MPPercent, 1, new Color(0,0,255,175));
+            DrawSPBar(sb, HPPercent, 0, new Color(255, 0, 0, 175));
+            DrawSPBar(sb, MPPercent, 1, new Color(0, 0, 255, 175));
         }
 
         /// <summary>

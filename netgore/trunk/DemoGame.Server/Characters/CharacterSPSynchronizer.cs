@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
-using NetGore;
+using NetGore.Network;
 
 namespace DemoGame.Server
 {
@@ -14,15 +12,19 @@ namespace DemoGame.Server
     /// </summary>
     public class CharacterSPSynchronizer
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly Character _character;
+        readonly bool _isUser;
         byte _lastSentHPPercent;
         byte _lastSentMPPercent;
-        readonly bool _isUser;
 
         /// <summary>
         /// Gets the Character that this CharacterSPSynchronizer is for.
         /// </summary>
-        public Character Character { get { return _character; } }
+        public Character Character
+        {
+            get { return _character; }
+        }
 
         /// <summary>
         /// CharacterSPSynchronizer constructor.
@@ -37,15 +39,21 @@ namespace DemoGame.Server
             _isUser = (_character is User);
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        /// <summary>
+        /// Performs any synchronization needed.
+        /// </summary>
+        public virtual void Synchronize()
+        {
+            SynchronizePercentage();
+        }
 
         protected void SynchronizePercentage()
         {
             const int _updatePercentDiff = 2;
 
             // Check if the percentage has changed
-            var maxHP = _character.ModStats[StatType.MaxHP];
-            var maxMP = _character.ModStats[StatType.MaxMP];
+            int maxHP = _character.ModStats[StatType.MaxHP];
+            int maxMP = _character.ModStats[StatType.MaxMP];
 
             if (maxHP < 1 || maxMP < 1)
             {
@@ -69,7 +77,7 @@ namespace DemoGame.Server
             _lastSentMPPercent = newMPPercent;
 
             // Get the map
-            var map = _character.Map;
+            Map map = _character.Map;
             if (map == null)
                 return;
 
@@ -81,31 +89,27 @@ namespace DemoGame.Server
                 return;
 
             // Send the updates
-            using (var pw = ServerPacket.GetWriter())
+            using (PacketWriter pw = ServerPacket.GetWriter())
             {
                 if (updateHP)
                 {
                     pw.Reset();
                     ServerPacket.SetCharacterHPPercent(pw, _character.MapEntityIndex, newHPPercent);
-                    foreach (var user in users)
+                    foreach (User user in users)
+                    {
                         user.Send(pw);
+                    }
                 }
                 if (updateMP)
                 {
                     pw.Reset();
                     ServerPacket.SetCharacterMPPercent(pw, _character.MapEntityIndex, newMPPercent);
-                    foreach (var user in users)
+                    foreach (User user in users)
+                    {
                         user.Send(pw);
+                    }
                 }
             }
-        }
-
-        /// <summary>
-        /// Performs any synchronization needed.
-        /// </summary>
-        public virtual void Synchronize()
-        {
-            SynchronizePercentage();
         }
     }
 }

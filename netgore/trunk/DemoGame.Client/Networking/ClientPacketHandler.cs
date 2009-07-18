@@ -67,7 +67,10 @@ namespace DemoGame.Client
             get { return GameplayScreen.UserChar; }
         }
 
-        public UserInfo UserInfo { get { return GameplayScreen.UserInfo; } }
+        public UserInfo UserInfo
+        {
+            get { return GameplayScreen.UserInfo; }
+        }
 
         /// <summary>
         /// Gets the world used by the game (Parent.World)
@@ -151,56 +154,6 @@ namespace DemoGame.Client
             // TODO: Should use a GameMessage so we don't have the constant "says"
             var chatText = CreateChatText(name, "says", text);
             GameplayScreen.AppendToChatOutput(chatText);
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetHP)]
-        void RecvSetHP(IIPSocket conn, BitStream r)
-        {
-            SPValueType value = r.ReadSPValueType();
-            UserInfo.HP = value;
-
-            if (User == null)
-                return;
-
-            User.HPPercent = UserInfo.HPPercent;
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetMP)]
-        void RecvSetMP(IIPSocket conn, BitStream r)
-        {
-            SPValueType value = r.ReadSPValueType();
-            UserInfo.MP = value;
-
-            if (User == null)
-                return;
-
-            User.MPPercent = UserInfo.MPPercent;
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetCharacterHPPercent)]
-        void RecvSetCharacterHPPercent(IIPSocket conn, BitStream r)
-        {
-            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-            byte percent = r.ReadByte();
-
-            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
-            if (character == null)
-                return;
-
-            character.HPPercent = percent;
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetCharacterMPPercent)]
-        void RecvSetCharacterMPPercent(IIPSocket conn, BitStream r)
-        {
-            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-            byte percent = r.ReadByte();
-
-            var character = Map.GetDynamicEntity<Character>(mapEntityIndex);
-            if (character == null)
-                return;
-
-            character.MPPercent = percent;
         }
 
         [MessageHandler((byte)ServerPacketID.CreateDynamicEntity)]
@@ -344,6 +297,44 @@ namespace DemoGame.Client
             GameplayScreen.AppendToChatOutput(message, Color.Black);
         }
 
+        [MessageHandler((byte)ServerPacketID.SetCharacterHPPercent)]
+        void RecvSetCharacterHPPercent(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
+            byte percent = r.ReadByte();
+
+            Character character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            if (character == null)
+                return;
+
+            character.HPPercent = percent;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetCharacterMPPercent)]
+        void RecvSetCharacterMPPercent(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
+            byte percent = r.ReadByte();
+
+            Character character = Map.GetDynamicEntity<Character>(mapEntityIndex);
+            if (character == null)
+                return;
+
+            character.MPPercent = percent;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetHP)]
+        void RecvSetHP(IIPSocket conn, BitStream r)
+        {
+            SPValueType value = r.ReadSPValueType();
+            UserInfo.HP = value;
+
+            if (User == null)
+                return;
+
+            User.HPPercent = UserInfo.HPPercent;
+        }
+
         [MessageHandler((byte)ServerPacketID.SetInventorySlot)]
         void RecvSetInventorySlot(IIPSocket conn, BitStream r)
         {
@@ -368,6 +359,18 @@ namespace DemoGame.Client
 
             // Unload all map content from the previous map and from the new map loading
             GameplayScreen.ScreenManager.MapContent.Unload();
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetMP)]
+        void RecvSetMP(IIPSocket conn, BitStream r)
+        {
+            SPValueType value = r.ReadSPValueType();
+            UserInfo.MP = value;
+
+            if (User == null)
+                return;
+
+            User.MPPercent = UserInfo.MPPercent;
         }
 
         [MessageHandler((byte)ServerPacketID.SetUserChar)]
