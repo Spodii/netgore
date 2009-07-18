@@ -189,7 +189,6 @@
     <Compile Include="Stats\NPCStats.cs" />
     <Compile Include="Stats\StatUpdateHandlers.cs" />
     <Compile Include="Stats\UserStats.cs" />
-    <Compile Include="Queries\User\UserQueryBase.cs" />
     <Compile Include="World\Map.cs" />
     <Compile Include="Characters\CharacterTemplate.cs" />
     <Compile Include="Characters\CharacterTemplateManager.cs" />
