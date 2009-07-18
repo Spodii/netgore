@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
 using NetGore.IO;
 
 namespace DemoGame
@@ -17,16 +14,6 @@ namespace DemoGame
         public SPValueType(ushort value)
         {
             _value = value;
-        }
-
-        public static implicit operator ushort(SPValueType v)
-        {
-            return v._value;
-        }
-
-        public static implicit operator SPValueType(ushort v)
-        {
-            return new SPValueType(v);
         }
 
         /// <summary>
@@ -68,11 +55,6 @@ namespace DemoGame
             return Read(reader, reader.GetOrdinal(name));
         }
 
-        public override string ToString()
-        {
-            return _value.ToString();
-        }
-
         /// <summary>
         /// Reads an SPValueType from an IValueReader.
         /// </summary>
@@ -82,6 +64,11 @@ namespace DemoGame
         {
             ushort value = bitStream.ReadUShort();
             return new SPValueType(value);
+        }
+
+        public override string ToString()
+        {
+            return _value.ToString();
         }
 
         /// <summary>
@@ -102,6 +89,16 @@ namespace DemoGame
         public void Write(BitStream bitStream)
         {
             bitStream.Write(_value);
+        }
+
+        public static implicit operator ushort(SPValueType v)
+        {
+            return v._value;
+        }
+
+        public static implicit operator SPValueType(ushort v)
+        {
+            return new SPValueType(v);
         }
     }
 
