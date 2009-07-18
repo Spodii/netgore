@@ -231,6 +231,60 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static void SetCharacterHPPercent(PacketWriter pw, MapEntityIndex mapEntityIndex, byte hpPercent)
+        {
+            pw.Write(ServerPacketID.SetCharacterHPPercent);
+            pw.Write(mapEntityIndex);
+            pw.Write(hpPercent);
+        }
+
+        public static PacketWriter SetCharacterHPPercent(MapEntityIndex mapEntityIndex, byte hpPercent)
+        {
+            PacketWriter pw = GetWriter();
+            SetCharacterHPPercent(pw, mapEntityIndex, hpPercent);
+            return pw;
+        }
+
+        public static void SetCharacterMPPercent(PacketWriter pw, MapEntityIndex mapEntityIndex, byte mpPercent)
+        {
+            pw.Write(ServerPacketID.SetCharacterMPPercent);
+            pw.Write(mapEntityIndex);
+            pw.Write(mpPercent);
+        }
+
+        public static PacketWriter SetCharacterMPPercent(MapEntityIndex mapEntityIndex, byte mpPercent)
+        {
+            PacketWriter pw = GetWriter();
+            SetCharacterMPPercent(pw, mapEntityIndex, mpPercent);
+            return pw;
+        }
+
+        public static void SetHP(PacketWriter pw, SPValueType hp)
+        {
+            pw.Write(ServerPacketID.SetHP);
+            pw.Write(hp);
+        }
+
+        public static PacketWriter SetHP(SPValueType hp)
+        {
+            PacketWriter pw = GetWriter();
+            SetHP(pw, hp);
+            return pw;
+        }
+
+        public static void SetMP(PacketWriter pw, SPValueType mp)
+        {
+            pw.Write(ServerPacketID.SetMP);
+            pw.Write(mp);
+        }
+
+        public static PacketWriter SetMP(SPValueType mp)
+        {
+            PacketWriter pw = GetWriter();
+            SetMP(pw, mp);
+            return pw;
+        }
+
         public static void SynchronizeDynamicEntity(PacketWriter pw, DynamicEntity dynamicEntity)
         {
             pw.Write(ServerPacketID.CreateDynamicEntity);

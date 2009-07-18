@@ -30,6 +30,8 @@ namespace DemoGame.Server.Queries
             p["@y"] = character.Position.Y;
             p["@body"] = character.BodyInfo.Index;
             p["@name"] = character.Name;
+            p["@hp"] = (int)character.HP;
+            p["@mp"] = (int)character.MP;
 
             foreach (var stat in character.BaseStats)
             {

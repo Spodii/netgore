@@ -141,8 +141,8 @@ namespace DemoGame.Server
             // Create and copy over the stats
             BaseStats.CopyStatValuesFrom(template.StatValues, true);
 
-            BaseStats[StatType.HP] = BaseStats[StatType.MaxHP];
-            BaseStats[StatType.MP] = BaseStats[StatType.MaxMP];
+            HP = (SPValueType)ModStats[StatType.MaxHP];
+            MP = (SPValueType)ModStats[StatType.MaxMP];
 
             // Set the rest of the template stuff
             _respawnSecs = template.RespawnSecs;
@@ -340,9 +340,11 @@ namespace DemoGame.Server
 
         void IRespawnable.Respawn()
         {
+            UpdateModStats();
+
             // Restore the NPC's stats
-            BaseStats[StatType.HP] = BaseStats[StatType.MaxHP];
-            BaseStats[StatType.MP] = BaseStats[StatType.MaxMP];
+            HP = (SPValueType)ModStats[StatType.MaxHP];
+            MP = (SPValueType)ModStats[StatType.MaxMP];
 
             // Set the NPC's new location
             Teleport(new Vector2(560f, 400f)); // HACK: Hard-coded spawn location

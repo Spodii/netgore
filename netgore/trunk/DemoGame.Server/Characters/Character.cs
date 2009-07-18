@@ -51,6 +51,8 @@ namespace DemoGame.Server
 
     public delegate void CharacterCashEventHandler(Character character, uint oldCash, uint cash);
 
+    public delegate void CharacterChangeSPEventHandler(Character character, SPValueType oldValue, SPValueType newValue);
+
     /// <summary>
     /// A game character
     /// </summary>
@@ -108,6 +110,76 @@ namespace DemoGame.Server
         string _name;
 
         uint _nextLevelExp;
+
+        SPValueType _hp;
+
+        public SPValueType HP
+        {
+            get
+            {
+                return _hp;
+            }
+            set
+            {
+                // Get the new value, ensuring it is in a valid range
+                var max = ModStats[StatType.MaxHP];
+                SPValueType newValue;
+                if (value > max)
+                    newValue = (SPValueType)max;
+                else if (value < 0)
+                    newValue = 0;
+                else
+                    newValue = value;
+
+                // Check that the value has changed
+                var oldValue = _hp;
+                if (newValue == oldValue)
+                    return;
+
+                // Apply new value
+                _hp = newValue;
+
+                if (OnChangeHP != null)
+                    OnChangeHP(this, oldValue, _hp);
+
+                if (_hp <= 0)
+                    Kill();
+            }
+        }
+
+        SPValueType _mp;
+
+        public SPValueType MP
+        {
+            get { return _mp; }
+            set
+            {
+                // Get the new value, ensuring it is in a valid range
+                var max = ModStats[StatType.MaxMP];
+                SPValueType newValue;
+                if (value > max)
+                    newValue = (SPValueType)max;
+                else if (value < 0)
+                    newValue = 0;
+                else
+                    newValue = value;
+
+                // Check that the value has changed
+                var oldValue = _mp;
+                if (newValue == oldValue)
+                    return;
+
+                // Apply new value
+                _mp = newValue;
+
+                if (OnChangeMP != null)
+                    OnChangeMP(this, oldValue, _mp);
+            }
+        }
+
+        public event CharacterChangeSPEventHandler OnChangeHP;
+
+        public event CharacterChangeSPEventHandler OnChangeMP;
 
         /// <summary>
         /// Lets us know if we have saved the Character since they have been updated. Used to ensure saves aren't
@@ -325,6 +397,8 @@ namespace DemoGame.Server
             get { return _modStats; }
         }
 
+        readonly CharacterSPSynchronizer _spSync;
+
         /// <summary>
         /// Gets or sets the name of the character.
         /// </summary>
@@ -404,7 +478,13 @@ namespace DemoGame.Server
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _baseStats = CreateStats(StatCollectionType.Base);
             _modStats = CreateStats(StatCollectionType.Modified);
+            _spSync = CreateSPSynchronizer();
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+
+        protected virtual CharacterSPSynchronizer CreateSPSynchronizer()
+        {
+            return new CharacterSPSynchronizer(this);
         }
 
         /// <summary>
@@ -516,10 +596,10 @@ namespace DemoGame.Server
             {
                 Map.SendToArea(Position, pw);
             }
-            BaseStats[StatType.HP] -= damage;
+            HP -= (SPValueType)damage;
 
             // Check if the character died
-            if (BaseStats[StatType.HP] <= 0)
+            if (HP <= 0)
             {
                 if (source != null)
                 {
@@ -660,27 +740,6 @@ namespace DemoGame.Server
             base.HandleDispose();
         }
 
-        /// <summary>
-        /// Handles when the Character's HP changes.
-        /// </summary>
-        /// <param name="stat">Stat that changed.</param>
-        void HP_OnChange(IStat stat)
-        {
-            int hp = BaseStats[StatType.HP];
-            int maxHP = BaseStats[StatType.MaxHP];
-
-            if (hp > maxHP)
-            {
-                // Keep the HP in a valid range
-                BaseStats[StatType.HP] = maxHP;
-            }
-            else if (hp <= 0)
-            {
-                // No more HP, no more living
-                Kill();
-            }
-        }
-
         void InternalLoad(SelectCharacterQueryValues v)
         {
             Name = v.Name;
@@ -695,6 +754,8 @@ namespace DemoGame.Server
             _expSpent = v.ExpSpent;
             _exp = v.Exp;
             _cash = v.Cash;
+            _hp = v.HP;
+            _mp = v.MP;
 
             // Load the stats
             _baseStats.CopyStatValuesFrom(v.Stats, true);
@@ -803,21 +864,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Handles when the Character's MP changes.
-        /// </summary>
-        /// <param name="stat">Stat that changed.</param>
-        void MP_OnChange(IStat stat)
-        {
-            int mp = BaseStats[StatType.MP];
-            int maxMP = BaseStats[StatType.MaxMP];
-
-            if (mp > maxMP)
-                BaseStats[StatType.MP] = maxMP;
-            else if (mp < 0)
-                BaseStats[StatType.MP] = 0;
-        }
-
-        /// <summary>
         /// Makes the Character raise their base Stat of the corresponding type by one point, assuming they have enough
         /// points available to raise the Stat, and lowers the amount of spendable points accordingly.
         /// </summary>
@@ -867,10 +913,6 @@ namespace DemoGame.Server
         {
             Debug.Assert(!_isLoaded, "SetAsLoaded() has already been called on this Character.");
             _isLoaded = true;
-
-            // Hook some event listeners
-            BaseStats.GetStat(StatType.HP).OnChange += HP_OnChange;
-            BaseStats.GetStat(StatType.MP).OnChange += MP_OnChange;
         }
 
         /// <summary>
@@ -932,9 +974,11 @@ namespace DemoGame.Server
             UpdateModStats();
 
             base.Update(imap, deltaTime);
+
+            _spSync.Synchronize();
         }
 
-        void UpdateModStats()
+        protected void UpdateModStats()
         {
             // FUTURE: This is called every goddamn Update(). That is WAY too much...
             foreach (IStat modStat in ModStats)
@@ -1022,6 +1066,11 @@ namespace DemoGame.Server
             {
                 BaseStats[stat.StatType] += stat.Value;
             }
+
+            if (item.HP != 0)
+                HP += item.HP;
+            if (item.MP != 0)
+                MP += item.MP;
 
             return true;
         }

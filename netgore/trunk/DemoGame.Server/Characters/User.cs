@@ -31,6 +31,11 @@ namespace DemoGame.Server
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
 
+        protected override CharacterSPSynchronizer CreateSPSynchronizer()
+        {
+            return new UserSPSynchronizer(this);
+        }
+
         /// <summary>
         /// Gets the socket connection info for the user
         /// </summary>
@@ -314,9 +319,13 @@ namespace DemoGame.Server
         {
             base.Kill();
 
+            // TODO: Respawn the user to the correct respawn location
             Teleport(new Vector2(100, 100));
-            BaseStats[StatType.HP] = BaseStats[StatType.MaxHP];
-            BaseStats[StatType.MP] = BaseStats[StatType.MaxMP];
+
+            UpdateModStats();
+
+            HP = (SPValueType)ModStats[StatType.MaxHP];
+            MP = (SPValueType)ModStats[StatType.MaxMP];
         }
 
         /// <summary>

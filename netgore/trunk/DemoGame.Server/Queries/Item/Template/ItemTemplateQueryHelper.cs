@@ -18,7 +18,7 @@ namespace DemoGame.Server.Queries
             BaseStatDBFields = StatsQueryHelper.GetStatTypeFields(DBTables.ItemTemplate, StatCollectionType.Base);
             ReqStatDBFields = StatsQueryHelper.GetStatTypeFields(DBTables.ItemTemplate, StatCollectionType.Requirement);
 
-            NonStatDBFields = new string[] { "id", "name", "description", "graphic", "value", "width", "height", "type" };
+            NonStatDBFields = new string[] { "id", "name", "description", "graphic", "value", "width", "height", "type", "hp", "mp" };
 
             AllDBFields = (BaseStatDBFields.Concat(ReqStatDBFields)).Select(x => x.Field).Concat(NonStatDBFields).ToArray();
         }
@@ -34,13 +34,15 @@ namespace DemoGame.Server.Queries
             byte width = r.GetByte("width");
             byte height = r.GetByte("height");
             ItemType type = r.GetItemType("type");
+            SPValueType hp = r.GetSPValueType("hp");
+            SPValueType mp = r.GetSPValueType("mp");
 
             // Stats
             var baseStats = StatsQueryHelper.ReadStatValues(r, BaseStatDBFields);
             var reqStats = StatsQueryHelper.ReadStatValues(r, ReqStatDBFields);
 
             // Create the template and enqueue it for returning
-            ItemTemplate template = new ItemTemplate(id, name, description, type, graphic, value, width, height, baseStats,
+            ItemTemplate template = new ItemTemplate(id, name, description, type, graphic, value, width, height, hp, mp, baseStats,
                                                      reqStats);
 
             return template;

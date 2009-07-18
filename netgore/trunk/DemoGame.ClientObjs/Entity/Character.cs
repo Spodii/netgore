@@ -42,6 +42,9 @@ namespace DemoGame.Client
             get { return _interpolator; }
         }
 
+        public byte HPPercent { get; set; }
+        public byte MPPercent { get; set; }
+
         /// <summary>
         /// Gets the map the character belongs to
         /// </summary>
