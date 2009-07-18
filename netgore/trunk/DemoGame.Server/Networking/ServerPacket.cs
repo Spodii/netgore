@@ -167,6 +167,8 @@ namespace DemoGame.Server
             pw.Write(item.Name);
             pw.Write(item.Description);
             pw.Write(item.Value);
+            pw.Write(item.HP);
+            pw.Write(item.MP);
             pw.Write(item.BaseStats);
             pw.Write(item.ReqStats);
             return pw;

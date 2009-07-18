@@ -26,6 +26,11 @@ namespace DemoGame.Client
         int _slot;
         ItemInfoSource _source;
         int _value;
+        SPValueType _hp;
+        SPValueType _mp;
+
+        public SPValueType HP { get { return _hp; } }
+        public SPValueType MP { get { return _mp; } }
 
         /// <summary>
         /// Gets the item's description.
@@ -175,11 +180,15 @@ namespace DemoGame.Client
         /// <param name="name">Name of the item.</param>
         /// <param name="desc">Item's description.</param>
         /// <param name="value">Value of the item.</param>
-        public void SetItemInfo(string name, string desc, int value)
+        /// <param name="hp">How much HP the item recovers.</param>
+        /// <param name="mp">How much MP the item recovers.</param>
+        public void SetItemInfo(string name, string desc, int value, SPValueType hp, SPValueType mp)
         {
             _name = name;
             _description = desc;
             _value = value;
+            _hp = hp;
+            _mp = mp;
         }
 
         void StartRequest()

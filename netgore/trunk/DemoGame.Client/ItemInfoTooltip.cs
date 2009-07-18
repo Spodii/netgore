@@ -57,6 +57,11 @@ namespace DemoGame.Client
             // Basic item information
             var lines = new List<string>(numNonZeroStats + 10) { ItemInfo.Name, ItemInfo.Description, "Value: " + ItemInfo.Value };
 
+            if (ItemInfo.HP != 0)
+                lines.Add(string.Format(" +{0} HP", ItemInfo.HP));
+            if (ItemInfo.MP != 0)
+                lines.Add(string.Format(" +{0} MP", ItemInfo.MP));
+
             // Item stats
             if (numNonZeroStats > 0)
             {
