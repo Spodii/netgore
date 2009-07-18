@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 
@@ -8,9 +9,11 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class UpdateCharacterQuery : UserQueryBase
+    public class UpdateCharacterQuery : DbQueryNonReader<Character>
     {
         static readonly string _queryString;
+
+        static readonly IEnumerable<string> _dbParameterCache = CharacterQueryHelper.AllDBFields.Select(x => "@" + x);
 
         static UpdateCharacterQuery()
         {
@@ -26,6 +29,33 @@ namespace DemoGame.Server.Queries
         public UpdateCharacterQuery(DbConnectionPool connectionPool)
             : base(connectionPool, _queryString)
         {
+        }
+
+        protected override IEnumerable<DbParameter> InitializeParameters()
+        {
+            return CreateParameters(_dbParameterCache);
+        }
+
+        protected override void SetParameters(DbParameterValues p, Character character)
+        {
+            p["@id"] = character.ID;
+            p["@template_id"] = character.TemplateID;
+            p["@map"] = character.Map.Index;
+            p["@x"] = character.Position.X;
+            p["@y"] = character.Position.Y;
+            p["@body"] = character.BodyInfo.Index;
+            p["@name"] = character.Name;
+            p["@hp"] = (int)character.HP;
+            p["@mp"] = (int)character.MP;
+
+            foreach (var stat in character.BaseStats)
+            {
+                string fieldName = stat.StatType.GetDatabaseField(StatCollectionType.Base);
+                string key = "@" + fieldName;
+
+                Debug.Assert(p.Contains(key), "If any parameter is missing, something is wrong with the initialization.");
+                p[key] = stat.Value;
+            }
         }
     }
 }
