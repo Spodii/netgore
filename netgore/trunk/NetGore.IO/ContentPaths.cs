@@ -23,8 +23,9 @@ namespace NetGore
         const string _skeletonsFolder = "Skeletons";
         const string _texturesFolder = "Texture";
 
+        static readonly string _appRoot;
         static readonly ContentPaths _buildPaths;
-        static readonly ContentPaths _devPaths;
+        static ContentPaths _devPaths;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly PathString _data;
@@ -51,7 +52,14 @@ namespace NetGore
         /// </summary>
         public static ContentPaths Dev
         {
-            get { return _devPaths; }
+            get 
+            {
+                if (_devPaths == null)
+                {
+                    _devPaths = new ContentPaths(GetDevContentPath(_appRoot));
+                }
+                return _devPaths; 
+            }
         }
 
         /// <summary>
@@ -136,11 +144,10 @@ namespace NetGore
 
         static ContentPaths()
         {
-            string appRoot = AppDomain.CurrentDomain.BaseDirectory;
-            appRoot = Path.GetFullPath(appRoot);
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            _appRoot = Path.GetFullPath(baseDir);
 
-            _buildPaths = new ContentPaths(GetBuildContentPath(appRoot));
-            _devPaths = new ContentPaths(GetDevContentPath(appRoot));
+            _buildPaths = new ContentPaths(GetBuildContentPath(_appRoot));
         }
 
         public ContentPaths(string rootPath)
