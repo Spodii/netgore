@@ -164,6 +164,16 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets an array of all the Users in the world.
+        /// </summary>
+        /// <returns>An array of all the Users in the world.</returns>
+        public User[] GetUsers()
+        {
+            // NOTE: We use this instead of returning the _users.Values IEnumerable to avoid issues with the collection changing
+            return _users.Values.ToArray();
+        }
+
+        /// <summary>
         /// Returns a map by its index
         /// </summary>
         /// <param name="mapIndex">Index of the map</param>
