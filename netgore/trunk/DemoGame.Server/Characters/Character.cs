@@ -908,7 +908,7 @@ namespace DemoGame.Server
         {
             uint cost = GameData.StatCost(BaseStats[st]);
 
-            if (StatPoints <= cost)
+            if (StatPoints < cost)
             {
                 const string errmsg = "Character `{0}` tried to raise stat `{1}`, but only has `{2}` of `{3}` needed points.";
                 Debug.Fail(string.Format(errmsg, this, st, StatPoints, cost));
