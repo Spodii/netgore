@@ -12,14 +12,14 @@ using NetGore.Network;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// A user-controlled character
+    /// A user-controlled character.
     /// </summary>
     public class User : Character
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Connection information for the user
+        /// The socket used to communicate with the User.
         /// </summary>
         readonly IIPSocket _conn;
 
