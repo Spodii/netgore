@@ -44,18 +44,18 @@ namespace DemoGame.Server
             _itemTemplates.Trim();
         }
 
+        static readonly Random _rnd = new Random();
+
         /// <summary>
         /// Get a random ItemTemplate.
         /// </summary>
         /// <returns>A random ItemTemplate. Will not be null.</returns>
         public static ItemTemplate GetRandomTemplate()
         {
-            Random rnd = new Random();
-
             ItemTemplate template;
             do
             {
-                int i = rnd.Next(0, _itemTemplates.Count);
+                int i = _rnd.Next(0, _itemTemplates.Count);
                 Debug.Assert(_itemTemplates.CanGet(i));
                 template = _itemTemplates[i];
             } while (template == null);
