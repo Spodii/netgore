@@ -47,6 +47,16 @@ namespace DemoGame.Server
             SynchronizePercentage();
         }
 
+        /// <summary>
+        /// Forces synchronization.
+        /// </summary>
+        public virtual void ForceSynchronize()
+        {
+            // Since the percent will never be at this value, this will force a synchronization on next Synchronize call
+            _lastSentHPPercent = byte.MaxValue;
+            _lastSentMPPercent = byte.MaxValue;
+        }
+
         protected void SynchronizePercentage()
         {
             const int _updatePercentDiff = 2;
