@@ -55,14 +55,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the server's CharacterTemplateManager
-        /// </summary>
-        public CharacterTemplateManager NPCTemplates
-        {
-            get { return _server.CharacterTemplateManager; }
-        }
-
-        /// <summary>
         /// Gets the server the world belongs to
         /// </summary>
         public Server Server
@@ -102,7 +94,7 @@ namespace DemoGame.Server
             // Create some test NPCs and items
 #if true
             Random rand = new Random();
-            CharacterTemplate npcTemplate = NPCTemplates.GetTemplate(new CharacterTemplateID(1));
+            CharacterTemplate npcTemplate = CharacterTemplateManager.GetTemplate(new CharacterTemplateID(1));
             foreach (Map m in Maps)
             {
                 for (int i = 0; i < 3; i++)

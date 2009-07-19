@@ -107,6 +107,24 @@ namespace DemoGame.Server
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created persistent NPC `{0}` from CharacterID `{1}`.", this, characterID);
+
+            LoadPersistentNPCTemplateInfo();
+        }
+
+        /// <summary>
+        /// Loads additional information for a persistent NPC from their CharacterTemplate, if they have one.
+        /// </summary>
+        void LoadPersistentNPCTemplateInfo()
+        {
+            if (!TemplateID.HasValue)
+                return;
+
+            var template = CharacterTemplateManager.GetTemplate(TemplateID.Value);
+            if (template == null)
+                return;
+
+            _giveCash = template.GiveCash;
+            _giveExp = template.GiveExp;
         }
 
         /// <summary>
@@ -233,7 +251,7 @@ namespace DemoGame.Server
             if (!templateID.HasValue)
                 return;
 
-            CharacterTemplate template = World.NPCTemplates[templateID.Value];
+            CharacterTemplate template = CharacterTemplateManager.GetTemplate(templateID.Value);
             if (template == null)
                 return;
 
