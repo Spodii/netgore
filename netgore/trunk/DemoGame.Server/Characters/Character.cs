@@ -588,6 +588,8 @@ namespace DemoGame.Server
             // Set the Character's new map
             if (newMap != null)
                 newMap.AddEntity(this);
+
+            _spSync.ForceSynchronize();
         }
 
         protected virtual CharacterSPSynchronizer CreateSPSynchronizer()
