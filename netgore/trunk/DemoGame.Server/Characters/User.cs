@@ -31,11 +31,6 @@ namespace DemoGame.Server
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
 
-        protected override CharacterSPSynchronizer CreateSPSynchronizer()
-        {
-            return new UserSPSynchronizer(this);
-        }
-
         /// <summary>
         /// Gets the socket connection info for the user
         /// </summary>
@@ -92,11 +87,43 @@ namespace DemoGame.Server
             Alliance = World.Server.AllianceManager["user"];
 
             // Attach to some events
-            OnChangeExp += Exp_OnChange;
             OnKillCharacter += User_OnKillCharacter;
+            OnChangeStatPoints += User_OnChangeStatPoints;
+            OnChangeExp += User_OnChangeExp;
+            OnChangeCash += User_OnChangeCash;
+            OnChangeLevel += User_OnChangeLevel;
 
             // Activate the user
             IsAlive = true;
+
+            // Send the initial information
+            User_OnChangeLevel(this, Level, Level);
+            User_OnChangeCash(this, Cash, Cash);
+            User_OnChangeExp(this, Exp, Exp);
+            User_OnChangeStatPoints(this, StatPoints, StatPoints);
+        }
+
+        void User_OnChangeLevel(Character character, byte oldLevel, byte level)
+        {
+            using (var pw = ServerPacket.SetLevel(level))
+                Send(pw);
+        }
+
+        void User_OnChangeCash(Character character, uint oldCash, uint cash)
+        {
+            using (var pw = ServerPacket.SetCash(cash))
+                Send(pw);
+        }
+
+        void User_OnChangeExp(Character character, uint oldExp, uint exp)
+        {
+            using (var pw = ServerPacket.SetExp(exp))
+                Send(pw);
+        }
+
+        protected override CharacterSPSynchronizer CreateSPSynchronizer()
+        {
+            return new UserSPSynchronizer(this);
         }
 
         protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
@@ -155,29 +182,6 @@ namespace DemoGame.Server
             }
 
             return successful;
-        }
-
-        void Exp_OnChange(Character character, uint oldExp, uint exp)
-        {
-            // TODO: [STATS] Move the level calculation to Character
-            /*
-            // If the current level is 0, we probably haven't even set the level yet
-            if (Level == 0)
-                return;
-
-            // Check if we have enough experience to move to the next level
-            if (exp < _nextLevelExp)
-                return;
-
-            // Increase the level
-            BaseStats[StatType.Level]++;
-            */
-
-            // Notify users on the map of the level-up
-            using (PacketWriter pw = ServerPacket.NotifyLevel(MapEntityIndex))
-            {
-                Send(pw);
-            }
         }
 
         /// <summary>
@@ -326,6 +330,17 @@ namespace DemoGame.Server
 
             HP = (SPValueType)ModStats[StatType.MaxHP];
             MP = (SPValueType)ModStats[StatType.MaxMP];
+        }
+
+        protected override void LevelUp()
+        {
+            base.LevelUp();
+
+            // Notify users on the map of the level-up
+            using (PacketWriter pw = ServerPacket.NotifyLevel(MapEntityIndex))
+            {
+                Send(pw);
+            }
         }
 
         /// <summary>
@@ -517,6 +532,14 @@ namespace DemoGame.Server
             // NOTE: Once I hook to the item's amount in the inventory to listen for changes, I can put this in UseItem()
             if (item.Type == ItemType.UseOnce)
                 _inventory.DecreaseItemAmount(slot);
+        }
+
+        void User_OnChangeStatPoints(Character character, uint oldValue, uint newValue)
+        {
+            using (PacketWriter pw = ServerPacket.SetStatPoints(newValue))
+            {
+                Send(pw);
+            }
         }
 
         void User_OnKillCharacter(Character killed, Character killer)

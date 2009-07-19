@@ -15,7 +15,7 @@ namespace DemoGame.Server.Queries
         {
             StatDBFields = StatsQueryHelper.GetStatTypeFields(StatFactory.AllStats, StatCollectionType.Base);
 
-            NonStatDBFields = new string[] { "body", "id", "name", "give_exp", "give_cash", "alliance_id", "respawn", "ai" };
+            NonStatDBFields = new string[] { "body", "id", "name", "give_exp", "give_cash", "alliance_id", "respawn", "ai", "statpoints", "exp", "level" };
 
             AllDBFields = StatDBFields.Select(x => x.Field).Concat(NonStatDBFields).ToArray();
         }
@@ -31,12 +31,15 @@ namespace DemoGame.Server.Queries
             ushort respawn = r.GetUInt16("respawn");
             ushort giveExp = r.GetUInt16("give_exp");
             ushort giveCash = r.GetUInt16("give_cash");
+            uint exp = r.GetUInt32("exp");
+            uint statPoints = r.GetUInt32("statpoints");
+            byte level = r.GetByte("level");
 
             var stats = StatsQueryHelper.ReadStatValues(r, StatDBFields);
 
             SelectCharacterTemplateQueryValues ret = new SelectCharacterTemplateQueryValues(templateID, name, bodyIndex, ai,
                                                                                             allianceID, respawn, giveExp, giveCash,
-                                                                                            stats);
+                                                                                            exp, statPoints, level, stats);
 
             return ret;
         }

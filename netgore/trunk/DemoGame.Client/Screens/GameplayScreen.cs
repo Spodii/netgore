@@ -357,7 +357,7 @@ namespace DemoGame.Client
             _gui = new GUIManager(_guiFont);
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
-            _statsForm = new StatsForm(UserInfo.BaseStats, UserInfo.ModStats, cScreen);
+            _statsForm = new StatsForm(UserInfo, cScreen);
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 
             _inventoryForm = new InventoryForm(ItemInfoTooltip, new Vector2(250, 0), cScreen);
