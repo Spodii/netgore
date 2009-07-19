@@ -101,7 +101,7 @@ namespace DemoGame.Server
             _inventory = new NPCInventory(this);
             _equipped = new NPCEquipped(this);
 
-            Alliance = parent.Server.AllianceManager["monster"];
+            Alliance = AllianceManager.GetAlliance("monster");
 
             Load(characterID);
 

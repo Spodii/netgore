@@ -30,7 +30,6 @@ namespace DemoGame.Server
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly AllianceManager _allianceManager;
         readonly DBController _dbController;
 
         /// <summary>
@@ -42,8 +41,6 @@ namespace DemoGame.Server
         /// Thread for managing console input
         /// </summary>
         readonly Thread _inputThread;
-
-        readonly ItemTemplates _itemTemplates;
 
         /// <summary>
         /// Lock used to ensure that only one user is logging in at a time. The main intention of this is to prevent
@@ -67,25 +64,12 @@ namespace DemoGame.Server
         /// </summary>
         bool _isRunning = true;
 
-        public AllianceManager AllianceManager
-        {
-            get { return _allianceManager; }
-        }
-
         /// <summary>
         /// Gets the DBController used to communicate with the database by this server.
         /// </summary>
         public DBController DBController
         {
             get { return _dbController; }
-        }
-
-        /// <summary>
-        /// Gets the ItemTemplates
-        /// </summary>
-        public ItemTemplates ItemTemplates
-        {
-            get { return _itemTemplates; }
         }
 
         public ServerSockets ServerSockets
@@ -125,9 +109,9 @@ namespace DemoGame.Server
             // Load the game data and such
             GameData.Load();
             ItemEntity.Initialize(DBController);
-            _allianceManager = new AllianceManager(DBController);
-            _itemTemplates = new ItemTemplates(DBController.GetQuery<SelectItemTemplatesQuery>());
-            CharacterTemplateManager.Initialize(DBController, AllianceManager, _itemTemplates);
+            AllianceManager.Initialize(DBController);
+            ItemTemplateManager.Initialize(DBController);
+            CharacterTemplateManager.Initialize(DBController);
             InitializeScripts();
 
             // Create the world and sockets
