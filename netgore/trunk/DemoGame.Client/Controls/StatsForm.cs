@@ -97,7 +97,7 @@ namespace DemoGame.Client
         void NewStatLabel(StatType statType)
         {
             AddLine();
-            
+
             // Create the stat label
             Vector2 pos = new Vector2(_xOffset, _yOffset);
             new StatLabel(this, statType, pos);
@@ -241,8 +241,8 @@ namespace DemoGame.Client
 
         class StatLabel : Label
         {
-            readonly StatType _statType;
             readonly StatsForm _statsForm;
+            readonly StatType _statType;
 
             public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos, Control parent)
                 : base(string.Empty, pos, parent)
@@ -254,8 +254,7 @@ namespace DemoGame.Client
                 _statType = statType;
             }
 
-            public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos)
-                : this(statsForm, statType, pos, statsForm)
+            public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos) : this(statsForm, statType, pos, statsForm)
             {
             }
 

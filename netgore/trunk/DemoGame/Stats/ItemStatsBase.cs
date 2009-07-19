@@ -13,7 +13,7 @@ namespace DemoGame
 
         protected ItemStatsBase(IEnumerable<StatTypeValue> src, StatCollectionType statCollectionType) : this(statCollectionType)
         {
-            foreach (var statInfo in src)
+            foreach (StatTypeValue statInfo in src)
             {
                 IStat stat = StatFactory.CreateStat(statInfo.StatType, statCollectionType, statInfo.Value);
                 Add(stat);
@@ -27,6 +27,22 @@ namespace DemoGame
         public override IStat GetStat(StatType statType)
         {
             return GetStatOrCreate(statType);
+        }
+
+        protected override void HandleStatAdded(IStat stat)
+        {
+            // Attach a listener to every stat to listen for changes
+            stat.OnChange += HandleStatChanged;
+        }
+
+        /// <summary>
+        /// Handler for listening to all of the stats and forwarding to the OnStatChange
+        /// </summary>
+        /// <param name="stat">Stat that changed</param>
+        void HandleStatChanged(IStat stat)
+        {
+            if (OnStatChange != null)
+                OnStatChange(stat);
         }
 
         /// <summary>
@@ -47,22 +63,6 @@ namespace DemoGame
 
             // Everything matched, so return true
             return true;
-        }
-
-        protected override void HandleStatAdded(IStat stat)
-        {
-            // Attach a listener to every stat to listen for changes
-            stat.OnChange += HandleStatChanged;
-        }
-
-        /// <summary>
-        /// Handler for listening to all of the stats and forwarding to the OnStatChange
-        /// </summary>
-        /// <param name="stat">Stat that changed</param>
-        void HandleStatChanged(IStat stat)
-        {
-            if (OnStatChange != null)
-                OnStatChange(stat);
         }
     }
 }

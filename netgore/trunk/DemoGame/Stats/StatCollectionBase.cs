@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-using log4net;
 using System.Linq;
 
 namespace DemoGame
@@ -24,15 +21,6 @@ namespace DemoGame
         protected void Add(IStat stat)
         {
             _stats.Add(stat.StatType, stat);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles when an IStat is added to this StatCollectionBase. This will
-        /// be invoked once and only once for every IStat added to this StatCollectionBase.
-        /// </summary>
-        /// <param name="stat">The IStat that was added to this StatCollectionBase.</param>
-        protected virtual void HandleStatAdded(IStat stat)
-        {
         }
 
         protected void Add(IEnumerable<IStat> stats)
@@ -106,6 +94,15 @@ namespace DemoGame
             }
 
             return stat;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles when an IStat is added to this StatCollectionBase. This will
+        /// be invoked once and only once for every IStat added to this StatCollectionBase.
+        /// </summary>
+        /// <param name="stat">The IStat that was added to this StatCollectionBase.</param>
+        protected virtual void HandleStatAdded(IStat stat)
+        {
         }
 
         public IEnumerable<StatTypeValue> ToStatTypeValues()

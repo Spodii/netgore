@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DemoGame.Server
 {
@@ -9,8 +8,7 @@ namespace DemoGame.Server
         {
         }
 
-        public ItemStats(IEnumerable<StatTypeValue> src, StatCollectionType statCollectionType)
-            : base(src, statCollectionType)
+        public ItemStats(IEnumerable<StatTypeValue> src, StatCollectionType statCollectionType) : base(src, statCollectionType)
         {
         }
     }

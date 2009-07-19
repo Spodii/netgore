@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-
 namespace DemoGame
 {
     /// <summary>
@@ -12,7 +7,7 @@ namespace DemoGame
     {
         protected CharacterStatsBase(StatCollectionType statCollectionType) : base(statCollectionType)
         {
-            foreach (var statType in StatFactory.AllStats)
+            foreach (StatType statType in StatFactory.AllStats)
             {
                 Add(StatFactory.CreateStat(statType, statCollectionType));
             }

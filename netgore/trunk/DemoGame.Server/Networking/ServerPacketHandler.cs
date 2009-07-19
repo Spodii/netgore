@@ -219,7 +219,7 @@ namespace DemoGame.Server
             if (!TryGetUser(conn, out user))
                 return;
 
-            _sayHandler.Process(text, user);
+            _sayHandler.Process(user, text);
         }
 
         [MessageHandler((byte)ClientPacketID.SetUDPPort)]
