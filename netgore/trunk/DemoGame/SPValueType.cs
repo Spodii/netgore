@@ -9,9 +9,12 @@ namespace DemoGame
     /// </summary>
     public struct SPValueType
     {
-        readonly ushort _value;
+        public const short MinValue = short.MinValue;
+        public const short MaxValue = short.MaxValue;
 
-        public SPValueType(ushort value)
+        readonly short _value;
+
+        public SPValueType(short value)
         {
             _value = value;
         }
@@ -24,7 +27,7 @@ namespace DemoGame
         /// <returns>The SPValueType read from the IValueReader.</returns>
         public static SPValueType Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            short value = reader.ReadShort(name);
             return new SPValueType(value);
         }
 
@@ -37,10 +40,10 @@ namespace DemoGame
         public static SPValueType Read(IDataReader reader, int i)
         {
             object value = reader.GetValue(i);
-            if (value is ushort)
-                return new SPValueType((ushort)value);
+            if (value is short)
+                return new SPValueType((short)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            short convertedValue = Convert.ToInt16(value);
             return new SPValueType(convertedValue);
         }
 
@@ -62,7 +65,7 @@ namespace DemoGame
         /// <returns>The SPValueType read from the BitStream.</returns>
         public static SPValueType Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            short value = bitStream.ReadShort();
             return new SPValueType(value);
         }
 
@@ -91,12 +94,12 @@ namespace DemoGame
             bitStream.Write(_value);
         }
 
-        public static implicit operator ushort(SPValueType v)
+        public static implicit operator short(SPValueType v)
         {
             return v._value;
         }
 
-        public static implicit operator SPValueType(ushort v)
+        public static implicit operator SPValueType(short v)
         {
             return new SPValueType(v);
         }

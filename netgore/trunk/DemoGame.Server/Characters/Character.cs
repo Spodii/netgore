@@ -605,14 +605,17 @@ namespace DemoGame.Server
         /// from defense or any other kind of damage alterations since these are calculated here.</param>
         public virtual void Damage(Entity source, int damage)
         {
-            // TODO: Handle having Map == null
-
             // Apply damage
             using (PacketWriter pw = ServerPacket.CharDamage(MapEntityIndex, damage))
             {
                 Map.SendToArea(Position, pw);
             }
-            HP -= (SPValueType)damage;
+
+            int newHP = HP - damage;
+            if (newHP < 0)
+                newHP = 0;
+
+            HP = (SPValueType)newHP;
 
             // Check if the character died
             if (HP <= 0)
