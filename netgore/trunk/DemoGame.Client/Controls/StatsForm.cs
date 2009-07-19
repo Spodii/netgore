@@ -29,7 +29,10 @@ namespace DemoGame.Client
         /// </summary>
         public event RaiseStatHandler OnRaiseStat;
 
-        public UserInfo UserInfo { get { return _userInfo; } }
+        public UserInfo UserInfo
+        {
+            get { return _userInfo; }
+        }
 
         public StatsForm(UserInfo userInfo, Control parent)
             : base(parent.GUIManager, "Stats", Vector2.Zero, new Vector2(225, 500), parent)
@@ -82,13 +85,6 @@ namespace DemoGame.Client
             _yOffset += Font.LineSpacing;
         }
 
-        void NewUserInfoLabel(string title, UserInfoLabelValueHandler valueHandler)
-        {
-            AddLine();
-            Vector2 pos = new Vector2(_xOffset, _yOffset);
-            new UserInfoLabel(pos, this, title, valueHandler);
-        }
-
         void NewStatLabel(StatType statType)
         {
             AddLine();
@@ -103,6 +99,13 @@ namespace DemoGame.Client
                 RaiseStatPB statPB = new RaiseStatPB(pos - new Vector2(22, 0), _addStatGrh, this, statType);
                 statPB.OnClick += StatPB_OnClick;
             }
+        }
+
+        void NewUserInfoLabel(string title, UserInfoLabelValueHandler valueHandler)
+        {
+            AddLine();
+            Vector2 pos = new Vector2(_xOffset, _yOffset);
+            new UserInfoLabel(pos, this, title, valueHandler);
         }
 
         void StatPB_OnClick(object sender, MouseClickEventArgs e)
@@ -149,32 +152,6 @@ namespace DemoGame.Client
 
         #endregion
 
-        delegate string UserInfoLabelValueHandler(UserInfo userInfo);
-
-        class UserInfoLabel : Label
-        {
-            readonly StatsForm _statsForm;
-            readonly UserInfoLabelValueHandler _valueHandler;
-            readonly string _title;
-
-            public UserInfoLabel(Vector2 pos, StatsForm parent, string title, UserInfoLabelValueHandler valueHandler)
-                : base(string.Empty, pos, parent)
-            {
-                if (valueHandler == null)
-                    throw new ArgumentNullException("valueHandler");
-
-                _title = title;
-                _statsForm = parent;
-                _valueHandler = valueHandler;
-            }
-
-            protected override void DrawControl(SpriteBatch spriteBatch)
-            {
-                base.DrawControl(spriteBatch);
-                Text = _title + ": " + _valueHandler(_statsForm.UserInfo);
-            }
-        }
-
         class RaiseStatPB : PictureBox
         {
             readonly StatsForm _statsForm;
@@ -187,10 +164,7 @@ namespace DemoGame.Client
 
             uint Points
             {
-                get
-                {
-                    return _statsForm.UserInfo.StatPoints;
-                }
+                get { return _statsForm.UserInfo.StatPoints; }
             }
 
             uint StatCost
@@ -237,18 +211,17 @@ namespace DemoGame.Client
             readonly StatsForm _statsForm;
             readonly StatType _statType;
 
-            public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos, Control parent)
-                : base(string.Empty, pos, parent)
+            public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos) : this(statsForm, statType, pos, statsForm)
+            {
+            }
+
+            StatLabel(StatsForm statsForm, StatType statType, Vector2 pos, Control parent) : base(string.Empty, pos, parent)
             {
                 if (statsForm == null)
                     throw new ArgumentNullException("statsForm");
 
                 _statsForm = statsForm;
                 _statType = statType;
-            }
-
-            public StatLabel(StatsForm statsForm, StatType statType, Vector2 pos) : this(statsForm, statType, pos, statsForm)
-            {
             }
 
             protected override void DrawControl(SpriteBatch spriteBatch)
@@ -266,5 +239,31 @@ namespace DemoGame.Client
                 Text = _statType + ": " + baseValue + " (" + modValue + ")";
             }
         }
+
+        class UserInfoLabel : Label
+        {
+            readonly StatsForm _statsForm;
+            readonly string _title;
+            readonly UserInfoLabelValueHandler _valueHandler;
+
+            public UserInfoLabel(Vector2 pos, StatsForm parent, string title, UserInfoLabelValueHandler valueHandler)
+                : base(string.Empty, pos, parent)
+            {
+                if (valueHandler == null)
+                    throw new ArgumentNullException("valueHandler");
+
+                _title = title;
+                _statsForm = parent;
+                _valueHandler = valueHandler;
+            }
+
+            protected override void DrawControl(SpriteBatch spriteBatch)
+            {
+                base.DrawControl(spriteBatch);
+                Text = _title + ": " + _valueHandler(_statsForm.UserInfo);
+            }
+        }
+
+        delegate string UserInfoLabelValueHandler(UserInfo userInfo);
     }
 }
