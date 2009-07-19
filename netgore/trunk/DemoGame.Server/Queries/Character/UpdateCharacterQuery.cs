@@ -47,6 +47,9 @@ namespace DemoGame.Server.Queries
             p["@name"] = character.Name;
             p["@hp"] = (int)character.HP;
             p["@mp"] = (int)character.MP;
+            p["@level"] = character.Level;
+            p["@exp"] = character.Exp;
+            p["@statpoints"] = character.StatPoints;
 
             foreach (var stat in character.BaseStats)
             {

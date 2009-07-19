@@ -13,6 +13,14 @@ namespace DemoGame.Client
         readonly CharacterStats _modStats = new CharacterStats(StatCollectionType.Modified);
         readonly ClientSockets _socket;
 
+        public uint StatPoints { get; set; }
+
+        public uint Exp { get; set; }
+
+        public byte Level { get; set; }
+
+        public uint Cash { get; set; }
+
         public CharacterStats BaseStats
         {
             get { return _baseStats; }

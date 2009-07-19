@@ -175,6 +175,34 @@ namespace DemoGame.Client
                                dynamicEntity.GetType());
         }
 
+        [MessageHandler((byte)ServerPacketID.SetStatPoints)]
+        void RecvSetStatPoints(IIPSocket conn, BitStream r)
+        {
+            uint statPoints = r.ReadUInt();
+            UserInfo.StatPoints = statPoints;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetLevel)]
+        void RecvSetLevel(IIPSocket conn, BitStream r)
+        {
+            byte level = r.ReadByte();
+            UserInfo.Level = level;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetExp)]
+        void RecvSetExp(IIPSocket conn, BitStream r)
+        {
+            uint exp = r.ReadUInt();
+            UserInfo.Exp = exp;
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetCash)]
+        void RecvSetCash(IIPSocket conn, BitStream r)
+        {
+            uint cash = r.ReadUInt();
+            UserInfo.Cash = cash;
+        }
+
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
         void RecvLoginSuccessful(IIPSocket conn, BitStream r)
         {

@@ -21,8 +21,7 @@ namespace DemoGame.Client
     {
         const float _xOffset = 21;
         readonly Grh _addStatGrh = new Grh(GrhInfo.GetData("GUI", "AddStat"));
-        readonly CharacterStats _baseStats;
-        readonly CharacterStats _modStats;
+        readonly UserInfo _userInfo;
         float _yOffset = 0;
 
         /// <summary>
@@ -30,30 +29,26 @@ namespace DemoGame.Client
         /// </summary>
         public event RaiseStatHandler OnRaiseStat;
 
-        public CharacterStats CharacterBaseStats
-        {
-            get { return _baseStats; }
-        }
+        public UserInfo UserInfo { get { return _userInfo; } }
 
-        public CharacterStats CharacterModStats
+        public StatsForm(UserInfo userInfo, Control parent)
+            : base(parent.GUIManager, "Stats", Vector2.Zero, new Vector2(225, 500), parent)
         {
-            get { return _modStats; }
-        }
+            if (userInfo == null)
+                throw new ArgumentNullException("userInfo");
 
-        public StatsForm(CharacterStats baseStats, CharacterStats modStats, Control parent)
-            : base(parent.GUIManager, "Stats", Vector2.Zero, new Vector2(225, 425), parent)
-        {
-            if (baseStats == null)
-                throw new ArgumentNullException("baseStats");
-
-            _baseStats = baseStats;
-            _modStats = modStats;
+            _userInfo = userInfo;
 
             _yOffset = 2;
 
-            //NewStatLabel(charStats.GetStat(StatType.Level));
-            //NewStatLabel(charStats.GetStat(StatType.Cash));
-            //NewStatLabel(charStats.GetStat(StatType.Exp));
+            NewUserInfoLabel("Level", x => x.Level.ToString());
+            NewUserInfoLabel("Exp", x => x.Exp.ToString());
+            NewUserInfoLabel("StatPoints", x => x.StatPoints.ToString());
+
+            AddLine();
+
+            NewUserInfoLabel("HP", x => x.HP + " / " + x.ModStats[StatType.MaxHP]);
+            NewUserInfoLabel("MP", x => x.MP + " / " + x.ModStats[StatType.MaxMP]);
 
             AddLine();
 
@@ -87,11 +82,11 @@ namespace DemoGame.Client
             _yOffset += Font.LineSpacing;
         }
 
-        void NewPointsLabel()
+        void NewUserInfoLabel(string title, UserInfoLabelValueHandler valueHandler)
         {
             AddLine();
             Vector2 pos = new Vector2(_xOffset, _yOffset);
-            new PointsLabel(pos, this);
+            new UserInfoLabel(pos, this, title, valueHandler);
         }
 
         void NewStatLabel(StatType statType)
@@ -131,7 +126,7 @@ namespace DemoGame.Client
             if (!IsVisible)
                 return;
 
-            if (CharacterBaseStats == null)
+            if (UserInfo.BaseStats == null)
             {
                 Debug.Fail("CharacterStats is null.");
                 return;
@@ -154,29 +149,29 @@ namespace DemoGame.Client
 
         #endregion
 
-        class PointsLabel : Label
+        delegate string UserInfoLabelValueHandler(UserInfo userInfo);
+
+        class UserInfoLabel : Label
         {
             readonly StatsForm _statsForm;
+            readonly UserInfoLabelValueHandler _valueHandler;
+            readonly string _title;
 
-            int Points
+            public UserInfoLabel(Vector2 pos, StatsForm parent, string title, UserInfoLabelValueHandler valueHandler)
+                : base(string.Empty, pos, parent)
             {
-                get
-                {
-                    // TODO: [STATS] Return the correct number of points
-                    return 0;
-                    //return _statsForm.CharacterStats.Points; 
-                }
-            }
+                if (valueHandler == null)
+                    throw new ArgumentNullException("valueHandler");
 
-            public PointsLabel(Vector2 pos, StatsForm parent) : base(string.Empty, pos, parent)
-            {
+                _title = title;
                 _statsForm = parent;
+                _valueHandler = valueHandler;
             }
 
             protected override void DrawControl(SpriteBatch spriteBatch)
             {
                 base.DrawControl(spriteBatch);
-                Text = string.Format("Points: {0}", Points);
+                Text = _title + ": " + _valueHandler(_statsForm.UserInfo);
             }
         }
 
@@ -190,17 +185,15 @@ namespace DemoGame.Client
                 get { return Points >= StatCost; }
             }
 
-            int Points
+            uint Points
             {
                 get
                 {
-                    // TODO: [STATS] Return the correct number of points
-                    return 0;
-                    //return Stats.Points; 
+                    return _statsForm.UserInfo.StatPoints;
                 }
             }
 
-            int StatCost
+            uint StatCost
             {
                 get { return GameData.StatCost(StatLevel); }
             }
@@ -212,7 +205,7 @@ namespace DemoGame.Client
 
             CharacterStats Stats
             {
-                get { return _statsForm.CharacterBaseStats; }
+                get { return _statsForm.UserInfo.BaseStats; }
             }
 
             public StatType StatType
@@ -263,11 +256,11 @@ namespace DemoGame.Client
                 base.DrawControl(spriteBatch);
 
                 int baseValue;
-                if (!_statsForm.CharacterBaseStats.TryGetStatValue(_statType, out baseValue))
+                if (!_statsForm.UserInfo.BaseStats.TryGetStatValue(_statType, out baseValue))
                     baseValue = 0;
 
                 int modValue;
-                if (!_statsForm.CharacterModStats.TryGetStatValue(_statType, out modValue))
+                if (!_statsForm.UserInfo.ModStats.TryGetStatValue(_statType, out modValue))
                     modValue = 0;
 
                 Text = _statType + ": " + baseValue + " (" + modValue + ")";

@@ -19,7 +19,8 @@ namespace DemoGame.Server.Queries
         {
             StatDBFields = StatsQueryHelper.GetStatTypeFields(StatFactory.AllStats, StatCollectionType.Base);
 
-            NonStatDBFields = new string[] { "body", "id", "template_id", "map", "name", "x", "y", "hp", "mp" };
+            NonStatDBFields = new string[] { "body", "id", "template_id", "map", "name", "x", "y", "hp", "mp", "level",
+                "exp", "statpoints" };
 
             AllDBFields = StatDBFields.Select(x => x.Field).Concat(NonStatDBFields).ToArray();
         }
@@ -36,7 +37,7 @@ namespace DemoGame.Server.Queries
             BodyIndex body = r.GetBodyIndex("body");
             byte level = r.GetByte("level");
             uint exp = r.GetUInt32("exp");
-            uint expSpent = r.GetUInt32("expSpent");
+            uint statpoints = r.GetUInt32("statpoints");
             uint cash = r.GetUInt32("cash");
             SPValueType hp = r.GetSPValueType("hp");
             SPValueType mp = r.GetSPValueType("mp");
@@ -46,7 +47,7 @@ namespace DemoGame.Server.Queries
 
             // Create the return object
             Vector2 pos = new Vector2(x, y);
-            var ret = new SelectCharacterQueryValues(id, templateID, name, mapIndex, pos, body, level, exp, expSpent, cash, hp, mp, stats);
+            var ret = new SelectCharacterQueryValues(id, templateID, name, mapIndex, pos, body, level, exp, statpoints, cash, hp, mp, stats);
             return ret;
         }
     }

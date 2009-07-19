@@ -18,6 +18,27 @@ namespace DemoGame.Server
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        public static PacketWriter SetExp(uint exp)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetExp);
+            pw.Write(exp);
+            return pw;
+        }
+
+        public static PacketWriter SetCash(uint cash)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetCash);
+            pw.Write(cash);
+            return pw;
+        }
+
+        public static PacketWriter SetLevel(byte level)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetLevel);
+            pw.Write(level);
+            return pw;
+        }
+
         public static PacketWriter CharAttack(MapEntityIndex mapEntityIndex)
         {
             PacketWriter pw = GetWriter(ServerPacketID.CharAttack);
@@ -30,6 +51,13 @@ namespace DemoGame.Server
             PacketWriter pw = GetWriter(ServerPacketID.CharDamage);
             pw.Write(mapEntityIndex);
             pw.Write(damage);
+            return pw;
+        }
+
+        public static PacketWriter SetStatPoints(uint statPoints)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetStatPoints);
+            pw.Write(statPoints);
             return pw;
         }
 

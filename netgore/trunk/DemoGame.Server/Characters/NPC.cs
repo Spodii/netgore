@@ -125,26 +125,12 @@ namespace DemoGame.Server
             _inventory = new NPCInventory(this);
             _equipped = new NPCEquipped(this);
 
-            // Set up the NPC
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
-            Name = template.Name;
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
-            Alliance = template.Alliance;
-            BodyInfo = GameData.Body(template.BodyIndex);
-            TemplateID = template.ID;
-            CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
-
             // Create the AI
             if (!string.IsNullOrEmpty(template.AIName))
                 SetAI(template.AIName);
 
-            // Create and copy over the stats
-            BaseStats.CopyStatValuesFrom(template.StatValues, true);
-
-            HP = (SPValueType)ModStats[StatType.MaxHP];
-            MP = (SPValueType)ModStats[StatType.MaxMP];
-
             // Set the rest of the template stuff
+            Load(template);
             _respawnSecs = template.RespawnSecs;
             _giveExp = template.GiveExp;
             _giveCash = template.GiveCash;

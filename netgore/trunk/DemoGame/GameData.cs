@@ -168,20 +168,20 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Checks if a password is valid
+        /// Checks if a password is valid.
         /// </summary>
-        /// <param name="name">Name of the character</param>
-        /// <returns>True if valid, else false</returns>
+        /// <param name="name">Name of the character.</param>
+        /// <returns>True if valid, else false.</returns>
         public static bool IsValidPassword(string name)
         {
             return _namePassRegex.IsMatch(name);
         }
 
         /// <summary>
-        /// Gets the experience required for a given level
+        /// Gets the experience required for a given level.
         /// </summary>
-        /// <param name="x">Level to check (current level)</param>
-        /// <returns>Experience required for the given level</returns>
+        /// <param name="x">Level to check (current level).</param>
+        /// <returns>Experience required for the given level.</returns>
         public static uint LevelCost(uint x)
         {
             uint z = x + 1;
@@ -199,14 +199,13 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the experience required for a given stat level
+        /// Gets the experience required for a given stat level.
         /// </summary>
-        /// <param name="x">Stat level to check (current stat level)</param>
-        /// <returns>Experience required for the given stat level</returns>
-        public static int StatCost(int x)
+        /// <param name="x">Stat level to check (current stat level).</param>
+        /// <returns>Experience required for the given stat level.</returns>
+        public static uint StatCost(int x)
         {
-            float y = 5f + 3.5f * (float)Math.Pow(x, 2f + x * 0.001f);
-            return (int)y;
+            return (uint)((x / 10) + 1);
         }
 
         /// <summary>

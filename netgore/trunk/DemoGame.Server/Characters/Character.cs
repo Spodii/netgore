@@ -53,6 +53,8 @@ namespace DemoGame.Server
 
     public delegate void CharacterChangeSPEventHandler(Character character, SPValueType oldValue, SPValueType newValue);
 
+    public delegate void CharacterStatPointsEventHandler(Character character, uint oldValue, uint newValue);
+
     /// <summary>
     /// A game character
     /// </summary>
@@ -72,6 +74,7 @@ namespace DemoGame.Server
         readonly CharacterStatsBase _baseStats;
         readonly bool _isPersistent;
         readonly CharacterStatsBase _modStats;
+        readonly CharacterSPSynchronizer _spSync;
 
         readonly World _world;
 
@@ -82,7 +85,7 @@ namespace DemoGame.Server
 
         uint _cash;
         uint _exp;
-        uint _expSpent;
+        SPValueType _hp;
         CharacterID _id;
 
         /// <summary>
@@ -104,6 +107,8 @@ namespace DemoGame.Server
         /// </summary>
         Map _map;
 
+        SPValueType _mp;
+
         /// <summary>
         /// Name of the character.
         /// </summary>
@@ -111,81 +116,13 @@ namespace DemoGame.Server
 
         uint _nextLevelExp;
 
-        SPValueType _hp;
-
-        public SPValueType HP
-        {
-            get
-            {
-                return _hp;
-            }
-            set
-            {
-                // Get the new value, ensuring it is in a valid range
-                var max = ModStats[StatType.MaxHP];
-                SPValueType newValue;
-                if (value > max)
-                    newValue = (SPValueType)max;
-                else if (value < 0)
-                    newValue = 0;
-                else
-                    newValue = value;
-
-                // Check that the value has changed
-                var oldValue = _hp;
-                if (newValue == oldValue)
-                    return;
-
-                // Apply new value
-                _hp = newValue;
-
-                if (OnChangeHP != null)
-                    OnChangeHP(this, oldValue, _hp);
-
-                if (_hp <= 0)
-                    Kill();
-            }
-        }
-
-        SPValueType _mp;
-
-        public SPValueType MP
-        {
-            get { return _mp; }
-            set
-            {
-                // Get the new value, ensuring it is in a valid range
-                var max = ModStats[StatType.MaxMP];
-                SPValueType newValue;
-                if (value > max)
-                    newValue = (SPValueType)max;
-                else if (value < 0)
-                    newValue = 0;
-                else
-                    newValue = value;
-
-                // Check that the value has changed
-                var oldValue = _mp;
-                if (newValue == oldValue)
-                    return;
-
-                // Apply new value
-                _mp = newValue;
-
-                if (OnChangeMP != null)
-                    OnChangeMP(this, oldValue, _mp);
-            }
-        }
-
-        public event CharacterChangeSPEventHandler OnChangeHP;
-
-        public event CharacterChangeSPEventHandler OnChangeMP;
-
         /// <summary>
         /// Lets us know if we have saved the Character since they have been updated. Used to ensure saves aren't
         /// called back-to-back without any values changing in-between.
         /// </summary>
         bool _saved = false;
+
+        uint _statPoints;
 
         CharacterTemplateID? _templateID;
 
@@ -207,8 +144,10 @@ namespace DemoGame.Server
 
         public event CharacterCashEventHandler OnChangeCash;
         public event CharacterExpEventHandler OnChangeExp;
-        public event CharacterExpEventHandler OnChangeExpSpent;
+        public event CharacterChangeSPEventHandler OnChangeHP;
         public event CharacterLevelEventHandler OnChangeLevel;
+        public event CharacterChangeSPEventHandler OnChangeMP;
+        public event CharacterStatPointsEventHandler OnChangeStatPoints;
 
         /// <summary>
         /// Notifies listeners when the Character's TemplateID has changed.
@@ -295,6 +234,9 @@ namespace DemoGame.Server
         /// </summary>
         public abstract CharacterEquipped Equipped { get; }
 
+        /// <summary>
+        /// Gets the amount of experience the Character has.
+        /// </summary>
         public uint Exp
         {
             get { return _exp; }
@@ -308,22 +250,53 @@ namespace DemoGame.Server
 
                 if (OnChangeExp != null)
                     OnChangeExp(this, oldValue, _exp);
+
+                // Check if this change in experience has made the Character level
+                while (_exp >= _nextLevelExp)
+                {
+                    LevelUp();
+                }
             }
         }
 
-        public uint ExpSpent
+        /// <summary>
+        /// Makes the Character's level increase. Does not alter the experience in any way since it is assume that,
+        /// when this is called, the Character already has enough experience for the next level.
+        /// </summary>
+        protected virtual void LevelUp()
         {
-            get { return _expSpent; }
-            private set
+            Level++;
+            StatPoints += 5;
+        }
+
+        public SPValueType HP
+        {
+            get { return _hp; }
+            set
             {
-                if (_expSpent == value)
+                // Get the new value, ensuring it is in a valid range
+                int max = ModStats[StatType.MaxHP];
+                SPValueType newValue;
+                if (value > max)
+                    newValue = (SPValueType)max;
+                else if (value < 0)
+                    newValue = 0;
+                else
+                    newValue = value;
+
+                // Check that the value has changed
+                SPValueType oldValue = _hp;
+                if (newValue == oldValue)
                     return;
 
-                uint oldValue = _expSpent;
-                _expSpent = value;
+                // Apply new value
+                _hp = newValue;
 
-                if (OnChangeExpSpent != null)
-                    OnChangeExpSpent(this, oldValue, _expSpent);
+                if (OnChangeHP != null)
+                    OnChangeHP(this, oldValue, _hp);
+
+                if (_hp <= 0)
+                    Kill();
             }
         }
 
@@ -397,7 +370,33 @@ namespace DemoGame.Server
             get { return _modStats; }
         }
 
-        readonly CharacterSPSynchronizer _spSync;
+        public SPValueType MP
+        {
+            get { return _mp; }
+            set
+            {
+                // Get the new value, ensuring it is in a valid range
+                int max = ModStats[StatType.MaxMP];
+                SPValueType newValue;
+                if (value > max)
+                    newValue = (SPValueType)max;
+                else if (value < 0)
+                    newValue = 0;
+                else
+                    newValue = value;
+
+                // Check that the value has changed
+                SPValueType oldValue = _mp;
+                if (newValue == oldValue)
+                    return;
+
+                // Apply new value
+                _mp = newValue;
+
+                if (OnChangeMP != null)
+                    OnChangeMP(this, oldValue, _mp);
+            }
+        }
 
         /// <summary>
         /// Gets or sets the name of the character.
@@ -425,9 +424,24 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Gets the number of points the Character can spend on stats.
+        /// </summary>
         public uint StatPoints
         {
-            get { return Exp - ExpSpent; }
+            get { return _statPoints; }
+            private set
+            {
+                // TODO: Synchronize User's StatPoints
+                if (_statPoints == value)
+                    return;
+
+                uint oldValue = _statPoints;
+                _statPoints = value;
+
+                if (OnChangeStatPoints != null)
+                    OnChangeStatPoints(this, oldValue, _statPoints);
+            }
         }
 
         /// <summary>
@@ -480,11 +494,6 @@ namespace DemoGame.Server
             _modStats = CreateStats(StatCollectionType.Modified);
             _spSync = CreateSPSynchronizer();
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
-        }
-
-        protected virtual CharacterSPSynchronizer CreateSPSynchronizer()
-        {
-            return new CharacterSPSynchronizer(this);
         }
 
         /// <summary>
@@ -579,6 +588,11 @@ namespace DemoGame.Server
             // Set the Character's new map
             if (newMap != null)
                 newMap.AddEntity(this);
+        }
+
+        protected virtual CharacterSPSynchronizer CreateSPSynchronizer()
+        {
+            return new CharacterSPSynchronizer(this);
         }
 
         protected abstract CharacterStatsBase CreateStats(StatCollectionType statCollectionType);
@@ -753,11 +767,11 @@ namespace DemoGame.Server
 
             // Set the character information
             _level = v.Level;
-            _expSpent = v.ExpSpent;
             _exp = v.Exp;
             _cash = v.Cash;
             _hp = v.HP;
             _mp = v.MP;
+            StatPoints = v.StatPoints;
 
             // Load the stats
             _baseStats.CopyStatValuesFrom(v.Stats, true);
@@ -843,6 +857,20 @@ namespace DemoGame.Server
             InternalLoad(values);
         }
 
+        protected void Load(CharacterTemplate template)
+        {
+            Name = template.Name;
+            Alliance = template.Alliance;
+            BodyInfo = GameData.Body(template.BodyIndex);
+            TemplateID = template.ID;
+            CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
+            _level = template.Level;
+            _exp = template.Exp;
+            _statPoints = template.StatPoints;
+
+            BaseStats.CopyStatValuesFrom(template.StatValues, true);
+        }
+
         /// <summary>
         /// Starts moving the character to the left
         /// </summary>
@@ -872,17 +900,19 @@ namespace DemoGame.Server
         /// <param name="st">StatType of the stat to raise.</param>
         public void RaiseStat(StatType st)
         {
-            int cost = GameData.StatCost(BaseStats[st]);
+            uint cost = GameData.StatCost(BaseStats[st]);
 
             if (StatPoints <= cost)
             {
-                const string errmsg = "User `{0}` tried to raise stat `{1}`, but only has {2} of {3} points needed.";
+                const string errmsg = "Character `{0}` tried to raise stat `{1}`, but only has `{2}` of `{3}` needed points.";
                 Debug.Fail(string.Format(errmsg, this, st, StatPoints, cost));
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, this, st, StatPoints, cost);
                 return;
             }
 
             BaseStats[st]++;
-            _expSpent += (uint)cost;
+            StatPoints -= cost;
         }
 
         /// <summary>
@@ -915,6 +945,8 @@ namespace DemoGame.Server
         {
             Debug.Assert(!_isLoaded, "SetAsLoaded() has already been called on this Character.");
             _isLoaded = true;
+
+            _nextLevelExp = GameData.LevelCost(_level);
         }
 
         /// <summary>
