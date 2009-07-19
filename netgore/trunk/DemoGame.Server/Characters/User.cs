@@ -9,8 +9,6 @@ using NetGore;
 using NetGore.IO;
 using NetGore.Network;
 
-// TODO: Once the NPCs have Inventory support, move all the inventory-related shit into Character
-
 namespace DemoGame.Server
 {
     /// <summary>
@@ -25,8 +23,6 @@ namespace DemoGame.Server
         /// </summary>
         readonly IIPSocket _conn;
 
-        readonly UserEquipped _equipped;
-        readonly UserInventory _inventory;
         readonly SocketSendQueue _unreliableBuffer;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
@@ -39,23 +35,12 @@ namespace DemoGame.Server
             get { return _conn; }
         }
 
-        public override CharacterEquipped Equipped
-        {
-            get { return _equipped; }
-        }
-
-        /// <summary>
-        /// Gets the Character's Inventory.
-        /// </summary>
-        public override CharacterInventory Inventory
-        {
-            get { return _inventory; }
-        }
-
         [Obsolete("Do not use this empty constructor on the Server!")]
         public User()
         {
         }
+
+        readonly UserInventory _userInventory;
 
         /// <summary>
         /// User constructor.
@@ -77,8 +62,6 @@ namespace DemoGame.Server
 
             // Create some objects
             _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
-            _inventory = new UserInventory(this);
-            _equipped = new UserEquipped(this);
 
             // Load the character data
             Load(name);
@@ -92,6 +75,8 @@ namespace DemoGame.Server
             OnChangeExp += User_OnChangeExp;
             OnChangeCash += User_OnChangeCash;
             OnChangeLevel += User_OnChangeLevel;
+
+            _userInventory = (UserInventory)Inventory;
 
             // Activate the user
             IsAlive = true;
@@ -121,6 +106,16 @@ namespace DemoGame.Server
                 Send(pw);
         }
 
+        protected override CharacterInventory CreateInventory()
+        {
+            return new UserInventory(this);
+        }
+
+        protected override CharacterEquipped CreateEquipped()
+        {
+            return new UserEquipped(this);
+        }
+
         protected override CharacterSPSynchronizer CreateSPSynchronizer()
         {
             return new UserSPSynchronizer(this);
@@ -144,7 +139,7 @@ namespace DemoGame.Server
         public bool Equip(InventorySlot inventorySlot)
         {
             // Get the item from the inventory
-            ItemEntity item = _inventory[inventorySlot];
+            ItemEntity item = Inventory[inventorySlot];
 
             // Do not try to equip null items
             if (item == null)
@@ -245,42 +240,13 @@ namespace DemoGame.Server
             }
         }
 
-        public override ItemEntity GiveItem(ItemEntity item)
+        protected override void AfterGiveItem(ItemEntity item, byte amount)
         {
-            if (item == null)
-            {
-                Debug.Fail("Item is null.");
-                return null;
-            }
-
-            Debug.Assert(item.Amount != 0, "Invalid item amount.");
-
-            // Add as much of the item to the inventory as we can
-            byte startAmount = item.Amount;
-            ItemEntity remainder = _inventory.Add(item);
-
-            // Check how much was added
-            byte amountAdded;
-            if (remainder == null)
-                amountAdded = startAmount;
-            else
-            {
-                Debug.Assert(startAmount >= item.Amount, "Somehow the startAmount is less than the current amount of items.");
-                Debug.Assert(startAmount - item.Amount >= 0, "Negative item amount given...?");
-                amountAdded = (byte)(startAmount - item.Amount);
-            }
-
             // If any was added, send the notification
-            if (amountAdded > 0)
+            using (PacketWriter pw = ServerPacket.NotifyGetItem(item.Name, amount))
             {
-                using (PacketWriter pw = ServerPacket.NotifyGetItem(item.Name, amountAdded))
-                {
-                    Send(pw);
-                }
+                Send(pw);
             }
-
-            // Return the remainder
-            return remainder;
         }
 
         protected override void GiveKillReward(uint exp, uint cash)
@@ -423,7 +389,7 @@ namespace DemoGame.Server
             }
 
             // Get the item
-            ItemEntity item = _equipped[slot];
+            ItemEntity item = Equipped[slot];
             if (item == null)
             {
                 const string errmsg = "User `{0}` requested info for equipment slot `{1}`, but the slot has no item.";
@@ -456,7 +422,7 @@ namespace DemoGame.Server
             }
 
             // Get the item
-            ItemEntity item = _inventory[slot];
+            ItemEntity item = Inventory[slot];
             if (item == null)
             {
                 const string errmsg = "User `{0}` requested info for inventory slot `{1}`, but the slot has no item.";
@@ -495,13 +461,13 @@ namespace DemoGame.Server
             _userStatsMod.UpdateClient();
 
             // Synchronize the Inventory
-            _inventory.UpdateClient();
+            _userInventory.UpdateClient();
         }
 
         public void UseInventoryItem(InventorySlot slot)
         {
             // Get the item to use
-            ItemEntity item = _inventory[slot];
+            ItemEntity item = Inventory[slot];
             if (item == null)
             {
                 const string errmsg = "Tried to use inventory slot `{0}`, but it contains no item.";
@@ -523,15 +489,14 @@ namespace DemoGame.Server
                         log.ErrorFormat(errmsg, item, slot);
 
                     // Destroy the item
-                    _inventory.RemoveAt(slot);
+                    Inventory.RemoveAt(slot);
                     item.Dispose();
                 }
             }
 
             // Lower the count of use-once items
-            // NOTE: Once I hook to the item's amount in the inventory to listen for changes, I can put this in UseItem()
             if (item.Type == ItemType.UseOnce)
-                _inventory.DecreaseItemAmount(slot);
+                Inventory.DecreaseItemAmount(slot);
         }
 
         void User_OnChangeStatPoints(Character character, uint oldValue, uint newValue)
