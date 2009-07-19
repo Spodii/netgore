@@ -344,7 +344,8 @@ namespace NetGore
             }
 
             // The number of parameters can only be less than the number of args if the last parameter is a string
-            if (parameters.Length < args.Length && parameters.Last().ParameterType != typeof(string))
+            var lastParameter = parameters.LastOrDefault();
+            if (parameters.Length < args.Length && (lastParameter == null || lastParameter.ParameterType != typeof(string)))
             {
                 result = string.Empty;
                 return false;
