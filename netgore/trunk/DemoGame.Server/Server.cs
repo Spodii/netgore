@@ -217,7 +217,7 @@ namespace DemoGame.Server
                 string input = Console.ReadLine();
                 string resultStr = consoleCommands.ExecuteCommand(input);
                 if (!string.IsNullOrEmpty(resultStr))
-                    Console.WriteLine(" - " + resultStr);
+                    Console.WriteLine(resultStr);
             }
         }
 
