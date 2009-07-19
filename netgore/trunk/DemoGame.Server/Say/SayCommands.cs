@@ -71,6 +71,12 @@ namespace DemoGame.Server
             }
         }
 
+        [SayCommand("Suicide")]
+        public void Suicide()
+        {
+            User.Kill();
+        }
+
         [SayCommand("Tell")]
         [SayCommand("Whisper")]
         public void CmdTell(string userName, string message)

@@ -19,10 +19,13 @@ namespace DemoGame.Server.Queries
         public readonly SPValueType HP;
         public readonly SPValueType MP;
         public readonly uint StatPoints;
+        public readonly MapIndex? RespawnMapIndex;
+        public readonly Vector2 RespawnPosition;
 
         public SelectCharacterQueryValues(CharacterID id, CharacterTemplateID? templateID, string name, MapIndex mapIndex,
                                           Vector2 position, BodyIndex bodyIndex, byte level, uint exp, uint statpoints, uint cash,
-                                          SPValueType hp, SPValueType mp, IEnumerable<StatTypeValue> stats)
+                                          SPValueType hp, SPValueType mp, MapIndex? respawnMapIndex, Vector2 respawnPosition,
+                                            IEnumerable<StatTypeValue> stats)
         {
             Name = name;
             ID = id;
@@ -37,6 +40,8 @@ namespace DemoGame.Server.Queries
             Cash = cash;
             HP = hp;
             MP = mp;
+            RespawnMapIndex = respawnMapIndex;
+            RespawnPosition = respawnPosition;
         }
     }
 }

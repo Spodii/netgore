@@ -20,7 +20,7 @@ namespace DemoGame.Server.Queries
             StatDBFields = StatsQueryHelper.GetStatTypeFields(StatFactory.AllStats, StatCollectionType.Base);
 
             NonStatDBFields = new string[] { "body", "id", "template_id", "map", "name", "x", "y", "hp", "mp", "level",
-                "exp", "statpoints" };
+                "exp", "statpoints", "respawn_map", "respawn_x", "respawn_y" };
 
             AllDBFields = StatDBFields.Select(x => x.Field).Concat(NonStatDBFields).ToArray();
         }
@@ -42,12 +42,17 @@ namespace DemoGame.Server.Queries
             SPValueType hp = r.GetSPValueType("hp");
             SPValueType mp = r.GetSPValueType("mp");
 
+            MapIndex? respawnMap = r.GetMapIndexNullable("respawn_map");
+            float respawnX = r.GetFloat("respawn_x");
+            float respawnY = r.GetFloat("respawn_y");
+
             // Read the user's stats
             var stats = StatsQueryHelper.ReadStatValues(r, StatDBFields);
 
             // Create the return object
             Vector2 pos = new Vector2(x, y);
-            var ret = new SelectCharacterQueryValues(id, templateID, name, mapIndex, pos, body, level, exp, statpoints, cash, hp, mp, stats);
+            Vector2 respawnPos = new Vector2(respawnX, respawnY);
+            var ret = new SelectCharacterQueryValues(id, templateID, name, mapIndex, pos, body, level, exp, statpoints, cash, hp, mp, respawnMap, respawnPos, stats);
             return ret;
         }
     }

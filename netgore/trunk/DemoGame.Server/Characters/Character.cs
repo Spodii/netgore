@@ -58,7 +58,7 @@ namespace DemoGame.Server
     /// <summary>
     /// A game character
     /// </summary>
-    public abstract class Character : CharacterEntity, IGetTime
+    public abstract class Character : CharacterEntity, IGetTime, IRespawnable
     {
         /// <summary>
         /// Amount of time the character must wait between attacks
@@ -72,6 +72,8 @@ namespace DemoGame.Server
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly CharacterStatsBase _baseStats;
+        readonly CharacterEquipped _equipped;
+        readonly CharacterInventory _inventory;
         readonly bool _isPersistent;
         readonly CharacterStatsBase _modStats;
         readonly CharacterSPSynchronizer _spSync;
@@ -232,7 +234,10 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the Character's equipped items.
         /// </summary>
-        public CharacterEquipped Equipped { get { return _equipped; } }
+        public CharacterEquipped Equipped
+        {
+            get { return _equipped; }
+        }
 
         /// <summary>
         /// Gets the amount of experience the Character has.
@@ -257,16 +262,6 @@ namespace DemoGame.Server
                     LevelUp();
                 }
             }
-        }
-
-        /// <summary>
-        /// Makes the Character's level increase. Does not alter the experience in any way since it is assume that,
-        /// when this is called, the Character already has enough experience for the next level.
-        /// </summary>
-        protected virtual void LevelUp()
-        {
-            Level++;
-            StatPoints += 5;
         }
 
         public SPValueType HP
@@ -308,7 +303,10 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the Character's Inventory.
         /// </summary>
-        public CharacterInventory Inventory { get { return _inventory; } }
+        public CharacterInventory Inventory
+        {
+            get { return _inventory; }
+        }
 
         /// <summary>
         /// Gets or sets (protected) if the Character is currently alive.
@@ -357,12 +355,17 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets or sets the map the character is currently on.
+        /// Gets the Map the Character is currently on. This value can be null if the Character is not currently
+        /// on a Map.
         /// </summary>
         public Map Map
         {
             get { return _map; }
-            internal set { _map = value; }
+            internal set
+            {
+                // TODO: It would be best if I could find a way to make this setting private...
+                _map = value;
+            }
         }
 
         public CharacterStatsBase ModStats
@@ -425,6 +428,17 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets or sets the index of the Map the Character will respawn on.
+        /// </summary>
+        public MapIndex? RespawnMapIndex { get; set; }
+
+        /// <summary>
+        /// Gets or sets where the Character will respawn in their respawn map. Only valid if the
+        /// RespawnMapIndex is set to a non-null value.
+        /// </summary>
+        public Vector2 RespawnPosition { get; set; }
+
+        /// <summary>
         /// Gets the number of points the Character can spend on stats.
         /// </summary>
         public uint StatPoints
@@ -464,7 +478,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the world the NPC belongs to.
+        /// Gets the world the Character is in.
         /// </summary>
         public World World
         {
@@ -497,12 +511,15 @@ namespace DemoGame.Server
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
-        readonly CharacterEquipped _equipped;
-        readonly CharacterInventory _inventory;
-
-        protected abstract CharacterInventory CreateInventory();
-
-        protected abstract CharacterEquipped CreateEquipped();
+        /// <summary>
+        /// When overridden in the derived class, lets the Character handle being given items through GiveItem().
+        /// </summary>
+        /// <param name="item">The item the Character was given.</param>
+        /// <param name="amount">The amount of the <paramref name="item"/> the Character was given. Will be greater
+        /// than 0.</param>
+        protected virtual void AfterGiveItem(ItemEntity item, byte amount)
+        {
+        }
 
         /// <summary>
         /// Makes the character perform an attack.
@@ -600,6 +617,18 @@ namespace DemoGame.Server
             _spSync.ForceSynchronize();
         }
 
+        /// <summary>
+        /// When overridden in the derived class, checks if enough time has elapesd since the Character died
+        /// for them to be able to respawn.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
+        /// <returns>True if enough time has elapsed; otherwise false.</returns>
+        protected abstract bool CheckRespawnElapsedTime(int currentTime);
+
+        protected abstract CharacterEquipped CreateEquipped();
+
+        protected abstract CharacterInventory CreateInventory();
+
         protected virtual CharacterSPSynchronizer CreateSPSynchronizer()
         {
             return new CharacterSPSynchronizer(this);
@@ -652,7 +681,7 @@ namespace DemoGame.Server
         /// </summary>
         public void DelayedDispose()
         {
-            var stack = Map.World.DisposeStack;
+            var stack = World.DisposeStack;
             if (!stack.Contains(this))
                 stack.Push(this);
         }
@@ -784,16 +813,6 @@ namespace DemoGame.Server
             return remainder;
         }
 
-        /// <summary>
-        /// When overridden in the derived class, lets the Character handle being given items through GiveItem().
-        /// </summary>
-        /// <param name="item">The item the Character was given.</param>
-        /// <param name="amount">The amount of the <paramref name="item"/> the Character was given. Will be greater
-        /// than 0.</param>
-        protected virtual void AfterGiveItem(ItemEntity item, byte amount)
-        {
-        }
-
         protected virtual void GiveKillReward(uint exp, uint cash)
         {
             Exp += exp;
@@ -813,53 +832,6 @@ namespace DemoGame.Server
                 Inventory.Dispose();
 
             base.HandleDispose();
-        }
-
-        void InternalLoad(SelectCharacterQueryValues v)
-        {
-            Name = v.Name;
-            _id = v.ID;
-            _templateID = v.TemplateID;
-
-            BodyInfo = GameData.Body(v.BodyIndex);
-            CB = new CollisionBox(v.Position, BodyInfo.Width, BodyInfo.Height);
-
-            // Set the character information
-            _level = v.Level;
-            _exp = v.Exp;
-            _cash = v.Cash;
-            _hp = v.HP;
-            _mp = v.MP;
-            StatPoints = v.StatPoints;
-
-            // Load the stats
-            _baseStats.CopyStatValuesFrom(v.Stats, true);
-
-            // Set the Map and, if a User, add them to the World
-            Map m = World.GetMap(v.MapIndex);
-            // TODO: We can recover when a NPC's map is invalid at least...
-            if (m == null)
-                throw new Exception(string.Format("Unable to get Map with index `{0}`.", v.MapIndex));
-
-            User asUser = this as User;
-            if (asUser != null)
-                World.AddUser(asUser);
-
-            // HACK: The Respawn Map should be coming from the SelectCharacterQueryValues
-            if (this is NPC)
-                ((NPC)this).RespawnMap = m;
-
-            ChangeMap(m);
-
-            // Load the Character's items
-            Inventory.Load();
-            Equipped.Load();
-
-            // Update the mod stats
-            UpdateModStats();
-
-            // Mark the Character as loaded
-            SetAsLoaded();
         }
 
         /// <summary>
@@ -904,16 +876,26 @@ namespace DemoGame.Server
                 OnKilled(this);
         }
 
+        /// <summary>
+        /// Makes the Character's level increase. Does not alter the experience in any way since it is assume that,
+        /// when this is called, the Character already has enough experience for the next level.
+        /// </summary>
+        protected virtual void LevelUp()
+        {
+            Level++;
+            StatPoints += 5;
+        }
+
         protected void Load(CharacterID characterID)
         {
             SelectCharacterQueryValues values = DBController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
-            InternalLoad(values);
+            LoadFromQueryValues(values);
         }
 
         protected void Load(string characterName)
         {
             SelectCharacterQueryValues values = DBController.GetQuery<SelectCharacterQuery>().Execute(characterName);
-            InternalLoad(values);
+            LoadFromQueryValues(values);
         }
 
         protected void Load(CharacterTemplate template)
@@ -930,6 +912,51 @@ namespace DemoGame.Server
             BaseStats.CopyStatValuesFrom(template.StatValues, true);
         }
 
+        void LoadFromQueryValues(SelectCharacterQueryValues v)
+        {
+            Name = v.Name;
+            _id = v.ID;
+            _templateID = v.TemplateID;
+
+            BodyInfo = GameData.Body(v.BodyIndex);
+            CB = new CollisionBox(v.Position, BodyInfo.Width, BodyInfo.Height);
+
+            // Set the character information
+            _level = v.Level;
+            _exp = v.Exp;
+            _cash = v.Cash;
+            _hp = v.HP;
+            _mp = v.MP;
+            RespawnMapIndex = v.RespawnMapIndex;
+            RespawnPosition = v.RespawnPosition;
+            StatPoints = v.StatPoints;
+
+            // Load the stats
+            _baseStats.CopyStatValuesFrom(v.Stats, true);
+
+            // Set the Map and, if a User, add them to the World
+            Map m = World.GetMap(v.MapIndex);
+            // TODO: We can recover when a NPC's map is invalid at least... See bug: http://netgore.com/bugs/view.php?id=103
+            if (m == null)
+                throw new Exception(string.Format("Unable to get Map with index `{0}`.", v.MapIndex));
+
+            User asUser = this as User;
+            if (asUser != null)
+                World.AddUser(asUser);
+
+            ChangeMap(m);
+
+            // Load the Character's items
+            Inventory.Load();
+            Equipped.Load();
+
+            // Update the mod stats
+            UpdateModStats();
+
+            // Mark the Character as loaded
+            SetAsLoaded();
+        }
+
         /// <summary>
         /// Starts moving the character to the left
         /// </summary>
@@ -939,6 +966,7 @@ namespace DemoGame.Server
                 return;
 
             SetVelocity(Velocity + new Vector2(-0.18f, 0.0f));
+                // HACK: Constant speed value. Be careful, I think this constant is in a few places...
         }
 
         /// <summary>
@@ -950,6 +978,7 @@ namespace DemoGame.Server
                 return;
 
             SetVelocity(Velocity + new Vector2(0.18f, 0.0f));
+                // HACK: Constant speed value. Be careful, I think this constant is in a few places...
         }
 
         /// <summary>
@@ -1038,13 +1067,20 @@ namespace DemoGame.Server
             base.Teleport(position);
         }
 
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
             return string.Format("{0} [ID: {1}, Type: {2}]", Name, ID, GetType().Name);
         }
 
         /// <summary>
-        /// Updates the character and their state.
+        /// Updates the Character and their state.
         /// </summary>
         public override void Update(IMap imap, float deltaTime)
         {
@@ -1177,6 +1213,60 @@ namespace DemoGame.Server
         public int GetTime()
         {
             return World.GetTime();
+        }
+
+        #endregion
+
+        #region IRespawnable Members
+
+        bool IRespawnable.ReadyToRespawn(int currentTime)
+        {
+            return IsAlive || CheckRespawnElapsedTime(currentTime);
+        }
+
+        void IRespawnable.Respawn()
+        {
+            UpdateModStats();
+
+            // Restore the NPC's stats
+            HP = (SPValueType)ModStats[StatType.MaxHP];
+            MP = (SPValueType)ModStats[StatType.MaxMP];
+
+            // Set the NPC's new location
+            Teleport(RespawnPosition);
+
+            // Set the NPC as alive
+            IsAlive = true;
+
+            // Set the map
+            if (!RespawnMapIndex.HasValue)
+            {
+                // If the respawn map is invalid, there is nothing we can do to spawn it, so dispose of it
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Disposing character `{0}` since they had no respawn map.");
+
+                Debug.Assert(!IsDisposed);
+                DelayedDispose();
+            }
+            else
+            {
+                Map respawnMap = World.GetMap(RespawnMapIndex.Value);
+                if (respawnMap == null)
+                {
+                    // TODO: Invalid respawn map? If a User, log them out. If a NPC... Dispose of it? In either case, a log.Fatal() is needed.
+                    Debug.Fail("...");
+                }
+                else
+                {
+                    // Move the Character to their respawn map
+                    ChangeMap(respawnMap);
+                }
+            }
+        }
+
+        DynamicEntity IRespawnable.DynamicEntity
+        {
+            get { return this; }
         }
 
         #endregion

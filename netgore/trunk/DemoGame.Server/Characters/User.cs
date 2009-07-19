@@ -464,6 +464,18 @@ namespace DemoGame.Server
             _userInventory.UpdateClient();
         }
 
+        /// <summary>
+        /// When overridden in the derived class, checks if enough time has elapesd since the Character died
+        /// for them to be able to respawn.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
+        /// <returns>True if enough time has elapsed; otherwise false.</returns>
+        protected override bool CheckRespawnElapsedTime(int currentTime)
+        {
+            // Users don't need to wait for nuttin'!
+            return true;
+        }
+
         public void UseInventoryItem(InventorySlot slot)
         {
             // Get the item to use

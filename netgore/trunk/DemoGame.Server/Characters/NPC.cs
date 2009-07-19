@@ -11,7 +11,7 @@ namespace DemoGame.Server
     /// <summary>
     /// A non-player character
     /// </summary>
-    public class NPC : Character, IRespawnable
+    public class NPC : Character
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -19,7 +19,6 @@ namespace DemoGame.Server
 
         ushort _giveCash;
         ushort _giveExp;
-
         ushort _respawnSecs;
 
         /// <summary>
@@ -48,11 +47,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets or sets the Map the NPC will respawn on after dying.
-        /// </summary>
-        public Map RespawnMap { get; set; }
-
-        /// <summary>
         /// Gets or sets (protected) the amount of time it takes (in milliseconds) for the NPC to respawn.
         /// </summary>
         public ushort RespawnSecs
@@ -67,7 +61,7 @@ namespace DemoGame.Server
 // ReSharper disable MemberCanBeMadeStatic.Global
         public bool WillRespawn // ReSharper restore MemberCanBeMadeStatic.Global
         {
-            get { return RespawnMap != null; }
+            get { return RespawnMapIndex.HasValue; }
         }
 
         [Obsolete("Do not use this empty constructor on the Server!")]
@@ -92,27 +86,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Loads additional information for a persistent NPC from their CharacterTemplate, if they have one.
-        /// </summary>
-        void LoadPersistentNPCTemplateInfo()
-        {
-            if (!TemplateID.HasValue)
-                return;
-
-            var template = CharacterTemplateManager.GetTemplate(TemplateID.Value);
-            if (template == null)
-                return;
-
-            _giveCash = template.GiveCash;
-            _giveExp = template.GiveExp;
-        }
-
-        /// <summary>
-        /// NPC constructor
+        /// NPC constructor.
         /// </summary>
         /// <param name="parent">World that the NPC belongs to.</param>
         /// <param name="template">NPCTemplate used to create the NPC.</param>
-        public NPC(World parent, CharacterTemplate template) : base(parent, false)
+        public NPC(World parent, CharacterTemplate template, Map map, Vector2 position) : base(parent, false)
         {
             if (parent == null)
                 throw new ArgumentNullException("parent");
@@ -129,6 +107,9 @@ namespace DemoGame.Server
             _giveExp = template.GiveExp;
             _giveCash = template.GiveCash;
 
+            RespawnMapIndex = map.Index;
+            RespawnPosition = position;
+
             LoadSpawnItems();
 
             // Done loading
@@ -136,16 +117,33 @@ namespace DemoGame.Server
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created NPC instance from template `{0}`.", template);
+
+            // Spawn
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            Teleport(position);
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            ChangeMap(map);
         }
 
-        protected override CharacterInventory CreateInventory()
+        /// <summary>
+        /// When overridden in the derived class, checks if enough time has elapesd since the Character died
+        /// for them to be able to respawn.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
+        /// <returns>True if enough time has elapsed; otherwise false.</returns>
+        protected override bool CheckRespawnElapsedTime(int currentTime)
         {
-            return new NPCInventory(this);
+            return currentTime > _respawnTime;
         }
 
         protected override CharacterEquipped CreateEquipped()
         {
             return new NPCEquipped(this);
+        }
+
+        protected override CharacterInventory CreateInventory()
+        {
+            return new NPCInventory(this);
         }
 
         protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
@@ -170,22 +168,25 @@ namespace DemoGame.Server
                 Debug.Fail(string.Format(errmsg, this));
                 return;
             }
+
+            // Drop items
             if (Map == null)
             {
                 const string errmsg = "Attempted to kill NPC `{0}` with a null map.";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
-                return;
             }
-
-            // Drop items
-            foreach (var item in Inventory)
+            else
             {
-                Inventory.RemoveAt(item.Key);
-                DropItem(item.Value);
+                foreach (var item in Inventory)
+                {
+                    Inventory.RemoveAt(item.Key);
+                    DropItem(item.Value);
+                }
             }
 
+            // Remove equipment
             foreach (var item in Equipped)
             {
                 Equipped.RemoveAt(item.Key);
@@ -201,7 +202,7 @@ namespace DemoGame.Server
                 LoadSpawnItems();
 
                 ChangeMap(null);
-                RespawnMap.AddToRespawn(this);
+                World.AddToRespawn(this);
             }
             else
             {
@@ -209,6 +210,22 @@ namespace DemoGame.Server
                 Debug.Assert(!IsDisposed);
                 DelayedDispose();
             }
+        }
+
+        /// <summary>
+        /// Loads additional information for a persistent NPC from their CharacterTemplate, if they have one.
+        /// </summary>
+        void LoadPersistentNPCTemplateInfo()
+        {
+            if (!TemplateID.HasValue)
+                return;
+
+            CharacterTemplate template = CharacterTemplateManager.GetTemplate(TemplateID.Value);
+            if (template == null)
+                return;
+
+            _giveCash = template.GiveCash;
+            _giveExp = template.GiveExp;
         }
 
         /// <summary>
@@ -247,8 +264,7 @@ namespace DemoGame.Server
                         extraItems.Dispose();
                 }
             }
-            
-            
+
             if (spawnEquipment != null)
             {
                 foreach (CharacterTemplateEquipmentItem equippedItem in spawnEquipment)
@@ -256,7 +272,7 @@ namespace DemoGame.Server
                     ItemEntity item = equippedItem.CreateInstance();
                     if (item == null)
                         continue;
-                    
+
                     if (!Equipped.Equip(item))
                         item.Dispose();
                 }
@@ -309,52 +325,5 @@ namespace DemoGame.Server
             // Perform the base update of the character
             base.Update(imap, deltaTime);
         }
-
-        #region IRespawnable Members
-
-        public bool ReadyToRespawn(int currentTime)
-        {
-            return IsAlive || currentTime > _respawnTime;
-        }
-
-        void IRespawnable.Respawn()
-        {
-            UpdateModStats();
-
-            // Restore the NPC's stats
-            HP = (SPValueType)ModStats[StatType.MaxHP];
-            MP = (SPValueType)ModStats[StatType.MaxMP];
-
-            // Set the NPC's new location
-            Teleport(new Vector2(560f, 400f)); // HACK: Hard-coded spawn location
-
-            // Set the NPC as alive
-            IsAlive = true;
-
-            // Set the map
-            if (RespawnMap == null)
-            {
-                // If the respawn map is invalid, there is nothing we can do to spawn it, so dispose of it
-                const string errmsg = "Null respawn map for NPC `{0}`. Cannot respawn - disposing instead.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
-
-                Debug.Assert(!IsDisposed);
-                DelayedDispose();
-            }
-            else
-            {
-                if (RespawnMap != null)
-                    ChangeMap(RespawnMap);
-            }
-        }
-
-        DynamicEntity IRespawnable.DynamicEntity
-        {
-            get { return this; }
-        }
-
-        #endregion
     }
 }
