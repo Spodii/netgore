@@ -184,9 +184,7 @@ namespace DemoGame
         /// <returns>Experience required for the given level.</returns>
         public static uint LevelCost(uint x)
         {
-            uint z = x + 1;
-            uint y = 25 * z + 75 * (uint)Math.Pow(z, 2.1f + z * 0.003f);
-            return y;
+            return x * 30;
         }
 
         /// <summary>
