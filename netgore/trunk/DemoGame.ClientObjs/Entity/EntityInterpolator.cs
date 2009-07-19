@@ -88,15 +88,27 @@ namespace DemoGame.Client
             Vector2 newPosition = _drawPosition + (velocity * deltaTime);
 
             // Don't allow the draw position to exceed the real position
-            if (_drawPosition.X > position.X && newPosition.X < position.X)
-                newPosition.X = position.X;
-            else if (_drawPosition.X < position.X && newPosition.X > position.X)
-                newPosition.X = position.X;
+            if (_drawPosition.X >= position.X)
+            {
+                if (newPosition.X < position.X)
+                    newPosition.X = position.X;
+            }
+            else if (_drawPosition.X <= position.X)
+            {
+                if (newPosition.X > position.X)
+                    newPosition.X = position.X;
+            }
 
-            if (_drawPosition.Y > position.Y && newPosition.Y < position.Y)
-                newPosition.Y = position.Y;
-            else if (_drawPosition.Y < position.Y && newPosition.Y > position.Y)
-                newPosition.Y = position.Y;
+            if (_drawPosition.Y >= position.Y)
+            {
+                if (newPosition.Y < position.Y)
+                    newPosition.Y = position.Y;
+            }
+            else if (_drawPosition.Y <= position.Y)
+            {
+                if (newPosition.Y > position.Y)
+                    newPosition.Y = position.Y;
+            }
 
             // If we are too far out of sync, just jump to the real position
             Vector2 diff = (newPosition - position).Abs();
