@@ -261,11 +261,11 @@ namespace DemoGame.Server
 
         protected override void HandleDispose()
         {
-            // Close the user's connection
+            base.HandleDispose();
+
+            // Close the User's connection
             if (_conn != null)
                 _conn.Dispose();
-
-            base.HandleDispose();
         }
 
         /// <summary>
