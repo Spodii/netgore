@@ -13,33 +13,14 @@ namespace DemoGame.Server
     /// </summary>
     public static class CharacterTemplateManager
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static AllianceManager _allianceManager;
-        static DBController _dbController;
-        static ItemTemplates _itemTemplates;
         static readonly DArray<CharacterTemplate> _templates = new DArray<CharacterTemplate>(false);
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static DBController _dbController;
 
         /// <summary>
-        /// CharacterTemplateManager constructor.
+        /// Gets if this class has been initialized.
         /// </summary>
-        /// <param name="dbController">DBController used to perform queries.</param>
-        /// <param name="allianceManager">AllianceManager containing the Alliances to be used.</param>
-        /// <param name="itemTemplates">ItemTemplates containing the templates for the items the NPCs will drop.</param>
-        public static void Initialize(DBController dbController, AllianceManager allianceManager, ItemTemplates itemTemplates)
-        {
-            if (dbController == null)
-                throw new ArgumentNullException("dbController");
-            if (allianceManager == null)
-                throw new ArgumentNullException("allianceManager");
-            if (itemTemplates == null)
-                throw new ArgumentNullException("itemTemplates");
-
-            _dbController = dbController;
-            _allianceManager = allianceManager;
-            _itemTemplates = itemTemplates;
-
-            LoadAll();
-        }
+        public static bool IsInitialized { get; private set; }
 
         /// <summary>
         /// Gets a CharacterTemplate by the given CharacterTemplateID.
@@ -57,7 +38,7 @@ namespace DemoGame.Server
             // If not cached, load it and place a copy in the cache
             if (ret == null)
             {
-                ret = LoadCharacterTemplate(_dbController, _allianceManager, _itemTemplates, id);
+                ret = LoadCharacterTemplate(_dbController, id);
                 _templates[(int)id] = ret;
 
                 if (log.IsInfoEnabled)
@@ -65,6 +46,30 @@ namespace DemoGame.Server
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// CharacterTemplateManager constructor.
+        /// </summary>
+        /// <param name="dbController">DBController used to perform queries.</param>
+        public static void Initialize(DBController dbController)
+        {
+            if (IsInitialized)
+                return;
+
+            IsInitialized = true;
+
+            if (dbController == null)
+                throw new ArgumentNullException("dbController");
+
+            if (!AllianceManager.IsInitialized)
+                AllianceManager.Initialize(dbController);
+            if (!ItemTemplateManager.IsInitialized)
+                ItemTemplateManager.Initialize(dbController);
+
+            _dbController = dbController;
+
+            LoadAll();
         }
 
         static void LoadAll()
@@ -77,8 +82,7 @@ namespace DemoGame.Server
             }
         }
 
-        public static CharacterTemplate LoadCharacterTemplate(DBController dbController, AllianceManager allianceManager,
-                                                              ItemTemplates itemTemplates, CharacterTemplateID id)
+        public static CharacterTemplate LoadCharacterTemplate(DBController dbController, CharacterTemplateID id)
         {
             SelectCharacterTemplateQueryValues v = dbController.GetQuery<SelectCharacterTemplateQuery>().Execute(id);
             var itemValues = dbController.GetQuery<SelectCharacterTemplateInventoryQuery>().Execute(id);
@@ -88,10 +92,13 @@ namespace DemoGame.Server
             Debug.Assert(itemValues.All(x => id == x.CharacterTemplateID));
             Debug.Assert(equippedValues.All(x => id == x.CharacterTemplateID));
 
-            Alliance alliance = allianceManager[v.AllianceID];
+            Alliance alliance = AllianceManager.GetAlliance(v.AllianceID);
             var items =
-                itemValues.Select(x => new CharacterTemplateInventoryItem(itemTemplates[x.ItemTemplateID], x.Min, x.Max, x.Chance));
-            var euipped = equippedValues.Select(x => new CharacterTemplateEquipmentItem(itemTemplates[x.ItemTemplateID], x.Chance));
+                itemValues.Select(
+                    x => new CharacterTemplateInventoryItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Min, x.Max, x.Chance));
+            var euipped =
+                equippedValues.Select(
+                    x => new CharacterTemplateEquipmentItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Chance));
 
             CharacterTemplate template = new CharacterTemplate(id, v.Name, v.AIName, alliance, v.BodyIndex, v.Respawn, v.GiveExp,
                                                                v.GiveCash, v.Exp, v.StatPoints, v.Level, v.StatValues, items,

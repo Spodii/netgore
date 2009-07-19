@@ -12,44 +12,46 @@ namespace DemoGame.Server
     /// <summary>
     /// Loads and manages a collection of Alliances.
     /// </summary>
-    public class AllianceManager : IEnumerable<Alliance>
+    public static class AllianceManager
     {
         /// <summary>
         /// Dictionary of alliances stored by their name.
         /// </summary>
-        readonly Dictionary<string, Alliance> _allianceFromName = new Dictionary<string, Alliance>(StringComparer.OrdinalIgnoreCase);
+        static readonly Dictionary<string, Alliance> _allianceFromName = new Dictionary<string, Alliance>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Array of alliances stored by their ID.
         /// </summary>
-        readonly DArray<Alliance> _alliance = new DArray<Alliance>(false);
+        static readonly DArray<Alliance> _alliance = new DArray<Alliance>(false);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly DBController _dbController;
+        static DBController _dbController;
 
         /// <summary>
         /// Gets the DBController used by this AllianceManager.
         /// </summary>
-        public DBController DBController
+        public static DBController DBController
         {
             get { return _dbController; }
         }
+
+        /// <summary>
+        /// Gets if this class has been initialized.
+        /// </summary>
+        public static bool IsInitialized { get; private set; }
 
         /// <summary>
         /// Gets the Alliance by the given name.
         /// </summary>
         /// <param name="allianceName">Name of the Alliance to get.</param>
         /// <returns>The Alliance by the given name, or null if none found.</returns>
-        public Alliance this[string allianceName]
+        public static Alliance GetAlliance(string allianceName)
         {
-            get 
-            {
-                Alliance ret;
-                if (_allianceFromName.TryGetValue(allianceName, out ret))
-                    return ret;
-                return null;
-            }
+            Alliance ret;
+            if (_allianceFromName.TryGetValue(allianceName, out ret))
+                return ret;
+            return null;
         }
 
         /// <summary>
@@ -57,22 +59,24 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="allianceID">ID of the Alliance.</param>
         /// <returns>The Alliance with the given ID, or null if none found.</returns>
-        public Alliance this[AllianceID allianceID]
+        public static Alliance GetAlliance(AllianceID allianceID)
         {
-            get 
-            {
-                if (!_alliance.CanGet((int)allianceID))
-                    return null;
-                return _alliance[(int)allianceID]; 
-            }
+            if (!_alliance.CanGet((int)allianceID))
+                return null;
+            return _alliance[(int)allianceID]; 
         }
 
         /// <summary>
         /// AllianceManager constructor
         /// </summary>
         /// <param name="dbController">DBController for the database holding the alliance information.</param>
-        public AllianceManager(DBController dbController)
+        public static void Initialize(DBController dbController)
         {
+            if (IsInitialized)
+                return;
+
+            IsInitialized = true;
+
             if (dbController == null)
                 throw new ArgumentNullException("dbController");
 
@@ -88,7 +92,7 @@ namespace DemoGame.Server
         /// <param name="allianceName">Name of the Alliance.</param>
         /// <returns>True if this AllianceManager contains an Alliance with the name <paramref name="allianceName"/>,
         /// else false.</returns>
-        public bool Contains(string allianceName)
+        public static bool Contains(string allianceName)
         {
             return _allianceFromName.ContainsKey(allianceName);
         }
@@ -121,7 +125,7 @@ namespace DemoGame.Server
         /// Adds an Alliance to this AllianceManager.
         /// </summary>
         /// <param name="alliance">Alliance to add.</param>
-        void Add(Alliance alliance)
+        static void Add(Alliance alliance)
         {
             if (alliance == null)
                 throw new ArgumentNullException("alliance");
@@ -160,7 +164,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Loads the Alliance information for all Alliances and binds them to this AllianceManager.
         /// </summary>
-        void LoadAll()
+        static void LoadAll()
         {
             // Grab all IDs
             var allianceIDs = DBController.GetQuery<SelectAllianceIDsQuery>().Execute();
@@ -174,38 +178,5 @@ namespace DemoGame.Server
 
             _alliance.Trim();
         }
-
-        #region IEnumerable<Alliance> Members
-
-        ///<summary>
-        ///Returns an enumerator that iterates through the collection.
-        ///</summary>
-        ///
-        ///<returns>
-        ///A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
-        ///</returns>
-        ///<filterpriority>1</filterpriority>
-        public IEnumerator<Alliance> GetEnumerator()
-        {
-            foreach (Alliance alliance in _allianceFromName.Values)
-            {
-                yield return alliance;
-            }
-        }
-
-        ///<summary>
-        ///Returns an enumerator that iterates through a collection.
-        ///</summary>
-        ///
-        ///<returns>
-        ///An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
-        ///</returns>
-        ///<filterpriority>2</filterpriority>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
     }
 }
