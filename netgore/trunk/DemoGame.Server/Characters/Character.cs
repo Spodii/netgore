@@ -232,7 +232,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the Character's equipped items.
         /// </summary>
-        public abstract CharacterEquipped Equipped { get; }
+        public CharacterEquipped Equipped { get { return _equipped; } }
 
         /// <summary>
         /// Gets the amount of experience the Character has.
@@ -308,7 +308,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the Character's Inventory.
         /// </summary>
-        public abstract CharacterInventory Inventory { get; }
+        public CharacterInventory Inventory { get { return _inventory; } }
 
         /// <summary>
         /// Gets or sets (protected) if the Character is currently alive.
@@ -432,7 +432,6 @@ namespace DemoGame.Server
             get { return _statPoints; }
             private set
             {
-                // TODO: Synchronize User's StatPoints
                 if (_statPoints == value)
                     return;
 
@@ -493,8 +492,17 @@ namespace DemoGame.Server
             _baseStats = CreateStats(StatCollectionType.Base);
             _modStats = CreateStats(StatCollectionType.Modified);
             _spSync = CreateSPSynchronizer();
+            _inventory = CreateInventory();
+            _equipped = CreateEquipped();
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
+
+        readonly CharacterEquipped _equipped;
+        readonly CharacterInventory _inventory;
+
+        protected abstract CharacterInventory CreateInventory();
+
+        protected abstract CharacterEquipped CreateEquipped();
 
         /// <summary>
         /// Makes the character perform an attack.
@@ -744,7 +752,47 @@ namespace DemoGame.Server
         /// <param name="item">Item to give to the character.</param>
         /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
         /// item was added.</returns>
-        public abstract ItemEntity GiveItem(ItemEntity item);
+        public virtual ItemEntity GiveItem(ItemEntity item)
+        {
+            if (item == null)
+            {
+                Debug.Fail("Item is null.");
+                return null;
+            }
+
+            Debug.Assert(item.Amount != 0, "Invalid item amount.");
+
+            // Add as much of the item to the inventory as we can
+            byte startAmount = item.Amount;
+            ItemEntity remainder = _inventory.Add(item);
+
+            // Check how much was added
+            byte amountAdded;
+            if (remainder == null)
+                amountAdded = startAmount;
+            else
+            {
+                Debug.Assert(startAmount >= item.Amount, "Somehow the startAmount is less than the current amount of items.");
+                Debug.Assert(startAmount - item.Amount >= 0, "Negative item amount given...?");
+                amountAdded = (byte)(startAmount - item.Amount);
+            }
+
+            if (amountAdded > 0)
+                AfterGiveItem(item, amountAdded);
+
+            // Return the remainder
+            return remainder;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, lets the Character handle being given items through GiveItem().
+        /// </summary>
+        /// <param name="item">The item the Character was given.</param>
+        /// <param name="amount">The amount of the <paramref name="item"/> the Character was given. Will be greater
+        /// than 0.</param>
+        protected virtual void AfterGiveItem(ItemEntity item, byte amount)
+        {
+        }
 
         protected virtual void GiveKillReward(uint exp, uint cash)
         {

@@ -15,9 +15,6 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly NPCEquipped _equipped;
-        readonly NPCInventory _inventory;
-
         AIBase _ai;
 
         ushort _giveCash;
@@ -38,11 +35,6 @@ namespace DemoGame.Server
             get { return _ai; }
         }
 
-        public override CharacterEquipped Equipped
-        {
-            get { return _equipped; }
-        }
-
         public ushort GiveCash
         {
             get { return _giveCash; }
@@ -53,14 +45,6 @@ namespace DemoGame.Server
         {
             get { return _giveExp; }
             protected set { _giveExp = value; }
-        }
-
-        /// <summary>
-        /// Gets the Character's Inventory.
-        /// </summary>
-        public override CharacterInventory Inventory
-        {
-            get { return _inventory; }
         }
 
         /// <summary>
@@ -96,10 +80,6 @@ namespace DemoGame.Server
             // HACK: This whole constructor is uber hax
             if (parent == null)
                 throw new ArgumentNullException("parent");
-
-            // Set up the inventory
-            _inventory = new NPCInventory(this);
-            _equipped = new NPCEquipped(this);
 
             Alliance = AllianceManager.GetAlliance("monster");
 
@@ -139,10 +119,6 @@ namespace DemoGame.Server
             if (template == null)
                 throw new ArgumentNullException("template");
 
-            // Set up the inventory
-            _inventory = new NPCInventory(this);
-            _equipped = new NPCEquipped(this);
-
             // Create the AI
             if (!string.IsNullOrEmpty(template.AIName))
                 SetAI(template.AIName);
@@ -162,15 +138,14 @@ namespace DemoGame.Server
                 log.InfoFormat("Created NPC instance from template `{0}`.", template);
         }
 
-        /// <summary>
-        /// Gives an item to the Character.
-        /// </summary>
-        /// <param name="item">Item to give to the character.</param>
-        /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
-        /// item was added.</returns>
-        public override ItemEntity GiveItem(ItemEntity item)
+        protected override CharacterInventory CreateInventory()
         {
-            return _inventory.Add(item);
+            return new NPCInventory(this);
+        }
+
+        protected override CharacterEquipped CreateEquipped()
+        {
+            return new NPCEquipped(this);
         }
 
         protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
@@ -243,8 +218,8 @@ namespace DemoGame.Server
         {
             // All items remaining in the inventory or equipment should NOT be referenced!
             // Items that were dropped should have been removed when dropping
-            _inventory.RemoveAll(true);
-            _equipped.RemoveAll(true);
+            Inventory.RemoveAll(true);
+            Equipped.RemoveAll(true);
 
             // Grab the respawn items from the template
             var templateID = TemplateID;
