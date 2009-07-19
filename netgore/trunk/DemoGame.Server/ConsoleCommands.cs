@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using DemoGame.Server.Queries;
 using NetGore;
 
@@ -28,6 +29,48 @@ namespace DemoGame.Server
         public ConsoleCommands(Server server)
         {
             _server = server;
+        }
+
+        static string BuildString(IEnumerable<string> strings, string delimiter)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var s in strings)
+            {
+                sb.Append(s);
+                sb.Append(delimiter);
+            }
+            return sb.ToString();
+        }
+
+        const string _separator = "-------------------";
+        static readonly string _newLine = Environment.NewLine;
+
+        static string GetCommandHeader(string header, params object[] args)
+        {
+            return _separator + _newLine + string.Format(header, args) + _newLine + _separator + _newLine;
+        }
+
+        [ConsoleCommand("ShowUsers")]
+        public string ShowUsers()
+        {
+            var users = Server.World.GetUsers();
+            var userInfo = BuildString(users.Select(x => GetCharacterInfoShort(x)), Environment.NewLine);
+
+            return GetCommandHeader("Total Users: {0}", users.Count()) + userInfo;
+        }
+
+        static string GetCharacterInfoShort(Character c)
+        {
+            string s = c.ToString();
+            s += "\t Map: ";
+            if (c.Map != null)
+                s += c.Map.Index;
+            else
+                s += "null";
+
+            s += " @ ";
+            s += c.Position;
+            return s;
         }
 
         [ConsoleCommand("AddUser")]
