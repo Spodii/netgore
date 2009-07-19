@@ -118,6 +118,8 @@ namespace DemoGame.Server
             _world = new World(this);
             _sockets = new ServerSockets(this);
 
+            Console.WriteLine("Server is loaded");
+
             _inputThread = new Thread(HandleInput) { Name = "Input Handler" };
         }
 
@@ -126,6 +128,8 @@ namespace DemoGame.Server
         /// </summary>
         public void Start()
         {
+            Console.WriteLine("Server is starting");
+
             // Start the input thread
             _inputThread.Start();
 
