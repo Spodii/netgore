@@ -689,7 +689,13 @@ namespace DemoGame.Server
             if (target == null)
                 throw new ArgumentNullException("target");
 
-            int damage = Rand.Next(ModStats[StatType.MinHit], ModStats[StatType.MaxHit]);
+            int minHit = ModStats[StatType.MinHit];
+            int maxHit = ModStats[StatType.MaxHit];
+
+            if (minHit > maxHit)
+                maxHit = minHit;
+
+            int damage = Rand.Next(minHit, maxHit);
 
             // Apply the defence, and ensure the damage is in a valid range
             int defence;
