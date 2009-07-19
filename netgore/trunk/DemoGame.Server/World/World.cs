@@ -99,7 +99,7 @@ namespace DemoGame.Server
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    npcTemplate.CreateNPCInstance(m);
+                    new NPC(this, npcTemplate, m, new Vector2(500, 200));
                 }
 
                 for (int i = 0; i < 5; i++)
@@ -127,6 +127,11 @@ namespace DemoGame.Server
         /// <param name="respawnable">The object to respawn.</param>
         public void AddToRespawn(IRespawnable respawnable)
         {
+            if (respawnable == null)
+                throw new ArgumentNullException("respawnable");
+
+            Debug.Assert(respawnable.DynamicEntity != null);
+
             _respawnables.Add(respawnable);
         }
 

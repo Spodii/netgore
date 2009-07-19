@@ -50,6 +50,9 @@ namespace DemoGame.Server.Queries
             p["@level"] = character.Level;
             p["@exp"] = character.Exp;
             p["@statpoints"] = character.StatPoints;
+            p["@respawn_map"] = character.RespawnMapIndex;
+            p["@respawn_x"] = character.RespawnPosition.X;
+            p["@respawn_y"] = character.RespawnPosition.Y;
 
             foreach (var stat in character.BaseStats)
             {

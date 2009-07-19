@@ -841,6 +841,19 @@ namespace NetGore
             return MapIndex.Read(dataReader, name);
         }
 
+        public static MapIndex? GetMapIndexNullable(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return GetMapIndexNullable(dataReader, i);
+        }
+
+        public static MapIndex? GetMapIndexNullable(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+            return MapIndex.Read(dataReader, i);
+        }
+
         /// <summary>
         /// Reads the CustomValueType from a BitStream.
         /// </summary>
