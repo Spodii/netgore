@@ -11,18 +11,13 @@ namespace DemoGame.Server
     /// <summary>
     /// Loads, caches, and manages a collection of CharacterTemplates.
     /// </summary>
-    public class CharacterTemplateManager
+    public static class CharacterTemplateManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly AllianceManager _allianceManager;
-        readonly DBController _dbController;
-        readonly ItemTemplates _itemTemplates;
-        readonly DArray<CharacterTemplate> _templates = new DArray<CharacterTemplate>(false);
-
-        public CharacterTemplate this[CharacterTemplateID id]
-        {
-            get { return GetTemplate(id); }
-        }
+        static AllianceManager _allianceManager;
+        static DBController _dbController;
+        static ItemTemplates _itemTemplates;
+        static readonly DArray<CharacterTemplate> _templates = new DArray<CharacterTemplate>(false);
 
         /// <summary>
         /// CharacterTemplateManager constructor.
@@ -30,7 +25,7 @@ namespace DemoGame.Server
         /// <param name="dbController">DBController used to perform queries.</param>
         /// <param name="allianceManager">AllianceManager containing the Alliances to be used.</param>
         /// <param name="itemTemplates">ItemTemplates containing the templates for the items the NPCs will drop.</param>
-        public CharacterTemplateManager(DBController dbController, AllianceManager allianceManager, ItemTemplates itemTemplates)
+        public static void Initialize(DBController dbController, AllianceManager allianceManager, ItemTemplates itemTemplates)
         {
             if (dbController == null)
                 throw new ArgumentNullException("dbController");
@@ -51,7 +46,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="id">ID of the template to get.</param>
         /// <returns>NPCTemplate by the given <paramref name="id"/>.</returns>
-        public CharacterTemplate GetTemplate(CharacterTemplateID id)
+        public static CharacterTemplate GetTemplate(CharacterTemplateID id)
         {
             CharacterTemplate ret = null;
 
@@ -72,7 +67,7 @@ namespace DemoGame.Server
             return ret;
         }
 
-        void LoadAll()
+        static void LoadAll()
         {
             var ids = _dbController.GetQuery<SelectCharacterTemplateIDsQuery>().Execute();
 
