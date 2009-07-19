@@ -1,6 +1,5 @@
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;

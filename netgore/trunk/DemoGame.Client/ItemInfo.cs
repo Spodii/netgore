@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-
 using log4net;
 using NetGore.Network;
 
@@ -21,16 +17,21 @@ namespace DemoGame.Client
         readonly ItemStats _baseStats = new ItemStats(StatCollectionType.Base);
         readonly ItemStats _reqStats = new ItemStats(StatCollectionType.Requirement);
         string _description;
+        SPValueType _hp;
         bool _isUpdated;
+        SPValueType _mp;
         string _name;
         int _slot;
         ItemInfoSource _source;
         int _value;
-        SPValueType _hp;
-        SPValueType _mp;
 
-        public SPValueType HP { get { return _hp; } }
-        public SPValueType MP { get { return _mp; } }
+        /// <summary>
+        /// Gets the stats of the item.
+        /// </summary>
+        public ItemStats BaseStats
+        {
+            get { return _baseStats; }
+        }
 
         /// <summary>
         /// Gets the item's description.
@@ -38,6 +39,11 @@ namespace DemoGame.Client
         public string Description
         {
             get { return _description; }
+        }
+
+        public SPValueType HP
+        {
+            get { return _hp; }
         }
 
         /// <summary>
@@ -49,12 +55,22 @@ namespace DemoGame.Client
             get { return _isUpdated; }
         }
 
+        public SPValueType MP
+        {
+            get { return _mp; }
+        }
+
         /// <summary>
         /// Gets the name of the item.
         /// </summary>
         public string Name
         {
             get { return _name; }
+        }
+
+        public ItemStats ReqStats
+        {
+            get { return _reqStats; }
         }
 
         /// <summary>
@@ -76,19 +92,6 @@ namespace DemoGame.Client
         public ItemInfoSource Source
         {
             get { return _source; }
-        }
-
-        /// <summary>
-        /// Gets the stats of the item.
-        /// </summary>
-        public ItemStats BaseStats
-        {
-            get { return _baseStats; }
-        }
-
-        public ItemStats ReqStats
-        {
-            get { return _reqStats; }
         }
 
         /// <summary>

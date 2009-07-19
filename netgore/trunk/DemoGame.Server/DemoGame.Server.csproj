@@ -142,10 +142,7 @@
     <Compile Include="Queries\Item\Template\ItemTemplateQueryHelper.cs" />
     <Compile Include="Queries\StatsQueryHelper.cs" />
     <Compile Include="Queries\StatTypeField.cs" />
-    <Compile Include="Say\SayCommand.cs" />
-    <Compile Include="Say\SayCommandAttribute.cs" />
-    <Compile Include="Say\SayCommandCallback.cs" />
-    <Compile Include="Say\SayCommandManager.cs" />
+    <Compile Include="Say\SayCommands.cs" />
     <Compile Include="Say\SayHandler.cs" />
     <Compile Include="Networking\ServerPacket.cs" />
     <Compile Include="Networking\ServerPacketHandler.cs" />

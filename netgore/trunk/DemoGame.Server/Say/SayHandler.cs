@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Threading;
 using log4net;
 using Microsoft.Xna.Framework;
+using NetGore;
+using NetGore.Collections;
 using NetGore.Network;
 
 // ReSharper disable SuggestBaseTypeForParameter
@@ -12,30 +14,36 @@ using NetGore.Network;
 
 namespace DemoGame.Server
 {
+    public class SayCommandAttribute : StringCommandBaseAttribute
+    {
+        public SayCommandAttribute(string command) : base(command)
+        {
+        }
+    }
+
     /// <summary>
     /// Handles processing what Users say.
     /// </summary>
     public class SayHandler
     {
+        /// <summary>
+        /// Parser for the Say commands.
+        /// </summary>
+        class SayCommandParser : StringCommandParser<SayCommandAttribute>
+        {
+            public SayCommandParser()
+                : base(typeof(SayCommands))
+            { }
+        }
+
+        readonly SayCommands _sayCommands;
+
+        /// <summary>
+        /// The parser for the Say commands.
+        /// </summary>
+        static readonly SayCommandParser _parser = new SayCommandParser();
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly SayCommandManager _commandManager;
-        readonly Server _server;
-
-        /// <summary>
-        /// Gets the Server that the commands are coming from.
-        /// </summary>
-        public Server Server
-        {
-            get { return _server; }
-        }
-
-        /// <summary>
-        /// Gets the World to use.
-        /// </summary>
-        public World World
-        {
-            get { return Server.World; }
-        }
 
         /// <summary>
         /// SayHandler constructor.
@@ -43,84 +51,10 @@ namespace DemoGame.Server
         /// <param name="server">Server that the commands are coming from.</param>
         public SayHandler(Server server)
         {
-            _server = server;
-            _commandManager = new SayCommandManager(this);
-        }
+            if (server == null)
+                throw new ArgumentNullException("server");
 
-        [SayCommand("CreateTestDamageTrap", false)]
-        void CmdCreateTestDamageTrap(string text, User user)
-        {
-            // NOTE: This is a temporary command
-            DamageTrapEntity trap = new DamageTrapEntity();
-            trap.Resize(new Vector2(64, 64));
-            trap.Teleport(user.Position);
-            user.Map.AddEntity(trap);
-        }
-
-        [SayCommand("Shout", true)]
-        void CmdShout(string text, User user)
-        {
-            using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandShout, user.Name, text))
-            {
-                World.Send(pw);
-            }
-        }
-
-        [SayCommand("Tell", true)]
-        [SayCommand("Whisper", true)]
-        void CmdTell(string text, User user)
-        {
-            // Check for a message to tell
-            if (string.IsNullOrEmpty(text))
-            {
-                // Invalid message
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellNoName))
-                {
-                    user.Send(pw);
-                }
-                return;
-            }
-
-            // Find the user to tell
-            int spaceIndex = text.IndexOf(' ');
-            if (spaceIndex < 0)
-            {
-                // No or invalid message
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellNoMessage))
-                {
-                    user.Send(pw);
-                }
-                return;
-            }
-
-            string targetName = text.Substring(0, spaceIndex);
-            User target = World.FindUser(targetName);
-
-            // Check if the target user is available or not
-            if (target != null)
-            {
-                string message = text.Substring(spaceIndex + 1);
-
-                // Message to sender ("You tell...")
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellSender, target.Name, message))
-                {
-                    user.Send(pw);
-                }
-
-                // Message to receivd ("X tells you...")
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellReceiver, user.Name, message))
-                {
-                    target.Send(pw);
-                }
-            }
-            else
-            {
-                // User not found
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandTellInvalidUser, targetName))
-                {
-                    user.Send(pw);
-                }
-            }
+            _sayCommands = new SayCommands(server);
         }
 
         /// <summary>
@@ -171,9 +105,9 @@ namespace DemoGame.Server
         /// <summary>
         /// Processes a string of text.
         /// </summary>
-        /// <param name="text">Text to process.</param>
         /// <param name="user">User that the text came from.</param>
-        public void Process(string text, User user)
+        /// <param name="text">Text to process.</param>
+        public void Process(User user, string text)
         {
             if (user == null)
                 throw new ArgumentNullException("user");
@@ -194,7 +128,7 @@ namespace DemoGame.Server
             // Check if a command
             if (IsCommand(text))
             {
-                ProcessCommand(text, user);
+                HandleCommand(user, text);
                 return;
             }
 
@@ -205,80 +139,24 @@ namespace DemoGame.Server
             }
         }
 
-        /// <summary>
-        /// Processes a string of text that is a command.
-        /// </summary>
-        /// <param name="text">Text to process.</param>
-        /// <param name="user">User that the text came from.</param>
-        void ProcessCommand(string text, User user)
+        void HandleCommand(User user, string text)
         {
-            // Split the text
-            string commandName;
-            string remainder;
-            SplitCommandFromText(text, out commandName, out remainder);
+            // Remove the command symbol from the text
+            text = text.Substring(1);
 
-            // Get the SayCommand for the given command name
-            SayCommand command = _commandManager.GetCommand(commandName);
-            if (command == null)
+            // NOTE: This lock makes it so we can only parse one Say command at a time. Might want to use a pool in the future.
+            string output;
+            lock (_sayCommands)
             {
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.InvalidCommand))
-                {
+                _sayCommands.User = user;
+                _parser.TryParse(_sayCommands, text, out output);
+            }
+
+            // Send the resulting message to the User
+            if (!string.IsNullOrEmpty(output))
+            {
+                using (var pw = ServerPacket.Chat(output))
                     user.Send(pw);
-                }
-                return;
-            }
-
-            // Trim the remainder text
-            if (remainder != null)
-                remainder = remainder.Trim();
-
-            // Call the handler
-            if (!command.IsThreadSafe)
-            {
-                // Invoke synchronously
-                command.Callback(remainder, user);
-            }
-            else
-            {
-                // Invoke asynchronously
-                ThreadPool.QueueUserWorkItem(delegate
-                                             {
-                                                 command.Callback(remainder, user);
-                                             });
-            }
-        }
-
-        /// <summary>
-        /// Splits a string of text into a command and remainder text.
-        /// </summary>
-        /// <param name="text">Text to split.</param>
-        /// <param name="command">Output of the name of the command.</param>
-        /// <param name="remainder">Remainder text (command's parameters), if any. Can be null or empty.</param>
-        public static void SplitCommandFromText(string text, out string command, out string remainder)
-        {
-            // Check that the text is valid
-            if (string.IsNullOrEmpty(text))
-            {
-                command = null;
-                remainder = text;
-                return;
-            }
-
-            int index = text.IndexOf(' ');
-
-            if (index < 0)
-            {
-                // No space found, so just return the command
-                command = text.Substring(1);
-                remainder = null;
-                return;
-            }
-            else
-            {
-                // Split the command and remainder apart
-                command = text.Substring(1, index - 1);
-                remainder = text.Substring(index + 1);
-                return;
             }
         }
     }

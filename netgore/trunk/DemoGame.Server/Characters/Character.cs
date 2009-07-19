@@ -591,6 +591,8 @@ namespace DemoGame.Server
         /// from defense or any other kind of damage alterations since these are calculated here.</param>
         public virtual void Damage(Entity source, int damage)
         {
+            // TODO: Handle having Map == null
+
             // Apply damage
             using (PacketWriter pw = ServerPacket.CharDamage(MapEntityIndex, damage))
             {

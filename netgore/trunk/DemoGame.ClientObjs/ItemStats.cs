@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace DemoGame.Client
 {
     public class ItemStats : ItemStatsBase

@@ -1,7 +1,5 @@
-using System;
 using System.Data;
 using NetGore.IO;
-using System.Linq;
 
 namespace DemoGame
 {
@@ -13,6 +11,11 @@ namespace DemoGame
         public bool CanWrite
         {
             get { return true; }
+        }
+
+        public bool IsModStat
+        {
+            get { return false; }
         }
 
         internal BaseStat(StatType statType)
@@ -78,11 +81,6 @@ namespace DemoGame
         public IStatValueType DeepCopyValueType()
         {
             return _value.DeepCopy();
-        }
-
-        public bool IsModStat
-        {
-            get { return false; }
         }
 
         public IStat DeepCopy()

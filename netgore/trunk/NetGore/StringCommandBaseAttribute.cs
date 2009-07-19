@@ -5,7 +5,7 @@ namespace NetGore
     /// <summary>
     /// Base Attribute for an Attribute used to mark a method that is handled by a StringCommandParser.
     /// </summary>
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
     public abstract class StringCommandBaseAttribute : Attribute
     {
         readonly string _command;
