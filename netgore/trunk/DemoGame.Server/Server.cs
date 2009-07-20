@@ -72,6 +72,11 @@ namespace DemoGame.Server
             get { return _dbController; }
         }
 
+        public bool IsDisposed
+        {
+            get { return _disposed; }
+        }
+
         public ServerSockets ServerSockets
         {
             get { return _sockets; }
@@ -121,20 +126,6 @@ namespace DemoGame.Server
             Console.WriteLine("Server is loaded");
 
             _inputThread = new Thread(HandleInput) { Name = "Input Handler" };
-        }
-
-        /// <summary>
-        /// Starts the Server loop.
-        /// </summary>
-        public void Start()
-        {
-            Console.WriteLine("Server is starting");
-
-            // Start the input thread
-            _inputThread.Start();
-
-            // Start the main game loop
-            GameLoop();
         }
 
         /// <summary>
@@ -294,7 +285,19 @@ namespace DemoGame.Server
             _isRunning = false;
         }
 
-        public bool IsDisposed { get { return _disposed; } }
+        /// <summary>
+        /// Starts the Server loop.
+        /// </summary>
+        public void Start()
+        {
+            Console.WriteLine("Server is starting");
+
+            // Start the input thread
+            _inputThread.Start();
+
+            // Start the main game loop
+            GameLoop();
+        }
 
         #region IDisposable Members
 

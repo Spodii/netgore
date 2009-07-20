@@ -4,7 +4,7 @@ Source Host: localhost
 Source Database: demogame
 Target Host: localhost
 Target Database: demogame
-Date: 7/19/2009 11:52:17 AM
+Date: 7/20/2009 12:13:06 PM
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -52,7 +52,7 @@ CREATE TABLE `character` (
   `map` smallint(5) unsigned NOT NULL DEFAULT '1',
   `x` float NOT NULL DEFAULT '100',
   `y` float NOT NULL DEFAULT '100',
-  `respawn_map` smallint(5) unsigned NOT NULL,
+  `respawn_map` smallint(5) unsigned DEFAULT NULL,
   `respawn_x` float NOT NULL,
   `respawn_y` float NOT NULL,
   `body` smallint(5) unsigned NOT NULL DEFAULT '1',
@@ -81,10 +81,14 @@ CREATE TABLE `character` (
   `str` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `tact` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `ws` tinyint(3) unsigned NOT NULL,
-  PRIMARY KEY (`id`,`respawn_map`),
+  PRIMARY KEY (`id`),
   UNIQUE KEY `idx_name` (`name`),
   KEY `template_id` (`template_id`),
-  CONSTRAINT `character_ibfk_1` FOREIGN KEY (`template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `map` (`map`),
+  KEY `respawn_map` (`respawn_map`),
+  CONSTRAINT `character_ibfk_1` FOREIGN KEY (`template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `character_ibfk_2` FOREIGN KEY (`map`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `character_ibfk_3` FOREIGN KEY (`respawn_map`) REFERENCES `map` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -94,8 +98,8 @@ CREATE TABLE `character_equipped` (
   `character_id` int(10) unsigned NOT NULL,
   `item_id` int(10) unsigned NOT NULL,
   `slot` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`character_id`,`item_id`),
   KEY `item_id` (`item_id`),
-  KEY `character_id` (`character_id`),
   CONSTRAINT `character_equipped_ibfk_3` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_equipped_ibfk_4` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -106,6 +110,7 @@ CREATE TABLE `character_equipped` (
 CREATE TABLE `character_inventory` (
   `character_id` int(10) unsigned NOT NULL,
   `item_id` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`character_id`,`item_id`),
   KEY `item_id` (`item_id`),
   KEY `character_id` (`character_id`),
   CONSTRAINT `character_inventory_ibfk_3` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -257,6 +262,31 @@ CREATE TABLE `item_template` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
+-- Table structure for map
+-- ----------------------------
+CREATE TABLE `map` (
+  `id` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Table structure for map_spawn
+-- ----------------------------
+CREATE TABLE `map_spawn` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `map_id` smallint(5) unsigned NOT NULL,
+  `character_id` smallint(5) unsigned NOT NULL,
+  `amount` tinyint(3) unsigned NOT NULL,
+  `x` smallint(5) unsigned DEFAULT NULL,
+  `y` smallint(5) unsigned DEFAULT NULL,
+  `width` smallint(5) unsigned DEFAULT NULL,
+  `height` smallint(5) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `character_id` (`character_id`),
+  CONSTRAINT `map_spawn_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
 -- Records 
 -- ----------------------------
 INSERT INTO `alliance` VALUES ('0', 'user');
@@ -266,8 +296,8 @@ INSERT INTO `alliance_attackable` VALUES ('1', '0');
 INSERT INTO `alliance_hostile` VALUES ('0', '1');
 INSERT INTO `alliance_hostile` VALUES ('1', '0');
 INSERT INTO `character` VALUES ('1', null, 'Spodi', 'asdf', '2', '418', '466', '1', '500', '200', '1', '1', '14', '419', '50', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
-INSERT INTO `character` VALUES ('2', '1', 'Test A', '', '2', '930', '530', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', '1', 'Test B', '', '2', '901.2', '530', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('2', '1', 'Test A', '', '2', '800', '250', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', '1', 'Test B', '', '2', '500', '250', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
 INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', '1', '2', '0', '0', '0', '5', '5', '5', '5', '0', '0', '0', '0', '1', '0', '1', '1', '0', '0', '1', '0', '0', '0', '1', '0', '0');
 INSERT INTO `character_template_equipped` VALUES ('1', '3', '10000');
 INSERT INTO `character_template_equipped` VALUES ('1', '4', '5000');
@@ -282,3 +312,6 @@ INSERT INTO `item_template` VALUES ('2', '1', '9', '16', 'Mana Potion', 'A mana 
 INSERT INTO `item_template` VALUES ('3', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 INSERT INTO `item_template` VALUES ('4', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '130', '50', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 INSERT INTO `item_template` VALUES ('5', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '132', '50', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `map` VALUES ('1');
+INSERT INTO `map` VALUES ('2');
+INSERT INTO `map_spawn` VALUES ('1', '1', '1', '5', null, null, null, null);

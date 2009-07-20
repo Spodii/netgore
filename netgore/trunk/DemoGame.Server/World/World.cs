@@ -149,16 +149,6 @@ namespace DemoGame.Server
             user.OnDispose += User_OnDispose;
             _users.Add(user.Name, user);
         }
-        
-        /// <summary>
-        /// Handles when a User is Disposed.
-        /// </summary>
-        /// <param name="entity">User that was Disposed.</param>
-        void User_OnDispose(Entity entity)
-        {
-            // Remove the User from the list of Users
-            _users.Remove(((User)entity).Name);
-        }
 
         /// <summary>
         /// Searches for a User in this World.
@@ -172,16 +162,6 @@ namespace DemoGame.Server
                 return null;
 
             return user;
-        }
-
-        /// <summary>
-        /// Gets an array of all the Users in the world.
-        /// </summary>
-        /// <returns>An array of all the Users in the world.</returns>
-        public User[] GetUsers()
-        {
-            // NOTE: We use this instead of returning the _users.Values IEnumerable to avoid issues with the collection changing
-            return _users.Values.ToArray();
         }
 
         /// <summary>
@@ -259,6 +239,16 @@ namespace DemoGame.Server
         public User GetUser(IIPSocket conn)
         {
             return GetUser(conn, true);
+        }
+
+        /// <summary>
+        /// Gets an array of all the Users in the world.
+        /// </summary>
+        /// <returns>An array of all the Users in the world.</returns>
+        public User[] GetUsers()
+        {
+            // NOTE: We use this instead of returning the _users.Values IEnumerable to avoid issues with the collection changing
+            return _users.Values.ToArray();
         }
 
         /// <summary>
@@ -372,6 +362,16 @@ namespace DemoGame.Server
             // Remove the successful respawns from the master list
             if (respawned.Count > 0)
                 _respawnables.RemoveAll(respawned.Contains);
+        }
+
+        /// <summary>
+        /// Handles when a User is Disposed.
+        /// </summary>
+        /// <param name="entity">User that was Disposed.</param>
+        void User_OnDispose(Entity entity)
+        {
+            // Remove the User from the list of Users
+            _users.Remove(((User)entity).Name);
         }
 
         #region IDisposable Members
