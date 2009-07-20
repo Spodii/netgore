@@ -177,6 +177,292 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// Gets the nullable Boolean of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable Boolean of the specified field.</returns>
+        public static bool? GetNullableBoolean(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+
+            return dataReader.GetBoolean(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Boolean of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable Boolean of the specified field.</returns>
+        public static bool? GetNullableBoolean(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return dataReader.GetNullableBoolean(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Byte of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable Byte of the specified field.</returns>
+        public static byte? GetNullableByte(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+
+            return dataReader.GetByte(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Byte of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable Byte of the specified field.</returns>
+        public static byte? GetNullableByte(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return dataReader.GetNullableByte(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Decimal of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable Decimal of the specified field.</returns>
+        public static decimal? GetNullableDecimal(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+
+            return dataReader.GetDecimal(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Decimal of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable Decimal of the specified field.</returns>
+        public static decimal? GetNullableDecimal(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return dataReader.GetNullableDecimal(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Float of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable Float of the specified field.</returns>
+        public static float? GetNullableFloat(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+
+            return dataReader.GetFloat(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Float of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable Float of the specified field.</returns>
+        public static float? GetNullableFloat(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return dataReader.GetNullableFloat(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Short of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable Short of the specified field.</returns>
+        public static short? GetNullableInt16(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+
+            return dataReader.GetInt16(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Short of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable Short of the specified field.</returns>
+        public static short? GetNullableInt16(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return dataReader.GetNullableInt16(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Int32 of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable Int32 of the specified field.</returns>
+        public static int? GetNullableInt32(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+
+            return dataReader.GetInt32(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Int32 of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable Int32 of the specified field.</returns>
+        public static int? GetNullableInt32(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return dataReader.GetNullableInt32(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Int64 of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable Int64 of the specified field.</returns>
+        public static long? GetNullableInt64(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+
+            return dataReader.GetInt64(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable Int64 of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable Int64 of the specified field.</returns>
+        public static long? GetNullableInt64(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return dataReader.GetNullableInt64(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable SByte of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable SByte of the specified field.</returns>
+        public static sbyte? GetNullableSByte(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+
+            return dataReader.GetSByte(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable SByte of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable SByte of the specified field.</returns>
+        public static sbyte? GetNullableSByte(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return dataReader.GetNullableSByte(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable UInt16 of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable UInt16 of the specified field.</returns>
+        public static ushort? GetNullableUInt16(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+
+            return dataReader.GetUInt16(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable UInt16 of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable UInt16 of the specified field.</returns>
+        public static ushort? GetNullableUInt16(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return dataReader.GetNullableUInt16(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable UInt32 of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable UInt32 of the specified field.</returns>
+        public static ulong? GetNullableUInt32(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+
+            return dataReader.GetUInt32(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable UInt32 of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable UInt32 of the specified field.</returns>
+        public static ulong? GetNullableUInt32(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return dataReader.GetNullableUInt32(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable UInt64 of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The nullable UInt64 of the specified field.</returns>
+        public static ulong? GetNullableUInt64(this IDataReader dataReader, int i)
+        {
+            if (dataReader.IsDBNull(i))
+                return null;
+
+            return dataReader.GetUInt64(i);
+        }
+
+        /// <summary>
+        /// Gets the nullable UInt64 of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="name">The name of the field to find.</param>
+        /// <returns>The nullable UInt64 of the specified field.</returns>
+        public static ulong? GetNullableUInt64(this IDataReader dataReader, string name)
+        {
+            int i = dataReader.GetOrdinal(name);
+            return dataReader.GetNullableUInt64(i);
+        }
+
+        /// <summary>
         /// Gets the 8-bit unsigned integer value of the specified field.
         /// </summary>
         /// <param name="dataReader">IDataReader to get the value from.</param>
@@ -184,7 +470,18 @@ namespace NetGore.Db
         /// <returns>The 8-bit unsigned integer value of the specified field.</returns>
         public static sbyte GetSByte(this IDataReader dataReader, string name)
         {
-            object value = GetValue(dataReader, name);
+            return dataReader.GetSByte(dataReader.GetOrdinal(name));
+        }
+
+        /// <summary>
+        /// Gets the 8-bit unsigned integer value of the specified field.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to get the value from.</param>
+        /// <param name="i">The index of the field to find.</param>
+        /// <returns>The 8-bit unsigned integer value of the specified field.</returns>
+        public static sbyte GetSByte(this IDataReader dataReader, int i)
+        {
+            object value = dataReader.GetValue(i);
             if (value is sbyte)
                 return (sbyte)value;
 
