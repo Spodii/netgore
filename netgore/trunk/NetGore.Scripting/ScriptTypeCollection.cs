@@ -64,14 +64,6 @@ namespace NetGore.Scripting
             get { return _types.Values; }
         }
 
-        static string[] SafeGetFiles(string dir, string searchPattern, SearchOption searchOptions)
-        {
-            if (!Directory.Exists(dir))
-                return new string[0];
-
-            return Directory.GetFiles(dir, searchPattern, searchOptions);
-        }
-
         /// <summary>
         /// ScriptTypeCollection constructor.
         /// </summary>
@@ -145,11 +137,6 @@ namespace NetGore.Scripting
             return errors;
         }
 
-        string GetOutputFilePath(ScriptLanguage language)
-        {
-            return Name + "." + language + ".dll";
-        }
-
         /// <summary>
         /// Compiles the source code files.
         /// </summary>
@@ -205,6 +192,19 @@ namespace NetGore.Scripting
                 return null;
 
             return result.CompiledAssembly;
+        }
+
+        string GetOutputFilePath(ScriptLanguage language)
+        {
+            return Name + "." + language + ".dll";
+        }
+
+        static string[] SafeGetFiles(string dir, string searchPattern, SearchOption searchOptions)
+        {
+            if (!Directory.Exists(dir))
+                return new string[0];
+
+            return Directory.GetFiles(dir, searchPattern, searchOptions);
         }
 
         #region IEnumerable<Type> Members

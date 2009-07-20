@@ -21,5 +21,7 @@ namespace DemoGame.Server
         public const string CharacterTemplateEquipped = "character_template_equipped";
         public const string Item = "item";
         public const string ItemTemplate = "item_template";
+        public const string Map = "map";
+        public const string MapSpawn = "map_spawn";
     }
 }

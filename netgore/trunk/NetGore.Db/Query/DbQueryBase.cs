@@ -147,7 +147,7 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// Turns an IEnumerable of strings into the format of: `field`=@field. Each entry is comma-delimited.
+        /// Turns an IEnumerable of strings into the format of: `field`=@field. Each field is comma-delimited.
         /// </summary>
         /// <returns>A comma-delimited string of all fields in the format of: `field`=@field.</returns>
         public static string FormatParametersIntoString(IEnumerable<string> fields)
@@ -165,6 +165,48 @@ namespace NetGore.Db
 
             // Remove the trailing comma (last character)
             sb.Length--;
+
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Turns an IEnumerable of strings into the format of: (`a`,`b`,...) VALUES (@a,@b,...). Each field is comma-delimited.
+        /// </summary>
+        /// <returns>A comma-delimited string of all fields in the format of: (`a`,`b`,...) VALUES (@a,@b,...).</returns>
+        public static string FormatParametersIntoValuesString(IEnumerable<string> fields)
+        {
+            StringBuilder sb = new StringBuilder(512);
+
+            // Turn the IEnumerable into an array so we can ensure that both iterations are the EXACT same since
+            // IEnumerable iterators do not guarentee two iterations to return the same set in the same order
+            var farray = fields.ToArray();
+
+            // Field names
+            sb.Append("(");
+
+            for (int i = 0; i < farray.Length; i++)
+            {
+                sb.Append("`");
+                sb.Append(farray[i]);
+                sb.Append("`");
+                sb.Append(",");
+            }
+            sb.Length--; // Remove the last extra comma
+
+            // Parameter names
+
+            sb.Append(") VALUES (");
+
+            for (int i = 0; i < farray.Length; i++)
+            {
+                sb.Append("@");
+                sb.Append(farray[i]);
+                sb.Append(",");
+            }
+
+            sb.Length--; // Remove the last extra comma
+
+            sb.Append(")");
 
             return sb.ToString();
         }
