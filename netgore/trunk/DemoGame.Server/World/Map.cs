@@ -142,11 +142,54 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Handles when a Character is added to the Map. This is an extension of EntityAdded that handles
+        /// special stuff just for Characters.
+        /// </summary>
+        /// <param name="character">The Character that was added to the map.</param>
+        void CharacterAdded(Character character)
+        {
+            // If the character was already on a map, so remove them from the old map
+            if (character.Map != null)
+            {
+                const string errmsg = "Character `{0}` [{1}] added to new map, but is already on a map!";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, character, character.MapEntityIndex);
+                Debug.Fail(string.Format(errmsg, character, character.MapEntityIndex));
+                character.Map.RemoveEntity(character);
+            }
+
+            // Set the new map
+            character.Map = this;
+
+            // Added character is a User
+            User user = character as User;
+            if (user != null)
+            {
+                Debug.Assert(!Users.Contains(user), string.Format("Users list already contains `{0}`!", user));
+                _users.Add(user);
+                SendMapData(user);
+                return;
+            }
+
+            // Added character is a NPC
+            NPC npc = character as NPC;
+            if (npc != null)
+            {
+                Debug.Assert(!NPCs.Contains(npc), string.Format("NPCs list already contains `{0}`!", npc));
+                _npcs.Add(npc);
+                return;
+            }
+
+            // Unknown added character type - not actually an error, but it is likely an oversight
+            throw new Exception("Unknown Character type - not a NPC or User...?");
+        }
+
+        /// <summary>
         /// Handles when a Character is removed from the Map. This is an extension of EntityRemoved that handles
         /// special stuff just for Characters.
         /// </summary>
         /// <param name="character">The Character that was removed from the Map.</param>
-        void CharRemoved(Character character)
+        void CharacterRemoved(Character character)
         {
             User user;
             NPC npc;
@@ -232,7 +275,7 @@ namespace DemoGame.Server
             // Handle the different types of entities
             Character character = entity as Character;
             if (character != null)
-                HandleCharacterAdded(character);
+                CharacterAdded(character);
         }
 
         /// <summary>
@@ -250,7 +293,7 @@ namespace DemoGame.Server
             {
                 Character character = entity as Character;
                 if (character != null)
-                    CharRemoved(character);
+                    CharacterRemoved(character);
 
                 // Destroy the DynamicEntity for everyone on the map
                 if (_users.Count > 0)
@@ -286,49 +329,6 @@ namespace DemoGame.Server
                 if (syncRegion.Intersects(userRegion))
                     yield return user;
             }
-        }
-
-        /// <summary>
-        /// Handles when a Character is added to the Map. This is an extension of EntityAdded that handles
-        /// special stuff just for Characters.
-        /// </summary>
-        /// <param name="character">The Character that was added to the map.</param>
-        void HandleCharacterAdded(Character character)
-        {
-            // If the character was already on a map, so remove them from the old map
-            if (character.Map != null)
-            {
-                const string errmsg = "Character `{0}` [{1}] added to new map, but is already on a map!";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, character, character.MapEntityIndex);
-                Debug.Fail(string.Format(errmsg, character, character.MapEntityIndex));
-                character.Map.RemoveEntity(character);
-            }
-
-            // Set the new map
-            character.Map = this;
-
-            // Added character is a User
-            User user = character as User;
-            if (user != null)
-            {
-                Debug.Assert(!Users.Contains(user), string.Format("Users list already contains `{0}`!", user));
-                _users.Add(user);
-                SendMapData(user);
-                return;
-            }
-
-            // Added character is a NPC
-            NPC npc = character as NPC;
-            if (npc != null)
-            {
-                Debug.Assert(!NPCs.Contains(npc), string.Format("NPCs list already contains `{0}`!", npc));
-                _npcs.Add(npc);
-                return;
-            }
-
-            // Unknown added character type - not actually an error, but it is likely an oversight
-            throw new Exception("Unknown Character type - not a NPC or User...?");
         }
 
         /// <summary>
