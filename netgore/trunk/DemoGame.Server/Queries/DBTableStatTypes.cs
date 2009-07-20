@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using NetGore.Db;
@@ -31,9 +32,9 @@ namespace DemoGame.Server
 
             foreach (var table in tables)
             {
+                var columns = controller.GetTableColumns(table);
                 foreach (var statCollectionType in scts)
                 {
-                    var columns = controller.GetTableColumns(table);
                     var type = statCollectionType;
                     var statTypes = StatFactory.AllStats.Where(x => columns.Contains(x.GetDatabaseField(type), StringComparer.OrdinalIgnoreCase));
                     var v = new TableAndType(table, statCollectionType);

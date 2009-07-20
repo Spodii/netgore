@@ -51,7 +51,7 @@ namespace DemoGame.Server
 
             // Find the classes marked with our attribute
             var requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
-            var types = TypeHelper.FindTypesWithAttribute(typeof(DBControllerQueryAttribute), requiredConstructorParams);
+            var types = TypeHelper.FindTypesWithAttribute(typeof(DBControllerQueryAttribute), requiredConstructorParams, false);
 
             // Create an instance of each of the types
             foreach (Type type in types)

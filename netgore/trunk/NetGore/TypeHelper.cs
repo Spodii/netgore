@@ -12,7 +12,23 @@ namespace NetGore
     /// </summary>
     public static class TypeHelper
     {
+        const bool _gacDefault = false;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Gets all Types from every Assembly.
+        /// </summary>
+        /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.
+        /// Default is false.</param>
+        /// <returns>All Types from every Assembly.</returns>
+        public static IEnumerable<Type> AllTypes(bool includeGAC)
+        {
+            IEnumerable<Assembly> assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            if (!includeGAC)
+                assemblies = assemblies.Where(x => !x.GlobalAssemblyCache);
+            var types = assemblies.SelectMany(x => x.GetTypes());
+            return types;
+        }
 
         /// <summary>
         /// Gets all Types from every Assembly.
@@ -20,7 +36,7 @@ namespace NetGore
         /// <returns>All Types from every Assembly.</returns>
         public static IEnumerable<Type> AllTypes()
         {
-            return AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Distinct();
+            return AllTypes(_gacDefault);
         }
 
         /// <summary>
@@ -36,8 +52,26 @@ namespace NetGore
         /// <returns>All Types that match the given conditions.</returns>
         public static IEnumerable<Type> FindTypes(Func<Type, bool> conditions, Type[] constructorParams)
         {
+            return FindTypes(conditions, constructorParams, _gacDefault);
+        }
+
+        /// <summary>
+        /// Finds all Types that match the given conditions.
+        /// </summary>
+        /// <param name="conditions">The conditions that each Type must meet.</param>
+        /// <param name="constructorParams">An array of Types that define the parameters required for
+        /// the constructor. If no constructor with the specified parameter Types are found, a
+        /// MissingMethodException will be thrown. Set to null to not require any constructor, and set to
+        /// an empty array to require an empty constructor. Use this parameter only if you want to require
+        /// a specific constructor signature, not if you just want to find Types that have a specific
+        /// constructor signature. If this value is not null, only instanceable classes will be returned.</param>
+        /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.
+        /// Default is false.</param>
+        /// <returns>All Types that match the given conditions.</returns>
+        public static IEnumerable<Type> FindTypes(Func<Type, bool> conditions, Type[] constructorParams, bool includeGAC)
+        {
             // Grab all types
-            var types = AllTypes();
+            var types = AllTypes(includeGAC);
 
             // Match against the custom conditions
             if (conditions != null)
@@ -66,7 +100,7 @@ namespace NetGore
 
             return types;
         }
-
+        
         /// <summary>
         /// Finds all Types that inherit the specified <paramref name="baseType"/>.
         /// </summary>
@@ -80,7 +114,25 @@ namespace NetGore
         /// <returns>IEnumerable of all Types that inherit the specified <paramref name="baseType"/>.</returns>
         public static IEnumerable<Type> FindTypesThatInherit(Type baseType, Type[] constructorParams)
         {
-            return FindTypes(x => x.IsSubclassOf(baseType), constructorParams);
+            return FindTypesThatInherit(baseType, constructorParams, _gacDefault);
+        }
+
+        /// <summary>
+        /// Finds all Types that inherit the specified <paramref name="baseType"/>.
+        /// </summary>
+        /// <param name="baseType">Type of the base class or interface to find the Types that inherit.</param>
+        /// <param name="constructorParams">An array of Types that define the parameters required for
+        /// the constructor. If no constructor with the specified parameter Types are found, a
+        /// MissingMethodException will be thrown. Set to null to not require any constructor, and set to
+        /// an empty array to require an empty constructor. Use this parameter only if you want to require
+        /// a specific constructor signature, not if you just want to find Types that have a specific
+        /// constructor signature. If this value is not null, only instanceable classes will be returned.</param>
+        /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.
+        /// Default is false.</param>
+        /// <returns>IEnumerable of all Types that inherit the specified <paramref name="baseType"/>.</returns>
+        public static IEnumerable<Type> FindTypesThatInherit(Type baseType, Type[] constructorParams, bool includeGAC)
+        {
+            return FindTypes(x => x.IsSubclassOf(baseType), constructorParams, includeGAC);
         }
 
         /// <summary>
@@ -96,7 +148,26 @@ namespace NetGore
         /// <returns>IEnumerable of all Types that have the specified <paramref name="attributeType"/>.</returns>
         public static IEnumerable<Type> FindTypesWithAttribute(Type attributeType, Type[] constructorParams)
         {
-            return FindTypes(x => x.GetCustomAttributes(attributeType, true).Count() > 0, constructorParams);
+            return FindTypesWithAttribute(attributeType, constructorParams, _gacDefault);
+        }
+
+        /// <summary>
+        /// Finds all Types that contain an attribute of Type <paramref name="attributeType"/>.
+        /// </summary>
+        /// <param name="attributeType">Type of the attribute to find on the Types.</param>
+        /// <param name="constructorParams">An array of Types that define the parameters required for
+        /// the constructor. If no constructor with the specified parameter Types are found, a
+        /// MissingMethodException will be thrown. Set to null to not require any constructor, and set to
+        /// an empty array to require an empty constructor. Use this parameter only if you want to require
+        /// a specific constructor signature, not if you just want to find Types that have a specific
+        /// constructor signature. If this value is not null, only instanceable classes will be returned.</param>
+        /// <param name="includeGAC">If true, Types from Assemblies from the Global Assembly Cache will be included.
+        /// Default is false.</param>
+        /// <returns>IEnumerable of all Types that have the specified <paramref name="attributeType"/>.</returns>
+        public static IEnumerable<Type> FindTypesWithAttribute(Type attributeType, Type[] constructorParams, bool includeGAC)
+        {
+            Func<Type, bool> func = (x => x.GetCustomAttributes(attributeType, true).Count() > 0);
+            return FindTypes(func, constructorParams, includeGAC);
         }
     }
 }
