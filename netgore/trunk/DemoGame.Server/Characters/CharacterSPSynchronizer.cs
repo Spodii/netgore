@@ -47,6 +47,16 @@ namespace DemoGame.Server
             SynchronizePercentage();
         }
 
+        public virtual void ForceSynchronizeTo(User user)
+        {
+            using (PacketWriter pw = ServerPacket.GetWriter())
+            {
+                ServerPacket.SetCharacterHPPercent(pw, _character.MapEntityIndex, _lastSentHPPercent);
+                ServerPacket.SetCharacterMPPercent(pw, _character.MapEntityIndex, _lastSentMPPercent);
+                user.Send(pw);
+            }
+        }
+
         /// <summary>
         /// Forces synchronization.
         /// </summary>
