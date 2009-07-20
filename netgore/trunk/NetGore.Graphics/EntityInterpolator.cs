@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-
 using Microsoft.Xna.Framework;
 using NetGore;
 
-namespace DemoGame.Client
+namespace NetGore.Graphics
 {
     /// <summary>
     /// Assists in smoothing out Entity movement by interpolating the position drawn.

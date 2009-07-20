@@ -75,7 +75,6 @@
     <Compile Include="Entity\Character.cs" />
     <Compile Include="Entity\DamageTrapEntity.cs" />
     <Compile Include="Entity\EntityDrawer.cs" />
-    <Compile Include="Entity\EntityInterpolator.cs" />
     <Compile Include="Entity\ItemEntity.cs" />
     <Compile Include="Entity\MapRenderLayerChange.cs" />
     <Compile Include="Entity\NPC.cs" />
