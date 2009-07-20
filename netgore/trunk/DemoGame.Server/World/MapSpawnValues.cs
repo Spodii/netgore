@@ -68,9 +68,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets or sets the maximum number of Characters that will be spawned.
+        /// Gets or sets the maximum number of Characters that will be spawned by this MapSpawnValues.
         /// </summary>
-        public byte NPCAmount
+        public byte SpawnAmount
         {
             get { return _npcAmount; }
             set
@@ -158,7 +158,7 @@ namespace DemoGame.Server
         public static IEnumerable<MapSpawnValues> Load(DBController dbController, MapIndex mapIndex)
         {
             var ret = new List<MapSpawnValues>();
-            var queryValues = dbController.GetQuery<SelectMapSpawnsQuery>().Execute(mapIndex);
+            var queryValues = dbController.GetQuery<SelectMapSpawnsOnMapQuery>().Execute(mapIndex);
 
             foreach (SelectMapSpawnQueryValues v in queryValues)
             {
@@ -177,25 +177,32 @@ namespace DemoGame.Server
         /// <param name="newSpawnArea">New MapSpawnRect values.</param>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="newSpawnArea"/> contains one or more
         /// values that are not in range of the <paramref name="map"/>.</exception>
+        /// <exception cref="ArgumentException">The <paramref name="map"/>'s MapIndex does not match this
+        /// MapSpawnValues's <see cref="MapIndex"/>.</exception>
         public void SetSpawnArea(Map map, MapSpawnRect newSpawnArea)
         {
+            if (map.Index != MapIndex)
+                throw new ArgumentException("The index of the specified map does not match this MapIndex", "map");
+
             if (newSpawnArea == SpawnArea)
                 return;
 
             ushort x = newSpawnArea.X.HasValue ? newSpawnArea.X.Value : (ushort)0;
             ushort y = newSpawnArea.Y.HasValue ? newSpawnArea.Y.Value : (ushort)0;
 
+            const string errmsg = "One or more of the `newSpawnArea` parameter values are out of range of the map!";
+
             if (x < 0)
-                throw new ArgumentOutOfRangeException("newSpawnArea");
+                throw new ArgumentOutOfRangeException("newSpawnArea", errmsg);
 
             if (y < 0)
-                throw new ArgumentOutOfRangeException("newSpawnArea");
+                throw new ArgumentOutOfRangeException("newSpawnArea", errmsg);
 
             if (newSpawnArea.Width.HasValue && (x + newSpawnArea.Width.Value) > map.Width)
-                throw new ArgumentOutOfRangeException("newSpawnArea");
+                throw new ArgumentOutOfRangeException("newSpawnArea", errmsg);
 
             if (newSpawnArea.Height.HasValue && (y + newSpawnArea.Height.Value) > map.Height)
-                throw new ArgumentOutOfRangeException("newSpawnArea");
+                throw new ArgumentOutOfRangeException("newSpawnArea", errmsg);
 
             SpawnArea = newSpawnArea;
         }

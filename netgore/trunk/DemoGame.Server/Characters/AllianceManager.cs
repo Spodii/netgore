@@ -67,7 +67,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// AllianceManager constructor
+        /// Initializes the AllianceManager. Must be called before anything else.
         /// </summary>
         /// <param name="dbController">DBController for the database holding the alliance information.</param>
         public static void Initialize(DBController dbController)
