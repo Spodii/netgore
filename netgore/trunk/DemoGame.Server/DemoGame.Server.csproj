@@ -93,6 +93,7 @@
   <ItemGroup>
     <Compile Include="AI\AIBase.cs" />
     <Compile Include="AI\AIFactory.cs" />
+    <Compile Include="AI\TestAI.cs" />
     <Compile Include="Characters\Alliance.cs">
       <SubType>Code</SubType>
     </Compile>

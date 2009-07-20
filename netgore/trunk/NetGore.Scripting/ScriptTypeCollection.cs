@@ -2,6 +2,7 @@ using System;
 using System.CodeDom.Compiler;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -63,6 +64,14 @@ namespace NetGore.Scripting
             get { return _types.Values; }
         }
 
+        static string[] SafeGetFiles(string dir, string searchPattern, SearchOption searchOptions)
+        {
+            if (!Directory.Exists(dir))
+                return new string[0];
+
+            return Directory.GetFiles(dir, searchPattern, searchOptions);
+        }
+
         /// <summary>
         /// ScriptTypeCollection constructor.
         /// </summary>
@@ -70,7 +79,7 @@ namespace NetGore.Scripting
         /// ScriptTypeCollections.</param>
         /// <param name="scriptDir">Directory containing the scripts to load.</param>
         public ScriptTypeCollection(string name, string scriptDir)
-            : this(name, Directory.GetFiles(scriptDir, "*", SearchOption.TopDirectoryOnly))
+            : this(name, SafeGetFiles(scriptDir, "*", SearchOption.TopDirectoryOnly))
         {
         }
 
@@ -84,8 +93,6 @@ namespace NetGore.Scripting
         {
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
-            if (sourceFiles == null || sourceFiles.Count() == 0)
-                throw new ArgumentNullException("sourceFiles");
 
             _name = name;
 
@@ -112,7 +119,12 @@ namespace NetGore.Scripting
         {
             // Check for files
             if (scriptFiles.Count() == 0)
+            {
+                string outputFilePath = GetOutputFilePath(language);
+                if (File.Exists(outputFilePath))
+                    File.Delete(outputFilePath);
                 return null;
+            }
 
             // Compile the code
             CompilerErrorCollection errors;
@@ -133,6 +145,11 @@ namespace NetGore.Scripting
             return errors;
         }
 
+        string GetOutputFilePath(ScriptLanguage language)
+        {
+            return Name + "." + language + ".dll";
+        }
+
         /// <summary>
         /// Compiles the source code files.
         /// </summary>
@@ -142,6 +159,8 @@ namespace NetGore.Scripting
         /// <returns>The resulting Assembly from the compiler.</returns>
         Assembly CompileCode(IEnumerable<string> files, ScriptLanguage language, out CompilerErrorCollection errors)
         {
+            Debug.Assert(files.Count() > 0);
+
             // Set the .NET framework version
             var providerOptions = new Dictionary<string, string> { { "CompilerVersion", "v3.5" } };
 
@@ -161,6 +180,8 @@ namespace NetGore.Scripting
                     throw new ArgumentOutOfRangeException("language");
             }
 
+            // FUTURE: Add a cache to see if the scripts need to be recompiled. Can be done easily enough with a MD5 hash of the input files.
+
             // Compile
             CompilerResults result;
             using (codeDomProvider)
@@ -168,7 +189,7 @@ namespace NetGore.Scripting
                 CompilerParameters options = new CompilerParameters
                                              {
                                                  GenerateExecutable = false, GenerateInMemory = false,
-                                                 OutputAssembly = Name + "." + language + ".dll"
+                                                 OutputAssembly = GetOutputFilePath(language)
                                              };
 
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
