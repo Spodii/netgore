@@ -1,16 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using log4net;
+using Microsoft.Xna.Framework;
+using NetGore;
 
 namespace DemoGame.Server
 {
     public struct MapSpawnRect
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// The X co-ordinate of the rectangle. If null, the rectangle will be located at the left side of the Map.
+        /// </summary>
         public ushort? X;
+
+        /// <summary>
+        /// The Y co-ordinate of the rectangle. If null, the rectangle will be located at the top side of the Map.
+        /// </summary>
         public ushort? Y;
+
+        /// <summary>
+        /// The width of the rectangle. If null, the rectangle will be stretched to fit the width of the Map.
+        /// </summary>
         public ushort? Width;
+
+        /// <summary>
+        /// The height of the rectangle. If null, the rectangle will be stretched to fit the height of the Map.
+        /// </summary>
         public ushort? Height;
+
+        /// <summary>
+        /// Gets the MapSpawnRect as a Rectangle.
+        /// </summary>
+        /// <param name="map">The IMap used to resolve any null values.</param>
+        /// <returns>The MapSpawnRect as a Rectangle.</returns>
+        public Rectangle ToRectangle(IMap map)
+        {
+            int x = X.HasValue ? (int)X.Value : 0;
+            int y = X.HasValue ? (int)X.Value : 0;
+            int width = Width.HasValue ? Width.Value : (int)map.Width - x;
+            int height = Height.HasValue ? Height.Value : (int)map.Height - y;
+
+            // NOTE: We could use validation here to ensure the rectangle fits in the map.
+            // If the width/height do not fit, shrink them down to fit. If x/y do not fit,
+            // set it to like Width/Height - 32 to fit it in. Use Log.Fatal() on all of these cases.
+
+            return new Rectangle(x, y, width, height);
+        }
 
         public MapSpawnRect(ushort? x, ushort? y, ushort? width, ushort? height)
         {

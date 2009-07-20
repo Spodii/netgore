@@ -145,7 +145,7 @@
     <Compile Include="Queries\Map\Spawn\MapSpawnQueryHelper.cs" />
     <Compile Include="Queries\Map\Spawn\SelectMapSpawnQuery.cs" />
     <Compile Include="Queries\Map\Spawn\SelectMapSpawnQueryValues.cs" />
-    <Compile Include="Queries\Map\Spawn\SelectMapSpawnsQuery.cs" />
+    <Compile Include="Queries\Map\Spawn\SelectMapSpawnsOnMapQuery.cs" />
     <Compile Include="Queries\Map\Spawn\UpdateMapSpawnQuery.cs" />
     <Compile Include="Queries\StatsQueryHelper.cs" />
     <Compile Include="Queries\StatTypeField.cs" />
