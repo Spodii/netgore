@@ -17,7 +17,7 @@ namespace DemoGame.Server.Queries
         {
             ID = id;
             CharacterTemplateID = characterTemplateID;
-            MapIndex = MapIndex;
+            MapIndex = mapIndex;
             MapSpawnRect = mapSpawnRect;  
         }
     }
