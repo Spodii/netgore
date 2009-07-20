@@ -9,6 +9,9 @@ using NetGore;
 
 namespace DemoGame.Server
 {
+    /// <summary>
+    /// Describes a rectangle that describes the area in a Map where spawning will take place.
+    /// </summary>
     public struct MapSpawnRect
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
