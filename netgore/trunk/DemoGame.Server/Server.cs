@@ -146,8 +146,8 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loading scripts `{0}`.", name);
 
-            ScriptTypeCollection scriptTypes = new ScriptTypeCollection(name,
-                                                                        ContentPaths.Build.Data.Join("ServerScripts").Join(name));
+            string path = ContentPaths.Build.Data.Join("ServerScripts").Join(name);
+            ScriptTypeCollection scriptTypes = new ScriptTypeCollection(name, path);
 
             // Display warnings
             if (log.IsWarnEnabled)
