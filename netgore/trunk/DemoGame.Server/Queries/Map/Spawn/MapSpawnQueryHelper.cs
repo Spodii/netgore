@@ -14,7 +14,7 @@ namespace DemoGame.Server.Queries
 
         static MapSpawnQueryHelper()
         {
-            AllDBFieldsExceptID = new string[] { "id", "map_id", "character_id", "x", "y", "width", "height" }.ToArray();
+            AllDBFieldsExceptID = new string[] { "id", "map_id", "character_id", "amount", "x", "y", "width", "height" }.ToArray();
             AllDBFields = new string[] { "id" }.Concat(AllDBFieldsExceptID).ToArray();
         }
 
@@ -23,13 +23,14 @@ namespace DemoGame.Server.Queries
             MapSpawnValuesID id = r.GetInt32("id");
             MapIndex mapIndex = r.GetMapIndex("map_id");
             CharacterTemplateID charTemplate = r.GetCharacterTemplateID("character_id");
+            byte amount = r.GetByte("amount");
             var x = r.GetNullableUInt16("x");
             var y = r.GetNullableUInt16("y");
             var w = r.GetNullableUInt16("width");
             var h = r.GetNullableUInt16("height");
 
             MapSpawnRect spawnRect = new MapSpawnRect(x, y, w, h);
-            SelectMapSpawnQueryValues ret = new SelectMapSpawnQueryValues(id, charTemplate, mapIndex, spawnRect);
+            SelectMapSpawnQueryValues ret = new SelectMapSpawnQueryValues(id, charTemplate, mapIndex, amount, spawnRect);
 
             return ret;
         }
@@ -39,6 +40,7 @@ namespace DemoGame.Server.Queries
             p["@id"] = spawnValues.ID;
             p["@map_id"] = spawnValues.MapIndex;
             p["@character_id"] = spawnValues.CharacterTemplateID;
+            p["@amount"] = spawnValues.SpawnAmount;
             p["@x"] = spawnValues.SpawnArea.X;
             p["@y"] = spawnValues.SpawnArea.Y;
             p["@width"] = spawnValues.SpawnArea.Width;

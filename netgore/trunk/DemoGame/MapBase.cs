@@ -1766,7 +1766,7 @@ namespace DemoGame
         /// </summary>
         public Vector2 Size
         {
-            get { return new Vector2(_width, _height); }
+            get { return new Vector2(Width, Height); }
         }
 
         /// <summary>

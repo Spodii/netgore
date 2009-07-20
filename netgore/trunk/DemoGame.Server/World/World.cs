@@ -81,9 +81,6 @@ namespace DemoGame.Server
             {
                 MapIndex mapIndex = Map.GetIndexFromPath(mapFile);
                 Map m = new Map(mapIndex, this);
-                m.Load(ContentPaths.Build, true);
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Loaded map index {0} from file {1}", mapIndex, mapFile);
                 _maps[(int)mapIndex] = m;
             }
 
@@ -94,14 +91,8 @@ namespace DemoGame.Server
             // Create some test NPCs and items
 #if true
             Random rand = new Random();
-            CharacterTemplate npcTemplate = CharacterTemplateManager.GetTemplate(new CharacterTemplateID(1));
             foreach (Map m in Maps)
             {
-                for (int i = 0; i < 3; i++)
-                {
-                    new NPC(this, npcTemplate, m, new Vector2(500, 200));
-                }
-
                 for (int i = 0; i < 5; i++)
                 {
                     float x = rand.Next(128, (int)m.Width - 256);
