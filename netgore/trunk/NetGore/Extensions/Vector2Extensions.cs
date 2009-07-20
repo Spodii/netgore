@@ -97,7 +97,7 @@ namespace NetGore
         /// <returns>A Vector2 containing the rounded value of the <paramref name="source"/> Vector2.</returns>
         public static Vector2 Round(this Vector2 source)
         {
-            return new Vector2(Math.Abs(source.X), Math.Abs(source.Y));
+            return new Vector2((float)Math.Round(source.X), (float)Math.Round(source.Y));
         }
 
         /// <summary>
