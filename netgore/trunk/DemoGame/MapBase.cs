@@ -45,14 +45,6 @@ namespace DemoGame
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Stack used for CheckCollisions(). Because entity updating can result in movement, which in
-        /// turn can result in the entity grid being updated, enumerating over the grid directly won't work.
-        /// To fix this problem, this stack provides a medium for enumerating through entities. It also
-        /// allows us to easily check for and avoid duplicate entity collision tests.
-        /// </summary>
-        readonly Stack<Entity> _cdStack = new Stack<Entity>();
-
-        /// <summary>
         /// Enumerator for the DynamicEntities.
         /// </summary>
         readonly SafeEnumerator<DynamicEntity> _dyanmicEntityEnumerator;
@@ -1834,6 +1826,8 @@ namespace DemoGame
 
             int collisions = 0;
 
+            var cdStack = new Stack<Entity>();
+
             // Iterate through the grid segments
             foreach (var gridSegment in GetEntityGrids(entity.CB))
             {
@@ -1844,7 +1838,8 @@ namespace DemoGame
                     continue;
 
                 // Clear our stack, since we use the same object for every segment
-                _cdStack.Clear();
+                Debug.Assert(cdStack.Count == 0, "This should be empty already since we should have popped every Entity in it.");
+                cdStack.Clear();
 
                 // Lock the entity grid
                 lock (_entityGridLock)
@@ -1865,16 +1860,16 @@ namespace DemoGame
                             continue;
 
                         // Add the entity to our stack of entities to check for collision (if we haven't already)
-                        if (!_cdStack.Contains(collideEntity))
-                            _cdStack.Push(collideEntity);
+                        if (!cdStack.Contains(collideEntity))
+                            cdStack.Push(collideEntity);
                     }
                 }
 
                 // Now that we have our entities to test, test them all
-                while (_cdStack.Count > 0)
+                while (cdStack.Count > 0)
                 {
                     // Pop the entity to test against
-                    Entity collideEntity = _cdStack.Pop();
+                    Entity collideEntity = cdStack.Pop();
 
                     // Get the displacement vector if the two entities collided
                     Vector2 displacement = CollisionBox.MTD(entity.CB, collideEntity.CB, collideEntity.CollisionType);
