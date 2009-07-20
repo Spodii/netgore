@@ -143,6 +143,10 @@
       <Project>{7313F955-A78D-48A2-B087-8EC22E24ED8A}</Project>
       <Name>DemoGame.ClientObjs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DemoGame.Server\DemoGame.Server.csproj">
+      <Project>{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}</Project>
+      <Name>DemoGame.Server</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DemoGame\DemoGame.csproj">
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
