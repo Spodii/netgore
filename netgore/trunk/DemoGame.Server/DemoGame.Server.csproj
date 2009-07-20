@@ -210,10 +210,6 @@
     <Compile Include="World\World.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DemoGame.ServerObjs\DemoGame.ServerObjs.csproj">
-      <Project>{E7126698-6CF2-46C8-B35A-9C56F9314F8B}</Project>
-      <Name>DemoGame.ServerObjs</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
       <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
       <Name>NetGore.Collections</Name>
