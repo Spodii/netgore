@@ -30,7 +30,7 @@ namespace DemoGame.Client
         MapEntityIndex _usercharIndex;
 
         /// <summary>
-        /// Gets the camera used for the active view
+        /// Gets the camera used for the active view.
         /// </summary>
         public Camera2D Camera
         {
@@ -38,12 +38,16 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets or sets the map currently being used
+        /// Gets or sets the map currently being used.
         /// </summary>
         public Map Map
         {
             get { return _map; }
-            set { _map = value; }
+            set 
+            { 
+                _map = value;
+                _camera.Map = _map;
+            }
         }
 
         /// <summary>

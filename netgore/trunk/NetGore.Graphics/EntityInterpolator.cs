@@ -94,25 +94,29 @@ namespace NetGore.Graphics
             Vector2 newPosition = _drawPosition + (velocity * deltaTime);
 
             // Don't allow the draw position to exceed the real position
-            if (_drawPosition.X >= position.X)
+            if (velocity.X > 0)
             {
-                if (newPosition.X < position.X)
-                    newPosition.X = position.X;
-            }
-            else if (_drawPosition.X <= position.X)
-            {
+                // Moving right
                 if (newPosition.X > position.X)
                     newPosition.X = position.X;
             }
-
-            if (_drawPosition.Y >= position.Y)
+            else if (velocity.X < 0)
             {
-                if (newPosition.Y < position.Y)
+                // Moving left
+                if (newPosition.X < position.X)
+                    newPosition.X = position.X;
+            }
+
+            if (velocity.Y > 0)
+            {
+                // Moving down
+                if (newPosition.Y > position.Y)
                     newPosition.Y = position.Y;
             }
-            else if (_drawPosition.Y <= position.Y)
+            else if (velocity.Y < 0)
             {
-                if (newPosition.Y > position.Y)
+                // Moving up
+                if (newPosition.Y < position.Y)
                     newPosition.Y = position.Y;
             }
 

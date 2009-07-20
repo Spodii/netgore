@@ -40,11 +40,6 @@ namespace DemoGame.Client
         const int _minUseRate = 150;
 
         /// <summary>
-        /// Camera used to manage the view area
-        /// </summary>
-        readonly Camera2D _camera = new Camera2D(GameData.ScreenSize);
-
-        /// <summary>
         /// Pool for the damage text
         /// </summary>
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
@@ -149,14 +144,6 @@ namespace DemoGame.Client
         /// Root world of the game
         /// </summary>
         World _world;
-
-        /// <summary>
-        /// Gets the game camera
-        /// </summary>
-        public Camera2D Camera
-        {
-            get { return _camera; }
-        }
 
         /// <summary>
         /// Gets the DamageTextPool
@@ -313,7 +300,11 @@ namespace DemoGame.Client
         /// </summary>
         void DrawWorld()
         {
-            _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, _camera.Matrix);
+            // Update the camera
+            World.Camera.Min = World.UserChar.GetCameraPos();
+
+            // Draw the world layer
+            _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, World.Camera.Matrix);
             World.Draw(_spriteBatch);
             _damageTextPool.Draw(_spriteBatch, _damageFont);
             _spriteBatch.End();
@@ -334,7 +325,7 @@ namespace DemoGame.Client
 
         public override void Initialize()
         {
-            _world = new World(this, _camera);
+            _world = new World(this, new Camera2D(GameData.ScreenSize));
 
             // Create the socket
             _socket = new ClientSockets(this);
@@ -461,10 +452,6 @@ namespace DemoGame.Client
 
             if (_latencyLabel != null)
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
-
-            // Update the camera
-            _camera.Min = UserChar.GetCameraPos();
-            _camera.Map = Map;
         }
 
         void UpdateInput()
