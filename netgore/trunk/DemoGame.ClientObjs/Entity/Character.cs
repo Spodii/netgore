@@ -103,6 +103,13 @@ namespace DemoGame.Client
             _currSkelSet = setName;
         }
 
+        /// <summary>
+        /// Draws a bar for the Character's SP.
+        /// </summary>
+        /// <param name="sb">SpriteBatch to draw to.</param>
+        /// <param name="percent">The percent of the SP being drawn.</param>
+        /// <param name="index">The 0-based index of the bar being drawn.</param>
+        /// <param name="color">The color to draw the bar.</param>
         void DrawSPBar(SpriteBatch sb, byte percent, byte index, Color color)
         {
             const float spBarWidth = 55;
