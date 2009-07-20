@@ -55,12 +55,12 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Character constructor
+        /// Character constructor.
         /// </summary>
-        /// <param name="map">Map the character belongs to</param>
-        /// <param name="position">Position of the character</param>
-        /// <param name="bodyInfo">BodyInfo defining the character's body</param>
-        /// <param name="skelManager">SkeletonManager used to load skeleton information</param>
+        /// <param name="map">Map the character belongs to.</param>
+        /// <param name="position">Position of the character.</param>
+        /// <param name="bodyInfo">BodyInfo defining the character's body.</param>
+        /// <param name="skelManager">SkeletonManager used to load skeleton information.</param>
         public Character(Map map, Vector2 position, BodyInfo bodyInfo, SkeletonManager skelManager)
         {
             _map = map;
@@ -79,7 +79,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Makes the character show an attack
+        /// Makes the character show an attack.
         /// </summary>
         public void Attack()
         {
@@ -90,9 +90,9 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Changes the SkeletonSet used if different
+        /// Changes the SkeletonSet used if different.
         /// </summary>
-        /// <param name="setName">Name of the set to use</param>
+        /// <param name="setName">Name of the set to use.</param>
         void ChangeSet(string setName)
         {
             // Check that the set has changed
@@ -145,6 +145,11 @@ namespace DemoGame.Client
             return _map;
         }
 
+        /// <summary>
+        /// Initializes the Character.
+        /// </summary>
+        /// <param name="map">The Map to place the Character on.</param>
+        /// <param name="skelManager">The SkeletonManager to use for the Character's skeletons.</param>
         public void Initialize(Map map, SkeletonManager skelManager)
         {
             // HACK: This is quite a dirty way to do this
@@ -160,9 +165,9 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Sets the character's heading
+        /// Sets the character's heading.
         /// </summary>
-        /// <param name="newHeading">New heading for the character</param>
+        /// <param name="newHeading">New heading for the character.</param>
         public override void SetHeading(Direction newHeading)
         {
             if (Heading == newHeading)
@@ -172,7 +177,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles OnLoop events for the SkeletonAnimation to set the character's animation back to normal
+        /// Handles OnLoop events for the SkeletonAnimation to set the character's animation back to normal.
         /// </summary>
         void skelAnim_OnLoop(object sender, EventArgs e)
         {
@@ -181,7 +186,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Updates the character's sprites
+        /// Updates the character's sprites.
         /// </summary>
         void UpdateAnimation()
         {
@@ -218,9 +223,9 @@ namespace DemoGame.Client
         #region IDrawableEntity Members
 
         /// <summary>
-        /// Draws the character
+        /// Draws the character.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw the character with</param>
+        /// <param name="sb">SpriteBatch to draw the character with.</param>
         public void Draw(SpriteBatch sb)
         {
             if (_skelAnim == null)
@@ -250,17 +255,17 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Checks if in view of the specified camera
+        /// Checks if in view of the specified camera.
         /// </summary>
-        /// <param name="camera">Camera to check if in view of</param>
-        /// <returns>True if in view of the camera, else false</returns>
+        /// <param name="camera">Camera to check if in view of.</param>
+        /// <returns>True if in view of the camera, else false.</returns>
         public bool InView(Camera2D camera)
         {
             return camera.InView(this);
         }
 
         /// <summary>
-        /// Notifies when the Character's render layer changes (which is never for Characters)
+        /// Notifies listeners that the Entity's MapRenderLayer has changed.
         /// </summary>
         public event MapRenderLayerChange OnChangeRenderLayer
         {
@@ -269,7 +274,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the MapRenderLayer for the Character
+        /// Gets the MapRenderLayer that this Entity is rendered on.
         /// </summary>
         public MapRenderLayer MapRenderLayer
         {
@@ -285,9 +290,9 @@ namespace DemoGame.Client
         #region IGetTime Members
 
         /// <summary>
-        /// Gets the current game time where time 0 is when the application started
+        /// Gets the current time.
         /// </summary>
-        /// <returns>Current game time in milliseconds</returns>
+        /// <returns>Current time.</returns>
         public int GetTime()
         {
             return _map.GetTime();
