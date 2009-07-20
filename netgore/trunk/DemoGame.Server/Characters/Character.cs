@@ -81,6 +81,15 @@ namespace DemoGame.Server
         readonly World _world;
 
         /// <summary>
+        /// Synchronizes this Character's SP to the specified <paramref name="user"/>.
+        /// </summary>
+        /// <param name="user">The User to synchronize this Character's SP to.</param>
+        public void SynchronizeSPTo(User user)
+        {
+            _spSync.ForceSynchronizeTo(user);
+        }
+
+        /// <summary>
         /// Character's alliance.
         /// </summary>
         Alliance _alliance;

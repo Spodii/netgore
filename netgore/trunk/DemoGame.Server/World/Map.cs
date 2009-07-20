@@ -414,9 +414,13 @@ namespace DemoGame.Server
                     pw.Reset();
                     ServerPacket.CreateDynamicEntity(pw, dynamicEntity);
                     user.Send(pw);
+
+                    Character character = dynamicEntity as Character;
+                    if (character != null)
+                        character.SynchronizeSPTo(user);
                 }
 
-                // Now that the user know about the map and every character on it, tell them which one is theirs
+                // Now that the user know about the Map and every Entity on it, tell them which one is theirs
                 pw.Reset();
                 ServerPacket.SetUserChar(pw, user.MapEntityIndex);
                 user.Send(pw);
