@@ -91,6 +91,11 @@ namespace DemoGame.Server
             get { return _world; }
         }
 
+        /// <summary>
+        /// Map constructor.
+        /// </summary>
+        /// <param name="mapIndex">Index of the Map.</param>
+        /// <param name="world">World that the Map will be inside of.</param>
         public Map(MapIndex mapIndex, World world) : base(mapIndex, world)
         {
             _world = world;
