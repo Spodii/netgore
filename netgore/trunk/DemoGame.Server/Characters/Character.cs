@@ -625,15 +625,32 @@ namespace DemoGame.Server
         /// <returns>True if enough time has elapsed; otherwise false.</returns>
         protected abstract bool CheckRespawnElapsedTime(int currentTime);
 
+        /// <summary>
+        /// When overridden in the derived class, creates the CharacterEquipped for this Character.
+        /// </summary>
+        /// <returns>The CharacterEquipped for this Character.</returns>
         protected abstract CharacterEquipped CreateEquipped();
 
+        /// <summary>
+        /// When overridden in the derived class, creates the CharacterInventory for this Character.
+        /// </summary>
+        /// <returns>The CharacterInventory for this Character.</returns>
         protected abstract CharacterInventory CreateInventory();
 
+        /// <summary>
+        /// When overridden in the derived class, creates the CharacterSPSynchronizer for this Character.
+        /// </summary>
+        /// <returns>The CharacterSPSynchronizer for this Character.</returns>
         protected virtual CharacterSPSynchronizer CreateSPSynchronizer()
         {
             return new CharacterSPSynchronizer(this);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates the CharacterStatsBase for this Character.
+        /// </summary>
+        /// <param name="statCollectionType">The type of StatCollectionType to create.</param>
+        /// <returns>The CharacterStatsBase for this Character.</returns>
         protected abstract CharacterStatsBase CreateStats(StatCollectionType statCollectionType);
 
         /// <summary>
