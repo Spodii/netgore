@@ -16,6 +16,12 @@ using NetGore.IO;
 namespace DemoGame
 {
     /// <summary>
+    /// Event handler for basic events from the MapBase.
+    /// </summary>
+    /// <param name="map">MapBase that the event came from.</param>
+    public delegate void MapBaseEventHandler(MapBase map);
+
+    /// <summary>
     /// Base map class
     /// </summary>
     public abstract class MapBase : IMap
@@ -1458,7 +1464,15 @@ namespace DemoGame
         {
             PathString path = contentPath.Maps.Join(mapIndex + "." + MapFileSuffix);
             Save(path);
+
+            if (OnSave != null)
+                OnSave(this);
         }
+
+        /// <summary>
+        /// Notifies listeners that the Map has been saved.
+        /// </summary>
+        public event MapBaseEventHandler OnSave;
 
         /// <summary>
         /// Saves the map to a file to the specified file path.
