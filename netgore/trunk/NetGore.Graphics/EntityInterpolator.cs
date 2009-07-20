@@ -51,6 +51,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// The maximum distance allowed between the Entity's Position and the DrawPosition. If the distance between
+        /// these two points exceeds this value, the DrawPosition should be set to the Position instead of interpolating
+        /// to it.
+        /// </summary>
+        const float _maxAllowedDistance = 50.0f;
+
+        /// <summary>
         /// Updates the drawing position interpolation.
         /// </summary>
         /// <param name="entity">Entity that this EntityInterpolator is for.</param>
@@ -110,9 +117,8 @@ namespace NetGore.Graphics
             }
 
             // If we are too far out of sync, just jump to the real position
-            Vector2 diff = (newPosition - position).Abs();
-            const float teleDiff = 50f;
-            if (diff.X > teleDiff || diff.Y > teleDiff)
+            float diff = newPosition.QuickDistance(position);
+            if (diff > _maxAllowedDistance)
                 newPosition = position;
 
             // Set the new drawing position
