@@ -26,6 +26,12 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly SafeEnumerator<NPC> _npcEnumerator;
         readonly List<NPC> _npcs;
+
+        /// <summary>
+        /// IEnumerable of the NPCSpawners on this Map.
+        /// </summary>
+        readonly IEnumerable<NPCSpawner> _npcSpawners;
+
         readonly SafeEnumerator<User> _userEnumerator;
         readonly TSList<User> _users;
         readonly World _world;
@@ -62,6 +68,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets an IEnumerable of the NPCSpawners on this Map.
+        /// </summary>
+        public IEnumerable<NPCSpawner> NPCSpawners
+        {
+            get { return _npcSpawners; }
+        }
+
+        /// <summary>
         /// Gets the list of users on the Map.
         /// </summary>
         public IEnumerable<User> Users
@@ -86,6 +100,13 @@ namespace DemoGame.Server
 
             _users = new TSList<User>();
             _userEnumerator = new SafeEnumerator<User>(_users);
+
+            Load(ContentPaths.Build, true);
+
+            _npcSpawners = NPCSpawner.LoadSpawners(this).ToArray();
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Loaded Map `{0}`.", this);
         }
 
         public override void AddEntity(Entity entity)
@@ -462,7 +483,9 @@ namespace DemoGame.Server
 
             // Flush the unreliable buffers for all of the users
             foreach (User user in Users)
+            {
                 user.FlushUnreliableBuffer();
+            }
         }
 
         public override void Update(int deltaTime)

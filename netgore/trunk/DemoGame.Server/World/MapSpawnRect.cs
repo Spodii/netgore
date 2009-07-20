@@ -42,8 +42,8 @@ namespace DemoGame.Server
         {
             int x = X.HasValue ? (int)X.Value : 0;
             int y = X.HasValue ? (int)X.Value : 0;
-            int width = Width.HasValue ? Width.Value : (int)map.Width - x;
-            int height = Height.HasValue ? Height.Value : (int)map.Height - y;
+            int width = Width.HasValue ? Width.Value : (int)Math.Round(map.Width) - x;
+            int height = Height.HasValue ? Height.Value : (int)Math.Round(map.Height) - y;
 
             // NOTE: We could use validation here to ensure the rectangle fits in the map.
             // If the width/height do not fit, shrink them down to fit. If x/y do not fit,

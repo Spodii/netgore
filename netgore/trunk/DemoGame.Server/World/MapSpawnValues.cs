@@ -16,7 +16,7 @@ namespace DemoGame.Server
 
         CharacterTemplateID _characterTemplateID;
         MapIndex _mapIndex;
-        byte _npcAmount;
+        byte _spawnAmount;
         MapSpawnRect _spawnArea;
 
         /// <summary>
@@ -72,13 +72,13 @@ namespace DemoGame.Server
         /// </summary>
         public byte SpawnAmount
         {
-            get { return _npcAmount; }
+            get { return _spawnAmount; }
             set
             {
-                if (_npcAmount == value)
+                if (_spawnAmount == value)
                     return;
 
-                _npcAmount = value;
+                _spawnAmount = value;
                 UpdateDB();
             }
         }
@@ -104,7 +104,7 @@ namespace DemoGame.Server
         /// <param name="mapIndex">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
         public MapSpawnValues(DBController dbController, MapSpawnValuesID id, MapIndex mapIndex, CharacterTemplateID characterTemplateID)
-            : this(dbController, id, mapIndex, characterTemplateID, new MapSpawnRect(null, null, null, null))
+            : this(dbController, id, mapIndex, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
         {
         }
 
@@ -114,7 +114,7 @@ namespace DemoGame.Server
         /// <param name="dbController">The DBController used to synchronize changes to the values.</param>
         /// <param name="v">The SelectMapSpawnQueryValues containing the values to use.</param>
         MapSpawnValues(DBController dbController, SelectMapSpawnQueryValues v)
-            : this(dbController, v.ID, v.MapIndex, v.CharacterTemplateID, v.MapSpawnRect)
+            : this(dbController, v.ID, v.MapIndex, v.CharacterTemplateID, v.Amount, v.MapSpawnRect)
         {
         }
 
@@ -125,14 +125,16 @@ namespace DemoGame.Server
         /// <param name="id">The unique ID of this MapSpawnValues.</param>
         /// <param name="mapIndex">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
+        /// <param name="spawnAmount">The maximum number of Characters that will be spawned by this MapSpawnValues.</param>
         /// <param name="spawnRect">The area on the map the spawning will take place at.</param>
         MapSpawnValues(DBController dbController, MapSpawnValuesID id, MapIndex mapIndex, CharacterTemplateID characterTemplateID,
-                       MapSpawnRect spawnRect)
+                       byte spawnAmount, MapSpawnRect spawnRect)
         {
             _dbController = dbController;
             _id = id;
             _mapIndex = mapIndex;
             _characterTemplateID = characterTemplateID;
+            _spawnAmount = spawnAmount;
             _spawnArea = spawnRect;
         }
 

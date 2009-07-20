@@ -1,50 +1,58 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using Microsoft.Xna.Framework;
-using NetGore;
 
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Uses the information from a <see cref="MapSpawnValues"/> to spawn NPCs on a Map.
+    /// Uses the information from a <see cref="MapSpawnValues"/> to spawn non-persistent NPCs on a Map.
     /// </summary>
     public class NPCSpawner
     {
         static readonly Random _rnd = new Random();
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly Map _map;
-
-        /// <summary>
-        /// Gets the Map that this NPCSpawner is on.
-        /// </summary>
-        public Map Map { get { return _map; } }
-
-        readonly CharacterTemplate _characterTemplate;
-
-        /// <summary>
-        /// Gets the CharacterTemplate used for the Characters spawned.
-        /// </summary>
-        public CharacterTemplate CharacterTemplate { get { return _characterTemplate; } }
 
         readonly byte _amount;
+
+        readonly Rectangle _area;
+        readonly CharacterTemplate _characterTemplate;
+        readonly Map _map;
 
         /// <summary>
         /// Gets the number of Characters being spawned by this NPCSpawner.
         /// </summary>
-        public byte Amount { get { return _amount; } }
-
-        readonly Rectangle _area;
+        public byte Amount
+        {
+            get { return _amount; }
+        }
 
         /// <summary>
         /// Gets the area that the spawning takes place in.
         /// </summary>
-        public Rectangle Area { get { return _area; } }
+        public Rectangle Area
+        {
+            get { return _area; }
+        }
+
+        /// <summary>
+        /// Gets the CharacterTemplate used for the Characters spawned.
+        /// </summary>
+        public CharacterTemplate CharacterTemplate
+        {
+            get { return _characterTemplate; }
+        }
+
+        /// <summary>
+        /// Gets the Map that this NPCSpawner is on.
+        /// </summary>
+        public Map Map
+        {
+            get { return _map; }
+        }
 
         /// <summary>
         /// NPCSpawner constructor.
@@ -83,6 +91,40 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Loads the NPCSpawners for a Map.
+        /// </summary>
+        /// <param name="map">Map to load the spawners for.</param>
+        /// <returns>IEnumerable of the NPCSpawners that were loaded.</returns>
+        public static IEnumerable<NPCSpawner> LoadSpawners(Map map)
+        {
+            var queryValues = MapSpawnValues.Load(map.DBController, map.Index);
+            var ret = new List<NPCSpawner>();
+
+            foreach (MapSpawnValues queryValue in queryValues)
+            {
+                NPCSpawner spawner = new NPCSpawner(queryValue, map);
+                ret.Add(spawner);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Handles when a NPC handled by this NPCSpawner is killed.
+        /// </summary>
+        /// <param name="character">The NPC that was killed.</param>
+        void NPC_OnKilled(Character character)
+        {
+            Debug.Assert(character is NPC, "How is this not a NPC?!");
+            Debug.Assert(!character.IsDisposed, "Uhm, why did somebody dispose my precious little map-spawned NPC? :(");
+
+            Vector2 respawnPos = RandomSpawnPosition();
+
+            character.RespawnMapIndex = _map.Index;
+            character.RespawnPosition = respawnPos;
+        }
+
+        /// <summary>
         /// Gets a random position that fits inside this NPCSpawner's Area.
         /// </summary>
         /// <returns>A random position that fits inside this NPCSpawner's Area.</returns>
@@ -105,18 +147,6 @@ namespace DemoGame.Server
                 NPC npc = new NPC(_map.World, _characterTemplate, _map, pos);
                 npc.OnKilled += NPC_OnKilled;
             }
-        }
-
-        /// <summary>
-        /// Handles when a NPC handled by this NPCSpawner is killed.
-        /// </summary>
-        /// <param name="character">The NPC that was killed.</param>
-        void NPC_OnKilled(Character character)
-        {
-            Vector2 respawnPos = RandomSpawnPosition();
-
-            character.RespawnMapIndex = _map.Index;
-            character.RespawnPosition = respawnPos;
         }
     }
 }
