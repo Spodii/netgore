@@ -106,6 +106,7 @@
     <Compile Include="CharacterTemplateEquipmentItemExtensions.cs" />
     <Compile Include="CharacterTemplateInventoryItemExtensions.cs" />
     <Compile Include="ConsoleCommandAttribute.cs" />
+    <Compile Include="IRespawnable.cs" />
     <Compile Include="Items\CharacterEquipped.cs" />
     <Compile Include="Items\CharacterInventory.cs" />
     <Compile Include="Items\InventoryChangeInfo.cs" />
