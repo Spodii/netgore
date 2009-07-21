@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using NetGore;
 
 namespace DemoGame
@@ -20,6 +21,7 @@ namespace DemoGame
         /// on each Client. If false, this message will never be sent. Only set to true if any code is placed in
         /// Use() on the Client implementation of the IUsableEntity, or there are expected to be listeners to OnUse.
         /// </summary>
+        [Browsable(false)]
         bool NotifyClientsOfUsage { get; }
 
         /// <summary>

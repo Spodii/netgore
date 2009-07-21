@@ -103,11 +103,7 @@ namespace DemoGame.Server
         /// </summary>
         public Server()
         {
-            // Get the server settings
-            const string settingsPath = "Settings.xml";
-            ServerSettings settings = new ServerSettings(settingsPath);
-
-            // Open the database connection
+            DBConnectionSettings settings = new DBConnectionSettings();
             _dbController = new DBController(settings.SqlConnectionString());
             DBTableValidator.ValidateTables(_dbController);
 

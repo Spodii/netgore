@@ -14,7 +14,9 @@ using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using Color=System.Drawing.Color;
+using Map=DemoGame.Client.Map;
 using Point=System.Drawing.Point;
+using World=DemoGame.Client.World;
 
 // LATER: Grid-snapping for batch movement
 // LATER: When walking down slope, don't count it as falling
@@ -448,9 +450,15 @@ namespace DemoGame.MapEditor
             }
 
             Map = new Map(index, _world, GameScreen.GraphicsDevice);
+            Map.OnSave += Map_OnSave;
             Map.SetDimensions(new Vector2(30 * 32, 20 * 32));
             Map.Save(index, ContentPaths.Dev);
             SetMap(newMapPath);
+        }
+
+        void Map_OnSave(MapBase map)
+        {
+            // TODO: ...
         }
 
         void cmdSave_Click(object sender, EventArgs e)
@@ -785,6 +793,16 @@ namespace DemoGame.MapEditor
 
         void LoadEditor()
         {
+            // TODO: Load the database connection
+            /*
+            DBConnectionSettings settings = new DBConnectionSettings();
+            _dbController = new DBController(settings.SqlConnectionString());
+            Server.ItemEntity.Initialize(DBController);
+            AllianceManager.Initialize(DBController);
+            ItemTemplateManager.Initialize(DBController);
+            CharacterTemplateManager.Initialize(DBController);
+            */
+
             // Create the engine objects 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
             _sb = new SpriteBatch(GameScreen.GraphicsDevice);
@@ -1078,6 +1096,7 @@ namespace DemoGame.MapEditor
         {
             MapIndex index = Map.GetIndexFromPath(filePath);
             Map = new Map(index, _world, GameScreen.GraphicsDevice);
+            Map.OnSave += Map_OnSave;
             Map.Load(ContentPaths.Dev, true);
 
             // Remove all of the walls previously created from the MapGrhs
