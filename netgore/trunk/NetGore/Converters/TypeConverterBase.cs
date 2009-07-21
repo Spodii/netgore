@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-
-// NOTE: Unused
+ // NOTE: Unused
 
 /*
 namespace NetGore

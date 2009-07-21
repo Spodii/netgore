@@ -1,11 +1,7 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
-using NetGore.IO;
 using NetGore.Network;
 
 namespace DemoGame.Server
@@ -17,27 +13,6 @@ namespace DemoGame.Server
     {
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public static PacketWriter SetExp(uint exp)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetExp);
-            pw.Write(exp);
-            return pw;
-        }
-
-        public static PacketWriter SetCash(uint cash)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetCash);
-            pw.Write(cash);
-            return pw;
-        }
-
-        public static PacketWriter SetLevel(byte level)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetLevel);
-            pw.Write(level);
-            return pw;
-        }
 
         public static PacketWriter CharAttack(MapEntityIndex mapEntityIndex)
         {
@@ -51,13 +26,6 @@ namespace DemoGame.Server
             PacketWriter pw = GetWriter(ServerPacketID.CharDamage);
             pw.Write(mapEntityIndex);
             pw.Write(damage);
-            return pw;
-        }
-
-        public static PacketWriter SetStatPoints(uint statPoints)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SetStatPoints);
-            pw.Write(statPoints);
             return pw;
         }
 
@@ -128,7 +96,7 @@ namespace DemoGame.Server
         /// <param name="gameMessage">GameMessage for explaining why the login was unsuccessful.</param>
         public static PacketWriter LoginUnsuccessful(GameMessage gameMessage)
         {
-            var pw = GetWriter(ServerPacketID.LoginUnsuccessful);
+            PacketWriter pw = GetWriter(ServerPacketID.LoginUnsuccessful);
             pw.Write(gameMessage);
             return pw;
         }
@@ -140,7 +108,7 @@ namespace DemoGame.Server
         /// <param name="p">Arguments for the GameMessage.</param>
         public static PacketWriter LoginUnsuccessful(GameMessage gameMessage, params object[] p)
         {
-            var pw = GetWriter(ServerPacketID.LoginUnsuccessful);
+            PacketWriter pw = GetWriter(ServerPacketID.LoginUnsuccessful);
             pw.Write(gameMessage, p);
             return pw;
         }
@@ -216,48 +184,10 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static void SetInventorySlot(PacketWriter pw, InventorySlot slot, GrhIndex graphic, byte amount)
+        public static PacketWriter SetCash(uint cash)
         {
-            pw.Write(ServerPacketID.SetInventorySlot);
-            pw.Write(slot);
-            pw.Write(graphic);
-            pw.Write(amount);
-        }
-
-        public static PacketWriter SetInventorySlot(InventorySlot slot, GrhIndex graphic, byte amount)
-        {
-            PacketWriter pw = GetWriter();
-            SetInventorySlot(pw, slot, graphic, amount);
-            return pw;
-        }
-
-        public static void SetMap(PacketWriter pw, MapIndex mapIndex)
-        {
-            pw.Write(ServerPacketID.SetMap);
-            pw.Write(mapIndex);
-        }
-
-        public static PacketWriter SetMap(MapIndex mapIndex)
-        {
-            PacketWriter pw = GetWriter();
-            SetMap(pw, mapIndex);
-            return pw;
-        }
-
-        public static void SetUserChar(PacketWriter pw, MapEntityIndex mapEntityIndex)
-        {
-            pw.Write(ServerPacketID.SetUserChar);
-            pw.Write(mapEntityIndex);
-        }
-
-        /// <summary>
-        /// Sets which map character is the one controlled by the user
-        /// </summary>
-        /// <param name="mapEntityIndex">Map character index controlled by the user</param>
-        public static PacketWriter SetUserChar(MapEntityIndex mapEntityIndex)
-        {
-            PacketWriter pw = GetWriter();
-            SetUserChar(pw, mapEntityIndex);
+            PacketWriter pw = GetWriter(ServerPacketID.SetCash);
+            pw.Write(cash);
             return pw;
         }
 
@@ -289,6 +219,13 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter SetExp(uint exp)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetExp);
+            pw.Write(exp);
+            return pw;
+        }
+
         public static void SetHP(PacketWriter pw, SPValueType hp)
         {
             pw.Write(ServerPacketID.SetHP);
@@ -302,6 +239,41 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static void SetInventorySlot(PacketWriter pw, InventorySlot slot, GrhIndex graphic, byte amount)
+        {
+            pw.Write(ServerPacketID.SetInventorySlot);
+            pw.Write(slot);
+            pw.Write(graphic);
+            pw.Write(amount);
+        }
+
+        public static PacketWriter SetInventorySlot(InventorySlot slot, GrhIndex graphic, byte amount)
+        {
+            PacketWriter pw = GetWriter();
+            SetInventorySlot(pw, slot, graphic, amount);
+            return pw;
+        }
+
+        public static PacketWriter SetLevel(byte level)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetLevel);
+            pw.Write(level);
+            return pw;
+        }
+
+        public static void SetMap(PacketWriter pw, MapIndex mapIndex)
+        {
+            pw.Write(ServerPacketID.SetMap);
+            pw.Write(mapIndex);
+        }
+
+        public static PacketWriter SetMap(MapIndex mapIndex)
+        {
+            PacketWriter pw = GetWriter();
+            SetMap(pw, mapIndex);
+            return pw;
+        }
+
         public static void SetMP(PacketWriter pw, SPValueType mp)
         {
             pw.Write(ServerPacketID.SetMP);
@@ -312,6 +284,30 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter();
             SetMP(pw, mp);
+            return pw;
+        }
+
+        public static PacketWriter SetStatPoints(uint statPoints)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetStatPoints);
+            pw.Write(statPoints);
+            return pw;
+        }
+
+        public static void SetUserChar(PacketWriter pw, MapEntityIndex mapEntityIndex)
+        {
+            pw.Write(ServerPacketID.SetUserChar);
+            pw.Write(mapEntityIndex);
+        }
+
+        /// <summary>
+        /// Sets which map character is the one controlled by the user
+        /// </summary>
+        /// <param name="mapEntityIndex">Map character index controlled by the user</param>
+        public static PacketWriter SetUserChar(MapEntityIndex mapEntityIndex)
+        {
+            PacketWriter pw = GetWriter();
+            SetUserChar(pw, mapEntityIndex);
             return pw;
         }
 

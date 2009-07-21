@@ -6,7 +6,6 @@ using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
-using System.Linq;
 
 namespace DemoGame.Server
 {
@@ -24,18 +23,18 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static DBController _dbController;
 
-        readonly ItemID _id;
         readonly ItemStats _baseStats;
+        readonly ItemID _id;
         readonly ItemStats _reqStats;
 
         byte _amount = 1;
         string _description;
         GrhIndex _graphicIndex;
+        SPValueType _hp;
+        SPValueType _mp;
         string _name;
         ItemType _type;
         int _value;
-        SPValueType _hp;
-        SPValueType _mp;
 
         /// <summary>
         /// Notifies listeners that the item's Amount or GraphicIndex have changed.
@@ -87,6 +86,11 @@ namespace DemoGame.Server
             }
         }
 
+        public ItemStats BaseStats
+        {
+            get { return _baseStats; }
+        }
+
         /// <summary>
         /// Gets or sets the description of the item.
         /// </summary>
@@ -101,39 +105,6 @@ namespace DemoGame.Server
                 _description = value;
 
                 SynchronizeField("description", _description);
-            }
-        }
-
-        public SPValueType HP
-        {
-            get
-            {
-                return _hp;
-            }
-            set
-            {
-                if (_hp == value)
-                    return;
-
-                _hp = value;
-
-                SynchronizeField("hp", _hp);
-            }
-        }
-        public SPValueType MP
-        {
-            get
-            {
-                return _mp;
-            }
-            set
-            {
-                if (_mp == value)
-                    return;
-
-                _mp = value;
-
-                SynchronizeField("mp", _mp);
             }
         }
 
@@ -157,12 +128,40 @@ namespace DemoGame.Server
             }
         }
 
+        public SPValueType HP
+        {
+            get { return _hp; }
+            set
+            {
+                if (_hp == value)
+                    return;
+
+                _hp = value;
+
+                SynchronizeField("hp", _hp);
+            }
+        }
+
         /// <summary>
         /// Gets the unique ID for this ItemEntity.
         /// </summary>
         public ItemID ID
         {
             get { return _id; }
+        }
+
+        public SPValueType MP
+        {
+            get { return _mp; }
+            set
+            {
+                if (_mp == value)
+                    return;
+
+                _mp = value;
+
+                SynchronizeField("mp", _mp);
+            }
         }
 
         /// <summary>
@@ -180,11 +179,6 @@ namespace DemoGame.Server
 
                 SynchronizeField("name", _name);
             }
-        }
-
-        public ItemStats BaseStats
-        {
-            get { return _baseStats; }
         }
 
         public ItemStats ReqStats
@@ -226,13 +220,11 @@ namespace DemoGame.Server
             }
         }
 
-        public ItemEntity(ItemTemplate t, byte amount)
-            : this(t, Vector2.Zero, amount)
+        public ItemEntity(ItemTemplate t, byte amount) : this(t, Vector2.Zero, amount)
         {
         }
 
-        public ItemEntity(ItemTemplate t, Vector2 pos, byte amount, Map map)
-            : this(t, pos, amount)
+        public ItemEntity(ItemTemplate t, Vector2 pos, byte amount, Map map) : this(t, pos, amount)
         {
             map.AddEntity(this);
         }
@@ -264,15 +256,6 @@ namespace DemoGame.Server
             OnResize += ItemEntity_OnResize;
         }
 
-        public ItemValues ToItemValues(ItemID id)
-        {
-            var bs = BaseStats.ToStatTypeValues();
-            var rs = ReqStats.ToStatTypeValues();
-
-            return new ItemValues(id, (byte)CB.Width, (byte)CB.Height, Name, Description, Type, GraphicIndex, Amount,
-                Value, HP, MP, bs, rs);
-        }
-
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
                    SPValueType hp, SPValueType mp, IEnumerable<StatTypeValue> baseStats, IEnumerable<StatTypeValue> reqStats)
             : base(pos, size)
@@ -297,8 +280,16 @@ namespace DemoGame.Server
         }
 
         ItemEntity(ItemEntity s)
-            : this(s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP, s.BaseStats.ToStatTypeValues(), s.ReqStats.ToStatTypeValues())
+            : this(
+                s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP,
+                s.BaseStats.ToStatTypeValues(), s.ReqStats.ToStatTypeValues())
         {
+        }
+
+        void BaseStatChangeReceiver(IStat stat)
+        {
+            string field = stat.StatType.GetDatabaseField(StatCollectionType.Base);
+            SynchronizeField(field, stat.Value);
         }
 
         /// <summary>
@@ -486,6 +477,12 @@ namespace DemoGame.Server
             return true;
         }
 
+        void ReqStatChangeReceiver(IStat stat)
+        {
+            string field = stat.StatType.GetDatabaseField(StatCollectionType.Requirement);
+            SynchronizeField(field, stat.Value);
+        }
+
         /// <summary>
         /// Splits the ItemEntity into two parts. This ItemEntity's amount will be decreased, and a new
         /// ItemEntity will be constructed as the product of the method. The original ItemEntity must still have
@@ -518,18 +515,6 @@ namespace DemoGame.Server
             return child;
         }
 
-        void BaseStatChangeReceiver(IStat stat)
-        {
-            var field = stat.StatType.GetDatabaseField(StatCollectionType.Base);
-            SynchronizeField(field, stat.Value);
-        }
-
-        void ReqStatChangeReceiver(IStat stat)
-        {
-            var field = stat.StatType.GetDatabaseField(StatCollectionType.Requirement);
-            SynchronizeField(field, stat.Value);
-        }
-
         /// <summary>
         /// Updates a single field for the ItemEntity in the database.
         /// </summary>
@@ -538,6 +523,15 @@ namespace DemoGame.Server
         void SynchronizeField(string field, object value)
         {
             UpdateItemField.Execute(_id, field, value);
+        }
+
+        public ItemValues ToItemValues(ItemID id)
+        {
+            var bs = BaseStats.ToStatTypeValues();
+            var rs = ReqStats.ToStatTypeValues();
+
+            return new ItemValues(id, (byte)CB.Width, (byte)CB.Height, Name, Description, Type, GraphicIndex, Amount, Value, HP,
+                                  MP, bs, rs);
         }
 
         public override string ToString()

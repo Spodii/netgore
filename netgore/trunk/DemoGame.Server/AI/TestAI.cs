@@ -1,16 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using DemoGame.Server;
-using DemoGame;
-using NetGore;
-
 namespace DemoGame.Server
 {
     public class TestAI : AIBase
     {
-        public TestAI(Character actor)
-            : base(actor)
+        public TestAI(Character actor) : base(actor)
         {
         }
 

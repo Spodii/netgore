@@ -1,11 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using log4net;
-
-// FUTURE: There may be a bug in picking up items, from threading conflict, that will allow two people to pick up the same item
+ // FUTURE: There may be a bug in picking up items, from threading conflict, that will allow two people to pick up the same item
 
 namespace DemoGame.Server
 {
@@ -26,21 +19,21 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Updates the client controlling the User that this Inventory belongs to with all the
-        /// most accurate inventory information.
-        /// </summary>
-        public void UpdateClient()
-        {
-            _inventoryUpdater.Update();
-        }
-
-        /// <summary>
         /// When overridden in the derived class, notifies the Client that a slot in the Inventory has changed.
         /// </summary>
         /// <param name="slot">The slot that changed.</param>
         protected override void SendSlotUpdate(InventorySlot slot)
         {
             _inventoryUpdater.SlotChanged(slot);
+        }
+
+        /// <summary>
+        /// Updates the client controlling the User that this Inventory belongs to with all the
+        /// most accurate inventory information.
+        /// </summary>
+        public void UpdateClient()
+        {
+            _inventoryUpdater.Update();
         }
     }
 }

@@ -16,13 +16,8 @@ namespace NetGore
         [Browsable(false)]
         public override float Weight
         {
-            get
-            {
-                return 0;
-            }
-            set
-            {
-            }
+            get { return 0; }
+            set { }
         }
 
         protected WallEntityBase(Vector2 position, Vector2 size) : this(position, size, CollisionType.Full)

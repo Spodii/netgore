@@ -1,14 +1,11 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace DemoGame.Server.Queries
 {
-    public struct StatTypeField 
+    public struct StatTypeField
     {
-        public readonly StatType StatType;
         public readonly string Field;
+        public readonly StatType StatType;
 
         public StatTypeField(StatType statType, string field)
         {

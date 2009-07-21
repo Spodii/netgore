@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
@@ -10,9 +9,8 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class UpdateCharacterQuery : DbQueryNonReader<Character>
     {
-        static readonly string _queryString;
-
         static readonly IEnumerable<string> _dbParameterCache = CharacterQueryHelper.AllDBFields.Select(x => "@" + x);
+        static readonly string _queryString;
 
         static UpdateCharacterQuery()
         {
@@ -21,12 +19,11 @@ namespace DemoGame.Server.Queries
 
             Debug.Assert(dbFieldsExceptID.Count() == dbFields.Count() - 1);
 
-            var setString = FormatParametersIntoString(dbFieldsExceptID);
+            string setString = FormatParametersIntoString(dbFieldsExceptID);
             _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", DBTables.Character, setString);
         }
 
-        public UpdateCharacterQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public UpdateCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
@@ -53,7 +50,7 @@ namespace DemoGame.Server.Queries
             p["@respawn_x"] = character.RespawnPosition.X;
             p["@respawn_y"] = character.RespawnPosition.Y;
 
-            foreach (var stat in character.BaseStats)
+            foreach (IStat stat in character.BaseStats)
             {
                 string fieldName = stat.StatType.GetDatabaseField(StatCollectionType.Base);
                 string key = "@" + fieldName;

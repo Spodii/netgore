@@ -12,22 +12,19 @@ namespace DemoGame.Server
         readonly string _desc;
         readonly GrhIndex _graphic;
         readonly byte _height;
+        readonly SPValueType _hp;
         readonly ItemTemplateID _id;
+        readonly SPValueType _mp;
         readonly string _name;
         readonly IEnumerable<StatTypeValue> _reqStats;
         readonly ItemType _type;
         readonly int _value;
         readonly byte _width;
-        readonly SPValueType _hp;
-        readonly SPValueType _mp;
 
         public IEnumerable<StatTypeValue> BaseStats
         {
             get { return _baseStats; }
         }
-
-        public SPValueType HP { get { return _hp; } }
-        public SPValueType MP { get { return _mp; } }
 
         public string Description
         {
@@ -44,9 +41,19 @@ namespace DemoGame.Server
             get { return _height; }
         }
 
+        public SPValueType HP
+        {
+            get { return _hp; }
+        }
+
         public ItemTemplateID ID
         {
             get { return _id; }
+        }
+
+        public SPValueType MP
+        {
+            get { return _mp; }
         }
 
         public string Name
@@ -80,7 +87,8 @@ namespace DemoGame.Server
         }
 
         public ItemTemplate(ItemTemplateID id, string name, string desc, ItemType type, GrhIndex graphic, int value, byte width,
-                            byte height, SPValueType hp, SPValueType mp, IEnumerable<StatTypeValue> baseStats, IEnumerable<StatTypeValue> reqStats)
+                            byte height, SPValueType hp, SPValueType mp, IEnumerable<StatTypeValue> baseStats,
+                            IEnumerable<StatTypeValue> reqStats)
         {
             _id = id;
             _name = name;

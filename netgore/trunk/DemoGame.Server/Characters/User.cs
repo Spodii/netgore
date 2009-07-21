@@ -24,6 +24,7 @@ namespace DemoGame.Server
         readonly IIPSocket _conn;
 
         readonly SocketSendQueue _unreliableBuffer;
+        readonly UserInventory _userInventory;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
 
@@ -39,8 +40,6 @@ namespace DemoGame.Server
         public User()
         {
         }
-
-        readonly UserInventory _userInventory;
 
         /// <summary>
         /// User constructor.
@@ -88,32 +87,35 @@ namespace DemoGame.Server
             User_OnChangeStatPoints(this, StatPoints, StatPoints);
         }
 
-        void User_OnChangeLevel(Character character, byte oldLevel, byte level)
+        protected override void AfterGiveItem(ItemEntity item, byte amount)
         {
-            using (var pw = ServerPacket.SetLevel(level))
+            // If any was added, send the notification
+            using (PacketWriter pw = ServerPacket.NotifyGetItem(item.Name, amount))
+            {
                 Send(pw);
+            }
         }
 
-        void User_OnChangeCash(Character character, uint oldCash, uint cash)
+        /// <summary>
+        /// When overridden in the derived class, checks if enough time has elapesd since the Character died
+        /// for them to be able to respawn.
+        /// </summary>
+        /// <param name="currentTime">Current game time.</param>
+        /// <returns>True if enough time has elapsed; otherwise false.</returns>
+        protected override bool CheckRespawnElapsedTime(int currentTime)
         {
-            using (var pw = ServerPacket.SetCash(cash))
-                Send(pw);
-        }
-
-        void User_OnChangeExp(Character character, uint oldExp, uint exp)
-        {
-            using (var pw = ServerPacket.SetExp(exp))
-                Send(pw);
-        }
-
-        protected override CharacterInventory CreateInventory()
-        {
-            return new UserInventory(this);
+            // Users don't need to wait for nuttin'!
+            return true;
         }
 
         protected override CharacterEquipped CreateEquipped()
         {
             return new UserEquipped(this);
+        }
+
+        protected override CharacterInventory CreateInventory()
+        {
+            return new UserInventory(this);
         }
 
         protected override CharacterSPSynchronizer CreateSPSynchronizer()
@@ -237,15 +239,6 @@ namespace DemoGame.Server
                     // No gap found, return one above the last highest index
                     return (ushort)(lastValue + 1);
                 }
-            }
-        }
-
-        protected override void AfterGiveItem(ItemEntity item, byte amount)
-        {
-            // If any was added, send the notification
-            using (PacketWriter pw = ServerPacket.NotifyGetItem(item.Name, amount))
-            {
-                Send(pw);
             }
         }
 
@@ -464,18 +457,6 @@ namespace DemoGame.Server
             _userInventory.UpdateClient();
         }
 
-        /// <summary>
-        /// When overridden in the derived class, checks if enough time has elapesd since the Character died
-        /// for them to be able to respawn.
-        /// </summary>
-        /// <param name="currentTime">Current game time.</param>
-        /// <returns>True if enough time has elapsed; otherwise false.</returns>
-        protected override bool CheckRespawnElapsedTime(int currentTime)
-        {
-            // Users don't need to wait for nuttin'!
-            return true;
-        }
-
         public void UseInventoryItem(InventorySlot slot)
         {
             // Get the item to use
@@ -509,6 +490,30 @@ namespace DemoGame.Server
             // Lower the count of use-once items
             if (item.Type == ItemType.UseOnce)
                 Inventory.DecreaseItemAmount(slot);
+        }
+
+        void User_OnChangeCash(Character character, uint oldCash, uint cash)
+        {
+            using (PacketWriter pw = ServerPacket.SetCash(cash))
+            {
+                Send(pw);
+            }
+        }
+
+        void User_OnChangeExp(Character character, uint oldExp, uint exp)
+        {
+            using (PacketWriter pw = ServerPacket.SetExp(exp))
+            {
+                Send(pw);
+            }
+        }
+
+        void User_OnChangeLevel(Character character, byte oldLevel, byte level)
+        {
+            using (PacketWriter pw = ServerPacket.SetLevel(level))
+            {
+                Send(pw);
+            }
         }
 
         void User_OnChangeStatPoints(Character character, uint oldValue, uint newValue)

@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Text;
-using DemoGame.Server.Queries;
 using NetGore;
 
 namespace DemoGame.Server
@@ -14,63 +11,19 @@ namespace DemoGame.Server
     /// </summary>
     class ConsoleCommands
     {
-        class ConsoleCommandParser : StringCommandParser<ConsoleCommandAttribute>
-        {
-            public ConsoleCommandParser() : base(typeof(ConsoleCommands))
-            {
-            }
-        }
-
+        const string _separator = "-------------------";
+        static readonly string _newLine = Environment.NewLine;
         readonly ConsoleCommandParser _parser = new ConsoleCommandParser();
         readonly Server _server;
 
-        public Server Server { get { return _server; } }
+        public Server Server
+        {
+            get { return _server; }
+        }
 
         public ConsoleCommands(Server server)
         {
             _server = server;
-        }
-
-        static string BuildString(IEnumerable<string> strings, string delimiter)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var s in strings)
-            {
-                sb.Append(s);
-                sb.Append(delimiter);
-            }
-            return sb.ToString();
-        }
-
-        const string _separator = "-------------------";
-        static readonly string _newLine = Environment.NewLine;
-
-        static string GetCommandHeader(string header, params object[] args)
-        {
-            return _separator + _newLine + string.Format(header, args) + _newLine + _separator + _newLine;
-        }
-
-        [ConsoleCommand("ShowUsers")]
-        public string ShowUsers()
-        {
-            var users = Server.World.GetUsers();
-            var userInfo = BuildString(users.Select(x => GetCharacterInfoShort(x)), Environment.NewLine);
-
-            return GetCommandHeader("Total Users: {0}", users.Count()) + userInfo;
-        }
-
-        static string GetCharacterInfoShort(Character c)
-        {
-            string s = c.ToString();
-            s += "\t Map: ";
-            if (c.Map != null)
-                s += c.Map.Index;
-            else
-                s += "null";
-
-            s += " @ ";
-            s += c.Position;
-            return s;
         }
 
         [ConsoleCommand("AddUser")]
@@ -92,6 +45,25 @@ namespace DemoGame.Server
             */
         }
 
+        static string BuildString(IEnumerable<string> strings, string delimiter)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (string s in strings)
+            {
+                sb.Append(s);
+                sb.Append(delimiter);
+            }
+            return sb.ToString();
+        }
+
+        public string ExecuteCommand(string commandString)
+        {
+            string result;
+            _parser.TryParse(this, commandString, out result);
+
+            return result;
+        }
+
         [ConsoleCommand("FindItem")]
         public string FindItem(string itemID)
         {
@@ -108,16 +80,17 @@ namespace DemoGame.Server
             else if (source is CharacterEquipped)
                 return string.Format("Item `{0}` is equipped by Character `{1}`.", item, ((CharacterEquipped)source).Character);
             else if (source is CharacterInventory)
-                return string.Format("Item `{0}` is in the inventory of Character `{1}`.", item, ((CharacterInventory)source).Character);
+                return string.Format("Item `{0}` is in the inventory of Character `{1}`.", item,
+                                     ((CharacterInventory)source).Character);
             else
                 return string.Format("Item `{0}` found at unknown source `{1}`.", item, source);
         }
 
         public ItemEntity FindItem(ItemID id, out object source)
         {
-            foreach (var map in Server.World.Maps)
+            foreach (Map map in Server.World.Maps)
             {
-                foreach (var item in map.DynamicEntities.OfType<ItemEntity>())
+                foreach (ItemEntity item in map.DynamicEntities.OfType<ItemEntity>())
                 {
                     if (item.ID == id)
                     {
@@ -126,9 +99,9 @@ namespace DemoGame.Server
                     }
                 }
 
-                foreach (var character in map.DynamicEntities.OfType<Character>())
+                foreach (Character character in map.DynamicEntities.OfType<Character>())
                 {
-                    foreach (var item in character.Equipped.Select(x => x.Value))
+                    foreach (ItemEntity item in character.Equipped.Select(x => x.Value))
                     {
                         if (item.ID == id)
                         {
@@ -137,7 +110,7 @@ namespace DemoGame.Server
                         }
                     }
 
-                    foreach (var item in character.Inventory.Select(x => x.Value))
+                    foreach (ItemEntity item in character.Inventory.Select(x => x.Value))
                     {
                         if (item.ID == id)
                         {
@@ -152,12 +125,23 @@ namespace DemoGame.Server
             return null;
         }
 
-        public string ExecuteCommand(string commandString)
+        static string GetCharacterInfoShort(Character c)
         {
-            string result;
-            _parser.TryParse(this, commandString, out result);
+            string s = c.ToString();
+            s += "\t Map: ";
+            if (c.Map != null)
+                s += c.Map.Index;
+            else
+                s += "null";
 
-            return result;
+            s += " @ ";
+            s += c.Position;
+            return s;
+        }
+
+        static string GetCommandHeader(string header, params object[] args)
+        {
+            return _separator + _newLine + string.Format(header, args) + _newLine + _separator + _newLine;
         }
 
         [ConsoleCommand("Quit")]
@@ -165,6 +149,22 @@ namespace DemoGame.Server
         {
             _server.Shutdown();
             return "Server shutting down";
+        }
+
+        [ConsoleCommand("ShowUsers")]
+        public string ShowUsers()
+        {
+            var users = Server.World.GetUsers();
+            string userInfo = BuildString(users.Select(x => GetCharacterInfoShort(x)), Environment.NewLine);
+
+            return GetCommandHeader("Total Users: {0}", users.Count()) + userInfo;
+        }
+
+        class ConsoleCommandParser : StringCommandParser<ConsoleCommandAttribute>
+        {
+            public ConsoleCommandParser() : base(typeof(ConsoleCommands))
+            {
+            }
         }
     }
 }

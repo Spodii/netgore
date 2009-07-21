@@ -25,7 +25,7 @@ namespace DemoGame.MapEditor
             if (PropertyGrid == null)
                 return;
 
-            var selected = SelectedItem as NPCSpawnsListBoxItem;
+            NPCSpawnsListBoxItem selected = SelectedItem as NPCSpawnsListBoxItem;
             if (selected == null)
                 return;
 
@@ -66,7 +66,8 @@ namespace DemoGame.MapEditor
 
             public override string ToString()
             {
-                return string.Format("Char ID: {0}  Count: {1}  Region: {2}", Value.CharacterTemplateID, Value.SpawnAmount, Value.SpawnArea);
+                return string.Format("Char ID: {0}  Count: {1}  Region: {2}", Value.CharacterTemplateID, Value.SpawnAmount,
+                                     Value.SpawnArea);
             }
 
             public static implicit operator MapSpawnValues(NPCSpawnsListBoxItem v)

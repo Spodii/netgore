@@ -1,9 +1,5 @@
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Diagnostics;
-using System.Linq;
-
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -12,7 +8,8 @@ namespace DemoGame.Server.Queries
     public class InsertCharacterEquippedItemQuery : DbQueryNonReader<InsertCharacterEquippedItemQuery.QueryArgs>
     {
         static readonly string _queryString =
-            string.Format("INSERT INTO `{0}` SET `character_id`=@characterID,`item_id`=@itemID,`slot`=@slot", DBTables.CharacterEquipped);
+            string.Format("INSERT INTO `{0}` SET `character_id`=@characterID,`item_id`=@itemID,`slot`=@slot",
+                          DBTables.CharacterEquipped);
 
         public InsertCharacterEquippedItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
@@ -36,6 +33,11 @@ namespace DemoGame.Server.Queries
         public struct QueryArgs
         {
             /// <summary>
+            /// The ID of the Character that this equipment belongs to.
+            /// </summary>
+            public readonly CharacterID CharacterID;
+
+            /// <summary>
             /// The item's ID for the equipment slot, or null if the slot is to be set to empty.
             /// </summary>
             public readonly ItemID? ItemID;
@@ -44,11 +46,6 @@ namespace DemoGame.Server.Queries
             /// The EquipmentSlot to be updated.
             /// </summary>
             public readonly EquipmentSlot Slot;
-
-            /// <summary>
-            /// The ID of the Character that this equipment belongs to.
-            /// </summary>
-            public readonly CharacterID CharacterID;
 
             /// <summary>
             /// InsertUserEquippedQuery constructor.

@@ -1,19 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
     public class InsertMapQuery : DbQueryNonReader<MapBase>
     {
-        static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}",
-            DBTables.Map, FormatParametersIntoValuesString(MapQueryHelper.AllDBFields));
+        static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", DBTables.Map,
+                                                            FormatParametersIntoValuesString(MapQueryHelper.AllDBFields));
 
-        public InsertMapQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public InsertMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 

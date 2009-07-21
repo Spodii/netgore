@@ -110,6 +110,11 @@ namespace DemoGame
         float _width = float.MinValue;
 
         /// <summary>
+        /// Notifies listeners that the Map has been saved.
+        /// </summary>
+        public event MapBaseEventHandler OnSave;
+
+        /// <summary>
         /// Gets a thread-safe IEnumerable of all the DynamicEntities on the Map.
         /// </summary>
         public IEnumerable<DynamicEntity> DynamicEntities
@@ -1460,11 +1465,6 @@ namespace DemoGame
             if (OnSave != null)
                 OnSave(this);
         }
-
-        /// <summary>
-        /// Notifies listeners that the Map has been saved.
-        /// </summary>
-        public event MapBaseEventHandler OnSave;
 
         /// <summary>
         /// Saves the map to a file to the specified file path.

@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -13,8 +11,7 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@characterID", DBTables.Character);
 
-        public SelectCharacterByIDQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectCharacterByIDQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
@@ -25,7 +22,8 @@ namespace DemoGame.Server.Queries
             using (IDataReader r = ExecuteReader(characterID))
             {
                 if (!r.Read())
-                    throw new ArgumentException(string.Format("Could not find character with ID `{0}`.", characterID), characterID.ToString());
+                    throw new ArgumentException(string.Format("Could not find character with ID `{0}`.", characterID),
+                                                characterID.ToString());
 
                 ret = CharacterQueryHelper.ReadCharacterQueryValues(r);
             }

@@ -132,25 +132,6 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Enqueues data into the SocketSendQueue. This is internal due to the fact that its usage should be
-        /// avoided whenever possible since it pretty much destroys the buffering.
-        /// </summary>
-        /// <param name="data">A byte[] containing the data to be enqueued.</param>
-        internal void Enqueue(byte[] data)
-        {
-            // Empty the _sendStream if it contains anything
-            if (_sendStream.LengthBits > 0)
-            {
-                var bufferCopy = _sendStream.GetBufferCopy();
-                _sendQueue.Enqueue(bufferCopy);
-                _sendStream.Reset();
-            }
-
-            // Enqueue the data
-            _sendQueue.Enqueue(data);
-        }
-
-        /// <summary>
         /// Enqueues data into the SocketSendQueue.
         /// </summary>
         /// <param name="bitStream">A BitStream containing the data to be enqueued.</param>
@@ -173,6 +154,25 @@ namespace NetGore.Network
             {
                 AddToSendStream(bitStream);
             }
+        }
+
+        /// <summary>
+        /// Enqueues data into the SocketSendQueue. This is internal due to the fact that its usage should be
+        /// avoided whenever possible since it pretty much destroys the buffering.
+        /// </summary>
+        /// <param name="data">A byte[] containing the data to be enqueued.</param>
+        internal void Enqueue(byte[] data)
+        {
+            // Empty the _sendStream if it contains anything
+            if (_sendStream.LengthBits > 0)
+            {
+                var bufferCopy = _sendStream.GetBufferCopy();
+                _sendQueue.Enqueue(bufferCopy);
+                _sendStream.Reset();
+            }
+
+            // Enqueue the data
+            _sendQueue.Enqueue(data);
         }
     }
 }

@@ -1,9 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
-using NetGore;
 
 namespace NetGore.Graphics
 {
@@ -13,10 +9,18 @@ namespace NetGore.Graphics
     public class EntityInterpolator
     {
         /// <summary>
+        /// The maximum distance allowed between the Entity's Position and the DrawPosition. If the distance between
+        /// these two points exceeds this value, the DrawPosition should be set to the Position instead of interpolating
+        /// to it.
+        /// </summary>
+        const float _maxAllowedDistance = 50.0f;
+
+        Vector2 _drawPosition;
+
+        /// <summary>
         /// The absolute value of the greatest velocity of the Entity.
         /// </summary>
         Vector2 _greatestVelocity;
-        Vector2 _drawPosition;
 
         /// <summary>
         /// Gets the position to use when drawing the Entity.
@@ -34,28 +38,6 @@ namespace NetGore.Graphics
         {
             _drawPosition = position;
         }
-
-        /// <summary>
-        /// Updates the Entity's greatest velocity.
-        /// </summary>
-        /// <param name="currentVelocity">Current velocity.</param>
-        void UpdateGreatestVelocity(Vector2 currentVelocity)
-        {
-            currentVelocity = currentVelocity.Abs();
-
-            if (currentVelocity.X > _greatestVelocity.X)
-                _greatestVelocity.X = currentVelocity.X;
-
-            if (currentVelocity.Y > _greatestVelocity.Y)
-                _greatestVelocity.Y = currentVelocity.Y;
-        }
-
-        /// <summary>
-        /// The maximum distance allowed between the Entity's Position and the DrawPosition. If the distance between
-        /// these two points exceeds this value, the DrawPosition should be set to the Position instead of interpolating
-        /// to it.
-        /// </summary>
-        const float _maxAllowedDistance = 50.0f;
 
         /// <summary>
         /// Updates the drawing position interpolation.
@@ -127,6 +109,21 @@ namespace NetGore.Graphics
 
             // Set the new drawing position
             _drawPosition = newPosition;
+        }
+
+        /// <summary>
+        /// Updates the Entity's greatest velocity.
+        /// </summary>
+        /// <param name="currentVelocity">Current velocity.</param>
+        void UpdateGreatestVelocity(Vector2 currentVelocity)
+        {
+            currentVelocity = currentVelocity.Abs();
+
+            if (currentVelocity.X > _greatestVelocity.X)
+                _greatestVelocity.X = currentVelocity.X;
+
+            if (currentVelocity.Y > _greatestVelocity.Y)
+                _greatestVelocity.Y = currentVelocity.Y;
         }
     }
 }

@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -140,6 +138,8 @@ namespace DemoGame.Client
         /// </summary>
         StatsForm _statsForm;
 
+        UserInfo _userInfo;
+
         /// <summary>
         /// Root world of the game
         /// </summary>
@@ -193,6 +193,11 @@ namespace DemoGame.Client
         public Character UserChar
         {
             get { return World.UserChar; }
+        }
+
+        public UserInfo UserInfo
+        {
+            get { return _userInfo; }
         }
 
         /// <summary>
@@ -304,7 +309,8 @@ namespace DemoGame.Client
             World.Camera.Min = World.UserChar.GetCameraPos();
 
             // Draw the world layer
-            _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None, World.Camera.Matrix);
+            _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None,
+                                         World.Camera.Matrix);
             World.Draw(_spriteBatch);
             _damageTextPool.Draw(_spriteBatch, _damageFont);
             _spriteBatch.End();
@@ -318,10 +324,6 @@ namespace DemoGame.Client
                 Socket.Send(pw);
             }
         }
-
-        UserInfo _userInfo;
-
-        public UserInfo UserInfo { get { return _userInfo; } }
 
         public override void Initialize()
         {
@@ -398,7 +400,7 @@ namespace DemoGame.Client
         /// <param name="statType">StatType requested to be raised.</param>
         void StatsForm_OnRaiseStat(StatsForm statsForm, StatType statType)
         {
-            using (var pw = ClientPacket.RaiseStat(statType))
+            using (PacketWriter pw = ClientPacket.RaiseStat(statType))
             {
                 Socket.Send(pw);
             }
@@ -518,7 +520,7 @@ namespace DemoGame.Client
             if (_currentTime - _lastUseTime > _minUseRate && ks.IsKeyDown(Keys.LeftAlt))
             {
                 _lastUseTime = _currentTime;
-                var useEntity = Map.GetEntity<DynamicEntity>(UserChar.CB.ToRectangle(), UsableEntityFilter);
+                DynamicEntity useEntity = Map.GetEntity<DynamicEntity>(UserChar.CB.ToRectangle(), UsableEntityFilter);
                 if (useEntity != null)
                 {
                     using (PacketWriter pw = ClientPacket.UseWorld(useEntity.MapEntityIndex))
@@ -554,7 +556,7 @@ namespace DemoGame.Client
         static bool UsableEntityFilter(DynamicEntity dynamicEntity)
         {
             // Make sure it is usable
-            var asUsable = dynamicEntity as IUsableEntity;
+            IUsableEntity asUsable = dynamicEntity as IUsableEntity;
             if (asUsable == null)
                 return false;
 

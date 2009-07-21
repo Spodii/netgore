@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -17,8 +16,8 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly AllianceID[] _attackable;
         readonly AllianceID[] _hostile;
-        readonly string _name;
         readonly AllianceID _id;
+        readonly string _name;
 
         /// <summary>
         /// Gets the list of Alliance IDs that this Alliance can attack
@@ -29,16 +28,19 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the ID of this Alliance.
-        /// </summary>
-        public AllianceID ID { get { return _id; } }
-
-        /// <summary>
         /// Gets the list of Alliance IDs that this Alliance is hostile towards
         /// </summary>
         public IEnumerable<AllianceID> Hostile
         {
             get { return _hostile; }
+        }
+
+        /// <summary>
+        /// Gets the ID of this Alliance.
+        /// </summary>
+        public AllianceID ID
+        {
+            get { return _id; }
         }
 
         /// <summary>

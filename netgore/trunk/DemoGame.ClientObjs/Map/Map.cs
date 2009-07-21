@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Xml;
-
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

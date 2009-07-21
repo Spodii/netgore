@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Client;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;

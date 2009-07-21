@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using NetGore;
 
@@ -9,25 +8,27 @@ namespace DemoGame.Server
     public class ItemValues
     {
         readonly byte _amount;
+        readonly IEnumerable<StatTypeValue> _baseStats;
         readonly string _description;
         readonly GrhIndex _graphicIndex;
-        readonly ItemID _id;
         readonly byte _height;
+        readonly SPValueType _hp;
+        readonly ItemID _id;
+        readonly SPValueType _mp;
         readonly string _name;
-        readonly IEnumerable<StatTypeValue> _baseStats;
         readonly IEnumerable<StatTypeValue> _reqStats;
         readonly ItemType _type;
         readonly int _value;
         readonly byte _width;
-        readonly SPValueType _hp;
-        readonly SPValueType _mp;
-
-        public SPValueType HP { get { return _hp; } }
-        public SPValueType MP { get { return _mp; } }
 
         public byte Amount
         {
             get { return _amount; }
+        }
+
+        public IEnumerable<StatTypeValue> BaseStats
+        {
+            get { return _baseStats; }
         }
 
         public string Description
@@ -40,24 +41,29 @@ namespace DemoGame.Server
             get { return _graphicIndex; }
         }
 
-        public ItemID ID
-        {
-            get { return _id; }
-        }
-
         public byte Height
         {
             get { return _height; }
         }
 
+        public SPValueType HP
+        {
+            get { return _hp; }
+        }
+
+        public ItemID ID
+        {
+            get { return _id; }
+        }
+
+        public SPValueType MP
+        {
+            get { return _mp; }
+        }
+
         public string Name
         {
             get { return _name; }
-        }
-
-        public IEnumerable<StatTypeValue> BaseStats
-        {
-            get { return _baseStats; }
         }
 
         public IEnumerable<StatTypeValue> ReqStats
@@ -80,9 +86,9 @@ namespace DemoGame.Server
             get { return _width; }
         }
 
-        public ItemValues(ItemID id, byte width, byte height, string name, string description, ItemType type, GrhIndex graphicIndex,
-                          byte amount, int value, SPValueType hp, SPValueType mp, IEnumerable<StatTypeValue> baseStats
-            , IEnumerable<StatTypeValue> reqStats)
+        public ItemValues(ItemID id, byte width, byte height, string name, string description, ItemType type,
+                          GrhIndex graphicIndex, byte amount, int value, SPValueType hp, SPValueType mp,
+                          IEnumerable<StatTypeValue> baseStats, IEnumerable<StatTypeValue> reqStats)
         {
             if (name == null)
                 throw new ArgumentNullException("name");

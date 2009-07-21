@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using NetGore.Db;
 
@@ -11,8 +10,7 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", DBTables.MapSpawn,
                                                             FormatParametersIntoString(MapSpawnQueryHelper.AllDBFieldsExceptID));
 
-        public UpdateMapSpawnQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public UpdateMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 

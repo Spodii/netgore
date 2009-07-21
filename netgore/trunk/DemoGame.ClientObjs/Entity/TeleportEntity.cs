@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -14,6 +9,13 @@ namespace DemoGame.Client
     [MapFileEntity]
     public class TeleportEntity : TeleportEntityBase, IDrawableEntity
     {
+        /// <summary>
+        /// Notifies the listeners when the IUsableEntity was used, and the DynamicEntity that used it. On the Client, this
+        /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
+        /// that used this IUsableEntity may be null.
+        /// </summary>
+        public override event EntityEventHandler<DynamicEntity> OnUse;
+
         /// <summary>
         /// Client:
         ///     Handles any additional usage stuff. When this is called, it is to be assumed that the Server has recognized
@@ -31,6 +33,8 @@ namespace DemoGame.Client
 
             return true;
         }
+
+        #region IDrawableEntity Members
 
         /// <summary>
         /// Notifies listeners that the Entity's MapRenderLayer has changed.
@@ -66,11 +70,6 @@ namespace DemoGame.Client
             return camera.InView(this);
         }
 
-        /// <summary>
-        /// Notifies the listeners when the IUsableEntity was used, and the DynamicEntity that used it. On the Client, this
-        /// event will only be triggered if NotifyClientsOfUsage is true. The DynamicEntity argument
-        /// that used this IUsableEntity may be null.
-        /// </summary>
-        public override event EntityEventHandler<DynamicEntity> OnUse;
+        #endregion
     }
 }

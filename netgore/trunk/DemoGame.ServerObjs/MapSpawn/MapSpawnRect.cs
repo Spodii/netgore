@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -16,18 +13,15 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        static string GetString(ushort? value)
-        {
-            const string nullStr = "?";
-            if (!value.HasValue)
-                return nullStr;
-            return value.Value.ToString();
-        }
+        /// <summary>
+        /// The height of the rectangle. If null, the rectangle will be stretched to fit the height of the Map.
+        /// </summary>
+        public ushort? Height;
 
-        public override string ToString()
-        {
-            return string.Format("({0},{1})x({2},{3})", GetString(X), GetString(Y), GetString(Width), GetString(Height));
-        }
+        /// <summary>
+        /// The width of the rectangle. If null, the rectangle will be stretched to fit the width of the Map.
+        /// </summary>
+        public ushort? Width;
 
         /// <summary>
         /// The X co-ordinate of the rectangle. If null, the rectangle will be located at the left side of the Map.
@@ -39,51 +33,12 @@ namespace DemoGame.Server
         /// </summary>
         public ushort? Y;
 
-        /// <summary>
-        /// The width of the rectangle. If null, the rectangle will be stretched to fit the width of the Map.
-        /// </summary>
-        public ushort? Width;
-
-        /// <summary>
-        /// The height of the rectangle. If null, the rectangle will be stretched to fit the height of the Map.
-        /// </summary>
-        public ushort? Height;
-
-        /// <summary>
-        /// Gets the MapSpawnRect as a Rectangle.
-        /// </summary>
-        /// <param name="map">The IMap used to resolve any null values.</param>
-        /// <returns>The MapSpawnRect as a Rectangle.</returns>
-        public Rectangle ToRectangle(IMap map)
-        {
-            int x = X.HasValue ? (int)X.Value : 0;
-            int y = X.HasValue ? (int)X.Value : 0;
-            int width = Width.HasValue ? Width.Value : (int)Math.Round(map.Width) - x;
-            int height = Height.HasValue ? Height.Value : (int)Math.Round(map.Height) - y;
-
-            // NOTE: We could use validation here to ensure the rectangle fits in the map.
-            // If the width/height do not fit, shrink them down to fit. If x/y do not fit,
-            // set it to like Width/Height - 32 to fit it in. Use Log.Fatal() on all of these cases.
-
-            return new Rectangle(x, y, width, height);
-        }
-
         public MapSpawnRect(ushort? x, ushort? y, ushort? width, ushort? height)
         {
             X = x;
             Y = y;
             Width = width;
             Height = height;
-        }
-
-        public static bool operator ==(MapSpawnRect l, MapSpawnRect r)
-        {
-            return (l.X == r.X) && (l.Y == r.Y) && (l.Width == r.Width) && (l.Height == r.Height);
-        }
-
-        public static bool operator !=(MapSpawnRect l, MapSpawnRect r)
-        {
-            return !(l == r);
         }
 
         public bool Equals(MapSpawnRect other)
@@ -125,6 +80,48 @@ namespace DemoGame.Server
                 result = (result * 397) ^ (Height.HasValue ? Height.Value.GetHashCode() : 0);
                 return result;
             }
+        }
+
+        static string GetString(ushort? value)
+        {
+            const string nullStr = "?";
+            if (!value.HasValue)
+                return nullStr;
+            return value.Value.ToString();
+        }
+
+        /// <summary>
+        /// Gets the MapSpawnRect as a Rectangle.
+        /// </summary>
+        /// <param name="map">The IMap used to resolve any null values.</param>
+        /// <returns>The MapSpawnRect as a Rectangle.</returns>
+        public Rectangle ToRectangle(IMap map)
+        {
+            int x = X.HasValue ? (int)X.Value : 0;
+            int y = X.HasValue ? (int)X.Value : 0;
+            int width = Width.HasValue ? Width.Value : (int)Math.Round(map.Width) - x;
+            int height = Height.HasValue ? Height.Value : (int)Math.Round(map.Height) - y;
+
+            // NOTE: We could use validation here to ensure the rectangle fits in the map.
+            // If the width/height do not fit, shrink them down to fit. If x/y do not fit,
+            // set it to like Width/Height - 32 to fit it in. Use Log.Fatal() on all of these cases.
+
+            return new Rectangle(x, y, width, height);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("({0},{1})x({2},{3})", GetString(X), GetString(Y), GetString(Width), GetString(Height));
+        }
+
+        public static bool operator ==(MapSpawnRect l, MapSpawnRect r)
+        {
+            return (l.X == r.X) && (l.Y == r.Y) && (l.Width == r.Width) && (l.Height == r.Height);
+        }
+
+        public static bool operator !=(MapSpawnRect l, MapSpawnRect r)
+        {
+            return !(l == r);
         }
     }
 }

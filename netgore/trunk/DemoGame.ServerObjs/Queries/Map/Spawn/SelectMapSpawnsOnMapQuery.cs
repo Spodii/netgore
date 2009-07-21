@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 using NetGore;
 using NetGore.Db;
 
@@ -13,20 +11,19 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `map_id`=@mapID", DBTables.MapSpawn);
 
-        public SelectMapSpawnsOnMapQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectMapSpawnsOnMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
         public IEnumerable<SelectMapSpawnQueryValues> Execute(MapIndex id)
         {
-            List<SelectMapSpawnQueryValues> ret = new List<SelectMapSpawnQueryValues>();
+            var ret = new List<SelectMapSpawnQueryValues>();
 
-            using (var r = ExecuteReader(id))
+            using (IDataReader r = ExecuteReader(id))
             {
                 while (r.Read())
                 {
-                    var v = MapSpawnQueryHelper.ReadMapSpawnValues(r);
+                    SelectMapSpawnQueryValues v = MapSpawnQueryHelper.ReadMapSpawnValues(r);
                     ret.Add(v);
                 }
             }

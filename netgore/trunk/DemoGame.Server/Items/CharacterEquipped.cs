@@ -15,6 +15,7 @@ namespace DemoGame.Server
         readonly Character _character;
 
         readonly bool _isPersistent;
+        bool _disposed = false;
 
         /// <summary>
         /// Gets the Character that this UserEquipped belongs to.
@@ -156,8 +157,6 @@ namespace DemoGame.Server
         {
         }
 
-        bool _disposed = false;
-
         #region IDisposable Members
 
         public void Dispose()
@@ -171,7 +170,7 @@ namespace DemoGame.Server
             // database as garbage
             if (!_isPersistent)
             {
-                foreach (var item in this.Select(x => x.Value))
+                foreach (ItemEntity item in this.Select(x => x.Value))
                 {
                     item.Dispose();
                 }
@@ -180,10 +179,14 @@ namespace DemoGame.Server
 
         #endregion
 
+        #region IModStatContainer Members
+
         public int GetStatModBonus(StatType statType)
         {
             // TODO: [STATS] This totally sucks. Add some kind of cache.
             return this.SelectMany(x => x.Value.BaseStats).Where(x => x.StatType == statType).Select(x => x.Value).Sum();
         }
+
+        #endregion
     }
 }

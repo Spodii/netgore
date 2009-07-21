@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
@@ -136,14 +133,14 @@ namespace DemoGame.Client
             SetError("Failed to connect to server.");
         }
 
-        void sockets_OnLoginUnsuccessful(IIPSocket conn, string message)
-        {
-            SetError(message);
-        }
-
         void sockets_OnLoginSuccessful(IIPSocket conn)
         {
             ScreenManager.SetScreen("game");
+        }
+
+        void sockets_OnLoginUnsuccessful(IIPSocket conn, string message)
+        {
+            SetError(message);
         }
 
         public override void Update(GameTime gameTime)

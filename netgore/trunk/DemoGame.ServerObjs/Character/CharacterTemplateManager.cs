@@ -95,7 +95,8 @@ namespace DemoGame.Server
             Alliance alliance = AllianceManager.GetAlliance(v.AllianceID);
             var items =
                 itemValues.Select(
-                    x => new CharacterTemplateInventoryItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Min, x.Max, x.Chance));
+                    x =>
+                    new CharacterTemplateInventoryItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Min, x.Max, x.Chance));
             var euipped =
                 equippedValues.Select(
                     x => new CharacterTemplateEquipmentItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Chance));

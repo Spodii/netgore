@@ -1,11 +1,8 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Threading;
 using log4net;
-using Microsoft.Xna.Framework;
 using NetGore;
-using NetGore.Collections;
 using NetGore.Network;
 
 // ReSharper disable SuggestBaseTypeForParameter
@@ -27,23 +24,12 @@ namespace DemoGame.Server
     public class SayHandler
     {
         /// <summary>
-        /// Parser for the Say commands.
-        /// </summary>
-        class SayCommandParser : StringCommandParser<SayCommandAttribute>
-        {
-            public SayCommandParser()
-                : base(typeof(SayCommands))
-            { }
-        }
-
-        readonly SayCommands _sayCommands;
-
-        /// <summary>
         /// The parser for the Say commands.
         /// </summary>
         static readonly SayCommandParser _parser = new SayCommandParser();
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly SayCommands _sayCommands;
 
         /// <summary>
         /// SayHandler constructor.
@@ -55,6 +41,29 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("server");
 
             _sayCommands = new SayCommands(server);
+        }
+
+        void HandleCommand(User user, string text)
+        {
+            // Remove the command symbol from the text
+            text = text.Substring(1);
+
+            // NOTE: This lock makes it so we can only parse one Say command at a time. Might want to use a pool in the future.
+            string output;
+            lock (_sayCommands)
+            {
+                _sayCommands.User = user;
+                _parser.TryParse(_sayCommands, text, out output);
+            }
+
+            // Send the resulting message to the User
+            if (!string.IsNullOrEmpty(output))
+            {
+                using (PacketWriter pw = ServerPacket.Chat(output))
+                {
+                    user.Send(pw);
+                }
+            }
         }
 
         /// <summary>
@@ -139,24 +148,13 @@ namespace DemoGame.Server
             }
         }
 
-        void HandleCommand(User user, string text)
+        /// <summary>
+        /// Parser for the Say commands.
+        /// </summary>
+        class SayCommandParser : StringCommandParser<SayCommandAttribute>
         {
-            // Remove the command symbol from the text
-            text = text.Substring(1);
-
-            // NOTE: This lock makes it so we can only parse one Say command at a time. Might want to use a pool in the future.
-            string output;
-            lock (_sayCommands)
+            public SayCommandParser() : base(typeof(SayCommands))
             {
-                _sayCommands.User = user;
-                _parser.TryParse(_sayCommands, text, out output);
-            }
-
-            // Send the resulting message to the User
-            if (!string.IsNullOrEmpty(output))
-            {
-                using (var pw = ServerPacket.Chat(output))
-                    user.Send(pw);
             }
         }
     }

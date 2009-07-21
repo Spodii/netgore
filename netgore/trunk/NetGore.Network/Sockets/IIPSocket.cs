@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using NetGore.IO;
 
 namespace NetGore.Network
@@ -13,16 +10,6 @@ namespace NetGore.Network
     public interface IIPSocket : IDisposable
     {
         /// <summary>
-        /// Gets the maximum size of a message to the unreliable channel.
-        /// </summary>
-        int MaxUnreliableMessageSize { get; }
-
-        /// <summary>
-        /// Gets the maximum size of a message to the reliable channel.
-        /// </summary>
-        int MaxReliableMessageSize { get; }
-
-        /// <summary>
         /// Gets the IP address string that this IIPSocket is connected to.
         /// </summary>
         string Address { get; }
@@ -31,6 +18,16 @@ namespace NetGore.Network
         /// Gets if this IIPSocket is currently connected.
         /// </summary>
         bool IsConnected { get; }
+
+        /// <summary>
+        /// Gets the maximum size of a message to the reliable channel.
+        /// </summary>
+        int MaxReliableMessageSize { get; }
+
+        /// <summary>
+        /// Gets the maximum size of a message to the unreliable channel.
+        /// </summary>
+        int MaxUnreliableMessageSize { get; }
 
         /// <summary>
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag

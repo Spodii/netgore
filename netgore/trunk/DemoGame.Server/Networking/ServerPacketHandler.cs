@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-
 using log4net;
 using NetGore;
 using NetGore.IO;
@@ -257,7 +255,7 @@ namespace DemoGame.Server
 #pragma warning restore 168
         {
             MapEntityIndex useEntityIndex = r.ReadMapEntityIndex();
-            
+
             // Get the map and user
             User user;
             Map map;
@@ -279,7 +277,8 @@ namespace DemoGame.Server
             IUsableEntity asUsable = useEntity as IUsableEntity;
             if (asUsable == null)
             {
-                const string errmsg = "UseEntity received but useByIndex `{0}` refers to DynamicEntity `{1}` which does " +
+                const string errmsg =
+                    "UseEntity received but useByIndex `{0}` refers to DynamicEntity `{1}` which does " +
                     "not implement IUsableEntity.";
                 Debug.Fail(string.Format(errmsg, useEntityIndex, useEntity));
                 if (log.IsErrorEnabled)
@@ -293,7 +292,7 @@ namespace DemoGame.Server
                 // Notify everyone in the map it was used
                 if (asUsable.NotifyClientsOfUsage)
                 {
-                    using (var pw = ServerPacket.UseEntity(useEntity.MapEntityIndex, user.MapEntityIndex))
+                    using (PacketWriter pw = ServerPacket.UseEntity(useEntity.MapEntityIndex, user.MapEntityIndex))
                     {
                         map.Send(pw);
                     }

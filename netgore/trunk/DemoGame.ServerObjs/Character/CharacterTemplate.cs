@@ -19,6 +19,7 @@ namespace DemoGame.Server
 
         public BodyIndex BodyIndex { get; private set; }
         public IEnumerable<CharacterTemplateEquipmentItem> Equipment { get; private set; }
+        public uint Exp { get; private set; }
 
         public ushort GiveCash { get; private set; }
 
@@ -26,14 +27,13 @@ namespace DemoGame.Server
 
         public CharacterTemplateID ID { get; private set; }
         public IEnumerable<CharacterTemplateInventoryItem> Inventory { get; private set; }
+        public byte Level { get; private set; }
 
         public string Name { get; private set; }
 
         public ushort RespawnSecs { get; private set; }
 
-        public uint Exp { get; private set; }
         public uint StatPoints { get; private set; }
-        public byte Level { get; private set; }
 
         /// <summary>
         /// Gets the default stat values for the CharacterTemplate. This IEnumerable will only contain
@@ -43,8 +43,7 @@ namespace DemoGame.Server
 
         public CharacterTemplate(CharacterTemplateID id, string name, string aiName, Alliance alliance, BodyIndex body,
                                  ushort respawnSecs, ushort giveExp, ushort giveCash, uint exp, uint statPoints, byte level,
-                                 IEnumerable<StatTypeValue> statValues,
-                                 IEnumerable<CharacterTemplateInventoryItem> inventory,
+                                 IEnumerable<StatTypeValue> statValues, IEnumerable<CharacterTemplateInventoryItem> inventory,
                                  IEnumerable<CharacterTemplateEquipmentItem> equipment)
         {
             Debug.Assert(!inventory.Any(x => x == null));
