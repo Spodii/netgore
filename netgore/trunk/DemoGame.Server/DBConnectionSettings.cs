@@ -8,9 +8,9 @@ using NetGore;
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Settings for the server
+    /// Settings for the database connection.
     /// </summary>
-    class ServerSettings
+    public class DBConnectionSettings
     {
         readonly string _sqlDatabase;
         readonly string _sqlHost;
@@ -50,12 +50,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// ServerSettings constructor
+        /// ServerSettings constructor.
         /// </summary>
-        /// <param name="filePath">Path to the file containing the server settings</param>
-        public ServerSettings(string filePath)
+        public DBConnectionSettings()
         {
-            var dic = XmlInfoReader.ReadFile(filePath)[0];
+            var dic = XmlInfoReader.ReadFile("Settings.xml")[0];
             _sqlUser = dic["MySql.User"];
             _sqlHost = dic["MySql.Host"];
             _sqlDatabase = dic["MySql.Database"];
