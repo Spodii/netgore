@@ -126,7 +126,6 @@
     <Compile Include="Items\UserInventory.cs" />
     <Compile Include="Items\ItemEntity.cs" />
     <Compile Include="Stats\NPCStats.cs" />
-    <Compile Include="Stats\StatUpdateHandlers.cs" />
     <Compile Include="Stats\UserStats.cs" />
     <Compile Include="World\Map.cs" />
     <Compile Include="Program.cs" />
@@ -140,7 +139,7 @@
     <Compile Include="World\World.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DemoGame.Db\DemoGame.ServerObjs.csproj">
+    <ProjectReference Include="..\DemoGame.ServerObjs\DemoGame.ServerObjs.csproj">
       <Project>{20E83735-4A5F-426C-9759-F9A1AD51B00E}</Project>
       <Name>DemoGame.ServerObjs</Name>
     </ProjectReference>
