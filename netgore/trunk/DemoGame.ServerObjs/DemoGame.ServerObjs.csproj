@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{20E83735-4A5F-426C-9759-F9A1AD51B00E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>DemoGame.Db</RootNamespace>
+    <AssemblyName>DemoGame.Db</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Xna.Framework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
+    <Reference Include="System" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Alliance.cs" />
+    <Compile Include="AllianceID.cs" />
+    <Compile Include="AllianceManager.cs" />
+    <Compile Include="CharacterID.cs" />
+    <Compile Include="CharacterTemplate.cs" />
+    <Compile Include="CharacterTemplateEquipmentItem.cs" />
+    <Compile Include="CharacterTemplateID.cs" />
+    <Compile Include="CharacterTemplateInventoryItem.cs" />
+    <Compile Include="CharacterTemplateManager.cs" />
+    <Compile Include="IRespawnable.cs" />
+    <Compile Include="ItemChance.cs" />
+    <Compile Include="ItemID.cs" />
+    <Compile Include="ItemIDCreator.cs" />
+    <Compile Include="ItemTemplate.cs" />
+    <Compile Include="ItemTemplateID.cs" />
+    <Compile Include="ItemTemplateManager.cs" />
+    <Compile Include="ItemValues.cs" />
+    <Compile Include="MapSpawnRect.cs" />
+    <Compile Include="MapSpawnValues.cs" />
+    <Compile Include="MapSpawnValuesID.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceAttackableQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceAttackableQueryValues.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceHostileQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceHostileQueryValues.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceIDsQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceQueryValues.cs" />
+    <Compile Include="Queries\Character\CharacterQueryHelper.cs" />
+    <Compile Include="Queries\Character\Items\DeleteCharacterEquippedItemQuery.cs" />
+    <Compile Include="Queries\Character\Items\DeleteCharacterInventoryItemQuery.cs" />
+    <Compile Include="Queries\Character\Items\InsertCharacterEquippedItemQuery.cs" />
+    <Compile Include="Queries\Character\Items\InsertUserItemQuery.cs" />
+    <Compile Include="Queries\Character\Items\SelectCharacterEquippedItemsQuery.cs" />
+    <Compile Include="Queries\Character\Items\SelectCharacterInventoryItemsQuery.cs" />
+    <Compile Include="Queries\Character\SelectCharacterByIDQuery.cs" />
+    <Compile Include="Queries\Character\SelectCharacterQuery.cs" />
+    <Compile Include="Queries\Character\SelectCharacterQueryValues.cs" />
+    <Compile Include="Queries\Character\Template\CharacterTemplateQueryHelper.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateEquippedQuery.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateEquippedQueryValues.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateIDsQuery.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateInventoryQuery.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateInventoryQueryValues.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateQuery.cs" />
+    <Compile Include="Queries\Character\Template\SelectCharacterTemplateQueryValues.cs" />
+    <Compile Include="Queries\DBController.cs" />
+    <Compile Include="Queries\DBControllerQueryAttribute.cs" />
+    <Compile Include="Queries\DBTables.cs" />
+    <Compile Include="Queries\DBTableStatTypes.cs" />
+    <Compile Include="Queries\DBTableValidator.cs" />
+    <Compile Include="Queries\IDataReaderExtensions.cs" />
+    <Compile Include="Queries\Item\DeleteItemQuery.cs" />
+    <Compile Include="Queries\Item\ItemQueryHelper.cs" />
+    <Compile Include="Queries\Item\ReplaceItemQuery.cs" />
+    <Compile Include="Queries\Item\SelectItemQuery.cs" />
+    <Compile Include="Queries\Item\SelectItemsQuery.cs" />
+    <Compile Include="Queries\Item\Template\ItemTemplateQueryHelper.cs" />
+    <Compile Include="Queries\Item\Template\SelectItemTemplatesQuery.cs" />
+    <Compile Include="Queries\Item\UpdateItemFieldQuery.cs" />
+    <Compile Include="Queries\Map\Spawn\InsertMapSpawnQuery.cs" />
+    <Compile Include="Queries\Map\Spawn\MapSpawnQueryHelper.cs" />
+    <Compile Include="Queries\Map\Spawn\SelectMapSpawnQuery.cs" />
+    <Compile Include="Queries\Map\Spawn\SelectMapSpawnQueryValues.cs" />
+    <Compile Include="Queries\Map\Spawn\SelectMapSpawnsOnMapQuery.cs" />
+    <Compile Include="Queries\Map\Spawn\UpdateMapSpawnQuery.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\StatsQueryHelper.cs" />
+    <Compile Include="Queries\StatTypeField.cs" />
+    <Compile Include="Queries\User\SelectUserPasswordQuery.cs" />
+    <Compile Include="Queries\User\UserExistsQuery.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DemoGame\DemoGame.csproj">
+      <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
+      <Name>DemoGame</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
+      <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
+      <Name>NetGore.Collections</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Db.MySql\NetGore.Db.MySql.csproj">
+      <Project>{43D09443-29F5-4688-81D7-5B5835EAC550}</Project>
+      <Name>NetGore.Db.MySql</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Db\NetGore.Db.csproj">
+      <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
+      <Name>NetGore.Db</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
+      <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
+      <Name>NetGore.IO</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore\NetGore.csproj">
+      <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
+      <Name>NetGore</Name>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

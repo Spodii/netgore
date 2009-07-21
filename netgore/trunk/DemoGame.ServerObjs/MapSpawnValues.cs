@@ -181,7 +181,7 @@ namespace DemoGame.Server
         /// values that are not in range of the <paramref name="map"/>.</exception>
         /// <exception cref="ArgumentException">The <paramref name="map"/>'s MapIndex does not match this
         /// MapSpawnValues's <see cref="MapIndex"/>.</exception>
-        public void SetSpawnArea(Map map, MapSpawnRect newSpawnArea)
+        public void SetSpawnArea(MapBase map, MapSpawnRect newSpawnArea)
         {
             if (map.Index != MapIndex)
                 throw new ArgumentException("The index of the specified map does not match this MapIndex", "map");

@@ -226,6 +226,17 @@ namespace DemoGame.Server
             }
         }
 
+        public ItemEntity(ItemTemplate t, byte amount)
+            : this(t, Vector2.Zero, amount)
+        {
+        }
+
+        public ItemEntity(ItemTemplate t, Vector2 pos, byte amount, Map map)
+            : this(t, pos, amount)
+        {
+            map.AddEntity(this);
+        }
+
         public ItemEntity(ItemTemplate t, Vector2 pos, byte amount)
             : this(pos, t.Size, t.Name, t.Description, t.Type, t.Graphic, t.Value, amount, t.HP, t.MP, t.BaseStats, t.ReqStats)
         {
@@ -253,6 +264,15 @@ namespace DemoGame.Server
             OnResize += ItemEntity_OnResize;
         }
 
+        public ItemValues ToItemValues(ItemID id)
+        {
+            var bs = BaseStats.ToStatTypeValues();
+            var rs = ReqStats.ToStatTypeValues();
+
+            return new ItemValues(id, (byte)CB.Width, (byte)CB.Height, Name, Description, Type, GraphicIndex, Amount,
+                Value, HP, MP, bs, rs);
+        }
+
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
                    SPValueType hp, SPValueType mp, IEnumerable<StatTypeValue> baseStats, IEnumerable<StatTypeValue> reqStats)
             : base(pos, size)
@@ -271,7 +291,7 @@ namespace DemoGame.Server
             _baseStats = NewItemStats(baseStats, StatCollectionType.Base);
             _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
 
-            ReplaceItem.Execute(new ItemValues(this, ID));
+            ReplaceItem.Execute(ToItemValues(_id));
 
             OnResize += ItemEntity_OnResize;
         }

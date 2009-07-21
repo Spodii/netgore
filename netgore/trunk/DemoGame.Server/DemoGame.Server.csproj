@@ -94,107 +94,41 @@
     <Compile Include="AI\AIBase.cs" />
     <Compile Include="AI\AIFactory.cs" />
     <Compile Include="AI\TestAI.cs" />
-    <Compile Include="Characters\Alliance.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Characters\AllianceID.cs" />
-    <Compile Include="Characters\AllianceManager.cs" />
     <Compile Include="Characters\Character.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Characters\CharacterID.cs" />
     <Compile Include="Characters\CharacterSPSynchronizer.cs" />
-    <Compile Include="Characters\CharacterTemplateEquipmentItem.cs" />
-    <Compile Include="Characters\CharacterTemplateID.cs" />
-    <Compile Include="Characters\CharacterTemplateInventoryItem.cs" />
-    <Compile Include="Characters\IRespawnable.cs" />
+    <Compile Include="Characters\CharacterStats.cs" />
     <Compile Include="Characters\NPC.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Characters\UserSPSynchronizer.cs" />
+    <Compile Include="CharacterTemplateEquipmentItemExtensions.cs" />
+    <Compile Include="CharacterTemplateInventoryItemExtensions.cs" />
     <Compile Include="ConsoleCommandAttribute.cs" />
-    <Compile Include="ItemChance.cs" />
     <Compile Include="Items\CharacterEquipped.cs" />
     <Compile Include="Items\CharacterInventory.cs" />
     <Compile Include="Items\InventoryChangeInfo.cs" />
     <Compile Include="Items\InventoryChangeTracker.cs" />
-    <Compile Include="Items\ItemIDCreator.cs" />
-    <Compile Include="Items\ItemID.cs" />
     <Compile Include="Items\ItemStats.cs" />
-    <Compile Include="Items\ItemTemplateID.cs" />
-    <Compile Include="Items\ItemTemplateManager.cs" />
     <Compile Include="Items\ItemValueTracker.cs" />
     <Compile Include="Items\NPCEquipped.cs" />
     <Compile Include="Items\NPCInventory.cs" />
     <Compile Include="ConsoleCommands.cs" />
-    <Compile Include="Items\ItemValues.cs" />
     <Compile Include="Items\UserEquipped.cs" />
     <Compile Include="Items\UserInventoryUpdater.cs" />
-    <Compile Include="Queries\Character\CharacterQueryHelper.cs" />
-    <Compile Include="Queries\Character\Template\CharacterTemplateQueryHelper.cs" />
-    <Compile Include="Queries\Character\Template\SelectCharacterTemplateEquippedQueryValues.cs" />
-    <Compile Include="Queries\Character\Template\SelectCharacterTemplateIDsQuery.cs" />
-    <Compile Include="Queries\Character\Template\SelectCharacterTemplateInventoryQuery.cs" />
-    <Compile Include="Queries\Character\Template\SelectCharacterTemplateInventoryQueryValues.cs" />
-    <Compile Include="Queries\DBTableStatTypes.cs" />
-    <Compile Include="Queries\DBTableValidator.cs" />
-    <Compile Include="Queries\Item\ItemQueryHelper.cs" />
-    <Compile Include="Queries\Item\Template\ItemTemplateQueryHelper.cs" />
-    <Compile Include="Queries\Map\Spawn\InsertMapSpawnQuery.cs" />
-    <Compile Include="Queries\Map\Spawn\MapSpawnQueryHelper.cs" />
-    <Compile Include="Queries\Map\Spawn\SelectMapSpawnQuery.cs" />
-    <Compile Include="Queries\Map\Spawn\SelectMapSpawnQueryValues.cs" />
-    <Compile Include="Queries\Map\Spawn\SelectMapSpawnsOnMapQuery.cs" />
-    <Compile Include="Queries\Map\Spawn\UpdateMapSpawnQuery.cs" />
-    <Compile Include="Queries\StatsQueryHelper.cs" />
-    <Compile Include="Queries\StatTypeField.cs" />
+    <Compile Include="Queries\UpdateCharacterQuery.cs" />
     <Compile Include="Say\SayCommands.cs" />
     <Compile Include="Say\SayHandler.cs" />
     <Compile Include="Networking\ServerPacket.cs" />
     <Compile Include="Networking\ServerPacketHandler.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceAttackableQuery.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceAttackableQueryValues.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceHostileQuery.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceHostileQueryValues.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceIDsQuery.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceQuery.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceQueryValues.cs" />
-    <Compile Include="Queries\Character\SelectCharacterByIDQuery.cs" />
-    <Compile Include="Queries\Character\Template\SelectCharacterTemplateEquippedQuery.cs" />
-    <Compile Include="Queries\DBController.cs" />
-    <Compile Include="Queries\DBControllerQueryAttribute.cs" />
-    <Compile Include="Queries\DBTables.cs" />
-    <Compile Include="Queries\IDataReaderExtensions.cs" />
-    <Compile Include="Queries\Item\SelectItemsQuery.cs" />
-    <Compile Include="Queries\Item\Template\SelectItemTemplatesQuery.cs" />
-    <Compile Include="Queries\Character\Items\SelectCharacterEquippedItemsQuery.cs" />
-    <Compile Include="Queries\Character\Items\SelectCharacterInventoryItemsQuery.cs" />
-    <Compile Include="Queries\Item\UpdateItemFieldQuery.cs" />
-    <Compile Include="Queries\Character\Template\SelectCharacterTemplateQuery.cs" />
-    <Compile Include="Queries\Character\Template\SelectCharacterTemplateQueryValues.cs" />
-    <Compile Include="Queries\Character\Items\DeleteCharacterEquippedItemQuery.cs" />
-    <Compile Include="Queries\Character\Items\InsertUserItemQuery.cs" />
-    <Compile Include="Queries\Character\Items\DeleteCharacterInventoryItemQuery.cs" />
-    <Compile Include="Queries\Item\SelectItemQuery.cs" />
-    <Compile Include="Queries\Item\DeleteItemQuery.cs" />
-    <Compile Include="Queries\Item\ReplaceItemQuery.cs" />
-    <Compile Include="Queries\Character\Items\InsertCharacterEquippedItemQuery.cs" />
-    <Compile Include="Queries\User\SelectUserPasswordQuery.cs" />
-    <Compile Include="Queries\Character\SelectCharacterQuery.cs" />
-    <Compile Include="Queries\Character\SelectCharacterQueryValues.cs" />
-    <Compile Include="Queries\User\UserExistsQuery.cs" />
-    <Compile Include="Stats\CharacterStats.cs" />
     <Compile Include="World\DamageTrapEntity.cs" />
     <Compile Include="Items\UserInventory.cs" />
     <Compile Include="Items\ItemEntity.cs" />
-    <Compile Include="Items\ItemTemplate.cs" />
-    <Compile Include="Queries\Character\UpdateCharacterQuery.cs" />
     <Compile Include="Stats\NPCStats.cs" />
     <Compile Include="Stats\StatUpdateHandlers.cs" />
     <Compile Include="Stats\UserStats.cs" />
     <Compile Include="World\Map.cs" />
-    <Compile Include="Characters\CharacterTemplate.cs" />
-    <Compile Include="Characters\CharacterTemplateManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
@@ -202,13 +136,14 @@
     <Compile Include="Networking\ServerSockets.cs" />
     <Compile Include="Characters\User.cs" />
     <Compile Include="World\NPCSpawner.cs" />
-    <Compile Include="World\MapSpawnValuesID.cs" />
-    <Compile Include="World\MapSpawnRect.cs" />
-    <Compile Include="World\MapSpawnValues.cs" />
     <Compile Include="World\TeleportEntity.cs" />
     <Compile Include="World\World.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DemoGame.Db\DemoGame.ServerObjs.csproj">
+      <Project>{20E83735-4A5F-426C-9759-F9A1AD51B00E}</Project>
+      <Name>DemoGame.ServerObjs</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
       <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
       <Name>NetGore.Collections</Name>
