@@ -447,6 +447,7 @@ namespace DemoGame.MapEditor
             }
 
             Map = new Map(index, _world, GameScreen.GraphicsDevice);
+            DBController.GetQuery<InsertMapQuery>().Execute(Map);
             Map.OnSave += Map_OnSave;
             Map.SetDimensions(new Vector2(30 * 32, 20 * 32));
             Map.Save(index, ContentPaths.Dev);
