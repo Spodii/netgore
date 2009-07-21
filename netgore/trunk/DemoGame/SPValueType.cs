@@ -9,8 +9,8 @@ namespace DemoGame
     /// </summary>
     public struct SPValueType
     {
-        public const short MinValue = short.MinValue;
         public const short MaxValue = short.MaxValue;
+        public const short MinValue = short.MinValue;
 
         readonly short _value;
 

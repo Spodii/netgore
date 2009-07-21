@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -107,8 +104,7 @@ namespace DemoGame.Client
             _grh = new Grh(null);
         }
 
-        public ItemEntity(GrhIndex graphicIndex, byte amount, int currentTime)
-            : base(Vector2.Zero, Vector2.Zero)
+        public ItemEntity(GrhIndex graphicIndex, byte amount, int currentTime) : base(Vector2.Zero, Vector2.Zero)
         {
             // NOTE: Can I get rid of this constructor?
             _amount = amount;

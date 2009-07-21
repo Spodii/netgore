@@ -23,9 +23,9 @@ namespace DemoGame.Server
         [Browsable(true)]
         [Description("The ID of the CharacterTemplate to spawn.")]
         /// <summary>
-        /// Gets or sets the CharacterTemplateID of the CharacterTemplate to spawn.
-        /// </summary>
-        public CharacterTemplateID CharacterTemplateID
+            /// Gets or sets the CharacterTemplateID of the CharacterTemplate to spawn.
+            /// </summary>
+            public CharacterTemplateID CharacterTemplateID
         {
             get { return _characterTemplateID; }
             set
@@ -40,27 +40,27 @@ namespace DemoGame.Server
 
         [Browsable(false)]
         /// <summary>
-        /// Gets the DBController used to synchronize changes to the values.
-        /// </summary>
-        public DBController DBController
+            /// Gets the DBController used to synchronize changes to the values.
+            /// </summary>
+            public DBController DBController
         {
             get { return _dbController; }
         }
 
         [Browsable(false)]
         /// <summary>
-        /// Gets the unique ID of this MapSpawnValues.
-        /// </summary>
-        public MapSpawnValuesID ID
+            /// Gets the unique ID of this MapSpawnValues.
+            /// </summary>
+            public MapSpawnValuesID ID
         {
             get { return _id; }
         }
 
         [Browsable(false)]
         /// <summary>
-        /// Gets or sets the index of the Map that these values are for.
-        /// </summary>
-        public MapIndex MapIndex
+            /// Gets or sets the index of the Map that these values are for.
+            /// </summary>
+            public MapIndex MapIndex
         {
             get { return _mapIndex; }
             set
@@ -76,9 +76,9 @@ namespace DemoGame.Server
         [Browsable(true)]
         [Description("The maximum number of Characters that will be spawned by this MapSpawnValues.")]
         /// <summary>
-        /// Gets or sets the maximum number of Characters that will be spawned by this MapSpawnValues.
-        /// </summary>
-        public byte SpawnAmount
+            /// Gets or sets the maximum number of Characters that will be spawned by this MapSpawnValues.
+            /// </summary>
+            public byte SpawnAmount
         {
             get { return _spawnAmount; }
             set
@@ -94,9 +94,9 @@ namespace DemoGame.Server
         [Browsable(true)]
         [Description("The area on the map the spawning will take place at.")]
         /// <summary>
-        /// Gets the area on the map the spawning will take place at.
-        /// </summary>
-        public MapSpawnRect SpawnArea
+            /// Gets the area on the map the spawning will take place at.
+            /// </summary>
+            public MapSpawnRect SpawnArea
         {
             get { return _spawnArea; }
             private set
@@ -113,7 +113,8 @@ namespace DemoGame.Server
         /// <param name="id">The unique ID of this MapSpawnValues.</param>
         /// <param name="mapIndex">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
-        public MapSpawnValues(DBController dbController, MapSpawnValuesID id, MapIndex mapIndex, CharacterTemplateID characterTemplateID)
+        public MapSpawnValues(DBController dbController, MapSpawnValuesID id, MapIndex mapIndex,
+                              CharacterTemplateID characterTemplateID)
             : this(dbController, id, mapIndex, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
         {
         }

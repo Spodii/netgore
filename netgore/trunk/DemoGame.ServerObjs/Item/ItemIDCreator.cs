@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
     /// <summary>
-    /// A thread-safe collection of available IDs for items.
-    /// </summary>
+        /// A thread-safe collection of available IDs for items.
+        /// </summary>
     public class ItemIDCreator : IDCreatorBase
     {
         /// <summary>

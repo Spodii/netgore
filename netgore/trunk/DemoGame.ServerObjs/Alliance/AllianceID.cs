@@ -692,16 +692,6 @@ namespace DemoGame.Server
     public static class AllianceIDReadWriteExtensions
     {
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
-        public static AllianceID ReadAllianceID(this BitStream bitStream)
-        {
-            return AllianceID.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the CustomValueType from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
@@ -723,6 +713,15 @@ namespace DemoGame.Server
             return AllianceID.Read(dataReader, name);
         }
 
+        /// <summary>
+        /// Reads the CustomValueType from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
+        /// <returns>The CustomValueType read from the BitStream.</returns>
+        public static AllianceID ReadAllianceID(this BitStream bitStream)
+        {
+            return AllianceID.Read(bitStream);
+        }
 
         /// <summary>
         /// Reads the CustomValueType from an IValueReader.

@@ -1,11 +1,7 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using Microsoft.Xna.Framework;
-using NetGore.Collections;
 using NetGore.Network;
 
 namespace DemoGame.Server
@@ -17,12 +13,28 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        readonly Server _server;
+
+        /// <summary>
+        /// Gets the Server that the commands are coming from.
+        /// </summary>
+        public Server Server
+        {
+            get { return _server; }
+        }
+
         /// <summary>
         /// Gets the User that the current command came from.
         /// </summary>
         public User User { get; internal set; }
 
-        readonly Server _server;
+        /// <summary>
+        /// Gets the World that the User belongs to.
+        /// </summary>
+        public World World
+        {
+            get { return Server.World; }
+        }
 
         /// <summary>
         /// SayCommands constructor.
@@ -34,47 +46,6 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("server");
 
             _server = server;
-        }
-
-        /// <summary>
-        /// Gets the Server that the commands are coming from.
-        /// </summary>
-        public Server Server
-        {
-            get { return _server; }
-        }
-
-        /// <summary>
-        /// Gets the World that the User belongs to.
-        /// </summary>
-        public World World
-        {
-            get { return Server.World; }
-        }
-
-        [SayCommand("CreateTestDamageTrap")]
-        public void CreateTestDamageTrap()
-        {
-            // NOTE: This is a temporary command
-            DamageTrapEntity trap = new DamageTrapEntity();
-            trap.Resize(new Vector2(64, 64));
-            trap.Teleport(User.Position);
-            User.Map.AddEntity(trap);
-        }
-
-        [SayCommand("Shout")]
-        public void Shout(string message)
-        {
-            using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandShout, User.Name, message))
-            {
-                World.Send(pw);
-            }
-        }
-
-        [SayCommand("Suicide")]
-        public void Suicide()
-        {
-            User.Kill();
         }
 
         [SayCommand("Tell")]
@@ -128,6 +99,31 @@ namespace DemoGame.Server
                     User.Send(pw);
                 }
             }
+        }
+
+        [SayCommand("CreateTestDamageTrap")]
+        public void CreateTestDamageTrap()
+        {
+            // NOTE: This is a temporary command
+            DamageTrapEntity trap = new DamageTrapEntity();
+            trap.Resize(new Vector2(64, 64));
+            trap.Teleport(User.Position);
+            User.Map.AddEntity(trap);
+        }
+
+        [SayCommand("Shout")]
+        public void Shout(string message)
+        {
+            using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.CommandShout, User.Name, message))
+            {
+                World.Send(pw);
+            }
+        }
+
+        [SayCommand("Suicide")]
+        public void Suicide()
+        {
+            User.Kill();
         }
     }
 }

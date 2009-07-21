@@ -1,17 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Microsoft.Xna.Framework;
-
 namespace DemoGame.Server
 {
     public class CharacterTemplateInventoryItem
     {
-        public ItemTemplate ItemTemplate { get; private set; }
-        public byte Min { get; private set; }
-        public byte Max { get; private set; }
         public ItemChance Chance { get; private set; }
+        public ItemTemplate ItemTemplate { get; private set; }
+        public byte Max { get; private set; }
+        public byte Min { get; private set; }
 
         public CharacterTemplateInventoryItem(ItemTemplate itemTemplate, byte min, byte max, ItemChance chance)
         {

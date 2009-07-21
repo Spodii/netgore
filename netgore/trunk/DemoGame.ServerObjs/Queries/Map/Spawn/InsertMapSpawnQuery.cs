@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -13,8 +10,7 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", DBTables.MapSpawn,
                                                             FormatParametersIntoValuesString(MapSpawnQueryHelper.AllDBFields));
 
-        public InsertMapSpawnQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public InsertMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 

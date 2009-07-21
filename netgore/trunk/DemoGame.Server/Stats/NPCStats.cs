@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-
 namespace DemoGame.Server
 {
     public class NPCStats : CharacterStats
@@ -14,8 +9,7 @@ namespace DemoGame.Server
             get { return _npc; }
         }
 
-        public NPCStats(NPC npc, StatCollectionType statCollectionType)
-            : base(statCollectionType)
+        public NPCStats(NPC npc, StatCollectionType statCollectionType) : base(statCollectionType)
         {
             _npc = npc;
         }

@@ -40,11 +40,13 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Performs any synchronization needed.
+        /// Forces synchronization.
         /// </summary>
-        public virtual void Synchronize()
+        public virtual void ForceSynchronize()
         {
-            SynchronizePercentage();
+            // Since the percent will never be at this value, this will force a synchronization on next Synchronize call
+            _lastSentHPPercent = byte.MaxValue;
+            _lastSentMPPercent = byte.MaxValue;
         }
 
         public virtual void ForceSynchronizeTo(User user)
@@ -58,13 +60,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Forces synchronization.
+        /// Performs any synchronization needed.
         /// </summary>
-        public virtual void ForceSynchronize()
+        public virtual void Synchronize()
         {
-            // Since the percent will never be at this value, this will force a synchronization on next Synchronize call
-            _lastSentHPPercent = byte.MaxValue;
-            _lastSentMPPercent = byte.MaxValue;
+            SynchronizePercentage();
         }
 
         protected void SynchronizePercentage()

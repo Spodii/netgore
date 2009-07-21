@@ -13,23 +13,19 @@ namespace DemoGame.Client
         readonly CharacterStats _modStats = new CharacterStats(StatCollectionType.Modified);
         readonly ClientSockets _socket;
 
-        public uint StatPoints { get; set; }
-
-        public uint Exp { get; set; }
-
-        public byte Level { get; set; }
-
-        public uint Cash { get; set; }
-
         public CharacterStats BaseStats
         {
             get { return _baseStats; }
         }
 
+        public uint Cash { get; set; }
+
         public UserEquipped Equipped
         {
             get { return _equipped; }
         }
+
+        public uint Exp { get; set; }
 
         public SPValueType HP { get; set; }
 
@@ -49,6 +45,8 @@ namespace DemoGame.Client
             get { return _inventory; }
         }
 
+        public byte Level { get; set; }
+
         public CharacterStats ModStats
         {
             get { return _modStats; }
@@ -66,6 +64,8 @@ namespace DemoGame.Client
                 return (byte)((MP / max) * 100);
             }
         }
+
+        public uint StatPoints { get; set; }
 
         public UserInfo(ClientSockets socket)
         {

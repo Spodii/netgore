@@ -15,14 +15,14 @@ namespace NetGore.Network
     public class UDPSocket : IDisposable
     {
         /// <summary>
-        /// Length of the custom packet header in bytes.
-        /// </summary>
-        const int _headerSize = 0;
-
-        /// <summary>
         /// Length of the maximum packet size in bytes.
         /// </summary>
         public const int MaxPacketSize = 1024 - _headerSize;
+
+        /// <summary>
+        /// Length of the custom packet header in bytes.
+        /// </summary>
+        const int _headerSize = 0;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

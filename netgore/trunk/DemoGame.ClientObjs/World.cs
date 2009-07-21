@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-
 using log4net;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -43,8 +40,8 @@ namespace DemoGame.Client
         public Map Map
         {
             get { return _map; }
-            set 
-            { 
+            set
+            {
                 _map = value;
                 _camera.Map = _map;
             }
@@ -102,6 +99,15 @@ namespace DemoGame.Client
             _map.Draw(sb, Camera);
         }
 
+        /// <summary>
+        /// Gets the current time
+        /// </summary>
+        /// <returns>Current time</returns>
+        public override int GetTime()
+        {
+            return _getTime.GetTime();
+        }
+
         public void SetMap(Map newMap)
         {
             if (newMap == null)
@@ -133,15 +139,6 @@ namespace DemoGame.Client
             // Update the map
             if (_map != null)
                 _map.Update(deltaTime);
-        }
-
-        /// <summary>
-        /// Gets the current time
-        /// </summary>
-        /// <returns>Current time</returns>
-        public override int GetTime()
-        {
-            return _getTime.GetTime();
         }
     }
 }

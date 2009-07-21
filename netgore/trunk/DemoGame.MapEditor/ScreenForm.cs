@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -15,7 +14,6 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
-using Color=System.Drawing.Color;
 using Point=System.Drawing.Point;
 
 // LATER: Grid-snapping for batch movement
@@ -55,8 +53,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Color of the Grh preview when placing new Grhs
         /// </summary>
-        static readonly Microsoft.Xna.Framework.Graphics.Color _drawPreviewColor = new Microsoft.Xna.Framework.Graphics.Color(
-            255, 255, 255, 150);
+        static readonly Color _drawPreviewColor = new Color(255, 255, 255, 150);
 
         readonly AddGrhCursor _addGrhCursor = new AddGrhCursor();
         readonly AddWallCursor _addWallCursor = new AddWallCursor();
@@ -485,7 +482,7 @@ namespace DemoGame.MapEditor
         public void DrawGame()
         {
             // Clear the background
-            GameScreen.GraphicsDevice.Clear(Microsoft.Xna.Framework.Graphics.Color.CornflowerBlue);
+            GameScreen.GraphicsDevice.Clear(Color.CornflowerBlue);
 
             // Draw a Grh if its being edited
             if (_editGrh != null)
@@ -574,7 +571,7 @@ namespace DemoGame.MapEditor
             // Cursor position
             Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
             cursorPosText -= new Vector2(100, 30);
-            DrawShadedText(cursorPosText, _cursorPos.ToString(), Microsoft.Xna.Framework.Graphics.Color.White);
+            DrawShadedText(cursorPosText, _cursorPos.ToString(), Color.White);
 
             // End GUI rendering and present
             _sb.End();
@@ -618,9 +615,9 @@ namespace DemoGame.MapEditor
         /// <param name="pos">Top-left corner to start drawing at</param>
         /// <param name="text">String to draw</param>
         /// <param name="color">Font color</param>
-        public void DrawShadedText(Vector2 pos, string text, Microsoft.Xna.Framework.Graphics.Color color)
+        public void DrawShadedText(Vector2 pos, string text, Color color)
         {
-            Microsoft.Xna.Framework.Graphics.Color shadeColor = Microsoft.Xna.Framework.Graphics.Color.Black;
+            Color shadeColor = Color.Black;
 
             // Draw the shade
             _sb.DrawString(_font, text, pos - new Vector2(0, 1), shadeColor);
@@ -1131,7 +1128,7 @@ namespace DemoGame.MapEditor
             // Set the background colors for the tools
             foreach (PictureBox pic in panToolBar.Controls)
             {
-                pic.BackColor = Color.White;
+                pic.BackColor = System.Drawing.Color.White;
                 pic.BorderStyle = BorderStyle.None;
             }
 
@@ -1139,7 +1136,7 @@ namespace DemoGame.MapEditor
             if (src == null)
                 return;
 
-            src.BackColor = Color.LightGreen;
+            src.BackColor = System.Drawing.Color.LightGreen;
             src.BorderStyle = BorderStyle.FixedSingle;
 
             // Set the selected tool

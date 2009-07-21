@@ -15,7 +15,11 @@ namespace DemoGame.Server.Queries
         {
             StatDBFields = StatsQueryHelper.GetStatTypeFields(StatFactory.AllStats, StatCollectionType.Base);
 
-            NonStatDBFields = new string[] { "body", "id", "name", "give_exp", "give_cash", "alliance_id", "respawn", "ai", "statpoints", "exp", "level" };
+            NonStatDBFields = new string[]
+                              {
+                                  "body", "id", "name", "give_exp", "give_cash", "alliance_id", "respawn", "ai", "statpoints", "exp"
+                                  , "level"
+                              };
 
             AllDBFields = StatDBFields.Select(x => x.Field).Concat(NonStatDBFields).ToArray();
         }

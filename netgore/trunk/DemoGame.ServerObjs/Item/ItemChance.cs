@@ -1,7 +1,5 @@
 using System;
 using System.Data;
-using System.Globalization;
-using System.IO;
 using System.Runtime.InteropServices;
 using NetGore.IO;
 
@@ -14,18 +12,6 @@ namespace DemoGame.Server
     [StructLayout(LayoutKind.Sequential)]
     public struct ItemChance : IComparable, IFormattable
     {
-        static readonly Random _random = new Random();
-
-        /// <summary>
-        /// Performs a test against the ItemChance.
-        /// </summary>
-        /// <returns>True if the test passed; otherwise false.</returns>
-        public bool Test()
-        {
-            int randValue = _random.Next(_minValue + 1, _maxValue + 1);
-            return randValue <= _value;
-        }
-
         /// <summary>
         /// Represents the largest possible value of ItemChance. This field is constant.
         /// </summary>
@@ -35,6 +21,8 @@ namespace DemoGame.Server
         /// Represents the smallest possible value of ItemChance. This field is constant.
         /// </summary>
         const int _minValue = ushort.MinValue;
+
+        static readonly Random _random = new Random();
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
@@ -160,6 +148,16 @@ namespace DemoGame.Server
         {
             ushort value = bitStream.ReadUShort();
             return new ItemChance(value);
+        }
+
+        /// <summary>
+        /// Performs a test against the ItemChance.
+        /// </summary>
+        /// <returns>True if the test passed; otherwise false.</returns>
+        public bool Test()
+        {
+            int randValue = _random.Next(_minValue + 1, _maxValue + 1);
+            return randValue <= _value;
         }
 
         /// <summary>
@@ -337,16 +335,6 @@ namespace DemoGame.Server
     public static class ItemChanceReadWriteExtensions
     {
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
-        public static ItemChance ReadItemChance(this BitStream bitStream)
-        {
-            return ItemChance.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the CustomValueType from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
@@ -366,6 +354,16 @@ namespace DemoGame.Server
         public static ItemChance GetItemChance(this IDataReader dataReader, string name)
         {
             return ItemChance.Read(dataReader, name);
+        }
+
+        /// <summary>
+        /// Reads the CustomValueType from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
+        /// <returns>The CustomValueType read from the BitStream.</returns>
+        public static ItemChance ReadItemChance(this BitStream bitStream)
+        {
+            return ItemChance.Read(bitStream);
         }
 
         /// <summary>

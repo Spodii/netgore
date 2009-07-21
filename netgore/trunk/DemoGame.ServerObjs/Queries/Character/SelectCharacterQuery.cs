@@ -2,10 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Diagnostics;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries

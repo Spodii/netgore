@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -10,18 +8,18 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class SelectCharacterTemplateEquippedQuery : DbQueryReader<CharacterTemplateID>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `character_id`=@characterID", DBTables.CharacterTemplateEquipped);
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `character_id`=@characterID",
+                                                            DBTables.CharacterTemplateEquipped);
 
-        public SelectCharacterTemplateEquippedQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectCharacterTemplateEquippedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
         public IEnumerable<SelectCharacterTemplateEquippedQueryValues> Execute(CharacterTemplateID templateID)
         {
-            List<SelectCharacterTemplateEquippedQueryValues> ret = new List<SelectCharacterTemplateEquippedQueryValues>();
+            var ret = new List<SelectCharacterTemplateEquippedQueryValues>();
 
-            using (var r = ExecuteReader(templateID))
+            using (IDataReader r = ExecuteReader(templateID))
             {
                 while (r.Read())
                 {
@@ -29,7 +27,8 @@ namespace DemoGame.Server.Queries
                     ItemTemplateID item = r.GetItemTemplateID("item_id");
                     ItemChance chance = r.GetItemChance("chance");
 
-                    var v = new SelectCharacterTemplateEquippedQueryValues(character, item, chance);
+                    SelectCharacterTemplateEquippedQueryValues v = new SelectCharacterTemplateEquippedQueryValues(character, item,
+                                                                                                                  chance);
                     ret.Add(v);
                 }
             }

@@ -692,16 +692,6 @@ namespace DemoGame.Server
     public static class CharacterIDReadWriteExtensions
     {
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
-        public static CharacterID ReadCharacterID(this BitStream bitStream)
-        {
-            return CharacterID.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the CustomValueType from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
@@ -721,6 +711,16 @@ namespace DemoGame.Server
         public static CharacterID GetCharacterID(this IDataReader dataReader, string name)
         {
             return CharacterID.Read(dataReader, name);
+        }
+
+        /// <summary>
+        /// Reads the CustomValueType from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
+        /// <returns>The CustomValueType read from the BitStream.</returns>
+        public static CharacterID ReadCharacterID(this BitStream bitStream)
+        {
+            return CharacterID.Read(bitStream);
         }
 
         /// <summary>

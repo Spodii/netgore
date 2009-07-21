@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore.IO;
@@ -15,8 +14,8 @@ namespace NetGore.Network
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly MessageProcessor[] _processors;
         readonly int _messageIDBitLength;
+        readonly MessageProcessor[] _processors;
 
         /// <summary>
         /// Gets an IEnumerable of all the MessageProcessors handled by this MessageProcessorManager.

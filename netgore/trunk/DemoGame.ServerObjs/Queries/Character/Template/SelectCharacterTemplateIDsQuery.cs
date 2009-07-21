@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -11,8 +9,7 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString = string.Format("SELECT `id` FROM `{0}`", DBTables.CharacterTemplate);
 
-        public SelectCharacterTemplateIDsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectCharacterTemplateIDsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
@@ -20,7 +17,7 @@ namespace DemoGame.Server.Queries
         {
             var ret = new List<CharacterTemplateID>();
 
-            using (var r = ExecuteReader())
+            using (IDataReader r = ExecuteReader())
             {
                 while (r.Read())
                 {

@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -10,19 +8,18 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class SelectCharacterTemplateInventoryQuery : DbQueryReader<CharacterTemplateID>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `character_id`=@characterID", 
-            DBTables.CharacterTemplateInventory);
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `character_id`=@characterID",
+                                                            DBTables.CharacterTemplateInventory);
 
-        public SelectCharacterTemplateInventoryQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public SelectCharacterTemplateInventoryQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
         public IEnumerable<SelectCharacterTemplateInventoryQueryValues> Execute(CharacterTemplateID templateID)
         {
-            List<SelectCharacterTemplateInventoryQueryValues> ret = new List<SelectCharacterTemplateInventoryQueryValues>();
+            var ret = new List<SelectCharacterTemplateInventoryQueryValues>();
 
-            using (var r = ExecuteReader(templateID))
+            using (IDataReader r = ExecuteReader(templateID))
             {
                 while (r.Read())
                 {
@@ -32,7 +29,9 @@ namespace DemoGame.Server.Queries
                     byte max = r.GetByte("max");
                     ItemChance chance = r.GetItemChance("chance");
 
-                    var v = new SelectCharacterTemplateInventoryQueryValues(character, item, min, max, chance);
+                    SelectCharacterTemplateInventoryQueryValues v = new SelectCharacterTemplateInventoryQueryValues(character,
+                                                                                                                    item, min, max,
+                                                                                                                    chance);
                     ret.Add(v);
                 }
             }

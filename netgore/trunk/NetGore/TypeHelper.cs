@@ -100,7 +100,7 @@ namespace NetGore
 
             return types;
         }
-        
+
         /// <summary>
         /// Finds all Types that inherit the specified <paramref name="baseType"/>.
         /// </summary>

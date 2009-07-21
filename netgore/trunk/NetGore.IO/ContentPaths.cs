@@ -25,8 +25,8 @@ namespace NetGore
 
         static readonly string _appRoot;
         static readonly ContentPaths _buildPaths;
-        static ContentPaths _devPaths;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        static ContentPaths _devPaths;
 
         readonly PathString _data;
         readonly PathString _engine;
@@ -52,13 +52,11 @@ namespace NetGore
         /// </summary>
         public static ContentPaths Dev
         {
-            get 
+            get
             {
                 if (_devPaths == null)
-                {
                     _devPaths = new ContentPaths(GetDevContentPath(_appRoot));
-                }
-                return _devPaths; 
+                return _devPaths;
             }
         }
 

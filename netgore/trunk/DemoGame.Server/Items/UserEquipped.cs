@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
@@ -18,15 +14,17 @@ namespace DemoGame.Server
 
         readonly User _user;
 
-        User User { get { return _user; } }
+        User User
+        {
+            get { return _user; }
+        }
 
         /// <summary>
         /// UserEquipped constructor.
         /// </summary>
         /// <param name="user">User that this UserEquipped belongs to.</param>
 // ReSharper disable SuggestBaseTypeForParameter
-        public UserEquipped(User user) : base(user)
-// ReSharper restore SuggestBaseTypeForParameter
+        public UserEquipped(User user) : base(user) // ReSharper restore SuggestBaseTypeForParameter
         {
             _user = user;
         }

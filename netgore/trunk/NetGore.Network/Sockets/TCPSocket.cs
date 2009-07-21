@@ -581,8 +581,8 @@ namespace NetGore.Network
         /// <param name="data">Data to send.</param>
         public void Send(byte[] data)
         {
-            Debug.Fail("Try to avoid using this whenever possible. Despite how it may seem, it actually performs MUCH worse"
-                + " than if you were to send a BitStream.");
+            Debug.Fail("Try to avoid using this whenever possible. Despite how it may seem, it actually performs MUCH worse" +
+                       " than if you were to send a BitStream.");
 
             _sendQueue.Enqueue(data);
         }
