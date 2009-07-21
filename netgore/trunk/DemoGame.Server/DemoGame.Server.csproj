@@ -132,7 +132,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server.cs" />
-    <Compile Include="DBConnectionSettings.cs" />
     <Compile Include="Networking\ServerSockets.cs" />
     <Compile Include="Characters\User.cs" />
     <Compile Include="World\NPCSpawner.cs" />
