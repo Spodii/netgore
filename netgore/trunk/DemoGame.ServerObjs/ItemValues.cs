@@ -106,14 +106,5 @@ namespace DemoGame.Server
             _baseStats = baseStats.Where(x => x.Value != 0).ToArray();
             _reqStats = reqStats.Where(x => x.Value != 0).ToArray();
         }
-
-        public ItemValues(ItemEntity ie, ItemID id)
-            : this(
-                id, (byte)ie.CB.Width, (byte)ie.CB.Height, ie.Name, ie.Description, ie.Type, ie.GraphicIndex, ie.Amount,
-                ie.Value, ie.HP, ie.MP, ie.BaseStats.ToStatTypeValues(), ie.ReqStats.ToStatTypeValues())
-        {
-            if (ie == null)
-                throw new ArgumentNullException("ie");
-        }
     }
 }

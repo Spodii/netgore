@@ -54,7 +54,7 @@ namespace DemoGame.Server
             get { return _user; }
         }
 
-        public UserStats(User user, StatCollectionType statCollectionType) : base(user, statCollectionType)
+        public UserStats(User user, StatCollectionType statCollectionType) : base(statCollectionType)
         {
             if (user == null)
                 throw new ArgumentNullException("user");

@@ -99,7 +99,7 @@ namespace DemoGame.Server
                     float y = rand.Next(128, (int)m.Height - 256);
                     ItemTemplate template = ItemTemplateManager.GetRandomTemplate();
 
-                    template.CreateInstance(m, new Vector2(x, y), 1);
+                    new ItemEntity(template, new Vector2(x, y), 1, m);
                 }
             }
 

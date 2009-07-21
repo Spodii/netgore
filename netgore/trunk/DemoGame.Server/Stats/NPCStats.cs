@@ -15,7 +15,7 @@ namespace DemoGame.Server
         }
 
         public NPCStats(NPC npc, StatCollectionType statCollectionType)
-            : base(npc, statCollectionType)
+            : base(statCollectionType)
         {
             _npc = npc;
         }
