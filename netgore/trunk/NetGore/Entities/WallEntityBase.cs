@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using Microsoft.Xna.Framework;
 using NetGore.IO;
 
@@ -12,6 +13,18 @@ namespace NetGore
     /// </summary>
     public abstract class WallEntityBase : Entity
     {
+        [Browsable(false)]
+        public override float Weight
+        {
+            get
+            {
+                return 0;
+            }
+            set
+            {
+            }
+        }
+
         protected WallEntityBase(Vector2 position, Vector2 size) : this(position, size, CollisionType.Full)
         {
         }
@@ -24,7 +37,6 @@ namespace NetGore
         protected WallEntityBase(Vector2 position, Vector2 size, CollisionType collisionType) : base(position, size)
         {
             CollisionType = collisionType;
-            Weight = 0.0f; // Walls have no weight
         }
 
         void Read(IValueReader r)

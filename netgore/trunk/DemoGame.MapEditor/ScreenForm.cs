@@ -402,12 +402,6 @@ namespace DemoGame.MapEditor
             Map.DrawWalls = chkShowWalls.Checked;
         }
 
-        void cmbCurrWallType_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (_wallToEdit != null)
-                _wallToEdit.CollisionType = (CollisionType)cmbCurrWallType.SelectedItem;
-        }
-
         void cmdApplySize_Click(object sender, EventArgs e)
         {
             if (Map == null)
@@ -814,12 +808,8 @@ namespace DemoGame.MapEditor
 
             // Set the wall types
             cmbWallType.Items.Clear();
-            cmbCurrWallType.Items.Clear();
             foreach (CollisionType item in Enum.GetValues(typeof(CollisionType)))
-            {
                 cmbWallType.Items.Add(item);
-                cmbCurrWallType.Items.Add(item);
-            }
             cmbWallType.SelectedItem = CollisionType.Full;
 
             // Hook the toolbar visuals
@@ -1104,17 +1094,6 @@ namespace DemoGame.MapEditor
             txtMapHeight.Text = Map.Height.ToString();
         }
 
-        void SetWallToEdit(WallEntityBase wall)
-        {
-            _wallToEdit = wall;
-            gbCurrentWall.Enabled = (_wallToEdit != null);
-
-            if (_wallToEdit == null)
-                return;
-
-            cmbCurrWallType.SelectedItem = _wallToEdit.CollisionType;
-        }
-
         void tabPageGrhs_Enter(object sender, EventArgs e)
         {
             treeGrhs.Select();
@@ -1352,9 +1331,9 @@ namespace DemoGame.MapEditor
             }
 
             if (selectedWalls.Count == 1)
-                SetWallToEdit(selectedWalls[0]);
+                pgWall.SelectedObject = selectedWalls[0];
             else
-                SetWallToEdit(null);
+                pgWall.SelectedObject = null;
         }
 
         #region IGetTime Members
@@ -1369,5 +1348,15 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
+
+        private void lstSelectedWalls_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            WallEntityBase selected = lstSelectedWalls.SelectedItem as WallEntityBase;
+            if (selected == null)
+                return;
+
+            if (pgWall.SelectedObject != selected)
+                pgWall.SelectedObject = selected;
+        }
     }
 }

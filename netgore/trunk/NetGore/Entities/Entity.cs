@@ -143,7 +143,7 @@ namespace NetGore
             " where 0 is unaffected by gravity.")]
         [DefaultValue(0.0f)]
         [Browsable(true)]
-        public float Weight
+        public virtual float Weight
         {
             get { return _weight; }
             set { _weight = value; }
