@@ -52,9 +52,8 @@ namespace DemoGame.MapEditor
             this.chkSnapGrhGrid = new System.Windows.Forms.CheckBox();
             this.treeGrhs = new NetGore.EditorTools.GrhTreeView();
             this.tabPageWalls = new System.Windows.Forms.TabPage();
+            this.pgWall = new System.Windows.Forms.PropertyGrid();
             this.cmbWallType = new System.Windows.Forms.ComboBox();
-            this.gbCurrentWall = new System.Windows.Forms.GroupBox();
-            this.cmbCurrWallType = new System.Windows.Forms.ComboBox();
             this.chkSnapWallGrid = new System.Windows.Forms.CheckBox();
             this.chkSnapWallWall = new System.Windows.Forms.CheckBox();
             this.lstSelectedWalls = new System.Windows.Forms.ListBox();
@@ -62,13 +61,11 @@ namespace DemoGame.MapEditor
             this.cmbEntityTypes = new System.Windows.Forms.ComboBox();
             this.btnNewEntity = new System.Windows.Forms.Button();
             this.pgEntity = new System.Windows.Forms.PropertyGrid();
-            this.lstEntities = new DemoGame.MapEditor.EntityListBox();
             this.tabPageBackground = new System.Windows.Forms.TabPage();
             this.pgBGItem = new System.Windows.Forms.PropertyGrid();
             this.btnNewBGSprite = new System.Windows.Forms.Button();
             this.btnNewBGLayer = new System.Windows.Forms.Button();
             this.btnDeleteBGItem = new System.Windows.Forms.Button();
-            this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
             this.tabPageNPCs = new System.Windows.Forms.TabPage();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
@@ -94,12 +91,13 @@ namespace DemoGame.MapEditor
             this.picToolWalls = new System.Windows.Forms.PictureBox();
             this.picToolSelect = new System.Windows.Forms.PictureBox();
             this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
+            this.lstEntities = new DemoGame.MapEditor.EntityListBox();
+            this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
             this.tcMenu.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.MapSizeGroupBox.SuspendLayout();
             this.tabPageGrhs.SuspendLayout();
             this.tabPageWalls.SuspendLayout();
-            this.gbCurrentWall.SuspendLayout();
             this.tabPageEntities.SuspendLayout();
             this.tabPageBackground.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
@@ -158,7 +156,7 @@ namespace DemoGame.MapEditor
             // 
             // cmdApplySize
             // 
-            this.cmdApplySize.Location = new System.Drawing.Point(216, 19);
+            this.cmdApplySize.Location = new System.Drawing.Point(216, 16);
             this.cmdApplySize.Name = "cmdApplySize";
             this.cmdApplySize.Size = new System.Drawing.Size(50, 25);
             this.cmdApplySize.TabIndex = 7;
@@ -223,7 +221,7 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs.Controls.Add(this.treeGrhs);
             this.tabPageGrhs.Location = new System.Drawing.Point(4, 22);
             this.tabPageGrhs.Name = "tabPageGrhs";
-            this.tabPageGrhs.Size = new System.Drawing.Size(299, 544);
+            this.tabPageGrhs.Size = new System.Drawing.Size(337, 579);
             this.tabPageGrhs.TabIndex = 5;
             this.tabPageGrhs.Text = "Grhs";
             this.tabPageGrhs.UseVisualStyleBackColor = true;
@@ -232,7 +230,7 @@ namespace DemoGame.MapEditor
             // chkForeground
             // 
             this.chkForeground.AutoSize = true;
-            this.chkForeground.Location = new System.Drawing.Point(98, 6);
+            this.chkForeground.Location = new System.Drawing.Point(101, 6);
             this.chkForeground.Name = "chkForeground";
             this.chkForeground.Size = new System.Drawing.Size(80, 17);
             this.chkForeground.TabIndex = 9;
@@ -244,7 +242,7 @@ namespace DemoGame.MapEditor
             this.chkSnapGrhGrid.AutoSize = true;
             this.chkSnapGrhGrid.Checked = true;
             this.chkSnapGrhGrid.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkSnapGrhGrid.Location = new System.Drawing.Point(3, 6);
+            this.chkSnapGrhGrid.Location = new System.Drawing.Point(6, 6);
             this.chkSnapGrhGrid.Name = "chkSnapGrhGrid";
             this.chkSnapGrhGrid.Size = new System.Drawing.Size(89, 17);
             this.chkSnapGrhGrid.TabIndex = 7;
@@ -258,11 +256,11 @@ namespace DemoGame.MapEditor
             this.treeGrhs.ImageSize = new System.Drawing.Size(16, 16);
             this.treeGrhs.ImeMode = System.Windows.Forms.ImeMode.NoControl;
             this.treeGrhs.LabelEdit = true;
-            this.treeGrhs.Location = new System.Drawing.Point(3, 29);
+            this.treeGrhs.Location = new System.Drawing.Point(6, 29);
             this.treeGrhs.Name = "treeGrhs";
             this.treeGrhs.SelectedImageIndex = 0;
             this.treeGrhs.ShowNodeToolTips = true;
-            this.treeGrhs.Size = new System.Drawing.Size(290, 512);
+            this.treeGrhs.Size = new System.Drawing.Size(326, 547);
             this.treeGrhs.Sorted = true;
             this.treeGrhs.TabIndex = 8;
             this.treeGrhs.GrhAfterSelect += new NetGore.EditorTools.GrhTreeViewEvent(this.treeGrhs_SelectGrh);
@@ -270,47 +268,36 @@ namespace DemoGame.MapEditor
             // 
             // tabPageWalls
             // 
+            this.tabPageWalls.Controls.Add(this.pgWall);
             this.tabPageWalls.Controls.Add(this.cmbWallType);
-            this.tabPageWalls.Controls.Add(this.gbCurrentWall);
             this.tabPageWalls.Controls.Add(this.chkSnapWallGrid);
             this.tabPageWalls.Controls.Add(this.chkSnapWallWall);
             this.tabPageWalls.Controls.Add(this.lstSelectedWalls);
             this.tabPageWalls.Location = new System.Drawing.Point(4, 22);
             this.tabPageWalls.Name = "tabPageWalls";
             this.tabPageWalls.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageWalls.Size = new System.Drawing.Size(299, 544);
+            this.tabPageWalls.Size = new System.Drawing.Size(337, 579);
             this.tabPageWalls.TabIndex = 1;
             this.tabPageWalls.Text = "Walls";
             this.tabPageWalls.ToolTipText = "Collision walls";
             this.tabPageWalls.UseVisualStyleBackColor = true;
             // 
+            // pgWall
+            // 
+            this.pgWall.HelpVisible = false;
+            this.pgWall.Location = new System.Drawing.Point(6, 469);
+            this.pgWall.Name = "pgWall";
+            this.pgWall.Size = new System.Drawing.Size(325, 104);
+            this.pgWall.TabIndex = 8;
+            this.pgWall.ToolbarVisible = false;
+            // 
             // cmbWallType
             // 
             this.cmbWallType.FormattingEnabled = true;
-            this.cmbWallType.Location = new System.Drawing.Point(3, 29);
+            this.cmbWallType.Location = new System.Drawing.Point(6, 29);
             this.cmbWallType.Name = "cmbWallType";
-            this.cmbWallType.Size = new System.Drawing.Size(147, 21);
+            this.cmbWallType.Size = new System.Drawing.Size(181, 21);
             this.cmbWallType.TabIndex = 7;
-            // 
-            // gbCurrentWall
-            // 
-            this.gbCurrentWall.Controls.Add(this.cmbCurrWallType);
-            this.gbCurrentWall.Enabled = false;
-            this.gbCurrentWall.Location = new System.Drawing.Point(6, 455);
-            this.gbCurrentWall.Name = "gbCurrentWall";
-            this.gbCurrentWall.Size = new System.Drawing.Size(284, 79);
-            this.gbCurrentWall.TabIndex = 6;
-            this.gbCurrentWall.TabStop = false;
-            this.gbCurrentWall.Text = "Selected Wall";
-            // 
-            // cmbCurrWallType
-            // 
-            this.cmbCurrWallType.FormattingEnabled = true;
-            this.cmbCurrWallType.Location = new System.Drawing.Point(6, 19);
-            this.cmbCurrWallType.Name = "cmbCurrWallType";
-            this.cmbCurrWallType.Size = new System.Drawing.Size(110, 21);
-            this.cmbCurrWallType.TabIndex = 0;
-            this.cmbCurrWallType.SelectedIndexChanged += new System.EventHandler(this.cmbCurrWallType_SelectedIndexChanged);
             // 
             // chkSnapWallGrid
             // 
@@ -339,12 +326,13 @@ namespace DemoGame.MapEditor
             // lstSelectedWalls
             // 
             this.lstSelectedWalls.FormattingEnabled = true;
-            this.lstSelectedWalls.Location = new System.Drawing.Point(3, 56);
+            this.lstSelectedWalls.Location = new System.Drawing.Point(6, 56);
             this.lstSelectedWalls.Name = "lstSelectedWalls";
             this.lstSelectedWalls.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
-            this.lstSelectedWalls.Size = new System.Drawing.Size(290, 394);
+            this.lstSelectedWalls.Size = new System.Drawing.Size(325, 407);
             this.lstSelectedWalls.Sorted = true;
             this.lstSelectedWalls.TabIndex = 3;
+            this.lstSelectedWalls.SelectedIndexChanged += new System.EventHandler(this.lstSelectedWalls_SelectedIndexChanged);
             this.lstSelectedWalls.SelectedValueChanged += new System.EventHandler(this.lstSelectedWalls_SelectedValueChanged);
             // 
             // tabPageEntities
@@ -355,7 +343,7 @@ namespace DemoGame.MapEditor
             this.tabPageEntities.Controls.Add(this.lstEntities);
             this.tabPageEntities.Location = new System.Drawing.Point(4, 22);
             this.tabPageEntities.Name = "tabPageEntities";
-            this.tabPageEntities.Size = new System.Drawing.Size(299, 544);
+            this.tabPageEntities.Size = new System.Drawing.Size(337, 579);
             this.tabPageEntities.TabIndex = 7;
             this.tabPageEntities.Text = "Entities";
             this.tabPageEntities.UseVisualStyleBackColor = true;
@@ -364,14 +352,14 @@ namespace DemoGame.MapEditor
             // 
             this.cmbEntityTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbEntityTypes.FormattingEnabled = true;
-            this.cmbEntityTypes.Location = new System.Drawing.Point(3, 198);
+            this.cmbEntityTypes.Location = new System.Drawing.Point(3, 201);
             this.cmbEntityTypes.Name = "cmbEntityTypes";
-            this.cmbEntityTypes.Size = new System.Drawing.Size(228, 21);
+            this.cmbEntityTypes.Size = new System.Drawing.Size(264, 21);
             this.cmbEntityTypes.TabIndex = 11;
             // 
             // btnNewEntity
             // 
-            this.btnNewEntity.Location = new System.Drawing.Point(237, 197);
+            this.btnNewEntity.Location = new System.Drawing.Point(273, 198);
             this.btnNewEntity.Name = "btnNewEntity";
             this.btnNewEntity.Size = new System.Drawing.Size(59, 24);
             this.btnNewEntity.TabIndex = 10;
@@ -381,21 +369,11 @@ namespace DemoGame.MapEditor
             // 
             // pgEntity
             // 
-            this.pgEntity.Location = new System.Drawing.Point(3, 224);
+            this.pgEntity.Location = new System.Drawing.Point(3, 228);
             this.pgEntity.Name = "pgEntity";
-            this.pgEntity.Size = new System.Drawing.Size(293, 317);
+            this.pgEntity.Size = new System.Drawing.Size(329, 348);
             this.pgEntity.TabIndex = 1;
-            // 
-            // lstEntities
-            // 
-            this.lstEntities.Camera = null;
-            this.lstEntities.FormattingEnabled = true;
-            this.lstEntities.IMap = null;
-            this.lstEntities.Location = new System.Drawing.Point(3, 6);
-            this.lstEntities.Name = "lstEntities";
-            this.lstEntities.Size = new System.Drawing.Size(293, 186);
-            this.lstEntities.TabIndex = 0;
-            this.lstEntities.SelectedIndexChanged += new System.EventHandler(this.lstEntities_SelectedIndexChanged);
+            this.pgEntity.ToolbarVisible = false;
             // 
             // tabPageBackground
             // 
@@ -406,7 +384,7 @@ namespace DemoGame.MapEditor
             this.tabPageBackground.Controls.Add(this.lstBGItems);
             this.tabPageBackground.Location = new System.Drawing.Point(4, 22);
             this.tabPageBackground.Name = "tabPageBackground";
-            this.tabPageBackground.Size = new System.Drawing.Size(299, 544);
+            this.tabPageBackground.Size = new System.Drawing.Size(337, 579);
             this.tabPageBackground.TabIndex = 6;
             this.tabPageBackground.Text = "Background";
             this.tabPageBackground.UseVisualStyleBackColor = true;
@@ -415,8 +393,9 @@ namespace DemoGame.MapEditor
             // 
             this.pgBGItem.Location = new System.Drawing.Point(3, 173);
             this.pgBGItem.Name = "pgBGItem";
-            this.pgBGItem.Size = new System.Drawing.Size(293, 368);
+            this.pgBGItem.Size = new System.Drawing.Size(329, 403);
             this.pgBGItem.TabIndex = 5;
+            this.pgBGItem.ToolbarVisible = false;
             // 
             // btnNewBGSprite
             // 
@@ -446,22 +425,11 @@ namespace DemoGame.MapEditor
             this.btnDeleteBGItem.Text = "Delete";
             this.btnDeleteBGItem.UseVisualStyleBackColor = true;
             // 
-            // lstBGItems
-            // 
-            this.lstBGItems.Camera = null;
-            this.lstBGItems.FormattingEnabled = true;
-            this.lstBGItems.IMap = null;
-            this.lstBGItems.Location = new System.Drawing.Point(3, 3);
-            this.lstBGItems.Name = "lstBGItems";
-            this.lstBGItems.Size = new System.Drawing.Size(293, 134);
-            this.lstBGItems.TabIndex = 0;
-            this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
-            // 
             // tabPageNPCs
             // 
             this.tabPageNPCs.Location = new System.Drawing.Point(4, 22);
             this.tabPageNPCs.Name = "tabPageNPCs";
-            this.tabPageNPCs.Size = new System.Drawing.Size(299, 544);
+            this.tabPageNPCs.Size = new System.Drawing.Size(337, 579);
             this.tabPageNPCs.TabIndex = 4;
             this.tabPageNPCs.Text = "NPCs";
             this.tabPageNPCs.ToolTipText = "Mob and NPC spawning and settings";
@@ -473,7 +441,7 @@ namespace DemoGame.MapEditor
             this.tabPageSettings.Controls.Add(this.groupBox1);
             this.tabPageSettings.Location = new System.Drawing.Point(4, 22);
             this.tabPageSettings.Name = "tabPageSettings";
-            this.tabPageSettings.Size = new System.Drawing.Size(299, 544);
+            this.tabPageSettings.Size = new System.Drawing.Size(337, 579);
             this.tabPageSettings.TabIndex = 3;
             this.tabPageSettings.Text = "Settings";
             this.tabPageSettings.ToolTipText = "Map editor settings";
@@ -497,6 +465,8 @@ namespace DemoGame.MapEditor
             // chkDrawBackground
             // 
             this.chkDrawBackground.AutoSize = true;
+            this.chkDrawBackground.Checked = true;
+            this.chkDrawBackground.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDrawBackground.Location = new System.Drawing.Point(120, 67);
             this.chkDrawBackground.Name = "chkDrawBackground";
             this.chkDrawBackground.Size = new System.Drawing.Size(112, 17);
@@ -529,6 +499,8 @@ namespace DemoGame.MapEditor
             // chkShowGrhs
             // 
             this.chkShowGrhs.AutoSize = true;
+            this.chkShowGrhs.Checked = true;
+            this.chkShowGrhs.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShowGrhs.Location = new System.Drawing.Point(6, 67);
             this.chkShowGrhs.Name = "chkShowGrhs";
             this.chkShowGrhs.Size = new System.Drawing.Size(76, 17);
@@ -722,6 +694,28 @@ namespace DemoGame.MapEditor
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
             this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
             // 
+            // lstEntities
+            // 
+            this.lstEntities.Camera = null;
+            this.lstEntities.FormattingEnabled = true;
+            this.lstEntities.IMap = null;
+            this.lstEntities.Location = new System.Drawing.Point(3, 6);
+            this.lstEntities.Name = "lstEntities";
+            this.lstEntities.Size = new System.Drawing.Size(329, 186);
+            this.lstEntities.TabIndex = 0;
+            this.lstEntities.SelectedIndexChanged += new System.EventHandler(this.lstEntities_SelectedIndexChanged);
+            // 
+            // lstBGItems
+            // 
+            this.lstBGItems.Camera = null;
+            this.lstBGItems.FormattingEnabled = true;
+            this.lstBGItems.IMap = null;
+            this.lstBGItems.Location = new System.Drawing.Point(3, 3);
+            this.lstBGItems.Name = "lstBGItems";
+            this.lstBGItems.Size = new System.Drawing.Size(329, 134);
+            this.lstBGItems.TabIndex = 0;
+            this.lstBGItems.SelectedIndexChanged += new System.EventHandler(this.lstBGItems_SelectedIndexChanged);
+            // 
             // ScreenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -749,7 +743,6 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs.PerformLayout();
             this.tabPageWalls.ResumeLayout(false);
             this.tabPageWalls.PerformLayout();
-            this.gbCurrentWall.ResumeLayout(false);
             this.tabPageEntities.ResumeLayout(false);
             this.tabPageBackground.ResumeLayout(false);
             this.tabPageSettings.ResumeLayout(false);
@@ -794,8 +787,6 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Panel panToolBar;
         private System.Windows.Forms.TabPage tabPageGrhs;
         private GameScreenControl GameScreen;
-        private System.Windows.Forms.GroupBox gbCurrentWall;
-        private System.Windows.Forms.ComboBox cmbCurrWallType;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox chkShowGrhs;
         private System.Windows.Forms.CheckBox chkShowWalls;
@@ -826,5 +817,6 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Button btnNewEntity;
         private System.Windows.Forms.ComboBox cmbEntityTypes;
         private System.Windows.Forms.CheckBox chkDrawBackground;
+        private System.Windows.Forms.PropertyGrid pgWall;
     }
 }
