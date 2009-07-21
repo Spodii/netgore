@@ -1105,6 +1105,7 @@ namespace DemoGame.MapEditor
             Map = new Map(index, _world, GameScreen.GraphicsDevice);
             Map.OnSave += Map_OnSave;
             Map.Load(ContentPaths.Dev, true);
+            lstNPCSpawns.SetMap(DBController, Map);
 
             // Remove all of the walls previously created from the MapGrhs
             var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);

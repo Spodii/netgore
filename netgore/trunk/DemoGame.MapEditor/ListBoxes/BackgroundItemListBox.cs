@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Client;
-
 using NetGore.EditorTools;
 using NetGore.Graphics;
 

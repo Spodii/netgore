@@ -1,0 +1,78 @@
+﻿using System;
+using System.Linq;
+using System.Windows.Forms;
+using DemoGame.Server;
+
+namespace DemoGame.MapEditor
+{
+    public class NPCSpawnsListBox : ListBox
+    {
+        DBController _dbController;
+        MapBase _map;
+
+        /// <summary>
+        /// Gets or sets the PropertyGrid to display the property values for the selected item in this NPCSpawnsListBox.
+        /// </summary>
+        public PropertyGrid PropertyGrid { get; set; }
+
+        public NPCSpawnsListBox()
+        {
+            SelectedIndexChanged += HandleSelectedIndexChanged;
+        }
+
+        void HandleSelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (PropertyGrid == null)
+                return;
+
+            var selected = SelectedItem as NPCSpawnsListBoxItem;
+            if (selected == null)
+                return;
+
+            if (PropertyGrid.SelectedObject != selected.Value)
+                PropertyGrid.SelectedObject = selected.Value;
+        }
+
+        void ReloadSpawns()
+        {
+            Items.Clear();
+
+            var spawnInfo = MapSpawnValues.Load(_dbController, _map.Index);
+            var asArray = spawnInfo.Select(x => new NPCSpawnsListBoxItem(x)).ToArray();
+            Items.AddRange(asArray);
+        }
+
+        public void SetMap(DBController dbController, MapBase map)
+        {
+            if (map == null)
+                throw new ArgumentNullException("map");
+            if (dbController == null)
+                throw new ArgumentNullException("dbController");
+
+            _map = map;
+            _dbController = dbController;
+
+            ReloadSpawns();
+        }
+
+        class NPCSpawnsListBoxItem
+        {
+            public readonly MapSpawnValues Value;
+
+            public NPCSpawnsListBoxItem(MapSpawnValues v)
+            {
+                Value = v;
+            }
+
+            public override string ToString()
+            {
+                return string.Format("Char ID: {0}  Count: {1}  Region: {2}", Value.CharacterTemplateID, Value.SpawnAmount, Value.SpawnArea);
+            }
+
+            public static implicit operator MapSpawnValues(NPCSpawnsListBoxItem v)
+            {
+                return v.Value;
+            }
+        }
+    }
+}

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using DemoGame.Server.Queries;
 using NetGore;
@@ -19,6 +20,8 @@ namespace DemoGame.Server
         byte _spawnAmount;
         MapSpawnRect _spawnArea;
 
+        [Browsable(true)]
+        [Description("The ID of the CharacterTemplate to spawn.")]
         /// <summary>
         /// Gets or sets the CharacterTemplateID of the CharacterTemplate to spawn.
         /// </summary>
@@ -35,6 +38,7 @@ namespace DemoGame.Server
             }
         }
 
+        [Browsable(false)]
         /// <summary>
         /// Gets the DBController used to synchronize changes to the values.
         /// </summary>
@@ -43,6 +47,7 @@ namespace DemoGame.Server
             get { return _dbController; }
         }
 
+        [Browsable(false)]
         /// <summary>
         /// Gets the unique ID of this MapSpawnValues.
         /// </summary>
@@ -51,6 +56,7 @@ namespace DemoGame.Server
             get { return _id; }
         }
 
+        [Browsable(false)]
         /// <summary>
         /// Gets or sets the index of the Map that these values are for.
         /// </summary>
@@ -67,6 +73,8 @@ namespace DemoGame.Server
             }
         }
 
+        [Browsable(true)]
+        [Description("The maximum number of Characters that will be spawned by this MapSpawnValues.")]
         /// <summary>
         /// Gets or sets the maximum number of Characters that will be spawned by this MapSpawnValues.
         /// </summary>
@@ -83,6 +91,8 @@ namespace DemoGame.Server
             }
         }
 
+        [Browsable(true)]
+        [Description("The area on the map the spawning will take place at.")]
         /// <summary>
         /// Gets the area on the map the spawning will take place at.
         /// </summary>

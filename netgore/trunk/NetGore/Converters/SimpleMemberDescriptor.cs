@@ -5,6 +5,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 
+// NOTE: Unused
+
+/*
 namespace NetGore
 {
     public class SimpleMemberDescriptor : PropertyDescriptor
@@ -121,3 +124,4 @@ namespace NetGore
         }
     }
 }
+*/
