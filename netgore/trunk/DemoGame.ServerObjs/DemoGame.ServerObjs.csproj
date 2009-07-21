@@ -50,42 +50,35 @@
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\log4net.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=3.0.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
     <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alliance.cs" />
-    <Compile Include="AllianceID.cs" />
-    <Compile Include="AllianceManager.cs" />
-    <Compile Include="CharacterID.cs" />
-    <Compile Include="CharacterTemplate.cs" />
-    <Compile Include="CharacterTemplateEquipmentItem.cs" />
-    <Compile Include="CharacterTemplateID.cs" />
-    <Compile Include="CharacterTemplateInventoryItem.cs" />
-    <Compile Include="CharacterTemplateManager.cs" />
-    <Compile Include="IRespawnable.cs" />
-    <Compile Include="ItemChance.cs" />
-    <Compile Include="ItemID.cs" />
-    <Compile Include="ItemIDCreator.cs" />
-    <Compile Include="ItemTemplate.cs" />
-    <Compile Include="ItemTemplateID.cs" />
-    <Compile Include="ItemTemplateManager.cs" />
-    <Compile Include="ItemValues.cs" />
-    <Compile Include="MapSpawnRect.cs" />
-    <Compile Include="MapSpawnValues.cs" />
-    <Compile Include="MapSpawnValuesID.cs" />
+    <Compile Include="Alliance\Alliance.cs" />
+    <Compile Include="Alliance\AllianceID.cs" />
+    <Compile Include="Alliance\AllianceManager.cs" />
+    <Compile Include="Character\CharacterID.cs" />
+    <Compile Include="Character\CharacterTemplate.cs" />
+    <Compile Include="Character\CharacterTemplateEquipmentItem.cs" />
+    <Compile Include="Character\CharacterTemplateID.cs" />
+    <Compile Include="Character\CharacterTemplateInventoryItem.cs" />
+    <Compile Include="Character\CharacterTemplateManager.cs" />
+    <Compile Include="Item\ItemChance.cs" />
+    <Compile Include="Item\ItemID.cs" />
+    <Compile Include="Item\ItemIDCreator.cs" />
+    <Compile Include="Item\ItemTemplate.cs" />
+    <Compile Include="Item\ItemTemplateID.cs" />
+    <Compile Include="Item\ItemTemplateManager.cs" />
+    <Compile Include="Item\ItemValues.cs" />
+    <Compile Include="MapSpawn\MapSpawnRect.cs" />
+    <Compile Include="MapSpawn\MapSpawnValues.cs" />
+    <Compile Include="MapSpawn\MapSpawnValuesID.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceAttackableQuery.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceAttackableQueryValues.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceHostileQuery.cs" />
@@ -141,6 +134,7 @@
     <ProjectReference Include="..\DemoGame\DemoGame.csproj">
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
       <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>

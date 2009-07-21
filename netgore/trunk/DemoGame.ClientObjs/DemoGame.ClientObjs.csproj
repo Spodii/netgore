@@ -95,6 +95,7 @@
     <ProjectReference Include="..\DemoGame\DemoGame.csproj">
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
+      <Private>False</Private>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
       <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
