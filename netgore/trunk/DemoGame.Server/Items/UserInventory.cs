@@ -1,5 +1,3 @@
- // FUTURE: There may be a bug in picking up items, from threading conflict, that will allow two people to pick up the same item
-
 namespace DemoGame.Server
 {
     /// <summary>
