@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using System.Xml;
 using DemoGame.Client;
 using DemoGame.Server;
+using DemoGame.Server.Queries;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -15,9 +16,7 @@ using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 using Color=System.Drawing.Color;
-using Map=DemoGame.Client.Map;
 using Point=System.Drawing.Point;
-using World=DemoGame.Client.World;
 
 // LATER: Grid-snapping for batch movement
 // LATER: When walking down slope, don't count it as falling
@@ -52,11 +51,6 @@ namespace DemoGame.MapEditor
         /// Key to move the camera up
         /// </summary>
         const Keys _cameraUp = Keys.W;
-
-        // TODO: Replace with EditorColors
-        static readonly Color _colorChanged = Color.Lime;
-        static readonly Color _colorError = Color.Red;
-        static readonly Color _colorNormal = SystemColors.Window;
 
         /// <summary>
         /// Color of the Grh preview when placing new Grhs
@@ -130,6 +124,8 @@ namespace DemoGame.MapEditor
         /// World position of the cursor
         /// </summary>
         Vector2 _cursorPos = Vector2.Zero;
+
+        DBController _dbController;
 
         /// <summary>
         /// Grh display of the _editGrhData
@@ -209,6 +205,11 @@ namespace DemoGame.MapEditor
         {
             get { return _cursorPos; }
             set { _cursorPos = value; }
+        }
+
+        DBController DBController
+        {
+            get { return _dbController; }
         }
 
         public EntityCursor EntityCursor
@@ -450,11 +451,6 @@ namespace DemoGame.MapEditor
             Map.SetDimensions(new Vector2(30 * 32, 20 * 32));
             Map.Save(index, ContentPaths.Dev);
             SetMap(newMapPath);
-        }
-
-        void Map_OnSave(MapBase map)
-        {
-            // TODO: ...
         }
 
         void cmdSave_Click(object sender, EventArgs e)
@@ -787,10 +783,6 @@ namespace DemoGame.MapEditor
             }
         }
 
-        DBController DBController { get { return _dbController; } }
-
-        DBController _dbController;
-
         void LoadEditor()
         {
             // Load the database connection
@@ -824,7 +816,9 @@ namespace DemoGame.MapEditor
             // Set the wall types
             cmbWallType.Items.Clear();
             foreach (CollisionType item in Enum.GetValues(typeof(CollisionType)))
+            {
                 cmbWallType.Items.Add(item);
+            }
             cmbWallType.SelectedItem = CollisionType.Full;
 
             // Hook the toolbar visuals
@@ -919,6 +913,16 @@ namespace DemoGame.MapEditor
                 pgEntity.SelectedObject = lstEntities.SelectedItem;
         }
 
+        void lstSelectedWalls_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            WallEntityBase selected = lstSelectedWalls.SelectedItem as WallEntityBase;
+            if (selected == null)
+                return;
+
+            if (pgWall.SelectedObject != selected)
+                pgWall.SelectedObject = selected;
+        }
+
         void lstSelectedWalls_SelectedValueChanged(object sender, EventArgs e)
         {
             if (Map == null)
@@ -929,6 +933,11 @@ namespace DemoGame.MapEditor
             {
                 WallCursor.SelectedWalls.Add(lbw);
             }
+        }
+
+        void Map_OnSave(MapBase map)
+        {
+            DBController.GetQuery<UpdateMapQuery>().Execute(map);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -1259,12 +1268,12 @@ namespace DemoGame.MapEditor
             if (uint.TryParse(txtMapHeight.Text, out o))
             {
                 if (o == Map.Height)
-                    txtMapHeight.BackColor = _colorNormal;
+                    txtMapHeight.BackColor = EditorColors.Normal;
                 else
-                    txtMapHeight.BackColor = _colorChanged;
+                    txtMapHeight.BackColor = EditorColors.Changed;
             }
             else
-                txtMapHeight.BackColor = _colorError;
+                txtMapHeight.BackColor = EditorColors.Error;
         }
 
         void txtMapWidth_TextChanged(object sender, EventArgs e)
@@ -1273,12 +1282,12 @@ namespace DemoGame.MapEditor
             if (uint.TryParse(txtMapWidth.Text, out o))
             {
                 if (o == Map.Width)
-                    txtMapWidth.BackColor = _colorNormal;
+                    txtMapWidth.BackColor = EditorColors.Normal;
                 else
-                    txtMapWidth.BackColor = _colorChanged;
+                    txtMapWidth.BackColor = EditorColors.Changed;
             }
             else
-                txtMapWidth.BackColor = _colorError;
+                txtMapWidth.BackColor = EditorColors.Error;
         }
 
         /// <summary>
@@ -1364,15 +1373,5 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
-
-        private void lstSelectedWalls_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            WallEntityBase selected = lstSelectedWalls.SelectedItem as WallEntityBase;
-            if (selected == null)
-                return;
-
-            if (pgWall.SelectedObject != selected)
-                pgWall.SelectedObject = selected;
-        }
     }
 }
