@@ -54,7 +54,7 @@ namespace DemoGame.Server
         /// </summary>
         public DBConnectionSettings()
         {
-            var dic = XmlInfoReader.ReadFile("Settings.xml")[0];
+            var dic = XmlInfoReader.ReadFile("DbSettings.xml")[0];
             _sqlUser = dic["MySql.User"];
             _sqlHost = dic["MySql.Host"];
             _sqlDatabase = dic["MySql.Database"];

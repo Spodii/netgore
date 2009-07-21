@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml;
 using DemoGame.Client;
+using DemoGame.Server;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -182,11 +183,6 @@ namespace DemoGame.MapEditor
         /// Currently selected transformation box
         /// </summary>
         TransBox _selTransBox = null;
-
-        /// <summary>
-        /// Wall currently being edited
-        /// </summary>
-        WallEntityBase _wallToEdit = null;
 
         public AddGrhCursor AddGrhCursor
         {
@@ -791,17 +787,18 @@ namespace DemoGame.MapEditor
             }
         }
 
+        DBController DBController { get { return _dbController; } }
+
+        DBController _dbController;
+
         void LoadEditor()
         {
-            // TODO: Load the database connection
-            /*
+            // Load the database connection
             DBConnectionSettings settings = new DBConnectionSettings();
             _dbController = new DBController(settings.SqlConnectionString());
-            Server.ItemEntity.Initialize(DBController);
             AllianceManager.Initialize(DBController);
             ItemTemplateManager.Initialize(DBController);
             CharacterTemplateManager.Initialize(DBController);
-            */
 
             // Create the engine objects 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
