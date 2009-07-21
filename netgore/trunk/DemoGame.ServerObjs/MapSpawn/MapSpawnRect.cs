@@ -16,6 +16,19 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        static string GetString(ushort? value)
+        {
+            const string nullStr = "?";
+            if (!value.HasValue)
+                return nullStr;
+            return value.Value.ToString();
+        }
+
+        public override string ToString()
+        {
+            return string.Format("({0},{1})x({2},{3})", GetString(X), GetString(Y), GetString(Width), GetString(Height));
+        }
+
         /// <summary>
         /// The X co-ordinate of the rectangle. If null, the rectangle will be located at the left side of the Map.
         /// </summary>
