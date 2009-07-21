@@ -62,6 +62,7 @@
     <Compile Include="Connections\PooledDbConnection.cs" />
     <Compile Include="DbParameterValues.cs" />
     <Compile Include="IDataReaderExtensions.cs" />
+    <Compile Include="IDCreatorBase.cs" />
     <Compile Include="Query\DbQueryBase.cs" />
     <Compile Include="Query\DbQueryNonReader.cs" />
     <Compile Include="Query\DbQueryReader.cs" />

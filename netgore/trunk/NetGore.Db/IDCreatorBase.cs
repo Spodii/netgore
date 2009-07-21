@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
-using NetGore.Db;
 
-namespace DemoGame.Server
+namespace NetGore.Db
 {
     /// <summary>
     /// A thread-safe object that is used to get and track free IDs. It makes use of the database
