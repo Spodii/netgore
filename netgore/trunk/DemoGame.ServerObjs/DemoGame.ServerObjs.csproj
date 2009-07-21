@@ -8,8 +8,8 @@
     <ProjectGuid>{20E83735-4A5F-426C-9759-F9A1AD51B00E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>DemoGame.Db</RootNamespace>
-    <AssemblyName>DemoGame.Db</AssemblyName>
+    <RootNamespace>DemoGame.Server</RootNamespace>
+    <AssemblyName>DemoGame.ServerObjs</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -59,6 +59,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alliance\Alliance.cs" />
@@ -81,6 +82,9 @@
     <Compile Include="MapSpawn\MapSpawnRect.cs" />
     <Compile Include="MapSpawn\MapSpawnValues.cs" />
     <Compile Include="MapSpawn\MapSpawnValuesID.cs" />
+    <Compile Include="Queries\Map\InsertMapQuery.cs" />
+    <Compile Include="Queries\Map\MapQueryHelper.cs" />
+    <Compile Include="Queries\Map\UpdateMapQuery.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceAttackableQuery.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceAttackableQueryValues.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceHostileQuery.cs" />
@@ -168,6 +172,9 @@
     <None Include="DbSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Map\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
