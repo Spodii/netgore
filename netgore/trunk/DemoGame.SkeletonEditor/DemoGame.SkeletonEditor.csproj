@@ -110,6 +110,10 @@
       <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
       <Name>DemoGame</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.EditorTools\NetGore.EditorTools.csproj">
+      <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
+      <Name>NetGore.EditorTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics.WinForms\NetGore.Graphics.WinForms.csproj">
       <Project>{B2AC0C73-29FE-4184-97E7-929A98769248}</Project>
       <Name>NetGore.Graphics.WinForms</Name>

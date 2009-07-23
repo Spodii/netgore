@@ -21,7 +21,7 @@ namespace DemoGame.Server.Queries
 
         protected override void SetParameters(DbParameterValues p, ItemID itemID)
         {
-            p["@itemID"] = itemID;
+            p["@itemID"] = (int)itemID;
         }
     }
 }

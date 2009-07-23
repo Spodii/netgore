@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
+using NetGore.EditorTools;
 
 namespace DemoGame.MapEditor
 {
@@ -53,6 +54,54 @@ namespace DemoGame.MapEditor
             _dbController = dbController;
 
             ReloadSpawns();
+        }
+
+        public void DeleteSelectedItem()
+        {
+            if (SelectedItem == null)
+                return;
+
+            DeleteItem(SelectedItem);
+        }
+
+        public void AddNewItem()
+        {
+            if (_map == null)
+            {
+                MessageBox.Show("The map must be set before a new spawn can be created!");
+                return;
+            }
+
+            var newSpawn = new MapSpawnValues(_dbController, _map.Index, new CharacterTemplateID(1));
+            var newItem = new NPCSpawnsListBoxItem(newSpawn);
+
+            this.AddItemAndReselect(newItem);
+
+            SelectedItem = newItem;
+        }
+
+        public void DeleteItem(object item)
+        {
+            if (item == null)
+                return;
+
+            NPCSpawnsListBoxItem listBoxItem = SelectedItem as NPCSpawnsListBoxItem;
+            if (listBoxItem == null)
+                return;
+
+            var spawnItem = listBoxItem.Value;
+            if (spawnItem == null)
+                return;
+
+            if (!Items.Contains(listBoxItem))
+            {
+                MessageBox.Show("Failed to find item `{0}` in the ListBox.");
+                return;
+            }
+
+            this.RemoveItemAndReselect(listBoxItem);
+
+            spawnItem.Delete();
         }
 
         class NPCSpawnsListBoxItem

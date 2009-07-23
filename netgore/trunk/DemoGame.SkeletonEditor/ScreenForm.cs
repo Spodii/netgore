@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.EditorTools;
 using NetGore.Graphics;
 using Color=System.Drawing.Color;
 
@@ -274,7 +275,7 @@ namespace DemoGame.SkeletonEditor
                 lstBodies.Items[i] = lstBodies.Items[i + 1];
                 SkeletonBody.BodyItems[i] = SkeletonBody.BodyItems[i + 1];
             }
-            lstBodies.Items.RemoveAt(lstBodies.Items.Count - 1);
+            lstBodies.RemoveItemAtAndReselect(lstBodies.Items.Count - 1);
             Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length - 1);
         }
 
@@ -1023,7 +1024,7 @@ namespace DemoGame.SkeletonEditor
             for (int i = 0; i < SkeletonBody.BodyItems.Length; i++)
             {
                 SkeletonBodyItem item = SkeletonBody.BodyItems[i];
-                lstBodies.Items.Add(new ListItem<SkeletonBodyItem>(item, GetDSIString(item)));
+                lstBodies.AddItemAndReselect(new ListItem<SkeletonBodyItem>(item, GetDSIString(item)));
             }
             UpdateAnimationNodeCBs();
         }

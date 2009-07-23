@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Reflection;
 using DemoGame.Server.Queries;
+using log4net;
 using NetGore;
 
 namespace DemoGame.Server
@@ -12,7 +14,9 @@ namespace DemoGame.Server
     /// </summary>
     public class MapSpawnValues
     {
-        readonly DBController _dbController;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        DBController _dbController;
         readonly MapSpawnValuesID _id;
 
         CharacterTemplateID _characterTemplateID;
@@ -106,17 +110,21 @@ namespace DemoGame.Server
             }
         }
 
+        static MapSpawnValuesID GetFreeID(DBController dbController)
+        {
+            return new MapSpawnValuesID(dbController.GetQuery<MapSpawnValuesIDCreator>().GetNext());
+        }
+
         /// <summary>
         /// MapSpawnValues constructor.
         /// </summary>
         /// <param name="dbController">The DBController used to synchronize changes to the values.</param>
-        /// <param name="id">The unique ID of this MapSpawnValues.</param>
         /// <param name="mapIndex">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
-        public MapSpawnValues(DBController dbController, MapSpawnValuesID id, MapIndex mapIndex,
-                              CharacterTemplateID characterTemplateID)
-            : this(dbController, id, mapIndex, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
+        public MapSpawnValues(DBController dbController, MapIndex mapIndex, CharacterTemplateID characterTemplateID)
+            : this(dbController, GetFreeID(dbController), mapIndex, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
         {
+            DBController.GetQuery<InsertMapSpawnQuery>().Execute(this);
         }
 
         /// <summary>
@@ -147,6 +155,31 @@ namespace DemoGame.Server
             _characterTemplateID = characterTemplateID;
             _spawnAmount = spawnAmount;
             _spawnArea = spawnRect;
+        }
+
+        /// <summary>
+        /// Deletes the MapSpawnValues from the database. After this is called, this MapSpawnValues must be treated
+        /// as disposed and not be used at all!
+        /// </summary>
+        public void Delete()
+        {
+            if (DBController == null)
+            {
+                const string errmsg = "Called Delete() on `{0}` when the DBController was already null. Likely already deleted.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                return;
+            }
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Deleting MapSpawnValues `{0}`.", this);
+
+            var id = ID;
+            DBController.GetQuery<DeleteMapSpawnQuery>().Execute(id);
+            DBController.GetQuery<MapSpawnValuesIDCreator>().FreeID(id);
+
+            _dbController = null;
         }
 
         /// <summary>
@@ -225,7 +258,25 @@ namespace DemoGame.Server
         /// </summary>
         void UpdateDB()
         {
-            _dbController.GetQuery<UpdateMapSpawnQuery>().Execute(this);
+            if (DBController == null)
+            {
+                const string errmsg = "Tried to call UpdateDB() on `{0}` when the DBController was null." +
+                    " Likely means Delete() was called.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
+                Debug.Fail(string.Format(errmsg, this));
+                return;
+            }
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Updating MapSpawnValues `{0}`.", this);
+
+            DBController.GetQuery<UpdateMapSpawnQuery>().Execute(this);
+        }
+
+        public override string ToString()
+        {
+            return string.Format("MapSpawnValues [ID: {0} Map: {1}]", ID, MapIndex);
         }
     }
 }

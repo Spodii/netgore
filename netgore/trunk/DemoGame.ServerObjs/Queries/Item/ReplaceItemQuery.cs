@@ -72,7 +72,7 @@ namespace DemoGame.Server.Queries
 
         protected override void SetParameters(DbParameterValues p, ItemValues item)
         {
-            p["@id"] = item.ID;
+            p["@id"] = (int)item.ID;
             p["@name"] = item.Name;
             p["@description"] = item.Description;
             p["@type"] = item.Type;

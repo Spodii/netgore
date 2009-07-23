@@ -106,7 +106,7 @@
     </Compile>
     <Compile Include="ListboxWall.cs" />
     <Compile Include="MapGrhWalls.cs" />
-    <Compile Include="NPCSpawnsListBox.cs">
+    <Compile Include="ListBoxes\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="ScreenForm.cs">
