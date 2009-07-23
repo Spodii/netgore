@@ -230,13 +230,13 @@ namespace NetGore.EditorTools
                 // Remove the extra items
                 foreach (TItem item in toRemove)
                 {
-                    Items.Remove(item);
+                    this.RemoveItemAndReselect(item);
                 }
 
                 // Add the new items
                 foreach (TItem item in toAdd)
                 {
-                    Items.Add(item);
+                    this.AddItemAndReselect(item);
                 }
 
                 // Refresh the items

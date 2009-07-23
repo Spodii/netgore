@@ -69,6 +69,7 @@ namespace DemoGame.MapEditor
             this.btnDeleteBGItem = new System.Windows.Forms.Button();
             this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
             this.tabPageNPCs = new System.Windows.Forms.TabPage();
+            this.pgNPCSpawn = new System.Windows.Forms.PropertyGrid();
             this.btnAddSpawn = new System.Windows.Forms.Button();
             this.btnDeleteSpawn = new System.Windows.Forms.Button();
             this.lstNPCSpawns = new DemoGame.MapEditor.NPCSpawnsListBox();
@@ -96,7 +97,6 @@ namespace DemoGame.MapEditor
             this.picToolWalls = new System.Windows.Forms.PictureBox();
             this.picToolSelect = new System.Windows.Forms.PictureBox();
             this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
-            this.pgNPCSpawn = new System.Windows.Forms.PropertyGrid();
             this.tcMenu.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.MapSizeGroupBox.SuspendLayout();
@@ -416,16 +416,17 @@ namespace DemoGame.MapEditor
             // 
             // btnNewBGSprite
             // 
-            this.btnNewBGSprite.Location = new System.Drawing.Point(224, 143);
+            this.btnNewBGSprite.Location = new System.Drawing.Point(258, 143);
             this.btnNewBGSprite.Name = "btnNewBGSprite";
             this.btnNewBGSprite.Size = new System.Drawing.Size(74, 24);
             this.btnNewBGSprite.TabIndex = 4;
             this.btnNewBGSprite.Text = "New Sprite";
             this.btnNewBGSprite.UseVisualStyleBackColor = true;
+            this.btnNewBGSprite.Click += new System.EventHandler(this.btnNewBGSprite_Click);
             // 
             // btnNewBGLayer
             // 
-            this.btnNewBGLayer.Location = new System.Drawing.Point(144, 143);
+            this.btnNewBGLayer.Location = new System.Drawing.Point(178, 143);
             this.btnNewBGLayer.Name = "btnNewBGLayer";
             this.btnNewBGLayer.Size = new System.Drawing.Size(74, 24);
             this.btnNewBGLayer.TabIndex = 3;
@@ -435,12 +436,13 @@ namespace DemoGame.MapEditor
             // 
             // btnDeleteBGItem
             // 
-            this.btnDeleteBGItem.Location = new System.Drawing.Point(64, 143);
+            this.btnDeleteBGItem.Location = new System.Drawing.Point(98, 143);
             this.btnDeleteBGItem.Name = "btnDeleteBGItem";
             this.btnDeleteBGItem.Size = new System.Drawing.Size(74, 24);
             this.btnDeleteBGItem.TabIndex = 2;
             this.btnDeleteBGItem.Text = "Delete";
             this.btnDeleteBGItem.UseVisualStyleBackColor = true;
+            this.btnDeleteBGItem.Click += new System.EventHandler(this.btnDeleteBGItem_Click);
             // 
             // lstBGItems
             // 
@@ -467,6 +469,14 @@ namespace DemoGame.MapEditor
             this.tabPageNPCs.ToolTipText = "Mob and NPC spawning and settings";
             this.tabPageNPCs.UseVisualStyleBackColor = true;
             // 
+            // pgNPCSpawn
+            // 
+            this.pgNPCSpawn.Location = new System.Drawing.Point(3, 173);
+            this.pgNPCSpawn.Name = "pgNPCSpawn";
+            this.pgNPCSpawn.Size = new System.Drawing.Size(329, 403);
+            this.pgNPCSpawn.TabIndex = 6;
+            this.pgNPCSpawn.ToolbarVisible = false;
+            // 
             // btnAddSpawn
             // 
             this.btnAddSpawn.Location = new System.Drawing.Point(258, 143);
@@ -475,6 +485,7 @@ namespace DemoGame.MapEditor
             this.btnAddSpawn.TabIndex = 4;
             this.btnAddSpawn.Text = "Add";
             this.btnAddSpawn.UseVisualStyleBackColor = true;
+            this.btnAddSpawn.Click += new System.EventHandler(this.btnAddSpawn_Click);
             // 
             // btnDeleteSpawn
             // 
@@ -484,15 +495,16 @@ namespace DemoGame.MapEditor
             this.btnDeleteSpawn.TabIndex = 3;
             this.btnDeleteSpawn.Text = "Delete";
             this.btnDeleteSpawn.UseVisualStyleBackColor = true;
+            this.btnDeleteSpawn.Click += new System.EventHandler(this.btnDeleteSpawn_Click);
             // 
             // lstNPCSpawns
             // 
             this.lstNPCSpawns.FormattingEnabled = true;
             this.lstNPCSpawns.Location = new System.Drawing.Point(3, 3);
             this.lstNPCSpawns.Name = "lstNPCSpawns";
+            this.lstNPCSpawns.PropertyGrid = this.pgNPCSpawn;
             this.lstNPCSpawns.Size = new System.Drawing.Size(329, 134);
             this.lstNPCSpawns.TabIndex = 1;
-            this.lstNPCSpawns.PropertyGrid = pgNPCSpawn;
             // 
             // tabPageSettings
             // 
@@ -752,14 +764,6 @@ namespace DemoGame.MapEditor
             this.GameScreen.MouseMove += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseMove);
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
             this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
-            // 
-            // pgNPCSpawn
-            // 
-            this.pgNPCSpawn.Location = new System.Drawing.Point(3, 173);
-            this.pgNPCSpawn.Name = "pgNPCSpawn";
-            this.pgNPCSpawn.Size = new System.Drawing.Size(329, 403);
-            this.pgNPCSpawn.TabIndex = 6;
-            this.pgNPCSpawn.ToolbarVisible = false;
             // 
             // ScreenForm
             // 

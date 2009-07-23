@@ -84,7 +84,7 @@ namespace NetGore.EditorTools
             GrhDatasList.Items.Clear();
             foreach (GrhData grhData in selectedItem.GrhDatas)
             {
-                GrhDatasList.Items.Add(grhData.Category + "." + grhData.Title);
+                GrhDatasList.AddItemAndReselect(grhData.Category + "." + grhData.Title);
             }
         }
 
@@ -136,7 +136,7 @@ namespace NetGore.EditorTools
             foreach (var item in _missingTextures)
             {
                 TextureListItem listItem = new TextureListItem(item.Key, item.Value);
-                TextureList.Items.Add(listItem);
+                TextureList.AddItemAndReselect(listItem);
             }
         }
 
@@ -169,7 +169,7 @@ namespace NetGore.EditorTools
                 return;
 
             // Remove the entry
-            TextureList.Items.Remove(selectedItem);
+            TextureList.RemoveItemAndReselect(selectedItem);
 
             // Auto-select the first item in the list
             if (TextureList.Items.Count > 0)

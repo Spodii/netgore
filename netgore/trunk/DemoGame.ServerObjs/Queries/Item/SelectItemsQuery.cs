@@ -47,8 +47,8 @@ namespace DemoGame.Server.Queries
 
         protected override void SetParameters(DbParameterValues p, SelectItemsQueryValues item)
         {
-            p["@low"] = item.Low;
-            p["@high"] = item.High;
+            p["@low"] = (int)item.Low;
+            p["@high"] = (int)item.High;
         }
     }
 

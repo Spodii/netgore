@@ -39,7 +39,7 @@ namespace DemoGame.Server.Queries
 
         protected override void SetParameters(DbParameterValues p, AllianceID id)
         {
-            p["@id"] = id;
+            p["@id"] = (int)id;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace DemoGame.Server.Queries
 
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@itemID"] = item.ItemID;
+            p["@itemID"] = (int)item.ItemID;
             p["@slot"] = item.Slot;
             p["@characterID"] = item.CharacterID;
         }
@@ -38,9 +38,9 @@ namespace DemoGame.Server.Queries
             public readonly CharacterID CharacterID;
 
             /// <summary>
-            /// The item's ID for the equipment slot, or null if the slot is to be set to empty.
+            /// The item's ID for the equipment slot.
             /// </summary>
-            public readonly ItemID? ItemID;
+            public readonly ItemID ItemID;
 
             /// <summary>
             /// The EquipmentSlot to be updated.
@@ -51,10 +51,9 @@ namespace DemoGame.Server.Queries
             /// InsertUserEquippedQuery constructor.
             /// </summary>
             /// <param name="characterID">The ID of the Character that this equipment belongs to.</param>
-            /// <param name="itemID">The item's ID for the equipment slot, or null if the slot is to be set
-            /// to empty.</param>
+            /// <param name="itemID">The item's ID for the equipment slot.</param>
             /// <param name="slot">The EquipmentSlot to be updated.</param>
-            public QueryArgs(CharacterID characterID, ItemID? itemID, EquipmentSlot slot)
+            public QueryArgs(CharacterID characterID, ItemID itemID, EquipmentSlot slot)
             {
                 CharacterID = characterID;
                 ItemID = itemID;

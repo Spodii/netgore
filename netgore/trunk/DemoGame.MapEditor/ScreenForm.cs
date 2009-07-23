@@ -1343,7 +1343,7 @@ namespace DemoGame.MapEditor
             lstSelectedWalls.Items.Clear();
             foreach (WallEntityBase wall in selectedWalls)
             {
-                lstSelectedWalls.Items.Add(new ListboxWall(wall));
+                lstSelectedWalls.AddItemAndReselect(new ListboxWall(wall));
             }
 
             tcMenu.SelectTab(tabPageWalls);
@@ -1372,5 +1372,26 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
+
+        private void btnDeleteSpawn_Click(object sender, EventArgs e)
+        {
+            lstNPCSpawns.DeleteSelectedItem();
+        }
+
+        private void btnAddSpawn_Click(object sender, EventArgs e)
+        {
+            lstNPCSpawns.AddNewItem();
+        }
+
+        private void btnDeleteBGItem_Click(object sender, EventArgs e)
+        {
+            // TODO: Add background item deletion support
+            throw new NotImplementedException();
+        }
+
+        private void btnNewBGSprite_Click(object sender, EventArgs e)
+        {
+            // NOTE: Have to add background sprite support...
+        }
     }
 }

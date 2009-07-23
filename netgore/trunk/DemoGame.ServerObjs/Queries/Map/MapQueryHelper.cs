@@ -18,7 +18,7 @@ namespace DemoGame.Server.Queries
 
         public static void SetParameters(DbParameterValues p, MapBase map)
         {
-            p["@id"] = map.Index;
+            p["@id"] = (int)map.Index;
             p["@name"] = map.Name;
         }
     }

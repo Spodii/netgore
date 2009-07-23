@@ -4,6 +4,10 @@ using System.Data;
 using System.Diagnostics;
 using System.Threading;
 
+// NOTE: This isn't going to be safe if there is more than one IDCreatorBase instance for a table.
+
+// TODO: Redo this so it supports generics instead of considering everything an int. Would be nice if it was more "safe", too.
+
 namespace NetGore.Db
 {
     /// <summary>
@@ -17,7 +21,7 @@ namespace NetGore.Db
 
         readonly Stack<int> _freeIndices;
         readonly SelectIDQuery _selectIDQuery;
-        readonly object _stackLock = new object();
+        readonly object _stackLock;
         bool _isRefilling;
 
         /// <summary>
@@ -43,6 +47,7 @@ namespace NetGore.Db
             if (string.IsNullOrEmpty(column))
                 throw new ArgumentNullException("column");
 
+            _stackLock = new object();
             _freeIndices = new Stack<int>(stackSize);
             _criticalSize = criticalSize;
             _selectIDQuery = new SelectIDQuery(connectionPool, table, column);
@@ -200,6 +205,8 @@ namespace NetGore.Db
         {
             // Get the free values from the database
             int amount = _criticalSize - _freeIndices.Count;
+            if (amount < 1)
+                amount = 1;
             var freeValues = GetFreeFromDB(amount);
 
             // Reverse the values so we end up using the lowest values first

@@ -191,7 +191,7 @@ namespace DemoGame.MapEditor
                 }
 
                 if (gd.TextureName == texture)
-                    lstReferenced.Items.Add(gd);
+                    lstReferenced.AddItemAndReselect(gd);
             }
         }
 
@@ -221,7 +221,7 @@ namespace DemoGame.MapEditor
 
                 // If the texture isn't already listed, add it
                 if (!lstTextures.Items.Contains(gd.TextureName))
-                    lstTextures.Items.Add(gd.TextureName);
+                    lstTextures.AddItemAndReselect(gd.TextureName);
             }
         }
     }

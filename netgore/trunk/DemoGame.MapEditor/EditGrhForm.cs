@@ -150,7 +150,7 @@ namespace DemoGame.MapEditor
         void btnAdd_Click(object sender, EventArgs e)
         {
             WallEntity wall = new WallEntity(Vector2.Zero, new Vector2(16));
-            lstWalls.Items.Add(wall);
+            lstWalls.AddItemAndReselect(wall);
             lstWalls.SelectedItem = wall;
         }
 
@@ -164,7 +164,7 @@ namespace DemoGame.MapEditor
             WallEntityBase wall = lstWalls.SelectedItem as WallEntityBase;
             if (wall == null)
                 return;
-            lstWalls.Items.Remove(wall);
+            lstWalls.RemoveItemAndReselect(wall);
         }
 
         void chkAutoSize_CheckedChanged(object sender, EventArgs e)
@@ -286,7 +286,7 @@ namespace DemoGame.MapEditor
             {
                 foreach (WallEntityBase wall in walls)
                 {
-                    lstWalls.Items.Add(wall);
+                    lstWalls.AddItemAndReselect(wall);
                 }
             }
         }
