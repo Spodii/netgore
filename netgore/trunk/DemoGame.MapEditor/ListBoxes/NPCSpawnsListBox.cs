@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
@@ -11,6 +12,7 @@ namespace DemoGame.MapEditor
         DBController _dbController;
         MapBase _map;
 
+        [Description("The PropertyGrid to display the property values for the selected item in this NPCSpawnsListBox.")]
         /// <summary>
         /// Gets or sets the PropertyGrid to display the property values for the selected item in this NPCSpawnsListBox.
         /// </summary>

@@ -24,6 +24,23 @@ namespace DemoGame.Server
 
         bool _disposed;
 
+        static readonly List<DBController> _instances = new List<DBController>();
+
+        /// <summary>
+        /// Gets an instance of the DbController. A DbController must have already been constructed for this to work.
+        /// </summary>
+        /// <returns>An instance of the DbController.</returns>
+        public static DBController GetInstance()
+        {
+            lock (_instances)
+            {
+                if (_instances.Count == 0)
+                    throw new MemberAccessException("Constructor on the DbController has not yet been called!");
+
+                return _instances[_instances.Count - 1];
+            }
+        }
+
         public DBController(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
@@ -76,6 +93,11 @@ namespace DemoGame.Server
 
             if (log.IsInfoEnabled)
                 log.Info("DBController successfully initialized all queries.");
+
+            lock (_instances)
+            {
+                _instances.Add(this);
+            }
         }
 
         public T GetQuery<T>()
@@ -115,6 +137,9 @@ namespace DemoGame.Server
                 return;
 
             _disposed = true;
+
+            lock (_instances)
+                _instances.Remove(this);
 
             // Dispose of all the queries, where possible
             foreach (IDisposable disposableQuery in _queryObjects.OfType<IDisposable>())
