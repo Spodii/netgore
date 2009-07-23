@@ -37,7 +37,7 @@ namespace DemoGame.Server.Queries
 
         public static void SetParameters(DbParameterValues p, MapSpawnValues spawnValues)
         {
-            p["@id"] = spawnValues.ID;
+            p["@id"] = (int)spawnValues.ID;
             p["@map_id"] = spawnValues.MapIndex;
             p["@character_id"] = spawnValues.CharacterTemplateID;
             p["@amount"] = spawnValues.SpawnAmount;
