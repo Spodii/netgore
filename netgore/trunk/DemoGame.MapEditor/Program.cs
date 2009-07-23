@@ -1,5 +1,7 @@
 using System;
+using System.ComponentModel;
 using System.Windows.Forms;
+using DemoGame.Server;
 
 namespace DemoGame.MapEditor
 {

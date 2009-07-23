@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.Graphics;
@@ -14,11 +15,13 @@ namespace NetGore.EditorTools
         IMap _map;
         Timer _updateTimer;
 
+        [Browsable(false)]
         /// <summary>
         /// Gets or sets the Camera2D used to view the Map.
         /// </summary>
         public Camera2D Camera { get; set; }
 
+        [Browsable(false)]
         /// <summary>
         /// Gets or sets the Map containing the Entities being handled.
         /// </summary>

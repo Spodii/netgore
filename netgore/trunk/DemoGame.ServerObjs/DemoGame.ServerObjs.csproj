@@ -69,6 +69,7 @@
     <Compile Include="Character\CharacterTemplate.cs" />
     <Compile Include="Character\CharacterTemplateEquipmentItem.cs" />
     <Compile Include="Character\CharacterTemplateID.cs" />
+    <Compile Include="Character\CharacterTemplateIDConverter.cs" />
     <Compile Include="Character\CharacterTemplateInventoryItem.cs" />
     <Compile Include="Character\CharacterTemplateManager.cs" />
     <Compile Include="DBConnectionSettings.cs" />
