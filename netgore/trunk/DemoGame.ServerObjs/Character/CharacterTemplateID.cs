@@ -14,7 +14,7 @@ namespace DemoGame.Server
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]
-    [TypeConverter(typeof(Int32Converter))]
+    [TypeConverter(typeof(CharacterTemplateIDConverter))]
     public struct CharacterTemplateID : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
