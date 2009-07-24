@@ -84,10 +84,17 @@ namespace DemoGame.Server
         {
             if (value is string)
             {
-                CharacterTemplateID id = CharacterTemplateID.Parse((string)value);
-                if (!id.TemplateExists())
-                    throw new Exception(string.Format("No CharacterTemplate with ID `{0}`.", id));
-                return id;
+                try
+                {
+                    CharacterTemplateID id = CharacterTemplateID.Parse((string)value);
+                    if (!id.TemplateExists())
+                        throw new InvalidCastException(string.Format("No CharacterTemplate with ID `{0}`.", id));
+                    return id;
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidCastException(ex.ToString());
+                }
             }
 
             return base.ConvertFrom(context, culture, value);
