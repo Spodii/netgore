@@ -8,6 +8,9 @@ using NetGore.EditorTools;
 
 namespace DemoGame.MapEditor
 {
+    /// <summary>
+    /// A ListBox specifically for the MapSpawnValues on a Map.
+    /// </summary>
     public class NPCSpawnsListBox : ListBox
     {
         DBController _dbController;
