@@ -268,16 +268,6 @@ namespace DemoGame.MapEditor
                 _map.Load(ContentPaths.Dev, true);
                 _map.OnSave += Map_OnSave;
 
-                // Notify listeners
-                if (OnChangeMap != null)
-                    OnChangeMap(oldMap, _map);
-
-                // Update everything that references the map
-                // TODO: Move all of this shit out of here
-                _camera.Map = Map;
-
-                lstNPCSpawns.SetMap(DBController, _map);
-
                 // Remove all of the walls previously created from the MapGrhs
                 var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
                 var dupeWalls = Map.FindDuplicateWalls(grhWalls);
@@ -290,6 +280,10 @@ namespace DemoGame.MapEditor
                 _camera.Min = Vector2.Zero;
                 txtMapWidth.Text = Map.Width.ToString();
                 txtMapHeight.Text = Map.Height.ToString();
+
+                // Notify listeners
+                if (OnChangeMap != null)
+                    OnChangeMap(oldMap, _map);
             }
         }
 
@@ -351,6 +345,10 @@ namespace DemoGame.MapEditor
         {
             InitializeComponent();
             GameScreen.Screen = this;
+
+            // Set up some of the OnChangeMap events for objects that need to reference the Map
+            OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);
+            OnChangeMap += ((oldMap, newMap) => lstNPCSpawns.SetMap(DBController, newMap));
 
             // Set up the EntityTypes
             cmbEntityTypes.Items.Clear();
@@ -896,6 +894,9 @@ namespace DemoGame.MapEditor
             // Set up the MapExtensionBases
             CreateMapDrawExtensionBase<MapEntityBoxDrawer>(chkDrawEntities);
             CreateMapDrawExtensionBase<MapWallDrawer>(chkShowWalls);
+            var v = CreateMapDrawExtensionBase<MapSpawnDrawer>(chkDrawSpawnAreas);
+            // NOTE: Using SelectedIndexChanged for this may be a stupid idea...
+            lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawnValues = ((NPCSpawnsListBox)o).GetMapSpawnValues());
         }
 
         /// <summary>
@@ -1442,11 +1443,6 @@ namespace DemoGame.MapEditor
         private void btnNewBGSprite_Click(object sender, EventArgs e)
         {
             // NOTE: Have to add background sprite support...
-        }
-
-        private void chkDrawSpawnAreas_CheckedChanged(object sender, EventArgs e)
-        {
-
         }
     }
 }
