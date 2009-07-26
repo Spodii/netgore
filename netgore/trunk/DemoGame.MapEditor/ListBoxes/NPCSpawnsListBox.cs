@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -17,6 +18,12 @@ namespace DemoGame.MapEditor
         /// Gets or sets the PropertyGrid to display the property values for the selected item in this NPCSpawnsListBox.
         /// </summary>
         public PropertyGrid PropertyGrid { get; set; }
+
+        public IEnumerable<MapSpawnValues> GetMapSpawnValues()
+        {
+            foreach (var item in Items.OfType<NPCSpawnsListBoxItem>())
+                yield return item.Value;
+        }
 
         public NPCSpawnsListBox()
         {

@@ -107,6 +107,7 @@
     <Compile Include="ListBoxes\NPCSpawnsListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="MapSpawnDrawer.cs" />
     <Compile Include="ScreenForm.cs">
       <SubType>Form</SubType>
     </Compile>

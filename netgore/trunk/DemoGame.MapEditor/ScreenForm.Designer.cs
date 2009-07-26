@@ -776,7 +776,6 @@ namespace DemoGame.MapEditor
             this.chkDrawSpawnAreas.TabIndex = 15;
             this.chkDrawSpawnAreas.Text = "Spawn Areas";
             this.chkDrawSpawnAreas.UseVisualStyleBackColor = true;
-            this.chkDrawSpawnAreas.CheckedChanged += new System.EventHandler(this.chkDrawSpawnAreas_CheckedChanged);
             // 
             // chkDrawPersistentNPCs
             // 
