@@ -349,6 +349,7 @@ namespace DemoGame.MapEditor
             // Set up some of the OnChangeMap events for objects that need to reference the Map
             OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);
             OnChangeMap += ((oldMap, newMap) => lstNPCSpawns.SetMap(DBController, newMap));
+            OnChangeMap += ((oldMap, newMap) => lstPersistentNPCs.SetMap(DBController, newMap));
 
             // Set up the EntityTypes
             cmbEntityTypes.Items.Clear();
@@ -1437,12 +1438,13 @@ namespace DemoGame.MapEditor
         private void btnDeleteBGItem_Click(object sender, EventArgs e)
         {
             // TODO: Add background item deletion support
-            throw new NotImplementedException();
+            Debug.Fail("Not implemented...");
         }
 
         private void btnNewBGSprite_Click(object sender, EventArgs e)
         {
-            // NOTE: Have to add background sprite support...
+            // TODO: Add background sprite support...
+            Debug.Fail("Not implemented...");
         }
     }
 }

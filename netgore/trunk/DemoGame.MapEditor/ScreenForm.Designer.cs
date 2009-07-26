@@ -27,8 +27,6 @@ namespace DemoGame.MapEditor
             base.Dispose(disposing);
         }
 
-
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -57,11 +55,6 @@ namespace DemoGame.MapEditor
             this.chkSnapWallGrid = new System.Windows.Forms.CheckBox();
             this.chkSnapWallWall = new System.Windows.Forms.CheckBox();
             this.lstSelectedWalls = new System.Windows.Forms.ListBox();
-            this.tabPageEntities = new System.Windows.Forms.TabPage();
-            this.cmbEntityTypes = new System.Windows.Forms.ComboBox();
-            this.btnNewEntity = new System.Windows.Forms.Button();
-            this.pgEntity = new System.Windows.Forms.PropertyGrid();
-            this.lstEntities = new DemoGame.MapEditor.EntityListBox();
             this.tabPageBackground = new System.Windows.Forms.TabPage();
             this.pgBGItem = new System.Windows.Forms.PropertyGrid();
             this.btnNewBGSprite = new System.Windows.Forms.Button();
@@ -70,11 +63,10 @@ namespace DemoGame.MapEditor
             this.lstBGItems = new DemoGame.MapEditor.BackgroundItemListBox();
             this.tabPageNPCs = new System.Windows.Forms.TabPage();
             this.pgNPCSpawn = new System.Windows.Forms.PropertyGrid();
-            this.btnAddSpawn = new System.Windows.Forms.Button();
-            this.btnDeleteSpawn = new System.Windows.Forms.Button();
-            this.lstNPCSpawns = new DemoGame.MapEditor.NPCSpawnsListBox();
             this.tabPageSettings = new System.Windows.Forms.TabPage();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.chkDrawPersistentNPCs = new System.Windows.Forms.CheckBox();
+            this.chkDrawSpawnAreas = new System.Windows.Forms.CheckBox();
             this.chkDrawBackground = new System.Windows.Forms.CheckBox();
             this.chkDrawEntities = new System.Windows.Forms.CheckBox();
             this.chkDrawAutoWalls = new System.Windows.Forms.CheckBox();
@@ -97,14 +89,25 @@ namespace DemoGame.MapEditor
             this.picToolWalls = new System.Windows.Forms.PictureBox();
             this.picToolSelect = new System.Windows.Forms.PictureBox();
             this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
-            this.chkDrawSpawnAreas = new System.Windows.Forms.CheckBox();
-            this.chkDrawPersistentNPCs = new System.Windows.Forms.CheckBox();
+            this.lstEntities = new DemoGame.MapEditor.EntityListBox();
+            this.pgEntity = new System.Windows.Forms.PropertyGrid();
+            this.btnNewEntity = new System.Windows.Forms.Button();
+            this.cmbEntityTypes = new System.Windows.Forms.ComboBox();
+            this.tabPageEntities = new System.Windows.Forms.TabPage();
+            this.tpPersistent = new System.Windows.Forms.TabPage();
+            this.tpSpawns = new System.Windows.Forms.TabPage();
+            this.lstNPCSpawns = new DemoGame.MapEditor.NPCSpawnsListBox();
+            this.btnDeleteSpawn = new System.Windows.Forms.Button();
+            this.btnAddSpawn = new System.Windows.Forms.Button();
+            this.tcSpawns = new System.Windows.Forms.TabControl();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.lstPersistentNPCs = new DemoGame.MapEditor.PersistentNPCListBox();
             this.tcMenu.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.MapSizeGroupBox.SuspendLayout();
             this.tabPageGrhs.SuspendLayout();
             this.tabPageWalls.SuspendLayout();
-            this.tabPageEntities.SuspendLayout();
             this.tabPageBackground.SuspendLayout();
             this.tabPageNPCs.SuspendLayout();
             this.tabPageSettings.SuspendLayout();
@@ -116,6 +119,10 @@ namespace DemoGame.MapEditor
             ((System.ComponentModel.ISupportInitialize)(this.picToolWallsAdd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picToolWalls)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picToolSelect)).BeginInit();
+            this.tabPageEntities.SuspendLayout();
+            this.tpPersistent.SuspendLayout();
+            this.tpSpawns.SuspendLayout();
+            this.tcSpawns.SuspendLayout();
             this.SuspendLayout();
             // 
             // tcMenu
@@ -343,57 +350,6 @@ namespace DemoGame.MapEditor
             this.lstSelectedWalls.SelectedIndexChanged += new System.EventHandler(this.lstSelectedWalls_SelectedIndexChanged);
             this.lstSelectedWalls.SelectedValueChanged += new System.EventHandler(this.lstSelectedWalls_SelectedValueChanged);
             // 
-            // tabPageEntities
-            // 
-            this.tabPageEntities.Controls.Add(this.cmbEntityTypes);
-            this.tabPageEntities.Controls.Add(this.btnNewEntity);
-            this.tabPageEntities.Controls.Add(this.pgEntity);
-            this.tabPageEntities.Controls.Add(this.lstEntities);
-            this.tabPageEntities.Location = new System.Drawing.Point(4, 22);
-            this.tabPageEntities.Name = "tabPageEntities";
-            this.tabPageEntities.Size = new System.Drawing.Size(337, 579);
-            this.tabPageEntities.TabIndex = 7;
-            this.tabPageEntities.Text = "Entities";
-            this.tabPageEntities.UseVisualStyleBackColor = true;
-            // 
-            // cmbEntityTypes
-            // 
-            this.cmbEntityTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbEntityTypes.FormattingEnabled = true;
-            this.cmbEntityTypes.Location = new System.Drawing.Point(3, 195);
-            this.cmbEntityTypes.Name = "cmbEntityTypes";
-            this.cmbEntityTypes.Size = new System.Drawing.Size(264, 21);
-            this.cmbEntityTypes.TabIndex = 11;
-            // 
-            // btnNewEntity
-            // 
-            this.btnNewEntity.Location = new System.Drawing.Point(273, 192);
-            this.btnNewEntity.Name = "btnNewEntity";
-            this.btnNewEntity.Size = new System.Drawing.Size(59, 24);
-            this.btnNewEntity.TabIndex = 10;
-            this.btnNewEntity.Text = "New";
-            this.btnNewEntity.UseVisualStyleBackColor = true;
-            this.btnNewEntity.Click += new System.EventHandler(this.btnNewEntity_Click);
-            // 
-            // pgEntity
-            // 
-            this.pgEntity.Location = new System.Drawing.Point(3, 222);
-            this.pgEntity.Name = "pgEntity";
-            this.pgEntity.Size = new System.Drawing.Size(329, 354);
-            this.pgEntity.TabIndex = 1;
-            this.pgEntity.ToolbarVisible = false;
-            // 
-            // lstEntities
-            // 
-            this.lstEntities.Camera = null;
-            this.lstEntities.FormattingEnabled = true;
-            this.lstEntities.IMap = null;
-            this.lstEntities.Location = new System.Drawing.Point(3, 3);
-            this.lstEntities.Name = "lstEntities";
-            this.lstEntities.Size = new System.Drawing.Size(329, 186);
-            this.lstEntities.TabIndex = 0;
-            this.lstEntities.SelectedIndexChanged += new System.EventHandler(this.lstEntities_SelectedIndexChanged);
-            // 
             // tabPageBackground
             // 
             this.tabPageBackground.Controls.Add(this.pgBGItem);
@@ -459,10 +415,8 @@ namespace DemoGame.MapEditor
             // 
             // tabPageNPCs
             // 
+            this.tabPageNPCs.Controls.Add(this.tcSpawns);
             this.tabPageNPCs.Controls.Add(this.pgNPCSpawn);
-            this.tabPageNPCs.Controls.Add(this.btnAddSpawn);
-            this.tabPageNPCs.Controls.Add(this.btnDeleteSpawn);
-            this.tabPageNPCs.Controls.Add(this.lstNPCSpawns);
             this.tabPageNPCs.Location = new System.Drawing.Point(4, 22);
             this.tabPageNPCs.Name = "tabPageNPCs";
             this.tabPageNPCs.Size = new System.Drawing.Size(337, 579);
@@ -473,40 +427,11 @@ namespace DemoGame.MapEditor
             // 
             // pgNPCSpawn
             // 
-            this.pgNPCSpawn.Location = new System.Drawing.Point(3, 173);
+            this.pgNPCSpawn.Location = new System.Drawing.Point(3, 209);
             this.pgNPCSpawn.Name = "pgNPCSpawn";
-            this.pgNPCSpawn.Size = new System.Drawing.Size(329, 403);
+            this.pgNPCSpawn.Size = new System.Drawing.Size(329, 367);
             this.pgNPCSpawn.TabIndex = 6;
             this.pgNPCSpawn.ToolbarVisible = false;
-            // 
-            // btnAddSpawn
-            // 
-            this.btnAddSpawn.Location = new System.Drawing.Point(258, 143);
-            this.btnAddSpawn.Name = "btnAddSpawn";
-            this.btnAddSpawn.Size = new System.Drawing.Size(74, 24);
-            this.btnAddSpawn.TabIndex = 4;
-            this.btnAddSpawn.Text = "Add";
-            this.btnAddSpawn.UseVisualStyleBackColor = true;
-            this.btnAddSpawn.Click += new System.EventHandler(this.btnAddSpawn_Click);
-            // 
-            // btnDeleteSpawn
-            // 
-            this.btnDeleteSpawn.Location = new System.Drawing.Point(178, 143);
-            this.btnDeleteSpawn.Name = "btnDeleteSpawn";
-            this.btnDeleteSpawn.Size = new System.Drawing.Size(74, 24);
-            this.btnDeleteSpawn.TabIndex = 3;
-            this.btnDeleteSpawn.Text = "Delete";
-            this.btnDeleteSpawn.UseVisualStyleBackColor = true;
-            this.btnDeleteSpawn.Click += new System.EventHandler(this.btnDeleteSpawn_Click);
-            // 
-            // lstNPCSpawns
-            // 
-            this.lstNPCSpawns.FormattingEnabled = true;
-            this.lstNPCSpawns.Location = new System.Drawing.Point(3, 3);
-            this.lstNPCSpawns.Name = "lstNPCSpawns";
-            this.lstNPCSpawns.PropertyGrid = this.pgNPCSpawn;
-            this.lstNPCSpawns.Size = new System.Drawing.Size(329, 134);
-            this.lstNPCSpawns.TabIndex = 1;
             // 
             // tabPageSettings
             // 
@@ -536,6 +461,26 @@ namespace DemoGame.MapEditor
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Display Options";
+            // 
+            // chkDrawPersistentNPCs
+            // 
+            this.chkDrawPersistentNPCs.AutoSize = true;
+            this.chkDrawPersistentNPCs.Location = new System.Drawing.Point(120, 90);
+            this.chkDrawPersistentNPCs.Name = "chkDrawPersistentNPCs";
+            this.chkDrawPersistentNPCs.Size = new System.Drawing.Size(102, 17);
+            this.chkDrawPersistentNPCs.TabIndex = 16;
+            this.chkDrawPersistentNPCs.Text = "Persistent NPCs";
+            this.chkDrawPersistentNPCs.UseVisualStyleBackColor = true;
+            // 
+            // chkDrawSpawnAreas
+            // 
+            this.chkDrawSpawnAreas.AutoSize = true;
+            this.chkDrawSpawnAreas.Location = new System.Drawing.Point(6, 90);
+            this.chkDrawSpawnAreas.Name = "chkDrawSpawnAreas";
+            this.chkDrawSpawnAreas.Size = new System.Drawing.Size(89, 17);
+            this.chkDrawSpawnAreas.TabIndex = 15;
+            this.chkDrawSpawnAreas.Text = "Spawn Areas";
+            this.chkDrawSpawnAreas.UseVisualStyleBackColor = true;
             // 
             // chkDrawBackground
             // 
@@ -767,25 +712,146 @@ namespace DemoGame.MapEditor
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
             this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
             // 
-            // chkDrawSpawnAreas
+            // lstEntities
             // 
-            this.chkDrawSpawnAreas.AutoSize = true;
-            this.chkDrawSpawnAreas.Location = new System.Drawing.Point(6, 90);
-            this.chkDrawSpawnAreas.Name = "chkDrawSpawnAreas";
-            this.chkDrawSpawnAreas.Size = new System.Drawing.Size(89, 17);
-            this.chkDrawSpawnAreas.TabIndex = 15;
-            this.chkDrawSpawnAreas.Text = "Spawn Areas";
-            this.chkDrawSpawnAreas.UseVisualStyleBackColor = true;
+            this.lstEntities.Camera = null;
+            this.lstEntities.FormattingEnabled = true;
+            this.lstEntities.IMap = null;
+            this.lstEntities.Location = new System.Drawing.Point(3, 3);
+            this.lstEntities.Name = "lstEntities";
+            this.lstEntities.Size = new System.Drawing.Size(329, 186);
+            this.lstEntities.TabIndex = 0;
+            this.lstEntities.SelectedIndexChanged += new System.EventHandler(this.lstEntities_SelectedIndexChanged);
             // 
-            // chkDrawPersistentNPCs
+            // pgEntity
             // 
-            this.chkDrawPersistentNPCs.AutoSize = true;
-            this.chkDrawPersistentNPCs.Location = new System.Drawing.Point(120, 90);
-            this.chkDrawPersistentNPCs.Name = "chkDrawPersistentNPCs";
-            this.chkDrawPersistentNPCs.Size = new System.Drawing.Size(102, 17);
-            this.chkDrawPersistentNPCs.TabIndex = 16;
-            this.chkDrawPersistentNPCs.Text = "Persistent NPCs";
-            this.chkDrawPersistentNPCs.UseVisualStyleBackColor = true;
+            this.pgEntity.Location = new System.Drawing.Point(3, 222);
+            this.pgEntity.Name = "pgEntity";
+            this.pgEntity.Size = new System.Drawing.Size(329, 354);
+            this.pgEntity.TabIndex = 1;
+            this.pgEntity.ToolbarVisible = false;
+            // 
+            // btnNewEntity
+            // 
+            this.btnNewEntity.Location = new System.Drawing.Point(273, 192);
+            this.btnNewEntity.Name = "btnNewEntity";
+            this.btnNewEntity.Size = new System.Drawing.Size(59, 24);
+            this.btnNewEntity.TabIndex = 10;
+            this.btnNewEntity.Text = "New";
+            this.btnNewEntity.UseVisualStyleBackColor = true;
+            this.btnNewEntity.Click += new System.EventHandler(this.btnNewEntity_Click);
+            // 
+            // cmbEntityTypes
+            // 
+            this.cmbEntityTypes.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbEntityTypes.FormattingEnabled = true;
+            this.cmbEntityTypes.Location = new System.Drawing.Point(3, 195);
+            this.cmbEntityTypes.Name = "cmbEntityTypes";
+            this.cmbEntityTypes.Size = new System.Drawing.Size(264, 21);
+            this.cmbEntityTypes.TabIndex = 11;
+            // 
+            // tabPageEntities
+            // 
+            this.tabPageEntities.Controls.Add(this.cmbEntityTypes);
+            this.tabPageEntities.Controls.Add(this.btnNewEntity);
+            this.tabPageEntities.Controls.Add(this.pgEntity);
+            this.tabPageEntities.Controls.Add(this.lstEntities);
+            this.tabPageEntities.Location = new System.Drawing.Point(4, 22);
+            this.tabPageEntities.Name = "tabPageEntities";
+            this.tabPageEntities.Size = new System.Drawing.Size(337, 579);
+            this.tabPageEntities.TabIndex = 7;
+            this.tabPageEntities.Text = "Entities";
+            this.tabPageEntities.UseVisualStyleBackColor = true;
+            // 
+            // tpPersistent
+            // 
+            this.tpPersistent.Controls.Add(this.lstPersistentNPCs);
+            this.tpPersistent.Controls.Add(this.button1);
+            this.tpPersistent.Controls.Add(this.button2);
+            this.tpPersistent.Location = new System.Drawing.Point(4, 22);
+            this.tpPersistent.Name = "tpPersistent";
+            this.tpPersistent.Padding = new System.Windows.Forms.Padding(3);
+            this.tpPersistent.Size = new System.Drawing.Size(323, 174);
+            this.tpPersistent.TabIndex = 1;
+            this.tpPersistent.Text = "Persistent";
+            this.tpPersistent.UseVisualStyleBackColor = true;
+            // 
+            // tpSpawns
+            // 
+            this.tpSpawns.Controls.Add(this.btnAddSpawn);
+            this.tpSpawns.Controls.Add(this.btnDeleteSpawn);
+            this.tpSpawns.Controls.Add(this.lstNPCSpawns);
+            this.tpSpawns.Location = new System.Drawing.Point(4, 22);
+            this.tpSpawns.Name = "tpSpawns";
+            this.tpSpawns.Padding = new System.Windows.Forms.Padding(3);
+            this.tpSpawns.Size = new System.Drawing.Size(323, 174);
+            this.tpSpawns.TabIndex = 0;
+            this.tpSpawns.Text = "Spawns";
+            this.tpSpawns.UseVisualStyleBackColor = true;
+            // 
+            // lstNPCSpawns
+            // 
+            this.lstNPCSpawns.FormattingEnabled = true;
+            this.lstNPCSpawns.Location = new System.Drawing.Point(6, 6);
+            this.lstNPCSpawns.Name = "lstNPCSpawns";
+            this.lstNPCSpawns.PropertyGrid = this.pgNPCSpawn;
+            this.lstNPCSpawns.Size = new System.Drawing.Size(311, 134);
+            this.lstNPCSpawns.TabIndex = 5;
+            // 
+            // btnDeleteSpawn
+            // 
+            this.btnDeleteSpawn.Location = new System.Drawing.Point(163, 146);
+            this.btnDeleteSpawn.Name = "btnDeleteSpawn";
+            this.btnDeleteSpawn.Size = new System.Drawing.Size(74, 24);
+            this.btnDeleteSpawn.TabIndex = 6;
+            this.btnDeleteSpawn.Text = "Delete";
+            this.btnDeleteSpawn.UseVisualStyleBackColor = true;
+            // 
+            // btnAddSpawn
+            // 
+            this.btnAddSpawn.Location = new System.Drawing.Point(243, 146);
+            this.btnAddSpawn.Name = "btnAddSpawn";
+            this.btnAddSpawn.Size = new System.Drawing.Size(74, 24);
+            this.btnAddSpawn.TabIndex = 7;
+            this.btnAddSpawn.Text = "Add";
+            this.btnAddSpawn.UseVisualStyleBackColor = true;
+            // 
+            // tcSpawns
+            // 
+            this.tcSpawns.Controls.Add(this.tpSpawns);
+            this.tcSpawns.Controls.Add(this.tpPersistent);
+            this.tcSpawns.Location = new System.Drawing.Point(3, 3);
+            this.tcSpawns.Name = "tcSpawns";
+            this.tcSpawns.SelectedIndex = 0;
+            this.tcSpawns.Size = new System.Drawing.Size(331, 200);
+            this.tcSpawns.TabIndex = 7;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(243, 145);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(74, 24);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Add";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(163, 145);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(74, 24);
+            this.button2.TabIndex = 9;
+            this.button2.Text = "Delete";
+            this.button2.UseVisualStyleBackColor = true;
+            // 
+            // lstPersistentNPCs
+            // 
+            this.lstPersistentNPCs.FormattingEnabled = true;
+            this.lstPersistentNPCs.Location = new System.Drawing.Point(6, 6);
+            this.lstPersistentNPCs.Name = "lstPersistentNPCs";
+            this.lstPersistentNPCs.PropertyGrid = this.pgNPCSpawn;
+            this.lstPersistentNPCs.Size = new System.Drawing.Size(311, 134);
+            this.lstPersistentNPCs.TabIndex = 11;
             // 
             // ScreenForm
             // 
@@ -814,7 +880,6 @@ namespace DemoGame.MapEditor
             this.tabPageGrhs.PerformLayout();
             this.tabPageWalls.ResumeLayout(false);
             this.tabPageWalls.PerformLayout();
-            this.tabPageEntities.ResumeLayout(false);
             this.tabPageBackground.ResumeLayout(false);
             this.tabPageNPCs.ResumeLayout(false);
             this.tabPageSettings.ResumeLayout(false);
@@ -828,6 +893,10 @@ namespace DemoGame.MapEditor
             ((System.ComponentModel.ISupportInitialize)(this.picToolWallsAdd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picToolWalls)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picToolSelect)).EndInit();
+            this.tabPageEntities.ResumeLayout(false);
+            this.tpPersistent.ResumeLayout(false);
+            this.tpSpawns.ResumeLayout(false);
+            this.tcSpawns.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -883,18 +952,24 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Button btnNewBGLayer;
         private System.Windows.Forms.Button btnDeleteBGItem;
         private System.Windows.Forms.PropertyGrid pgBGItem;
-        private System.Windows.Forms.TabPage tabPageEntities;
-        private System.Windows.Forms.PropertyGrid pgEntity;
-        private EntityListBox lstEntities;
-        private System.Windows.Forms.Button btnNewEntity;
-        private System.Windows.Forms.ComboBox cmbEntityTypes;
         private System.Windows.Forms.CheckBox chkDrawBackground;
         private System.Windows.Forms.PropertyGrid pgWall;
-        private System.Windows.Forms.Button btnAddSpawn;
-        private System.Windows.Forms.Button btnDeleteSpawn;
-        private NPCSpawnsListBox lstNPCSpawns;
         private System.Windows.Forms.PropertyGrid pgNPCSpawn;
         private System.Windows.Forms.CheckBox chkDrawSpawnAreas;
         private System.Windows.Forms.CheckBox chkDrawPersistentNPCs;
+        private System.Windows.Forms.TabPage tabPageEntities;
+        private System.Windows.Forms.ComboBox cmbEntityTypes;
+        private System.Windows.Forms.Button btnNewEntity;
+        private System.Windows.Forms.PropertyGrid pgEntity;
+        private EntityListBox lstEntities;
+        private System.Windows.Forms.TabControl tcSpawns;
+        private System.Windows.Forms.TabPage tpSpawns;
+        private System.Windows.Forms.Button btnAddSpawn;
+        private System.Windows.Forms.Button btnDeleteSpawn;
+        private NPCSpawnsListBox lstNPCSpawns;
+        private System.Windows.Forms.TabPage tpPersistent;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button2;
+        private PersistentNPCListBox lstPersistentNPCs;
     }
 }
