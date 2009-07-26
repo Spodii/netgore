@@ -23,6 +23,8 @@ using Point=System.Drawing.Point;
 
 namespace DemoGame.MapEditor
 {
+    delegate void MapChangeEventHandler(Map oldMap, Map newMap);
+
     partial class ScreenForm : Form, IGetTime
     {
         /// <summary>
@@ -240,16 +242,54 @@ namespace DemoGame.MapEditor
             get { return _keyEventArgs; }
         }
 
+        public event MapChangeEventHandler OnChangeMap;
+
         /// <summary>
-        /// Gets or sets (private) the currently loaded map.
+        /// Gets or sets the currently loaded map.
         /// </summary>
         public Map Map
         {
             get { return _map; }
             private set
             {
+                if (_map == value)
+                    return;
+                if (value == null)
+                    throw new ArgumentNullException("value");
+                
+                var oldMap = _map;
+
+                // Remove old map
+                if (oldMap != null)
+                    oldMap.OnSave -= Map_OnSave;
+
+                // Set new map
                 _map = value;
+                _map.Load(ContentPaths.Dev, true);
+                _map.OnSave += Map_OnSave;
+
+                // Notify listeners
+                if (OnChangeMap != null)
+                    OnChangeMap(oldMap, _map);
+
+                // Update everything that references the map
+                // TODO: Move all of this shit out of here
                 _camera.Map = Map;
+
+                lstNPCSpawns.SetMap(DBController, _map);
+
+                // Remove all of the walls previously created from the MapGrhs
+                var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
+                var dupeWalls = Map.FindDuplicateWalls(grhWalls);
+                foreach (WallEntityBase dupeWall in dupeWalls)
+                {
+                    Map.RemoveEntity(dupeWall);
+                }
+
+                // Reset some of the variables
+                _camera.Min = Vector2.Zero;
+                txtMapWidth.Text = Map.Width.ToString();
+                txtMapHeight.Text = Map.Height.ToString();
             }
         }
 
@@ -378,24 +418,36 @@ namespace DemoGame.MapEditor
             entity.Size = size;
         }
 
+        /// <summary>
+        /// Creates an instance of a MapDrawExtensionBase that automatically updates the Map and Enabled properties.
+        /// </summary>
+        /// <typeparam name="T">Type of MapDrawExtensionBase to create.</typeparam>
+        /// <param name="checkBox">The CheckBox that is used to set the Enabled property.</param>
+        /// <returns>The instanced MapDrawExtensionBase of type <typeparamref name="T"/>.</returns>
+// ReSharper disable UnusedMethodReturnValue.Local
+        T CreateMapDrawExtensionBase<T>(CheckBox checkBox) where T : MapDrawExtensionBase, new()
+// ReSharper restore UnusedMethodReturnValue.Local
+        {
+            // Create the instance of the MapDrawExtensionBase
+            var instance = new T { Map = Map, Enabled = checkBox.Checked };
+
+            // Handle when the CheckBox value changes
+            checkBox.CheckedChanged += ((obj, e) => instance.Enabled = ((CheckBox)obj).Checked);
+
+            // Handle when the Map changes
+            OnChangeMap += ((oldMap, newMap) => instance.Map = newMap);
+
+            return instance;
+        }
+
         void chkDrawBackground_CheckedChanged(object sender, EventArgs e)
         {
             Map.DrawBackground = chkDrawBackground.Checked;
         }
 
-        void chkDrawEntities_CheckedChanged(object sender, EventArgs e)
-        {
-            Map.DrawEntityBoxes = chkDrawEntities.Checked;
-        }
-
         void chkShowGrhs_CheckedChanged(object sender, EventArgs e)
         {
             Map.DrawMapGrhs = chkShowGrhs.Checked;
-        }
-
-        void chkShowWalls_CheckedChanged(object sender, EventArgs e)
-        {
-            Map.DrawWalls = chkShowWalls.Checked;
         }
 
         void cmdApplySize_Click(object sender, EventArgs e)
@@ -802,7 +854,7 @@ namespace DemoGame.MapEditor
             treeGrhs.Initialize(_content);
             TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
 
-            //Hook GrhTreeView context menu click events
+            // Hook GrhTreeView context menu click events
             treeGrhs.GrhContextMenuEditClick += treeGrhs_mnuEdit;
             treeGrhs.GrhContextMenuDuplicateClick += treeGrhs_mnuDuplicate;
             treeGrhs.GrhContextMenuBatchChangeTextureClick += treeGrhs_mnuBatchChangeTexture;
@@ -840,6 +892,10 @@ namespace DemoGame.MapEditor
                 lb.IMap = Map;
                 lb.Camera = Camera;
             }
+
+            // Set up the MapExtensionBases
+            CreateMapDrawExtensionBase<MapEntityBoxDrawer>(chkDrawEntities);
+            CreateMapDrawExtensionBase<MapWallDrawer>(chkShowWalls);
         }
 
         /// <summary>
@@ -893,6 +949,12 @@ namespace DemoGame.MapEditor
                             break;
                         case "Display.Background":
                             chkDrawBackground.Checked = bool.Parse(value);
+                            break;
+                        case "Display.SpawnAreas":
+                            chkDrawSpawnAreas.Checked = bool.Parse(value);
+                            break;
+                        case "Display.PersistentNPCs":
+                            chkDrawPersistentNPCs.Checked = bool.Parse(value);
                             break;
                     }
                 }
@@ -1032,6 +1094,8 @@ namespace DemoGame.MapEditor
         /// </summary>
         void SaveSettings()
         {
+            // TODO: Use the IRestorableSettings instead
+
             using (FileStream stream = new FileStream("MapEditorSettings.xml", FileMode.Create))
             {
                 XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
@@ -1060,6 +1124,8 @@ namespace DemoGame.MapEditor
                     w.WriteElementString("AutoWalls", chkDrawAutoWalls.Checked.ToString().ToLower());
                     w.WriteElementString("Entities", chkDrawEntities.Checked.ToString().ToLower());
                     w.WriteElementString("Background", chkDrawBackground.Checked.ToString().ToLower());
+                    w.WriteElementString("SpawnAreas", chkDrawSpawnAreas.Checked.ToString().ToLower());
+                    w.WriteElementString("PersistentNPCs", chkDrawPersistentNPCs.Checked.ToString().ToLower());
                     w.WriteEndElement();
 
                     w.WriteEndElement();
@@ -1100,22 +1166,6 @@ namespace DemoGame.MapEditor
         {
             MapIndex index = Map.GetIndexFromPath(filePath);
             Map = new Map(index, _world, GameScreen.GraphicsDevice);
-            Map.OnSave += Map_OnSave;
-            Map.Load(ContentPaths.Dev, true);
-            lstNPCSpawns.SetMap(DBController, Map);
-
-            // Remove all of the walls previously created from the MapGrhs
-            var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
-            var dupeWalls = Map.FindDuplicateWalls(grhWalls);
-            foreach (WallEntityBase dupeWall in dupeWalls)
-            {
-                Map.RemoveEntity(dupeWall);
-            }
-
-            // Reset some of the variables
-            _camera.Min = Vector2.Zero;
-            txtMapWidth.Text = Map.Width.ToString();
-            txtMapHeight.Text = Map.Height.ToString();
         }
 
         void tabPageGrhs_Enter(object sender, EventArgs e)

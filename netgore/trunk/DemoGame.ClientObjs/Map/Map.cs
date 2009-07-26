@@ -97,11 +97,6 @@ namespace DemoGame.Client
         public static bool DrawCharacters { get; set; }
 
         /// <summary>
-        /// Gets or sets if the collision boxes for map entities (except for walls) are drawn.
-        /// </summary>
-        public static bool DrawEntityBoxes { get; set; }
-
-        /// <summary>
         /// Gets or sets if the items layer is drawn.
         /// </summary>
         public static bool DrawItems { get; set; }
@@ -111,18 +106,17 @@ namespace DemoGame.Client
         /// </summary>
         public static bool DrawMapGrhs { get; set; }
 
-        /// <summary>
-        /// Gets or sets if walls are drawn.
-        /// </summary>
-        public static bool DrawWalls { get; set; }
 
+        /// <summary>
+        /// Gets an IEnumerable of all the BackgroundImages on the Map.
+        /// </summary>
         public IEnumerable<BackgroundImage> BackgroundImages
         {
             get { return _backgroundImagesEnumerator; }
         }
 
         /// <summary>
-        /// Gets an enumerator for all the MapGrhs on the map
+        /// Gets an IEnumerable of all the MapGrhs on the Map.
         /// </summary>
         public IEnumerable<MapGrh> MapGrhs
         {
@@ -130,7 +124,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the world the map belongs to
+        /// Gets the World the Map belongs to.
         /// </summary>
         public World World
         {
@@ -141,10 +135,8 @@ namespace DemoGame.Client
         {
             DrawBackground = true;
             DrawCharacters = true;
-            DrawEntityBoxes = false;
             DrawItems = true;
             DrawMapGrhs = true;
-            DrawWalls = false;
         }
 
         /// <summary>
@@ -248,6 +240,10 @@ namespace DemoGame.Client
             _mapAtlases = ta.Build(_graphics);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates a new WallEntityBase instance.
+        /// </summary>
+        /// <returns>WallEntityBase that is to be used on the map.</returns>
         protected override WallEntityBase CreateWall(IValueReader r)
         {
             return new WallEntity(r);
@@ -286,30 +282,6 @@ namespace DemoGame.Client
 
             // Draw the foreground map graphics (in front of the character)
             DrawLayer(sb, camera, _drawLayerForeground, MapRenderLayer.SpriteForeground, DrawMapGrhs);
-
-            // Draw the wall entities
-            // TODO: !! Move outside of the class using the draw events
-            if (DrawWalls)
-            {
-                foreach (Entity entity in Entities)
-                {
-                    WallEntity w = entity as WallEntity;
-                    if (w != null && camera.InView(w))
-                        EntityDrawer.Draw(sb, w);
-                }
-            }
-
-            // Draw the non-wall entities
-            // TODO: !! Move outside of the class using the draw events
-            if (DrawEntityBoxes)
-            {
-                foreach (Entity entity in Entities)
-                {
-                    if (entity is WallEntityBase)
-                        continue;
-                    EntityDrawer.Draw(sb, entity);
-                }
-            }
         }
 
         /// <summary>

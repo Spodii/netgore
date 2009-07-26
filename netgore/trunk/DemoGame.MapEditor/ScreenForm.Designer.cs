@@ -559,7 +559,6 @@ namespace DemoGame.MapEditor
             this.chkDrawEntities.TabIndex = 13;
             this.chkDrawEntities.Text = "Entities";
             this.chkDrawEntities.UseVisualStyleBackColor = true;
-            this.chkDrawEntities.CheckedChanged += new System.EventHandler(this.chkDrawEntities_CheckedChanged);
             // 
             // chkDrawAutoWalls
             // 
@@ -593,7 +592,6 @@ namespace DemoGame.MapEditor
             this.chkShowWalls.TabIndex = 9;
             this.chkShowWalls.Text = "Walls";
             this.chkShowWalls.UseVisualStyleBackColor = true;
-            this.chkShowWalls.CheckedChanged += new System.EventHandler(this.chkShowWalls_CheckedChanged);
             // 
             // chkDrawGrid
             // 
