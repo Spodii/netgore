@@ -99,6 +99,9 @@
     <Compile Include="ListBoxes\EntityListBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="ListBoxes\PersistentNPCListBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ListBoxes\WallListBox.cs">
       <SubType>Component</SubType>
     </Compile>
