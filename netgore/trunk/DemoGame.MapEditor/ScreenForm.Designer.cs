@@ -97,6 +97,8 @@ namespace DemoGame.MapEditor
             this.picToolWalls = new System.Windows.Forms.PictureBox();
             this.picToolSelect = new System.Windows.Forms.PictureBox();
             this.GameScreen = new DemoGame.MapEditor.GameScreenControl();
+            this.chkDrawSpawnAreas = new System.Windows.Forms.CheckBox();
+            this.chkDrawPersistentNPCs = new System.Windows.Forms.CheckBox();
             this.tcMenu.SuspendLayout();
             this.tabPageGeneral.SuspendLayout();
             this.MapSizeGroupBox.SuspendLayout();
@@ -520,6 +522,8 @@ namespace DemoGame.MapEditor
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.chkDrawPersistentNPCs);
+            this.groupBox3.Controls.Add(this.chkDrawSpawnAreas);
             this.groupBox3.Controls.Add(this.chkDrawBackground);
             this.groupBox3.Controls.Add(this.chkDrawEntities);
             this.groupBox3.Controls.Add(this.chkDrawAutoWalls);
@@ -528,7 +532,7 @@ namespace DemoGame.MapEditor
             this.groupBox3.Controls.Add(this.chkDrawGrid);
             this.groupBox3.Location = new System.Drawing.Point(3, 52);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(290, 95);
+            this.groupBox3.Size = new System.Drawing.Size(290, 116);
             this.groupBox3.TabIndex = 1;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Display Options";
@@ -540,9 +544,9 @@ namespace DemoGame.MapEditor
             this.chkDrawBackground.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkDrawBackground.Location = new System.Drawing.Point(120, 67);
             this.chkDrawBackground.Name = "chkDrawBackground";
-            this.chkDrawBackground.Size = new System.Drawing.Size(112, 17);
+            this.chkDrawBackground.Size = new System.Drawing.Size(84, 17);
             this.chkDrawBackground.TabIndex = 14;
-            this.chkDrawBackground.Text = "Draw Background";
+            this.chkDrawBackground.Text = "Background";
             this.chkDrawBackground.UseVisualStyleBackColor = true;
             this.chkDrawBackground.CheckedChanged += new System.EventHandler(this.chkDrawBackground_CheckedChanged);
             // 
@@ -551,9 +555,9 @@ namespace DemoGame.MapEditor
             this.chkDrawEntities.AutoSize = true;
             this.chkDrawEntities.Location = new System.Drawing.Point(120, 21);
             this.chkDrawEntities.Name = "chkDrawEntities";
-            this.chkDrawEntities.Size = new System.Drawing.Size(88, 17);
+            this.chkDrawEntities.Size = new System.Drawing.Size(60, 17);
             this.chkDrawEntities.TabIndex = 13;
-            this.chkDrawEntities.Text = "Draw Entities";
+            this.chkDrawEntities.Text = "Entities";
             this.chkDrawEntities.UseVisualStyleBackColor = true;
             this.chkDrawEntities.CheckedChanged += new System.EventHandler(this.chkDrawEntities_CheckedChanged);
             // 
@@ -562,9 +566,9 @@ namespace DemoGame.MapEditor
             this.chkDrawAutoWalls.AutoSize = true;
             this.chkDrawAutoWalls.Location = new System.Drawing.Point(120, 44);
             this.chkDrawAutoWalls.Name = "chkDrawAutoWalls";
-            this.chkDrawAutoWalls.Size = new System.Drawing.Size(105, 17);
+            this.chkDrawAutoWalls.Size = new System.Drawing.Size(77, 17);
             this.chkDrawAutoWalls.TabIndex = 12;
-            this.chkDrawAutoWalls.Text = "Draw Auto-Walls";
+            this.chkDrawAutoWalls.Text = "Auto-Walls";
             this.chkDrawAutoWalls.UseVisualStyleBackColor = true;
             // 
             // chkShowGrhs
@@ -574,9 +578,9 @@ namespace DemoGame.MapEditor
             this.chkShowGrhs.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkShowGrhs.Location = new System.Drawing.Point(6, 67);
             this.chkShowGrhs.Name = "chkShowGrhs";
-            this.chkShowGrhs.Size = new System.Drawing.Size(76, 17);
+            this.chkShowGrhs.Size = new System.Drawing.Size(48, 17);
             this.chkShowGrhs.TabIndex = 11;
-            this.chkShowGrhs.Text = "Draw Grhs";
+            this.chkShowGrhs.Text = "Grhs";
             this.chkShowGrhs.UseVisualStyleBackColor = true;
             this.chkShowGrhs.CheckedChanged += new System.EventHandler(this.chkShowGrhs_CheckedChanged);
             // 
@@ -585,9 +589,9 @@ namespace DemoGame.MapEditor
             this.chkShowWalls.AutoSize = true;
             this.chkShowWalls.Location = new System.Drawing.Point(6, 44);
             this.chkShowWalls.Name = "chkShowWalls";
-            this.chkShowWalls.Size = new System.Drawing.Size(80, 17);
+            this.chkShowWalls.Size = new System.Drawing.Size(52, 17);
             this.chkShowWalls.TabIndex = 9;
-            this.chkShowWalls.Text = "Draw Walls";
+            this.chkShowWalls.Text = "Walls";
             this.chkShowWalls.UseVisualStyleBackColor = true;
             this.chkShowWalls.CheckedChanged += new System.EventHandler(this.chkShowWalls_CheckedChanged);
             // 
@@ -596,9 +600,9 @@ namespace DemoGame.MapEditor
             this.chkDrawGrid.AutoSize = true;
             this.chkDrawGrid.Location = new System.Drawing.Point(6, 21);
             this.chkDrawGrid.Name = "chkDrawGrid";
-            this.chkDrawGrid.Size = new System.Drawing.Size(73, 17);
+            this.chkDrawGrid.Size = new System.Drawing.Size(45, 17);
             this.chkDrawGrid.TabIndex = 1;
-            this.chkDrawGrid.Text = "Draw Grid";
+            this.chkDrawGrid.Text = "Grid";
             this.chkDrawGrid.UseVisualStyleBackColor = true;
             // 
             // groupBox1
@@ -765,6 +769,27 @@ namespace DemoGame.MapEditor
             this.GameScreen.MouseDown += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseDown);
             this.GameScreen.MouseUp += new System.Windows.Forms.MouseEventHandler(this.GameScreen_MouseUp);
             // 
+            // chkDrawSpawnAreas
+            // 
+            this.chkDrawSpawnAreas.AutoSize = true;
+            this.chkDrawSpawnAreas.Location = new System.Drawing.Point(6, 90);
+            this.chkDrawSpawnAreas.Name = "chkDrawSpawnAreas";
+            this.chkDrawSpawnAreas.Size = new System.Drawing.Size(89, 17);
+            this.chkDrawSpawnAreas.TabIndex = 15;
+            this.chkDrawSpawnAreas.Text = "Spawn Areas";
+            this.chkDrawSpawnAreas.UseVisualStyleBackColor = true;
+            this.chkDrawSpawnAreas.CheckedChanged += new System.EventHandler(this.chkDrawSpawnAreas_CheckedChanged);
+            // 
+            // chkDrawPersistentNPCs
+            // 
+            this.chkDrawPersistentNPCs.AutoSize = true;
+            this.chkDrawPersistentNPCs.Location = new System.Drawing.Point(120, 90);
+            this.chkDrawPersistentNPCs.Name = "chkDrawPersistentNPCs";
+            this.chkDrawPersistentNPCs.Size = new System.Drawing.Size(102, 17);
+            this.chkDrawPersistentNPCs.TabIndex = 16;
+            this.chkDrawPersistentNPCs.Text = "Persistent NPCs";
+            this.chkDrawPersistentNPCs.UseVisualStyleBackColor = true;
+            // 
             // ScreenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -872,5 +897,7 @@ namespace DemoGame.MapEditor
         private System.Windows.Forms.Button btnDeleteSpawn;
         private NPCSpawnsListBox lstNPCSpawns;
         private System.Windows.Forms.PropertyGrid pgNPCSpawn;
+        private System.Windows.Forms.CheckBox chkDrawSpawnAreas;
+        private System.Windows.Forms.CheckBox chkDrawPersistentNPCs;
     }
 }

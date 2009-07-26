@@ -37,19 +37,21 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets or sets if the MapGrh is in the foreground
+        /// Gets or sets if the MapGrh is in the foreground.
         /// </summary>
         public bool IsForeground
         {
             get { return _isForeground; }
             set
             {
-                if (_isForeground != value)
-                {
-                    MapRenderLayer oldLayer = MapRenderLayer;
-                    _isForeground = value;
+                if (_isForeground == value)
+                    return;
+
+                MapRenderLayer oldLayer = MapRenderLayer;
+                _isForeground = value;
+
+                if (OnChangeRenderLayer != null)
                     OnChangeRenderLayer(this, oldLayer);
-                }
             }
         }
 
@@ -137,9 +139,9 @@ namespace DemoGame.Client
             {
                 // MapGrhs can be either foreground or background
                 if (IsForeground)
-                    return MapRenderLayer.Foreground;
+                    return MapRenderLayer.SpriteForeground;
                 else
-                    return MapRenderLayer.Background;
+                    return MapRenderLayer.SpriteBackground;
             }
         }
 

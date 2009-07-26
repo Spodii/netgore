@@ -16,6 +16,18 @@ using NetGore.IO;
 namespace DemoGame.Client
 {
     /// <summary>
+    /// Handler for Map drawing events.
+    /// </summary>
+    /// <param name="map">Map that the drawing is taking place on.</param>
+    /// <param name="layer">The layer that the drawing event is related to.</param>
+    /// <param name="spriteBatch">The SpriteBatch that was used to do the drawing.</param>
+    /// <param name="camera">The Camera2D that was used in the drawing.</param>
+    /// <param name="isDrawing">If the <paramref name="layer"/> is actually being drawn by the <paramref name="map"/>. If
+    /// false, it is time for the <paramref name="layer"/> to be drawn, but the <paramref name="map"/> will not actually
+    /// draw the layer.</param>
+    public delegate void MapDrawEventHandler(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, Camera2D camera, bool isDrawing);
+
+    /// <summary>
     /// Map object for the client
     /// </summary>
     public class Map : MapBase, IDisposable
@@ -249,6 +261,9 @@ namespace DemoGame.Client
         public void Draw(SpriteBatch sb, Camera2D camera)
         {
             // Draw the background
+            if (OnStartDrawLayer != null)
+                OnStartDrawLayer(this, MapRenderLayer.Background, sb, camera, DrawBackground);
+
             if (DrawBackground)
             {
                 foreach (BackgroundImage bgImage in _backgroundImages)
@@ -257,23 +272,23 @@ namespace DemoGame.Client
                 }
             }
 
+            if (OnEndDrawLayer != null)
+                OnEndDrawLayer(this, MapRenderLayer.Background, sb, camera, DrawBackground);
+
             // Draw the background map graphics (behind the character)
-            if (DrawMapGrhs)
-                DrawLayer(sb, camera, _drawLayerBackground);
+            DrawLayer(sb, camera, _drawLayerBackground, MapRenderLayer.SpriteBackground, DrawMapGrhs);
 
             // Draw the characters
-            if (DrawCharacters)
-                DrawLayer(sb, camera, _drawLayerCharacter);
+            DrawLayer(sb, camera, _drawLayerCharacter, MapRenderLayer.Chararacter, DrawCharacters);
 
             // Draw the items
-            if (DrawItems)
-                DrawLayer(sb, camera, _drawLayerItem);
+            DrawLayer(sb, camera, _drawLayerItem, MapRenderLayer.Item, DrawItems);
 
             // Draw the foreground map graphics (in front of the character)
-            if (DrawMapGrhs)
-                DrawLayer(sb, camera, _drawLayerForeground);
+            DrawLayer(sb, camera, _drawLayerForeground, MapRenderLayer.SpriteForeground, DrawMapGrhs);
 
             // Draw the wall entities
+            // TODO: !! Move outside of the class using the draw events
             if (DrawWalls)
             {
                 foreach (Entity entity in Entities)
@@ -285,6 +300,7 @@ namespace DemoGame.Client
             }
 
             // Draw the non-wall entities
+            // TODO: !! Move outside of the class using the draw events
             if (DrawEntityBoxes)
             {
                 foreach (Entity entity in Entities)
@@ -297,18 +313,41 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Notifies listeners when the Map has started drawing a layer. This event is raised immediately before any
+        /// drawing for the layer is actually done.
+        /// </summary>
+        public event MapDrawEventHandler OnStartDrawLayer;
+
+        /// <summary>
+        /// Notifies listeners when the Map has finished drawing a layer. This event is raised immediately after
+        /// drawing for the layer has finished.
+        /// </summary>
+        public event MapDrawEventHandler OnEndDrawLayer;
+
+        /// <summary>
         /// Draws an IEnumerable of IDrawableEntities.
         /// </summary>
         /// <param name="sb">SpriteBatch to draw to.</param>
         /// <param name="camera">Camera to use to check if in view.</param>
         /// <param name="drawableEntities">List of IDrawableEntity objects to draw.</param>
-        static void DrawLayer(SpriteBatch sb, Camera2D camera, IEnumerable<IDrawableEntity> drawableEntities)
+        /// <param name="layer">The MapRenderLayer that is being drawn.</param>
+        /// <param name="draw">If true, the layer will be drawn. If false, no drawing will be done.</param>
+        void DrawLayer(SpriteBatch sb, Camera2D camera, IEnumerable<IDrawableEntity> drawableEntities, MapRenderLayer layer, bool draw)
         {
-            foreach (IDrawableEntity drawableEntity in drawableEntities)
+            if (OnStartDrawLayer != null)
+                OnStartDrawLayer(this, layer, sb, camera, draw);
+
+            if (draw)
             {
-                if (drawableEntity.InView(camera))
-                    drawableEntity.Draw(sb);
+                foreach (IDrawableEntity drawableEntity in drawableEntities)
+                {
+                    if (drawableEntity.InView(camera))
+                        drawableEntity.Draw(sb);
+                }
             }
+
+            if (OnEndDrawLayer != null)
+                OnEndDrawLayer(this, layer, sb, camera, draw);
         }
 
         /// <summary>
@@ -439,13 +478,13 @@ namespace DemoGame.Client
         {
             switch (layer)
             {
-                case MapRenderLayer.Background:
+                case MapRenderLayer.SpriteBackground:
                     return _drawLayerBackground;
                 case MapRenderLayer.Chararacter:
                     return _drawLayerCharacter;
                 case MapRenderLayer.Item:
                     return _drawLayerItem;
-                case MapRenderLayer.Foreground:
+                case MapRenderLayer.SpriteForeground:
                     return _drawLayerForeground;
                 default:
                     const string errmsg = "Could not get the list for unknown layer `{0}`.";

@@ -1393,5 +1393,10 @@ namespace DemoGame.MapEditor
         {
             // NOTE: Have to add background sprite support...
         }
+
+        private void chkDrawSpawnAreas_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
