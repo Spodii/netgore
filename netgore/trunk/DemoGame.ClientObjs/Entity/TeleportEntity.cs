@@ -47,7 +47,7 @@ namespace DemoGame.Client
         [Browsable(false)]
         public MapRenderLayer MapRenderLayer
         {
-            get { return MapRenderLayer.Foreground; }
+            get { return MapRenderLayer.SpriteForeground; }
         }
 
         /// <summary>
