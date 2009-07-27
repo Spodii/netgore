@@ -1,1 +1,1 @@
-dbmetal.exe /server:localhost /user:root /password: /database:demogame /provider:MySql /namespace:DemoGame.Db /code:Database.cs
+dbmetal.exe /server:localhost /user:root /password: /database:demogame /provider:MySql /namespace:DemoGame.Db /aliases:renaming.xml /code:Database.cs
