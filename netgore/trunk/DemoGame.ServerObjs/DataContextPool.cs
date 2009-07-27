@@ -7,26 +7,54 @@ using MySql.Data.MySqlClient;
 
 namespace DemoGame.Db
 {
+    /// <summary>
+    /// A pool for the DataContext for the game database.
+    /// </summary>
     public static class DataContextPool
     {
-        static string _connectionString;
+        /// <summary>
+        /// Connection string for new database connection objects.
+        /// </summary>
+        static readonly string _connectionString;
 
+        /// <summary>
+        /// Pool matching the DataContext to a Thread.
+        /// </summary>
         static readonly Dictionary<Thread, DemoGameDb> _pool = new Dictionary<Thread, DemoGameDb>();
+
+        /// <summary>
+        /// Lock for the pool Dictionary.
+        /// </summary>
         static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
-        public static void Initialize(string connectionString)
+        static DataContextPool()
         {
-            _connectionString = connectionString;
+            // TODO: Grab these values from a property file...
+            var sb = new MySqlConnectionStringBuilder 
+            { UserID = "root", Password = "", Database = "demogame", Server = "localhost" };
+
+            _connectionString = sb.ToString();
         }
 
+        /// <summary>
+        /// Creates a new DataContext.
+        /// </summary>
+        /// <returns>The new DataContext.</returns>
         static DemoGameDb CreateNew()
         {
             var conn = new MySqlConnection(_connectionString);
             return new DemoGameDb(conn);
         }
 
+        /// <summary>
+        /// Gets a DataContext that can be used.
+        /// </summary>
+        /// <returns>A DataContext that can be used.</returns>
         public static DemoGameDb GetDataContext()
         {
+            // Grabs a DataContext by the Thread calling this
+            // Allows for a single DataContext per Thread
+
             DemoGameDb output;
             var thread = Thread.CurrentThread;
 
