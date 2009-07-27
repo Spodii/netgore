@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading;
 using MySql.Data.MySqlClient;
 
@@ -18,20 +15,23 @@ namespace DemoGame.Db
         static readonly string _connectionString;
 
         /// <summary>
+        /// Lock for the pool Dictionary.
+        /// </summary>
+        static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
+
+        /// <summary>
         /// Pool matching the DataContext to a Thread.
         /// </summary>
         static readonly Dictionary<Thread, DemoGameDb> _pool = new Dictionary<Thread, DemoGameDb>();
 
         /// <summary>
-        /// Lock for the pool Dictionary.
+        /// DataContextPool static constructor.
         /// </summary>
-        static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
-
         static DataContextPool()
         {
             // TODO: Grab these values from a property file...
-            var sb = new MySqlConnectionStringBuilder 
-            { UserID = "root", Password = "", Database = "demogame", Server = "localhost" };
+            MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder
+                                              { UserID = "root", Password = "", Database = "demogame", Server = "localhost" };
 
             _connectionString = sb.ToString();
         }
@@ -42,7 +42,7 @@ namespace DemoGame.Db
         /// <returns>The new DataContext.</returns>
         static DemoGameDb CreateNew()
         {
-            var conn = new MySqlConnection(_connectionString);
+            MySqlConnection conn = new MySqlConnection(_connectionString);
             return new DemoGameDb(conn);
         }
 
@@ -56,7 +56,7 @@ namespace DemoGame.Db
             // Allows for a single DataContext per Thread
 
             DemoGameDb output;
-            var thread = Thread.CurrentThread;
+            Thread thread = Thread.CurrentThread;
 
             _lock.EnterUpgradeableReadLock();
             try
