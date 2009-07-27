@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<Renamings>
+	<Renaming old="alliance" new="AllianceTable" />
+	<Renaming old="alliance_attackable" new="AllianceAttackableTable" />
+	<Renaming old="alliance_hostile" new="AllianceHostileTable" />
+	<Renaming old="character" new="CharacterTable" />
+	<Renaming old="character_equipped" new="CharacterEquippedTable" />
+	<Renaming old="character_inventory" new="CharacterInventoryTable" />
+	<Renaming old="character_template" new="CharacterTemplateTable" />
+	<Renaming old="character_template_equipped" new="CharacterTemplateEquippedTable" />
+	<Renaming old="character_template_inventory" new="CharacterTemplateInventoryTable" />
+	<Renaming old="item" new="ItemTable" />
+	<Renaming old="item_template" new="ItemTemplateTable" />
+	<Renaming old="map" new="MapTable" />
+	<Renaming old="map_spawn" new="MapSpawnTable" />
+	
+	<Renaming old="id" new="ID" />
+	<Renaming old="alliance_id" new="AllianceID" />
+	<Renaming old="attackable_id" new="AttackableID" />
+	<Renaming old="hostile_id" new="HostileID" />
+	<Renaming old="item_id" new="ItemID" />
+	<Renaming old="template_id" new="TemplateID" />
+	<Renaming old="map_id" new="MapID" />
+	
+	<Renaming old="name" new="Name" />
+	<Renaming old="password" new="Password" />
+	<Renaming old="level" new="Level" />
+	<Renaming old="statpoints" new="StatPoints" />
+	<Renaming old="min" new="Min" />
+	<Renaming old="max" new="Max" />
+	<Renaming old="height" new="Height" />
+	<Renaming old="width" new="Width" />
+	<Renaming old="type" new="Type" />
+	<Renaming old="description" new="Description" />
+	
+	<Renaming old="respawn_map" new="RespawnMap" />
+	<Renaming old="respawn_x" new="RespawnX" />
+	<Renaming old="respawn_y" new="RespawnY" />
+	<Renaming old="x" new="X" />
+	<Renaming old="y" new="Y" />
+	
+	<Renaming old="acc" new="Acc" />
+	<Renaming old="agi" new="Agi" />
+	<Renaming old="armor" new="Armor" />
+	<Renaming old="body" new="Body" />
+	<Renaming old="bra" new="Bra" />
+	<Renaming old="cash" new="Cash" />
+	<Renaming old="defence" new="Defence" />
+	<Renaming old="dex" new="Dex" />
+	<Renaming old="evade" new="Evade" />
+	<Renaming old="exp" new="Exp" />
+	<Renaming old="hp" new="HP" />
+	<Renaming old="imm" new="Imm" />
+	<Renaming old="maxhit" new="MaxHit" />
+	<Renaming old="maxmp" new="MaxMP" />
+	<Renaming old="maxhp" new="MaxHP" />
+	<Renaming old="minhit" new="MinHit" />
+	<Renaming old="mp" new="MP" />
+	<Renaming old="perc" new="Perc" />
+	<Renaming old="recov" new="Recov" />
+	<Renaming old="regen" new="Regen" />
+	<Renaming old="str" new="Str" />
+	<Renaming old="tact" new="Tact" />
+	<Renaming old="ws" new="WS" />
+</Renamings>
