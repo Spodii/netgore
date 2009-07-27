@@ -20,7 +20,7 @@ namespace DemoGame.Db
         static readonly ReaderWriterLockSlim _lock = new ReaderWriterLockSlim();
 
         /// <summary>
-        /// Pool matching the DataContext to a Thread.
+        /// Pool matching the Thread to a DataContext.
         /// </summary>
         static readonly Dictionary<Thread, DemoGameDb> _pool = new Dictionary<Thread, DemoGameDb>();
 
