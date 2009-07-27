@@ -1,5 +1,0 @@
-dblinq was checked out from the SVN repository at:
-
-http://dblinq2007.googlecode.com/svn/trunk
-
-The dblinq_compile_mysql.bat file was custom made and provided for making the database compiling to a .cs file easy.
