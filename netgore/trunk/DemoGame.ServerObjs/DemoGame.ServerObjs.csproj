@@ -47,6 +47,14 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DbLinq, Version=0.19.0.0, Culture=neutral, PublicKeyToken=61e015a67077348b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\DbLinq.dll</HintPath>
+    </Reference>
+    <Reference Include="DbLinq.MySql, Version=0.19.0.0, Culture=neutral, PublicKeyToken=61e015a67077348b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\DbLinq.MySql.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\_dependencies\log4net.dll</HintPath>
@@ -59,6 +67,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +83,8 @@
     <Compile Include="Character\CharacterTemplateIDConverter.cs" />
     <Compile Include="Character\CharacterTemplateInventoryItem.cs" />
     <Compile Include="Character\CharacterTemplateManager.cs" />
+    <Compile Include="Database.cs" />
+    <Compile Include="DataContextPool.cs" />
     <Compile Include="DBConnectionSettings.cs" />
     <Compile Include="Item\ItemChance.cs" />
     <Compile Include="Item\ItemID.cs" />
