@@ -102,9 +102,60 @@ namespace DemoGame.Server
             int width = Width.HasValue ? Width.Value : (int)Math.Round(map.Width) - x;
             int height = Height.HasValue ? Height.Value : (int)Math.Round(map.Height) - y;
 
-            // NOTE: We could use validation here to ensure the rectangle fits in the map.
-            // If the width/height do not fit, shrink them down to fit. If x/y do not fit,
-            // set it to like Width/Height - 32 to fit it in. Use Log.Fatal() on all of these cases.
+            /// <summary>
+            /// Checks that the x value is not higher than the maps width. If so it will make it fit.
+            /// </summary>
+            if (x > map.Width)
+            {
+                int t = x;
+                x = map.Height - width;                
+                log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
+                    + t.ToString() + " and it has been moved to " + x.ToString() + ".");
+            }
+            /// <summary>
+            /// Checks that the x value is not negative, making it draw off the map.
+            /// </summary>
+            else if (x < 0)
+            {
+                log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
+                    + x.ToString() + " and it has been moved to 0.");
+                x = 0;
+            }
+            /// <summary>
+            /// Checks that the y value is not higher than the maps height. If so it will make it fit.
+            /// </summary>
+            else if (y > map.Height)
+            {
+                int t = y;
+                y = map.Height - height;
+                log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
+                    + t.ToString() + " and it has been moved to " + y.ToString() + ".");
+            }
+            /// <summary>
+            /// Checks that the y value is not negative, making it draw off the map.
+            /// </summary>
+            else if (y < map.Height)
+            {
+                log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
+                    + y.ToString() + " and it has been moved to 0.");
+                y = 0;
+            }
+            /// <summary>
+            /// Checks that a spawn rectangle does not exceed the width of the map.
+            /// </summary>
+            else if ((x + width) > map.Width)
+            {
+                width = map.Width - x;
+                log.Fatal("A spawn rectangle was to big and has been resized to fit into the map");
+            }
+            /// <summary>
+            /// Checks that a spawn rectangle does not exceed the height of the map.
+            /// </summary>
+            else if ((y + height) > map.Height)
+            {
+                height = map.Height - y;
+                log.Fatal("A spawn rectangle was to big and has been resized to fit into the map");
+            }
 
             return new Rectangle(x, y, width, height);
         }
