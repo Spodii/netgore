@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -102,59 +103,54 @@ namespace DemoGame.Server
             int width = Width.HasValue ? Width.Value : (int)Math.Round(map.Width) - x;
             int height = Height.HasValue ? Height.Value : (int)Math.Round(map.Height) - y;
 
-            /// <summary>
-            /// Checks that the x value is not higher than the maps width. If so it will make it fit.
-            /// </summary>
+            const string errmsgMoved = "A spawn rectangle was being drawn off of the map." +
+                " Its previous {0} location was {1} and has been moved to {2}.";
+
+            const string errmsgSize = "A spawn rectangle was to big on the {0} axis" +
+                " and has been resized to fit into the map.";
+
             if (x > map.Width)
             {
                 int t = x;
-                x = (int)(map.Height - width);                
-                log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
-                    + t + " and it has been moved to " + x + ".");
+                x = (int)(map.Height - width);
+                log.FatalFormat(errmsgMoved, "X", t, x);
+                Debug.Fail(string.Format(errmsgMoved, "X", t, x));
             }
-            /// <summary>
-            /// Checks that the x value is not negative, making it draw off the map.
-            /// </summary>
-            else if (x < 0)
+
+            if (x < 0)
             {
-                log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
-                    + x + " and it has been moved to 0.");
+                log.FatalFormat(errmsgMoved, "X", x, 0);
+                Debug.Fail(string.Format(errmsgMoved, "X", x, 0));
                 x = 0;
             }
-            /// <summary>
-            /// Checks that the y value is not higher than the maps height. If so it will make it fit.
-            /// </summary>
-            else if (y > map.Height)
+
+            if (y > map.Height)
             {
                 int t = y;
                 y = (int)(map.Height - height);
-                log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
-                    + t + " and it has been moved to " + y + ".");
+                log.FatalFormat(errmsgMoved, "Y", t, y);
+                Debug.Fail(string.Format(errmsgMoved, "Y", t, y));
             }
-            /// <summary>
-            /// Checks that the y value is not negative, making it draw off the map.
-            /// </summary>
-            else if (y < map.Height)
+
+            if (y < 0)
             {
-                log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
-                    + y + " and it has been moved to 0.");
+                log.FatalFormat(errmsgMoved, "X", x, 0);
+                Debug.Fail(string.Format(errmsgMoved, "X", x, 0));
                 y = 0;
             }
-            /// <summary>
-            /// Checks that a spawn rectangle does not exceed the width of the map.
-            /// </summary>
-            else if ((x + width) > map.Width)
+            
+            if ((x + width) > map.Width)
             {
                 width = (int)(map.Width - x);
-                log.Fatal("A spawn rectangle was to big and has been resized to fit into the map");
+                log.FatalFormat(errmsgSize, "X");
+                Debug.Fail(string.Format(errmsgSize, "X"));
             }
-            /// <summary>
-            /// Checks that a spawn rectangle does not exceed the height of the map.
-            /// </summary>
-            else if ((y + height) > map.Height)
+
+            if ((y + height) > map.Height)
             {
                 height = (int)(map.Height - y);
-                log.Fatal("A spawn rectangle was to big and has been resized to fit into the map");
+                log.FatalFormat(errmsgSize, "Y");
+                Debug.Fail(string.Format(errmsgSize, "Y"));
             }
 
             return new Rectangle(x, y, width, height);
