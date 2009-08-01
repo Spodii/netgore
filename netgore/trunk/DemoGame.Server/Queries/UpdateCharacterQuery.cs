@@ -36,7 +36,7 @@ namespace DemoGame.Server.Queries
         {
             p["@id"] = character.ID;
             p["@template_id"] = character.TemplateID;
-            p["@map"] = character.Map.Index;
+            p["@map_id"] = character.Map.Index;
             p["@x"] = character.Position.X;
             p["@y"] = character.Position.Y;
             p["@body"] = character.BodyInfo.Index;
