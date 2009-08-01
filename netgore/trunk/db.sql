@@ -1,16 +1,23 @@
 /*
-MySQL Data Transfer
-Source Host: localhost
-Source Database: demogame
-Target Host: localhost
-Target Database: demogame
-Date: 7/20/2009 12:13:06 PM
+Navicat MySQL Data Transfer
+
+Source Server         : local
+Source Server Version : 50136
+Source Host           : localhost:3306
+Source Database       : demogame
+
+Target Server Type    : MYSQL
+Target Server Version : 50136
+File Encoding         : 65001
+
+Date: 2009-08-01 13:44:32
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
--- Table structure for alliance
+-- Table structure for `alliance`
 -- ----------------------------
+DROP TABLE IF EXISTS `alliance`;
 CREATE TABLE `alliance` (
   `id` tinyint(3) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
@@ -18,11 +25,19 @@ CREATE TABLE `alliance` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for alliance_attackable
+-- Records of alliance
 -- ----------------------------
+INSERT INTO `alliance` VALUES ('0', 'user');
+INSERT INTO `alliance` VALUES ('1', 'monster');
+
+-- ----------------------------
+-- Table structure for `alliance_attackable`
+-- ----------------------------
+DROP TABLE IF EXISTS `alliance_attackable`;
 CREATE TABLE `alliance_attackable` (
   `alliance_id` tinyint(3) unsigned NOT NULL,
   `attackable_id` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`alliance_id`,`attackable_id`),
   KEY `attackable_id` (`attackable_id`),
   KEY `alliance_id` (`alliance_id`),
   CONSTRAINT `alliance_attackable_ibfk_3` FOREIGN KEY (`attackable_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -30,11 +45,19 @@ CREATE TABLE `alliance_attackable` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for alliance_hostile
+-- Records of alliance_attackable
 -- ----------------------------
+INSERT INTO `alliance_attackable` VALUES ('1', '0');
+INSERT INTO `alliance_attackable` VALUES ('0', '1');
+
+-- ----------------------------
+-- Table structure for `alliance_hostile`
+-- ----------------------------
+DROP TABLE IF EXISTS `alliance_hostile`;
 CREATE TABLE `alliance_hostile` (
   `alliance_id` tinyint(3) unsigned NOT NULL,
   `hostile_id` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`alliance_id`,`hostile_id`),
   KEY `hostile_id` (`hostile_id`),
   KEY `alliance_id` (`alliance_id`),
   CONSTRAINT `alliance_hostile_ibfk_3` FOREIGN KEY (`hostile_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -42,14 +65,21 @@ CREATE TABLE `alliance_hostile` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for character
+-- Records of alliance_hostile
 -- ----------------------------
+INSERT INTO `alliance_hostile` VALUES ('1', '0');
+INSERT INTO `alliance_hostile` VALUES ('0', '1');
+
+-- ----------------------------
+-- Table structure for `character`
+-- ----------------------------
+DROP TABLE IF EXISTS `character`;
 CREATE TABLE `character` (
   `id` int(10) unsigned NOT NULL,
   `template_id` smallint(5) unsigned DEFAULT NULL,
   `name` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `map` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `map_id` smallint(5) unsigned NOT NULL DEFAULT '1',
   `x` float NOT NULL DEFAULT '100',
   `y` float NOT NULL DEFAULT '100',
   `respawn_map` smallint(5) unsigned DEFAULT NULL,
@@ -84,16 +114,24 @@ CREATE TABLE `character` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_name` (`name`),
   KEY `template_id` (`template_id`),
-  KEY `map` (`map`),
   KEY `respawn_map` (`respawn_map`),
+  KEY `character_ibfk_2` (`map_id`),
   CONSTRAINT `character_ibfk_1` FOREIGN KEY (`template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `character_ibfk_2` FOREIGN KEY (`map`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `character_ibfk_2` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_3` FOREIGN KEY (`respawn_map`) REFERENCES `map` (`id`) ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for character_equipped
+-- Records of character
 -- ----------------------------
+INSERT INTO `character` VALUES ('1', null, 'Spodi', 'asdf', '1', '569.2', '498', '1', '500', '200', '1', '1', '17', '509', '65', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('2', '1', 'Test A', '', '2', '800', '250', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', '1', 'Test B', '', '2', '500', '250', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+
+-- ----------------------------
+-- Table structure for `character_equipped`
+-- ----------------------------
+DROP TABLE IF EXISTS `character_equipped`;
 CREATE TABLE `character_equipped` (
   `character_id` int(10) unsigned NOT NULL,
   `item_id` int(10) unsigned NOT NULL,
@@ -105,8 +143,13 @@ CREATE TABLE `character_equipped` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for character_inventory
+-- Records of character_equipped
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `character_inventory`
+-- ----------------------------
+DROP TABLE IF EXISTS `character_inventory`;
 CREATE TABLE `character_inventory` (
   `character_id` int(10) unsigned NOT NULL,
   `item_id` int(10) unsigned NOT NULL,
@@ -118,8 +161,13 @@ CREATE TABLE `character_inventory` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for character_template
+-- Records of character_inventory
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `character_template`
+-- ----------------------------
+DROP TABLE IF EXISTS `character_template`;
 CREATE TABLE `character_template` (
   `id` smallint(5) unsigned NOT NULL,
   `alliance_id` tinyint(3) unsigned NOT NULL,
@@ -157,8 +205,14 @@ CREATE TABLE `character_template` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for character_template_equipped
+-- Records of character_template
 -- ----------------------------
+INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', '1', '2', '0', '0', '0', '5', '5', '5', '5', '0', '0', '0', '0', '1', '0', '1', '1', '0', '0', '1', '0', '0', '0', '1', '0', '0');
+
+-- ----------------------------
+-- Table structure for `character_template_equipped`
+-- ----------------------------
+DROP TABLE IF EXISTS `character_template_equipped`;
 CREATE TABLE `character_template_equipped` (
   `character_id` smallint(5) unsigned NOT NULL,
   `item_id` smallint(5) unsigned NOT NULL,
@@ -170,8 +224,16 @@ CREATE TABLE `character_template_equipped` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for character_template_inventory
+-- Records of character_template_equipped
 -- ----------------------------
+INSERT INTO `character_template_equipped` VALUES ('1', '3', '10000');
+INSERT INTO `character_template_equipped` VALUES ('1', '4', '5000');
+INSERT INTO `character_template_equipped` VALUES ('1', '5', '5000');
+
+-- ----------------------------
+-- Table structure for `character_template_inventory`
+-- ----------------------------
+DROP TABLE IF EXISTS `character_template_inventory`;
 CREATE TABLE `character_template_inventory` (
   `character_id` smallint(5) unsigned NOT NULL,
   `item_id` smallint(5) unsigned NOT NULL,
@@ -185,8 +247,18 @@ CREATE TABLE `character_template_inventory` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for item
+-- Records of character_template_inventory
 -- ----------------------------
+INSERT INTO `character_template_inventory` VALUES ('1', '1', '0', '5', '10000');
+INSERT INTO `character_template_inventory` VALUES ('1', '2', '0', '1', '10000');
+INSERT INTO `character_template_inventory` VALUES ('1', '3', '1', '1', '5000');
+INSERT INTO `character_template_inventory` VALUES ('1', '4', '1', '2', '5000');
+INSERT INTO `character_template_inventory` VALUES ('1', '5', '0', '2', '10000');
+
+-- ----------------------------
+-- Table structure for `item`
+-- ----------------------------
+DROP TABLE IF EXISTS `item`;
 CREATE TABLE `item` (
   `id` int(10) unsigned NOT NULL,
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -224,8 +296,13 @@ CREATE TABLE `item` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for item_template
+-- Records of item
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for `item_template`
+-- ----------------------------
+DROP TABLE IF EXISTS `item_template`;
 CREATE TABLE `item_template` (
   `id` smallint(5) unsigned NOT NULL,
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -262,16 +339,34 @@ CREATE TABLE `item_template` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for map
+-- Records of item_template
 -- ----------------------------
+INSERT INTO `item_template` VALUES ('1', '1', '9', '16', 'Healing Potion', 'A healing potion', '127', '10', '0', '0', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item_template` VALUES ('2', '1', '9', '16', 'Mana Potion', 'A mana potion', '128', '10', '0', '0', '0', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item_template` VALUES ('3', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item_template` VALUES ('4', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '130', '50', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item_template` VALUES ('5', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '132', '50', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+
+-- ----------------------------
+-- Table structure for `map`
+-- ----------------------------
+DROP TABLE IF EXISTS `map`;
 CREATE TABLE `map` (
   `id` smallint(5) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Table structure for map_spawn
+-- Records of map
 -- ----------------------------
+INSERT INTO `map` VALUES ('1', '');
+INSERT INTO `map` VALUES ('2', '');
+
+-- ----------------------------
+-- Table structure for `map_spawn`
+-- ----------------------------
+DROP TABLE IF EXISTS `map_spawn`;
 CREATE TABLE `map_spawn` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `map_id` smallint(5) unsigned NOT NULL,
@@ -284,34 +379,11 @@ CREATE TABLE `map_spawn` (
   PRIMARY KEY (`id`),
   KEY `character_id` (`character_id`),
   CONSTRAINT `map_spawn_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Records 
+-- Records of map_spawn
 -- ----------------------------
-INSERT INTO `alliance` VALUES ('0', 'user');
-INSERT INTO `alliance` VALUES ('1', 'monster');
-INSERT INTO `alliance_attackable` VALUES ('0', '1');
-INSERT INTO `alliance_attackable` VALUES ('1', '0');
-INSERT INTO `alliance_hostile` VALUES ('0', '1');
-INSERT INTO `alliance_hostile` VALUES ('1', '0');
-INSERT INTO `character` VALUES ('1', null, 'Spodi', 'asdf', '2', '418', '466', '1', '500', '200', '1', '1', '14', '419', '50', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
-INSERT INTO `character` VALUES ('2', '1', 'Test A', '', '2', '800', '250', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', '1', 'Test B', '', '2', '500', '250', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', '1', '2', '0', '0', '0', '5', '5', '5', '5', '0', '0', '0', '0', '1', '0', '1', '1', '0', '0', '1', '0', '0', '0', '1', '0', '0');
-INSERT INTO `character_template_equipped` VALUES ('1', '3', '10000');
-INSERT INTO `character_template_equipped` VALUES ('1', '4', '5000');
-INSERT INTO `character_template_equipped` VALUES ('1', '5', '5000');
-INSERT INTO `character_template_inventory` VALUES ('1', '1', '0', '5', '10000');
-INSERT INTO `character_template_inventory` VALUES ('1', '2', '0', '1', '10000');
-INSERT INTO `character_template_inventory` VALUES ('1', '3', '1', '1', '5000');
-INSERT INTO `character_template_inventory` VALUES ('1', '4', '1', '2', '5000');
-INSERT INTO `character_template_inventory` VALUES ('1', '5', '0', '2', '10000');
-INSERT INTO `item_template` VALUES ('1', '1', '9', '16', 'Healing Potion', 'A healing potion', '127', '10', '0', '0', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('2', '1', '9', '16', 'Mana Potion', 'A mana potion', '128', '10', '0', '0', '0', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('3', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('4', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '130', '50', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('5', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '132', '50', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `map` VALUES ('1');
-INSERT INTO `map` VALUES ('2');
-INSERT INTO `map_spawn` VALUES ('1', '1', '1', '5', null, null, null, null);
+INSERT INTO `map_spawn` VALUES ('12', '1', '1', '1', null, null, null, null);
+INSERT INTO `map_spawn` VALUES ('13', '1', '1', '1', null, null, null, null);
+INSERT INTO `map_spawn` VALUES ('14', '1', '1', '1', null, null, null, null);
