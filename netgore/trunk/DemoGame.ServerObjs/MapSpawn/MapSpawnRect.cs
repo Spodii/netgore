@@ -108,9 +108,9 @@ namespace DemoGame.Server
             if (x > map.Width)
             {
                 int t = x;
-                x = map.Height - width;                
+                x = (int)(map.Height - width);                
                 log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
-                    + t.ToString() + " and it has been moved to " + x.ToString() + ".");
+                    + t + " and it has been moved to " + x + ".");
             }
             /// <summary>
             /// Checks that the x value is not negative, making it draw off the map.
@@ -118,7 +118,7 @@ namespace DemoGame.Server
             else if (x < 0)
             {
                 log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
-                    + x.ToString() + " and it has been moved to 0.");
+                    + x + " and it has been moved to 0.");
                 x = 0;
             }
             /// <summary>
@@ -127,9 +127,9 @@ namespace DemoGame.Server
             else if (y > map.Height)
             {
                 int t = y;
-                y = map.Height - height;
+                y = (int)(map.Height - height);
                 log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
-                    + t.ToString() + " and it has been moved to " + y.ToString() + ".");
+                    + t + " and it has been moved to " + y + ".");
             }
             /// <summary>
             /// Checks that the y value is not negative, making it draw off the map.
@@ -137,7 +137,7 @@ namespace DemoGame.Server
             else if (y < map.Height)
             {
                 log.Fatal("A spawn rectangle was being drawn off of the map. Its previous location was "
-                    + y.ToString() + " and it has been moved to 0.");
+                    + y + " and it has been moved to 0.");
                 y = 0;
             }
             /// <summary>
@@ -145,7 +145,7 @@ namespace DemoGame.Server
             /// </summary>
             else if ((x + width) > map.Width)
             {
-                width = map.Width - x;
+                width = (int)(map.Width - x);
                 log.Fatal("A spawn rectangle was to big and has been resized to fit into the map");
             }
             /// <summary>
@@ -153,7 +153,7 @@ namespace DemoGame.Server
             /// </summary>
             else if ((y + height) > map.Height)
             {
-                height = map.Height - y;
+                height = (int)(map.Height - y);
                 log.Fatal("A spawn rectangle was to big and has been resized to fit into the map");
             }
 
