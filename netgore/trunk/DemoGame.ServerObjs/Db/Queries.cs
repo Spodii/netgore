@@ -1,0 +1,46 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Data.Objects;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using NetGore.DbEntities;
+
+// TODO: Rename DbQueries to Queries after I get rid of the namespace NetGore.Server.Queries
+
+namespace DemoGame.Server.Db
+{
+    /// <summary>
+    /// The master class for all of the custom, reusable queries. Try to keep all common queries in this
+    /// class so custom queries can be grouped together as much as possible.
+    /// </summary>
+    public static class DbQueries
+    {
+        /// <summary>
+        /// The QueryHelper used to help execute the queries.
+        /// </summary>
+        static readonly QueryHelper _qh = QueryHelper.Instance;
+
+        /// <summary>
+        /// Queries that focus on the Alliance.
+        /// </summary>
+        public static class Alliance
+        {
+            static readonly Func<DatabaseEntities, int, alliance> _getAlliance =
+                CompiledQuery.Compile((DatabaseEntities db, int id) => db.alliance.First(x => x.id == id));
+
+            /// <summary>
+            /// Gets the data for an Alliance.
+            /// </summary>
+            /// <param name="id">ID of the Alliance to get the data for.</param>
+            /// <returns>The data for the Alliance with the given <paramref name="id"/>.</returns>
+            public static alliance GetAlliance(AllianceID id)
+            {
+                var ret = _qh.Invoke(_getAlliance, (int)id);
+                Debug.Assert(ret != null);
+                Debug.Assert(ret.id == id);
+                return ret;
+            }
+        }
+    }
+}
