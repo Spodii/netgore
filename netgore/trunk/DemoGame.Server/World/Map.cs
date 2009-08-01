@@ -25,7 +25,7 @@ namespace DemoGame.Server
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly SafeEnumerator<NPC> _npcEnumerator;
-        readonly List<NPC> _npcs;
+        readonly List<NPC> _npcs = new List<NPC>();
 
         /// <summary>
         /// IEnumerable of the NPCSpawners on this Map.
@@ -33,7 +33,7 @@ namespace DemoGame.Server
         readonly IEnumerable<NPCSpawner> _npcSpawners;
 
         readonly SafeEnumerator<User> _userEnumerator;
-        readonly TSList<User> _users;
+        readonly TSList<User> _users = new TSList<User>();
         readonly World _world;
         bool _disposed;
 
@@ -100,10 +100,7 @@ namespace DemoGame.Server
         {
             _world = world;
 
-            _npcs = new List<NPC>();
             _npcEnumerator = new SafeEnumerator<NPC>(_npcs);
-
-            _users = new TSList<User>();
             _userEnumerator = new SafeEnumerator<User>(_users);
 
             Load(ContentPaths.Build, true);
