@@ -45,6 +45,15 @@ namespace DemoGame.Server.Db
                 return result;
             }
 
+            static readonly Func<DatabaseEntities, int, IQueryable<alliance_attackable>> _getAllianceAttackable =
+                CompiledQuery.Compile((DatabaseEntities db, int id) => db.alliance_attackable.Where(x => x.alliance_id == id));
+
+            public static IEnumerable<alliance_attackable> GetAllianceAttackable(AllianceID id)
+            {
+                var result = _qh.InvokeAndSelectMany(_getAllianceAttackable, x => x, (int)id);
+                return result;
+            }
+
             /// <summary>
             /// Gets all of the AllianceIDs.
             /// </summary>

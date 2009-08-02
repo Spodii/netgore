@@ -103,8 +103,6 @@
     <Compile Include="Queries\Map\MapQueryHelper.cs" />
     <Compile Include="Queries\Map\Spawn\DeleteMapSpawnQuery.cs" />
     <Compile Include="Queries\Map\UpdateMapQuery.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceAttackableQuery.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceAttackableQueryValues.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceHostileQuery.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceHostileQueryValues.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceQueryValues.cs" />
