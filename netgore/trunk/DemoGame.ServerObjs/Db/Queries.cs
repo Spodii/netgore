@@ -55,7 +55,7 @@ namespace DemoGame.Server.Db
             /// <returns>The Alliances that are attackable by the given Alliance.</returns>
             public static IEnumerable<alliance_attackable> GetAllianceAttackable(AllianceID id)
             {
-                var result = _qh.InvokeAndSelectMany(_getAllianceAttackable, x => x, (int)id);
+                var result = _qh.InvokeMany(_getAllianceAttackable, (int)id);
                 return result;
             }
 

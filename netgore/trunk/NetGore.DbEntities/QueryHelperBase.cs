@@ -147,10 +147,11 @@ namespace NetGore.DbEntities
         /// <typeparam name="TArg0">The first argument type.</typeparam>
         /// <param name="func">The CompiledQuery Func to invoke.</param>
         /// <param name="selector">The Func used to transform type <typeparamref name="TRet"/>
-        /// <param name="arg0">The first argument.</param>
         /// into <typeparamref name="TSelectRet"/>.</param>
+        /// <param name="arg0">The first argument.</param>
         /// <returns>The return of the <paramref name="func"/> query as type <typeparamref name="TSelectRet"/>.</returns>
-        public IEnumerable<TSelectRet> InvokeAndSelectMany<TRet, TSelectRet, TArg0>(Func<TObjContext, TArg0, IQueryable<TRet>> func, Func<TRet, TSelectRet> selector, TArg0 arg0)
+        public IEnumerable<TSelectRet> InvokeAndSelectMany<TRet, TSelectRet, TArg0>(
+            Func<TObjContext, TArg0, IQueryable<TRet>> func, Func<TRet, TSelectRet> selector, TArg0 arg0)
         {
             IEnumerable<TSelectRet> ret;
 
@@ -171,9 +172,9 @@ namespace NetGore.DbEntities
         /// <typeparam name="TArg1">The second argument type.</typeparam>
         /// <param name="func">The CompiledQuery Func to invoke.</param>
         /// <param name="selector">The Func used to transform type <typeparamref name="TRet"/>
+        /// into <typeparamref name="TSelectRet"/>.</param>
         /// <param name="arg0">The first argument.</param>
         /// <param name="arg1">The second argument.</param>
-        /// into <typeparamref name="TSelectRet"/>.</param>
         /// <returns>The return of the <paramref name="func"/> query as type <typeparamref name="TSelectRet"/>.</returns>
         public IEnumerable<TSelectRet> InvokeAndSelectMany<TRet, TSelectRet, TArg0, TArg1>(
             Func<TObjContext, TArg0, TArg1, IQueryable<TRet>> func, Func<TRet, TSelectRet> selector, TArg0 arg0, TArg1 arg1)
@@ -198,10 +199,10 @@ namespace NetGore.DbEntities
         /// <typeparam name="TArg2">The third argument type.</typeparam>
         /// <param name="func">The CompiledQuery Func to invoke.</param>
         /// <param name="selector">The Func used to transform type <typeparamref name="TRet"/>
+        /// into <typeparamref name="TSelectRet"/>.</param>
         /// <param name="arg0">The first argument.</param>
         /// <param name="arg1">The second argument.</param>
         /// <param name="arg2">The third argument.</param>
-        /// into <typeparamref name="TSelectRet"/>.</param>
         /// <returns>The return of the <paramref name="func"/> query as type <typeparamref name="TSelectRet"/>.</returns>
         public IEnumerable<TSelectRet> InvokeAndSelectMany<TRet, TSelectRet, TArg0, TArg1, TArg2>(
             Func<TObjContext, TArg0, TArg1, TArg2, IQueryable<TRet>> func, Func<TRet, TSelectRet> selector, TArg0 arg0, TArg1 arg1,
@@ -215,6 +216,108 @@ namespace NetGore.DbEntities
                 ret = SelectIQueryableToIEnumerable(results, selector);
             }
             return ret;
+        }
+
+        /// <summary>
+        /// Assists in invoking a Func created with CompiledQuery that returns multiple results.
+        /// </summary>
+        /// <typeparam name="TRet">The query return type.</typeparam>
+        /// <param name="func">The CompiledQuery Func to invoke.</param>
+        /// <returns>An IEnumerable of the results from the <paramref name="func"/> query.</returns>
+        public IEnumerable<TRet> InvokeMany<TRet>(Func<TObjContext, IQueryable<TRet>> func)
+        {
+            IEnumerable<TRet> ret;
+
+            using (TObjContext db = GetObjectContext())
+            {
+                var results = func.Invoke(db);
+                ret = IQueryableToIEnumerable(results);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Assists in invoking a Func created with CompiledQuery that returns multiple results.
+        /// </summary>
+        /// <typeparam name="TRet">The query return type.</typeparam>
+        /// <typeparam name="TArg0">The first argument type.</typeparam>
+        /// <param name="func">The CompiledQuery Func to invoke.</param>
+        /// <param name="arg0">The first argument.</param>
+        /// <returns>An IEnumerable of the results from the <paramref name="func"/> query.</returns>
+        public IEnumerable<TRet> InvokeMany<TRet, TArg0>(Func<TObjContext, TArg0, IQueryable<TRet>> func, TArg0 arg0)
+        {
+            IEnumerable<TRet> ret;
+
+            using (TObjContext db = GetObjectContext())
+            {
+                var results = func.Invoke(db, arg0);
+                ret = IQueryableToIEnumerable(results);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Assists in invoking a Func created with CompiledQuery that returns multiple results.
+        /// </summary>
+        /// <typeparam name="TRet">The query return type.</typeparam>
+        /// <typeparam name="TArg0">The first argument type.</typeparam>
+        /// <typeparam name="TArg1">The second argument type.</typeparam>
+        /// <param name="func">The CompiledQuery Func to invoke.</param>
+        /// <param name="arg0">The first argument.</param>
+        /// <param name="arg1">The second argument.</param>
+        /// <returns>An IEnumerable of the results from the <paramref name="func"/> query.</returns>
+        public IEnumerable<TRet> InvokeMany<TRet, TArg0, TArg1>(Func<TObjContext, TArg0, TArg1, IQueryable<TRet>> func, TArg0 arg0,
+                                                                TArg1 arg1)
+        {
+            IEnumerable<TRet> ret;
+
+            using (TObjContext db = GetObjectContext())
+            {
+                var results = func.Invoke(db, arg0, arg1);
+                ret = IQueryableToIEnumerable(results);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Assists in invoking a Func created with CompiledQuery that returns multiple results.
+        /// </summary>
+        /// <typeparam name="TRet">The query return type.</typeparam>
+        /// <typeparam name="TArg0">The first argument type.</typeparam>
+        /// <typeparam name="TArg1">The second argument type.</typeparam>
+        /// <typeparam name="TArg2">The third argument type.</typeparam>
+        /// <param name="func">The CompiledQuery Func to invoke.</param>
+        /// <param name="arg0">The first argument.</param>
+        /// <param name="arg1">The second argument.</param>
+        /// <param name="arg2">The third argument.</param>
+        /// <returns>An IEnumerable of the results from the <paramref name="func"/> query.</returns>
+        public IEnumerable<TRet> InvokeMany<TRet, TArg0, TArg1, TArg2>(
+            Func<TObjContext, TArg0, TArg1, TArg2, IQueryable<TRet>> func, TArg0 arg0, TArg1 arg1, TArg2 arg2)
+        {
+            IEnumerable<TRet> ret;
+
+            using (TObjContext db = GetObjectContext())
+            {
+                var results = func.Invoke(db, arg0, arg1, arg2);
+                ret = IQueryableToIEnumerable(results);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Takes an IQueryable with elements of type <typeparamref name="T"/> and converts it to an IEnumerable.
+        /// </summary>
+        /// <typeparam name="T">The query type.</typeparam>
+        /// <param name="queryable">The IQueryable contianing the elements to process.</param>
+        /// <returns>An IEnumerable containing the elements found in <paramref name="queryable"/>.</returns>
+// ReSharper disable SuggestBaseTypeForParameter
+        static IEnumerable<T> IQueryableToIEnumerable<T>(IQueryable<T> queryable) // ReSharper restore SuggestBaseTypeForParameter
+        {
+            return queryable.ToArray();
         }
 
         /// <summary>
