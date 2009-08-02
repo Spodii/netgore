@@ -29,6 +29,9 @@ namespace DemoGame.Server.Db
             static readonly Func<DatabaseEntities, int, alliance> _getAlliance =
                 CompiledQuery.Compile((DatabaseEntities db, int id) => db.alliance.First(x => x.id == id));
 
+            static readonly Func<DatabaseEntities, IQueryable<byte>> _getAllianceIDs =
+                CompiledQuery.Compile((DatabaseEntities db) => db.alliance.Select(x => x.id));
+
             /// <summary>
             /// Gets the data for an Alliance.
             /// </summary>
@@ -36,10 +39,21 @@ namespace DemoGame.Server.Db
             /// <returns>The data for the Alliance with the given <paramref name="id"/>.</returns>
             public static alliance GetAlliance(AllianceID id)
             {
-                var ret = _qh.Invoke(_getAlliance, (int)id);
-                Debug.Assert(ret != null);
-                Debug.Assert(ret.id == id);
-                return ret;
+                var result = _qh.Invoke(_getAlliance, (int)id);
+                Debug.Assert(result != null);
+                Debug.Assert(result.id == id);
+                return result;
+            }
+
+            /// <summary>
+            /// Gets all of the AllianceIDs.
+            /// </summary>
+            /// <returns>All of the AllianceIDs.</returns>
+            public static IEnumerable<AllianceID> GetAllianceIDs()
+            {
+                var result = _qh.InvokeAndSelectMany(_getAllianceIDs, x => new AllianceID(x));
+                Debug.Assert(result.Count() > 0);
+                return result;
             }
         }
     }

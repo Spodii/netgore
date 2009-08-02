@@ -144,7 +144,7 @@ namespace DemoGame.Server
         static void LoadAll()
         {
             // Grab all IDs
-            var allianceIDs = DBController.GetQuery<SelectAllianceIDsQuery>().Execute();
+            var allianceIDs = DbQueries.Alliance.GetAllianceIDs();
 
             // Load each alliance
             foreach (AllianceID allianceID in allianceIDs)
