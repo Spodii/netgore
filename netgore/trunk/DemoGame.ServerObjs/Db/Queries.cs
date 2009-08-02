@@ -48,6 +48,11 @@ namespace DemoGame.Server.Db
             static readonly Func<DatabaseEntities, int, IQueryable<alliance_attackable>> _getAllianceAttackable =
                 CompiledQuery.Compile((DatabaseEntities db, int id) => db.alliance_attackable.Where(x => x.alliance_id == id));
 
+            /// <summary>
+            /// Gets the attackable Alliances for the given Alliance.
+            /// </summary>
+            /// <param name="id">ID of the Alliance to find the attackable Alliances for.</param>
+            /// <returns>The Alliances that are attackable by the given Alliance.</returns>
             public static IEnumerable<alliance_attackable> GetAllianceAttackable(AllianceID id)
             {
                 var result = _qh.InvokeAndSelectMany(_getAllianceAttackable, x => x, (int)id);
