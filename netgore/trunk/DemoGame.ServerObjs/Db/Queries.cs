@@ -48,6 +48,20 @@ namespace DemoGame.Server.Db
             static readonly Func<DatabaseEntities, int, IQueryable<alliance_attackable>> _getAllianceAttackable =
                 CompiledQuery.Compile((DatabaseEntities db, int id) => db.alliance_attackable.Where(x => x.alliance_id == id));
 
+            static readonly Func<DatabaseEntities, int, IQueryable<alliance_hostile>> _getAllianceHostile =
+                CompiledQuery.Compile((DatabaseEntities db, int id) => db.alliance_hostile.Where(x => x.alliance_id == id));
+
+            /// <summary>
+            /// Gets the Alliances that the given Alliance is hostile towards by default.
+            /// </summary>
+            /// <param name="id">ID of the Alliance to find the hostile Alliances for.</param>
+            /// <returns>The Alliances that the given Alliance is hostile towards by default.</returns>
+            public static IEnumerable<alliance_hostile> GetAllianceHostile(AllianceID id)
+            {
+                var result = _qh.InvokeMany(_getAllianceHostile, (int)id);
+                return result;
+            }
+
             /// <summary>
             /// Gets the attackable Alliances for the given Alliance.
             /// </summary>
