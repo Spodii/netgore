@@ -62,8 +62,6 @@ namespace DemoGame.Server
             if (dbController == null)
                 throw new ArgumentNullException("dbController");
 
-            if (!AllianceManager.IsInitialized)
-                AllianceManager.Initialize(dbController);
             if (!ItemTemplateManager.IsInitialized)
                 ItemTemplateManager.Initialize(dbController);
 

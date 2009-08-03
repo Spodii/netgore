@@ -29,11 +29,6 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Gets if this class has been initialized.
-        /// </summary>
-        public static bool IsInitialized { get; private set; }
-
-        /// <summary>
         /// Adds an Alliance to this AllianceManager.
         /// </summary>
         /// <param name="alliance">Alliance to add.</param>
@@ -110,17 +105,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Initializes the AllianceManager. Must be called before anything else.
+        /// AllianceManager static constructor.
         /// </summary>
-        /// <param name="dbController">DBController for the database holding the alliance information.</param>
-        public static void Initialize(DBController dbController)
+        static AllianceManager()
         {
-            // TODO: Auto-initialize through static constructor
-            if (IsInitialized)
-                return;
-
-            IsInitialized = true;
-
             // Load the alliances
             LoadAll();
         }
@@ -144,11 +132,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Loads a single Alliance.
+        /// Loads a single Alliance from the Database.
         /// </summary>
         /// <param name="id">ID of the Alliance to load.</param>
         /// <returns>The loaded Alliance.</returns>
-        public static Alliance LoadAlliance(AllianceID id)
+        static Alliance LoadAlliance(AllianceID id)
         {
             var values = DbQueries.Alliance.GetAlliance(id);
             var attackableIDs = DbQueries.Alliance.GetAllianceAttackable(id).Select(x => new AllianceID(x.attackable_id));

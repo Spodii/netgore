@@ -110,7 +110,6 @@ namespace DemoGame.Server
             // Load the game data and such
             GameData.Load();
             ItemEntity.Initialize(DBController);
-            AllianceManager.Initialize(DBController);
             ItemTemplateManager.Initialize(DBController);
             CharacterTemplateManager.Initialize(DBController);
             InitializeScripts();
