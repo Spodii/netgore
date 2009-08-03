@@ -33,12 +33,24 @@ namespace NetGore.DbEntities
         protected abstract TObjContext GetObjectContext();
 
         /// <summary>
+        /// Takes an IQueryable with elements of type <typeparamref name="T"/> and converts it to an IEnumerable.
+        /// </summary>
+        /// <typeparam name="T">The query type.</typeparam>
+        /// <param name="queryable">The IQueryable contianing the elements to process.</param>
+        /// <returns>An IEnumerable containing the elements found in <paramref name="queryable"/>.</returns>
+// ReSharper disable SuggestBaseTypeForParameter
+        static IEnumerable<T> IQueryableToIEnumerable<T>(IQueryable<T> queryable) // ReSharper restore SuggestBaseTypeForParameter
+        {
+            return queryable.ToArray();
+        }
+
+        /// <summary>
         /// Assists in invoking a Func created with CompiledQuery.
         /// </summary>
         /// <typeparam name="TRet">The return type.</typeparam>
         /// <param name="func">The Func to invoke.</param>
         /// <returns>The return value of the Func.</returns>
-        public TRet Invoke<TRet>(Func<TObjContext, TRet> func)
+        public TRet Read<TRet>(Func<TObjContext, TRet> func)
         {
             EnsureNotIQueryable(func);
 
@@ -58,7 +70,7 @@ namespace NetGore.DbEntities
         /// <param name="func">The Func to invoke.</param>
         /// <param name="arg0">The first argument.</param>
         /// <returns>The return value of the Func.</returns>
-        public TRet Invoke<TRet, TArg0>(Func<TObjContext, TArg0, TRet> func, TArg0 arg0)
+        public TRet Read<TRet, TArg0>(Func<TObjContext, TArg0, TRet> func, TArg0 arg0)
         {
             EnsureNotIQueryable(func);
 
@@ -80,7 +92,7 @@ namespace NetGore.DbEntities
         /// <param name="arg0">The first argument.</param>
         /// <param name="arg1">The second argument.</param>
         /// <returns>The return value of the Func.</returns>
-        public TRet Invoke<TRet, TArg0, TArg1>(Func<TObjContext, TArg0, TArg1, TRet> func, TArg0 arg0, TArg1 arg1)
+        public TRet Read<TRet, TArg0, TArg1>(Func<TObjContext, TArg0, TArg1, TRet> func, TArg0 arg0, TArg1 arg1)
         {
             EnsureNotIQueryable(func);
 
@@ -104,8 +116,8 @@ namespace NetGore.DbEntities
         /// <param name="arg1">The second argument.</param>
         /// <param name="arg2">The third argument.</param>
         /// <returns>The return value of the Func.</returns>
-        public TRet Invoke<TRet, TArg0, TArg1, TArg2>(Func<TObjContext, TArg0, TArg1, TArg2, TRet> func, TArg0 arg0, TArg1 arg1,
-                                                      TArg2 arg2)
+        public TRet Read<TRet, TArg0, TArg1, TArg2>(Func<TObjContext, TArg0, TArg1, TArg2, TRet> func, TArg0 arg0, TArg1 arg1,
+                                                    TArg2 arg2)
         {
             EnsureNotIQueryable(func);
 
@@ -126,8 +138,8 @@ namespace NetGore.DbEntities
         /// <param name="selector">The Func used to transform type <typeparamref name="TRet"/>
         /// into <typeparamref name="TSelectRet"/>.</param>
         /// <returns>The return of the <paramref name="func"/> query as type <typeparamref name="TSelectRet"/>.</returns>
-        public IEnumerable<TSelectRet> InvokeAndSelectMany<TRet, TSelectRet>(Func<TObjContext, IQueryable<TRet>> func,
-                                                                             Func<TRet, TSelectRet> selector)
+        public IEnumerable<TSelectRet> ReadAndSelectMany<TRet, TSelectRet>(Func<TObjContext, IQueryable<TRet>> func,
+                                                                           Func<TRet, TSelectRet> selector)
         {
             IEnumerable<TSelectRet> ret;
 
@@ -150,8 +162,8 @@ namespace NetGore.DbEntities
         /// into <typeparamref name="TSelectRet"/>.</param>
         /// <param name="arg0">The first argument.</param>
         /// <returns>The return of the <paramref name="func"/> query as type <typeparamref name="TSelectRet"/>.</returns>
-        public IEnumerable<TSelectRet> InvokeAndSelectMany<TRet, TSelectRet, TArg0>(
-            Func<TObjContext, TArg0, IQueryable<TRet>> func, Func<TRet, TSelectRet> selector, TArg0 arg0)
+        public IEnumerable<TSelectRet> ReadAndSelectMany<TRet, TSelectRet, TArg0>(Func<TObjContext, TArg0, IQueryable<TRet>> func,
+                                                                                  Func<TRet, TSelectRet> selector, TArg0 arg0)
         {
             IEnumerable<TSelectRet> ret;
 
@@ -176,7 +188,7 @@ namespace NetGore.DbEntities
         /// <param name="arg0">The first argument.</param>
         /// <param name="arg1">The second argument.</param>
         /// <returns>The return of the <paramref name="func"/> query as type <typeparamref name="TSelectRet"/>.</returns>
-        public IEnumerable<TSelectRet> InvokeAndSelectMany<TRet, TSelectRet, TArg0, TArg1>(
+        public IEnumerable<TSelectRet> ReadAndSelectMany<TRet, TSelectRet, TArg0, TArg1>(
             Func<TObjContext, TArg0, TArg1, IQueryable<TRet>> func, Func<TRet, TSelectRet> selector, TArg0 arg0, TArg1 arg1)
         {
             IEnumerable<TSelectRet> ret;
@@ -204,7 +216,7 @@ namespace NetGore.DbEntities
         /// <param name="arg1">The second argument.</param>
         /// <param name="arg2">The third argument.</param>
         /// <returns>The return of the <paramref name="func"/> query as type <typeparamref name="TSelectRet"/>.</returns>
-        public IEnumerable<TSelectRet> InvokeAndSelectMany<TRet, TSelectRet, TArg0, TArg1, TArg2>(
+        public IEnumerable<TSelectRet> ReadAndSelectMany<TRet, TSelectRet, TArg0, TArg1, TArg2>(
             Func<TObjContext, TArg0, TArg1, TArg2, IQueryable<TRet>> func, Func<TRet, TSelectRet> selector, TArg0 arg0, TArg1 arg1,
             TArg2 arg2)
         {
@@ -224,7 +236,7 @@ namespace NetGore.DbEntities
         /// <typeparam name="TRet">The query return type.</typeparam>
         /// <param name="func">The CompiledQuery Func to invoke.</param>
         /// <returns>An IEnumerable of the results from the <paramref name="func"/> query.</returns>
-        public IEnumerable<TRet> InvokeMany<TRet>(Func<TObjContext, IQueryable<TRet>> func)
+        public IEnumerable<TRet> ReadMany<TRet>(Func<TObjContext, IQueryable<TRet>> func)
         {
             IEnumerable<TRet> ret;
 
@@ -245,7 +257,7 @@ namespace NetGore.DbEntities
         /// <param name="func">The CompiledQuery Func to invoke.</param>
         /// <param name="arg0">The first argument.</param>
         /// <returns>An IEnumerable of the results from the <paramref name="func"/> query.</returns>
-        public IEnumerable<TRet> InvokeMany<TRet, TArg0>(Func<TObjContext, TArg0, IQueryable<TRet>> func, TArg0 arg0)
+        public IEnumerable<TRet> ReadMany<TRet, TArg0>(Func<TObjContext, TArg0, IQueryable<TRet>> func, TArg0 arg0)
         {
             IEnumerable<TRet> ret;
 
@@ -268,8 +280,8 @@ namespace NetGore.DbEntities
         /// <param name="arg0">The first argument.</param>
         /// <param name="arg1">The second argument.</param>
         /// <returns>An IEnumerable of the results from the <paramref name="func"/> query.</returns>
-        public IEnumerable<TRet> InvokeMany<TRet, TArg0, TArg1>(Func<TObjContext, TArg0, TArg1, IQueryable<TRet>> func, TArg0 arg0,
-                                                                TArg1 arg1)
+        public IEnumerable<TRet> ReadMany<TRet, TArg0, TArg1>(Func<TObjContext, TArg0, TArg1, IQueryable<TRet>> func, TArg0 arg0,
+                                                              TArg1 arg1)
         {
             IEnumerable<TRet> ret;
 
@@ -294,7 +306,7 @@ namespace NetGore.DbEntities
         /// <param name="arg1">The second argument.</param>
         /// <param name="arg2">The third argument.</param>
         /// <returns>An IEnumerable of the results from the <paramref name="func"/> query.</returns>
-        public IEnumerable<TRet> InvokeMany<TRet, TArg0, TArg1, TArg2>(
+        public IEnumerable<TRet> ReadMany<TRet, TArg0, TArg1, TArg2>(
             Func<TObjContext, TArg0, TArg1, TArg2, IQueryable<TRet>> func, TArg0 arg0, TArg1 arg1, TArg2 arg2)
         {
             IEnumerable<TRet> ret;
@@ -306,18 +318,6 @@ namespace NetGore.DbEntities
             }
 
             return ret;
-        }
-
-        /// <summary>
-        /// Takes an IQueryable with elements of type <typeparamref name="T"/> and converts it to an IEnumerable.
-        /// </summary>
-        /// <typeparam name="T">The query type.</typeparam>
-        /// <param name="queryable">The IQueryable contianing the elements to process.</param>
-        /// <returns>An IEnumerable containing the elements found in <paramref name="queryable"/>.</returns>
-// ReSharper disable SuggestBaseTypeForParameter
-        static IEnumerable<T> IQueryableToIEnumerable<T>(IQueryable<T> queryable) // ReSharper restore SuggestBaseTypeForParameter
-        {
-            return queryable.ToArray();
         }
 
         /// <summary>
