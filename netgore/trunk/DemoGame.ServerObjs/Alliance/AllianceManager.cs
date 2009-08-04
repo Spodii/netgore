@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
-using DemoGame.Server.Db;
 using DemoGame.Server.Queries;
 using log4net;
-using System.Linq;
 using NetGore.Collections;
 
 namespace DemoGame.Server
@@ -27,6 +25,21 @@ namespace DemoGame.Server
             new Dictionary<string, Alliance>(StringComparer.OrdinalIgnoreCase);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        static DBController _dbController;
+
+        /// <summary>
+        /// Gets the DBController used by this AllianceManager.
+        /// </summary>
+        public static DBController DBController
+        {
+            get { return _dbController; }
+        }
+
+        /// <summary>
+        /// Gets if this class has been initialized.
+        /// </summary>
+        public static bool IsInitialized { get; private set; }
 
         /// <summary>
         /// Adds an Alliance to this AllianceManager.
@@ -105,10 +118,21 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// AllianceManager static constructor.
+        /// Initializes the AllianceManager. Must be called before anything else.
         /// </summary>
-        static AllianceManager()
+        /// <param name="dbController">DBController for the database holding the alliance information.</param>
+        public static void Initialize(DBController dbController)
         {
+            if (IsInitialized)
+                return;
+
+            IsInitialized = true;
+
+            if (dbController == null)
+                throw new ArgumentNullException("dbController");
+
+            _dbController = dbController;
+
             // Load the alliances
             LoadAll();
         }
@@ -119,12 +143,12 @@ namespace DemoGame.Server
         static void LoadAll()
         {
             // Grab all IDs
-            var allianceIDs = DbQueries.Alliance.GetAllianceIDs();
+            var allianceIDs = DBController.GetQuery<SelectAllianceIDsQuery>().Execute();
 
             // Load each alliance
             foreach (AllianceID allianceID in allianceIDs)
             {
-                Alliance alliance = LoadAlliance(allianceID);
+                Alliance alliance = LoadAlliance(DBController, allianceID);
                 Add(alliance);
             }
 
@@ -132,17 +156,22 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Loads a single Alliance from the Database.
+        /// Loads a single Alliance.
         /// </summary>
+        /// <param name="dbController">DBController used to communicate with the database.</param>
         /// <param name="id">ID of the Alliance to load.</param>
         /// <returns>The loaded Alliance.</returns>
-        static Alliance LoadAlliance(AllianceID id)
+        public static Alliance LoadAlliance(DBController dbController, AllianceID id)
         {
-            var values = DbQueries.Alliance.GetAlliance(id);
-            var attackableIDs = DbQueries.Alliance.GetAllianceAttackable(id).Select(x => new AllianceID(x.attackable_id));
-            var hostileIDs = DbQueries.Alliance.GetAllianceHostile(id).Select(x => new AllianceID(x.hostile_id));
+            SelectAllianceQueryValues values = dbController.GetQuery<SelectAllianceQuery>().Execute(id);
+            SelectAllianceAttackableQueryValues attackableIDs = dbController.GetQuery<SelectAllianceAttackableQuery>().Execute(id);
+            SelectAllianceHostileQueryValues hostileIDs = dbController.GetQuery<SelectAllianceHostileQuery>().Execute(id);
 
-            Alliance alliance = new Alliance(id, values.name, attackableIDs, hostileIDs);
+            Debug.Assert(id == values.ID);
+            Debug.Assert(id == attackableIDs.AllianceID);
+            Debug.Assert(id == hostileIDs.AllianceID);
+
+            Alliance alliance = new Alliance(id, values.Name, attackableIDs.AttackableIDs, hostileIDs.HostileIDs);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded Alliance `{0}`.", alliance);
