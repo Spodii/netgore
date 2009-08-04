@@ -9,10 +9,6 @@
 //------------------------------------------------------------------------------
 
 [assembly: global::System.Data.Objects.DataClasses.EdmSchemaAttribute()]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "alliance_attackable_ibfk_3", "alliance", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DemoGame.Server.Db.alliance), "alliance_attackable", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.alliance_attackable))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "alliance_attackable_ibfk_4", "alliance", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DemoGame.Server.Db.alliance), "alliance_attackable", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.alliance_attackable))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "alliance_hostile_ibfk_3", "alliance", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DemoGame.Server.Db.alliance), "alliance_hostile", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.alliance_hostile))]
-[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "alliance_hostile_ibfk_4", "alliance", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DemoGame.Server.Db.alliance), "alliance_hostile", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.alliance_hostile))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "character_template_ibfk_2", "alliance", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DemoGame.Server.Db.alliance), "character_template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.character_template))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "character_equipped_ibfk_4", "character", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DemoGame.Server.Db.character), "character_equipped", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.character_equipped))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "character_ibfk_1", "character_template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.ZeroOrOne, typeof(DemoGame.Server.Db.character_template), "character", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.character))]
@@ -24,10 +20,12 @@
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "map_spawn_ibfk_1", "character_template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DemoGame.Server.Db.character_template), "map_spawn", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.map_spawn))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "character_template_equipped_ibfk_3", "item_template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DemoGame.Server.Db.item_template), "character_template_equipped", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.character_template_equipped))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "character_template_inventory_ibfk_2", "item_template", global::System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(DemoGame.Server.Db.item_template), "character_template_inventory", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.character_template_inventory))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "alliance_attackable", "alliance", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.alliance), "alliance1", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.alliance))]
+[assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "alliance_hostile", "alliance", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.alliance), "alliance1", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.alliance))]
 [assembly: global::System.Data.Objects.DataClasses.EdmRelationshipAttribute("DatabaseModel", "character_inventory", "item", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.item), "character", global::System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(DemoGame.Server.Db.character))]
 
 // Original file name:
-// Generation date: 8/2/2009 12:43:37 PM
+// Generation date: 7/27/2009 1:22:20 PM
 namespace DemoGame.Server.Db
 {
     
@@ -76,36 +74,6 @@ namespace DemoGame.Server.Db
             }
         }
         private global::System.Data.Objects.ObjectQuery<alliance> _alliance;
-        /// <summary>
-        /// There are no comments for alliance_attackable in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectQuery<alliance_attackable> alliance_attackable
-        {
-            get
-            {
-                if ((this._alliance_attackable == null))
-                {
-                    this._alliance_attackable = base.CreateQuery<alliance_attackable>("[alliance_attackable]");
-                }
-                return this._alliance_attackable;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<alliance_attackable> _alliance_attackable;
-        /// <summary>
-        /// There are no comments for alliance_hostile in the schema.
-        /// </summary>
-        public global::System.Data.Objects.ObjectQuery<alliance_hostile> alliance_hostile
-        {
-            get
-            {
-                if ((this._alliance_hostile == null))
-                {
-                    this._alliance_hostile = base.CreateQuery<alliance_hostile>("[alliance_hostile]");
-                }
-                return this._alliance_hostile;
-            }
-        }
-        private global::System.Data.Objects.ObjectQuery<alliance_hostile> _alliance_hostile;
         /// <summary>
         /// There are no comments for character in the schema.
         /// </summary>
@@ -249,20 +217,6 @@ namespace DemoGame.Server.Db
             base.AddObject("alliance", alliance);
         }
         /// <summary>
-        /// There are no comments for alliance_attackable in the schema.
-        /// </summary>
-        public void AddToalliance_attackable(alliance_attackable alliance_attackable)
-        {
-            base.AddObject("alliance_attackable", alliance_attackable);
-        }
-        /// <summary>
-        /// There are no comments for alliance_hostile in the schema.
-        /// </summary>
-        public void AddToalliance_hostile(alliance_hostile alliance_hostile)
-        {
-            base.AddObject("alliance_hostile", alliance_hostile);
-        }
-        /// <summary>
         /// There are no comments for character in the schema.
         /// </summary>
         public void AddTocharacter(character character)
@@ -396,90 +350,6 @@ namespace DemoGame.Server.Db
         partial void OnnameChanging(string value);
         partial void OnnameChanged();
         /// <summary>
-        /// There are no comments for alliance_attackable in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_attackable_ibfk_3", "alliance_attackable")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<alliance_attackable> alliance_attackable
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<alliance_attackable>("DatabaseModel.alliance_attackable_ibfk_3", "alliance_attackable");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<alliance_attackable>("DatabaseModel.alliance_attackable_ibfk_3", "alliance_attackable", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for alliance_attackable1 in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_attackable_ibfk_4", "alliance_attackable")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<alliance_attackable> alliance_attackable1
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<alliance_attackable>("DatabaseModel.alliance_attackable_ibfk_4", "alliance_attackable");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<alliance_attackable>("DatabaseModel.alliance_attackable_ibfk_4", "alliance_attackable", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for alliance_hostile in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_hostile_ibfk_3", "alliance_hostile")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<alliance_hostile> alliance_hostile
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<alliance_hostile>("DatabaseModel.alliance_hostile_ibfk_3", "alliance_hostile");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<alliance_hostile>("DatabaseModel.alliance_hostile_ibfk_3", "alliance_hostile", value);
-                }
-            }
-        }
-        /// <summary>
-        /// There are no comments for alliance_hostile1 in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_hostile_ibfk_4", "alliance_hostile")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityCollection<alliance_hostile> alliance_hostile1
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<alliance_hostile>("DatabaseModel.alliance_hostile_ibfk_4", "alliance_hostile");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<alliance_hostile>("DatabaseModel.alliance_hostile_ibfk_4", "alliance_hostile", value);
-                }
-            }
-        }
-        /// <summary>
         /// There are no comments for character_template in the schema.
         /// </summary>
         [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "character_template_ibfk_2", "character_template")]
@@ -500,339 +370,87 @@ namespace DemoGame.Server.Db
                 }
             }
         }
-    }
-    /// <summary>
-    /// There are no comments for DatabaseModel.alliance_attackable in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// alliance_id
-    /// attackable_id
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="DatabaseModel", Name="alliance_attackable")]
-    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
-    [global::System.Serializable()]
-    public partial class alliance_attackable : global::System.Data.Objects.DataClasses.EntityObject
-    {
         /// <summary>
-        /// Create a new alliance_attackable object.
+        /// There are no comments for alliance1 in the schema.
         /// </summary>
-        /// <param name="alliance_id">Initial value of alliance_id.</param>
-        /// <param name="attackable_id">Initial value of attackable_id.</param>
-        public static alliance_attackable Createalliance_attackable(byte alliance_id, byte attackable_id)
-        {
-            alliance_attackable alliance_attackable = new alliance_attackable();
-            alliance_attackable.alliance_id = alliance_id;
-            alliance_attackable.attackable_id = attackable_id;
-            return alliance_attackable;
-        }
-        /// <summary>
-        /// There are no comments for Property alliance_id in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte alliance_id
-        {
-            get
-            {
-                return this._alliance_id;
-            }
-            set
-            {
-                this.Onalliance_idChanging(value);
-                this.ReportPropertyChanging("alliance_id");
-                this._alliance_id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("alliance_id");
-                this.Onalliance_idChanged();
-            }
-        }
-        private byte _alliance_id;
-        partial void Onalliance_idChanging(byte value);
-        partial void Onalliance_idChanged();
-        /// <summary>
-        /// There are no comments for Property attackable_id in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte attackable_id
-        {
-            get
-            {
-                return this._attackable_id;
-            }
-            set
-            {
-                this.Onattackable_idChanging(value);
-                this.ReportPropertyChanging("attackable_id");
-                this._attackable_id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("attackable_id");
-                this.Onattackable_idChanged();
-            }
-        }
-        private byte _attackable_id;
-        partial void Onattackable_idChanging(byte value);
-        partial void Onattackable_idChanged();
-        /// <summary>
-        /// There are no comments for Property placeholder in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Nullable<byte> placeholder
-        {
-            get
-            {
-                return this._placeholder;
-            }
-            set
-            {
-                this.OnplaceholderChanging(value);
-                this.ReportPropertyChanging("placeholder");
-                this._placeholder = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("placeholder");
-                this.OnplaceholderChanged();
-            }
-        }
-        private global::System.Nullable<byte> _placeholder;
-        partial void OnplaceholderChanging(global::System.Nullable<byte> value);
-        partial void OnplaceholderChanged();
-        /// <summary>
-        /// There are no comments for alliance in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_attackable_ibfk_3", "alliance")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_attackable", "alliance1")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public alliance alliance
+        public global::System.Data.Objects.DataClasses.EntityCollection<alliance> alliance1
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_attackable_ibfk_3", "alliance").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_attackable_ibfk_3", "alliance").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for alliance in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<alliance> allianceReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_attackable_ibfk_3", "alliance");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<alliance>("DatabaseModel.alliance_attackable", "alliance1");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<alliance>("DatabaseModel.alliance_attackable_ibfk_3", "alliance", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<alliance>("DatabaseModel.alliance_attackable", "alliance1", value);
                 }
             }
         }
         /// <summary>
-        /// There are no comments for alliance1 in the schema.
+        /// There are no comments for alliance2 in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_attackable_ibfk_4", "alliance")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_attackable", "alliance")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public alliance alliance1
+        public global::System.Data.Objects.DataClasses.EntityCollection<alliance> alliance2
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_attackable_ibfk_4", "alliance").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_attackable_ibfk_4", "alliance").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for alliance1 in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<alliance> alliance1Reference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_attackable_ibfk_4", "alliance");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<alliance>("DatabaseModel.alliance_attackable", "alliance");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<alliance>("DatabaseModel.alliance_attackable_ibfk_4", "alliance", value);
-                }
-            }
-        }
-    }
-    /// <summary>
-    /// There are no comments for DatabaseModel.alliance_hostile in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// alliance_id
-    /// hostile_id
-    /// </KeyProperties>
-    [global::System.Data.Objects.DataClasses.EdmEntityTypeAttribute(NamespaceName="DatabaseModel", Name="alliance_hostile")]
-    [global::System.Runtime.Serialization.DataContractAttribute(IsReference=true)]
-    [global::System.Serializable()]
-    public partial class alliance_hostile : global::System.Data.Objects.DataClasses.EntityObject
-    {
-        /// <summary>
-        /// Create a new alliance_hostile object.
-        /// </summary>
-        /// <param name="alliance_id">Initial value of alliance_id.</param>
-        /// <param name="hostile_id">Initial value of hostile_id.</param>
-        public static alliance_hostile Createalliance_hostile(byte alliance_id, byte hostile_id)
-        {
-            alliance_hostile alliance_hostile = new alliance_hostile();
-            alliance_hostile.alliance_id = alliance_id;
-            alliance_hostile.hostile_id = hostile_id;
-            return alliance_hostile;
-        }
-        /// <summary>
-        /// There are no comments for Property alliance_id in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte alliance_id
-        {
-            get
-            {
-                return this._alliance_id;
-            }
-            set
-            {
-                this.Onalliance_idChanging(value);
-                this.ReportPropertyChanging("alliance_id");
-                this._alliance_id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("alliance_id");
-                this.Onalliance_idChanged();
-            }
-        }
-        private byte _alliance_id;
-        partial void Onalliance_idChanging(byte value);
-        partial void Onalliance_idChanged();
-        /// <summary>
-        /// There are no comments for Property hostile_id in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public byte hostile_id
-        {
-            get
-            {
-                return this._hostile_id;
-            }
-            set
-            {
-                this.Onhostile_idChanging(value);
-                this.ReportPropertyChanging("hostile_id");
-                this._hostile_id = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("hostile_id");
-                this.Onhostile_idChanged();
-            }
-        }
-        private byte _hostile_id;
-        partial void Onhostile_idChanging(byte value);
-        partial void Onhostile_idChanged();
-        /// <summary>
-        /// There are no comments for Property placeholder in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmScalarPropertyAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Nullable<byte> placeholder
-        {
-            get
-            {
-                return this._placeholder;
-            }
-            set
-            {
-                this.OnplaceholderChanging(value);
-                this.ReportPropertyChanging("placeholder");
-                this._placeholder = global::System.Data.Objects.DataClasses.StructuralObject.SetValidValue(value);
-                this.ReportPropertyChanged("placeholder");
-                this.OnplaceholderChanged();
-            }
-        }
-        private global::System.Nullable<byte> _placeholder;
-        partial void OnplaceholderChanging(global::System.Nullable<byte> value);
-        partial void OnplaceholderChanged();
-        /// <summary>
-        /// There are no comments for alliance in the schema.
-        /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_hostile_ibfk_3", "alliance")]
-        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
-        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public alliance alliance
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_hostile_ibfk_3", "alliance").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_hostile_ibfk_3", "alliance").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for alliance in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<alliance> allianceReference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_hostile_ibfk_3", "alliance");
-            }
-            set
-            {
-                if ((value != null))
-                {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<alliance>("DatabaseModel.alliance_hostile_ibfk_3", "alliance", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<alliance>("DatabaseModel.alliance_attackable", "alliance", value);
                 }
             }
         }
         /// <summary>
-        /// There are no comments for alliance1 in the schema.
+        /// There are no comments for alliance11 in the schema.
         /// </summary>
-        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_hostile_ibfk_4", "alliance")]
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_hostile", "alliance1")]
         [global::System.Xml.Serialization.XmlIgnoreAttribute()]
         [global::System.Xml.Serialization.SoapIgnoreAttribute()]
         [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public alliance alliance1
+        public global::System.Data.Objects.DataClasses.EntityCollection<alliance> alliance11
         {
             get
             {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_hostile_ibfk_4", "alliance").Value;
-            }
-            set
-            {
-                ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_hostile_ibfk_4", "alliance").Value = value;
-            }
-        }
-        /// <summary>
-        /// There are no comments for alliance1 in the schema.
-        /// </summary>
-        [global::System.ComponentModel.BrowsableAttribute(false)]
-        [global::System.Runtime.Serialization.DataMemberAttribute()]
-        public global::System.Data.Objects.DataClasses.EntityReference<alliance> alliance1Reference
-        {
-            get
-            {
-                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedReference<alliance>("DatabaseModel.alliance_hostile_ibfk_4", "alliance");
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<alliance>("DatabaseModel.alliance_hostile", "alliance1");
             }
             set
             {
                 if ((value != null))
                 {
-                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedReference<alliance>("DatabaseModel.alliance_hostile_ibfk_4", "alliance", value);
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<alliance>("DatabaseModel.alliance_hostile", "alliance1", value);
+                }
+            }
+        }
+        /// <summary>
+        /// There are no comments for alliance3 in the schema.
+        /// </summary>
+        [global::System.Data.Objects.DataClasses.EdmRelationshipNavigationPropertyAttribute("DatabaseModel", "alliance_hostile", "alliance")]
+        [global::System.Xml.Serialization.XmlIgnoreAttribute()]
+        [global::System.Xml.Serialization.SoapIgnoreAttribute()]
+        [global::System.Runtime.Serialization.DataMemberAttribute()]
+        public global::System.Data.Objects.DataClasses.EntityCollection<alliance> alliance3
+        {
+            get
+            {
+                return ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.GetRelatedCollection<alliance>("DatabaseModel.alliance_hostile", "alliance");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((global::System.Data.Objects.DataClasses.IEntityWithRelationships)(this)).RelationshipManager.InitializeRelatedCollection<alliance>("DatabaseModel.alliance_hostile", "alliance", value);
                 }
             }
         }

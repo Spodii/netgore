@@ -1,8 +1,6 @@
 using MySql.Data.MySqlClient;
 using NetGore;
 
-// TODO: I NEED to find a better way to handle the App.Config's database connection info!
-
 namespace DemoGame.Server
 {
     /// <summary>

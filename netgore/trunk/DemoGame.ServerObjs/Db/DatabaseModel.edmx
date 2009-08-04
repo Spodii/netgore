@@ -7,8 +7,18 @@
       <Schema Namespace="DatabaseModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.1" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2006/04/edm/ssdl">
         <EntityContainer Name="DatabaseModelStoreContainer">
           <EntitySet Name="alliance" EntityType="DatabaseModel.Store.alliance" store:Type="Tables" Schema="demogame" />
-          <EntitySet Name="alliance_attackable" EntityType="DatabaseModel.Store.alliance_attackable" store:Type="Tables" Schema="demogame" />
-          <EntitySet Name="alliance_hostile" EntityType="DatabaseModel.Store.alliance_hostile" store:Type="Tables" Schema="demogame" />
+          <EntitySet Name="alliance_attackable" EntityType="DatabaseModel.Store.alliance_attackable" store:Type="Tables" store:Schema="demogame" store:Name="alliance_attackable">
+            <DefiningQuery>SELECT
+      `alliance_attackable`.`alliance_id`, 
+      `alliance_attackable`.`attackable_id`
+      FROM `alliance_attackable` AS `alliance_attackable`</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="alliance_hostile" EntityType="DatabaseModel.Store.alliance_hostile" store:Type="Tables" store:Schema="demogame" store:Name="alliance_hostile">
+            <DefiningQuery>SELECT
+      `alliance_hostile`.`alliance_id`, 
+      `alliance_hostile`.`hostile_id`
+      FROM `alliance_hostile` AS `alliance_hostile`</DefiningQuery>
+          </EntitySet>
           <EntitySet Name="character" EntityType="DatabaseModel.Store.character" store:Type="Tables" Schema="demogame" />
           <EntitySet Name="character_equipped" EntityType="DatabaseModel.Store.character_equipped" store:Type="Tables" Schema="demogame" />
           <EntitySet Name="character_inventory" EntityType="DatabaseModel.Store.character_inventory" store:Type="Tables" Schema="demogame" />
@@ -109,6 +119,9 @@
           <Property Name="id" Type="utinyint" Nullable="false" />
           <Property Name="name" Type="varchar" Nullable="false" MaxLength="1" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'demogame.alliance_attackable' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
         <EntityType Name="alliance_attackable">
           <Key>
             <PropertyRef Name="alliance_id" />
@@ -116,8 +129,10 @@
           </Key>
           <Property Name="alliance_id" Type="utinyint" Nullable="false" />
           <Property Name="attackable_id" Type="utinyint" Nullable="false" />
-          <Property Name="placeholder" Type="utinyint" />
         </EntityType>
+        <!--Errors Found During Generation:
+      warning 6002: The table/view 'demogame.alliance_hostile' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.
+      -->
         <EntityType Name="alliance_hostile">
           <Key>
             <PropertyRef Name="alliance_id" />
@@ -125,7 +140,6 @@
           </Key>
           <Property Name="alliance_id" Type="utinyint" Nullable="false" />
           <Property Name="hostile_id" Type="utinyint" Nullable="false" />
-          <Property Name="placeholder" Type="utinyint" />
         </EntityType>
         <EntityType Name="character">
           <Key>
@@ -584,8 +598,6 @@
       <Schema Namespace="DatabaseModel" Alias="Self" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
         <EntityContainer Name="DatabaseEntities">
           <EntitySet Name="alliance" EntityType="DatabaseModel.alliance" />
-          <EntitySet Name="alliance_attackable" EntityType="DatabaseModel.alliance_attackable" />
-          <EntitySet Name="alliance_hostile" EntityType="DatabaseModel.alliance_hostile" />
           <EntitySet Name="character" EntityType="DatabaseModel.character" />
           <EntitySet Name="character_equipped" EntityType="DatabaseModel.character_equipped" />
           <EntitySet Name="character_template" EntityType="DatabaseModel.character_template" />
@@ -595,22 +607,6 @@
           <EntitySet Name="item_template" EntityType="DatabaseModel.item_template" />
           <EntitySet Name="map" EntityType="DatabaseModel.map" />
           <EntitySet Name="map_spawn" EntityType="DatabaseModel.map_spawn" />
-          <AssociationSet Name="alliance_attackable_ibfk_3" Association="DatabaseModel.alliance_attackable_ibfk_3">
-            <End Role="alliance" EntitySet="alliance" />
-            <End Role="alliance_attackable" EntitySet="alliance_attackable" />
-          </AssociationSet>
-          <AssociationSet Name="alliance_attackable_ibfk_4" Association="DatabaseModel.alliance_attackable_ibfk_4">
-            <End Role="alliance" EntitySet="alliance" />
-            <End Role="alliance_attackable" EntitySet="alliance_attackable" />
-          </AssociationSet>
-          <AssociationSet Name="alliance_hostile_ibfk_3" Association="DatabaseModel.alliance_hostile_ibfk_3">
-            <End Role="alliance" EntitySet="alliance" />
-            <End Role="alliance_hostile" EntitySet="alliance_hostile" />
-          </AssociationSet>
-          <AssociationSet Name="alliance_hostile_ibfk_4" Association="DatabaseModel.alliance_hostile_ibfk_4">
-            <End Role="alliance" EntitySet="alliance" />
-            <End Role="alliance_hostile" EntitySet="alliance_hostile" />
-          </AssociationSet>
           <AssociationSet Name="character_template_ibfk_2" Association="DatabaseModel.character_template_ibfk_2">
             <End Role="alliance" EntitySet="alliance" />
             <End Role="character_template" EntitySet="character_template" />
@@ -655,6 +651,14 @@
             <End Role="item_template" EntitySet="item_template" />
             <End Role="character_template_inventory" EntitySet="character_template_inventory" />
           </AssociationSet>
+          <AssociationSet Name="alliance_attackable" Association="DatabaseModel.alliance_attackable">
+            <End Role="alliance" EntitySet="alliance" />
+            <End Role="alliance1" EntitySet="alliance" />
+          </AssociationSet>
+          <AssociationSet Name="alliance_hostile" Association="DatabaseModel.alliance_hostile">
+            <End Role="alliance" EntitySet="alliance" />
+            <End Role="alliance1" EntitySet="alliance" />
+          </AssociationSet>
           <AssociationSet Name="character_inventory" Association="DatabaseModel.character_inventory">
             <End Role="item" EntitySet="item" />
             <End Role="character" EntitySet="character" />
@@ -666,33 +670,11 @@
           </Key>
           <Property Name="id" Type="Byte" Nullable="false" />
           <Property Name="name" Type="String" Nullable="false" />
-          <NavigationProperty Name="alliance_attackable" Relationship="DatabaseModel.alliance_attackable_ibfk_3" FromRole="alliance" ToRole="alliance_attackable" />
-          <NavigationProperty Name="alliance_attackable1" Relationship="DatabaseModel.alliance_attackable_ibfk_4" FromRole="alliance" ToRole="alliance_attackable" />
-          <NavigationProperty Name="alliance_hostile" Relationship="DatabaseModel.alliance_hostile_ibfk_3" FromRole="alliance" ToRole="alliance_hostile" />
-          <NavigationProperty Name="alliance_hostile1" Relationship="DatabaseModel.alliance_hostile_ibfk_4" FromRole="alliance" ToRole="alliance_hostile" />
           <NavigationProperty Name="character_template" Relationship="DatabaseModel.character_template_ibfk_2" FromRole="alliance" ToRole="character_template" />
-        </EntityType>
-        <EntityType Name="alliance_attackable">
-          <Key>
-            <PropertyRef Name="alliance_id" />
-            <PropertyRef Name="attackable_id" />
-          </Key>
-          <Property Name="alliance_id" Type="Byte" Nullable="false" />
-          <Property Name="attackable_id" Type="Byte" Nullable="false" />
-          <Property Name="placeholder" Type="Byte" />
-          <NavigationProperty Name="alliance" Relationship="DatabaseModel.alliance_attackable_ibfk_3" FromRole="alliance_attackable" ToRole="alliance" />
-          <NavigationProperty Name="alliance1" Relationship="DatabaseModel.alliance_attackable_ibfk_4" FromRole="alliance_attackable" ToRole="alliance" />
-        </EntityType>
-        <EntityType Name="alliance_hostile">
-          <Key>
-            <PropertyRef Name="alliance_id" />
-            <PropertyRef Name="hostile_id" />
-          </Key>
-          <Property Name="alliance_id" Type="Byte" Nullable="false" />
-          <Property Name="hostile_id" Type="Byte" Nullable="false" />
-          <Property Name="placeholder" Type="Byte" />
-          <NavigationProperty Name="alliance" Relationship="DatabaseModel.alliance_hostile_ibfk_3" FromRole="alliance_hostile" ToRole="alliance" />
-          <NavigationProperty Name="alliance1" Relationship="DatabaseModel.alliance_hostile_ibfk_4" FromRole="alliance_hostile" ToRole="alliance" />
+          <NavigationProperty Name="alliance1" Relationship="DatabaseModel.alliance_attackable" FromRole="alliance" ToRole="alliance1" />
+          <NavigationProperty Name="alliance2" Relationship="DatabaseModel.alliance_attackable" FromRole="alliance1" ToRole="alliance" />
+          <NavigationProperty Name="alliance11" Relationship="DatabaseModel.alliance_hostile" FromRole="alliance" ToRole="alliance1" />
+          <NavigationProperty Name="alliance3" Relationship="DatabaseModel.alliance_hostile" FromRole="alliance1" ToRole="alliance" />
         </EntityType>
         <EntityType Name="character">
           <Key>
@@ -914,62 +896,6 @@
           <Property Name="y" Type="Int32" />
           <NavigationProperty Name="character_template" Relationship="DatabaseModel.map_spawn_ibfk_1" FromRole="map_spawn" ToRole="character_template" />
         </EntityType>
-        <Association Name="alliance_attackable_ibfk_3">
-          <End Role="alliance" Type="DatabaseModel.alliance" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="alliance_attackable" Type="DatabaseModel.alliance_attackable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="alliance">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="alliance_attackable">
-              <PropertyRef Name="attackable_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="alliance_attackable_ibfk_4">
-          <End Role="alliance" Type="DatabaseModel.alliance" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="alliance_attackable" Type="DatabaseModel.alliance_attackable" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="alliance">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="alliance_attackable">
-              <PropertyRef Name="alliance_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="alliance_hostile_ibfk_3">
-          <End Role="alliance" Type="DatabaseModel.alliance" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="alliance_hostile" Type="DatabaseModel.alliance_hostile" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="alliance">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="alliance_hostile">
-              <PropertyRef Name="hostile_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="alliance_hostile_ibfk_4">
-          <End Role="alliance" Type="DatabaseModel.alliance" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="alliance_hostile" Type="DatabaseModel.alliance_hostile" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="alliance">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="alliance_hostile">
-              <PropertyRef Name="alliance_id" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="character_template_ibfk_2">
           <End Role="alliance" Type="DatabaseModel.alliance" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -1080,6 +1006,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="alliance_attackable">
+          <End Role="alliance" Type="DatabaseModel.alliance" Multiplicity="*" />
+          <End Role="alliance1" Type="DatabaseModel.alliance" Multiplicity="*" />
+        </Association>
+        <Association Name="alliance_hostile">
+          <End Role="alliance" Type="DatabaseModel.alliance" Multiplicity="*" />
+          <End Role="alliance1" Type="DatabaseModel.alliance" Multiplicity="*" />
+        </Association>
         <Association Name="character_inventory">
           <End Role="item" Type="DatabaseModel.item" Multiplicity="*" />
           <End Role="character" Type="DatabaseModel.character" Multiplicity="*" />
@@ -1095,24 +1029,6 @@
               <MappingFragment StoreEntitySet="alliance">
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="alliance_attackable">
-            <EntityTypeMapping TypeName="IsTypeOf(DatabaseModel.alliance_attackable)">
-              <MappingFragment StoreEntitySet="alliance_attackable">
-                <ScalarProperty Name="alliance_id" ColumnName="alliance_id" />
-                <ScalarProperty Name="attackable_id" ColumnName="attackable_id" />
-                <ScalarProperty Name="placeholder" ColumnName="placeholder" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="alliance_hostile">
-            <EntityTypeMapping TypeName="IsTypeOf(DatabaseModel.alliance_hostile)">
-              <MappingFragment StoreEntitySet="alliance_hostile">
-                <ScalarProperty Name="alliance_id" ColumnName="alliance_id" />
-                <ScalarProperty Name="hostile_id" ColumnName="hostile_id" />
-                <ScalarProperty Name="placeholder" ColumnName="placeholder" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1315,42 +1231,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="alliance_attackable_ibfk_3" TypeName="DatabaseModel.alliance_attackable_ibfk_3" StoreEntitySet="alliance_attackable">
-            <EndProperty Name="alliance">
-              <ScalarProperty Name="id" ColumnName="attackable_id" />
-            </EndProperty>
-            <EndProperty Name="alliance_attackable">
-              <ScalarProperty Name="alliance_id" ColumnName="alliance_id" />
-              <ScalarProperty Name="attackable_id" ColumnName="attackable_id" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="alliance_attackable_ibfk_4" TypeName="DatabaseModel.alliance_attackable_ibfk_4" StoreEntitySet="alliance_attackable">
-            <EndProperty Name="alliance">
-              <ScalarProperty Name="id" ColumnName="alliance_id" />
-            </EndProperty>
-            <EndProperty Name="alliance_attackable">
-              <ScalarProperty Name="alliance_id" ColumnName="alliance_id" />
-              <ScalarProperty Name="attackable_id" ColumnName="attackable_id" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="alliance_hostile_ibfk_3" TypeName="DatabaseModel.alliance_hostile_ibfk_3" StoreEntitySet="alliance_hostile">
-            <EndProperty Name="alliance">
-              <ScalarProperty Name="id" ColumnName="hostile_id" />
-            </EndProperty>
-            <EndProperty Name="alliance_hostile">
-              <ScalarProperty Name="alliance_id" ColumnName="alliance_id" />
-              <ScalarProperty Name="hostile_id" ColumnName="hostile_id" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="alliance_hostile_ibfk_4" TypeName="DatabaseModel.alliance_hostile_ibfk_4" StoreEntitySet="alliance_hostile">
-            <EndProperty Name="alliance">
-              <ScalarProperty Name="id" ColumnName="alliance_id" />
-            </EndProperty>
-            <EndProperty Name="alliance_hostile">
-              <ScalarProperty Name="alliance_id" ColumnName="alliance_id" />
-              <ScalarProperty Name="hostile_id" ColumnName="hostile_id" />
-            </EndProperty>
-          </AssociationSetMapping>
           <AssociationSetMapping Name="character_template_ibfk_2" TypeName="DatabaseModel.character_template_ibfk_2" StoreEntitySet="character_template">
             <EndProperty Name="alliance">
               <ScalarProperty Name="id" ColumnName="alliance_id" />
@@ -1455,6 +1335,22 @@
               <ScalarProperty Name="min" ColumnName="min" />
             </EndProperty>
           </AssociationSetMapping>
+          <AssociationSetMapping Name="alliance_attackable" TypeName="DatabaseModel.alliance_attackable" StoreEntitySet="alliance_attackable">
+            <EndProperty Name="alliance">
+              <ScalarProperty Name="id" ColumnName="attackable_id" />
+            </EndProperty>
+            <EndProperty Name="alliance1">
+              <ScalarProperty Name="id" ColumnName="alliance_id" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="alliance_hostile" TypeName="DatabaseModel.alliance_hostile" StoreEntitySet="alliance_hostile">
+            <EndProperty Name="alliance">
+              <ScalarProperty Name="id" ColumnName="hostile_id" />
+            </EndProperty>
+            <EndProperty Name="alliance1">
+              <ScalarProperty Name="id" ColumnName="alliance_id" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="character_inventory" TypeName="DatabaseModel.character_inventory" StoreEntitySet="character_inventory">
             <EndProperty Name="item">
               <ScalarProperty Name="id" ColumnName="item_id" />
@@ -1481,88 +1377,88 @@
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram Name="DatabaseModel" ZoomLevel="78">
-        <EntityTypeShape EntityType="DatabaseModel.alliance" Width="1.5" PointX="0.75" PointY="14.5" Height="2.3648893229166674" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.alliance_attackable" Width="1.5" PointX="3" PointY="9.25" Height="1.9802864583333335" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.alliance_hostile" Width="1.5" PointX="3" PointY="11.875" Height="1.9802864583333317" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.character" Width="1.5" PointX="8.25" PointY="14.25" Height="8.3262337239583335" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.character_equipped" Width="1.5" PointX="10.5" PointY="17.5" Height="1.9802864583333317" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.character_template" Width="1.5" PointX="3" PointY="14.625" Height="7.5570279947916656" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.character_template_equipped" Width="1.5" PointX="5.25" PointY="17.5" Height="1.9802864583333317" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.character_template_inventory" Width="1.5" PointX="5.25" PointY="14.25" Height="2.3648893229166656" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.item" Width="1.5" PointX="6" PointY="26.875" Height="7.5570279947916674" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.item_template" Width="1.5" PointX="3" PointY="0.75" Height="7.3647265625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.map" Width="1.5" PointX="6" PointY="11.375" Height="1.7879850260416674" IsExpanded="true" />
-        <EntityTypeShape EntityType="DatabaseModel.map_spawn" Width="1.5" PointX="5.25" PointY="23" Height="2.5571907552083317" IsExpanded="true" />
-        <AssociationConnector Association="DatabaseModel.alliance_attackable_ibfk_3" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.5" PointY="14.5" />
-          <ConnectorPoint PointX="1.5" PointY="10.240143229166666" />
-          <ConnectorPoint PointX="3" PointY="10.240143229166666" /></AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.alliance_attackable_ibfk_4" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.9062525" PointY="14.5" />
-          <ConnectorPoint PointX="1.9062525" PointY="10.766467343749998" />
-          <ConnectorPoint PointX="3" PointY="10.766467343749998" /></AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.alliance_hostile_ibfk_3" ManuallyRouted="false">
-          <ConnectorPoint PointX="1.0937475" PointY="14.5" />
-          <ConnectorPoint PointX="1.0937475" PointY="12.865143229166666" />
-          <ConnectorPoint PointX="1.4166666666666667" PointY="12.865143229166666" />
-          <ConnectorPoint PointX="1.5833333333333333" PointY="12.865143229166666" />
-          <ConnectorPoint PointX="1.8229191666666667" PointY="12.865143229166666" />
-          <ConnectorPoint PointX="1.9895858333333332" PointY="12.865143229166666" />
-          <ConnectorPoint PointX="3" PointY="12.865143229166666" /></AssociationConnector>
-        <AssociationConnector Association="DatabaseModel.alliance_hostile_ibfk_4" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.10937875" PointY="14.5" />
-          <ConnectorPoint PointX="2.10937875" PointY="13.391467343749998" />
-          <ConnectorPoint PointX="3" PointY="13.391467343749998" /></AssociationConnector>
+      <Diagram Name="DatabaseModel">
+        <EntityTypeShape EntityType="DatabaseModel.alliance" Width="1.5" PointX="1.5" PointY="2.25" Height="2.364889322916667" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.character" Width="1.5" PointX="6" PointY="6.25" Height="8.3262337239583353" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.character_equipped" Width="1.5" PointX="8.25" PointY="9.5" Height="1.9802864583333353" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.character_template" Width="1.5" PointX="0.75" PointY="6.625" Height="7.5570279947916648" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.character_template_equipped" Width="1.5" PointX="3" PointY="9.5" Height="1.9802864583333353" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.character_template_inventory" Width="1.5" PointX="3" PointY="6.25" Height="2.3648893229166665" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.item" Width="1.5" PointX="3.75" PointY="18.875" Height="7.5570279947916674" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.item_template" Width="1.5" PointX="0.75" PointY="15.75" Height="7.3647265624999978" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.map" Width="1.5" PointX="3.75" PointY="3.375" Height="1.787985026041667" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.map_spawn" Width="1.5" PointX="3" PointY="15" Height="2.5571907552083317" IsExpanded="true" />
         <AssociationConnector Association="DatabaseModel.character_template_ibfk_2" ManuallyRouted="false">
-          <ConnectorPoint PointX="2.25" PointY="15.744944661458334" />
-          <ConnectorPoint PointX="3" PointY="15.744944661458334" /></AssociationConnector>
+          <ConnectorPoint PointX="1.875" PointY="4.6148893229166674" />
+          <ConnectorPoint PointX="1.875" PointY="6.625" /></AssociationConnector>
         <AssociationConnector Association="DatabaseModel.character_equipped_ibfk_4" ManuallyRouted="false">
-          <ConnectorPoint PointX="9.75" PointY="18.490143229166666" />
-          <ConnectorPoint PointX="10.5" PointY="18.490143229166666" /></AssociationConnector>
+          <ConnectorPoint PointX="7.5" PointY="10.490143229166668" />
+          <ConnectorPoint PointX="8.25" PointY="10.490143229166668" /></AssociationConnector>
         <AssociationConnector Association="DatabaseModel.character_ibfk_1" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="20.8624072265625" />
-          <ConnectorPoint PointX="7.072916666666667" PointY="20.8624072265625" />
-          <ConnectorPoint PointX="7.239583333333333" PointY="20.8624072265625" />
-          <ConnectorPoint PointX="8.25" PointY="20.8624072265625" /></AssociationConnector>
+          <ConnectorPoint PointX="2.25" PointY="12.8624072265625" />
+          <ConnectorPoint PointX="2.5416666666666665" PointY="12.862407226562498" />
+          <ConnectorPoint PointX="2.9583333333333335" PointY="12.8624072265625" />
+          <ConnectorPoint PointX="4.822916666666667" PointY="12.8624072265625" />
+          <ConnectorPoint PointX="4.989583333333333" PointY="12.8624072265625" />
+          <ConnectorPoint PointX="6" PointY="12.8624072265625" /></AssociationConnector>
         <AssociationConnector Association="DatabaseModel.character_ibfk_2" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.15625" PointY="13.162985026041667" />
-          <ConnectorPoint PointX="7.15625" PointY="21.750572975260418" />
-          <ConnectorPoint PointX="8.25" PointY="21.750572975260418" /></AssociationConnector>
+          <ConnectorPoint PointX="4.90625" PointY="5.1629850260416674" />
+          <ConnectorPoint PointX="4.90625" PointY="13.750572975260418" />
+          <ConnectorPoint PointX="6" PointY="13.750572975260418" /></AssociationConnector>
         <AssociationConnector Association="DatabaseModel.character_ibfk_3" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.3593775" PointY="13.162985026041667" />
-          <ConnectorPoint PointX="7.3593775" PointY="20.171344342447917" />
-          <ConnectorPoint PointX="8.25" PointY="20.171344342447917" /></AssociationConnector>
+          <ConnectorPoint PointX="5.1093775" PointY="5.1629850260416674" />
+          <ConnectorPoint PointX="5.1093775" PointY="12.171344342447917" />
+          <ConnectorPoint PointX="6" PointY="12.171344342447917" /></AssociationConnector>
         <AssociationConnector Association="DatabaseModel.character_equipped_ibfk_3" ManuallyRouted="false">
-          <ConnectorPoint PointX="7.5" PointY="30.653513997395834" />
-          <ConnectorPoint PointX="11.25" PointY="30.653513997395834" />
-          <ConnectorPoint PointX="11.25" PointY="19.480286458333332" /></AssociationConnector>
+          <ConnectorPoint PointX="5.25" PointY="22.653513997395834" />
+          <ConnectorPoint PointX="9" PointY="22.653513997395834" />
+          <ConnectorPoint PointX="9" PointY="11.480286458333335" /></AssociationConnector>
         <AssociationConnector Association="DatabaseModel.character_template_equipped_ibfk_4" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="18.490143229166666" />
-          <ConnectorPoint PointX="5.25" PointY="18.490143229166666" /></AssociationConnector>
+          <ConnectorPoint PointX="2.25" PointY="10.490143229166668" />
+          <ConnectorPoint PointX="2.5416666666666665" PointY="10.490143229166668" />
+          <ConnectorPoint PointX="2.7083333333333335" PointY="10.490143229166668" />
+          <ConnectorPoint PointX="2.7916666666666665" PointY="10.490143229166668" />
+          <ConnectorPoint PointX="2.9583333333333335" PointY="10.490143229166668" />
+          <ConnectorPoint PointX="3" PointY="10.490143229166668" /></AssociationConnector>
         <AssociationConnector Association="DatabaseModel.character_template_inventory_ibfk_1" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="15.619944661458334" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="15.619944661458334" />
-          <ConnectorPoint PointX="4.958333333333333" PointY="15.619944661458334" />
-          <ConnectorPoint PointX="5.25" PointY="15.619944661458334" /></AssociationConnector>
+          <ConnectorPoint PointX="2.25" PointY="7.6199446614583337" />
+          <ConnectorPoint PointX="2.7916666666666665" PointY="7.6199446614583328" />
+          <ConnectorPoint PointX="2.9583333333333335" PointY="7.6199446614583337" />
+          <ConnectorPoint PointX="3" PointY="7.6199446614583337" /></AssociationConnector>
         <AssociationConnector Association="DatabaseModel.map_spawn_ibfk_1" ManuallyRouted="false">
-          <ConnectorPoint PointX="3.75" PointY="22.182027994791667" />
-          <ConnectorPoint PointX="3.75" PointY="24.278595377604166" />
-          <ConnectorPoint PointX="5.25" PointY="24.278595377604166" /></AssociationConnector>
+          <ConnectorPoint PointX="2.25" PointY="9.0550439453125016" />
+          <ConnectorPoint PointX="2.625" PointY="9.0550439453125016" />
+          <ConnectorPoint PointX="2.625" PointY="16.278595377604166" />
+          <ConnectorPoint PointX="2.6666666666666665" PointY="16.278595377604166" />
+          <ConnectorPoint PointX="2.9583333333333335" PointY="16.278595377604166" />
+          <ConnectorPoint PointX="3" PointY="16.278595377604166" /></AssociationConnector>
         <AssociationConnector Association="DatabaseModel.character_template_equipped_ibfk_3" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="4.43236328125" />
-          <ConnectorPoint PointX="4.875" PointY="4.43236328125" />
-          <ConnectorPoint PointX="4.875" PointY="17.963819614583336" />
-          <ConnectorPoint PointX="5.25" PointY="17.963819614583336" /></AssociationConnector>
+          <ConnectorPoint PointX="2.25" PointY="19.69666047005208" />
+          <ConnectorPoint PointX="2.75" PointY="19.69666047005208" />
+          <ConnectorPoint PointX="2.75" PointY="11.016466843750003" />
+          <ConnectorPoint PointX="2.7916666666666665" PointY="11.016466843750003" />
+          <ConnectorPoint PointX="2.9583333333333335" PointY="11.016466843750003" />
+          <ConnectorPoint PointX="3" PointY="11.016466843750003" /></AssociationConnector>
         <AssociationConnector Association="DatabaseModel.character_template_inventory_ibfk_2" ManuallyRouted="false">
-          <ConnectorPoint PointX="4.5" PointY="6.3047974218750005" />
-          <ConnectorPoint PointX="4.791666666666667" PointY="6.304797421875" />
-          <ConnectorPoint PointX="4.958333333333333" PointY="6.3047974218750005" />
-          <ConnectorPoint PointX="5.59375" PointY="6.3047974218750005" />
-          <ConnectorPoint PointX="5.59375" PointY="14.25" /></AssociationConnector>
+          <ConnectorPoint PointX="2.25" PointY="17.956375423828121" />
+          <ConnectorPoint PointX="2.6666666666666665" PointY="17.956375423828121" />
+          <ConnectorPoint PointX="2.8333333333333335" PointY="17.956375423828121" />
+          <ConnectorPoint PointX="2.875" PointY="17.956375423828121" />
+          <ConnectorPoint PointX="2.875" PointY="6.9037203307291675" />
+          <ConnectorPoint PointX="3" PointY="6.9037203307291675" /></AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.alliance_attackable" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.0319230769230767" PointY="2.25" />
+          <ConnectorPoint PointX="2.0319230769230767" PointY="2" />
+          <ConnectorPoint PointX="2.4784615384615383" PointY="2" />
+          <ConnectorPoint PointX="2.4784615384615383" PointY="2.25" /></AssociationConnector>
+        <AssociationConnector Association="DatabaseModel.alliance_hostile" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.5" PointY="3.0746548477564106" />
+          <ConnectorPoint PointX="1.25" PointY="3.0746548477564106" />
+          <ConnectorPoint PointX="1.25" PointY="3.8072720853365389" />
+          <ConnectorPoint PointX="1.5" PointY="3.8072720853365389" /></AssociationConnector>
         <AssociationConnector Association="DatabaseModel.character_inventory" ManuallyRouted="false">
-          <ConnectorPoint PointX="6.984375" PointY="26.875" />
-          <ConnectorPoint PointX="6.984375" PointY="22.194655849609376" />
-          <ConnectorPoint PointX="8.25" PointY="22.194655849609376" /></AssociationConnector></Diagram></edmx:Diagrams>
+          <ConnectorPoint PointX="4.734375" PointY="18.875" />
+          <ConnectorPoint PointX="4.734375" PointY="14.194655849609378" />
+          <ConnectorPoint PointX="6" PointY="14.194655849609378" /></AssociationConnector></Diagram></edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

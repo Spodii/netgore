@@ -85,9 +85,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DatabaseModel.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Db\ObjectContextManager.cs" />
-    <Compile Include="Db\Queries.cs" />
-    <Compile Include="Db\QueryHelper.cs" />
     <Compile Include="Item\ItemChance.cs" />
     <Compile Include="Item\ItemID.cs" />
     <Compile Include="Item\ItemIDCreator.cs" />
@@ -103,6 +100,13 @@
     <Compile Include="Queries\Map\MapQueryHelper.cs" />
     <Compile Include="Queries\Map\Spawn\DeleteMapSpawnQuery.cs" />
     <Compile Include="Queries\Map\UpdateMapQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceAttackableQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceAttackableQueryValues.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceHostileQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceHostileQueryValues.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceIDsQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceQuery.cs" />
+    <Compile Include="Queries\Alliance\SelectAllianceQueryValues.cs" />
     <Compile Include="Queries\Character\CharacterQueryHelper.cs" />
     <Compile Include="Queries\Character\Items\DeleteCharacterEquippedItemQuery.cs" />
     <Compile Include="Queries\Character\Items\DeleteCharacterInventoryItemQuery.cs" />
@@ -163,10 +167,6 @@
       <Name>NetGore.Db.MySql</Name>
       <Private>False</Private>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.DbEntities\NetGore.DbEntities.csproj">
-      <Project>{08B7D2ED-59AE-466D-8E80-76D3454D6EDF}</Project>
-      <Name>NetGore.DbEntities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore.Db\NetGore.Db.csproj">
       <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
       <Name>NetGore.Db</Name>
@@ -184,6 +184,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.Config" />
     <None Include="DbSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

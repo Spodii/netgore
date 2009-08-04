@@ -138,7 +138,7 @@ namespace DemoGame.Server
                 Debug.Fail(string.Format(errmsgMoved, "X", x, 0));
                 y = 0;
             }
-            
+
             if ((x + width) > map.Width)
             {
                 width = (int)(map.Width - x);
