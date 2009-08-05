@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -8,123 +10,130 @@ namespace NetGore.Db.ClassCreator
 {
     public abstract class DbClassGenerator : IDisposable
     {
-        const string _copyValuesMethodName = "CopyValues";
-        const string _dataReaderName = "dataReader";
-        const string _dbColumnsField = "_dbColumns";
+        protected const string copyValuesMethodName = "CopyValues";
+        protected const string dataReaderName = "dataReader";
+        protected const string dbColumnsField = "_dbColumns";
 
-        protected virtual string CreateCode(string tableName, IEnumerable<DbColumnInfo> columns, string namespaceName,
-                                            CodeFormatter formatter)
+        readonly Dictionary<string, IEnumerable<DbColumnInfo>> _dbTables = new Dictionary<string, IEnumerable<DbColumnInfo>>();
+
+        DbConnection _dbConnction;
+        bool _isDbContentLoaded = false;
+
+        /// <summary>
+        /// Gets the DbConnection used to connect to the database.
+        /// </summary>
+        public DbConnection DbConnection
+        {
+            get { return _dbConnction; }
+        }
+
+        /// <summary>
+        /// Gets or sets the CodeFormatter to use. Default is the CSharpCodeFormatter.
+        /// </summary>
+        public CodeFormatter Formatter { get; set; }
+
+        protected DbClassGenerator()
+        {
+            Formatter = new CSharpCodeFormatter();
+        }
+
+        protected virtual string CreateCode(string tableName, IEnumerable<DbColumnInfo> columns, string namespaceName)
         {
             columns = columns.OrderBy(x => x.Name);
 
-            string className = formatter.GetClassName(tableName);
-            string interfaceName = formatter.GetInterfaceName(tableName);
-
-            var privateColumnNames = new Dictionary<DbColumnInfo, string>();
-            var publicColumnNames = new Dictionary<DbColumnInfo, string>();
-            var parameterColumnNames = new Dictionary<DbColumnInfo, string>();
-
-            foreach (DbColumnInfo column in columns)
-            {
-                privateColumnNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, column.Type));
-                publicColumnNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, column.Type));
-                parameterColumnNames.Add(column, formatter.GetParameterName(column.Name, column.Type));
-            }
+            ClassData cd = new ClassData(tableName, columns, Formatter);
 
             StringBuilder sb = new StringBuilder(16384);
 
             // Header
-            sb.AppendLine(formatter.GetUsing("System"));
-            sb.AppendLine(formatter.GetUsing("System.Linq"));
+            sb.AppendLine(Formatter.GetUsing("System"));
+            sb.AppendLine(Formatter.GetUsing("System.Linq"));
 
-            sb.AppendLine(formatter.GetNamespace(namespaceName));
-            sb.AppendLine(formatter.OpenBrace);
+            sb.AppendLine(Formatter.GetNamespace(namespaceName));
+            sb.AppendLine(Formatter.OpenBrace);
             {
                 // Interface
                 sb.AppendLine(
-                    formatter.GetXmlComment("Interface for a class that can be used to serialize values to the database table `" +
+                    Formatter.GetXmlComment("Interface for a class that can be used to serialize values to the database table `" +
                                             tableName + "`."));
-                sb.AppendLine(formatter.GetInterface(interfaceName, MemberVisibilityLevel.Public));
-                sb.AppendLine(formatter.OpenBrace);
+                sb.AppendLine(Formatter.GetInterface(cd.InterfaceName, MemberVisibilityLevel.Public));
+                sb.AppendLine(Formatter.OpenBrace);
                 {
                     foreach (DbColumnInfo column in columns)
                     {
-                        sb.AppendLine(formatter.GetXmlComment("Gets the value for the database column `" + column.Name + "`."));
-                        sb.AppendLine(formatter.GetInterfaceProperty(publicColumnNames[column], column.Type, false));
+                        sb.AppendLine(Formatter.GetXmlComment("Gets the value for the database column `" + column.Name + "`."));
+                        sb.AppendLine(Formatter.GetInterfaceProperty(cd.GetPublicName(column), column.Type, false));
                     }
                 }
-                sb.AppendLine(formatter.CloseBrace);
+                sb.AppendLine(Formatter.CloseBrace);
 
                 // Class
                 sb.AppendLine(
-                    formatter.GetXmlComment("Provides a strongly-typed structure for the database table `" + tableName + "`."));
-                sb.AppendLine(formatter.GetClass(className, MemberVisibilityLevel.Public, new string[] { interfaceName }));
-                sb.AppendLine(formatter.OpenBrace);
+                    Formatter.GetXmlComment("Provides a strongly-typed structure for the database table `" + tableName + "`."));
+                sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, new string[] { cd.InterfaceName }));
+                sb.AppendLine(Formatter.OpenBrace);
                 {
                     // Fields/Properties
-                    string fieldNamesCode = GetStringArrayCode(columns.Select(x => x.Name), formatter);
-                    sb.AppendLine(formatter.GetXmlComment("Array of the database column names."));
-                    sb.AppendLine(formatter.GetField(_dbColumnsField, typeof(string[]), MemberVisibilityLevel.Private,
+                    string fieldNamesCode = Formatter.GetStringArrayCode(columns.Select(x => x.Name));
+                    sb.AppendLine(Formatter.GetXmlComment("Array of the database column names."));
+                    sb.AppendLine(Formatter.GetField(dbColumnsField, typeof(string[]), MemberVisibilityLevel.Private,
                                                      fieldNamesCode, true, true));
 
                     sb.AppendLine(
-                        formatter.GetXmlComment(
+                        Formatter.GetXmlComment(
                             "Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents."));
-                    sb.AppendLine(formatter.GetProperty("DbColumns", typeof(IEnumerable<string>), MemberVisibilityLevel.Public,
-                                                        null, _dbColumnsField, false));
+                    sb.AppendLine(Formatter.GetProperty("DbColumns", typeof(IEnumerable<string>), MemberVisibilityLevel.Public,
+                                                        null, dbColumnsField, false));
 
-                    sb.AppendLine(formatter.GetXmlComment("The name of the database table that this class represents."));
-                    sb.AppendLine(formatter.GetConstField("TableName", typeof(string), MemberVisibilityLevel.Public,
+                    sb.AppendLine(Formatter.GetXmlComment("The name of the database table that this class represents."));
+                    sb.AppendLine(Formatter.GetConstField("TableName", typeof(string), MemberVisibilityLevel.Public,
                                                           "\"" + tableName + "\""));
 
                     sb.AppendLine(
-                        formatter.GetXmlComment("The number of columns in the database table that this class represents."));
-                    sb.AppendLine(formatter.GetConstField("ColumnCount", typeof(int), MemberVisibilityLevel.Public,
+                        Formatter.GetXmlComment("The number of columns in the database table that this class represents."));
+                    sb.AppendLine(Formatter.GetConstField("ColumnCount", typeof(int), MemberVisibilityLevel.Public,
                                                           columns.Count().ToString()));
 
-                    sb.AppendLine(CreateFields(columns, privateColumnNames, publicColumnNames, formatter));
+                    sb.AppendLine(CreateFields(cd));
 
                     // Constructor (empty)
-                    sb.AppendLine(CreateConstructor(className, columns, parameterColumnNames, formatter, string.Empty, false));
+                    sb.AppendLine(CreateConstructor(cd, string.Empty, false));
 
                     // Constructor (full)
-                    string fullConstructorBody = FullConstructorMemberBody(columns, parameterColumnNames, publicColumnNames,
-                                                                           formatter);
-                    sb.AppendLine(CreateConstructor(className, columns, parameterColumnNames, formatter, fullConstructorBody, true));
+                    string fullConstructorBody = FullConstructorMemberBody(cd);
+                    sb.AppendLine(CreateConstructor(cd, fullConstructorBody, true));
 
                     // Constructor (IDataReader)
-                    sb.AppendLine(formatter.GetXmlComment(className + " constructor.", null,
+                    sb.AppendLine(Formatter.GetXmlComment(cd.ClassName + " constructor.", null,
                                                           new KeyValuePair<string, string>("dataReader",
                                                                                            "The IDataReader to read the values from. See method ReadValues() for details.")));
-                    string drConstructorBody = formatter.GetCallMethod("ReadValues", "dataReader");
+                    string drConstructorBody = Formatter.GetCallMethod("ReadValues", "dataReader");
                     var drConstructorParams = new MethodParameter[]
-                                              { new MethodParameter("dataReader", typeof(IDataReader), formatter) };
-                    sb.AppendLine(formatter.GetConstructorHeader(className, MemberVisibilityLevel.Public, drConstructorParams));
-                    sb.AppendLine(formatter.GetMethodBody(drConstructorBody));
+                                              { new MethodParameter("dataReader", typeof(IDataReader), Formatter) };
+                    sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, drConstructorParams));
+                    sb.AppendLine(Formatter.GetMethodBody(drConstructorBody));
 
                     // Methods
-                    sb.AppendLine(CreateMethodReadValues(columns, publicColumnNames, formatter));
-                    sb.AppendLine(CreateMethodCopyValuesToDict(interfaceName, columns, publicColumnNames, formatter));
-                    sb.AppendLine(CreateMethodCopyValuesToDbParameterValues(interfaceName, columns, publicColumnNames, formatter));
+                    sb.AppendLine(CreateMethodReadValues(cd));
+                    sb.AppendLine(CreateMethodCopyValuesToDict(cd));
+                    sb.AppendLine(CreateMethodCopyValuesToDbParameterValues(cd));
                 }
-                sb.AppendLine(formatter.CloseBrace);
+                sb.AppendLine(Formatter.CloseBrace);
             }
-            sb.AppendLine(formatter.CloseBrace);
+            sb.AppendLine(Formatter.CloseBrace);
 
             return sb.ToString();
         }
 
-        protected virtual string CreateConstructor(string className, IEnumerable<DbColumnInfo> columns,
-                                                   Dictionary<DbColumnInfo, string> parameterNames, CodeFormatter formatter,
-                                                   string code, bool addParameters)
+        protected virtual string CreateConstructor(ClassData cd, string code, bool addParameters)
         {
             MethodParameter[] parameters;
             if (addParameters)
-                parameters = GetMethodParameters(columns, parameterNames, formatter);
+                parameters = GetConstructorParameters(cd);
             else
                 parameters = MethodParameter.Empty;
 
-            string cSummary = className + " constructor.";
+            string cSummary = cd.ClassName + " constructor.";
             var cParams = new List<KeyValuePair<string, string>>(Math.Max(1, parameters.Length));
             foreach (MethodParameter p in parameters)
             {
@@ -133,31 +142,30 @@ namespace NetGore.Db.ClassCreator
             }
 
             StringBuilder sb = new StringBuilder(2048);
-            sb.AppendLine(formatter.GetXmlComment(cSummary, null, cParams.ToArray()));
-            sb.AppendLine(formatter.GetConstructorHeader(className, MemberVisibilityLevel.Public, parameters));
-            sb.Append(formatter.GetMethodBody(code));
+            sb.AppendLine(Formatter.GetXmlComment(cSummary, null, cParams.ToArray()));
+            sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, parameters));
+            sb.Append(Formatter.GetMethodBody(code));
             return sb.ToString();
         }
 
-        protected virtual string CreateFields(IEnumerable<DbColumnInfo> columns, Dictionary<DbColumnInfo, string> privateNames,
-                                              Dictionary<DbColumnInfo, string> publicNames, CodeFormatter formatter)
+        protected virtual string CreateFields(ClassData cd)
         {
             StringBuilder sb = new StringBuilder(2048);
 
             // Column fields
-            foreach (DbColumnInfo column in columns)
+            foreach (DbColumnInfo column in cd.Columns)
             {
-                string name = privateNames[column];
+                string name = cd.GetPrivateName(column);
                 string comment = "The field that maps onto the database column `" + column.Name + "`.";
-                sb.AppendLine(formatter.GetXmlComment(comment));
-                sb.AppendLine(formatter.GetField(name, column.Type, MemberVisibilityLevel.Private));
+                sb.AppendLine(Formatter.GetXmlComment(comment));
+                sb.AppendLine(Formatter.GetField(name, column.Type, MemberVisibilityLevel.Private));
             }
 
             // Properties for the fields
-            foreach (DbColumnInfo column in columns)
+            foreach (DbColumnInfo column in cd.Columns)
             {
-                string name = publicNames[column];
-                string fieldName = privateNames[column];
+                string name = cd.GetPublicName(column);
+                string fieldName = cd.GetPrivateName(column);
                 string comment = "Gets or sets the value for the field that maps onto the database column `" + column.Name + "`." +
                                  Environment.NewLine + "The underlying database type is `" + column.DatabaseType + "`";
                 if (column.DefaultValue != null && !string.IsNullOrEmpty(column.DefaultValue.ToString()))
@@ -167,22 +175,21 @@ namespace NetGore.Db.ClassCreator
                 if (!string.IsNullOrEmpty(column.Comment))
                     comment += " The database column contains the comment: " + Environment.NewLine + "\"" + column.Comment + "\".";
 
-                sb.AppendLine(formatter.GetXmlComment(comment));
-                sb.AppendLine(formatter.GetProperty(name, column.Type, MemberVisibilityLevel.Public, MemberVisibilityLevel.Public,
+                sb.AppendLine(Formatter.GetXmlComment(comment));
+                sb.AppendLine(Formatter.GetProperty(name, column.Type, MemberVisibilityLevel.Public, MemberVisibilityLevel.Public,
                                                     fieldName, false));
             }
 
             return sb.ToString();
         }
 
-        protected virtual string CreateMethodCopyValuesToDbParameterValues(string interfaceName, IEnumerable<DbColumnInfo> columns,
-                                                                           Dictionary<DbColumnInfo, string> publicNames,
-                                                                           CodeFormatter formatter)
+        protected virtual string CreateMethodCopyValuesToDbParameterValues(ClassData cd)
         {
             const string parameterName = "paramValues";
 
-            var iParameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(DbParameterValues), formatter) };
-            var sParameters = new MethodParameter[] { new MethodParameter("source", interfaceName) }.Concat(iParameters).ToArray();
+            var iParameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(DbParameterValues), Formatter) };
+            var sParameters =
+                new MethodParameter[] { new MethodParameter("source", cd.InterfaceName) }.Concat(iParameters).ToArray();
 
             StringBuilder sb = new StringBuilder(2048);
 
@@ -192,48 +199,47 @@ namespace NetGore.Db.ClassCreator
                               Environment.NewLine + " this method will not create them if they are missing.";
 
             // Instanced header
-            sb.AppendLine(formatter.GetXmlComment(cSummary, null,
+            sb.AppendLine(Formatter.GetXmlComment(cSummary, null,
                                                   new KeyValuePair<string, string>(parameterName,
                                                                                    "The DbParameterValues to copy the values into.")));
 
-            sb.AppendLine(formatter.GetMethodHeader(_copyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void),
+            sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void),
                                                     false, false));
 
             // Instanced body
-            sb.AppendLine(formatter.GetMethodBody(formatter.GetCallMethod(_copyValuesMethodName, "this", parameterName)));
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(copyValuesMethodName, "this", parameterName)));
 
             // Static hader
-            sb.AppendLine(formatter.GetXmlComment(cSummary, null,
+            sb.AppendLine(Formatter.GetXmlComment(cSummary, null,
                                                   new KeyValuePair<string, string>("source", "The object to copy the values from."),
                                                   new KeyValuePair<string, string>(parameterName,
                                                                                    "The DbParameterValues to copy the values into.")));
 
-            sb.AppendLine(formatter.GetMethodHeader(_copyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void),
+            sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void),
                                                     false, true));
 
             // Static body
             StringBuilder bodySB = new StringBuilder(2048);
-            foreach (DbColumnInfo column in columns)
+            foreach (DbColumnInfo column in cd.Columns)
             {
                 string left = parameterName + "[\"@" + column.Name + "\"]";
-                string right = "source." + publicNames[column];
-                string line = formatter.GetSetValue(left, right, false, false, column.Type);
+                string right = "source." + cd.GetPublicName(column);
+                string line = Formatter.GetSetValue(left, right, false, false, column.Type);
                 bodySB.AppendLine(line);
             }
-            sb.AppendLine(formatter.GetMethodBody(bodySB.ToString()));
+            sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
 
             return sb.ToString();
         }
 
-        protected virtual string CreateMethodCopyValuesToDict(string interfaceName, IEnumerable<DbColumnInfo> columns,
-                                                              Dictionary<DbColumnInfo, string> publicNames,
-                                                              CodeFormatter formatter)
+        protected virtual string CreateMethodCopyValuesToDict(ClassData cd)
         {
             const string parameterName = "dic";
 
             var iParameters = new MethodParameter[]
-                              { new MethodParameter(parameterName, typeof(IDictionary<string, object>), formatter) };
-            var sParameters = new MethodParameter[] { new MethodParameter("source", interfaceName) }.Concat(iParameters).ToArray();
+                              { new MethodParameter(parameterName, typeof(IDictionary<string, object>), Formatter) };
+            var sParameters =
+                new MethodParameter[] { new MethodParameter("source", cd.InterfaceName) }.Concat(iParameters).ToArray();
 
             StringBuilder sb = new StringBuilder(2048);
 
@@ -242,48 +248,47 @@ namespace NetGore.Db.ClassCreator
                               Environment.NewLine + " this method will not create them if they are missing.";
 
             // Instanced header
-            sb.AppendLine(formatter.GetXmlComment(cSummary, null,
+            sb.AppendLine(Formatter.GetXmlComment(cSummary, null,
                                                   new KeyValuePair<string, string>(parameterName,
                                                                                    "The Dictionary to copy the values into.")));
 
-            sb.AppendLine(formatter.GetMethodHeader(_copyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void),
+            sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void),
                                                     false, false));
 
             // Instanced body
-            sb.AppendLine(formatter.GetMethodBody(formatter.GetCallMethod(_copyValuesMethodName, "this", parameterName)));
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(copyValuesMethodName, "this", parameterName)));
 
             // Static hader
-            sb.AppendLine(formatter.GetXmlComment(cSummary, null,
+            sb.AppendLine(Formatter.GetXmlComment(cSummary, null,
                                                   new KeyValuePair<string, string>("source", "The object to copy the values from."),
                                                   new KeyValuePair<string, string>(parameterName,
                                                                                    "The Dictionary to copy the values into.")));
 
-            sb.AppendLine(formatter.GetMethodHeader(_copyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void),
+            sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void),
                                                     false, true));
 
             // Static body
             StringBuilder bodySB = new StringBuilder(2048);
-            foreach (DbColumnInfo column in columns)
+            foreach (DbColumnInfo column in cd.Columns)
             {
                 string left = parameterName + "[\"@" + column.Name + "\"]";
-                string right = "source." + publicNames[column];
-                string line = formatter.GetSetValue(left, right, false, false, column.Type);
+                string right = "source." + cd.GetPublicName(column);
+                string line = Formatter.GetSetValue(left, right, false, false, column.Type);
                 bodySB.AppendLine(line);
             }
-            sb.AppendLine(formatter.GetMethodBody(bodySB.ToString()));
+            sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
 
             return sb.ToString();
         }
 
-        protected virtual string CreateMethodReadValues(IEnumerable<DbColumnInfo> columns,
-                                                        Dictionary<DbColumnInfo, string> publicNames, CodeFormatter formatter)
+        protected virtual string CreateMethodReadValues(ClassData cd)
         {
-            var parameters = new MethodParameter[] { new MethodParameter("dataReader", typeof(IDataReader), formatter) };
+            var parameters = new MethodParameter[] { new MethodParameter("dataReader", typeof(IDataReader), Formatter) };
 
             StringBuilder sb = new StringBuilder(2048);
 
             sb.AppendLine(
-                formatter.GetXmlComment(
+                Formatter.GetXmlComment(
                     "Reads the values from an IDataReader and assigns the read values to this" + Environment.NewLine +
                     "object's properties. The database column's name is used to as the key, so the value" + Environment.NewLine +
                     "will not be found if any aliases are used or not all columns were selected.", null,
@@ -291,106 +296,210 @@ namespace NetGore.Db.ClassCreator
                                                      "The IDataReader to read the values from. Must already be ready to be read from.")));
 
             // Header
-            string header = formatter.GetMethodHeader("ReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false,
+            string header = Formatter.GetMethodHeader("ReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false,
                                                       false);
             sb.AppendLine(header);
 
             // Body
             StringBuilder bodySB = new StringBuilder(2048);
-            foreach (DbColumnInfo column in columns)
+            foreach (DbColumnInfo column in cd.Columns)
             {
-                string line = formatter.GetSetValue(publicNames[column], GetDataReaderAccessor(column, formatter), true, false);
+                string line = Formatter.GetSetValue(cd.GetPublicName(column), cd.GetDataReaderAccessor(column), true, false);
                 bodySB.AppendLine(line);
             }
 
-            sb.AppendLine(formatter.GetMethodBody(bodySB.ToString()));
+            sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
 
             return sb.ToString();
         }
 
-        protected virtual string FullConstructorMemberBody(IEnumerable<DbColumnInfo> columns,
-                                                           Dictionary<DbColumnInfo, string> parameterNames,
-                                                           Dictionary<DbColumnInfo, string> publicNames, CodeFormatter formatter)
+        protected virtual string FullConstructorMemberBody(ClassData cd)
         {
             StringBuilder sb = new StringBuilder(1024);
-            foreach (DbColumnInfo column in columns)
+            foreach (DbColumnInfo column in cd.Columns)
             {
-                string left = publicNames[column];
-                string right = parameterNames[column];
-                sb.AppendLine(formatter.GetSetValue(left, right, true, false));
+                string left = cd.GetPublicName(column);
+                string right = cd.GetParameterName(column);
+                sb.AppendLine(Formatter.GetSetValue(left, right, true, false));
             }
             return sb.ToString();
+        }
+
+        public void Generate(string codeNamespace, string outputDir)
+        {
+            if (!outputDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                outputDir += Path.DirectorySeparatorChar.ToString();
+
+            if (!Directory.Exists(outputDir))
+                Directory.CreateDirectory(outputDir);
+
+            var items = Generate(codeNamespace);
+
+            foreach (GeneratedTableCode item in items)
+            {
+                string filePath = outputDir + item.ClassName + "." + Formatter.FilenameSuffix;
+                File.WriteAllText(filePath, item.Code);
+            }
+        }
+
+        public IEnumerable<GeneratedTableCode> Generate(string codeNamespace)
+        {
+            LoadDbContent();
+
+            var ret = new List<GeneratedTableCode>();
+
+            foreach (var table in _dbTables)
+            {
+                string code = CreateCode(table.Key, table.Value, codeNamespace);
+                ret.Add(new GeneratedTableCode(table.Key, Formatter.GetClassName(table.Key), code));
+            }
+
+            return ret;
         }
 
         protected abstract IEnumerable<DbColumnInfo> GetColumns(string table);
 
-        protected static string GetDataReaderAccessor(DbColumnInfo column, CodeFormatter formatter)
+        protected virtual MethodParameter[] GetConstructorParameters(ClassData cd)
         {
-            // Find the method to use for reading the value
-            // TODO: string callMethod = "Get" + column.Type.Name;
-            string callMethod = "GetValue";
-            StringBuilder sb = new StringBuilder();
-
-            // Cast
-            sb.Append(formatter.GetCast(column.Type));
-
-            // Accessor
-            sb.Append(_dataReaderName + ".");
-            sb.Append(callMethod);
-            sb.Append("(");
-            sb.Append(_dataReaderName);
-            sb.Append(".GetOrdinal(\"");
-            sb.Append(column.Name);
-            sb.Append("\"))");
-
-            return sb.ToString();
-        }
-
-        protected virtual MethodParameter[] GetMethodParameters(IEnumerable<DbColumnInfo> columns,
-                                                                Dictionary<DbColumnInfo, string> parameterNames,
-                                                                CodeFormatter formatter)
-        {
-            var columnsArray = columns.ToArray();
+            var columnsArray = cd.Columns.ToArray();
             var parameters = new MethodParameter[columnsArray.Length];
             for (int i = 0; i < columnsArray.Length; i++)
             {
                 DbColumnInfo column = columnsArray[i];
-                MethodParameter p = new MethodParameter(parameterNames[column], column.Type, formatter);
+                MethodParameter p = new MethodParameter(cd.GetParameterName(column), column.Type, Formatter);
                 parameters[i] = p;
             }
 
             return parameters;
         }
 
-        protected virtual string GetStringArrayCode(IEnumerable<string> strings, CodeFormatter formatter)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("new string[] ");
+        protected abstract IEnumerable<string> GetTables();
 
-            sb.Append(formatter.OpenBrace);
-            foreach (string s in strings)
+        /// <summary>
+        /// Loads the content (table and column data) from the database and populates _dbTables. This only happens once
+        /// per object instance.
+        /// </summary>
+        void LoadDbContent()
+        {
+            if (_isDbContentLoaded)
+                return;
+
+            _isDbContentLoaded = true;
+
+            DbConnection.Open();
+
+            var tables = GetTables();
+
+            foreach (string table in tables)
             {
-                sb.Append("\"");
-                sb.Append(s);
-                sb.Append("\"");
-                sb.Append(formatter.ParameterSpacer);
+                var columns = GetColumns(table);
+                _dbTables.Add(table, columns.ToArray());
             }
 
-            if (strings.Count() > 0)
-                sb.Length -= formatter.ParameterSpacer.Length;
-
-            sb.Append(" ");
-            sb.Append(formatter.CloseBrace);
-
-            return sb.ToString();
+            DbConnection.Close();
         }
 
-        protected abstract IEnumerable<string> GetTables();
+        protected void SetDbConnection(DbConnection dbConnection)
+        {
+            if (_dbConnction != null)
+                throw new MethodAccessException("The DbConnection has already been set!");
+
+            _dbConnction = dbConnection;
+        }
 
         #region IDisposable Members
 
         public abstract void Dispose();
 
         #endregion
+
+        public class ClassData
+        {
+            // ReSharper disable UnaccessedField.Global
+            public readonly string ClassName;
+            public readonly IEnumerable<DbColumnInfo> Columns;
+            public readonly CodeFormatter Formatter;
+            public readonly string InterfaceName;
+            public readonly string TableName;
+            // ReSharper restore UnaccessedField.Global
+
+            readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
+            readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
+            readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
+
+            public ClassData(string tableName, IEnumerable<DbColumnInfo> columns, CodeFormatter formatter)
+            {
+                TableName = tableName;
+                Columns = columns;
+                Formatter = formatter;
+
+                ClassName = formatter.GetClassName(tableName);
+                InterfaceName = formatter.GetInterfaceName(tableName);
+
+                foreach (DbColumnInfo column in columns)
+                {
+                    _privateNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, column.Type));
+                    _publicNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, column.Type));
+                    _parameterNames.Add(column, formatter.GetParameterName(column.Name, column.Type));
+                }
+            }
+
+            /// <summary>
+            /// Gets the parameter name for a DbColumnInfo.
+            /// </summary>
+            /// <param name="dbColumn">The DbColumnInfo to get the parameter name for.</param>
+            /// <returns>The parameter name for the DbColumnInfo.</returns>
+            public string GetParameterName(DbColumnInfo dbColumn)
+            {
+                return _parameterNames[dbColumn];
+            }
+
+            /// <summary>
+            /// Gets the private name for a DbColumnInfo.
+            /// </summary>
+            /// <param name="dbColumn">The DbColumnInfo to get the private name for.</param>
+            /// <returns>The private name for the DbColumnInfo.</returns>
+            public string GetPrivateName(DbColumnInfo dbColumn)
+            {
+                return _privateNames[dbColumn];
+            }
+
+            /// <summary>
+            /// Gets the public name for a DbColumnInfo.
+            /// </summary>
+            /// <param name="dbColumn">The DbColumnInfo to get the public name for.</param>
+            /// <returns>The public name for the DbColumnInfo.</returns>
+            public string GetPublicName(DbColumnInfo dbColumn)
+            {
+                return _publicNames[dbColumn];
+            }
+
+            /// <summary>
+            /// Gets the code string used for accessing a database DbColumnInfo's value from a DataReader.
+            /// </summary>
+            /// <param name="column">The DbColumnInfo to get the value from.</param>
+            /// <returns>The code string used for accessing a database DbColumnInfo's value.</returns>
+            public string GetDataReaderAccessor(DbColumnInfo column)
+            {
+                // Find the method to use for reading the value
+                // TODO: string callMethod = "Get" + column.Type.Name;
+                string callMethod = "GetValue";
+                StringBuilder sb = new StringBuilder();
+
+                // Cast
+                sb.Append(Formatter.GetCast(column.Type));
+
+                // Accessor
+                sb.Append(dataReaderName + ".");
+                sb.Append(callMethod);
+                sb.Append("(");
+                sb.Append(dataReaderName);
+                sb.Append(".GetOrdinal(\"");
+                sb.Append(column.Name);
+                sb.Append("\"))");
+
+                return sb.ToString();
+            }
+        }
     }
 }
