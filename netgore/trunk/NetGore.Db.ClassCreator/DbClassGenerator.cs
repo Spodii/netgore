@@ -53,44 +53,38 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.OpenBrace);
             {
                 // Interface
-                sb.AppendLine(
-                    Formatter.GetXmlComment("Interface for a class that can be used to serialize values to the database table `" +
-                                            tableName + "`."));
+                sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.InterfaceSummary, tableName)));
                 sb.AppendLine(Formatter.GetInterface(cd.InterfaceName, MemberVisibilityLevel.Public));
                 sb.AppendLine(Formatter.OpenBrace);
                 {
                     foreach (DbColumnInfo column in columns)
                     {
-                        sb.AppendLine(Formatter.GetXmlComment("Gets the value for the database column `" + column.Name + "`."));
+                        sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.InterfaceGetProperty, column.Name)));
                         sb.AppendLine(Formatter.GetInterfaceProperty(cd.GetPublicName(column), column.Type, false));
                     }
                 }
                 sb.AppendLine(Formatter.CloseBrace);
 
                 // Class
-                sb.AppendLine(
-                    Formatter.GetXmlComment("Provides a strongly-typed structure for the database table `" + tableName + "`."));
+                sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ClassSummary, tableName)));
                 sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, new string[] { cd.InterfaceName }));
                 sb.AppendLine(Formatter.OpenBrace);
                 {
                     // Fields/Properties
                     string fieldNamesCode = Formatter.GetStringArrayCode(columns.Select(x => x.Name));
-                    sb.AppendLine(Formatter.GetXmlComment("Array of the database column names."));
+                    sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnArrayField));
                     sb.AppendLine(Formatter.GetField(dbColumnsField, typeof(string[]), MemberVisibilityLevel.Private,
                                                      fieldNamesCode, true, true));
 
-                    sb.AppendLine(
-                        Formatter.GetXmlComment(
-                            "Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents."));
+                    sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnIEnumerableProperty));
                     sb.AppendLine(Formatter.GetProperty("DbColumns", typeof(IEnumerable<string>), MemberVisibilityLevel.Public,
                                                         null, dbColumnsField, false));
 
-                    sb.AppendLine(Formatter.GetXmlComment("The name of the database table that this class represents."));
+                    sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.TableName));
                     sb.AppendLine(Formatter.GetConstField("TableName", typeof(string), MemberVisibilityLevel.Public,
                                                           "\"" + tableName + "\""));
 
-                    sb.AppendLine(
-                        Formatter.GetXmlComment("The number of columns in the database table that this class represents."));
+                    sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnCount));
                     sb.AppendLine(Formatter.GetConstField("ColumnCount", typeof(int), MemberVisibilityLevel.Public,
                                                           columns.Count().ToString()));
 
@@ -105,11 +99,12 @@ namespace NetGore.Db.ClassCreator
 
                     // Constructor (IDataReader)
                     sb.AppendLine(Formatter.GetXmlComment(cd.ClassName + " constructor.", null,
-                                                          new KeyValuePair<string, string>("dataReader",
-                                                                                           "The IDataReader to read the values from. See method ReadValues() for details.")));
-                    string drConstructorBody = Formatter.GetCallMethod("ReadValues", "dataReader");
+                                                          new KeyValuePair<string, string>(dataReaderName,
+                                                                                           Comments.CreateCode.
+                                                                                               ConstructorParameterIDataReader)));
+                    string drConstructorBody = Formatter.GetCallMethod("ReadValues", dataReaderName);
                     var drConstructorParams = new MethodParameter[]
-                                              { new MethodParameter("dataReader", typeof(IDataReader), Formatter) };
+                                              { new MethodParameter(dataReaderName, typeof(IDataReader), Formatter) };
                     sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, drConstructorParams));
                     sb.AppendLine(Formatter.GetMethodBody(drConstructorBody));
 
@@ -137,7 +132,7 @@ namespace NetGore.Db.ClassCreator
             var cParams = new List<KeyValuePair<string, string>>(Math.Max(1, parameters.Length));
             foreach (MethodParameter p in parameters)
             {
-                var kvp = new KeyValuePair<string, string>(p.Name, "The initial value for the corresponding property.");
+                var kvp = new KeyValuePair<string, string>(p.Name, Comments.CreateConstructor.Parameter);
                 cParams.Add(kvp);
             }
 
@@ -156,7 +151,7 @@ namespace NetGore.Db.ClassCreator
             foreach (DbColumnInfo column in cd.Columns)
             {
                 string name = cd.GetPrivateName(column);
-                string comment = "The field that maps onto the database column `" + column.Name + "`.";
+                string comment = string.Format(Comments.CreateFields.Field, column.Name);
                 sb.AppendLine(Formatter.GetXmlComment(comment));
                 sb.AppendLine(Formatter.GetField(name, column.Type, MemberVisibilityLevel.Private));
             }
@@ -166,14 +161,15 @@ namespace NetGore.Db.ClassCreator
             {
                 string name = cd.GetPublicName(column);
                 string fieldName = cd.GetPrivateName(column);
-                string comment = "Gets or sets the value for the field that maps onto the database column `" + column.Name + "`." +
-                                 Environment.NewLine + "The underlying database type is `" + column.DatabaseType + "`";
+                string comment = string.Format(Comments.CreateFields.Property, column.Name, column.DatabaseType);
+
                 if (column.DefaultValue != null && !string.IsNullOrEmpty(column.DefaultValue.ToString()))
-                    comment += " with the default value of `" + column.DefaultValue + "`.";
+                    comment += string.Format(Comments.CreateFields.PropertyHasDefaultValue, column.DefaultValue);
                 else
-                    comment += ".";
+                    comment += Comments.CreateFields.PropertyNoDefaultValue;
+
                 if (!string.IsNullOrEmpty(column.Comment))
-                    comment += " The database column contains the comment: " + Environment.NewLine + "\"" + column.Comment + "\".";
+                    comment += string.Format(Comments.CreateFields.PropertyDbComment, column.Comment);
 
                 sb.AppendLine(Formatter.GetXmlComment(comment));
                 sb.AppendLine(Formatter.GetProperty(name, column.Type, MemberVisibilityLevel.Public, MemberVisibilityLevel.Public,
@@ -193,15 +189,10 @@ namespace NetGore.Db.ClassCreator
 
             StringBuilder sb = new StringBuilder(2048);
 
-            string cSummary = "Copies the column values into the given DbParameterValues using the database column name" +
-                              Environment.NewLine +
-                              "with a prefixed @ as the key. The keys must already exist in the DbParameterValues;" +
-                              Environment.NewLine + " this method will not create them if they are missing.";
-
             // Instanced header
-            sb.AppendLine(Formatter.GetXmlComment(cSummary, null,
+            sb.AppendLine(Formatter.GetXmlComment(Comments.CopyToDPV.Summary, null,
                                                   new KeyValuePair<string, string>(parameterName,
-                                                                                   "The DbParameterValues to copy the values into.")));
+                                                                                   Comments.CopyToDPV.ParameterDbParameterValues)));
 
             sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void),
                                                     false, false));
@@ -210,10 +201,10 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(copyValuesMethodName, "this", parameterName)));
 
             // Static hader
-            sb.AppendLine(Formatter.GetXmlComment(cSummary, null,
-                                                  new KeyValuePair<string, string>("source", "The object to copy the values from."),
+            sb.AppendLine(Formatter.GetXmlComment(Comments.CopyToDPV.Summary, null,
+                                                  new KeyValuePair<string, string>("source", Comments.CopyToDPV.ParameterSource),
                                                   new KeyValuePair<string, string>(parameterName,
-                                                                                   "The DbParameterValues to copy the values into.")));
+                                                                                   Comments.CopyToDPV.ParameterDbParameterValues)));
 
             sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void),
                                                     false, true));
@@ -243,14 +234,10 @@ namespace NetGore.Db.ClassCreator
 
             StringBuilder sb = new StringBuilder(2048);
 
-            string cSummary = "Copies the column values into the given Dictionary using the database column name" +
-                              Environment.NewLine + "with a prefixed @ as the key. The keys must already exist in the Dictionary;" +
-                              Environment.NewLine + " this method will not create them if they are missing.";
-
             // Instanced header
-            sb.AppendLine(Formatter.GetXmlComment(cSummary, null,
+            sb.AppendLine(Formatter.GetXmlComment(Comments.CopyToDict.Summary, null,
                                                   new KeyValuePair<string, string>(parameterName,
-                                                                                   "The Dictionary to copy the values into.")));
+                                                                                   Comments.CopyToDict.ParameterDict)));
 
             sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void),
                                                     false, false));
@@ -259,10 +246,10 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(copyValuesMethodName, "this", parameterName)));
 
             // Static hader
-            sb.AppendLine(Formatter.GetXmlComment(cSummary, null,
-                                                  new KeyValuePair<string, string>("source", "The object to copy the values from."),
+            sb.AppendLine(Formatter.GetXmlComment(Comments.CopyToDict.Summary, null,
+                                                  new KeyValuePair<string, string>("source", Comments.CopyToDict.ParameterSource),
                                                   new KeyValuePair<string, string>(parameterName,
-                                                                                   "The Dictionary to copy the values into.")));
+                                                                                   Comments.CopyToDict.ParameterDict)));
 
             sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void),
                                                     false, true));
@@ -283,17 +270,13 @@ namespace NetGore.Db.ClassCreator
 
         protected virtual string CreateMethodReadValues(ClassData cd)
         {
-            var parameters = new MethodParameter[] { new MethodParameter("dataReader", typeof(IDataReader), Formatter) };
+            var parameters = new MethodParameter[] { new MethodParameter(dataReaderName, typeof(IDataReader), Formatter) };
 
             StringBuilder sb = new StringBuilder(2048);
 
-            sb.AppendLine(
-                Formatter.GetXmlComment(
-                    "Reads the values from an IDataReader and assigns the read values to this" + Environment.NewLine +
-                    "object's properties. The database column's name is used to as the key, so the value" + Environment.NewLine +
-                    "will not be found if any aliases are used or not all columns were selected.", null,
-                    new KeyValuePair<string, string>("dataReader",
-                                                     "The IDataReader to read the values from. Must already be ready to be read from.")));
+            sb.AppendLine(Formatter.GetXmlComment(Comments.ReadValues.Summary, null,
+                                                  new KeyValuePair<string, string>(dataReaderName,
+                                                                                   Comments.ReadValues.ParameterDataReader)));
 
             // Header
             string header = Formatter.GetMethodHeader("ReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false,
@@ -325,7 +308,7 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        public void Generate(string codeNamespace, string outputDir)
+        public virtual void Generate(string codeNamespace, string outputDir)
         {
             if (!outputDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
                 outputDir += Path.DirectorySeparatorChar.ToString();
@@ -342,7 +325,7 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
-        public IEnumerable<GeneratedTableCode> Generate(string codeNamespace)
+        public virtual IEnumerable<GeneratedTableCode> Generate(string codeNamespace)
         {
             LoadDbContent();
 
@@ -445,6 +428,33 @@ namespace NetGore.Db.ClassCreator
             }
 
             /// <summary>
+            /// Gets the code string used for accessing a database DbColumnInfo's value from a DataReader.
+            /// </summary>
+            /// <param name="column">The DbColumnInfo to get the value from.</param>
+            /// <returns>The code string used for accessing a database DbColumnInfo's value.</returns>
+            public string GetDataReaderAccessor(DbColumnInfo column)
+            {
+                // Find the method to use for reading the value
+                // TODO: string callMethod = "Get" + column.Type.Name;
+                string callMethod = "GetValue";
+                StringBuilder sb = new StringBuilder();
+
+                // Cast
+                sb.Append(Formatter.GetCast(column.Type));
+
+                // Accessor
+                sb.Append(dataReaderName + ".");
+                sb.Append(callMethod);
+                sb.Append("(");
+                sb.Append(dataReaderName);
+                sb.Append(".GetOrdinal(\"");
+                sb.Append(column.Name);
+                sb.Append("\"))");
+
+                return sb.ToString();
+            }
+
+            /// <summary>
             /// Gets the parameter name for a DbColumnInfo.
             /// </summary>
             /// <param name="dbColumn">The DbColumnInfo to get the parameter name for.</param>
@@ -473,32 +483,105 @@ namespace NetGore.Db.ClassCreator
             {
                 return _publicNames[dbColumn];
             }
+        }
+
+        /// <summary>
+        /// Contains all the code comments.
+        /// </summary>
+        protected static class Comments
+        {
+            /// <summary>
+            /// Comments used in CreateMethodCopyValuesToDict().
+            /// </summary>
+            public static class CopyToDict
+            {
+                public const string ParameterDict = "The Dictionary to copy the values into.";
+
+                public const string ParameterSource = "The object to copy the values from.";
+
+                public static readonly string Summary =
+                    "Copies the column values into the given Dictionary using the database column name" + Environment.NewLine +
+                    "with a prefixed @ as the key. The keys must already exist in the Dictionary;" + Environment.NewLine +
+                    " this method will not create them if they are missing.";
+            }
 
             /// <summary>
-            /// Gets the code string used for accessing a database DbColumnInfo's value from a DataReader.
+            /// Comments used in CreateMethodCopyValuesToDbParameterValues().
             /// </summary>
-            /// <param name="column">The DbColumnInfo to get the value from.</param>
-            /// <returns>The code string used for accessing a database DbColumnInfo's value.</returns>
-            public string GetDataReaderAccessor(DbColumnInfo column)
+            public static class CopyToDPV
             {
-                // Find the method to use for reading the value
-                // TODO: string callMethod = "Get" + column.Type.Name;
-                string callMethod = "GetValue";
-                StringBuilder sb = new StringBuilder();
+                public const string ParameterDbParameterValues = "The DbParameterValues to copy the values into.";
 
-                // Cast
-                sb.Append(Formatter.GetCast(column.Type));
+                public const string ParameterSource = "The object to copy the values from.";
 
-                // Accessor
-                sb.Append(dataReaderName + ".");
-                sb.Append(callMethod);
-                sb.Append("(");
-                sb.Append(dataReaderName);
-                sb.Append(".GetOrdinal(\"");
-                sb.Append(column.Name);
-                sb.Append("\"))");
+                public static readonly string Summary =
+                    "Copies the column values into the given DbParameterValues using the database column name" +
+                    Environment.NewLine + "with a prefixed @ as the key. The keys must already exist in the DbParameterValues;" +
+                    Environment.NewLine + " this method will not create them if they are missing.";
+            }
 
-                return sb.ToString();
+            /// <summary>
+            /// Comments used in CreateCode().
+            /// </summary>
+            public static class CreateCode
+            {
+                public const string ClassSummary = "Provides a strongly-typed structure for the database table `{0}`.";
+                public const string ColumnArrayField = "Array of the database column names.";
+
+                public const string ColumnCount = "The number of columns in the database table that this class represents.";
+
+                public const string ColumnIEnumerableProperty =
+                    "Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.";
+
+                public const string ConstructorParameterIDataReader =
+                    "The IDataReader to read the values from. See method ReadValues() for details.";
+
+                public const string InterfaceGetProperty = "Gets the value for the database column `{0}`.";
+
+                public const string InterfaceSummary =
+                    "Interface for a class that can be used to serialize values to the database table `{0}`.";
+
+                public const string TableName = "The name of the database table that this class represents.";
+            }
+
+            /// <summary>
+            /// Comments used in CreateConstructor().
+            /// </summary>
+            public static class CreateConstructor
+            {
+                public const string Parameter = "The initial value for the corresponding property.";
+            }
+
+            /// <summary>
+            /// Comments used in CreateFields().
+            /// </summary>
+            public static class CreateFields
+            {
+                public const string Field = "The field that maps onto the database column `{0}`.";
+
+                public const string PropertyHasDefaultValue = " with the default value of `{0}`.";
+                public const string PropertyNoDefaultValue = ".";
+
+                public static readonly string Property =
+                    "Gets or sets the value for the field that maps onto the database column `{0}`." + Environment.NewLine +
+                    "The underlying database type is `{1}`";
+
+                public static readonly string PropertyDbComment = " The database column contains the comment: " +
+                                                                  Environment.NewLine + "\"{0}\".";
+            }
+
+            /// <summary>
+            /// Comments used in CreateMethodReadValues().
+            /// </summary>
+            public static class ReadValues
+            {
+                public const string ParameterDataReader =
+                    "The IDataReader to read the values from. Must already be ready to be read from.";
+
+                public static readonly string Summary =
+                    "Reads the values from an IDataReader and assigns the read values to this" + Environment.NewLine +
+                    "object's properties. The database column's name is used to as the key, so the value" + Environment.NewLine +
+                    "will not be found if any aliases are used or not all columns were selected.";
             }
         }
     }
