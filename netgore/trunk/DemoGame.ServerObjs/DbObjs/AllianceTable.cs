@@ -22,6 +22,7 @@ System.String Name
 get;
 }
 }
+
 /// <summary>
 /// Provides a strongly-typed structure for the database table `alliance`.
 /// </summary>
@@ -171,4 +172,5 @@ paramValues["@name"] = (System.String)source.Name;
 }
 
 }
+
 }

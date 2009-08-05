@@ -29,6 +29,7 @@ System.UInt16 ItemId
 get;
 }
 }
+
 /// <summary>
 /// Provides a strongly-typed structure for the database table `character_template_equipped`.
 /// </summary>
@@ -202,4 +203,5 @@ paramValues["@item_id"] = (System.UInt16)source.ItemId;
 }
 
 }
+
 }

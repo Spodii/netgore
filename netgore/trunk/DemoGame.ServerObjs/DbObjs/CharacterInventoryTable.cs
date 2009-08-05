@@ -22,6 +22,7 @@ System.UInt32 ItemId
 get;
 }
 }
+
 /// <summary>
 /// Provides a strongly-typed structure for the database table `character_inventory`.
 /// </summary>
@@ -171,4 +172,5 @@ paramValues["@item_id"] = (System.UInt32)source.ItemId;
 }
 
 }
+
 }

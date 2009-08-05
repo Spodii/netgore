@@ -232,6 +232,7 @@ System.Byte Width
 get;
 }
 }
+
 /// <summary>
 /// Provides a strongly-typed structure for the database table `item`.
 /// </summary>
@@ -1101,4 +1102,5 @@ paramValues["@width"] = (System.Byte)source.Width;
 }
 
 }
+
 }

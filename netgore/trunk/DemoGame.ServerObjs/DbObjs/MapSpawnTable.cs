@@ -64,6 +64,7 @@ System.UInt16 Y
 get;
 }
 }
+
 /// <summary>
 /// Provides a strongly-typed structure for the database table `map_spawn`.
 /// </summary>
@@ -357,4 +358,5 @@ paramValues["@y"] = (System.UInt16)source.Y;
 }
 
 }
+
 }

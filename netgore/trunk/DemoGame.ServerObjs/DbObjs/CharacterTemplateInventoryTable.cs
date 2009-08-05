@@ -43,6 +43,7 @@ System.Byte Min
 get;
 }
 }
+
 /// <summary>
 /// Provides a strongly-typed structure for the database table `character_template_inventory`.
 /// </summary>
@@ -264,4 +265,5 @@ paramValues["@min"] = (System.Byte)source.Min;
 }
 
 }
+
 }
