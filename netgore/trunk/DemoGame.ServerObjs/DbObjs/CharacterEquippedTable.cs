@@ -29,6 +29,7 @@ System.Byte Slot
 get;
 }
 }
+
 /// <summary>
 /// Provides a strongly-typed structure for the database table `character_equipped`.
 /// </summary>
@@ -202,4 +203,5 @@ paramValues["@slot"] = (System.Byte)source.Slot;
 }
 
 }
+
 }

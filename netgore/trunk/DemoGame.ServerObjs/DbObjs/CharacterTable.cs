@@ -260,6 +260,7 @@ System.Single Y
 get;
 }
 }
+
 /// <summary>
 /// Provides a strongly-typed structure for the database table `character`.
 /// </summary>
@@ -1225,4 +1226,5 @@ paramValues["@y"] = (System.Single)source.Y;
 }
 
 }
+
 }

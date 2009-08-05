@@ -218,6 +218,7 @@ System.Byte Ws
 get;
 }
 }
+
 /// <summary>
 /// Provides a strongly-typed structure for the database table `character_template`.
 /// </summary>
@@ -1039,4 +1040,5 @@ paramValues["@ws"] = (System.Byte)source.Ws;
 }
 
 }
+
 }

@@ -29,6 +29,7 @@ System.Byte Placeholder
 get;
 }
 }
+
 /// <summary>
 /// Provides a strongly-typed structure for the database table `alliance_attackable`.
 /// </summary>
@@ -203,4 +204,5 @@ paramValues["@placeholder"] = (System.Byte)source.Placeholder;
 }
 
 }
+
 }
