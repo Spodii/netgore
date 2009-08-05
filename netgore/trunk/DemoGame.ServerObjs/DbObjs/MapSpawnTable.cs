@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore.Db;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
@@ -289,14 +290,14 @@ ReadValues(dataReader);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.Amount = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("amount"));
-this.CharacterId = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("character_id"));
-this.Height = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("height"));
-this.Id = (System.Int32)dataReader.GetValue(dataReader.GetOrdinal("id"));
-this.MapId = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("map_id"));
-this.Width = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("width"));
-this.X = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("x"));
-this.Y = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("y"));
+this.Amount = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("amount"));
+this.CharacterId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
+this.Height = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("height"));
+this.Id = (System.Int32)dataReader.GetInt32(dataReader.GetOrdinal("id"));
+this.MapId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("map_id"));
+this.Width = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("width"));
+this.X = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("x"));
+this.Y = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("y"));
 }
 
 /// <summary>
