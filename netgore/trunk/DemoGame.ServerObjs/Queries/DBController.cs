@@ -17,29 +17,13 @@ namespace DemoGame.Server
     /// </summary>
     public class DBController : IDisposable
     {
+        static readonly List<DBController> _instances = new List<DBController>();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly DbConnectionPool _connectionPool;
         readonly Dictionary<Type, object> _queryObjects = new Dictionary<Type, object>();
 
         bool _disposed;
-
-        static readonly List<DBController> _instances = new List<DBController>();
-
-        /// <summary>
-        /// Gets an instance of the DbController. A DbController must have already been constructed for this to work.
-        /// </summary>
-        /// <returns>An instance of the DbController.</returns>
-        public static DBController GetInstance()
-        {
-            lock (_instances)
-            {
-                if (_instances.Count == 0)
-                    throw new MemberAccessException("Constructor on the DbController has not yet been called!");
-
-                return _instances[_instances.Count - 1];
-            }
-        }
 
         public DBController(string connectionString)
         {
@@ -97,6 +81,21 @@ namespace DemoGame.Server
             lock (_instances)
             {
                 _instances.Add(this);
+            }
+        }
+
+        /// <summary>
+        /// Gets an instance of the DbController. A DbController must have already been constructed for this to work.
+        /// </summary>
+        /// <returns>An instance of the DbController.</returns>
+        public static DBController GetInstance()
+        {
+            lock (_instances)
+            {
+                if (_instances.Count == 0)
+                    throw new MemberAccessException("Constructor on the DbController has not yet been called!");
+
+                return _instances[_instances.Count - 1];
             }
         }
 

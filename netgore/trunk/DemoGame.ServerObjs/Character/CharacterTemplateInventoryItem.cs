@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace DemoGame.Server
 {
     public class CharacterTemplateInventoryItem

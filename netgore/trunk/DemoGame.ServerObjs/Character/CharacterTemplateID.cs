@@ -2,9 +2,9 @@ using System;
 using System.ComponentModel;
 using System.Data;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using DemoGame.Server.Queries;
-using NetGore.Db;
 using NetGore.IO;
 
 namespace DemoGame.Server
@@ -844,30 +844,6 @@ namespace DemoGame.Server
     public static class CharacterTemplateIDReadWriteExtensions
     {
         /// <summary>
-        /// Checks if the CharacterTemplate with the given CharacterTemplateID exists in the database.
-        /// </summary>
-        /// <param name="id">CharacterTemplateID to check.</param>
-        /// <returns>True if a CharacterTemplate with the given id exists; otherwise false.</returns>
-        public static bool TemplateExists(this CharacterTemplateID id)
-        {
-            var dbController = DBController.GetInstance();
-            var query = dbController.GetQuery<SelectCharacterTemplateQuery>();
-
-            try
-            {
-                var result = query.Execute(id);
-                if (result == null)
-                    return false;
-            }
-            catch (ArgumentException)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        /// <summary>
         /// Reads the CharacterTemplateID from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the CharacterTemplateID from.</param>
@@ -921,6 +897,30 @@ namespace DemoGame.Server
         public static CharacterTemplateID ReadCharacterTemplateID(this IValueReader valueReader, string name)
         {
             return CharacterTemplateID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Checks if the CharacterTemplate with the given CharacterTemplateID exists in the database.
+        /// </summary>
+        /// <param name="id">CharacterTemplateID to check.</param>
+        /// <returns>True if a CharacterTemplate with the given id exists; otherwise false.</returns>
+        public static bool TemplateExists(this CharacterTemplateID id)
+        {
+            DBController dbController = DBController.GetInstance();
+            SelectCharacterTemplateQuery query = dbController.GetQuery<SelectCharacterTemplateQuery>();
+
+            try
+            {
+                SelectCharacterTemplateQueryValues result = query.Execute(id);
+                if (result == null)
+                    return false;
+            }
+            catch (ArgumentException)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

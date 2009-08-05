@@ -1,3 +1,4 @@
+using System.Linq;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries

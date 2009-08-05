@@ -25,7 +25,8 @@ namespace DemoGame.Client
     /// <param name="isDrawing">If the <paramref name="layer"/> is actually being drawn by the <paramref name="map"/>. If
     /// false, it is time for the <paramref name="layer"/> to be drawn, but the <paramref name="map"/> will not actually
     /// draw the layer.</param>
-    public delegate void MapDrawEventHandler(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, Camera2D camera, bool isDrawing);
+    public delegate void MapDrawEventHandler(
+        Map map, MapRenderLayer layer, SpriteBatch spriteBatch, Camera2D camera, bool isDrawing);
 
     /// <summary>
     /// Map object for the client
@@ -87,6 +88,18 @@ namespace DemoGame.Client
         List<Texture2D> _mapAtlases = new List<Texture2D>();
 
         /// <summary>
+        /// Notifies listeners when the Map has finished drawing a layer. This event is raised immediately after
+        /// drawing for the layer has finished.
+        /// </summary>
+        public event MapDrawEventHandler OnEndDrawLayer;
+
+        /// <summary>
+        /// Notifies listeners when the Map has started drawing a layer. This event is raised immediately before any
+        /// drawing for the layer is actually done.
+        /// </summary>
+        public event MapDrawEventHandler OnStartDrawLayer;
+
+        /// <summary>
         /// Gets or sets if the background items are drawn.
         /// </summary>
         public static bool DrawBackground { get; set; }
@@ -105,7 +118,6 @@ namespace DemoGame.Client
         /// Gets or sets if the map graphics are drawn.
         /// </summary>
         public static bool DrawMapGrhs { get; set; }
-
 
         /// <summary>
         /// Gets an IEnumerable of all the BackgroundImages on the Map.
@@ -285,18 +297,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Notifies listeners when the Map has started drawing a layer. This event is raised immediately before any
-        /// drawing for the layer is actually done.
-        /// </summary>
-        public event MapDrawEventHandler OnStartDrawLayer;
-
-        /// <summary>
-        /// Notifies listeners when the Map has finished drawing a layer. This event is raised immediately after
-        /// drawing for the layer has finished.
-        /// </summary>
-        public event MapDrawEventHandler OnEndDrawLayer;
-
-        /// <summary>
         /// Draws an IEnumerable of IDrawableEntities.
         /// </summary>
         /// <param name="sb">SpriteBatch to draw to.</param>
@@ -304,7 +304,8 @@ namespace DemoGame.Client
         /// <param name="drawableEntities">List of IDrawableEntity objects to draw.</param>
         /// <param name="layer">The MapRenderLayer that is being drawn.</param>
         /// <param name="draw">If true, the layer will be drawn. If false, no drawing will be done.</param>
-        void DrawLayer(SpriteBatch sb, Camera2D camera, IEnumerable<IDrawableEntity> drawableEntities, MapRenderLayer layer, bool draw)
+        void DrawLayer(SpriteBatch sb, Camera2D camera, IEnumerable<IDrawableEntity> drawableEntities, MapRenderLayer layer,
+                       bool draw)
         {
             if (OnStartDrawLayer != null)
                 OnStartDrawLayer(this, layer, sb, camera, draw);

@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Net;
 
 namespace NetGore.Network

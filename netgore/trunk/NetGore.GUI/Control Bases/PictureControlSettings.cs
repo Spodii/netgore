@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace NetGore.Graphics.GUI
 {
     public abstract class PictureControlSettings : ControlSettings

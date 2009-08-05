@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace NetGore
 {
     enum BoxSide

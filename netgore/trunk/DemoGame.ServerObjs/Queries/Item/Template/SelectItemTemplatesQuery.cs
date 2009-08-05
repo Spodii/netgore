@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using NetGore.Db;
 
 // TODO: Make this a query to just select ONE ItemTemplate, then add a new query to get all ItemTemplateIDs
