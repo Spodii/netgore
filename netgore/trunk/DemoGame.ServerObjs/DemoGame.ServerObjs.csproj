@@ -80,6 +80,19 @@
     <Compile Include="Character\CharacterTemplateInventoryItem.cs" />
     <Compile Include="Character\CharacterTemplateManager.cs" />
     <Compile Include="DBConnectionSettings.cs" />
+    <Compile Include="DbObjs\AllianceAttackableTable.cs" />
+    <Compile Include="DbObjs\AllianceHostileTable.cs" />
+    <Compile Include="DbObjs\AllianceTable.cs" />
+    <Compile Include="DbObjs\CharacterEquippedTable.cs" />
+    <Compile Include="DbObjs\CharacterInventoryTable.cs" />
+    <Compile Include="DbObjs\CharacterTable.cs" />
+    <Compile Include="DbObjs\CharacterTemplateEquippedTable.cs" />
+    <Compile Include="DbObjs\CharacterTemplateInventoryTable.cs" />
+    <Compile Include="DbObjs\CharacterTemplateTable.cs" />
+    <Compile Include="DbObjs\ItemTable.cs" />
+    <Compile Include="DbObjs\ItemTemplateTable.cs" />
+    <Compile Include="DbObjs\MapSpawnTable.cs" />
+    <Compile Include="DbObjs\MapTable.cs" />
     <Compile Include="Db\DatabaseModel.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

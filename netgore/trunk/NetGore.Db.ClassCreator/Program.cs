@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -14,8 +12,9 @@ namespace NetGore.Db.ClassCreator
 
             using (MySqlClassGenerator generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
             {
-                string outputDir = AppDomain.CurrentDomain.BaseDirectory + "TestOutput";
-                generator.Generate(formatter, "DemoGame.Server", outputDir);
+                string outputDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.ServerObjs{1}DbObjs{1}",
+                                                 AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+                generator.Generate(formatter, "DemoGame.Server.DbObjs", outputDir);
             }
         }
     }
