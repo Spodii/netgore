@@ -179,6 +179,8 @@ namespace DemoGame.MapEditor
         /// </summary>
         TransBox _selTransBox = null;
 
+        public event MapChangeEventHandler OnChangeMap;
+
         public AddGrhCursor AddGrhCursor
         {
             get { return _addGrhCursor; }
@@ -242,8 +244,6 @@ namespace DemoGame.MapEditor
             get { return _keyEventArgs; }
         }
 
-        public event MapChangeEventHandler OnChangeMap;
-
         /// <summary>
         /// Gets or sets the currently loaded map.
         /// </summary>
@@ -256,8 +256,8 @@ namespace DemoGame.MapEditor
                     return;
                 if (value == null)
                     throw new ArgumentNullException("value");
-                
-                var oldMap = _map;
+
+                Map oldMap = _map;
 
                 // Remove old map
                 if (oldMap != null)
@@ -391,10 +391,32 @@ namespace DemoGame.MapEditor
             _editGrhWallItems = f.lstWalls.Items;
         }
 
+        void btnAddSpawn_Click(object sender, EventArgs e)
+        {
+            lstNPCSpawns.AddNewItem();
+        }
+
+        void btnDeleteBGItem_Click(object sender, EventArgs e)
+        {
+            // TODO: Add background item deletion support
+            Debug.Fail("Not implemented...");
+        }
+
+        void btnDeleteSpawn_Click(object sender, EventArgs e)
+        {
+            lstNPCSpawns.DeleteSelectedItem();
+        }
+
         void btnNewBGLayer_Click(object sender, EventArgs e)
         {
             BackgroundLayer bgLayer = new BackgroundLayer();
             Map.AddBackgroundImage(bgLayer);
+        }
+
+        void btnNewBGSprite_Click(object sender, EventArgs e)
+        {
+            // TODO: Add background sprite support...
+            Debug.Fail("Not implemented...");
         }
 
         void btnNewEntity_Click(object sender, EventArgs e)
@@ -415,28 +437,6 @@ namespace DemoGame.MapEditor
             Vector2 size = new Vector2(64);
             entity.Position = Camera.Min + (Camera.Size / 2) - (size / 2);
             entity.Size = size;
-        }
-
-        /// <summary>
-        /// Creates an instance of a MapDrawExtensionBase that automatically updates the Map and Enabled properties.
-        /// </summary>
-        /// <typeparam name="T">Type of MapDrawExtensionBase to create.</typeparam>
-        /// <param name="checkBox">The CheckBox that is used to set the Enabled property.</param>
-        /// <returns>The instanced MapDrawExtensionBase of type <typeparamref name="T"/>.</returns>
-// ReSharper disable UnusedMethodReturnValue.Local
-        T CreateMapDrawExtensionBase<T>(CheckBox checkBox) where T : MapDrawExtensionBase, new()
-// ReSharper restore UnusedMethodReturnValue.Local
-        {
-            // Create the instance of the MapDrawExtensionBase
-            var instance = new T { Map = Map, Enabled = checkBox.Checked };
-
-            // Handle when the CheckBox value changes
-            checkBox.CheckedChanged += ((obj, e) => instance.Enabled = ((CheckBox)obj).Checked);
-
-            // Handle when the Map changes
-            OnChangeMap += ((oldMap, newMap) => instance.Map = newMap);
-
-            return instance;
         }
 
         void chkDrawBackground_CheckedChanged(object sender, EventArgs e)
@@ -528,6 +528,28 @@ namespace DemoGame.MapEditor
 
             Enabled = true;
             Cursor = Cursors.Default;
+        }
+
+        /// <summary>
+        /// Creates an instance of a MapDrawExtensionBase that automatically updates the Map and Enabled properties.
+        /// </summary>
+        /// <typeparam name="T">Type of MapDrawExtensionBase to create.</typeparam>
+        /// <param name="checkBox">The CheckBox that is used to set the Enabled property.</param>
+        /// <returns>The instanced MapDrawExtensionBase of type <typeparamref name="T"/>.</returns>
+// ReSharper disable UnusedMethodReturnValue.Local
+        T CreateMapDrawExtensionBase<T>(CheckBox checkBox) where T : MapDrawExtensionBase, new()
+            // ReSharper restore UnusedMethodReturnValue.Local
+        {
+            // Create the instance of the MapDrawExtensionBase
+            T instance = new T { Map = Map, Enabled = checkBox.Checked };
+
+            // Handle when the CheckBox value changes
+            checkBox.CheckedChanged += ((obj, e) => instance.Enabled = ((CheckBox)obj).Checked);
+
+            // Handle when the Map changes
+            OnChangeMap += ((oldMap, newMap) => instance.Map = newMap);
+
+            return instance;
         }
 
         public void DrawGame()
@@ -895,7 +917,7 @@ namespace DemoGame.MapEditor
             // Set up the MapExtensionBases
             CreateMapDrawExtensionBase<MapEntityBoxDrawer>(chkDrawEntities);
             CreateMapDrawExtensionBase<MapWallDrawer>(chkShowWalls);
-            var v = CreateMapDrawExtensionBase<MapSpawnDrawer>(chkDrawSpawnAreas);
+            MapSpawnDrawer v = CreateMapDrawExtensionBase<MapSpawnDrawer>(chkDrawSpawnAreas);
             // NOTE: Using SelectedIndexChanged for this may be a stupid idea...
             lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawnValues = ((NPCSpawnsListBox)o).GetMapSpawnValues());
         }
@@ -1424,27 +1446,5 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
-
-        private void btnDeleteSpawn_Click(object sender, EventArgs e)
-        {
-            lstNPCSpawns.DeleteSelectedItem();
-        }
-
-        private void btnAddSpawn_Click(object sender, EventArgs e)
-        {
-            lstNPCSpawns.AddNewItem();
-        }
-
-        private void btnDeleteBGItem_Click(object sender, EventArgs e)
-        {
-            // TODO: Add background item deletion support
-            Debug.Fail("Not implemented...");
-        }
-
-        private void btnNewBGSprite_Click(object sender, EventArgs e)
-        {
-            // TODO: Add background sprite support...
-            Debug.Fail("Not implemented...");
-        }
     }
 }

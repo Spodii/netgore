@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -103,11 +104,12 @@ namespace DemoGame.Server
             int width = Width.HasValue ? Width.Value : (int)Math.Round(map.Width) - x;
             int height = Height.HasValue ? Height.Value : (int)Math.Round(map.Height) - y;
 
-            const string errmsgMoved = "A spawn rectangle was being drawn off of the map." +
+            const string errmsgMoved =
+                "A spawn rectangle was being drawn off of the map." +
                 " Its previous {0} location was {1} and has been moved to {2}.";
 
-            const string errmsgSize = "A spawn rectangle was to big on the {0} axis" +
-                " and has been resized to fit into the map.";
+            const string errmsgSize =
+                "A spawn rectangle was to big on the {0} axis" + " and has been resized to fit into the map.";
 
             if (x > map.Width)
             {

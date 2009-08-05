@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -18,19 +18,69 @@ namespace DemoGame.MapEditor
 
         [Description("The PropertyGrid to display the property values for the selected item in this NPCSpawnsListBox.")]
         /// <summary>
-        /// Gets or sets the PropertyGrid to display the property values for the selected item in this NPCSpawnsListBox.
-        /// </summary>
-        public PropertyGrid PropertyGrid { get; set; }
-
-        public IEnumerable<MapSpawnValues> GetMapSpawnValues()
-        {
-            foreach (var item in Items.OfType<NPCSpawnsListBoxItem>())
-                yield return item.Value;
-        }
+            /// Gets or sets the PropertyGrid to display the property values for the selected item in this NPCSpawnsListBox.
+            /// </summary>
+            public PropertyGrid PropertyGrid { get; set; }
 
         public NPCSpawnsListBox()
         {
             SelectedIndexChanged += HandleSelectedIndexChanged;
+        }
+
+        public void AddNewItem()
+        {
+            if (_map == null)
+            {
+                MessageBox.Show("The map must be set before a new spawn can be created!");
+                return;
+            }
+
+            MapSpawnValues newSpawn = new MapSpawnValues(_dbController, _map.Index, new CharacterTemplateID(1));
+            NPCSpawnsListBoxItem newItem = new NPCSpawnsListBoxItem(newSpawn);
+
+            this.AddItemAndReselect(newItem);
+
+            SelectedItem = newItem;
+        }
+
+        public void DeleteItem(object item)
+        {
+            if (item == null)
+                return;
+
+            NPCSpawnsListBoxItem listBoxItem = SelectedItem as NPCSpawnsListBoxItem;
+            if (listBoxItem == null)
+                return;
+
+            MapSpawnValues spawnItem = listBoxItem.Value;
+            if (spawnItem == null)
+                return;
+
+            if (!Items.Contains(listBoxItem))
+            {
+                MessageBox.Show("Failed to find item `{0}` in the ListBox.");
+                return;
+            }
+
+            this.RemoveItemAndReselect(listBoxItem);
+
+            spawnItem.Delete();
+        }
+
+        public void DeleteSelectedItem()
+        {
+            if (SelectedItem == null)
+                return;
+
+            DeleteItem(SelectedItem);
+        }
+
+        public IEnumerable<MapSpawnValues> GetMapSpawnValues()
+        {
+            foreach (NPCSpawnsListBoxItem item in Items.OfType<NPCSpawnsListBoxItem>())
+            {
+                yield return item.Value;
+            }
         }
 
         void HandleSelectedIndexChanged(object sender, EventArgs e)
@@ -66,54 +116,6 @@ namespace DemoGame.MapEditor
             _dbController = dbController;
 
             ReloadSpawns();
-        }
-
-        public void DeleteSelectedItem()
-        {
-            if (SelectedItem == null)
-                return;
-
-            DeleteItem(SelectedItem);
-        }
-
-        public void AddNewItem()
-        {
-            if (_map == null)
-            {
-                MessageBox.Show("The map must be set before a new spawn can be created!");
-                return;
-            }
-
-            var newSpawn = new MapSpawnValues(_dbController, _map.Index, new CharacterTemplateID(1));
-            var newItem = new NPCSpawnsListBoxItem(newSpawn);
-
-            this.AddItemAndReselect(newItem);
-
-            SelectedItem = newItem;
-        }
-
-        public void DeleteItem(object item)
-        {
-            if (item == null)
-                return;
-
-            NPCSpawnsListBoxItem listBoxItem = SelectedItem as NPCSpawnsListBoxItem;
-            if (listBoxItem == null)
-                return;
-
-            var spawnItem = listBoxItem.Value;
-            if (spawnItem == null)
-                return;
-
-            if (!Items.Contains(listBoxItem))
-            {
-                MessageBox.Show("Failed to find item `{0}` in the ListBox.");
-                return;
-            }
-
-            this.RemoveItemAndReselect(listBoxItem);
-
-            spawnItem.Delete();
         }
 
         class NPCSpawnsListBoxItem

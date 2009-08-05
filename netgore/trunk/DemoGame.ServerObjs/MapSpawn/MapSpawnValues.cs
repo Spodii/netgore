@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using DemoGame.Server.Queries;
 using log4net;
@@ -16,10 +17,10 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        DBController _dbController;
         readonly MapSpawnValuesID _id;
 
         CharacterTemplateID _characterTemplateID;
+        DBController _dbController;
         MapIndex _mapIndex;
         byte _spawnAmount;
         MapSpawnRect _spawnArea;
@@ -110,11 +111,6 @@ namespace DemoGame.Server
             }
         }
 
-        static MapSpawnValuesID GetFreeID(DBController dbController)
-        {
-            return new MapSpawnValuesID(dbController.GetQuery<MapSpawnValuesIDCreator>().GetNext());
-        }
-
         /// <summary>
         /// MapSpawnValues constructor.
         /// </summary>
@@ -122,7 +118,8 @@ namespace DemoGame.Server
         /// <param name="mapIndex">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
         public MapSpawnValues(DBController dbController, MapIndex mapIndex, CharacterTemplateID characterTemplateID)
-            : this(dbController, GetFreeID(dbController), mapIndex, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
+            : this(
+                dbController, GetFreeID(dbController), mapIndex, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
         {
             DBController.GetQuery<InsertMapSpawnQuery>().Execute(this);
         }
@@ -175,11 +172,16 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.InfoFormat("Deleting MapSpawnValues `{0}`.", this);
 
-            var id = ID;
+            MapSpawnValuesID id = ID;
             DBController.GetQuery<DeleteMapSpawnQuery>().Execute(id);
             DBController.GetQuery<MapSpawnValuesIDCreator>().FreeID(id);
 
             _dbController = null;
+        }
+
+        static MapSpawnValuesID GetFreeID(DBController dbController)
+        {
+            return new MapSpawnValuesID(dbController.GetQuery<MapSpawnValuesIDCreator>().GetNext());
         }
 
         /// <summary>
@@ -253,6 +255,11 @@ namespace DemoGame.Server
             SpawnArea = newSpawnArea;
         }
 
+        public override string ToString()
+        {
+            return string.Format("MapSpawnValues [ID: {0} Map: {1}]", ID, MapIndex);
+        }
+
         /// <summary>
         /// Updates the MapSpawnValues in the database.
         /// </summary>
@@ -260,8 +267,8 @@ namespace DemoGame.Server
         {
             if (DBController == null)
             {
-                const string errmsg = "Tried to call UpdateDB() on `{0}` when the DBController was null." +
-                    " Likely means Delete() was called.";
+                const string errmsg =
+                    "Tried to call UpdateDB() on `{0}` when the DBController was null." + " Likely means Delete() was called.";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
@@ -272,11 +279,6 @@ namespace DemoGame.Server
                 log.InfoFormat("Updating MapSpawnValues `{0}`.", this);
 
             DBController.GetQuery<UpdateMapSpawnQuery>().Execute(this);
-        }
-
-        public override string ToString()
-        {
-            return string.Format("MapSpawnValues [ID: {0} Map: {1}]", ID, MapIndex);
         }
     }
 }

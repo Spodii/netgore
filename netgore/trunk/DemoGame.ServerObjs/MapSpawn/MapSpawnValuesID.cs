@@ -1,4 +1,6 @@
-﻿namespace DemoGame.Server
+using System.Linq;
+
+namespace DemoGame.Server
 {
     public struct MapSpawnValuesID
     {

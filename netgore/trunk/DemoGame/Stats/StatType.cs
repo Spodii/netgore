@@ -1,3 +1,5 @@
+using System.Linq;
+
 namespace DemoGame
 {
     public enum StatType : byte

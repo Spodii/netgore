@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 
 namespace DemoGame.Server
 {
@@ -47,29 +45,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Converts the given value object to the specified type, using the specified context and culture information.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Object"/> that represents the converted value.
-        /// </returns>
-        /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context. 
-        ///                 </param><param name="culture">A <see cref="T:System.Globalization.CultureInfo"/>. If null is passed, the current culture is assumed. 
-        ///                 </param><param name="value">The <see cref="T:System.Object"/> to convert. 
-        ///                 </param><param name="destinationType">The <see cref="T:System.Type"/> to convert the <paramref name="value"/> parameter to. 
-        ///                 </param><exception cref="T:System.ArgumentNullException">The <paramref name="destinationType"/> parameter is null. 
-        ///                 </exception><exception cref="T:System.NotSupportedException">The conversion cannot be performed. 
-        ///                 </exception>
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
-        {
-            if (destinationType == typeof(string))
-            {
-                return value.ToString();
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Converts the given object to the type of this converter, using the specified context and culture information.
         /// </summary>
         /// <returns>
@@ -98,6 +73,27 @@ namespace DemoGame.Server
             }
 
             return base.ConvertFrom(context, culture, value);
+        }
+
+        /// <summary>
+        /// Converts the given value object to the specified type, using the specified context and culture information.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Object"/> that represents the converted value.
+        /// </returns>
+        /// <param name="context">An <see cref="T:System.ComponentModel.ITypeDescriptorContext"/> that provides a format context. 
+        ///                 </param><param name="culture">A <see cref="T:System.Globalization.CultureInfo"/>. If null is passed, the current culture is assumed. 
+        ///                 </param><param name="value">The <see cref="T:System.Object"/> to convert. 
+        ///                 </param><param name="destinationType">The <see cref="T:System.Type"/> to convert the <paramref name="value"/> parameter to. 
+        ///                 </param><exception cref="T:System.ArgumentNullException">The <paramref name="destinationType"/> parameter is null. 
+        ///                 </exception><exception cref="T:System.NotSupportedException">The conversion cannot be performed. 
+        ///                 </exception>
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+        {
+            if (destinationType == typeof(string))
+                return value.ToString();
+
+            return false;
         }
     }
 }

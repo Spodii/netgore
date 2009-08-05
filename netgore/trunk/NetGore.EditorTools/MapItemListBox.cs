@@ -17,15 +17,15 @@ namespace NetGore.EditorTools
 
         [Browsable(false)]
         /// <summary>
-        /// Gets or sets the Camera2D used to view the Map.
-        /// </summary>
-        public Camera2D Camera { get; set; }
+            /// Gets or sets the Camera2D used to view the Map.
+            /// </summary>
+            public Camera2D Camera { get; set; }
 
         [Browsable(false)]
         /// <summary>
-        /// Gets or sets the Map containing the Entities being handled.
-        /// </summary>
-        public IMap IMap
+            /// Gets or sets the Map containing the Entities being handled.
+            /// </summary>
+            public IMap IMap
         {
             get { return _map; }
             set

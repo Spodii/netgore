@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 
@@ -13,12 +10,12 @@ namespace DemoGame.Client
     /// </summary>
     public abstract class MapDrawExtensionBase
     {
+        Map _map;
+
         /// <summary>
         /// Gets or sets if this MapDrawExtensionBase will perform the drawing.
         /// </summary>
         public virtual bool Enabled { get; set; }
-
-        Map _map;
 
         /// <summary>
         /// Gets or sets the Map that the drawing is for. Can be null.
@@ -45,17 +42,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles additional drawing for a MapRenderLayer before the
-        /// Map actually renders the layer.
-        /// </summary>
-        /// <param name="layer">The MapRenderLayer that is to be drawn.</param>
-        /// <param name="spriteBatch">The SpriteBatch the Map used to draw.</param>
-        /// <param name="camera">The Camera2D that the Map used to draw.</param>
-        /// <param name="isDrawing">If true, the Map actually drew this layer. If false, it is time for this
-        /// <paramref name="layer"/> to be drawn, but the Map did not actually draw it.</param>
-        protected abstract void StartDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, Camera2D camera, bool isDrawing);
-
-        /// <summary>
         /// When overridden in the derived class, handles additional drawing for a MapRenderLayer after the
         /// Map actually renders the layer.
         /// </summary>
@@ -67,33 +53,14 @@ namespace DemoGame.Client
         protected abstract void EndDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, Camera2D camera, bool isDrawing);
 
         /// <summary>
-        /// Handles actions needed in removing a Map from this MapDrawExtensionBase. All event hooks and cached values
-        /// for the <paramref name="map"/> should be removed here.
+        /// Handles actions needed in adding a Map to this MapDrawExtensionBase. All event hooks and cached values
+        /// for the <paramref name="map"/> should be added here.
         /// </summary>
-        /// <param name="map">Map that is to stop being used for drawing. This value is never null.</param>
-        protected virtual void UnhookMap(Map map)
+        /// <param name="map">Map that is to be used for drawing. This value is never null.</param>
+        protected virtual void HookMap(Map map)
         {
-            map.OnStartDrawLayer -= MapStartDrawEventForwarder;
-            map.OnEndDrawLayer -= MapEndDrawEventForwarder;
-        }
-
-        /// <summary>
-        /// Forwards the draw events from the Map to the corresponding abstract method in this Class.
-        /// </summary>
-        /// <param name="map">Map that the drawing is taking place on.</param>
-        /// <param name="layer">The layer that the drawing event is related to.</param>
-        /// <param name="spriteBatch">The SpriteBatch that was used to do the drawing.</param>
-        /// <param name="camera">The Camera2D that was used in the drawing.</param>
-        /// <param name="isDrawing">If the <paramref name="layer"/> is actually being drawn by the <paramref name="map"/>. If
-        /// false, it is time for the <paramref name="layer"/> to be drawn, but the <paramref name="map"/> will not actually
-        /// draw the layer.</param>
-        void MapStartDrawEventForwarder(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, Camera2D camera, bool isDrawing)
-        {
-            Debug.Assert(map == Map, "We received a draw event for the wrong map?");
-            Debug.Assert(Map != null, "How did we receive a draw event while the Map is null?");
-
-            if (Enabled && Map != null)
-                StartDrawLayer(layer, spriteBatch, camera, isDrawing);
+            map.OnStartDrawLayer += MapStartDrawEventForwarder;
+            map.OnEndDrawLayer += MapEndDrawEventForwarder;
         }
 
         /// <summary>
@@ -116,14 +83,44 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Handles actions needed in adding a Map to this MapDrawExtensionBase. All event hooks and cached values
-        /// for the <paramref name="map"/> should be added here.
+        /// Forwards the draw events from the Map to the corresponding abstract method in this Class.
         /// </summary>
-        /// <param name="map">Map that is to be used for drawing. This value is never null.</param>
-        protected virtual void HookMap(Map map)
+        /// <param name="map">Map that the drawing is taking place on.</param>
+        /// <param name="layer">The layer that the drawing event is related to.</param>
+        /// <param name="spriteBatch">The SpriteBatch that was used to do the drawing.</param>
+        /// <param name="camera">The Camera2D that was used in the drawing.</param>
+        /// <param name="isDrawing">If the <paramref name="layer"/> is actually being drawn by the <paramref name="map"/>. If
+        /// false, it is time for the <paramref name="layer"/> to be drawn, but the <paramref name="map"/> will not actually
+        /// draw the layer.</param>
+        void MapStartDrawEventForwarder(Map map, MapRenderLayer layer, SpriteBatch spriteBatch, Camera2D camera, bool isDrawing)
         {
-            map.OnStartDrawLayer += MapStartDrawEventForwarder;
-            map.OnEndDrawLayer += MapEndDrawEventForwarder;
+            Debug.Assert(map == Map, "We received a draw event for the wrong map?");
+            Debug.Assert(Map != null, "How did we receive a draw event while the Map is null?");
+
+            if (Enabled && Map != null)
+                StartDrawLayer(layer, spriteBatch, camera, isDrawing);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles additional drawing for a MapRenderLayer before the
+        /// Map actually renders the layer.
+        /// </summary>
+        /// <param name="layer">The MapRenderLayer that is to be drawn.</param>
+        /// <param name="spriteBatch">The SpriteBatch the Map used to draw.</param>
+        /// <param name="camera">The Camera2D that the Map used to draw.</param>
+        /// <param name="isDrawing">If true, the Map actually drew this layer. If false, it is time for this
+        /// <paramref name="layer"/> to be drawn, but the Map did not actually draw it.</param>
+        protected abstract void StartDrawLayer(MapRenderLayer layer, SpriteBatch spriteBatch, Camera2D camera, bool isDrawing);
+
+        /// <summary>
+        /// Handles actions needed in removing a Map from this MapDrawExtensionBase. All event hooks and cached values
+        /// for the <paramref name="map"/> should be removed here.
+        /// </summary>
+        /// <param name="map">Map that is to stop being used for drawing. This value is never null.</param>
+        protected virtual void UnhookMap(Map map)
+        {
+            map.OnStartDrawLayer -= MapStartDrawEventForwarder;
+            map.OnEndDrawLayer -= MapEndDrawEventForwarder;
         }
     }
 }

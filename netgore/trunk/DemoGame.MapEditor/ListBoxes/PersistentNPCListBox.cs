@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
 
@@ -26,17 +27,6 @@ namespace DemoGame.MapEditor
             SelectedIndexChanged += HandleSelectedIndexChanged;
         }
 
-        public void SetMap(DBController dbController, MapBase map)
-        {
-            if (map == null)
-                throw new ArgumentNullException("map");
-            if (dbController == null)
-                throw new ArgumentNullException("dbController");
-
-            _map = map;
-            _dbController = dbController;
-        }
-
         void HandleSelectedIndexChanged(object sender, EventArgs e)
         {
             if (PropertyGrid == null)
@@ -48,6 +38,17 @@ namespace DemoGame.MapEditor
 
             //if (PropertyGrid.SelectedObject != selected.Value)
             //    PropertyGrid.SelectedObject = selected.Value;
+        }
+
+        public void SetMap(DBController dbController, MapBase map)
+        {
+            if (map == null)
+                throw new ArgumentNullException("map");
+            if (dbController == null)
+                throw new ArgumentNullException("dbController");
+
+            _map = map;
+            _dbController = dbController;
         }
 
         class PersistentNPCListBoxItem
