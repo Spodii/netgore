@@ -93,11 +93,6 @@
     <Compile Include="DbObjs\ItemTemplateTable.cs" />
     <Compile Include="DbObjs\MapSpawnTable.cs" />
     <Compile Include="DbObjs\MapTable.cs" />
-    <Compile Include="Db\DatabaseModel.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DatabaseModel.edmx</DependentUpon>
-    </Compile>
     <Compile Include="Item\ItemChance.cs" />
     <Compile Include="Item\ItemID.cs" />
     <Compile Include="Item\ItemIDCreator.cs" />
@@ -201,10 +196,6 @@
     <None Include="DbSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <EntityDeploy Include="Db\DatabaseModel.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DatabaseModel.Designer.cs</LastGenOutput>
-    </EntityDeploy>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
