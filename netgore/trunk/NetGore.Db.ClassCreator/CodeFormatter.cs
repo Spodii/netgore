@@ -15,6 +15,13 @@ namespace NetGore.Db.ClassCreator
             get { return _aliases; }
         }
 
+        /// <summary>
+        /// When overridden in the derived class, generates the code for an array of string literals.
+        /// </summary>
+        /// <param name="strings">The string literals to include.</param>
+        /// <returns>The code for an array of string literals.</returns>
+        public abstract string GetStringArrayCode(IEnumerable<string> strings);
+
         public virtual string ClassMemberQualifier
         {
             get { return "this."; }

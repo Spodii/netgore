@@ -7,6 +7,34 @@ namespace NetGore.Db.ClassCreator
 {
     public class CSharpCodeFormatter : CodeFormatter
     {
+        /// <summary>
+        /// When overridden in the derived class, generates the code for an array of string literals.
+        /// </summary>
+        /// <param name="strings">The string literals to include.</param>
+        /// <returns>The code for an array of string literals.</returns>
+        public override string GetStringArrayCode(IEnumerable<string> strings)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("new string[] ");
+
+            sb.Append(OpenBrace);
+            foreach (string s in strings)
+            {
+                sb.Append("\"");
+                sb.Append(s);
+                sb.Append("\"");
+                sb.Append(ParameterSpacer);
+            }
+
+            if (strings.Count() > 0)
+                sb.Length -= ParameterSpacer.Length;
+
+            sb.Append(" ");
+            sb.Append(CloseBrace);
+
+            return sb.ToString();
+        }
+
         public override string CloseBrace
         {
             get { return "}"; }

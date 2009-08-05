@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using MySql.Data.MySqlClient;
 
@@ -18,6 +17,8 @@ namespace NetGore.Db.ClassCreator
                                               { Server = server, UserID = userID, Password = password, Database = database };
 
             _conn = new MySqlConnection(sb.ToString());
+
+            SetDbConnection(_conn);
         }
 
         public override void Dispose()
@@ -29,43 +30,6 @@ namespace NetGore.Db.ClassCreator
 
             if (_conn != null)
                 _conn.Dispose();
-        }
-
-        public void Generate(CodeFormatter formatter, string codeNamespace, string outputDir)
-        {
-            if (!outputDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                outputDir += Path.DirectorySeparatorChar.ToString();
-
-            if (!Directory.Exists(outputDir))
-                Directory.CreateDirectory(outputDir);
-
-            var items = Generate(formatter, codeNamespace);
-
-            foreach (GeneratedTableCode item in items)
-            {
-                string filePath = outputDir + item.ClassName + "." + formatter.FilenameSuffix;
-                File.WriteAllText(filePath, item.Code);
-            }
-        }
-
-        public IEnumerable<GeneratedTableCode> Generate(CodeFormatter formatter, string codeNamespace)
-        {
-            var ret = new List<GeneratedTableCode>();
-
-            _conn.Open();
-
-            var tables = GetTables();
-
-            foreach (string table in tables)
-            {
-                var columns = GetColumns(table);
-                string code = CreateCode(table, columns, codeNamespace, formatter);
-                ret.Add(new GeneratedTableCode(table, formatter.GetClassName(table), code));
-            }
-
-            _conn.Close();
-
-            return ret;
         }
 
         static bool GetColumnInfoNull(string value)
