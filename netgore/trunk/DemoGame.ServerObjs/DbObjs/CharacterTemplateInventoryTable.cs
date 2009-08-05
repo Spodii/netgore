@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore.Db;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
@@ -205,11 +206,11 @@ ReadValues(dataReader);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.Chance = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("chance"));
-this.CharacterId = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("character_id"));
-this.ItemId = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("item_id"));
-this.Max = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("max"));
-this.Min = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("min"));
+this.Chance = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("chance"));
+this.CharacterId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
+this.ItemId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("item_id"));
+this.Max = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("max"));
+this.Min = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("min"));
 }
 
 /// <summary>

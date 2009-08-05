@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore.Db;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
@@ -905,36 +906,36 @@ ReadValues(dataReader);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.Acc = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("acc"));
-this.Agi = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("agi"));
-this.Ai = (System.String)dataReader.GetValue(dataReader.GetOrdinal("ai"));
-this.AllianceId = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("alliance_id"));
-this.Armor = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("armor"));
-this.Body = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("body"));
-this.Bra = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("bra"));
-this.Defence = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("defence"));
-this.Dex = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("dex"));
-this.Evade = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("evade"));
-this.Exp = (System.UInt32)dataReader.GetValue(dataReader.GetOrdinal("exp"));
-this.GiveCash = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("give_cash"));
-this.GiveExp = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("give_exp"));
-this.Id = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("id"));
-this.Imm = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("imm"));
-this.Int = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("int"));
-this.Level = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("level"));
-this.Maxhit = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("maxhit"));
-this.Maxhp = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("maxhp"));
-this.Maxmp = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("maxmp"));
-this.Minhit = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("minhit"));
-this.Name = (System.String)dataReader.GetValue(dataReader.GetOrdinal("name"));
-this.Perc = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("perc"));
-this.Recov = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("recov"));
-this.Regen = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("regen"));
-this.Respawn = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("respawn"));
-this.Statpoints = (System.UInt32)dataReader.GetValue(dataReader.GetOrdinal("statpoints"));
-this.Str = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("str"));
-this.Tact = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("tact"));
-this.Ws = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("ws"));
+this.Acc = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("acc"));
+this.Agi = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("agi"));
+this.Ai = (System.String)dataReader.GetString(dataReader.GetOrdinal("ai"));
+this.AllianceId = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("alliance_id"));
+this.Armor = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("armor"));
+this.Body = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("body"));
+this.Bra = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("bra"));
+this.Defence = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("defence"));
+this.Dex = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("dex"));
+this.Evade = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("evade"));
+this.Exp = (System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("exp"));
+this.GiveCash = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("give_cash"));
+this.GiveExp = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("give_exp"));
+this.Id = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("id"));
+this.Imm = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("imm"));
+this.Int = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("int"));
+this.Level = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("level"));
+this.Maxhit = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("maxhit"));
+this.Maxhp = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxhp"));
+this.Maxmp = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxmp"));
+this.Minhit = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("minhit"));
+this.Name = (System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
+this.Perc = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("perc"));
+this.Recov = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("recov"));
+this.Regen = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("regen"));
+this.Respawn = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("respawn"));
+this.Statpoints = (System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("statpoints"));
+this.Str = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("str"));
+this.Tact = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("tact"));
+this.Ws = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("ws"));
 }
 
 /// <summary>

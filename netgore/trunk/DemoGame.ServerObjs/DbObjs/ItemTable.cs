@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore.Db;
 namespace DemoGame.Server.DbObjs
 {
 /// <summary>
@@ -961,38 +962,38 @@ ReadValues(dataReader);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.Agi = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("agi"));
-this.Amount = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("amount"));
-this.Armor = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("armor"));
-this.Bra = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("bra"));
-this.Defence = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("defence"));
-this.Description = (System.String)dataReader.GetValue(dataReader.GetOrdinal("description"));
-this.Dex = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("dex"));
-this.Evade = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("evade"));
-this.Graphic = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("graphic"));
-this.Height = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("height"));
-this.Hp = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("hp"));
-this.Id = (System.UInt32)dataReader.GetValue(dataReader.GetOrdinal("id"));
-this.Imm = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("imm"));
-this.Int = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("int"));
-this.Maxhit = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("maxhit"));
-this.Maxhp = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("maxhp"));
-this.Maxmp = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("maxmp"));
-this.Minhit = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("minhit"));
-this.Mp = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("mp"));
-this.Name = (System.String)dataReader.GetValue(dataReader.GetOrdinal("name"));
-this.Perc = (System.UInt16)dataReader.GetValue(dataReader.GetOrdinal("perc"));
-this.Reqacc = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("reqacc"));
-this.Reqagi = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("reqagi"));
-this.Reqarmor = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("reqarmor"));
-this.Reqbra = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("reqbra"));
-this.Reqdex = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("reqdex"));
-this.Reqevade = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("reqevade"));
-this.Reqimm = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("reqimm"));
-this.Reqint = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("reqint"));
-this.Type = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("type"));
-this.Value = (System.Int32)dataReader.GetValue(dataReader.GetOrdinal("value"));
-this.Width = (System.Byte)dataReader.GetValue(dataReader.GetOrdinal("width"));
+this.Agi = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("agi"));
+this.Amount = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("amount"));
+this.Armor = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("armor"));
+this.Bra = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("bra"));
+this.Defence = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("defence"));
+this.Description = (System.String)dataReader.GetString(dataReader.GetOrdinal("description"));
+this.Dex = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("dex"));
+this.Evade = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("evade"));
+this.Graphic = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("graphic"));
+this.Height = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("height"));
+this.Hp = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("hp"));
+this.Id = (System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("id"));
+this.Imm = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("imm"));
+this.Int = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("int"));
+this.Maxhit = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxhit"));
+this.Maxhp = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxhp"));
+this.Maxmp = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxmp"));
+this.Minhit = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("minhit"));
+this.Mp = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("mp"));
+this.Name = (System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
+this.Perc = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("perc"));
+this.Reqacc = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqacc"));
+this.Reqagi = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqagi"));
+this.Reqarmor = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqarmor"));
+this.Reqbra = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqbra"));
+this.Reqdex = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqdex"));
+this.Reqevade = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqevade"));
+this.Reqimm = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqimm"));
+this.Reqint = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqint"));
+this.Type = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("type"));
+this.Value = (System.Int32)dataReader.GetInt32(dataReader.GetOrdinal("value"));
+this.Width = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("width"));
 }
 
 /// <summary>
