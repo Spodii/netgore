@@ -142,6 +142,10 @@ public CharacterEquippedTable(System.Data.IDataReader dataReader)
 {
 ReadValues(dataReader);
 }
+public CharacterEquippedTable(ICharacterEquippedTable source)
+{
+CopyValuesFrom(source);
+}
 /// <summary>
 /// Reads the values from an IDataReader and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
@@ -201,6 +205,13 @@ public static void CopyValues(ICharacterEquippedTable source, NetGore.Db.DbParam
 paramValues["@character_id"] = (System.UInt32)source.CharacterId;
 paramValues["@item_id"] = (System.UInt32)source.ItemId;
 paramValues["@slot"] = (System.Byte)source.Slot;
+}
+
+public void CopyValuesFrom(ICharacterEquippedTable source)
+{
+this.CharacterId = (System.UInt32)source.CharacterId;
+this.ItemId = (System.UInt32)source.ItemId;
+this.Slot = (System.Byte)source.Slot;
 }
 
 }

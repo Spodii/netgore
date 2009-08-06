@@ -11,6 +11,7 @@ namespace NetGore.Db.ClassCreator
     public abstract class DbClassGenerator : IDisposable
     {
         protected const string copyValuesMethodName = "CopyValues";
+        protected const string copyValuesFromMethodName = "CopyValuesFrom";
         protected const string dataReaderName = "dataReader";
         protected const string dbColumnsField = "_dbColumns";
 
@@ -158,10 +159,16 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, drConstructorParams));
                 sb.AppendLine(Formatter.GetMethodBody(drConstructorBody));
 
+                // Constructor (self-referencing interface)
+                var sriConstructorParams = new MethodParameter[] { new MethodParameter("source", cd.InterfaceName)};
+                sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, sriConstructorParams));
+                sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(copyValuesFromMethodName, "source")));
+
                 // Methods
                 sb.AppendLine(CreateMethodReadValues(cd));
                 sb.AppendLine(CreateMethodCopyValuesToDict(cd));
                 sb.AppendLine(CreateMethodCopyValuesToDbParameterValues(cd));
+                sb.AppendLine(CreateMethodCopyValuesFrom(cd));
             }
             sb.AppendLine(Formatter.CloseBrace);
 
@@ -251,6 +258,31 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        protected virtual string CreateMethodCopyValuesFrom(ClassData cd)
+        {
+            const string sourceName = "source";
+
+            var parameters = new MethodParameter[] { new MethodParameter(sourceName, cd.InterfaceName) };
+
+            StringBuilder sb = new StringBuilder(2048);
+
+            // Header
+            sb.AppendLine(Formatter.GetMethodHeader(copyValuesFromMethodName, MemberVisibilityLevel.Public, parameters, typeof(void), false, false));
+
+            // Body
+            StringBuilder bodySB = new StringBuilder(2048);
+            foreach (var column in cd.Columns)
+            {
+                string left = cd.GetColumnValueMutator(column);
+                string right = sourceName + "." + cd.GetColumnValueAccessor(column);
+                string line = Formatter.GetSetValue(left, right, true, false, column.Type);
+                bodySB.AppendLine(line);
+            }
+            sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
+
+            return sb.ToString();
+        }
+
         protected virtual string CreateMethodCopyValuesToDbParameterValues(ClassData cd)
         {
             const string parameterName = "paramValues";
@@ -287,7 +319,7 @@ namespace NetGore.Db.ClassCreator
             foreach (DbColumnInfo column in cd.Columns)
             {
                 string left = parameterName + "[\"@" + column.Name + "\"]";
-                string right = sourceName + "." + cd.GetPublicName(column);
+                string right = sourceName + "." + cd.GetColumnValueAccessor(column);
                 string line = Formatter.GetSetValue(left, right, false, false, column.Type);
                 bodySB.AppendLine(line);
             }
@@ -333,7 +365,7 @@ namespace NetGore.Db.ClassCreator
             foreach (DbColumnInfo column in cd.Columns)
             {
                 string left = parameterName + "[\"@" + column.Name + "\"]";
-                string right = sourceName + "." + cd.GetPublicName(column);
+                string right = sourceName + "." + cd.GetColumnValueAccessor(column);
                 string line = Formatter.GetSetValue(left, right, false, false, column.Type);
                 bodySB.AppendLine(line);
             }
@@ -513,6 +545,16 @@ namespace NetGore.Db.ClassCreator
             public string GetColumnValueAccessor(DbColumnInfo dbColumn)
             {
                 return GetPublicName(dbColumn);
+            }
+
+            /// <summary>
+            /// Gets the code to use for the mutator for a DbColumnInfo.
+            /// </summary>
+            /// <param name="dbColumn">The DbColumnInfo to get the value mutator for.</param>
+            /// <returns>The code to use for the mutator for a DbColumnInfo.</returns>
+            public string GetColumnValueMutator(DbColumnInfo dbColumn)
+            {
+                return GetColumnValueAccessor(dbColumn);
             }
 
             /// <summary>

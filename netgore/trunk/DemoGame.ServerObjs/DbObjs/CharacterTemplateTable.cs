@@ -898,6 +898,10 @@ public CharacterTemplateTable(System.Data.IDataReader dataReader)
 {
 ReadValues(dataReader);
 }
+public CharacterTemplateTable(ICharacterTemplateTable source)
+{
+CopyValuesFrom(source);
+}
 /// <summary>
 /// Reads the values from an IDataReader and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
@@ -1038,6 +1042,40 @@ paramValues["@statpoints"] = (System.UInt32)source.Statpoints;
 paramValues["@str"] = (System.Byte)source.Str;
 paramValues["@tact"] = (System.Byte)source.Tact;
 paramValues["@ws"] = (System.Byte)source.Ws;
+}
+
+public void CopyValuesFrom(ICharacterTemplateTable source)
+{
+this.Acc = (System.Byte)source.Acc;
+this.Agi = (System.Byte)source.Agi;
+this.Ai = (System.String)source.Ai;
+this.AllianceId = (System.Byte)source.AllianceId;
+this.Armor = (System.Byte)source.Armor;
+this.Body = (System.UInt16)source.Body;
+this.Bra = (System.Byte)source.Bra;
+this.Defence = (System.Byte)source.Defence;
+this.Dex = (System.Byte)source.Dex;
+this.Evade = (System.Byte)source.Evade;
+this.Exp = (System.UInt32)source.Exp;
+this.GiveCash = (System.UInt16)source.GiveCash;
+this.GiveExp = (System.UInt16)source.GiveExp;
+this.Id = (System.UInt16)source.Id;
+this.Imm = (System.Byte)source.Imm;
+this.Int = (System.Byte)source.Int;
+this.Level = (System.Byte)source.Level;
+this.Maxhit = (System.Byte)source.Maxhit;
+this.Maxhp = (System.UInt16)source.Maxhp;
+this.Maxmp = (System.UInt16)source.Maxmp;
+this.Minhit = (System.Byte)source.Minhit;
+this.Name = (System.String)source.Name;
+this.Perc = (System.Byte)source.Perc;
+this.Recov = (System.Byte)source.Recov;
+this.Regen = (System.Byte)source.Regen;
+this.Respawn = (System.UInt16)source.Respawn;
+this.Statpoints = (System.UInt32)source.Statpoints;
+this.Str = (System.Byte)source.Str;
+this.Tact = (System.Byte)source.Tact;
+this.Ws = (System.Byte)source.Ws;
 }
 
 }

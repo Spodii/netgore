@@ -282,6 +282,10 @@ public MapSpawnTable(System.Data.IDataReader dataReader)
 {
 ReadValues(dataReader);
 }
+public MapSpawnTable(IMapSpawnTable source)
+{
+CopyValuesFrom(source);
+}
 /// <summary>
 /// Reads the values from an IDataReader and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
@@ -356,6 +360,18 @@ paramValues["@map_id"] = (System.UInt16)source.MapId;
 paramValues["@width"] = (System.UInt16)source.Width;
 paramValues["@x"] = (System.UInt16)source.X;
 paramValues["@y"] = (System.UInt16)source.Y;
+}
+
+public void CopyValuesFrom(IMapSpawnTable source)
+{
+this.Amount = (System.Byte)source.Amount;
+this.CharacterId = (System.UInt16)source.CharacterId;
+this.Height = (System.UInt16)source.Height;
+this.Id = (System.Int32)source.Id;
+this.MapId = (System.UInt16)source.MapId;
+this.Width = (System.UInt16)source.Width;
+this.X = (System.UInt16)source.X;
+this.Y = (System.UInt16)source.Y;
 }
 
 }

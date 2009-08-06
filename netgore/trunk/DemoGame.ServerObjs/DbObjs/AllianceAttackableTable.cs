@@ -143,6 +143,10 @@ public AllianceAttackableTable(System.Data.IDataReader dataReader)
 {
 ReadValues(dataReader);
 }
+public AllianceAttackableTable(IAllianceAttackableTable source)
+{
+CopyValuesFrom(source);
+}
 /// <summary>
 /// Reads the values from an IDataReader and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
@@ -202,6 +206,13 @@ public static void CopyValues(IAllianceAttackableTable source, NetGore.Db.DbPara
 paramValues["@alliance_id"] = (System.Byte)source.AllianceId;
 paramValues["@attackable_id"] = (System.Byte)source.AttackableId;
 paramValues["@placeholder"] = (System.Byte)source.Placeholder;
+}
+
+public void CopyValuesFrom(IAllianceAttackableTable source)
+{
+this.AllianceId = (System.Byte)source.AllianceId;
+this.AttackableId = (System.Byte)source.AttackableId;
+this.Placeholder = (System.Byte)source.Placeholder;
 }
 
 }

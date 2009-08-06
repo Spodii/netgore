@@ -198,6 +198,10 @@ public CharacterTemplateInventoryTable(System.Data.IDataReader dataReader)
 {
 ReadValues(dataReader);
 }
+public CharacterTemplateInventoryTable(ICharacterTemplateInventoryTable source)
+{
+CopyValuesFrom(source);
+}
 /// <summary>
 /// Reads the values from an IDataReader and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
@@ -263,6 +267,15 @@ paramValues["@character_id"] = (System.UInt16)source.CharacterId;
 paramValues["@item_id"] = (System.UInt16)source.ItemId;
 paramValues["@max"] = (System.Byte)source.Max;
 paramValues["@min"] = (System.Byte)source.Min;
+}
+
+public void CopyValuesFrom(ICharacterTemplateInventoryTable source)
+{
+this.Chance = (System.UInt16)source.Chance;
+this.CharacterId = (System.UInt16)source.CharacterId;
+this.ItemId = (System.UInt16)source.ItemId;
+this.Max = (System.Byte)source.Max;
+this.Min = (System.Byte)source.Min;
 }
 
 }

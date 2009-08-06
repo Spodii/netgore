@@ -954,6 +954,10 @@ public ItemTable(System.Data.IDataReader dataReader)
 {
 ReadValues(dataReader);
 }
+public ItemTable(IItemTable source)
+{
+CopyValuesFrom(source);
+}
 /// <summary>
 /// Reads the values from an IDataReader and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
@@ -1100,6 +1104,42 @@ paramValues["@reqint"] = (System.Byte)source.Reqint;
 paramValues["@type"] = (System.Byte)source.Type;
 paramValues["@value"] = (System.Int32)source.Value;
 paramValues["@width"] = (System.Byte)source.Width;
+}
+
+public void CopyValuesFrom(IItemTable source)
+{
+this.Agi = (System.UInt16)source.Agi;
+this.Amount = (System.Byte)source.Amount;
+this.Armor = (System.UInt16)source.Armor;
+this.Bra = (System.UInt16)source.Bra;
+this.Defence = (System.UInt16)source.Defence;
+this.Description = (System.String)source.Description;
+this.Dex = (System.UInt16)source.Dex;
+this.Evade = (System.UInt16)source.Evade;
+this.Graphic = (System.UInt16)source.Graphic;
+this.Height = (System.Byte)source.Height;
+this.Hp = (System.UInt16)source.Hp;
+this.Id = (System.UInt32)source.Id;
+this.Imm = (System.UInt16)source.Imm;
+this.Int = (System.UInt16)source.Int;
+this.Maxhit = (System.UInt16)source.Maxhit;
+this.Maxhp = (System.UInt16)source.Maxhp;
+this.Maxmp = (System.UInt16)source.Maxmp;
+this.Minhit = (System.UInt16)source.Minhit;
+this.Mp = (System.UInt16)source.Mp;
+this.Name = (System.String)source.Name;
+this.Perc = (System.UInt16)source.Perc;
+this.Reqacc = (System.Byte)source.Reqacc;
+this.Reqagi = (System.Byte)source.Reqagi;
+this.Reqarmor = (System.Byte)source.Reqarmor;
+this.Reqbra = (System.Byte)source.Reqbra;
+this.Reqdex = (System.Byte)source.Reqdex;
+this.Reqevade = (System.Byte)source.Reqevade;
+this.Reqimm = (System.Byte)source.Reqimm;
+this.Reqint = (System.Byte)source.Reqint;
+this.Type = (System.Byte)source.Type;
+this.Value = (System.Int32)source.Value;
+this.Width = (System.Byte)source.Width;
 }
 
 }
