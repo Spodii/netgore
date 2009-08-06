@@ -131,9 +131,9 @@ public AllianceHostileTable()
 /// <param name="placeholder">The initial value for the corresponding property.</param>
 public AllianceHostileTable(System.Byte @allianceId, System.Byte @hostileId, System.Byte @placeholder)
 {
-this.AllianceId = @allianceId;
-this.HostileId = @hostileId;
-this.Placeholder = @placeholder;
+AllianceId = (System.Byte)@allianceId;
+HostileId = (System.Byte)@hostileId;
+Placeholder = (System.Byte)@placeholder;
 }
 /// <summary>
 /// AllianceHostileTable constructor.
@@ -155,9 +155,9 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.AllianceId = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("alliance_id"));
-this.HostileId = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("hostile_id"));
-this.Placeholder = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("placeholder"));
+AllianceId = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("alliance_id"));
+HostileId = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("hostile_id"));
+Placeholder = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("placeholder"));
 }
 
 /// <summary>
@@ -210,9 +210,9 @@ paramValues["@placeholder"] = (System.Byte)source.Placeholder;
 
 public void CopyValuesFrom(IAllianceHostileTable source)
 {
-this.AllianceId = (System.Byte)source.AllianceId;
-this.HostileId = (System.Byte)source.HostileId;
-this.Placeholder = (System.Byte)source.Placeholder;
+AllianceId = (System.Byte)source.AllianceId;
+HostileId = (System.Byte)source.HostileId;
+Placeholder = (System.Byte)source.Placeholder;
 }
 
 }

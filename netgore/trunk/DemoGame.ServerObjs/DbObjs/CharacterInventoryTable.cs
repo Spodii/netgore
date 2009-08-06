@@ -103,8 +103,8 @@ public CharacterInventoryTable()
 /// <param name="itemId">The initial value for the corresponding property.</param>
 public CharacterInventoryTable(System.UInt32 @characterId, System.UInt32 @itemId)
 {
-this.CharacterId = @characterId;
-this.ItemId = @itemId;
+CharacterId = (System.UInt32)@characterId;
+ItemId = (System.UInt32)@itemId;
 }
 /// <summary>
 /// CharacterInventoryTable constructor.
@@ -126,8 +126,8 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.CharacterId = (System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("character_id"));
-this.ItemId = (System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("item_id"));
+CharacterId = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("character_id"));
+ItemId = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("item_id"));
 }
 
 /// <summary>
@@ -178,8 +178,8 @@ paramValues["@item_id"] = (System.UInt32)source.ItemId;
 
 public void CopyValuesFrom(ICharacterInventoryTable source)
 {
-this.CharacterId = (System.UInt32)source.CharacterId;
-this.ItemId = (System.UInt32)source.ItemId;
+CharacterId = (System.UInt32)source.CharacterId;
+ItemId = (System.UInt32)source.ItemId;
 }
 
 }

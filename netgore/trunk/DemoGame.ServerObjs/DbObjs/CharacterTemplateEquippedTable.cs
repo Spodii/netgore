@@ -130,9 +130,9 @@ public CharacterTemplateEquippedTable()
 /// <param name="itemId">The initial value for the corresponding property.</param>
 public CharacterTemplateEquippedTable(System.UInt16 @chance, System.UInt16 @characterId, System.UInt16 @itemId)
 {
-this.Chance = @chance;
-this.CharacterId = @characterId;
-this.ItemId = @itemId;
+Chance = (System.UInt16)@chance;
+CharacterId = (System.UInt16)@characterId;
+ItemId = (System.UInt16)@itemId;
 }
 /// <summary>
 /// CharacterTemplateEquippedTable constructor.
@@ -154,9 +154,9 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.Chance = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("chance"));
-this.CharacterId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
-this.ItemId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("item_id"));
+Chance = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("chance"));
+CharacterId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
+ItemId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("item_id"));
 }
 
 /// <summary>
@@ -209,9 +209,9 @@ paramValues["@item_id"] = (System.UInt16)source.ItemId;
 
 public void CopyValuesFrom(ICharacterTemplateEquippedTable source)
 {
-this.Chance = (System.UInt16)source.Chance;
-this.CharacterId = (System.UInt16)source.CharacterId;
-this.ItemId = (System.UInt16)source.ItemId;
+Chance = (System.UInt16)source.Chance;
+CharacterId = (System.UInt16)source.CharacterId;
+ItemId = (System.UInt16)source.ItemId;
 }
 
 }

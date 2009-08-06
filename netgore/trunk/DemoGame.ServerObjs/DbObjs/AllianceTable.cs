@@ -103,8 +103,8 @@ public AllianceTable()
 /// <param name="name">The initial value for the corresponding property.</param>
 public AllianceTable(System.Byte @id, System.String @name)
 {
-this.Id = @id;
-this.Name = @name;
+Id = (System.Byte)@id;
+Name = (System.String)@name;
 }
 /// <summary>
 /// AllianceTable constructor.
@@ -126,8 +126,8 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.Id = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("id"));
-this.Name = (System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
+Id = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("id"));
+Name = (System.String)(System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
 }
 
 /// <summary>
@@ -178,8 +178,8 @@ paramValues["@name"] = (System.String)source.Name;
 
 public void CopyValuesFrom(IAllianceTable source)
 {
-this.Id = (System.Byte)source.Id;
-this.Name = (System.String)source.Name;
+Id = (System.Byte)source.Id;
+Name = (System.String)source.Name;
 }
 
 }
