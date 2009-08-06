@@ -8,24 +8,7 @@ namespace DemoGame.Server.DbObjs
 /// </summary>
 public interface ICharacterTable
 {
-/// <summary>
-/// Gets the value for the database column `acc`.
-/// </summary>
-System.Byte Acc
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `agi`.
-/// </summary>
-System.Byte Agi
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `armor`.
-/// </summary>
-System.Byte Armor
+System.Collections.Generic.Dictionary<DemoGame.StatType, System.Int32> Stats
 {
 get;
 }
@@ -37,37 +20,9 @@ System.UInt16 Body
 get;
 }
 /// <summary>
-/// Gets the value for the database column `bra`.
-/// </summary>
-System.Byte Bra
-{
-get;
-}
-/// <summary>
 /// Gets the value for the database column `cash`.
 /// </summary>
 System.UInt32 Cash
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `defence`.
-/// </summary>
-System.Byte Defence
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `dex`.
-/// </summary>
-System.Byte Dex
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `evade`.
-/// </summary>
-System.Byte Evade
 {
 get;
 }
@@ -93,20 +48,6 @@ System.UInt32 Id
 get;
 }
 /// <summary>
-/// Gets the value for the database column `imm`.
-/// </summary>
-System.Byte Imm
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `int`.
-/// </summary>
-System.Byte Int
-{
-get;
-}
-/// <summary>
 /// Gets the value for the database column `level`.
 /// </summary>
 System.Byte Level
@@ -117,34 +58,6 @@ get;
 /// Gets the value for the database column `map_id`.
 /// </summary>
 System.UInt16 MapId
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `maxhit`.
-/// </summary>
-System.Byte Maxhit
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `maxhp`.
-/// </summary>
-System.UInt16 Maxhp
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `maxmp`.
-/// </summary>
-System.UInt16 Maxmp
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `minhit`.
-/// </summary>
-System.Byte Minhit
 {
 get;
 }
@@ -166,27 +79,6 @@ get;
 /// Gets the value for the database column `password`.
 /// </summary>
 System.String Password
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `perc`.
-/// </summary>
-System.Byte Perc
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `recov`.
-/// </summary>
-System.Byte Recov
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `regen`.
-/// </summary>
-System.Byte Regen
 {
 get;
 }
@@ -219,30 +111,9 @@ System.UInt32 Statpoints
 get;
 }
 /// <summary>
-/// Gets the value for the database column `str`.
-/// </summary>
-System.Byte Str
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `tact`.
-/// </summary>
-System.Byte Tact
-{
-get;
-}
-/// <summary>
 /// Gets the value for the database column `template_id`.
 /// </summary>
 System.UInt16 TemplateId
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `ws`.
-/// </summary>
-System.Byte Ws
 {
 get;
 }
@@ -289,42 +160,15 @@ public const System.String TableName = "character";
 /// The number of columns in the database table that this class represents.
 /// </summary>
 public const System.Int32 ColumnCount = 36;
-/// <summary>
-/// The field that maps onto the database column `acc`.
-/// </summary>
-System.Byte _acc;
-/// <summary>
-/// The field that maps onto the database column `agi`.
-/// </summary>
-System.Byte _agi;
-/// <summary>
-/// The field that maps onto the database column `armor`.
-/// </summary>
-System.Byte _armor;
+ readonly System.Collections.Generic.Dictionary<DemoGame.StatType, System.Int32> _stats;
 /// <summary>
 /// The field that maps onto the database column `body`.
 /// </summary>
 System.UInt16 _body;
 /// <summary>
-/// The field that maps onto the database column `bra`.
-/// </summary>
-System.Byte _bra;
-/// <summary>
 /// The field that maps onto the database column `cash`.
 /// </summary>
 System.UInt32 _cash;
-/// <summary>
-/// The field that maps onto the database column `defence`.
-/// </summary>
-System.Byte _defence;
-/// <summary>
-/// The field that maps onto the database column `dex`.
-/// </summary>
-System.Byte _dex;
-/// <summary>
-/// The field that maps onto the database column `evade`.
-/// </summary>
-System.Byte _evade;
 /// <summary>
 /// The field that maps onto the database column `exp`.
 /// </summary>
@@ -338,14 +182,6 @@ System.UInt16 _hp;
 /// </summary>
 System.UInt32 _id;
 /// <summary>
-/// The field that maps onto the database column `imm`.
-/// </summary>
-System.Byte _imm;
-/// <summary>
-/// The field that maps onto the database column `int`.
-/// </summary>
-System.Byte _int;
-/// <summary>
 /// The field that maps onto the database column `level`.
 /// </summary>
 System.Byte _level;
@@ -353,22 +189,6 @@ System.Byte _level;
 /// The field that maps onto the database column `map_id`.
 /// </summary>
 System.UInt16 _mapId;
-/// <summary>
-/// The field that maps onto the database column `maxhit`.
-/// </summary>
-System.Byte _maxhit;
-/// <summary>
-/// The field that maps onto the database column `maxhp`.
-/// </summary>
-System.UInt16 _maxhp;
-/// <summary>
-/// The field that maps onto the database column `maxmp`.
-/// </summary>
-System.UInt16 _maxmp;
-/// <summary>
-/// The field that maps onto the database column `minhit`.
-/// </summary>
-System.Byte _minhit;
 /// <summary>
 /// The field that maps onto the database column `mp`.
 /// </summary>
@@ -381,18 +201,6 @@ System.String _name;
 /// The field that maps onto the database column `password`.
 /// </summary>
 System.String _password;
-/// <summary>
-/// The field that maps onto the database column `perc`.
-/// </summary>
-System.Byte _perc;
-/// <summary>
-/// The field that maps onto the database column `recov`.
-/// </summary>
-System.Byte _recov;
-/// <summary>
-/// The field that maps onto the database column `regen`.
-/// </summary>
-System.Byte _regen;
 /// <summary>
 /// The field that maps onto the database column `respawn_map`.
 /// </summary>
@@ -410,21 +218,9 @@ System.Single _respawnY;
 /// </summary>
 System.UInt32 _statpoints;
 /// <summary>
-/// The field that maps onto the database column `str`.
-/// </summary>
-System.Byte _str;
-/// <summary>
-/// The field that maps onto the database column `tact`.
-/// </summary>
-System.Byte _tact;
-/// <summary>
 /// The field that maps onto the database column `template_id`.
 /// </summary>
 System.UInt16 _templateId;
-/// <summary>
-/// The field that maps onto the database column `ws`.
-/// </summary>
-System.Byte _ws;
 /// <summary>
 /// The field that maps onto the database column `x`.
 /// </summary>
@@ -433,49 +229,11 @@ System.Single _x;
 /// The field that maps onto the database column `y`.
 /// </summary>
 System.Single _y;
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `acc`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Acc
+public System.Collections.Generic.Dictionary<DemoGame.StatType, System.Int32> Stats
 {
 get
 {
-return _acc;
-}
-set
-{
-this._acc = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `agi`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Agi
-{
-get
-{
-return _agi;
-}
-set
-{
-this._agi = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `armor`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Armor
-{
-get
-{
-return _armor;
-}
-set
-{
-this._armor = value;
+return _stats;
 }
 }
 /// <summary>
@@ -494,21 +252,6 @@ this._body = value;
 }
 }
 /// <summary>
-/// Gets or sets the value for the field that maps onto the database column `bra`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Bra
-{
-get
-{
-return _bra;
-}
-set
-{
-this._bra = value;
-}
-}
-/// <summary>
 /// Gets or sets the value for the field that maps onto the database column `cash`.
 /// The underlying database type is `int(10) unsigned` with the default value of `0`.
 /// </summary>
@@ -521,51 +264,6 @@ return _cash;
 set
 {
 this._cash = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `defence`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `0`.
-/// </summary>
-public System.Byte Defence
-{
-get
-{
-return _defence;
-}
-set
-{
-this._defence = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `dex`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Dex
-{
-get
-{
-return _dex;
-}
-set
-{
-this._dex = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `evade`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Evade
-{
-get
-{
-return _evade;
-}
-set
-{
-this._evade = value;
 }
 }
 /// <summary>
@@ -614,36 +312,6 @@ this._id = value;
 }
 }
 /// <summary>
-/// Gets or sets the value for the field that maps onto the database column `imm`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Imm
-{
-get
-{
-return _imm;
-}
-set
-{
-this._imm = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `int`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Int
-{
-get
-{
-return _int;
-}
-set
-{
-this._int = value;
-}
-}
-/// <summary>
 /// Gets or sets the value for the field that maps onto the database column `level`.
 /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
 /// </summary>
@@ -671,66 +339,6 @@ return _mapId;
 set
 {
 this._mapId = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `maxhit`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Maxhit
-{
-get
-{
-return _maxhit;
-}
-set
-{
-this._maxhit = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `maxhp`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
-/// </summary>
-public System.UInt16 Maxhp
-{
-get
-{
-return _maxhp;
-}
-set
-{
-this._maxhp = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `maxmp`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
-/// </summary>
-public System.UInt16 Maxmp
-{
-get
-{
-return _maxmp;
-}
-set
-{
-this._maxmp = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `minhit`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Minhit
-{
-get
-{
-return _minhit;
-}
-set
-{
-this._minhit = value;
 }
 }
 /// <summary>
@@ -776,51 +384,6 @@ return _password;
 set
 {
 this._password = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `perc`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Perc
-{
-get
-{
-return _perc;
-}
-set
-{
-this._perc = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `recov`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Recov
-{
-get
-{
-return _recov;
-}
-set
-{
-this._recov = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `regen`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Regen
-{
-get
-{
-return _regen;
-}
-set
-{
-this._regen = value;
 }
 }
 /// <summary>
@@ -884,36 +447,6 @@ this._statpoints = value;
 }
 }
 /// <summary>
-/// Gets or sets the value for the field that maps onto the database column `str`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Str
-{
-get
-{
-return _str;
-}
-set
-{
-this._str = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `tact`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Tact
-{
-get
-{
-return _tact;
-}
-set
-{
-this._tact = value;
-}
-}
-/// <summary>
 /// Gets or sets the value for the field that maps onto the database column `template_id`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
@@ -926,21 +459,6 @@ return _templateId;
 set
 {
 this._templateId = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `ws`.
-/// The underlying database type is `tinyint(3) unsigned`.
-/// </summary>
-public System.Byte Ws
-{
-get
-{
-return _ws;
-}
-set
-{
-this._ws = value;
 }
 }
 /// <summary>
@@ -1021,40 +539,40 @@ public CharacterTable()
 /// <param name="y">The initial value for the corresponding property.</param>
 public CharacterTable(System.Byte @acc, System.Byte @agi, System.Byte @armor, System.UInt16 @body, System.Byte @bra, System.UInt32 @cash, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, System.UInt16 @hp, System.UInt32 @id, System.Byte @imm, System.Byte @int, System.Byte @level, System.UInt16 @mapId, System.Byte @maxhit, System.UInt16 @maxhp, System.UInt16 @maxmp, System.Byte @minhit, System.UInt16 @mp, System.String @name, System.String @password, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.UInt16 @respawnMap, System.Single @respawnX, System.Single @respawnY, System.UInt32 @statpoints, System.Byte @str, System.Byte @tact, System.UInt16 @templateId, System.Byte @ws, System.Single @x, System.Single @y)
 {
-this.Acc = @acc;
-this.Agi = @agi;
-this.Armor = @armor;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Acc] = @acc;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Agi] = @agi;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Armor] = @armor;
 this.Body = @body;
-this.Bra = @bra;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Bra] = @bra;
 this.Cash = @cash;
-this.Defence = @defence;
-this.Dex = @dex;
-this.Evade = @evade;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Defence] = @defence;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Dex] = @dex;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Evade] = @evade;
 this.Exp = @exp;
 this.Hp = @hp;
 this.Id = @id;
-this.Imm = @imm;
-this.Int = @int;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Imm] = @imm;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Int] = @int;
 this.Level = @level;
 this.MapId = @mapId;
-this.Maxhit = @maxhit;
-this.Maxhp = @maxhp;
-this.Maxmp = @maxmp;
-this.Minhit = @minhit;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHit] = @maxhit;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHP] = @maxhp;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MaxMP] = @maxmp;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MinHit] = @minhit;
 this.Mp = @mp;
 this.Name = @name;
 this.Password = @password;
-this.Perc = @perc;
-this.Recov = @recov;
-this.Regen = @regen;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Perc] = @perc;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Recov] = @recov;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Regen] = @regen;
 this.RespawnMap = @respawnMap;
 this.RespawnX = @respawnX;
 this.RespawnY = @respawnY;
 this.Statpoints = @statpoints;
-this.Str = @str;
-this.Tact = @tact;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Str] = @str;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Tact] = @tact;
 this.TemplateId = @templateId;
-this.Ws = @ws;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.WS] = @ws;
 this.X = @x;
 this.Y = @y;
 }
@@ -1078,40 +596,40 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.Acc = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("acc"));
-this.Agi = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("agi"));
-this.Armor = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("armor"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Acc] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("acc"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Agi] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("agi"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Armor] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("armor"));
 this.Body = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("body"));
-this.Bra = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("bra"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Bra] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("bra"));
 this.Cash = (System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("cash"));
-this.Defence = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("defence"));
-this.Dex = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("dex"));
-this.Evade = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("evade"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Defence] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("defence"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Dex] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("dex"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Evade] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("evade"));
 this.Exp = (System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("exp"));
 this.Hp = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("hp"));
 this.Id = (System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("id"));
-this.Imm = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("imm"));
-this.Int = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("int"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Imm] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("imm"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Int] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("int"));
 this.Level = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("level"));
 this.MapId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("map_id"));
-this.Maxhit = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("maxhit"));
-this.Maxhp = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxhp"));
-this.Maxmp = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxmp"));
-this.Minhit = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("minhit"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHit] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("maxhit"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHP] = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxhp"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MaxMP] = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxmp"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MinHit] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("minhit"));
 this.Mp = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("mp"));
 this.Name = (System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
 this.Password = (System.String)dataReader.GetString(dataReader.GetOrdinal("password"));
-this.Perc = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("perc"));
-this.Recov = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("recov"));
-this.Regen = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("regen"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Perc] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("perc"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Recov] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("recov"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Regen] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("regen"));
 this.RespawnMap = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("respawn_map"));
 this.RespawnX = (System.Single)dataReader.GetFloat(dataReader.GetOrdinal("respawn_x"));
 this.RespawnY = (System.Single)dataReader.GetFloat(dataReader.GetOrdinal("respawn_y"));
 this.Statpoints = (System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("statpoints"));
-this.Str = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("str"));
-this.Tact = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("tact"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Str] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("str"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Tact] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("tact"));
 this.TemplateId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("template_id"));
-this.Ws = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("ws"));
+this.Stats[(DemoGame.StatType)DemoGame.StatType.WS] = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("ws"));
 this.X = (System.Single)dataReader.GetFloat(dataReader.GetOrdinal("x"));
 this.Y = (System.Single)dataReader.GetFloat(dataReader.GetOrdinal("y"));
 }
@@ -1135,40 +653,40 @@ CopyValues(this, dic);
 /// <param name="dic">The Dictionary to copy the values into.</param>
 public static void CopyValues(ICharacterTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@acc"] = (System.Byte)source.Acc;
-dic["@agi"] = (System.Byte)source.Agi;
-dic["@armor"] = (System.Byte)source.Armor;
+dic["@acc"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Acc];
+dic["@agi"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Agi];
+dic["@armor"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Armor];
 dic["@body"] = (System.UInt16)source.Body;
-dic["@bra"] = (System.Byte)source.Bra;
+dic["@bra"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Bra];
 dic["@cash"] = (System.UInt32)source.Cash;
-dic["@defence"] = (System.Byte)source.Defence;
-dic["@dex"] = (System.Byte)source.Dex;
-dic["@evade"] = (System.Byte)source.Evade;
+dic["@defence"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Defence];
+dic["@dex"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Dex];
+dic["@evade"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Evade];
 dic["@exp"] = (System.UInt32)source.Exp;
 dic["@hp"] = (System.UInt16)source.Hp;
 dic["@id"] = (System.UInt32)source.Id;
-dic["@imm"] = (System.Byte)source.Imm;
-dic["@int"] = (System.Byte)source.Int;
+dic["@imm"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Imm];
+dic["@int"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Int];
 dic["@level"] = (System.Byte)source.Level;
 dic["@map_id"] = (System.UInt16)source.MapId;
-dic["@maxhit"] = (System.Byte)source.Maxhit;
-dic["@maxhp"] = (System.UInt16)source.Maxhp;
-dic["@maxmp"] = (System.UInt16)source.Maxmp;
-dic["@minhit"] = (System.Byte)source.Minhit;
+dic["@maxhit"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHit];
+dic["@maxhp"] = (System.UInt16)source.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHP];
+dic["@maxmp"] = (System.UInt16)source.Stats[(DemoGame.StatType)DemoGame.StatType.MaxMP];
+dic["@minhit"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.MinHit];
 dic["@mp"] = (System.UInt16)source.Mp;
 dic["@name"] = (System.String)source.Name;
 dic["@password"] = (System.String)source.Password;
-dic["@perc"] = (System.Byte)source.Perc;
-dic["@recov"] = (System.Byte)source.Recov;
-dic["@regen"] = (System.Byte)source.Regen;
+dic["@perc"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Perc];
+dic["@recov"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Recov];
+dic["@regen"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Regen];
 dic["@respawn_map"] = (System.UInt16)source.RespawnMap;
 dic["@respawn_x"] = (System.Single)source.RespawnX;
 dic["@respawn_y"] = (System.Single)source.RespawnY;
 dic["@statpoints"] = (System.UInt32)source.Statpoints;
-dic["@str"] = (System.Byte)source.Str;
-dic["@tact"] = (System.Byte)source.Tact;
+dic["@str"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Str];
+dic["@tact"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Tact];
 dic["@template_id"] = (System.UInt16)source.TemplateId;
-dic["@ws"] = (System.Byte)source.Ws;
+dic["@ws"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.WS];
 dic["@x"] = (System.Single)source.X;
 dic["@y"] = (System.Single)source.Y;
 }
@@ -1192,80 +710,80 @@ CopyValues(this, paramValues);
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(ICharacterTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@acc"] = (System.Byte)source.Acc;
-paramValues["@agi"] = (System.Byte)source.Agi;
-paramValues["@armor"] = (System.Byte)source.Armor;
+paramValues["@acc"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Acc];
+paramValues["@agi"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Agi];
+paramValues["@armor"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Armor];
 paramValues["@body"] = (System.UInt16)source.Body;
-paramValues["@bra"] = (System.Byte)source.Bra;
+paramValues["@bra"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Bra];
 paramValues["@cash"] = (System.UInt32)source.Cash;
-paramValues["@defence"] = (System.Byte)source.Defence;
-paramValues["@dex"] = (System.Byte)source.Dex;
-paramValues["@evade"] = (System.Byte)source.Evade;
+paramValues["@defence"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Defence];
+paramValues["@dex"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Dex];
+paramValues["@evade"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Evade];
 paramValues["@exp"] = (System.UInt32)source.Exp;
 paramValues["@hp"] = (System.UInt16)source.Hp;
 paramValues["@id"] = (System.UInt32)source.Id;
-paramValues["@imm"] = (System.Byte)source.Imm;
-paramValues["@int"] = (System.Byte)source.Int;
+paramValues["@imm"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Imm];
+paramValues["@int"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Int];
 paramValues["@level"] = (System.Byte)source.Level;
 paramValues["@map_id"] = (System.UInt16)source.MapId;
-paramValues["@maxhit"] = (System.Byte)source.Maxhit;
-paramValues["@maxhp"] = (System.UInt16)source.Maxhp;
-paramValues["@maxmp"] = (System.UInt16)source.Maxmp;
-paramValues["@minhit"] = (System.Byte)source.Minhit;
+paramValues["@maxhit"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHit];
+paramValues["@maxhp"] = (System.UInt16)source.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHP];
+paramValues["@maxmp"] = (System.UInt16)source.Stats[(DemoGame.StatType)DemoGame.StatType.MaxMP];
+paramValues["@minhit"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.MinHit];
 paramValues["@mp"] = (System.UInt16)source.Mp;
 paramValues["@name"] = (System.String)source.Name;
 paramValues["@password"] = (System.String)source.Password;
-paramValues["@perc"] = (System.Byte)source.Perc;
-paramValues["@recov"] = (System.Byte)source.Recov;
-paramValues["@regen"] = (System.Byte)source.Regen;
+paramValues["@perc"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Perc];
+paramValues["@recov"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Recov];
+paramValues["@regen"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Regen];
 paramValues["@respawn_map"] = (System.UInt16)source.RespawnMap;
 paramValues["@respawn_x"] = (System.Single)source.RespawnX;
 paramValues["@respawn_y"] = (System.Single)source.RespawnY;
 paramValues["@statpoints"] = (System.UInt32)source.Statpoints;
-paramValues["@str"] = (System.Byte)source.Str;
-paramValues["@tact"] = (System.Byte)source.Tact;
+paramValues["@str"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Str];
+paramValues["@tact"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Tact];
 paramValues["@template_id"] = (System.UInt16)source.TemplateId;
-paramValues["@ws"] = (System.Byte)source.Ws;
+paramValues["@ws"] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.WS];
 paramValues["@x"] = (System.Single)source.X;
 paramValues["@y"] = (System.Single)source.Y;
 }
 
 public void CopyValuesFrom(ICharacterTable source)
 {
-this.Acc = (System.Byte)source.Acc;
-this.Agi = (System.Byte)source.Agi;
-this.Armor = (System.Byte)source.Armor;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Acc] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Acc];
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Agi] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Agi];
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Armor] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Armor];
 this.Body = (System.UInt16)source.Body;
-this.Bra = (System.Byte)source.Bra;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Bra] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Bra];
 this.Cash = (System.UInt32)source.Cash;
-this.Defence = (System.Byte)source.Defence;
-this.Dex = (System.Byte)source.Dex;
-this.Evade = (System.Byte)source.Evade;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Defence] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Defence];
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Dex] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Dex];
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Evade] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Evade];
 this.Exp = (System.UInt32)source.Exp;
 this.Hp = (System.UInt16)source.Hp;
 this.Id = (System.UInt32)source.Id;
-this.Imm = (System.Byte)source.Imm;
-this.Int = (System.Byte)source.Int;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Imm] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Imm];
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Int] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Int];
 this.Level = (System.Byte)source.Level;
 this.MapId = (System.UInt16)source.MapId;
-this.Maxhit = (System.Byte)source.Maxhit;
-this.Maxhp = (System.UInt16)source.Maxhp;
-this.Maxmp = (System.UInt16)source.Maxmp;
-this.Minhit = (System.Byte)source.Minhit;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHit] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHit];
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHP] = (System.UInt16)source.Stats[(DemoGame.StatType)DemoGame.StatType.MaxHP];
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MaxMP] = (System.UInt16)source.Stats[(DemoGame.StatType)DemoGame.StatType.MaxMP];
+this.Stats[(DemoGame.StatType)DemoGame.StatType.MinHit] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.MinHit];
 this.Mp = (System.UInt16)source.Mp;
 this.Name = (System.String)source.Name;
 this.Password = (System.String)source.Password;
-this.Perc = (System.Byte)source.Perc;
-this.Recov = (System.Byte)source.Recov;
-this.Regen = (System.Byte)source.Regen;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Perc] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Perc];
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Recov] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Recov];
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Regen] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Regen];
 this.RespawnMap = (System.UInt16)source.RespawnMap;
 this.RespawnX = (System.Single)source.RespawnX;
 this.RespawnY = (System.Single)source.RespawnY;
 this.Statpoints = (System.UInt32)source.Statpoints;
-this.Str = (System.Byte)source.Str;
-this.Tact = (System.Byte)source.Tact;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Str] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Str];
+this.Stats[(DemoGame.StatType)DemoGame.StatType.Tact] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.Tact];
 this.TemplateId = (System.UInt16)source.TemplateId;
-this.Ws = (System.Byte)source.Ws;
+this.Stats[(DemoGame.StatType)DemoGame.StatType.WS] = (System.Byte)source.Stats[(DemoGame.StatType)DemoGame.StatType.WS];
 this.X = (System.Single)source.X;
 this.Y = (System.Single)source.Y;
 }

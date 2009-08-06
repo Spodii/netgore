@@ -48,6 +48,9 @@ namespace NetGore.Db.ClassCreator
 
         public abstract string OpenBrace { get; }
 
+        public abstract string OpenIndexer { get; }
+        public abstract string CloseIndexer { get; }
+
         public virtual string OpenGeneric
         {
             get { return "<"; }
@@ -175,8 +178,14 @@ namespace NetGore.Db.ClassCreator
             return GetMethodHeader(className, visibility, parameters, string.Empty, false, false);
         }
 
-        public abstract string GetField(string memberName, Type type, MemberVisibilityLevel visibility, string value,
+        public abstract string GetField(string memberName, string type, MemberVisibilityLevel visibility, string value,
                                         bool isReadonly, bool isStatic);
+
+        public string GetField(string memberName, Type type, MemberVisibilityLevel visibility, string value,
+                                        bool isReadonly, bool isStatic)
+        {
+            return GetField(memberName, GetTypeString(type), visibility, value, isReadonly, isStatic);
+        }
 
         public string GetField(string memberName, Type type, MemberVisibilityLevel visibility)
         {
@@ -212,9 +221,41 @@ namespace NetGore.Db.ClassCreator
             return "I" + GetClassName(tableName);
         }
 
+        public virtual string GetComplexTypeString(Type baseType, params Type[] genericTypes)
+        {
+            string baseTypeWithoutGenerics = GetTypeString(baseType);
+            int start = baseTypeWithoutGenerics.LastIndexOf(OpenGeneric);
+            baseTypeWithoutGenerics = baseTypeWithoutGenerics.Substring(0, start);
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(baseTypeWithoutGenerics);
+            sb.Append(OpenGeneric);
+            for (int i = 0; i < genericTypes.Length; i++)
+            {
+                sb.Append(GetTypeString(genericTypes[i]));
+                sb.Append(ParameterSpacer);
+            }
+            sb.Length -= ParameterSpacer.Length;
+            sb.Append(CloseGeneric);
+
+            return sb.ToString();
+        }
+
         public string GetInterfaceProperty(string name, Type returnType, bool hasSetter)
         {
             return GetInterfaceProperty(name, GetTypeString(returnType), hasSetter);
+        }
+
+        public virtual string GetInterfaceMethod(string name, Type returnType, params MethodParameter[] parameters)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(returnType + " " + name);
+            sb.Append(OpenParameterString);
+            sb.Append(GetParameters(parameters));
+            sb.Append(CloseParameterString);
+            sb.AppendLine(EndOfLine);
+
+            return sb.ToString();
         }
 
         public virtual string GetInterfaceProperty(string name, string returnType, bool hasSetter)
@@ -316,6 +357,9 @@ namespace NetGore.Db.ClassCreator
 
         public virtual string GetParameters(MethodParameter[] parameters)
         {
+            if (parameters == null)
+                return string.Empty;
+
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < parameters.Length; i++)
             {
@@ -326,7 +370,13 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        public virtual string GetProperty(string propertyName, Type type, MemberVisibilityLevel getterVisibility,
+        public string GetProperty(string propertyName, Type type, MemberVisibilityLevel getterVisibility,
+                                          MemberVisibilityLevel? setterVisibility, string member, bool isVirtual)
+        {
+            return GetProperty(propertyName, GetTypeString(type), getterVisibility, setterVisibility, member, isVirtual);
+        }
+
+        public virtual string GetProperty(string propertyName, string type, MemberVisibilityLevel getterVisibility,
                                           MemberVisibilityLevel? setterVisibility, string member, bool isVirtual)
         {
             StringBuilder sb = new StringBuilder();
