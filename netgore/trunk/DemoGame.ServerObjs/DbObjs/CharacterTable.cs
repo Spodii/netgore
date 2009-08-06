@@ -1,794 +1,767 @@
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using NetGore.Db;
+
 namespace DemoGame.Server.DbObjs
 {
-/// <summary>
-/// Interface for a class that can be used to serialize values to the database table `character`.
-/// </summary>
-public interface ICharacterTable
-{
-System.Int32 GetStat(DemoGame.StatType key);
+    /// <summary>
+    /// Interface for a class that can be used to serialize values to the database table `character`.
+    /// </summary>
+    public interface ICharacterTable
+    {
+        /// <summary>
+        /// Gets the value for the database column `body`.
+        /// </summary>
+        UInt16 Body { get; }
 
-System.Void SetStat(DemoGame.StatType key, System.Int32 value);
+        /// <summary>
+        /// Gets the value for the database column `cash`.
+        /// </summary>
+        UInt32 Cash { get; }
 
-/// <summary>
-/// Gets the value for the database column `body`.
-/// </summary>
-System.UInt16 Body
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `cash`.
-/// </summary>
-System.UInt32 Cash
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `exp`.
-/// </summary>
-System.UInt32 Exp
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `hp`.
-/// </summary>
-System.UInt16 Hp
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `id`.
-/// </summary>
-System.UInt32 Id
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `level`.
-/// </summary>
-System.Byte Level
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `map_id`.
-/// </summary>
-System.UInt16 MapId
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `mp`.
-/// </summary>
-System.UInt16 Mp
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `name`.
-/// </summary>
-System.String Name
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `password`.
-/// </summary>
-System.String Password
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `respawn_map`.
-/// </summary>
-System.UInt16 RespawnMap
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `respawn_x`.
-/// </summary>
-System.Single RespawnX
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `respawn_y`.
-/// </summary>
-System.Single RespawnY
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `statpoints`.
-/// </summary>
-System.UInt32 Statpoints
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `template_id`.
-/// </summary>
-System.UInt16 TemplateId
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `x`.
-/// </summary>
-System.Single X
-{
-get;
-}
-/// <summary>
-/// Gets the value for the database column `y`.
-/// </summary>
-System.Single Y
-{
-get;
-}
-}
+        /// <summary>
+        /// Gets the value for the database column `exp`.
+        /// </summary>
+        UInt32 Exp { get; }
 
-/// <summary>
-/// Provides a strongly-typed structure for the database table `character`.
-/// </summary>
-public class CharacterTable : ICharacterTable
-{
-/// <summary>
-/// Array of the database column names.
-/// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"acc", "agi", "armor", "body", "bra", "cash", "defence", "dex", "evade", "exp", "hp", "id", "imm", "int", "level", "map_id", "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "password", "perc", "recov", "regen", "respawn_map", "respawn_x", "respawn_y", "statpoints", "str", "tact", "template_id", "ws", "x", "y" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-/// </summary>
-public System.Collections.Generic.IEnumerable<System.String> DbColumns
-{
-get
-{
-return _dbColumns;
-}
-}
-/// <summary>
-/// The name of the database table that this class represents.
-/// </summary>
-public const System.String TableName = "character";
-/// <summary>
-/// The number of columns in the database table that this class represents.
-/// </summary>
-public const System.Int32 ColumnCount = 36;
- readonly System.Collections.Generic.Dictionary<DemoGame.StatType, System.Int32> _stat = new System.Collections.Generic.Dictionary<DemoGame.StatType, System.Int32>();
-/// <summary>
-/// The field that maps onto the database column `body`.
-/// </summary>
-System.UInt16 _body;
-/// <summary>
-/// The field that maps onto the database column `cash`.
-/// </summary>
-System.UInt32 _cash;
-/// <summary>
-/// The field that maps onto the database column `exp`.
-/// </summary>
-System.UInt32 _exp;
-/// <summary>
-/// The field that maps onto the database column `hp`.
-/// </summary>
-System.UInt16 _hp;
-/// <summary>
-/// The field that maps onto the database column `id`.
-/// </summary>
-System.UInt32 _id;
-/// <summary>
-/// The field that maps onto the database column `level`.
-/// </summary>
-System.Byte _level;
-/// <summary>
-/// The field that maps onto the database column `map_id`.
-/// </summary>
-System.UInt16 _mapId;
-/// <summary>
-/// The field that maps onto the database column `mp`.
-/// </summary>
-System.UInt16 _mp;
-/// <summary>
-/// The field that maps onto the database column `name`.
-/// </summary>
-System.String _name;
-/// <summary>
-/// The field that maps onto the database column `password`.
-/// </summary>
-System.String _password;
-/// <summary>
-/// The field that maps onto the database column `respawn_map`.
-/// </summary>
-System.UInt16 _respawnMap;
-/// <summary>
-/// The field that maps onto the database column `respawn_x`.
-/// </summary>
-System.Single _respawnX;
-/// <summary>
-/// The field that maps onto the database column `respawn_y`.
-/// </summary>
-System.Single _respawnY;
-/// <summary>
-/// The field that maps onto the database column `statpoints`.
-/// </summary>
-System.UInt32 _statpoints;
-/// <summary>
-/// The field that maps onto the database column `template_id`.
-/// </summary>
-System.UInt16 _templateId;
-/// <summary>
-/// The field that maps onto the database column `x`.
-/// </summary>
-System.Single _x;
-/// <summary>
-/// The field that maps onto the database column `y`.
-/// </summary>
-System.Single _y;
-public System.Int32 GetStat(DemoGame.StatType key)
-{
-return _stat[(DemoGame.StatType)key];
-}
-public void SetStat(DemoGame.StatType key, System.Int32 value)
-{
-this._stat[(DemoGame.StatType)key] = value;
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `body`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `1`.
-/// </summary>
-public System.UInt16 Body
-{
-get
-{
-return _body;
-}
-set
-{
-this._body = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `cash`.
-/// The underlying database type is `int(10) unsigned` with the default value of `0`.
-/// </summary>
-public System.UInt32 Cash
-{
-get
-{
-return _cash;
-}
-set
-{
-this._cash = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `exp`.
-/// The underlying database type is `int(10) unsigned` with the default value of `0`.
-/// </summary>
-public System.UInt32 Exp
-{
-get
-{
-return _exp;
-}
-set
-{
-this._exp = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `hp`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
-/// </summary>
-public System.UInt16 Hp
-{
-get
-{
-return _hp;
-}
-set
-{
-this._hp = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `id`.
-/// The underlying database type is `int(10) unsigned`.
-/// </summary>
-public System.UInt32 Id
-{
-get
-{
-return _id;
-}
-set
-{
-this._id = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `level`.
-/// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-/// </summary>
-public System.Byte Level
-{
-get
-{
-return _level;
-}
-set
-{
-this._level = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `map_id`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `1`.
-/// </summary>
-public System.UInt16 MapId
-{
-get
-{
-return _mapId;
-}
-set
-{
-this._mapId = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `mp`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
-/// </summary>
-public System.UInt16 Mp
-{
-get
-{
-return _mp;
-}
-set
-{
-this._mp = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `name`.
-/// The underlying database type is `varchar(50)`.
-/// </summary>
-public System.String Name
-{
-get
-{
-return _name;
-}
-set
-{
-this._name = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `password`.
-/// The underlying database type is `varchar(50)`.
-/// </summary>
-public System.String Password
-{
-get
-{
-return _password;
-}
-set
-{
-this._password = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `respawn_map`.
-/// The underlying database type is `smallint(5) unsigned`.
-/// </summary>
-public System.UInt16 RespawnMap
-{
-get
-{
-return _respawnMap;
-}
-set
-{
-this._respawnMap = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `respawn_x`.
-/// The underlying database type is `float`.
-/// </summary>
-public System.Single RespawnX
-{
-get
-{
-return _respawnX;
-}
-set
-{
-this._respawnX = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `respawn_y`.
-/// The underlying database type is `float`.
-/// </summary>
-public System.Single RespawnY
-{
-get
-{
-return _respawnY;
-}
-set
-{
-this._respawnY = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `statpoints`.
-/// The underlying database type is `int(10) unsigned` with the default value of `0`.
-/// </summary>
-public System.UInt32 Statpoints
-{
-get
-{
-return _statpoints;
-}
-set
-{
-this._statpoints = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `template_id`.
-/// The underlying database type is `smallint(5) unsigned`.
-/// </summary>
-public System.UInt16 TemplateId
-{
-get
-{
-return _templateId;
-}
-set
-{
-this._templateId = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `x`.
-/// The underlying database type is `float` with the default value of `100`.
-/// </summary>
-public System.Single X
-{
-get
-{
-return _x;
-}
-set
-{
-this._x = value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `y`.
-/// The underlying database type is `float` with the default value of `100`.
-/// </summary>
-public System.Single Y
-{
-get
-{
-return _y;
-}
-set
-{
-this._y = value;
-}
-}
+        /// <summary>
+        /// Gets the value for the database column `hp`.
+        /// </summary>
+        UInt16 Hp { get; }
 
-/// <summary>
-/// CharacterTable constructor.
-/// </summary>
-public CharacterTable()
-{
-}
-/// <summary>
-/// CharacterTable constructor.
-/// </summary>
-/// <param name="acc">The initial value for the corresponding property.</param>
-/// <param name="agi">The initial value for the corresponding property.</param>
-/// <param name="armor">The initial value for the corresponding property.</param>
-/// <param name="body">The initial value for the corresponding property.</param>
-/// <param name="bra">The initial value for the corresponding property.</param>
-/// <param name="cash">The initial value for the corresponding property.</param>
-/// <param name="defence">The initial value for the corresponding property.</param>
-/// <param name="dex">The initial value for the corresponding property.</param>
-/// <param name="evade">The initial value for the corresponding property.</param>
-/// <param name="exp">The initial value for the corresponding property.</param>
-/// <param name="hp">The initial value for the corresponding property.</param>
-/// <param name="id">The initial value for the corresponding property.</param>
-/// <param name="imm">The initial value for the corresponding property.</param>
-/// <param name="int">The initial value for the corresponding property.</param>
-/// <param name="level">The initial value for the corresponding property.</param>
-/// <param name="mapId">The initial value for the corresponding property.</param>
-/// <param name="maxhit">The initial value for the corresponding property.</param>
-/// <param name="maxhp">The initial value for the corresponding property.</param>
-/// <param name="maxmp">The initial value for the corresponding property.</param>
-/// <param name="minhit">The initial value for the corresponding property.</param>
-/// <param name="mp">The initial value for the corresponding property.</param>
-/// <param name="name">The initial value for the corresponding property.</param>
-/// <param name="password">The initial value for the corresponding property.</param>
-/// <param name="perc">The initial value for the corresponding property.</param>
-/// <param name="recov">The initial value for the corresponding property.</param>
-/// <param name="regen">The initial value for the corresponding property.</param>
-/// <param name="respawnMap">The initial value for the corresponding property.</param>
-/// <param name="respawnX">The initial value for the corresponding property.</param>
-/// <param name="respawnY">The initial value for the corresponding property.</param>
-/// <param name="statpoints">The initial value for the corresponding property.</param>
-/// <param name="str">The initial value for the corresponding property.</param>
-/// <param name="tact">The initial value for the corresponding property.</param>
-/// <param name="templateId">The initial value for the corresponding property.</param>
-/// <param name="ws">The initial value for the corresponding property.</param>
-/// <param name="x">The initial value for the corresponding property.</param>
-/// <param name="y">The initial value for the corresponding property.</param>
-public CharacterTable(System.Byte @acc, System.Byte @agi, System.Byte @armor, System.UInt16 @body, System.Byte @bra, System.UInt32 @cash, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, System.UInt16 @hp, System.UInt32 @id, System.Byte @imm, System.Byte @int, System.Byte @level, System.UInt16 @mapId, System.Byte @maxhit, System.UInt16 @maxhp, System.UInt16 @maxmp, System.Byte @minhit, System.UInt16 @mp, System.String @name, System.String @password, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.UInt16 @respawnMap, System.Single @respawnX, System.Single @respawnY, System.UInt32 @statpoints, System.Byte @str, System.Byte @tact, System.UInt16 @templateId, System.Byte @ws, System.Single @x, System.Single @y)
-{
-SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)@acc);
-SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@agi);
-SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)@armor);
-Body = (System.UInt16)@body;
-SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)@bra);
-Cash = (System.UInt32)@cash;
-SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)@defence);
-SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)@dex);
-SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)@evade);
-Exp = (System.UInt32)@exp;
-Hp = (System.UInt16)@hp;
-Id = (System.UInt32)@id;
-SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)@imm);
-SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)@int);
-Level = (System.Byte)@level;
-MapId = (System.UInt16)@mapId;
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)@maxhit);
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)@maxhp);
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)@maxmp);
-SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)@minhit);
-Mp = (System.UInt16)@mp;
-Name = (System.String)@name;
-Password = (System.String)@password;
-SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)@perc);
-SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)@recov);
-SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)@regen);
-RespawnMap = (System.UInt16)@respawnMap;
-RespawnX = (System.Single)@respawnX;
-RespawnY = (System.Single)@respawnY;
-Statpoints = (System.UInt32)@statpoints;
-SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)@str);
-SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)@tact);
-TemplateId = (System.UInt16)@templateId;
-SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)@ws);
-X = (System.Single)@x;
-Y = (System.Single)@y;
-}
-/// <summary>
-/// CharacterTable constructor.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
-public CharacterTable(System.Data.IDataReader dataReader)
-{
-ReadValues(dataReader);
-}
-public CharacterTable(ICharacterTable source)
-{
-CopyValuesFrom(source);
-}
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. The database column's name is used to as the key, so the value
-/// will not be found if any aliases are used or not all columns were selected.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void ReadValues(System.Data.IDataReader dataReader)
-{
-SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("acc")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("agi")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("armor")));
-Body = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("body"));
-SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("bra")));
-Cash = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("cash"));
-SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("defence")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("dex")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("evade")));
-Exp = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("exp"));
-Hp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("hp"));
-Id = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("id"));
-SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("imm")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("int")));
-Level = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("level"));
-MapId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("map_id"));
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("maxhit")));
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxhp")));
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxmp")));
-SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("minhit")));
-Mp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("mp"));
-Name = (System.String)(System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
-Password = (System.String)(System.String)dataReader.GetString(dataReader.GetOrdinal("password"));
-SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("perc")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("recov")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("regen")));
-RespawnMap = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("respawn_map"));
-RespawnX = (System.Single)(System.Single)dataReader.GetFloat(dataReader.GetOrdinal("respawn_x"));
-RespawnY = (System.Single)(System.Single)dataReader.GetFloat(dataReader.GetOrdinal("respawn_y"));
-Statpoints = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("statpoints"));
-SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("str")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("tact")));
-TemplateId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("template_id"));
-SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("ws")));
-X = (System.Single)(System.Single)dataReader.GetFloat(dataReader.GetOrdinal("x"));
-Y = (System.Single)(System.Single)dataReader.GetFloat(dataReader.GetOrdinal("y"));
-}
+        /// <summary>
+        /// Gets the value for the database column `id`.
+        /// </summary>
+        UInt32 Id { get; }
 
-/// <summary>
-/// Copies the column values into the given Dictionary using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="dic">The Dictionary to copy the values into.</param>
-public void CopyValues(System.Collections.Generic.IDictionary<System.String,System.Object> dic)
-{
-CopyValues(this, dic);
-}
-/// <summary>
-/// Copies the column values into the given Dictionary using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="dic">The Dictionary to copy the values into.</param>
-public static void CopyValues(ICharacterTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
-{
-dic["@acc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
-dic["@agi"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
-dic["@armor"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
-dic["@body"] = (System.UInt16)source.Body;
-dic["@bra"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
-dic["@cash"] = (System.UInt32)source.Cash;
-dic["@defence"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
-dic["@dex"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
-dic["@evade"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
-dic["@exp"] = (System.UInt32)source.Exp;
-dic["@hp"] = (System.UInt16)source.Hp;
-dic["@id"] = (System.UInt32)source.Id;
-dic["@imm"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
-dic["@int"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
-dic["@level"] = (System.Byte)source.Level;
-dic["@map_id"] = (System.UInt16)source.MapId;
-dic["@maxhit"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
-dic["@maxhp"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
-dic["@maxmp"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
-dic["@minhit"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
-dic["@mp"] = (System.UInt16)source.Mp;
-dic["@name"] = (System.String)source.Name;
-dic["@password"] = (System.String)source.Password;
-dic["@perc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
-dic["@recov"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov);
-dic["@regen"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen);
-dic["@respawn_map"] = (System.UInt16)source.RespawnMap;
-dic["@respawn_x"] = (System.Single)source.RespawnX;
-dic["@respawn_y"] = (System.Single)source.RespawnY;
-dic["@statpoints"] = (System.UInt32)source.Statpoints;
-dic["@str"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Str);
-dic["@tact"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Tact);
-dic["@template_id"] = (System.UInt16)source.TemplateId;
-dic["@ws"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.WS);
-dic["@x"] = (System.Single)source.X;
-dic["@y"] = (System.Single)source.Y;
-}
+        /// <summary>
+        /// Gets the value for the database column `level`.
+        /// </summary>
+        Byte Level { get; }
 
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void CopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-CopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(ICharacterTable source, NetGore.Db.DbParameterValues paramValues)
-{
-paramValues["@acc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
-paramValues["@agi"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
-paramValues["@armor"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
-paramValues["@body"] = (System.UInt16)source.Body;
-paramValues["@bra"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
-paramValues["@cash"] = (System.UInt32)source.Cash;
-paramValues["@defence"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
-paramValues["@dex"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
-paramValues["@evade"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
-paramValues["@exp"] = (System.UInt32)source.Exp;
-paramValues["@hp"] = (System.UInt16)source.Hp;
-paramValues["@id"] = (System.UInt32)source.Id;
-paramValues["@imm"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
-paramValues["@int"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
-paramValues["@level"] = (System.Byte)source.Level;
-paramValues["@map_id"] = (System.UInt16)source.MapId;
-paramValues["@maxhit"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
-paramValues["@maxhp"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
-paramValues["@maxmp"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
-paramValues["@minhit"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
-paramValues["@mp"] = (System.UInt16)source.Mp;
-paramValues["@name"] = (System.String)source.Name;
-paramValues["@password"] = (System.String)source.Password;
-paramValues["@perc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
-paramValues["@recov"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov);
-paramValues["@regen"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen);
-paramValues["@respawn_map"] = (System.UInt16)source.RespawnMap;
-paramValues["@respawn_x"] = (System.Single)source.RespawnX;
-paramValues["@respawn_y"] = (System.Single)source.RespawnY;
-paramValues["@statpoints"] = (System.UInt32)source.Statpoints;
-paramValues["@str"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Str);
-paramValues["@tact"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Tact);
-paramValues["@template_id"] = (System.UInt16)source.TemplateId;
-paramValues["@ws"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.WS);
-paramValues["@x"] = (System.Single)source.X;
-paramValues["@y"] = (System.Single)source.Y;
-}
+        /// <summary>
+        /// Gets the value for the database column `map_id`.
+        /// </summary>
+        UInt16 MapId { get; }
 
-public void CopyValuesFrom(ICharacterTable source)
-{
-SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc));
-SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi));
-SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor));
-Body = (System.UInt16)source.Body;
-SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra));
-Cash = (System.UInt32)source.Cash;
-SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence));
-SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex));
-SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade));
-Exp = (System.UInt32)source.Exp;
-Hp = (System.UInt16)source.Hp;
-Id = (System.UInt32)source.Id;
-SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm));
-SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int));
-Level = (System.Byte)source.Level;
-MapId = (System.UInt16)source.MapId;
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit));
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP));
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP));
-SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit));
-Mp = (System.UInt16)source.Mp;
-Name = (System.String)source.Name;
-Password = (System.String)source.Password;
-SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc));
-SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov));
-SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen));
-RespawnMap = (System.UInt16)source.RespawnMap;
-RespawnX = (System.Single)source.RespawnX;
-RespawnY = (System.Single)source.RespawnY;
-Statpoints = (System.UInt32)source.Statpoints;
-SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Str));
-SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Tact));
-TemplateId = (System.UInt16)source.TemplateId;
-SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.WS));
-X = (System.Single)source.X;
-Y = (System.Single)source.Y;
-}
+        /// <summary>
+        /// Gets the value for the database column `mp`.
+        /// </summary>
+        UInt16 Mp { get; }
 
-}
+        /// <summary>
+        /// Gets the value for the database column `name`.
+        /// </summary>
+        String Name { get; }
 
+        /// <summary>
+        /// Gets the value for the database column `password`.
+        /// </summary>
+        String Password { get; }
+
+        /// <summary>
+        /// Gets the value for the database column `respawn_map`.
+        /// </summary>
+        UInt16 RespawnMap { get; }
+
+        /// <summary>
+        /// Gets the value for the database column `respawn_x`.
+        /// </summary>
+        Single RespawnX { get; }
+
+        /// <summary>
+        /// Gets the value for the database column `respawn_y`.
+        /// </summary>
+        Single RespawnY { get; }
+
+        /// <summary>
+        /// Gets the value for the database column `statpoints`.
+        /// </summary>
+        UInt32 Statpoints { get; }
+
+        /// <summary>
+        /// Gets the value for the database column `template_id`.
+        /// </summary>
+        UInt16 TemplateId { get; }
+
+        /// <summary>
+        /// Gets the value for the database column `x`.
+        /// </summary>
+        Single X { get; }
+
+        /// <summary>
+        /// Gets the value for the database column `y`.
+        /// </summary>
+        Single Y { get; }
+
+        Int32 GetStat(StatType key);
+
+        Void SetStat(StatType key, Int32 value);
+    }
+
+    /// <summary>
+    /// Provides a strongly-typed structure for the database table `character`.
+    /// </summary>
+    public class CharacterTable : ICharacterTable
+    {
+        /// <summary>
+        /// The number of columns in the database table that this class represents.
+        /// </summary>
+        public const Int32 ColumnCount = 36;
+
+        /// <summary>
+        /// The name of the database table that this class represents.
+        /// </summary>
+        public const String TableName = "character";
+
+        /// <summary>
+        /// Array of the database column names.
+        /// </summary>
+        static readonly String[] _dbColumns = new string[]
+                                              {
+                                                  "acc", "agi", "armor", "body", "bra", "cash", "defence", "dex", "evade", "exp",
+                                                  "hp", "id", "imm", "int", "level", "map_id", "maxhit", "maxhp", "maxmp", "minhit",
+                                                  "mp", "name", "password", "perc", "recov", "regen", "respawn_map", "respawn_x",
+                                                  "respawn_y", "statpoints", "str", "tact", "template_id", "ws", "x", "y"
+                                              };
+
+        readonly StatConstDictionary _stat = new StatConstDictionary();
+
+        /// <summary>
+        /// The field that maps onto the database column `body`.
+        /// </summary>
+        UInt16 _body;
+
+        /// <summary>
+        /// The field that maps onto the database column `cash`.
+        /// </summary>
+        UInt32 _cash;
+
+        /// <summary>
+        /// The field that maps onto the database column `exp`.
+        /// </summary>
+        UInt32 _exp;
+
+        /// <summary>
+        /// The field that maps onto the database column `hp`.
+        /// </summary>
+        UInt16 _hp;
+
+        /// <summary>
+        /// The field that maps onto the database column `id`.
+        /// </summary>
+        UInt32 _id;
+
+        /// <summary>
+        /// The field that maps onto the database column `level`.
+        /// </summary>
+        Byte _level;
+
+        /// <summary>
+        /// The field that maps onto the database column `map_id`.
+        /// </summary>
+        UInt16 _mapId;
+
+        /// <summary>
+        /// The field that maps onto the database column `mp`.
+        /// </summary>
+        UInt16 _mp;
+
+        /// <summary>
+        /// The field that maps onto the database column `name`.
+        /// </summary>
+        String _name;
+
+        /// <summary>
+        /// The field that maps onto the database column `password`.
+        /// </summary>
+        String _password;
+
+        /// <summary>
+        /// The field that maps onto the database column `respawn_map`.
+        /// </summary>
+        UInt16 _respawnMap;
+
+        /// <summary>
+        /// The field that maps onto the database column `respawn_x`.
+        /// </summary>
+        Single _respawnX;
+
+        /// <summary>
+        /// The field that maps onto the database column `respawn_y`.
+        /// </summary>
+        Single _respawnY;
+
+        /// <summary>
+        /// The field that maps onto the database column `statpoints`.
+        /// </summary>
+        UInt32 _statpoints;
+
+        /// <summary>
+        /// The field that maps onto the database column `template_id`.
+        /// </summary>
+        UInt16 _templateId;
+
+        /// <summary>
+        /// The field that maps onto the database column `x`.
+        /// </summary>
+        Single _x;
+
+        /// <summary>
+        /// The field that maps onto the database column `y`.
+        /// </summary>
+        Single _y;
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
+
+        /// <summary>
+        /// CharacterTable constructor.
+        /// </summary>
+        public CharacterTable()
+        {
+        }
+
+        /// <summary>
+        /// CharacterTable constructor.
+        /// </summary>
+        /// <param name="acc">The initial value for the corresponding property.</param>
+        /// <param name="agi">The initial value for the corresponding property.</param>
+        /// <param name="armor">The initial value for the corresponding property.</param>
+        /// <param name="body">The initial value for the corresponding property.</param>
+        /// <param name="bra">The initial value for the corresponding property.</param>
+        /// <param name="cash">The initial value for the corresponding property.</param>
+        /// <param name="defence">The initial value for the corresponding property.</param>
+        /// <param name="dex">The initial value for the corresponding property.</param>
+        /// <param name="evade">The initial value for the corresponding property.</param>
+        /// <param name="exp">The initial value for the corresponding property.</param>
+        /// <param name="hp">The initial value for the corresponding property.</param>
+        /// <param name="id">The initial value for the corresponding property.</param>
+        /// <param name="imm">The initial value for the corresponding property.</param>
+        /// <param name="int">The initial value for the corresponding property.</param>
+        /// <param name="level">The initial value for the corresponding property.</param>
+        /// <param name="mapId">The initial value for the corresponding property.</param>
+        /// <param name="maxhit">The initial value for the corresponding property.</param>
+        /// <param name="maxhp">The initial value for the corresponding property.</param>
+        /// <param name="maxmp">The initial value for the corresponding property.</param>
+        /// <param name="minhit">The initial value for the corresponding property.</param>
+        /// <param name="mp">The initial value for the corresponding property.</param>
+        /// <param name="name">The initial value for the corresponding property.</param>
+        /// <param name="password">The initial value for the corresponding property.</param>
+        /// <param name="perc">The initial value for the corresponding property.</param>
+        /// <param name="recov">The initial value for the corresponding property.</param>
+        /// <param name="regen">The initial value for the corresponding property.</param>
+        /// <param name="respawnMap">The initial value for the corresponding property.</param>
+        /// <param name="respawnX">The initial value for the corresponding property.</param>
+        /// <param name="respawnY">The initial value for the corresponding property.</param>
+        /// <param name="statpoints">The initial value for the corresponding property.</param>
+        /// <param name="str">The initial value for the corresponding property.</param>
+        /// <param name="tact">The initial value for the corresponding property.</param>
+        /// <param name="templateId">The initial value for the corresponding property.</param>
+        /// <param name="ws">The initial value for the corresponding property.</param>
+        /// <param name="x">The initial value for the corresponding property.</param>
+        /// <param name="y">The initial value for the corresponding property.</param>
+        public CharacterTable(Byte @acc, Byte @agi, Byte @armor, UInt16 @body, Byte @bra, UInt32 @cash, Byte @defence, Byte @dex,
+                              Byte @evade, UInt32 @exp, UInt16 @hp, UInt32 @id, Byte @imm, Byte @int, Byte @level, UInt16 @mapId,
+                              Byte @maxhit, UInt16 @maxhp, UInt16 @maxmp, Byte @minhit, UInt16 @mp, String @name, String @password,
+                              Byte @perc, Byte @recov, Byte @regen, UInt16 @respawnMap, Single @respawnX, Single @respawnY,
+                              UInt32 @statpoints, Byte @str, Byte @tact, UInt16 @templateId, Byte @ws, Single @x, Single @y)
+        {
+            SetStat(StatType.Acc, @acc);
+            SetStat(StatType.Agi, @agi);
+            SetStat(StatType.Armor, @armor);
+            Body = @body;
+            SetStat(StatType.Bra, @bra);
+            Cash = @cash;
+            SetStat(StatType.Defence, @defence);
+            SetStat(StatType.Dex, @dex);
+            SetStat(StatType.Evade, @evade);
+            Exp = @exp;
+            Hp = @hp;
+            Id = @id;
+            SetStat(StatType.Imm, @imm);
+            SetStat(StatType.Int, @int);
+            Level = @level;
+            MapId = @mapId;
+            SetStat(StatType.MaxHit, @maxhit);
+            SetStat(StatType.MaxHP, @maxhp);
+            SetStat(StatType.MaxMP, @maxmp);
+            SetStat(StatType.MinHit, @minhit);
+            Mp = @mp;
+            Name = @name;
+            Password = @password;
+            SetStat(StatType.Perc, @perc);
+            SetStat(StatType.Recov, @recov);
+            SetStat(StatType.Regen, @regen);
+            RespawnMap = @respawnMap;
+            RespawnX = @respawnX;
+            RespawnY = @respawnY;
+            Statpoints = @statpoints;
+            SetStat(StatType.Str, @str);
+            SetStat(StatType.Tact, @tact);
+            TemplateId = @templateId;
+            SetStat(StatType.WS, @ws);
+            X = @x;
+            Y = @y;
+        }
+
+        /// <summary>
+        /// CharacterTable constructor.
+        /// </summary>
+        /// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
+        public CharacterTable(IDataReader dataReader)
+        {
+            ReadValues(dataReader);
+        }
+
+        public CharacterTable(ICharacterTable source)
+        {
+            CopyValuesFrom(source);
+        }
+
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        ///  this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public static void CopyValues(ICharacterTable source, IDictionary<String, Object> dic)
+        {
+            dic["@acc"] = (Byte)source.GetStat(StatType.Acc);
+            dic["@agi"] = (Byte)source.GetStat(StatType.Agi);
+            dic["@armor"] = (Byte)source.GetStat(StatType.Armor);
+            dic["@body"] = source.Body;
+            dic["@bra"] = (Byte)source.GetStat(StatType.Bra);
+            dic["@cash"] = source.Cash;
+            dic["@defence"] = (Byte)source.GetStat(StatType.Defence);
+            dic["@dex"] = (Byte)source.GetStat(StatType.Dex);
+            dic["@evade"] = (Byte)source.GetStat(StatType.Evade);
+            dic["@exp"] = source.Exp;
+            dic["@hp"] = source.Hp;
+            dic["@id"] = source.Id;
+            dic["@imm"] = (Byte)source.GetStat(StatType.Imm);
+            dic["@int"] = (Byte)source.GetStat(StatType.Int);
+            dic["@level"] = source.Level;
+            dic["@map_id"] = source.MapId;
+            dic["@maxhit"] = (Byte)source.GetStat(StatType.MaxHit);
+            dic["@maxhp"] = (UInt16)source.GetStat(StatType.MaxHP);
+            dic["@maxmp"] = (UInt16)source.GetStat(StatType.MaxMP);
+            dic["@minhit"] = (Byte)source.GetStat(StatType.MinHit);
+            dic["@mp"] = source.Mp;
+            dic["@name"] = source.Name;
+            dic["@password"] = source.Password;
+            dic["@perc"] = (Byte)source.GetStat(StatType.Perc);
+            dic["@recov"] = (Byte)source.GetStat(StatType.Recov);
+            dic["@regen"] = (Byte)source.GetStat(StatType.Regen);
+            dic["@respawn_map"] = source.RespawnMap;
+            dic["@respawn_x"] = source.RespawnX;
+            dic["@respawn_y"] = source.RespawnY;
+            dic["@statpoints"] = source.Statpoints;
+            dic["@str"] = (Byte)source.GetStat(StatType.Str);
+            dic["@tact"] = (Byte)source.GetStat(StatType.Tact);
+            dic["@template_id"] = source.TemplateId;
+            dic["@ws"] = (Byte)source.GetStat(StatType.WS);
+            dic["@x"] = source.X;
+            dic["@y"] = source.Y;
+        }
+
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+        ///  this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public static void CopyValues(ICharacterTable source, DbParameterValues paramValues)
+        {
+            paramValues["@acc"] = (Byte)source.GetStat(StatType.Acc);
+            paramValues["@agi"] = (Byte)source.GetStat(StatType.Agi);
+            paramValues["@armor"] = (Byte)source.GetStat(StatType.Armor);
+            paramValues["@body"] = source.Body;
+            paramValues["@bra"] = (Byte)source.GetStat(StatType.Bra);
+            paramValues["@cash"] = source.Cash;
+            paramValues["@defence"] = (Byte)source.GetStat(StatType.Defence);
+            paramValues["@dex"] = (Byte)source.GetStat(StatType.Dex);
+            paramValues["@evade"] = (Byte)source.GetStat(StatType.Evade);
+            paramValues["@exp"] = source.Exp;
+            paramValues["@hp"] = source.Hp;
+            paramValues["@id"] = source.Id;
+            paramValues["@imm"] = (Byte)source.GetStat(StatType.Imm);
+            paramValues["@int"] = (Byte)source.GetStat(StatType.Int);
+            paramValues["@level"] = source.Level;
+            paramValues["@map_id"] = source.MapId;
+            paramValues["@maxhit"] = (Byte)source.GetStat(StatType.MaxHit);
+            paramValues["@maxhp"] = (UInt16)source.GetStat(StatType.MaxHP);
+            paramValues["@maxmp"] = (UInt16)source.GetStat(StatType.MaxMP);
+            paramValues["@minhit"] = (Byte)source.GetStat(StatType.MinHit);
+            paramValues["@mp"] = source.Mp;
+            paramValues["@name"] = source.Name;
+            paramValues["@password"] = source.Password;
+            paramValues["@perc"] = (Byte)source.GetStat(StatType.Perc);
+            paramValues["@recov"] = (Byte)source.GetStat(StatType.Recov);
+            paramValues["@regen"] = (Byte)source.GetStat(StatType.Regen);
+            paramValues["@respawn_map"] = source.RespawnMap;
+            paramValues["@respawn_x"] = source.RespawnX;
+            paramValues["@respawn_y"] = source.RespawnY;
+            paramValues["@statpoints"] = source.Statpoints;
+            paramValues["@str"] = (Byte)source.GetStat(StatType.Str);
+            paramValues["@tact"] = (Byte)source.GetStat(StatType.Tact);
+            paramValues["@template_id"] = source.TemplateId;
+            paramValues["@ws"] = (Byte)source.GetStat(StatType.WS);
+            paramValues["@x"] = source.X;
+            paramValues["@y"] = source.Y;
+        }
+
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        ///  this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public void CopyValues(IDictionary<String, Object> dic)
+        {
+            CopyValues(this, dic);
+        }
+
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+        ///  this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public void CopyValues(DbParameterValues paramValues)
+        {
+            CopyValues(this, paramValues);
+        }
+
+        public void CopyValuesFrom(ICharacterTable source)
+        {
+            SetStat(StatType.Acc, source.GetStat(StatType.Acc));
+            SetStat(StatType.Agi, source.GetStat(StatType.Agi));
+            SetStat(StatType.Armor, source.GetStat(StatType.Armor));
+            Body = source.Body;
+            SetStat(StatType.Bra, source.GetStat(StatType.Bra));
+            Cash = source.Cash;
+            SetStat(StatType.Defence, source.GetStat(StatType.Defence));
+            SetStat(StatType.Dex, source.GetStat(StatType.Dex));
+            SetStat(StatType.Evade, source.GetStat(StatType.Evade));
+            Exp = source.Exp;
+            Hp = source.Hp;
+            Id = source.Id;
+            SetStat(StatType.Imm, source.GetStat(StatType.Imm));
+            SetStat(StatType.Int, source.GetStat(StatType.Int));
+            Level = source.Level;
+            MapId = source.MapId;
+            SetStat(StatType.MaxHit, source.GetStat(StatType.MaxHit));
+            SetStat(StatType.MaxHP, source.GetStat(StatType.MaxHP));
+            SetStat(StatType.MaxMP, source.GetStat(StatType.MaxMP));
+            SetStat(StatType.MinHit, source.GetStat(StatType.MinHit));
+            Mp = source.Mp;
+            Name = source.Name;
+            Password = source.Password;
+            SetStat(StatType.Perc, source.GetStat(StatType.Perc));
+            SetStat(StatType.Recov, source.GetStat(StatType.Recov));
+            SetStat(StatType.Regen, source.GetStat(StatType.Regen));
+            RespawnMap = source.RespawnMap;
+            RespawnX = source.RespawnX;
+            RespawnY = source.RespawnY;
+            Statpoints = source.Statpoints;
+            SetStat(StatType.Str, source.GetStat(StatType.Str));
+            SetStat(StatType.Tact, source.GetStat(StatType.Tact));
+            TemplateId = source.TemplateId;
+            SetStat(StatType.WS, source.GetStat(StatType.WS));
+            X = source.X;
+            Y = source.Y;
+        }
+
+        /// <summary>
+        /// Reads the values from an IDataReader and assigns the read values to this
+        /// object's properties. The database column's name is used to as the key, so the value
+        /// will not be found if any aliases are used or not all columns were selected.
+        /// </summary>
+        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+        public void ReadValues(IDataReader dataReader)
+        {
+            SetStat(StatType.Acc, dataReader.GetByte(dataReader.GetOrdinal("acc")));
+            SetStat(StatType.Agi, dataReader.GetByte(dataReader.GetOrdinal("agi")));
+            SetStat(StatType.Armor, dataReader.GetByte(dataReader.GetOrdinal("armor")));
+            Body = dataReader.GetUInt16(dataReader.GetOrdinal("body"));
+            SetStat(StatType.Bra, dataReader.GetByte(dataReader.GetOrdinal("bra")));
+            Cash = dataReader.GetUInt32(dataReader.GetOrdinal("cash"));
+            SetStat(StatType.Defence, dataReader.GetByte(dataReader.GetOrdinal("defence")));
+            SetStat(StatType.Dex, dataReader.GetByte(dataReader.GetOrdinal("dex")));
+            SetStat(StatType.Evade, dataReader.GetByte(dataReader.GetOrdinal("evade")));
+            Exp = dataReader.GetUInt32(dataReader.GetOrdinal("exp"));
+            Hp = dataReader.GetUInt16(dataReader.GetOrdinal("hp"));
+            Id = dataReader.GetUInt32(dataReader.GetOrdinal("id"));
+            SetStat(StatType.Imm, dataReader.GetByte(dataReader.GetOrdinal("imm")));
+            SetStat(StatType.Int, dataReader.GetByte(dataReader.GetOrdinal("int")));
+            Level = dataReader.GetByte(dataReader.GetOrdinal("level"));
+            MapId = dataReader.GetUInt16(dataReader.GetOrdinal("map_id"));
+            SetStat(StatType.MaxHit, dataReader.GetByte(dataReader.GetOrdinal("maxhit")));
+            SetStat(StatType.MaxHP, dataReader.GetUInt16(dataReader.GetOrdinal("maxhp")));
+            SetStat(StatType.MaxMP, dataReader.GetUInt16(dataReader.GetOrdinal("maxmp")));
+            SetStat(StatType.MinHit, dataReader.GetByte(dataReader.GetOrdinal("minhit")));
+            Mp = dataReader.GetUInt16(dataReader.GetOrdinal("mp"));
+            Name = dataReader.GetString(dataReader.GetOrdinal("name"));
+            Password = dataReader.GetString(dataReader.GetOrdinal("password"));
+            SetStat(StatType.Perc, dataReader.GetByte(dataReader.GetOrdinal("perc")));
+            SetStat(StatType.Recov, dataReader.GetByte(dataReader.GetOrdinal("recov")));
+            SetStat(StatType.Regen, dataReader.GetByte(dataReader.GetOrdinal("regen")));
+            RespawnMap = dataReader.GetUInt16(dataReader.GetOrdinal("respawn_map"));
+            RespawnX = dataReader.GetFloat(dataReader.GetOrdinal("respawn_x"));
+            RespawnY = dataReader.GetFloat(dataReader.GetOrdinal("respawn_y"));
+            Statpoints = dataReader.GetUInt32(dataReader.GetOrdinal("statpoints"));
+            SetStat(StatType.Str, dataReader.GetByte(dataReader.GetOrdinal("str")));
+            SetStat(StatType.Tact, dataReader.GetByte(dataReader.GetOrdinal("tact")));
+            TemplateId = dataReader.GetUInt16(dataReader.GetOrdinal("template_id"));
+            SetStat(StatType.WS, dataReader.GetByte(dataReader.GetOrdinal("ws")));
+            X = dataReader.GetFloat(dataReader.GetOrdinal("x"));
+            Y = dataReader.GetFloat(dataReader.GetOrdinal("y"));
+        }
+
+        #region ICharacterTable Members
+
+        public Int32 GetStat(StatType key)
+        {
+            return _stat[key];
+        }
+
+        public void SetStat(StatType key, Int32 value)
+        {
+            _stat[key] = value;
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `body`.
+        /// The underlying database type is `smallint(5) unsigned` with the default value of `1`.
+        /// </summary>
+        public UInt16 Body
+        {
+            get { return _body; }
+            set { _body = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `cash`.
+        /// The underlying database type is `int(10) unsigned` with the default value of `0`.
+        /// </summary>
+        public UInt32 Cash
+        {
+            get { return _cash; }
+            set { _cash = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `exp`.
+        /// The underlying database type is `int(10) unsigned` with the default value of `0`.
+        /// </summary>
+        public UInt32 Exp
+        {
+            get { return _exp; }
+            set { _exp = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `hp`.
+        /// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
+        /// </summary>
+        public UInt16 Hp
+        {
+            get { return _hp; }
+            set { _hp = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `id`.
+        /// The underlying database type is `int(10) unsigned`.
+        /// </summary>
+        public UInt32 Id
+        {
+            get { return _id; }
+            set { _id = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `level`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Level
+        {
+            get { return _level; }
+            set { _level = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `map_id`.
+        /// The underlying database type is `smallint(5) unsigned` with the default value of `1`.
+        /// </summary>
+        public UInt16 MapId
+        {
+            get { return _mapId; }
+            set { _mapId = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `mp`.
+        /// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
+        /// </summary>
+        public UInt16 Mp
+        {
+            get { return _mp; }
+            set { _mp = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `name`.
+        /// The underlying database type is `varchar(50)`.
+        /// </summary>
+        public String Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `password`.
+        /// The underlying database type is `varchar(50)`.
+        /// </summary>
+        public String Password
+        {
+            get { return _password; }
+            set { _password = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `respawn_map`.
+        /// The underlying database type is `smallint(5) unsigned`.
+        /// </summary>
+        public UInt16 RespawnMap
+        {
+            get { return _respawnMap; }
+            set { _respawnMap = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `respawn_x`.
+        /// The underlying database type is `float`.
+        /// </summary>
+        public Single RespawnX
+        {
+            get { return _respawnX; }
+            set { _respawnX = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `respawn_y`.
+        /// The underlying database type is `float`.
+        /// </summary>
+        public Single RespawnY
+        {
+            get { return _respawnY; }
+            set { _respawnY = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `statpoints`.
+        /// The underlying database type is `int(10) unsigned` with the default value of `0`.
+        /// </summary>
+        public UInt32 Statpoints
+        {
+            get { return _statpoints; }
+            set { _statpoints = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `template_id`.
+        /// The underlying database type is `smallint(5) unsigned`.
+        /// </summary>
+        public UInt16 TemplateId
+        {
+            get { return _templateId; }
+            set { _templateId = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `x`.
+        /// The underlying database type is `float` with the default value of `100`.
+        /// </summary>
+        public Single X
+        {
+            get { return _x; }
+            set { _x = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `y`.
+        /// The underlying database type is `float` with the default value of `100`.
+        /// </summary>
+        public Single Y
+        {
+            get { return _y; }
+            set { _y = value; }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// A Dictionary-like lookup table for the Enum values of the type collection `Stat` for the
+        /// table that this class represents. Majority of the code for this class was automatically generated and
+        /// only other automatically generated code should be using this class.
+        /// </summary>
+        class StatConstDictionary
+        {
+            /// <summary>
+            /// Array that maps the integer value of key type to the index of the _values array.
+            /// </summary>
+            static readonly Int32[] _lookupTable;
+
+            /// <summary>
+            /// Array containing the actual values. The index of this array is found through the value returned
+            /// from the _lookupTable.
+            /// </summary>
+            readonly Int32[] _values;
+
+            /// <summary>
+            /// Gets or sets an item's value using the <paramref name="key"/>.
+            /// </summary>
+            /// <param name="key">The key for the value to get or set.</param>
+            /// <returns>The item's value for the corresponding <paramref name="key"/>.</returns>
+            public Int32 this[StatType key]
+            {
+                get { return _values[_lookupTable[(Int32)key]]; }
+                set { _values[_lookupTable[(Int32)key]] = value; }
+            }
+
+            /// <summary>
+            /// StatConstDictionary static constructor.
+            /// </summary>
+            static StatConstDictionary()
+            {
+                var asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
+                _lookupTable = new Int32[asArray.Length];
+
+                for (Int32 i = 0; i < _lookupTable.Length; i++)
+                {
+                    _lookupTable[i] = (Int32)asArray[i];
+                }
+            }
+
+            /// <summary>
+            /// StatConstDictionary constructor.
+            /// </summary>
+            public StatConstDictionary()
+            {
+                _values = new Int32[_lookupTable.Length];
+            }
+        }
+    }
 }

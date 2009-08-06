@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Text;
+using NetGore.Db.ClassCreator.Properties;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -176,6 +177,12 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateMethodCopyValuesToDict(cd));
                 sb.AppendLine(CreateMethodCopyValuesToDbParameterValues(cd));
                 sb.AppendLine(CreateMethodCopyValuesFrom(cd));
+
+                // ConstEnumDictionary class
+                foreach (var coll in cd.ColumnCollections)
+                {
+                    sb.AppendLine(cd.GetConstEnumDictonaryCode(coll));
+                }
             }
             sb.AppendLine(Formatter.CloseBrace);
 
@@ -271,7 +278,7 @@ namespace NetGore.Db.ClassCreator
                     addedCollections.Add(coll);
                     // TODO: ColumnCollection field comment
 
-                    string collType = cd.GetCollectionTypeString(coll);
+                    string collType = ClassData.GetCollectionTypeString(coll);
                     sb.AppendLine(Formatter.GetField(cd.GetPrivateName(coll), collType, MemberVisibilityLevel.Private, "new " + collType + "()", true, false));
                 }
             }
@@ -629,6 +636,22 @@ namespace NetGore.Db.ClassCreator
                 return GetCollectionForColumn(dbColumn, out item);
             }
 
+            public static string GetConstEnumDictonaryName(ColumnCollection columnCollection)
+            {
+                return columnCollection.Name.Substring(0, 1).ToUpper() + columnCollection.Name.Substring(1) + "ConstDictionary";
+            }
+
+            public string GetConstEnumDictonaryCode(ColumnCollection columnCollection)
+            {
+                StringBuilder sb = new StringBuilder(Resources.ConstEnumDictionaryCode);
+                sb.Replace("[CLASSNAME]", GetConstEnumDictonaryName(columnCollection));
+                sb.Replace("[VALUETYPE]", Formatter.GetTypeString(columnCollection.ValueType));
+                sb.Replace("[KEYTYPE]", Formatter.GetTypeString(columnCollection.KeyType));
+                sb.Replace("[COLUMNCOLLECTIONNAME]", columnCollection.Name);
+                sb.Replace("[STORAGETYPE]", Formatter.GetTypeString(typeof(int)));
+                return sb.ToString();
+            }
+
             /// <summary>
             /// Gets the ColumnCollection for a given DbColumnInfo, or null if the DbColumnInfo is not part of
             /// andy ColumnCollection in this table.
@@ -809,12 +832,9 @@ namespace NetGore.Db.ClassCreator
                 return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Public, columnCollection.ValueType);
             }
 
-            public string GetCollectionTypeString(ColumnCollection columnCollection)
+            public static string GetCollectionTypeString(ColumnCollection columnCollection)
             {
-                var baseType = typeof(Dictionary<,>);
-                var genericTypes = new Type[] { columnCollection.KeyType, columnCollection.ValueType };
-                return Formatter.GetComplexTypeString(baseType,
-                                                                   genericTypes);
+                return GetConstEnumDictonaryName(columnCollection);
             }
         }
 
