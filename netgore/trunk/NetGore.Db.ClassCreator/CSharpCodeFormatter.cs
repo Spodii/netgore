@@ -55,6 +55,16 @@ namespace NetGore.Db.ClassCreator
             get { return "{"; }
         }
 
+        public override string OpenIndexer
+        {
+            get { return "["; }
+        }
+
+        public override string CloseIndexer
+        {
+            get { return "]"; }
+        }
+
         public override string ParameterSpacer
         {
             get { return ", "; }
@@ -95,7 +105,7 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        public override string GetField(string memberName, Type type, MemberVisibilityLevel visibility, string code,
+        public override string GetField(string memberName, string type, MemberVisibilityLevel visibility, string code,
                                         bool isReadonly, bool isStatic)
         {
             StringBuilder sb = new StringBuilder();
@@ -112,7 +122,7 @@ namespace NetGore.Db.ClassCreator
             if (isReadonly)
                 sb.Append(" readonly ");
 
-            sb.Append(GetTypeString(type));
+            sb.Append(type);
             sb.Append(" ");
             sb.Append(memberName);
 

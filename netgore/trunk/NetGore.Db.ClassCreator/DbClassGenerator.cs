@@ -10,37 +10,58 @@ namespace NetGore.Db.ClassCreator
 {
     public abstract class DbClassGenerator : IDisposable
     {
-        protected const string copyValuesMethodName = "CopyValues";
         protected const string copyValuesFromMethodName = "CopyValuesFrom";
+        protected const string copyValuesMethodName = "CopyValues";
         protected const string dataReaderName = "dataReader";
         protected const string dbColumnsField = "_dbColumns";
-
-        readonly Dictionary<string, IEnumerable<DbColumnInfo>> _dbTables = new Dictionary<string, IEnumerable<DbColumnInfo>>();
-
-        DbConnection _dbConnction;
-        bool _isDbContentLoaded = false;
-
-        /// <summary>
-        /// Using directives to add.
-        /// </summary>
-        readonly List<string> _usings = new List<string>();
+        readonly List<ColumnCollection> _columnCollections = new List<ColumnCollection>();
 
         /// <summary>
         /// Dictionary of the DataReader Read method names for a given Type.
         /// </summary>
         readonly Dictionary<Type, string> _dataReaderReadMethods = new Dictionary<Type, string>();
 
+        readonly Dictionary<string, IEnumerable<DbColumnInfo>> _dbTables = new Dictionary<string, IEnumerable<DbColumnInfo>>();
+
         /// <summary>
-        /// Sets the name of the method to use for the DataReader to read a given type.
+        /// Using directives to add.
         /// </summary>
-        /// <param name="type">The type to read.</param>
-        /// <param name="methodName">Name of the DataReader method to use to read the <paramref name="type"/>.</param>
-        public void SetDataReaderReadMethod(Type type, string methodName)
+        readonly List<string> _usings = new List<string>();
+
+        DbConnection _dbConnction;
+        bool _isDbContentLoaded = false;
+
+        /// <summary>
+        /// Gets the DbConnection used to connect to the database.
+        /// </summary>
+        public DbConnection DbConnection
         {
-            if (_dataReaderReadMethods.ContainsKey(type))
-                _dataReaderReadMethods[type] = methodName;
-            else
-                _dataReaderReadMethods.Add(type, methodName);
+            get { return _dbConnction; }
+        }
+
+        /// <summary>
+        /// Gets or sets the CodeFormatter to use. Default is the CSharpCodeFormatter.
+        /// </summary>
+        public CodeFormatter Formatter { get; set; }
+
+        protected DbClassGenerator()
+        {
+            Formatter = new CSharpCodeFormatter();
+            AddUsing(new string[] { "System", "System.Linq" });
+        }
+
+        public void AddColumnCollection(string name, Type keyType, Type valueType, IEnumerable<string> tables,
+                                        IEnumerable<ColumnCollectionItem> columns)
+        {
+            ColumnCollection columnCollection = new ColumnCollection(name, keyType, valueType, tables, columns);
+            _columnCollections.Add(columnCollection);
+        }
+
+        public void AddColumnCollection(string name, Type keyType, Type valueType, string table,
+                                        IEnumerable<ColumnCollectionItem> columns)
+        {
+            ColumnCollection columnCollection = new ColumnCollection(name, keyType, valueType, new string[] { table }, columns);
+            _columnCollections.Add(columnCollection);
         }
 
         /// <summary>
@@ -59,40 +80,25 @@ namespace NetGore.Db.ClassCreator
         /// <param name="namespaceNames">Namespaces to use.</param>
         public void AddUsing(IEnumerable<string> namespaceNames)
         {
-            foreach (var n in namespaceNames)
+            foreach (string n in namespaceNames)
+            {
                 AddUsing(n);
-        }
-
-        /// <summary>
-        /// Gets the DbConnection used to connect to the database.
-        /// </summary>
-        public DbConnection DbConnection
-        {
-            get { return _dbConnction; }
-        }
-
-        /// <summary>
-        /// Gets or sets the CodeFormatter to use. Default is the CSharpCodeFormatter.
-        /// </summary>
-        public CodeFormatter Formatter { get; set; }
-
-        protected DbClassGenerator()
-        {
-            Formatter = new CSharpCodeFormatter();
-            AddUsing(new string[] { "System", "System.Linq"});
+            }
         }
 
         protected virtual string CreateCode(string tableName, IEnumerable<DbColumnInfo> columns, string namespaceName)
         {
             columns = columns.OrderBy(x => x.Name);
 
-            ClassData cd = new ClassData(tableName, columns, Formatter, _dataReaderReadMethods);
+            ClassData cd = new ClassData(tableName, columns, Formatter, _dataReaderReadMethods, _columnCollections);
 
             StringBuilder sb = new StringBuilder(16384);
 
             // Header
-            foreach (var usingNamespace in _usings)
+            foreach (string usingNamespace in _usings)
+            {
                 sb.AppendLine(Formatter.GetUsing(usingNamespace));
+            }
 
             sb.AppendLine(Formatter.GetNamespace(namespaceName));
             sb.AppendLine(Formatter.OpenBrace);
@@ -121,7 +127,7 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, new string[] { cd.InterfaceName }));
             sb.AppendLine(Formatter.OpenBrace);
             {
-                // Fields/Properties
+                // Other Fields/Properties
                 string fieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Select(x => x.Name));
                 sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnArrayField));
                 sb.AppendLine(Formatter.GetField(dbColumnsField, typeof(string[]), MemberVisibilityLevel.Private, fieldNamesCode,
@@ -139,6 +145,7 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(Formatter.GetConstField("ColumnCount", typeof(int), MemberVisibilityLevel.Public,
                                                       cd.Columns.Count().ToString()));
 
+                // Properties for the interface implementation
                 sb.AppendLine(CreateFields(cd));
 
                 // Constructor (empty)
@@ -160,7 +167,7 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(Formatter.GetMethodBody(drConstructorBody));
 
                 // Constructor (self-referencing interface)
-                var sriConstructorParams = new MethodParameter[] { new MethodParameter("source", cd.InterfaceName)};
+                var sriConstructorParams = new MethodParameter[] { new MethodParameter("source", cd.InterfaceName) };
                 sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, sriConstructorParams));
                 sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(copyValuesFromMethodName, "source")));
 
@@ -188,10 +195,25 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetInterface(cd.InterfaceName, MemberVisibilityLevel.Public));
             sb.AppendLine(Formatter.OpenBrace);
             {
+                var addedCollections = new List<ColumnCollection>();
                 foreach (DbColumnInfo column in cd.Columns)
                 {
-                    sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.InterfaceGetProperty, column.Name)));
-                    sb.AppendLine(Formatter.GetInterfaceProperty(cd.GetPublicName(column), column.Type, false));
+                    ColumnCollectionItem collItem;
+                    ColumnCollection coll = cd.GetCollectionForColumn(column, out collItem);
+
+                    if (coll == null)
+                    {
+                        // No collection - just add the property like normal
+                        sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.InterfaceGetProperty, column.Name)));
+                        sb.AppendLine(Formatter.GetInterfaceProperty(cd.GetPublicName(column), column.Type, false));
+                    }
+                    else if (!addedCollections.Contains(coll))
+                    {
+                        // Has a collection - only add the code if the collection hasn't been added yet
+                        addedCollections.Add(coll);
+                        // TODO: ColumnCollection interface comment
+                        sb.AppendLine(Formatter.GetInterfaceProperty(cd.GetPublicName(coll), cd.GetCollectionTypeString(coll), false));
+                    }
                 }
             }
             sb.AppendLine(Formatter.CloseBrace);
@@ -227,32 +249,60 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(2048);
 
             // Column fields
+            var addedCollections = new List<ColumnCollection>();
             foreach (DbColumnInfo column in cd.Columns)
             {
-                string name = cd.GetPrivateName(column);
-                string comment = string.Format(Comments.CreateFields.Field, column.Name);
-                sb.AppendLine(Formatter.GetXmlComment(comment));
-                sb.AppendLine(Formatter.GetField(name, column.Type, MemberVisibilityLevel.Private));
+                ColumnCollectionItem collItem;
+                ColumnCollection coll = cd.GetCollectionForColumn(column, out collItem);
+
+                if (coll == null)
+                {
+                    // Not part of a collection
+                    string comment = string.Format(Comments.CreateFields.Field, column.Name);
+                    sb.AppendLine(Formatter.GetXmlComment(comment));
+                    sb.AppendLine(Formatter.GetField(cd.GetPrivateName(column), column.Type, MemberVisibilityLevel.Private));
+                }
+                else if (!addedCollections.Contains(coll))
+                {
+                    // Has a collection - only add the code if the collection hasn't been added yet
+                    addedCollections.Add(coll);
+                    // TODO: ColumnCollection field comment
+                    sb.AppendLine(Formatter.GetField(cd.GetPrivateName(coll), cd.GetCollectionTypeString(coll), MemberVisibilityLevel.Private, null, true, false));
+                }
             }
 
             // Properties for the fields
+            addedCollections.Clear();
             foreach (DbColumnInfo column in cd.Columns)
             {
-                string name = cd.GetPublicName(column);
-                string fieldName = cd.GetPrivateName(column);
-                string comment = string.Format(Comments.CreateFields.Property, column.Name, column.DatabaseType);
+                ColumnCollectionItem collItem;
+                ColumnCollection coll = cd.GetCollectionForColumn(column, out collItem);
 
-                if (column.DefaultValue != null && !string.IsNullOrEmpty(column.DefaultValue.ToString()))
-                    comment += string.Format(Comments.CreateFields.PropertyHasDefaultValue, column.DefaultValue);
-                else
-                    comment += Comments.CreateFields.PropertyNoDefaultValue;
+                if (coll == null)
+                {
+                    // Not part of a collection
+                    string comment = string.Format(Comments.CreateFields.Property, column.Name, column.DatabaseType);
 
-                if (!string.IsNullOrEmpty(column.Comment))
-                    comment += string.Format(Comments.CreateFields.PropertyDbComment, column.Comment);
+                    if (column.DefaultValue != null && !string.IsNullOrEmpty(column.DefaultValue.ToString()))
+                        comment += string.Format(Comments.CreateFields.PropertyHasDefaultValue, column.DefaultValue);
+                    else
+                        comment += Comments.CreateFields.PropertyNoDefaultValue;
 
-                sb.AppendLine(Formatter.GetXmlComment(comment));
-                sb.AppendLine(Formatter.GetProperty(name, column.Type, MemberVisibilityLevel.Public, MemberVisibilityLevel.Public,
-                                                    fieldName, false));
+                    if (!string.IsNullOrEmpty(column.Comment))
+                        comment += string.Format(Comments.CreateFields.PropertyDbComment, column.Comment);
+
+                    sb.AppendLine(Formatter.GetXmlComment(comment));
+
+                    sb.AppendLine(Formatter.GetProperty(cd.GetPublicName(column), column.Type, MemberVisibilityLevel.Public, MemberVisibilityLevel.Public,
+                                                        cd.GetPrivateName(column), false));
+                }
+                else if (!addedCollections.Contains(coll))
+                {
+                    // Has a collection - only add the code if the collection hasn't been added yet
+                    addedCollections.Add(coll);
+                    // TODO: ColumnCollection property comment
+                    sb.AppendLine(Formatter.GetProperty(cd.GetPublicName(coll), cd.GetCollectionTypeString(coll), MemberVisibilityLevel.Public, null, cd.GetPrivateName(coll), false));
+                }
             }
 
             return sb.ToString();
@@ -267,11 +317,12 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(2048);
 
             // Header
-            sb.AppendLine(Formatter.GetMethodHeader(copyValuesFromMethodName, MemberVisibilityLevel.Public, parameters, typeof(void), false, false));
+            sb.AppendLine(Formatter.GetMethodHeader(copyValuesFromMethodName, MemberVisibilityLevel.Public, parameters,
+                                                    typeof(void), false, false));
 
             // Body
             StringBuilder bodySB = new StringBuilder(2048);
-            foreach (var column in cd.Columns)
+            foreach (DbColumnInfo column in cd.Columns)
             {
                 string left = cd.GetColumnValueMutator(column);
                 string right = sourceName + "." + cd.GetColumnValueAccessor(column);
@@ -393,7 +444,7 @@ namespace NetGore.Db.ClassCreator
             StringBuilder bodySB = new StringBuilder(2048);
             foreach (DbColumnInfo column in cd.Columns)
             {
-                string line = Formatter.GetSetValue(cd.GetPublicName(column), cd.GetDataReaderAccessor(column), true, false);
+                string line = Formatter.GetSetValue(cd.GetColumnValueAccessor(column), cd.GetDataReaderAccessor(column), true, false);
                 bodySB.AppendLine(line);
             }
 
@@ -407,7 +458,7 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(1024);
             foreach (DbColumnInfo column in cd.Columns)
             {
-                string left = cd.GetPublicName(column);
+                string left = cd.GetColumnValueAccessor(column);
                 string right = cd.GetParameterName(column);
                 sb.AppendLine(Formatter.GetSetValue(left, right, true, false));
             }
@@ -488,6 +539,19 @@ namespace NetGore.Db.ClassCreator
             DbConnection.Close();
         }
 
+        /// <summary>
+        /// Sets the name of the method to use for the DataReader to read a given type.
+        /// </summary>
+        /// <param name="type">The type to read.</param>
+        /// <param name="methodName">Name of the DataReader method to use to read the <paramref name="type"/>.</param>
+        public void SetDataReaderReadMethod(Type type, string methodName)
+        {
+            if (_dataReaderReadMethods.ContainsKey(type))
+                _dataReaderReadMethods[type] = methodName;
+            else
+                _dataReaderReadMethods.Add(type, methodName);
+        }
+
         protected void SetDbConnection(DbConnection dbConnection)
         {
             if (_dbConnction != null)
@@ -506,28 +570,32 @@ namespace NetGore.Db.ClassCreator
         {
             // ReSharper disable UnaccessedField.Global
             public readonly string ClassName;
+            public readonly IEnumerable<ColumnCollection> ColumnCollections;
             public readonly IEnumerable<DbColumnInfo> Columns;
             public readonly CodeFormatter Formatter;
             public readonly string InterfaceName;
             public readonly string TableName;
+            readonly Dictionary<Type, string> _dataReaderReadMethods;
             // ReSharper restore UnaccessedField.Global
 
             readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
             readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
             readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
 
-            readonly Dictionary<Type, string> _dataReaderReadMethods;
-
-            public ClassData(string tableName, IEnumerable<DbColumnInfo> columns, CodeFormatter formatter, Dictionary<Type, string> dataReaderReadMethods)
+            public ClassData(string tableName, IEnumerable<DbColumnInfo> columns, CodeFormatter formatter,
+                             Dictionary<Type, string> dataReaderReadMethods, IEnumerable<ColumnCollection> columnCollections)
             {
                 TableName = tableName;
                 Columns = columns;
                 Formatter = formatter;
-                
+                _dataReaderReadMethods = dataReaderReadMethods;
+
                 ClassName = formatter.GetClassName(tableName);
                 InterfaceName = formatter.GetInterfaceName(tableName);
 
-                _dataReaderReadMethods = dataReaderReadMethods;
+                ColumnCollections =
+                    columnCollections.Where(
+                        x => x.Columns.Count() > 0 && x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase)).ToArray();
 
                 foreach (DbColumnInfo column in columns)
                 {
@@ -538,13 +606,76 @@ namespace NetGore.Db.ClassCreator
             }
 
             /// <summary>
+            /// Gets the ColumnCollection for a given DbColumnInfo, or null if the DbColumnInfo is not part of
+            /// andy ColumnCollection in this table.
+            /// </summary>
+            /// <param name="dbColumn">The DbColumnInfo to get the ColumnCollection for.</param>
+            /// <returns>The ColumnCollection the DbColumnInfo is part of, or null if it
+            /// is not part of a ColumnCollection.</returns>
+            public ColumnCollection GetCollectionForColumn(DbColumnInfo dbColumn)
+            {
+                ColumnCollectionItem item;
+                return GetCollectionForColumn(dbColumn, out item);
+            }
+
+            /// <summary>
+            /// Gets the ColumnCollection for a given DbColumnInfo, or null if the DbColumnInfo is not part of
+            /// andy ColumnCollection in this table.
+            /// </summary>
+            /// <param name="dbColumn">The DbColumnInfo to get the ColumnCollection for.</param>
+            /// <<param name="item">The ColumnCollectionItem for the <paramref name="dbColumn"/> in the ColumnCollection.</param>
+            /// <returns>The ColumnCollection the DbColumnInfo is part of, or null if it
+            /// is not part of a ColumnCollection.</returns>
+            public ColumnCollection GetCollectionForColumn(DbColumnInfo dbColumn, out ColumnCollectionItem item)
+            {
+                foreach (ColumnCollection columnCollection in ColumnCollections)
+                {
+                    var matches =
+                        columnCollection.Columns.Where(x => x.ColumnName.Equals(dbColumn.Name, StringComparison.OrdinalIgnoreCase));
+                    int count = matches.Count();
+                    if (count == 1)
+                    {
+                        item = matches.First();
+                        return columnCollection;
+                    }
+                    else if (count > 1)
+                    {
+                        throw new Exception(
+                            string.Format("DbColumnInfo for column `{0}` in table `{1}` matched more than one ColumnCollection!",
+                                          dbColumn.Name, TableName));
+                    }
+                }
+
+                item = default(ColumnCollectionItem);
+                return null;
+            }
+
+            /// <summary>
             /// Gets the code to use for the accessor for a DbColumnInfo.
             /// </summary>
             /// <param name="dbColumn">The DbColumnInfo to get the value accessor for.</param>
             /// <returns>The code to use for the accessor for a DbColumnInfo.</returns>
             public string GetColumnValueAccessor(DbColumnInfo dbColumn)
             {
-                return GetPublicName(dbColumn);
+                ColumnCollectionItem item;
+                ColumnCollection coll = GetCollectionForColumn(dbColumn, out item);
+
+                if (coll == null)
+                {
+                    // Not part of a collection
+                    return GetPublicName(dbColumn);
+                }
+                else
+                {
+                    // Part of a collection
+                    StringBuilder sb = new StringBuilder();
+                    sb.Append(GetPublicName(coll));
+                    sb.Append(Formatter.OpenIndexer);
+                    sb.Append(Formatter.GetCast(coll.KeyType));
+                    sb.Append(item.Key);
+                    sb.Append(Formatter.CloseIndexer);
+                    return sb.ToString();
+                }
             }
 
             /// <summary>
@@ -555,20 +686,6 @@ namespace NetGore.Db.ClassCreator
             public string GetColumnValueMutator(DbColumnInfo dbColumn)
             {
                 return GetColumnValueAccessor(dbColumn);
-            }
-
-            /// <summary>
-            /// Gets the name of the method used by the DataReader to read the given Type.
-            /// </summary>
-            /// <param name="type">Type to read.</param>
-            /// <returns>The name of the method used by the DataReader to read the given Type.</returns>
-            public string GetDataReaderReadMethodName(Type type)
-            {
-                string callMethod;
-                if (_dataReaderReadMethods.TryGetValue(type, out callMethod))
-                    return callMethod;
-                    
-                return "Get" + type.Name;
             }
 
             /// <summary>
@@ -599,6 +716,20 @@ namespace NetGore.Db.ClassCreator
             }
 
             /// <summary>
+            /// Gets the name of the method used by the DataReader to read the given Type.
+            /// </summary>
+            /// <param name="type">Type to read.</param>
+            /// <returns>The name of the method used by the DataReader to read the given Type.</returns>
+            public string GetDataReaderReadMethodName(Type type)
+            {
+                string callMethod;
+                if (_dataReaderReadMethods.TryGetValue(type, out callMethod))
+                    return callMethod;
+
+                return "Get" + type.Name;
+            }
+
+            /// <summary>
             /// Gets the parameter name for a DbColumnInfo.
             /// </summary>
             /// <param name="dbColumn">The DbColumnInfo to get the parameter name for.</param>
@@ -618,6 +749,11 @@ namespace NetGore.Db.ClassCreator
                 return _privateNames[dbColumn];
             }
 
+            public string GetPrivateName(ColumnCollection columnCollection)
+            {
+                return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Private, columnCollection.ValueType);
+            }
+
             /// <summary>
             /// Gets the public name for a DbColumnInfo.
             /// </summary>
@@ -626,6 +762,19 @@ namespace NetGore.Db.ClassCreator
             public string GetPublicName(DbColumnInfo dbColumn)
             {
                 return _publicNames[dbColumn];
+            }
+
+            public string GetPublicName(ColumnCollection columnCollection)
+            {
+                return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Public, columnCollection.ValueType);
+            }
+
+            public string GetCollectionTypeString(ColumnCollection columnCollection)
+            {
+                var baseType = typeof(Dictionary<,>);
+                var genericTypes = new Type[] { columnCollection.KeyType, columnCollection.ValueType };
+                return Formatter.GetComplexTypeString(baseType,
+                                                                   genericTypes);
             }
         }
 
