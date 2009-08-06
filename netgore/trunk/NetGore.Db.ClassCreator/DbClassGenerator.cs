@@ -211,8 +211,11 @@ namespace NetGore.Db.ClassCreator
                     {
                         // Has a collection - only add the code if the collection hasn't been added yet
                         addedCollections.Add(coll);
-                        // TODO: ColumnCollection interface comment
-                        sb.AppendLine(Formatter.GetInterfaceProperty(cd.GetPublicName(coll), cd.GetCollectionTypeString(coll), false));
+                        // TODO: ColumnCollection interface comments
+                        string name = cd.GetPublicName(coll);
+                        var keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
+                        sb.AppendLine(Formatter.GetInterfaceMethod("Get" + name, coll.ValueType, new MethodParameter[] { keyParameter }));
+                        sb.AppendLine(Formatter.GetInterfaceMethod("Set" + name, typeof(void), new MethodParameter[] { keyParameter, new MethodParameter("value", coll.ValueType, Formatter) }));
                     }
                 }
             }
@@ -267,7 +270,9 @@ namespace NetGore.Db.ClassCreator
                     // Has a collection - only add the code if the collection hasn't been added yet
                     addedCollections.Add(coll);
                     // TODO: ColumnCollection field comment
-                    sb.AppendLine(Formatter.GetField(cd.GetPrivateName(coll), cd.GetCollectionTypeString(coll), MemberVisibilityLevel.Private, null, true, false));
+
+                    string collType = cd.GetCollectionTypeString(coll);
+                    sb.AppendLine(Formatter.GetField(cd.GetPrivateName(coll), collType, MemberVisibilityLevel.Private, "new " + collType + "()", true, false));
                 }
             }
 
@@ -300,8 +305,17 @@ namespace NetGore.Db.ClassCreator
                 {
                     // Has a collection - only add the code if the collection hasn't been added yet
                     addedCollections.Add(coll);
-                    // TODO: ColumnCollection property comment
-                    sb.AppendLine(Formatter.GetProperty(cd.GetPublicName(coll), cd.GetCollectionTypeString(coll), MemberVisibilityLevel.Public, null, cd.GetPrivateName(coll), false));
+
+                    string name = cd.GetPublicName(coll);
+                    var keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
+                    string field = cd.GetPrivateName(coll) +  Formatter.OpenIndexer + Formatter.GetCast(coll.KeyType) + "key" + Formatter.CloseIndexer;
+
+                    // TODO: ColumnCollection property comments
+                    sb.AppendLine(Formatter.GetMethodHeader("Get" + name, MemberVisibilityLevel.Public, new MethodParameter[] { keyParameter }, coll.ValueType, false, false));
+                    sb.AppendLine(Formatter.GetMethodBody("return " + field + Formatter.EndOfLine));
+
+                    sb.AppendLine(Formatter.GetMethodHeader("Set" + name, MemberVisibilityLevel.Public, new MethodParameter[] { keyParameter, new MethodParameter("value", coll.ValueType, Formatter) }, typeof(void), false, false));
+                    sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSetValue(field, "value", true, false)));
                 }
             }
 
@@ -324,10 +338,7 @@ namespace NetGore.Db.ClassCreator
             StringBuilder bodySB = new StringBuilder(2048);
             foreach (DbColumnInfo column in cd.Columns)
             {
-                string left = cd.GetColumnValueMutator(column);
-                string right = sourceName + "." + cd.GetColumnValueAccessor(column);
-                string line = Formatter.GetSetValue(left, right, true, false, column.Type);
-                bodySB.AppendLine(line);
+                bodySB.AppendLine(cd.GetColumnValueMutator(column, sourceName + "." + cd.GetColumnValueAccessor(column)));
             }
             sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
 
@@ -444,7 +455,8 @@ namespace NetGore.Db.ClassCreator
             StringBuilder bodySB = new StringBuilder(2048);
             foreach (DbColumnInfo column in cd.Columns)
             {
-                string line = Formatter.GetSetValue(cd.GetColumnValueAccessor(column), cd.GetDataReaderAccessor(column), true, false);
+                string right = cd.GetDataReaderAccessor(column);
+                string line = cd.GetColumnValueMutator(column, right);
                 bodySB.AppendLine(line);
             }
 
@@ -458,9 +470,8 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(1024);
             foreach (DbColumnInfo column in cd.Columns)
             {
-                string left = cd.GetColumnValueAccessor(column);
                 string right = cd.GetParameterName(column);
-                sb.AppendLine(Formatter.GetSetValue(left, right, true, false));
+                sb.AppendLine(cd.GetColumnValueMutator(column, right));
             }
             return sb.ToString();
         }
@@ -669,11 +680,11 @@ namespace NetGore.Db.ClassCreator
                 {
                     // Part of a collection
                     StringBuilder sb = new StringBuilder();
-                    sb.Append(GetPublicName(coll));
-                    sb.Append(Formatter.OpenIndexer);
+                    sb.Append("Get" + GetPublicName(coll));
+                    sb.Append(Formatter.OpenParameterString);
                     sb.Append(Formatter.GetCast(coll.KeyType));
                     sb.Append(item.Key);
-                    sb.Append(Formatter.CloseIndexer);
+                    sb.Append(Formatter.CloseParameterString);
                     return sb.ToString();
                 }
             }
@@ -682,10 +693,39 @@ namespace NetGore.Db.ClassCreator
             /// Gets the code to use for the mutator for a DbColumnInfo.
             /// </summary>
             /// <param name="dbColumn">The DbColumnInfo to get the value mutator for.</param>
+            /// <param name="valueName">Code to generate for the value to set.</param>
             /// <returns>The code to use for the mutator for a DbColumnInfo.</returns>
-            public string GetColumnValueMutator(DbColumnInfo dbColumn)
+            public string GetColumnValueMutator(DbColumnInfo dbColumn, string valueName)
             {
-                return GetColumnValueAccessor(dbColumn);
+                ColumnCollectionItem item;
+                ColumnCollection coll = GetCollectionForColumn(dbColumn, out item);
+
+                StringBuilder sb = new StringBuilder();
+
+                if (coll == null)
+                {
+                    // Not part of a collection
+                    sb.Append(GetPublicName(dbColumn));
+                    sb.Append(" = ");
+                    sb.Append(Formatter.GetCast(dbColumn.Type));
+                    sb.Append(valueName);
+                    sb.Append(Formatter.EndOfLine);
+                }
+                else
+                {
+                    // Part of a collection
+                    sb.Append("Set" + GetPublicName(coll));
+                    sb.Append(Formatter.OpenParameterString);
+                    sb.Append(Formatter.GetCast(coll.KeyType));
+                    sb.Append(item.Key);
+                    sb.Append(Formatter.ParameterSpacer);
+                    sb.Append(Formatter.GetCast(coll.ValueType));
+                    sb.Append(valueName);
+                    sb.Append(Formatter.CloseParameterString);
+                    sb.Append(Formatter.EndOfLine);
+                }
+
+                return sb.ToString();
             }
 
             /// <summary>

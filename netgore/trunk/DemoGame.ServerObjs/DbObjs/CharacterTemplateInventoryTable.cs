@@ -184,11 +184,11 @@ public CharacterTemplateInventoryTable()
 /// <param name="min">The initial value for the corresponding property.</param>
 public CharacterTemplateInventoryTable(System.UInt16 @chance, System.UInt16 @characterId, System.UInt16 @itemId, System.Byte @max, System.Byte @min)
 {
-this.Chance = @chance;
-this.CharacterId = @characterId;
-this.ItemId = @itemId;
-this.Max = @max;
-this.Min = @min;
+Chance = (System.UInt16)@chance;
+CharacterId = (System.UInt16)@characterId;
+ItemId = (System.UInt16)@itemId;
+Max = (System.Byte)@max;
+Min = (System.Byte)@min;
 }
 /// <summary>
 /// CharacterTemplateInventoryTable constructor.
@@ -210,11 +210,11 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.Chance = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("chance"));
-this.CharacterId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
-this.ItemId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("item_id"));
-this.Max = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("max"));
-this.Min = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("min"));
+Chance = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("chance"));
+CharacterId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
+ItemId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("item_id"));
+Max = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("max"));
+Min = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("min"));
 }
 
 /// <summary>
@@ -271,11 +271,11 @@ paramValues["@min"] = (System.Byte)source.Min;
 
 public void CopyValuesFrom(ICharacterTemplateInventoryTable source)
 {
-this.Chance = (System.UInt16)source.Chance;
-this.CharacterId = (System.UInt16)source.CharacterId;
-this.ItemId = (System.UInt16)source.ItemId;
-this.Max = (System.Byte)source.Max;
-this.Min = (System.Byte)source.Min;
+Chance = (System.UInt16)source.Chance;
+CharacterId = (System.UInt16)source.CharacterId;
+ItemId = (System.UInt16)source.ItemId;
+Max = (System.Byte)source.Max;
+Min = (System.Byte)source.Min;
 }
 
 }

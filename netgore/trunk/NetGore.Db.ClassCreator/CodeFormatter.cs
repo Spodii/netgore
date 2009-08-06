@@ -192,6 +192,11 @@ namespace NetGore.Db.ClassCreator
             return GetField(memberName, type, visibility, string.Empty, false, false);
         }
 
+        public string GetField(string memberName, string type, MemberVisibilityLevel visibility)
+        {
+            return GetField(memberName, type, visibility, string.Empty, false, false);
+        }
+
         public virtual string GetFieldName(string inputName, MemberVisibilityLevel visibility, Type type)
         {
             if (ApplyAlias(ref inputName))

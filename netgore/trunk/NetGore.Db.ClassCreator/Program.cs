@@ -25,7 +25,7 @@ namespace NetGore.Db.ClassCreator
             {
                 generator.AddUsing("NetGore.Db");
                 generator.SetDataReaderReadMethod(typeof(float), "GetFloat");
-                generator.AddColumnCollection("Stats", typeof(StatType), typeof(int), "character", columnItems);
+                generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), "character", columnItems);
 
                 generator.Generate("DemoGame.Server.DbObjs", outputDir);
             }

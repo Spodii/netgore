@@ -130,9 +130,9 @@ public CharacterEquippedTable()
 /// <param name="slot">The initial value for the corresponding property.</param>
 public CharacterEquippedTable(System.UInt32 @characterId, System.UInt32 @itemId, System.Byte @slot)
 {
-this.CharacterId = @characterId;
-this.ItemId = @itemId;
-this.Slot = @slot;
+CharacterId = (System.UInt32)@characterId;
+ItemId = (System.UInt32)@itemId;
+Slot = (System.Byte)@slot;
 }
 /// <summary>
 /// CharacterEquippedTable constructor.
@@ -154,9 +154,9 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.CharacterId = (System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("character_id"));
-this.ItemId = (System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("item_id"));
-this.Slot = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("slot"));
+CharacterId = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("character_id"));
+ItemId = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("item_id"));
+Slot = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("slot"));
 }
 
 /// <summary>
@@ -209,9 +209,9 @@ paramValues["@slot"] = (System.Byte)source.Slot;
 
 public void CopyValuesFrom(ICharacterEquippedTable source)
 {
-this.CharacterId = (System.UInt32)source.CharacterId;
-this.ItemId = (System.UInt32)source.ItemId;
-this.Slot = (System.Byte)source.Slot;
+CharacterId = (System.UInt32)source.CharacterId;
+ItemId = (System.UInt32)source.ItemId;
+Slot = (System.Byte)source.Slot;
 }
 
 }

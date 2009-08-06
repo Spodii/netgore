@@ -131,9 +131,9 @@ public AllianceAttackableTable()
 /// <param name="placeholder">The initial value for the corresponding property.</param>
 public AllianceAttackableTable(System.Byte @allianceId, System.Byte @attackableId, System.Byte @placeholder)
 {
-this.AllianceId = @allianceId;
-this.AttackableId = @attackableId;
-this.Placeholder = @placeholder;
+AllianceId = (System.Byte)@allianceId;
+AttackableId = (System.Byte)@attackableId;
+Placeholder = (System.Byte)@placeholder;
 }
 /// <summary>
 /// AllianceAttackableTable constructor.
@@ -155,9 +155,9 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.AllianceId = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("alliance_id"));
-this.AttackableId = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("attackable_id"));
-this.Placeholder = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("placeholder"));
+AllianceId = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("alliance_id"));
+AttackableId = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("attackable_id"));
+Placeholder = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("placeholder"));
 }
 
 /// <summary>
@@ -210,9 +210,9 @@ paramValues["@placeholder"] = (System.Byte)source.Placeholder;
 
 public void CopyValuesFrom(IAllianceAttackableTable source)
 {
-this.AllianceId = (System.Byte)source.AllianceId;
-this.AttackableId = (System.Byte)source.AttackableId;
-this.Placeholder = (System.Byte)source.Placeholder;
+AllianceId = (System.Byte)source.AllianceId;
+AttackableId = (System.Byte)source.AttackableId;
+Placeholder = (System.Byte)source.Placeholder;
 }
 
 }

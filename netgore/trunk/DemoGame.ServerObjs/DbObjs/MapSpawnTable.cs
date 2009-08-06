@@ -265,14 +265,14 @@ public MapSpawnTable()
 /// <param name="y">The initial value for the corresponding property.</param>
 public MapSpawnTable(System.Byte @amount, System.UInt16 @characterId, System.UInt16 @height, System.Int32 @id, System.UInt16 @mapId, System.UInt16 @width, System.UInt16 @x, System.UInt16 @y)
 {
-this.Amount = @amount;
-this.CharacterId = @characterId;
-this.Height = @height;
-this.Id = @id;
-this.MapId = @mapId;
-this.Width = @width;
-this.X = @x;
-this.Y = @y;
+Amount = (System.Byte)@amount;
+CharacterId = (System.UInt16)@characterId;
+Height = (System.UInt16)@height;
+Id = (System.Int32)@id;
+MapId = (System.UInt16)@mapId;
+Width = (System.UInt16)@width;
+X = (System.UInt16)@x;
+Y = (System.UInt16)@y;
 }
 /// <summary>
 /// MapSpawnTable constructor.
@@ -294,14 +294,14 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.Amount = (System.Byte)dataReader.GetByte(dataReader.GetOrdinal("amount"));
-this.CharacterId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
-this.Height = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("height"));
-this.Id = (System.Int32)dataReader.GetInt32(dataReader.GetOrdinal("id"));
-this.MapId = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("map_id"));
-this.Width = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("width"));
-this.X = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("x"));
-this.Y = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("y"));
+Amount = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("amount"));
+CharacterId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
+Height = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("height"));
+Id = (System.Int32)(System.Int32)dataReader.GetInt32(dataReader.GetOrdinal("id"));
+MapId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("map_id"));
+Width = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("width"));
+X = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("x"));
+Y = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("y"));
 }
 
 /// <summary>
@@ -364,14 +364,14 @@ paramValues["@y"] = (System.UInt16)source.Y;
 
 public void CopyValuesFrom(IMapSpawnTable source)
 {
-this.Amount = (System.Byte)source.Amount;
-this.CharacterId = (System.UInt16)source.CharacterId;
-this.Height = (System.UInt16)source.Height;
-this.Id = (System.Int32)source.Id;
-this.MapId = (System.UInt16)source.MapId;
-this.Width = (System.UInt16)source.Width;
-this.X = (System.UInt16)source.X;
-this.Y = (System.UInt16)source.Y;
+Amount = (System.Byte)source.Amount;
+CharacterId = (System.UInt16)source.CharacterId;
+Height = (System.UInt16)source.Height;
+Id = (System.Int32)source.Id;
+MapId = (System.UInt16)source.MapId;
+Width = (System.UInt16)source.Width;
+X = (System.UInt16)source.X;
+Y = (System.UInt16)source.Y;
 }
 
 }

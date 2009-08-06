@@ -103,8 +103,8 @@ public MapTable()
 /// <param name="name">The initial value for the corresponding property.</param>
 public MapTable(System.UInt16 @id, System.String @name)
 {
-this.Id = @id;
-this.Name = @name;
+Id = (System.UInt16)@id;
+Name = (System.String)@name;
 }
 /// <summary>
 /// MapTable constructor.
@@ -126,8 +126,8 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-this.Id = (System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("id"));
-this.Name = (System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
+Id = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("id"));
+Name = (System.String)(System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
 }
 
 /// <summary>
@@ -178,8 +178,8 @@ paramValues["@name"] = (System.String)source.Name;
 
 public void CopyValuesFrom(IMapTable source)
 {
-this.Id = (System.UInt16)source.Id;
-this.Name = (System.String)source.Name;
+Id = (System.UInt16)source.Id;
+Name = (System.String)source.Name;
 }
 
 }
