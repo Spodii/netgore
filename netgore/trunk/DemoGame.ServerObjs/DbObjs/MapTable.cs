@@ -114,6 +114,10 @@ public MapTable(System.Data.IDataReader dataReader)
 {
 ReadValues(dataReader);
 }
+public MapTable(IMapTable source)
+{
+CopyValuesFrom(source);
+}
 /// <summary>
 /// Reads the values from an IDataReader and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
@@ -170,6 +174,12 @@ public static void CopyValues(IMapTable source, NetGore.Db.DbParameterValues par
 {
 paramValues["@id"] = (System.UInt16)source.Id;
 paramValues["@name"] = (System.String)source.Name;
+}
+
+public void CopyValuesFrom(IMapTable source)
+{
+this.Id = (System.UInt16)source.Id;
+this.Name = (System.String)source.Name;
 }
 
 }

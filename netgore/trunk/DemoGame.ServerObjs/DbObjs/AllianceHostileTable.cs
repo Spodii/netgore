@@ -143,6 +143,10 @@ public AllianceHostileTable(System.Data.IDataReader dataReader)
 {
 ReadValues(dataReader);
 }
+public AllianceHostileTable(IAllianceHostileTable source)
+{
+CopyValuesFrom(source);
+}
 /// <summary>
 /// Reads the values from an IDataReader and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
@@ -202,6 +206,13 @@ public static void CopyValues(IAllianceHostileTable source, NetGore.Db.DbParamet
 paramValues["@alliance_id"] = (System.Byte)source.AllianceId;
 paramValues["@hostile_id"] = (System.Byte)source.HostileId;
 paramValues["@placeholder"] = (System.Byte)source.Placeholder;
+}
+
+public void CopyValuesFrom(IAllianceHostileTable source)
+{
+this.AllianceId = (System.Byte)source.AllianceId;
+this.HostileId = (System.Byte)source.HostileId;
+this.Placeholder = (System.Byte)source.Placeholder;
 }
 
 }

@@ -1066,6 +1066,10 @@ public CharacterTable(System.Data.IDataReader dataReader)
 {
 ReadValues(dataReader);
 }
+public CharacterTable(ICharacterTable source)
+{
+CopyValuesFrom(source);
+}
 /// <summary>
 /// Reads the values from an IDataReader and assigns the read values to this
 /// object's properties. The database column's name is used to as the key, so the value
@@ -1224,6 +1228,46 @@ paramValues["@template_id"] = (System.UInt16)source.TemplateId;
 paramValues["@ws"] = (System.Byte)source.Ws;
 paramValues["@x"] = (System.Single)source.X;
 paramValues["@y"] = (System.Single)source.Y;
+}
+
+public void CopyValuesFrom(ICharacterTable source)
+{
+this.Acc = (System.Byte)source.Acc;
+this.Agi = (System.Byte)source.Agi;
+this.Armor = (System.Byte)source.Armor;
+this.Body = (System.UInt16)source.Body;
+this.Bra = (System.Byte)source.Bra;
+this.Cash = (System.UInt32)source.Cash;
+this.Defence = (System.Byte)source.Defence;
+this.Dex = (System.Byte)source.Dex;
+this.Evade = (System.Byte)source.Evade;
+this.Exp = (System.UInt32)source.Exp;
+this.Hp = (System.UInt16)source.Hp;
+this.Id = (System.UInt32)source.Id;
+this.Imm = (System.Byte)source.Imm;
+this.Int = (System.Byte)source.Int;
+this.Level = (System.Byte)source.Level;
+this.MapId = (System.UInt16)source.MapId;
+this.Maxhit = (System.Byte)source.Maxhit;
+this.Maxhp = (System.UInt16)source.Maxhp;
+this.Maxmp = (System.UInt16)source.Maxmp;
+this.Minhit = (System.Byte)source.Minhit;
+this.Mp = (System.UInt16)source.Mp;
+this.Name = (System.String)source.Name;
+this.Password = (System.String)source.Password;
+this.Perc = (System.Byte)source.Perc;
+this.Recov = (System.Byte)source.Recov;
+this.Regen = (System.Byte)source.Regen;
+this.RespawnMap = (System.UInt16)source.RespawnMap;
+this.RespawnX = (System.Single)source.RespawnX;
+this.RespawnY = (System.Single)source.RespawnY;
+this.Statpoints = (System.UInt32)source.Statpoints;
+this.Str = (System.Byte)source.Str;
+this.Tact = (System.Byte)source.Tact;
+this.TemplateId = (System.UInt16)source.TemplateId;
+this.Ws = (System.Byte)source.Ws;
+this.X = (System.Single)source.X;
+this.Y = (System.Single)source.Y;
 }
 
 }
