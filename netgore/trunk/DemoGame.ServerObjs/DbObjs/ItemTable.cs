@@ -142,6 +142,22 @@ get
 return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
 }
 }
+ static  readonly System.String[] _statColumns = new string[] {"agi", "armor", "bra", "defence", "dex", "evade", "imm", "int", "maxhit", "maxhp", "maxmp", "minhit", "perc" };
+public System.Collections.Generic.IEnumerable<System.String> StatColumns
+{
+get
+{
+return (System.Collections.Generic.IEnumerable<System.String>)_statColumns;
+}
+}
+ static  readonly System.String[] _reqStatColumns = new string[] {"reqacc", "reqagi", "reqarmor", "reqbra", "reqdex", "reqevade", "reqimm", "reqint" };
+public System.Collections.Generic.IEnumerable<System.String> ReqStatColumns
+{
+get
+{
+return (System.Collections.Generic.IEnumerable<System.String>)_reqStatColumns;
+}
+}
 /// <summary>
 /// The name of the database table that this class represents.
 /// </summary>

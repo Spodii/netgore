@@ -217,6 +217,28 @@ namespace NetGore.Db.ClassCreator
                                                         DbColumnsNonKeysField, false));
                 }
 
+                {
+                    // Collection fields
+                    foreach (var coll in cd.ColumnCollections)
+                    {
+                        string privateFieldName = cd.GetPrivateName(coll) + "Columns";
+                        string publicPropertyName = cd.GetPublicName(coll) + "Columns";
+
+                        var currColl = coll;
+                        var columnsInCollection = cd.Columns.Where(x => cd.GetCollectionForColumn(x) == currColl);
+                        if (columnsInCollection.Count() == 0)
+                            continue;
+
+                        string columnNamesCode = Formatter.GetStringArrayCode(columnsInCollection.Select(x => x.Name));
+                        // TODO: Add XML comment (field)
+                        sb.AppendLine(Formatter.GetField(privateFieldName, typeof(string[]), MemberVisibilityLevel.Private, columnNamesCode, true, true));
+
+                        // TODO: Add other XML comment (property)
+                        sb.AppendLine(Formatter.GetProperty(publicPropertyName, typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
+                                                            privateFieldName, false));
+                    }
+                }
+
                 sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.TableName));
                 sb.AppendLine(Formatter.GetConstField("TableName", typeof(string), MemberVisibilityLevel.Public,
                                                       "\"" + cd.TableName + "\""));

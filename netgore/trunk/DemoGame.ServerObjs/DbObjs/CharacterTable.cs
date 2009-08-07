@@ -180,6 +180,14 @@ get
 return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
 }
 }
+ static  readonly System.String[] _statColumns = new string[] {"acc", "agi", "armor", "bra", "defence", "dex", "evade", "imm", "int", "maxhit", "maxhp", "maxmp", "minhit", "perc", "recov", "regen", "str", "tact", "ws" };
+public System.Collections.Generic.IEnumerable<System.String> StatColumns
+{
+get
+{
+return (System.Collections.Generic.IEnumerable<System.String>)_statColumns;
+}
+}
 /// <summary>
 /// The name of the database table that this class represents.
 /// </summary>
