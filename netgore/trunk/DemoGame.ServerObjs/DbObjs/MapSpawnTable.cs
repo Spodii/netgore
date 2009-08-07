@@ -485,6 +485,58 @@ throw new ArgumentException("Field not found.","fieldName");
 }
 }
 
+/// <summary>
+/// Reads the values from an IDataReader and assigns the read values to this
+/// object's properties. Unlike ReadValues(), this method not only doesn't require
+/// all values to be in the IDataReader, but also does not require the values in
+/// the IDataReader to be a defined field for the table this class represents.
+/// Because of this, you need to be careful when using this method because values
+/// can easily be skipped without any indication.
+/// </summary>
+/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+public void TryReadValues(System.Data.IDataReader dataReader)
+{
+for (int i = 0; i < dataReader.FieldCount; i++)
+{
+switch (dataReader.GetName(i))
+{
+case "amount":
+Amount = (System.Byte)dataReader.GetByte(i);
+break;
+
+case "character_id":
+CharacterId = (DemoGame.Server.CharacterID)dataReader.GetUInt16(i);
+break;
+
+case "height":
+Height = (System.UInt16)dataReader.GetUInt16(i);
+break;
+
+case "id":
+Id = (DemoGame.Server.MapSpawnValuesID)dataReader.GetInt32(i);
+break;
+
+case "map_id":
+MapId = (NetGore.MapIndex)dataReader.GetUInt16(i);
+break;
+
+case "width":
+Width = (System.UInt16)dataReader.GetUInt16(i);
+break;
+
+case "x":
+X = (System.UInt16)dataReader.GetUInt16(i);
+break;
+
+case "y":
+Y = (System.UInt16)dataReader.GetUInt16(i);
+break;
+
+}
+
+}
+}
+
 }
 
 }

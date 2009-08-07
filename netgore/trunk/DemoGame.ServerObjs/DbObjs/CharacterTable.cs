@@ -1105,6 +1105,170 @@ throw new ArgumentException("Field not found.","fieldName");
 }
 
 /// <summary>
+/// Reads the values from an IDataReader and assigns the read values to this
+/// object's properties. Unlike ReadValues(), this method not only doesn't require
+/// all values to be in the IDataReader, but also does not require the values in
+/// the IDataReader to be a defined field for the table this class represents.
+/// Because of this, you need to be careful when using this method because values
+/// can easily be skipped without any indication.
+/// </summary>
+/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+public void TryReadValues(System.Data.IDataReader dataReader)
+{
+for (int i = 0; i < dataReader.FieldCount; i++)
+{
+switch (dataReader.GetName(i))
+{
+case "acc":
+SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "agi":
+SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "armor":
+SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "body":
+Body = (System.UInt16)dataReader.GetUInt16(i);
+break;
+
+case "bra":
+SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "cash":
+Cash = (System.UInt32)dataReader.GetUInt32(i);
+break;
+
+case "defence":
+SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "dex":
+SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "evade":
+SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "exp":
+Exp = (System.UInt32)dataReader.GetUInt32(i);
+break;
+
+case "hp":
+Hp = (System.UInt16)dataReader.GetUInt16(i);
+break;
+
+case "id":
+Id = (DemoGame.Server.CharacterID)dataReader.GetInt32(i);
+break;
+
+case "imm":
+SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "int":
+SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "level":
+Level = (System.Byte)dataReader.GetByte(i);
+break;
+
+case "map_id":
+MapId = (NetGore.MapIndex)dataReader.GetUInt16(i);
+break;
+
+case "maxhit":
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "maxhp":
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)dataReader.GetUInt16(i));
+break;
+
+case "maxmp":
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)dataReader.GetUInt16(i));
+break;
+
+case "minhit":
+SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "mp":
+Mp = (System.UInt16)dataReader.GetUInt16(i);
+break;
+
+case "name":
+Name = (System.String)dataReader.GetString(i);
+break;
+
+case "password":
+Password = (System.String)dataReader.GetString(i);
+break;
+
+case "perc":
+SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "recov":
+SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "regen":
+SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "respawn_map":
+RespawnMap = (NetGore.MapIndex)dataReader.GetUInt16(i);
+break;
+
+case "respawn_x":
+RespawnX = (System.Single)dataReader.GetFloat(i);
+break;
+
+case "respawn_y":
+RespawnY = (System.Single)dataReader.GetFloat(i);
+break;
+
+case "statpoints":
+Statpoints = (System.UInt32)dataReader.GetUInt32(i);
+break;
+
+case "str":
+SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "tact":
+SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "template_id":
+TemplateId = (DemoGame.Server.CharacterTemplateID)dataReader.GetUInt16(i);
+break;
+
+case "ws":
+SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)dataReader.GetByte(i));
+break;
+
+case "x":
+X = (System.Single)dataReader.GetFloat(i);
+break;
+
+case "y":
+Y = (System.Single)dataReader.GetFloat(i);
+break;
+
+}
+
+}
+}
+
+/// <summary>
 /// A Dictionary-like lookup table for the Enum values of the type collection `Stat` for the
 /// table that this class represents. Majority of the code for this class was automatically generated and
 /// only other automatically generated code should be using this class.

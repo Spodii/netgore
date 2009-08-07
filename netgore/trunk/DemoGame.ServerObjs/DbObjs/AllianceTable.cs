@@ -251,6 +251,34 @@ throw new ArgumentException("Field not found.","fieldName");
 }
 }
 
+/// <summary>
+/// Reads the values from an IDataReader and assigns the read values to this
+/// object's properties. Unlike ReadValues(), this method not only doesn't require
+/// all values to be in the IDataReader, but also does not require the values in
+/// the IDataReader to be a defined field for the table this class represents.
+/// Because of this, you need to be careful when using this method because values
+/// can easily be skipped without any indication.
+/// </summary>
+/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+public void TryReadValues(System.Data.IDataReader dataReader)
+{
+for (int i = 0; i < dataReader.FieldCount; i++)
+{
+switch (dataReader.GetName(i))
+{
+case "id":
+Id = (DemoGame.Server.AllianceID)dataReader.GetByte(i);
+break;
+
+case "name":
+Name = (System.String)dataReader.GetString(i);
+break;
+
+}
+
+}
+}
+
 }
 
 }
