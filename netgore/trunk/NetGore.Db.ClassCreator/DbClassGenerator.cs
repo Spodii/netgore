@@ -223,6 +223,7 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateMethodCopyValuesFrom(cd));
                 sb.AppendLine(CreateMethodGetValue(cd));
                 sb.AppendLine(CreateMethodSetValue(cd));
+                sb.AppendLine(CreateMethodGetColumnData(cd));
 
                 // ConstEnumDictionary class
                 foreach (ColumnCollection coll in cd.ColumnCollections)
@@ -454,6 +455,96 @@ namespace NetGore.Db.ClassCreator
                 bodySB.AppendLine(line);
             }
             sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
+
+            return sb.ToString();
+        }
+
+        protected string CreateMethodGetColumnDataReturnString(DbColumnInfo column)
+        {
+            StringBuilder sb = new StringBuilder(256);
+
+            sb.Append(Formatter.ReturnString);
+            sb.Append(" ");
+            sb.Append("new ");
+            sb.Append(ColumnMetadataClassName);
+            sb.Append(Formatter.OpenParameterString);
+            sb.Append("\"" + column.Name + "\"" + Formatter.ParameterSpacer);
+            sb.Append("\"" + column.Comment + "\"" + Formatter.ParameterSpacer);
+            sb.Append("\"" + column.DatabaseType + "\"" + Formatter.ParameterSpacer);
+
+            if (column.DefaultValue == null || (column.DefaultValue.ToString() == "" && !(column.DefaultValue is string)))
+                sb.Append("null" + Formatter.ParameterSpacer);
+            else if (column.DefaultValue is string)
+                sb.Append("\"" + column.DefaultValue + "\"" + Formatter.ParameterSpacer);
+            else
+                sb.Append(column.DefaultValue + Formatter.ParameterSpacer);
+            
+            sb.Append("typeof(" + column.Type + ")" + Formatter.ParameterSpacer);
+            sb.Append(column.Nullable.ToString().ToLower() + Formatter.ParameterSpacer);
+            sb.Append((column.KeyType == DbColumnKeyType.Primary).ToString().ToLower() + Formatter.ParameterSpacer);
+            sb.Append((column.KeyType == DbColumnKeyType.Foreign).ToString().ToLower());
+            sb.Append(Formatter.CloseParameterString);
+            sb.Append(Formatter.EndOfLine);
+
+            return sb.ToString();
+        }
+
+        public class ColumnMetadata
+        {
+            readonly string _name;
+            readonly string _comment;
+            readonly string _databaseType;
+            readonly object _defaultValue;
+            readonly Type _type;
+            readonly bool _nullable;
+            readonly bool _isPrimaryKey;
+            readonly bool _isForeignKey;
+
+            public string Name { get { return _name; } }
+
+            public string Comment { get { return _comment; } }
+
+            public string DatabaseType { get { return _databaseType; } }
+
+            public object DefaultValue { get { return _defaultValue; } }
+
+            public Type Type { get { return _type; } }
+
+            public bool Nullable { get { return _nullable; } }
+
+            public bool IsPrimaryKey { get { return _isPrimaryKey; } }
+
+            public bool IsForeignKey { get { return _isForeignKey; } }
+
+            public ColumnMetadata(string name, string comment, string databaseType, object defaultValue, Type type, bool nullable, bool isPrimaryKey, bool isForeignKey)
+            {
+                _name = name;
+                _comment = comment;
+                _databaseType = databaseType;
+                _defaultValue = defaultValue;
+                _type = type;
+                _nullable = nullable;
+                _isPrimaryKey = isPrimaryKey;
+                _isForeignKey = isForeignKey;
+            }
+        }
+
+        protected virtual string CreateMethodGetColumnData(DbClassData cd)
+        {
+            const string methodName = "GetColumnData";
+            const string parameterName = "fieldName";
+
+            StringBuilder sb = new StringBuilder(4096);
+
+            // Header
+            // TODO: Header XML comments
+            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
+            sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, ColumnMetadataClassName, false, true));
+
+            // Body
+            var switches = cd.Columns.Select(x => new KeyValuePair<string, string>("\"" + x.Name + "\"", CreateMethodGetColumnDataReturnString(x)));
+            var defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" + Formatter.EndOfLine;
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
 
             return sb.ToString();
         }

@@ -247,6 +247,21 @@ throw new ArgumentException("Field not found.","columnName");
 }
 }
 
+public static ColumnMetadata GetColumnData(System.String fieldName)
+{
+switch (fieldName)
+{
+case "chance":
+return new ColumnMetadata("chance", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+case "character_id":
+return new ColumnMetadata("character_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
+case "item_id":
+return new ColumnMetadata("item_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
+default:
+throw new ArgumentException("Field not found.","fieldName");
+}
+}
+
 }
 
 }

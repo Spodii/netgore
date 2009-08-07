@@ -765,6 +765,75 @@ throw new ArgumentException("Field not found.","columnName");
 }
 }
 
+public static ColumnMetadata GetColumnData(System.String fieldName)
+{
+switch (fieldName)
+{
+case "acc":
+return new ColumnMetadata("acc", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "agi":
+return new ColumnMetadata("agi", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "ai":
+return new ColumnMetadata("ai", "", "varchar(255)", null, typeof(System.String), false, false, false);
+case "alliance_id":
+return new ColumnMetadata("alliance_id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, true);
+case "armor":
+return new ColumnMetadata("armor", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "body":
+return new ColumnMetadata("body", "", "smallint(5) unsigned", "1", typeof(System.UInt16), false, false, false);
+case "bra":
+return new ColumnMetadata("bra", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "defence":
+return new ColumnMetadata("defence", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+case "dex":
+return new ColumnMetadata("dex", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "evade":
+return new ColumnMetadata("evade", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "exp":
+return new ColumnMetadata("exp", "", "int(10) unsigned", null, typeof(System.UInt32), false, false, false);
+case "give_cash":
+return new ColumnMetadata("give_cash", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "give_exp":
+return new ColumnMetadata("give_exp", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "id":
+return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
+case "imm":
+return new ColumnMetadata("imm", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "int":
+return new ColumnMetadata("int", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "level":
+return new ColumnMetadata("level", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "maxhit":
+return new ColumnMetadata("maxhit", "", "tinyint(3) unsigned", "2", typeof(System.Byte), false, false, false);
+case "maxhp":
+return new ColumnMetadata("maxhp", "", "smallint(5) unsigned", "50", typeof(System.UInt16), false, false, false);
+case "maxmp":
+return new ColumnMetadata("maxmp", "", "smallint(5) unsigned", "50", typeof(System.UInt16), false, false, false);
+case "minhit":
+return new ColumnMetadata("minhit", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "name":
+return new ColumnMetadata("name", "", "varchar(50)", "New NPC", typeof(System.String), false, false, false);
+case "perc":
+return new ColumnMetadata("perc", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "recov":
+return new ColumnMetadata("recov", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "regen":
+return new ColumnMetadata("regen", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "respawn":
+return new ColumnMetadata("respawn", "", "smallint(5) unsigned", "5", typeof(System.UInt16), false, false, false);
+case "statpoints":
+return new ColumnMetadata("statpoints", "", "int(10) unsigned", null, typeof(System.UInt32), false, false, false);
+case "str":
+return new ColumnMetadata("str", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "tact":
+return new ColumnMetadata("tact", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "ws":
+return new ColumnMetadata("ws", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+default:
+throw new ArgumentException("Field not found.","fieldName");
+}
+}
+
 /// <summary>
 /// A Dictionary-like lookup table for the Enum values of the type collection `Stat` for the
 /// table that this class represents. Majority of the code for this class was automatically generated and

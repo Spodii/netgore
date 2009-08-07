@@ -210,6 +210,19 @@ throw new ArgumentException("Field not found.","columnName");
 }
 }
 
+public static ColumnMetadata GetColumnData(System.String fieldName)
+{
+switch (fieldName)
+{
+case "id":
+return new ColumnMetadata("id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
+case "name":
+return new ColumnMetadata("name", "", "varchar(255)", null, typeof(System.String), false, false, false);
+default:
+throw new ArgumentException("Field not found.","fieldName");
+}
+}
+
 }
 
 }

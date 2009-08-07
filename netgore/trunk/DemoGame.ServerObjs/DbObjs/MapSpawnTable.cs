@@ -432,6 +432,31 @@ throw new ArgumentException("Field not found.","columnName");
 }
 }
 
+public static ColumnMetadata GetColumnData(System.String fieldName)
+{
+switch (fieldName)
+{
+case "amount":
+return new ColumnMetadata("amount", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+case "character_id":
+return new ColumnMetadata("character_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
+case "height":
+return new ColumnMetadata("height", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, false);
+case "id":
+return new ColumnMetadata("id", "", "int(11)", null, typeof(System.Int32), false, true, false);
+case "map_id":
+return new ColumnMetadata("map_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+case "width":
+return new ColumnMetadata("width", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, false);
+case "x":
+return new ColumnMetadata("x", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, false);
+case "y":
+return new ColumnMetadata("y", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, false);
+default:
+throw new ArgumentException("Field not found.","fieldName");
+}
+}
+
 }
 
 }
