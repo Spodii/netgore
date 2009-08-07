@@ -18,14 +18,14 @@ get;
 /// <summary>
 /// Gets the value for the database column `character_id`.
 /// </summary>
-System.UInt16 CharacterId
+DemoGame.Server.CharacterID CharacterId
 {
 get;
 }
 /// <summary>
 /// Gets the value for the database column `item_id`.
 /// </summary>
-System.UInt16 ItemId
+DemoGame.Server.ItemID ItemId
 {
 get;
 }
@@ -47,7 +47,7 @@ public System.Collections.Generic.IEnumerable<System.String> DbColumns
 {
 get
 {
-return _dbColumns;
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 }
 }
 /// <summary>
@@ -78,41 +78,41 @@ public System.UInt16 Chance
 {
 get
 {
-return _chance;
+return (System.UInt16)_chance;
 }
 set
 {
-this._chance = value;
+this._chance = (System.UInt16)value;
 }
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `character_id`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
-public System.UInt16 CharacterId
+public DemoGame.Server.CharacterID CharacterId
 {
 get
 {
-return _characterId;
+return (DemoGame.Server.CharacterID)_characterId;
 }
 set
 {
-this._characterId = value;
+this._characterId = (System.UInt16)value;
 }
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `item_id`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
-public System.UInt16 ItemId
+public DemoGame.Server.ItemID ItemId
 {
 get
 {
-return _itemId;
+return (DemoGame.Server.ItemID)_itemId;
 }
 set
 {
-this._itemId = value;
+this._itemId = (System.UInt16)value;
 }
 }
 
@@ -128,11 +128,11 @@ public CharacterTemplateEquippedTable()
 /// <param name="chance">The initial value for the corresponding property.</param>
 /// <param name="characterId">The initial value for the corresponding property.</param>
 /// <param name="itemId">The initial value for the corresponding property.</param>
-public CharacterTemplateEquippedTable(System.UInt16 @chance, System.UInt16 @characterId, System.UInt16 @itemId)
+public CharacterTemplateEquippedTable(System.UInt16 @chance, DemoGame.Server.CharacterID @characterId, DemoGame.Server.ItemID @itemId)
 {
 Chance = (System.UInt16)@chance;
-CharacterId = (System.UInt16)@characterId;
-ItemId = (System.UInt16)@itemId;
+CharacterId = (DemoGame.Server.CharacterID)@characterId;
+ItemId = (DemoGame.Server.ItemID)@itemId;
 }
 /// <summary>
 /// CharacterTemplateEquippedTable constructor.
@@ -155,8 +155,8 @@ CopyValuesFrom(source);
 public void ReadValues(System.Data.IDataReader dataReader)
 {
 Chance = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("chance"));
-CharacterId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
-ItemId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("item_id"));
+CharacterId = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
+ItemId = (DemoGame.Server.ItemID)(DemoGame.Server.ItemID)dataReader.GetUInt16(dataReader.GetOrdinal("item_id"));
 }
 
 /// <summary>
@@ -179,8 +179,8 @@ CopyValues(this, dic);
 public static void CopyValues(ICharacterTemplateEquippedTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
 dic["@chance"] = (System.UInt16)source.Chance;
-dic["@character_id"] = (System.UInt16)source.CharacterId;
-dic["@item_id"] = (System.UInt16)source.ItemId;
+dic["@character_id"] = (DemoGame.Server.CharacterID)source.CharacterId;
+dic["@item_id"] = (DemoGame.Server.ItemID)source.ItemId;
 }
 
 /// <summary>
@@ -203,15 +203,15 @@ CopyValues(this, paramValues);
 public static void CopyValues(ICharacterTemplateEquippedTable source, NetGore.Db.DbParameterValues paramValues)
 {
 paramValues["@chance"] = (System.UInt16)source.Chance;
-paramValues["@character_id"] = (System.UInt16)source.CharacterId;
-paramValues["@item_id"] = (System.UInt16)source.ItemId;
+paramValues["@character_id"] = (DemoGame.Server.CharacterID)source.CharacterId;
+paramValues["@item_id"] = (DemoGame.Server.ItemID)source.ItemId;
 }
 
 public void CopyValuesFrom(ICharacterTemplateEquippedTable source)
 {
 Chance = (System.UInt16)source.Chance;
-CharacterId = (System.UInt16)source.CharacterId;
-ItemId = (System.UInt16)source.ItemId;
+CharacterId = (DemoGame.Server.CharacterID)source.CharacterId;
+ItemId = (DemoGame.Server.ItemID)source.ItemId;
 }
 
 }

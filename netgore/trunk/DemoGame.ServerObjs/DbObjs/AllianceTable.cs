@@ -11,7 +11,7 @@ public interface IAllianceTable
 /// <summary>
 /// Gets the value for the database column `id`.
 /// </summary>
-System.Byte Id
+DemoGame.Server.AllianceID Id
 {
 get;
 }
@@ -40,7 +40,7 @@ public System.Collections.Generic.IEnumerable<System.String> DbColumns
 {
 get
 {
-return _dbColumns;
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 }
 }
 /// <summary>
@@ -63,15 +63,15 @@ System.String _name;
 /// Gets or sets the value for the field that maps onto the database column `id`.
 /// The underlying database type is `tinyint(3) unsigned`.
 /// </summary>
-public System.Byte Id
+public DemoGame.Server.AllianceID Id
 {
 get
 {
-return _id;
+return (DemoGame.Server.AllianceID)_id;
 }
 set
 {
-this._id = value;
+this._id = (System.Byte)value;
 }
 }
 /// <summary>
@@ -82,11 +82,11 @@ public System.String Name
 {
 get
 {
-return _name;
+return (System.String)_name;
 }
 set
 {
-this._name = value;
+this._name = (System.String)value;
 }
 }
 
@@ -101,9 +101,9 @@ public AllianceTable()
 /// </summary>
 /// <param name="id">The initial value for the corresponding property.</param>
 /// <param name="name">The initial value for the corresponding property.</param>
-public AllianceTable(System.Byte @id, System.String @name)
+public AllianceTable(DemoGame.Server.AllianceID @id, System.String @name)
 {
-Id = (System.Byte)@id;
+Id = (DemoGame.Server.AllianceID)@id;
 Name = (System.String)@name;
 }
 /// <summary>
@@ -126,7 +126,7 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-Id = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("id"));
+Id = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(dataReader.GetOrdinal("id"));
 Name = (System.String)(System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
 }
 
@@ -149,7 +149,7 @@ CopyValues(this, dic);
 /// <param name="dic">The Dictionary to copy the values into.</param>
 public static void CopyValues(IAllianceTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@id"] = (System.Byte)source.Id;
+dic["@id"] = (DemoGame.Server.AllianceID)source.Id;
 dic["@name"] = (System.String)source.Name;
 }
 
@@ -172,13 +172,13 @@ CopyValues(this, paramValues);
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(IAllianceTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@id"] = (System.Byte)source.Id;
+paramValues["@id"] = (DemoGame.Server.AllianceID)source.Id;
 paramValues["@name"] = (System.String)source.Name;
 }
 
 public void CopyValuesFrom(IAllianceTable source)
 {
-Id = (System.Byte)source.Id;
+Id = (DemoGame.Server.AllianceID)source.Id;
 Name = (System.String)source.Name;
 }
 

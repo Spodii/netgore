@@ -45,6 +45,34 @@ namespace NetGore.Db.ClassCreator
                 generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), baseStatTables, baseStatColumns);
                 generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), reqStatTables, reqStatColumns);
 
+                // Custom external types
+                const string allianceID = "DemoGame.Server.AllianceID";
+                const string characterID = "DemoGame.Server.CharacterID";
+                const string characterTemplateID = "DemoGame.Server.CharacterTemplateID";
+                const string mapID = "NetGore.MapIndex";
+                const string itemID = "DemoGame.Server.ItemID";
+                const string itemTemplateID = "DemoGame.Server.ItemTemplateID";
+                const string mapSpawnID = "DemoGame.Server.MapSpawnValuesID";
+
+                generator.AddCustomType(allianceID, "alliance", "id");
+
+                generator.AddCustomType(characterID, "character", "id");
+                generator.AddCustomType(characterTemplateID, "character", "template_id");
+
+                generator.AddCustomType(itemID, "item", "id");
+
+                generator.AddCustomType(itemTemplateID, "item_template", "id");
+
+                generator.AddCustomType(mapID, "map", "id");
+
+                generator.AddCustomType(mapSpawnID, "map_spawn", "id");
+
+                // Mass-added custom types
+                generator.AddCustomType(allianceID, "*", "alliance_id", "attackable_id", "hostile_id");
+                generator.AddCustomType(characterID, "*", "character_id");
+                generator.AddCustomType(mapID, "*", "map_id", "respawn_map");
+                generator.AddCustomType(itemID, "*", "item_id");
+
                 // Generate
                 generator.Generate("DemoGame.Server.DbObjs", outputDir);
             }

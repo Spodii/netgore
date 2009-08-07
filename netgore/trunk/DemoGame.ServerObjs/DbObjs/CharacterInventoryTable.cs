@@ -11,14 +11,14 @@ public interface ICharacterInventoryTable
 /// <summary>
 /// Gets the value for the database column `character_id`.
 /// </summary>
-System.UInt32 CharacterId
+DemoGame.Server.CharacterID CharacterId
 {
 get;
 }
 /// <summary>
 /// Gets the value for the database column `item_id`.
 /// </summary>
-System.UInt32 ItemId
+DemoGame.Server.ItemID ItemId
 {
 get;
 }
@@ -40,7 +40,7 @@ public System.Collections.Generic.IEnumerable<System.String> DbColumns
 {
 get
 {
-return _dbColumns;
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 }
 }
 /// <summary>
@@ -54,39 +54,39 @@ public const System.Int32 ColumnCount = 2;
 /// <summary>
 /// The field that maps onto the database column `character_id`.
 /// </summary>
-System.UInt32 _characterId;
+System.Int32 _characterId;
 /// <summary>
 /// The field that maps onto the database column `item_id`.
 /// </summary>
-System.UInt32 _itemId;
+System.Int32 _itemId;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `character_id`.
-/// The underlying database type is `int(10) unsigned`.
+/// The underlying database type is `int(11)`.
 /// </summary>
-public System.UInt32 CharacterId
+public DemoGame.Server.CharacterID CharacterId
 {
 get
 {
-return _characterId;
+return (DemoGame.Server.CharacterID)_characterId;
 }
 set
 {
-this._characterId = value;
+this._characterId = (System.Int32)value;
 }
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `item_id`.
-/// The underlying database type is `int(10) unsigned`.
+/// The underlying database type is `int(11)`.
 /// </summary>
-public System.UInt32 ItemId
+public DemoGame.Server.ItemID ItemId
 {
 get
 {
-return _itemId;
+return (DemoGame.Server.ItemID)_itemId;
 }
 set
 {
-this._itemId = value;
+this._itemId = (System.Int32)value;
 }
 }
 
@@ -101,10 +101,10 @@ public CharacterInventoryTable()
 /// </summary>
 /// <param name="characterId">The initial value for the corresponding property.</param>
 /// <param name="itemId">The initial value for the corresponding property.</param>
-public CharacterInventoryTable(System.UInt32 @characterId, System.UInt32 @itemId)
+public CharacterInventoryTable(DemoGame.Server.CharacterID @characterId, DemoGame.Server.ItemID @itemId)
 {
-CharacterId = (System.UInt32)@characterId;
-ItemId = (System.UInt32)@itemId;
+CharacterId = (DemoGame.Server.CharacterID)@characterId;
+ItemId = (DemoGame.Server.ItemID)@itemId;
 }
 /// <summary>
 /// CharacterInventoryTable constructor.
@@ -126,8 +126,8 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-CharacterId = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("character_id"));
-ItemId = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("item_id"));
+CharacterId = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(dataReader.GetOrdinal("character_id"));
+ItemId = (DemoGame.Server.ItemID)(DemoGame.Server.ItemID)dataReader.GetInt32(dataReader.GetOrdinal("item_id"));
 }
 
 /// <summary>
@@ -149,8 +149,8 @@ CopyValues(this, dic);
 /// <param name="dic">The Dictionary to copy the values into.</param>
 public static void CopyValues(ICharacterInventoryTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@character_id"] = (System.UInt32)source.CharacterId;
-dic["@item_id"] = (System.UInt32)source.ItemId;
+dic["@character_id"] = (DemoGame.Server.CharacterID)source.CharacterId;
+dic["@item_id"] = (DemoGame.Server.ItemID)source.ItemId;
 }
 
 /// <summary>
@@ -172,14 +172,14 @@ CopyValues(this, paramValues);
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(ICharacterInventoryTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@character_id"] = (System.UInt32)source.CharacterId;
-paramValues["@item_id"] = (System.UInt32)source.ItemId;
+paramValues["@character_id"] = (DemoGame.Server.CharacterID)source.CharacterId;
+paramValues["@item_id"] = (DemoGame.Server.ItemID)source.ItemId;
 }
 
 public void CopyValuesFrom(ICharacterInventoryTable source)
 {
-CharacterId = (System.UInt32)source.CharacterId;
-ItemId = (System.UInt32)source.ItemId;
+CharacterId = (DemoGame.Server.CharacterID)source.CharacterId;
+ItemId = (DemoGame.Server.ItemID)source.ItemId;
 }
 
 }

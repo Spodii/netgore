@@ -18,7 +18,7 @@ get;
 /// <summary>
 /// Gets the value for the database column `character_id`.
 /// </summary>
-System.UInt16 CharacterId
+DemoGame.Server.CharacterID CharacterId
 {
 get;
 }
@@ -32,14 +32,14 @@ get;
 /// <summary>
 /// Gets the value for the database column `id`.
 /// </summary>
-System.Int32 Id
+DemoGame.Server.MapSpawnValuesID Id
 {
 get;
 }
 /// <summary>
 /// Gets the value for the database column `map_id`.
 /// </summary>
-System.UInt16 MapId
+NetGore.MapIndex MapId
 {
 get;
 }
@@ -82,7 +82,7 @@ public System.Collections.Generic.IEnumerable<System.String> DbColumns
 {
 get
 {
-return _dbColumns;
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 }
 }
 /// <summary>
@@ -133,26 +133,26 @@ public System.Byte Amount
 {
 get
 {
-return _amount;
+return (System.Byte)_amount;
 }
 set
 {
-this._amount = value;
+this._amount = (System.Byte)value;
 }
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `character_id`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
-public System.UInt16 CharacterId
+public DemoGame.Server.CharacterID CharacterId
 {
 get
 {
-return _characterId;
+return (DemoGame.Server.CharacterID)_characterId;
 }
 set
 {
-this._characterId = value;
+this._characterId = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -163,41 +163,41 @@ public System.UInt16 Height
 {
 get
 {
-return _height;
+return (System.UInt16)_height;
 }
 set
 {
-this._height = value;
+this._height = (System.UInt16)value;
 }
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `id`.
 /// The underlying database type is `int(11)`.
 /// </summary>
-public System.Int32 Id
+public DemoGame.Server.MapSpawnValuesID Id
 {
 get
 {
-return _id;
+return (DemoGame.Server.MapSpawnValuesID)_id;
 }
 set
 {
-this._id = value;
+this._id = (System.Int32)value;
 }
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `map_id`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
-public System.UInt16 MapId
+public NetGore.MapIndex MapId
 {
 get
 {
-return _mapId;
+return (NetGore.MapIndex)_mapId;
 }
 set
 {
-this._mapId = value;
+this._mapId = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -208,11 +208,11 @@ public System.UInt16 Width
 {
 get
 {
-return _width;
+return (System.UInt16)_width;
 }
 set
 {
-this._width = value;
+this._width = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -223,11 +223,11 @@ public System.UInt16 X
 {
 get
 {
-return _x;
+return (System.UInt16)_x;
 }
 set
 {
-this._x = value;
+this._x = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -238,11 +238,11 @@ public System.UInt16 Y
 {
 get
 {
-return _y;
+return (System.UInt16)_y;
 }
 set
 {
-this._y = value;
+this._y = (System.UInt16)value;
 }
 }
 
@@ -263,13 +263,13 @@ public MapSpawnTable()
 /// <param name="width">The initial value for the corresponding property.</param>
 /// <param name="x">The initial value for the corresponding property.</param>
 /// <param name="y">The initial value for the corresponding property.</param>
-public MapSpawnTable(System.Byte @amount, System.UInt16 @characterId, System.UInt16 @height, System.Int32 @id, System.UInt16 @mapId, System.UInt16 @width, System.UInt16 @x, System.UInt16 @y)
+public MapSpawnTable(System.Byte @amount, DemoGame.Server.CharacterID @characterId, System.UInt16 @height, DemoGame.Server.MapSpawnValuesID @id, NetGore.MapIndex @mapId, System.UInt16 @width, System.UInt16 @x, System.UInt16 @y)
 {
 Amount = (System.Byte)@amount;
-CharacterId = (System.UInt16)@characterId;
+CharacterId = (DemoGame.Server.CharacterID)@characterId;
 Height = (System.UInt16)@height;
-Id = (System.Int32)@id;
-MapId = (System.UInt16)@mapId;
+Id = (DemoGame.Server.MapSpawnValuesID)@id;
+MapId = (NetGore.MapIndex)@mapId;
 Width = (System.UInt16)@width;
 X = (System.UInt16)@x;
 Y = (System.UInt16)@y;
@@ -295,10 +295,10 @@ CopyValuesFrom(source);
 public void ReadValues(System.Data.IDataReader dataReader)
 {
 Amount = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("amount"));
-CharacterId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
+CharacterId = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetUInt16(dataReader.GetOrdinal("character_id"));
 Height = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("height"));
-Id = (System.Int32)(System.Int32)dataReader.GetInt32(dataReader.GetOrdinal("id"));
-MapId = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("map_id"));
+Id = (DemoGame.Server.MapSpawnValuesID)(DemoGame.Server.MapSpawnValuesID)dataReader.GetInt32(dataReader.GetOrdinal("id"));
+MapId = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(dataReader.GetOrdinal("map_id"));
 Width = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("width"));
 X = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("x"));
 Y = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("y"));
@@ -324,10 +324,10 @@ CopyValues(this, dic);
 public static void CopyValues(IMapSpawnTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
 dic["@amount"] = (System.Byte)source.Amount;
-dic["@character_id"] = (System.UInt16)source.CharacterId;
+dic["@character_id"] = (DemoGame.Server.CharacterID)source.CharacterId;
 dic["@height"] = (System.UInt16)source.Height;
-dic["@id"] = (System.Int32)source.Id;
-dic["@map_id"] = (System.UInt16)source.MapId;
+dic["@id"] = (DemoGame.Server.MapSpawnValuesID)source.Id;
+dic["@map_id"] = (NetGore.MapIndex)source.MapId;
 dic["@width"] = (System.UInt16)source.Width;
 dic["@x"] = (System.UInt16)source.X;
 dic["@y"] = (System.UInt16)source.Y;
@@ -353,10 +353,10 @@ CopyValues(this, paramValues);
 public static void CopyValues(IMapSpawnTable source, NetGore.Db.DbParameterValues paramValues)
 {
 paramValues["@amount"] = (System.Byte)source.Amount;
-paramValues["@character_id"] = (System.UInt16)source.CharacterId;
+paramValues["@character_id"] = (DemoGame.Server.CharacterID)source.CharacterId;
 paramValues["@height"] = (System.UInt16)source.Height;
-paramValues["@id"] = (System.Int32)source.Id;
-paramValues["@map_id"] = (System.UInt16)source.MapId;
+paramValues["@id"] = (DemoGame.Server.MapSpawnValuesID)source.Id;
+paramValues["@map_id"] = (NetGore.MapIndex)source.MapId;
 paramValues["@width"] = (System.UInt16)source.Width;
 paramValues["@x"] = (System.UInt16)source.X;
 paramValues["@y"] = (System.UInt16)source.Y;
@@ -365,10 +365,10 @@ paramValues["@y"] = (System.UInt16)source.Y;
 public void CopyValuesFrom(IMapSpawnTable source)
 {
 Amount = (System.Byte)source.Amount;
-CharacterId = (System.UInt16)source.CharacterId;
+CharacterId = (DemoGame.Server.CharacterID)source.CharacterId;
 Height = (System.UInt16)source.Height;
-Id = (System.Int32)source.Id;
-MapId = (System.UInt16)source.MapId;
+Id = (DemoGame.Server.MapSpawnValuesID)source.Id;
+MapId = (NetGore.MapIndex)source.MapId;
 Width = (System.UInt16)source.Width;
 X = (System.UInt16)source.X;
 Y = (System.UInt16)source.Y;

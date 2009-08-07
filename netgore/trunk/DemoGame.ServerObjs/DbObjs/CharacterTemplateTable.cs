@@ -22,7 +22,7 @@ get;
 /// <summary>
 /// Gets the value for the database column `alliance_id`.
 /// </summary>
-System.Byte AllianceId
+DemoGame.Server.AllianceID AllianceId
 {
 get;
 }
@@ -107,7 +107,7 @@ public System.Collections.Generic.IEnumerable<System.String> DbColumns
 {
 get
 {
-return _dbColumns;
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 }
 }
 /// <summary>
@@ -165,11 +165,11 @@ System.UInt16 _respawn;
 System.UInt32 _statpoints;
 public System.Int32 GetStat(DemoGame.StatType key)
 {
-return _stat[(DemoGame.StatType)key];
+return (System.Byte)_stat[(DemoGame.StatType)key];
 }
 public void SetStat(DemoGame.StatType key, System.Int32 value)
 {
-this._stat[(DemoGame.StatType)key] = value;
+this._stat[(DemoGame.StatType)key] = (System.Byte)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `ai`.
@@ -179,26 +179,26 @@ public System.String Ai
 {
 get
 {
-return _ai;
+return (System.String)_ai;
 }
 set
 {
-this._ai = value;
+this._ai = (System.String)value;
 }
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `alliance_id`.
 /// The underlying database type is `tinyint(3) unsigned`.
 /// </summary>
-public System.Byte AllianceId
+public DemoGame.Server.AllianceID AllianceId
 {
 get
 {
-return _allianceId;
+return (DemoGame.Server.AllianceID)_allianceId;
 }
 set
 {
-this._allianceId = value;
+this._allianceId = (System.Byte)value;
 }
 }
 /// <summary>
@@ -209,11 +209,11 @@ public System.UInt16 Body
 {
 get
 {
-return _body;
+return (System.UInt16)_body;
 }
 set
 {
-this._body = value;
+this._body = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -224,11 +224,11 @@ public System.UInt32 Exp
 {
 get
 {
-return _exp;
+return (System.UInt32)_exp;
 }
 set
 {
-this._exp = value;
+this._exp = (System.UInt32)value;
 }
 }
 /// <summary>
@@ -239,11 +239,11 @@ public System.UInt16 GiveCash
 {
 get
 {
-return _giveCash;
+return (System.UInt16)_giveCash;
 }
 set
 {
-this._giveCash = value;
+this._giveCash = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -254,11 +254,11 @@ public System.UInt16 GiveExp
 {
 get
 {
-return _giveExp;
+return (System.UInt16)_giveExp;
 }
 set
 {
-this._giveExp = value;
+this._giveExp = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -269,11 +269,11 @@ public System.UInt16 Id
 {
 get
 {
-return _id;
+return (System.UInt16)_id;
 }
 set
 {
-this._id = value;
+this._id = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -284,11 +284,11 @@ public System.Byte Level
 {
 get
 {
-return _level;
+return (System.Byte)_level;
 }
 set
 {
-this._level = value;
+this._level = (System.Byte)value;
 }
 }
 /// <summary>
@@ -299,11 +299,11 @@ public System.String Name
 {
 get
 {
-return _name;
+return (System.String)_name;
 }
 set
 {
-this._name = value;
+this._name = (System.String)value;
 }
 }
 /// <summary>
@@ -314,11 +314,11 @@ public System.UInt16 Respawn
 {
 get
 {
-return _respawn;
+return (System.UInt16)_respawn;
 }
 set
 {
-this._respawn = value;
+this._respawn = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -329,11 +329,11 @@ public System.UInt32 Statpoints
 {
 get
 {
-return _statpoints;
+return (System.UInt32)_statpoints;
 }
 set
 {
-this._statpoints = value;
+this._statpoints = (System.UInt32)value;
 }
 }
 
@@ -376,12 +376,12 @@ public CharacterTemplateTable()
 /// <param name="str">The initial value for the corresponding property.</param>
 /// <param name="tact">The initial value for the corresponding property.</param>
 /// <param name="ws">The initial value for the corresponding property.</param>
-public CharacterTemplateTable(System.Byte @acc, System.Byte @agi, System.String @ai, System.Byte @allianceId, System.Byte @armor, System.UInt16 @body, System.Byte @bra, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, System.UInt16 @giveCash, System.UInt16 @giveExp, System.UInt16 @id, System.Byte @imm, System.Byte @int, System.Byte @level, System.Byte @maxhit, System.UInt16 @maxhp, System.UInt16 @maxmp, System.Byte @minhit, System.String @name, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.UInt16 @respawn, System.UInt32 @statpoints, System.Byte @str, System.Byte @tact, System.Byte @ws)
+public CharacterTemplateTable(System.Byte @acc, System.Byte @agi, System.String @ai, DemoGame.Server.AllianceID @allianceId, System.Byte @armor, System.UInt16 @body, System.Byte @bra, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, System.UInt16 @giveCash, System.UInt16 @giveExp, System.UInt16 @id, System.Byte @imm, System.Byte @int, System.Byte @level, System.Byte @maxhit, System.UInt16 @maxhp, System.UInt16 @maxmp, System.Byte @minhit, System.String @name, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.UInt16 @respawn, System.UInt32 @statpoints, System.Byte @str, System.Byte @tact, System.Byte @ws)
 {
 SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)@acc);
 SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@agi);
 Ai = (System.String)@ai;
-AllianceId = (System.Byte)@allianceId;
+AllianceId = (DemoGame.Server.AllianceID)@allianceId;
 SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)@armor);
 Body = (System.UInt16)@body;
 SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)@bra);
@@ -432,7 +432,7 @@ public void ReadValues(System.Data.IDataReader dataReader)
 SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("acc")));
 SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("agi")));
 Ai = (System.String)(System.String)dataReader.GetString(dataReader.GetOrdinal("ai"));
-AllianceId = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("alliance_id"));
+AllianceId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(dataReader.GetOrdinal("alliance_id"));
 SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("armor")));
 Body = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("body"));
 SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("bra")));
@@ -483,7 +483,7 @@ public static void CopyValues(ICharacterTemplateTable source, System.Collections
 dic["@acc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
 dic["@agi"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
 dic["@ai"] = (System.String)source.Ai;
-dic["@alliance_id"] = (System.Byte)source.AllianceId;
+dic["@alliance_id"] = (DemoGame.Server.AllianceID)source.AllianceId;
 dic["@armor"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
 dic["@body"] = (System.UInt16)source.Body;
 dic["@bra"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
@@ -534,7 +534,7 @@ public static void CopyValues(ICharacterTemplateTable source, NetGore.Db.DbParam
 paramValues["@acc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
 paramValues["@agi"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
 paramValues["@ai"] = (System.String)source.Ai;
-paramValues["@alliance_id"] = (System.Byte)source.AllianceId;
+paramValues["@alliance_id"] = (DemoGame.Server.AllianceID)source.AllianceId;
 paramValues["@armor"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
 paramValues["@body"] = (System.UInt16)source.Body;
 paramValues["@bra"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
@@ -568,7 +568,7 @@ public void CopyValuesFrom(ICharacterTemplateTable source)
 SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc));
 SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi));
 Ai = (System.String)source.Ai;
-AllianceId = (System.Byte)source.AllianceId;
+AllianceId = (DemoGame.Server.AllianceID)source.AllianceId;
 SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor));
 Body = (System.UInt16)source.Body;
 SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra));
