@@ -61,8 +61,34 @@ namespace NetGore.Db.ClassCreator.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to public class ColumnMetadata
+        ///{
+        ///    readonly string _name;
+        ///    readonly string _comment;
+        ///    readonly string _databaseType;
+        ///    readonly object _defaultValue;
+        ///    readonly Type _type;
+        ///    readonly bool _nullable;
+        ///    readonly bool _isPrimaryKey;
+        ///    readonly bool _isForeignKey;
+        ///
+        ///    public string Name { get { return _name; } }
+        ///
+        ///    public string Comment { get { return _comment; } }
+        ///
+        ///    public string DatabaseType { get { return _databaseType; } }
+        ///
+        ///    public object DefaultValue { get { return [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string ColumnMetadataCode {
+            get {
+                return ResourceManager.GetString("ColumnMetadataCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to /// &lt;summary&gt;
-        ////// A Dictionary-like lookup table for the Enum values of the type collection `[TYPECOLLECTIONNAME]` for the
+        ////// A Dictionary-like lookup table for the Enum values of the type collection `[COLUMNCOLLECTIONNAME]` for the
         ////// table that this class represents. Majority of the code for this class was automatically generated and
         ////// only other automatically generated code should be using this class.
         ////// &lt;/summary&gt;
@@ -71,7 +97,7 @@ namespace NetGore.Db.ClassCreator.Properties {
         ///    /// &lt;summary&gt;
         ///    /// Array containing the actual values. The index of this array is found through the value returned
         ///    /// from the _lookupTable.
-        ///    / [rest of string was truncated]&quot;;.
+        ///    [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string ConstEnumDictionaryCode {
             get {

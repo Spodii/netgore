@@ -622,6 +622,184 @@ Value = (System.Int32)source.Value;
 Width = (System.Byte)source.Width;
 }
 
+public System.Object GetValue(System.String columnName)
+{
+switch (columnName)
+{
+case "agi":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
+case "amount":
+return Amount;
+case "armor":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
+case "bra":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
+case "defence":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
+case "description":
+return Description;
+case "dex":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
+case "evade":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
+case "graphic":
+return Graphic;
+case "height":
+return Height;
+case "hp":
+return Hp;
+case "id":
+return Id;
+case "imm":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
+case "int":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Int);
+case "maxhit":
+return GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
+case "maxhp":
+return GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
+case "maxmp":
+return GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
+case "minhit":
+return GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
+case "mp":
+return Mp;
+case "name":
+return Name;
+case "perc":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
+case "reqacc":
+return GetReqStat((DemoGame.StatType)DemoGame.StatType.Acc);
+case "reqagi":
+return GetReqStat((DemoGame.StatType)DemoGame.StatType.Agi);
+case "reqarmor":
+return GetReqStat((DemoGame.StatType)DemoGame.StatType.Armor);
+case "reqbra":
+return GetReqStat((DemoGame.StatType)DemoGame.StatType.Bra);
+case "reqdex":
+return GetReqStat((DemoGame.StatType)DemoGame.StatType.Dex);
+case "reqevade":
+return GetReqStat((DemoGame.StatType)DemoGame.StatType.Evade);
+case "reqimm":
+return GetReqStat((DemoGame.StatType)DemoGame.StatType.Imm);
+case "reqint":
+return GetReqStat((DemoGame.StatType)DemoGame.StatType.Int);
+case "type":
+return Type;
+case "value":
+return Value;
+case "width":
+return Width;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
+public void SetValue(System.String columnName, System.Object value)
+{
+switch (columnName)
+{
+case "agi":
+SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)value);
+break;
+case "amount":
+Amount = (System.Byte)value;
+break;
+case "armor":
+SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)value);
+break;
+case "bra":
+SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)value);
+break;
+case "defence":
+SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)value);
+break;
+case "description":
+Description = (System.String)value;
+break;
+case "dex":
+SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)value);
+break;
+case "evade":
+SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)value);
+break;
+case "graphic":
+Graphic = (System.UInt16)value;
+break;
+case "height":
+Height = (System.Byte)value;
+break;
+case "hp":
+Hp = (System.UInt16)value;
+break;
+case "id":
+Id = (DemoGame.Server.ItemID)value;
+break;
+case "imm":
+SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)value);
+break;
+case "int":
+SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)value);
+break;
+case "maxhit":
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)value);
+break;
+case "maxhp":
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)value);
+break;
+case "maxmp":
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)value);
+break;
+case "minhit":
+SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)value);
+break;
+case "mp":
+Mp = (System.UInt16)value;
+break;
+case "name":
+Name = (System.String)value;
+break;
+case "perc":
+SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)value);
+break;
+case "reqacc":
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)value);
+break;
+case "reqagi":
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)value);
+break;
+case "reqarmor":
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)value);
+break;
+case "reqbra":
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)value);
+break;
+case "reqdex":
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)value);
+break;
+case "reqevade":
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)value);
+break;
+case "reqimm":
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)value);
+break;
+case "reqint":
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)value);
+break;
+case "type":
+Type = (System.Byte)value;
+break;
+case "value":
+Value = (System.Int32)value;
+break;
+case "width":
+Width = (System.Byte)value;
+break;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
 /// <summary>
 /// A Dictionary-like lookup table for the Enum values of the type collection `Stat` for the
 /// table that this class represents. Majority of the code for this class was automatically generated and

@@ -789,6 +789,204 @@ X = (System.Single)source.X;
 Y = (System.Single)source.Y;
 }
 
+public System.Object GetValue(System.String columnName)
+{
+switch (columnName)
+{
+case "acc":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
+case "agi":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
+case "armor":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
+case "body":
+return Body;
+case "bra":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
+case "cash":
+return Cash;
+case "defence":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
+case "dex":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
+case "evade":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
+case "exp":
+return Exp;
+case "hp":
+return Hp;
+case "id":
+return Id;
+case "imm":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
+case "int":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Int);
+case "level":
+return Level;
+case "map_id":
+return MapId;
+case "maxhit":
+return GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
+case "maxhp":
+return GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
+case "maxmp":
+return GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
+case "minhit":
+return GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
+case "mp":
+return Mp;
+case "name":
+return Name;
+case "password":
+return Password;
+case "perc":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
+case "recov":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Recov);
+case "regen":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Regen);
+case "respawn_map":
+return RespawnMap;
+case "respawn_x":
+return RespawnX;
+case "respawn_y":
+return RespawnY;
+case "statpoints":
+return Statpoints;
+case "str":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Str);
+case "tact":
+return GetStat((DemoGame.StatType)DemoGame.StatType.Tact);
+case "template_id":
+return TemplateId;
+case "ws":
+return GetStat((DemoGame.StatType)DemoGame.StatType.WS);
+case "x":
+return X;
+case "y":
+return Y;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
+public void SetValue(System.String columnName, System.Object value)
+{
+switch (columnName)
+{
+case "acc":
+SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)value);
+break;
+case "agi":
+SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)value);
+break;
+case "armor":
+SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)value);
+break;
+case "body":
+Body = (System.UInt16)value;
+break;
+case "bra":
+SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)value);
+break;
+case "cash":
+Cash = (System.UInt32)value;
+break;
+case "defence":
+SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)value);
+break;
+case "dex":
+SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)value);
+break;
+case "evade":
+SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)value);
+break;
+case "exp":
+Exp = (System.UInt32)value;
+break;
+case "hp":
+Hp = (System.UInt16)value;
+break;
+case "id":
+Id = (DemoGame.Server.CharacterID)value;
+break;
+case "imm":
+SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)value);
+break;
+case "int":
+SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)value);
+break;
+case "level":
+Level = (System.Byte)value;
+break;
+case "map_id":
+MapId = (NetGore.MapIndex)value;
+break;
+case "maxhit":
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)value);
+break;
+case "maxhp":
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)value);
+break;
+case "maxmp":
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)value);
+break;
+case "minhit":
+SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)value);
+break;
+case "mp":
+Mp = (System.UInt16)value;
+break;
+case "name":
+Name = (System.String)value;
+break;
+case "password":
+Password = (System.String)value;
+break;
+case "perc":
+SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)value);
+break;
+case "recov":
+SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)value);
+break;
+case "regen":
+SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)value);
+break;
+case "respawn_map":
+RespawnMap = (NetGore.MapIndex)value;
+break;
+case "respawn_x":
+RespawnX = (System.Single)value;
+break;
+case "respawn_y":
+RespawnY = (System.Single)value;
+break;
+case "statpoints":
+Statpoints = (System.UInt32)value;
+break;
+case "str":
+SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)value);
+break;
+case "tact":
+SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)value);
+break;
+case "template_id":
+TemplateId = (DemoGame.Server.CharacterTemplateID)value;
+break;
+case "ws":
+SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)value);
+break;
+case "x":
+X = (System.Single)value;
+break;
+case "y":
+Y = (System.Single)value;
+break;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
 /// <summary>
 /// A Dictionary-like lookup table for the Enum values of the type collection `Stat` for the
 /// table that this class represents. Majority of the code for this class was automatically generated and

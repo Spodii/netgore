@@ -214,6 +214,39 @@ ItemId = (DemoGame.Server.ItemID)source.ItemId;
 Slot = (System.Byte)source.Slot;
 }
 
+public System.Object GetValue(System.String columnName)
+{
+switch (columnName)
+{
+case "character_id":
+return CharacterId;
+case "item_id":
+return ItemId;
+case "slot":
+return Slot;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
+public void SetValue(System.String columnName, System.Object value)
+{
+switch (columnName)
+{
+case "character_id":
+CharacterId = (DemoGame.Server.CharacterID)value;
+break;
+case "item_id":
+ItemId = (DemoGame.Server.ItemID)value;
+break;
+case "slot":
+Slot = (System.Byte)value;
+break;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
 }
 
 }

@@ -182,6 +182,34 @@ Id = (DemoGame.Server.AllianceID)source.Id;
 Name = (System.String)source.Name;
 }
 
+public System.Object GetValue(System.String columnName)
+{
+switch (columnName)
+{
+case "id":
+return Id;
+case "name":
+return Name;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
+public void SetValue(System.String columnName, System.Object value)
+{
+switch (columnName)
+{
+case "id":
+Id = (DemoGame.Server.AllianceID)value;
+break;
+case "name":
+Name = (System.String)value;
+break;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
 }
 
 }

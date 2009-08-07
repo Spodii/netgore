@@ -386,6 +386,16 @@ namespace NetGore.Db.ClassCreator
             return GetProperty(propertyName, GetTypeString(externalType), GetTypeString(internalType), getterVisibility, setterVisibility, member, isVirtual);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, generates the code for a switch.
+        /// </summary>
+        /// <param name="switchOn">The code to switch on.</param>
+        /// <param name="switches">The switches to use, where the key is the switch's value, and the value is the
+        /// code used for the switch.</param>
+        /// <param name="defaultCode">The code to use on a default. If null, no default switch will be made.</param>
+        /// <returns>The code for a switch.</returns>
+        public abstract string GetSwitch(string switchOn, IEnumerable<KeyValuePair<string, string>> switches, string defaultCode);
+
         public virtual string GetProperty(string propertyName, string externalType, string internalType, MemberVisibilityLevel getterVisibility,
                                           MemberVisibilityLevel? setterVisibility, string member, bool isVirtual)
         {
