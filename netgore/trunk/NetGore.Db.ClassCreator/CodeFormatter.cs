@@ -103,13 +103,21 @@ namespace NetGore.Db.ClassCreator
             _aliases.Add(fieldName, alias);
         }
 
-        protected virtual string AddXmlCommentParamRefs(IEnumerable<string> paramNames, string value)
+        protected string AddXmlCommentParamRefs(IEnumerable<string> paramNames, string value)
+        {
+            return AddXmlCommentParamRefs(paramNames, value, null);
+        }
+
+        protected virtual string AddXmlCommentParamRefs(IEnumerable<string> paramNames, string value, string currentParameter)
         {
             if (paramNames == null || paramNames.Count() == 0)
                 return value;
 
             foreach (string parameter in paramNames)
             {
+                if (currentParameter != null && parameter == currentParameter)
+                    continue;
+
                 string withoutPrefix = parameter;
                 if (withoutPrefix.StartsWith(VerbatinIdentifier))
                     withoutPrefix = withoutPrefix.Substring(VerbatinIdentifier.Length);
@@ -516,7 +524,7 @@ namespace NetGore.Db.ClassCreator
                         key = key.Substring(VerbatinIdentifier.Length);
 
                     sb.Append("/// <param name=\"" + key + "\">");
-                    sb.Append(EscapeXmlCommentEntry(AddXmlCommentParamRefs(paramNames, p.Value)));
+                    sb.Append(EscapeXmlCommentEntry(AddXmlCommentParamRefs(paramNames, p.Value, p.Key)));
                     sb.AppendLine("</param>");
                 }
             }

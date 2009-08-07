@@ -551,21 +551,19 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(2048);
 
             // Instanced header
-            sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null, new KeyValuePair<string, string>[]
-                {
+            sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null, 
                     new KeyValuePair<string,string>(parameterName, Comments.TryCopyValues.ParameterDbParameterValues)
-                }));
+               ));
             sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void), false, false));
 
             // Instanced body
             sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(TryCopyValuesMethodName, "this", parameterName)));
 
             // Static header
-            sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null, new KeyValuePair<string, string>[]
-                {
+            sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null, 
                     new KeyValuePair<string,string>(sourceName, Comments.TryCopyValues.ParameterSource),
                     new KeyValuePair<string,string>(parameterName, Comments.TryCopyValues.ParameterDbParameterValues)
-                }));
+                ));
             sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void), false, true));
 
             // Static body
@@ -741,8 +739,8 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(2048);
 
             // Header
-            sb.AppendLine(Formatter.GetXmlComment(Comments.TryReadValues.Summary, null, new KeyValuePair<string, string>[] {
-                new KeyValuePair<string, string>(DataReaderName, Comments.TryReadValues.ParameterDataReader)}));
+            sb.AppendLine(Formatter.GetXmlComment(Comments.TryReadValues.Summary, null, 
+                new KeyValuePair<string, string>(DataReaderName, Comments.TryReadValues.ParameterDataReader)));
             sb.AppendLine(Formatter.GetMethodHeader("TryReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false, false));
 
             // Body
