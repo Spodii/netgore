@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="CodeFormatter.cs" />
     <Compile Include="ColumnCollection.cs" />
+    <Compile Include="Comments.cs" />
     <Compile Include="CSharpCodeFormatter.cs" />
     <Compile Include="CustomTypeMapping.cs" />
     <Compile Include="DbClassData.cs" />
