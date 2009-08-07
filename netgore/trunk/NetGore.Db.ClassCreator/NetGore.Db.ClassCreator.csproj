@@ -65,6 +65,7 @@
     <Compile Include="CodeFormatter.cs" />
     <Compile Include="ColumnCollection.cs" />
     <Compile Include="CSharpCodeFormatter.cs" />
+    <Compile Include="CustomTypeMapping.cs" />
     <Compile Include="DbClassData.cs" />
     <Compile Include="DbClassGenerator.cs" />
     <Compile Include="DbColumnInfo.cs" />

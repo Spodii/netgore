@@ -43,7 +43,7 @@ get;
 /// <summary>
 /// Gets the value for the database column `id`.
 /// </summary>
-System.UInt16 Id
+DemoGame.Server.ItemTemplateID Id
 {
 get;
 }
@@ -104,7 +104,7 @@ public System.Collections.Generic.IEnumerable<System.String> DbColumns
 {
 get
 {
-return _dbColumns;
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 }
 }
 /// <summary>
@@ -159,11 +159,11 @@ System.Int32 _value;
 System.Byte _width;
 public System.Int32 GetStat(DemoGame.StatType key)
 {
-return _stat[(DemoGame.StatType)key];
+return (System.UInt16)_stat[(DemoGame.StatType)key];
 }
 public void SetStat(DemoGame.StatType key, System.Int32 value)
 {
-this._stat[(DemoGame.StatType)key] = value;
+this._stat[(DemoGame.StatType)key] = (System.UInt16)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `description`.
@@ -173,11 +173,11 @@ public System.String Description
 {
 get
 {
-return _description;
+return (System.String)_description;
 }
 set
 {
-this._description = value;
+this._description = (System.String)value;
 }
 }
 /// <summary>
@@ -188,11 +188,11 @@ public System.UInt16 Graphic
 {
 get
 {
-return _graphic;
+return (System.UInt16)_graphic;
 }
 set
 {
-this._graphic = value;
+this._graphic = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -203,11 +203,11 @@ public System.Byte Height
 {
 get
 {
-return _height;
+return (System.Byte)_height;
 }
 set
 {
-this._height = value;
+this._height = (System.Byte)value;
 }
 }
 /// <summary>
@@ -218,26 +218,26 @@ public System.UInt16 Hp
 {
 get
 {
-return _hp;
+return (System.UInt16)_hp;
 }
 set
 {
-this._hp = value;
+this._hp = (System.UInt16)value;
 }
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `id`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
-public System.UInt16 Id
+public DemoGame.Server.ItemTemplateID Id
 {
 get
 {
-return _id;
+return (DemoGame.Server.ItemTemplateID)_id;
 }
 set
 {
-this._id = value;
+this._id = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -248,11 +248,11 @@ public System.UInt16 Mp
 {
 get
 {
-return _mp;
+return (System.UInt16)_mp;
 }
 set
 {
-this._mp = value;
+this._mp = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -263,20 +263,20 @@ public System.String Name
 {
 get
 {
-return _name;
+return (System.String)_name;
 }
 set
 {
-this._name = value;
+this._name = (System.String)value;
 }
 }
 public System.Int32 GetReqStat(DemoGame.StatType key)
 {
-return _reqStat[(DemoGame.StatType)key];
+return (System.Byte)_reqStat[(DemoGame.StatType)key];
 }
 public void SetReqStat(DemoGame.StatType key, System.Int32 value)
 {
-this._reqStat[(DemoGame.StatType)key] = value;
+this._reqStat[(DemoGame.StatType)key] = (System.Byte)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `type`.
@@ -286,11 +286,11 @@ public System.Byte Type
 {
 get
 {
-return _type;
+return (System.Byte)_type;
 }
 set
 {
-this._type = value;
+this._type = (System.Byte)value;
 }
 }
 /// <summary>
@@ -301,11 +301,11 @@ public System.Int32 Value
 {
 get
 {
-return _value;
+return (System.Int32)_value;
 }
 set
 {
-this._value = value;
+this._value = (System.Int32)value;
 }
 }
 /// <summary>
@@ -316,11 +316,11 @@ public System.Byte Width
 {
 get
 {
-return _width;
+return (System.Byte)_width;
 }
 set
 {
-this._width = value;
+this._width = (System.Byte)value;
 }
 }
 
@@ -364,7 +364,7 @@ public ItemTemplateTable()
 /// <param name="type">The initial value for the corresponding property.</param>
 /// <param name="value">The initial value for the corresponding property.</param>
 /// <param name="width">The initial value for the corresponding property.</param>
-public ItemTemplateTable(System.UInt16 @agi, System.UInt16 @armor, System.UInt16 @bra, System.UInt16 @defence, System.String @description, System.UInt16 @dex, System.UInt16 @evade, System.UInt16 @graphic, System.Byte @height, System.UInt16 @hp, System.UInt16 @id, System.UInt16 @imm, System.UInt16 @int, System.UInt16 @maxhit, System.UInt16 @maxhp, System.UInt16 @maxmp, System.UInt16 @minhit, System.UInt16 @mp, System.String @name, System.UInt16 @perc, System.Byte @reqacc, System.Byte @reqagi, System.Byte @reqarmor, System.Byte @reqbra, System.Byte @reqdex, System.Byte @reqevade, System.Byte @reqimm, System.Byte @reqint, System.Byte @type, System.Int32 @value, System.Byte @width)
+public ItemTemplateTable(System.UInt16 @agi, System.UInt16 @armor, System.UInt16 @bra, System.UInt16 @defence, System.String @description, System.UInt16 @dex, System.UInt16 @evade, System.UInt16 @graphic, System.Byte @height, System.UInt16 @hp, DemoGame.Server.ItemTemplateID @id, System.UInt16 @imm, System.UInt16 @int, System.UInt16 @maxhit, System.UInt16 @maxhp, System.UInt16 @maxmp, System.UInt16 @minhit, System.UInt16 @mp, System.String @name, System.UInt16 @perc, System.Byte @reqacc, System.Byte @reqagi, System.Byte @reqarmor, System.Byte @reqbra, System.Byte @reqdex, System.Byte @reqevade, System.Byte @reqimm, System.Byte @reqint, System.Byte @type, System.Int32 @value, System.Byte @width)
 {
 SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@agi);
 SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)@armor);
@@ -376,7 +376,7 @@ SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)@evade);
 Graphic = (System.UInt16)@graphic;
 Height = (System.Byte)@height;
 Hp = (System.UInt16)@hp;
-Id = (System.UInt16)@id;
+Id = (DemoGame.Server.ItemTemplateID)@id;
 SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)@imm);
 SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)@int);
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)@maxhit);
@@ -428,7 +428,7 @@ SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)(System.UInt16
 Graphic = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("graphic"));
 Height = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("height"));
 Hp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("hp"));
-Id = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("id"));
+Id = (DemoGame.Server.ItemTemplateID)(DemoGame.Server.ItemTemplateID)dataReader.GetUInt16(dataReader.GetOrdinal("id"));
 SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("imm")));
 SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("int")));
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxhit")));
@@ -480,7 +480,7 @@ dic["@evade"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatTy
 dic["@graphic"] = (System.UInt16)source.Graphic;
 dic["@height"] = (System.Byte)source.Height;
 dic["@hp"] = (System.UInt16)source.Hp;
-dic["@id"] = (System.UInt16)source.Id;
+dic["@id"] = (DemoGame.Server.ItemTemplateID)source.Id;
 dic["@imm"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
 dic["@int"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
 dic["@maxhit"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
@@ -532,7 +532,7 @@ paramValues["@evade"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGam
 paramValues["@graphic"] = (System.UInt16)source.Graphic;
 paramValues["@height"] = (System.Byte)source.Height;
 paramValues["@hp"] = (System.UInt16)source.Hp;
-paramValues["@id"] = (System.UInt16)source.Id;
+paramValues["@id"] = (DemoGame.Server.ItemTemplateID)source.Id;
 paramValues["@imm"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
 paramValues["@int"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
 paramValues["@maxhit"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
@@ -567,7 +567,7 @@ SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)source.GetStat
 Graphic = (System.UInt16)source.Graphic;
 Height = (System.Byte)source.Height;
 Hp = (System.UInt16)source.Hp;
-Id = (System.UInt16)source.Id;
+Id = (DemoGame.Server.ItemTemplateID)source.Id;
 SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm));
 SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int));
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit));

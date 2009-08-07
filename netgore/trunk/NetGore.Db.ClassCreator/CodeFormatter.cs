@@ -197,7 +197,12 @@ namespace NetGore.Db.ClassCreator
             return GetField(memberName, type, visibility, string.Empty, false, false);
         }
 
-        public virtual string GetFieldName(string inputName, MemberVisibilityLevel visibility, Type type)
+        public string GetFieldName(string inputName, MemberVisibilityLevel visibility, Type type)
+        {
+            return GetFieldName(inputName, visibility, GetTypeString(type));
+        }
+
+        public virtual string GetFieldName(string inputName, MemberVisibilityLevel visibility, string type)
         {
             if (ApplyAlias(ref inputName))
             {
@@ -375,24 +380,28 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        public string GetProperty(string propertyName, Type type, MemberVisibilityLevel getterVisibility,
+        public string GetProperty(string propertyName, Type externalType, Type internalType, MemberVisibilityLevel getterVisibility,
                                           MemberVisibilityLevel? setterVisibility, string member, bool isVirtual)
         {
-            return GetProperty(propertyName, GetTypeString(type), getterVisibility, setterVisibility, member, isVirtual);
+            return GetProperty(propertyName, GetTypeString(externalType), GetTypeString(internalType), getterVisibility, setterVisibility, member, isVirtual);
         }
 
-        public virtual string GetProperty(string propertyName, string type, MemberVisibilityLevel getterVisibility,
+        public virtual string GetProperty(string propertyName, string externalType, string internalType, MemberVisibilityLevel getterVisibility,
                                           MemberVisibilityLevel? setterVisibility, string member, bool isVirtual)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(GetMethodNameAndVisibility(propertyName, getterVisibility, type, isVirtual, false));
+            sb.AppendLine(GetMethodNameAndVisibility(propertyName, getterVisibility, externalType, isVirtual, false));
             sb.AppendLine(OpenBrace);
             {
                 // Getter
                 sb.AppendLine(PropertyGetString);
                 sb.AppendLine(OpenBrace);
                 {
-                    sb.AppendLine(ReturnString + " " + member + EndOfLine);
+                    sb.Append(ReturnString);
+                    sb.Append(" ");
+                    sb.Append(GetCast(externalType));
+                    sb.Append(member);
+                    sb.AppendLine(EndOfLine);
                 }
                 sb.AppendLine(CloseBrace);
 
@@ -401,10 +410,11 @@ namespace NetGore.Db.ClassCreator
                 {
                     if (setterVisibility.Value != getterVisibility)
                         sb.Append(GetVisibilityLevel(setterVisibility.Value) + " ");
+
                     sb.AppendLine(PropertySetString);
                     sb.AppendLine(OpenBrace);
                     {
-                        sb.AppendLine(GetSetValue(member, PropertyValue, true, false));
+                        sb.AppendLine(GetSetValue(member, PropertyValue, true, false, internalType));
                     }
                     sb.AppendLine(CloseBrace);
                 }

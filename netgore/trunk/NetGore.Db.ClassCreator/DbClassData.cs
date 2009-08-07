@@ -17,14 +17,18 @@ namespace NetGore.Db.ClassCreator
         public readonly CodeFormatter Formatter;
         public readonly string InterfaceName;
         public readonly string TableName;
+        readonly IEnumerable<CustomTypeMapping> _customTypes;
         readonly Dictionary<Type, string> _dataReaderReadMethods;
 
         readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
 
+        readonly IDictionary<DbColumnInfo, string> _externalTypes = new Dictionary<DbColumnInfo, string>();
+
         public DbClassData(string tableName, IEnumerable<DbColumnInfo> columns, CodeFormatter formatter,
-                         Dictionary<Type, string> dataReaderReadMethods, IEnumerable<ColumnCollection> columnCollections)
+                           Dictionary<Type, string> dataReaderReadMethods, IEnumerable<ColumnCollection> columnCollections,
+                           IEnumerable<CustomTypeMapping> customTypes)
         {
             const string tableNameWildcard = "*";
 
@@ -36,19 +40,41 @@ namespace NetGore.Db.ClassCreator
             ClassName = formatter.GetClassName(tableName);
             InterfaceName = formatter.GetInterfaceName(tableName);
 
-            ColumnCollections =
-                columnCollections.Where(x =>
-                    // Must have 1 or more columns
+            // Custom types filter
+            _customTypes =
+                customTypes.Where(
+                    x =>
                     x.Columns.Count() > 0 &&
-                        // Check for matching TableNames
-                    (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) ||
-                        // Or just check for a table name with a Wildcard, which is an insta-win!
-                    x.Tables.Contains(tableNameWildcard))).ToArray();
+                    (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) || x.Tables.Contains(tableNameWildcard))).
+                    ToArray();
 
+            // Column collections filter
+            ColumnCollections =
+                columnCollections.Where(
+                    x =>
+                    x.Columns.Count() > 0 &&
+                    (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) || x.Tables.Contains(tableNameWildcard))).
+                    ToArray();
+
+            // Populate the external types dictionary
             foreach (DbColumnInfo column in columns)
             {
-                _privateNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, column.Type));
-                _publicNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, column.Type));
+                string columnName = column.Name;
+                string externalType;
+                var customType = _customTypes.FirstOrDefault(x => x.Columns.Contains(columnName, StringComparer.OrdinalIgnoreCase));
+                if (customType != null)
+                    externalType = customType.CustomType;
+                else
+                    externalType = GetInternalType(column);
+
+                _externalTypes.Add(column, externalType);
+            }
+
+            // Populate the naming dictionaries
+            foreach (DbColumnInfo column in columns)
+            {
+                _privateNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, GetInternalType(column)));
+                _publicNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, GetExternalType(column)));
                 _parameterNames.Add(column, formatter.GetParameterName(column.Name, column.Type));
             }
         }
@@ -149,7 +175,7 @@ namespace NetGore.Db.ClassCreator
                 // Not part of a collection
                 sb.Append(GetPublicName(dbColumn));
                 sb.Append(" = ");
-                sb.Append(Formatter.GetCast(dbColumn.Type));
+                sb.Append(Formatter.GetCast(GetExternalType(dbColumn)));
                 sb.Append(valueName);
                 sb.Append(Formatter.EndOfLine);
             }
@@ -199,7 +225,7 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder();
 
             // Cast
-            sb.Append(Formatter.GetCast(column.Type));
+            sb.Append(Formatter.GetCast(GetExternalType(column)));
 
             // Accessor
             sb.Append(DbClassGenerator.DataReaderName + ".");
@@ -260,6 +286,26 @@ namespace NetGore.Db.ClassCreator
         public string GetPublicName(DbColumnInfo dbColumn)
         {
             return _publicNames[dbColumn];
+        }
+
+        /// <summary>
+        /// Gets a string for the Type used externally for a given column.
+        /// </summary>
+        /// <param name="dbColumn">The DbColumnInfo to get the external type for.</param>
+        /// <returns>A string for the Type used externally for a given column.</returns>
+        public string GetExternalType(DbColumnInfo dbColumn)
+        {
+            return _externalTypes[dbColumn];
+        }
+
+        /// <summary>
+        /// Gets a string for the Type used internally for a given column.
+        /// </summary>
+        /// <param name="dbColumn">The DbColumnInfo to get the internal type for.</param>
+        /// <returns>A string for the Type used internally for a given column.</returns>
+        public string GetInternalType(DbColumnInfo dbColumn)
+        {
+            return Formatter.GetTypeString(dbColumn.Type);
         }
 
         public string GetPublicName(ColumnCollection columnCollection)

@@ -11,14 +11,14 @@ public interface IAllianceAttackableTable
 /// <summary>
 /// Gets the value for the database column `alliance_id`.
 /// </summary>
-System.Byte AllianceId
+DemoGame.Server.AllianceID AllianceId
 {
 get;
 }
 /// <summary>
 /// Gets the value for the database column `attackable_id`.
 /// </summary>
-System.Byte AttackableId
+DemoGame.Server.AllianceID AttackableId
 {
 get;
 }
@@ -47,7 +47,7 @@ public System.Collections.Generic.IEnumerable<System.String> DbColumns
 {
 get
 {
-return _dbColumns;
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 }
 }
 /// <summary>
@@ -74,30 +74,30 @@ System.Byte _placeholder;
 /// Gets or sets the value for the field that maps onto the database column `alliance_id`.
 /// The underlying database type is `tinyint(3) unsigned`.
 /// </summary>
-public System.Byte AllianceId
+public DemoGame.Server.AllianceID AllianceId
 {
 get
 {
-return _allianceId;
+return (DemoGame.Server.AllianceID)_allianceId;
 }
 set
 {
-this._allianceId = value;
+this._allianceId = (System.Byte)value;
 }
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `attackable_id`.
 /// The underlying database type is `tinyint(3) unsigned`.
 /// </summary>
-public System.Byte AttackableId
+public DemoGame.Server.AllianceID AttackableId
 {
 get
 {
-return _attackableId;
+return (DemoGame.Server.AllianceID)_attackableId;
 }
 set
 {
-this._attackableId = value;
+this._attackableId = (System.Byte)value;
 }
 }
 /// <summary>
@@ -109,11 +109,11 @@ public System.Byte Placeholder
 {
 get
 {
-return _placeholder;
+return (System.Byte)_placeholder;
 }
 set
 {
-this._placeholder = value;
+this._placeholder = (System.Byte)value;
 }
 }
 
@@ -129,10 +129,10 @@ public AllianceAttackableTable()
 /// <param name="allianceId">The initial value for the corresponding property.</param>
 /// <param name="attackableId">The initial value for the corresponding property.</param>
 /// <param name="placeholder">The initial value for the corresponding property.</param>
-public AllianceAttackableTable(System.Byte @allianceId, System.Byte @attackableId, System.Byte @placeholder)
+public AllianceAttackableTable(DemoGame.Server.AllianceID @allianceId, DemoGame.Server.AllianceID @attackableId, System.Byte @placeholder)
 {
-AllianceId = (System.Byte)@allianceId;
-AttackableId = (System.Byte)@attackableId;
+AllianceId = (DemoGame.Server.AllianceID)@allianceId;
+AttackableId = (DemoGame.Server.AllianceID)@attackableId;
 Placeholder = (System.Byte)@placeholder;
 }
 /// <summary>
@@ -155,8 +155,8 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-AllianceId = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("alliance_id"));
-AttackableId = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("attackable_id"));
+AllianceId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(dataReader.GetOrdinal("alliance_id"));
+AttackableId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(dataReader.GetOrdinal("attackable_id"));
 Placeholder = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("placeholder"));
 }
 
@@ -179,8 +179,8 @@ CopyValues(this, dic);
 /// <param name="dic">The Dictionary to copy the values into.</param>
 public static void CopyValues(IAllianceAttackableTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@alliance_id"] = (System.Byte)source.AllianceId;
-dic["@attackable_id"] = (System.Byte)source.AttackableId;
+dic["@alliance_id"] = (DemoGame.Server.AllianceID)source.AllianceId;
+dic["@attackable_id"] = (DemoGame.Server.AllianceID)source.AttackableId;
 dic["@placeholder"] = (System.Byte)source.Placeholder;
 }
 
@@ -203,15 +203,15 @@ CopyValues(this, paramValues);
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(IAllianceAttackableTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@alliance_id"] = (System.Byte)source.AllianceId;
-paramValues["@attackable_id"] = (System.Byte)source.AttackableId;
+paramValues["@alliance_id"] = (DemoGame.Server.AllianceID)source.AllianceId;
+paramValues["@attackable_id"] = (DemoGame.Server.AllianceID)source.AttackableId;
 paramValues["@placeholder"] = (System.Byte)source.Placeholder;
 }
 
 public void CopyValuesFrom(IAllianceAttackableTable source)
 {
-AllianceId = (System.Byte)source.AllianceId;
-AttackableId = (System.Byte)source.AttackableId;
+AllianceId = (DemoGame.Server.AllianceID)source.AllianceId;
+AttackableId = (DemoGame.Server.AllianceID)source.AttackableId;
 Placeholder = (System.Byte)source.Placeholder;
 }
 

@@ -11,7 +11,7 @@ public interface IMapTable
 /// <summary>
 /// Gets the value for the database column `id`.
 /// </summary>
-System.UInt16 Id
+NetGore.MapIndex Id
 {
 get;
 }
@@ -40,7 +40,7 @@ public System.Collections.Generic.IEnumerable<System.String> DbColumns
 {
 get
 {
-return _dbColumns;
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 }
 }
 /// <summary>
@@ -63,15 +63,15 @@ System.String _name;
 /// Gets or sets the value for the field that maps onto the database column `id`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
-public System.UInt16 Id
+public NetGore.MapIndex Id
 {
 get
 {
-return _id;
+return (NetGore.MapIndex)_id;
 }
 set
 {
-this._id = value;
+this._id = (System.UInt16)value;
 }
 }
 /// <summary>
@@ -82,11 +82,11 @@ public System.String Name
 {
 get
 {
-return _name;
+return (System.String)_name;
 }
 set
 {
-this._name = value;
+this._name = (System.String)value;
 }
 }
 
@@ -101,9 +101,9 @@ public MapTable()
 /// </summary>
 /// <param name="id">The initial value for the corresponding property.</param>
 /// <param name="name">The initial value for the corresponding property.</param>
-public MapTable(System.UInt16 @id, System.String @name)
+public MapTable(NetGore.MapIndex @id, System.String @name)
 {
-Id = (System.UInt16)@id;
+Id = (NetGore.MapIndex)@id;
 Name = (System.String)@name;
 }
 /// <summary>
@@ -126,7 +126,7 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-Id = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("id"));
+Id = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(dataReader.GetOrdinal("id"));
 Name = (System.String)(System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
 }
 
@@ -149,7 +149,7 @@ CopyValues(this, dic);
 /// <param name="dic">The Dictionary to copy the values into.</param>
 public static void CopyValues(IMapTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
-dic["@id"] = (System.UInt16)source.Id;
+dic["@id"] = (NetGore.MapIndex)source.Id;
 dic["@name"] = (System.String)source.Name;
 }
 
@@ -172,13 +172,13 @@ CopyValues(this, paramValues);
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(IMapTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@id"] = (System.UInt16)source.Id;
+paramValues["@id"] = (NetGore.MapIndex)source.Id;
 paramValues["@name"] = (System.String)source.Name;
 }
 
 public void CopyValuesFrom(IMapTable source)
 {
-Id = (System.UInt16)source.Id;
+Id = (NetGore.MapIndex)source.Id;
 Name = (System.String)source.Name;
 }
 
