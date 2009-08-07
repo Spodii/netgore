@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-08-04 10:52:42
+Date: 2009-08-07 12:02:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -77,7 +77,7 @@ INSERT INTO `alliance_hostile` VALUES ('1', '0', '0');
 -- ----------------------------
 DROP TABLE IF EXISTS `character`;
 CREATE TABLE `character` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(11) NOT NULL,
   `template_id` smallint(5) unsigned DEFAULT NULL,
   `name` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
@@ -135,8 +135,8 @@ INSERT INTO `character` VALUES ('3', '1', 'Test B', '', '2', '500', '250', '2', 
 -- ----------------------------
 DROP TABLE IF EXISTS `character_equipped`;
 CREATE TABLE `character_equipped` (
-  `character_id` int(10) unsigned NOT NULL,
-  `item_id` int(10) unsigned NOT NULL,
+  `character_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
   `slot` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`character_id`,`item_id`),
   KEY `item_id` (`item_id`),
@@ -153,8 +153,8 @@ CREATE TABLE `character_equipped` (
 -- ----------------------------
 DROP TABLE IF EXISTS `character_inventory`;
 CREATE TABLE `character_inventory` (
-  `character_id` int(10) unsigned NOT NULL,
-  `item_id` int(10) unsigned NOT NULL,
+  `character_id` int(11) NOT NULL,
+  `item_id` int(11) NOT NULL,
   PRIMARY KEY (`character_id`,`item_id`),
   KEY `item_id` (`item_id`),
   KEY `character_id` (`character_id`),
@@ -262,7 +262,7 @@ INSERT INTO `character_template_inventory` VALUES ('1', '5', '0', '2', '10000');
 -- ----------------------------
 DROP TABLE IF EXISTS `item`;
 CREATE TABLE `item` (
-  `id` int(10) unsigned NOT NULL,
+  `id` int(11) NOT NULL,
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `width` tinyint(3) unsigned NOT NULL DEFAULT '16',
   `height` tinyint(3) unsigned NOT NULL DEFAULT '16',
