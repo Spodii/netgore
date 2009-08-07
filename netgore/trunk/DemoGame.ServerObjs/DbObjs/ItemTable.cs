@@ -800,6 +800,79 @@ throw new ArgumentException("Field not found.","columnName");
 }
 }
 
+public static ColumnMetadata GetColumnData(System.String fieldName)
+{
+switch (fieldName)
+{
+case "agi":
+return new ColumnMetadata("agi", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "amount":
+return new ColumnMetadata("amount", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+case "armor":
+return new ColumnMetadata("armor", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "bra":
+return new ColumnMetadata("bra", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "defence":
+return new ColumnMetadata("defence", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "description":
+return new ColumnMetadata("description", "", "varchar(255)", null, typeof(System.String), false, false, false);
+case "dex":
+return new ColumnMetadata("dex", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "evade":
+return new ColumnMetadata("evade", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "graphic":
+return new ColumnMetadata("graphic", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "height":
+return new ColumnMetadata("height", "", "tinyint(3) unsigned", "16", typeof(System.Byte), false, false, false);
+case "hp":
+return new ColumnMetadata("hp", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "id":
+return new ColumnMetadata("id", "", "int(11)", null, typeof(System.Int32), false, true, false);
+case "imm":
+return new ColumnMetadata("imm", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "int":
+return new ColumnMetadata("int", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "maxhit":
+return new ColumnMetadata("maxhit", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "maxhp":
+return new ColumnMetadata("maxhp", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "maxmp":
+return new ColumnMetadata("maxmp", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "minhit":
+return new ColumnMetadata("minhit", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "mp":
+return new ColumnMetadata("mp", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "name":
+return new ColumnMetadata("name", "", "varchar(255)", null, typeof(System.String), false, false, false);
+case "perc":
+return new ColumnMetadata("perc", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+case "reqacc":
+return new ColumnMetadata("reqacc", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+case "reqagi":
+return new ColumnMetadata("reqagi", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+case "reqarmor":
+return new ColumnMetadata("reqarmor", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+case "reqbra":
+return new ColumnMetadata("reqbra", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+case "reqdex":
+return new ColumnMetadata("reqdex", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+case "reqevade":
+return new ColumnMetadata("reqevade", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+case "reqimm":
+return new ColumnMetadata("reqimm", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+case "reqint":
+return new ColumnMetadata("reqint", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+case "type":
+return new ColumnMetadata("type", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+case "value":
+return new ColumnMetadata("value", "", "int(11)", "0", typeof(System.Int32), false, false, false);
+case "width":
+return new ColumnMetadata("width", "", "tinyint(3) unsigned", "16", typeof(System.Byte), false, false, false);
+default:
+throw new ArgumentException("Field not found.","fieldName");
+}
+}
+
 /// <summary>
 /// A Dictionary-like lookup table for the Enum values of the type collection `Stat` for the
 /// table that this class represents. Majority of the code for this class was automatically generated and
