@@ -54,6 +54,9 @@ namespace NetGore.Db.ClassCreator
         public void AddColumnCollection(string name, Type keyType, Type valueType, IEnumerable<string> tables,
                                         IEnumerable<ColumnCollectionItem> columns)
         {
+            if (!(keyType.IsEnum))
+                throw new ArgumentException("Only Enums are supported for the keyType at the present.", "keyType");
+
             ColumnCollection columnCollection = new ColumnCollection(name, keyType, valueType, tables, columns);
             _columnCollections.Add(columnCollection);
         }
@@ -61,6 +64,9 @@ namespace NetGore.Db.ClassCreator
         public void AddColumnCollection(string name, Type keyType, Type valueType, string table,
                                         IEnumerable<ColumnCollectionItem> columns)
         {
+            if (!(keyType.IsEnum))
+                throw new ArgumentException("Only Enums are supported for the keyType at the present.", "keyType");
+
             ColumnCollection columnCollection = new ColumnCollection(name, keyType, valueType, new string[] { table }, columns);
             _columnCollections.Add(columnCollection);
         }
