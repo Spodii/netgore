@@ -51,6 +51,34 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 }
 }
 /// <summary>
+/// Array of the database column names for columns that are primary keys.
+/// </summary>
+ static  readonly System.String[] _dbColumnsKeys = new string[] {"character_id", "item_id" };
+/// <summary>
+/// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+/// </summary>
+public System.Collections.Generic.IEnumerable<System.String> DbKeyColumns
+{
+get
+{
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
+}
+}
+/// <summary>
+/// Array of the database column names for columns that are not primary keys.
+/// </summary>
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"slot" };
+/// <summary>
+/// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+/// </summary>
+public System.Collections.Generic.IEnumerable<System.String> DbNonKeyColumns
+{
+get
+{
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
+}
+}
+/// <summary>
 /// The name of the database table that this class represents.
 /// </summary>
 public const System.String TableName = "character_equipped";
