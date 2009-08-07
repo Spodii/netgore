@@ -11,10 +11,26 @@ namespace NetGore.Db.ClassCreator
 {
     public abstract class DbClassGenerator : IDisposable
     {
-        protected const string copyValuesFromMethodName = "CopyValuesFrom";
-        protected const string copyValuesMethodName = "CopyValues";
-        protected const string dataReaderName = "dataReader";
-        protected const string dbColumnsField = "_dbColumns";
+        /// <summary>
+        /// Name of the CopyValuesFrom method in the generated code.
+        /// </summary>
+        public const string CopyValuesFromMethodName = "CopyValuesFrom";
+        
+        /// <summary>
+        /// Name of the CopyValues method in the generated code.
+        /// </summary>
+        public const string CopyValuesMethodName = "CopyValues";
+
+        /// <summary>
+        /// Name of the dataReader when used in arguments in the generated code.
+        /// </summary>
+        public const string DataReaderName = "dataReader";
+
+        /// <summary>
+        /// Name of the _dbColumns field in the generated code.
+        /// </summary>
+        public const string DbColumnsField = "_dbColumns";
+
         readonly List<ColumnCollection> _columnCollections = new List<ColumnCollection>();
 
         /// <summary>
@@ -97,7 +113,7 @@ namespace NetGore.Db.ClassCreator
         {
             columns = columns.OrderBy(x => x.Name);
 
-            ClassData cd = new ClassData(tableName, columns, Formatter, _dataReaderReadMethods, _columnCollections);
+            DbClassData cd = new DbClassData(tableName, columns, Formatter, _dataReaderReadMethods, _columnCollections);
 
             StringBuilder sb = new StringBuilder(16384);
 
@@ -126,7 +142,7 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <param name="cd">Class data.</param>
         /// <returns>The code for the class.</returns>
-        protected virtual string CreateCodeForClass(ClassData cd)
+        protected virtual string CreateCodeForClass(DbClassData cd)
         {
             StringBuilder sb = new StringBuilder(8192);
 
@@ -137,12 +153,12 @@ namespace NetGore.Db.ClassCreator
                 // Other Fields/Properties
                 string fieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Select(x => x.Name));
                 sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnArrayField));
-                sb.AppendLine(Formatter.GetField(dbColumnsField, typeof(string[]), MemberVisibilityLevel.Private, fieldNamesCode,
+                sb.AppendLine(Formatter.GetField(DbColumnsField, typeof(string[]), MemberVisibilityLevel.Private, fieldNamesCode,
                                                  true, true));
 
                 sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnIEnumerableProperty));
                 sb.AppendLine(Formatter.GetProperty("DbColumns", typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
-                                                    dbColumnsField, false));
+                                                    DbColumnsField, false));
 
                 sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.TableName));
                 sb.AppendLine(Formatter.GetConstField("TableName", typeof(string), MemberVisibilityLevel.Public,
@@ -164,19 +180,19 @@ namespace NetGore.Db.ClassCreator
 
                 // Constructor (IDataReader)
                 sb.AppendLine(Formatter.GetXmlComment(cd.ClassName + " constructor.", null,
-                                                      new KeyValuePair<string, string>(dataReaderName,
+                                                      new KeyValuePair<string, string>(DataReaderName,
                                                                                        Comments.CreateCode.
                                                                                            ConstructorParameterIDataReader)));
-                string drConstructorBody = Formatter.GetCallMethod("ReadValues", dataReaderName);
+                string drConstructorBody = Formatter.GetCallMethod("ReadValues", DataReaderName);
                 var drConstructorParams = new MethodParameter[]
-                                          { new MethodParameter(dataReaderName, typeof(IDataReader), Formatter) };
+                                          { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
                 sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, drConstructorParams));
                 sb.AppendLine(Formatter.GetMethodBody(drConstructorBody));
 
                 // Constructor (self-referencing interface)
                 var sriConstructorParams = new MethodParameter[] { new MethodParameter("source", cd.InterfaceName) };
                 sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, sriConstructorParams));
-                sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(copyValuesFromMethodName, "source")));
+                sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(CopyValuesFromMethodName, "source")));
 
                 // Methods
                 sb.AppendLine(CreateMethodReadValues(cd));
@@ -200,7 +216,7 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <param name="cd">Class data.</param>
         /// <returns>The class code for the interface.</returns>
-        protected virtual string CreateCodeForInterface(ClassData cd)
+        protected virtual string CreateCodeForInterface(DbClassData cd)
         {
             StringBuilder sb = new StringBuilder(2048);
 
@@ -243,7 +259,7 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        protected virtual string CreateConstructor(ClassData cd, string code, bool addParameters)
+        protected virtual string CreateConstructor(DbClassData cd, string code, bool addParameters)
         {
             MethodParameter[] parameters;
             if (addParameters)
@@ -266,7 +282,7 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        protected virtual string CreateFields(ClassData cd)
+        protected virtual string CreateFields(DbClassData cd)
         {
             StringBuilder sb = new StringBuilder(2048);
 
@@ -290,7 +306,7 @@ namespace NetGore.Db.ClassCreator
                     addedCollections.Add(coll);
                     // TODO: ColumnCollection field comment
 
-                    string collType = ClassData.GetCollectionTypeString(coll);
+                    string collType = DbClassData.GetCollectionTypeString(coll);
                     sb.AppendLine(Formatter.GetField(cd.GetPrivateName(coll), collType, MemberVisibilityLevel.Private,
                                                      "new " + collType + "()", true, false));
                 }
@@ -350,7 +366,7 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        protected virtual string CreateMethodCopyValuesFrom(ClassData cd)
+        protected virtual string CreateMethodCopyValuesFrom(DbClassData cd)
         {
             const string sourceName = "source";
 
@@ -359,7 +375,7 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(2048);
 
             // Header
-            sb.AppendLine(Formatter.GetMethodHeader(copyValuesFromMethodName, MemberVisibilityLevel.Public, parameters,
+            sb.AppendLine(Formatter.GetMethodHeader(CopyValuesFromMethodName, MemberVisibilityLevel.Public, parameters,
                                                     typeof(void), false, false));
 
             // Body
@@ -373,7 +389,7 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        protected virtual string CreateMethodCopyValuesToDbParameterValues(ClassData cd)
+        protected virtual string CreateMethodCopyValuesToDbParameterValues(DbClassData cd)
         {
             const string parameterName = "paramValues";
             const string sourceName = "source";
@@ -389,11 +405,11 @@ namespace NetGore.Db.ClassCreator
                                                   new KeyValuePair<string, string>(parameterName,
                                                                                    Comments.CopyToDPV.ParameterDbParameterValues)));
 
-            sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void),
+            sb.AppendLine(Formatter.GetMethodHeader(CopyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void),
                                                     false, false));
 
             // Instanced body
-            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(copyValuesMethodName, "this", parameterName)));
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(CopyValuesMethodName, "this", parameterName)));
 
             // Static hader
             sb.AppendLine(Formatter.GetXmlComment(Comments.CopyToDPV.Summary, null,
@@ -401,7 +417,7 @@ namespace NetGore.Db.ClassCreator
                                                   new KeyValuePair<string, string>(parameterName,
                                                                                    Comments.CopyToDPV.ParameterDbParameterValues)));
 
-            sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void),
+            sb.AppendLine(Formatter.GetMethodHeader(CopyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void),
                                                     false, true));
 
             // Static body
@@ -418,7 +434,7 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        protected virtual string CreateMethodCopyValuesToDict(ClassData cd)
+        protected virtual string CreateMethodCopyValuesToDict(DbClassData cd)
         {
             const string parameterName = "dic";
             const string sourceName = "source";
@@ -435,11 +451,11 @@ namespace NetGore.Db.ClassCreator
                                                   new KeyValuePair<string, string>(parameterName,
                                                                                    Comments.CopyToDict.ParameterDict)));
 
-            sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void),
+            sb.AppendLine(Formatter.GetMethodHeader(CopyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void),
                                                     false, false));
 
             // Instanced body
-            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(copyValuesMethodName, "this", parameterName)));
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(CopyValuesMethodName, "this", parameterName)));
 
             // Static hader
             sb.AppendLine(Formatter.GetXmlComment(Comments.CopyToDict.Summary, null,
@@ -447,7 +463,7 @@ namespace NetGore.Db.ClassCreator
                                                   new KeyValuePair<string, string>(parameterName,
                                                                                    Comments.CopyToDict.ParameterDict)));
 
-            sb.AppendLine(Formatter.GetMethodHeader(copyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void),
+            sb.AppendLine(Formatter.GetMethodHeader(CopyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void),
                                                     false, true));
 
             // Static body
@@ -464,14 +480,14 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        protected virtual string CreateMethodReadValues(ClassData cd)
+        protected virtual string CreateMethodReadValues(DbClassData cd)
         {
-            var parameters = new MethodParameter[] { new MethodParameter(dataReaderName, typeof(IDataReader), Formatter) };
+            var parameters = new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
 
             StringBuilder sb = new StringBuilder(2048);
 
             sb.AppendLine(Formatter.GetXmlComment(Comments.ReadValues.Summary, null,
-                                                  new KeyValuePair<string, string>(dataReaderName,
+                                                  new KeyValuePair<string, string>(DataReaderName,
                                                                                    Comments.ReadValues.ParameterDataReader)));
 
             // Header
@@ -493,7 +509,7 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        protected virtual string FullConstructorMemberBody(ClassData cd)
+        protected virtual string FullConstructorMemberBody(DbClassData cd)
         {
             StringBuilder sb = new StringBuilder(1024);
             foreach (DbColumnInfo column in cd.Columns)
@@ -538,7 +554,7 @@ namespace NetGore.Db.ClassCreator
 
         protected abstract IEnumerable<DbColumnInfo> GetColumns(string table);
 
-        protected virtual MethodParameter[] GetConstructorParameters(ClassData cd)
+        protected virtual MethodParameter[] GetConstructorParameters(DbClassData cd)
         {
             var columnsArray = cd.Columns.ToArray();
             var parameters = new MethodParameter[columnsArray.Length];
@@ -604,267 +620,6 @@ namespace NetGore.Db.ClassCreator
         public abstract void Dispose();
 
         #endregion
-
-        public class ClassData
-        {
-            // ReSharper disable UnaccessedField.Global
-            public readonly string ClassName;
-            public readonly IEnumerable<ColumnCollection> ColumnCollections;
-            public readonly IEnumerable<DbColumnInfo> Columns;
-            public readonly CodeFormatter Formatter;
-            public readonly string InterfaceName;
-            public readonly string TableName;
-            readonly Dictionary<Type, string> _dataReaderReadMethods;
-            // ReSharper restore UnaccessedField.Global
-
-            readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
-            readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
-            readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
-
-            public ClassData(string tableName, IEnumerable<DbColumnInfo> columns, CodeFormatter formatter,
-                             Dictionary<Type, string> dataReaderReadMethods, IEnumerable<ColumnCollection> columnCollections)
-            {
-                const string tableNameWildcard = "*";
-
-                TableName = tableName;
-                Columns = columns;
-                Formatter = formatter;
-                _dataReaderReadMethods = dataReaderReadMethods;
-
-                ClassName = formatter.GetClassName(tableName);
-                InterfaceName = formatter.GetInterfaceName(tableName);
-
-                ColumnCollections =
-                    columnCollections.Where(x =>
-                        // Must have 1 or more columns
-                        x.Columns.Count() > 0 && 
-                        // Check for matching TableNames
-                        (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) ||
-                        // Or just check for a table name with a Wildcard, which is an insta-win!
-                        x.Tables.Contains(tableNameWildcard))).ToArray();
-
-                foreach (DbColumnInfo column in columns)
-                {
-                    _privateNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, column.Type));
-                    _publicNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, column.Type));
-                    _parameterNames.Add(column, formatter.GetParameterName(column.Name, column.Type));
-                }
-            }
-
-            /// <summary>
-            /// Gets the ColumnCollection for a given DbColumnInfo, or null if the DbColumnInfo is not part of
-            /// andy ColumnCollection in this table.
-            /// </summary>
-            /// <param name="dbColumn">The DbColumnInfo to get the ColumnCollection for.</param>
-            /// <returns>The ColumnCollection the DbColumnInfo is part of, or null if it
-            /// is not part of a ColumnCollection.</returns>
-            public ColumnCollection GetCollectionForColumn(DbColumnInfo dbColumn)
-            {
-                ColumnCollectionItem item;
-                return GetCollectionForColumn(dbColumn, out item);
-            }
-
-            /// <summary>
-            /// Gets the ColumnCollection for a given DbColumnInfo, or null if the DbColumnInfo is not part of
-            /// andy ColumnCollection in this table.
-            /// </summary>
-            /// <param name="dbColumn">The DbColumnInfo to get the ColumnCollection for.</param>
-            /// <<param name="item">The ColumnCollectionItem for the <paramref name="dbColumn"/> in the ColumnCollection.</param>
-            /// <returns>The ColumnCollection the DbColumnInfo is part of, or null if it
-            /// is not part of a ColumnCollection.</returns>
-            public ColumnCollection GetCollectionForColumn(DbColumnInfo dbColumn, out ColumnCollectionItem item)
-            {
-                foreach (ColumnCollection columnCollection in ColumnCollections)
-                {
-                    var matches =
-                        columnCollection.Columns.Where(x => x.ColumnName.Equals(dbColumn.Name, StringComparison.OrdinalIgnoreCase));
-                    int count = matches.Count();
-                    if (count == 1)
-                    {
-                        item = matches.First();
-                        return columnCollection;
-                    }
-                    else if (count > 1)
-                    {
-                        throw new Exception(
-                            string.Format("DbColumnInfo for column `{0}` in table `{1}` matched more than one ColumnCollection!",
-                                          dbColumn.Name, TableName));
-                    }
-                }
-
-                item = default(ColumnCollectionItem);
-                return null;
-            }
-
-            public static string GetCollectionTypeString(ColumnCollection columnCollection)
-            {
-                return GetConstEnumDictonaryName(columnCollection);
-            }
-
-            /// <summary>
-            /// Gets the code to use for the accessor for a DbColumnInfo.
-            /// </summary>
-            /// <param name="dbColumn">The DbColumnInfo to get the value accessor for.</param>
-            /// <returns>The code to use for the accessor for a DbColumnInfo.</returns>
-            public string GetColumnValueAccessor(DbColumnInfo dbColumn)
-            {
-                ColumnCollectionItem item;
-                ColumnCollection coll = GetCollectionForColumn(dbColumn, out item);
-
-                if (coll == null)
-                {
-                    // Not part of a collection
-                    return GetPublicName(dbColumn);
-                }
-                else
-                {
-                    // Part of a collection
-                    StringBuilder sb = new StringBuilder();
-                    sb.Append("Get" + GetPublicName(coll));
-                    sb.Append(Formatter.OpenParameterString);
-                    sb.Append(Formatter.GetCast(coll.KeyType));
-                    sb.Append(item.Key);
-                    sb.Append(Formatter.CloseParameterString);
-                    return sb.ToString();
-                }
-            }
-
-            /// <summary>
-            /// Gets the code to use for the mutator for a DbColumnInfo.
-            /// </summary>
-            /// <param name="dbColumn">The DbColumnInfo to get the value mutator for.</param>
-            /// <param name="valueName">Code to generate for the value to set.</param>
-            /// <returns>The code to use for the mutator for a DbColumnInfo.</returns>
-            public string GetColumnValueMutator(DbColumnInfo dbColumn, string valueName)
-            {
-                ColumnCollectionItem item;
-                ColumnCollection coll = GetCollectionForColumn(dbColumn, out item);
-
-                StringBuilder sb = new StringBuilder();
-
-                if (coll == null)
-                {
-                    // Not part of a collection
-                    sb.Append(GetPublicName(dbColumn));
-                    sb.Append(" = ");
-                    sb.Append(Formatter.GetCast(dbColumn.Type));
-                    sb.Append(valueName);
-                    sb.Append(Formatter.EndOfLine);
-                }
-                else
-                {
-                    // Part of a collection
-                    sb.Append("Set" + GetPublicName(coll));
-                    sb.Append(Formatter.OpenParameterString);
-                    sb.Append(Formatter.GetCast(coll.KeyType));
-                    sb.Append(item.Key);
-                    sb.Append(Formatter.ParameterSpacer);
-                    sb.Append(Formatter.GetCast(coll.ValueType));
-                    sb.Append(valueName);
-                    sb.Append(Formatter.CloseParameterString);
-                    sb.Append(Formatter.EndOfLine);
-                }
-
-                return sb.ToString();
-            }
-
-            public string GetConstEnumDictonaryCode(ColumnCollection columnCollection)
-            {
-                StringBuilder sb = new StringBuilder(Resources.ConstEnumDictionaryCode);
-                sb.Replace("[CLASSNAME]", GetConstEnumDictonaryName(columnCollection));
-                sb.Replace("[VALUETYPE]", Formatter.GetTypeString(columnCollection.ValueType));
-                sb.Replace("[KEYTYPE]", Formatter.GetTypeString(columnCollection.KeyType));
-                sb.Replace("[COLUMNCOLLECTIONNAME]", columnCollection.Name);
-                sb.Replace("[STORAGETYPE]", Formatter.GetTypeString(typeof(int)));
-                return sb.ToString();
-            }
-
-            public static string GetConstEnumDictonaryName(ColumnCollection columnCollection)
-            {
-                return columnCollection.Name.Substring(0, 1).ToUpper() + columnCollection.Name.Substring(1) + "ConstDictionary";
-            }
-
-            /// <summary>
-            /// Gets the code string used for accessing a database DbColumnInfo's value from a DataReader.
-            /// </summary>
-            /// <param name="column">The DbColumnInfo to get the value from.</param>
-            /// <returns>The code string used for accessing a database DbColumnInfo's value.</returns>
-            public string GetDataReaderAccessor(DbColumnInfo column)
-            {
-                string callMethod = GetDataReaderReadMethodName(column.Type);
-
-                // Find the method to use for reading the value
-                StringBuilder sb = new StringBuilder();
-
-                // Cast
-                sb.Append(Formatter.GetCast(column.Type));
-
-                // Accessor
-                sb.Append(dataReaderName + ".");
-                sb.Append(callMethod);
-                sb.Append("(");
-                sb.Append(dataReaderName);
-                sb.Append(".GetOrdinal(\"");
-                sb.Append(column.Name);
-                sb.Append("\"))");
-
-                return sb.ToString();
-            }
-
-            /// <summary>
-            /// Gets the name of the method used by the DataReader to read the given Type.
-            /// </summary>
-            /// <param name="type">Type to read.</param>
-            /// <returns>The name of the method used by the DataReader to read the given Type.</returns>
-            public string GetDataReaderReadMethodName(Type type)
-            {
-                string callMethod;
-                if (_dataReaderReadMethods.TryGetValue(type, out callMethod))
-                    return callMethod;
-
-                return "Get" + type.Name;
-            }
-
-            /// <summary>
-            /// Gets the parameter name for a DbColumnInfo.
-            /// </summary>
-            /// <param name="dbColumn">The DbColumnInfo to get the parameter name for.</param>
-            /// <returns>The parameter name for the DbColumnInfo.</returns>
-            public string GetParameterName(DbColumnInfo dbColumn)
-            {
-                return _parameterNames[dbColumn];
-            }
-
-            /// <summary>
-            /// Gets the private name for a DbColumnInfo.
-            /// </summary>
-            /// <param name="dbColumn">The DbColumnInfo to get the private name for.</param>
-            /// <returns>The private name for the DbColumnInfo.</returns>
-            public string GetPrivateName(DbColumnInfo dbColumn)
-            {
-                return _privateNames[dbColumn];
-            }
-
-            public string GetPrivateName(ColumnCollection columnCollection)
-            {
-                return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Private, columnCollection.ValueType);
-            }
-
-            /// <summary>
-            /// Gets the public name for a DbColumnInfo.
-            /// </summary>
-            /// <param name="dbColumn">The DbColumnInfo to get the public name for.</param>
-            /// <returns>The public name for the DbColumnInfo.</returns>
-            public string GetPublicName(DbColumnInfo dbColumn)
-            {
-                return _publicNames[dbColumn];
-            }
-
-            public string GetPublicName(ColumnCollection columnCollection)
-            {
-                return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Public, columnCollection.ValueType);
-            }
-        }
 
         /// <summary>
         /// Contains all the code comments.
