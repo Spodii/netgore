@@ -23,10 +23,16 @@ namespace NetGore.Db.ClassCreator
 
             using (MySqlClassGenerator generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
             {
+                // Custom usings
                 generator.AddUsing("NetGore.Db");
+
+                // Custom DataReader methods
                 generator.SetDataReaderReadMethod(typeof(float), "GetFloat");
+
+                // Custom column collections
                 generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), "character", columnItems);
 
+                // Generate
                 generator.Generate("DemoGame.Server.DbObjs", outputDir);
             }
         }

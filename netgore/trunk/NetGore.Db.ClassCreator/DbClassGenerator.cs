@@ -185,7 +185,7 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateMethodCopyValuesFrom(cd));
 
                 // ConstEnumDictionary class
-                foreach (var coll in cd.ColumnCollections)
+                foreach (ColumnCollection coll in cd.ColumnCollections)
                 {
                     sb.AppendLine(cd.GetConstEnumDictonaryCode(coll));
                 }
@@ -226,9 +226,15 @@ namespace NetGore.Db.ClassCreator
                         addedCollections.Add(coll);
                         // TODO: ColumnCollection interface comments
                         string name = cd.GetPublicName(coll);
-                        var keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
-                        sb.AppendLine(Formatter.GetInterfaceMethod("Get" + name, coll.ValueType, new MethodParameter[] { keyParameter }));
-                        sb.AppendLine(Formatter.GetInterfaceMethod("Set" + name, typeof(void), new MethodParameter[] { keyParameter, new MethodParameter("value", coll.ValueType, Formatter) }));
+                        MethodParameter keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
+                        sb.AppendLine(Formatter.GetInterfaceMethod("Get" + name, coll.ValueType,
+                                                                   new MethodParameter[] { keyParameter }));
+                        sb.AppendLine(Formatter.GetInterfaceMethod("Set" + name, typeof(void),
+                                                                   new MethodParameter[]
+                                                                   {
+                                                                       keyParameter,
+                                                                       new MethodParameter("value", coll.ValueType, Formatter)
+                                                                   }));
                     }
                 }
             }
@@ -285,7 +291,8 @@ namespace NetGore.Db.ClassCreator
                     // TODO: ColumnCollection field comment
 
                     string collType = ClassData.GetCollectionTypeString(coll);
-                    sb.AppendLine(Formatter.GetField(cd.GetPrivateName(coll), collType, MemberVisibilityLevel.Private, "new " + collType + "()", true, false));
+                    sb.AppendLine(Formatter.GetField(cd.GetPrivateName(coll), collType, MemberVisibilityLevel.Private,
+                                                     "new " + collType + "()", true, false));
                 }
             }
 
@@ -311,8 +318,8 @@ namespace NetGore.Db.ClassCreator
 
                     sb.AppendLine(Formatter.GetXmlComment(comment));
 
-                    sb.AppendLine(Formatter.GetProperty(cd.GetPublicName(column), column.Type, MemberVisibilityLevel.Public, MemberVisibilityLevel.Public,
-                                                        cd.GetPrivateName(column), false));
+                    sb.AppendLine(Formatter.GetProperty(cd.GetPublicName(column), column.Type, MemberVisibilityLevel.Public,
+                                                        MemberVisibilityLevel.Public, cd.GetPrivateName(column), false));
                 }
                 else if (!addedCollections.Contains(coll))
                 {
@@ -320,14 +327,22 @@ namespace NetGore.Db.ClassCreator
                     addedCollections.Add(coll);
 
                     string name = cd.GetPublicName(coll);
-                    var keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
-                    string field = cd.GetPrivateName(coll) +  Formatter.OpenIndexer + Formatter.GetCast(coll.KeyType) + "key" + Formatter.CloseIndexer;
+                    MethodParameter keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
+                    string field = cd.GetPrivateName(coll) + Formatter.OpenIndexer + Formatter.GetCast(coll.KeyType) + "key" +
+                                   Formatter.CloseIndexer;
 
                     // TODO: ColumnCollection property comments
-                    sb.AppendLine(Formatter.GetMethodHeader("Get" + name, MemberVisibilityLevel.Public, new MethodParameter[] { keyParameter }, coll.ValueType, false, false));
+                    sb.AppendLine(Formatter.GetMethodHeader("Get" + name, MemberVisibilityLevel.Public,
+                                                            new MethodParameter[] { keyParameter }, coll.ValueType, false, false));
                     sb.AppendLine(Formatter.GetMethodBody("return " + field + Formatter.EndOfLine));
 
-                    sb.AppendLine(Formatter.GetMethodHeader("Set" + name, MemberVisibilityLevel.Public, new MethodParameter[] { keyParameter, new MethodParameter("value", coll.ValueType, Formatter) }, typeof(void), false, false));
+                    sb.AppendLine(Formatter.GetMethodHeader("Set" + name, MemberVisibilityLevel.Public,
+                                                            new MethodParameter[]
+                                                            {
+                                                                keyParameter,
+                                                                new MethodParameter("value", coll.ValueType, Formatter)
+                                                            },
+                                                            typeof(void), false, false));
                     sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSetValue(field, "value", true, false)));
                 }
             }
@@ -609,6 +624,8 @@ namespace NetGore.Db.ClassCreator
             public ClassData(string tableName, IEnumerable<DbColumnInfo> columns, CodeFormatter formatter,
                              Dictionary<Type, string> dataReaderReadMethods, IEnumerable<ColumnCollection> columnCollections)
             {
+                const string tableNameWildcard = "*";
+
                 TableName = tableName;
                 Columns = columns;
                 Formatter = formatter;
@@ -618,8 +635,13 @@ namespace NetGore.Db.ClassCreator
                 InterfaceName = formatter.GetInterfaceName(tableName);
 
                 ColumnCollections =
-                    columnCollections.Where(
-                        x => x.Columns.Count() > 0 && x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase)).ToArray();
+                    columnCollections.Where(x =>
+                        // Must have 1 or more columns
+                        x.Columns.Count() > 0 && 
+                        // Check for matching TableNames
+                        (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) ||
+                        // Or just check for a table name with a Wildcard, which is an insta-win!
+                        x.Tables.Contains(tableNameWildcard))).ToArray();
 
                 foreach (DbColumnInfo column in columns)
                 {
@@ -640,22 +662,6 @@ namespace NetGore.Db.ClassCreator
             {
                 ColumnCollectionItem item;
                 return GetCollectionForColumn(dbColumn, out item);
-            }
-
-            public static string GetConstEnumDictonaryName(ColumnCollection columnCollection)
-            {
-                return columnCollection.Name.Substring(0, 1).ToUpper() + columnCollection.Name.Substring(1) + "ConstDictionary";
-            }
-
-            public string GetConstEnumDictonaryCode(ColumnCollection columnCollection)
-            {
-                StringBuilder sb = new StringBuilder(Resources.ConstEnumDictionaryCode);
-                sb.Replace("[CLASSNAME]", GetConstEnumDictonaryName(columnCollection));
-                sb.Replace("[VALUETYPE]", Formatter.GetTypeString(columnCollection.ValueType));
-                sb.Replace("[KEYTYPE]", Formatter.GetTypeString(columnCollection.KeyType));
-                sb.Replace("[COLUMNCOLLECTIONNAME]", columnCollection.Name);
-                sb.Replace("[STORAGETYPE]", Formatter.GetTypeString(typeof(int)));
-                return sb.ToString();
             }
 
             /// <summary>
@@ -688,6 +694,11 @@ namespace NetGore.Db.ClassCreator
 
                 item = default(ColumnCollectionItem);
                 return null;
+            }
+
+            public static string GetCollectionTypeString(ColumnCollection columnCollection)
+            {
+                return GetConstEnumDictonaryName(columnCollection);
             }
 
             /// <summary>
@@ -755,6 +766,22 @@ namespace NetGore.Db.ClassCreator
                 }
 
                 return sb.ToString();
+            }
+
+            public string GetConstEnumDictonaryCode(ColumnCollection columnCollection)
+            {
+                StringBuilder sb = new StringBuilder(Resources.ConstEnumDictionaryCode);
+                sb.Replace("[CLASSNAME]", GetConstEnumDictonaryName(columnCollection));
+                sb.Replace("[VALUETYPE]", Formatter.GetTypeString(columnCollection.ValueType));
+                sb.Replace("[KEYTYPE]", Formatter.GetTypeString(columnCollection.KeyType));
+                sb.Replace("[COLUMNCOLLECTIONNAME]", columnCollection.Name);
+                sb.Replace("[STORAGETYPE]", Formatter.GetTypeString(typeof(int)));
+                return sb.ToString();
+            }
+
+            public static string GetConstEnumDictonaryName(ColumnCollection columnCollection)
+            {
+                return columnCollection.Name.Substring(0, 1).ToUpper() + columnCollection.Name.Substring(1) + "ConstDictionary";
             }
 
             /// <summary>
@@ -836,11 +863,6 @@ namespace NetGore.Db.ClassCreator
             public string GetPublicName(ColumnCollection columnCollection)
             {
                 return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Public, columnCollection.ValueType);
-            }
-
-            public static string GetCollectionTypeString(ColumnCollection columnCollection)
-            {
-                return GetConstEnumDictonaryName(columnCollection);
             }
         }
 
