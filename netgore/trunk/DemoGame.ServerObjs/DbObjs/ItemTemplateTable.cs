@@ -640,66 +640,97 @@ switch (columnName)
 {
 case "agi":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
+
 case "armor":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
+
 case "bra":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
+
 case "defence":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
+
 case "description":
 return Description;
+
 case "dex":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
+
 case "evade":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
+
 case "graphic":
 return Graphic;
+
 case "height":
 return Height;
+
 case "hp":
 return Hp;
+
 case "id":
 return Id;
+
 case "imm":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
+
 case "int":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Int);
+
 case "maxhit":
 return GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
+
 case "maxhp":
 return GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
+
 case "maxmp":
 return GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
+
 case "minhit":
 return GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
+
 case "mp":
 return Mp;
+
 case "name":
 return Name;
+
 case "perc":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
+
 case "reqacc":
 return GetReqStat((DemoGame.StatType)DemoGame.StatType.Acc);
+
 case "reqagi":
 return GetReqStat((DemoGame.StatType)DemoGame.StatType.Agi);
+
 case "reqarmor":
 return GetReqStat((DemoGame.StatType)DemoGame.StatType.Armor);
+
 case "reqbra":
 return GetReqStat((DemoGame.StatType)DemoGame.StatType.Bra);
+
 case "reqdex":
 return GetReqStat((DemoGame.StatType)DemoGame.StatType.Dex);
+
 case "reqevade":
 return GetReqStat((DemoGame.StatType)DemoGame.StatType.Evade);
+
 case "reqimm":
 return GetReqStat((DemoGame.StatType)DemoGame.StatType.Imm);
+
 case "reqint":
 return GetReqStat((DemoGame.StatType)DemoGame.StatType.Int);
+
 case "type":
 return Type;
+
 case "value":
 return Value;
+
 case "width":
 return Width;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -712,96 +743,127 @@ switch (columnName)
 case "agi":
 SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)value);
 break;
+
 case "armor":
 SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)value);
 break;
+
 case "bra":
 SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)value);
 break;
+
 case "defence":
 SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)value);
 break;
+
 case "description":
 Description = (System.String)value;
 break;
+
 case "dex":
 SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)value);
 break;
+
 case "evade":
 SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)value);
 break;
+
 case "graphic":
 Graphic = (System.UInt16)value;
 break;
+
 case "height":
 Height = (System.Byte)value;
 break;
+
 case "hp":
 Hp = (System.UInt16)value;
 break;
+
 case "id":
 Id = (DemoGame.Server.ItemTemplateID)value;
 break;
+
 case "imm":
 SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)value);
 break;
+
 case "int":
 SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)value);
 break;
+
 case "maxhit":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)value);
 break;
+
 case "maxhp":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)value);
 break;
+
 case "maxmp":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)value);
 break;
+
 case "minhit":
 SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)value);
 break;
+
 case "mp":
 Mp = (System.UInt16)value;
 break;
+
 case "name":
 Name = (System.String)value;
 break;
+
 case "perc":
 SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)value);
 break;
+
 case "reqacc":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)value);
 break;
+
 case "reqagi":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)value);
 break;
+
 case "reqarmor":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)value);
 break;
+
 case "reqbra":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)value);
 break;
+
 case "reqdex":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)value);
 break;
+
 case "reqevade":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)value);
 break;
+
 case "reqimm":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)value);
 break;
+
 case "reqint":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)value);
 break;
+
 case "type":
 Type = (System.Byte)value;
 break;
+
 case "value":
 Value = (System.Int32)value;
 break;
+
 case "width":
 Width = (System.Byte)value;
 break;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -813,66 +875,97 @@ switch (fieldName)
 {
 case "agi":
 return new ColumnMetadata("agi", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "armor":
 return new ColumnMetadata("armor", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "bra":
 return new ColumnMetadata("bra", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "defence":
 return new ColumnMetadata("defence", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "description":
 return new ColumnMetadata("description", "", "varchar(255)", null, typeof(System.String), false, false, false);
+
 case "dex":
 return new ColumnMetadata("dex", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "evade":
 return new ColumnMetadata("evade", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "graphic":
 return new ColumnMetadata("graphic", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+
 case "height":
 return new ColumnMetadata("height", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+
 case "hp":
 return new ColumnMetadata("hp", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "id":
 return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
+
 case "imm":
 return new ColumnMetadata("imm", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "int":
 return new ColumnMetadata("int", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "maxhit":
 return new ColumnMetadata("maxhit", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "maxhp":
 return new ColumnMetadata("maxhp", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "maxmp":
 return new ColumnMetadata("maxmp", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "minhit":
 return new ColumnMetadata("minhit", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "mp":
 return new ColumnMetadata("mp", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "name":
 return new ColumnMetadata("name", "", "varchar(255)", null, typeof(System.String), false, false, false);
+
 case "perc":
 return new ColumnMetadata("perc", "", "smallint(5) unsigned", "0", typeof(System.UInt16), false, false, false);
+
 case "reqacc":
 return new ColumnMetadata("reqacc", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+
 case "reqagi":
 return new ColumnMetadata("reqagi", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+
 case "reqarmor":
 return new ColumnMetadata("reqarmor", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+
 case "reqbra":
 return new ColumnMetadata("reqbra", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+
 case "reqdex":
 return new ColumnMetadata("reqdex", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+
 case "reqevade":
 return new ColumnMetadata("reqevade", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+
 case "reqimm":
 return new ColumnMetadata("reqimm", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+
 case "reqint":
 return new ColumnMetadata("reqint", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+
 case "type":
 return new ColumnMetadata("type", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+
 case "value":
 return new ColumnMetadata("value", "", "int(11)", "0", typeof(System.Int32), false, false, false);
+
 case "width":
 return new ColumnMetadata("width", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+
 default:
 throw new ArgumentException("Field not found.","fieldName");
 }
@@ -897,125 +990,326 @@ case "agi":
 SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)dataReader.GetUInt16(i));
 break;
 
+
 case "armor":
 SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)dataReader.GetUInt16(i));
 break;
+
 
 case "bra":
 SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)dataReader.GetUInt16(i));
 break;
 
+
 case "defence":
 SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)dataReader.GetUInt16(i));
 break;
+
 
 case "description":
 Description = (System.String)dataReader.GetString(i);
 break;
 
+
 case "dex":
 SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)dataReader.GetUInt16(i));
 break;
+
 
 case "evade":
 SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)dataReader.GetUInt16(i));
 break;
 
+
 case "graphic":
 Graphic = (System.UInt16)dataReader.GetUInt16(i);
 break;
+
 
 case "height":
 Height = (System.Byte)dataReader.GetByte(i);
 break;
 
+
 case "hp":
 Hp = (System.UInt16)dataReader.GetUInt16(i);
 break;
+
 
 case "id":
 Id = (DemoGame.Server.ItemTemplateID)dataReader.GetUInt16(i);
 break;
 
+
 case "imm":
 SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)dataReader.GetUInt16(i));
 break;
+
 
 case "int":
 SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)dataReader.GetUInt16(i));
 break;
 
+
 case "maxhit":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)dataReader.GetUInt16(i));
 break;
+
 
 case "maxhp":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)dataReader.GetUInt16(i));
 break;
 
+
 case "maxmp":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)dataReader.GetUInt16(i));
 break;
+
 
 case "minhit":
 SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)dataReader.GetUInt16(i));
 break;
 
+
 case "mp":
 Mp = (System.UInt16)dataReader.GetUInt16(i);
 break;
+
 
 case "name":
 Name = (System.String)dataReader.GetString(i);
 break;
 
+
 case "perc":
 SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)dataReader.GetUInt16(i));
 break;
+
 
 case "reqacc":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "reqagi":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "reqarmor":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "reqbra":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "reqdex":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "reqevade":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "reqimm":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "reqint":
 SetReqStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "type":
 Type = (System.Byte)dataReader.GetByte(i);
 break;
 
+
 case "value":
 Value = (System.Int32)dataReader.GetInt32(i);
 break;
 
+
 case "width":
 Width = (System.Byte)dataReader.GetByte(i);
 break;
+
+
+}
+
+}
+}
+
+public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
+{
+TryCopyValues(this, paramValues);
+}
+public static void TryCopyValues(IItemTemplateTable source, NetGore.Db.DbParameterValues paramValues)
+{
+for (int i = 0; i < paramValues.Count; i++)
+{
+switch (paramValues.GetParameterName(i))
+{
+case "@agi":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
+break;
+
+
+case "@armor":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
+break;
+
+
+case "@bra":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
+break;
+
+
+case "@defence":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
+break;
+
+
+case "@description":
+paramValues[i] = source.Description;
+break;
+
+
+case "@dex":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
+break;
+
+
+case "@evade":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
+break;
+
+
+case "@graphic":
+paramValues[i] = source.Graphic;
+break;
+
+
+case "@height":
+paramValues[i] = source.Height;
+break;
+
+
+case "@hp":
+paramValues[i] = source.Hp;
+break;
+
+
+case "@id":
+paramValues[i] = source.Id;
+break;
+
+
+case "@imm":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
+break;
+
+
+case "@int":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
+break;
+
+
+case "@maxhit":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
+break;
+
+
+case "@maxhp":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
+break;
+
+
+case "@maxmp":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
+break;
+
+
+case "@minhit":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
+break;
+
+
+case "@mp":
+paramValues[i] = source.Mp;
+break;
+
+
+case "@name":
+paramValues[i] = source.Name;
+break;
+
+
+case "@perc":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
+break;
+
+
+case "@reqacc":
+paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Acc);
+break;
+
+
+case "@reqagi":
+paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Agi);
+break;
+
+
+case "@reqarmor":
+paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Armor);
+break;
+
+
+case "@reqbra":
+paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Bra);
+break;
+
+
+case "@reqdex":
+paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Dex);
+break;
+
+
+case "@reqevade":
+paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Evade);
+break;
+
+
+case "@reqimm":
+paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Imm);
+break;
+
+
+case "@reqint":
+paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Int);
+break;
+
+
+case "@type":
+paramValues[i] = source.Type;
+break;
+
+
+case "@value":
+paramValues[i] = source.Value;
+break;
+
+
+case "@width":
+paramValues[i] = source.Width;
+break;
+
 
 }
 

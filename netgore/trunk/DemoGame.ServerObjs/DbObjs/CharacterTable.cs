@@ -831,76 +831,112 @@ switch (columnName)
 {
 case "acc":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
+
 case "agi":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
+
 case "armor":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
+
 case "body":
 return Body;
+
 case "bra":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
+
 case "cash":
 return Cash;
+
 case "defence":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
+
 case "dex":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
+
 case "evade":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
+
 case "exp":
 return Exp;
+
 case "hp":
 return Hp;
+
 case "id":
 return Id;
+
 case "imm":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
+
 case "int":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Int);
+
 case "level":
 return Level;
+
 case "map_id":
 return MapId;
+
 case "maxhit":
 return GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
+
 case "maxhp":
 return GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
+
 case "maxmp":
 return GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
+
 case "minhit":
 return GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
+
 case "mp":
 return Mp;
+
 case "name":
 return Name;
+
 case "password":
 return Password;
+
 case "perc":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
+
 case "recov":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Recov);
+
 case "regen":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Regen);
+
 case "respawn_map":
 return RespawnMap;
+
 case "respawn_x":
 return RespawnX;
+
 case "respawn_y":
 return RespawnY;
+
 case "statpoints":
 return Statpoints;
+
 case "str":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Str);
+
 case "tact":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Tact);
+
 case "template_id":
 return TemplateId;
+
 case "ws":
 return GetStat((DemoGame.StatType)DemoGame.StatType.WS);
+
 case "x":
 return X;
+
 case "y":
 return Y;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -913,111 +949,147 @@ switch (columnName)
 case "acc":
 SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)value);
 break;
+
 case "agi":
 SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)value);
 break;
+
 case "armor":
 SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)value);
 break;
+
 case "body":
 Body = (System.UInt16)value;
 break;
+
 case "bra":
 SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)value);
 break;
+
 case "cash":
 Cash = (System.UInt32)value;
 break;
+
 case "defence":
 SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)value);
 break;
+
 case "dex":
 SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)value);
 break;
+
 case "evade":
 SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)value);
 break;
+
 case "exp":
 Exp = (System.UInt32)value;
 break;
+
 case "hp":
 Hp = (System.UInt16)value;
 break;
+
 case "id":
 Id = (DemoGame.Server.CharacterID)value;
 break;
+
 case "imm":
 SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)value);
 break;
+
 case "int":
 SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)value);
 break;
+
 case "level":
 Level = (System.Byte)value;
 break;
+
 case "map_id":
 MapId = (NetGore.MapIndex)value;
 break;
+
 case "maxhit":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)value);
 break;
+
 case "maxhp":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)value);
 break;
+
 case "maxmp":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)value);
 break;
+
 case "minhit":
 SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)value);
 break;
+
 case "mp":
 Mp = (System.UInt16)value;
 break;
+
 case "name":
 Name = (System.String)value;
 break;
+
 case "password":
 Password = (System.String)value;
 break;
+
 case "perc":
 SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)value);
 break;
+
 case "recov":
 SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)value);
 break;
+
 case "regen":
 SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)value);
 break;
+
 case "respawn_map":
 RespawnMap = (NetGore.MapIndex)value;
 break;
+
 case "respawn_x":
 RespawnX = (System.Single)value;
 break;
+
 case "respawn_y":
 RespawnY = (System.Single)value;
 break;
+
 case "statpoints":
 Statpoints = (System.UInt32)value;
 break;
+
 case "str":
 SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)value);
 break;
+
 case "tact":
 SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)value);
 break;
+
 case "template_id":
 TemplateId = (DemoGame.Server.CharacterTemplateID)value;
 break;
+
 case "ws":
 SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)value);
 break;
+
 case "x":
 X = (System.Single)value;
 break;
+
 case "y":
 Y = (System.Single)value;
 break;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -1029,76 +1101,112 @@ switch (fieldName)
 {
 case "acc":
 return new ColumnMetadata("acc", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "agi":
 return new ColumnMetadata("agi", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "armor":
 return new ColumnMetadata("armor", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "body":
 return new ColumnMetadata("body", "", "smallint(5) unsigned", "1", typeof(System.UInt16), false, false, false);
+
 case "bra":
 return new ColumnMetadata("bra", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "cash":
 return new ColumnMetadata("cash", "", "int(10) unsigned", "0", typeof(System.UInt32), false, false, false);
+
 case "defence":
 return new ColumnMetadata("defence", "", "tinyint(3) unsigned", "0", typeof(System.Byte), false, false, false);
+
 case "dex":
 return new ColumnMetadata("dex", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "evade":
 return new ColumnMetadata("evade", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "exp":
 return new ColumnMetadata("exp", "", "int(10) unsigned", "0", typeof(System.UInt32), false, false, false);
+
 case "hp":
 return new ColumnMetadata("hp", "", "smallint(5) unsigned", "50", typeof(System.UInt16), false, false, false);
+
 case "id":
 return new ColumnMetadata("id", "", "int(11)", null, typeof(System.Int32), false, true, false);
+
 case "imm":
 return new ColumnMetadata("imm", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "int":
 return new ColumnMetadata("int", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "level":
 return new ColumnMetadata("level", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "map_id":
 return new ColumnMetadata("map_id", "", "smallint(5) unsigned", "1", typeof(System.UInt16), false, false, true);
+
 case "maxhit":
 return new ColumnMetadata("maxhit", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "maxhp":
 return new ColumnMetadata("maxhp", "", "smallint(5) unsigned", "50", typeof(System.UInt16), false, false, false);
+
 case "maxmp":
 return new ColumnMetadata("maxmp", "", "smallint(5) unsigned", "50", typeof(System.UInt16), false, false, false);
+
 case "minhit":
 return new ColumnMetadata("minhit", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "mp":
 return new ColumnMetadata("mp", "", "smallint(5) unsigned", "50", typeof(System.UInt16), false, false, false);
+
 case "name":
 return new ColumnMetadata("name", "", "varchar(50)", null, typeof(System.String), false, false, true);
+
 case "password":
 return new ColumnMetadata("password", "", "varchar(50)", null, typeof(System.String), false, false, false);
+
 case "perc":
 return new ColumnMetadata("perc", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "recov":
 return new ColumnMetadata("recov", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "regen":
 return new ColumnMetadata("regen", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "respawn_map":
 return new ColumnMetadata("respawn_map", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, true);
+
 case "respawn_x":
 return new ColumnMetadata("respawn_x", "", "float", null, typeof(System.Single), false, false, false);
+
 case "respawn_y":
 return new ColumnMetadata("respawn_y", "", "float", null, typeof(System.Single), false, false, false);
+
 case "statpoints":
 return new ColumnMetadata("statpoints", "", "int(10) unsigned", "0", typeof(System.UInt32), false, false, false);
+
 case "str":
 return new ColumnMetadata("str", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "tact":
 return new ColumnMetadata("tact", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
+
 case "template_id":
 return new ColumnMetadata("template_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, true);
+
 case "ws":
 return new ColumnMetadata("ws", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+
 case "x":
 return new ColumnMetadata("x", "", "float", "100", typeof(System.Single), false, false, false);
+
 case "y":
 return new ColumnMetadata("y", "", "float", "100", typeof(System.Single), false, false, false);
+
 default:
 throw new ArgumentException("Field not found.","fieldName");
 }
@@ -1123,145 +1231,376 @@ case "acc":
 SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "agi":
 SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "armor":
 SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "body":
 Body = (System.UInt16)dataReader.GetUInt16(i);
 break;
+
 
 case "bra":
 SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "cash":
 Cash = (System.UInt32)dataReader.GetUInt32(i);
 break;
+
 
 case "defence":
 SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "dex":
 SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "evade":
 SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "exp":
 Exp = (System.UInt32)dataReader.GetUInt32(i);
 break;
+
 
 case "hp":
 Hp = (System.UInt16)dataReader.GetUInt16(i);
 break;
 
+
 case "id":
 Id = (DemoGame.Server.CharacterID)dataReader.GetInt32(i);
 break;
+
 
 case "imm":
 SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "int":
 SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "level":
 Level = (System.Byte)dataReader.GetByte(i);
 break;
 
+
 case "map_id":
 MapId = (NetGore.MapIndex)dataReader.GetUInt16(i);
 break;
+
 
 case "maxhit":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "maxhp":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)dataReader.GetUInt16(i));
 break;
+
 
 case "maxmp":
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)dataReader.GetUInt16(i));
 break;
 
+
 case "minhit":
 SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "mp":
 Mp = (System.UInt16)dataReader.GetUInt16(i);
 break;
 
+
 case "name":
 Name = (System.String)dataReader.GetString(i);
 break;
+
 
 case "password":
 Password = (System.String)dataReader.GetString(i);
 break;
 
+
 case "perc":
 SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "recov":
 SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "regen":
 SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "respawn_map":
 RespawnMap = (NetGore.MapIndex)dataReader.GetUInt16(i);
 break;
 
+
 case "respawn_x":
 RespawnX = (System.Single)dataReader.GetFloat(i);
 break;
+
 
 case "respawn_y":
 RespawnY = (System.Single)dataReader.GetFloat(i);
 break;
 
+
 case "statpoints":
 Statpoints = (System.UInt32)dataReader.GetUInt32(i);
 break;
+
 
 case "str":
 SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)dataReader.GetByte(i));
 break;
 
+
 case "tact":
 SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "template_id":
 TemplateId = (DemoGame.Server.CharacterTemplateID)dataReader.GetUInt16(i);
 break;
 
+
 case "ws":
 SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)dataReader.GetByte(i));
 break;
+
 
 case "x":
 X = (System.Single)dataReader.GetFloat(i);
 break;
 
+
 case "y":
 Y = (System.Single)dataReader.GetFloat(i);
 break;
+
+
+}
+
+}
+}
+
+public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
+{
+TryCopyValues(this, paramValues);
+}
+public static void TryCopyValues(ICharacterTable source, NetGore.Db.DbParameterValues paramValues)
+{
+for (int i = 0; i < paramValues.Count; i++)
+{
+switch (paramValues.GetParameterName(i))
+{
+case "@acc":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
+break;
+
+
+case "@agi":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
+break;
+
+
+case "@armor":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
+break;
+
+
+case "@body":
+paramValues[i] = source.Body;
+break;
+
+
+case "@bra":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
+break;
+
+
+case "@cash":
+paramValues[i] = source.Cash;
+break;
+
+
+case "@defence":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
+break;
+
+
+case "@dex":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
+break;
+
+
+case "@evade":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
+break;
+
+
+case "@exp":
+paramValues[i] = source.Exp;
+break;
+
+
+case "@hp":
+paramValues[i] = source.Hp;
+break;
+
+
+case "@id":
+paramValues[i] = source.Id;
+break;
+
+
+case "@imm":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
+break;
+
+
+case "@int":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
+break;
+
+
+case "@level":
+paramValues[i] = source.Level;
+break;
+
+
+case "@map_id":
+paramValues[i] = source.MapId;
+break;
+
+
+case "@maxhit":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
+break;
+
+
+case "@maxhp":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
+break;
+
+
+case "@maxmp":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
+break;
+
+
+case "@minhit":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
+break;
+
+
+case "@mp":
+paramValues[i] = source.Mp;
+break;
+
+
+case "@name":
+paramValues[i] = source.Name;
+break;
+
+
+case "@password":
+paramValues[i] = source.Password;
+break;
+
+
+case "@perc":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
+break;
+
+
+case "@recov":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov);
+break;
+
+
+case "@regen":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen);
+break;
+
+
+case "@respawn_map":
+paramValues[i] = source.RespawnMap;
+break;
+
+
+case "@respawn_x":
+paramValues[i] = source.RespawnX;
+break;
+
+
+case "@respawn_y":
+paramValues[i] = source.RespawnY;
+break;
+
+
+case "@statpoints":
+paramValues[i] = source.Statpoints;
+break;
+
+
+case "@str":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Str);
+break;
+
+
+case "@tact":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Tact);
+break;
+
+
+case "@template_id":
+paramValues[i] = source.TemplateId;
+break;
+
+
+case "@ws":
+paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.WS);
+break;
+
+
+case "@x":
+paramValues[i] = source.X;
+break;
+
+
+case "@y":
+paramValues[i] = source.Y;
+break;
+
 
 }
 

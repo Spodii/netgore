@@ -216,8 +216,10 @@ switch (columnName)
 {
 case "id":
 return Id;
+
 case "name":
 return Name;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -230,9 +232,11 @@ switch (columnName)
 case "id":
 Id = (NetGore.MapIndex)value;
 break;
+
 case "name":
 Name = (System.String)value;
 break;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -244,8 +248,10 @@ switch (fieldName)
 {
 case "id":
 return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
+
 case "name":
 return new ColumnMetadata("name", "", "varchar(255)", null, typeof(System.String), false, false, false);
+
 default:
 throw new ArgumentException("Field not found.","fieldName");
 }
@@ -270,9 +276,36 @@ case "id":
 Id = (NetGore.MapIndex)dataReader.GetUInt16(i);
 break;
 
+
 case "name":
 Name = (System.String)dataReader.GetString(i);
 break;
+
+
+}
+
+}
+}
+
+public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
+{
+TryCopyValues(this, paramValues);
+}
+public static void TryCopyValues(IMapTable source, NetGore.Db.DbParameterValues paramValues)
+{
+for (int i = 0; i < paramValues.Count; i++)
+{
+switch (paramValues.GetParameterName(i))
+{
+case "@id":
+paramValues[i] = source.Id;
+break;
+
+
+case "@name":
+paramValues[i] = source.Name;
+break;
+
 
 }
 

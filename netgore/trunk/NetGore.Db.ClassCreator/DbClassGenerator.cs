@@ -17,11 +17,16 @@ namespace NetGore.Db.ClassCreator
         /// Name of the CopyValuesFrom method in the generated code.
         /// </summary>
         public const string CopyValuesFromMethodName = "CopyValuesFrom";
-        
+
         /// <summary>
         /// Name of the CopyValues method in the generated code.
         /// </summary>
         public const string CopyValuesMethodName = "CopyValues";
+
+        /// <summary>
+        /// Name of the TryCopyValues method in the generated code.
+        /// </summary>
+        public const string TryCopyValuesMethodName = "TryCopyValues";
 
         /// <summary>
         /// Name of the dataReader when used in arguments in the generated code.
@@ -283,6 +288,7 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateMethodSetValue(cd));
                 sb.AppendLine(CreateMethodGetColumnData(cd));
                 sb.AppendLine(CreateMethodTryReadValues(cd));
+                sb.AppendLine(CreateMethodTryCopyValuesToDbParameterValues(cd));
 
                 // ConstEnumDictionary class
                 foreach (ColumnCollection coll in cd.ColumnCollections)
@@ -495,7 +501,7 @@ namespace NetGore.Db.ClassCreator
             // Instanced body
             sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(CopyValuesMethodName, "this", parameterName)));
 
-            // Static hader
+            // Static header
             sb.AppendLine(Formatter.GetXmlComment(Comments.CopyToDPV.Summary, null,
                                                   new KeyValuePair<string, string>(sourceName, Comments.CopyToDPV.ParameterSource),
                                                   new KeyValuePair<string, string>(parameterName,
@@ -513,6 +519,55 @@ namespace NetGore.Db.ClassCreator
                 string line = Formatter.GetSetValue(left, right, false, false, cd.GetExternalType(column));
                 bodySB.AppendLine(line);
             }
+            sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
+
+            return sb.ToString();
+        }
+
+        protected string CreateMethodTryCopyValuesToDbParameterValuesSwitchString(DbClassData cd, DbColumnInfo column, string parameterName, string sourceName)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(Formatter.GetSetValue(parameterName + Formatter.OpenIndexer + "i" + Formatter.CloseIndexer, sourceName + "." + cd.GetColumnValueAccessor(column), false, false));
+            sb.AppendLine("break" + Formatter.EndOfLine);
+            return sb.ToString();
+        }
+
+        protected virtual string CreateMethodTryCopyValuesToDbParameterValues(DbClassData cd)
+        {
+            const string parameterName = "paramValues";
+            const string sourceName = "source";
+
+            var iParameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(DbParameterValues), Formatter) };
+            var sParameters =
+                new MethodParameter[] { new MethodParameter(sourceName, cd.InterfaceName) }.Concat(iParameters).ToArray();
+
+            StringBuilder sb = new StringBuilder(2048);
+
+            // Instanced header
+            // TODO: Xml comments
+            sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void), false, false));
+
+            // Instanced body
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(TryCopyValuesMethodName, "this", parameterName)));
+
+            // Static header
+            // TODO: Xml comments
+            sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void), false, true));
+
+            // Static body
+            StringBuilder bodySB = new StringBuilder(2048);
+            bodySB.AppendLine("for (int i = 0; i < " + parameterName + ".Count; i++)"); // NOTE: Language specific code
+            bodySB.AppendLine(Formatter.OpenBrace);
+            {
+                bodySB.AppendLine(Formatter.GetSwitch(
+                    parameterName + ".GetParameterName(i)", 
+                    cd.Columns.Select(
+                        x => new KeyValuePair<string, string>(
+                            "\"@" + x.Name + "\"", 
+                            CreateMethodTryCopyValuesToDbParameterValuesSwitchString(cd, x, parameterName, sourceName))), null));
+            }
+            bodySB.Append(Formatter.CloseBrace);
+
             sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
 
             return sb.ToString();

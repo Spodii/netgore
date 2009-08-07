@@ -248,10 +248,13 @@ switch (columnName)
 {
 case "chance":
 return Chance;
+
 case "character_id":
 return CharacterId;
+
 case "item_id":
 return ItemId;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -264,12 +267,15 @@ switch (columnName)
 case "chance":
 Chance = (System.UInt16)value;
 break;
+
 case "character_id":
 CharacterId = (DemoGame.Server.CharacterID)value;
 break;
+
 case "item_id":
 ItemId = (DemoGame.Server.ItemID)value;
 break;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -281,10 +287,13 @@ switch (fieldName)
 {
 case "chance":
 return new ColumnMetadata("chance", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+
 case "character_id":
 return new ColumnMetadata("character_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
+
 case "item_id":
 return new ColumnMetadata("item_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
+
 default:
 throw new ArgumentException("Field not found.","fieldName");
 }
@@ -309,13 +318,46 @@ case "chance":
 Chance = (System.UInt16)dataReader.GetUInt16(i);
 break;
 
+
 case "character_id":
 CharacterId = (DemoGame.Server.CharacterID)dataReader.GetUInt16(i);
 break;
 
+
 case "item_id":
 ItemId = (DemoGame.Server.ItemID)dataReader.GetUInt16(i);
 break;
+
+
+}
+
+}
+}
+
+public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
+{
+TryCopyValues(this, paramValues);
+}
+public static void TryCopyValues(ICharacterTemplateEquippedTable source, NetGore.Db.DbParameterValues paramValues)
+{
+for (int i = 0; i < paramValues.Count; i++)
+{
+switch (paramValues.GetParameterName(i))
+{
+case "@chance":
+paramValues[i] = source.Chance;
+break;
+
+
+case "@character_id":
+paramValues[i] = source.CharacterId;
+break;
+
+
+case "@item_id":
+paramValues[i] = source.ItemId;
+break;
+
 
 }
 
