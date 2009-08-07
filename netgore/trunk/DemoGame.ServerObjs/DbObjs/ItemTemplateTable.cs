@@ -61,9 +61,9 @@ System.String Name
 {
 get;
 }
-System.Int32 GetReqstat(DemoGame.StatType key);
+System.Int32 GetReqStat(DemoGame.StatType key);
 
-System.Void SetReqstat(DemoGame.StatType key, System.Int32 value);
+System.Void SetReqStat(DemoGame.StatType key, System.Int32 value);
 
 /// <summary>
 /// Gets the value for the database column `type`.
@@ -144,7 +144,7 @@ System.UInt16 _mp;
 /// The field that maps onto the database column `name`.
 /// </summary>
 System.String _name;
- readonly ReqStatConstDictionary _reqstat = new ReqStatConstDictionary();
+ readonly ReqStatConstDictionary _reqStat = new ReqStatConstDictionary();
 /// <summary>
 /// The field that maps onto the database column `type`.
 /// </summary>
@@ -270,13 +270,13 @@ set
 this._name = value;
 }
 }
-public System.Int32 GetReqstat(DemoGame.StatType key)
+public System.Int32 GetReqStat(DemoGame.StatType key)
 {
-return _reqstat[(DemoGame.StatType)key];
+return _reqStat[(DemoGame.StatType)key];
 }
-public void SetReqstat(DemoGame.StatType key, System.Int32 value)
+public void SetReqStat(DemoGame.StatType key, System.Int32 value)
 {
-this._reqstat[(DemoGame.StatType)key] = value;
+this._reqStat[(DemoGame.StatType)key] = value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `type`.
@@ -386,14 +386,14 @@ SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)@minhit);
 Mp = (System.UInt16)@mp;
 Name = (System.String)@name;
 SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)@perc);
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)@reqacc);
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@reqagi);
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)@reqarmor);
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)@reqbra);
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)@reqdex);
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)@reqevade);
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)@reqimm);
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)@reqint);
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)@reqacc);
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@reqagi);
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)@reqarmor);
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)@reqbra);
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)@reqdex);
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)@reqevade);
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)@reqimm);
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)@reqint);
 Type = (System.Byte)@type;
 Value = (System.Int32)@value;
 Width = (System.Byte)@width;
@@ -438,14 +438,14 @@ SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.UInt1
 Mp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("mp"));
 Name = (System.String)(System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
 SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("perc")));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqacc")));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqagi")));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqarmor")));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqbra")));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqdex")));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqevade")));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqimm")));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqint")));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqacc")));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqagi")));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqarmor")));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqbra")));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqdex")));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqevade")));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqimm")));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("reqint")));
 Type = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("type"));
 Value = (System.Int32)(System.Int32)dataReader.GetInt32(dataReader.GetOrdinal("value"));
 Width = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("width"));
@@ -490,14 +490,14 @@ dic["@minhit"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatT
 dic["@mp"] = (System.UInt16)source.Mp;
 dic["@name"] = (System.String)source.Name;
 dic["@perc"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
-dic["@reqacc"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Acc);
-dic["@reqagi"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Agi);
-dic["@reqarmor"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Armor);
-dic["@reqbra"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Bra);
-dic["@reqdex"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Dex);
-dic["@reqevade"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Evade);
-dic["@reqimm"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Imm);
-dic["@reqint"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Int);
+dic["@reqacc"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Acc);
+dic["@reqagi"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Agi);
+dic["@reqarmor"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Armor);
+dic["@reqbra"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Bra);
+dic["@reqdex"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Dex);
+dic["@reqevade"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Evade);
+dic["@reqimm"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Imm);
+dic["@reqint"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Int);
 dic["@type"] = (System.Byte)source.Type;
 dic["@value"] = (System.Int32)source.Value;
 dic["@width"] = (System.Byte)source.Width;
@@ -542,14 +542,14 @@ paramValues["@minhit"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGa
 paramValues["@mp"] = (System.UInt16)source.Mp;
 paramValues["@name"] = (System.String)source.Name;
 paramValues["@perc"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
-paramValues["@reqacc"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Acc);
-paramValues["@reqagi"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Agi);
-paramValues["@reqarmor"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Armor);
-paramValues["@reqbra"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Bra);
-paramValues["@reqdex"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Dex);
-paramValues["@reqevade"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Evade);
-paramValues["@reqimm"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Imm);
-paramValues["@reqint"] = (System.Byte)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Int);
+paramValues["@reqacc"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Acc);
+paramValues["@reqagi"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Agi);
+paramValues["@reqarmor"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Armor);
+paramValues["@reqbra"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Bra);
+paramValues["@reqdex"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Dex);
+paramValues["@reqevade"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Evade);
+paramValues["@reqimm"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Imm);
+paramValues["@reqint"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Int);
 paramValues["@type"] = (System.Byte)source.Type;
 paramValues["@value"] = (System.Int32)source.Value;
 paramValues["@width"] = (System.Byte)source.Width;
@@ -577,14 +577,14 @@ SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)source.GetSta
 Mp = (System.UInt16)source.Mp;
 Name = (System.String)source.Name;
 SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Acc));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Agi));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Armor));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Bra));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Dex));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Evade));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Imm));
-SetReqstat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)source.GetReqstat((DemoGame.StatType)DemoGame.StatType.Int));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Acc));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Agi));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Armor));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Bra));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Dex));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Evade));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Imm));
+SetReqStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Int));
 Type = (System.Byte)source.Type;
 Value = (System.Int32)source.Value;
 Width = (System.Byte)source.Width;

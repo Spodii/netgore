@@ -520,11 +520,11 @@ namespace NetGore.Db.ClassCreator
         protected virtual string RemoveSeparatorCharacters(string str)
         {
             var parts = str.Split(separatorCharacters);
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(parts.Sum(x => x.Length) + 1);
             foreach (string part in parts)
             {
                 sb.Append(part.Substring(0, 1).ToUpper());
-                sb.Append(part.Substring(1).ToLower());
+                sb.Append(part.Substring(1));
             }
 
             return sb.ToString();

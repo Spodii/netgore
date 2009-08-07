@@ -264,6 +264,10 @@ namespace NetGore.Db.ClassCreator
 
         public string GetPublicName(ColumnCollection columnCollection)
         {
+            if (columnCollection.Name != "Stat")
+            {
+            }
+
             return Formatter.GetFieldName(columnCollection.Name, MemberVisibilityLevel.Public, columnCollection.ValueType);
         }
     }
