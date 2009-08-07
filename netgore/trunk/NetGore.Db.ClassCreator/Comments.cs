@@ -10,9 +10,22 @@ namespace NetGore.Db.ClassCreator
     /// </summary>
     internal static class Comments
     {
+        /// <summary>
+        /// Comments used in CreateMethodTryCopyValuesToDbParameterValues().
+        /// </summary>
         public static class TryCopyValues
         {
+            public static readonly string Summary =
+                "Copies the column values into the given DbParameterValues using the database column name" + Environment.NewLine +
+                "with a prefixed @ as the key. The key must already exist in the DbParameterValues" + Environment.NewLine +
+                "for the value to be copied over. If any of the keys in the DbParameterValues do not" + Environment.NewLine +
+                "match one of the column names, or if there is no field for a key, then it will be" + Environment.NewLine +
+                "ignored. Because of this, it is important to be careful when using this method" + Environment.NewLine +
+                "since columns or keys can be skipped without any indication.";
 
+            public const string ParameterSource = "The object to copy the values from.";
+
+            public const string ParameterDbParameterValues = "The DbParameterValues to copy the values into.";
         }
 
         /// <summary>
