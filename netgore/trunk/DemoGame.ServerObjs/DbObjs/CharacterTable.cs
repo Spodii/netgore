@@ -1412,10 +1412,29 @@ break;
 }
 }
 
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+/// for the value to be copied over. If any of the keys in the DbParameterValues do not
+/// match one of the column names, or if there is no field for a key, then it will be
+/// ignored. Because of this, it is important to be careful when using this method
+/// since columns or keys can be skipped without any indication.
+/// </summary>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
 {
 TryCopyValues(this, paramValues);
 }
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+/// for the value to be copied over. If any of the keys in the DbParameterValues do not
+/// match one of the column names, or if there is no field for a key, then it will be
+/// ignored. Because of this, it is important to be careful when using this method
+/// since columns or keys can be skipped without any indication.
+/// </summary>
+/// <param name="source">The object to copy the values from.</param>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void TryCopyValues(ICharacterTable source, NetGore.Db.DbParameterValues paramValues)
 {
 for (int i = 0; i < paramValues.Count; i++)

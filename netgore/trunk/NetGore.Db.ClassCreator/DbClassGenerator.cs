@@ -544,14 +544,21 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(2048);
 
             // Instanced header
-            // TODO: Xml comments
+            sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null, new KeyValuePair<string, string>[]
+                {
+                    new KeyValuePair<string,string>(parameterName, Comments.TryCopyValues.ParameterDbParameterValues)
+                }));
             sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void), false, false));
 
             // Instanced body
             sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(TryCopyValuesMethodName, "this", parameterName)));
 
             // Static header
-            // TODO: Xml comments
+            sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null, new KeyValuePair<string, string>[]
+                {
+                    new KeyValuePair<string,string>(sourceName, Comments.TryCopyValues.ParameterSource),
+                    new KeyValuePair<string,string>(parameterName, Comments.TryCopyValues.ParameterDbParameterValues)
+                }));
             sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void), false, true));
 
             // Static body
