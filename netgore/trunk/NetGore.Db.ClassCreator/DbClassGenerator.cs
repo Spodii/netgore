@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using NetGore.Db.ClassCreator.Properties;
 
+// TODO: I don't think I have valid support for nullable types
+
 namespace NetGore.Db.ClassCreator
 {
     public abstract class DbClassGenerator : IDisposable
@@ -543,46 +545,6 @@ namespace NetGore.Db.ClassCreator
             sb.Append(Formatter.EndOfLine);
 
             return sb.ToString();
-        }
-
-        public class ColumnMetadata
-        {
-            readonly string _name;
-            readonly string _comment;
-            readonly string _databaseType;
-            readonly object _defaultValue;
-            readonly Type _type;
-            readonly bool _nullable;
-            readonly bool _isPrimaryKey;
-            readonly bool _isForeignKey;
-
-            public string Name { get { return _name; } }
-
-            public string Comment { get { return _comment; } }
-
-            public string DatabaseType { get { return _databaseType; } }
-
-            public object DefaultValue { get { return _defaultValue; } }
-
-            public Type Type { get { return _type; } }
-
-            public bool Nullable { get { return _nullable; } }
-
-            public bool IsPrimaryKey { get { return _isPrimaryKey; } }
-
-            public bool IsForeignKey { get { return _isForeignKey; } }
-
-            public ColumnMetadata(string name, string comment, string databaseType, object defaultValue, Type type, bool nullable, bool isPrimaryKey, bool isForeignKey)
-            {
-                _name = name;
-                _comment = comment;
-                _databaseType = databaseType;
-                _defaultValue = defaultValue;
-                _type = type;
-                _nullable = nullable;
-                _isPrimaryKey = isPrimaryKey;
-                _isForeignKey = isForeignKey;
-            }
         }
 
         protected virtual string CreateMethodGetColumnData(DbClassData cd)
