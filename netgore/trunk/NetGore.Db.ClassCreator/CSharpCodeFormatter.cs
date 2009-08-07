@@ -147,6 +147,36 @@ namespace NetGore.Db.ClassCreator
             return "namespace " + namespaceName;
         }
 
+        public override string GetSwitch(string switchOn, IEnumerable<KeyValuePair<string, string>> switches, string defaultCode)
+        {
+            StringBuilder sb = new StringBuilder(512);
+            sb.Append("switch ");
+            sb.Append(OpenParameterString);
+            sb.Append(switchOn);
+            sb.AppendLine(CloseParameterString);
+
+            sb.AppendLine(OpenBrace);
+
+            foreach (var item in switches)
+            {
+                sb.Append("case ");
+                sb.Append(item.Key);
+                sb.AppendLine(":");
+
+                sb.AppendLine(item.Value);
+            }
+
+            if (defaultCode != null)
+            {
+                sb.AppendLine("default:");
+                sb.AppendLine(defaultCode);
+            }
+
+            sb.AppendLine(CloseBrace);
+
+            return sb.ToString();
+        }
+
         public override string GetUsing(string namespaceName)
         {
             return "using " + namespaceName + EndOfLine;

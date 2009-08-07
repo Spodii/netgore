@@ -278,6 +278,49 @@ Max = (System.Byte)source.Max;
 Min = (System.Byte)source.Min;
 }
 
+public System.Object GetValue(System.String columnName)
+{
+switch (columnName)
+{
+case "chance":
+return Chance;
+case "character_id":
+return CharacterId;
+case "item_id":
+return ItemId;
+case "max":
+return Max;
+case "min":
+return Min;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
+public void SetValue(System.String columnName, System.Object value)
+{
+switch (columnName)
+{
+case "chance":
+Chance = (System.UInt16)value;
+break;
+case "character_id":
+CharacterId = (DemoGame.Server.CharacterID)value;
+break;
+case "item_id":
+ItemId = (DemoGame.Server.ItemID)value;
+break;
+case "max":
+Max = (System.Byte)value;
+break;
+case "min":
+Min = (System.Byte)value;
+break;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
 }
 
 }

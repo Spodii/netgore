@@ -89,6 +89,7 @@
     <Compile Include="DbObjs\CharacterTemplateEquippedTable.cs" />
     <Compile Include="DbObjs\CharacterTemplateInventoryTable.cs" />
     <Compile Include="DbObjs\CharacterTemplateTable.cs" />
+    <Compile Include="DbObjs\ColumnMetadata.cs" />
     <Compile Include="DbObjs\ItemTable.cs" />
     <Compile Include="DbObjs\ItemTemplateTable.cs" />
     <Compile Include="DbObjs\MapSpawnTable.cs" />

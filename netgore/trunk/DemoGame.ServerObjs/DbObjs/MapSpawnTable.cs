@@ -374,6 +374,64 @@ X = (System.UInt16)source.X;
 Y = (System.UInt16)source.Y;
 }
 
+public System.Object GetValue(System.String columnName)
+{
+switch (columnName)
+{
+case "amount":
+return Amount;
+case "character_id":
+return CharacterId;
+case "height":
+return Height;
+case "id":
+return Id;
+case "map_id":
+return MapId;
+case "width":
+return Width;
+case "x":
+return X;
+case "y":
+return Y;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
+public void SetValue(System.String columnName, System.Object value)
+{
+switch (columnName)
+{
+case "amount":
+Amount = (System.Byte)value;
+break;
+case "character_id":
+CharacterId = (DemoGame.Server.CharacterID)value;
+break;
+case "height":
+Height = (System.UInt16)value;
+break;
+case "id":
+Id = (DemoGame.Server.MapSpawnValuesID)value;
+break;
+case "map_id":
+MapId = (NetGore.MapIndex)value;
+break;
+case "width":
+Width = (System.UInt16)value;
+break;
+case "x":
+X = (System.UInt16)value;
+break;
+case "y":
+Y = (System.UInt16)value;
+break;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
 }
 
 }

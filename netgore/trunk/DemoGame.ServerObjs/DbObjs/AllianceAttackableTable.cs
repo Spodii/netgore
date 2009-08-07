@@ -215,6 +215,39 @@ AttackableId = (DemoGame.Server.AllianceID)source.AttackableId;
 Placeholder = (System.Byte)source.Placeholder;
 }
 
+public System.Object GetValue(System.String columnName)
+{
+switch (columnName)
+{
+case "alliance_id":
+return AllianceId;
+case "attackable_id":
+return AttackableId;
+case "placeholder":
+return Placeholder;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
+public void SetValue(System.String columnName, System.Object value)
+{
+switch (columnName)
+{
+case "alliance_id":
+AllianceId = (DemoGame.Server.AllianceID)value;
+break;
+case "attackable_id":
+AttackableId = (DemoGame.Server.AllianceID)value;
+break;
+case "placeholder":
+Placeholder = (System.Byte)value;
+break;
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
+
 }
 
 }

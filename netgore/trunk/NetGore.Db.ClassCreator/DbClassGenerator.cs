@@ -221,6 +221,8 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateMethodCopyValuesToDict(cd));
                 sb.AppendLine(CreateMethodCopyValuesToDbParameterValues(cd));
                 sb.AppendLine(CreateMethodCopyValuesFrom(cd));
+                sb.AppendLine(CreateMethodGetValue(cd));
+                sb.AppendLine(CreateMethodSetValue(cd));
 
                 // ConstEnumDictionary class
                 foreach (ColumnCollection coll in cd.ColumnCollections)
@@ -456,6 +458,48 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        protected virtual string CreateMethodGetValue(DbClassData cd)
+        {
+            const string parameterName = "columnName";
+            const string methodName = "GetValue";
+
+            StringBuilder sb = new StringBuilder(2048);
+
+            // Header
+            // TODO: Header XML comments
+            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter)};
+            sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, typeof(object), false, false));
+
+            // Body
+            var switches= cd.Columns.Select(x => new KeyValuePair<string, string>("\"" + x.Name + "\"", Formatter.ReturnString + " " + cd.GetColumnValueAccessor(x) + Formatter.EndOfLine));
+            var defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" + Formatter.EndOfLine;
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
+
+            return sb.ToString();
+        }
+
+        protected virtual string CreateMethodSetValue(DbClassData cd)
+        {
+            const string parameterName = "columnName";
+            const string valueName = "value";
+            const string methodName = "SetValue";
+
+            StringBuilder sb = new StringBuilder(2048);
+
+            // Header
+            // TODO: Header XML comments
+            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter), new MethodParameter(valueName, typeof(object), Formatter) };
+            sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, typeof(void), false, false));
+
+            // Body
+            var switches = cd.Columns.Select(x => new KeyValuePair<string, string>("\"" + x.Name + "\"",
+                cd.GetColumnValueMutator(x, valueName) + Environment.NewLine + "break" + Formatter.EndOfLine));
+            var defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" + Formatter.EndOfLine;
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
+
+            return sb.ToString();
+        }
+
         protected virtual string CreateMethodCopyValuesToDict(DbClassData cd)
         {
             const string parameterName = "dic";
@@ -559,6 +603,25 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
+        public const string ColumnMetadataClassName = "ColumnMetadata";
+
+        protected virtual GeneratedTableCode CreateCodeForColumnMetadata(string codeNamespace)
+        {
+            string code = Resources.ColumnMetadataCode;
+            StringBuilder sb = new StringBuilder(code.Length + 200);
+
+            sb.AppendLine(Formatter.GetUsing("System"));
+
+            sb.AppendLine(Formatter.GetNamespace(codeNamespace));
+            sb.AppendLine(Formatter.OpenBrace);
+            {
+                sb.AppendLine(code);
+            }
+            sb.AppendLine(Formatter.CloseBrace);
+
+            return new GeneratedTableCode(ColumnMetadataClassName, ColumnMetadataClassName, sb.ToString());
+        }
+
         public virtual IEnumerable<GeneratedTableCode> Generate(string codeNamespace)
         {
             LoadDbContent();
@@ -570,6 +633,8 @@ namespace NetGore.Db.ClassCreator
                 string code = CreateCode(table.Key, table.Value, codeNamespace);
                 ret.Add(new GeneratedTableCode(table.Key, Formatter.GetClassName(table.Key), code));
             }
+
+            ret.Add(CreateCodeForColumnMetadata(codeNamespace));
 
             return ret;
         }
