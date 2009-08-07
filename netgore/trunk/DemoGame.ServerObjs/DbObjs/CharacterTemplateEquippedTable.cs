@@ -9,21 +9,21 @@ namespace DemoGame.Server.DbObjs
 public interface ICharacterTemplateEquippedTable
 {
 /// <summary>
-/// Gets the value for the database column `chance`.
+/// Gets the value of the database column `chance`.
 /// </summary>
 System.UInt16 Chance
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `character_id`.
+/// Gets the value of the database column `character_id`.
 /// </summary>
 DemoGame.Server.CharacterID CharacterId
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `item_id`.
+/// Gets the value of the database column `item_id`.
 /// </summary>
 DemoGame.Server.ItemID ItemId
 {

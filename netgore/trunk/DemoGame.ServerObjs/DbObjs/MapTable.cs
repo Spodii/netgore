@@ -9,14 +9,14 @@ namespace DemoGame.Server.DbObjs
 public interface IMapTable
 {
 /// <summary>
-/// Gets the value for the database column `id`.
+/// Gets the value of the database column `id`.
 /// </summary>
 NetGore.MapIndex Id
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `name`.
+/// Gets the value of the database column `name`.
 /// </summary>
 System.String Name
 {

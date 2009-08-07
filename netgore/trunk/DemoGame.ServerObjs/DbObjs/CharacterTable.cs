@@ -8,124 +8,138 @@ namespace DemoGame.Server.DbObjs
 /// </summary>
 public interface ICharacterTable
 {
+/// <summary>
+/// Gets the value of the database column in the column collection `{0}`
+/// that corresponds to the given <paramref name="key"/>.
+/// </summary>
+/// <param name="key">The <paramref name="key"/> that represents the column in this column collection.</param>
+/// <returns>
+/// The value of the database column with the corresponding <paramref name="key"/>.
+/// </returns>
 System.Int32 GetStat(DemoGame.StatType key);
 
+/// <summary>
+/// Gets the <paramref name="value"/> of the database column in the column collection `{0}`
+/// that corresponds to the given <paramref name="key"/>.
+/// </summary>
+/// <param name="key">The <paramref name="key"/> that represents the column in this column collection.</param>
+/// <param name="value">The <paramref name="value"/> to assign to the column with the corresponding <paramref name="key"/>.</param>
 System.Void SetStat(DemoGame.StatType key, System.Int32 value);
 
 /// <summary>
-/// Gets the value for the database column `body`.
+/// Gets the value of the database column `body`.
 /// </summary>
 System.UInt16 Body
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `cash`.
+/// Gets the value of the database column `cash`.
 /// </summary>
 System.UInt32 Cash
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `exp`.
+/// Gets the value of the database column `exp`.
 /// </summary>
 System.UInt32 Exp
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `hp`.
+/// Gets the value of the database column `hp`.
 /// </summary>
 System.UInt16 Hp
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `id`.
+/// Gets the value of the database column `id`.
 /// </summary>
 DemoGame.Server.CharacterID Id
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `level`.
+/// Gets the value of the database column `level`.
 /// </summary>
 System.Byte Level
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `map_id`.
+/// Gets the value of the database column `map_id`.
 /// </summary>
 NetGore.MapIndex MapId
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `mp`.
+/// Gets the value of the database column `mp`.
 /// </summary>
 System.UInt16 Mp
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `name`.
+/// Gets the value of the database column `name`.
 /// </summary>
 System.String Name
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `password`.
+/// Gets the value of the database column `password`.
 /// </summary>
 System.String Password
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `respawn_map`.
+/// Gets the value of the database column `respawn_map`.
 /// </summary>
 NetGore.MapIndex RespawnMap
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `respawn_x`.
+/// Gets the value of the database column `respawn_x`.
 /// </summary>
 System.Single RespawnX
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `respawn_y`.
+/// Gets the value of the database column `respawn_y`.
 /// </summary>
 System.Single RespawnY
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `statpoints`.
+/// Gets the value of the database column `statpoints`.
 /// </summary>
 System.UInt32 Statpoints
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `template_id`.
+/// Gets the value of the database column `template_id`.
 /// </summary>
 DemoGame.Server.CharacterTemplateID TemplateId
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `x`.
+/// Gets the value of the database column `x`.
 /// </summary>
 System.Single X
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `y`.
+/// Gets the value of the database column `y`.
 /// </summary>
 System.Single Y
 {
@@ -180,7 +194,14 @@ get
 return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
 }
 }
+/// <summary>
+/// The fields that are used in the column collection `Stat`.
+/// </summary>
  static  readonly System.String[] _statColumns = new string[] {"acc", "agi", "armor", "bra", "defence", "dex", "evade", "imm", "int", "maxhit", "maxhp", "maxmp", "minhit", "perc", "recov", "regen", "str", "tact", "ws" };
+/// <summary>
+/// Gets an IEnumerable of strings containing the name of the database
+/// columns used in the column collection `Stat`.
+/// </summary>
 public System.Collections.Generic.IEnumerable<System.String> StatColumns
 {
 get
