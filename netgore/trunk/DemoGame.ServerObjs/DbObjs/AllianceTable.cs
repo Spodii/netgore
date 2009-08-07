@@ -216,8 +216,10 @@ switch (columnName)
 {
 case "id":
 return Id;
+
 case "name":
 return Name;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -230,9 +232,11 @@ switch (columnName)
 case "id":
 Id = (DemoGame.Server.AllianceID)value;
 break;
+
 case "name":
 Name = (System.String)value;
 break;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -244,8 +248,10 @@ switch (fieldName)
 {
 case "id":
 return new ColumnMetadata("id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
+
 case "name":
 return new ColumnMetadata("name", "", "varchar(255)", null, typeof(System.String), false, false, false);
+
 default:
 throw new ArgumentException("Field not found.","fieldName");
 }
@@ -270,9 +276,36 @@ case "id":
 Id = (DemoGame.Server.AllianceID)dataReader.GetByte(i);
 break;
 
+
 case "name":
 Name = (System.String)dataReader.GetString(i);
 break;
+
+
+}
+
+}
+}
+
+public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
+{
+TryCopyValues(this, paramValues);
+}
+public static void TryCopyValues(IAllianceTable source, NetGore.Db.DbParameterValues paramValues)
+{
+for (int i = 0; i < paramValues.Count; i++)
+{
+switch (paramValues.GetParameterName(i))
+{
+case "@id":
+paramValues[i] = source.Id;
+break;
+
+
+case "@name":
+paramValues[i] = source.Name;
+break;
+
 
 }
 

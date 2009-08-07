@@ -164,6 +164,7 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(":");
 
                 sb.AppendLine(item.Value);
+                sb.AppendLine();
             }
 
             if (defaultCode != null)

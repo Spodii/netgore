@@ -249,10 +249,13 @@ switch (columnName)
 {
 case "alliance_id":
 return AllianceId;
+
 case "hostile_id":
 return HostileId;
+
 case "placeholder":
 return Placeholder;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -265,12 +268,15 @@ switch (columnName)
 case "alliance_id":
 AllianceId = (DemoGame.Server.AllianceID)value;
 break;
+
 case "hostile_id":
 HostileId = (DemoGame.Server.AllianceID)value;
 break;
+
 case "placeholder":
 Placeholder = (System.Byte)value;
 break;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -282,10 +288,13 @@ switch (fieldName)
 {
 case "alliance_id":
 return new ColumnMetadata("alliance_id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
+
 case "hostile_id":
 return new ColumnMetadata("hostile_id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
+
 case "placeholder":
 return new ColumnMetadata("placeholder", "Unused placeholder column - please do not remove", "tinyint(3) unsigned", null, typeof(System.Byte), true, false, false);
+
 default:
 throw new ArgumentException("Field not found.","fieldName");
 }
@@ -310,13 +319,46 @@ case "alliance_id":
 AllianceId = (DemoGame.Server.AllianceID)dataReader.GetByte(i);
 break;
 
+
 case "hostile_id":
 HostileId = (DemoGame.Server.AllianceID)dataReader.GetByte(i);
 break;
 
+
 case "placeholder":
 Placeholder = (System.Byte)dataReader.GetByte(i);
 break;
+
+
+}
+
+}
+}
+
+public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
+{
+TryCopyValues(this, paramValues);
+}
+public static void TryCopyValues(IAllianceHostileTable source, NetGore.Db.DbParameterValues paramValues)
+{
+for (int i = 0; i < paramValues.Count; i++)
+{
+switch (paramValues.GetParameterName(i))
+{
+case "@alliance_id":
+paramValues[i] = source.AllianceId;
+break;
+
+
+case "@hostile_id":
+paramValues[i] = source.HostileId;
+break;
+
+
+case "@placeholder":
+paramValues[i] = source.Placeholder;
+break;
+
 
 }
 

@@ -408,20 +408,28 @@ switch (columnName)
 {
 case "amount":
 return Amount;
+
 case "character_id":
 return CharacterId;
+
 case "height":
 return Height;
+
 case "id":
 return Id;
+
 case "map_id":
 return MapId;
+
 case "width":
 return Width;
+
 case "x":
 return X;
+
 case "y":
 return Y;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -434,27 +442,35 @@ switch (columnName)
 case "amount":
 Amount = (System.Byte)value;
 break;
+
 case "character_id":
 CharacterId = (DemoGame.Server.CharacterID)value;
 break;
+
 case "height":
 Height = (System.UInt16)value;
 break;
+
 case "id":
 Id = (DemoGame.Server.MapSpawnValuesID)value;
 break;
+
 case "map_id":
 MapId = (NetGore.MapIndex)value;
 break;
+
 case "width":
 Width = (System.UInt16)value;
 break;
+
 case "x":
 X = (System.UInt16)value;
 break;
+
 case "y":
 Y = (System.UInt16)value;
 break;
+
 default:
 throw new ArgumentException("Field not found.","columnName");
 }
@@ -466,20 +482,28 @@ switch (fieldName)
 {
 case "amount":
 return new ColumnMetadata("amount", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+
 case "character_id":
 return new ColumnMetadata("character_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, true);
+
 case "height":
 return new ColumnMetadata("height", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, false);
+
 case "id":
 return new ColumnMetadata("id", "", "int(11)", null, typeof(System.Int32), false, true, false);
+
 case "map_id":
 return new ColumnMetadata("map_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, false, false);
+
 case "width":
 return new ColumnMetadata("width", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, false);
+
 case "x":
 return new ColumnMetadata("x", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, false);
+
 case "y":
 return new ColumnMetadata("y", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, false);
+
 default:
 throw new ArgumentException("Field not found.","fieldName");
 }
@@ -504,33 +528,96 @@ case "amount":
 Amount = (System.Byte)dataReader.GetByte(i);
 break;
 
+
 case "character_id":
 CharacterId = (DemoGame.Server.CharacterID)dataReader.GetUInt16(i);
 break;
+
 
 case "height":
 Height = (System.UInt16)dataReader.GetUInt16(i);
 break;
 
+
 case "id":
 Id = (DemoGame.Server.MapSpawnValuesID)dataReader.GetInt32(i);
 break;
+
 
 case "map_id":
 MapId = (NetGore.MapIndex)dataReader.GetUInt16(i);
 break;
 
+
 case "width":
 Width = (System.UInt16)dataReader.GetUInt16(i);
 break;
+
 
 case "x":
 X = (System.UInt16)dataReader.GetUInt16(i);
 break;
 
+
 case "y":
 Y = (System.UInt16)dataReader.GetUInt16(i);
 break;
+
+
+}
+
+}
+}
+
+public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
+{
+TryCopyValues(this, paramValues);
+}
+public static void TryCopyValues(IMapSpawnTable source, NetGore.Db.DbParameterValues paramValues)
+{
+for (int i = 0; i < paramValues.Count; i++)
+{
+switch (paramValues.GetParameterName(i))
+{
+case "@amount":
+paramValues[i] = source.Amount;
+break;
+
+
+case "@character_id":
+paramValues[i] = source.CharacterId;
+break;
+
+
+case "@height":
+paramValues[i] = source.Height;
+break;
+
+
+case "@id":
+paramValues[i] = source.Id;
+break;
+
+
+case "@map_id":
+paramValues[i] = source.MapId;
+break;
+
+
+case "@width":
+paramValues[i] = source.Width;
+break;
+
+
+case "@x":
+paramValues[i] = source.X;
+break;
+
+
+case "@y":
+paramValues[i] = source.Y;
+break;
+
 
 }
 
