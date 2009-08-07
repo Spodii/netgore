@@ -23,6 +23,7 @@ namespace NetGore.Db.ClassCreator
 
         static void Main(string[] args)
         {
+            // Output directory for the generated code - points to the ...\DemoGame.ServerObjs\DbObjs\ folder
             string outputDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.ServerObjs{1}DbObjs{1}",
                                              AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
