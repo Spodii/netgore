@@ -12,7 +12,7 @@ public interface IItemTemplateTable
 /// Gets the value of the database column in the column collection `{0}`
 /// that corresponds to the given <paramref name="key"/>.
 /// </summary>
-/// <param name="key">The <paramref name="key"/> that represents the column in this column collection.</param>
+/// <param name="key">The key that represents the column in this column collection.</param>
 /// <returns>
 /// The value of the database column with the corresponding <paramref name="key"/>.
 /// </returns>
@@ -22,8 +22,8 @@ System.Int32 GetStat(DemoGame.StatType key);
 /// Gets the <paramref name="value"/> of the database column in the column collection `{0}`
 /// that corresponds to the given <paramref name="key"/>.
 /// </summary>
-/// <param name="key">The <paramref name="key"/> that represents the column in this column collection.</param>
-/// <param name="value">The <paramref name="value"/> to assign to the column with the corresponding <paramref name="key"/>.</param>
+/// <param name="key">The key that represents the column in this column collection.</param>
+/// <param name="value">The value to assign to the column with the corresponding <paramref name="key"/>.</param>
 System.Void SetStat(DemoGame.StatType key, System.Int32 value);
 
 /// <summary>
@@ -79,7 +79,7 @@ get;
 /// Gets the value of the database column in the column collection `{0}`
 /// that corresponds to the given <paramref name="key"/>.
 /// </summary>
-/// <param name="key">The <paramref name="key"/> that represents the column in this column collection.</param>
+/// <param name="key">The key that represents the column in this column collection.</param>
 /// <returns>
 /// The value of the database column with the corresponding <paramref name="key"/>.
 /// </returns>
@@ -89,8 +89,8 @@ System.Int32 GetReqStat(DemoGame.StatType key);
 /// Gets the <paramref name="value"/> of the database column in the column collection `{0}`
 /// that corresponds to the given <paramref name="key"/>.
 /// </summary>
-/// <param name="key">The <paramref name="key"/> that represents the column in this column collection.</param>
-/// <param name="value">The <paramref name="value"/> to assign to the column with the corresponding <paramref name="key"/>.</param>
+/// <param name="key">The key that represents the column in this column collection.</param>
+/// <param name="value">The value to assign to the column with the corresponding <paramref name="key"/>.</param>
 System.Void SetReqStat(DemoGame.StatType key, System.Int32 value);
 
 /// <summary>
