@@ -31,6 +31,16 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         public const string DbColumnsField = "_dbColumns";
 
+        /// <summary>
+        /// Name of the _dbColumnsNonKeys field in the generated code.
+        /// </summary>
+        public const string DbColumnsNonKeysField = "_dbColumnsNonKey";
+
+        /// <summary>
+        /// Name of the _dbColumnsKeys field in the generated code.
+        /// </summary>
+        public const string DbColumnsKeysField = "_dbColumnsKeys";
+
         readonly List<ColumnCollection> _columnCollections = new List<ColumnCollection>();
 
         /// <summary>
@@ -173,14 +183,39 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.OpenBrace);
             {
                 // Other Fields/Properties
-                string fieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Select(x => x.Name));
-                sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnArrayField));
-                sb.AppendLine(Formatter.GetField(DbColumnsField, typeof(string[]), MemberVisibilityLevel.Private, fieldNamesCode,
-                                                 true, true));
+                {
+                    // All fields
+                    string fieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Select(x => x.Name));
+                    sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnArrayField));
+                    sb.AppendLine(Formatter.GetField(DbColumnsField, typeof(string[]), MemberVisibilityLevel.Private, fieldNamesCode,
+                                                     true, true));
 
-                sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnIEnumerableProperty));
-                sb.AppendLine(Formatter.GetProperty("DbColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
-                                                    DbColumnsField, false));
+                    sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnIEnumerableProperty));
+                    sb.AppendLine(Formatter.GetProperty("DbColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
+                                                        DbColumnsField, false));
+                }
+
+                {
+                    // Key fields
+                    string keyFieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Where(x => x.KeyType == DbColumnKeyType.Primary).Select(x => x.Name));
+                    sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.KeyColumnArrayField));
+                    sb.AppendLine(Formatter.GetField(DbColumnsKeysField, typeof(string[]), MemberVisibilityLevel.Private, keyFieldNamesCode, true, true));
+
+                    sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.KeyColumnIEnumerableProperty));
+                    sb.AppendLine(Formatter.GetProperty("DbKeyColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
+                                                        DbColumnsKeysField, false));
+                }
+
+                {
+                    // Non-key fields
+                    string nonKeyFieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Where(x => x.KeyType != DbColumnKeyType.Primary).Select(x => x.Name));
+                    sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.NonKeyColumnArrayField));
+                    sb.AppendLine(Formatter.GetField(DbColumnsNonKeysField, typeof(string[]), MemberVisibilityLevel.Private, nonKeyFieldNamesCode, true, true));
+
+                    sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.NonKeyColumnIEnumerableProperty));
+                    sb.AppendLine(Formatter.GetProperty("DbNonKeyColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
+                                                        DbColumnsNonKeysField, false));
+                }
 
                 sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.TableName));
                 sb.AppendLine(Formatter.GetConstField("TableName", typeof(string), MemberVisibilityLevel.Public,
@@ -206,8 +241,7 @@ namespace NetGore.Db.ClassCreator
                                                                                        Comments.CreateCode.
                                                                                            ConstructorParameterIDataReader)));
                 string drConstructorBody = Formatter.GetCallMethod("ReadValues", DataReaderName);
-                var drConstructorParams = new MethodParameter[]
-                                          { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
+                var drConstructorParams = new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
                 sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, drConstructorParams));
                 sb.AppendLine(Formatter.GetMethodBody(drConstructorBody));
 
@@ -840,12 +874,23 @@ namespace NetGore.Db.ClassCreator
             public static class CreateCode
             {
                 public const string ClassSummary = "Provides a strongly-typed structure for the database table `{0}`.";
+                
                 public const string ColumnArrayField = "Array of the database column names.";
+
+                public const string NonKeyColumnArrayField = "Array of the database column names for columns that are not primary keys.";
+                
+                public const string KeyColumnArrayField = "Array of the database column names for columns that are primary keys.";
 
                 public const string ColumnCount = "The number of columns in the database table that this class represents.";
 
                 public const string ColumnIEnumerableProperty =
                     "Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.";
+
+                public const string NonKeyColumnIEnumerableProperty =
+                    "Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.";
+
+                public const string KeyColumnIEnumerableProperty =
+                    "Gets an IEnumerable of strings containing the names of the database columns that are primary keys.";
 
                 public const string ConstructorParameterIDataReader =
                     "The IDataReader to read the values from. See method ReadValues() for details.";

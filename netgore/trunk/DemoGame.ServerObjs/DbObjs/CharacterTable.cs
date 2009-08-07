@@ -153,6 +153,34 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 }
 }
 /// <summary>
+/// Array of the database column names for columns that are primary keys.
+/// </summary>
+ static  readonly System.String[] _dbColumnsKeys = new string[] {"id" };
+/// <summary>
+/// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+/// </summary>
+public System.Collections.Generic.IEnumerable<System.String> DbKeyColumns
+{
+get
+{
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
+}
+}
+/// <summary>
+/// Array of the database column names for columns that are not primary keys.
+/// </summary>
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"acc", "agi", "armor", "body", "bra", "cash", "defence", "dex", "evade", "exp", "hp", "imm", "int", "level", "map_id", "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "password", "perc", "recov", "regen", "respawn_map", "respawn_x", "respawn_y", "statpoints", "str", "tact", "template_id", "ws", "x", "y" };
+/// <summary>
+/// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+/// </summary>
+public System.Collections.Generic.IEnumerable<System.String> DbNonKeyColumns
+{
+get
+{
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
+}
+}
+/// <summary>
 /// The name of the database table that this class represents.
 /// </summary>
 public const System.String TableName = "character";
