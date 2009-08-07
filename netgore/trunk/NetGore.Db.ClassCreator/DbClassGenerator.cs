@@ -282,6 +282,7 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateMethodGetValue(cd));
                 sb.AppendLine(CreateMethodSetValue(cd));
                 sb.AppendLine(CreateMethodGetColumnData(cd));
+                sb.AppendLine(CreateMethodTryReadValues(cd));
 
                 // ConstEnumDictionary class
                 foreach (ColumnCollection coll in cd.ColumnCollections)
@@ -655,20 +656,53 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        protected string CreateMethodTryReadValuesSwitchString(DbClassData cd, DbColumnInfo column)
+        {
+            StringBuilder sb = new StringBuilder();
+            string reader = DataReaderName + "." + cd.GetDataReaderReadMethodName(column.Type) + Formatter.OpenParameterString + "i" + Formatter.CloseParameterString;
+            sb.AppendLine(cd.GetColumnValueMutator(column, reader));
+            sb.AppendLine("break" + Formatter.EndOfLine);
+            return sb.ToString();
+        }
+
+        protected virtual string CreateMethodTryReadValues(DbClassData cd)
+        {
+            var parameters = new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
+
+            StringBuilder sb = new StringBuilder(2048);
+
+            // Header
+            sb.AppendLine(Formatter.GetXmlComment(Comments.TryReadValues.Summary, null, new KeyValuePair<string, string>[] {
+                new KeyValuePair<string, string>(DataReaderName, Comments.TryReadValues.ParameterDataReader)}));
+            sb.AppendLine(Formatter.GetMethodHeader("TryReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false, false));
+
+            // Body
+            StringBuilder bodySB = new StringBuilder(2048);
+            bodySB.AppendLine("for (int i = 0; i < " + DataReaderName + ".FieldCount; i++)"); // NOTE: Hardcoded language code
+            bodySB.AppendLine(Formatter.OpenBrace);
+            {
+                bodySB.AppendLine(Formatter.GetSwitch(DataReaderName + ".GetName(i)", cd.Columns.Select(x => new KeyValuePair<string, string>("\"" + x.Name + "\"", CreateMethodTryReadValuesSwitchString(cd, x))), null));
+            }
+            bodySB.Append(Formatter.CloseBrace);
+
+            sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
+
+            return sb.ToString();
+        }
+
         protected virtual string CreateMethodReadValues(DbClassData cd)
         {
             var parameters = new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
 
             StringBuilder sb = new StringBuilder(2048);
 
+            // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.ReadValues.Summary, null,
                                                   new KeyValuePair<string, string>(DataReaderName,
                                                                                    Comments.ReadValues.ParameterDataReader)));
 
-            // Header
-            string header = Formatter.GetMethodHeader("ReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false,
-                                                      false);
-            sb.AppendLine(header);
+            sb.AppendLine(Formatter.GetMethodHeader("ReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false,
+                                                      false));
 
             // Body
             StringBuilder bodySB = new StringBuilder(2048);
@@ -911,6 +945,23 @@ namespace NetGore.Db.ClassCreator
 
                 public static readonly string PropertyDbComment = " The database column contains the comment: " +
                                                                   Environment.NewLine + "\"{0}\".";
+            }
+
+            /// <summary>
+            /// Comments used in CreateMethodTryReadValues().
+            /// </summary>
+            public static class TryReadValues
+            {
+                public static readonly string Summary =
+                    "Reads the values from an IDataReader and assigns the read values to this" + Environment.NewLine +
+                    "object's properties. Unlike ReadValues(), this method not only doesn't require" + Environment.NewLine +
+                    "all values to be in the IDataReader, but also does not require the values in" + Environment.NewLine +
+                    "the IDataReader to be a defined field for the table this class represents." + Environment.NewLine +
+                    "Because of this, you need to be careful when using this method because values" + Environment.NewLine +
+                    "can easily be skipped without any indication.";
+
+                public const string ParameterDataReader =
+                    "The IDataReader to read the values from. Must already be ready to be read from.";
             }
 
             /// <summary>
