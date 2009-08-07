@@ -9,56 +9,56 @@ namespace DemoGame.Server.DbObjs
 public interface IMapSpawnTable
 {
 /// <summary>
-/// Gets the value for the database column `amount`.
+/// Gets the value of the database column `amount`.
 /// </summary>
 System.Byte Amount
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `character_id`.
+/// Gets the value of the database column `character_id`.
 /// </summary>
 DemoGame.Server.CharacterID CharacterId
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `height`.
+/// Gets the value of the database column `height`.
 /// </summary>
 System.UInt16 Height
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `id`.
+/// Gets the value of the database column `id`.
 /// </summary>
 DemoGame.Server.MapSpawnValuesID Id
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `map_id`.
+/// Gets the value of the database column `map_id`.
 /// </summary>
 NetGore.MapIndex MapId
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `width`.
+/// Gets the value of the database column `width`.
 /// </summary>
 System.UInt16 Width
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `x`.
+/// Gets the value of the database column `x`.
 /// </summary>
 System.UInt16 X
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `y`.
+/// Gets the value of the database column `y`.
 /// </summary>
 System.UInt16 Y
 {

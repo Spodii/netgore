@@ -9,21 +9,21 @@ namespace DemoGame.Server.DbObjs
 public interface IAllianceAttackableTable
 {
 /// <summary>
-/// Gets the value for the database column `alliance_id`.
+/// Gets the value of the database column `alliance_id`.
 /// </summary>
 DemoGame.Server.AllianceID AllianceId
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `attackable_id`.
+/// Gets the value of the database column `attackable_id`.
 /// </summary>
 DemoGame.Server.AllianceID AttackableId
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `placeholder`.
+/// Gets the value of the database column `placeholder`.
 /// </summary>
 System.Byte Placeholder
 {

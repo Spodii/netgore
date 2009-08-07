@@ -63,6 +63,11 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         public static class CreateCode
         {
+            public const string ColumnCollectionField = "The fields that are used in the column collection `{0}`.";
+
+            public static readonly string ColumnCollectionProperty = "Gets an IEnumerable of strings containing the name of the database" + Environment.NewLine
+                + "columns used in the column collection `{0}`.";
+
             public const string ClassSummary = "Provides a strongly-typed structure for the database table `{0}`.";
 
             public const string ColumnArrayField = "Array of the database column names.";
@@ -85,7 +90,19 @@ namespace NetGore.Db.ClassCreator
             public const string ConstructorParameterIDataReader =
                 "The IDataReader to read the values from. See method ReadValues() for details.";
 
-            public const string InterfaceGetProperty = "Gets the value for the database column `{0}`.";
+            public static readonly string InterfaceCollectionGetter = "Gets the value of the database column in the column collection `{0}`" + Environment.NewLine +
+                "that corresponds to the given key.";
+
+            public static readonly string InterfaceCollectionSetter = "Sets the value of the database column in the column collection `{0}`" + Environment.NewLine +
+                "that corresponds to the given key.";
+
+            public const string InterfaceCollectionReturns = "The value of the database column with the corresponding key.";
+
+            public const string InterfaceCollectionParamKey = "The key that represents the column in this column collection.";
+
+            public const string InterfaceCollectionParamValue = "The value to assign to the column with the corresponding key.";
+
+            public const string InterfaceGetProperty = "Gets the value of the database column `{0}`.";
 
             public const string InterfaceSummary =
                 "Interface for a class that can be used to serialize values to the database table `{0}`.";

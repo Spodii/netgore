@@ -237,10 +237,10 @@ namespace NetGore.Db.ClassCreator
                             continue;
 
                         string columnNamesCode = Formatter.GetStringArrayCode(columnsInCollection.Select(x => x.Name));
-                        // TODO: Add XML comment (field)
+                        sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionField, coll.Name)));
                         sb.AppendLine(Formatter.GetField(privateFieldName, typeof(string[]), MemberVisibilityLevel.Private, columnNamesCode, true, true));
 
-                        // TODO: Add other XML comment (property)
+                        sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionProperty, coll.Name)));
                         sb.AppendLine(Formatter.GetProperty(publicPropertyName, typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
                                                             privateFieldName, false));
                     }
@@ -333,8 +333,15 @@ namespace NetGore.Db.ClassCreator
                         // TODO: ColumnCollection interface comments
                         string name = cd.GetPublicName(coll);
                         MethodParameter keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
+
+                        sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.InterfaceCollectionGetter, Comments.CreateCode.InterfaceCollectionReturns,
+                            new KeyValuePair<string, string>("key", Comments.CreateCode.InterfaceCollectionParamKey)));
                         sb.AppendLine(Formatter.GetInterfaceMethod("Get" + name, coll.ValueType,
                                                                    new MethodParameter[] { keyParameter }));
+
+                        sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.InterfaceCollectionGetter, null,
+                            new KeyValuePair<string, string>("key", Comments.CreateCode.InterfaceCollectionParamKey),
+                            new KeyValuePair<string, string>("value", Comments.CreateCode.InterfaceCollectionParamValue)));
                         sb.AppendLine(Formatter.GetInterfaceMethod("Set" + name, typeof(void),
                                                                    new MethodParameter[]
                                                                    {

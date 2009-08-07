@@ -8,79 +8,107 @@ namespace DemoGame.Server.DbObjs
 /// </summary>
 public interface IItemTemplateTable
 {
+/// <summary>
+/// Gets the value of the database column in the column collection `{0}`
+/// that corresponds to the given <paramref name="key"/>.
+/// </summary>
+/// <param name="key">The <paramref name="key"/> that represents the column in this column collection.</param>
+/// <returns>
+/// The value of the database column with the corresponding <paramref name="key"/>.
+/// </returns>
 System.Int32 GetStat(DemoGame.StatType key);
 
+/// <summary>
+/// Gets the <paramref name="value"/> of the database column in the column collection `{0}`
+/// that corresponds to the given <paramref name="key"/>.
+/// </summary>
+/// <param name="key">The <paramref name="key"/> that represents the column in this column collection.</param>
+/// <param name="value">The <paramref name="value"/> to assign to the column with the corresponding <paramref name="key"/>.</param>
 System.Void SetStat(DemoGame.StatType key, System.Int32 value);
 
 /// <summary>
-/// Gets the value for the database column `description`.
+/// Gets the value of the database column `description`.
 /// </summary>
 System.String Description
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `graphic`.
+/// Gets the value of the database column `graphic`.
 /// </summary>
 System.UInt16 Graphic
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `height`.
+/// Gets the value of the database column `height`.
 /// </summary>
 System.Byte Height
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `hp`.
+/// Gets the value of the database column `hp`.
 /// </summary>
 System.UInt16 Hp
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `id`.
+/// Gets the value of the database column `id`.
 /// </summary>
 DemoGame.Server.ItemTemplateID Id
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `mp`.
+/// Gets the value of the database column `mp`.
 /// </summary>
 System.UInt16 Mp
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `name`.
+/// Gets the value of the database column `name`.
 /// </summary>
 System.String Name
 {
 get;
 }
+/// <summary>
+/// Gets the value of the database column in the column collection `{0}`
+/// that corresponds to the given <paramref name="key"/>.
+/// </summary>
+/// <param name="key">The <paramref name="key"/> that represents the column in this column collection.</param>
+/// <returns>
+/// The value of the database column with the corresponding <paramref name="key"/>.
+/// </returns>
 System.Int32 GetReqStat(DemoGame.StatType key);
 
+/// <summary>
+/// Gets the <paramref name="value"/> of the database column in the column collection `{0}`
+/// that corresponds to the given <paramref name="key"/>.
+/// </summary>
+/// <param name="key">The <paramref name="key"/> that represents the column in this column collection.</param>
+/// <param name="value">The <paramref name="value"/> to assign to the column with the corresponding <paramref name="key"/>.</param>
 System.Void SetReqStat(DemoGame.StatType key, System.Int32 value);
 
 /// <summary>
-/// Gets the value for the database column `type`.
+/// Gets the value of the database column `type`.
 /// </summary>
 System.Byte Type
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `value`.
+/// Gets the value of the database column `value`.
 /// </summary>
 System.Int32 Value
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `width`.
+/// Gets the value of the database column `width`.
 /// </summary>
 System.Byte Width
 {
@@ -135,7 +163,14 @@ get
 return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
 }
 }
+/// <summary>
+/// The fields that are used in the column collection `Stat`.
+/// </summary>
  static  readonly System.String[] _statColumns = new string[] {"agi", "armor", "bra", "defence", "dex", "evade", "imm", "int", "maxhit", "maxhp", "maxmp", "minhit", "perc" };
+/// <summary>
+/// Gets an IEnumerable of strings containing the name of the database
+/// columns used in the column collection `Stat`.
+/// </summary>
 public System.Collections.Generic.IEnumerable<System.String> StatColumns
 {
 get
@@ -143,7 +178,14 @@ get
 return (System.Collections.Generic.IEnumerable<System.String>)_statColumns;
 }
 }
+/// <summary>
+/// The fields that are used in the column collection `ReqStat`.
+/// </summary>
  static  readonly System.String[] _reqStatColumns = new string[] {"reqacc", "reqagi", "reqarmor", "reqbra", "reqdex", "reqevade", "reqimm", "reqint" };
+/// <summary>
+/// Gets an IEnumerable of strings containing the name of the database
+/// columns used in the column collection `ReqStat`.
+/// </summary>
 public System.Collections.Generic.IEnumerable<System.String> ReqStatColumns
 {
 get

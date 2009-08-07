@@ -9,14 +9,14 @@ namespace DemoGame.Server.DbObjs
 public interface IAllianceTable
 {
 /// <summary>
-/// Gets the value for the database column `id`.
+/// Gets the value of the database column `id`.
 /// </summary>
 DemoGame.Server.AllianceID Id
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `name`.
+/// Gets the value of the database column `name`.
 /// </summary>
 System.String Name
 {

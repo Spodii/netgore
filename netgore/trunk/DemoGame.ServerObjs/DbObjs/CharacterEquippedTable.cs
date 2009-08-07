@@ -9,21 +9,21 @@ namespace DemoGame.Server.DbObjs
 public interface ICharacterEquippedTable
 {
 /// <summary>
-/// Gets the value for the database column `character_id`.
+/// Gets the value of the database column `character_id`.
 /// </summary>
 DemoGame.Server.CharacterID CharacterId
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `item_id`.
+/// Gets the value of the database column `item_id`.
 /// </summary>
 DemoGame.Server.ItemID ItemId
 {
 get;
 }
 /// <summary>
-/// Gets the value for the database column `slot`.
+/// Gets the value of the database column `slot`.
 /// </summary>
 System.Byte Slot
 {
