@@ -17,6 +17,21 @@ namespace NetGore.Db
         readonly DbParameterCollection _collection;
 
         /// <summary>
+        /// Gets the number of parameters in this collection.
+        /// </summary>
+        public int Count { get { return _collection.Count; } }
+
+        /// <summary>
+        /// Gets the name of the parameter at the given index.
+        /// </summary>
+        /// <param name="index">Index of the parameter to get the name of.</param>
+        /// <returns>The name of the parameter at the given index.</returns>
+        public string GetParameterName(int index)
+        {
+            return _collection[index].ParameterName;
+        }
+
+        /// <summary>
         /// Gets or sets the parameter's value.
         /// </summary>
         /// <param name="index">The zero-based index of the parameter.</param>
