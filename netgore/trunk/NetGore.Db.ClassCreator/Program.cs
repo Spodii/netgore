@@ -8,18 +8,26 @@ namespace NetGore.Db.ClassCreator
 {
     class Program
     {
+        static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(StatCollectionType statCollectionType)
+        {
+            List<ColumnCollectionItem> columnItems = new List<ColumnCollectionItem>();
+            foreach (var statType in Enum.GetValues(typeof(StatType)).Cast<StatType>())
+            {
+                var dbField = statType.GetDatabaseField(statCollectionType);
+                var item = ColumnCollectionItem.FromEnum(dbField, statType);
+                columnItems.Add(item);
+            }
+
+            return columnItems;
+        }
+
         static void Main(string[] args)
         {
             string outputDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.ServerObjs{1}DbObjs{1}",
                                              AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
-            List<ColumnCollectionItem> columnItems = new List<ColumnCollectionItem>();
-            foreach (var statType in Enum.GetValues(typeof(StatType)).Cast<StatType>())
-            {
-                var dbField = statType.GetDatabaseField(StatCollectionType.Base);
-                var item = ColumnCollectionItem.FromEnum(dbField, statType);
-                columnItems.Add(item);
-            }
+            var baseStatColumns = GetStatColumnCollectionItems(StatCollectionType.Base);
+            var reqStatColumns = GetStatColumnCollectionItems(StatCollectionType.Requirement);
 
             using (MySqlClassGenerator generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
             {
@@ -30,7 +38,11 @@ namespace NetGore.Db.ClassCreator
                 generator.SetDataReaderReadMethod(typeof(float), "GetFloat");
 
                 // Custom column collections
-                generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), "character", columnItems);
+                string[] baseStatTables = new string[] { "character", "character_template", "item", "item_template" };
+                string[] reqStatTables = new string[] { "item", "item_template" };
+
+                generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), baseStatTables, baseStatColumns);
+                generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), reqStatTables, reqStatColumns);
 
                 // Generate
                 generator.Generate("DemoGame.Server.DbObjs", outputDir);
