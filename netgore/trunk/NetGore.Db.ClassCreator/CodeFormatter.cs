@@ -195,6 +195,13 @@ namespace NetGore.Db.ClassCreator
             return GetField(memberName, GetTypeString(type), visibility, value, isReadonly, isStatic);
         }
 
+        public string GetLocalField(string memberName, Type type, string value)
+        {
+            return GetLocalField(memberName, GetTypeString(type), value);
+        }
+
+        public abstract string GetLocalField(string memberName, string type, string value);
+
         public string GetField(string memberName, Type type, MemberVisibilityLevel visibility)
         {
             return GetField(memberName, type, visibility, string.Empty, false, false);

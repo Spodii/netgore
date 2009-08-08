@@ -216,8 +216,10 @@ namespace NetGore.Db.ClassCreator
         /// Gets the code string used for accessing a database DbColumnInfo's value from a DataReader.
         /// </summary>
         /// <param name="column">The DbColumnInfo to get the value from.</param>
+        /// <param name="ordinalFieldName">Name of the local field used to store the ordinal. The ordinal
+        /// must already be assigned to this field.</param>
         /// <returns>The code string used for accessing a database DbColumnInfo's value.</returns>
-        public string GetDataReaderAccessor(DbColumnInfo column)
+        public string GetDataReaderAccessor(DbColumnInfo column, string ordinalFieldName)
         {
             string callMethod = GetDataReaderReadMethodName(column.Type);
 
@@ -228,13 +230,27 @@ namespace NetGore.Db.ClassCreator
             sb.Append(Formatter.GetCast(GetExternalType(column)));
 
             // Accessor
-            sb.Append(DbClassGenerator.DataReaderName + ".");
-            sb.Append(callMethod);
-            sb.Append("(");
+            if (column.Type.IsNullable())
+            {
+                sb.Append(Formatter.OpenParameterString);
+                sb.Append(DbClassGenerator.DataReaderName);
+                sb.Append(".IsDBNull");
+                sb.Append(Formatter.OpenParameterString);
+                sb.Append(ordinalFieldName);
+                sb.Append(Formatter.CloseParameterString);
+                sb.Append(" ? ");
+                sb.Append(Formatter.GetCast(column.Type));
+                sb.Append("null : ");
+            }
             sb.Append(DbClassGenerator.DataReaderName);
-            sb.Append(".GetOrdinal(\"");
-            sb.Append(column.Name);
-            sb.Append("\"))");
+            sb.Append(".");
+            sb.Append(callMethod);
+            sb.Append(Formatter.OpenParameterString);
+            sb.Append(ordinalFieldName);
+            sb.Append(Formatter.CloseParameterString);
+            
+            if (column.Type.IsNullable())
+                sb.Append(Formatter.CloseParameterString);
 
             return sb.ToString();
         }
@@ -246,6 +262,9 @@ namespace NetGore.Db.ClassCreator
         /// <returns>The name of the method used by the DataReader to read the given Type.</returns>
         public string GetDataReaderReadMethodName(Type type)
         {
+            if (type.IsNullable())
+                type = type.GetNullableUnderlyingType();
+
             string callMethod;
             if (_dataReaderReadMethods.TryGetValue(type, out callMethod))
                 return callMethod;

@@ -78,6 +78,12 @@ namespace NetGore.Db.ClassCreator
             foreach (DbColumnInfo column in ret)
             {
                 Type type = GetColumnType(table, column.Name);
+                if (column.Nullable)
+                    type = Type.GetType("System.Nullable`1[" + type.FullName + "]", true);
+
+                if (type == null)
+                    throw new Exception(string.Format("Failed to get the type for column `{0}` on table `{1}`.", column.Name, table));
+
                 column.Type = type;
             }
 

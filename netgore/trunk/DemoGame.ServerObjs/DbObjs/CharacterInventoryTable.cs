@@ -154,8 +154,13 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-CharacterId = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(dataReader.GetOrdinal("character_id"));
-ItemId = (DemoGame.Server.ItemID)(DemoGame.Server.ItemID)dataReader.GetInt32(dataReader.GetOrdinal("item_id"));
+System.Int32 i;
+
+i = dataReader.GetOrdinal("character_id");
+CharacterId = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(i);
+
+i = dataReader.GetOrdinal("item_id");
+ItemId = (DemoGame.Server.ItemID)(DemoGame.Server.ItemID)dataReader.GetInt32(i);
 }
 
 /// <summary>
@@ -273,12 +278,12 @@ for (int i = 0; i < dataReader.FieldCount; i++)
 switch (dataReader.GetName(i))
 {
 case "character_id":
-CharacterId = (DemoGame.Server.CharacterID)dataReader.GetInt32(i);
+CharacterId = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(i);
 break;
 
 
 case "item_id":
-ItemId = (DemoGame.Server.ItemID)dataReader.GetInt32(i);
+ItemId = (DemoGame.Server.ItemID)(DemoGame.Server.ItemID)dataReader.GetInt32(i);
 break;
 
 

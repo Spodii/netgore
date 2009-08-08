@@ -154,8 +154,13 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-Id = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(dataReader.GetOrdinal("id"));
-Name = (System.String)(System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
+System.Int32 i;
+
+i = dataReader.GetOrdinal("id");
+Id = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(i);
+
+i = dataReader.GetOrdinal("name");
+Name = (System.String)(System.String)dataReader.GetString(i);
 }
 
 /// <summary>
@@ -273,12 +278,12 @@ for (int i = 0; i < dataReader.FieldCount; i++)
 switch (dataReader.GetName(i))
 {
 case "id":
-Id = (NetGore.MapIndex)dataReader.GetUInt16(i);
+Id = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(i);
 break;
 
 
 case "name":
-Name = (System.String)dataReader.GetString(i);
+Name = (System.String)(System.String)dataReader.GetString(i);
 break;
 
 
