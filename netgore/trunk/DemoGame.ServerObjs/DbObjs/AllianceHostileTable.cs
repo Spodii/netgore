@@ -25,7 +25,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `placeholder`.
 /// </summary>
-System.Byte Placeholder
+System.Nullable<System.Byte> Placeholder
 {
 get;
 }
@@ -97,7 +97,7 @@ System.Byte _hostileId;
 /// <summary>
 /// The field that maps onto the database column `placeholder`.
 /// </summary>
-System.Byte _placeholder;
+System.Nullable<System.Byte> _placeholder;
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `alliance_id`.
 /// The underlying database type is `tinyint(3) unsigned`.
@@ -133,15 +133,15 @@ this._hostileId = (System.Byte)value;
 /// The underlying database type is `tinyint(3) unsigned`. The database column contains the comment: 
 /// "Unused placeholder column - please do not remove".
 /// </summary>
-public System.Byte Placeholder
+public System.Nullable<System.Byte> Placeholder
 {
 get
 {
-return (System.Byte)_placeholder;
+return (System.Nullable<System.Byte>)_placeholder;
 }
 set
 {
-this._placeholder = (System.Byte)value;
+this._placeholder = (System.Nullable<System.Byte>)value;
 }
 }
 
@@ -157,11 +157,11 @@ public AllianceHostileTable()
 /// <param name="allianceId">The initial value for the corresponding property.</param>
 /// <param name="hostileId">The initial value for the corresponding property.</param>
 /// <param name="placeholder">The initial value for the corresponding property.</param>
-public AllianceHostileTable(DemoGame.Server.AllianceID @allianceId, DemoGame.Server.AllianceID @hostileId, System.Byte @placeholder)
+public AllianceHostileTable(DemoGame.Server.AllianceID @allianceId, DemoGame.Server.AllianceID @hostileId, System.Nullable<System.Byte> @placeholder)
 {
 AllianceId = (DemoGame.Server.AllianceID)@allianceId;
 HostileId = (DemoGame.Server.AllianceID)@hostileId;
-Placeholder = (System.Byte)@placeholder;
+Placeholder = (System.Nullable<System.Byte>)@placeholder;
 }
 /// <summary>
 /// AllianceHostileTable constructor.
@@ -183,9 +183,16 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-AllianceId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(dataReader.GetOrdinal("alliance_id"));
-HostileId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(dataReader.GetOrdinal("hostile_id"));
-Placeholder = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("placeholder"));
+System.Int32 i;
+
+i = dataReader.GetOrdinal("alliance_id");
+AllianceId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
+
+i = dataReader.GetOrdinal("hostile_id");
+HostileId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
+
+i = dataReader.GetOrdinal("placeholder");
+Placeholder = (System.Nullable<System.Byte>)(System.Nullable<System.Byte>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataReader.GetByte(i));
 }
 
 /// <summary>
@@ -209,7 +216,7 @@ public static void CopyValues(IAllianceHostileTable source, System.Collections.G
 {
 dic["@alliance_id"] = (DemoGame.Server.AllianceID)source.AllianceId;
 dic["@hostile_id"] = (DemoGame.Server.AllianceID)source.HostileId;
-dic["@placeholder"] = (System.Byte)source.Placeholder;
+dic["@placeholder"] = (System.Nullable<System.Byte>)source.Placeholder;
 }
 
 /// <summary>
@@ -233,14 +240,14 @@ public static void CopyValues(IAllianceHostileTable source, NetGore.Db.DbParamet
 {
 paramValues["@alliance_id"] = (DemoGame.Server.AllianceID)source.AllianceId;
 paramValues["@hostile_id"] = (DemoGame.Server.AllianceID)source.HostileId;
-paramValues["@placeholder"] = (System.Byte)source.Placeholder;
+paramValues["@placeholder"] = (System.Nullable<System.Byte>)source.Placeholder;
 }
 
 public void CopyValuesFrom(IAllianceHostileTable source)
 {
 AllianceId = (DemoGame.Server.AllianceID)source.AllianceId;
 HostileId = (DemoGame.Server.AllianceID)source.HostileId;
-Placeholder = (System.Byte)source.Placeholder;
+Placeholder = (System.Nullable<System.Byte>)source.Placeholder;
 }
 
 public System.Object GetValue(System.String columnName)
@@ -274,7 +281,7 @@ HostileId = (DemoGame.Server.AllianceID)value;
 break;
 
 case "placeholder":
-Placeholder = (System.Byte)value;
+Placeholder = (System.Nullable<System.Byte>)value;
 break;
 
 default:
@@ -293,7 +300,7 @@ case "hostile_id":
 return new ColumnMetadata("hostile_id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
 
 case "placeholder":
-return new ColumnMetadata("placeholder", "Unused placeholder column - please do not remove", "tinyint(3) unsigned", null, typeof(System.Byte), true, false, false);
+return new ColumnMetadata("placeholder", "Unused placeholder column - please do not remove", "tinyint(3) unsigned", null, typeof(System.Nullable<System.Byte>), true, false, false);
 
 default:
 throw new ArgumentException("Field not found.","fieldName");
@@ -316,17 +323,17 @@ for (int i = 0; i < dataReader.FieldCount; i++)
 switch (dataReader.GetName(i))
 {
 case "alliance_id":
-AllianceId = (DemoGame.Server.AllianceID)dataReader.GetByte(i);
+AllianceId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
 break;
 
 
 case "hostile_id":
-HostileId = (DemoGame.Server.AllianceID)dataReader.GetByte(i);
+HostileId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
 break;
 
 
 case "placeholder":
-Placeholder = (System.Byte)dataReader.GetByte(i);
+Placeholder = (System.Nullable<System.Byte>)(System.Nullable<System.Byte>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataReader.GetByte(i));
 break;
 
 

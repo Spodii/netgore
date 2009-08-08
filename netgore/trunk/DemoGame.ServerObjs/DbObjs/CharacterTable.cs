@@ -261,7 +261,7 @@ System.String _password;
 /// <summary>
 /// The field that maps onto the database column `respawn_map`.
 /// </summary>
-System.UInt16 _respawnMap;
+System.Nullable<System.UInt16> _respawnMap;
 /// <summary>
 /// The field that maps onto the database column `respawn_x`.
 /// </summary>
@@ -277,7 +277,7 @@ System.UInt32 _statpoints;
 /// <summary>
 /// The field that maps onto the database column `template_id`.
 /// </summary>
-System.UInt16 _templateId;
+System.Nullable<System.UInt16> _templateId;
 /// <summary>
 /// The field that maps onto the database column `x`.
 /// </summary>
@@ -456,7 +456,7 @@ return (NetGore.MapIndex)_respawnMap;
 }
 set
 {
-this._respawnMap = (System.UInt16)value;
+this._respawnMap = (System.Nullable<System.UInt16>)value;
 }
 }
 /// <summary>
@@ -516,7 +516,7 @@ return (DemoGame.Server.CharacterTemplateID)_templateId;
 }
 set
 {
-this._templateId = (System.UInt16)value;
+this._templateId = (System.Nullable<System.UInt16>)value;
 }
 }
 /// <summary>
@@ -654,42 +654,115 @@ CopyValuesFrom(source);
 /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
 public void ReadValues(System.Data.IDataReader dataReader)
 {
-SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("acc")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("agi")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("armor")));
-Body = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("body"));
-SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("bra")));
-Cash = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("cash"));
-SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("defence")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("dex")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("evade")));
-Exp = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("exp"));
-Hp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("hp"));
-Id = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(dataReader.GetOrdinal("id"));
-SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("imm")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("int")));
-Level = (System.Byte)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("level"));
-MapId = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(dataReader.GetOrdinal("map_id"));
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("maxhit")));
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxhp")));
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("maxmp")));
-SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("minhit")));
-Mp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(dataReader.GetOrdinal("mp"));
-Name = (System.String)(System.String)dataReader.GetString(dataReader.GetOrdinal("name"));
-Password = (System.String)(System.String)dataReader.GetString(dataReader.GetOrdinal("password"));
-SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("perc")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("recov")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("regen")));
-RespawnMap = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(dataReader.GetOrdinal("respawn_map"));
-RespawnX = (System.Single)(System.Single)dataReader.GetFloat(dataReader.GetOrdinal("respawn_x"));
-RespawnY = (System.Single)(System.Single)dataReader.GetFloat(dataReader.GetOrdinal("respawn_y"));
-Statpoints = (System.UInt32)(System.UInt32)dataReader.GetUInt32(dataReader.GetOrdinal("statpoints"));
-SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("str")));
-SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("tact")));
-TemplateId = (DemoGame.Server.CharacterTemplateID)(DemoGame.Server.CharacterTemplateID)dataReader.GetUInt16(dataReader.GetOrdinal("template_id"));
-SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)(System.Byte)dataReader.GetByte(dataReader.GetOrdinal("ws")));
-X = (System.Single)(System.Single)dataReader.GetFloat(dataReader.GetOrdinal("x"));
-Y = (System.Single)(System.Single)dataReader.GetFloat(dataReader.GetOrdinal("y"));
+System.Int32 i;
+
+i = dataReader.GetOrdinal("acc");
+SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("agi");
+SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("armor");
+SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("body");
+Body = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+
+i = dataReader.GetOrdinal("bra");
+SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("cash");
+Cash = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+
+i = dataReader.GetOrdinal("defence");
+SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("dex");
+SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("evade");
+SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("exp");
+Exp = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+
+i = dataReader.GetOrdinal("hp");
+Hp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+
+i = dataReader.GetOrdinal("id");
+Id = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(i);
+
+i = dataReader.GetOrdinal("imm");
+SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("int");
+SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("level");
+Level = (System.Byte)(System.Byte)dataReader.GetByte(i);
+
+i = dataReader.GetOrdinal("map_id");
+MapId = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(i);
+
+i = dataReader.GetOrdinal("maxhit");
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("maxhp");
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.UInt16)dataReader.GetUInt16(i));
+
+i = dataReader.GetOrdinal("maxmp");
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.UInt16)dataReader.GetUInt16(i));
+
+i = dataReader.GetOrdinal("minhit");
+SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("mp");
+Mp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+
+i = dataReader.GetOrdinal("name");
+Name = (System.String)(System.String)dataReader.GetString(i);
+
+i = dataReader.GetOrdinal("password");
+Password = (System.String)(System.String)dataReader.GetString(i);
+
+i = dataReader.GetOrdinal("perc");
+SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("recov");
+SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("regen");
+SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("respawn_map");
+RespawnMap = (NetGore.MapIndex)(NetGore.MapIndex)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+
+i = dataReader.GetOrdinal("respawn_x");
+RespawnX = (System.Single)(System.Single)dataReader.GetFloat(i);
+
+i = dataReader.GetOrdinal("respawn_y");
+RespawnY = (System.Single)(System.Single)dataReader.GetFloat(i);
+
+i = dataReader.GetOrdinal("statpoints");
+Statpoints = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
+
+i = dataReader.GetOrdinal("str");
+SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("tact");
+SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("template_id");
+TemplateId = (DemoGame.Server.CharacterTemplateID)(DemoGame.Server.CharacterTemplateID)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+
+i = dataReader.GetOrdinal("ws");
+SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)(System.Byte)dataReader.GetByte(i));
+
+i = dataReader.GetOrdinal("x");
+X = (System.Single)(System.Single)dataReader.GetFloat(i);
+
+i = dataReader.GetOrdinal("y");
+Y = (System.Single)(System.Single)dataReader.GetFloat(i);
 }
 
 /// <summary>
@@ -1199,7 +1272,7 @@ case "regen":
 return new ColumnMetadata("regen", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
 
 case "respawn_map":
-return new ColumnMetadata("respawn_map", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, true);
+return new ColumnMetadata("respawn_map", "", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "respawn_x":
 return new ColumnMetadata("respawn_x", "", "float", null, typeof(System.Single), false, false, false);
@@ -1217,7 +1290,7 @@ case "tact":
 return new ColumnMetadata("tact", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
 
 case "template_id":
-return new ColumnMetadata("template_id", "", "smallint(5) unsigned", null, typeof(System.UInt16), true, false, true);
+return new ColumnMetadata("template_id", "", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "ws":
 return new ColumnMetadata("ws", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
@@ -1249,182 +1322,182 @@ for (int i = 0; i < dataReader.FieldCount; i++)
 switch (dataReader.GetName(i))
 {
 case "acc":
-SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "agi":
-SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "armor":
-SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "body":
-Body = (System.UInt16)dataReader.GetUInt16(i);
+Body = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 break;
 
 
 case "bra":
-SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "cash":
-Cash = (System.UInt32)dataReader.GetUInt32(i);
+Cash = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 break;
 
 
 case "defence":
-SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "dex":
-SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "evade":
-SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "exp":
-Exp = (System.UInt32)dataReader.GetUInt32(i);
+Exp = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 break;
 
 
 case "hp":
-Hp = (System.UInt16)dataReader.GetUInt16(i);
+Hp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 break;
 
 
 case "id":
-Id = (DemoGame.Server.CharacterID)dataReader.GetInt32(i);
+Id = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(i);
 break;
 
 
 case "imm":
-SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "int":
-SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "level":
-Level = (System.Byte)dataReader.GetByte(i);
+Level = (System.Byte)(System.Byte)dataReader.GetByte(i);
 break;
 
 
 case "map_id":
-MapId = (NetGore.MapIndex)dataReader.GetUInt16(i);
+MapId = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(i);
 break;
 
 
 case "maxhit":
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "maxhp":
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)dataReader.GetUInt16(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.UInt16)dataReader.GetUInt16(i));
 break;
 
 
 case "maxmp":
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)dataReader.GetUInt16(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.UInt16)dataReader.GetUInt16(i));
 break;
 
 
 case "minhit":
-SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "mp":
-Mp = (System.UInt16)dataReader.GetUInt16(i);
+Mp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 break;
 
 
 case "name":
-Name = (System.String)dataReader.GetString(i);
+Name = (System.String)(System.String)dataReader.GetString(i);
 break;
 
 
 case "password":
-Password = (System.String)dataReader.GetString(i);
+Password = (System.String)(System.String)dataReader.GetString(i);
 break;
 
 
 case "perc":
-SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "recov":
-SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "regen":
-SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "respawn_map":
-RespawnMap = (NetGore.MapIndex)dataReader.GetUInt16(i);
+RespawnMap = (NetGore.MapIndex)(NetGore.MapIndex)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 break;
 
 
 case "respawn_x":
-RespawnX = (System.Single)dataReader.GetFloat(i);
+RespawnX = (System.Single)(System.Single)dataReader.GetFloat(i);
 break;
 
 
 case "respawn_y":
-RespawnY = (System.Single)dataReader.GetFloat(i);
+RespawnY = (System.Single)(System.Single)dataReader.GetFloat(i);
 break;
 
 
 case "statpoints":
-Statpoints = (System.UInt32)dataReader.GetUInt32(i);
+Statpoints = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 break;
 
 
 case "str":
-SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "tact":
-SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "template_id":
-TemplateId = (DemoGame.Server.CharacterTemplateID)dataReader.GetUInt16(i);
+TemplateId = (DemoGame.Server.CharacterTemplateID)(DemoGame.Server.CharacterTemplateID)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 break;
 
 
 case "ws":
-SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)dataReader.GetByte(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)(System.Byte)dataReader.GetByte(i));
 break;
 
 
 case "x":
-X = (System.Single)dataReader.GetFloat(i);
+X = (System.Single)(System.Single)dataReader.GetFloat(i);
 break;
 
 
 case "y":
-Y = (System.Single)dataReader.GetFloat(i);
+Y = (System.Single)(System.Single)dataReader.GetFloat(i);
 break;
 
 

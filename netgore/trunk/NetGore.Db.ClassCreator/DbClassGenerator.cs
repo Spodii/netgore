@@ -7,8 +7,6 @@ using System.Linq;
 using System.Text;
 using NetGore.Db.ClassCreator.Properties;
 
-// TODO: I don't think I have valid support for nullable types
-
 namespace NetGore.Db.ClassCreator
 {
     public abstract class DbClassGenerator : IDisposable
@@ -605,7 +603,7 @@ namespace NetGore.Db.ClassCreator
             else
                 sb.Append(column.DefaultValue + Formatter.ParameterSpacer);
             
-            sb.Append("typeof(" + column.Type + ")" + Formatter.ParameterSpacer);
+            sb.Append("typeof(" + Formatter.GetTypeString(column.Type) + ")" + Formatter.ParameterSpacer);
             sb.Append(column.Nullable.ToString().ToLower() + Formatter.ParameterSpacer);
             sb.Append((column.KeyType == DbColumnKeyType.Primary).ToString().ToLower() + Formatter.ParameterSpacer);
             sb.Append((column.KeyType == DbColumnKeyType.Foreign).ToString().ToLower());
@@ -726,8 +724,7 @@ namespace NetGore.Db.ClassCreator
         protected string CreateMethodTryReadValuesSwitchString(DbClassData cd, DbColumnInfo column)
         {
             StringBuilder sb = new StringBuilder();
-            string reader = DataReaderName + "." + cd.GetDataReaderReadMethodName(column.Type) + Formatter.OpenParameterString + "i" + Formatter.CloseParameterString;
-            sb.AppendLine(cd.GetColumnValueMutator(column, reader));
+            sb.AppendLine(cd.GetColumnValueMutator(column, cd.GetDataReaderAccessor(column, "i")));
             sb.AppendLine("break" + Formatter.EndOfLine);
             return sb.ToString();
         }
@@ -773,11 +770,15 @@ namespace NetGore.Db.ClassCreator
 
             // Body
             StringBuilder bodySB = new StringBuilder(2048);
+            bodySB.AppendLine(Formatter.GetLocalField("i", typeof(int), null));
+            bodySB.AppendLine();
             foreach (DbColumnInfo column in cd.Columns)
             {
-                string right = cd.GetDataReaderAccessor(column);
-                string line = cd.GetColumnValueMutator(column, right);
-                bodySB.AppendLine(line);
+                bodySB.AppendLine(Formatter.GetSetValue("i", DataReaderName + ".GetOrdinal(\"" + column.Name + "\")", false, false));
+
+                string right = cd.GetDataReaderAccessor(column, "i");
+                bodySB.AppendLine(cd.GetColumnValueMutator(column, right));
+                bodySB.AppendLine();
             }
 
             sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));

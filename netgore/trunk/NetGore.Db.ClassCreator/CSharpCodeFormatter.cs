@@ -145,6 +145,23 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        public override string GetLocalField(string memberName, string type, string value)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(type);
+            sb.Append(" ");
+            sb.Append(memberName);
+
+            if (!string.IsNullOrEmpty(value))
+            {
+                sb.Append(" = ");
+                sb.Append(value);
+            }
+
+            sb.Append(EndOfLine);
+            return sb.ToString();
+        }
+
         public override string GetInterface(string interfaceName, MemberVisibilityLevel visibility)
         {
             return GetVisibilityLevel(visibility) + " interface " + interfaceName;
