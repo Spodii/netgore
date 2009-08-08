@@ -19,12 +19,11 @@ namespace NetGore.Db.ClassCreator
         public readonly string TableName;
         readonly IEnumerable<CustomTypeMapping> _customTypes;
         readonly Dictionary<Type, string> _dataReaderReadMethods;
+        readonly IDictionary<DbColumnInfo, string> _externalTypes = new Dictionary<DbColumnInfo, string>();
 
         readonly IDictionary<DbColumnInfo, string> _parameterNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
-
-        readonly IDictionary<DbColumnInfo, string> _externalTypes = new Dictionary<DbColumnInfo, string>();
 
         public DbClassData(string tableName, IEnumerable<DbColumnInfo> columns, CodeFormatter formatter,
                            Dictionary<Type, string> dataReaderReadMethods, IEnumerable<ColumnCollection> columnCollections,
@@ -61,7 +60,8 @@ namespace NetGore.Db.ClassCreator
             {
                 string columnName = column.Name;
                 string externalType;
-                var customType = _customTypes.FirstOrDefault(x => x.Columns.Contains(columnName, StringComparer.OrdinalIgnoreCase));
+                CustomTypeMapping customType =
+                    _customTypes.FirstOrDefault(x => x.Columns.Contains(columnName, StringComparer.OrdinalIgnoreCase));
                 if (customType != null)
                     externalType = customType.CustomType;
                 else
@@ -73,8 +73,10 @@ namespace NetGore.Db.ClassCreator
             // Populate the naming dictionaries
             foreach (DbColumnInfo column in columns)
             {
-                _privateNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, GetInternalType(column)));
-                _publicNames.Add(column, formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, GetExternalType(column)));
+                _privateNames.Add(column,
+                                  formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, GetInternalType(column)));
+                _publicNames.Add(column,
+                                 formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, GetExternalType(column)));
                 _parameterNames.Add(column, formatter.GetParameterName(column.Name, column.Type));
             }
         }
@@ -248,7 +250,7 @@ namespace NetGore.Db.ClassCreator
             sb.Append(Formatter.OpenParameterString);
             sb.Append(ordinalFieldName);
             sb.Append(Formatter.CloseParameterString);
-            
+
             if (column.Type.IsNullable())
                 sb.Append(Formatter.CloseParameterString);
 
@@ -270,6 +272,26 @@ namespace NetGore.Db.ClassCreator
                 return callMethod;
 
             return "Get" + type.Name;
+        }
+
+        /// <summary>
+        /// Gets a string for the Type used externally for a given column.
+        /// </summary>
+        /// <param name="dbColumn">The DbColumnInfo to get the external type for.</param>
+        /// <returns>A string for the Type used externally for a given column.</returns>
+        public string GetExternalType(DbColumnInfo dbColumn)
+        {
+            return _externalTypes[dbColumn];
+        }
+
+        /// <summary>
+        /// Gets a string for the Type used internally for a given column.
+        /// </summary>
+        /// <param name="dbColumn">The DbColumnInfo to get the internal type for.</param>
+        /// <returns>A string for the Type used internally for a given column.</returns>
+        public string GetInternalType(DbColumnInfo dbColumn)
+        {
+            return Formatter.GetTypeString(dbColumn.Type);
         }
 
         /// <summary>
@@ -305,26 +327,6 @@ namespace NetGore.Db.ClassCreator
         public string GetPublicName(DbColumnInfo dbColumn)
         {
             return _publicNames[dbColumn];
-        }
-
-        /// <summary>
-        /// Gets a string for the Type used externally for a given column.
-        /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the external type for.</param>
-        /// <returns>A string for the Type used externally for a given column.</returns>
-        public string GetExternalType(DbColumnInfo dbColumn)
-        {
-            return _externalTypes[dbColumn];
-        }
-
-        /// <summary>
-        /// Gets a string for the Type used internally for a given column.
-        /// </summary>
-        /// <param name="dbColumn">The DbColumnInfo to get the internal type for.</param>
-        /// <returns>A string for the Type used internally for a given column.</returns>
-        public string GetInternalType(DbColumnInfo dbColumn)
-        {
-            return Formatter.GetTypeString(dbColumn.Type);
         }
 
         public string GetPublicName(ColumnCollection columnCollection)

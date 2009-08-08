@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -10,11 +9,6 @@ namespace NetGore.Db.ClassCreator
     /// </summary>
     public class CustomTypeMapping
     {
-        /// <summary>
-        /// The tables to use this mapping on.
-        /// </summary>
-        public readonly IEnumerable<string> Tables;
-
         /// <summary>
         /// The columns to use this mapping on.
         /// </summary>
@@ -25,6 +19,11 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         public readonly string CustomType;
 
+        /// <summary>
+        /// The tables to use this mapping on.
+        /// </summary>
+        public readonly IEnumerable<string> Tables;
+
         public CustomTypeMapping(IEnumerable<string> tables, IEnumerable<string> columns, string customType)
         {
             Tables = tables;
@@ -32,8 +31,8 @@ namespace NetGore.Db.ClassCreator
             CustomType = customType;
         }
 
-        public CustomTypeMapping(IEnumerable<string> tables, IEnumerable<string> columns, Type customType, CodeFormatter formatter) : 
-            this(tables, columns, formatter.GetTypeString(customType))
+        public CustomTypeMapping(IEnumerable<string> tables, IEnumerable<string> columns, Type customType, CodeFormatter formatter)
+            : this(tables, columns, formatter.GetTypeString(customType))
         {
         }
     }

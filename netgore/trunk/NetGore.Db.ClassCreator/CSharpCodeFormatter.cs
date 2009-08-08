@@ -7,45 +7,14 @@ namespace NetGore.Db.ClassCreator
 {
     public class CSharpCodeFormatter : CodeFormatter
     {
-        public override string GetTypeString(Type type)
-        {
-            if (type == typeof(void))
-                return "void";
-
-            return base.GetTypeString(type);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, generates the code for an array of string literals.
-        /// </summary>
-        /// <param name="strings">The string literals to include.</param>
-        /// <returns>The code for an array of string literals.</returns>
-        public override string GetStringArrayCode(IEnumerable<string> strings)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("new string[] ");
-
-            sb.Append(OpenBrace);
-            foreach (string s in strings)
-            {
-                sb.Append("\"");
-                sb.Append(s);
-                sb.Append("\"");
-                sb.Append(ParameterSpacer);
-            }
-
-            if (strings.Count() > 0)
-                sb.Length -= ParameterSpacer.Length;
-
-            sb.Append(" ");
-            sb.Append(CloseBrace);
-
-            return sb.ToString();
-        }
-
         public override string CloseBrace
         {
             get { return "}"; }
+        }
+
+        public override string CloseIndexer
+        {
+            get { return "]"; }
         }
 
         public override string EndOfLine
@@ -66,11 +35,6 @@ namespace NetGore.Db.ClassCreator
         public override string OpenIndexer
         {
             get { return "["; }
-        }
-
-        public override string CloseIndexer
-        {
-            get { return "]"; }
         }
 
         public override string ParameterSpacer
@@ -145,6 +109,11 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        public override string GetInterface(string interfaceName, MemberVisibilityLevel visibility)
+        {
+            return GetVisibilityLevel(visibility) + " interface " + interfaceName;
+        }
+
         public override string GetLocalField(string memberName, string type, string value)
         {
             StringBuilder sb = new StringBuilder();
@@ -162,14 +131,37 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        public override string GetInterface(string interfaceName, MemberVisibilityLevel visibility)
-        {
-            return GetVisibilityLevel(visibility) + " interface " + interfaceName;
-        }
-
         public override string GetNamespace(string namespaceName)
         {
             return "namespace " + namespaceName;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, generates the code for an array of string literals.
+        /// </summary>
+        /// <param name="strings">The string literals to include.</param>
+        /// <returns>The code for an array of string literals.</returns>
+        public override string GetStringArrayCode(IEnumerable<string> strings)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("new string[] ");
+
+            sb.Append(OpenBrace);
+            foreach (string s in strings)
+            {
+                sb.Append("\"");
+                sb.Append(s);
+                sb.Append("\"");
+                sb.Append(ParameterSpacer);
+            }
+
+            if (strings.Count() > 0)
+                sb.Length -= ParameterSpacer.Length;
+
+            sb.Append(" ");
+            sb.Append(CloseBrace);
+
+            return sb.ToString();
         }
 
         public override string GetSwitch(string switchOn, IEnumerable<KeyValuePair<string, string>> switches, string defaultCode)
@@ -201,6 +193,14 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(CloseBrace);
 
             return sb.ToString();
+        }
+
+        public override string GetTypeString(Type type)
+        {
+            if (type == typeof(void))
+                return "void";
+
+            return base.GetTypeString(type);
         }
 
         public override string GetUsing(string namespaceName)
