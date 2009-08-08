@@ -24,7 +24,7 @@ System.Int32 GetStat(DemoGame.StatType key);
 /// </summary>
 /// <param name="key">The key that represents the column in this column collection.</param>
 /// <param name="value">The value to assign to the column with the corresponding <paramref name="key"/>.</param>
-System.Void SetStat(DemoGame.StatType key, System.Int32 value);
+void SetStat(DemoGame.StatType key, System.Int32 value);
 
 /// <summary>
 /// Gets the value of the database column `amount`.
@@ -98,7 +98,7 @@ System.Int32 GetReqStat(DemoGame.StatType key);
 /// </summary>
 /// <param name="key">The key that represents the column in this column collection.</param>
 /// <param name="value">The value to assign to the column with the corresponding <paramref name="key"/>.</param>
-System.Void SetReqStat(DemoGame.StatType key, System.Int32 value);
+void SetReqStat(DemoGame.StatType key, System.Int32 value);
 
 /// <summary>
 /// Gets the value of the database column `type`.

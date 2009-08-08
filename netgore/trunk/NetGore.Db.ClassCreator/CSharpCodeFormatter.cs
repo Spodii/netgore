@@ -7,6 +7,14 @@ namespace NetGore.Db.ClassCreator
 {
     public class CSharpCodeFormatter : CodeFormatter
     {
+        public override string GetTypeString(Type type)
+        {
+            if (type == typeof(void))
+                return "void";
+
+            return base.GetTypeString(type);
+        }
+
         /// <summary>
         /// When overridden in the derived class, generates the code for an array of string literals.
         /// </summary>
