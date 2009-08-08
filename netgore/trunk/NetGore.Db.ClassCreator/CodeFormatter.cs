@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,13 +15,6 @@ namespace NetGore.Db.ClassCreator
             get { return _aliases; }
         }
 
-        /// <summary>
-        /// When overridden in the derived class, generates the code for an array of string literals.
-        /// </summary>
-        /// <param name="strings">The string literals to include.</param>
-        /// <returns>The code for an array of string literals.</returns>
-        public abstract string GetStringArrayCode(IEnumerable<string> strings);
-
         public virtual string ClassMemberQualifier
         {
             get { return "this."; }
@@ -33,6 +26,8 @@ namespace NetGore.Db.ClassCreator
         {
             get { return ">"; }
         }
+
+        public abstract string CloseIndexer { get; }
 
         public virtual string CloseParameterString
         {
@@ -48,13 +43,12 @@ namespace NetGore.Db.ClassCreator
 
         public abstract string OpenBrace { get; }
 
-        public abstract string OpenIndexer { get; }
-        public abstract string CloseIndexer { get; }
-
         public virtual string OpenGeneric
         {
             get { return "<"; }
         }
+
+        public abstract string OpenIndexer { get; }
 
         public virtual string OpenParameterString
         {
@@ -178,6 +172,26 @@ namespace NetGore.Db.ClassCreator
             return RemoveSeparatorCharacters(tableName) + "Table";
         }
 
+        public virtual string GetComplexTypeString(Type baseType, params Type[] genericTypes)
+        {
+            string baseTypeWithoutGenerics = GetTypeString(baseType);
+            int start = baseTypeWithoutGenerics.LastIndexOf(OpenGeneric);
+            baseTypeWithoutGenerics = baseTypeWithoutGenerics.Substring(0, start);
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append(baseTypeWithoutGenerics);
+            sb.Append(OpenGeneric);
+            for (int i = 0; i < genericTypes.Length; i++)
+            {
+                sb.Append(GetTypeString(genericTypes[i]));
+                sb.Append(ParameterSpacer);
+            }
+            sb.Length -= ParameterSpacer.Length;
+            sb.Append(CloseGeneric);
+
+            return sb.ToString();
+        }
+
         public abstract string GetConstField(string fieldName, Type type, MemberVisibilityLevel visibility, string value);
 
         public virtual string GetConstructorHeader(string className, MemberVisibilityLevel visibility,
@@ -189,18 +203,11 @@ namespace NetGore.Db.ClassCreator
         public abstract string GetField(string memberName, string type, MemberVisibilityLevel visibility, string value,
                                         bool isReadonly, bool isStatic);
 
-        public string GetField(string memberName, Type type, MemberVisibilityLevel visibility, string value,
-                                        bool isReadonly, bool isStatic)
+        public string GetField(string memberName, Type type, MemberVisibilityLevel visibility, string value, bool isReadonly,
+                               bool isStatic)
         {
             return GetField(memberName, GetTypeString(type), visibility, value, isReadonly, isStatic);
         }
-
-        public string GetLocalField(string memberName, Type type, string value)
-        {
-            return GetLocalField(memberName, GetTypeString(type), value);
-        }
-
-        public abstract string GetLocalField(string memberName, string type, string value);
 
         public string GetField(string memberName, Type type, MemberVisibilityLevel visibility)
         {
@@ -241,36 +248,6 @@ namespace NetGore.Db.ClassCreator
 
         public abstract string GetInterface(string interfaceName, MemberVisibilityLevel visibility);
 
-        public virtual string GetInterfaceName(string tableName)
-        {
-            return "I" + GetClassName(tableName);
-        }
-
-        public virtual string GetComplexTypeString(Type baseType, params Type[] genericTypes)
-        {
-            string baseTypeWithoutGenerics = GetTypeString(baseType);
-            int start = baseTypeWithoutGenerics.LastIndexOf(OpenGeneric);
-            baseTypeWithoutGenerics = baseTypeWithoutGenerics.Substring(0, start);
-
-            StringBuilder sb = new StringBuilder();
-            sb.Append(baseTypeWithoutGenerics);
-            sb.Append(OpenGeneric);
-            for (int i = 0; i < genericTypes.Length; i++)
-            {
-                sb.Append(GetTypeString(genericTypes[i]));
-                sb.Append(ParameterSpacer);
-            }
-            sb.Length -= ParameterSpacer.Length;
-            sb.Append(CloseGeneric);
-
-            return sb.ToString();
-        }
-
-        public string GetInterfaceProperty(string name, Type returnType, bool hasSetter)
-        {
-            return GetInterfaceProperty(name, GetTypeString(returnType), hasSetter);
-        }
-
         public virtual string GetInterfaceMethod(string name, string returnType, params MethodParameter[] parameters)
         {
             StringBuilder sb = new StringBuilder();
@@ -288,6 +265,16 @@ namespace NetGore.Db.ClassCreator
             return GetInterfaceMethod(name, GetTypeString(returnType), parameters);
         }
 
+        public virtual string GetInterfaceName(string tableName)
+        {
+            return "I" + GetClassName(tableName);
+        }
+
+        public string GetInterfaceProperty(string name, Type returnType, bool hasSetter)
+        {
+            return GetInterfaceProperty(name, GetTypeString(returnType), hasSetter);
+        }
+
         public virtual string GetInterfaceProperty(string name, string returnType, bool hasSetter)
         {
             StringBuilder sb = new StringBuilder();
@@ -302,6 +289,13 @@ namespace NetGore.Db.ClassCreator
 
             return sb.ToString();
         }
+
+        public string GetLocalField(string memberName, Type type, string value)
+        {
+            return GetLocalField(memberName, GetTypeString(type), value);
+        }
+
+        public abstract string GetLocalField(string memberName, string type, string value);
 
         public virtual string GetMethodBody(string code)
         {
@@ -400,24 +394,17 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        public string GetProperty(string propertyName, Type externalType, Type internalType, MemberVisibilityLevel getterVisibility,
-                                          MemberVisibilityLevel? setterVisibility, string member, bool isVirtual, bool isStatic)
+        public string GetProperty(string propertyName, Type externalType, Type internalType,
+                                  MemberVisibilityLevel getterVisibility, MemberVisibilityLevel? setterVisibility, string member,
+                                  bool isVirtual, bool isStatic)
         {
-            return GetProperty(propertyName, GetTypeString(externalType), GetTypeString(internalType), getterVisibility, setterVisibility, member, isVirtual, isStatic);
+            return GetProperty(propertyName, GetTypeString(externalType), GetTypeString(internalType), getterVisibility,
+                               setterVisibility, member, isVirtual, isStatic);
         }
 
-        /// <summary>
-        /// When overridden in the derived class, generates the code for a switch.
-        /// </summary>
-        /// <param name="switchOn">The code to switch on.</param>
-        /// <param name="switches">The switches to use, where the key is the switch's value, and the value is the
-        /// code used for the switch.</param>
-        /// <param name="defaultCode">The code to use on a default. If null, no default switch will be made.</param>
-        /// <returns>The code for a switch.</returns>
-        public abstract string GetSwitch(string switchOn, IEnumerable<KeyValuePair<string, string>> switches, string defaultCode);
-
-        public virtual string GetProperty(string propertyName, string externalType, string internalType, MemberVisibilityLevel getterVisibility,
-                                          MemberVisibilityLevel? setterVisibility, string member, bool isVirtual, bool isStatic)
+        public virtual string GetProperty(string propertyName, string externalType, string internalType,
+                                          MemberVisibilityLevel getterVisibility, MemberVisibilityLevel? setterVisibility,
+                                          string member, bool isVirtual, bool isStatic)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(GetMethodNameAndVisibility(propertyName, getterVisibility, externalType, isVirtual, isStatic));
@@ -485,6 +472,23 @@ namespace NetGore.Db.ClassCreator
         {
             return GetSetValue(leftSide, rightSide, leftIsClassMember, rightIsClassMember, string.Empty);
         }
+
+        /// <summary>
+        /// When overridden in the derived class, generates the code for an array of string literals.
+        /// </summary>
+        /// <param name="strings">The string literals to include.</param>
+        /// <returns>The code for an array of string literals.</returns>
+        public abstract string GetStringArrayCode(IEnumerable<string> strings);
+
+        /// <summary>
+        /// When overridden in the derived class, generates the code for a switch.
+        /// </summary>
+        /// <param name="switchOn">The code to switch on.</param>
+        /// <param name="switches">The switches to use, where the key is the switch's value, and the value is the
+        /// code used for the switch.</param>
+        /// <param name="defaultCode">The code to use on a default. If null, no default switch will be made.</param>
+        /// <returns>The code for a switch.</returns>
+        public abstract string GetSwitch(string switchOn, IEnumerable<KeyValuePair<string, string>> switches, string defaultCode);
 
         public virtual string GetTypeString(Type type)
         {

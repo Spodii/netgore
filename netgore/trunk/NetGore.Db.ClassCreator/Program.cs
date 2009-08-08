@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,11 +10,11 @@ namespace NetGore.Db.ClassCreator
     {
         static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(StatCollectionType statCollectionType)
         {
-            List<ColumnCollectionItem> columnItems = new List<ColumnCollectionItem>();
-            foreach (var statType in Enum.GetValues(typeof(StatType)).Cast<StatType>())
+            var columnItems = new List<ColumnCollectionItem>();
+            foreach (StatType statType in Enum.GetValues(typeof(StatType)).Cast<StatType>())
             {
-                var dbField = statType.GetDatabaseField(statCollectionType);
-                var item = ColumnCollectionItem.FromEnum(dbField, statType);
+                string dbField = statType.GetDatabaseField(statCollectionType);
+                ColumnCollectionItem item = ColumnCollectionItem.FromEnum(dbField, statType);
                 columnItems.Add(item);
             }
 
@@ -39,8 +39,8 @@ namespace NetGore.Db.ClassCreator
                 generator.SetDataReaderReadMethod(typeof(float), "GetFloat");
 
                 // Custom column collections
-                string[] baseStatTables = new string[] { "character", "character_template", "item", "item_template" };
-                string[] reqStatTables = new string[] { "item", "item_template" };
+                var baseStatTables = new string[] { "character", "character_template", "item", "item_template" };
+                var reqStatTables = new string[] { "item", "item_template" };
 
                 generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), baseStatTables, baseStatColumns);
                 generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), reqStatTables, reqStatColumns);

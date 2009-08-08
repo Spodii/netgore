@@ -1,396 +1,378 @@
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using NetGore.Db;
+
 namespace DemoGame.Server.DbObjs
 {
-/// <summary>
-/// Interface for a class that can be used to serialize values to the database table `alliance_hostile`.
-/// </summary>
-public interface IAllianceHostileTable
-{
-/// <summary>
-/// Gets the value of the database column `alliance_id`.
-/// </summary>
-DemoGame.Server.AllianceID AllianceId
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `hostile_id`.
-/// </summary>
-DemoGame.Server.AllianceID HostileId
-{
-get;
-}
-/// <summary>
-/// Gets the value of the database column `placeholder`.
-/// </summary>
-System.Nullable<System.Byte> Placeholder
-{
-get;
-}
-}
+    /// <summary>
+    /// Interface for a class that can be used to serialize values to the database table `alliance_hostile`.
+    /// </summary>
+    public interface IAllianceHostileTable
+    {
+        /// <summary>
+        /// Gets the value of the database column `alliance_id`.
+        /// </summary>
+        AllianceID AllianceId { get; }
 
-/// <summary>
-/// Provides a strongly-typed structure for the database table `alliance_hostile`.
-/// </summary>
-public class AllianceHostileTable : IAllianceHostileTable
-{
-/// <summary>
-/// Array of the database column names.
-/// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"alliance_id", "hostile_id", "placeholder" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
-}
-}
-/// <summary>
-/// Array of the database column names for columns that are primary keys.
-/// </summary>
- static  readonly System.String[] _dbColumnsKeys = new string[] {"alliance_id", "hostile_id" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbKeyColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
-}
-}
-/// <summary>
-/// Array of the database column names for columns that are not primary keys.
-/// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"placeholder" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbNonKeyColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
-}
-}
-/// <summary>
-/// The name of the database table that this class represents.
-/// </summary>
-public const System.String TableName = "alliance_hostile";
-/// <summary>
-/// The number of columns in the database table that this class represents.
-/// </summary>
-public const System.Int32 ColumnCount = 3;
-/// <summary>
-/// The field that maps onto the database column `alliance_id`.
-/// </summary>
-System.Byte _allianceId;
-/// <summary>
-/// The field that maps onto the database column `hostile_id`.
-/// </summary>
-System.Byte _hostileId;
-/// <summary>
-/// The field that maps onto the database column `placeholder`.
-/// </summary>
-System.Nullable<System.Byte> _placeholder;
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `alliance_id`.
-/// The underlying database type is `tinyint(3) unsigned`.
-/// </summary>
-public DemoGame.Server.AllianceID AllianceId
-{
-get
-{
-return (DemoGame.Server.AllianceID)_allianceId;
-}
-set
-{
-this._allianceId = (System.Byte)value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `hostile_id`.
-/// The underlying database type is `tinyint(3) unsigned`.
-/// </summary>
-public DemoGame.Server.AllianceID HostileId
-{
-get
-{
-return (DemoGame.Server.AllianceID)_hostileId;
-}
-set
-{
-this._hostileId = (System.Byte)value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `placeholder`.
-/// The underlying database type is `tinyint(3) unsigned`. The database column contains the comment: 
-/// "Unused placeholder column - please do not remove".
-/// </summary>
-public System.Nullable<System.Byte> Placeholder
-{
-get
-{
-return (System.Nullable<System.Byte>)_placeholder;
-}
-set
-{
-this._placeholder = (System.Nullable<System.Byte>)value;
-}
-}
+        /// <summary>
+        /// Gets the value of the database column `hostile_id`.
+        /// </summary>
+        AllianceID HostileId { get; }
 
-/// <summary>
-/// AllianceHostileTable constructor.
-/// </summary>
-public AllianceHostileTable()
-{
-}
-/// <summary>
-/// AllianceHostileTable constructor.
-/// </summary>
-/// <param name="allianceId">The initial value for the corresponding property.</param>
-/// <param name="hostileId">The initial value for the corresponding property.</param>
-/// <param name="placeholder">The initial value for the corresponding property.</param>
-public AllianceHostileTable(DemoGame.Server.AllianceID @allianceId, DemoGame.Server.AllianceID @hostileId, System.Nullable<System.Byte> @placeholder)
-{
-AllianceId = (DemoGame.Server.AllianceID)@allianceId;
-HostileId = (DemoGame.Server.AllianceID)@hostileId;
-Placeholder = (System.Nullable<System.Byte>)@placeholder;
-}
-/// <summary>
-/// AllianceHostileTable constructor.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
-public AllianceHostileTable(System.Data.IDataReader dataReader)
-{
-ReadValues(dataReader);
-}
-public AllianceHostileTable(IAllianceHostileTable source)
-{
-CopyValuesFrom(source);
-}
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. The database column's name is used to as the key, so the value
-/// will not be found if any aliases are used or not all columns were selected.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void ReadValues(System.Data.IDataReader dataReader)
-{
-System.Int32 i;
+        /// <summary>
+        /// Gets the value of the database column `placeholder`.
+        /// </summary>
+        byte? Placeholder { get; }
+    }
 
-i = dataReader.GetOrdinal("alliance_id");
-AllianceId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
+    /// <summary>
+    /// Provides a strongly-typed structure for the database table `alliance_hostile`.
+    /// </summary>
+    public class AllianceHostileTable : IAllianceHostileTable
+    {
+        /// <summary>
+        /// The number of columns in the database table that this class represents.
+        /// </summary>
+        public const Int32 ColumnCount = 3;
 
-i = dataReader.GetOrdinal("hostile_id");
-HostileId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
+        /// <summary>
+        /// The name of the database table that this class represents.
+        /// </summary>
+        public const String TableName = "alliance_hostile";
 
-i = dataReader.GetOrdinal("placeholder");
-Placeholder = (System.Nullable<System.Byte>)(System.Nullable<System.Byte>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataReader.GetByte(i));
-}
+        /// <summary>
+        /// Array of the database column names.
+        /// </summary>
+        static readonly String[] _dbColumns = new string[] { "alliance_id", "hostile_id", "placeholder" };
 
-/// <summary>
-/// Copies the column values into the given Dictionary using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="dic">The Dictionary to copy the values into.</param>
-public void CopyValues(System.Collections.Generic.IDictionary<System.String,System.Object> dic)
-{
-CopyValues(this, dic);
-}
-/// <summary>
-/// Copies the column values into the given Dictionary using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="dic">The Dictionary to copy the values into.</param>
-public static void CopyValues(IAllianceHostileTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
-{
-dic["@alliance_id"] = (DemoGame.Server.AllianceID)source.AllianceId;
-dic["@hostile_id"] = (DemoGame.Server.AllianceID)source.HostileId;
-dic["@placeholder"] = (System.Nullable<System.Byte>)source.Placeholder;
-}
+        /// <summary>
+        /// Array of the database column names for columns that are primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsKeys = new string[] { "alliance_id", "hostile_id" };
 
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void CopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-CopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(IAllianceHostileTable source, NetGore.Db.DbParameterValues paramValues)
-{
-paramValues["@alliance_id"] = (DemoGame.Server.AllianceID)source.AllianceId;
-paramValues["@hostile_id"] = (DemoGame.Server.AllianceID)source.HostileId;
-paramValues["@placeholder"] = (System.Nullable<System.Byte>)source.Placeholder;
-}
+        /// <summary>
+        /// Array of the database column names for columns that are not primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsNonKey = new string[] { "placeholder" };
 
-public void CopyValuesFrom(IAllianceHostileTable source)
-{
-AllianceId = (DemoGame.Server.AllianceID)source.AllianceId;
-HostileId = (DemoGame.Server.AllianceID)source.HostileId;
-Placeholder = (System.Nullable<System.Byte>)source.Placeholder;
-}
+        /// <summary>
+        /// The field that maps onto the database column `alliance_id`.
+        /// </summary>
+        Byte _allianceId;
 
-public System.Object GetValue(System.String columnName)
-{
-switch (columnName)
-{
-case "alliance_id":
-return AllianceId;
+        /// <summary>
+        /// The field that maps onto the database column `hostile_id`.
+        /// </summary>
+        Byte _hostileId;
 
-case "hostile_id":
-return HostileId;
+        /// <summary>
+        /// The field that maps onto the database column `placeholder`.
+        /// </summary>
+        byte? _placeholder;
 
-case "placeholder":
-return Placeholder;
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
 
-default:
-throw new ArgumentException("Field not found.","columnName");
-}
-}
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
 
-public void SetValue(System.String columnName, System.Object value)
-{
-switch (columnName)
-{
-case "alliance_id":
-AllianceId = (DemoGame.Server.AllianceID)value;
-break;
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
+        }
 
-case "hostile_id":
-HostileId = (DemoGame.Server.AllianceID)value;
-break;
+        /// <summary>
+        /// AllianceHostileTable constructor.
+        /// </summary>
+        public AllianceHostileTable()
+        {
+        }
 
-case "placeholder":
-Placeholder = (System.Nullable<System.Byte>)value;
-break;
+        /// <summary>
+        /// AllianceHostileTable constructor.
+        /// </summary>
+        /// <param name="allianceId">The initial value for the corresponding property.</param>
+        /// <param name="hostileId">The initial value for the corresponding property.</param>
+        /// <param name="placeholder">The initial value for the corresponding property.</param>
+        public AllianceHostileTable(AllianceID @allianceId, AllianceID @hostileId, byte? @placeholder)
+        {
+            AllianceId = @allianceId;
+            HostileId = @hostileId;
+            Placeholder = @placeholder;
+        }
 
-default:
-throw new ArgumentException("Field not found.","columnName");
-}
-}
+        /// <summary>
+        /// AllianceHostileTable constructor.
+        /// </summary>
+        /// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
+        public AllianceHostileTable(IDataReader dataReader)
+        {
+            ReadValues(dataReader);
+        }
 
-public static ColumnMetadata GetColumnData(System.String fieldName)
-{
-switch (fieldName)
-{
-case "alliance_id":
-return new ColumnMetadata("alliance_id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
+        public AllianceHostileTable(IAllianceHostileTable source)
+        {
+            CopyValuesFrom(source);
+        }
 
-case "hostile_id":
-return new ColumnMetadata("hostile_id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        ///  this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public static void CopyValues(IAllianceHostileTable source, IDictionary<String, Object> dic)
+        {
+            dic["@alliance_id"] = source.AllianceId;
+            dic["@hostile_id"] = source.HostileId;
+            dic["@placeholder"] = source.Placeholder;
+        }
 
-case "placeholder":
-return new ColumnMetadata("placeholder", "Unused placeholder column - please do not remove", "tinyint(3) unsigned", null, typeof(System.Nullable<System.Byte>), true, false, false);
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+        ///  this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public static void CopyValues(IAllianceHostileTable source, DbParameterValues paramValues)
+        {
+            paramValues["@alliance_id"] = source.AllianceId;
+            paramValues["@hostile_id"] = source.HostileId;
+            paramValues["@placeholder"] = source.Placeholder;
+        }
 
-default:
-throw new ArgumentException("Field not found.","fieldName");
-}
-}
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        ///  this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public void CopyValues(IDictionary<String, Object> dic)
+        {
+            CopyValues(this, dic);
+        }
 
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. Unlike ReadValues(), this method not only doesn't require
-/// all values to be in the IDataReader, but also does not require the values in
-/// the IDataReader to be a defined field for the table this class represents.
-/// Because of this, you need to be careful when using this method because values
-/// can easily be skipped without any indication.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void TryReadValues(System.Data.IDataReader dataReader)
-{
-for (int i = 0; i < dataReader.FieldCount; i++)
-{
-switch (dataReader.GetName(i))
-{
-case "alliance_id":
-AllianceId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
-break;
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+        ///  this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public void CopyValues(DbParameterValues paramValues)
+        {
+            CopyValues(this, paramValues);
+        }
 
+        public void CopyValuesFrom(IAllianceHostileTable source)
+        {
+            AllianceId = source.AllianceId;
+            HostileId = source.HostileId;
+            Placeholder = source.Placeholder;
+        }
 
-case "hostile_id":
-HostileId = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
-break;
+        public static ColumnMetadata GetColumnData(String fieldName)
+        {
+            switch (fieldName)
+            {
+                case "alliance_id":
+                    return new ColumnMetadata("alliance_id", "", "tinyint(3) unsigned", null, typeof(Byte), false, true, false);
 
+                case "hostile_id":
+                    return new ColumnMetadata("hostile_id", "", "tinyint(3) unsigned", null, typeof(Byte), false, true, false);
 
-case "placeholder":
-Placeholder = (System.Nullable<System.Byte>)(System.Nullable<System.Byte>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataReader.GetByte(i));
-break;
+                case "placeholder":
+                    return new ColumnMetadata("placeholder", "Unused placeholder column - please do not remove",
+                                              "tinyint(3) unsigned", null, typeof(byte?), true, false, false);
 
+                default:
+                    throw new ArgumentException("Field not found.", "fieldName");
+            }
+        }
 
-}
+        public Object GetValue(String columnName)
+        {
+            switch (columnName)
+            {
+                case "alliance_id":
+                    return AllianceId;
 
-}
-}
+                case "hostile_id":
+                    return HostileId;
 
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-TryCopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(IAllianceHostileTable source, NetGore.Db.DbParameterValues paramValues)
-{
-for (int i = 0; i < paramValues.Count; i++)
-{
-switch (paramValues.GetParameterName(i))
-{
-case "@alliance_id":
-paramValues[i] = source.AllianceId;
-break;
+                case "placeholder":
+                    return Placeholder;
 
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
 
-case "@hostile_id":
-paramValues[i] = source.HostileId;
-break;
+        /// <summary>
+        /// Reads the values from an IDataReader and assigns the read values to this
+        /// object's properties. The database column's name is used to as the key, so the value
+        /// will not be found if any aliases are used or not all columns were selected.
+        /// </summary>
+        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+        public void ReadValues(IDataReader dataReader)
+        {
+            Int32 i;
 
+            i = dataReader.GetOrdinal("alliance_id");
+            AllianceId = (AllianceID)dataReader.GetByte(i);
 
-case "@placeholder":
-paramValues[i] = source.Placeholder;
-break;
+            i = dataReader.GetOrdinal("hostile_id");
+            HostileId = (AllianceID)dataReader.GetByte(i);
 
+            i = dataReader.GetOrdinal("placeholder");
+            Placeholder = (dataReader.IsDBNull(i) ? (byte?)null : dataReader.GetByte(i));
+        }
 
-}
+        public void SetValue(String columnName, Object value)
+        {
+            switch (columnName)
+            {
+                case "alliance_id":
+                    AllianceId = (AllianceID)value;
+                    break;
 
-}
-}
+                case "hostile_id":
+                    HostileId = (AllianceID)value;
+                    break;
 
-}
+                case "placeholder":
+                    Placeholder = (byte?)value;
+                    break;
 
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
+
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+        /// for the value to be copied over. If any of the keys in the DbParameterValues do not
+        /// match one of the column names, or if there is no field for a key, then it will be
+        /// ignored. Because of this, it is important to be careful when using this method
+        /// since columns or keys can be skipped without any indication.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public static void TryCopyValues(IAllianceHostileTable source, DbParameterValues paramValues)
+        {
+            for (int i = 0; i < paramValues.Count; i++)
+            {
+                switch (paramValues.GetParameterName(i))
+                {
+                    case "@alliance_id":
+                        paramValues[i] = source.AllianceId;
+                        break;
+
+                    case "@hostile_id":
+                        paramValues[i] = source.HostileId;
+                        break;
+
+                    case "@placeholder":
+                        paramValues[i] = source.Placeholder;
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+        /// for the value to be copied over. If any of the keys in the DbParameterValues do not
+        /// match one of the column names, or if there is no field for a key, then it will be
+        /// ignored. Because of this, it is important to be careful when using this method
+        /// since columns or keys can be skipped without any indication.
+        /// </summary>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public void TryCopyValues(DbParameterValues paramValues)
+        {
+            TryCopyValues(this, paramValues);
+        }
+
+        /// <summary>
+        /// Reads the values from an IDataReader and assigns the read values to this
+        /// object's properties. Unlike ReadValues(), this method not only doesn't require
+        /// all values to be in the IDataReader, but also does not require the values in
+        /// the IDataReader to be a defined field for the table this class represents.
+        /// Because of this, you need to be careful when using this method because values
+        /// can easily be skipped without any indication.
+        /// </summary>
+        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+        public void TryReadValues(IDataReader dataReader)
+        {
+            for (int i = 0; i < dataReader.FieldCount; i++)
+            {
+                switch (dataReader.GetName(i))
+                {
+                    case "alliance_id":
+                        AllianceId = (AllianceID)dataReader.GetByte(i);
+                        break;
+
+                    case "hostile_id":
+                        HostileId = (AllianceID)dataReader.GetByte(i);
+                        break;
+
+                    case "placeholder":
+                        Placeholder = (dataReader.IsDBNull(i) ? (byte?)null : dataReader.GetByte(i));
+                        break;
+                }
+            }
+        }
+
+        #region IAllianceHostileTable Members
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `alliance_id`.
+        /// The underlying database type is `tinyint(3) unsigned`.
+        /// </summary>
+        public AllianceID AllianceId
+        {
+            get { return (AllianceID)_allianceId; }
+            set { _allianceId = (Byte)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `hostile_id`.
+        /// The underlying database type is `tinyint(3) unsigned`.
+        /// </summary>
+        public AllianceID HostileId
+        {
+            get { return (AllianceID)_hostileId; }
+            set { _hostileId = (Byte)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `placeholder`.
+        /// The underlying database type is `tinyint(3) unsigned`. The database column contains the comment: 
+        /// "Unused placeholder column - please do not remove".
+        /// </summary>
+        public byte? Placeholder
+        {
+            get { return _placeholder; }
+            set { _placeholder = value; }
+        }
+
+        #endregion
+    }
 }

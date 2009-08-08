@@ -82,7 +82,8 @@ namespace NetGore.Db.ClassCreator
                     type = Type.GetType("System.Nullable`1[" + type.FullName + "]", true);
 
                 if (type == null)
-                    throw new Exception(string.Format("Failed to get the type for column `{0}` on table `{1}`.", column.Name, table));
+                    throw new Exception(string.Format("Failed to get the type for column `{0}` on table `{1}`.", column.Name,
+                                                      table));
 
                 column.Type = type;
             }

@@ -12,6 +12,11 @@ namespace NetGore.Db.ClassCreator
     public abstract class DbClassGenerator : IDisposable
     {
         /// <summary>
+        /// Name of the class used to store the column metadata.
+        /// </summary>
+        public const string ColumnMetadataClassName = "ColumnMetadata";
+
+        /// <summary>
         /// Name of the CopyValuesFrom method in the generated code.
         /// </summary>
         public const string CopyValuesFromMethodName = "CopyValuesFrom";
@@ -20,11 +25,6 @@ namespace NetGore.Db.ClassCreator
         /// Name of the CopyValues method in the generated code.
         /// </summary>
         public const string CopyValuesMethodName = "CopyValues";
-
-        /// <summary>
-        /// Name of the TryCopyValues method in the generated code.
-        /// </summary>
-        public const string TryCopyValuesMethodName = "TryCopyValues";
 
         /// <summary>
         /// Name of the dataReader when used in arguments in the generated code.
@@ -37,16 +37,22 @@ namespace NetGore.Db.ClassCreator
         public const string DbColumnsField = "_dbColumns";
 
         /// <summary>
+        /// Name of the _dbColumnsKeys field in the generated code.
+        /// </summary>
+        public const string DbColumnsKeysField = "_dbColumnsKeys";
+
+        /// <summary>
         /// Name of the _dbColumnsNonKeys field in the generated code.
         /// </summary>
         public const string DbColumnsNonKeysField = "_dbColumnsNonKey";
 
         /// <summary>
-        /// Name of the _dbColumnsKeys field in the generated code.
+        /// Name of the TryCopyValues method in the generated code.
         /// </summary>
-        public const string DbColumnsKeysField = "_dbColumnsKeys";
+        public const string TryCopyValuesMethodName = "TryCopyValues";
 
         readonly List<ColumnCollection> _columnCollections = new List<ColumnCollection>();
+        readonly List<CustomTypeMapping> _customTypes = new List<CustomTypeMapping>();
 
         /// <summary>
         /// Dictionary of the DataReader Read method names for a given Type.
@@ -54,28 +60,6 @@ namespace NetGore.Db.ClassCreator
         readonly Dictionary<Type, string> _dataReaderReadMethods = new Dictionary<Type, string>();
 
         readonly Dictionary<string, IEnumerable<DbColumnInfo>> _dbTables = new Dictionary<string, IEnumerable<DbColumnInfo>>();
-
-        readonly List<CustomTypeMapping> _customTypes = new List<CustomTypeMapping>();
-
-        public void AddCustomType(Type type, string table, params string[] columns)
-        {
-            AddCustomType(type, new string[] { table}, columns);
-        }
-
-        public void AddCustomType(string type, string table, params string[] columns)
-        {
-            AddCustomType(type, new string[] { table }, columns);
-        }
-
-        public void AddCustomType(Type type, IEnumerable<string> tables, params string[] columns)
-        {
-            AddCustomType(Formatter.GetTypeString(type), tables, columns);
-        }
-
-        public void AddCustomType(string type, IEnumerable<string> tables, params string[] columns)
-        {
-            _customTypes.Add(new CustomTypeMapping(tables, columns, type));
-        }
 
         /// <summary>
         /// Using directives to add.
@@ -124,6 +108,26 @@ namespace NetGore.Db.ClassCreator
             _columnCollections.Add(columnCollection);
         }
 
+        public void AddCustomType(Type type, string table, params string[] columns)
+        {
+            AddCustomType(type, new string[] { table }, columns);
+        }
+
+        public void AddCustomType(string type, string table, params string[] columns)
+        {
+            AddCustomType(type, new string[] { table }, columns);
+        }
+
+        public void AddCustomType(Type type, IEnumerable<string> tables, params string[] columns)
+        {
+            AddCustomType(Formatter.GetTypeString(type), tables, columns);
+        }
+
+        public void AddCustomType(string type, IEnumerable<string> tables, params string[] columns)
+        {
+            _customTypes.Add(new CustomTypeMapping(tables, columns, type));
+        }
+
         /// <summary>
         /// Adds a Using directive to the generated code.
         /// </summary>
@@ -150,7 +154,8 @@ namespace NetGore.Db.ClassCreator
         {
             columns = columns.OrderBy(x => x.Name);
 
-            DbClassData cd = new DbClassData(tableName, columns, Formatter, _dataReaderReadMethods, _columnCollections, _customTypes);
+            DbClassData cd = new DbClassData(tableName, columns, Formatter, _dataReaderReadMethods, _columnCollections,
+                                             _customTypes);
 
             StringBuilder sb = new StringBuilder(16384);
 
@@ -192,54 +197,64 @@ namespace NetGore.Db.ClassCreator
                     // All fields
                     string fieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Select(x => x.Name));
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnArrayField));
-                    sb.AppendLine(Formatter.GetField(DbColumnsField, typeof(string[]), MemberVisibilityLevel.Private, fieldNamesCode,
-                                                     true, true));
+                    sb.AppendLine(Formatter.GetField(DbColumnsField, typeof(string[]), MemberVisibilityLevel.Private,
+                                                     fieldNamesCode, true, true));
 
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnIEnumerableProperty));
-                    sb.AppendLine(Formatter.GetProperty("DbColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
-                                                        DbColumnsField, false, true));
+                    sb.AppendLine(Formatter.GetProperty("DbColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>),
+                                                        MemberVisibilityLevel.Public, null, DbColumnsField, false, true));
                 }
 
                 {
                     // Key fields
-                    string keyFieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Where(x => x.KeyType == DbColumnKeyType.Primary).Select(x => x.Name));
+                    string keyFieldNamesCode =
+                        Formatter.GetStringArrayCode(
+                            cd.Columns.Where(x => x.KeyType == DbColumnKeyType.Primary).Select(x => x.Name));
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.KeyColumnArrayField));
-                    sb.AppendLine(Formatter.GetField(DbColumnsKeysField, typeof(string[]), MemberVisibilityLevel.Private, keyFieldNamesCode, true, true));
+                    sb.AppendLine(Formatter.GetField(DbColumnsKeysField, typeof(string[]), MemberVisibilityLevel.Private,
+                                                     keyFieldNamesCode, true, true));
 
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.KeyColumnIEnumerableProperty));
-                    sb.AppendLine(Formatter.GetProperty("DbKeyColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
-                                                        DbColumnsKeysField, false, true));
+                    sb.AppendLine(Formatter.GetProperty("DbKeyColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>),
+                                                        MemberVisibilityLevel.Public, null, DbColumnsKeysField, false, true));
                 }
 
                 {
                     // Non-key fields
-                    string nonKeyFieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Where(x => x.KeyType != DbColumnKeyType.Primary).Select(x => x.Name));
+                    string nonKeyFieldNamesCode =
+                        Formatter.GetStringArrayCode(
+                            cd.Columns.Where(x => x.KeyType != DbColumnKeyType.Primary).Select(x => x.Name));
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.NonKeyColumnArrayField));
-                    sb.AppendLine(Formatter.GetField(DbColumnsNonKeysField, typeof(string[]), MemberVisibilityLevel.Private, nonKeyFieldNamesCode, true, true));
+                    sb.AppendLine(Formatter.GetField(DbColumnsNonKeysField, typeof(string[]), MemberVisibilityLevel.Private,
+                                                     nonKeyFieldNamesCode, true, true));
 
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.NonKeyColumnIEnumerableProperty));
-                    sb.AppendLine(Formatter.GetProperty("DbNonKeyColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
+                    sb.AppendLine(Formatter.GetProperty("DbNonKeyColumns", typeof(IEnumerable<string>),
+                                                        typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
                                                         DbColumnsNonKeysField, false, true));
                 }
 
                 {
                     // Collection fields
-                    foreach (var coll in cd.ColumnCollections)
+                    foreach (ColumnCollection coll in cd.ColumnCollections)
                     {
                         string privateFieldName = cd.GetPrivateName(coll) + "Columns";
                         string publicPropertyName = cd.GetPublicName(coll) + "Columns";
 
-                        var currColl = coll;
+                        ColumnCollection currColl = coll;
                         var columnsInCollection = cd.Columns.Where(x => cd.GetCollectionForColumn(x) == currColl);
                         if (columnsInCollection.Count() == 0)
                             continue;
 
                         string columnNamesCode = Formatter.GetStringArrayCode(columnsInCollection.Select(x => x.Name));
                         sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionField, coll.Name)));
-                        sb.AppendLine(Formatter.GetField(privateFieldName, typeof(string[]), MemberVisibilityLevel.Private, columnNamesCode, true, true));
+                        sb.AppendLine(Formatter.GetField(privateFieldName, typeof(string[]), MemberVisibilityLevel.Private,
+                                                         columnNamesCode, true, true));
 
-                        sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionProperty, coll.Name)));
-                        sb.AppendLine(Formatter.GetProperty(publicPropertyName, typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
+                        sb.AppendLine(
+                            Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionProperty, coll.Name)));
+                        sb.AppendLine(Formatter.GetProperty(publicPropertyName, typeof(IEnumerable<string>),
+                                                            typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
                                                             privateFieldName, false, true));
                     }
                 }
@@ -268,7 +283,8 @@ namespace NetGore.Db.ClassCreator
                                                                                        Comments.CreateCode.
                                                                                            ConstructorParameterIDataReader)));
                 string drConstructorBody = Formatter.GetCallMethod("ReadValues", DataReaderName);
-                var drConstructorParams = new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
+                var drConstructorParams = new MethodParameter[]
+                                          { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
                 sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, drConstructorParams));
                 sb.AppendLine(Formatter.GetMethodBody(drConstructorBody));
 
@@ -297,6 +313,23 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.CloseBrace);
 
             return sb.ToString();
+        }
+
+        protected virtual GeneratedTableCode CreateCodeForColumnMetadata(string codeNamespace)
+        {
+            string code = Resources.ColumnMetadataCode;
+            StringBuilder sb = new StringBuilder(code.Length + 200);
+
+            sb.AppendLine(Formatter.GetUsing("System"));
+
+            sb.AppendLine(Formatter.GetNamespace(codeNamespace));
+            sb.AppendLine(Formatter.OpenBrace);
+            {
+                sb.AppendLine(code);
+            }
+            sb.AppendLine(Formatter.CloseBrace);
+
+            return new GeneratedTableCode(ColumnMetadataClassName, ColumnMetadataClassName, sb.ToString());
         }
 
         /// <summary>
@@ -331,14 +364,21 @@ namespace NetGore.Db.ClassCreator
                         string name = cd.GetPublicName(coll);
                         MethodParameter keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
 
-                        sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.InterfaceCollectionGetter, Comments.CreateCode.InterfaceCollectionReturns,
-                            new KeyValuePair<string, string>("key", Comments.CreateCode.InterfaceCollectionParamKey)));
+                        sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.InterfaceCollectionGetter,
+                                                              Comments.CreateCode.InterfaceCollectionReturns,
+                                                              new KeyValuePair<string, string>("key",
+                                                                                               Comments.CreateCode.
+                                                                                                   InterfaceCollectionParamKey)));
                         sb.AppendLine(Formatter.GetInterfaceMethod("Get" + name, coll.ValueType,
                                                                    new MethodParameter[] { keyParameter }));
 
                         sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.InterfaceCollectionGetter, null,
-                            new KeyValuePair<string, string>("key", Comments.CreateCode.InterfaceCollectionParamKey),
-                            new KeyValuePair<string, string>("value", Comments.CreateCode.InterfaceCollectionParamValue)));
+                                                              new KeyValuePair<string, string>("key",
+                                                                                               Comments.CreateCode.
+                                                                                                   InterfaceCollectionParamKey),
+                                                              new KeyValuePair<string, string>("value",
+                                                                                               Comments.CreateCode.
+                                                                                                   InterfaceCollectionParamValue)));
                         sb.AppendLine(Formatter.GetInterfaceMethod("Set" + name, typeof(void),
                                                                    new MethodParameter[]
                                                                    {
@@ -392,7 +432,8 @@ namespace NetGore.Db.ClassCreator
                     // Not part of a collection
                     string comment = string.Format(Comments.CreateFields.Field, column.Name);
                     sb.AppendLine(Formatter.GetXmlComment(comment));
-                    sb.AppendLine(Formatter.GetField(cd.GetPrivateName(column), cd.GetInternalType(column), MemberVisibilityLevel.Private));
+                    sb.AppendLine(Formatter.GetField(cd.GetPrivateName(column), cd.GetInternalType(column),
+                                                     MemberVisibilityLevel.Private));
                 }
                 else if (!addedCollections.Contains(coll))
                 {
@@ -401,7 +442,8 @@ namespace NetGore.Db.ClassCreator
                     sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateFields.CollectionField, coll.Name)));
                     string collType = DbClassData.GetCollectionTypeString(coll);
                     sb.AppendLine(Formatter.GetField(cd.GetPrivateName(coll), collType, MemberVisibilityLevel.Private,
-                                                     "new " + collType + Formatter.OpenParameterString + Formatter.CloseParameterString, true, false));
+                                                     "new " + collType + Formatter.OpenParameterString +
+                                                     Formatter.CloseParameterString, true, false));
                 }
             }
 
@@ -427,7 +469,8 @@ namespace NetGore.Db.ClassCreator
 
                     sb.AppendLine(Formatter.GetXmlComment(comment));
 
-                    sb.AppendLine(Formatter.GetProperty(cd.GetPublicName(column), cd.GetExternalType(column), cd.GetInternalType(column), MemberVisibilityLevel.Public,
+                    sb.AppendLine(Formatter.GetProperty(cd.GetPublicName(column), cd.GetExternalType(column),
+                                                        cd.GetInternalType(column), MemberVisibilityLevel.Public,
                                                         MemberVisibilityLevel.Public, cd.GetPrivateName(column), false, false));
                 }
                 else if (!addedCollections.Contains(coll))
@@ -442,15 +485,24 @@ namespace NetGore.Db.ClassCreator
 
                     // Getter
                     sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateFields.PublicMethodGet, coll.Name),
-                        Comments.CreateFields.PublicMethodGetReturns, new KeyValuePair<string, string>("key", Comments.CreateFields.PublicMethodGetKeyParameter)));
+                                                          Comments.CreateFields.PublicMethodGetReturns,
+                                                          new KeyValuePair<string, string>("key",
+                                                                                           Comments.CreateFields.
+                                                                                               PublicMethodGetKeyParameter)));
                     sb.AppendLine(Formatter.GetMethodHeader("Get" + name, MemberVisibilityLevel.Public,
                                                             new MethodParameter[] { keyParameter }, coll.ValueType, false, false));
-                    sb.AppendLine(Formatter.GetMethodBody("return " + Formatter.GetCast(cd.GetExternalType(column)) + field + Formatter.EndOfLine));
+                    sb.AppendLine(
+                        Formatter.GetMethodBody("return " + Formatter.GetCast(cd.GetExternalType(column)) + field +
+                                                Formatter.EndOfLine));
 
                     // Setter
-                    sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateFields.PublicMethodGet, coll.Name),
-                        null, new KeyValuePair<string, string>("key", Comments.CreateFields.PublicMethodGetKeyParameter),
-                        new KeyValuePair<string, string>("value", Comments.CreateFields.PublicMethodValueParameter)));
+                    sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateFields.PublicMethodGet, coll.Name), null,
+                                                          new KeyValuePair<string, string>("key",
+                                                                                           Comments.CreateFields.
+                                                                                               PublicMethodGetKeyParameter),
+                                                          new KeyValuePair<string, string>("value",
+                                                                                           Comments.CreateFields.
+                                                                                               PublicMethodValueParameter)));
                     sb.AppendLine(Formatter.GetMethodHeader("Set" + name, MemberVisibilityLevel.Public,
                                                             new MethodParameter[]
                                                             {
@@ -459,7 +511,8 @@ namespace NetGore.Db.ClassCreator
                                                             },
                                                             typeof(void), false, false));
 
-                    sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSetValue(field, "value", true, false, cd.GetInternalType(column))));
+                    sb.AppendLine(
+                        Formatter.GetMethodBody(Formatter.GetSetValue(field, "value", true, false, cd.GetInternalType(column))));
                 }
             }
 
@@ -534,152 +587,6 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        protected string CreateMethodTryCopyValuesToDbParameterValuesSwitchString(DbClassData cd, DbColumnInfo column, string parameterName, string sourceName)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(Formatter.GetSetValue(parameterName + Formatter.OpenIndexer + "i" + Formatter.CloseIndexer, sourceName + "." + cd.GetColumnValueAccessor(column), false, false));
-            sb.AppendLine("break" + Formatter.EndOfLine);
-            return sb.ToString();
-        }
-
-        protected virtual string CreateMethodTryCopyValuesToDbParameterValues(DbClassData cd)
-        {
-            const string parameterName = "paramValues";
-            const string sourceName = "source";
-
-            var iParameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(DbParameterValues), Formatter) };
-            var sParameters =
-                new MethodParameter[] { new MethodParameter(sourceName, cd.InterfaceName) }.Concat(iParameters).ToArray();
-
-            StringBuilder sb = new StringBuilder(2048);
-
-            // Instanced header
-            sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null, 
-                    new KeyValuePair<string,string>(parameterName, Comments.TryCopyValues.ParameterDbParameterValues)
-               ));
-            sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void), false, false));
-
-            // Instanced body
-            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(TryCopyValuesMethodName, "this", parameterName)));
-
-            // Static header
-            sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null, 
-                    new KeyValuePair<string,string>(sourceName, Comments.TryCopyValues.ParameterSource),
-                    new KeyValuePair<string,string>(parameterName, Comments.TryCopyValues.ParameterDbParameterValues)
-                ));
-            sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void), false, true));
-
-            // Static body
-            StringBuilder bodySB = new StringBuilder(2048);
-            bodySB.AppendLine("for (int i = 0; i < " + parameterName + ".Count; i++)"); // NOTE: Language specific code
-            bodySB.AppendLine(Formatter.OpenBrace);
-            {
-                bodySB.AppendLine(Formatter.GetSwitch(
-                    parameterName + ".GetParameterName(i)", 
-                    cd.Columns.Select(
-                        x => new KeyValuePair<string, string>(
-                            "\"@" + x.Name + "\"", 
-                            CreateMethodTryCopyValuesToDbParameterValuesSwitchString(cd, x, parameterName, sourceName))), null));
-            }
-            bodySB.Append(Formatter.CloseBrace);
-
-            sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
-
-            return sb.ToString();
-        }
-
-        protected string CreateMethodGetColumnDataReturnString(DbColumnInfo column)
-        {
-            StringBuilder sb = new StringBuilder(256);
-
-            sb.Append(Formatter.ReturnString);
-            sb.Append(" ");
-            sb.Append("new ");
-            sb.Append(ColumnMetadataClassName);
-            sb.Append(Formatter.OpenParameterString);
-            sb.Append("\"" + column.Name + "\"" + Formatter.ParameterSpacer);
-            sb.Append("\"" + column.Comment + "\"" + Formatter.ParameterSpacer);
-            sb.Append("\"" + column.DatabaseType + "\"" + Formatter.ParameterSpacer);
-
-            if (column.DefaultValue == null || (column.DefaultValue.ToString() == "" && !(column.DefaultValue is string)))
-                sb.Append("null" + Formatter.ParameterSpacer);
-            else if (column.DefaultValue is string)
-                sb.Append("\"" + column.DefaultValue + "\"" + Formatter.ParameterSpacer);
-            else
-                sb.Append(column.DefaultValue + Formatter.ParameterSpacer);
-            
-            sb.Append("typeof(" + Formatter.GetTypeString(column.Type) + ")" + Formatter.ParameterSpacer);
-            sb.Append(column.Nullable.ToString().ToLower() + Formatter.ParameterSpacer);
-            sb.Append((column.KeyType == DbColumnKeyType.Primary).ToString().ToLower() + Formatter.ParameterSpacer);
-            sb.Append((column.KeyType == DbColumnKeyType.Foreign).ToString().ToLower());
-            sb.Append(Formatter.CloseParameterString);
-            sb.Append(Formatter.EndOfLine);
-
-            return sb.ToString();
-        }
-
-        protected virtual string CreateMethodGetColumnData(DbClassData cd)
-        {
-            const string methodName = "GetColumnData";
-            const string parameterName = "fieldName";
-
-            StringBuilder sb = new StringBuilder(4096);
-
-            // Header
-            // TODO: Header XML comments
-            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
-            sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, ColumnMetadataClassName, false, true));
-
-            // Body
-            var switches = cd.Columns.Select(x => new KeyValuePair<string, string>("\"" + x.Name + "\"", CreateMethodGetColumnDataReturnString(x)));
-            var defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" + Formatter.EndOfLine;
-            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
-
-            return sb.ToString();
-        }
-
-        protected virtual string CreateMethodGetValue(DbClassData cd)
-        {
-            const string parameterName = "columnName";
-            const string methodName = "GetValue";
-
-            StringBuilder sb = new StringBuilder(2048);
-
-            // Header
-            // TODO: Header XML comments
-            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter)};
-            sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, typeof(object), false, false));
-
-            // Body
-            var switches= cd.Columns.Select(x => new KeyValuePair<string, string>("\"" + x.Name + "\"", Formatter.ReturnString + " " + cd.GetColumnValueAccessor(x) + Formatter.EndOfLine));
-            var defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" + Formatter.EndOfLine;
-            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
-
-            return sb.ToString();
-        }
-
-        protected virtual string CreateMethodSetValue(DbClassData cd)
-        {
-            const string parameterName = "columnName";
-            const string valueName = "value";
-            const string methodName = "SetValue";
-
-            StringBuilder sb = new StringBuilder(2048);
-
-            // Header
-            // TODO: Header XML comments
-            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter), new MethodParameter(valueName, typeof(object), Formatter) };
-            sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, typeof(void), false, false));
-
-            // Body
-            var switches = cd.Columns.Select(x => new KeyValuePair<string, string>("\"" + x.Name + "\"",
-                cd.GetColumnValueMutator(x, valueName) + Environment.NewLine + "break" + Formatter.EndOfLine));
-            var defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" + Formatter.EndOfLine;
-            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
-
-            return sb.ToString();
-        }
-
         protected virtual string CreateMethodCopyValuesToDict(DbClassData cd)
         {
             const string parameterName = "dic";
@@ -726,35 +633,83 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        protected string CreateMethodTryReadValuesSwitchString(DbClassData cd, DbColumnInfo column)
+        protected virtual string CreateMethodGetColumnData(DbClassData cd)
         {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine(cd.GetColumnValueMutator(column, cd.GetDataReaderAccessor(column, "i")));
-            sb.AppendLine("break" + Formatter.EndOfLine);
+            const string methodName = "GetColumnData";
+            const string parameterName = "fieldName";
+
+            StringBuilder sb = new StringBuilder(4096);
+
+            // Header
+            // TODO: Header XML comments
+            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
+            sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, ColumnMetadataClassName,
+                                                    false, true));
+
+            // Body
+            var switches =
+                cd.Columns.Select(
+                    x => new KeyValuePair<string, string>("\"" + x.Name + "\"", CreateMethodGetColumnDataReturnString(x)));
+            string defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" +
+                                 Formatter.EndOfLine;
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
+
             return sb.ToString();
         }
 
-        protected virtual string CreateMethodTryReadValues(DbClassData cd)
+        protected string CreateMethodGetColumnDataReturnString(DbColumnInfo column)
         {
-            var parameters = new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
+            StringBuilder sb = new StringBuilder(256);
+
+            sb.Append(Formatter.ReturnString);
+            sb.Append(" ");
+            sb.Append("new ");
+            sb.Append(ColumnMetadataClassName);
+            sb.Append(Formatter.OpenParameterString);
+            sb.Append("\"" + column.Name + "\"" + Formatter.ParameterSpacer);
+            sb.Append("\"" + column.Comment + "\"" + Formatter.ParameterSpacer);
+            sb.Append("\"" + column.DatabaseType + "\"" + Formatter.ParameterSpacer);
+
+            if (column.DefaultValue == null || (column.DefaultValue.ToString() == "" && !(column.DefaultValue is string)))
+                sb.Append("null" + Formatter.ParameterSpacer);
+            else if (column.DefaultValue is string)
+                sb.Append("\"" + column.DefaultValue + "\"" + Formatter.ParameterSpacer);
+            else
+                sb.Append(column.DefaultValue + Formatter.ParameterSpacer);
+
+            sb.Append("typeof(" + Formatter.GetTypeString(column.Type) + ")" + Formatter.ParameterSpacer);
+            sb.Append(column.Nullable.ToString().ToLower() + Formatter.ParameterSpacer);
+            sb.Append((column.KeyType == DbColumnKeyType.Primary).ToString().ToLower() + Formatter.ParameterSpacer);
+            sb.Append((column.KeyType == DbColumnKeyType.Foreign).ToString().ToLower());
+            sb.Append(Formatter.CloseParameterString);
+            sb.Append(Formatter.EndOfLine);
+
+            return sb.ToString();
+        }
+
+        protected virtual string CreateMethodGetValue(DbClassData cd)
+        {
+            const string parameterName = "columnName";
+            const string methodName = "GetValue";
 
             StringBuilder sb = new StringBuilder(2048);
 
             // Header
-            sb.AppendLine(Formatter.GetXmlComment(Comments.TryReadValues.Summary, null, 
-                new KeyValuePair<string, string>(DataReaderName, Comments.TryReadValues.ParameterDataReader)));
-            sb.AppendLine(Formatter.GetMethodHeader("TryReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false, false));
+            // TODO: Header XML comments
+            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
+            sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, typeof(object), false,
+                                                    false));
 
             // Body
-            StringBuilder bodySB = new StringBuilder(2048);
-            bodySB.AppendLine("for (int i = 0; i < " + DataReaderName + ".FieldCount; i++)"); // NOTE: Hardcoded language code
-            bodySB.AppendLine(Formatter.OpenBrace);
-            {
-                bodySB.AppendLine(Formatter.GetSwitch(DataReaderName + ".GetName(i)", cd.Columns.Select(x => new KeyValuePair<string, string>("\"" + x.Name + "\"", CreateMethodTryReadValuesSwitchString(cd, x))), null));
-            }
-            bodySB.Append(Formatter.CloseBrace);
-
-            sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
+            var switches =
+                cd.Columns.Select(
+                    x =>
+                    new KeyValuePair<string, string>("\"" + x.Name + "\"",
+                                                     Formatter.ReturnString + " " + cd.GetColumnValueAccessor(x) +
+                                                     Formatter.EndOfLine));
+            string defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" +
+                                 Formatter.EndOfLine;
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
 
             return sb.ToString();
         }
@@ -771,7 +726,7 @@ namespace NetGore.Db.ClassCreator
                                                                                    Comments.ReadValues.ParameterDataReader)));
 
             sb.AppendLine(Formatter.GetMethodHeader("ReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false,
-                                                      false));
+                                                    false));
 
             // Body
             StringBuilder bodySB = new StringBuilder(2048);
@@ -788,6 +743,140 @@ namespace NetGore.Db.ClassCreator
 
             sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
 
+            return sb.ToString();
+        }
+
+        protected virtual string CreateMethodSetValue(DbClassData cd)
+        {
+            const string parameterName = "columnName";
+            const string valueName = "value";
+            const string methodName = "SetValue";
+
+            StringBuilder sb = new StringBuilder(2048);
+
+            // Header
+            // TODO: Header XML comments
+            var parameters = new MethodParameter[]
+                             {
+                                 new MethodParameter(parameterName, typeof(string), Formatter),
+                                 new MethodParameter(valueName, typeof(object), Formatter)
+                             };
+            sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, typeof(void), false,
+                                                    false));
+
+            // Body
+            var switches =
+                cd.Columns.Select(
+                    x =>
+                    new KeyValuePair<string, string>("\"" + x.Name + "\"",
+                                                     cd.GetColumnValueMutator(x, valueName) + Environment.NewLine + "break" +
+                                                     Formatter.EndOfLine));
+            string defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" +
+                                 Formatter.EndOfLine;
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
+
+            return sb.ToString();
+        }
+
+        protected virtual string CreateMethodTryCopyValuesToDbParameterValues(DbClassData cd)
+        {
+            const string parameterName = "paramValues";
+            const string sourceName = "source";
+
+            var iParameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(DbParameterValues), Formatter) };
+            var sParameters =
+                new MethodParameter[] { new MethodParameter(sourceName, cd.InterfaceName) }.Concat(iParameters).ToArray();
+
+            StringBuilder sb = new StringBuilder(2048);
+
+            // Instanced header
+            sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null,
+                                                  new KeyValuePair<string, string>(parameterName,
+                                                                                   Comments.TryCopyValues.
+                                                                                       ParameterDbParameterValues)));
+            sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, iParameters,
+                                                    typeof(void), false, false));
+
+            // Instanced body
+            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(TryCopyValuesMethodName, "this", parameterName)));
+
+            // Static header
+            sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null,
+                                                  new KeyValuePair<string, string>(sourceName,
+                                                                                   Comments.TryCopyValues.ParameterSource),
+                                                  new KeyValuePair<string, string>(parameterName,
+                                                                                   Comments.TryCopyValues.
+                                                                                       ParameterDbParameterValues)));
+            sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, sParameters,
+                                                    typeof(void), false, true));
+
+            // Static body
+            StringBuilder bodySB = new StringBuilder(2048);
+            bodySB.AppendLine("for (int i = 0; i < " + parameterName + ".Count; i++)"); // NOTE: Language specific code
+            bodySB.AppendLine(Formatter.OpenBrace);
+            {
+                bodySB.AppendLine(Formatter.GetSwitch(parameterName + ".GetParameterName(i)",
+                                                      cd.Columns.Select(
+                                                          x =>
+                                                          new KeyValuePair<string, string>("\"@" + x.Name + "\"",
+                                                                                           CreateMethodTryCopyValuesToDbParameterValuesSwitchString
+                                                                                               (cd, x, parameterName, sourceName))),
+                                                      null));
+            }
+            bodySB.Append(Formatter.CloseBrace);
+
+            sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
+
+            return sb.ToString();
+        }
+
+        protected string CreateMethodTryCopyValuesToDbParameterValuesSwitchString(DbClassData cd, DbColumnInfo column,
+                                                                                  string parameterName, string sourceName)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(Formatter.GetSetValue(parameterName + Formatter.OpenIndexer + "i" + Formatter.CloseIndexer,
+                                                sourceName + "." + cd.GetColumnValueAccessor(column), false, false));
+            sb.AppendLine("break" + Formatter.EndOfLine);
+            return sb.ToString();
+        }
+
+        protected virtual string CreateMethodTryReadValues(DbClassData cd)
+        {
+            var parameters = new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
+
+            StringBuilder sb = new StringBuilder(2048);
+
+            // Header
+            sb.AppendLine(Formatter.GetXmlComment(Comments.TryReadValues.Summary, null,
+                                                  new KeyValuePair<string, string>(DataReaderName,
+                                                                                   Comments.TryReadValues.ParameterDataReader)));
+            sb.AppendLine(Formatter.GetMethodHeader("TryReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false,
+                                                    false));
+
+            // Body
+            StringBuilder bodySB = new StringBuilder(2048);
+            bodySB.AppendLine("for (int i = 0; i < " + DataReaderName + ".FieldCount; i++)"); // NOTE: Hardcoded language code
+            bodySB.AppendLine(Formatter.OpenBrace);
+            {
+                bodySB.AppendLine(Formatter.GetSwitch(DataReaderName + ".GetName(i)",
+                                                      cd.Columns.Select(
+                                                          x =>
+                                                          new KeyValuePair<string, string>("\"" + x.Name + "\"",
+                                                                                           CreateMethodTryReadValuesSwitchString(
+                                                                                               cd, x))), null));
+            }
+            bodySB.Append(Formatter.CloseBrace);
+
+            sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
+
+            return sb.ToString();
+        }
+
+        protected string CreateMethodTryReadValuesSwitchString(DbClassData cd, DbColumnInfo column)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine(cd.GetColumnValueMutator(column, cd.GetDataReaderAccessor(column, "i")));
+            sb.AppendLine("break" + Formatter.EndOfLine);
             return sb.ToString();
         }
 
@@ -817,28 +906,6 @@ namespace NetGore.Db.ClassCreator
                 string filePath = outputDir + item.ClassName + "." + Formatter.FilenameSuffix;
                 File.WriteAllText(filePath, item.Code);
             }
-        }
-
-        /// <summary>
-        /// Name of the class used to store the column metadata.
-        /// </summary>
-        public const string ColumnMetadataClassName = "ColumnMetadata";
-
-        protected virtual GeneratedTableCode CreateCodeForColumnMetadata(string codeNamespace)
-        {
-            string code = Resources.ColumnMetadataCode;
-            StringBuilder sb = new StringBuilder(code.Length + 200);
-
-            sb.AppendLine(Formatter.GetUsing("System"));
-
-            sb.AppendLine(Formatter.GetNamespace(codeNamespace));
-            sb.AppendLine(Formatter.OpenBrace);
-            {
-                sb.AppendLine(code);
-            }
-            sb.AppendLine(Formatter.CloseBrace);
-
-            return new GeneratedTableCode(ColumnMetadataClassName, ColumnMetadataClassName, sb.ToString());
         }
 
         public virtual IEnumerable<GeneratedTableCode> Generate(string codeNamespace)
