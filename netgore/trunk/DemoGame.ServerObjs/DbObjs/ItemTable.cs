@@ -208,6 +208,9 @@ public const System.String TableName = "item";
 /// The number of columns in the database table that this class represents.
 /// </summary>
 public const System.Int32 ColumnCount = 32;
+/// <summary>
+/// Dictionary containing the values for the column collection `Stat`.
+/// </summary>
  readonly StatConstDictionary _stat = new StatConstDictionary();
 /// <summary>
 /// The field that maps onto the database column `amount`.
@@ -241,6 +244,9 @@ System.UInt16 _mp;
 /// The field that maps onto the database column `name`.
 /// </summary>
 System.String _name;
+/// <summary>
+/// Dictionary containing the values for the column collection `ReqStat`.
+/// </summary>
  readonly ReqStatConstDictionary _reqStat = new ReqStatConstDictionary();
 /// <summary>
 /// The field that maps onto the database column `type`.
@@ -254,10 +260,22 @@ System.Int32 _value;
 /// The field that maps onto the database column `width`.
 /// </summary>
 System.Byte _width;
+/// <summary>
+/// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
+/// </summary>
+/// <param name="key">The key of the column to get.</param>
+/// <returns>
+/// The value of the database column for the corresponding <paramref name="key"/>.
+/// </returns>
 public System.Int32 GetStat(DemoGame.StatType key)
 {
 return (System.UInt16)_stat[(DemoGame.StatType)key];
 }
+/// <summary>
+/// Gets the <paramref name="value"/> of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
+/// </summary>
+/// <param name="key">The key of the column to get.</param>
+/// <param name="value">The value to assign to the column for the corresponding <paramref name="key"/>.</param>
 public void SetStat(DemoGame.StatType key, System.Int32 value)
 {
 this._stat[(DemoGame.StatType)key] = (System.UInt16)value;
@@ -382,10 +400,22 @@ set
 this._name = (System.String)value;
 }
 }
+/// <summary>
+/// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `ReqStat`.
+/// </summary>
+/// <param name="key">The key of the column to get.</param>
+/// <returns>
+/// The value of the database column for the corresponding <paramref name="key"/>.
+/// </returns>
 public System.Int32 GetReqStat(DemoGame.StatType key)
 {
 return (System.Byte)_reqStat[(DemoGame.StatType)key];
 }
+/// <summary>
+/// Gets the <paramref name="value"/> of a database column for the corresponding <paramref name="key"/> for the column collection `ReqStat`.
+/// </summary>
+/// <param name="key">The key of the column to get.</param>
+/// <param name="value">The value to assign to the column for the corresponding <paramref name="key"/>.</param>
 public void SetReqStat(DemoGame.StatType key, System.Int32 value)
 {
 this._reqStat[(DemoGame.StatType)key] = (System.Byte)value;
