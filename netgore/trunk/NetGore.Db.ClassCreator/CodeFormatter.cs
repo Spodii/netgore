@@ -394,9 +394,9 @@ namespace NetGore.Db.ClassCreator
         }
 
         public string GetProperty(string propertyName, Type externalType, Type internalType, MemberVisibilityLevel getterVisibility,
-                                          MemberVisibilityLevel? setterVisibility, string member, bool isVirtual)
+                                          MemberVisibilityLevel? setterVisibility, string member, bool isVirtual, bool isStatic)
         {
-            return GetProperty(propertyName, GetTypeString(externalType), GetTypeString(internalType), getterVisibility, setterVisibility, member, isVirtual);
+            return GetProperty(propertyName, GetTypeString(externalType), GetTypeString(internalType), getterVisibility, setterVisibility, member, isVirtual, isStatic);
         }
 
         /// <summary>
@@ -410,10 +410,10 @@ namespace NetGore.Db.ClassCreator
         public abstract string GetSwitch(string switchOn, IEnumerable<KeyValuePair<string, string>> switches, string defaultCode);
 
         public virtual string GetProperty(string propertyName, string externalType, string internalType, MemberVisibilityLevel getterVisibility,
-                                          MemberVisibilityLevel? setterVisibility, string member, bool isVirtual)
+                                          MemberVisibilityLevel? setterVisibility, string member, bool isVirtual, bool isStatic)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(GetMethodNameAndVisibility(propertyName, getterVisibility, externalType, isVirtual, false));
+            sb.AppendLine(GetMethodNameAndVisibility(propertyName, getterVisibility, externalType, isVirtual, isStatic));
             sb.AppendLine(OpenBrace);
             {
                 // Getter

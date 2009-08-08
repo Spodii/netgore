@@ -117,7 +117,7 @@ public class CharacterTemplateTable : ICharacterTemplateTable
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
-public System.Collections.Generic.IEnumerable<System.String> DbColumns
+public static System.Collections.Generic.IEnumerable<System.String> DbColumns
 {
 get
 {
@@ -131,7 +131,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
 /// </summary>
-public System.Collections.Generic.IEnumerable<System.String> DbKeyColumns
+public static System.Collections.Generic.IEnumerable<System.String> DbKeyColumns
 {
 get
 {
@@ -145,7 +145,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
-public System.Collections.Generic.IEnumerable<System.String> DbNonKeyColumns
+public static System.Collections.Generic.IEnumerable<System.String> DbNonKeyColumns
 {
 get
 {
@@ -160,7 +160,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
 /// Gets an IEnumerable of strings containing the name of the database
 /// columns used in the column collection `Stat`.
 /// </summary>
-public System.Collections.Generic.IEnumerable<System.String> StatColumns
+public static System.Collections.Generic.IEnumerable<System.String> StatColumns
 {
 get
 {

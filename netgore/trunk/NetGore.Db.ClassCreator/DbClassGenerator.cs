@@ -199,7 +199,7 @@ namespace NetGore.Db.ClassCreator
 
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnIEnumerableProperty));
                     sb.AppendLine(Formatter.GetProperty("DbColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
-                                                        DbColumnsField, false));
+                                                        DbColumnsField, false, true));
                 }
 
                 {
@@ -210,7 +210,7 @@ namespace NetGore.Db.ClassCreator
 
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.KeyColumnIEnumerableProperty));
                     sb.AppendLine(Formatter.GetProperty("DbKeyColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
-                                                        DbColumnsKeysField, false));
+                                                        DbColumnsKeysField, false, true));
                 }
 
                 {
@@ -221,7 +221,7 @@ namespace NetGore.Db.ClassCreator
 
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.NonKeyColumnIEnumerableProperty));
                     sb.AppendLine(Formatter.GetProperty("DbNonKeyColumns", typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
-                                                        DbColumnsNonKeysField, false));
+                                                        DbColumnsNonKeysField, false, true));
                 }
 
                 {
@@ -242,7 +242,7 @@ namespace NetGore.Db.ClassCreator
 
                         sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionProperty, coll.Name)));
                         sb.AppendLine(Formatter.GetProperty(publicPropertyName, typeof(IEnumerable<string>), typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
-                                                            privateFieldName, false));
+                                                            privateFieldName, false, true));
                     }
                 }
 
@@ -432,7 +432,7 @@ namespace NetGore.Db.ClassCreator
                     sb.AppendLine(Formatter.GetXmlComment(comment));
 
                     sb.AppendLine(Formatter.GetProperty(cd.GetPublicName(column), cd.GetExternalType(column), cd.GetInternalType(column), MemberVisibilityLevel.Public,
-                                                        MemberVisibilityLevel.Public, cd.GetPrivateName(column), false));
+                                                        MemberVisibilityLevel.Public, cd.GetPrivateName(column), false, false));
                 }
                 else if (!addedCollections.Contains(coll))
                 {
@@ -813,6 +813,9 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
+        /// <summary>
+        /// Name of the class used to store the column metadata.
+        /// </summary>
         public const string ColumnMetadataClassName = "ColumnMetadata";
 
         protected virtual GeneratedTableCode CreateCodeForColumnMetadata(string codeNamespace)
