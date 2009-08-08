@@ -264,7 +264,7 @@ namespace NetGore.Db.ClassCreator
             return GetInterfaceProperty(name, GetTypeString(returnType), hasSetter);
         }
 
-        public virtual string GetInterfaceMethod(string name, Type returnType, params MethodParameter[] parameters)
+        public virtual string GetInterfaceMethod(string name, string returnType, params MethodParameter[] parameters)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(returnType + " " + name);
@@ -274,6 +274,11 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(EndOfLine);
 
             return sb.ToString();
+        }
+
+        public virtual string GetInterfaceMethod(string name, Type returnType, params MethodParameter[] parameters)
+        {
+            return GetInterfaceMethod(name, GetTypeString(returnType), parameters);
         }
 
         public virtual string GetInterfaceProperty(string name, string returnType, bool hasSetter)
@@ -476,9 +481,6 @@ namespace NetGore.Db.ClassCreator
 
         public virtual string GetTypeString(Type type)
         {
-            if (type == typeof(void))
-                return "void";
-
             if (type.IsGenericType)
             {
                 string s = type.ToString();
