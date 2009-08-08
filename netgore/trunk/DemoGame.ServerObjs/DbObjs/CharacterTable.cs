@@ -217,6 +217,9 @@ public const System.String TableName = "character";
 /// The number of columns in the database table that this class represents.
 /// </summary>
 public const System.Int32 ColumnCount = 36;
+/// <summary>
+/// Dictionary containing the values for the column collection `Stat`.
+/// </summary>
  readonly StatConstDictionary _stat = new StatConstDictionary();
 /// <summary>
 /// The field that maps onto the database column `body`.
@@ -286,10 +289,22 @@ System.Single _x;
 /// The field that maps onto the database column `y`.
 /// </summary>
 System.Single _y;
+/// <summary>
+/// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
+/// </summary>
+/// <param name="key">The key of the column to get.</param>
+/// <returns>
+/// The value of the database column for the corresponding <paramref name="key"/>.
+/// </returns>
 public System.Int32 GetStat(DemoGame.StatType key)
 {
 return (System.Byte)_stat[(DemoGame.StatType)key];
 }
+/// <summary>
+/// Gets the <paramref name="value"/> of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
+/// </summary>
+/// <param name="key">The key of the column to get.</param>
+/// <param name="value">The value to assign to the column for the corresponding <paramref name="key"/>.</param>
 public void SetStat(DemoGame.StatType key, System.Int32 value)
 {
 this._stat[(DemoGame.StatType)key] = (System.Byte)value;

@@ -328,7 +328,6 @@ namespace NetGore.Db.ClassCreator
                     {
                         // Has a collection - only add the code if the collection hasn't been added yet
                         addedCollections.Add(coll);
-                        // TODO: ColumnCollection interface comments
                         string name = cd.GetPublicName(coll);
                         MethodParameter keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
 
@@ -399,11 +398,10 @@ namespace NetGore.Db.ClassCreator
                 {
                     // Has a collection - only add the code if the collection hasn't been added yet
                     addedCollections.Add(coll);
-                    // TODO: ColumnCollection field comment
-
+                    sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateFields.CollectionField, coll.Name)));
                     string collType = DbClassData.GetCollectionTypeString(coll);
                     sb.AppendLine(Formatter.GetField(cd.GetPrivateName(coll), collType, MemberVisibilityLevel.Private,
-                                                     "new " + collType + "()", true, false));
+                                                     "new " + collType + Formatter.OpenParameterString + Formatter.CloseParameterString, true, false));
                 }
             }
 
@@ -442,11 +440,17 @@ namespace NetGore.Db.ClassCreator
                     string field = cd.GetPrivateName(coll) + Formatter.OpenIndexer + Formatter.GetCast(coll.KeyType) + "key" +
                                    Formatter.CloseIndexer;
 
-                    // TODO: ColumnCollection property comments
+                    // Getter
+                    sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateFields.PublicMethodGet, coll.Name),
+                        Comments.CreateFields.PublicMethodGetReturns, new KeyValuePair<string, string>("key", Comments.CreateFields.PublicMethodGetKeyParameter)));
                     sb.AppendLine(Formatter.GetMethodHeader("Get" + name, MemberVisibilityLevel.Public,
                                                             new MethodParameter[] { keyParameter }, coll.ValueType, false, false));
                     sb.AppendLine(Formatter.GetMethodBody("return " + Formatter.GetCast(cd.GetExternalType(column)) + field + Formatter.EndOfLine));
 
+                    // Setter
+                    sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateFields.PublicMethodGet, coll.Name),
+                        null, new KeyValuePair<string, string>("key", Comments.CreateFields.PublicMethodGetKeyParameter),
+                        new KeyValuePair<string, string>("value", Comments.CreateFields.PublicMethodValueParameter)));
                     sb.AppendLine(Formatter.GetMethodHeader("Set" + name, MemberVisibilityLevel.Public,
                                                             new MethodParameter[]
                                                             {
@@ -454,6 +458,7 @@ namespace NetGore.Db.ClassCreator
                                                                 new MethodParameter("value", coll.ValueType, Formatter)
                                                             },
                                                             typeof(void), false, false));
+
                     sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSetValue(field, "value", true, false, cd.GetInternalType(column))));
                 }
             }

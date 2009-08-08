@@ -40,7 +40,7 @@ namespace NetGore.Db.ClassCreator
             public static readonly string Summary =
                 "Copies the column values into the given Dictionary using the database column name" + Environment.NewLine +
                 "with a prefixed @ as the key. The keys must already exist in the Dictionary;" + Environment.NewLine +
-                " this method will not create them if they are missing.";
+                "this method will not create them if they are missing.";
         }
 
         /// <summary>
@@ -123,6 +123,18 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         public static class CreateFields
         {
+            public const string PublicMethodGet = "Gets the value of a database column for the corresponding key for the column collection `{0}`.";
+
+            public const string PublicMethodSet = "Sets the value of a database column for the corresponding key for the column collection `{0}`.";
+
+            public const string PublicMethodValueParameter = "The value to assign to the column for the corresponding key.";
+
+            public const string PublicMethodGetReturns = "The value of the database column for the corresponding key.";
+
+            public const string PublicMethodGetKeyParameter = "The key of the column to get.";
+
+            public const string CollectionField = "Dictionary containing the values for the column collection `{0}`.";
+
             public const string Field = "The field that maps onto the database column `{0}`.";
 
             public const string PropertyHasDefaultValue = " with the default value of `{0}`.";
