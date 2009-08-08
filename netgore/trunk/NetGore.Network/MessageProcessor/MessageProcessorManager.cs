@@ -47,7 +47,7 @@ namespace NetGore.Network
             // Store the types we will use
             Type mpdType = typeof(MessageProcessorDelegate);
             Type atbType = typeof(MessageHandlerAttribute);
-            Type voidType = Type.GetType("System.Void");
+            Type voidType = typeof(void);
 
             // Create the processors array
             _processors = new MessageProcessor[256];
