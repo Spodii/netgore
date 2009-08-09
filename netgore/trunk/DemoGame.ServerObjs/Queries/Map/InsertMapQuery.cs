@@ -1,14 +1,13 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.DbObjs;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
-// TODO: !! Cleanup query
-
 namespace DemoGame.Server.Queries
 {
-    public class InsertMapQuery : DbQueryNonReader<MapBase>
+    public class InsertMapQuery : DbQueryNonReader<IMapTable>
     {
         static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", MapTable.TableName,
                                                             FormatParametersIntoValuesString(MapTable.DbColumns));
@@ -22,9 +21,9 @@ namespace DemoGame.Server.Queries
             return CreateParameters(MapTable.DbColumns);
         }
 
-        protected override void SetParameters(DbParameterValues p, MapBase map)
+        protected override void SetParameters(DbParameterValues p, IMapTable map)
         {
-            MapQueryHelper.SetParameters(p, map);
+            ((MapTable)map).CopyValues(p);
         }
     }
 }
