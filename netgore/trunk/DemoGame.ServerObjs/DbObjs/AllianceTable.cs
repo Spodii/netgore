@@ -14,7 +14,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
-        AllianceID Id { get; }
+        AllianceID ID { get; }
 
         /// <summary>
         /// Gets the value of the database column `name`.
@@ -55,7 +55,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `id`.
         /// </summary>
-        Byte _id;
+        Byte _iD;
 
         /// <summary>
         /// The field that maps onto the database column `name`.
@@ -96,11 +96,11 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// AllianceTable constructor.
         /// </summary>
-        /// <param name="id">The initial value for the corresponding property.</param>
+        /// <param name="iD">The initial value for the corresponding property.</param>
         /// <param name="name">The initial value for the corresponding property.</param>
-        public AllianceTable(AllianceID @id, String @name)
+        public AllianceTable(AllianceID @iD, String @name)
         {
-            Id = @id;
+            ID = @iD;
             Name = @name;
         }
 
@@ -121,13 +121,13 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(IAllianceTable source, IDictionary<String, Object> dic)
         {
-            dic["@id"] = source.Id;
+            dic["@id"] = source.ID;
             dic["@name"] = source.Name;
         }
 
@@ -140,14 +140,14 @@ namespace DemoGame.Server.DbObjs
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
         public static void CopyValues(IAllianceTable source, DbParameterValues paramValues)
         {
-            paramValues["@id"] = source.Id;
+            paramValues["@id"] = source.ID;
             paramValues["@name"] = source.Name;
         }
 
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public void CopyValues(IDictionary<String, Object> dic)
@@ -168,7 +168,7 @@ namespace DemoGame.Server.DbObjs
 
         public void CopyValuesFrom(IAllianceTable source)
         {
-            Id = source.Id;
+            ID = source.ID;
             Name = source.Name;
         }
 
@@ -192,7 +192,7 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "id":
-                    return Id;
+                    return ID;
 
                 case "name":
                     return Name;
@@ -213,7 +213,7 @@ namespace DemoGame.Server.DbObjs
             Int32 i;
 
             i = dataReader.GetOrdinal("id");
-            Id = (AllianceID)dataReader.GetByte(i);
+            ID = (AllianceID)dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("name");
             Name = dataReader.GetString(i);
@@ -224,7 +224,7 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "id":
-                    Id = (AllianceID)value;
+                    ID = (AllianceID)value;
                     break;
 
                 case "name":
@@ -253,7 +253,7 @@ namespace DemoGame.Server.DbObjs
                 switch (paramValues.GetParameterName(i))
                 {
                     case "@id":
-                        paramValues[i] = source.Id;
+                        paramValues[i] = source.ID;
                         break;
 
                     case "@name":
@@ -293,7 +293,7 @@ namespace DemoGame.Server.DbObjs
                 switch (dataReader.GetName(i))
                 {
                     case "id":
-                        Id = (AllianceID)dataReader.GetByte(i);
+                        ID = (AllianceID)dataReader.GetByte(i);
                         break;
 
                     case "name":
@@ -309,10 +309,10 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `id`.
         /// The underlying database type is `tinyint(3) unsigned`.
         /// </summary>
-        public AllianceID Id
+        public AllianceID ID
         {
-            get { return (AllianceID)_id; }
-            set { _id = (Byte)value; }
+            get { return (AllianceID)_iD; }
+            set { _iD = (Byte)value; }
         }
 
         /// <summary>

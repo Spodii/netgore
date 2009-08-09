@@ -2,32 +2,32 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using NetGore.Db;
+using DemoGame.Server.DbObjs;
 
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
     public class SelectAllianceQuery : DbQueryReader<AllianceID>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", DBTables.Alliance);
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", AllianceTable.TableName);
 
         public SelectAllianceQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
-        public SelectAllianceQueryValues Execute(AllianceID id)
+        public AllianceTable Execute(AllianceID id)
         {
-            SelectAllianceQueryValues ret;
+            AllianceTable ret;
 
             using (IDataReader r = ExecuteReader(id))
             {
                 if (!r.Read())
                     throw new ArgumentOutOfRangeException("id", string.Format("No alliance found for id `{0}`.", id));
 
-                string name = r.GetString("name");
-
-                ret = new SelectAllianceQueryValues(id, name);
+                ret = new AllianceTable(r);
             }
 
             return ret;

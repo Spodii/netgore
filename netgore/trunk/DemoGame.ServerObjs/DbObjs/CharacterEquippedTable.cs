@@ -14,12 +14,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `character_id`.
         /// </summary>
-        CharacterID CharacterId { get; }
+        CharacterID CharacterID { get; }
 
         /// <summary>
         /// Gets the value of the database column `item_id`.
         /// </summary>
-        ItemID ItemId { get; }
+        ItemID ItemID { get; }
 
         /// <summary>
         /// Gets the value of the database column `slot`.
@@ -60,12 +60,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `character_id`.
         /// </summary>
-        Int32 _characterId;
+        Int32 _characterID;
 
         /// <summary>
         /// The field that maps onto the database column `item_id`.
         /// </summary>
-        Int32 _itemId;
+        Int32 _itemID;
 
         /// <summary>
         /// The field that maps onto the database column `slot`.
@@ -106,13 +106,13 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// CharacterEquippedTable constructor.
         /// </summary>
-        /// <param name="characterId">The initial value for the corresponding property.</param>
-        /// <param name="itemId">The initial value for the corresponding property.</param>
+        /// <param name="characterID">The initial value for the corresponding property.</param>
+        /// <param name="itemID">The initial value for the corresponding property.</param>
         /// <param name="slot">The initial value for the corresponding property.</param>
-        public CharacterEquippedTable(CharacterID @characterId, ItemID @itemId, Byte @slot)
+        public CharacterEquippedTable(CharacterID @characterID, ItemID @itemID, Byte @slot)
         {
-            CharacterId = @characterId;
-            ItemId = @itemId;
+            CharacterID = @characterID;
+            ItemID = @itemID;
             Slot = @slot;
         }
 
@@ -133,14 +133,14 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(ICharacterEquippedTable source, IDictionary<String, Object> dic)
         {
-            dic["@character_id"] = source.CharacterId;
-            dic["@item_id"] = source.ItemId;
+            dic["@character_id"] = source.CharacterID;
+            dic["@item_id"] = source.ItemID;
             dic["@slot"] = source.Slot;
         }
 
@@ -153,15 +153,15 @@ namespace DemoGame.Server.DbObjs
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
         public static void CopyValues(ICharacterEquippedTable source, DbParameterValues paramValues)
         {
-            paramValues["@character_id"] = source.CharacterId;
-            paramValues["@item_id"] = source.ItemId;
+            paramValues["@character_id"] = source.CharacterID;
+            paramValues["@item_id"] = source.ItemID;
             paramValues["@slot"] = source.Slot;
         }
 
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public void CopyValues(IDictionary<String, Object> dic)
@@ -182,8 +182,8 @@ namespace DemoGame.Server.DbObjs
 
         public void CopyValuesFrom(ICharacterEquippedTable source)
         {
-            CharacterId = source.CharacterId;
-            ItemId = source.ItemId;
+            CharacterID = source.CharacterID;
+            ItemID = source.ItemID;
             Slot = source.Slot;
         }
 
@@ -210,10 +210,10 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "character_id":
-                    return CharacterId;
+                    return CharacterID;
 
                 case "item_id":
-                    return ItemId;
+                    return ItemID;
 
                 case "slot":
                     return Slot;
@@ -234,10 +234,10 @@ namespace DemoGame.Server.DbObjs
             Int32 i;
 
             i = dataReader.GetOrdinal("character_id");
-            CharacterId = (CharacterID)dataReader.GetInt32(i);
+            CharacterID = (CharacterID)dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("item_id");
-            ItemId = (ItemID)dataReader.GetInt32(i);
+            ItemID = (ItemID)dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("slot");
             Slot = dataReader.GetByte(i);
@@ -248,11 +248,11 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "character_id":
-                    CharacterId = (CharacterID)value;
+                    CharacterID = (CharacterID)value;
                     break;
 
                 case "item_id":
-                    ItemId = (ItemID)value;
+                    ItemID = (ItemID)value;
                     break;
 
                 case "slot":
@@ -281,11 +281,11 @@ namespace DemoGame.Server.DbObjs
                 switch (paramValues.GetParameterName(i))
                 {
                     case "@character_id":
-                        paramValues[i] = source.CharacterId;
+                        paramValues[i] = source.CharacterID;
                         break;
 
                     case "@item_id":
-                        paramValues[i] = source.ItemId;
+                        paramValues[i] = source.ItemID;
                         break;
 
                     case "@slot":
@@ -325,11 +325,11 @@ namespace DemoGame.Server.DbObjs
                 switch (dataReader.GetName(i))
                 {
                     case "character_id":
-                        CharacterId = (CharacterID)dataReader.GetInt32(i);
+                        CharacterID = (CharacterID)dataReader.GetInt32(i);
                         break;
 
                     case "item_id":
-                        ItemId = (ItemID)dataReader.GetInt32(i);
+                        ItemID = (ItemID)dataReader.GetInt32(i);
                         break;
 
                     case "slot":
@@ -345,20 +345,20 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `character_id`.
         /// The underlying database type is `int(11)`.
         /// </summary>
-        public CharacterID CharacterId
+        public CharacterID CharacterID
         {
-            get { return (CharacterID)_characterId; }
-            set { _characterId = (Int32)value; }
+            get { return (CharacterID)_characterID; }
+            set { _characterID = (Int32)value; }
         }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `item_id`.
         /// The underlying database type is `int(11)`.
         /// </summary>
-        public ItemID ItemId
+        public ItemID ItemID
         {
-            get { return (ItemID)_itemId; }
-            set { _itemId = (Int32)value; }
+            get { return (ItemID)_itemID; }
+            set { _itemID = (Int32)value; }
         }
 
         /// <summary>

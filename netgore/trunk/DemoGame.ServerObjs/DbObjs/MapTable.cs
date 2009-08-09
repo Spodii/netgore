@@ -15,7 +15,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
-        MapIndex Id { get; }
+        MapIndex ID { get; }
 
         /// <summary>
         /// Gets the value of the database column `name`.
@@ -56,7 +56,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `id`.
         /// </summary>
-        UInt16 _id;
+        UInt16 _iD;
 
         /// <summary>
         /// The field that maps onto the database column `name`.
@@ -97,11 +97,11 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// MapTable constructor.
         /// </summary>
-        /// <param name="id">The initial value for the corresponding property.</param>
+        /// <param name="iD">The initial value for the corresponding property.</param>
         /// <param name="name">The initial value for the corresponding property.</param>
-        public MapTable(MapIndex @id, String @name)
+        public MapTable(MapIndex @iD, String @name)
         {
-            Id = @id;
+            ID = @iD;
             Name = @name;
         }
 
@@ -122,13 +122,13 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(IMapTable source, IDictionary<String, Object> dic)
         {
-            dic["@id"] = source.Id;
+            dic["@id"] = source.ID;
             dic["@name"] = source.Name;
         }
 
@@ -141,14 +141,14 @@ namespace DemoGame.Server.DbObjs
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
         public static void CopyValues(IMapTable source, DbParameterValues paramValues)
         {
-            paramValues["@id"] = source.Id;
+            paramValues["@id"] = source.ID;
             paramValues["@name"] = source.Name;
         }
 
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public void CopyValues(IDictionary<String, Object> dic)
@@ -169,7 +169,7 @@ namespace DemoGame.Server.DbObjs
 
         public void CopyValuesFrom(IMapTable source)
         {
-            Id = source.Id;
+            ID = source.ID;
             Name = source.Name;
         }
 
@@ -193,7 +193,7 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "id":
-                    return Id;
+                    return ID;
 
                 case "name":
                     return Name;
@@ -214,7 +214,7 @@ namespace DemoGame.Server.DbObjs
             Int32 i;
 
             i = dataReader.GetOrdinal("id");
-            Id = (MapIndex)dataReader.GetUInt16(i);
+            ID = (MapIndex)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("name");
             Name = dataReader.GetString(i);
@@ -225,7 +225,7 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "id":
-                    Id = (MapIndex)value;
+                    ID = (MapIndex)value;
                     break;
 
                 case "name":
@@ -254,7 +254,7 @@ namespace DemoGame.Server.DbObjs
                 switch (paramValues.GetParameterName(i))
                 {
                     case "@id":
-                        paramValues[i] = source.Id;
+                        paramValues[i] = source.ID;
                         break;
 
                     case "@name":
@@ -294,7 +294,7 @@ namespace DemoGame.Server.DbObjs
                 switch (dataReader.GetName(i))
                 {
                     case "id":
-                        Id = (MapIndex)dataReader.GetUInt16(i);
+                        ID = (MapIndex)dataReader.GetUInt16(i);
                         break;
 
                     case "name":
@@ -310,10 +310,10 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `id`.
         /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
-        public MapIndex Id
+        public MapIndex ID
         {
-            get { return (MapIndex)_id; }
-            set { _id = (UInt16)value; }
+            get { return (MapIndex)_iD; }
+            set { _iD = (UInt16)value; }
         }
 
         /// <summary>

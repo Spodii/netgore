@@ -14,12 +14,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `ai`.
         /// </summary>
-        String Ai { get; }
+        String AI { get; }
 
         /// <summary>
         /// Gets the value of the database column `alliance_id`.
         /// </summary>
-        AllianceID AllianceId { get; }
+        AllianceID AllianceID { get; }
 
         /// <summary>
         /// Gets the value of the database column `body`.
@@ -44,7 +44,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
-        UInt16 Id { get; }
+        UInt16 ID { get; }
 
         /// <summary>
         /// Gets the value of the database column `level`.
@@ -64,7 +64,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `statpoints`.
         /// </summary>
-        UInt32 Statpoints { get; }
+        UInt32 StatPoints { get; }
 
         /// <summary>
         /// Gets the value of the database column in the column collection `{0}`
@@ -144,12 +144,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `ai`.
         /// </summary>
-        String _ai;
+        String _aI;
 
         /// <summary>
         /// The field that maps onto the database column `alliance_id`.
         /// </summary>
-        Byte _allianceId;
+        Byte _allianceID;
 
         /// <summary>
         /// The field that maps onto the database column `body`.
@@ -174,7 +174,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `id`.
         /// </summary>
-        UInt16 _id;
+        UInt16 _iD;
 
         /// <summary>
         /// The field that maps onto the database column `level`.
@@ -194,7 +194,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `statpoints`.
         /// </summary>
-        UInt32 _statpoints;
+        UInt32 _statPoints;
 
         /// <summary>
         /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
@@ -241,8 +241,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="acc">The initial value for the corresponding property.</param>
         /// <param name="agi">The initial value for the corresponding property.</param>
-        /// <param name="ai">The initial value for the corresponding property.</param>
-        /// <param name="allianceId">The initial value for the corresponding property.</param>
+        /// <param name="aI">The initial value for the corresponding property.</param>
+        /// <param name="allianceID">The initial value for the corresponding property.</param>
         /// <param name="armor">The initial value for the corresponding property.</param>
         /// <param name="body">The initial value for the corresponding property.</param>
         /// <param name="bra">The initial value for the corresponding property.</param>
@@ -252,33 +252,33 @@ namespace DemoGame.Server.DbObjs
         /// <param name="exp">The initial value for the corresponding property.</param>
         /// <param name="giveCash">The initial value for the corresponding property.</param>
         /// <param name="giveExp">The initial value for the corresponding property.</param>
-        /// <param name="id">The initial value for the corresponding property.</param>
+        /// <param name="iD">The initial value for the corresponding property.</param>
         /// <param name="imm">The initial value for the corresponding property.</param>
         /// <param name="int">The initial value for the corresponding property.</param>
         /// <param name="level">The initial value for the corresponding property.</param>
-        /// <param name="maxhit">The initial value for the corresponding property.</param>
-        /// <param name="maxhp">The initial value for the corresponding property.</param>
-        /// <param name="maxmp">The initial value for the corresponding property.</param>
-        /// <param name="minhit">The initial value for the corresponding property.</param>
+        /// <param name="maxHit">The initial value for the corresponding property.</param>
+        /// <param name="maxHP">The initial value for the corresponding property.</param>
+        /// <param name="maxMP">The initial value for the corresponding property.</param>
+        /// <param name="minHit">The initial value for the corresponding property.</param>
         /// <param name="name">The initial value for the corresponding property.</param>
         /// <param name="perc">The initial value for the corresponding property.</param>
         /// <param name="recov">The initial value for the corresponding property.</param>
         /// <param name="regen">The initial value for the corresponding property.</param>
         /// <param name="respawn">The initial value for the corresponding property.</param>
-        /// <param name="statpoints">The initial value for the corresponding property.</param>
+        /// <param name="statPoints">The initial value for the corresponding property.</param>
         /// <param name="str">The initial value for the corresponding property.</param>
         /// <param name="tact">The initial value for the corresponding property.</param>
-        /// <param name="ws">The initial value for the corresponding property.</param>
-        public CharacterTemplateTable(Byte @acc, Byte @agi, String @ai, AllianceID @allianceId, Byte @armor, UInt16 @body,
+        /// <param name="wS">The initial value for the corresponding property.</param>
+        public CharacterTemplateTable(Byte @acc, Byte @agi, String @aI, AllianceID @allianceID, Byte @armor, UInt16 @body,
                                       Byte @bra, Byte @defence, Byte @dex, Byte @evade, UInt32 @exp, UInt16 @giveCash,
-                                      UInt16 @giveExp, UInt16 @id, Byte @imm, Byte @int, Byte @level, Byte @maxhit, UInt16 @maxhp,
-                                      UInt16 @maxmp, Byte @minhit, String @name, Byte @perc, Byte @recov, Byte @regen,
-                                      UInt16 @respawn, UInt32 @statpoints, Byte @str, Byte @tact, Byte @ws)
+                                      UInt16 @giveExp, UInt16 @iD, Byte @imm, Byte @int, Byte @level, Byte @maxHit, UInt16 @maxHP,
+                                      UInt16 @maxMP, Byte @minHit, String @name, Byte @perc, Byte @recov, Byte @regen,
+                                      UInt16 @respawn, UInt32 @statPoints, Byte @str, Byte @tact, Byte @wS)
         {
             SetStat(StatType.Acc, @acc);
             SetStat(StatType.Agi, @agi);
-            Ai = @ai;
-            AllianceId = @allianceId;
+            AI = @aI;
+            AllianceID = @allianceID;
             SetStat(StatType.Armor, @armor);
             Body = @body;
             SetStat(StatType.Bra, @bra);
@@ -288,23 +288,23 @@ namespace DemoGame.Server.DbObjs
             Exp = @exp;
             GiveCash = @giveCash;
             GiveExp = @giveExp;
-            Id = @id;
+            ID = @iD;
             SetStat(StatType.Imm, @imm);
             SetStat(StatType.Int, @int);
             Level = @level;
-            SetStat(StatType.MaxHit, @maxhit);
-            SetStat(StatType.MaxHP, @maxhp);
-            SetStat(StatType.MaxMP, @maxmp);
-            SetStat(StatType.MinHit, @minhit);
+            SetStat(StatType.MaxHit, @maxHit);
+            SetStat(StatType.MaxHP, @maxHP);
+            SetStat(StatType.MaxMP, @maxMP);
+            SetStat(StatType.MinHit, @minHit);
             Name = @name;
             SetStat(StatType.Perc, @perc);
             SetStat(StatType.Recov, @recov);
             SetStat(StatType.Regen, @regen);
             Respawn = @respawn;
-            Statpoints = @statpoints;
+            StatPoints = @statPoints;
             SetStat(StatType.Str, @str);
             SetStat(StatType.Tact, @tact);
-            SetStat(StatType.WS, @ws);
+            SetStat(StatType.WS, @wS);
         }
 
         /// <summary>
@@ -324,7 +324,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
@@ -332,8 +332,8 @@ namespace DemoGame.Server.DbObjs
         {
             dic["@acc"] = (Byte)source.GetStat(StatType.Acc);
             dic["@agi"] = (Byte)source.GetStat(StatType.Agi);
-            dic["@ai"] = source.Ai;
-            dic["@alliance_id"] = source.AllianceId;
+            dic["@ai"] = source.AI;
+            dic["@alliance_id"] = source.AllianceID;
             dic["@armor"] = (Byte)source.GetStat(StatType.Armor);
             dic["@body"] = source.Body;
             dic["@bra"] = (Byte)source.GetStat(StatType.Bra);
@@ -343,7 +343,7 @@ namespace DemoGame.Server.DbObjs
             dic["@exp"] = source.Exp;
             dic["@give_cash"] = source.GiveCash;
             dic["@give_exp"] = source.GiveExp;
-            dic["@id"] = source.Id;
+            dic["@id"] = source.ID;
             dic["@imm"] = (Byte)source.GetStat(StatType.Imm);
             dic["@int"] = (Byte)source.GetStat(StatType.Int);
             dic["@level"] = source.Level;
@@ -356,7 +356,7 @@ namespace DemoGame.Server.DbObjs
             dic["@recov"] = (Byte)source.GetStat(StatType.Recov);
             dic["@regen"] = (Byte)source.GetStat(StatType.Regen);
             dic["@respawn"] = source.Respawn;
-            dic["@statpoints"] = source.Statpoints;
+            dic["@statpoints"] = source.StatPoints;
             dic["@str"] = (Byte)source.GetStat(StatType.Str);
             dic["@tact"] = (Byte)source.GetStat(StatType.Tact);
             dic["@ws"] = (Byte)source.GetStat(StatType.WS);
@@ -373,8 +373,8 @@ namespace DemoGame.Server.DbObjs
         {
             paramValues["@acc"] = (Byte)source.GetStat(StatType.Acc);
             paramValues["@agi"] = (Byte)source.GetStat(StatType.Agi);
-            paramValues["@ai"] = source.Ai;
-            paramValues["@alliance_id"] = source.AllianceId;
+            paramValues["@ai"] = source.AI;
+            paramValues["@alliance_id"] = source.AllianceID;
             paramValues["@armor"] = (Byte)source.GetStat(StatType.Armor);
             paramValues["@body"] = source.Body;
             paramValues["@bra"] = (Byte)source.GetStat(StatType.Bra);
@@ -384,7 +384,7 @@ namespace DemoGame.Server.DbObjs
             paramValues["@exp"] = source.Exp;
             paramValues["@give_cash"] = source.GiveCash;
             paramValues["@give_exp"] = source.GiveExp;
-            paramValues["@id"] = source.Id;
+            paramValues["@id"] = source.ID;
             paramValues["@imm"] = (Byte)source.GetStat(StatType.Imm);
             paramValues["@int"] = (Byte)source.GetStat(StatType.Int);
             paramValues["@level"] = source.Level;
@@ -397,7 +397,7 @@ namespace DemoGame.Server.DbObjs
             paramValues["@recov"] = (Byte)source.GetStat(StatType.Recov);
             paramValues["@regen"] = (Byte)source.GetStat(StatType.Regen);
             paramValues["@respawn"] = source.Respawn;
-            paramValues["@statpoints"] = source.Statpoints;
+            paramValues["@statpoints"] = source.StatPoints;
             paramValues["@str"] = (Byte)source.GetStat(StatType.Str);
             paramValues["@tact"] = (Byte)source.GetStat(StatType.Tact);
             paramValues["@ws"] = (Byte)source.GetStat(StatType.WS);
@@ -406,7 +406,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public void CopyValues(IDictionary<String, Object> dic)
@@ -429,8 +429,8 @@ namespace DemoGame.Server.DbObjs
         {
             SetStat(StatType.Acc, source.GetStat(StatType.Acc));
             SetStat(StatType.Agi, source.GetStat(StatType.Agi));
-            Ai = source.Ai;
-            AllianceId = source.AllianceId;
+            AI = source.AI;
+            AllianceID = source.AllianceID;
             SetStat(StatType.Armor, source.GetStat(StatType.Armor));
             Body = source.Body;
             SetStat(StatType.Bra, source.GetStat(StatType.Bra));
@@ -440,7 +440,7 @@ namespace DemoGame.Server.DbObjs
             Exp = source.Exp;
             GiveCash = source.GiveCash;
             GiveExp = source.GiveExp;
-            Id = source.Id;
+            ID = source.ID;
             SetStat(StatType.Imm, source.GetStat(StatType.Imm));
             SetStat(StatType.Int, source.GetStat(StatType.Int));
             Level = source.Level;
@@ -453,7 +453,7 @@ namespace DemoGame.Server.DbObjs
             SetStat(StatType.Recov, source.GetStat(StatType.Recov));
             SetStat(StatType.Regen, source.GetStat(StatType.Regen));
             Respawn = source.Respawn;
-            Statpoints = source.Statpoints;
+            StatPoints = source.StatPoints;
             SetStat(StatType.Str, source.GetStat(StatType.Str));
             SetStat(StatType.Tact, source.GetStat(StatType.Tact));
             SetStat(StatType.WS, source.GetStat(StatType.WS));
@@ -569,10 +569,10 @@ namespace DemoGame.Server.DbObjs
                     return GetStat(StatType.Agi);
 
                 case "ai":
-                    return Ai;
+                    return AI;
 
                 case "alliance_id":
-                    return AllianceId;
+                    return AllianceID;
 
                 case "armor":
                     return GetStat(StatType.Armor);
@@ -602,7 +602,7 @@ namespace DemoGame.Server.DbObjs
                     return GiveExp;
 
                 case "id":
-                    return Id;
+                    return ID;
 
                 case "imm":
                     return GetStat(StatType.Imm);
@@ -641,7 +641,7 @@ namespace DemoGame.Server.DbObjs
                     return Respawn;
 
                 case "statpoints":
-                    return Statpoints;
+                    return StatPoints;
 
                 case "str":
                     return GetStat(StatType.Str);
@@ -674,10 +674,10 @@ namespace DemoGame.Server.DbObjs
             SetStat(StatType.Agi, dataReader.GetByte(i));
 
             i = dataReader.GetOrdinal("ai");
-            Ai = dataReader.GetString(i);
+            AI = dataReader.GetString(i);
 
             i = dataReader.GetOrdinal("alliance_id");
-            AllianceId = (AllianceID)dataReader.GetByte(i);
+            AllianceID = (AllianceID)dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("armor");
             SetStat(StatType.Armor, dataReader.GetByte(i));
@@ -707,7 +707,7 @@ namespace DemoGame.Server.DbObjs
             GiveExp = dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("id");
-            Id = dataReader.GetUInt16(i);
+            ID = dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("imm");
             SetStat(StatType.Imm, dataReader.GetByte(i));
@@ -746,7 +746,7 @@ namespace DemoGame.Server.DbObjs
             Respawn = dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("statpoints");
-            Statpoints = dataReader.GetUInt32(i);
+            StatPoints = dataReader.GetUInt32(i);
 
             i = dataReader.GetOrdinal("str");
             SetStat(StatType.Str, dataReader.GetByte(i));
@@ -771,11 +771,11 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "ai":
-                    Ai = (String)value;
+                    AI = (String)value;
                     break;
 
                 case "alliance_id":
-                    AllianceId = (AllianceID)value;
+                    AllianceID = (AllianceID)value;
                     break;
 
                 case "armor":
@@ -815,7 +815,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "id":
-                    Id = (UInt16)value;
+                    ID = (UInt16)value;
                     break;
 
                 case "imm":
@@ -867,7 +867,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "statpoints":
-                    Statpoints = (UInt32)value;
+                    StatPoints = (UInt32)value;
                     break;
 
                 case "str":
@@ -912,11 +912,11 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@ai":
-                        paramValues[i] = source.Ai;
+                        paramValues[i] = source.AI;
                         break;
 
                     case "@alliance_id":
-                        paramValues[i] = source.AllianceId;
+                        paramValues[i] = source.AllianceID;
                         break;
 
                     case "@armor":
@@ -956,7 +956,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@id":
-                        paramValues[i] = source.Id;
+                        paramValues[i] = source.ID;
                         break;
 
                     case "@imm":
@@ -1008,7 +1008,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@statpoints":
-                        paramValues[i] = source.Statpoints;
+                        paramValues[i] = source.StatPoints;
                         break;
 
                     case "@str":
@@ -1064,11 +1064,11 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "ai":
-                        Ai = dataReader.GetString(i);
+                        AI = dataReader.GetString(i);
                         break;
 
                     case "alliance_id":
-                        AllianceId = (AllianceID)dataReader.GetByte(i);
+                        AllianceID = (AllianceID)dataReader.GetByte(i);
                         break;
 
                     case "armor":
@@ -1108,7 +1108,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "id":
-                        Id = dataReader.GetUInt16(i);
+                        ID = dataReader.GetUInt16(i);
                         break;
 
                     case "imm":
@@ -1160,7 +1160,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "statpoints":
-                        Statpoints = dataReader.GetUInt32(i);
+                        StatPoints = dataReader.GetUInt32(i);
                         break;
 
                     case "str":
@@ -1206,20 +1206,20 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `ai`.
         /// The underlying database type is `varchar(255)`.
         /// </summary>
-        public String Ai
+        public String AI
         {
-            get { return _ai; }
-            set { _ai = value; }
+            get { return _aI; }
+            set { _aI = value; }
         }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `alliance_id`.
         /// The underlying database type is `tinyint(3) unsigned`.
         /// </summary>
-        public AllianceID AllianceId
+        public AllianceID AllianceID
         {
-            get { return (AllianceID)_allianceId; }
-            set { _allianceId = (Byte)value; }
+            get { return (AllianceID)_allianceID; }
+            set { _allianceID = (Byte)value; }
         }
 
         /// <summary>
@@ -1266,10 +1266,10 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `id`.
         /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
-        public UInt16 Id
+        public UInt16 ID
         {
-            get { return _id; }
-            set { _id = value; }
+            get { return _iD; }
+            set { _iD = value; }
         }
 
         /// <summary>
@@ -1306,10 +1306,10 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `statpoints`.
         /// The underlying database type is `int(10) unsigned`.
         /// </summary>
-        public UInt32 Statpoints
+        public UInt32 StatPoints
         {
-            get { return _statpoints; }
-            set { _statpoints = value; }
+            get { return _statPoints; }
+            set { _statPoints = value; }
         }
 
         #endregion
