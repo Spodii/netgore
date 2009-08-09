@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -75,6 +75,7 @@
     <Compile Include="BitStreamExtensions.cs" />
     <Compile Include="BodyIndex.cs" />
     <Compile Include="BodyInfo.cs" />
+    <Compile Include="DbObjs\IMapTable.cs" />
     <Compile Include="Entity\CharacterEntity.cs" />
     <Compile Include="Entity\CharacterState.cs" />
     <Compile Include="DamageText.cs" />
