@@ -3,24 +3,23 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
-
-// TODO: !! Cleanup query
 
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
     public class SelectCharacterByIDQuery : DbQueryReader<CharacterID>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@characterID", DBTables.Character);
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", DBTables.Character);
 
         public SelectCharacterByIDQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
-        public SelectCharacterQueryValues Execute(CharacterID characterID)
+        public CharacterTable Execute(CharacterID characterID)
         {
-            SelectCharacterQueryValues ret;
+            CharacterTable ret;
 
             using (IDataReader r = ExecuteReader(characterID))
             {
@@ -28,7 +27,7 @@ namespace DemoGame.Server.Queries
                     throw new ArgumentException(string.Format("Could not find character with ID `{0}`.", characterID),
                                                 characterID.ToString());
 
-                ret = CharacterQueryHelper.ReadCharacterQueryValues(r);
+                ret = new CharacterTable(r);
             }
 
             return ret;
@@ -36,12 +35,12 @@ namespace DemoGame.Server.Queries
 
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@characterID");
+            return CreateParameters("@id");
         }
 
         protected override void SetParameters(DbParameterValues p, CharacterID characterID)
         {
-            p["@characterID"] = (int)characterID;
+            p["@id"] = (int)characterID;
         }
     }
 }
