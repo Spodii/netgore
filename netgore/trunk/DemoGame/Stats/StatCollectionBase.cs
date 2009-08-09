@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.Collections;
 
 namespace DemoGame
 {
@@ -11,18 +12,30 @@ namespace DemoGame
     public abstract class StatCollectionBase : IStatCollection
     {
         readonly StatCollectionType _statCollectionType;
-        readonly Dictionary<StatType, IStat> _stats = new Dictionary<StatType, IStat>();
+        readonly Dictionary<StatType, IStat> _stats = new Dictionary<StatType, IStat>(EnumComparer<StatType>.Instance);
 
+        /// <summary>
+        /// StatCollectionBase constructor.
+        /// </summary>
+        /// <param name="statCollectionType">The type of the collectoin.</param>
         protected StatCollectionBase(StatCollectionType statCollectionType)
         {
             _statCollectionType = statCollectionType;
         }
 
+        /// <summary>
+        /// Adds an IStat to the collection.
+        /// </summary>
+        /// <param name="stat">IStat to add to the collection.</param>
         protected void Add(IStat stat)
         {
             _stats.Add(stat.StatType, stat);
         }
 
+        /// <summary>
+        /// Adds IStats to the collection.
+        /// </summary>
+        /// <param name="stats">IStats to add to the collection.</param>
         protected void Add(IEnumerable<IStat> stats)
         {
             foreach (IStat stat in stats)
@@ -31,6 +44,10 @@ namespace DemoGame
             }
         }
 
+        /// <summary>
+        /// Adds IStats to the collection.
+        /// </summary>
+        /// <param name="stats">IStats to add to the collection.</param>
         protected void Add(params IStat[] stats)
         {
             foreach (IStat stat in stats)
@@ -39,6 +56,13 @@ namespace DemoGame
             }
         }
 
+        /// <summary>
+        /// Takes the stat values from the given source and copies them into this collection.
+        /// </summary>
+        /// <param name="sourceStats">The source to copy all the stat values from.</param>
+        /// <param name="errorOnFailure">If true, an ArgumentException will be thrown if the <paramref name="sourceStats"/>
+        /// contains one or more stats that are not in this collection. If false, any key in the
+        /// <paramref name="sourceStats"/> that is not in this collection will just be skipped.</param>
         public void CopyStatValuesFrom(IEnumerable<StatTypeValue> sourceStats, bool errorOnFailure)
         {
             // Iterate through each stat in the source
