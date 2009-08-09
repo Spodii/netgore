@@ -102,7 +102,6 @@
     <Compile Include="DbObjs\Interfaces\IItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IItemTemplateTable.cs" />
     <Compile Include="DbObjs\Interfaces\IMapSpawnTable.cs" />
-    <Compile Include="DbObjs\Interfaces\IMapTable.cs" />
     <Compile Include="DbObjs\ItemTable.cs" />
     <Compile Include="DbObjs\ItemTemplateTable.cs" />
     <Compile Include="DbObjs\MapSpawnTable.cs" />

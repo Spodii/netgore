@@ -1,6 +1,6 @@
 using System;
 using System.Linq;
-namespace DemoGame.Server.DbObjs
+namespace DemoGame.DbObjs
 {
 /// <summary>
 /// Interface for a class that can be used to serialize values to the database table `map`.

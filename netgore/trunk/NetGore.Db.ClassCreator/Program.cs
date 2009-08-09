@@ -39,7 +39,7 @@ namespace NetGore.Db.ClassCreator
         /// <summary>
         /// Contains the of the tables that will be exposed to the whole project instead of just the server.
         /// </summary>
-        static readonly ICollection<string> _globalInterfaces = new string[] { };
+        static readonly ICollection<string> _globalInterfaces = new string[] { "map" };
 
         static void SaveCodeFile(GeneratedTableCode gtc)
         {
@@ -80,6 +80,7 @@ namespace NetGore.Db.ClassCreator
             {
                 // Custom usings
                 generator.AddUsing("NetGore.Db");
+                generator.AddUsing("DemoGame.DbObjs");
 
                 // Custom DataReader methods
                 generator.SetDataReaderReadMethod(typeof(float), "GetFloat");
