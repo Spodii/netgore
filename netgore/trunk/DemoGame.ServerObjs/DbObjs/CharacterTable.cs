@@ -47,7 +47,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `character_template_id`.
 /// </summary>
-DemoGame.Server.CharacterTemplateID CharacterTemplateID
+System.Nullable<DemoGame.Server.CharacterTemplateID> CharacterTemplateID
 {
 get;
 }
@@ -61,7 +61,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `hp`.
 /// </summary>
-System.UInt16 HP
+System.Int16 HP
 {
 get;
 }
@@ -89,7 +89,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `mp`.
 /// </summary>
-System.UInt16 MP
+System.Int16 MP
 {
 get;
 }
@@ -110,7 +110,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `respawn_map`.
 /// </summary>
-NetGore.MapIndex RespawnMap
+System.Nullable<NetGore.MapIndex> RespawnMap
 {
 get;
 }
@@ -251,7 +251,7 @@ System.UInt32 _exp;
 /// <summary>
 /// The field that maps onto the database column `hp`.
 /// </summary>
-System.UInt16 _hP;
+System.Int16 _hP;
 /// <summary>
 /// The field that maps onto the database column `id`.
 /// </summary>
@@ -267,7 +267,7 @@ System.UInt16 _mapID;
 /// <summary>
 /// The field that maps onto the database column `mp`.
 /// </summary>
-System.UInt16 _mP;
+System.Int16 _mP;
 /// <summary>
 /// The field that maps onto the database column `name`.
 /// </summary>
@@ -354,11 +354,11 @@ this._cash = (System.UInt32)value;
 /// Gets or sets the value for the field that maps onto the database column `character_template_id`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
-public DemoGame.Server.CharacterTemplateID CharacterTemplateID
+public System.Nullable<DemoGame.Server.CharacterTemplateID> CharacterTemplateID
 {
 get
 {
-return (DemoGame.Server.CharacterTemplateID)_characterTemplateID;
+return (System.Nullable<DemoGame.Server.CharacterTemplateID>)_characterTemplateID;
 }
 set
 {
@@ -382,17 +382,17 @@ this._exp = (System.UInt32)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `hp`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
+/// The underlying database type is `smallint(6)` with the default value of `50`.
 /// </summary>
-public System.UInt16 HP
+public System.Int16 HP
 {
 get
 {
-return (System.UInt16)_hP;
+return (System.Int16)_hP;
 }
 set
 {
-this._hP = (System.UInt16)value;
+this._hP = (System.Int16)value;
 }
 }
 /// <summary>
@@ -442,17 +442,17 @@ this._mapID = (System.UInt16)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `mp`.
-/// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
+/// The underlying database type is `smallint(6)` with the default value of `50`.
 /// </summary>
-public System.UInt16 MP
+public System.Int16 MP
 {
 get
 {
-return (System.UInt16)_mP;
+return (System.Int16)_mP;
 }
 set
 {
-this._mP = (System.UInt16)value;
+this._mP = (System.Int16)value;
 }
 }
 /// <summary>
@@ -489,11 +489,11 @@ this._password = (System.String)value;
 /// Gets or sets the value for the field that maps onto the database column `respawn_map`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
-public NetGore.MapIndex RespawnMap
+public System.Nullable<NetGore.MapIndex> RespawnMap
 {
 get
 {
-return (NetGore.MapIndex)_respawnMap;
+return (System.Nullable<NetGore.MapIndex>)_respawnMap;
 }
 set
 {
@@ -621,7 +621,7 @@ public CharacterTable()
 /// <param name="wS">The initial value for the corresponding property.</param>
 /// <param name="x">The initial value for the corresponding property.</param>
 /// <param name="y">The initial value for the corresponding property.</param>
-public CharacterTable(System.Byte @acc, System.Byte @agi, System.Byte @armor, DemoGame.BodyIndex @bodyID, System.Byte @bra, System.UInt32 @cash, DemoGame.Server.CharacterTemplateID @characterTemplateID, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, System.UInt16 @hP, DemoGame.Server.CharacterID @iD, System.Byte @imm, System.Byte @int, System.Byte @level, NetGore.MapIndex @mapID, System.Byte @maxHit, System.UInt16 @maxHP, System.UInt16 @maxMP, System.Byte @minHit, System.UInt16 @mP, System.String @name, System.String @password, System.Byte @perc, System.Byte @recov, System.Byte @regen, NetGore.MapIndex @respawnMap, System.Single @respawnX, System.Single @respawnY, System.UInt32 @statPoints, System.Byte @str, System.Byte @tact, System.Byte @wS, System.Single @x, System.Single @y)
+public CharacterTable(System.Byte @acc, System.Byte @agi, System.Byte @armor, DemoGame.BodyIndex @bodyID, System.Byte @bra, System.UInt32 @cash, System.Nullable<DemoGame.Server.CharacterTemplateID> @characterTemplateID, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, System.Int16 @hP, DemoGame.Server.CharacterID @iD, System.Byte @imm, System.Byte @int, System.Byte @level, NetGore.MapIndex @mapID, System.Byte @maxHit, System.Int16 @maxHP, System.Int16 @maxMP, System.Byte @minHit, System.Int16 @mP, System.String @name, System.String @password, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.Nullable<NetGore.MapIndex> @respawnMap, System.Single @respawnX, System.Single @respawnY, System.UInt32 @statPoints, System.Byte @str, System.Byte @tact, System.Byte @wS, System.Single @x, System.Single @y)
 {
 SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)@acc);
 SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@agi);
@@ -629,12 +629,12 @@ SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)@armor);
 BodyID = (DemoGame.BodyIndex)@bodyID;
 SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)@bra);
 Cash = (System.UInt32)@cash;
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)@characterTemplateID;
+CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)@characterTemplateID;
 SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)@defence);
 SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)@dex);
 SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)@evade);
 Exp = (System.UInt32)@exp;
-HP = (System.UInt16)@hP;
+HP = (System.Int16)@hP;
 ID = (DemoGame.Server.CharacterID)@iD;
 SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)@imm);
 SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)@int);
@@ -644,13 +644,13 @@ SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)@maxHit);
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)@maxHP);
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)@maxMP);
 SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)@minHit);
-MP = (System.UInt16)@mP;
+MP = (System.Int16)@mP;
 Name = (System.String)@name;
 Password = (System.String)@password;
 SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)@perc);
 SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)@recov);
 SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)@regen);
-RespawnMap = (NetGore.MapIndex)@respawnMap;
+RespawnMap = (System.Nullable<NetGore.MapIndex>)@respawnMap;
 RespawnX = (System.Single)@respawnX;
 RespawnY = (System.Single)@respawnY;
 StatPoints = (System.UInt32)@statPoints;
@@ -701,7 +701,7 @@ i = dataReader.GetOrdinal("cash");
 Cash = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 
 i = dataReader.GetOrdinal("character_template_id");
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)(DemoGame.Server.CharacterTemplateID)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)(System.Nullable<DemoGame.Server.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 
 i = dataReader.GetOrdinal("defence");
 SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Byte)dataReader.GetByte(i));
@@ -716,7 +716,7 @@ i = dataReader.GetOrdinal("exp");
 Exp = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
 
 i = dataReader.GetOrdinal("hp");
-HP = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+HP = (System.Int16)(System.Int16)dataReader.GetInt16(i);
 
 i = dataReader.GetOrdinal("id");
 ID = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(i);
@@ -737,16 +737,16 @@ i = dataReader.GetOrdinal("maxhit");
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Byte)dataReader.GetByte(i));
 
 i = dataReader.GetOrdinal("maxhp");
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.UInt16)dataReader.GetUInt16(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
 
 i = dataReader.GetOrdinal("maxmp");
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.UInt16)dataReader.GetUInt16(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
 
 i = dataReader.GetOrdinal("minhit");
 SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Byte)dataReader.GetByte(i));
 
 i = dataReader.GetOrdinal("mp");
-MP = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+MP = (System.Int16)(System.Int16)dataReader.GetInt16(i);
 
 i = dataReader.GetOrdinal("name");
 Name = (System.String)(System.String)dataReader.GetString(i);
@@ -764,7 +764,7 @@ i = dataReader.GetOrdinal("regen");
 SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)(System.Byte)dataReader.GetByte(i));
 
 i = dataReader.GetOrdinal("respawn_map");
-RespawnMap = (NetGore.MapIndex)(NetGore.MapIndex)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+RespawnMap = (System.Nullable<NetGore.MapIndex>)(System.Nullable<NetGore.MapIndex>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 
 i = dataReader.GetOrdinal("respawn_x");
 RespawnX = (System.Single)(System.Single)dataReader.GetFloat(i);
@@ -816,28 +816,28 @@ dic["@armor"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType
 dic["@body_id"] = (DemoGame.BodyIndex)source.BodyID;
 dic["@bra"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
 dic["@cash"] = (System.UInt32)source.Cash;
-dic["@character_template_id"] = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
+dic["@character_template_id"] = (System.Nullable<DemoGame.Server.CharacterTemplateID>)source.CharacterTemplateID;
 dic["@defence"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
 dic["@dex"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
 dic["@evade"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
 dic["@exp"] = (System.UInt32)source.Exp;
-dic["@hp"] = (System.UInt16)source.HP;
+dic["@hp"] = (System.Int16)source.HP;
 dic["@id"] = (DemoGame.Server.CharacterID)source.ID;
 dic["@imm"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
 dic["@int"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
 dic["@level"] = (System.Byte)source.Level;
 dic["@map_id"] = (NetGore.MapIndex)source.MapID;
 dic["@maxhit"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
-dic["@maxhp"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
-dic["@maxmp"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
+dic["@maxhp"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
+dic["@maxmp"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
 dic["@minhit"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
-dic["@mp"] = (System.UInt16)source.MP;
+dic["@mp"] = (System.Int16)source.MP;
 dic["@name"] = (System.String)source.Name;
 dic["@password"] = (System.String)source.Password;
 dic["@perc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
 dic["@recov"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov);
 dic["@regen"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen);
-dic["@respawn_map"] = (NetGore.MapIndex)source.RespawnMap;
+dic["@respawn_map"] = (System.Nullable<NetGore.MapIndex>)source.RespawnMap;
 dic["@respawn_x"] = (System.Single)source.RespawnX;
 dic["@respawn_y"] = (System.Single)source.RespawnY;
 dic["@statpoints"] = (System.UInt32)source.StatPoints;
@@ -873,28 +873,28 @@ paramValues["@armor"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.
 paramValues["@body_id"] = (DemoGame.BodyIndex)source.BodyID;
 paramValues["@bra"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
 paramValues["@cash"] = (System.UInt32)source.Cash;
-paramValues["@character_template_id"] = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
+paramValues["@character_template_id"] = (System.Nullable<DemoGame.Server.CharacterTemplateID>)source.CharacterTemplateID;
 paramValues["@defence"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
 paramValues["@dex"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
 paramValues["@evade"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
 paramValues["@exp"] = (System.UInt32)source.Exp;
-paramValues["@hp"] = (System.UInt16)source.HP;
+paramValues["@hp"] = (System.Int16)source.HP;
 paramValues["@id"] = (DemoGame.Server.CharacterID)source.ID;
 paramValues["@imm"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
 paramValues["@int"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
 paramValues["@level"] = (System.Byte)source.Level;
 paramValues["@map_id"] = (NetGore.MapIndex)source.MapID;
 paramValues["@maxhit"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
-paramValues["@maxhp"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
-paramValues["@maxmp"] = (System.UInt16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
+paramValues["@maxhp"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
+paramValues["@maxmp"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
 paramValues["@minhit"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
-paramValues["@mp"] = (System.UInt16)source.MP;
+paramValues["@mp"] = (System.Int16)source.MP;
 paramValues["@name"] = (System.String)source.Name;
 paramValues["@password"] = (System.String)source.Password;
 paramValues["@perc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
 paramValues["@recov"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov);
 paramValues["@regen"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen);
-paramValues["@respawn_map"] = (NetGore.MapIndex)source.RespawnMap;
+paramValues["@respawn_map"] = (System.Nullable<NetGore.MapIndex>)source.RespawnMap;
 paramValues["@respawn_x"] = (System.Single)source.RespawnX;
 paramValues["@respawn_y"] = (System.Single)source.RespawnY;
 paramValues["@statpoints"] = (System.UInt32)source.StatPoints;
@@ -913,12 +913,12 @@ SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)source.GetStat
 BodyID = (DemoGame.BodyIndex)source.BodyID;
 SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra));
 Cash = (System.UInt32)source.Cash;
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
+CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)source.CharacterTemplateID;
 SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence));
 SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex));
 SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade));
 Exp = (System.UInt32)source.Exp;
-HP = (System.UInt16)source.HP;
+HP = (System.Int16)source.HP;
 ID = (DemoGame.Server.CharacterID)source.ID;
 SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm));
 SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int));
@@ -928,13 +928,13 @@ SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)source.GetSta
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP));
 SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP));
 SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit));
-MP = (System.UInt16)source.MP;
+MP = (System.Int16)source.MP;
 Name = (System.String)source.Name;
 Password = (System.String)source.Password;
 SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc));
 SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov));
 SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen));
-RespawnMap = (NetGore.MapIndex)source.RespawnMap;
+RespawnMap = (System.Nullable<NetGore.MapIndex>)source.RespawnMap;
 RespawnX = (System.Single)source.RespawnX;
 RespawnY = (System.Single)source.RespawnY;
 StatPoints = (System.UInt32)source.StatPoints;
@@ -1091,7 +1091,7 @@ Cash = (System.UInt32)value;
 break;
 
 case "character_template_id":
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)value;
+CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)value;
 break;
 
 case "defence":
@@ -1111,7 +1111,7 @@ Exp = (System.UInt32)value;
 break;
 
 case "hp":
-HP = (System.UInt16)value;
+HP = (System.Int16)value;
 break;
 
 case "id":
@@ -1151,7 +1151,7 @@ SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)value);
 break;
 
 case "mp":
-MP = (System.UInt16)value;
+MP = (System.Int16)value;
 break;
 
 case "name":
@@ -1175,7 +1175,7 @@ SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)value);
 break;
 
 case "respawn_map":
-RespawnMap = (NetGore.MapIndex)value;
+RespawnMap = (System.Nullable<NetGore.MapIndex>)value;
 break;
 
 case "respawn_x":
@@ -1253,7 +1253,7 @@ case "exp":
 return new ColumnMetadata("exp", "", "int(10) unsigned", "0", typeof(System.UInt32), false, false, false);
 
 case "hp":
-return new ColumnMetadata("hp", "", "smallint(5) unsigned", "50", typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("hp", "", "smallint(6)", "50", typeof(System.Int16), false, false, false);
 
 case "id":
 return new ColumnMetadata("id", "", "int(11)", null, typeof(System.Int32), false, true, false);
@@ -1274,16 +1274,16 @@ case "maxhit":
 return new ColumnMetadata("maxhit", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
 
 case "maxhp":
-return new ColumnMetadata("maxhp", "", "smallint(5) unsigned", "50", typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("maxhp", "", "smallint(6)", "50", typeof(System.Int16), false, false, false);
 
 case "maxmp":
-return new ColumnMetadata("maxmp", "", "smallint(5) unsigned", "50", typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("maxmp", "", "smallint(6)", "50", typeof(System.Int16), false, false, false);
 
 case "minhit":
 return new ColumnMetadata("minhit", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
 
 case "mp":
-return new ColumnMetadata("mp", "", "smallint(5) unsigned", "50", typeof(System.UInt16), false, false, false);
+return new ColumnMetadata("mp", "", "smallint(6)", "50", typeof(System.Int16), false, false, false);
 
 case "name":
 return new ColumnMetadata("name", "", "varchar(50)", null, typeof(System.String), false, false, true);
@@ -1378,7 +1378,7 @@ break;
 
 
 case "character_template_id":
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)(DemoGame.Server.CharacterTemplateID)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)(System.Nullable<DemoGame.Server.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 break;
 
 
@@ -1403,7 +1403,7 @@ break;
 
 
 case "hp":
-HP = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+HP = (System.Int16)(System.Int16)dataReader.GetInt16(i);
 break;
 
 
@@ -1438,12 +1438,12 @@ break;
 
 
 case "maxhp":
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.UInt16)dataReader.GetUInt16(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
 break;
 
 
 case "maxmp":
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.UInt16)dataReader.GetUInt16(i));
+SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
 break;
 
 
@@ -1453,7 +1453,7 @@ break;
 
 
 case "mp":
-MP = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+MP = (System.Int16)(System.Int16)dataReader.GetInt16(i);
 break;
 
 
@@ -1483,7 +1483,7 @@ break;
 
 
 case "respawn_map":
-RespawnMap = (NetGore.MapIndex)(NetGore.MapIndex)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
+RespawnMap = (System.Nullable<NetGore.MapIndex>)(System.Nullable<NetGore.MapIndex>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 break;
 
 

@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -905,13 +906,13 @@ namespace DemoGame.Server
 
         protected void Load(CharacterID characterID)
         {
-            SelectCharacterQueryValues values = DBController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
+            var values = DBController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
             LoadFromQueryValues(values);
         }
 
         protected void Load(string characterName)
         {
-            SelectCharacterQueryValues values = DBController.GetQuery<SelectCharacterQuery>().Execute(characterName);
+            var values = DBController.GetQuery<SelectCharacterQuery>().Execute(characterName);
             LoadFromQueryValues(values);
         }
 
@@ -929,33 +930,33 @@ namespace DemoGame.Server
             BaseStats.CopyStatValuesFrom(template.StatValues, true);
         }
 
-        void LoadFromQueryValues(SelectCharacterQueryValues v)
+        void LoadFromQueryValues(ICharacterTable v)
         {
             Name = v.Name;
             _id = v.ID;
-            _templateID = v.TemplateID;
+            _templateID = v.CharacterTemplateID;
 
-            BodyInfo = GameData.Body(v.BodyIndex);
-            CB = new CollisionBox(v.Position, BodyInfo.Width, BodyInfo.Height);
+            BodyInfo = GameData.Body(v.BodyID);
+            CB = new CollisionBox(new Vector2(v.X,v.Y), BodyInfo.Width, BodyInfo.Height);
 
             // Set the character information
             _level = v.Level;
             _exp = v.Exp;
             _cash = v.Cash;
-            _hp = v.HP;
-            _mp = v.MP;
-            RespawnMapIndex = v.RespawnMapIndex;
-            RespawnPosition = v.RespawnPosition;
+            _hp = new SPValueType(v.HP);
+            _mp = new SPValueType(v.MP);
+            RespawnMapIndex = v.RespawnMap;
+            RespawnPosition = new Vector2(v.RespawnX, v.RespawnY);
             StatPoints = v.StatPoints;
 
             // Load the stats
             _baseStats.CopyStatValuesFrom(v.Stats, true);
 
             // Set the Map and, if a User, add them to the World
-            Map m = World.GetMap(v.MapIndex);
+            Map m = World.GetMap(v.MapID);
             // TODO: We can recover when a NPC's map is invalid at least... See bug: http://netgore.com/bugs/view.php?id=103
             if (m == null)
-                throw new Exception(string.Format("Unable to get Map with index `{0}`.", v.MapIndex));
+                throw new Exception(string.Format("Unable to get Map with index `{0}`.", v.MapID));
 
             User asUser = this as User;
             if (asUser != null)

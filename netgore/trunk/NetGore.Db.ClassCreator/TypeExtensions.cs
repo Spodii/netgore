@@ -26,5 +26,18 @@ namespace NetGore.Db.ClassCreator
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
+
+        /// <summary>
+        /// Gets a Nullable Type from the given <paramref name="type"/>.
+        /// </summary>
+        /// <param name="type">The Type to make Nullable.</param>
+        /// <returns>The given <paramref name="type"/> as Nullable.</returns>
+        public static Type AsNullable(this Type type)
+        {
+            if (type.IsNullable())
+                return type;
+
+            return typeof(Nullable<>).MakeGenericType(type);
+        }
     }
 }

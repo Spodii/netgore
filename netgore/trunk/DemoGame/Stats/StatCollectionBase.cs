@@ -63,7 +63,7 @@ namespace DemoGame
         /// <param name="errorOnFailure">If true, an ArgumentException will be thrown if the <paramref name="sourceStats"/>
         /// contains one or more stats that are not in this collection. If false, any key in the
         /// <paramref name="sourceStats"/> that is not in this collection will just be skipped.</param>
-        public void CopyStatValuesFrom(IEnumerable<StatTypeValue> sourceStats, bool errorOnFailure)
+        public void CopyStatValuesFrom(IEnumerable<KeyValuePair<StatType, int>> sourceStats, bool errorOnFailure)
         {
             // Iterate through each stat in the source
             foreach (KeyValuePair<StatType, int> sourceStat in sourceStats)
@@ -85,6 +85,18 @@ namespace DemoGame
                 // This collection contains the stat, too, so copy the value over
                 stat.Value = sourceStat.Value;
             }
+        }
+
+        /// <summary>
+        /// Takes the stat values from the given source and copies them into this collection.
+        /// </summary>
+        /// <param name="sourceStats">The source to copy all the stat values from.</param>
+        /// <param name="errorOnFailure">If true, an ArgumentException will be thrown if the <paramref name="sourceStats"/>
+        /// contains one or more stats that are not in this collection. If false, any key in the
+        /// <paramref name="sourceStats"/> that is not in this collection will just be skipped.</param>
+        public void CopyStatValuesFrom(IEnumerable<StatTypeValue> sourceStats, bool errorOnFailure)
+        {
+            CopyStatValuesFrom(sourceStats.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value)), errorOnFailure);
         }
 
         /// <summary>

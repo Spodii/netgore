@@ -274,6 +274,13 @@ namespace NetGore.Db.ClassCreator
             return "Get" + type.Name;
         }
 
+        public string EnsureIsNullable(string type)
+        {
+            if (!type.StartsWith("System.Nullable", StringComparison.OrdinalIgnoreCase) && !type.EndsWith("?"))
+                return "System.Nullable" + Formatter.OpenGeneric + type + Formatter.CloseGeneric;
+            return type;
+        }
+
         /// <summary>
         /// Gets a string for the Type used externally for a given column.
         /// </summary>
@@ -281,7 +288,11 @@ namespace NetGore.Db.ClassCreator
         /// <returns>A string for the Type used externally for a given column.</returns>
         public string GetExternalType(DbColumnInfo dbColumn)
         {
-            return _externalTypes[dbColumn];
+            var ret = _externalTypes[dbColumn];
+            if (dbColumn.Nullable)
+                ret = EnsureIsNullable(ret);
+
+            return ret;
         }
 
         /// <summary>
@@ -291,7 +302,11 @@ namespace NetGore.Db.ClassCreator
         /// <returns>A string for the Type used internally for a given column.</returns>
         public string GetInternalType(DbColumnInfo dbColumn)
         {
-            return Formatter.GetTypeString(dbColumn.Type);
+            var ret = Formatter.GetTypeString(dbColumn.Type);
+            if (dbColumn.Nullable)
+                ret = EnsureIsNullable(ret);
+
+            return ret;
         }
 
         /// <summary>
