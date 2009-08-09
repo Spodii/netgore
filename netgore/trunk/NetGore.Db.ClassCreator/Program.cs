@@ -23,8 +23,13 @@ namespace NetGore.Db.ClassCreator
 
         static void Main(string[] args)
         {
-            // Output directory for the generated code - points to the ...\DemoGame.ServerObjs\DbObjs\ folder
-            string outputDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.ServerObjs{1}DbObjs{1}",
+            // Output directory for the generated class code - points to the ...\DemoGame.ServerObjs\DbObjs\ folder
+            string outputClassDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.ServerObjs{1}DbObjs{1}",
+                                             AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+
+
+            // Output directory for the generated interface code - points to the ...\DemoGame\DbObjs\ folder
+            string outputInterfaceDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame{1}DbObjs{1}",
                                              AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
             var baseStatColumns = GetStatColumnCollectionItems(StatCollectionType.Base);
@@ -117,7 +122,7 @@ namespace NetGore.Db.ClassCreator
                 formatter.AddAlias("WS");
 
                 // Generate
-                generator.Generate("DemoGame.Server.DbObjs", outputDir);
+                generator.Generate("DemoGame.Server.DbObjs", "DemoGame.DbObjs", outputClassDir, outputInterfaceDir);
             }
         }
     }

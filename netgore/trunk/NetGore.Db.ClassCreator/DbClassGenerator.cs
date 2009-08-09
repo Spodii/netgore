@@ -85,7 +85,6 @@ namespace NetGore.Db.ClassCreator
         protected DbClassGenerator()
         {
             Formatter = new CSharpCodeFormatter();
-            AddUsing(new string[] { "System", "System.Linq" });
         }
 
         public void AddColumnCollection(string name, Type keyType, Type valueType, IEnumerable<string> tables,
@@ -150,33 +149,38 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
-        protected virtual string CreateCode(string tableName, IEnumerable<DbColumnInfo> columns, string namespaceName)
+        string WrapCodeInHeaderAndNamespace(string code, string namespaceName, bool isInterface)
         {
-            columns = columns.OrderBy(x => x.Name);
-
-            DbClassData cd = new DbClassData(tableName, columns, Formatter, _dataReaderReadMethods, _columnCollections,
-                                             _customTypes);
-
-            StringBuilder sb = new StringBuilder(16384);
+            StringBuilder sb = new StringBuilder(code.Length + 512);
 
             // Header
-            foreach (string usingNamespace in _usings)
-            {
-                sb.AppendLine(Formatter.GetUsing(usingNamespace));
-            }
+            var usings = _usings;
+            if (!isInterface)
+                usings.Concat(new string[] { "System", "System.Linq" });
 
+            foreach (string usingNamespace in _usings)
+                sb.AppendLine(Formatter.GetUsing(usingNamespace));
+
+            // Namespace
             sb.AppendLine(Formatter.GetNamespace(namespaceName));
             sb.AppendLine(Formatter.OpenBrace);
             {
-                // Interface
-                sb.AppendLine(CreateCodeForInterface(cd));
-
-                // Class
-                sb.AppendLine(CreateCodeForClass(cd));
+                // Code
+                sb.AppendLine(code);
             }
             sb.AppendLine(Formatter.CloseBrace);
 
             return sb.ToString();
+        }
+
+        protected virtual IEnumerable<GeneratedTableCode> CreateCode(string tableName, IEnumerable<DbColumnInfo> columns, string classNamespace, string interfaceNamespace)
+        {
+            columns = columns.OrderBy(x => x.Name);
+
+            DbClassData cd = new DbClassData(tableName, columns, Formatter, _dataReaderReadMethods, _columnCollections, _customTypes);
+
+            yield return new GeneratedTableCode(tableName, Formatter.GetClassName(tableName), WrapCodeInHeaderAndNamespace(CreateCodeForClass(cd), classNamespace, false), false, false);
+            yield return new GeneratedTableCode(tableName, Formatter.GetInterfaceName(tableName), WrapCodeInHeaderAndNamespace(CreateCodeForInterface(cd), interfaceNamespace, true), true, false);
         }
 
         /// <summary>
@@ -336,7 +340,7 @@ namespace NetGore.Db.ClassCreator
             }
             sb.AppendLine(Formatter.CloseBrace);
 
-            return new GeneratedTableCode(ColumnMetadataClassName, ColumnMetadataClassName, sb.ToString());
+            return new GeneratedTableCode(ColumnMetadataClassName, ColumnMetadataClassName, sb.ToString(), false, true);
         }
 
         /// <summary>
@@ -904,38 +908,48 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        public virtual void Generate(string codeNamespace, string outputDir)
+        public virtual void Generate(string classNamespace, string interfaceNamespace, string classOutputDir, string interfaceOutputDir)
         {
-            if (!outputDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
-                outputDir += Path.DirectorySeparatorChar.ToString();
+            if (!classOutputDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                classOutputDir += Path.DirectorySeparatorChar.ToString();
 
-            if (!Directory.Exists(outputDir))
-                Directory.CreateDirectory(outputDir);
+            if (!interfaceOutputDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                interfaceOutputDir += Path.DirectorySeparatorChar.ToString();
 
-            var items = Generate(codeNamespace);
+            if (!Directory.Exists(classOutputDir))
+                Directory.CreateDirectory(classOutputDir);
+
+            if (!Directory.Exists(interfaceOutputDir))
+                Directory.CreateDirectory(interfaceOutputDir);
+
+            var items = Generate(classNamespace, interfaceNamespace);
 
             foreach (GeneratedTableCode item in items)
             {
-                string filePath = outputDir + item.ClassName + "." + Formatter.FilenameSuffix;
+                string filePath;
+                if (item.IsInterface)
+                    filePath = interfaceOutputDir;
+                else
+                    filePath = classOutputDir;
+
+                filePath += item.ClassName + "." + Formatter.FilenameSuffix;
+
                 File.WriteAllText(filePath, item.Code);
             }
         }
 
-        public virtual IEnumerable<GeneratedTableCode> Generate(string codeNamespace)
+        public virtual IEnumerable<GeneratedTableCode> Generate(string classNamespace, string interfaceNamespace)
         {
             LoadDbContent();
 
-            var ret = new List<GeneratedTableCode>();
-
             foreach (var table in _dbTables)
             {
-                string code = CreateCode(table.Key, table.Value, codeNamespace);
-                ret.Add(new GeneratedTableCode(table.Key, Formatter.GetClassName(table.Key), code));
+                var generatedCodes = CreateCode(table.Key, table.Value, classNamespace, interfaceNamespace);
+                foreach (var item in generatedCodes)
+                    yield return item;
             }
 
-            ret.Add(CreateCodeForColumnMetadata(codeNamespace));
-
-            return ret;
+            yield return CreateCodeForColumnMetadata(classNamespace);
         }
 
         protected abstract IEnumerable<DbColumnInfo> GetColumns(string table);
