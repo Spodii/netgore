@@ -3,6 +3,8 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
 
+// TODO: !! Make obsolete
+
 namespace DemoGame.Server.Queries
 {
     public class SelectCharacterQueryValues

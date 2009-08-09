@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Db;
 
+// TODO: !! Try to make this obsolete
+
 namespace DemoGame.Server.Queries
 {
     public static class CharacterQueryHelper
