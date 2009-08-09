@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-08-09 13:38:43
+Date: 2009-08-09 15:06:37
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -92,10 +92,10 @@ CREATE TABLE `character` (
   `level` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `exp` int(10) unsigned NOT NULL DEFAULT '0',
   `statpoints` int(10) unsigned NOT NULL DEFAULT '0',
-  `hp` smallint(5) unsigned NOT NULL DEFAULT '50',
-  `mp` smallint(5) unsigned NOT NULL DEFAULT '50',
-  `maxhp` smallint(5) unsigned NOT NULL DEFAULT '50',
-  `maxmp` smallint(5) unsigned NOT NULL DEFAULT '50',
+  `hp` smallint(6) NOT NULL DEFAULT '50',
+  `mp` smallint(6) NOT NULL DEFAULT '50',
+  `maxhp` smallint(6) NOT NULL DEFAULT '50',
+  `maxmp` smallint(6) NOT NULL DEFAULT '50',
   `minhit` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `maxhit` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `acc` tinyint(3) unsigned NOT NULL DEFAULT '1',
