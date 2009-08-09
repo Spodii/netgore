@@ -20,7 +20,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `character_id`.
         /// </summary>
-        CharacterID CharacterId { get; }
+        CharacterID CharacterID { get; }
 
         /// <summary>
         /// Gets the value of the database column `height`.
@@ -30,12 +30,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
-        MapSpawnValuesID Id { get; }
+        MapSpawnValuesID ID { get; }
 
         /// <summary>
         /// Gets the value of the database column `map_id`.
         /// </summary>
-        MapIndex MapId { get; }
+        MapIndex MapID { get; }
 
         /// <summary>
         /// Gets the value of the database column `width`.
@@ -93,7 +93,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `character_id`.
         /// </summary>
-        UInt16 _characterId;
+        UInt16 _characterID;
 
         /// <summary>
         /// The field that maps onto the database column `height`.
@@ -103,12 +103,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `id`.
         /// </summary>
-        Int32 _id;
+        Int32 _iD;
 
         /// <summary>
         /// The field that maps onto the database column `map_id`.
         /// </summary>
-        UInt16 _mapId;
+        UInt16 _mapID;
 
         /// <summary>
         /// The field that maps onto the database column `width`.
@@ -160,21 +160,21 @@ namespace DemoGame.Server.DbObjs
         /// MapSpawnTable constructor.
         /// </summary>
         /// <param name="amount">The initial value for the corresponding property.</param>
-        /// <param name="characterId">The initial value for the corresponding property.</param>
+        /// <param name="characterID">The initial value for the corresponding property.</param>
         /// <param name="height">The initial value for the corresponding property.</param>
-        /// <param name="id">The initial value for the corresponding property.</param>
-        /// <param name="mapId">The initial value for the corresponding property.</param>
+        /// <param name="iD">The initial value for the corresponding property.</param>
+        /// <param name="mapID">The initial value for the corresponding property.</param>
         /// <param name="width">The initial value for the corresponding property.</param>
         /// <param name="x">The initial value for the corresponding property.</param>
         /// <param name="y">The initial value for the corresponding property.</param>
-        public MapSpawnTable(Byte @amount, CharacterID @characterId, ushort? @height, MapSpawnValuesID @id, MapIndex @mapId,
+        public MapSpawnTable(Byte @amount, CharacterID @characterID, ushort? @height, MapSpawnValuesID @iD, MapIndex @mapID,
                              ushort? @width, ushort? @x, ushort? @y)
         {
             Amount = @amount;
-            CharacterId = @characterId;
+            CharacterID = @characterID;
             Height = @height;
-            Id = @id;
-            MapId = @mapId;
+            ID = @iD;
+            MapID = @mapID;
             Width = @width;
             X = @x;
             Y = @y;
@@ -197,17 +197,17 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(IMapSpawnTable source, IDictionary<String, Object> dic)
         {
             dic["@amount"] = source.Amount;
-            dic["@character_id"] = source.CharacterId;
+            dic["@character_id"] = source.CharacterID;
             dic["@height"] = source.Height;
-            dic["@id"] = source.Id;
-            dic["@map_id"] = source.MapId;
+            dic["@id"] = source.ID;
+            dic["@map_id"] = source.MapID;
             dic["@width"] = source.Width;
             dic["@x"] = source.X;
             dic["@y"] = source.Y;
@@ -223,10 +223,10 @@ namespace DemoGame.Server.DbObjs
         public static void CopyValues(IMapSpawnTable source, DbParameterValues paramValues)
         {
             paramValues["@amount"] = source.Amount;
-            paramValues["@character_id"] = source.CharacterId;
+            paramValues["@character_id"] = source.CharacterID;
             paramValues["@height"] = source.Height;
-            paramValues["@id"] = source.Id;
-            paramValues["@map_id"] = source.MapId;
+            paramValues["@id"] = source.ID;
+            paramValues["@map_id"] = source.MapID;
             paramValues["@width"] = source.Width;
             paramValues["@x"] = source.X;
             paramValues["@y"] = source.Y;
@@ -235,7 +235,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public void CopyValues(IDictionary<String, Object> dic)
@@ -257,10 +257,10 @@ namespace DemoGame.Server.DbObjs
         public void CopyValuesFrom(IMapSpawnTable source)
         {
             Amount = source.Amount;
-            CharacterId = source.CharacterId;
+            CharacterID = source.CharacterID;
             Height = source.Height;
-            Id = source.Id;
-            MapId = source.MapId;
+            ID = source.ID;
+            MapID = source.MapID;
             Width = source.Width;
             X = source.X;
             Y = source.Y;
@@ -307,16 +307,16 @@ namespace DemoGame.Server.DbObjs
                     return Amount;
 
                 case "character_id":
-                    return CharacterId;
+                    return CharacterID;
 
                 case "height":
                     return Height;
 
                 case "id":
-                    return Id;
+                    return ID;
 
                 case "map_id":
-                    return MapId;
+                    return MapID;
 
                 case "width":
                     return Width;
@@ -346,25 +346,25 @@ namespace DemoGame.Server.DbObjs
             Amount = dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("character_id");
-            CharacterId = (CharacterID)dataReader.GetUInt16(i);
+            CharacterID = (CharacterID)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("height");
-            Height = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+            Height = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("id");
-            Id = dataReader.GetInt32(i);
+            ID = dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("map_id");
-            MapId = (MapIndex)dataReader.GetUInt16(i);
+            MapID = (MapIndex)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("width");
-            Width = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+            Width = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("x");
-            X = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+            X = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("y");
-            Y = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+            Y = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
         }
 
         public void SetValue(String columnName, Object value)
@@ -376,7 +376,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "character_id":
-                    CharacterId = (CharacterID)value;
+                    CharacterID = (CharacterID)value;
                     break;
 
                 case "height":
@@ -384,11 +384,11 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "id":
-                    Id = (MapSpawnValuesID)value;
+                    ID = (MapSpawnValuesID)value;
                     break;
 
                 case "map_id":
-                    MapId = (MapIndex)value;
+                    MapID = (MapIndex)value;
                     break;
 
                 case "width":
@@ -429,7 +429,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@character_id":
-                        paramValues[i] = source.CharacterId;
+                        paramValues[i] = source.CharacterID;
                         break;
 
                     case "@height":
@@ -437,11 +437,11 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@id":
-                        paramValues[i] = source.Id;
+                        paramValues[i] = source.ID;
                         break;
 
                     case "@map_id":
-                        paramValues[i] = source.MapId;
+                        paramValues[i] = source.MapID;
                         break;
 
                     case "@width":
@@ -493,31 +493,31 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "character_id":
-                        CharacterId = (CharacterID)dataReader.GetUInt16(i);
+                        CharacterID = (CharacterID)dataReader.GetUInt16(i);
                         break;
 
                     case "height":
-                        Height = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        Height = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
                         break;
 
                     case "id":
-                        Id = dataReader.GetInt32(i);
+                        ID = dataReader.GetInt32(i);
                         break;
 
                     case "map_id":
-                        MapId = (MapIndex)dataReader.GetUInt16(i);
+                        MapID = (MapIndex)dataReader.GetUInt16(i);
                         break;
 
                     case "width":
-                        Width = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        Width = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
                         break;
 
                     case "x":
-                        X = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        X = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
                         break;
 
                     case "y":
-                        Y = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        Y = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
                         break;
                 }
             }
@@ -539,10 +539,10 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `character_id`.
         /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
-        public CharacterID CharacterId
+        public CharacterID CharacterID
         {
-            get { return (CharacterID)_characterId; }
-            set { _characterId = (UInt16)value; }
+            get { return (CharacterID)_characterID; }
+            set { _characterID = (UInt16)value; }
         }
 
         /// <summary>
@@ -559,20 +559,20 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `id`.
         /// The underlying database type is `int(11)`.
         /// </summary>
-        public MapSpawnValuesID Id
+        public MapSpawnValuesID ID
         {
-            get { return _id; }
-            set { _id = value; }
+            get { return _iD; }
+            set { _iD = value; }
         }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `map_id`.
         /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
-        public MapIndex MapId
+        public MapIndex MapID
         {
-            get { return (MapIndex)_mapId; }
-            set { _mapId = (UInt16)value; }
+            get { return (MapIndex)_mapID; }
+            set { _mapID = (UInt16)value; }
         }
 
         /// <summary>

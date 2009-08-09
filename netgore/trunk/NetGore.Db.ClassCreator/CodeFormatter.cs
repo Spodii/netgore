@@ -92,9 +92,28 @@ namespace NetGore.Db.ClassCreator
             get { return "virtual"; }
         }
 
+        /// <summary>
+        /// Adds an alias to the field naming so the names used in the code can differ from the naming
+        /// actually used in the database.
+        /// </summary>
+        /// <param name="alias">Alias name of the field. This will be the name used in the generated code. This
+        /// alias will automatically be used for any field who's name matches this alias except for with the casing.</param>
+        public void AddAlias(string alias)
+        {
+            AddAlias(alias.ToLower(), alias);
+            AddAlias(alias.ToUpper(), alias);
+        }
+
+        /// <summary>
+        /// Adds an alias to the field naming so the names used in the code can differ from the naming
+        /// actually used in the database.
+        /// </summary>
+        /// <param name="fieldName">Original name of the field.</param>
+        /// <param name="alias">Alias name of the field. This will be the name used in the generated code.</param>
         public void AddAlias(string fieldName, string alias)
         {
-            _aliases.Add(fieldName, alias);
+            if (!_aliases.ContainsKey(fieldName))
+                _aliases.Add(fieldName, alias);
         }
 
         protected string AddXmlCommentParamRefs(IEnumerable<string> paramNames, string value)

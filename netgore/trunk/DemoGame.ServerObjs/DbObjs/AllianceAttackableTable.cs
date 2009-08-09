@@ -14,12 +14,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `alliance_id`.
         /// </summary>
-        AllianceID AllianceId { get; }
+        AllianceID AllianceID { get; }
 
         /// <summary>
         /// Gets the value of the database column `attackable_id`.
         /// </summary>
-        AllianceID AttackableId { get; }
+        AllianceID AttackableID { get; }
 
         /// <summary>
         /// Gets the value of the database column `placeholder`.
@@ -60,12 +60,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `alliance_id`.
         /// </summary>
-        Byte _allianceId;
+        Byte _allianceID;
 
         /// <summary>
         /// The field that maps onto the database column `attackable_id`.
         /// </summary>
-        Byte _attackableId;
+        Byte _attackableID;
 
         /// <summary>
         /// The field that maps onto the database column `placeholder`.
@@ -106,13 +106,13 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// AllianceAttackableTable constructor.
         /// </summary>
-        /// <param name="allianceId">The initial value for the corresponding property.</param>
-        /// <param name="attackableId">The initial value for the corresponding property.</param>
+        /// <param name="allianceID">The initial value for the corresponding property.</param>
+        /// <param name="attackableID">The initial value for the corresponding property.</param>
         /// <param name="placeholder">The initial value for the corresponding property.</param>
-        public AllianceAttackableTable(AllianceID @allianceId, AllianceID @attackableId, byte? @placeholder)
+        public AllianceAttackableTable(AllianceID @allianceID, AllianceID @attackableID, byte? @placeholder)
         {
-            AllianceId = @allianceId;
-            AttackableId = @attackableId;
+            AllianceID = @allianceID;
+            AttackableID = @attackableID;
             Placeholder = @placeholder;
         }
 
@@ -133,14 +133,14 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(IAllianceAttackableTable source, IDictionary<String, Object> dic)
         {
-            dic["@alliance_id"] = source.AllianceId;
-            dic["@attackable_id"] = source.AttackableId;
+            dic["@alliance_id"] = source.AllianceID;
+            dic["@attackable_id"] = source.AttackableID;
             dic["@placeholder"] = source.Placeholder;
         }
 
@@ -153,15 +153,15 @@ namespace DemoGame.Server.DbObjs
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
         public static void CopyValues(IAllianceAttackableTable source, DbParameterValues paramValues)
         {
-            paramValues["@alliance_id"] = source.AllianceId;
-            paramValues["@attackable_id"] = source.AttackableId;
+            paramValues["@alliance_id"] = source.AllianceID;
+            paramValues["@attackable_id"] = source.AttackableID;
             paramValues["@placeholder"] = source.Placeholder;
         }
 
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public void CopyValues(IDictionary<String, Object> dic)
@@ -182,8 +182,8 @@ namespace DemoGame.Server.DbObjs
 
         public void CopyValuesFrom(IAllianceAttackableTable source)
         {
-            AllianceId = source.AllianceId;
-            AttackableId = source.AttackableId;
+            AllianceID = source.AllianceID;
+            AttackableID = source.AttackableID;
             Placeholder = source.Placeholder;
         }
 
@@ -211,10 +211,10 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "alliance_id":
-                    return AllianceId;
+                    return AllianceID;
 
                 case "attackable_id":
-                    return AttackableId;
+                    return AttackableID;
 
                 case "placeholder":
                     return Placeholder;
@@ -235,13 +235,13 @@ namespace DemoGame.Server.DbObjs
             Int32 i;
 
             i = dataReader.GetOrdinal("alliance_id");
-            AllianceId = (AllianceID)dataReader.GetByte(i);
+            AllianceID = (AllianceID)dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("attackable_id");
-            AttackableId = (AllianceID)dataReader.GetByte(i);
+            AttackableID = (AllianceID)dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("placeholder");
-            Placeholder = (dataReader.IsDBNull(i) ? (byte?)null : dataReader.GetByte(i));
+            Placeholder = (dataReader.IsDBNull(i) ? (Nullable<Byte>)null : dataReader.GetByte(i));
         }
 
         public void SetValue(String columnName, Object value)
@@ -249,11 +249,11 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "alliance_id":
-                    AllianceId = (AllianceID)value;
+                    AllianceID = (AllianceID)value;
                     break;
 
                 case "attackable_id":
-                    AttackableId = (AllianceID)value;
+                    AttackableID = (AllianceID)value;
                     break;
 
                 case "placeholder":
@@ -282,11 +282,11 @@ namespace DemoGame.Server.DbObjs
                 switch (paramValues.GetParameterName(i))
                 {
                     case "@alliance_id":
-                        paramValues[i] = source.AllianceId;
+                        paramValues[i] = source.AllianceID;
                         break;
 
                     case "@attackable_id":
-                        paramValues[i] = source.AttackableId;
+                        paramValues[i] = source.AttackableID;
                         break;
 
                     case "@placeholder":
@@ -326,15 +326,15 @@ namespace DemoGame.Server.DbObjs
                 switch (dataReader.GetName(i))
                 {
                     case "alliance_id":
-                        AllianceId = (AllianceID)dataReader.GetByte(i);
+                        AllianceID = (AllianceID)dataReader.GetByte(i);
                         break;
 
                     case "attackable_id":
-                        AttackableId = (AllianceID)dataReader.GetByte(i);
+                        AttackableID = (AllianceID)dataReader.GetByte(i);
                         break;
 
                     case "placeholder":
-                        Placeholder = (dataReader.IsDBNull(i) ? (byte?)null : dataReader.GetByte(i));
+                        Placeholder = (dataReader.IsDBNull(i) ? (Nullable<Byte>)null : dataReader.GetByte(i));
                         break;
                 }
             }
@@ -346,20 +346,20 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `alliance_id`.
         /// The underlying database type is `tinyint(3) unsigned`.
         /// </summary>
-        public AllianceID AllianceId
+        public AllianceID AllianceID
         {
-            get { return (AllianceID)_allianceId; }
-            set { _allianceId = (Byte)value; }
+            get { return (AllianceID)_allianceID; }
+            set { _allianceID = (Byte)value; }
         }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `attackable_id`.
         /// The underlying database type is `tinyint(3) unsigned`.
         /// </summary>
-        public AllianceID AttackableId
+        public AllianceID AttackableID
         {
-            get { return (AllianceID)_attackableId; }
-            set { _attackableId = (Byte)value; }
+            get { return (AllianceID)_attackableID; }
+            set { _attackableID = (Byte)value; }
         }
 
         /// <summary>

@@ -164,7 +164,7 @@ namespace DemoGame.Server
         /// <returns>The loaded Alliance.</returns>
         public static Alliance LoadAlliance(DBController dbController, AllianceID id)
         {
-            SelectAllianceQueryValues values = dbController.GetQuery<SelectAllianceQuery>().Execute(id);
+            var values = dbController.GetQuery<SelectAllianceQuery>().Execute(id);
             SelectAllianceAttackableQueryValues attackableIDs = dbController.GetQuery<SelectAllianceAttackableQuery>().Execute(id);
             SelectAllianceHostileQueryValues hostileIDs = dbController.GetQuery<SelectAllianceHostileQuery>().Execute(id);
 

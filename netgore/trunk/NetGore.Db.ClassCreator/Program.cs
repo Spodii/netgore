@@ -73,6 +73,34 @@ namespace NetGore.Db.ClassCreator
                 generator.AddCustomType(mapID, "*", "map_id", "respawn_map");
                 generator.AddCustomType(itemID, "*", "item_id");
 
+                // Renaming
+                var formatter = generator.Formatter;
+                formatter.AddAlias("alliance_id", "AllianceID");
+                formatter.AddAlias("attackable_id", "AttackableID");
+                formatter.AddAlias("hostile_id", "HostileID");
+                formatter.AddAlias("character_id", "CharacterID");
+                formatter.AddAlias("item_id", "ItemID");
+                formatter.AddAlias("map_id", "MapID");
+                formatter.AddAlias("respawn_map", "RespawnMap");
+                formatter.AddAlias("respawn_x", "RespawnX");
+                formatter.AddAlias("respawn_y", "RespawnY");
+                formatter.AddAlias("respawn_y", "RespawnY");
+                formatter.AddAlias("give_exp", "GiveExp");
+                formatter.AddAlias("give_cash", "GiveCash");
+
+                formatter.AddAlias("Name");
+                formatter.AddAlias("ID");
+                formatter.AddAlias("AI");
+                formatter.AddAlias("StatPoints");
+                formatter.AddAlias("HP");
+                formatter.AddAlias("MP");
+                formatter.AddAlias("HP");
+                formatter.AddAlias("MaxHP");
+                formatter.AddAlias("MaxMP");
+                formatter.AddAlias("MinHit");
+                formatter.AddAlias("MaxHit");
+                formatter.AddAlias("WS");
+
                 // Generate
                 generator.Generate("DemoGame.Server.DbObjs", outputDir);
             }

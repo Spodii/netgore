@@ -30,12 +30,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `hp`.
         /// </summary>
-        UInt16 Hp { get; }
+        UInt16 HP { get; }
 
         /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
-        CharacterID Id { get; }
+        CharacterID ID { get; }
 
         /// <summary>
         /// Gets the value of the database column `level`.
@@ -45,12 +45,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `map_id`.
         /// </summary>
-        MapIndex MapId { get; }
+        MapIndex MapID { get; }
 
         /// <summary>
         /// Gets the value of the database column `mp`.
         /// </summary>
-        UInt16 Mp { get; }
+        UInt16 MP { get; }
 
         /// <summary>
         /// Gets the value of the database column `name`.
@@ -80,7 +80,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `statpoints`.
         /// </summary>
-        UInt32 Statpoints { get; }
+        UInt32 StatPoints { get; }
 
         /// <summary>
         /// Gets the value of the database column `template_id`.
@@ -191,12 +191,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `hp`.
         /// </summary>
-        UInt16 _hp;
+        UInt16 _hP;
 
         /// <summary>
         /// The field that maps onto the database column `id`.
         /// </summary>
-        Int32 _id;
+        Int32 _iD;
 
         /// <summary>
         /// The field that maps onto the database column `level`.
@@ -206,12 +206,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `map_id`.
         /// </summary>
-        UInt16 _mapId;
+        UInt16 _mapID;
 
         /// <summary>
         /// The field that maps onto the database column `mp`.
         /// </summary>
-        UInt16 _mp;
+        UInt16 _mP;
 
         /// <summary>
         /// The field that maps onto the database column `name`.
@@ -241,7 +241,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `statpoints`.
         /// </summary>
-        UInt32 _statpoints;
+        UInt32 _statPoints;
 
         /// <summary>
         /// The field that maps onto the database column `template_id`.
@@ -311,17 +311,17 @@ namespace DemoGame.Server.DbObjs
         /// <param name="dex">The initial value for the corresponding property.</param>
         /// <param name="evade">The initial value for the corresponding property.</param>
         /// <param name="exp">The initial value for the corresponding property.</param>
-        /// <param name="hp">The initial value for the corresponding property.</param>
-        /// <param name="id">The initial value for the corresponding property.</param>
+        /// <param name="hP">The initial value for the corresponding property.</param>
+        /// <param name="iD">The initial value for the corresponding property.</param>
         /// <param name="imm">The initial value for the corresponding property.</param>
         /// <param name="int">The initial value for the corresponding property.</param>
         /// <param name="level">The initial value for the corresponding property.</param>
-        /// <param name="mapId">The initial value for the corresponding property.</param>
-        /// <param name="maxhit">The initial value for the corresponding property.</param>
-        /// <param name="maxhp">The initial value for the corresponding property.</param>
-        /// <param name="maxmp">The initial value for the corresponding property.</param>
-        /// <param name="minhit">The initial value for the corresponding property.</param>
-        /// <param name="mp">The initial value for the corresponding property.</param>
+        /// <param name="mapID">The initial value for the corresponding property.</param>
+        /// <param name="maxHit">The initial value for the corresponding property.</param>
+        /// <param name="maxHP">The initial value for the corresponding property.</param>
+        /// <param name="maxMP">The initial value for the corresponding property.</param>
+        /// <param name="minHit">The initial value for the corresponding property.</param>
+        /// <param name="mP">The initial value for the corresponding property.</param>
         /// <param name="name">The initial value for the corresponding property.</param>
         /// <param name="password">The initial value for the corresponding property.</param>
         /// <param name="perc">The initial value for the corresponding property.</param>
@@ -330,19 +330,19 @@ namespace DemoGame.Server.DbObjs
         /// <param name="respawnMap">The initial value for the corresponding property.</param>
         /// <param name="respawnX">The initial value for the corresponding property.</param>
         /// <param name="respawnY">The initial value for the corresponding property.</param>
-        /// <param name="statpoints">The initial value for the corresponding property.</param>
+        /// <param name="statPoints">The initial value for the corresponding property.</param>
         /// <param name="str">The initial value for the corresponding property.</param>
         /// <param name="tact">The initial value for the corresponding property.</param>
         /// <param name="templateId">The initial value for the corresponding property.</param>
-        /// <param name="ws">The initial value for the corresponding property.</param>
+        /// <param name="wS">The initial value for the corresponding property.</param>
         /// <param name="x">The initial value for the corresponding property.</param>
         /// <param name="y">The initial value for the corresponding property.</param>
         public CharacterTable(Byte @acc, Byte @agi, Byte @armor, UInt16 @body, Byte @bra, UInt32 @cash, Byte @defence, Byte @dex,
-                              Byte @evade, UInt32 @exp, UInt16 @hp, CharacterID @id, Byte @imm, Byte @int, Byte @level,
-                              MapIndex @mapId, Byte @maxhit, UInt16 @maxhp, UInt16 @maxmp, Byte @minhit, UInt16 @mp, String @name,
+                              Byte @evade, UInt32 @exp, UInt16 @hP, CharacterID @iD, Byte @imm, Byte @int, Byte @level,
+                              MapIndex @mapID, Byte @maxHit, UInt16 @maxHP, UInt16 @maxMP, Byte @minHit, UInt16 @mP, String @name,
                               String @password, Byte @perc, Byte @recov, Byte @regen, MapIndex @respawnMap, Single @respawnX,
-                              Single @respawnY, UInt32 @statpoints, Byte @str, Byte @tact, CharacterTemplateID @templateId,
-                              Byte @ws, Single @x, Single @y)
+                              Single @respawnY, UInt32 @statPoints, Byte @str, Byte @tact, CharacterTemplateID @templateId,
+                              Byte @wS, Single @x, Single @y)
         {
             SetStat(StatType.Acc, @acc);
             SetStat(StatType.Agi, @agi);
@@ -354,17 +354,17 @@ namespace DemoGame.Server.DbObjs
             SetStat(StatType.Dex, @dex);
             SetStat(StatType.Evade, @evade);
             Exp = @exp;
-            Hp = @hp;
-            Id = @id;
+            HP = @hP;
+            ID = @iD;
             SetStat(StatType.Imm, @imm);
             SetStat(StatType.Int, @int);
             Level = @level;
-            MapId = @mapId;
-            SetStat(StatType.MaxHit, @maxhit);
-            SetStat(StatType.MaxHP, @maxhp);
-            SetStat(StatType.MaxMP, @maxmp);
-            SetStat(StatType.MinHit, @minhit);
-            Mp = @mp;
+            MapID = @mapID;
+            SetStat(StatType.MaxHit, @maxHit);
+            SetStat(StatType.MaxHP, @maxHP);
+            SetStat(StatType.MaxMP, @maxMP);
+            SetStat(StatType.MinHit, @minHit);
+            MP = @mP;
             Name = @name;
             Password = @password;
             SetStat(StatType.Perc, @perc);
@@ -373,11 +373,11 @@ namespace DemoGame.Server.DbObjs
             RespawnMap = @respawnMap;
             RespawnX = @respawnX;
             RespawnY = @respawnY;
-            Statpoints = @statpoints;
+            StatPoints = @statPoints;
             SetStat(StatType.Str, @str);
             SetStat(StatType.Tact, @tact);
             TemplateId = @templateId;
-            SetStat(StatType.WS, @ws);
+            SetStat(StatType.WS, @wS);
             X = @x;
             Y = @y;
         }
@@ -399,7 +399,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
@@ -415,17 +415,17 @@ namespace DemoGame.Server.DbObjs
             dic["@dex"] = (Byte)source.GetStat(StatType.Dex);
             dic["@evade"] = (Byte)source.GetStat(StatType.Evade);
             dic["@exp"] = source.Exp;
-            dic["@hp"] = source.Hp;
-            dic["@id"] = source.Id;
+            dic["@hp"] = source.HP;
+            dic["@id"] = source.ID;
             dic["@imm"] = (Byte)source.GetStat(StatType.Imm);
             dic["@int"] = (Byte)source.GetStat(StatType.Int);
             dic["@level"] = source.Level;
-            dic["@map_id"] = source.MapId;
+            dic["@map_id"] = source.MapID;
             dic["@maxhit"] = (Byte)source.GetStat(StatType.MaxHit);
             dic["@maxhp"] = (UInt16)source.GetStat(StatType.MaxHP);
             dic["@maxmp"] = (UInt16)source.GetStat(StatType.MaxMP);
             dic["@minhit"] = (Byte)source.GetStat(StatType.MinHit);
-            dic["@mp"] = source.Mp;
+            dic["@mp"] = source.MP;
             dic["@name"] = source.Name;
             dic["@password"] = source.Password;
             dic["@perc"] = (Byte)source.GetStat(StatType.Perc);
@@ -434,7 +434,7 @@ namespace DemoGame.Server.DbObjs
             dic["@respawn_map"] = source.RespawnMap;
             dic["@respawn_x"] = source.RespawnX;
             dic["@respawn_y"] = source.RespawnY;
-            dic["@statpoints"] = source.Statpoints;
+            dic["@statpoints"] = source.StatPoints;
             dic["@str"] = (Byte)source.GetStat(StatType.Str);
             dic["@tact"] = (Byte)source.GetStat(StatType.Tact);
             dic["@template_id"] = source.TemplateId;
@@ -462,17 +462,17 @@ namespace DemoGame.Server.DbObjs
             paramValues["@dex"] = (Byte)source.GetStat(StatType.Dex);
             paramValues["@evade"] = (Byte)source.GetStat(StatType.Evade);
             paramValues["@exp"] = source.Exp;
-            paramValues["@hp"] = source.Hp;
-            paramValues["@id"] = source.Id;
+            paramValues["@hp"] = source.HP;
+            paramValues["@id"] = source.ID;
             paramValues["@imm"] = (Byte)source.GetStat(StatType.Imm);
             paramValues["@int"] = (Byte)source.GetStat(StatType.Int);
             paramValues["@level"] = source.Level;
-            paramValues["@map_id"] = source.MapId;
+            paramValues["@map_id"] = source.MapID;
             paramValues["@maxhit"] = (Byte)source.GetStat(StatType.MaxHit);
             paramValues["@maxhp"] = (UInt16)source.GetStat(StatType.MaxHP);
             paramValues["@maxmp"] = (UInt16)source.GetStat(StatType.MaxMP);
             paramValues["@minhit"] = (Byte)source.GetStat(StatType.MinHit);
-            paramValues["@mp"] = source.Mp;
+            paramValues["@mp"] = source.MP;
             paramValues["@name"] = source.Name;
             paramValues["@password"] = source.Password;
             paramValues["@perc"] = (Byte)source.GetStat(StatType.Perc);
@@ -481,7 +481,7 @@ namespace DemoGame.Server.DbObjs
             paramValues["@respawn_map"] = source.RespawnMap;
             paramValues["@respawn_x"] = source.RespawnX;
             paramValues["@respawn_y"] = source.RespawnY;
-            paramValues["@statpoints"] = source.Statpoints;
+            paramValues["@statpoints"] = source.StatPoints;
             paramValues["@str"] = (Byte)source.GetStat(StatType.Str);
             paramValues["@tact"] = (Byte)source.GetStat(StatType.Tact);
             paramValues["@template_id"] = source.TemplateId;
@@ -493,7 +493,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public void CopyValues(IDictionary<String, Object> dic)
@@ -524,17 +524,17 @@ namespace DemoGame.Server.DbObjs
             SetStat(StatType.Dex, source.GetStat(StatType.Dex));
             SetStat(StatType.Evade, source.GetStat(StatType.Evade));
             Exp = source.Exp;
-            Hp = source.Hp;
-            Id = source.Id;
+            HP = source.HP;
+            ID = source.ID;
             SetStat(StatType.Imm, source.GetStat(StatType.Imm));
             SetStat(StatType.Int, source.GetStat(StatType.Int));
             Level = source.Level;
-            MapId = source.MapId;
+            MapID = source.MapID;
             SetStat(StatType.MaxHit, source.GetStat(StatType.MaxHit));
             SetStat(StatType.MaxHP, source.GetStat(StatType.MaxHP));
             SetStat(StatType.MaxMP, source.GetStat(StatType.MaxMP));
             SetStat(StatType.MinHit, source.GetStat(StatType.MinHit));
-            Mp = source.Mp;
+            MP = source.MP;
             Name = source.Name;
             Password = source.Password;
             SetStat(StatType.Perc, source.GetStat(StatType.Perc));
@@ -543,7 +543,7 @@ namespace DemoGame.Server.DbObjs
             RespawnMap = source.RespawnMap;
             RespawnX = source.RespawnX;
             RespawnY = source.RespawnY;
-            Statpoints = source.Statpoints;
+            StatPoints = source.StatPoints;
             SetStat(StatType.Str, source.GetStat(StatType.Str));
             SetStat(StatType.Tact, source.GetStat(StatType.Tact));
             TemplateId = source.TemplateId;
@@ -704,10 +704,10 @@ namespace DemoGame.Server.DbObjs
                     return Exp;
 
                 case "hp":
-                    return Hp;
+                    return HP;
 
                 case "id":
-                    return Id;
+                    return ID;
 
                 case "imm":
                     return GetStat(StatType.Imm);
@@ -719,7 +719,7 @@ namespace DemoGame.Server.DbObjs
                     return Level;
 
                 case "map_id":
-                    return MapId;
+                    return MapID;
 
                 case "maxhit":
                     return GetStat(StatType.MaxHit);
@@ -734,7 +734,7 @@ namespace DemoGame.Server.DbObjs
                     return GetStat(StatType.MinHit);
 
                 case "mp":
-                    return Mp;
+                    return MP;
 
                 case "name":
                     return Name;
@@ -761,7 +761,7 @@ namespace DemoGame.Server.DbObjs
                     return RespawnY;
 
                 case "statpoints":
-                    return Statpoints;
+                    return StatPoints;
 
                 case "str":
                     return GetStat(StatType.Str);
@@ -827,10 +827,10 @@ namespace DemoGame.Server.DbObjs
             Exp = dataReader.GetUInt32(i);
 
             i = dataReader.GetOrdinal("hp");
-            Hp = dataReader.GetUInt16(i);
+            HP = dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("id");
-            Id = (CharacterID)dataReader.GetInt32(i);
+            ID = (CharacterID)dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("imm");
             SetStat(StatType.Imm, dataReader.GetByte(i));
@@ -842,7 +842,7 @@ namespace DemoGame.Server.DbObjs
             Level = dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("map_id");
-            MapId = (MapIndex)dataReader.GetUInt16(i);
+            MapID = (MapIndex)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("maxhit");
             SetStat(StatType.MaxHit, dataReader.GetByte(i));
@@ -857,7 +857,7 @@ namespace DemoGame.Server.DbObjs
             SetStat(StatType.MinHit, dataReader.GetByte(i));
 
             i = dataReader.GetOrdinal("mp");
-            Mp = dataReader.GetUInt16(i);
+            MP = dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("name");
             Name = dataReader.GetString(i);
@@ -884,7 +884,7 @@ namespace DemoGame.Server.DbObjs
             RespawnY = dataReader.GetFloat(i);
 
             i = dataReader.GetOrdinal("statpoints");
-            Statpoints = dataReader.GetUInt32(i);
+            StatPoints = dataReader.GetUInt32(i);
 
             i = dataReader.GetOrdinal("str");
             SetStat(StatType.Str, dataReader.GetByte(i));
@@ -950,11 +950,11 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "hp":
-                    Hp = (UInt16)value;
+                    HP = (UInt16)value;
                     break;
 
                 case "id":
-                    Id = (CharacterID)value;
+                    ID = (CharacterID)value;
                     break;
 
                 case "imm":
@@ -970,7 +970,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "map_id":
-                    MapId = (MapIndex)value;
+                    MapID = (MapIndex)value;
                     break;
 
                 case "maxhit":
@@ -990,7 +990,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "mp":
-                    Mp = (UInt16)value;
+                    MP = (UInt16)value;
                     break;
 
                 case "name":
@@ -1026,7 +1026,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "statpoints":
-                    Statpoints = (UInt32)value;
+                    StatPoints = (UInt32)value;
                     break;
 
                 case "str":
@@ -1115,11 +1115,11 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@hp":
-                        paramValues[i] = source.Hp;
+                        paramValues[i] = source.HP;
                         break;
 
                     case "@id":
-                        paramValues[i] = source.Id;
+                        paramValues[i] = source.ID;
                         break;
 
                     case "@imm":
@@ -1135,7 +1135,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@map_id":
-                        paramValues[i] = source.MapId;
+                        paramValues[i] = source.MapID;
                         break;
 
                     case "@maxhit":
@@ -1155,7 +1155,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@mp":
-                        paramValues[i] = source.Mp;
+                        paramValues[i] = source.MP;
                         break;
 
                     case "@name":
@@ -1191,7 +1191,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@statpoints":
-                        paramValues[i] = source.Statpoints;
+                        paramValues[i] = source.StatPoints;
                         break;
 
                     case "@str":
@@ -1291,11 +1291,11 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "hp":
-                        Hp = dataReader.GetUInt16(i);
+                        HP = dataReader.GetUInt16(i);
                         break;
 
                     case "id":
-                        Id = (CharacterID)dataReader.GetInt32(i);
+                        ID = (CharacterID)dataReader.GetInt32(i);
                         break;
 
                     case "imm":
@@ -1311,7 +1311,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "map_id":
-                        MapId = (MapIndex)dataReader.GetUInt16(i);
+                        MapID = (MapIndex)dataReader.GetUInt16(i);
                         break;
 
                     case "maxhit":
@@ -1331,7 +1331,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "mp":
-                        Mp = dataReader.GetUInt16(i);
+                        MP = dataReader.GetUInt16(i);
                         break;
 
                     case "name":
@@ -1367,7 +1367,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "statpoints":
-                        Statpoints = dataReader.GetUInt32(i);
+                        StatPoints = dataReader.GetUInt32(i);
                         break;
 
                     case "str":
@@ -1455,20 +1455,20 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `hp`.
         /// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
         /// </summary>
-        public UInt16 Hp
+        public UInt16 HP
         {
-            get { return _hp; }
-            set { _hp = value; }
+            get { return _hP; }
+            set { _hP = value; }
         }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `id`.
         /// The underlying database type is `int(11)`.
         /// </summary>
-        public CharacterID Id
+        public CharacterID ID
         {
-            get { return (CharacterID)_id; }
-            set { _id = (Int32)value; }
+            get { return (CharacterID)_iD; }
+            set { _iD = (Int32)value; }
         }
 
         /// <summary>
@@ -1485,20 +1485,20 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `map_id`.
         /// The underlying database type is `smallint(5) unsigned` with the default value of `1`.
         /// </summary>
-        public MapIndex MapId
+        public MapIndex MapID
         {
-            get { return (MapIndex)_mapId; }
-            set { _mapId = (UInt16)value; }
+            get { return (MapIndex)_mapID; }
+            set { _mapID = (UInt16)value; }
         }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `mp`.
         /// The underlying database type is `smallint(5) unsigned` with the default value of `50`.
         /// </summary>
-        public UInt16 Mp
+        public UInt16 MP
         {
-            get { return _mp; }
-            set { _mp = value; }
+            get { return _mP; }
+            set { _mP = value; }
         }
 
         /// <summary>
@@ -1555,10 +1555,10 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `statpoints`.
         /// The underlying database type is `int(10) unsigned` with the default value of `0`.
         /// </summary>
-        public UInt32 Statpoints
+        public UInt32 StatPoints
         {
-            get { return _statpoints; }
-            set { _statpoints = value; }
+            get { return _statPoints; }
+            set { _statPoints = value; }
         }
 
         /// <summary>

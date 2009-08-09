@@ -19,12 +19,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `character_id`.
         /// </summary>
-        CharacterID CharacterId { get; }
+        CharacterID CharacterID { get; }
 
         /// <summary>
         /// Gets the value of the database column `item_id`.
         /// </summary>
-        ItemID ItemId { get; }
+        ItemID ItemID { get; }
     }
 
     /// <summary>
@@ -65,12 +65,12 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `character_id`.
         /// </summary>
-        UInt16 _characterId;
+        UInt16 _characterID;
 
         /// <summary>
         /// The field that maps onto the database column `item_id`.
         /// </summary>
-        UInt16 _itemId;
+        UInt16 _itemID;
 
         /// <summary>
         /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
@@ -107,13 +107,13 @@ namespace DemoGame.Server.DbObjs
         /// CharacterTemplateEquippedTable constructor.
         /// </summary>
         /// <param name="chance">The initial value for the corresponding property.</param>
-        /// <param name="characterId">The initial value for the corresponding property.</param>
-        /// <param name="itemId">The initial value for the corresponding property.</param>
-        public CharacterTemplateEquippedTable(UInt16 @chance, CharacterID @characterId, ItemID @itemId)
+        /// <param name="characterID">The initial value for the corresponding property.</param>
+        /// <param name="itemID">The initial value for the corresponding property.</param>
+        public CharacterTemplateEquippedTable(UInt16 @chance, CharacterID @characterID, ItemID @itemID)
         {
             Chance = @chance;
-            CharacterId = @characterId;
-            ItemId = @itemId;
+            CharacterID = @characterID;
+            ItemID = @itemID;
         }
 
         /// <summary>
@@ -133,15 +133,15 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(ICharacterTemplateEquippedTable source, IDictionary<String, Object> dic)
         {
             dic["@chance"] = source.Chance;
-            dic["@character_id"] = source.CharacterId;
-            dic["@item_id"] = source.ItemId;
+            dic["@character_id"] = source.CharacterID;
+            dic["@item_id"] = source.ItemID;
         }
 
         /// <summary>
@@ -154,14 +154,14 @@ namespace DemoGame.Server.DbObjs
         public static void CopyValues(ICharacterTemplateEquippedTable source, DbParameterValues paramValues)
         {
             paramValues["@chance"] = source.Chance;
-            paramValues["@character_id"] = source.CharacterId;
-            paramValues["@item_id"] = source.ItemId;
+            paramValues["@character_id"] = source.CharacterID;
+            paramValues["@item_id"] = source.ItemID;
         }
 
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public void CopyValues(IDictionary<String, Object> dic)
@@ -183,8 +183,8 @@ namespace DemoGame.Server.DbObjs
         public void CopyValuesFrom(ICharacterTemplateEquippedTable source)
         {
             Chance = source.Chance;
-            CharacterId = source.CharacterId;
-            ItemId = source.ItemId;
+            CharacterID = source.CharacterID;
+            ItemID = source.ItemID;
         }
 
         public static ColumnMetadata GetColumnData(String fieldName)
@@ -213,10 +213,10 @@ namespace DemoGame.Server.DbObjs
                     return Chance;
 
                 case "character_id":
-                    return CharacterId;
+                    return CharacterID;
 
                 case "item_id":
-                    return ItemId;
+                    return ItemID;
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -237,10 +237,10 @@ namespace DemoGame.Server.DbObjs
             Chance = dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("character_id");
-            CharacterId = (CharacterID)dataReader.GetUInt16(i);
+            CharacterID = (CharacterID)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("item_id");
-            ItemId = (ItemID)dataReader.GetUInt16(i);
+            ItemID = (ItemID)dataReader.GetUInt16(i);
         }
 
         public void SetValue(String columnName, Object value)
@@ -252,11 +252,11 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "character_id":
-                    CharacterId = (CharacterID)value;
+                    CharacterID = (CharacterID)value;
                     break;
 
                 case "item_id":
-                    ItemId = (ItemID)value;
+                    ItemID = (ItemID)value;
                     break;
 
                 default:
@@ -285,11 +285,11 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@character_id":
-                        paramValues[i] = source.CharacterId;
+                        paramValues[i] = source.CharacterID;
                         break;
 
                     case "@item_id":
-                        paramValues[i] = source.ItemId;
+                        paramValues[i] = source.ItemID;
                         break;
                 }
             }
@@ -329,11 +329,11 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "character_id":
-                        CharacterId = (CharacterID)dataReader.GetUInt16(i);
+                        CharacterID = (CharacterID)dataReader.GetUInt16(i);
                         break;
 
                     case "item_id":
-                        ItemId = (ItemID)dataReader.GetUInt16(i);
+                        ItemID = (ItemID)dataReader.GetUInt16(i);
                         break;
                 }
             }
@@ -355,20 +355,20 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `character_id`.
         /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
-        public CharacterID CharacterId
+        public CharacterID CharacterID
         {
-            get { return (CharacterID)_characterId; }
-            set { _characterId = (UInt16)value; }
+            get { return (CharacterID)_characterID; }
+            set { _characterID = (UInt16)value; }
         }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `item_id`.
         /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
-        public ItemID ItemId
+        public ItemID ItemID
         {
-            get { return (ItemID)_itemId; }
-            set { _itemId = (UInt16)value; }
+            get { return (ItemID)_itemID; }
+            set { _itemID = (UInt16)value; }
         }
 
         #endregion

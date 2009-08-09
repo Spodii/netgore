@@ -34,17 +34,17 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `hp`.
         /// </summary>
-        UInt16 Hp { get; }
+        UInt16 HP { get; }
 
         /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
-        ItemID Id { get; }
+        ItemID ID { get; }
 
         /// <summary>
         /// Gets the value of the database column `mp`.
         /// </summary>
-        UInt16 Mp { get; }
+        UInt16 MP { get; }
 
         /// <summary>
         /// Gets the value of the database column `name`.
@@ -196,17 +196,17 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `hp`.
         /// </summary>
-        UInt16 _hp;
+        UInt16 _hP;
 
         /// <summary>
         /// The field that maps onto the database column `id`.
         /// </summary>
-        Int32 _id;
+        Int32 _iD;
 
         /// <summary>
         /// The field that maps onto the database column `mp`.
         /// </summary>
-        UInt16 _mp;
+        UInt16 _mP;
 
         /// <summary>
         /// The field that maps onto the database column `name`.
@@ -290,15 +290,15 @@ namespace DemoGame.Server.DbObjs
         /// <param name="evade">The initial value for the corresponding property.</param>
         /// <param name="graphic">The initial value for the corresponding property.</param>
         /// <param name="height">The initial value for the corresponding property.</param>
-        /// <param name="hp">The initial value for the corresponding property.</param>
-        /// <param name="id">The initial value for the corresponding property.</param>
+        /// <param name="hP">The initial value for the corresponding property.</param>
+        /// <param name="iD">The initial value for the corresponding property.</param>
         /// <param name="imm">The initial value for the corresponding property.</param>
         /// <param name="int">The initial value for the corresponding property.</param>
-        /// <param name="maxhit">The initial value for the corresponding property.</param>
-        /// <param name="maxhp">The initial value for the corresponding property.</param>
-        /// <param name="maxmp">The initial value for the corresponding property.</param>
-        /// <param name="minhit">The initial value for the corresponding property.</param>
-        /// <param name="mp">The initial value for the corresponding property.</param>
+        /// <param name="maxHit">The initial value for the corresponding property.</param>
+        /// <param name="maxHP">The initial value for the corresponding property.</param>
+        /// <param name="maxMP">The initial value for the corresponding property.</param>
+        /// <param name="minHit">The initial value for the corresponding property.</param>
+        /// <param name="mP">The initial value for the corresponding property.</param>
         /// <param name="name">The initial value for the corresponding property.</param>
         /// <param name="perc">The initial value for the corresponding property.</param>
         /// <param name="reqacc">The initial value for the corresponding property.</param>
@@ -313,8 +313,8 @@ namespace DemoGame.Server.DbObjs
         /// <param name="value">The initial value for the corresponding property.</param>
         /// <param name="width">The initial value for the corresponding property.</param>
         public ItemTable(UInt16 @agi, Byte @amount, UInt16 @armor, UInt16 @bra, UInt16 @defence, String @description, UInt16 @dex,
-                         UInt16 @evade, UInt16 @graphic, Byte @height, UInt16 @hp, ItemID @id, UInt16 @imm, UInt16 @int,
-                         UInt16 @maxhit, UInt16 @maxhp, UInt16 @maxmp, UInt16 @minhit, UInt16 @mp, String @name, UInt16 @perc,
+                         UInt16 @evade, UInt16 @graphic, Byte @height, UInt16 @hP, ItemID @iD, UInt16 @imm, UInt16 @int,
+                         UInt16 @maxHit, UInt16 @maxHP, UInt16 @maxMP, UInt16 @minHit, UInt16 @mP, String @name, UInt16 @perc,
                          Byte @reqacc, Byte @reqagi, Byte @reqarmor, Byte @reqbra, Byte @reqdex, Byte @reqevade, Byte @reqimm,
                          Byte @reqint, Byte @type, Int32 @value, Byte @width)
         {
@@ -328,15 +328,15 @@ namespace DemoGame.Server.DbObjs
             SetStat(StatType.Evade, @evade);
             Graphic = @graphic;
             Height = @height;
-            Hp = @hp;
-            Id = @id;
+            HP = @hP;
+            ID = @iD;
             SetStat(StatType.Imm, @imm);
             SetStat(StatType.Int, @int);
-            SetStat(StatType.MaxHit, @maxhit);
-            SetStat(StatType.MaxHP, @maxhp);
-            SetStat(StatType.MaxMP, @maxmp);
-            SetStat(StatType.MinHit, @minhit);
-            Mp = @mp;
+            SetStat(StatType.MaxHit, @maxHit);
+            SetStat(StatType.MaxHP, @maxHP);
+            SetStat(StatType.MaxMP, @maxMP);
+            SetStat(StatType.MinHit, @minHit);
+            MP = @mP;
             Name = @name;
             SetStat(StatType.Perc, @perc);
             SetReqStat(StatType.Acc, @reqacc);
@@ -369,7 +369,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
@@ -385,15 +385,15 @@ namespace DemoGame.Server.DbObjs
             dic["@evade"] = (UInt16)source.GetStat(StatType.Evade);
             dic["@graphic"] = source.Graphic;
             dic["@height"] = source.Height;
-            dic["@hp"] = source.Hp;
-            dic["@id"] = source.Id;
+            dic["@hp"] = source.HP;
+            dic["@id"] = source.ID;
             dic["@imm"] = (UInt16)source.GetStat(StatType.Imm);
             dic["@int"] = (UInt16)source.GetStat(StatType.Int);
             dic["@maxhit"] = (UInt16)source.GetStat(StatType.MaxHit);
             dic["@maxhp"] = (UInt16)source.GetStat(StatType.MaxHP);
             dic["@maxmp"] = (UInt16)source.GetStat(StatType.MaxMP);
             dic["@minhit"] = (UInt16)source.GetStat(StatType.MinHit);
-            dic["@mp"] = source.Mp;
+            dic["@mp"] = source.MP;
             dic["@name"] = source.Name;
             dic["@perc"] = (UInt16)source.GetStat(StatType.Perc);
             dic["@reqacc"] = (Byte)source.GetReqStat(StatType.Acc);
@@ -428,15 +428,15 @@ namespace DemoGame.Server.DbObjs
             paramValues["@evade"] = (UInt16)source.GetStat(StatType.Evade);
             paramValues["@graphic"] = source.Graphic;
             paramValues["@height"] = source.Height;
-            paramValues["@hp"] = source.Hp;
-            paramValues["@id"] = source.Id;
+            paramValues["@hp"] = source.HP;
+            paramValues["@id"] = source.ID;
             paramValues["@imm"] = (UInt16)source.GetStat(StatType.Imm);
             paramValues["@int"] = (UInt16)source.GetStat(StatType.Int);
             paramValues["@maxhit"] = (UInt16)source.GetStat(StatType.MaxHit);
             paramValues["@maxhp"] = (UInt16)source.GetStat(StatType.MaxHP);
             paramValues["@maxmp"] = (UInt16)source.GetStat(StatType.MaxMP);
             paramValues["@minhit"] = (UInt16)source.GetStat(StatType.MinHit);
-            paramValues["@mp"] = source.Mp;
+            paramValues["@mp"] = source.MP;
             paramValues["@name"] = source.Name;
             paramValues["@perc"] = (UInt16)source.GetStat(StatType.Perc);
             paramValues["@reqacc"] = (Byte)source.GetReqStat(StatType.Acc);
@@ -455,7 +455,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Copies the column values into the given Dictionary using the database column name
         /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        ///  this method will not create them if they are missing.
+        /// this method will not create them if they are missing.
         /// </summary>
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public void CopyValues(IDictionary<String, Object> dic)
@@ -486,15 +486,15 @@ namespace DemoGame.Server.DbObjs
             SetStat(StatType.Evade, source.GetStat(StatType.Evade));
             Graphic = source.Graphic;
             Height = source.Height;
-            Hp = source.Hp;
-            Id = source.Id;
+            HP = source.HP;
+            ID = source.ID;
             SetStat(StatType.Imm, source.GetStat(StatType.Imm));
             SetStat(StatType.Int, source.GetStat(StatType.Int));
             SetStat(StatType.MaxHit, source.GetStat(StatType.MaxHit));
             SetStat(StatType.MaxHP, source.GetStat(StatType.MaxHP));
             SetStat(StatType.MaxMP, source.GetStat(StatType.MaxMP));
             SetStat(StatType.MinHit, source.GetStat(StatType.MinHit));
-            Mp = source.Mp;
+            MP = source.MP;
             Name = source.Name;
             SetStat(StatType.Perc, source.GetStat(StatType.Perc));
             SetReqStat(StatType.Acc, source.GetReqStat(StatType.Acc));
@@ -650,10 +650,10 @@ namespace DemoGame.Server.DbObjs
                     return Height;
 
                 case "hp":
-                    return Hp;
+                    return HP;
 
                 case "id":
-                    return Id;
+                    return ID;
 
                 case "imm":
                     return GetStat(StatType.Imm);
@@ -674,7 +674,7 @@ namespace DemoGame.Server.DbObjs
                     return GetStat(StatType.MinHit);
 
                 case "mp":
-                    return Mp;
+                    return MP;
 
                 case "name":
                     return Name;
@@ -761,10 +761,10 @@ namespace DemoGame.Server.DbObjs
             Height = dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("hp");
-            Hp = dataReader.GetUInt16(i);
+            HP = dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("id");
-            Id = (ItemID)dataReader.GetInt32(i);
+            ID = (ItemID)dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("imm");
             SetStat(StatType.Imm, dataReader.GetUInt16(i));
@@ -785,7 +785,7 @@ namespace DemoGame.Server.DbObjs
             SetStat(StatType.MinHit, dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("mp");
-            Mp = dataReader.GetUInt16(i);
+            MP = dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("name");
             Name = dataReader.GetString(i);
@@ -872,11 +872,11 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "hp":
-                    Hp = (UInt16)value;
+                    HP = (UInt16)value;
                     break;
 
                 case "id":
-                    Id = (ItemID)value;
+                    ID = (ItemID)value;
                     break;
 
                 case "imm":
@@ -904,7 +904,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "mp":
-                    Mp = (UInt16)value;
+                    MP = (UInt16)value;
                     break;
 
                 case "name":
@@ -1021,11 +1021,11 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@hp":
-                        paramValues[i] = source.Hp;
+                        paramValues[i] = source.HP;
                         break;
 
                     case "@id":
-                        paramValues[i] = source.Id;
+                        paramValues[i] = source.ID;
                         break;
 
                     case "@imm":
@@ -1053,7 +1053,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@mp":
-                        paramValues[i] = source.Mp;
+                        paramValues[i] = source.MP;
                         break;
 
                     case "@name":
@@ -1181,11 +1181,11 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "hp":
-                        Hp = dataReader.GetUInt16(i);
+                        HP = dataReader.GetUInt16(i);
                         break;
 
                     case "id":
-                        Id = (ItemID)dataReader.GetInt32(i);
+                        ID = (ItemID)dataReader.GetInt32(i);
                         break;
 
                     case "imm":
@@ -1213,7 +1213,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "mp":
-                        Mp = dataReader.GetUInt16(i);
+                        MP = dataReader.GetUInt16(i);
                         break;
 
                     case "name":
@@ -1339,30 +1339,30 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `hp`.
         /// The underlying database type is `smallint(5) unsigned` with the default value of `0`.
         /// </summary>
-        public UInt16 Hp
+        public UInt16 HP
         {
-            get { return _hp; }
-            set { _hp = value; }
+            get { return _hP; }
+            set { _hP = value; }
         }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `id`.
         /// The underlying database type is `int(11)`.
         /// </summary>
-        public ItemID Id
+        public ItemID ID
         {
-            get { return (ItemID)_id; }
-            set { _id = (Int32)value; }
+            get { return (ItemID)_iD; }
+            set { _iD = (Int32)value; }
         }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `mp`.
         /// The underlying database type is `smallint(5) unsigned` with the default value of `0`.
         /// </summary>
-        public UInt16 Mp
+        public UInt16 MP
         {
-            get { return _mp; }
-            set { _mp = value; }
+            get { return _mP; }
+            set { _mP = value; }
         }
 
         /// <summary>
