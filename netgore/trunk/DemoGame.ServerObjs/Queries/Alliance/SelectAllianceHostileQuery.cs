@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -16,20 +17,19 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public SelectAllianceHostileQueryValues Execute(AllianceID id)
+        public IEnumerable<AllianceHostileTable> Execute(AllianceID id)
         {
-            var hostileIDs = new List<AllianceID>();
+            var ret = new List<AllianceHostileTable>();
 
             using (IDataReader r = ExecuteReader(id))
             {
                 while (r.Read())
                 {
-                    AllianceID hostileID = r.GetAllianceID("hostile_id");
-                    hostileIDs.Add(hostileID);
+                    var item = new AllianceHostileTable(r);
+                    ret.Add(item);
                 }
             }
 
-            SelectAllianceHostileQueryValues ret = new SelectAllianceHostileQueryValues(id, hostileIDs);
             return ret;
         }
 
