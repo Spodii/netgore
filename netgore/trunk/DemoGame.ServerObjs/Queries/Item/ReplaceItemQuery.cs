@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 using System.Text;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
 // TODO: !! Cleanup query
@@ -32,7 +33,7 @@ namespace DemoGame.Server.Queries
             StringBuilder sb = new StringBuilder();
 
             // Header
-            sb.AppendFormat("REPLACE INTO `{0}` (", DBTables.Item);
+            sb.AppendFormat("REPLACE INTO `{0}` (", ItemTable.TableName);
 
             // Field names
             foreach (string field in fields)

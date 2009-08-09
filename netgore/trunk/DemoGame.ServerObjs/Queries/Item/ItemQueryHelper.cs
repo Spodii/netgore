@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Db;
 
@@ -17,8 +18,8 @@ namespace DemoGame.Server.Queries
 
         static ItemQueryHelper()
         {
-            BaseDBStatFields = StatsQueryHelper.GetStatTypeFields(DBTables.Item, StatCollectionType.Base);
-            ReqDBStatFields = StatsQueryHelper.GetStatTypeFields(DBTables.Item, StatCollectionType.Requirement);
+            BaseDBStatFields = StatsQueryHelper.GetStatTypeFields(ItemTable.TableName, StatCollectionType.Base);
+            ReqDBStatFields = StatsQueryHelper.GetStatTypeFields(ItemTable.TableName, StatCollectionType.Requirement);
 
             NonStatFields = new string[]
                             { "amount", "description", "graphic", "id", "height", "name", "type", "value", "width", "hp", "mp" };

@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class SelectCharacterQuery : DbQueryReader<string>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `name`=@name", DBTables.Character);
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `name`=@name", CharacterTable.TableName);
 
         public SelectCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
@@ -45,7 +45,6 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// When overridden in the derived class, sets the database parameters based on the specified item.
         /// </summary>
-        /// <typeparam name="T">Type of the object containing the values to set.</typeparam>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">Item used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, string item)

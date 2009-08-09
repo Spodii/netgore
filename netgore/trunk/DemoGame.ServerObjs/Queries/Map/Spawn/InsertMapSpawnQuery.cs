@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
 // TODO: !! Cleanup query
@@ -10,7 +11,7 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class InsertMapSpawnQuery : DbQueryNonReader<MapSpawnValues>
     {
-        static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", DBTables.MapSpawn,
+        static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", MapSpawnTable.TableName,
                                                             FormatParametersIntoValuesString(MapSpawnQueryHelper.AllDBFields));
 
         public InsertMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)

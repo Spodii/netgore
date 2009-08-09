@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -20,7 +21,7 @@ namespace DemoGame.Server.Queries
             Debug.Assert(dbFieldsExceptID.Count() == dbFields.Count() - 1);
 
             string setString = FormatParametersIntoString(dbFieldsExceptID);
-            _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", DBTables.Character, setString);
+            _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", CharacterTable.TableName, setString);
         }
 
         public UpdateCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)

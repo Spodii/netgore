@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
 // TODO: !! Cleanup query
@@ -9,7 +10,7 @@ namespace DemoGame.Server.Queries
 {
     public class InsertMapQuery : DbQueryNonReader<MapBase>
     {
-        static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", DBTables.Map,
+        static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", MapTable.TableName,
                                                             FormatParametersIntoValuesString(MapQueryHelper.AllDBFields));
 
         public InsertMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)

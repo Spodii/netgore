@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 
 namespace DemoGame.Server
 {
@@ -48,7 +49,7 @@ namespace DemoGame.Server
                     return;
 
                 _dict = new Dictionary<TableAndType, IEnumerable<StatType>>();
-                AddTables(controller, DBTables.Character, DBTables.CharacterTemplate, DBTables.Item, DBTables.ItemTemplate);
+                AddTables(controller, CharacterTable.TableName, CharacterTemplateTable.TableName, ItemTable.TableName, ItemTemplateTable.TableName);
             }
         }
 
