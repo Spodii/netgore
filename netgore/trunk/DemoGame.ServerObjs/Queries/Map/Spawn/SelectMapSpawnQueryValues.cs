@@ -1,7 +1,7 @@
 using System.Linq;
 using NetGore;
 
-// TODO: !! Cleanup query
+// TODO: !! Try to remove
 
 namespace DemoGame.Server.Queries
 {
