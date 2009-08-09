@@ -2,6 +2,8 @@
 using System.Linq;
 using NetGore.Db;
 
+// TODO: !! Try to make obsolete
+
 namespace DemoGame.Server.Queries
 {
     public static class MapQueryHelper

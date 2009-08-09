@@ -1,6 +1,8 @@
 using System.Linq;
 using NetGore;
 
+// TODO: !! Cleanup query
+
 namespace DemoGame.Server.Queries
 {
     public class SelectMapSpawnQueryValues

@@ -5,6 +5,8 @@ using System.Linq;
 using NetGore;
 using NetGore.Db;
 
+// TODO: !! Cleanup query
+
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
