@@ -54,6 +54,8 @@ namespace NetGore.Db.ClassCreator
             else
             {
                 saveDir = _outputServerDir;
+                if (gtc.IsInterface)
+                    saveDir += "Interfaces" + Path.DirectorySeparatorChar;
                 code = gtc.Code.Replace(_tempNamespaceName, "DemoGame.Server.DbObjs");
             }
 
