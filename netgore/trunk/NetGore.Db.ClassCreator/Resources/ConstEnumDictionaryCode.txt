@@ -3,7 +3,7 @@
 /// table that this class represents. Majority of the code for this class was automatically generated and
 /// only other automatically generated code should be using this class.
 /// </summary>
-private class [CLASSNAME]
+private class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<[KEYTYPE], [VALUETYPE]>>
 {
     /// <summary>
     /// Array containing the actual values. The index of this array is found through the value returned
@@ -52,4 +52,35 @@ private class [CLASSNAME]
             _values[_lookupTable[([STORAGETYPE])key]] = value;
         }
     }
+    
+    #region IEnumerable<KeyValuePair<[KEYTYPE],[VALUETYPE]>> Members
+
+    /// <summary>
+    /// Returns an enumerator that iterates through the collection.
+    /// </summary>
+    /// <returns>
+    /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+    /// </returns>
+    /// <filterpriority>1</filterpriority>
+    public System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<[KEYTYPE], [VALUETYPE]>> GetEnumerator()
+    {
+        for (int i = 0; i < _values.Length; i++)
+        {
+            yield return new System.Collections.Generic.KeyValuePair<[KEYTYPE], [VALUETYPE]>(([KEYTYPE])i, _values[i]);
+        }
+    }
+
+    /// <summary>
+    /// Returns an enumerator that iterates through a collection.
+    /// </summary>
+    /// <returns>
+    /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+    /// </returns>
+    /// <filterpriority>2</filterpriority>
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    #endregion
 }

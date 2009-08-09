@@ -21,6 +21,27 @@ namespace NetGore.Db.ClassCreator
             Tables = tables;
             Columns = columns;
         }
+
+        static readonly char[] _vowels = new char[] { 'a', 'e', 'i', 'o', 'u' };
+
+        public string CollectionPropertyName
+        {
+            get
+            {
+
+                if (Name.EndsWith("s"))
+                    return Name + "es";
+                else if (Name.Length > 1 && Name.EndsWith("y"))
+                {
+                    if (!_vowels.Contains(Name[Name.Length - 2]))
+                        return Name.Substring(0, Name.Length - 1) + "ies";
+                    else
+                        return Name + "s";
+                }
+                else
+                    return Name + "s";
+            }
+        }
     }
 
     public struct ColumnCollectionItem

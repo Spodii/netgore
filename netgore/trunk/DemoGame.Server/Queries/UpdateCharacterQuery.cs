@@ -35,11 +35,11 @@ namespace DemoGame.Server.Queries
         protected override void SetParameters(DbParameterValues p, Character character)
         {
             p["@id"] = character.ID;
-            p["@template_id"] = character.TemplateID;
+            p["@character_template_id"] = character.TemplateID;
             p["@map_id"] = character.Map.Index;
             p["@x"] = character.Position.X;
             p["@y"] = character.Position.Y;
-            p["@body"] = character.BodyInfo.Index;
+            p["@body_id"] = character.BodyInfo.Index;
             p["@name"] = character.Name;
             p["@hp"] = (int)character.HP;
             p["@mp"] = (int)character.MP;

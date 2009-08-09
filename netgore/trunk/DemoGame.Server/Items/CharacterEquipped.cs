@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
@@ -79,8 +80,7 @@ namespace DemoGame.Server
 
             if (_isPersistent)
             {
-                InsertCharacterEquippedItemQuery.QueryArgs values = new InsertCharacterEquippedItemQuery.QueryArgs(Character.ID,
-                                                                                                                   item.ID, slot);
+                var values = new CharacterEquippedTable(Character.ID, item.ID, slot);
                 DBController.GetQuery<InsertCharacterEquippedItemQuery>().Execute(values);
             }
 

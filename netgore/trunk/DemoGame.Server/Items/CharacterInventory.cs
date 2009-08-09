@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 
@@ -142,8 +143,7 @@ namespace DemoGame.Server
                 // Update the database
                 if (!_isLoading)
                 {
-                    InsertCharacterInventoryItemQuery.QueryArgs args =
-                        new InsertCharacterInventoryItemQuery.QueryArgs(Character.ID, newItem.ID);
+                    var args = new CharacterInventoryTable(Character.ID, newItem.ID);
                     DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(args);
                 }
 

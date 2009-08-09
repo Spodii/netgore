@@ -911,7 +911,7 @@ namespace DemoGame.Server
 
             try
             {
-                SelectCharacterTemplateQueryValues result = query.Execute(id);
+                var result = query.Execute(id);
                 if (result == null)
                     return false;
             }

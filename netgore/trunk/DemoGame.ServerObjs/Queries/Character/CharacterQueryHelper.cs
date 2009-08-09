@@ -20,7 +20,7 @@ namespace DemoGame.Server.Queries
             NonStatDBFields =
                 new string[]
                 {
-                    "body", "id", "template_id", "map_id", "name", "x", "y", "hp", "mp", "level", "exp", "statpoints", "respawn_map"
+                    "body_id", "id", "character_template_id", "map_id", "name", "x", "y", "hp", "mp", "level", "exp", "statpoints", "respawn_map"
                     , "respawn_x", "respawn_y"
                 }.ToArray();
 
@@ -31,12 +31,12 @@ namespace DemoGame.Server.Queries
         {
             // Read the general user values
             CharacterID id = r.GetCharacterID("id");
-            var templateID = r.GetCharacterTemplateIDNullable("template_id");
+            var templateID = r.GetCharacterTemplateIDNullable("character_template_id");
             string name = r.GetString("name");
             MapIndex mapIndex = r.GetMapIndex("map_id");
             float x = r.GetFloat("x");
             float y = r.GetFloat("y");
-            BodyIndex body = r.GetBodyIndex("body");
+            BodyIndex body = r.GetBodyIndex("body_id");
             byte level = r.GetByte("level");
             uint exp = r.GetUInt32("exp");
             uint statpoints = r.GetUInt32("statpoints");

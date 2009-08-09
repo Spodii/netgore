@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-08-07 12:02:14
+Date: 2009-08-09 13:38:43
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -78,7 +78,7 @@ INSERT INTO `alliance_hostile` VALUES ('1', '0', '0');
 DROP TABLE IF EXISTS `character`;
 CREATE TABLE `character` (
   `id` int(11) NOT NULL,
-  `template_id` smallint(5) unsigned DEFAULT NULL,
+  `character_template_id` smallint(5) unsigned DEFAULT NULL,
   `name` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `map_id` smallint(5) unsigned NOT NULL DEFAULT '1',
@@ -87,7 +87,7 @@ CREATE TABLE `character` (
   `respawn_map` smallint(5) unsigned DEFAULT NULL,
   `respawn_x` float NOT NULL,
   `respawn_y` float NOT NULL,
-  `body` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `body_id` smallint(5) unsigned NOT NULL DEFAULT '1',
   `cash` int(10) unsigned NOT NULL DEFAULT '0',
   `level` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `exp` int(10) unsigned NOT NULL DEFAULT '0',
@@ -115,12 +115,12 @@ CREATE TABLE `character` (
   `ws` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `idx_name` (`name`),
-  KEY `template_id` (`template_id`),
+  KEY `template_id` (`character_template_id`),
   KEY `respawn_map` (`respawn_map`),
   KEY `character_ibfk_2` (`map_id`),
-  CONSTRAINT `character_ibfk_1` FOREIGN KEY (`template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_2` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `character_ibfk_3` FOREIGN KEY (`respawn_map`) REFERENCES `map` (`id`) ON UPDATE CASCADE
+  CONSTRAINT `character_ibfk_3` FOREIGN KEY (`respawn_map`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
+  CONSTRAINT `character_ibfk_4` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -175,7 +175,7 @@ CREATE TABLE `character_template` (
   `alliance_id` tinyint(3) unsigned NOT NULL,
   `name` varchar(50) NOT NULL DEFAULT 'New NPC',
   `ai` varchar(255) NOT NULL,
-  `body` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `body_id` smallint(5) unsigned NOT NULL DEFAULT '1',
   `respawn` smallint(5) unsigned NOT NULL DEFAULT '5',
   `level` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `exp` int(10) unsigned NOT NULL,
@@ -216,13 +216,13 @@ INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', '1', 
 -- ----------------------------
 DROP TABLE IF EXISTS `character_template_equipped`;
 CREATE TABLE `character_template_equipped` (
-  `character_id` smallint(5) unsigned NOT NULL,
-  `item_id` smallint(5) unsigned NOT NULL,
+  `character_template_id` smallint(5) unsigned NOT NULL,
+  `item_template_id` smallint(5) unsigned NOT NULL,
   `chance` smallint(5) unsigned NOT NULL,
-  KEY `item_id` (`item_id`),
-  KEY `character_id` (`character_id`),
-  CONSTRAINT `character_template_equipped_ibfk_3` FOREIGN KEY (`item_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `character_template_equipped_ibfk_4` FOREIGN KEY (`character_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `item_id` (`item_template_id`),
+  KEY `character_id` (`character_template_id`),
+  CONSTRAINT `character_template_equipped_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `character_template_equipped_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
@@ -237,15 +237,15 @@ INSERT INTO `character_template_equipped` VALUES ('1', '5', '5000');
 -- ----------------------------
 DROP TABLE IF EXISTS `character_template_inventory`;
 CREATE TABLE `character_template_inventory` (
-  `character_id` smallint(5) unsigned NOT NULL,
-  `item_id` smallint(5) unsigned NOT NULL,
+  `character_template_id` smallint(5) unsigned NOT NULL,
+  `item_template_id` smallint(5) unsigned NOT NULL,
   `min` tinyint(3) unsigned NOT NULL,
   `max` tinyint(3) unsigned NOT NULL,
   `chance` smallint(5) unsigned NOT NULL,
-  KEY `item_id` (`item_id`),
-  KEY `character_id` (`character_id`),
-  CONSTRAINT `character_template_inventory_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `character_template_inventory_ibfk_2` FOREIGN KEY (`item_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `item_id` (`item_template_id`),
+  KEY `character_id` (`character_template_id`),
+  CONSTRAINT `character_template_inventory_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `character_template_inventory_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
