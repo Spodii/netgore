@@ -21,16 +21,55 @@ namespace NetGore.Db.ClassCreator
             return columnItems;
         }
 
+        /// <summary>
+        /// Output directory for the generated code that is referenced only by the server.
+        /// Points to the ...\DemoGame.ServerObjs\DbObjs\ folder.
+        /// </summary>
+        static readonly string _outputServerDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.ServerObjs{1}DbObjs{1}",
+                                         AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+
+
+        /// <summary>
+        /// Output directory for the generated code that is referenced by the whole project.
+        /// Points to the ...\DemoGame\DbObjs\ folder.
+        /// </summary>
+        static readonly string _outputGameDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame{1}DbObjs{1}",
+                                         AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+
+        /// <summary>
+        /// Contains the of the tables that will be exposed to the whole project instead of just the server.
+        /// </summary>
+        static readonly ICollection<string> _globalInterfaces = new string[] { };
+
+        static void SaveCodeFile(GeneratedTableCode gtc)
+        {
+            string saveDir;
+            string code;
+
+            if (gtc.IsInterface && _globalInterfaces.Contains(gtc.Table, StringComparer.OrdinalIgnoreCase))
+            {
+                saveDir = _outputGameDir;
+                code = gtc.Code.Replace(_tempNamespaceName, "DemoGame.DbObjs");
+            }
+            else
+            {
+                saveDir = _outputServerDir;
+                code = gtc.Code.Replace(_tempNamespaceName, "DemoGame.Server.DbObjs");
+            }
+
+            if (!saveDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                saveDir += Path.DirectorySeparatorChar.ToString();
+
+            if (!Directory.Exists(saveDir))
+                Directory.CreateDirectory(saveDir);
+
+            string savePath = saveDir + gtc.ClassName + ".cs";
+
+            File.WriteAllText(savePath, code);
+        }
+
         static void Main(string[] args)
         {
-            // Output directory for the generated class code - points to the ...\DemoGame.ServerObjs\DbObjs\ folder
-            string outputClassDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.ServerObjs{1}DbObjs{1}",
-                                             AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
-
-
-            // Output directory for the generated interface code - points to the ...\DemoGame\DbObjs\ folder
-            string outputInterfaceDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame{1}DbObjs{1}",
-                                             AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
             var baseStatColumns = GetStatColumnCollectionItems(StatCollectionType.Base);
             var reqStatColumns = GetStatColumnCollectionItems(StatCollectionType.Requirement);
@@ -122,8 +161,12 @@ namespace NetGore.Db.ClassCreator
                 formatter.AddAlias("WS");
 
                 // Generate
-                generator.Generate("DemoGame.Server.DbObjs", "DemoGame.DbObjs", outputClassDir, outputInterfaceDir);
+                var codeItems = generator.Generate(_tempNamespaceName, _tempNamespaceName);
+                foreach (var item in codeItems)
+                    SaveCodeFile(item);
             }
         }
+
+        const string _tempNamespaceName = "[TEMPNAMESPACENAME]";
     }
 }
