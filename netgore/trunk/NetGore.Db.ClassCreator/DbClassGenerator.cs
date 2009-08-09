@@ -154,11 +154,11 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(code.Length + 512);
 
             // Header
-            var usings = _usings;
+            IEnumerable<string> usings = new string[] { "System", "System.Linq" };
             if (!isInterface)
-                usings.Concat(new string[] { "System", "System.Linq" });
+                usings = usings.Concat(_usings);
 
-            foreach (string usingNamespace in _usings)
+            foreach (string usingNamespace in usings)
                 sb.AppendLine(Formatter.GetUsing(usingNamespace));
 
             // Namespace
