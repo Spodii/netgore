@@ -165,14 +165,14 @@ namespace DemoGame.Server
         public static Alliance LoadAlliance(DBController dbController, AllianceID id)
         {
             var values = dbController.GetQuery<SelectAllianceQuery>().Execute(id);
-            SelectAllianceAttackableQueryValues attackableIDs = dbController.GetQuery<SelectAllianceAttackableQuery>().Execute(id);
-            SelectAllianceHostileQueryValues hostileIDs = dbController.GetQuery<SelectAllianceHostileQuery>().Execute(id);
+            var attackables = dbController.GetQuery<SelectAllianceAttackableQuery>().Execute(id);
+            var hostiles = dbController.GetQuery<SelectAllianceHostileQuery>().Execute(id);
 
             Debug.Assert(id == values.ID);
-            Debug.Assert(id == attackableIDs.AllianceID);
-            Debug.Assert(id == hostileIDs.AllianceID);
+            Debug.Assert(attackables.All(x => x.AllianceID == id));
+            Debug.Assert(hostiles.All(x => x.AllianceID == id));
 
-            Alliance alliance = new Alliance(id, values.Name, attackableIDs.AttackableIDs, hostileIDs.HostileIDs);
+            Alliance alliance = new Alliance(id, values.Name, attackables, hostiles);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded Alliance `{0}`.", alliance);

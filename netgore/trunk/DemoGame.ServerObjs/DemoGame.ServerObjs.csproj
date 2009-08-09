@@ -110,12 +110,9 @@
     <Compile Include="Queries\Map\Spawn\DeleteMapSpawnQuery.cs" />
     <Compile Include="Queries\Map\UpdateMapQuery.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceAttackableQuery.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceAttackableQueryValues.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceHostileQuery.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceHostileQueryValues.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceIDsQuery.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceQuery.cs" />
-    <Compile Include="Queries\Alliance\SelectAllianceQueryValues.cs" />
     <Compile Include="Queries\Character\CharacterQueryHelper.cs" />
     <Compile Include="Queries\Character\Items\DeleteCharacterEquippedItemQuery.cs" />
     <Compile Include="Queries\Character\Items\DeleteCharacterInventoryItemQuery.cs" />

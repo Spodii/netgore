@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using log4net;
 
 namespace DemoGame.Server
@@ -56,17 +57,20 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="id">The ID of this Alliance.</param>
         /// <param name="name">Name of the Alliance.</param>
-        /// <param name="attackable">Alliance IDs that this Alliance can attack.</param>
-        /// <param name="hostile">Alliance IDs that this Alliance is hostile towards.</param>
-        public Alliance(AllianceID id, string name, IEnumerable<AllianceID> attackable, IEnumerable<AllianceID> hostile)
+        /// <param name="attackables">Information for Alliances that this Alliance can attack.</param>
+        /// <param name="hostiles">Information for Alliances that this Alliance is hostile towards.</param>
+        public Alliance(AllianceID id, string name, IEnumerable<AllianceAttackableTable> attackables, IEnumerable<AllianceHostileTable> hostiles)
         {
+            Debug.Assert(attackables.All(x => x.AllianceID == id));
+            Debug.Assert(hostiles.All(x => x.AllianceID == id));
+
             if (string.IsNullOrEmpty(name))
                 throw new ArgumentNullException("name");
 
             _id = id;
             _name = name;
-            _attackable = attackable.ToArray();
-            _hostile = hostile.ToArray();
+            _attackable = attackables.Select(x => x.AttackableID).ToArray();
+            _hostile = hostiles.Select(x => x.HostileID).ToArray();
         }
 
         /// <summary>
