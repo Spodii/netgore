@@ -5,6 +5,8 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
+// EnumComparer code base credit goes to: http://www.codeproject.com/KB/cs/EnumComparer.aspx
+
 namespace NetGore.Collections
 {
     /// <summary>
