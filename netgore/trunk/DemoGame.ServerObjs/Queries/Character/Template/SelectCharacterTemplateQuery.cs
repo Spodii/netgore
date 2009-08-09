@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using log4net;
 using NetGore.Db;
 
@@ -14,15 +15,14 @@ namespace DemoGame.Server.Queries
     public class SelectCharacterTemplateQuery : DbQueryReader<CharacterTemplateID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", DBTables.CharacterTemplate);
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public SelectCharacterTemplateQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
-        public SelectCharacterTemplateQueryValues Execute(CharacterTemplateID templateID)
+        public CharacterTemplateTable Execute(CharacterTemplateID templateID)
         {
-            SelectCharacterTemplateQueryValues ret;
+            CharacterTemplateTable ret;
 
             using (IDataReader r = ExecuteReader(templateID))
             {
@@ -32,19 +32,7 @@ namespace DemoGame.Server.Queries
                     throw new ArgumentException(string.Format(errmsg, templateID), "templateID");
                 }
 
-                ret = CharacterTemplateQueryHelper.ReadCharacterTemplateValues(r);
-
-#if DEBUG
-                // Check that the correct record was grabbed (insanely unlikely this will ever happen)
-                if (ret.ID != templateID)
-                {
-                    const string errmsg = "Performed SELECT for CharacterTemplate with id `{0}`, but got id `{1}`.";
-                    string err = string.Format(errmsg, templateID, ret.ID);
-                    log.Fatal(err);
-                    Debug.Fail(err);
-                    throw new DataException(err);
-                }
-#endif
+                ret = new CharacterTemplateTable(r);
             }
 
             return ret;

@@ -53,11 +53,20 @@ namespace NetGore.Db.ClassCreator
                 const string itemID = "DemoGame.Server.ItemID";
                 const string itemTemplateID = "DemoGame.Server.ItemTemplateID";
                 const string mapSpawnID = "DemoGame.Server.MapSpawnValuesID";
+                const string bodyID = "DemoGame.BodyIndex";
+                const string equipmentSlot = "DemoGame.EquipmentSlot";
+                const string itemChance = "DemoGame.Server.ItemChance";
 
                 generator.AddCustomType(allianceID, "alliance", "id");
 
                 generator.AddCustomType(characterID, "character", "id");
                 generator.AddCustomType(characterTemplateID, "character", "template_id");
+
+                generator.AddCustomType(equipmentSlot, "character_equipped", "slot");
+
+                generator.AddCustomType(itemChance, "character_template_equipped", "chance");
+
+                generator.AddCustomType(itemChance, "character_template_inventory", "chance");
 
                 generator.AddCustomType(itemID, "item", "id");
 
@@ -72,6 +81,9 @@ namespace NetGore.Db.ClassCreator
                 generator.AddCustomType(characterID, "*", "character_id");
                 generator.AddCustomType(mapID, "*", "map_id", "respawn_map");
                 generator.AddCustomType(itemID, "*", "item_id");
+                generator.AddCustomType(characterTemplateID, "*", "character_template_id");
+                generator.AddCustomType(itemTemplateID, "*", "item_template_id");
+                generator.AddCustomType(bodyID, "*", "body_id");
 
                 // Renaming
                 var formatter = generator.Formatter;
@@ -79,8 +91,11 @@ namespace NetGore.Db.ClassCreator
                 formatter.AddAlias("attackable_id", "AttackableID");
                 formatter.AddAlias("hostile_id", "HostileID");
                 formatter.AddAlias("character_id", "CharacterID");
+                formatter.AddAlias("character_template_id", "CharacterTemplateID");
+                formatter.AddAlias("item_template_id", "ItemTemplateID");
                 formatter.AddAlias("item_id", "ItemID");
                 formatter.AddAlias("map_id", "MapID");
+                formatter.AddAlias("body_id", "BodyID");
                 formatter.AddAlias("respawn_map", "RespawnMap");
                 formatter.AddAlias("respawn_x", "RespawnX");
                 formatter.AddAlias("respawn_y", "RespawnY");

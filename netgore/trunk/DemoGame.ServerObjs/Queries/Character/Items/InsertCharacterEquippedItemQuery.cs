@@ -1,16 +1,17 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class InsertCharacterEquippedItemQuery : DbQueryNonReader<InsertCharacterEquippedItemQuery.QueryArgs>
+    public class InsertCharacterEquippedItemQuery : DbQueryNonReader<CharacterEquippedTable>
     {
         static readonly string _queryString =
-            string.Format("INSERT INTO `{0}` SET `character_id`=@characterID,`item_id`=@itemID,`slot`=@slot",
-                          DBTables.CharacterEquipped);
+            string.Format("INSERT INTO `{0}` SET {1}",
+                          DBTables.CharacterEquipped, FormatParametersIntoString(CharacterEquippedTable.DbColumns));
 
         public InsertCharacterEquippedItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
@@ -18,48 +19,12 @@ namespace DemoGame.Server.Queries
 
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@itemID", "@slot", "@characterID");
+            return CreateParameters(CharacterEquippedTable.DbColumns.Select(x => "@" + x));
         }
 
-        protected override void SetParameters(DbParameterValues p, QueryArgs item)
+        protected override void SetParameters(DbParameterValues p, CharacterEquippedTable item)
         {
-            p["@itemID"] = (int)item.ItemID;
-            p["@slot"] = item.Slot;
-            p["@characterID"] = item.CharacterID;
-        }
-
-        /// <summary>
-        /// Arguments for the InsertUserEquippedQuery.
-        /// </summary>
-        public struct QueryArgs
-        {
-            /// <summary>
-            /// The ID of the Character that this equipment belongs to.
-            /// </summary>
-            public readonly CharacterID CharacterID;
-
-            /// <summary>
-            /// The item's ID for the equipment slot.
-            /// </summary>
-            public readonly ItemID ItemID;
-
-            /// <summary>
-            /// The EquipmentSlot to be updated.
-            /// </summary>
-            public readonly EquipmentSlot Slot;
-
-            /// <summary>
-            /// InsertUserEquippedQuery constructor.
-            /// </summary>
-            /// <param name="characterID">The ID of the Character that this equipment belongs to.</param>
-            /// <param name="itemID">The item's ID for the equipment slot.</param>
-            /// <param name="slot">The EquipmentSlot to be updated.</param>
-            public QueryArgs(CharacterID characterID, ItemID itemID, EquipmentSlot slot)
-            {
-                CharacterID = characterID;
-                ItemID = itemID;
-                Slot = slot;
-            }
+            item.CopyValues(p);
         }
     }
 }

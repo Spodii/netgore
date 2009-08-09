@@ -16,12 +16,12 @@ namespace DemoGame.Server
         /// <summary>
         /// Represents the largest possible value of ItemChance. This field is constant.
         /// </summary>
-        const int _maxValue = 10000;
+        public const int MaxValue = 10000;
 
         /// <summary>
         /// Represents the smallest possible value of ItemChance. This field is constant.
         /// </summary>
-        const int _minValue = ushort.MinValue;
+        public const int MinValue = 0;
 
         static readonly Random _random = new Random();
 
@@ -40,20 +40,21 @@ namespace DemoGame.Server
             if (percent < 0.0f || percent > 1.0f)
                 throw new ArgumentOutOfRangeException("percent");
 
-            _value = (ushort)Math.Round(percent * _maxValue);
+            _value = (ushort)Math.Round(percent * MaxValue);
 
             // Ensure there were no rounding errors
-            if (_value > _maxValue)
-                _value = _maxValue;
+            if (_value > MaxValue)
+                _value = MaxValue;
         }
 
         /// <summary>
         /// ItemChance constructor.
         /// </summary>
-        /// <param name="value">Value to assign to the new ItemChance.</param>
-        ItemChance(int value)
+        /// <param name="value">The chance to assign this ItemChance, where MinValue is a 0% chance and
+        /// MaxValue is a 100% chance.</param>
+        public ItemChance(int value)
         {
-            if (value < _minValue || value > _maxValue)
+            if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
 
             _value = (ushort)value;
@@ -157,7 +158,7 @@ namespace DemoGame.Server
         /// <returns>True if the test passed; otherwise false.</returns>
         public bool Test()
         {
-            int randValue = _random.Next(_minValue + 1, _maxValue + 1);
+            int randValue = _random.Next(MinValue + 1, MaxValue + 1);
             return randValue <= _value;
         }
 
@@ -169,6 +170,26 @@ namespace DemoGame.Server
         public override string ToString()
         {
             return _value.ToString();
+        }
+
+        /// <summary>
+        /// Implements an explicit operator for converting an int to an ItemChance.
+        /// </summary>
+        /// <param name="value">Integer value of the ItemChance.</param>
+        /// <returns>An ItemChance instance created with the given int <paramref name="value"/>.</returns>
+        public static explicit operator ItemChance(int value)
+        {
+            return new ItemChance(value);
+        }
+
+        /// <summary>
+        /// Implements an explicit operator for converting an ItemChance to an int.
+        /// </summary>
+        /// <param name="value">ItemChance to convert to an int.</param>
+        /// <returns>An int created with the given ItemChance.</returns>
+        public static explicit operator int(ItemChance value)
+        {
+            return value._value;
         }
 
         /// <summary>

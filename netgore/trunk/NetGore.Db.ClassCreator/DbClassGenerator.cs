@@ -246,16 +246,23 @@ namespace NetGore.Db.ClassCreator
                         if (columnsInCollection.Count() == 0)
                             continue;
 
+                        // Getter
                         string columnNamesCode = Formatter.GetStringArrayCode(columnsInCollection.Select(x => x.Name));
                         sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionField, coll.Name)));
                         sb.AppendLine(Formatter.GetField(privateFieldName, typeof(string[]), MemberVisibilityLevel.Private,
                                                          columnNamesCode, true, true));
 
+                        // Setter
                         sb.AppendLine(
                             Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionProperty, coll.Name)));
                         sb.AppendLine(Formatter.GetProperty(publicPropertyName, typeof(IEnumerable<string>),
                                                             typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
                                                             privateFieldName, false, true));
+                        
+                        // Collection
+                        // TODO: Xml Comments
+                        string ikvpType=Formatter.GetIEnumerableKeyValuePair(coll.KeyType, coll.ValueType);
+                        sb.AppendLine(Formatter.GetProperty(coll.CollectionPropertyName, ikvpType, ikvpType, MemberVisibilityLevel.Public, null, cd.GetPrivateName(coll), false, false));
                     }
                 }
 
@@ -364,6 +371,7 @@ namespace NetGore.Db.ClassCreator
                         string name = cd.GetPublicName(coll);
                         MethodParameter keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
 
+                        // Getter
                         sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.InterfaceCollectionGetter,
                                                               Comments.CreateCode.InterfaceCollectionReturns,
                                                               new KeyValuePair<string, string>("key",
@@ -372,6 +380,7 @@ namespace NetGore.Db.ClassCreator
                         sb.AppendLine(Formatter.GetInterfaceMethod("Get" + name, coll.ValueType,
                                                                    new MethodParameter[] { keyParameter }));
 
+                        // Setter
                         sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.InterfaceCollectionGetter, null,
                                                               new KeyValuePair<string, string>("key",
                                                                                                Comments.CreateCode.
@@ -385,6 +394,10 @@ namespace NetGore.Db.ClassCreator
                                                                        keyParameter,
                                                                        new MethodParameter("value", coll.ValueType, Formatter)
                                                                    }));
+
+                        // Collection
+                        // TODO: XML comments
+                        sb.AppendLine(Formatter.GetInterfaceProperty(coll.CollectionPropertyName, Formatter.GetIEnumerableKeyValuePair(coll.KeyType, coll.ValueType), false));
                     }
                 }
             }

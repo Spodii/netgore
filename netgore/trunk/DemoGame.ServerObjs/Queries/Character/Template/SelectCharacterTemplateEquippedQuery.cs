@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -9,28 +10,23 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class SelectCharacterTemplateEquippedQuery : DbQueryReader<CharacterTemplateID>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `character_id`=@characterID",
+        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `character_template_id`=@characterTemplateID",
                                                             DBTables.CharacterTemplateEquipped);
 
         public SelectCharacterTemplateEquippedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
-        public IEnumerable<SelectCharacterTemplateEquippedQueryValues> Execute(CharacterTemplateID templateID)
+        public IEnumerable<CharacterTemplateEquippedTable> Execute(CharacterTemplateID templateID)
         {
-            var ret = new List<SelectCharacterTemplateEquippedQueryValues>();
+            var ret = new List<CharacterTemplateEquippedTable>();
 
             using (IDataReader r = ExecuteReader(templateID))
             {
                 while (r.Read())
                 {
-                    CharacterTemplateID character = r.GetCharacterTemplateID("character_id");
-                    ItemTemplateID item = r.GetItemTemplateID("item_id");
-                    ItemChance chance = r.GetItemChance("chance");
-
-                    SelectCharacterTemplateEquippedQueryValues v = new SelectCharacterTemplateEquippedQueryValues(character, item,
-                                                                                                                  chance);
-                    ret.Add(v);
+                    var item = new CharacterTemplateEquippedTable(r);
+                    ret.Add(item);
                 }
             }
 
@@ -39,12 +35,12 @@ namespace DemoGame.Server.Queries
 
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@characterID");
+            return CreateParameters("@characterTemplateID");
         }
 
         protected override void SetParameters(DbParameterValues p, CharacterTemplateID id)
         {
-            p["@characterID"] = (int)id;
+            p["@characterTemplateID"] = (int)id;
         }
     }
 }

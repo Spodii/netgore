@@ -4,6 +4,8 @@ using System.Data.Common;
 using System.Linq;
 using NetGore.Db;
 
+// TODO: !! Cleanup query
+
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
@@ -11,7 +13,7 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString =
             string.Format(
-                "SELECT {0}.*,{1}.slot FROM `{0}`,`{1}` " + "WHERE {1}.character_id = @characterID " + "AND {0}.id = {1}.item_id",
+                "SELECT {0}.*,{1}.slot FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
                 DBTables.Item, DBTables.CharacterEquipped);
 
         public SelectCharacterEquippedItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
