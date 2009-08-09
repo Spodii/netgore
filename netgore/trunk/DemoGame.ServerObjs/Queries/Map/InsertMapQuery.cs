@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class InsertMapQuery : DbQueryNonReader<MapBase>
     {
         static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", MapTable.TableName,
-                                                            FormatParametersIntoValuesString(MapQueryHelper.AllDBFields));
+                                                            FormatParametersIntoValuesString(MapTable.DbColumns));
 
         public InsertMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
@@ -19,7 +19,7 @@ namespace DemoGame.Server.Queries
 
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(MapQueryHelper.AllDBFields);
+            return CreateParameters(MapTable.DbColumns);
         }
 
         protected override void SetParameters(DbParameterValues p, MapBase map)
