@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
 // TODO: !! Cleanup query
@@ -14,7 +15,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
     public class UserExistsQuery : DbQueryReader<string>
     {
-        static readonly string _queryString = string.Format("SELECT COUNT(*) FROM `{0}` WHERE `name`=@name", DBTables.Character);
+        static readonly string _queryString = string.Format("SELECT COUNT(*) FROM `{0}` WHERE `name`=@name", CharacterTable.TableName);
 
         /// <summary>
         /// UserExistsQuery constructor.

@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -220,7 +221,7 @@ namespace DemoGame.Server
 
             using (MySqlCommand cmd = conn.CreateCommand())
             {
-                cmd.CommandText = string.Format("SELECT `unique_id` FROM `{0}` ORDER BY `unique_id` ASC", DBTables.Character);
+                cmd.CommandText = string.Format("SELECT `unique_id` FROM `{0}` ORDER BY `unique_id` ASC", CharacterTable.TableName);
                 using (MySqlDataReader r = cmd.ExecuteReader())
                 {
                     // No Users, so return the first index

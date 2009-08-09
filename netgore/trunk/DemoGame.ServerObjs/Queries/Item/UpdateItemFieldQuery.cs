@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
 // TODO: !! Cleanup query
@@ -11,7 +12,7 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class UpdateItemFieldQuery : IDisposable
     {
-        const string _queryString = "UPDATE `" + DBTables.Item + "` SET `{0}`=@value WHERE `id`=@itemID";
+        const string _queryString = "UPDATE `" + ItemTable.TableName + "` SET `{0}`=@value WHERE `id`=@itemID";
         readonly DbConnectionPool _connectionPool;
 
         readonly Dictionary<string, InternalUpdateItemFieldQuery> _fieldQueries =

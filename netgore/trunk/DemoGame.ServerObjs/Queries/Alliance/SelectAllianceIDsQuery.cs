@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -8,7 +9,7 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class SelectAllianceIDsQuery : DbQueryReader
     {
-        static readonly string _queryString = string.Format("SELECT `id` FROM `{0}`", DBTables.Alliance);
+        static readonly string _queryString = string.Format("SELECT `id` FROM `{0}`", AllianceTable.TableName);
 
         public SelectAllianceIDsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

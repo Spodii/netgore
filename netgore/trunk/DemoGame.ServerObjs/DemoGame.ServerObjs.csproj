@@ -129,7 +129,6 @@
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateQuery.cs" />
     <Compile Include="Queries\DBController.cs" />
     <Compile Include="Queries\DBControllerQueryAttribute.cs" />
-    <Compile Include="Queries\DBTables.cs" />
     <Compile Include="Queries\DBTableStatTypes.cs" />
     <Compile Include="Queries\DBTableValidator.cs" />
     <Compile Include="Queries\IDataReaderExtensions.cs" />

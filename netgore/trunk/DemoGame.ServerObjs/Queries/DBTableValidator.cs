@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using log4net;
 
 namespace DemoGame.Server.Queries
@@ -43,7 +44,7 @@ namespace DemoGame.Server.Queries
         /// <param name="db">The DBController to use for performing the validation checks.</param>
         static void ValidateCharacterTable(DBController db)
         {
-            EnsureStatColumnsExist(db, DBTables.Character, StatFactory.AllStats, StatCollectionType.Base);
+            EnsureStatColumnsExist(db, CharacterTable.TableName, StatFactory.AllStats, StatCollectionType.Base);
         }
 
         /// <summary>
@@ -52,7 +53,7 @@ namespace DemoGame.Server.Queries
         /// <param name="db">The DBController to use for performing the validation checks.</param>
         static void ValidateCharacterTemplateTable(DBController db)
         {
-            EnsureStatColumnsExist(db, DBTables.CharacterTemplate, StatFactory.AllStats, StatCollectionType.Base);
+            EnsureStatColumnsExist(db, CharacterTemplateTable.TableName, StatFactory.AllStats, StatCollectionType.Base);
         }
 
         /// <summary>
