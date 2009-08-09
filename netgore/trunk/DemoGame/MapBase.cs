@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Xml;
+using DemoGame.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -24,7 +25,7 @@ namespace DemoGame
     /// <summary>
     /// Base map class
     /// </summary>
-    public abstract class MapBase : IMap
+    public abstract class MapBase : IMap, IMapTable
     {
         /// <summary>
         /// The suffix used for map files. Does not include the period prefix.
@@ -147,6 +148,11 @@ namespace DemoGame
                         _updateStopWatch.Stop();
                 }
             }
+        }
+
+        MapIndex IMapTable.ID
+        {
+            get { return Index; }
         }
 
         /// <summary>
