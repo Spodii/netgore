@@ -71,6 +71,7 @@
     <Compile Include="DbClassGenerator.cs" />
     <Compile Include="DbColumnInfo.cs" />
     <Compile Include="DbColumnKeyType.cs" />
+    <Compile Include="GeneratedCodeType.cs" />
     <Compile Include="GeneratedTableCode.cs" />
     <Compile Include="MemberVisibilityLevel.cs" />
     <Compile Include="MethodParameter.cs" />

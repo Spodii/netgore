@@ -487,174 +487,47 @@ public CharacterTable()
 /// <param name="y">The initial value for the corresponding property.</param>
 public CharacterTable(System.Byte @acc, System.Byte @agi, System.Byte @armor, DemoGame.BodyIndex @bodyID, System.Byte @bra, System.UInt32 @cash, System.Nullable<DemoGame.Server.CharacterTemplateID> @characterTemplateID, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, DemoGame.SPValueType @hP, DemoGame.Server.CharacterID @iD, System.Byte @imm, System.Byte @int, System.Byte @level, NetGore.MapIndex @mapID, System.Byte @maxHit, System.Int16 @maxHP, System.Int16 @maxMP, System.Byte @minHit, DemoGame.SPValueType @mP, System.String @name, System.String @password, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.Nullable<NetGore.MapIndex> @respawnMap, System.Single @respawnX, System.Single @respawnY, System.UInt32 @statPoints, System.Byte @str, System.Byte @tact, System.Byte @wS, System.Single @x, System.Single @y)
 {
-SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)@acc);
-SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@agi);
-SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)@armor);
-BodyID = (DemoGame.BodyIndex)@bodyID;
-SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)@bra);
-Cash = (System.UInt32)@cash;
-CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)@characterTemplateID;
-SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)@defence);
-SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)@dex);
-SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)@evade);
-Exp = (System.UInt32)@exp;
-HP = (DemoGame.SPValueType)@hP;
-ID = (DemoGame.Server.CharacterID)@iD;
-SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)@imm);
-SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)@int);
-Level = (System.Byte)@level;
-MapID = (NetGore.MapIndex)@mapID;
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)@maxHit);
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)@maxHP);
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)@maxMP);
-SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)@minHit);
-MP = (DemoGame.SPValueType)@mP;
-Name = (System.String)@name;
-Password = (System.String)@password;
-SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)@perc);
-SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)@recov);
-SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)@regen);
-RespawnMap = (System.Nullable<NetGore.MapIndex>)@respawnMap;
-RespawnX = (System.Single)@respawnX;
-RespawnY = (System.Single)@respawnY;
-StatPoints = (System.UInt32)@statPoints;
-SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)@str);
-SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)@tact);
-SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)@wS);
-X = (System.Single)@x;
-Y = (System.Single)@y;
-}
-/// <summary>
-/// CharacterTable constructor.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
-public CharacterTable(System.Data.IDataReader dataReader)
-{
-ReadValues(dataReader);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)@acc);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@agi);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)@armor);
+this.BodyID = (DemoGame.BodyIndex)@bodyID;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)@bra);
+this.Cash = (System.UInt32)@cash;
+this.CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)@characterTemplateID;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)@defence);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)@dex);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)@evade);
+this.Exp = (System.UInt32)@exp;
+this.HP = (DemoGame.SPValueType)@hP;
+this.ID = (DemoGame.Server.CharacterID)@iD;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)@imm);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)@int);
+this.Level = (System.Byte)@level;
+this.MapID = (NetGore.MapIndex)@mapID;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)@maxHit);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)@maxHP);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)@maxMP);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)@minHit);
+this.MP = (DemoGame.SPValueType)@mP;
+this.Name = (System.String)@name;
+this.Password = (System.String)@password;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)@perc);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)@recov);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)@regen);
+this.RespawnMap = (System.Nullable<NetGore.MapIndex>)@respawnMap;
+this.RespawnX = (System.Single)@respawnX;
+this.RespawnY = (System.Single)@respawnY;
+this.StatPoints = (System.UInt32)@statPoints;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)@str);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)@tact);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)@wS);
+this.X = (System.Single)@x;
+this.Y = (System.Single)@y;
 }
 public CharacterTable(ICharacterTable source)
 {
 CopyValuesFrom(source);
 }
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. The database column's name is used to as the key, so the value
-/// will not be found if any aliases are used or not all columns were selected.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void ReadValues(System.Data.IDataReader dataReader)
-{
-System.Int32 i;
-
-i = dataReader.GetOrdinal("acc");
-SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("agi");
-SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("armor");
-SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("body_id");
-BodyID = (DemoGame.BodyIndex)(DemoGame.BodyIndex)dataReader.GetUInt16(i);
-
-i = dataReader.GetOrdinal("bra");
-SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("cash");
-Cash = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
-
-i = dataReader.GetOrdinal("character_template_id");
-CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)(System.Nullable<DemoGame.Server.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-
-i = dataReader.GetOrdinal("defence");
-SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("dex");
-SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("evade");
-SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("exp");
-Exp = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
-
-i = dataReader.GetOrdinal("hp");
-HP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
-
-i = dataReader.GetOrdinal("id");
-ID = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(i);
-
-i = dataReader.GetOrdinal("imm");
-SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("int");
-SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("level");
-Level = (System.Byte)(System.Byte)dataReader.GetByte(i);
-
-i = dataReader.GetOrdinal("map_id");
-MapID = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(i);
-
-i = dataReader.GetOrdinal("maxhit");
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("maxhp");
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-
-i = dataReader.GetOrdinal("maxmp");
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-
-i = dataReader.GetOrdinal("minhit");
-SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("mp");
-MP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
-
-i = dataReader.GetOrdinal("name");
-Name = (System.String)(System.String)dataReader.GetString(i);
-
-i = dataReader.GetOrdinal("password");
-Password = (System.String)(System.String)dataReader.GetString(i);
-
-i = dataReader.GetOrdinal("perc");
-SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("recov");
-SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("regen");
-SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("respawn_map");
-RespawnMap = (System.Nullable<NetGore.MapIndex>)(System.Nullable<NetGore.MapIndex>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-
-i = dataReader.GetOrdinal("respawn_x");
-RespawnX = (System.Single)(System.Single)dataReader.GetFloat(i);
-
-i = dataReader.GetOrdinal("respawn_y");
-RespawnY = (System.Single)(System.Single)dataReader.GetFloat(i);
-
-i = dataReader.GetOrdinal("statpoints");
-StatPoints = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
-
-i = dataReader.GetOrdinal("str");
-SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("tact");
-SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("ws");
-SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)(System.Byte)dataReader.GetByte(i));
-
-i = dataReader.GetOrdinal("x");
-X = (System.Single)(System.Single)dataReader.GetFloat(i);
-
-i = dataReader.GetOrdinal("y");
-Y = (System.Single)(System.Single)dataReader.GetFloat(i);
-}
-
 /// <summary>
 /// Copies the column values into the given Dictionary using the database column name
 /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
@@ -712,101 +585,44 @@ dic["@x"] = (System.Single)source.X;
 dic["@y"] = (System.Single)source.Y;
 }
 
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void CopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-CopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(ICharacterTable source, NetGore.Db.DbParameterValues paramValues)
-{
-paramValues["@acc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
-paramValues["@agi"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
-paramValues["@armor"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
-paramValues["@body_id"] = (DemoGame.BodyIndex)source.BodyID;
-paramValues["@bra"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
-paramValues["@cash"] = (System.UInt32)source.Cash;
-paramValues["@character_template_id"] = (System.Nullable<DemoGame.Server.CharacterTemplateID>)source.CharacterTemplateID;
-paramValues["@defence"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
-paramValues["@dex"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
-paramValues["@evade"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
-paramValues["@exp"] = (System.UInt32)source.Exp;
-paramValues["@hp"] = (DemoGame.SPValueType)source.HP;
-paramValues["@id"] = (DemoGame.Server.CharacterID)source.ID;
-paramValues["@imm"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
-paramValues["@int"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
-paramValues["@level"] = (System.Byte)source.Level;
-paramValues["@map_id"] = (NetGore.MapIndex)source.MapID;
-paramValues["@maxhit"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
-paramValues["@maxhp"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
-paramValues["@maxmp"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
-paramValues["@minhit"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
-paramValues["@mp"] = (DemoGame.SPValueType)source.MP;
-paramValues["@name"] = (System.String)source.Name;
-paramValues["@password"] = (System.String)source.Password;
-paramValues["@perc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
-paramValues["@recov"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov);
-paramValues["@regen"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen);
-paramValues["@respawn_map"] = (System.Nullable<NetGore.MapIndex>)source.RespawnMap;
-paramValues["@respawn_x"] = (System.Single)source.RespawnX;
-paramValues["@respawn_y"] = (System.Single)source.RespawnY;
-paramValues["@statpoints"] = (System.UInt32)source.StatPoints;
-paramValues["@str"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Str);
-paramValues["@tact"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Tact);
-paramValues["@ws"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.WS);
-paramValues["@x"] = (System.Single)source.X;
-paramValues["@y"] = (System.Single)source.Y;
-}
-
 public void CopyValuesFrom(ICharacterTable source)
 {
-SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc));
-SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi));
-SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor));
-BodyID = (DemoGame.BodyIndex)source.BodyID;
-SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra));
-Cash = (System.UInt32)source.Cash;
-CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)source.CharacterTemplateID;
-SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence));
-SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex));
-SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade));
-Exp = (System.UInt32)source.Exp;
-HP = (DemoGame.SPValueType)source.HP;
-ID = (DemoGame.Server.CharacterID)source.ID;
-SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm));
-SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int));
-Level = (System.Byte)source.Level;
-MapID = (NetGore.MapIndex)source.MapID;
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit));
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP));
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP));
-SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit));
-MP = (DemoGame.SPValueType)source.MP;
-Name = (System.String)source.Name;
-Password = (System.String)source.Password;
-SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc));
-SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov));
-SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen));
-RespawnMap = (System.Nullable<NetGore.MapIndex>)source.RespawnMap;
-RespawnX = (System.Single)source.RespawnX;
-RespawnY = (System.Single)source.RespawnY;
-StatPoints = (System.UInt32)source.StatPoints;
-SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Str));
-SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Tact));
-SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.WS));
-X = (System.Single)source.X;
-Y = (System.Single)source.Y;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor));
+this.BodyID = (DemoGame.BodyIndex)source.BodyID;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra));
+this.Cash = (System.UInt32)source.Cash;
+this.CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)source.CharacterTemplateID;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade));
+this.Exp = (System.UInt32)source.Exp;
+this.HP = (DemoGame.SPValueType)source.HP;
+this.ID = (DemoGame.Server.CharacterID)source.ID;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int));
+this.Level = (System.Byte)source.Level;
+this.MapID = (NetGore.MapIndex)source.MapID;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit));
+this.MP = (DemoGame.SPValueType)source.MP;
+this.Name = (System.String)source.Name;
+this.Password = (System.String)source.Password;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen));
+this.RespawnMap = (System.Nullable<NetGore.MapIndex>)source.RespawnMap;
+this.RespawnX = (System.Single)source.RespawnX;
+this.RespawnY = (System.Single)source.RespawnY;
+this.StatPoints = (System.UInt32)source.StatPoints;
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Str));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Tact));
+this.SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.WS));
+this.X = (System.Single)source.X;
+this.Y = (System.Single)source.Y;
 }
 
 public System.Object GetValue(System.String columnName)
@@ -931,147 +747,147 @@ public void SetValue(System.String columnName, System.Object value)
 switch (columnName)
 {
 case "acc":
-SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)value);
 break;
 
 case "agi":
-SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)value);
 break;
 
 case "armor":
-SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)value);
 break;
 
 case "body_id":
-BodyID = (DemoGame.BodyIndex)value;
+this.BodyID = (DemoGame.BodyIndex)value;
 break;
 
 case "bra":
-SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)value);
 break;
 
 case "cash":
-Cash = (System.UInt32)value;
+this.Cash = (System.UInt32)value;
 break;
 
 case "character_template_id":
-CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)value;
+this.CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)value;
 break;
 
 case "defence":
-SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)value);
 break;
 
 case "dex":
-SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)value);
 break;
 
 case "evade":
-SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)value);
 break;
 
 case "exp":
-Exp = (System.UInt32)value;
+this.Exp = (System.UInt32)value;
 break;
 
 case "hp":
-HP = (DemoGame.SPValueType)value;
+this.HP = (DemoGame.SPValueType)value;
 break;
 
 case "id":
-ID = (DemoGame.Server.CharacterID)value;
+this.ID = (DemoGame.Server.CharacterID)value;
 break;
 
 case "imm":
-SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)value);
 break;
 
 case "int":
-SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)value);
 break;
 
 case "level":
-Level = (System.Byte)value;
+this.Level = (System.Byte)value;
 break;
 
 case "map_id":
-MapID = (NetGore.MapIndex)value;
+this.MapID = (NetGore.MapIndex)value;
 break;
 
 case "maxhit":
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)value);
 break;
 
 case "maxhp":
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)value);
 break;
 
 case "maxmp":
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)value);
 break;
 
 case "minhit":
-SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)value);
 break;
 
 case "mp":
-MP = (DemoGame.SPValueType)value;
+this.MP = (DemoGame.SPValueType)value;
 break;
 
 case "name":
-Name = (System.String)value;
+this.Name = (System.String)value;
 break;
 
 case "password":
-Password = (System.String)value;
+this.Password = (System.String)value;
 break;
 
 case "perc":
-SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)value);
 break;
 
 case "recov":
-SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)value);
 break;
 
 case "regen":
-SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)value);
 break;
 
 case "respawn_map":
-RespawnMap = (System.Nullable<NetGore.MapIndex>)value;
+this.RespawnMap = (System.Nullable<NetGore.MapIndex>)value;
 break;
 
 case "respawn_x":
-RespawnX = (System.Single)value;
+this.RespawnX = (System.Single)value;
 break;
 
 case "respawn_y":
-RespawnY = (System.Single)value;
+this.RespawnY = (System.Single)value;
 break;
 
 case "statpoints":
-StatPoints = (System.UInt32)value;
+this.StatPoints = (System.UInt32)value;
 break;
 
 case "str":
-SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)value);
 break;
 
 case "tact":
-SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)value);
 break;
 
 case "ws":
-SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)value);
+this.SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)value);
 break;
 
 case "x":
-X = (System.Single)value;
+this.X = (System.Single)value;
 break;
 
 case "y":
-Y = (System.Single)value;
+this.Y = (System.Single)value;
 break;
 
 default:
@@ -1193,420 +1009,6 @@ return new ColumnMetadata("y", "", "float", "100", typeof(System.Single), false,
 
 default:
 throw new ArgumentException("Field not found.","fieldName");
-}
-}
-
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. Unlike ReadValues(), this method not only doesn't require
-/// all values to be in the IDataReader, but also does not require the values in
-/// the IDataReader to be a defined field for the table this class represents.
-/// Because of this, you need to be careful when using this method because values
-/// can easily be skipped without any indication.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void TryReadValues(System.Data.IDataReader dataReader)
-{
-for (int i = 0; i < dataReader.FieldCount; i++)
-{
-switch (dataReader.GetName(i))
-{
-case "acc":
-SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "agi":
-SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "armor":
-SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "body_id":
-BodyID = (DemoGame.BodyIndex)(DemoGame.BodyIndex)dataReader.GetUInt16(i);
-break;
-
-
-case "bra":
-SetStat((DemoGame.StatType)DemoGame.StatType.Bra, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "cash":
-Cash = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
-break;
-
-
-case "character_template_id":
-CharacterTemplateID = (System.Nullable<DemoGame.Server.CharacterTemplateID>)(System.Nullable<DemoGame.Server.CharacterTemplateID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-break;
-
-
-case "defence":
-SetStat((DemoGame.StatType)DemoGame.StatType.Defence, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "dex":
-SetStat((DemoGame.StatType)DemoGame.StatType.Dex, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "evade":
-SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "exp":
-Exp = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
-break;
-
-
-case "hp":
-HP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
-break;
-
-
-case "id":
-ID = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(i);
-break;
-
-
-case "imm":
-SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "int":
-SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "level":
-Level = (System.Byte)(System.Byte)dataReader.GetByte(i);
-break;
-
-
-case "map_id":
-MapID = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(i);
-break;
-
-
-case "maxhit":
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHit, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "maxhp":
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxHP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-break;
-
-
-case "maxmp":
-SetStat((DemoGame.StatType)DemoGame.StatType.MaxMP, (System.Int32)(System.Int16)dataReader.GetInt16(i));
-break;
-
-
-case "minhit":
-SetStat((DemoGame.StatType)DemoGame.StatType.MinHit, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "mp":
-MP = (DemoGame.SPValueType)(DemoGame.SPValueType)dataReader.GetInt16(i);
-break;
-
-
-case "name":
-Name = (System.String)(System.String)dataReader.GetString(i);
-break;
-
-
-case "password":
-Password = (System.String)(System.String)dataReader.GetString(i);
-break;
-
-
-case "perc":
-SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "recov":
-SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "regen":
-SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "respawn_map":
-RespawnMap = (System.Nullable<NetGore.MapIndex>)(System.Nullable<NetGore.MapIndex>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-break;
-
-
-case "respawn_x":
-RespawnX = (System.Single)(System.Single)dataReader.GetFloat(i);
-break;
-
-
-case "respawn_y":
-RespawnY = (System.Single)(System.Single)dataReader.GetFloat(i);
-break;
-
-
-case "statpoints":
-StatPoints = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
-break;
-
-
-case "str":
-SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "tact":
-SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "ws":
-SetStat((DemoGame.StatType)DemoGame.StatType.WS, (System.Int32)(System.Byte)dataReader.GetByte(i));
-break;
-
-
-case "x":
-X = (System.Single)(System.Single)dataReader.GetFloat(i);
-break;
-
-
-case "y":
-Y = (System.Single)(System.Single)dataReader.GetFloat(i);
-break;
-
-
-}
-
-}
-}
-
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-TryCopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(ICharacterTable source, NetGore.Db.DbParameterValues paramValues)
-{
-for (int i = 0; i < paramValues.Count; i++)
-{
-switch (paramValues.GetParameterName(i))
-{
-case "@acc":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
-break;
-
-
-case "@agi":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
-break;
-
-
-case "@armor":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
-break;
-
-
-case "@body_id":
-paramValues[i] = source.BodyID;
-break;
-
-
-case "@bra":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
-break;
-
-
-case "@cash":
-paramValues[i] = source.Cash;
-break;
-
-
-case "@character_template_id":
-paramValues[i] = source.CharacterTemplateID;
-break;
-
-
-case "@defence":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
-break;
-
-
-case "@dex":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
-break;
-
-
-case "@evade":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
-break;
-
-
-case "@exp":
-paramValues[i] = source.Exp;
-break;
-
-
-case "@hp":
-paramValues[i] = source.HP;
-break;
-
-
-case "@id":
-paramValues[i] = source.ID;
-break;
-
-
-case "@imm":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
-break;
-
-
-case "@int":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
-break;
-
-
-case "@level":
-paramValues[i] = source.Level;
-break;
-
-
-case "@map_id":
-paramValues[i] = source.MapID;
-break;
-
-
-case "@maxhit":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
-break;
-
-
-case "@maxhp":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
-break;
-
-
-case "@maxmp":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
-break;
-
-
-case "@minhit":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
-break;
-
-
-case "@mp":
-paramValues[i] = source.MP;
-break;
-
-
-case "@name":
-paramValues[i] = source.Name;
-break;
-
-
-case "@password":
-paramValues[i] = source.Password;
-break;
-
-
-case "@perc":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
-break;
-
-
-case "@recov":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov);
-break;
-
-
-case "@regen":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen);
-break;
-
-
-case "@respawn_map":
-paramValues[i] = source.RespawnMap;
-break;
-
-
-case "@respawn_x":
-paramValues[i] = source.RespawnX;
-break;
-
-
-case "@respawn_y":
-paramValues[i] = source.RespawnY;
-break;
-
-
-case "@statpoints":
-paramValues[i] = source.StatPoints;
-break;
-
-
-case "@str":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Str);
-break;
-
-
-case "@tact":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Tact);
-break;
-
-
-case "@ws":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.WS);
-break;
-
-
-case "@x":
-paramValues[i] = source.X;
-break;
-
-
-case "@y":
-paramValues[i] = source.Y;
-break;
-
-
-}
-
 }
 }
 

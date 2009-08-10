@@ -242,62 +242,19 @@ public MapSpawnTable()
 /// <param name="y">The initial value for the corresponding property.</param>
 public MapSpawnTable(System.Byte @amount, DemoGame.Server.CharacterTemplateID @characterTemplateID, System.Nullable<System.UInt16> @height, DemoGame.Server.MapSpawnValuesID @iD, NetGore.MapIndex @mapID, System.Nullable<System.UInt16> @width, System.Nullable<System.UInt16> @x, System.Nullable<System.UInt16> @y)
 {
-Amount = (System.Byte)@amount;
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)@characterTemplateID;
-Height = (System.Nullable<System.UInt16>)@height;
-ID = (DemoGame.Server.MapSpawnValuesID)@iD;
-MapID = (NetGore.MapIndex)@mapID;
-Width = (System.Nullable<System.UInt16>)@width;
-X = (System.Nullable<System.UInt16>)@x;
-Y = (System.Nullable<System.UInt16>)@y;
-}
-/// <summary>
-/// MapSpawnTable constructor.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
-public MapSpawnTable(System.Data.IDataReader dataReader)
-{
-ReadValues(dataReader);
+this.Amount = (System.Byte)@amount;
+this.CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)@characterTemplateID;
+this.Height = (System.Nullable<System.UInt16>)@height;
+this.ID = (DemoGame.Server.MapSpawnValuesID)@iD;
+this.MapID = (NetGore.MapIndex)@mapID;
+this.Width = (System.Nullable<System.UInt16>)@width;
+this.X = (System.Nullable<System.UInt16>)@x;
+this.Y = (System.Nullable<System.UInt16>)@y;
 }
 public MapSpawnTable(IMapSpawnTable source)
 {
 CopyValuesFrom(source);
 }
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. The database column's name is used to as the key, so the value
-/// will not be found if any aliases are used or not all columns were selected.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void ReadValues(System.Data.IDataReader dataReader)
-{
-System.Int32 i;
-
-i = dataReader.GetOrdinal("amount");
-Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
-
-i = dataReader.GetOrdinal("character_template_id");
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)(DemoGame.Server.CharacterTemplateID)dataReader.GetUInt16(i);
-
-i = dataReader.GetOrdinal("height");
-Height = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-
-i = dataReader.GetOrdinal("id");
-ID = (DemoGame.Server.MapSpawnValuesID)(DemoGame.Server.MapSpawnValuesID)dataReader.GetInt32(i);
-
-i = dataReader.GetOrdinal("map_id");
-MapID = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(i);
-
-i = dataReader.GetOrdinal("width");
-Width = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-
-i = dataReader.GetOrdinal("x");
-X = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-
-i = dataReader.GetOrdinal("y");
-Y = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-}
-
 /// <summary>
 /// Copies the column values into the given Dictionary using the database column name
 /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
@@ -327,45 +284,16 @@ dic["@x"] = (System.Nullable<System.UInt16>)source.X;
 dic["@y"] = (System.Nullable<System.UInt16>)source.Y;
 }
 
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void CopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-CopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(IMapSpawnTable source, NetGore.Db.DbParameterValues paramValues)
-{
-paramValues["@amount"] = (System.Byte)source.Amount;
-paramValues["@character_template_id"] = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
-paramValues["@height"] = (System.Nullable<System.UInt16>)source.Height;
-paramValues["@id"] = (DemoGame.Server.MapSpawnValuesID)source.ID;
-paramValues["@map_id"] = (NetGore.MapIndex)source.MapID;
-paramValues["@width"] = (System.Nullable<System.UInt16>)source.Width;
-paramValues["@x"] = (System.Nullable<System.UInt16>)source.X;
-paramValues["@y"] = (System.Nullable<System.UInt16>)source.Y;
-}
-
 public void CopyValuesFrom(IMapSpawnTable source)
 {
-Amount = (System.Byte)source.Amount;
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
-Height = (System.Nullable<System.UInt16>)source.Height;
-ID = (DemoGame.Server.MapSpawnValuesID)source.ID;
-MapID = (NetGore.MapIndex)source.MapID;
-Width = (System.Nullable<System.UInt16>)source.Width;
-X = (System.Nullable<System.UInt16>)source.X;
-Y = (System.Nullable<System.UInt16>)source.Y;
+this.Amount = (System.Byte)source.Amount;
+this.CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
+this.Height = (System.Nullable<System.UInt16>)source.Height;
+this.ID = (DemoGame.Server.MapSpawnValuesID)source.ID;
+this.MapID = (NetGore.MapIndex)source.MapID;
+this.Width = (System.Nullable<System.UInt16>)source.Width;
+this.X = (System.Nullable<System.UInt16>)source.X;
+this.Y = (System.Nullable<System.UInt16>)source.Y;
 }
 
 public System.Object GetValue(System.String columnName)
@@ -406,35 +334,35 @@ public void SetValue(System.String columnName, System.Object value)
 switch (columnName)
 {
 case "amount":
-Amount = (System.Byte)value;
+this.Amount = (System.Byte)value;
 break;
 
 case "character_template_id":
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)value;
+this.CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)value;
 break;
 
 case "height":
-Height = (System.Nullable<System.UInt16>)value;
+this.Height = (System.Nullable<System.UInt16>)value;
 break;
 
 case "id":
-ID = (DemoGame.Server.MapSpawnValuesID)value;
+this.ID = (DemoGame.Server.MapSpawnValuesID)value;
 break;
 
 case "map_id":
-MapID = (NetGore.MapIndex)value;
+this.MapID = (NetGore.MapIndex)value;
 break;
 
 case "width":
-Width = (System.Nullable<System.UInt16>)value;
+this.Width = (System.Nullable<System.UInt16>)value;
 break;
 
 case "x":
-X = (System.Nullable<System.UInt16>)value;
+this.X = (System.Nullable<System.UInt16>)value;
 break;
 
 case "y":
-Y = (System.Nullable<System.UInt16>)value;
+this.Y = (System.Nullable<System.UInt16>)value;
 break;
 
 default:
@@ -472,140 +400,6 @@ return new ColumnMetadata("y", "", "smallint(5) unsigned", null, typeof(System.N
 
 default:
 throw new ArgumentException("Field not found.","fieldName");
-}
-}
-
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. Unlike ReadValues(), this method not only doesn't require
-/// all values to be in the IDataReader, but also does not require the values in
-/// the IDataReader to be a defined field for the table this class represents.
-/// Because of this, you need to be careful when using this method because values
-/// can easily be skipped without any indication.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void TryReadValues(System.Data.IDataReader dataReader)
-{
-for (int i = 0; i < dataReader.FieldCount; i++)
-{
-switch (dataReader.GetName(i))
-{
-case "amount":
-Amount = (System.Byte)(System.Byte)dataReader.GetByte(i);
-break;
-
-
-case "character_template_id":
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)(DemoGame.Server.CharacterTemplateID)dataReader.GetUInt16(i);
-break;
-
-
-case "height":
-Height = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-break;
-
-
-case "id":
-ID = (DemoGame.Server.MapSpawnValuesID)(DemoGame.Server.MapSpawnValuesID)dataReader.GetInt32(i);
-break;
-
-
-case "map_id":
-MapID = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(i);
-break;
-
-
-case "width":
-Width = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-break;
-
-
-case "x":
-X = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-break;
-
-
-case "y":
-Y = (System.Nullable<System.UInt16>)(System.Nullable<System.UInt16>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
-break;
-
-
-}
-
-}
-}
-
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-TryCopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(IMapSpawnTable source, NetGore.Db.DbParameterValues paramValues)
-{
-for (int i = 0; i < paramValues.Count; i++)
-{
-switch (paramValues.GetParameterName(i))
-{
-case "@amount":
-paramValues[i] = source.Amount;
-break;
-
-
-case "@character_template_id":
-paramValues[i] = source.CharacterTemplateID;
-break;
-
-
-case "@height":
-paramValues[i] = source.Height;
-break;
-
-
-case "@id":
-paramValues[i] = source.ID;
-break;
-
-
-case "@map_id":
-paramValues[i] = source.MapID;
-break;
-
-
-case "@width":
-paramValues[i] = source.Width;
-break;
-
-
-case "@x":
-paramValues[i] = source.X;
-break;
-
-
-case "@y":
-paramValues[i] = source.Y;
-break;
-
-
-}
-
 }
 }
 

@@ -27,7 +27,8 @@ namespace DemoGame.Server.Queries
                     throw new ArgumentException(string.Format("Could not find character with ID `{0}`.", characterID),
                                                 characterID.ToString());
 
-                ret = new CharacterTable(r);
+                ret = new CharacterTable();
+                ret.ReadValues(r);
             }
 
             return ret;

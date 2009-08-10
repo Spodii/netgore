@@ -18,20 +18,14 @@ namespace NetGore.Db.ClassCreator
         public readonly string Code;
 
         /// <summary>
-        /// If the generated code is for an interface.
-        /// </summary>
-        public readonly bool IsInterface;
-
-        /// <summary>
-        /// If the generated code is for a special class. This will be true whenever the generated code is not for
-        /// a database table class or interface.
-        /// </summary>
-        public readonly bool IsSpecialClass;
-
-        /// <summary>
         /// The table that the code was generated for.
         /// </summary>
         public readonly string Table;
+
+        /// <summary>
+        /// The type of code that this is for.
+        /// </summary>
+        public readonly GeneratedCodeType CodeType;
 
         /// <summary>
         /// GeneratedTableCode constructor.
@@ -39,15 +33,13 @@ namespace NetGore.Db.ClassCreator
         /// <param name="table">The table that the code was generated for.</param>
         /// <param name="className">The name of the class or interface that was generated.</param>
         /// <param name="code">The generated code.</param>
-        /// <param name="isInterface">If the generated code is for an interface.</param>
-        /// <param name="isSpecialClass">If the generated code is for a special class.</param>
-        public GeneratedTableCode(string table, string className, string code, bool isInterface, bool isSpecialClass)
+        /// <param name="codeType">The type of code that this is for.</param>
+        public GeneratedTableCode(string table, string className, string code, GeneratedCodeType codeType)
         {
             Table = table;
             ClassName = className;
             Code = code;
-            IsInterface = isInterface;
-            IsSpecialClass = isSpecialClass;
+            CodeType = codeType;
         }
     }
 }

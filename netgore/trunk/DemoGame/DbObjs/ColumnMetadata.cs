@@ -1,5 +1,5 @@
 using System;
-namespace DemoGame.Server.DbObjs
+namespace DemoGame.DbObjs
 {
 public class ColumnMetadata
 {

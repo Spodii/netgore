@@ -142,42 +142,14 @@ public CharacterEquippedTable()
 /// <param name="slot">The initial value for the corresponding property.</param>
 public CharacterEquippedTable(DemoGame.Server.CharacterID @characterID, DemoGame.Server.ItemID @itemID, DemoGame.EquipmentSlot @slot)
 {
-CharacterID = (DemoGame.Server.CharacterID)@characterID;
-ItemID = (DemoGame.Server.ItemID)@itemID;
-Slot = (DemoGame.EquipmentSlot)@slot;
-}
-/// <summary>
-/// CharacterEquippedTable constructor.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
-public CharacterEquippedTable(System.Data.IDataReader dataReader)
-{
-ReadValues(dataReader);
+this.CharacterID = (DemoGame.Server.CharacterID)@characterID;
+this.ItemID = (DemoGame.Server.ItemID)@itemID;
+this.Slot = (DemoGame.EquipmentSlot)@slot;
 }
 public CharacterEquippedTable(ICharacterEquippedTable source)
 {
 CopyValuesFrom(source);
 }
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. The database column's name is used to as the key, so the value
-/// will not be found if any aliases are used or not all columns were selected.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void ReadValues(System.Data.IDataReader dataReader)
-{
-System.Int32 i;
-
-i = dataReader.GetOrdinal("character_id");
-CharacterID = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(i);
-
-i = dataReader.GetOrdinal("item_id");
-ItemID = (DemoGame.Server.ItemID)(DemoGame.Server.ItemID)dataReader.GetInt32(i);
-
-i = dataReader.GetOrdinal("slot");
-Slot = (DemoGame.EquipmentSlot)(DemoGame.EquipmentSlot)dataReader.GetByte(i);
-}
-
 /// <summary>
 /// Copies the column values into the given Dictionary using the database column name
 /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
@@ -202,35 +174,11 @@ dic["@item_id"] = (DemoGame.Server.ItemID)source.ItemID;
 dic["@slot"] = (DemoGame.EquipmentSlot)source.Slot;
 }
 
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void CopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-CopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(ICharacterEquippedTable source, NetGore.Db.DbParameterValues paramValues)
-{
-paramValues["@character_id"] = (DemoGame.Server.CharacterID)source.CharacterID;
-paramValues["@item_id"] = (DemoGame.Server.ItemID)source.ItemID;
-paramValues["@slot"] = (DemoGame.EquipmentSlot)source.Slot;
-}
-
 public void CopyValuesFrom(ICharacterEquippedTable source)
 {
-CharacterID = (DemoGame.Server.CharacterID)source.CharacterID;
-ItemID = (DemoGame.Server.ItemID)source.ItemID;
-Slot = (DemoGame.EquipmentSlot)source.Slot;
+this.CharacterID = (DemoGame.Server.CharacterID)source.CharacterID;
+this.ItemID = (DemoGame.Server.ItemID)source.ItemID;
+this.Slot = (DemoGame.EquipmentSlot)source.Slot;
 }
 
 public System.Object GetValue(System.String columnName)
@@ -256,15 +204,15 @@ public void SetValue(System.String columnName, System.Object value)
 switch (columnName)
 {
 case "character_id":
-CharacterID = (DemoGame.Server.CharacterID)value;
+this.CharacterID = (DemoGame.Server.CharacterID)value;
 break;
 
 case "item_id":
-ItemID = (DemoGame.Server.ItemID)value;
+this.ItemID = (DemoGame.Server.ItemID)value;
 break;
 
 case "slot":
-Slot = (DemoGame.EquipmentSlot)value;
+this.Slot = (DemoGame.EquipmentSlot)value;
 break;
 
 default:
@@ -287,90 +235,6 @@ return new ColumnMetadata("slot", "", "tinyint(3) unsigned", null, typeof(System
 
 default:
 throw new ArgumentException("Field not found.","fieldName");
-}
-}
-
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. Unlike ReadValues(), this method not only doesn't require
-/// all values to be in the IDataReader, but also does not require the values in
-/// the IDataReader to be a defined field for the table this class represents.
-/// Because of this, you need to be careful when using this method because values
-/// can easily be skipped without any indication.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void TryReadValues(System.Data.IDataReader dataReader)
-{
-for (int i = 0; i < dataReader.FieldCount; i++)
-{
-switch (dataReader.GetName(i))
-{
-case "character_id":
-CharacterID = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(i);
-break;
-
-
-case "item_id":
-ItemID = (DemoGame.Server.ItemID)(DemoGame.Server.ItemID)dataReader.GetInt32(i);
-break;
-
-
-case "slot":
-Slot = (DemoGame.EquipmentSlot)(DemoGame.EquipmentSlot)dataReader.GetByte(i);
-break;
-
-
-}
-
-}
-}
-
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-TryCopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(ICharacterEquippedTable source, NetGore.Db.DbParameterValues paramValues)
-{
-for (int i = 0; i < paramValues.Count; i++)
-{
-switch (paramValues.GetParameterName(i))
-{
-case "@character_id":
-paramValues[i] = source.CharacterID;
-break;
-
-
-case "@item_id":
-paramValues[i] = source.ItemID;
-break;
-
-
-case "@slot":
-paramValues[i] = source.Slot;
-break;
-
-
-}
-
 }
 }
 

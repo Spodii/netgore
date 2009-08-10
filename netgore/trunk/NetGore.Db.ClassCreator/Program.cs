@@ -13,7 +13,7 @@ namespace NetGore.Db.ClassCreator
         /// <summary>
         /// Contains the of the tables that will be exposed to the whole project instead of just the server.
         /// </summary>
-        static readonly ICollection<string> _globalInterfaces = new string[] { "map" };
+        static readonly ICollection<string> _globalTables = new string[] { "map" };
 
         /// <summary>
         /// Output directory for the generated code that is referenced by the whole project.
@@ -151,16 +151,22 @@ namespace NetGore.Db.ClassCreator
             string saveDir;
             string code;
 
-            if (gtc.IsInterface && _globalInterfaces.Contains(gtc.Table, StringComparer.OrdinalIgnoreCase))
+            var isInterfaceOrClass = (gtc.CodeType == GeneratedCodeType.Interface || gtc.CodeType == GeneratedCodeType.Class);
+            var isGlobalTable = _globalTables.Contains(gtc.Table, StringComparer.OrdinalIgnoreCase);
+
+            if ((isInterfaceOrClass && isGlobalTable) || gtc.CodeType == GeneratedCodeType.ColumnMetadata)
             {
                 saveDir = _outputGameDir;
                 code = gtc.Code.Replace(_tempNamespaceName, "DemoGame.DbObjs");
+                code = code.Replace("using NetGore.Db;", string.Empty);
             }
             else
             {
                 saveDir = _outputServerDir;
-                if (gtc.IsInterface)
+                if (gtc.CodeType == GeneratedCodeType.Interface)
                     saveDir += "Interfaces" + Path.DirectorySeparatorChar;
+                else if (gtc.CodeType == GeneratedCodeType.ClassDbExtensions)
+                    saveDir += "DbExtensions" + Path.DirectorySeparatorChar;
                 code = gtc.Code.Replace(_tempNamespaceName, "DemoGame.Server.DbObjs");
             }
 

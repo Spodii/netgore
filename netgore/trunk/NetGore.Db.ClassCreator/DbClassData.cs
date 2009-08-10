@@ -12,6 +12,7 @@ namespace NetGore.Db.ClassCreator
     public class DbClassData
     {
         public readonly string ClassName;
+        public readonly string ExtensionClassName;
         public readonly IEnumerable<ColumnCollection> ColumnCollections;
         public readonly IEnumerable<DbColumnInfo> Columns;
         public readonly CodeFormatter Formatter;
@@ -38,6 +39,7 @@ namespace NetGore.Db.ClassCreator
 
             ClassName = formatter.GetClassName(tableName);
             InterfaceName = formatter.GetInterfaceName(tableName);
+            ExtensionClassName = ClassName + "DbExtensions";
 
             // Custom types filter
             _customTypes =
@@ -174,10 +176,28 @@ namespace NetGore.Db.ClassCreator
         /// <returns>The code to use for the mutator for a DbColumnInfo.</returns>
         public string GetColumnValueMutator(DbColumnInfo dbColumn, string valueName)
         {
+            return GetColumnValueMutator(dbColumn, valueName, null);
+        }
+
+        /// <summary>
+        /// Gets the code to use for the mutator for a DbColumnInfo.
+        /// </summary>
+        /// <param name="dbColumn">The DbColumnInfo to get the value mutator for.</param>
+        /// <param name="valueName">Code to generate for the value to set.</param>
+        /// <param name="columnSource">The name of the source collection if it is not in an instanced method. Can be null.</param>
+        /// <returns>The code to use for the mutator for a DbColumnInfo.</returns>
+        public string GetColumnValueMutator(DbColumnInfo dbColumn, string valueName, string columnSource)
+        {
             ColumnCollectionItem item;
             ColumnCollection coll = GetCollectionForColumn(dbColumn, out item);
 
             StringBuilder sb = new StringBuilder();
+
+            if (string.IsNullOrEmpty(columnSource) || columnSource.Trim().Length == 0)
+                columnSource = "this";
+
+            sb.Append(columnSource);
+            sb.Append(".");
 
             if (coll == null)
             {

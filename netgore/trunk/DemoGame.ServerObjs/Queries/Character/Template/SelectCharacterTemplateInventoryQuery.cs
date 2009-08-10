@@ -26,7 +26,8 @@ namespace DemoGame.Server.Queries
             {
                 while (r.Read())
                 {
-                    CharacterTemplateInventoryTable item = new CharacterTemplateInventoryTable(r);
+                    CharacterTemplateInventoryTable item = new CharacterTemplateInventoryTable();
+                    item.ReadValues(r);
                     ret.Add(item);
                 }
             }
