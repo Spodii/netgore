@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-08-09 15:06:37
+Date: 2009-08-09 17:41:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -372,15 +372,17 @@ DROP TABLE IF EXISTS `map_spawn`;
 CREATE TABLE `map_spawn` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `map_id` smallint(5) unsigned NOT NULL,
-  `character_id` smallint(5) unsigned NOT NULL,
+  `character_template_id` smallint(5) unsigned NOT NULL,
   `amount` tinyint(3) unsigned NOT NULL,
   `x` smallint(5) unsigned DEFAULT NULL,
   `y` smallint(5) unsigned DEFAULT NULL,
   `width` smallint(5) unsigned DEFAULT NULL,
   `height` smallint(5) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `character_id` (`character_id`),
-  CONSTRAINT `map_spawn_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  KEY `character_id` (`character_template_id`),
+  KEY `map_id` (`map_id`),
+  CONSTRAINT `map_spawn_ibfk_2` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `map_spawn_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- ----------------------------

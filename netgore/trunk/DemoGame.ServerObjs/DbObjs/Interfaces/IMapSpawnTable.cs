@@ -15,9 +15,9 @@ namespace DemoGame.Server.DbObjs
         Byte Amount { get; }
 
         /// <summary>
-        /// Gets the value of the database column `character_id`.
+        /// Gets the value of the database column `character_template_id`.
         /// </summary>
-        CharacterID CharacterID { get; }
+        CharacterTemplateID CharacterTemplateID { get; }
 
         /// <summary>
         /// Gets the value of the database column `height`.

@@ -220,7 +220,7 @@ namespace DemoGame.Server.DbObjs
             HostileID = (AllianceID)dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("placeholder");
-            Placeholder = (dataReader.IsDBNull(i) ? (byte?)null : dataReader.GetByte(i));
+            Placeholder = (dataReader.IsDBNull(i) ? (Nullable<Byte>)null : dataReader.GetByte(i));
         }
 
         public void SetValue(String columnName, Object value)
@@ -313,7 +313,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "placeholder":
-                        Placeholder = (dataReader.IsDBNull(i) ? (byte?)null : dataReader.GetByte(i));
+                        Placeholder = (dataReader.IsDBNull(i) ? (Nullable<Byte>)null : dataReader.GetByte(i));
                         break;
                 }
             }

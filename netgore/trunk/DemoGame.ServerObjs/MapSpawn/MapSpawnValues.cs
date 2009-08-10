@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
@@ -13,7 +14,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Contains and internally synchronizes to the database the values used to specify how Characters spawn on a Map.
     /// </summary>
-    public class MapSpawnValues
+    public class MapSpawnValues : IMapSpawnTable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -26,39 +27,12 @@ namespace DemoGame.Server
         MapSpawnRect _spawnArea;
 
         /// <summary>
-        /// Gets or sets the CharacterTemplateID of the CharacterTemplate to spawn.
-        /// </summary>
-        [Browsable(true)]
-        [Description("The ID of the CharacterTemplate to spawn.")]
-        public CharacterTemplateID CharacterTemplateID
-        {
-            get { return _characterTemplateID; }
-            set
-            {
-                if (_characterTemplateID == value)
-                    return;
-
-                _characterTemplateID = value;
-                UpdateDB();
-            }
-        }
-
-        /// <summary>
         /// Gets the DBController used to synchronize changes to the values.
         /// </summary>
         [Browsable(false)]
         public DBController DBController
         {
             get { return _dbController; }
-        }
-
-        /// <summary>
-        /// Gets the unique ID of this MapSpawnValues.
-        /// </summary>
-        [Browsable(false)]
-        public MapSpawnValuesID ID
-        {
-            get { return _id; }
         }
 
         /// <summary>
@@ -255,6 +229,13 @@ namespace DemoGame.Server
             SpawnArea = newSpawnArea;
         }
 
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
             return string.Format("MapSpawnValues [ID: {0} Map: {1}]", ID, MapIndex);
@@ -280,5 +261,88 @@ namespace DemoGame.Server
 
             DBController.GetQuery<UpdateMapSpawnQuery>().Execute(this);
         }
+
+        #region IMapSpawnTable Members
+
+        /// <summary>
+        /// Gets the value of the database column `amount`.
+        /// </summary>
+        byte IMapSpawnTable.Amount
+        {
+            get { return SpawnAmount; }
+        }
+
+        /// <summary>
+        /// Gets or sets the CharacterTemplateID of the CharacterTemplate to spawn.
+        /// </summary>
+        [Browsable(true)]
+        [Description("The ID of the CharacterTemplate to spawn.")]
+        public CharacterTemplateID CharacterTemplateID
+        {
+            get { return _characterTemplateID; }
+            set
+            {
+                if (_characterTemplateID == value)
+                    return;
+
+                _characterTemplateID = value;
+                UpdateDB();
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `height`.
+        /// </summary>
+        ushort? IMapSpawnTable.Height
+        {
+            get { return SpawnArea.Height; }
+        }
+
+        /// <summary>
+        /// Gets the unique ID of this MapSpawnValues.
+        /// </summary>
+        [Browsable(false)]
+        public MapSpawnValuesID ID
+        {
+            get { return _id; }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `map_id`.
+        /// </summary>
+        [Browsable(false)]
+        MapIndex IMapSpawnTable.MapID
+        {
+            get { return MapIndex; }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `width`.
+        /// </summary>
+        [Browsable(false)]
+        ushort? IMapSpawnTable.Width
+        {
+            get { return SpawnArea.Width; }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `x`.
+        /// </summary>
+        [Browsable(false)]
+        ushort? IMapSpawnTable.X
+        {
+            get { return SpawnArea.X; }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `y`.
+        /// </summary>
+        [Browsable(false)]
+        ushort? IMapSpawnTable.Y
+        {
+            get { return SpawnArea.Y; }
+        }
+
+        #endregion
     }
 }
