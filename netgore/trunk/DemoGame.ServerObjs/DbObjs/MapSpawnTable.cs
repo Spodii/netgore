@@ -304,7 +304,7 @@ namespace DemoGame.Server.DbObjs
             CharacterTemplateID = (CharacterTemplateID)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("height");
-            Height = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+            Height = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("id");
             ID = dataReader.GetInt32(i);
@@ -313,13 +313,13 @@ namespace DemoGame.Server.DbObjs
             MapID = (MapIndex)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("width");
-            Width = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+            Width = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("x");
-            X = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+            X = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("y");
-            Y = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+            Y = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
         }
 
         public void SetValue(String columnName, Object value)
@@ -452,7 +452,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "height":
-                        Height = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+                        Height = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
                         break;
 
                     case "id":
@@ -464,15 +464,15 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "width":
-                        Width = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+                        Width = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
                         break;
 
                     case "x":
-                        X = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+                        X = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
                         break;
 
                     case "y":
-                        Y = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+                        Y = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
                         break;
                 }
             }

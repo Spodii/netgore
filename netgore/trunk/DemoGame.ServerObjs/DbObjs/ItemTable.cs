@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.DbObjs
@@ -217,7 +218,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="value">The initial value for the corresponding property.</param>
         /// <param name="width">The initial value for the corresponding property.</param>
         public ItemTable(UInt16 @agi, Byte @amount, UInt16 @armor, UInt16 @bra, UInt16 @defence, String @description, UInt16 @dex,
-                         UInt16 @evade, UInt16 @graphic, Byte @height, UInt16 @hP, ItemID @iD, UInt16 @imm, UInt16 @int,
+                         UInt16 @evade, GrhIndex @graphic, Byte @height, UInt16 @hP, ItemID @iD, UInt16 @imm, UInt16 @int,
                          UInt16 @maxHit, UInt16 @maxHP, UInt16 @maxMP, UInt16 @minHit, UInt16 @mP, String @name, UInt16 @perc,
                          Byte @reqacc, Byte @reqagi, Byte @reqarmor, Byte @reqbra, Byte @reqdex, Byte @reqevade, Byte @reqimm,
                          Byte @reqint, Byte @type, Int32 @value, Byte @width)
@@ -659,7 +660,7 @@ namespace DemoGame.Server.DbObjs
             SetStat(StatType.Evade, dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("graphic");
-            Graphic = dataReader.GetUInt16(i);
+            Graphic = (GrhIndex)dataReader.GetUInt16(i);
 
             i = dataReader.GetOrdinal("height");
             Height = dataReader.GetByte(i);
@@ -768,7 +769,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "graphic":
-                    Graphic = (UInt16)value;
+                    Graphic = (GrhIndex)value;
                     break;
 
                 case "height":
@@ -1077,7 +1078,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "graphic":
-                        Graphic = dataReader.GetUInt16(i);
+                        Graphic = (GrhIndex)dataReader.GetUInt16(i);
                         break;
 
                     case "height":
@@ -1233,10 +1234,10 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `graphic`.
         /// The underlying database type is `smallint(5) unsigned` with the default value of `0`.
         /// </summary>
-        public UInt16 Graphic
+        public GrhIndex Graphic
         {
-            get { return _graphic; }
-            set { _graphic = value; }
+            get { return (GrhIndex)_graphic; }
+            set { _graphic = (UInt16)value; }
         }
 
         /// <summary>
