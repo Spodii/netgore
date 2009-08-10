@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
@@ -10,18 +11,18 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class UpdateCharacterQuery : DbQueryNonReader<Character>
     {
-        static readonly IEnumerable<string> _dbParameterCache = CharacterQueryHelper.AllDBFields.Select(x => "@" + x);
-        static readonly string _queryString;
+        static readonly string _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", CharacterTable.TableName,
+                                                            FormatParametersIntoString(
+                                                                CharacterTable.DbNonKeyColumns.Except(FieldsToNotUpdate,
+                                                                                                      StringComparer.
+                                                                                                          OrdinalIgnoreCase)));
 
-        static UpdateCharacterQuery()
+        /// <summary>
+        /// Gets the fields that will not be updated when the Character is updated.
+        /// </summary>
+        static IEnumerable<string> FieldsToNotUpdate
         {
-            var dbFields = CharacterQueryHelper.AllDBFields;
-            var dbFieldsExceptID = dbFields.Where(x => x != "id");
-
-            Debug.Assert(dbFieldsExceptID.Count() == dbFields.Count() - 1);
-
-            string setString = FormatParametersIntoString(dbFieldsExceptID);
-            _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", CharacterTable.TableName, setString);
+            get { yield return "password"; }
         }
 
         public UpdateCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
@@ -35,7 +36,7 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(_dbParameterCache);
+            return CreateParameters(CharacterTable.DbColumns.Select(x => "@" + x));
         }
 
         /// <summary>
@@ -46,6 +47,7 @@ namespace DemoGame.Server.Queries
         protected override void SetParameters(DbParameterValues p, Character character)
         {
             p["@id"] = character.ID;
+            p["@cash"] = character.Cash;
             p["@character_template_id"] = character.TemplateID;
             p["@map_id"] = character.Map.Index;
             p["@x"] = character.Position.X;

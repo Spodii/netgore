@@ -22,13 +22,13 @@ namespace DemoGame.Server.Queries
         public readonly MapIndex? RespawnMapIndex;
         public readonly Vector2 RespawnPosition;
         public readonly uint StatPoints;
-        public readonly IEnumerable<StatTypeValue> Stats;
+        public readonly IEnumerable<KeyValuePair<StatType, int>> Stats;
         public readonly CharacterTemplateID? TemplateID;
 
         public SelectCharacterQueryValues(CharacterID id, CharacterTemplateID? templateID, string name, MapIndex mapIndex,
                                           Vector2 position, BodyIndex bodyIndex, byte level, uint exp, uint statpoints, uint cash,
                                           SPValueType hp, SPValueType mp, MapIndex? respawnMapIndex, Vector2 respawnPosition,
-                                          IEnumerable<StatTypeValue> stats)
+                                          IEnumerable<KeyValuePair<StatType, int>> stats)
         {
             Name = name;
             ID = id;

@@ -124,7 +124,6 @@
     <Compile Include="Queries\Alliance\SelectAllianceHostileQuery.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceIDsQuery.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceQuery.cs" />
-    <Compile Include="Queries\Character\CharacterQueryHelper.cs" />
     <Compile Include="Queries\Character\Items\DeleteCharacterEquippedItemQuery.cs" />
     <Compile Include="Queries\Character\Items\DeleteCharacterInventoryItemQuery.cs" />
     <Compile Include="Queries\Character\Items\InsertCharacterEquippedItemQuery.cs" />

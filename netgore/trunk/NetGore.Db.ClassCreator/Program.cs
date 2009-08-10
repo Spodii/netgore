@@ -53,9 +53,6 @@ namespace NetGore.Db.ClassCreator
                 generator.AddUsing("NetGore.Db");
                 generator.AddUsing("DemoGame.DbObjs");
 
-                // Custom DataReader methods
-                generator.SetDataReaderReadMethod(typeof(float), "GetFloat");
-
                 // Custom column collections
                 var baseStatTables = new string[] { "character", "character_template", "item", "item_template" };
                 var reqStatTables = new string[] { "item", "item_template" };
@@ -75,6 +72,8 @@ namespace NetGore.Db.ClassCreator
                 const string equipmentSlot = "DemoGame.EquipmentSlot";
                 const string itemChance = "DemoGame.Server.ItemChance";
                 const string grhIndex = "NetGore.GrhIndex";
+                const string spValueType = "DemoGame.SPValueType";
+                const string itemType = "DemoGame.ItemType";
 
                 generator.AddCustomType(allianceID, "alliance", "id");
 
@@ -89,6 +88,7 @@ namespace NetGore.Db.ClassCreator
 
                 generator.AddCustomType(itemID, "item", "id");
                 generator.AddCustomType(grhIndex, "item", "graphic");
+                generator.AddCustomType(itemType, "item", "type");
 
                 generator.AddCustomType(itemTemplateID, "item_template", "id");
                 generator.AddCustomType(grhIndex, "item_template", "graphic");
@@ -105,6 +105,7 @@ namespace NetGore.Db.ClassCreator
                 generator.AddCustomType(characterTemplateID, "*", "character_template_id");
                 generator.AddCustomType(itemTemplateID, "*", "item_template_id");
                 generator.AddCustomType(bodyID, "*", "body_id");
+                generator.AddCustomType(spValueType, "*", "hp", "mp");
 
                 // Renaming
                 CodeFormatter formatter = generator.Formatter;
@@ -119,7 +120,6 @@ namespace NetGore.Db.ClassCreator
                 formatter.AddAlias("body_id", "BodyID");
                 formatter.AddAlias("respawn_map", "RespawnMap");
                 formatter.AddAlias("respawn_x", "RespawnX");
-                formatter.AddAlias("respawn_y", "RespawnY");
                 formatter.AddAlias("respawn_y", "RespawnY");
                 formatter.AddAlias("give_exp", "GiveExp");
                 formatter.AddAlias("give_cash", "GiveCash");

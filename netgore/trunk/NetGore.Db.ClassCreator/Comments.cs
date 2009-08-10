@@ -43,6 +43,10 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         public static class CreateCode
         {
+            public static readonly string DeepCopySummary = "Creates a deep copy of this table. All the values will be the same" +
+                Environment.NewLine + "but they will be contained in a different object instance.";
+            public const string DeepCopyReturn = "A deep copy of this table.";
+
             public const string ClassSummary = "Provides a strongly-typed structure for the database table `{0}`.";
 
             public const string ColumnArrayField = "Array of the database column names.";

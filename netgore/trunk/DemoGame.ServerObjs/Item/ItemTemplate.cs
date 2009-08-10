@@ -8,7 +8,7 @@ namespace DemoGame.Server
 {
     public class ItemTemplate
     {
-        readonly IEnumerable<StatTypeValue> _baseStats;
+        readonly IEnumerable<KeyValuePair<StatType, int>> _baseStats;
         readonly string _desc;
         readonly GrhIndex _graphic;
         readonly byte _height;
@@ -16,12 +16,12 @@ namespace DemoGame.Server
         readonly ItemTemplateID _id;
         readonly SPValueType _mp;
         readonly string _name;
-        readonly IEnumerable<StatTypeValue> _reqStats;
+        readonly IEnumerable<KeyValuePair<StatType, int>> _reqStats;
         readonly ItemType _type;
         readonly int _value;
         readonly byte _width;
 
-        public IEnumerable<StatTypeValue> BaseStats
+        public IEnumerable<KeyValuePair<StatType, int>> BaseStats
         {
             get { return _baseStats; }
         }
@@ -61,7 +61,7 @@ namespace DemoGame.Server
             get { return _name; }
         }
 
-        public IEnumerable<StatTypeValue> ReqStats
+        public IEnumerable<KeyValuePair<StatType, int>> ReqStats
         {
             get { return _reqStats; }
         }
@@ -87,8 +87,8 @@ namespace DemoGame.Server
         }
 
         public ItemTemplate(ItemTemplateID id, string name, string desc, ItemType type, GrhIndex graphic, int value, byte width,
-                            byte height, SPValueType hp, SPValueType mp, IEnumerable<StatTypeValue> baseStats,
-                            IEnumerable<StatTypeValue> reqStats)
+                            byte height, SPValueType hp, SPValueType mp, IEnumerable<KeyValuePair<StatType, int>> baseStats,
+                            IEnumerable<KeyValuePair<StatType, int>> reqStats)
         {
             _id = id;
             _name = name;

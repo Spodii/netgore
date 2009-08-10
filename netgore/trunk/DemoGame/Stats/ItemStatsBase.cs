@@ -12,11 +12,12 @@ namespace DemoGame
         /// </summary>
         public event StatChangeHandler OnStatChange;
 
-        protected ItemStatsBase(IEnumerable<StatTypeValue> src, StatCollectionType statCollectionType) : this(statCollectionType)
+        protected ItemStatsBase(IEnumerable<KeyValuePair<StatType, int>> src, StatCollectionType statCollectionType)
+            : this(statCollectionType)
         {
-            foreach (StatTypeValue statInfo in src)
+            foreach (var statInfo in src)
             {
-                IStat stat = StatFactory.CreateStat(statInfo.StatType, statCollectionType, statInfo.Value);
+                IStat stat = StatFactory.CreateStat(statInfo.Key, statCollectionType, statInfo.Value);
                 Add(stat);
             }
         }

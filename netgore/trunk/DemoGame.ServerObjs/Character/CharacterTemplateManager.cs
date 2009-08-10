@@ -105,7 +105,7 @@ namespace DemoGame.Server
 
             CharacterTemplate template = new CharacterTemplate(id, v.Name, v.AI, alliance, v.BodyID, v.Respawn, v.GiveExp,
                                                                v.GiveCash, v.Exp, v.StatPoints, v.Level,
-                                                               v.Stats.Select(x => new StatTypeValue(x.Key, x.Value)), items,
+                                                               v.Stats, items,
                                                                euipped);
 
             return template;

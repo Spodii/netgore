@@ -22,14 +22,15 @@ namespace DemoGame.Server.Queries
             return statFields;
         }
 
-        public static IEnumerable<StatTypeValue> ReadStatValues(IDataReader r, IEnumerable<StatTypeField> dbStatFields)
+        public static IEnumerable<KeyValuePair<StatType, int>> ReadStatValues(IDataReader r, IEnumerable<StatTypeField> dbStatFields)
         {
-            var stats = new List<StatTypeValue>();
+            var stats = new List<KeyValuePair<StatType, int>>();
             foreach (StatTypeField statField in dbStatFields)
             {
                 int ordinal = r.GetOrdinal(statField.Field);
                 int statValue = r.GetInt32(ordinal);
-                stats.Add(new StatTypeValue(statField.StatType, statValue));
+                var stat = new KeyValuePair<StatType, int>(statField.StatType, statValue);
+                stats.Add(stat);
             }
 
             return stats;

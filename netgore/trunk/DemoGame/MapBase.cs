@@ -1892,6 +1892,19 @@ namespace DemoGame
 
         #region IMapTable Members
 
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        public IMapTable DeepCopy()
+        {
+            // TODO: !! Implement deep copy
+            throw new NotImplementedException();
+        }
+
         MapIndex IMapTable.ID
         {
             get { return Index; }

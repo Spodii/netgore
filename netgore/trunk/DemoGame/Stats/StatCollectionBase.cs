@@ -88,18 +88,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Takes the stat values from the given source and copies them into this collection.
-        /// </summary>
-        /// <param name="sourceStats">The source to copy all the stat values from.</param>
-        /// <param name="errorOnFailure">If true, an ArgumentException will be thrown if the <paramref name="sourceStats"/>
-        /// contains one or more stats that are not in this collection. If false, any key in the
-        /// <paramref name="sourceStats"/> that is not in this collection will just be skipped.</param>
-        public void CopyStatValuesFrom(IEnumerable<StatTypeValue> sourceStats, bool errorOnFailure)
-        {
-            CopyStatValuesFrom(sourceStats.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value)), errorOnFailure);
-        }
-
-        /// <summary>
         /// Copies all of the IStat.Values from each stat in the source enumerable where
         /// the IStat.CanWrite is true. Any stat that is in the source enumerable that is not
         /// in the destination, or any stat where CanWrite is false will not have their value copied over.
@@ -110,7 +98,7 @@ namespace DemoGame
         /// false, this will not be treated like an error and the value will just not be copied over.</param>
         public void CopyStatValuesFrom(IEnumerable<IStat> sourceStats, bool errorOnFailure)
         {
-            var keyValuePairs = sourceStats.Select(x => new StatTypeValue(x.StatType, x.Value));
+            var keyValuePairs = sourceStats.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value));
             CopyStatValuesFrom(keyValuePairs, errorOnFailure);
         }
 
@@ -141,9 +129,9 @@ namespace DemoGame
         {
         }
 
-        public IEnumerable<StatTypeValue> ToStatTypeValues()
+        public IEnumerable<KeyValuePair<StatType, int>> ToKeyValuePairs()
         {
-            return this.Select(x => new StatTypeValue(x.StatType, x.Value)).ToArray();
+            return this.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value)).ToArray();
         }
 
         #region IStatCollection Members

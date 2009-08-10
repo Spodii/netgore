@@ -1,316 +1,332 @@
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using DemoGame.DbObjs;
-using NetGore;
 using NetGore.Db;
-
+using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
-    /// <summary>
-    /// Provides a strongly-typed structure for the database table `map`.
-    /// </summary>
-    public class MapTable : IMapTable
-    {
-        /// <summary>
-        /// The number of columns in the database table that this class represents.
-        /// </summary>
-        public const Int32 ColumnCount = 2;
+/// <summary>
+/// Provides a strongly-typed structure for the database table `map`.
+/// </summary>
+public class MapTable : IMapTable
+{
+/// <summary>
+/// Array of the database column names.
+/// </summary>
+ static  readonly System.String[] _dbColumns = new string[] {"id", "name" };
+/// <summary>
+/// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+/// </summary>
+public static System.Collections.Generic.IEnumerable<System.String> DbColumns
+{
+get
+{
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
+}
+}
+/// <summary>
+/// Array of the database column names for columns that are primary keys.
+/// </summary>
+ static  readonly System.String[] _dbColumnsKeys = new string[] {"id" };
+/// <summary>
+/// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+/// </summary>
+public static System.Collections.Generic.IEnumerable<System.String> DbKeyColumns
+{
+get
+{
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
+}
+}
+/// <summary>
+/// Array of the database column names for columns that are not primary keys.
+/// </summary>
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"name" };
+/// <summary>
+/// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+/// </summary>
+public static System.Collections.Generic.IEnumerable<System.String> DbNonKeyColumns
+{
+get
+{
+return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
+}
+}
+/// <summary>
+/// The name of the database table that this class represents.
+/// </summary>
+public const System.String TableName = "map";
+/// <summary>
+/// The number of columns in the database table that this class represents.
+/// </summary>
+public const System.Int32 ColumnCount = 2;
+/// <summary>
+/// The field that maps onto the database column `id`.
+/// </summary>
+System.UInt16 _iD;
+/// <summary>
+/// The field that maps onto the database column `name`.
+/// </summary>
+System.String _name;
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `id`.
+/// The underlying database type is `smallint(5) unsigned`.
+/// </summary>
+public NetGore.MapIndex ID
+{
+get
+{
+return (NetGore.MapIndex)_iD;
+}
+set
+{
+this._iD = (System.UInt16)value;
+}
+}
+/// <summary>
+/// Gets or sets the value for the field that maps onto the database column `name`.
+/// The underlying database type is `varchar(255)`.
+/// </summary>
+public System.String Name
+{
+get
+{
+return (System.String)_name;
+}
+set
+{
+this._name = (System.String)value;
+}
+}
 
-        /// <summary>
-        /// The name of the database table that this class represents.
-        /// </summary>
-        public const String TableName = "map";
+/// <summary>
+/// Creates a deep copy of this table. All the values will be the same
+/// but they will be contained in a different object instance.
+/// </summary>
+/// <returns>
+/// A deep copy of this table.
+/// </returns>
+public IMapTable DeepCopy()
+{
+return new MapTable(this);
+}
+/// <summary>
+/// MapTable constructor.
+/// </summary>
+public MapTable()
+{
+}
+/// <summary>
+/// MapTable constructor.
+/// </summary>
+/// <param name="iD">The initial value for the corresponding property.</param>
+/// <param name="name">The initial value for the corresponding property.</param>
+public MapTable(NetGore.MapIndex @iD, System.String @name)
+{
+ID = (NetGore.MapIndex)@iD;
+Name = (System.String)@name;
+}
+/// <summary>
+/// MapTable constructor.
+/// </summary>
+/// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
+public MapTable(System.Data.IDataReader dataReader)
+{
+ReadValues(dataReader);
+}
+public MapTable(IMapTable source)
+{
+CopyValuesFrom(source);
+}
+/// <summary>
+/// Reads the values from an IDataReader and assigns the read values to this
+/// object's properties. The database column's name is used to as the key, so the value
+/// will not be found if any aliases are used or not all columns were selected.
+/// </summary>
+/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+public void ReadValues(System.Data.IDataReader dataReader)
+{
+System.Int32 i;
 
-        /// <summary>
-        /// Array of the database column names.
-        /// </summary>
-        static readonly String[] _dbColumns = new string[] { "id", "name" };
+i = dataReader.GetOrdinal("id");
+ID = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(i);
 
-        /// <summary>
-        /// Array of the database column names for columns that are primary keys.
-        /// </summary>
-        static readonly String[] _dbColumnsKeys = new string[] { "id" };
+i = dataReader.GetOrdinal("name");
+Name = (System.String)(System.String)dataReader.GetString(i);
+}
 
-        /// <summary>
-        /// Array of the database column names for columns that are not primary keys.
-        /// </summary>
-        static readonly String[] _dbColumnsNonKey = new string[] { "name" };
+/// <summary>
+/// Copies the column values into the given Dictionary using the database column name
+/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+/// this method will not create them if they are missing.
+/// </summary>
+/// <param name="dic">The Dictionary to copy the values into.</param>
+public void CopyValues(System.Collections.Generic.IDictionary<System.String,System.Object> dic)
+{
+CopyValues(this, dic);
+}
+/// <summary>
+/// Copies the column values into the given Dictionary using the database column name
+/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+/// this method will not create them if they are missing.
+/// </summary>
+/// <param name="source">The object to copy the values from.</param>
+/// <param name="dic">The Dictionary to copy the values into.</param>
+public static void CopyValues(IMapTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
+{
+dic["@id"] = (NetGore.MapIndex)source.ID;
+dic["@name"] = (System.String)source.Name;
+}
 
-        /// <summary>
-        /// The field that maps onto the database column `id`.
-        /// </summary>
-        UInt16 _iD;
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+///  this method will not create them if they are missing.
+/// </summary>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+public void CopyValues(NetGore.Db.DbParameterValues paramValues)
+{
+CopyValues(this, paramValues);
+}
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+///  this method will not create them if they are missing.
+/// </summary>
+/// <param name="source">The object to copy the values from.</param>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+public static void CopyValues(IMapTable source, NetGore.Db.DbParameterValues paramValues)
+{
+paramValues["@id"] = (NetGore.MapIndex)source.ID;
+paramValues["@name"] = (System.String)source.Name;
+}
 
-        /// <summary>
-        /// The field that maps onto the database column `name`.
-        /// </summary>
-        String _name;
+public void CopyValuesFrom(IMapTable source)
+{
+ID = (NetGore.MapIndex)source.ID;
+Name = (System.String)source.Name;
+}
 
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-        /// </summary>
-        public static IEnumerable<String> DbColumns
-        {
-            get { return _dbColumns; }
-        }
+public System.Object GetValue(System.String columnName)
+{
+switch (columnName)
+{
+case "id":
+return ID;
 
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbKeyColumns
-        {
-            get { return _dbColumnsKeys; }
-        }
+case "name":
+return Name;
 
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbNonKeyColumns
-        {
-            get { return _dbColumnsNonKey; }
-        }
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
 
-        /// <summary>
-        /// MapTable constructor.
-        /// </summary>
-        public MapTable()
-        {
-        }
+public void SetValue(System.String columnName, System.Object value)
+{
+switch (columnName)
+{
+case "id":
+ID = (NetGore.MapIndex)value;
+break;
 
-        /// <summary>
-        /// MapTable constructor.
-        /// </summary>
-        /// <param name="iD">The initial value for the corresponding property.</param>
-        /// <param name="name">The initial value for the corresponding property.</param>
-        public MapTable(MapIndex @iD, String @name)
-        {
-            ID = @iD;
-            Name = @name;
-        }
+case "name":
+Name = (System.String)value;
+break;
 
-        /// <summary>
-        /// MapTable constructor.
-        /// </summary>
-        /// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
-        public MapTable(IDataReader dataReader)
-        {
-            ReadValues(dataReader);
-        }
+default:
+throw new ArgumentException("Field not found.","columnName");
+}
+}
 
-        public MapTable(IMapTable source)
-        {
-            CopyValuesFrom(source);
-        }
+public static ColumnMetadata GetColumnData(System.String fieldName)
+{
+switch (fieldName)
+{
+case "id":
+return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
 
-        /// <summary>
-        /// Copies the column values into the given Dictionary using the database column name
-        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        /// this method will not create them if they are missing.
-        /// </summary>
-        /// <param name="source">The object to copy the values from.</param>
-        /// <param name="dic">The Dictionary to copy the values into.</param>
-        public static void CopyValues(IMapTable source, IDictionary<String, Object> dic)
-        {
-            dic["@id"] = source.ID;
-            dic["@name"] = source.Name;
-        }
+case "name":
+return new ColumnMetadata("name", "", "varchar(255)", null, typeof(System.String), false, false, false);
 
-        /// <summary>
-        /// Copies the column values into the given DbParameterValues using the database column name
-        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-        ///  this method will not create them if they are missing.
-        /// </summary>
-        /// <param name="source">The object to copy the values from.</param>
-        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void CopyValues(IMapTable source, DbParameterValues paramValues)
-        {
-            paramValues["@id"] = source.ID;
-            paramValues["@name"] = source.Name;
-        }
+default:
+throw new ArgumentException("Field not found.","fieldName");
+}
+}
 
-        /// <summary>
-        /// Copies the column values into the given Dictionary using the database column name
-        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-        /// this method will not create them if they are missing.
-        /// </summary>
-        /// <param name="dic">The Dictionary to copy the values into.</param>
-        public void CopyValues(IDictionary<String, Object> dic)
-        {
-            CopyValues(this, dic);
-        }
+/// <summary>
+/// Reads the values from an IDataReader and assigns the read values to this
+/// object's properties. Unlike ReadValues(), this method not only doesn't require
+/// all values to be in the IDataReader, but also does not require the values in
+/// the IDataReader to be a defined field for the table this class represents.
+/// Because of this, you need to be careful when using this method because values
+/// can easily be skipped without any indication.
+/// </summary>
+/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+public void TryReadValues(System.Data.IDataReader dataReader)
+{
+for (int i = 0; i < dataReader.FieldCount; i++)
+{
+switch (dataReader.GetName(i))
+{
+case "id":
+ID = (NetGore.MapIndex)(NetGore.MapIndex)dataReader.GetUInt16(i);
+break;
 
-        /// <summary>
-        /// Copies the column values into the given DbParameterValues using the database column name
-        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-        ///  this method will not create them if they are missing.
-        /// </summary>
-        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public void CopyValues(DbParameterValues paramValues)
-        {
-            CopyValues(this, paramValues);
-        }
 
-        public void CopyValuesFrom(IMapTable source)
-        {
-            ID = source.ID;
-            Name = source.Name;
-        }
+case "name":
+Name = (System.String)(System.String)dataReader.GetString(i);
+break;
 
-        public static ColumnMetadata GetColumnData(String fieldName)
-        {
-            switch (fieldName)
-            {
-                case "id":
-                    return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(UInt16), false, true, false);
 
-                case "name":
-                    return new ColumnMetadata("name", "", "varchar(255)", null, typeof(String), false, false, false);
+}
 
-                default:
-                    throw new ArgumentException("Field not found.", "fieldName");
-            }
-        }
+}
+}
 
-        public Object GetValue(String columnName)
-        {
-            switch (columnName)
-            {
-                case "id":
-                    return ID;
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+/// for the value to be copied over. If any of the keys in the DbParameterValues do not
+/// match one of the column names, or if there is no field for a key, then it will be
+/// ignored. Because of this, it is important to be careful when using this method
+/// since columns or keys can be skipped without any indication.
+/// </summary>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
+{
+TryCopyValues(this, paramValues);
+}
+/// <summary>
+/// Copies the column values into the given DbParameterValues using the database column name
+/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+/// for the value to be copied over. If any of the keys in the DbParameterValues do not
+/// match one of the column names, or if there is no field for a key, then it will be
+/// ignored. Because of this, it is important to be careful when using this method
+/// since columns or keys can be skipped without any indication.
+/// </summary>
+/// <param name="source">The object to copy the values from.</param>
+/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+public static void TryCopyValues(IMapTable source, NetGore.Db.DbParameterValues paramValues)
+{
+for (int i = 0; i < paramValues.Count; i++)
+{
+switch (paramValues.GetParameterName(i))
+{
+case "@id":
+paramValues[i] = source.ID;
+break;
 
-                case "name":
-                    return Name;
 
-                default:
-                    throw new ArgumentException("Field not found.", "columnName");
-            }
-        }
+case "@name":
+paramValues[i] = source.Name;
+break;
 
-        /// <summary>
-        /// Reads the values from an IDataReader and assigns the read values to this
-        /// object's properties. The database column's name is used to as the key, so the value
-        /// will not be found if any aliases are used or not all columns were selected.
-        /// </summary>
-        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public void ReadValues(IDataReader dataReader)
-        {
-            Int32 i;
 
-            i = dataReader.GetOrdinal("id");
-            ID = (MapIndex)dataReader.GetUInt16(i);
+}
 
-            i = dataReader.GetOrdinal("name");
-            Name = dataReader.GetString(i);
-        }
+}
+}
 
-        public void SetValue(String columnName, Object value)
-        {
-            switch (columnName)
-            {
-                case "id":
-                    ID = (MapIndex)value;
-                    break;
+}
 
-                case "name":
-                    Name = (String)value;
-                    break;
-
-                default:
-                    throw new ArgumentException("Field not found.", "columnName");
-            }
-        }
-
-        /// <summary>
-        /// Copies the column values into the given DbParameterValues using the database column name
-        /// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-        /// for the value to be copied over. If any of the keys in the DbParameterValues do not
-        /// match one of the column names, or if there is no field for a key, then it will be
-        /// ignored. Because of this, it is important to be careful when using this method
-        /// since columns or keys can be skipped without any indication.
-        /// </summary>
-        /// <param name="source">The object to copy the values from.</param>
-        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void TryCopyValues(IMapTable source, DbParameterValues paramValues)
-        {
-            for (int i = 0; i < paramValues.Count; i++)
-            {
-                switch (paramValues.GetParameterName(i))
-                {
-                    case "@id":
-                        paramValues[i] = source.ID;
-                        break;
-
-                    case "@name":
-                        paramValues[i] = source.Name;
-                        break;
-                }
-            }
-        }
-
-        /// <summary>
-        /// Copies the column values into the given DbParameterValues using the database column name
-        /// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-        /// for the value to be copied over. If any of the keys in the DbParameterValues do not
-        /// match one of the column names, or if there is no field for a key, then it will be
-        /// ignored. Because of this, it is important to be careful when using this method
-        /// since columns or keys can be skipped without any indication.
-        /// </summary>
-        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public void TryCopyValues(DbParameterValues paramValues)
-        {
-            TryCopyValues(this, paramValues);
-        }
-
-        /// <summary>
-        /// Reads the values from an IDataReader and assigns the read values to this
-        /// object's properties. Unlike ReadValues(), this method not only doesn't require
-        /// all values to be in the IDataReader, but also does not require the values in
-        /// the IDataReader to be a defined field for the table this class represents.
-        /// Because of this, you need to be careful when using this method because values
-        /// can easily be skipped without any indication.
-        /// </summary>
-        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public void TryReadValues(IDataReader dataReader)
-        {
-            for (int i = 0; i < dataReader.FieldCount; i++)
-            {
-                switch (dataReader.GetName(i))
-                {
-                    case "id":
-                        ID = (MapIndex)dataReader.GetUInt16(i);
-                        break;
-
-                    case "name":
-                        Name = dataReader.GetString(i);
-                        break;
-                }
-            }
-        }
-
-        #region IMapTable Members
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `id`.
-        /// The underlying database type is `smallint(5) unsigned`.
-        /// </summary>
-        public MapIndex ID
-        {
-            get { return (MapIndex)_iD; }
-            set { _iD = (UInt16)value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `name`.
-        /// The underlying database type is `varchar(255)`.
-        /// </summary>
-        public String Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
-        #endregion
-    }
 }

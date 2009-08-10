@@ -114,6 +114,8 @@ namespace NetGore.Db.ClassCreator
         {
             if (!_aliases.ContainsKey(fieldName))
                 _aliases.Add(fieldName, alias);
+            else
+                _aliases[fieldName] = alias;
         }
 
         protected string AddXmlCommentParamRefs(IEnumerable<string> paramNames, string value)
