@@ -173,26 +173,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Implements an explicit operator for converting an int to an ItemChance.
-        /// </summary>
-        /// <param name="value">Integer value of the ItemChance.</param>
-        /// <returns>An ItemChance instance created with the given int <paramref name="value"/>.</returns>
-        public static explicit operator ItemChance(int value)
-        {
-            return new ItemChance(value);
-        }
-
-        /// <summary>
-        /// Implements an explicit operator for converting an ItemChance to an int.
-        /// </summary>
-        /// <param name="value">ItemChance to convert to an int.</param>
-        /// <returns>An int created with the given ItemChance.</returns>
-        public static explicit operator int(ItemChance value)
-        {
-            return value._value;
-        }
-
-        /// <summary>
         /// Writes the ItemChance to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
@@ -259,6 +239,26 @@ namespace DemoGame.Server
         }
 
         #endregion
+
+        /// <summary>
+        /// Implements an explicit operator for converting an int to an ItemChance.
+        /// </summary>
+        /// <param name="value">Integer value of the ItemChance.</param>
+        /// <returns>An ItemChance instance created with the given int <paramref name="value"/>.</returns>
+        public static explicit operator ItemChance(int value)
+        {
+            return new ItemChance(value);
+        }
+
+        /// <summary>
+        /// Implements an explicit operator for converting an ItemChance to an int.
+        /// </summary>
+        /// <param name="value">ItemChance to convert to an int.</param>
+        /// <returns>An int created with the given ItemChance.</returns>
+        public static explicit operator int(ItemChance value)
+        {
+            return value._value;
+        }
 
         /// <summary>
         /// Implements operator >.

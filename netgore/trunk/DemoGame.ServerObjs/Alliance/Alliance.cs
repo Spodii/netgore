@@ -59,7 +59,8 @@ namespace DemoGame.Server
         /// <param name="name">Name of the Alliance.</param>
         /// <param name="attackables">Information for Alliances that this Alliance can attack.</param>
         /// <param name="hostiles">Information for Alliances that this Alliance is hostile towards.</param>
-        public Alliance(AllianceID id, string name, IEnumerable<AllianceAttackableTable> attackables, IEnumerable<AllianceHostileTable> hostiles)
+        public Alliance(AllianceID id, string name, IEnumerable<AllianceAttackableTable> attackables,
+                        IEnumerable<AllianceHostileTable> hostiles)
         {
             Debug.Assert(attackables.All(x => x.AllianceID == id));
             Debug.Assert(hostiles.All(x => x.AllianceID == id));

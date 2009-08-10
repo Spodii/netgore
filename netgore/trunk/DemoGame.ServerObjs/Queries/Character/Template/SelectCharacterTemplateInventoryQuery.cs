@@ -10,8 +10,9 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class SelectCharacterTemplateInventoryQuery : DbQueryReader<CharacterTemplateID>
     {
-        static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `character_template_id`=@characterTemplateID",
-                                                            CharacterTemplateInventoryTable.TableName);
+        static readonly string _queryString =
+            string.Format("SELECT * FROM `{0}` WHERE `character_template_id`=@characterTemplateID",
+                          CharacterTemplateInventoryTable.TableName);
 
         public SelectCharacterTemplateInventoryQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
@@ -25,7 +26,7 @@ namespace DemoGame.Server.Queries
             {
                 while (r.Read())
                 {
-                    var item = new CharacterTemplateInventoryTable(r);
+                    CharacterTemplateInventoryTable item = new CharacterTemplateInventoryTable(r);
                     ret.Add(item);
                 }
             }

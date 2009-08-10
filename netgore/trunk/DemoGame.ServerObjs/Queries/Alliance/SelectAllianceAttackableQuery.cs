@@ -25,7 +25,7 @@ namespace DemoGame.Server.Queries
             {
                 while (r.Read())
                 {
-                    var item = new AllianceAttackableTable(r);
+                    AllianceAttackableTable item = new AllianceAttackableTable(r);
                     ret.Add(item);
                 }
             }

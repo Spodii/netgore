@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore.Collections;
@@ -164,7 +165,7 @@ namespace DemoGame.Server
         /// <returns>The loaded Alliance.</returns>
         public static Alliance LoadAlliance(DBController dbController, AllianceID id)
         {
-            var values = dbController.GetQuery<SelectAllianceQuery>().Execute(id);
+            AllianceTable values = dbController.GetQuery<SelectAllianceQuery>().Execute(id);
             var attackables = dbController.GetQuery<SelectAllianceAttackableQuery>().Execute(id);
             var hostiles = dbController.GetQuery<SelectAllianceHostileQuery>().Execute(id);
 

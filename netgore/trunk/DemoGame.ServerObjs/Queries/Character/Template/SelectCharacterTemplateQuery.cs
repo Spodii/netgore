@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using DemoGame.Server.DbObjs;
-using log4net;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries

@@ -66,7 +66,7 @@ namespace DemoGame
         public void CopyStatValuesFrom(IEnumerable<KeyValuePair<StatType, int>> sourceStats, bool errorOnFailure)
         {
             // Iterate through each stat in the source
-            foreach (KeyValuePair<StatType, int> sourceStat in sourceStats)
+            foreach (var sourceStat in sourceStats)
             {
                 // Check that this collection handles the given stat
                 IStat stat;

@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -18,11 +18,6 @@ namespace NetGore.Db.ClassCreator
         public readonly string Code;
 
         /// <summary>
-        /// The table that the code was generated for.
-        /// </summary>
-        public readonly string Table;
-
-        /// <summary>
         /// If the generated code is for an interface.
         /// </summary>
         public readonly bool IsInterface;
@@ -32,6 +27,11 @@ namespace NetGore.Db.ClassCreator
         /// a database table class or interface.
         /// </summary>
         public readonly bool IsSpecialClass;
+
+        /// <summary>
+        /// The table that the code was generated for.
+        /// </summary>
+        public readonly string Table;
 
         /// <summary>
         /// GeneratedTableCode constructor.
