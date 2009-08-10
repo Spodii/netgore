@@ -30,6 +30,9 @@ namespace NetGore.Db
             _poolableConn = poolableConn;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.             
+        /// </summary>
         public override void Dispose()
         {
             DataReader.Dispose();
