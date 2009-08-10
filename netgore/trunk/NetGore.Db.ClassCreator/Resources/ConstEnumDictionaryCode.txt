@@ -52,7 +52,7 @@ private class [CLASSNAME] : System.Collections.Generic.IEnumerable<System.Collec
             _values[_lookupTable[([STORAGETYPE])key]] = value;
         }
     }
-    
+
     #region IEnumerable<KeyValuePair<[KEYTYPE],[VALUETYPE]>> Members
 
     /// <summary>

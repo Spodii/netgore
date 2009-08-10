@@ -942,7 +942,7 @@ private class StatConstDictionary : System.Collections.Generic.IEnumerable<Syste
             _values[_lookupTable[(System.Int32)key]] = value;
         }
     }
-    
+
     #region IEnumerable<KeyValuePair<DemoGame.StatType,System.Int32>> Members
 
     /// <summary>
@@ -1028,7 +1028,7 @@ private class ReqStatConstDictionary : System.Collections.Generic.IEnumerable<Sy
             _values[_lookupTable[(System.Int32)key]] = value;
         }
     }
-    
+
     #region IEnumerable<KeyValuePair<DemoGame.StatType,System.Int32>> Members
 
     /// <summary>

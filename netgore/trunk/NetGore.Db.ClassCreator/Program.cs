@@ -42,7 +42,7 @@ namespace NetGore.Db.ClassCreator
             return columnItems;
         }
 
-        static void Main(string[] args)
+        static void Main()
         {
             var baseStatColumns = GetStatColumnCollectionItems(StatCollectionType.Base);
             var reqStatColumns = GetStatColumnCollectionItems(StatCollectionType.Requirement);

@@ -1899,10 +1899,9 @@ namespace DemoGame
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        public IMapTable DeepCopy()
+        IMapTable IMapTable.DeepCopy()
         {
-            // TODO: !! Implement deep copy
-            throw new NotImplementedException();
+            return new MapTable(this);
         }
 
         MapIndex IMapTable.ID
