@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -74,12 +75,24 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// The prefix character for database query parameters.
+        /// </summary>
+        public const string ParameterPrefix = "@";
+
+        /// <summary>
         /// Creates a DbParameter that can be used with this DbQueryBase.
         /// </summary>
         /// <param name="parameterName">Name of the parameter to create.</param>
         /// <returns>DbParameter that can be used with this DbQueryBase.</returns>
         protected DbParameter CreateParameter(string parameterName)
         {
+            if (!parameterName.StartsWith(ParameterPrefix))
+            {
+                const string errmsg = "Parameter named `{0}` had an invalid or no prefix specified.";
+                Debug.Fail(string.Format(errmsg, parameterName));
+                parameterName = ParameterPrefix + parameterName;
+            }
+
             return ConnectionPool.CreateParameter(parameterName);
         }
 
