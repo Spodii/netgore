@@ -23,7 +23,7 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(MapQueryHelper.AllDBFields);
+            return CreateParameters(MapTable.DbColumns.Select(x => "@" + x));
         }
 
         /// <summary>

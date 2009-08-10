@@ -118,7 +118,6 @@
     <Compile Include="MapSpawn\MapSpawnValuesID.cs" />
     <Compile Include="MapSpawn\MapSpawnValuesIDCreator.cs" />
     <Compile Include="Queries\Map\InsertMapQuery.cs" />
-    <Compile Include="Queries\Map\MapQueryHelper.cs" />
     <Compile Include="Queries\Map\Spawn\DeleteMapSpawnQuery.cs" />
     <Compile Include="Queries\Map\UpdateMapQuery.cs" />
     <Compile Include="Queries\Alliance\SelectAllianceAttackableQuery.cs" />
