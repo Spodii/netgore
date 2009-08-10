@@ -42,14 +42,16 @@ namespace NetGore.Db.ClassCreator
             get { return ", "; }
         }
 
-        public override string GetClass(string className, MemberVisibilityLevel visibility, IEnumerable<string> interfaces)
+        public override string GetClass(string className, MemberVisibilityLevel visibility, bool isStatic, IEnumerable<string> interfaces)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(GetVisibilityLevel(visibility));
+            if (isStatic)
+                sb.Append(" static ");
             sb.Append(" class ");
             sb.Append(className);
 
-            if (interfaces.Count() > 0)
+            if (interfaces != null && interfaces.Count() > 0)
             {
                 sb.Append(" : ");
                 foreach (string i in interfaces)

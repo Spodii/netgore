@@ -29,7 +29,8 @@ namespace DemoGame.Server.Queries
                     throw new ArgumentException(string.Format(errmsg, templateID), "templateID");
                 }
 
-                ret = new CharacterTemplateTable(r);
+                ret = new CharacterTemplateTable();
+                ret.ReadValues(r);
             }
 
             return ret;

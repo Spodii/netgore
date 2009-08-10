@@ -186,7 +186,7 @@ namespace NetGore.Db.ClassCreator
             return "(" + castType + ")";
         }
 
-        public abstract string GetClass(string className, MemberVisibilityLevel visibility, IEnumerable<string> interfaces);
+        public abstract string GetClass(string className, MemberVisibilityLevel visibility, bool isStatic, IEnumerable<string> interfaces);
 
         public virtual string GetClassName(string tableName)
         {
@@ -366,10 +366,33 @@ namespace NetGore.Db.ClassCreator
             return GetMethodHeader(methodName, visibility, parameters, GetTypeString(returnType), isVirtual, isStatic);
         }
 
+
+        public virtual string GetExtensionMethodHeader(string methodName, MethodParameter extender, MethodParameter[] parameters, Type returnType)
+        {
+            StringBuilder sb = new StringBuilder(256);
+            sb.Append(GetMethodNameAndVisibility(methodName, MemberVisibilityLevel.Public, returnType, false, true));
+
+            sb.Append(OpenParameterString);
+
+            // First parameter
+            sb.Append("this ");
+            sb.Append(GetParameter(extender));
+
+            // Additional parameters
+            if (parameters != null && parameters.Length > 0)
+            {
+                sb.Append(ParameterSpacer);
+                sb.Append(GetParameters(parameters));
+            }
+
+            sb.Append(CloseParameterString);
+            return sb.ToString();
+        }
+
         public virtual string GetMethodHeader(string methodName, MemberVisibilityLevel visibility, MethodParameter[] parameters,
                                               string returnType, bool isVirtual, bool isStatic)
         {
-            StringBuilder sb = new StringBuilder(1024);
+            StringBuilder sb = new StringBuilder(256);
             sb.Append(GetMethodNameAndVisibility(methodName, visibility, returnType, isVirtual, isStatic));
 
             // Parameters

@@ -159,12 +159,33 @@ namespace NetGore.Db.ClassCreator
                                              _customTypes);
 
             yield return
-                new GeneratedTableCode(tableName, Formatter.GetClassName(tableName),
-                                       WrapCodeInHeaderAndNamespace(CreateCodeForClass(cd), classNamespace, false), false, false);
+                new GeneratedTableCode(tableName, cd.ClassName,
+                                       WrapCodeFile(CreateCodeForClass(cd), classNamespace, false), GeneratedCodeType.Class);
             yield return
-                new GeneratedTableCode(tableName, Formatter.GetInterfaceName(tableName),
-                                       WrapCodeInHeaderAndNamespace(CreateCodeForInterface(cd), interfaceNamespace, true), true,
-                                       false);
+                new GeneratedTableCode(tableName, cd.InterfaceName,
+                                       WrapCodeFile(CreateCodeForInterface(cd), interfaceNamespace, true), GeneratedCodeType.Interface);
+
+            yield return
+                new GeneratedTableCode(tableName, cd.ExtensionClassName, WrapCodeFile(CreateCodeForExtensions(cd), classNamespace, false), GeneratedCodeType.ClassDbExtensions);
+        }
+
+        protected virtual string CreateCodeForExtensions(DbClassData cd)
+        {
+            StringBuilder sb = new StringBuilder(8192);
+
+            // TODO: Extension class summary
+            sb.AppendLine(Formatter.GetClass(cd.ExtensionClassName, MemberVisibilityLevel.Public, true, null));
+            sb.AppendLine(Formatter.OpenBrace);
+            {
+                // Extension methods
+                sb.AppendLine(CreateMethodCopyValuesToDbParameterValues(cd));
+                sb.AppendLine(CreateMethodReadValues(cd));
+                sb.AppendLine(CreateMethodTryReadValues(cd));
+                sb.AppendLine(CreateMethodTryCopyValuesToDbParameterValues(cd));
+            }
+            sb.AppendLine(Formatter.CloseBrace);
+
+            return sb.ToString();
         }
 
         /// <summary>
@@ -177,7 +198,7 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(8192);
 
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ClassSummary, cd.TableName)));
-            sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, new string[] { cd.InterfaceName }));
+            sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, false, new string[] { cd.InterfaceName }));
             sb.AppendLine(Formatter.OpenBrace);
             {
                 // Other Fields/Properties
@@ -279,32 +300,17 @@ namespace NetGore.Db.ClassCreator
                 string fullConstructorBody = FullConstructorMemberBody(cd);
                 sb.AppendLine(CreateConstructor(cd, fullConstructorBody, true));
 
-                // Constructor (IDataReader)
-                sb.AppendLine(Formatter.GetXmlComment(cd.ClassName + " constructor.", null,
-                                                      new KeyValuePair<string, string>(DataReaderName,
-                                                                                       Comments.CreateCode.
-                                                                                           ConstructorParameterIDataReader)));
-                string drConstructorBody = Formatter.GetCallMethod("ReadValues", DataReaderName);
-                var drConstructorParams = new MethodParameter[]
-                                          { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
-                sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, drConstructorParams));
-                sb.AppendLine(Formatter.GetMethodBody(drConstructorBody));
-
                 // Constructor (self-referencing interface)
                 var sriConstructorParams = new MethodParameter[] { new MethodParameter("source", cd.InterfaceName) };
                 sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, sriConstructorParams));
                 sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(CopyValuesFromMethodName, "source")));
 
                 // Methods
-                sb.AppendLine(CreateMethodReadValues(cd));
                 sb.AppendLine(CreateMethodCopyValuesToDict(cd));
-                sb.AppendLine(CreateMethodCopyValuesToDbParameterValues(cd));
                 sb.AppendLine(CreateMethodCopyValuesFrom(cd));
                 sb.AppendLine(CreateMethodGetValue(cd));
                 sb.AppendLine(CreateMethodSetValue(cd));
                 sb.AppendLine(CreateMethodGetColumnData(cd));
-                sb.AppendLine(CreateMethodTryReadValues(cd));
-                sb.AppendLine(CreateMethodTryCopyValuesToDbParameterValues(cd));
 
                 // ConstEnumDictionary class
                 foreach (ColumnCollection coll in cd.ColumnCollections)
@@ -331,7 +337,7 @@ namespace NetGore.Db.ClassCreator
             }
             sb.AppendLine(Formatter.CloseBrace);
 
-            return new GeneratedTableCode(ColumnMetadataClassName, ColumnMetadataClassName, sb.ToString(), false, true);
+            return new GeneratedTableCode(ColumnMetadataClassName, ColumnMetadataClassName, sb.ToString(), GeneratedCodeType.ColumnMetadata);
         }
 
         /// <summary>
@@ -557,43 +563,31 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Name given to all extension method's first parameter.
+        /// </summary>
+        const string _extensionParamName = "source";
+
         protected virtual string CreateMethodCopyValuesToDbParameterValues(DbClassData cd)
         {
             const string parameterName = "paramValues";
-            const string sourceName = "source";
-
-            var iParameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(DbParameterValues), Formatter) };
-            var sParameters =
-                new MethodParameter[] { new MethodParameter(sourceName, cd.InterfaceName) }.Concat(iParameters).ToArray();
 
             StringBuilder sb = new StringBuilder(2048);
 
-            // Instanced header
+            // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.CopyToDPV.Summary, null,
+                                                  new KeyValuePair<string, string>(_extensionParamName, Comments.CopyToDPV.ParameterSource),
                                                   new KeyValuePair<string, string>(parameterName,
                                                                                    Comments.CopyToDPV.ParameterDbParameterValues)));
+            sb.AppendLine(Formatter.GetExtensionMethodHeader(CopyValuesMethodName, new MethodParameter(_extensionParamName, cd.InterfaceName), new MethodParameter[] {
+                new MethodParameter(parameterName, typeof(DbParameterValues), Formatter)}, typeof(void)));
 
-            sb.AppendLine(Formatter.GetMethodHeader(CopyValuesMethodName, MemberVisibilityLevel.Public, iParameters, typeof(void),
-                                                    false, false));
-
-            // Instanced body
-            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(CopyValuesMethodName, "this", parameterName)));
-
-            // Static header
-            sb.AppendLine(Formatter.GetXmlComment(Comments.CopyToDPV.Summary, null,
-                                                  new KeyValuePair<string, string>(sourceName, Comments.CopyToDPV.ParameterSource),
-                                                  new KeyValuePair<string, string>(parameterName,
-                                                                                   Comments.CopyToDPV.ParameterDbParameterValues)));
-
-            sb.AppendLine(Formatter.GetMethodHeader(CopyValuesMethodName, MemberVisibilityLevel.Public, sParameters, typeof(void),
-                                                    false, true));
-
-            // Static body
+            // Body
             StringBuilder bodySB = new StringBuilder(2048);
             foreach (DbColumnInfo column in cd.Columns)
             {
                 string left = parameterName + "[\"@" + column.Name + "\"]";
-                string right = sourceName + "." + cd.GetColumnValueAccessor(column);
+                string right = _extensionParamName + "." + cd.GetColumnValueAccessor(column);
                 string line = Formatter.GetSetValue(left, right, false, false, cd.GetExternalType(column));
                 bodySB.AppendLine(line);
             }
@@ -731,8 +725,6 @@ namespace NetGore.Db.ClassCreator
 
         protected virtual string CreateMethodReadValues(DbClassData cd)
         {
-            var parameters = new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
-
             StringBuilder sb = new StringBuilder(2048);
 
             // Header
@@ -740,8 +732,9 @@ namespace NetGore.Db.ClassCreator
                                                   new KeyValuePair<string, string>(DataReaderName,
                                                                                    Comments.ReadValues.ParameterDataReader)));
 
-            sb.AppendLine(Formatter.GetMethodHeader("ReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false,
-                                                    false));
+            sb.AppendLine(Formatter.GetExtensionMethodHeader("ReadValues", new MethodParameter(_extensionParamName, cd.ClassName),
+ new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) },
+ typeof(void)));
 
             // Body
             StringBuilder bodySB = new StringBuilder(2048);
@@ -752,7 +745,7 @@ namespace NetGore.Db.ClassCreator
                 bodySB.AppendLine(Formatter.GetSetValue("i", DataReaderName + ".GetOrdinal(\"" + column.Name + "\")", false, false));
 
                 string right = cd.GetDataReaderAccessor(column, "i");
-                bodySB.AppendLine(cd.GetColumnValueMutator(column, right));
+                bodySB.AppendLine(cd.GetColumnValueMutator(column, right, _extensionParamName));
                 bodySB.AppendLine();
             }
 
@@ -796,36 +789,23 @@ namespace NetGore.Db.ClassCreator
         protected virtual string CreateMethodTryCopyValuesToDbParameterValues(DbClassData cd)
         {
             const string parameterName = "paramValues";
-            const string sourceName = "source";
-
-            var iParameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(DbParameterValues), Formatter) };
-            var sParameters =
-                new MethodParameter[] { new MethodParameter(sourceName, cd.InterfaceName) }.Concat(iParameters).ToArray();
 
             StringBuilder sb = new StringBuilder(2048);
 
-            // Instanced header
+            // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null,
-                                                  new KeyValuePair<string, string>(parameterName,
-                                                                                   Comments.TryCopyValues.
-                                                                                       ParameterDbParameterValues)));
-            sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, iParameters,
-                                                    typeof(void), false, false));
-
-            // Instanced body
-            sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(TryCopyValuesMethodName, "this", parameterName)));
-
-            // Static header
-            sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null,
-                                                  new KeyValuePair<string, string>(sourceName,
+                                                  new KeyValuePair<string, string>(_extensionParamName,
                                                                                    Comments.TryCopyValues.ParameterSource),
                                                   new KeyValuePair<string, string>(parameterName,
                                                                                    Comments.TryCopyValues.
                                                                                        ParameterDbParameterValues)));
-            sb.AppendLine(Formatter.GetMethodHeader(TryCopyValuesMethodName, MemberVisibilityLevel.Public, sParameters,
-                                                    typeof(void), false, true));
 
-            // Static body
+            sb.AppendLine(Formatter.GetExtensionMethodHeader(TryCopyValuesMethodName,
+                new MethodParameter(_extensionParamName, cd.InterfaceName),
+                new MethodParameter[] { new MethodParameter(parameterName, typeof(DbParameterValues), Formatter) },
+                typeof(void)));
+
+            // Body
             StringBuilder bodySB = new StringBuilder(2048);
             bodySB.AppendLine("for (int i = 0; i < " + parameterName + ".Count; i++)"); // NOTE: Language specific code
             bodySB.AppendLine(Formatter.OpenBrace);
@@ -835,7 +815,7 @@ namespace NetGore.Db.ClassCreator
                                                           x =>
                                                           new KeyValuePair<string, string>("\"@" + x.Name + "\"",
                                                                                            CreateMethodTryCopyValuesToDbParameterValuesSwitchString
-                                                                                               (cd, x, parameterName, sourceName))),
+                                                                                               (cd, x, parameterName))),
                                                       null));
             }
             bodySB.Append(Formatter.CloseBrace);
@@ -846,11 +826,11 @@ namespace NetGore.Db.ClassCreator
         }
 
         protected string CreateMethodTryCopyValuesToDbParameterValuesSwitchString(DbClassData cd, DbColumnInfo column,
-                                                                                  string parameterName, string sourceName)
+                                                                                  string parameterName)
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(Formatter.GetSetValue(parameterName + Formatter.OpenIndexer + "i" + Formatter.CloseIndexer,
-                                                sourceName + "." + cd.GetColumnValueAccessor(column), false, false));
+                                                _extensionParamName + "." + cd.GetColumnValueAccessor(column), false, false));
             sb.AppendLine("break" + Formatter.EndOfLine);
             return sb.ToString();
         }
@@ -865,8 +845,10 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetXmlComment(Comments.TryReadValues.Summary, null,
                                                   new KeyValuePair<string, string>(DataReaderName,
                                                                                    Comments.TryReadValues.ParameterDataReader)));
-            sb.AppendLine(Formatter.GetMethodHeader("TryReadValues", MemberVisibilityLevel.Public, parameters, typeof(void), false,
-                                                    false));
+
+            sb.AppendLine(Formatter.GetExtensionMethodHeader("TryReadValues", new MethodParameter(_extensionParamName, cd.ClassName),
+                new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) },
+                typeof(void)));
 
             // Body
             StringBuilder bodySB = new StringBuilder(2048);
@@ -890,7 +872,7 @@ namespace NetGore.Db.ClassCreator
         protected string CreateMethodTryReadValuesSwitchString(DbClassData cd, DbColumnInfo column)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine(cd.GetColumnValueMutator(column, cd.GetDataReaderAccessor(column, "i")));
+            sb.AppendLine(cd.GetColumnValueMutator(column, cd.GetDataReaderAccessor(column, "i"), _extensionParamName));
             sb.AppendLine("break" + Formatter.EndOfLine);
             return sb.ToString();
         }
@@ -926,7 +908,7 @@ namespace NetGore.Db.ClassCreator
             foreach (GeneratedTableCode item in items)
             {
                 string filePath;
-                if (item.IsInterface)
+                if (item.CodeType == GeneratedCodeType.Interface)
                     filePath = interfaceOutputDir;
                 else
                     filePath = classOutputDir;
@@ -1016,7 +998,7 @@ namespace NetGore.Db.ClassCreator
             _dbConnction = dbConnection;
         }
 
-        string WrapCodeInHeaderAndNamespace(string code, string namespaceName, bool isInterface)
+        string WrapCodeFile(string code, string namespaceName, bool isInterface)
         {
             StringBuilder sb = new StringBuilder(code.Length + 512);
 

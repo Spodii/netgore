@@ -182,50 +182,16 @@ public CharacterTemplateInventoryTable()
 /// <param name="min">The initial value for the corresponding property.</param>
 public CharacterTemplateInventoryTable(DemoGame.Server.ItemChance @chance, DemoGame.Server.CharacterTemplateID @characterTemplateID, DemoGame.Server.ItemTemplateID @itemTemplateID, System.Byte @max, System.Byte @min)
 {
-Chance = (DemoGame.Server.ItemChance)@chance;
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)@characterTemplateID;
-ItemTemplateID = (DemoGame.Server.ItemTemplateID)@itemTemplateID;
-Max = (System.Byte)@max;
-Min = (System.Byte)@min;
-}
-/// <summary>
-/// CharacterTemplateInventoryTable constructor.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
-public CharacterTemplateInventoryTable(System.Data.IDataReader dataReader)
-{
-ReadValues(dataReader);
+this.Chance = (DemoGame.Server.ItemChance)@chance;
+this.CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)@characterTemplateID;
+this.ItemTemplateID = (DemoGame.Server.ItemTemplateID)@itemTemplateID;
+this.Max = (System.Byte)@max;
+this.Min = (System.Byte)@min;
 }
 public CharacterTemplateInventoryTable(ICharacterTemplateInventoryTable source)
 {
 CopyValuesFrom(source);
 }
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. The database column's name is used to as the key, so the value
-/// will not be found if any aliases are used or not all columns were selected.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void ReadValues(System.Data.IDataReader dataReader)
-{
-System.Int32 i;
-
-i = dataReader.GetOrdinal("chance");
-Chance = (DemoGame.Server.ItemChance)(DemoGame.Server.ItemChance)dataReader.GetUInt16(i);
-
-i = dataReader.GetOrdinal("character_template_id");
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)(DemoGame.Server.CharacterTemplateID)dataReader.GetUInt16(i);
-
-i = dataReader.GetOrdinal("item_template_id");
-ItemTemplateID = (DemoGame.Server.ItemTemplateID)(DemoGame.Server.ItemTemplateID)dataReader.GetUInt16(i);
-
-i = dataReader.GetOrdinal("max");
-Max = (System.Byte)(System.Byte)dataReader.GetByte(i);
-
-i = dataReader.GetOrdinal("min");
-Min = (System.Byte)(System.Byte)dataReader.GetByte(i);
-}
-
 /// <summary>
 /// Copies the column values into the given Dictionary using the database column name
 /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
@@ -252,39 +218,13 @@ dic["@max"] = (System.Byte)source.Max;
 dic["@min"] = (System.Byte)source.Min;
 }
 
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void CopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-CopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(ICharacterTemplateInventoryTable source, NetGore.Db.DbParameterValues paramValues)
-{
-paramValues["@chance"] = (DemoGame.Server.ItemChance)source.Chance;
-paramValues["@character_template_id"] = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
-paramValues["@item_template_id"] = (DemoGame.Server.ItemTemplateID)source.ItemTemplateID;
-paramValues["@max"] = (System.Byte)source.Max;
-paramValues["@min"] = (System.Byte)source.Min;
-}
-
 public void CopyValuesFrom(ICharacterTemplateInventoryTable source)
 {
-Chance = (DemoGame.Server.ItemChance)source.Chance;
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
-ItemTemplateID = (DemoGame.Server.ItemTemplateID)source.ItemTemplateID;
-Max = (System.Byte)source.Max;
-Min = (System.Byte)source.Min;
+this.Chance = (DemoGame.Server.ItemChance)source.Chance;
+this.CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
+this.ItemTemplateID = (DemoGame.Server.ItemTemplateID)source.ItemTemplateID;
+this.Max = (System.Byte)source.Max;
+this.Min = (System.Byte)source.Min;
 }
 
 public System.Object GetValue(System.String columnName)
@@ -316,23 +256,23 @@ public void SetValue(System.String columnName, System.Object value)
 switch (columnName)
 {
 case "chance":
-Chance = (DemoGame.Server.ItemChance)value;
+this.Chance = (DemoGame.Server.ItemChance)value;
 break;
 
 case "character_template_id":
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)value;
+this.CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)value;
 break;
 
 case "item_template_id":
-ItemTemplateID = (DemoGame.Server.ItemTemplateID)value;
+this.ItemTemplateID = (DemoGame.Server.ItemTemplateID)value;
 break;
 
 case "max":
-Max = (System.Byte)value;
+this.Max = (System.Byte)value;
 break;
 
 case "min":
-Min = (System.Byte)value;
+this.Min = (System.Byte)value;
 break;
 
 default:
@@ -361,110 +301,6 @@ return new ColumnMetadata("min", "", "tinyint(3) unsigned", null, typeof(System.
 
 default:
 throw new ArgumentException("Field not found.","fieldName");
-}
-}
-
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. Unlike ReadValues(), this method not only doesn't require
-/// all values to be in the IDataReader, but also does not require the values in
-/// the IDataReader to be a defined field for the table this class represents.
-/// Because of this, you need to be careful when using this method because values
-/// can easily be skipped without any indication.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void TryReadValues(System.Data.IDataReader dataReader)
-{
-for (int i = 0; i < dataReader.FieldCount; i++)
-{
-switch (dataReader.GetName(i))
-{
-case "chance":
-Chance = (DemoGame.Server.ItemChance)(DemoGame.Server.ItemChance)dataReader.GetUInt16(i);
-break;
-
-
-case "character_template_id":
-CharacterTemplateID = (DemoGame.Server.CharacterTemplateID)(DemoGame.Server.CharacterTemplateID)dataReader.GetUInt16(i);
-break;
-
-
-case "item_template_id":
-ItemTemplateID = (DemoGame.Server.ItemTemplateID)(DemoGame.Server.ItemTemplateID)dataReader.GetUInt16(i);
-break;
-
-
-case "max":
-Max = (System.Byte)(System.Byte)dataReader.GetByte(i);
-break;
-
-
-case "min":
-Min = (System.Byte)(System.Byte)dataReader.GetByte(i);
-break;
-
-
-}
-
-}
-}
-
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-TryCopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(ICharacterTemplateInventoryTable source, NetGore.Db.DbParameterValues paramValues)
-{
-for (int i = 0; i < paramValues.Count; i++)
-{
-switch (paramValues.GetParameterName(i))
-{
-case "@chance":
-paramValues[i] = source.Chance;
-break;
-
-
-case "@character_template_id":
-paramValues[i] = source.CharacterTemplateID;
-break;
-
-
-case "@item_template_id":
-paramValues[i] = source.ItemTemplateID;
-break;
-
-
-case "@max":
-paramValues[i] = source.Max;
-break;
-
-
-case "@min":
-paramValues[i] = source.Min;
-break;
-
-
-}
-
 }
 }
 

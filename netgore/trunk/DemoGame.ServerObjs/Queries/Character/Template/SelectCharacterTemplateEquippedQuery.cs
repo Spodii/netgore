@@ -26,7 +26,8 @@ namespace DemoGame.Server.Queries
             {
                 while (r.Read())
                 {
-                    CharacterTemplateEquippedTable item = new CharacterTemplateEquippedTable(r);
+                    CharacterTemplateEquippedTable item = new CharacterTemplateEquippedTable();
+                    item.ReadValues(r);
                     ret.Add(item);
                 }
             }
