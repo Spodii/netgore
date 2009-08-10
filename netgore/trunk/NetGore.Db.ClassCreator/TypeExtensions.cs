@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Linq;
 
@@ -6,6 +6,19 @@ namespace NetGore.Db.ClassCreator
 {
     public static class TypeExtensions
     {
+        /// <summary>
+        /// Gets a Nullable Type from the given <paramref name="type"/>.
+        /// </summary>
+        /// <param name="type">The Type to make Nullable.</param>
+        /// <returns>The given <paramref name="type"/> as Nullable.</returns>
+        public static Type AsNullable(this Type type)
+        {
+            if (type.IsNullable())
+                return type;
+
+            return typeof(Nullable<>).MakeGenericType(type);
+        }
+
         /// <summary>
         /// Gets the underlying Type from a Nullable Type.
         /// </summary>
@@ -25,19 +38,6 @@ namespace NetGore.Db.ClassCreator
         public static bool IsNullable(this Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
-        }
-
-        /// <summary>
-        /// Gets a Nullable Type from the given <paramref name="type"/>.
-        /// </summary>
-        /// <param name="type">The Type to make Nullable.</param>
-        /// <returns>The given <paramref name="type"/> as Nullable.</returns>
-        public static Type AsNullable(this Type type)
-        {
-            if (type.IsNullable())
-                return type;
-
-            return typeof(Nullable<>).MakeGenericType(type);
         }
     }
 }

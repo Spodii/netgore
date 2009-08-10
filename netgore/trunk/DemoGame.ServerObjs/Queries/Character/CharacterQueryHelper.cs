@@ -22,8 +22,8 @@ namespace DemoGame.Server.Queries
             NonStatDBFields =
                 new string[]
                 {
-                    "body_id", "id", "character_template_id", "map_id", "name", "x", "y", "hp", "mp", "level", "exp", "statpoints", "respawn_map"
-                    , "respawn_x", "respawn_y"
+                    "body_id", "id", "character_template_id", "map_id", "name", "x", "y", "hp", "mp", "level", "exp", "statpoints",
+                    "respawn_map", "respawn_x", "respawn_y"
                 }.ToArray();
 
             AllDBFields = StatDBFields.Select(x => x.Field).Concat(NonStatDBFields).ToArray();

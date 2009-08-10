@@ -906,13 +906,13 @@ namespace DemoGame.Server
 
         protected void Load(CharacterID characterID)
         {
-            var values = DBController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
+            CharacterTable values = DBController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
             LoadFromQueryValues(values);
         }
 
         protected void Load(string characterName)
         {
-            var values = DBController.GetQuery<SelectCharacterQuery>().Execute(characterName);
+            CharacterTable values = DBController.GetQuery<SelectCharacterQuery>().Execute(characterName);
             LoadFromQueryValues(values);
         }
 
@@ -937,7 +937,7 @@ namespace DemoGame.Server
             _templateID = v.CharacterTemplateID;
 
             BodyInfo = GameData.Body(v.BodyID);
-            CB = new CollisionBox(new Vector2(v.X,v.Y), BodyInfo.Width, BodyInfo.Height);
+            CB = new CollisionBox(new Vector2(v.X, v.Y), BodyInfo.Width, BodyInfo.Height);
 
             // Set the character information
             _level = v.Level;

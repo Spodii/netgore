@@ -143,7 +143,7 @@ namespace DemoGame.Server
                 // Update the database
                 if (!_isLoading)
                 {
-                    var args = new CharacterInventoryTable(Character.ID, newItem.ID);
+                    CharacterInventoryTable args = new CharacterInventoryTable(Character.ID, newItem.ID);
                     DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(args);
                 }
 

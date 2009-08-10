@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore.Collections;
@@ -84,7 +85,7 @@ namespace DemoGame.Server
 
         public static CharacterTemplate LoadCharacterTemplate(DBController dbController, CharacterTemplateID id)
         {
-            var v = dbController.GetQuery<SelectCharacterTemplateQuery>().Execute(id);
+            CharacterTemplateTable v = dbController.GetQuery<SelectCharacterTemplateQuery>().Execute(id);
             var itemValues = dbController.GetQuery<SelectCharacterTemplateInventoryQuery>().Execute(id);
             var equippedValues = dbController.GetQuery<SelectCharacterTemplateEquippedQuery>().Execute(id);
 
@@ -97,13 +98,14 @@ namespace DemoGame.Server
                 itemValues.Select(
                     x =>
                     new CharacterTemplateInventoryItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Min, x.Max, x.Chance));
-            
+
             var euipped =
                 equippedValues.Select(
                     x => new CharacterTemplateEquipmentItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Chance));
-            
+
             CharacterTemplate template = new CharacterTemplate(id, v.Name, v.AI, alliance, v.BodyID, v.Respawn, v.GiveExp,
-                                                               v.GiveCash, v.Exp, v.StatPoints, v.Level, v.Stats.Select(x => new StatTypeValue(x.Key, x.Value)), items,
+                                                               v.GiveCash, v.Exp, v.StatPoints, v.Level,
+                                                               v.Stats.Select(x => new StatTypeValue(x.Key, x.Value)), items,
                                                                euipped);
 
             return template;

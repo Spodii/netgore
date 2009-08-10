@@ -15,36 +15,6 @@ namespace NetGore.Db.ClassCreator
             get { return _aliases; }
         }
 
-        public string GetIEnumerableKeyValuePair(Type keyType, Type valueType)
-        {
-            return GetIEnumerableKeyValuePair(GetTypeString(keyType), GetTypeString(valueType));
-        }
-
-        public string GetIEnumerableKeyValuePair(string keyType, Type valueType)
-        {
-            return GetIEnumerableKeyValuePair(keyType, GetTypeString(valueType));
-        }
-
-        public string GetIEnumerableKeyValuePair(Type keyType, string valueType)
-        {
-            return GetIEnumerableKeyValuePair(GetTypeString(keyType), valueType);
-        }
-
-        public virtual string GetIEnumerableKeyValuePair(string keyType, string valueType)
-        {
-            StringBuilder sb = new StringBuilder();
-            sb.Append("System.Collections.Generic.IEnumerable");
-            sb.Append(OpenGeneric);
-            sb.Append("System.Collections.Generic.KeyValuePair");
-            sb.Append(OpenGeneric);
-            sb.Append(keyType);
-            sb.Append(ParameterSpacer);
-            sb.Append(valueType);
-            sb.Append(CloseGeneric);
-            sb.Append(CloseGeneric);
-            return sb.ToString();
-        }
-
         public virtual string ClassMemberQualifier
         {
             get { return "this."; }
@@ -293,6 +263,36 @@ namespace NetGore.Db.ClassCreator
                     // Make first character uppercase
                     return inputName.Substring(0, 1).ToUpper() + inputName.Substring(1);
             }
+        }
+
+        public string GetIEnumerableKeyValuePair(Type keyType, Type valueType)
+        {
+            return GetIEnumerableKeyValuePair(GetTypeString(keyType), GetTypeString(valueType));
+        }
+
+        public string GetIEnumerableKeyValuePair(string keyType, Type valueType)
+        {
+            return GetIEnumerableKeyValuePair(keyType, GetTypeString(valueType));
+        }
+
+        public string GetIEnumerableKeyValuePair(Type keyType, string valueType)
+        {
+            return GetIEnumerableKeyValuePair(GetTypeString(keyType), valueType);
+        }
+
+        public virtual string GetIEnumerableKeyValuePair(string keyType, string valueType)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append("System.Collections.Generic.IEnumerable");
+            sb.Append(OpenGeneric);
+            sb.Append("System.Collections.Generic.KeyValuePair");
+            sb.Append(OpenGeneric);
+            sb.Append(keyType);
+            sb.Append(ParameterSpacer);
+            sb.Append(valueType);
+            sb.Append(CloseGeneric);
+            sb.Append(CloseGeneric);
+            return sb.ToString();
         }
 
         public abstract string GetInterface(string interfaceName, MemberVisibilityLevel visibility);

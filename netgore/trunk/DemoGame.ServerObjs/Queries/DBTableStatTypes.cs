@@ -49,7 +49,8 @@ namespace DemoGame.Server
                     return;
 
                 _dict = new Dictionary<TableAndType, IEnumerable<StatType>>();
-                AddTables(controller, CharacterTable.TableName, CharacterTemplateTable.TableName, ItemTable.TableName, ItemTemplateTable.TableName);
+                AddTables(controller, CharacterTable.TableName, CharacterTemplateTable.TableName, ItemTable.TableName,
+                          ItemTemplateTable.TableName);
             }
         }
 

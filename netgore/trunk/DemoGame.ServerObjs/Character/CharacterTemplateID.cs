@@ -4,6 +4,7 @@ using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore.IO;
 
@@ -911,7 +912,7 @@ namespace DemoGame.Server
 
             try
             {
-                var result = query.Execute(id);
+                CharacterTemplateTable result = query.Execute(id);
                 if (result == null)
                     return false;
             }

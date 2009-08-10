@@ -80,7 +80,7 @@ namespace DemoGame.Server
 
             if (_isPersistent)
             {
-                var values = new CharacterEquippedTable(Character.ID, item.ID, slot);
+                CharacterEquippedTable values = new CharacterEquippedTable(Character.ID, item.ID, slot);
                 DBController.GetQuery<InsertCharacterEquippedItemQuery>().Execute(values);
             }
 

@@ -1,369 +1,357 @@
 using System;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using NetGore.Db;
-using DemoGame.DbObjs;
+
 namespace DemoGame.Server.DbObjs
 {
-/// <summary>
-/// Provides a strongly-typed structure for the database table `alliance_attackable`.
-/// </summary>
-public class AllianceAttackableTable : IAllianceAttackableTable
-{
-/// <summary>
-/// Array of the database column names.
-/// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"alliance_id", "attackable_id", "placeholder" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumns;
-}
-}
-/// <summary>
-/// Array of the database column names for columns that are primary keys.
-/// </summary>
- static  readonly System.String[] _dbColumnsKeys = new string[] {"alliance_id", "attackable_id" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbKeyColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
-}
-}
-/// <summary>
-/// Array of the database column names for columns that are not primary keys.
-/// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"placeholder" };
-/// <summary>
-/// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-/// </summary>
-public static System.Collections.Generic.IEnumerable<System.String> DbNonKeyColumns
-{
-get
-{
-return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsNonKey;
-}
-}
-/// <summary>
-/// The name of the database table that this class represents.
-/// </summary>
-public const System.String TableName = "alliance_attackable";
-/// <summary>
-/// The number of columns in the database table that this class represents.
-/// </summary>
-public const System.Int32 ColumnCount = 3;
-/// <summary>
-/// The field that maps onto the database column `alliance_id`.
-/// </summary>
-System.Byte _allianceID;
-/// <summary>
-/// The field that maps onto the database column `attackable_id`.
-/// </summary>
-System.Byte _attackableID;
-/// <summary>
-/// The field that maps onto the database column `placeholder`.
-/// </summary>
-System.Nullable<System.Byte> _placeholder;
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `alliance_id`.
-/// The underlying database type is `tinyint(3) unsigned`.
-/// </summary>
-public DemoGame.Server.AllianceID AllianceID
-{
-get
-{
-return (DemoGame.Server.AllianceID)_allianceID;
-}
-set
-{
-this._allianceID = (System.Byte)value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `attackable_id`.
-/// The underlying database type is `tinyint(3) unsigned`.
-/// </summary>
-public DemoGame.Server.AllianceID AttackableID
-{
-get
-{
-return (DemoGame.Server.AllianceID)_attackableID;
-}
-set
-{
-this._attackableID = (System.Byte)value;
-}
-}
-/// <summary>
-/// Gets or sets the value for the field that maps onto the database column `placeholder`.
-/// The underlying database type is `tinyint(3) unsigned`. The database column contains the comment: 
-/// "Unused placeholder column - please do not remove".
-/// </summary>
-public System.Nullable<System.Byte> Placeholder
-{
-get
-{
-return (System.Nullable<System.Byte>)_placeholder;
-}
-set
-{
-this._placeholder = (System.Nullable<System.Byte>)value;
-}
-}
+    /// <summary>
+    /// Provides a strongly-typed structure for the database table `alliance_attackable`.
+    /// </summary>
+    public class AllianceAttackableTable : IAllianceAttackableTable
+    {
+        /// <summary>
+        /// The number of columns in the database table that this class represents.
+        /// </summary>
+        public const Int32 ColumnCount = 3;
 
-/// <summary>
-/// AllianceAttackableTable constructor.
-/// </summary>
-public AllianceAttackableTable()
-{
-}
-/// <summary>
-/// AllianceAttackableTable constructor.
-/// </summary>
-/// <param name="allianceID">The initial value for the corresponding property.</param>
-/// <param name="attackableID">The initial value for the corresponding property.</param>
-/// <param name="placeholder">The initial value for the corresponding property.</param>
-public AllianceAttackableTable(DemoGame.Server.AllianceID @allianceID, DemoGame.Server.AllianceID @attackableID, System.Nullable<System.Byte> @placeholder)
-{
-AllianceID = (DemoGame.Server.AllianceID)@allianceID;
-AttackableID = (DemoGame.Server.AllianceID)@attackableID;
-Placeholder = (System.Nullable<System.Byte>)@placeholder;
-}
-/// <summary>
-/// AllianceAttackableTable constructor.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
-public AllianceAttackableTable(System.Data.IDataReader dataReader)
-{
-ReadValues(dataReader);
-}
-public AllianceAttackableTable(IAllianceAttackableTable source)
-{
-CopyValuesFrom(source);
-}
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. The database column's name is used to as the key, so the value
-/// will not be found if any aliases are used or not all columns were selected.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void ReadValues(System.Data.IDataReader dataReader)
-{
-System.Int32 i;
+        /// <summary>
+        /// The name of the database table that this class represents.
+        /// </summary>
+        public const String TableName = "alliance_attackable";
 
-i = dataReader.GetOrdinal("alliance_id");
-AllianceID = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
+        /// <summary>
+        /// Array of the database column names.
+        /// </summary>
+        static readonly String[] _dbColumns = new string[] { "alliance_id", "attackable_id", "placeholder" };
 
-i = dataReader.GetOrdinal("attackable_id");
-AttackableID = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
+        /// <summary>
+        /// Array of the database column names for columns that are primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsKeys = new string[] { "alliance_id", "attackable_id" };
 
-i = dataReader.GetOrdinal("placeholder");
-Placeholder = (System.Nullable<System.Byte>)(System.Nullable<System.Byte>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataReader.GetByte(i));
-}
+        /// <summary>
+        /// Array of the database column names for columns that are not primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsNonKey = new string[] { "placeholder" };
 
-/// <summary>
-/// Copies the column values into the given Dictionary using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-/// this method will not create them if they are missing.
-/// </summary>
-/// <param name="dic">The Dictionary to copy the values into.</param>
-public void CopyValues(System.Collections.Generic.IDictionary<System.String,System.Object> dic)
-{
-CopyValues(this, dic);
-}
-/// <summary>
-/// Copies the column values into the given Dictionary using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the Dictionary;
-/// this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="dic">The Dictionary to copy the values into.</param>
-public static void CopyValues(IAllianceAttackableTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
-{
-dic["@alliance_id"] = (DemoGame.Server.AllianceID)source.AllianceID;
-dic["@attackable_id"] = (DemoGame.Server.AllianceID)source.AttackableID;
-dic["@placeholder"] = (System.Nullable<System.Byte>)source.Placeholder;
-}
+        /// <summary>
+        /// The field that maps onto the database column `alliance_id`.
+        /// </summary>
+        Byte _allianceID;
 
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void CopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-CopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
-///  this method will not create them if they are missing.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void CopyValues(IAllianceAttackableTable source, NetGore.Db.DbParameterValues paramValues)
-{
-paramValues["@alliance_id"] = (DemoGame.Server.AllianceID)source.AllianceID;
-paramValues["@attackable_id"] = (DemoGame.Server.AllianceID)source.AttackableID;
-paramValues["@placeholder"] = (System.Nullable<System.Byte>)source.Placeholder;
-}
+        /// <summary>
+        /// The field that maps onto the database column `attackable_id`.
+        /// </summary>
+        Byte _attackableID;
 
-public void CopyValuesFrom(IAllianceAttackableTable source)
-{
-AllianceID = (DemoGame.Server.AllianceID)source.AllianceID;
-AttackableID = (DemoGame.Server.AllianceID)source.AttackableID;
-Placeholder = (System.Nullable<System.Byte>)source.Placeholder;
-}
+        /// <summary>
+        /// The field that maps onto the database column `placeholder`.
+        /// </summary>
+        byte? _placeholder;
 
-public System.Object GetValue(System.String columnName)
-{
-switch (columnName)
-{
-case "alliance_id":
-return AllianceID;
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
 
-case "attackable_id":
-return AttackableID;
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
 
-case "placeholder":
-return Placeholder;
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
+        }
 
-default:
-throw new ArgumentException("Field not found.","columnName");
-}
-}
+        /// <summary>
+        /// AllianceAttackableTable constructor.
+        /// </summary>
+        public AllianceAttackableTable()
+        {
+        }
 
-public void SetValue(System.String columnName, System.Object value)
-{
-switch (columnName)
-{
-case "alliance_id":
-AllianceID = (DemoGame.Server.AllianceID)value;
-break;
+        /// <summary>
+        /// AllianceAttackableTable constructor.
+        /// </summary>
+        /// <param name="allianceID">The initial value for the corresponding property.</param>
+        /// <param name="attackableID">The initial value for the corresponding property.</param>
+        /// <param name="placeholder">The initial value for the corresponding property.</param>
+        public AllianceAttackableTable(AllianceID @allianceID, AllianceID @attackableID, byte? @placeholder)
+        {
+            AllianceID = @allianceID;
+            AttackableID = @attackableID;
+            Placeholder = @placeholder;
+        }
 
-case "attackable_id":
-AttackableID = (DemoGame.Server.AllianceID)value;
-break;
+        /// <summary>
+        /// AllianceAttackableTable constructor.
+        /// </summary>
+        /// <param name="dataReader">The IDataReader to read the values from. See method ReadValues() for details.</param>
+        public AllianceAttackableTable(IDataReader dataReader)
+        {
+            ReadValues(dataReader);
+        }
 
-case "placeholder":
-Placeholder = (System.Nullable<System.Byte>)value;
-break;
+        public AllianceAttackableTable(IAllianceAttackableTable source)
+        {
+            CopyValuesFrom(source);
+        }
 
-default:
-throw new ArgumentException("Field not found.","columnName");
-}
-}
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        /// this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public static void CopyValues(IAllianceAttackableTable source, IDictionary<String, Object> dic)
+        {
+            dic["@alliance_id"] = source.AllianceID;
+            dic["@attackable_id"] = source.AttackableID;
+            dic["@placeholder"] = source.Placeholder;
+        }
 
-public static ColumnMetadata GetColumnData(System.String fieldName)
-{
-switch (fieldName)
-{
-case "alliance_id":
-return new ColumnMetadata("alliance_id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+        ///  this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public static void CopyValues(IAllianceAttackableTable source, DbParameterValues paramValues)
+        {
+            paramValues["@alliance_id"] = source.AllianceID;
+            paramValues["@attackable_id"] = source.AttackableID;
+            paramValues["@placeholder"] = source.Placeholder;
+        }
 
-case "attackable_id":
-return new ColumnMetadata("attackable_id", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, true, false);
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        /// this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public void CopyValues(IDictionary<String, Object> dic)
+        {
+            CopyValues(this, dic);
+        }
 
-case "placeholder":
-return new ColumnMetadata("placeholder", "Unused placeholder column - please do not remove", "tinyint(3) unsigned", null, typeof(System.Nullable<System.Byte>), true, false, false);
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the DbParameterValues;
+        ///  this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public void CopyValues(DbParameterValues paramValues)
+        {
+            CopyValues(this, paramValues);
+        }
 
-default:
-throw new ArgumentException("Field not found.","fieldName");
-}
-}
+        public void CopyValuesFrom(IAllianceAttackableTable source)
+        {
+            AllianceID = source.AllianceID;
+            AttackableID = source.AttackableID;
+            Placeholder = source.Placeholder;
+        }
 
-/// <summary>
-/// Reads the values from an IDataReader and assigns the read values to this
-/// object's properties. Unlike ReadValues(), this method not only doesn't require
-/// all values to be in the IDataReader, but also does not require the values in
-/// the IDataReader to be a defined field for the table this class represents.
-/// Because of this, you need to be careful when using this method because values
-/// can easily be skipped without any indication.
-/// </summary>
-/// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-public void TryReadValues(System.Data.IDataReader dataReader)
-{
-for (int i = 0; i < dataReader.FieldCount; i++)
-{
-switch (dataReader.GetName(i))
-{
-case "alliance_id":
-AllianceID = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
-break;
+        public static ColumnMetadata GetColumnData(String fieldName)
+        {
+            switch (fieldName)
+            {
+                case "alliance_id":
+                    return new ColumnMetadata("alliance_id", "", "tinyint(3) unsigned", null, typeof(Byte), false, true, false);
 
+                case "attackable_id":
+                    return new ColumnMetadata("attackable_id", "", "tinyint(3) unsigned", null, typeof(Byte), false, true, false);
 
-case "attackable_id":
-AttackableID = (DemoGame.Server.AllianceID)(DemoGame.Server.AllianceID)dataReader.GetByte(i);
-break;
+                case "placeholder":
+                    return new ColumnMetadata("placeholder", "Unused placeholder column - please do not remove",
+                                              "tinyint(3) unsigned", null, typeof(byte?), true, false, false);
 
+                default:
+                    throw new ArgumentException("Field not found.", "fieldName");
+            }
+        }
 
-case "placeholder":
-Placeholder = (System.Nullable<System.Byte>)(System.Nullable<System.Byte>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Byte>)null : dataReader.GetByte(i));
-break;
+        public Object GetValue(String columnName)
+        {
+            switch (columnName)
+            {
+                case "alliance_id":
+                    return AllianceID;
 
+                case "attackable_id":
+                    return AttackableID;
 
-}
+                case "placeholder":
+                    return Placeholder;
 
-}
-}
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
 
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public void TryCopyValues(NetGore.Db.DbParameterValues paramValues)
-{
-TryCopyValues(this, paramValues);
-}
-/// <summary>
-/// Copies the column values into the given DbParameterValues using the database column name
-/// with a prefixed @ as the key. The key must already exist in the DbParameterValues
-/// for the value to be copied over. If any of the keys in the DbParameterValues do not
-/// match one of the column names, or if there is no field for a key, then it will be
-/// ignored. Because of this, it is important to be careful when using this method
-/// since columns or keys can be skipped without any indication.
-/// </summary>
-/// <param name="source">The object to copy the values from.</param>
-/// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-public static void TryCopyValues(IAllianceAttackableTable source, NetGore.Db.DbParameterValues paramValues)
-{
-for (int i = 0; i < paramValues.Count; i++)
-{
-switch (paramValues.GetParameterName(i))
-{
-case "@alliance_id":
-paramValues[i] = source.AllianceID;
-break;
+        /// <summary>
+        /// Reads the values from an IDataReader and assigns the read values to this
+        /// object's properties. The database column's name is used to as the key, so the value
+        /// will not be found if any aliases are used or not all columns were selected.
+        /// </summary>
+        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+        public void ReadValues(IDataReader dataReader)
+        {
+            Int32 i;
 
+            i = dataReader.GetOrdinal("alliance_id");
+            AllianceID = (AllianceID)dataReader.GetByte(i);
 
-case "@attackable_id":
-paramValues[i] = source.AttackableID;
-break;
+            i = dataReader.GetOrdinal("attackable_id");
+            AttackableID = (AllianceID)dataReader.GetByte(i);
 
+            i = dataReader.GetOrdinal("placeholder");
+            Placeholder = (dataReader.IsDBNull(i) ? (byte?)null : dataReader.GetByte(i));
+        }
 
-case "@placeholder":
-paramValues[i] = source.Placeholder;
-break;
+        public void SetValue(String columnName, Object value)
+        {
+            switch (columnName)
+            {
+                case "alliance_id":
+                    AllianceID = (AllianceID)value;
+                    break;
 
+                case "attackable_id":
+                    AttackableID = (AllianceID)value;
+                    break;
 
-}
+                case "placeholder":
+                    Placeholder = (byte?)value;
+                    break;
 
-}
-}
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
 
-}
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+        /// for the value to be copied over. If any of the keys in the DbParameterValues do not
+        /// match one of the column names, or if there is no field for a key, then it will be
+        /// ignored. Because of this, it is important to be careful when using this method
+        /// since columns or keys can be skipped without any indication.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public static void TryCopyValues(IAllianceAttackableTable source, DbParameterValues paramValues)
+        {
+            for (int i = 0; i < paramValues.Count; i++)
+            {
+                switch (paramValues.GetParameterName(i))
+                {
+                    case "@alliance_id":
+                        paramValues[i] = source.AllianceID;
+                        break;
 
+                    case "@attackable_id":
+                        paramValues[i] = source.AttackableID;
+                        break;
+
+                    case "@placeholder":
+                        paramValues[i] = source.Placeholder;
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Copies the column values into the given DbParameterValues using the database column name
+        /// with a prefixed @ as the key. The key must already exist in the DbParameterValues
+        /// for the value to be copied over. If any of the keys in the DbParameterValues do not
+        /// match one of the column names, or if there is no field for a key, then it will be
+        /// ignored. Because of this, it is important to be careful when using this method
+        /// since columns or keys can be skipped without any indication.
+        /// </summary>
+        /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
+        public void TryCopyValues(DbParameterValues paramValues)
+        {
+            TryCopyValues(this, paramValues);
+        }
+
+        /// <summary>
+        /// Reads the values from an IDataReader and assigns the read values to this
+        /// object's properties. Unlike ReadValues(), this method not only doesn't require
+        /// all values to be in the IDataReader, but also does not require the values in
+        /// the IDataReader to be a defined field for the table this class represents.
+        /// Because of this, you need to be careful when using this method because values
+        /// can easily be skipped without any indication.
+        /// </summary>
+        /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
+        public void TryReadValues(IDataReader dataReader)
+        {
+            for (int i = 0; i < dataReader.FieldCount; i++)
+            {
+                switch (dataReader.GetName(i))
+                {
+                    case "alliance_id":
+                        AllianceID = (AllianceID)dataReader.GetByte(i);
+                        break;
+
+                    case "attackable_id":
+                        AttackableID = (AllianceID)dataReader.GetByte(i);
+                        break;
+
+                    case "placeholder":
+                        Placeholder = (dataReader.IsDBNull(i) ? (byte?)null : dataReader.GetByte(i));
+                        break;
+                }
+            }
+        }
+
+        #region IAllianceAttackableTable Members
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `alliance_id`.
+        /// The underlying database type is `tinyint(3) unsigned`.
+        /// </summary>
+        public AllianceID AllianceID
+        {
+            get { return (AllianceID)_allianceID; }
+            set { _allianceID = (Byte)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `attackable_id`.
+        /// The underlying database type is `tinyint(3) unsigned`.
+        /// </summary>
+        public AllianceID AttackableID
+        {
+            get { return (AllianceID)_attackableID; }
+            set { _attackableID = (Byte)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `placeholder`.
+        /// The underlying database type is `tinyint(3) unsigned`. The database column contains the comment: 
+        /// "Unused placeholder column - please do not remove".
+        /// </summary>
+        public byte? Placeholder
+        {
+            get { return _placeholder; }
+            set { _placeholder = value; }
+        }
+
+        #endregion
+    }
 }

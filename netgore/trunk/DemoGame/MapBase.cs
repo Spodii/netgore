@@ -150,20 +150,6 @@ namespace DemoGame
             }
         }
 
-        MapIndex IMapTable.ID
-        {
-            get { return Index; }
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the map.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
         /// <summary>
         /// MapBase constructor
         /// </summary>
@@ -1900,6 +1886,24 @@ namespace DemoGame
         public int GetTime()
         {
             return _getTime.GetTime();
+        }
+
+        #endregion
+
+        #region IMapTable Members
+
+        MapIndex IMapTable.ID
+        {
+            get { return Index; }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the map.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; }
         }
 
         #endregion

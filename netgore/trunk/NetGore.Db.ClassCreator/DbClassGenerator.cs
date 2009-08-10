@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
@@ -149,38 +149,21 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
-        string WrapCodeInHeaderAndNamespace(string code, string namespaceName, bool isInterface)
-        {
-            StringBuilder sb = new StringBuilder(code.Length + 512);
-
-            // Header
-            IEnumerable<string> usings = new string[] { "System", "System.Linq" };
-            if (!isInterface)
-                usings = usings.Concat(_usings);
-
-            foreach (string usingNamespace in usings)
-                sb.AppendLine(Formatter.GetUsing(usingNamespace));
-
-            // Namespace
-            sb.AppendLine(Formatter.GetNamespace(namespaceName));
-            sb.AppendLine(Formatter.OpenBrace);
-            {
-                // Code
-                sb.AppendLine(code);
-            }
-            sb.AppendLine(Formatter.CloseBrace);
-
-            return sb.ToString();
-        }
-
-        protected virtual IEnumerable<GeneratedTableCode> CreateCode(string tableName, IEnumerable<DbColumnInfo> columns, string classNamespace, string interfaceNamespace)
+        protected virtual IEnumerable<GeneratedTableCode> CreateCode(string tableName, IEnumerable<DbColumnInfo> columns,
+                                                                     string classNamespace, string interfaceNamespace)
         {
             columns = columns.OrderBy(x => x.Name);
 
-            DbClassData cd = new DbClassData(tableName, columns, Formatter, _dataReaderReadMethods, _columnCollections, _customTypes);
+            DbClassData cd = new DbClassData(tableName, columns, Formatter, _dataReaderReadMethods, _columnCollections,
+                                             _customTypes);
 
-            yield return new GeneratedTableCode(tableName, Formatter.GetClassName(tableName), WrapCodeInHeaderAndNamespace(CreateCodeForClass(cd), classNamespace, false), false, false);
-            yield return new GeneratedTableCode(tableName, Formatter.GetInterfaceName(tableName), WrapCodeInHeaderAndNamespace(CreateCodeForInterface(cd), interfaceNamespace, true), true, false);
+            yield return
+                new GeneratedTableCode(tableName, Formatter.GetClassName(tableName),
+                                       WrapCodeInHeaderAndNamespace(CreateCodeForClass(cd), classNamespace, false), false, false);
+            yield return
+                new GeneratedTableCode(tableName, Formatter.GetInterfaceName(tableName),
+                                       WrapCodeInHeaderAndNamespace(CreateCodeForInterface(cd), interfaceNamespace, true), true,
+                                       false);
         }
 
         /// <summary>
@@ -262,11 +245,13 @@ namespace NetGore.Db.ClassCreator
                         sb.AppendLine(Formatter.GetProperty(publicPropertyName, typeof(IEnumerable<string>),
                                                             typeof(IEnumerable<string>), MemberVisibilityLevel.Public, null,
                                                             privateFieldName, false, true));
-                        
+
                         // Collection
                         // TODO: Xml Comments
-                        string ikvpType=Formatter.GetIEnumerableKeyValuePair(coll.KeyType, coll.ValueType);
-                        sb.AppendLine(Formatter.GetProperty(coll.CollectionPropertyName, ikvpType, ikvpType, MemberVisibilityLevel.Public, null, cd.GetPrivateName(coll), false, false));
+                        string ikvpType = Formatter.GetIEnumerableKeyValuePair(coll.KeyType, coll.ValueType);
+                        sb.AppendLine(Formatter.GetProperty(coll.CollectionPropertyName, ikvpType, ikvpType,
+                                                            MemberVisibilityLevel.Public, null, cd.GetPrivateName(coll), false,
+                                                            false));
                     }
                 }
 
@@ -401,7 +386,9 @@ namespace NetGore.Db.ClassCreator
 
                         // Collection
                         // TODO: XML comments
-                        sb.AppendLine(Formatter.GetInterfaceProperty(coll.CollectionPropertyName, Formatter.GetIEnumerableKeyValuePair(coll.KeyType, coll.ValueType), false));
+                        sb.AppendLine(Formatter.GetInterfaceProperty(coll.CollectionPropertyName,
+                                                                     Formatter.GetIEnumerableKeyValuePair(coll.KeyType,
+                                                                                                          coll.ValueType), false));
                     }
                 }
             }
@@ -908,7 +895,8 @@ namespace NetGore.Db.ClassCreator
             return sb.ToString();
         }
 
-        public virtual void Generate(string classNamespace, string interfaceNamespace, string classOutputDir, string interfaceOutputDir)
+        public virtual void Generate(string classNamespace, string interfaceNamespace, string classOutputDir,
+                                     string interfaceOutputDir)
         {
             if (!classOutputDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
                 classOutputDir += Path.DirectorySeparatorChar.ToString();
@@ -945,8 +933,10 @@ namespace NetGore.Db.ClassCreator
             foreach (var table in _dbTables)
             {
                 var generatedCodes = CreateCode(table.Key, table.Value, classNamespace, interfaceNamespace);
-                foreach (var item in generatedCodes)
+                foreach (GeneratedTableCode item in generatedCodes)
+                {
                     yield return item;
+                }
             }
 
             yield return CreateCodeForColumnMetadata(classNamespace);
@@ -1013,6 +1003,32 @@ namespace NetGore.Db.ClassCreator
                 throw new MethodAccessException("The DbConnection has already been set!");
 
             _dbConnction = dbConnection;
+        }
+
+        string WrapCodeInHeaderAndNamespace(string code, string namespaceName, bool isInterface)
+        {
+            StringBuilder sb = new StringBuilder(code.Length + 512);
+
+            // Header
+            IEnumerable<string> usings = new string[] { "System", "System.Linq" };
+            if (!isInterface)
+                usings = usings.Concat(_usings);
+
+            foreach (string usingNamespace in usings)
+            {
+                sb.AppendLine(Formatter.GetUsing(usingNamespace));
+            }
+
+            // Namespace
+            sb.AppendLine(Formatter.GetNamespace(namespaceName));
+            sb.AppendLine(Formatter.OpenBrace);
+            {
+                // Code
+                sb.AppendLine(code);
+            }
+            sb.AppendLine(Formatter.CloseBrace);
+
+            return sb.ToString();
         }
 
         #region IDisposable Members
