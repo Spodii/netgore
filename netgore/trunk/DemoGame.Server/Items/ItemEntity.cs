@@ -246,7 +246,7 @@ namespace DemoGame.Server
 
             _name = iv.Name;
             _description = iv.Description;
-            _graphicIndex = iv.GraphicIndex;
+            _graphicIndex = iv.Graphic;
             _value = iv.Value;
             _amount = iv.Amount;
             _type = iv.Type;

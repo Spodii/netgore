@@ -91,7 +91,7 @@ namespace DemoGame.Server.Queries
             p["@description"] = item.Description;
             p["@type"] = item.Type;
             p["@amount"] = item.Amount;
-            p["@graphic"] = item.GraphicIndex;
+            p["@graphic"] = item.Graphic;
             p["@value"] = item.Value;
             p["@width"] = item.Width;
             p["@height"] = item.Height;

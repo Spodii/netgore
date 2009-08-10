@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 
 namespace DemoGame.Server.DbObjs
 {
@@ -22,7 +23,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `graphic`.
         /// </summary>
-        UInt16 Graphic { get; }
+        GrhIndex Graphic { get; }
 
         /// <summary>
         /// Gets the value of the database column `height`.
