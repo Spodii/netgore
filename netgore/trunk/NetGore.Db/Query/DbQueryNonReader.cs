@@ -18,6 +18,11 @@ namespace NetGore.Db
         {
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+        /// </summary>
+        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
+        /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return null;
