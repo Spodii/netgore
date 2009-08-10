@@ -85,6 +85,7 @@ namespace NetGore.Db.ClassCreator
         protected DbClassGenerator()
         {
             Formatter = new CSharpCodeFormatter();
+            SetDataReaderReadMethod(typeof(float), "GetFloat");
         }
 
         public void AddColumnCollection(string name, Type keyType, Type valueType, IEnumerable<string> tables,
@@ -266,6 +267,11 @@ namespace NetGore.Db.ClassCreator
                 // Properties for the interface implementation
                 sb.AppendLine(CreateFields(cd));
 
+                // DeepCopy implementation
+                sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.DeepCopySummary, Comments.CreateCode.DeepCopyReturn));
+                sb.AppendLine(Formatter.GetMethodHeader("DeepCopy", MemberVisibilityLevel.Public, null, cd.InterfaceName, false, false));
+                sb.AppendLine(Formatter.GetMethodBody("return new " + cd.ClassName + Formatter.OpenParameterString + "this" + Formatter.CloseParameterString + Formatter.EndOfLine));
+
                 // Constructor (empty)
                 sb.AppendLine(CreateConstructor(cd, string.Empty, false));
 
@@ -341,6 +347,11 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetInterface(cd.InterfaceName, MemberVisibilityLevel.Public));
             sb.AppendLine(Formatter.OpenBrace);
             {
+                // DeepCopy
+                sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.DeepCopySummary, Comments.CreateCode.DeepCopyReturn));
+                sb.AppendLine(Formatter.GetInterfaceMethod("DeepCopy", cd.InterfaceName));
+
+                // Columns
                 var addedCollections = new List<ColumnCollection>();
                 foreach (DbColumnInfo column in cd.Columns)
                 {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -240,7 +241,7 @@ namespace DemoGame.Server
             _id = new ItemID(IDCreator.GetNext());
         }
 
-        public ItemEntity(ItemValues iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
+        public ItemEntity(IItemTable iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
         {
             _id = iv.ID;
 
@@ -251,14 +252,14 @@ namespace DemoGame.Server
             _amount = iv.Amount;
             _type = iv.Type;
 
-            _baseStats = NewItemStats(iv.BaseStats, StatCollectionType.Base);
+            _baseStats = NewItemStats(iv.Stats, StatCollectionType.Base);
             _reqStats = NewItemStats(iv.ReqStats, StatCollectionType.Requirement);
 
             OnResize += ItemEntity_OnResize;
         }
 
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
-                   SPValueType hp, SPValueType mp, IEnumerable<StatTypeValue> baseStats, IEnumerable<StatTypeValue> reqStats)
+                   SPValueType hp, SPValueType mp, IEnumerable<KeyValuePair<StatType, int>> baseStats, IEnumerable<KeyValuePair<StatType, int>> reqStats)
             : base(pos, size)
         {
             _id = new ItemID(IDCreator.GetNext());
@@ -283,7 +284,7 @@ namespace DemoGame.Server
         ItemEntity(ItemEntity s)
             : this(
                 s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP,
-                s.BaseStats.ToStatTypeValues(), s.ReqStats.ToStatTypeValues())
+                s.BaseStats.ToKeyValuePairs(), s.ReqStats.ToKeyValuePairs())
         {
         }
 
@@ -405,10 +406,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Creates an ItemStats from the given collection of IStats.
         /// </summary>
-        /// <param name="statValues">IStats to create the ItemStats from.</param>
-        /// <param name="statCollectionType">The StatCollectionType for the new ItemStats.</param>
-        /// <returns>An ItemStats from the given collection of IStats.</returns>
-        ItemStats NewItemStats(IEnumerable<StatTypeValue> statValues, StatCollectionType statCollectionType)
+        ItemStats NewItemStats(IEnumerable<KeyValuePair<StatType, int>> statValues, StatCollectionType statCollectionType)
         {
             ItemStats ret = new ItemStats(statValues, statCollectionType);
 
@@ -528,8 +526,8 @@ namespace DemoGame.Server
 
         public ItemValues ToItemValues(ItemID id)
         {
-            var bs = BaseStats.ToStatTypeValues();
-            var rs = ReqStats.ToStatTypeValues();
+            var bs = BaseStats.ToKeyValuePairs();
+            var rs = ReqStats.ToKeyValuePairs();
 
             return new ItemValues(id, (byte)CB.Width, (byte)CB.Height, Name, Description, Type, GraphicIndex, Amount, Value, HP,
                                   MP, bs, rs);

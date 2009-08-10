@@ -12,57 +12,17 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class ReplaceItemQuery : DbQueryNonReader<ItemValues>
     {
-        static readonly string _queryString;
-
-        static ReplaceItemQuery()
-        {
-            _queryString = BuildQueryString(ItemQueryHelper.AllDBFields);
-        }
+        static readonly string _queryString = string.Format("REPLACE INTO `{0}` {1}", ItemTable.TableName, FormatParametersIntoValuesString(ItemTable.DbColumns));
 
         public ReplaceItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
-        /// <summary>
-        /// Builds the query string
-        /// </summary>
-        /// <param name="fields">IEnumerable of all the fields</param>
-        /// <returns>A string to be used for the query</returns>
-        static string BuildQueryString(IEnumerable<string> fields)
+        static int GetStatValue(IEnumerable<KeyValuePair<StatType, int>> e, StatType statType)
         {
-            StringBuilder sb = new StringBuilder();
-
-            // Header
-            sb.AppendFormat("REPLACE INTO `{0}` (", ItemTable.TableName);
-
-            // Field names
-            foreach (string field in fields)
+            foreach (var pair in e)
             {
-                sb.Append("`" + field + "`,");
-            }
-            sb.Remove(sb.Length - 1, 1); // Remove the trailing comma
-
-            // End field names, start values
-            sb.Append(") VALUES (");
-
-            // Values
-            foreach (string field in fields)
-            {
-                sb.Append("@" + field + ",");
-            }
-            sb.Remove(sb.Length - 1, 1); // Remove the trailing comma
-
-            // Close values
-            sb.Append(")");
-
-            return sb.ToString();
-        }
-
-        static int GetStatValue(IEnumerable<StatTypeValue> e, StatType statType)
-        {
-            foreach (StatTypeValue pair in e)
-            {
-                if (pair.StatType == statType)
+                if (pair.Key == statType)
                     return pair.Value;
             }
 
@@ -76,7 +36,7 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(ItemQueryHelper.AllDBFields);
+            return CreateParameters(ItemTable.DbColumns.Select(x => "@" + x));
         }
 
         /// <summary>
@@ -101,7 +61,7 @@ namespace DemoGame.Server.Queries
             foreach (StatTypeField statField in ItemQueryHelper.BaseDBStatFields)
             {
                 string paramName = "@" + statField.Field;
-                int statValue = GetStatValue(item.BaseStats, statField.StatType);
+                int statValue = GetStatValue(item.Stats, statField.StatType);
                 p[paramName] = statValue;
             }
 

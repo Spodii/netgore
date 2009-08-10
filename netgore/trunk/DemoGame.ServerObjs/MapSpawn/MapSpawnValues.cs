@@ -265,6 +265,18 @@ namespace DemoGame.Server
         #region IMapSpawnTable Members
 
         /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        public IMapSpawnTable DeepCopy()
+        {
+            return new MapSpawnTable(this);
+        }
+
+        /// <summary>
         /// Gets the value of the database column `amount`.
         /// </summary>
         byte IMapSpawnTable.Amount

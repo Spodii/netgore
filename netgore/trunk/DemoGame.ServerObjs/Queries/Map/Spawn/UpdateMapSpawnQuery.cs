@@ -25,7 +25,7 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(MapSpawnQueryHelper.AllDBFields);
+            return CreateParameters(MapSpawnQueryHelper.AllDBFields.Select(x => "@" + x));
         }
 
         /// <summary>
