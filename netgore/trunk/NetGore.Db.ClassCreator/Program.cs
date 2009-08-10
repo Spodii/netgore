@@ -74,6 +74,7 @@ namespace NetGore.Db.ClassCreator
                 const string bodyID = "DemoGame.BodyIndex";
                 const string equipmentSlot = "DemoGame.EquipmentSlot";
                 const string itemChance = "DemoGame.Server.ItemChance";
+                const string grhIndex = "NetGore.GrhIndex";
 
                 generator.AddCustomType(allianceID, "alliance", "id");
 
@@ -87,8 +88,10 @@ namespace NetGore.Db.ClassCreator
                 generator.AddCustomType(itemChance, "character_template_inventory", "chance");
 
                 generator.AddCustomType(itemID, "item", "id");
+                generator.AddCustomType(grhIndex, "item", "graphic");
 
                 generator.AddCustomType(itemTemplateID, "item_template", "id");
+                generator.AddCustomType(grhIndex, "item_template", "graphic");
 
                 generator.AddCustomType(mapID, "map", "id");
 
