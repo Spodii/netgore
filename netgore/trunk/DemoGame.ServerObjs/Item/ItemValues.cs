@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore;
 
 namespace DemoGame.Server
@@ -10,7 +11,7 @@ namespace DemoGame.Server
         readonly byte _amount;
         readonly IEnumerable<StatTypeValue> _baseStats;
         readonly string _description;
-        readonly GrhIndex _graphicIndex;
+        readonly GrhIndex _graphic;
         readonly byte _height;
         readonly SPValueType _hp;
         readonly ItemID _id;
@@ -36,9 +37,9 @@ namespace DemoGame.Server
             get { return _description; }
         }
 
-        public GrhIndex GraphicIndex
+        public GrhIndex Graphic
         {
-            get { return _graphicIndex; }
+            get { return _graphic; }
         }
 
         public byte Height
@@ -103,7 +104,7 @@ namespace DemoGame.Server
             _name = name;
             _description = description;
             _type = type;
-            _graphicIndex = graphicIndex;
+            _graphic = graphicIndex;
             _amount = amount;
             _value = value;
             _hp = hp;
