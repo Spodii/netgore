@@ -173,7 +173,7 @@ namespace NetGore.Db.ClassCreator
         {
             StringBuilder sb = new StringBuilder(8192);
 
-            // TODO: Extension class summary
+            sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ExtensionClassSummary, cd.ClassName)));
             sb.AppendLine(Formatter.GetClass(cd.ExtensionClassName, MemberVisibilityLevel.Public, true, null));
             sb.AppendLine(Formatter.OpenBrace);
             {
@@ -269,7 +269,7 @@ namespace NetGore.Db.ClassCreator
                                                             privateFieldName, false, true));
 
                         // Collection
-                        // TODO: Xml Comments
+                        sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionValueProperty, coll.Name)));
                         string ikvpType = Formatter.GetIEnumerableKeyValuePair(coll.KeyType, coll.ValueType);
                         sb.AppendLine(Formatter.GetProperty(coll.CollectionPropertyName, ikvpType, ikvpType,
                                                             MemberVisibilityLevel.Public, null, cd.GetPrivateName(coll), false,
@@ -302,6 +302,8 @@ namespace NetGore.Db.ClassCreator
 
                 // Constructor (self-referencing interface)
                 var sriConstructorParams = new MethodParameter[] { new MethodParameter("source", cd.InterfaceName) };
+                sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ConstructorSummary, cd.ClassName), null,
+                    new KeyValuePair<string, string>("source", string.Format(Comments.CreateCode.ConstructorInterfaceParameter, cd.InterfaceName))));
                 sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, sriConstructorParams));
                 sb.AppendLine(Formatter.GetMethodBody(Formatter.GetCallMethod(CopyValuesFromMethodName, "source")));
 
@@ -378,16 +380,16 @@ namespace NetGore.Db.ClassCreator
                         MethodParameter keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
 
                         // Getter
-                        sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.InterfaceCollectionGetter,
+                        sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.InterfaceCollectionGetter, coll.Name),
                                                               Comments.CreateCode.InterfaceCollectionReturns,
                                                               new KeyValuePair<string, string>("key",
                                                                                                Comments.CreateCode.
                                                                                                    InterfaceCollectionParamKey)));
                         sb.AppendLine(Formatter.GetInterfaceMethod("Get" + name, coll.ValueType,
-                                                                   new MethodParameter[] { keyParameter }));
+                                                                   keyParameter ));
 
                         // Setter
-                        sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.InterfaceCollectionGetter, null,
+                        sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.InterfaceCollectionSetter, coll.Name), null,
                                                               new KeyValuePair<string, string>("key",
                                                                                                Comments.CreateCode.
                                                                                                    InterfaceCollectionParamKey),
@@ -395,14 +397,13 @@ namespace NetGore.Db.ClassCreator
                                                                                                Comments.CreateCode.
                                                                                                    InterfaceCollectionParamValue)));
                         sb.AppendLine(Formatter.GetInterfaceMethod("Set" + name, typeof(void),
-                                                                   new MethodParameter[]
-                                                                   {
+                                        
                                                                        keyParameter,
                                                                        new MethodParameter("value", coll.ValueType, Formatter)
-                                                                   }));
+                                                                   ));
 
                         // Collection
-                        // TODO: XML comments
+                        sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionValueProperty, coll.Name)));
                         sb.AppendLine(Formatter.GetInterfaceProperty(coll.CollectionPropertyName,
                                                                      Formatter.GetIEnumerableKeyValuePair(coll.KeyType,
                                                                                                           coll.ValueType), false));
@@ -422,7 +423,6 @@ namespace NetGore.Db.ClassCreator
             else
                 parameters = MethodParameter.Empty;
 
-            string cSummary = cd.ClassName + " constructor.";
             var cParams = new List<KeyValuePair<string, string>>(Math.Max(1, parameters.Length));
             foreach (MethodParameter p in parameters)
             {
@@ -431,7 +431,7 @@ namespace NetGore.Db.ClassCreator
             }
 
             StringBuilder sb = new StringBuilder(2048);
-            sb.AppendLine(Formatter.GetXmlComment(cSummary, null, cParams.ToArray()));
+            sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ConstructorSummary, cd.ClassName), null, cParams.ToArray()));
             sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, parameters));
             sb.Append(Formatter.GetMethodBody(code));
             return sb.ToString();
@@ -549,6 +549,8 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(2048);
 
             // Header
+            sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CopyValuesFrom.Summary, cd.ClassName), null,
+                new KeyValuePair<string, string>(sourceName, string.Format(Comments.CopyValuesFrom.SourceParameter, cd.InterfaceName))));
             sb.AppendLine(Formatter.GetMethodHeader(CopyValuesFromMethodName, MemberVisibilityLevel.Public, parameters,
                                                     typeof(void), false, false));
 
@@ -645,13 +647,15 @@ namespace NetGore.Db.ClassCreator
         protected virtual string CreateMethodGetColumnData(DbClassData cd)
         {
             const string methodName = "GetColumnData";
-            const string parameterName = "fieldName";
+            const string parameterName = "columnName";
+
+            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
 
             StringBuilder sb = new StringBuilder(4096);
 
             // Header
-            // TODO: Header XML comments
-            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
+            sb.AppendLine(Formatter.GetXmlComment(Comments.GetColumnData.Summary, Comments.GetColumnData.Returns,
+                new KeyValuePair<string, string>(parameterName, Comments.GetColumnData.ColumnNameParameter)));
             sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, ColumnMetadataClassName,
                                                     false, true));
 
@@ -701,11 +705,13 @@ namespace NetGore.Db.ClassCreator
             const string parameterName = "columnName";
             const string methodName = "GetValue";
 
+            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
+
             StringBuilder sb = new StringBuilder(2048);
 
             // Header
-            // TODO: Header XML comments
-            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
+            sb.AppendLine(Formatter.GetXmlComment(Comments.GetValue.Summary, Comments.GetValue.Returns,
+                new KeyValuePair<string, string>(parameterName, Comments.GetValue.ColumnNameParameter)));
             sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, typeof(object), false,
                                                     false));
 
@@ -729,8 +735,10 @@ namespace NetGore.Db.ClassCreator
 
             // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.ReadValues.Summary, null,
+                    new KeyValuePair<string, string>(_extensionParamName, Comments.Extensions.ExtensionParameter),
                                                   new KeyValuePair<string, string>(DataReaderName,
-                                                                                   Comments.ReadValues.ParameterDataReader)));
+                                                                                   Comments.ReadValues.ParameterDataReader)
+                                                                                   ));
 
             sb.AppendLine(Formatter.GetExtensionMethodHeader("ReadValues", new MethodParameter(_extensionParamName, cd.ClassName),
  new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) },
@@ -760,15 +768,18 @@ namespace NetGore.Db.ClassCreator
             const string valueName = "value";
             const string methodName = "SetValue";
 
-            StringBuilder sb = new StringBuilder(2048);
-
-            // Header
-            // TODO: Header XML comments
             var parameters = new MethodParameter[]
                              {
                                  new MethodParameter(parameterName, typeof(string), Formatter),
                                  new MethodParameter(valueName, typeof(object), Formatter)
                              };
+
+            StringBuilder sb = new StringBuilder(2048);
+
+            // Header
+            sb.AppendLine(Formatter.GetXmlComment(Comments.SetValue.Summary, null,
+                new KeyValuePair<string, string>(parameterName, Comments.SetValue.ColumnNameParameter),
+                new KeyValuePair<string, string>(valueName, Comments.SetValue.ValueParameter)));
             sb.AppendLine(Formatter.GetMethodHeader(methodName, MemberVisibilityLevel.Public, parameters, typeof(void), false,
                                                     false));
 
@@ -837,12 +848,11 @@ namespace NetGore.Db.ClassCreator
 
         protected virtual string CreateMethodTryReadValues(DbClassData cd)
         {
-            var parameters = new MethodParameter[] { new MethodParameter(DataReaderName, typeof(IDataReader), Formatter) };
-
             StringBuilder sb = new StringBuilder(2048);
 
             // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.TryReadValues.Summary, null,
+                new KeyValuePair<string, string>(_extensionParamName, Comments.Extensions.ExtensionParameter),
                                                   new KeyValuePair<string, string>(DataReaderName,
                                                                                    Comments.TryReadValues.ParameterDataReader)));
 
