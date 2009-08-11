@@ -22,6 +22,35 @@ namespace DemoGame.Server
         readonly int _value;
         readonly byte _width;
 
+        public ItemValues(ItemID id, byte width, byte height, string name, string description, ItemType type,
+                          GrhIndex graphicIndex, byte amount, int value, SPValueType hp, SPValueType mp,
+                          IEnumerable<KeyValuePair<StatType, int>> baseStats, IEnumerable<KeyValuePair<StatType, int>> reqStats)
+        {
+            if (name == null)
+                throw new ArgumentNullException("name");
+            if (description == null)
+                throw new ArgumentNullException("description");
+            if (!type.IsDefined())
+                throw new InvalidCastException(string.Format("Invalid ItemType `{0}` for ItemEntity ID `{1}`", type, id));
+
+            _id = id;
+            _width = width;
+            _height = height;
+            _name = name;
+            _description = description;
+            _type = type;
+            _graphic = graphicIndex;
+            _amount = amount;
+            _value = value;
+            _hp = hp;
+            _mp = mp;
+
+            _baseStats = baseStats.Where(x => x.Value != 0).ToArray();
+            _reqStats = reqStats.Where(x => x.Value != 0).ToArray();
+        }
+
+        #region IItemTable Members
+
         /// <summary>
         /// Creates a deep copy of this table. All the values will be the same
         /// but they will be contained in a different object instance.
@@ -143,10 +172,7 @@ namespace DemoGame.Server
 
         public IEnumerable<KeyValuePair<StatType, int>> ReqStats
         {
-            get
-            {
-                return _reqStats;
-            }
+            get { return _reqStats; }
         }
 
         public ItemType Type
@@ -164,31 +190,6 @@ namespace DemoGame.Server
             get { return _width; }
         }
 
-        public ItemValues(ItemID id, byte width, byte height, string name, string description, ItemType type,
-                          GrhIndex graphicIndex, byte amount, int value, SPValueType hp, SPValueType mp,
-                          IEnumerable<KeyValuePair<StatType, int>> baseStats, IEnumerable<KeyValuePair<StatType, int>> reqStats)
-        {
-            if (name == null)
-                throw new ArgumentNullException("name");
-            if (description == null)
-                throw new ArgumentNullException("description");
-            if (!type.IsDefined())
-                throw new InvalidCastException(string.Format("Invalid ItemType `{0}` for ItemEntity ID `{1}`", type, id));
-
-            _id = id;
-            _width = width;
-            _height = height;
-            _name = name;
-            _description = description;
-            _type = type;
-            _graphic = graphicIndex;
-            _amount = amount;
-            _value = value;
-            _hp = hp;
-            _mp = mp;
-
-            _baseStats = baseStats.Where(x => x.Value != 0).ToArray();
-            _reqStats = reqStats.Where(x => x.Value != 0).ToArray();
-        }
+        #endregion
     }
 }

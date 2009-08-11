@@ -259,8 +259,8 @@ namespace DemoGame.Server
         }
 
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
-                   SPValueType hp, SPValueType mp, IEnumerable<KeyValuePair<StatType, int>> baseStats, IEnumerable<KeyValuePair<StatType, int>> reqStats)
-            : base(pos, size)
+                   SPValueType hp, SPValueType mp, IEnumerable<KeyValuePair<StatType, int>> baseStats,
+                   IEnumerable<KeyValuePair<StatType, int>> reqStats) : base(pos, size)
         {
             _id = new ItemID(IDCreator.GetNext());
 

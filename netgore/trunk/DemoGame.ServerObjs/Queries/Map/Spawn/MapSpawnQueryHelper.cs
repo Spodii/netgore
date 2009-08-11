@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using NetGore;
@@ -16,7 +16,8 @@ namespace DemoGame.Server.Queries
 
         static MapSpawnQueryHelper()
         {
-            AllDBFieldsExceptID = new string[] { "map_id", "character_template_id", "amount", "x", "y", "width", "height" }.ToArray();
+            AllDBFieldsExceptID =
+                new string[] { "map_id", "character_template_id", "amount", "x", "y", "width", "height" }.ToArray();
             AllDBFields = new string[] { "id" }.Concat(AllDBFieldsExceptID).ToArray();
         }
 

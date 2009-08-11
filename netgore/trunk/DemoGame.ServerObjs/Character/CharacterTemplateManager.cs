@@ -104,9 +104,7 @@ namespace DemoGame.Server
                     x => new CharacterTemplateEquipmentItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Chance));
 
             CharacterTemplate template = new CharacterTemplate(id, v.Name, v.AI, alliance, v.BodyID, v.Respawn, v.GiveExp,
-                                                               v.GiveCash, v.Exp, v.StatPoints, v.Level,
-                                                               v.Stats, items,
-                                                               euipped);
+                                                               v.GiveCash, v.Exp, v.StatPoints, v.Level, v.Stats, items, euipped);
 
             return template;
         }

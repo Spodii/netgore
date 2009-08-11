@@ -13,6 +13,11 @@ namespace NetGore.Db
     /// </summary>
     public abstract class DbQueryBase : IDbQueryHandler
     {
+        /// <summary>
+        /// The prefix character for database query parameters.
+        /// </summary>
+        public const string ParameterPrefix = "@";
+
         const string _disposedErrorMessage = "Can not access methods on a disposed object.";
         const int _initialStackSize = 2;
 
@@ -73,11 +78,6 @@ namespace NetGore.Db
             // FUTURE: Would be nice to have support of cloning ALL DbParameters...
             throw new NotImplementedException("Only DbParameters that implementICloneable are currently supported.");
         }
-
-        /// <summary>
-        /// The prefix character for database query parameters.
-        /// </summary>
-        public const string ParameterPrefix = "@";
 
         /// <summary>
         /// Creates a DbParameter that can be used with this DbQueryBase.

@@ -33,7 +33,7 @@ namespace DemoGame.Server.Queries
         /// <param name="map">Item used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, IMapTable map)
         {
-            ((MapTable)map).CopyValues(p);
+            (map).CopyValues(p);
         }
     }
 }

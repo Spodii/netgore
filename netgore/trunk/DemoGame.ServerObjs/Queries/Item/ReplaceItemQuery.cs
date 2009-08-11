@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -12,7 +11,8 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class ReplaceItemQuery : DbQueryNonReader<ItemValues>
     {
-        static readonly string _queryString = string.Format("REPLACE INTO `{0}` {1}", ItemTable.TableName, FormatParametersIntoValuesString(ItemTable.DbColumns));
+        static readonly string _queryString = string.Format("REPLACE INTO `{0}` {1}", ItemTable.TableName,
+                                                            FormatParametersIntoValuesString(ItemTable.DbColumns));
 
         public ReplaceItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
