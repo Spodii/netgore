@@ -191,7 +191,7 @@ namespace DemoGame.Server
             // TODO: Need to track the slots, too, I guess
             InventorySlot slot = new InventorySlot(0);
             var queryResults = DbController.GetQuery<SelectCharacterInventoryItemsQuery>().Execute(Character.ID);
-            foreach (var values in queryResults)
+            foreach (ItemValues values in queryResults)
             {
                 // Make sure no item is already in the slot... just in case
                 if (this[slot] != null)

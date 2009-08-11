@@ -12,9 +12,9 @@ namespace NetGore.Db.ClassCreator
     public class DbClassData
     {
         public readonly string ClassName;
-        public readonly string ExtensionClassName;
         public readonly IEnumerable<ColumnCollection> ColumnCollections;
         public readonly IEnumerable<DbColumnInfo> Columns;
+        public readonly string ExtensionClassName;
         public readonly CodeFormatter Formatter;
         public readonly string InterfaceName;
         public readonly string TableName;

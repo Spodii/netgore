@@ -42,7 +42,8 @@ namespace NetGore.Db.ClassCreator
             get { return ", "; }
         }
 
-        public override string GetClass(string className, MemberVisibilityLevel visibility, bool isStatic, IEnumerable<string> interfaces)
+        public override string GetClass(string className, MemberVisibilityLevel visibility, bool isStatic,
+                                        IEnumerable<string> interfaces)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(GetVisibilityLevel(visibility));

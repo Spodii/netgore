@@ -22,7 +22,8 @@ namespace DemoGame.Server.Queries
             return statFields;
         }
 
-        public static IEnumerable<KeyValuePair<StatType, int>> ReadStatValues(IDataReader r, IEnumerable<StatTypeField> dbStatFields)
+        public static IEnumerable<KeyValuePair<StatType, int>> ReadStatValues(IDataReader r,
+                                                                              IEnumerable<StatTypeField> dbStatFields)
         {
             var stats = new List<KeyValuePair<StatType, int>>();
             foreach (StatTypeField statField in dbStatFields)

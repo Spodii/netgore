@@ -43,7 +43,8 @@ namespace DemoGame.Server
 
         public CharacterTemplate(CharacterTemplateID id, string name, string aiName, Alliance alliance, BodyIndex body,
                                  ushort respawnSecs, ushort giveExp, ushort giveCash, uint exp, uint statPoints, byte level,
-                                 IEnumerable<KeyValuePair<StatType, int>> statValues, IEnumerable<CharacterTemplateInventoryItem> inventory,
+                                 IEnumerable<KeyValuePair<StatType, int>> statValues,
+                                 IEnumerable<CharacterTemplateInventoryItem> inventory,
                                  IEnumerable<CharacterTemplateEquipmentItem> equipment)
         {
             Debug.Assert(!inventory.Any(x => x == null));

@@ -18,14 +18,14 @@ namespace NetGore.Db.ClassCreator
         public readonly string Code;
 
         /// <summary>
-        /// The table that the code was generated for.
-        /// </summary>
-        public readonly string Table;
-
-        /// <summary>
         /// The type of code that this is for.
         /// </summary>
         public readonly GeneratedCodeType CodeType;
+
+        /// <summary>
+        /// The table that the code was generated for.
+        /// </summary>
+        public readonly string Table;
 
         /// <summary>
         /// GeneratedTableCode constructor.

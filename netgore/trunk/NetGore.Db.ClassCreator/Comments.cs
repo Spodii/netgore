@@ -39,57 +39,12 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
-        /// Comments used in CreateMethodGetColumnData().
-        /// </summary>
-        public static class GetColumnData
-        {
-            public const string Summary = "Gets the data for the database column that this table represents.";
-
-            public const string ColumnNameParameter = "The database name of the column to get the data for.";
-
-            public const string Returns = "The data for the database column with the name columnName.";
-        }
-
-        /// <summary>
-        /// Comments used with the extension methods.
-        /// </summary>
-        public static class Extensions
-        {
-            public const string ExtensionParameter = "The object to add the extension method to.";
-        }
-
-        /// <summary>
-        /// Comments used in CreateMethodSetValue();
-        /// </summary>
-        public static class SetValue
-        {
-            public const string Summary = "Sets the value of a column by the database column's name.";
-
-            public const string ColumnNameParameter = "The database name of the column to get the value for.";
-
-            public const string ValueParameter = "Value to assign to the column.";
-        }
-
-        /// <summary>
-        /// Comments used in CreateMethodGetValue().
-        /// </summary>
-        public static class GetValue
-        {
-            public const string Summary = "Gets the value of a column by the database column's name.";
-
-            public const string ColumnNameParameter = "The database name of the column to get the value for.";
-
-            public const string Returns = "The value of the column with the name columnName.";
-        }
-
-        /// <summary>
         /// Comments used in CreateMethodCopyValuesFrom().
         /// </summary>
         public static class CopyValuesFrom
         {
-            public const string Summary = "Copies the values from the given source into this {0}.";
-
             public const string SourceParameter = "The {0} to copy the values from.";
+            public const string Summary = "Copies the values from the given source into this {0}.";
         }
 
         /// <summary>
@@ -97,22 +52,6 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         public static class CreateCode
         {
-            public const string ConstructorSummary = "{0} constructor.";
-
-            public const string ConstructorInterfaceParameter = "{0} to copy the initial values from.";
-
-            public static readonly string ColumnCollectionValueProperty =
-                "Gets an IEnumerable of KeyValuePairs containing the values in the `{0}` collection. The" + Environment.NewLine +
-                "key is the collection's key and the value is the value for that corresponding key.";
-
-            public static readonly string ExtensionClassSummary = "Contains extension methods for class {0} that assist in performing" + Environment.NewLine
-                + "reads and writes to and from a database.";
-
-            public static readonly string DeepCopySummary = "Creates a deep copy of this table. All the values will be the same" +
-                Environment.NewLine + "but they will be contained in a different object instance.";
-
-            public const string DeepCopyReturn = "A deep copy of this table.";
-
             public const string ClassSummary = "Provides a strongly-typed structure for the database table `{0}`.";
 
             public const string ColumnArrayField = "Array of the database column names.";
@@ -124,8 +63,13 @@ namespace NetGore.Db.ClassCreator
             public const string ColumnIEnumerableProperty =
                 "Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.";
 
+            public const string ConstructorInterfaceParameter = "{0} to copy the initial values from.";
+
             public const string ConstructorParameterIDataReader =
                 "The IDataReader to read the values from. See method ReadValues() for details.";
+
+            public const string ConstructorSummary = "{0} constructor.";
+            public const string DeepCopyReturn = "A deep copy of this table.";
 
             public const string InterfaceCollectionParamKey = "The key that represents the column in this column collection.";
 
@@ -153,6 +97,18 @@ namespace NetGore.Db.ClassCreator
             public static readonly string ColumnCollectionProperty =
                 "Gets an IEnumerable of strings containing the name of the database" + Environment.NewLine +
                 "columns used in the column collection `{0}`.";
+
+            public static readonly string ColumnCollectionValueProperty =
+                "Gets an IEnumerable of KeyValuePairs containing the values in the `{0}` collection. The" + Environment.NewLine +
+                "key is the collection's key and the value is the value for that corresponding key.";
+
+            public static readonly string DeepCopySummary = "Creates a deep copy of this table. All the values will be the same" +
+                                                            Environment.NewLine +
+                                                            "but they will be contained in a different object instance.";
+
+            public static readonly string ExtensionClassSummary =
+                "Contains extension methods for class {0} that assist in performing" + Environment.NewLine +
+                "reads and writes to and from a database.";
 
             public static readonly string InterfaceCollectionGetter =
                 "Gets the value of the database column in the column collection `{0}`" + Environment.NewLine +
@@ -203,6 +159,36 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
+        /// Comments used with the extension methods.
+        /// </summary>
+        public static class Extensions
+        {
+            public const string ExtensionParameter = "The object to add the extension method to.";
+        }
+
+        /// <summary>
+        /// Comments used in CreateMethodGetColumnData().
+        /// </summary>
+        public static class GetColumnData
+        {
+            public const string ColumnNameParameter = "The database name of the column to get the data for.";
+
+            public const string Returns = "The data for the database column with the name columnName.";
+            public const string Summary = "Gets the data for the database column that this table represents.";
+        }
+
+        /// <summary>
+        /// Comments used in CreateMethodGetValue().
+        /// </summary>
+        public static class GetValue
+        {
+            public const string ColumnNameParameter = "The database name of the column to get the value for.";
+
+            public const string Returns = "The value of the column with the name columnName.";
+            public const string Summary = "Gets the value of a column by the database column's name.";
+        }
+
+        /// <summary>
         /// Comments used in CreateMethodReadValues().
         /// </summary>
         public static class ReadValues
@@ -215,6 +201,17 @@ namespace NetGore.Db.ClassCreator
                                                     "object's properties. The database column's name is used to as the key, so the value" +
                                                     Environment.NewLine +
                                                     "will not be found if any aliases are used or not all columns were selected.";
+        }
+
+        /// <summary>
+        /// Comments used in CreateMethodSetValue();
+        /// </summary>
+        public static class SetValue
+        {
+            public const string ColumnNameParameter = "The database name of the column to get the value for.";
+            public const string Summary = "Sets the value of a column by the database column's name.";
+
+            public const string ValueParameter = "Value to assign to the column.";
         }
 
         /// <summary>
