@@ -39,17 +39,84 @@ namespace NetGore.Db.ClassCreator
         }
 
         /// <summary>
+        /// Comments used in CreateMethodGetColumnData().
+        /// </summary>
+        public static class GetColumnData
+        {
+            public const string Summary = "Gets the data for the database column that this table represents.";
+
+            public const string ColumnNameParameter = "The database name of the column to get the data for.";
+
+            public const string Returns = "The data for the database column with the name columnName.";
+        }
+
+        /// <summary>
+        /// Comments used with the extension methods.
+        /// </summary>
+        public static class Extensions
+        {
+            public const string ExtensionParameter = "The object to add the extension method to.";
+        }
+
+        /// <summary>
+        /// Comments used in CreateMethodSetValue();
+        /// </summary>
+        public static class SetValue
+        {
+            public const string Summary = "Sets the value of a column by the database column's name.";
+
+            public const string ColumnNameParameter = "The database name of the column to get the value for.";
+
+            public const string ValueParameter = "Value to assign to the column.";
+        }
+
+        /// <summary>
+        /// Comments used in CreateMethodGetValue().
+        /// </summary>
+        public static class GetValue
+        {
+            public const string Summary = "Gets the value of a column by the database column's name.";
+
+            public const string ColumnNameParameter = "The database name of the column to get the value for.";
+
+            public const string Returns = "The value of the column with the name columnName.";
+        }
+
+        /// <summary>
+        /// Comments used in CreateMethodCopyValuesFrom().
+        /// </summary>
+        public static class CopyValuesFrom
+        {
+            public const string Summary = "Copies the values from the given source into this {0}.";
+
+            public const string SourceParameter = "The {0} to copy the values from.";
+        }
+
+        /// <summary>
         /// Comments used in CreateCode().
         /// </summary>
         public static class CreateCode
         {
+            public const string ConstructorSummary = "{0} constructor.";
+
+            public const string ConstructorInterfaceParameter = "{0} to copy the initial values from.";
+
+            public static readonly string ColumnCollectionValueProperty =
+                "Gets an IEnumerable of KeyValuePairs containing the values in the `{0}` collection. The" + Environment.NewLine +
+                "key is the collection's key and the value is the value for that corresponding key.";
+
+            public static readonly string ExtensionClassSummary = "Contains extension methods for class {0} that assist in performing" + Environment.NewLine
+                + "reads and writes to and from a database.";
+
             public static readonly string DeepCopySummary = "Creates a deep copy of this table. All the values will be the same" +
                 Environment.NewLine + "but they will be contained in a different object instance.";
+
             public const string DeepCopyReturn = "A deep copy of this table.";
 
             public const string ClassSummary = "Provides a strongly-typed structure for the database table `{0}`.";
 
             public const string ColumnArrayField = "Array of the database column names.";
+
             public const string ColumnCollectionField = "The fields that are used in the column collection `{0}`.";
 
             public const string ColumnCount = "The number of columns in the database table that this class represents.";
