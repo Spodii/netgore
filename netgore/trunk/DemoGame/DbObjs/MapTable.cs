@@ -125,6 +125,10 @@ public MapTable(NetGore.MapIndex @iD, System.String @name)
 this.ID = (NetGore.MapIndex)@iD;
 this.Name = (System.String)@name;
 }
+/// <summary>
+/// MapTable constructor.
+/// </summary>
+/// <param name="source">IMapTable to copy the initial values from.</param>
 public MapTable(IMapTable source)
 {
 CopyValuesFrom(source);
@@ -152,12 +156,23 @@ dic["@id"] = (NetGore.MapIndex)source.ID;
 dic["@name"] = (System.String)source.Name;
 }
 
+/// <summary>
+/// Copies the values from the given <paramref name="source"/> into this MapTable.
+/// </summary>
+/// <param name="source">The IMapTable to copy the values from.</param>
 public void CopyValuesFrom(IMapTable source)
 {
 this.ID = (NetGore.MapIndex)source.ID;
 this.Name = (System.String)source.Name;
 }
 
+/// <summary>
+/// Gets the value of a column by the database column's name.
+/// </summary>
+/// <param name="columnName">The database name of the column to get the value for.</param>
+/// <returns>
+/// The value of the column with the name <paramref name="columnName"/>.
+/// </returns>
 public System.Object GetValue(System.String columnName)
 {
 switch (columnName)
@@ -173,6 +188,11 @@ throw new ArgumentException("Field not found.","columnName");
 }
 }
 
+/// <summary>
+/// Sets the <paramref name="value"/> of a column by the database column's name.
+/// </summary>
+/// <param name="columnName">The database name of the column to get the <paramref name="value"/> for.</param>
+/// <param name="value">Value to assign to the column.</param>
 public void SetValue(System.String columnName, System.Object value)
 {
 switch (columnName)
@@ -190,9 +210,16 @@ throw new ArgumentException("Field not found.","columnName");
 }
 }
 
-public static ColumnMetadata GetColumnData(System.String fieldName)
+/// <summary>
+/// Gets the data for the database column that this table represents.
+/// </summary>
+/// <param name="columnName">The database name of the column to get the data for.</param>
+/// <returns>
+/// The data for the database column with the name <paramref name="columnName"/>.
+/// </returns>
+public static ColumnMetadata GetColumnData(System.String columnName)
 {
-switch (fieldName)
+switch (columnName)
 {
 case "id":
 return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(System.UInt16), false, true, false);
@@ -201,7 +228,7 @@ case "name":
 return new ColumnMetadata("name", "", "varchar(255)", null, typeof(System.String), false, false, false);
 
 default:
-throw new ArgumentException("Field not found.","fieldName");
+throw new ArgumentException("Field not found.","columnName");
 }
 }
 
