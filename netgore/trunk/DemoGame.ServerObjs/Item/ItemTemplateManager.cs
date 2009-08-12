@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore.Collections;
@@ -10,7 +11,7 @@ namespace DemoGame.Server
 {
     public static class ItemTemplateManager
     {
-        static readonly DArray<ItemTemplate> _itemTemplates = new DArray<ItemTemplate>(32, false);
+        static readonly DArray<IItemTemplateTable> _itemTemplates = new DArray<IItemTemplateTable>(32, false);
 
         static readonly Random _rnd = new Random();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -24,9 +25,9 @@ namespace DemoGame.Server
         /// Get a random ItemTemplate.
         /// </summary>
         /// <returns>A random ItemTemplate. Will not be null.</returns>
-        public static ItemTemplate GetRandomTemplate()
+        public static IItemTemplateTable GetRandomTemplate()
         {
-            ItemTemplate template;
+            IItemTemplateTable template;
             do
             {
                 int i = _rnd.Next(0, _itemTemplates.Count);
@@ -39,17 +40,19 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the ItemTemplate with the specified <paramref name="index"/>.
+        /// Gets the IItemTemplateTable with the specified <paramref name="index"/>.
         /// </summary>
         /// <param name="index">The index of the ItemTemplate.</param>
         /// <returns>The ItemTemplate with the specified <paramref name="index"/>, or null if none found for the index
         /// or the index is invalid.</returns>
-        public static ItemTemplate GetTemplate(ItemTemplateID index)
+        public static IItemTemplateTable GetTemplate(ItemTemplateID index)
         {
             if (!_itemTemplates.CanGet((int)index))
                 return null;
 
-            return _itemTemplates[(int)index];
+            var ret = _itemTemplates[(int)index];
+            Debug.Assert(ret.ID == index);
+            return ret;
         }
 
         public static void Initialize(DBController dbController)
@@ -64,7 +67,7 @@ namespace DemoGame.Server
 
             // Load the item templates
             var itemTemplates = dbController.GetQuery<SelectItemTemplatesQuery>().Execute();
-            foreach (ItemTemplate it in itemTemplates)
+            foreach (var it in itemTemplates)
             {
                 _itemTemplates[(int)it.ID] = it;
 

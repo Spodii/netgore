@@ -97,7 +97,7 @@ namespace DemoGame.Server
                 {
                     float x = rand.Next(128, (int)m.Width - 256);
                     float y = rand.Next(128, (int)m.Height - 256);
-                    ItemTemplate template = ItemTemplateManager.GetRandomTemplate();
+                    var template = ItemTemplateManager.GetRandomTemplate();
 
                     new ItemEntity(template, new Vector2(x, y), 1, m);
                 }
