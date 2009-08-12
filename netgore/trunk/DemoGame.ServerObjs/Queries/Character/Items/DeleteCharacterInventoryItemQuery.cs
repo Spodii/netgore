@@ -4,6 +4,8 @@ using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
+// TODO: !! This query won't work! I need to use the CharacterID, ItemID, AND Slot!
+
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]

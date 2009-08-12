@@ -13,6 +13,7 @@ namespace DemoGame.Server.Queries
 
         public SelectAllianceIDsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
+            QueryAsserts.ArePrimaryKeys(AllianceTable.DbKeyColumns, "id");
         }
 
         public IEnumerable<AllianceID> Execute()

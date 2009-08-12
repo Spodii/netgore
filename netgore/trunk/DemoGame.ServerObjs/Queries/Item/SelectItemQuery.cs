@@ -2,11 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
-
-// TODO: !! Cleanup query
 
 namespace DemoGame.Server.Queries
 {
@@ -17,6 +16,7 @@ namespace DemoGame.Server.Queries
 
         public SelectItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
+            QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }
 
         public IItemTable Execute(ItemID id)

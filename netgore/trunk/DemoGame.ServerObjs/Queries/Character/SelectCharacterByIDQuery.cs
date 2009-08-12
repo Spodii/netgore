@@ -15,6 +15,7 @@ namespace DemoGame.Server.Queries
 
         public SelectCharacterByIDQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
+            QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
         }
 
         public CharacterTable Execute(CharacterID characterID)

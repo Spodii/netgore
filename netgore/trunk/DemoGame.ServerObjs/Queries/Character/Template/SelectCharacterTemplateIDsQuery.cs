@@ -13,6 +13,7 @@ namespace DemoGame.Server.Queries
 
         public SelectCharacterTemplateIDsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
+            QueryAsserts.ArePrimaryKeys(CharacterTemplateTable.DbKeyColumns, "id");
         }
 
         public IEnumerable<CharacterTemplateID> Execute()
