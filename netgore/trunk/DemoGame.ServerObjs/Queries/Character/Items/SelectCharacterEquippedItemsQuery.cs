@@ -21,16 +21,17 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IDictionary<EquipmentSlot, ItemValues> Execute(CharacterID characterID)
+        public IDictionary<EquipmentSlot, IItemTable> Execute(CharacterID characterID)
         {
-            var retValues = new Dictionary<EquipmentSlot, ItemValues>();
+            var retValues = new Dictionary<EquipmentSlot, IItemTable>();
 
             using (IDataReader r = ExecuteReader(characterID))
             {
                 while (r.Read())
                 {
                     EquipmentSlot slot = r.GetEquipmentSlot("slot");
-                    ItemValues values = ItemQueryHelper.ReadItemValues(r);
+                    var values = new ItemTable();
+                    values.ReadValues(r);
                     retValues.Add(slot, values);
                 }
             }

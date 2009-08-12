@@ -20,15 +20,16 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IEnumerable<ItemValues> Execute(CharacterID characterID)
+        public IEnumerable<IItemTable> Execute(CharacterID characterID)
         {
-            var retValues = new List<ItemValues>();
+            var retValues = new List<IItemTable>();
 
             using (IDataReader r = ExecuteReader(characterID))
             {
                 while (r.Read())
                 {
-                    ItemValues values = ItemQueryHelper.ReadItemValues(r);
+                    var values = new ItemTable();
+                    values.ReadValues(r); 
                     retValues.Add(values);
                 }
             }

@@ -21,14 +21,14 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IEnumerable<ItemValues> Execute(ItemID low, ItemID high)
+        public IEnumerable<IItemTable> Execute(ItemID low, ItemID high)
         {
             return Execute(new SelectItemsQueryValues(low, high));
         }
 
-        public IEnumerable<ItemValues> Execute(SelectItemsQueryValues values)
+        public IEnumerable<IItemTable> Execute(SelectItemsQueryValues values)
         {
-            var retValues = new List<ItemValues>();
+            var retValues = new List<IItemTable>();
 
             using (IDataReader r = ExecuteReader(values))
             {
@@ -37,8 +37,9 @@ namespace DemoGame.Server.Queries
                     if (!r.Read())
                         throw new DataException("Query contained no results for the specified Item ID range.");
 
-                    ItemValues tempValues = ItemQueryHelper.ReadItemValues(r);
-                    retValues.Add(tempValues);
+                    var itemValues = new ItemTable();
+                    itemValues.ReadValues(r);
+                    retValues.Add(itemValues);
                 }
             }
 
