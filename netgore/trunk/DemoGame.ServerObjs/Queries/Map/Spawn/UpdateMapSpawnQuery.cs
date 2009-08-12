@@ -16,6 +16,7 @@ namespace DemoGame.Server.Queries
 
         public UpdateMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
+            QueryAsserts.ArePrimaryKeys(MapSpawnTable.DbKeyColumns, "id");
         }
 
         /// <summary>

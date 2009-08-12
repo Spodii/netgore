@@ -13,6 +13,7 @@ namespace DemoGame.Server.Queries
 
         public DeleteItemQuery(DbConnectionPool conn) : base(conn, _queryString)
         {
+            QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }
 
         /// <summary>

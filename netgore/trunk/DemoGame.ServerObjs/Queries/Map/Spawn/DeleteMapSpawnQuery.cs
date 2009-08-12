@@ -13,6 +13,7 @@ namespace DemoGame.Server.Queries
 
         public DeleteMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
+            QueryAsserts.ArePrimaryKeys(MapSpawnTable.DbKeyColumns, "id");
         }
 
         /// <summary>

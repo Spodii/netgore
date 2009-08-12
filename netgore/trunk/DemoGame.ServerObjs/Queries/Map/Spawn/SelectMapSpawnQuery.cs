@@ -17,6 +17,7 @@ namespace DemoGame.Server.Queries
 
         public SelectMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
+            QueryAsserts.ArePrimaryKeys(MapSpawnTable.DbKeyColumns, "id");
         }
 
         public SelectMapSpawnQueryValues Execute(MapSpawnValuesID id)

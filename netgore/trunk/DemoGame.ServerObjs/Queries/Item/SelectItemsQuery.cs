@@ -19,6 +19,7 @@ namespace DemoGame.Server.Queries
 
         public SelectItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
+            QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }
 
         public IEnumerable<IItemTable> Execute(ItemID low, ItemID high)

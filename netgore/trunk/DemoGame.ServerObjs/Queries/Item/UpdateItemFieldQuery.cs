@@ -24,6 +24,8 @@ namespace DemoGame.Server.Queries
                 throw new ArgumentNullException("connectionPool");
 
             _connectionPool = connectionPool;
+
+            QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }
 
         public void Execute(ItemID itemID, string field, object value)
