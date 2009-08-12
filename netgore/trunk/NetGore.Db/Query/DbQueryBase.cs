@@ -76,7 +76,7 @@ namespace NetGore.Db
                 return (DbParameter)cloneable.Clone();
 
             // FUTURE: Would be nice to have support of cloning ALL DbParameters...
-            throw new NotImplementedException("Only DbParameters that implementICloneable are currently supported.");
+            throw new NotImplementedException("Only DbParameters that implement ICloneable are currently supported.");
         }
 
         /// <summary>

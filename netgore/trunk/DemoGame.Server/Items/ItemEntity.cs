@@ -108,7 +108,7 @@ namespace DemoGame.Server
         }
 
         public ItemEntity(ItemTemplate t, Vector2 pos, byte amount)
-            : this(pos, t.Size, t.Name, t.Description, t.Type, t.Graphic, t.Value, amount, t.HP, t.MP, t.BaseStats, t.ReqStats)
+            : this(pos, t.Size, t.Name, t.Description, t.Type, t.Graphic, t.Value, amount, t.HP, t.MP, t.Stats, t.ReqStats)
         {
         }
 
@@ -623,28 +623,6 @@ namespace DemoGame.Server
         int IItemTable.GetStat(StatType key)
         {
             return _baseStats[key];
-        }
-
-        /// <summary>
-        /// Sets the <paramref name="value"/> of the database column in the column collection `ReqStat`
-        /// that corresponds to the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key that represents the column in this column collection.</param>
-        /// <param name="value">The value to assign to the column with the corresponding <paramref name="key"/>.</param>
-        void IItemTable.SetReqStat(StatType key, int value)
-        {
-            _reqStats[key] = value;
-        }
-
-        /// <summary>
-        /// Sets the <paramref name="value"/> of the database column in the column collection `Stat`
-        /// that corresponds to the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key that represents the column in this column collection.</param>
-        /// <param name="value">The value to assign to the column with the corresponding <paramref name="key"/>.</param>
-        void IItemTable.SetStat(StatType key, int value)
-        {
-            _baseStats[key] = value;
         }
 
         #endregion

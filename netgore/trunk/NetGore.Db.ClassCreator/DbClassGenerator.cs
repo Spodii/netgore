@@ -405,18 +405,6 @@ namespace NetGore.Db.ClassCreator
                                                                                          InterfaceCollectionParamKey)));
                         sb.AppendLine(Formatter.GetInterfaceMethod("Get" + name, coll.ValueType, keyParameter));
 
-                        // Setter
-                        sb.AppendLine(
-                            Formatter.GetXmlComment(string.Format(Comments.CreateCode.InterfaceCollectionSetter, coll.Name), null,
-                                                    new KeyValuePair<string, string>("key",
-                                                                                     Comments.CreateCode.
-                                                                                         InterfaceCollectionParamKey),
-                                                    new KeyValuePair<string, string>("value",
-                                                                                     Comments.CreateCode.
-                                                                                         InterfaceCollectionParamValue)));
-                        sb.AppendLine(Formatter.GetInterfaceMethod("Set" + name, typeof(void), keyParameter,
-                                                                   new MethodParameter("value", coll.ValueType, Formatter)));
-
                         // Collection
                         sb.AppendLine(
                             Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionValueProperty, coll.Name)));
