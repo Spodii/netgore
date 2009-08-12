@@ -19,19 +19,20 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public ItemValues Execute(ItemID id)
+        public IItemTable Execute(ItemID id)
         {
             if (id <= 0)
                 throw new ArgumentOutOfRangeException("id");
 
-            ItemValues retValues;
+            ItemTable retValues;
 
             using (IDataReader r = ExecuteReader(id))
             {
                 if (!r.Read())
                     throw new DataException(string.Format("Query contained no results for id `{0}`.", id));
 
-                retValues = ItemQueryHelper.ReadItemValues(r);
+                retValues = new ItemTable();
+                retValues.ReadValues(r);
             }
 
             return retValues;

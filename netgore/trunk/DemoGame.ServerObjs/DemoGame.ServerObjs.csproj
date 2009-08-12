@@ -123,7 +123,6 @@
     <Compile Include="Item\ItemTemplate.cs" />
     <Compile Include="Item\ItemTemplateID.cs" />
     <Compile Include="Item\ItemTemplateManager.cs" />
-    <Compile Include="Item\ItemValues.cs" />
     <Compile Include="MapSpawn\MapSpawnRect.cs" />
     <Compile Include="MapSpawn\MapSpawnValues.cs" />
     <Compile Include="MapSpawn\MapSpawnValuesID.cs" />
@@ -154,7 +153,6 @@
     <Compile Include="Queries\DBTableValidator.cs" />
     <Compile Include="Queries\IDataReaderExtensions.cs" />
     <Compile Include="Queries\Item\DeleteItemQuery.cs" />
-    <Compile Include="Queries\Item\ItemQueryHelper.cs" />
     <Compile Include="Queries\Item\ReplaceItemQuery.cs" />
     <Compile Include="Queries\Item\SelectItemQuery.cs" />
     <Compile Include="Queries\Item\SelectItemsQuery.cs" />

@@ -20,7 +20,7 @@ namespace DemoGame.Server
     /// <summary>
     /// An item on the server.
     /// </summary>
-    public class ItemEntity : ItemEntityBase
+    public class ItemEntity : ItemEntityBase, IItemTable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static DBController _dbController;
@@ -68,46 +68,9 @@ namespace DemoGame.Server
             get { return _dbController.GetQuery<UpdateItemFieldQuery>(); }
         }
 
-        /// <summary>
-        /// Gets or sets the size of this item cluster (1 for a single item).
-        /// </summary>
-        public override byte Amount
-        {
-            get { return _amount; }
-            set
-            {
-                if (_amount == value)
-                    return;
-
-                _amount = value;
-
-                if (OnChangeGraphicOrAmount != null)
-                    OnChangeGraphicOrAmount(this);
-
-                SynchronizeField("amount", _amount);
-            }
-        }
-
         public ItemStats BaseStats
         {
             get { return _baseStats; }
-        }
-
-        /// <summary>
-        /// Gets or sets the description of the item.
-        /// </summary>
-        public override string Description
-        {
-            get { return _description; }
-            set
-            {
-                if (_description == value)
-                    return;
-
-                _description = value;
-
-                SynchronizeField("description", _description);
-            }
         }
 
         /// <summary>
@@ -130,96 +93,9 @@ namespace DemoGame.Server
             }
         }
 
-        public SPValueType HP
-        {
-            get { return _hp; }
-            set
-            {
-                if (_hp == value)
-                    return;
-
-                _hp = value;
-
-                SynchronizeField("hp", _hp);
-            }
-        }
-
-        /// <summary>
-        /// Gets the unique ID for this ItemEntity.
-        /// </summary>
-        public ItemID ID
-        {
-            get { return _id; }
-        }
-
-        public SPValueType MP
-        {
-            get { return _mp; }
-            set
-            {
-                if (_mp == value)
-                    return;
-
-                _mp = value;
-
-                SynchronizeField("mp", _mp);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the item.
-        /// </summary>
-        public override string Name
-        {
-            get { return _name; }
-            set
-            {
-                if (_name == value)
-                    return;
-
-                _name = value;
-
-                SynchronizeField("name", _name);
-            }
-        }
-
         public ItemStats ReqStats
         {
             get { return _reqStats; }
-        }
-
-        /// <summary>
-        /// Gets or sets the type of item this is.
-        /// </summary>
-        public override ItemType Type
-        {
-            get { return _type; }
-            set
-            {
-                if (_type == value)
-                    return;
-
-                _type = value;
-
-                SynchronizeField("type", (byte)_type);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the value of the item.
-        /// </summary>
-        public override int Value
-        {
-            get { return _value; }
-            set
-            {
-                if (_value == value)
-                    return;
-
-                _value = value;
-
-                SynchronizeField("value", _value);
-            }
         }
 
         public ItemEntity(ItemTemplate t, byte amount) : this(t, Vector2.Zero, amount)
@@ -276,9 +152,19 @@ namespace DemoGame.Server
             _baseStats = NewItemStats(baseStats, StatCollectionType.Base);
             _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
 
-            ReplaceItem.Execute(ToItemValues(_id));
+            var itemValues = DeepCopyValues();
+            ReplaceItem.Execute(itemValues);
 
             OnResize += ItemEntity_OnResize;
+        }
+
+        /// <summary>
+        /// Gets a deep copy of the ItemEntity's values, providing a "snapshot" of the values of the ItemEntity.
+        /// </summary>
+        /// <returns>A deep copy of the ItemEntity's values.</returns>
+        public IItemTable DeepCopyValues()
+        {
+            return ((IItemTable)this).DeepCopy();
         }
 
         ItemEntity(ItemEntity s)
@@ -524,18 +410,243 @@ namespace DemoGame.Server
             UpdateItemField.Execute(_id, field, value);
         }
 
-        public ItemValues ToItemValues(ItemID id)
-        {
-            var bs = BaseStats.ToKeyValuePairs();
-            var rs = ReqStats.ToKeyValuePairs();
-
-            return new ItemValues(id, (byte)CB.Width, (byte)CB.Height, Name, Description, Type, GraphicIndex, Amount, Value, HP,
-                                  MP, bs, rs);
-        }
-
         public override string ToString()
         {
             return string.Format("{0} [{1}]", Name, ID);
         }
+
+        #region IItemTable Members
+
+        /// <summary>
+        /// Gets or sets the size of this item cluster (1 for a single item).
+        /// </summary>
+        public override byte Amount
+        {
+            get { return _amount; }
+            set
+            {
+                if (_amount == value)
+                    return;
+
+                _amount = value;
+
+                if (OnChangeGraphicOrAmount != null)
+                    OnChangeGraphicOrAmount(this);
+
+                SynchronizeField("amount", _amount);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the description of the item.
+        /// </summary>
+        public override string Description
+        {
+            get { return _description; }
+            set
+            {
+                if (_description == value)
+                    return;
+
+                _description = value;
+
+                SynchronizeField("description", _description);
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `graphic`.
+        /// </summary>
+        GrhIndex IItemTable.Graphic
+        {
+            get
+            {
+                // TODO: Remove this by renaming GraphicIndex overload
+                return GraphicIndex;
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `height`.
+        /// </summary>
+        byte IItemTable.Height
+        {
+            get { return (byte)CB.Height; }
+        }
+
+        public SPValueType HP
+        {
+            get { return _hp; }
+            set
+            {
+                if (_hp == value)
+                    return;
+
+                _hp = value;
+
+                SynchronizeField("hp", _hp);
+            }
+        }
+
+        /// <summary>
+        /// Gets the unique ID for this ItemEntity.
+        /// </summary>
+        public ItemID ID
+        {
+            get { return _id; }
+        }
+
+        public SPValueType MP
+        {
+            get { return _mp; }
+            set
+            {
+                if (_mp == value)
+                    return;
+
+                _mp = value;
+
+                SynchronizeField("mp", _mp);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the item.
+        /// </summary>
+        public override string Name
+        {
+            get { return _name; }
+            set
+            {
+                if (_name == value)
+                    return;
+
+                _name = value;
+
+                SynchronizeField("name", _name);
+            }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of KeyValuePairs containing the values in the `ReqStat` collection. The
+        /// key is the collection's key and the value is the value for that corresponding key.
+        /// </summary>
+        IEnumerable<KeyValuePair<StatType, int>> IItemTable.ReqStats
+        {
+            get { return ReqStats.ToKeyValuePairs(); }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of KeyValuePairs containing the values in the `Stat` collection. The
+        /// key is the collection's key and the value is the value for that corresponding key.
+        /// </summary>
+        IEnumerable<KeyValuePair<StatType, int>> IItemTable.Stats
+        {
+            get { return BaseStats.ToKeyValuePairs(); }
+        }
+
+        /// <summary>
+        /// Gets or sets the type of item this is.
+        /// </summary>
+        public override ItemType Type
+        {
+            get { return _type; }
+            set
+            {
+                if (_type == value)
+                    return;
+
+                _type = value;
+
+                SynchronizeField("type", (byte)_type);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the value of the item.
+        /// </summary>
+        public override int Value
+        {
+            get { return _value; }
+            set
+            {
+                if (_value == value)
+                    return;
+
+                _value = value;
+
+                SynchronizeField("value", _value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `width`.
+        /// </summary>
+        byte IItemTable.Width
+        {
+            get { return (byte)CB.Width; }
+        }
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        IItemTable IItemTable.DeepCopy()
+        {
+            return new ItemTable(this);
+        }
+
+        /// <summary>
+        /// Gets the value of the database column in the column collection `ReqStat`
+        /// that corresponds to the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key that represents the column in this column collection.</param>
+        /// <returns>
+        /// The value of the database column with the corresponding <paramref name="key"/>.
+        /// </returns>
+        int IItemTable.GetReqStat(StatType key)
+        {
+            return _reqStats[key];
+        }
+
+        /// <summary>
+        /// Gets the value of the database column in the column collection `Stat`
+        /// that corresponds to the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key that represents the column in this column collection.</param>
+        /// <returns>
+        /// The value of the database column with the corresponding <paramref name="key"/>.
+        /// </returns>
+        int IItemTable.GetStat(StatType key)
+        {
+            return _baseStats[key];
+        }
+
+        /// <summary>
+        /// Sets the <paramref name="value"/> of the database column in the column collection `ReqStat`
+        /// that corresponds to the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key that represents the column in this column collection.</param>
+        /// <param name="value">The value to assign to the column with the corresponding <paramref name="key"/>.</param>
+        void IItemTable.SetReqStat(StatType key, int value)
+        {
+            _reqStats[key] = value;
+        }
+
+        /// <summary>
+        /// Sets the <paramref name="value"/> of the database column in the column collection `Stat`
+        /// that corresponds to the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key that represents the column in this column collection.</param>
+        /// <param name="value">The value to assign to the column with the corresponding <paramref name="key"/>.</param>
+        void IItemTable.SetStat(StatType key, int value)
+        {
+            _baseStats[key] = value;
+        }
+
+        #endregion
     }
 }
