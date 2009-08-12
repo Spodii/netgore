@@ -98,17 +98,19 @@ namespace DemoGame.Server
             get { return _reqStats; }
         }
 
-        public ItemEntity(ItemTemplate t, byte amount) : this(t, Vector2.Zero, amount)
+        public ItemEntity(IItemTemplateTable t, byte amount)
+            : this(t, Vector2.Zero, amount)
         {
         }
 
-        public ItemEntity(ItemTemplate t, Vector2 pos, byte amount, Map map) : this(t, pos, amount)
+        public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, MapBase map)
+            : this(t, pos, amount)
         {
             map.AddEntity(this);
         }
 
-        public ItemEntity(ItemTemplate t, Vector2 pos, byte amount)
-            : this(pos, t.Size, t.Name, t.Description, t.Type, t.Graphic, t.Value, amount, t.HP, t.MP, t.Stats, t.ReqStats)
+        public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
+            : this(pos, new Vector2(t.Width, t.Height), t.Name, t.Description, (ItemType)t.Type, t.Graphic, t.Value, amount, t.HP, t.MP, t.Stats, t.ReqStats)
         {
         }
 
@@ -461,7 +463,6 @@ namespace DemoGame.Server
         {
             get
             {
-                // TODO: Remove this by renaming GraphicIndex overload
                 return GraphicIndex;
             }
         }

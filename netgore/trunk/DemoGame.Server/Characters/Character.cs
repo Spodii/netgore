@@ -728,7 +728,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="itemTemplate">ItemTemplate for the item to drop.</param>
         /// <param name="amount">Amount of the item to drop.</param>
-        protected void DropItem(ItemTemplate itemTemplate, byte amount)
+        protected void DropItem(IItemTemplateTable itemTemplate, byte amount)
         {
             Vector2 dropPos = GetDropPos();
 

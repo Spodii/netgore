@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -209,7 +210,7 @@ namespace DemoGame.Server
         /// <param name="pos">Position to create the item at.</param>
         /// <param name="amount">Amount of the item to create. Must be greater than 0.</param>
         /// <returns>Reference to the new ItemEntity created.</returns>
-        public ItemEntity CreateItem(ItemTemplate template, Vector2 pos, byte amount)
+        public ItemEntity CreateItem(IItemTemplateTable template, Vector2 pos, byte amount)
         {
             // Check for a valid amount
             if (amount < 1)

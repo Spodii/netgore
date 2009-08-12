@@ -18,15 +18,16 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IEnumerable<ItemTemplate> Execute()
+        public IEnumerable<IItemTemplateTable> Execute()
         {
-            var ret = new List<ItemTemplate>();
+            var ret = new List<IItemTemplateTable>();
 
             using (IDataReader r = ExecuteReader())
             {
                 while (r.Read())
                 {
-                    ItemTemplate template = ItemTemplateQueryHelper.ReadItemTemplate(r);
+                    var template = new ItemTemplateTable();
+                    template.ReadValues(r);
                     ret.Add(template);
                 }
             }

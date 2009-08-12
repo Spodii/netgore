@@ -1,13 +1,14 @@
 using System.Linq;
+using DemoGame.Server.DbObjs;
 
 namespace DemoGame.Server
 {
     public class CharacterTemplateEquipmentItem
     {
         public ItemChance Chance { get; private set; }
-        public ItemTemplate ItemTemplate { get; private set; }
+        public IItemTemplateTable ItemTemplate { get; private set; }
 
-        public CharacterTemplateEquipmentItem(ItemTemplate itemTemplate, ItemChance chance)
+        public CharacterTemplateEquipmentItem(IItemTemplateTable itemTemplate, ItemChance chance)
         {
             ItemTemplate = itemTemplate;
             Chance = chance;
