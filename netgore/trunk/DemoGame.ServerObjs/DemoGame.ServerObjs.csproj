@@ -141,7 +141,6 @@
     <Compile Include="Queries\Character\Items\SelectCharacterInventoryItemsQuery.cs" />
     <Compile Include="Queries\Character\SelectCharacterByIDQuery.cs" />
     <Compile Include="Queries\Character\SelectCharacterQuery.cs" />
-    <Compile Include="Queries\Character\SelectCharacterQueryValues.cs" />
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateEquippedQuery.cs" />
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateIDsQuery.cs" />
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateInventoryQuery.cs" />
@@ -158,9 +157,7 @@
     <Compile Include="Queries\Item\Template\SelectItemTemplatesQuery.cs" />
     <Compile Include="Queries\Item\UpdateItemFieldQuery.cs" />
     <Compile Include="Queries\Map\Spawn\InsertMapSpawnQuery.cs" />
-    <Compile Include="Queries\Map\Spawn\MapSpawnQueryHelper.cs" />
     <Compile Include="Queries\Map\Spawn\SelectMapSpawnQuery.cs" />
-    <Compile Include="Queries\Map\Spawn\SelectMapSpawnQueryValues.cs" />
     <Compile Include="Queries\Map\Spawn\SelectMapSpawnsOnMapQuery.cs" />
     <Compile Include="Queries\Map\Spawn\UpdateMapSpawnQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

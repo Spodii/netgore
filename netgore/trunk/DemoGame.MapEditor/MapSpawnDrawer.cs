@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame.Client;
 using DemoGame.Server;
+using DemoGame.Server.DbObjs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 
-namespace DemoGame.Client
+namespace DemoGame.MapEditor
 {
     /// <summary>
     /// Draws the MapSpawnValues on a Map.
@@ -20,7 +22,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets or sets an IEnumerable of the MapSpawnValues to draw.
         /// </summary>
-        public IEnumerable<MapSpawnValues> MapSpawnValues { get; set; }
+        public IEnumerable<MapSpawnValues> MapSpawns { get; set; }
 
         /// <summary>
         /// When overridden in the derived class, handles additional drawing for a MapRenderLayer after the
@@ -36,10 +38,10 @@ namespace DemoGame.Client
             if (layer != MapRenderLayer.SpriteForeground)
                 return;
 
-            if (MapSpawnValues == null)
+            if (MapSpawns == null)
                 return;
 
-            foreach (MapSpawnValues item in MapSpawnValues)
+            foreach (var item in MapSpawns)
             {
                 Rectangle rect = item.SpawnArea.ToRectangle(Map);
                 XNARectangle.Draw(spriteBatch, rect, _drawColor);

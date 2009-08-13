@@ -919,7 +919,7 @@ namespace DemoGame.MapEditor
             CreateMapDrawExtensionBase<MapWallDrawer>(chkShowWalls);
             MapSpawnDrawer v = CreateMapDrawExtensionBase<MapSpawnDrawer>(chkDrawSpawnAreas);
             // NOTE: Using SelectedIndexChanged for this may be a stupid idea...
-            lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawnValues = ((NPCSpawnsListBox)o).GetMapSpawnValues());
+            lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
         }
 
         /// <summary>

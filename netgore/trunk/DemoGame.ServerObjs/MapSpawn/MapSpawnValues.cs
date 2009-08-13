@@ -102,9 +102,9 @@ namespace DemoGame.Server
         /// MapSpawnValues constructor.
         /// </summary>
         /// <param name="dbController">The DBController used to synchronize changes to the values.</param>
-        /// <param name="v">The SelectMapSpawnQueryValues containing the values to use.</param>
-        MapSpawnValues(DBController dbController, SelectMapSpawnQueryValues v)
-            : this(dbController, v.ID, v.MapIndex, v.CharacterTemplateID, v.Amount, v.MapSpawnRect)
+        /// <param name="v">The IMapSpawnTable containing the values to use.</param>
+        MapSpawnValues(DBController dbController, IMapSpawnTable v)
+            : this(dbController, v.ID, v.MapID, v.CharacterTemplateID, v.Amount, new MapSpawnRect(v))
         {
         }
 
@@ -166,7 +166,7 @@ namespace DemoGame.Server
         /// <returns>The MapSpawnValues with ID <paramref name="id"/>.</returns>
         public static MapSpawnValues Load(DBController dbController, MapSpawnValuesID id)
         {
-            SelectMapSpawnQueryValues values = dbController.GetQuery<SelectMapSpawnQuery>().Execute(id);
+            var values = dbController.GetQuery<SelectMapSpawnQuery>().Execute(id);
             Debug.Assert(id == values.ID);
             return new MapSpawnValues(dbController, values);
         }
@@ -182,9 +182,9 @@ namespace DemoGame.Server
             var ret = new List<MapSpawnValues>();
             var queryValues = dbController.GetQuery<SelectMapSpawnsOnMapQuery>().Execute(mapIndex);
 
-            foreach (SelectMapSpawnQueryValues v in queryValues)
+            foreach (var v in queryValues)
             {
-                Debug.Assert(v.MapIndex == mapIndex);
+                Debug.Assert(v.MapID == mapIndex);
                 ret.Add(new MapSpawnValues(dbController, v));
             }
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
 
@@ -63,20 +64,20 @@ namespace DemoGame.Server
         /// MapIndex of the <paramref name="mapSpawnValues"/>.</param>
         /// <exception cref="ArgumentException">The <paramref name="map"/>'s MapIndex does not match the
         /// <paramref name="mapSpawnValues"/>'s MapIndex.</exception>
-        public NPCSpawner(MapSpawnValues mapSpawnValues, Map map)
+        public NPCSpawner(IMapSpawnTable mapSpawnValues, Map map)
         {
             if (map == null)
                 throw new ArgumentNullException("map");
             if (mapSpawnValues == null)
                 throw new ArgumentNullException("mapSpawnValues");
 
-            if (map.Index != mapSpawnValues.MapIndex)
+            if (map.Index != mapSpawnValues.MapID)
                 throw new ArgumentException("The map's MapIndex and mapSpawnValues's MapIndex do not match.", "map");
 
             _map = map;
             _characterTemplate = CharacterTemplateManager.GetTemplate(mapSpawnValues.CharacterTemplateID);
-            _amount = mapSpawnValues.SpawnAmount;
-            _area = mapSpawnValues.SpawnArea.ToRectangle(map);
+            _amount = mapSpawnValues.Amount;
+            _area = new MapSpawnRect(mapSpawnValues).ToRectangle(map);
 
             if (_characterTemplate == null)
             {

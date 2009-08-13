@@ -7,12 +7,10 @@ using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
-// TODO: !! Cleanup query
-
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class SelectItemsQuery : DbQueryReader<SelectItemsQueryValues>
+    public class SelectItemsQuery : DbQueryReader<SelectItemsQuery.QueryValues>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id` BETWEEN @low AND @high",
                                                             ItemTable.TableName);
@@ -24,10 +22,10 @@ namespace DemoGame.Server.Queries
 
         public IEnumerable<IItemTable> Execute(ItemID low, ItemID high)
         {
-            return Execute(new SelectItemsQueryValues(low, high));
+            return Execute(new QueryValues(low, high));
         }
 
-        public IEnumerable<IItemTable> Execute(SelectItemsQueryValues values)
+        public IEnumerable<IItemTable> Execute(QueryValues values)
         {
             var retValues = new List<IItemTable>();
 
@@ -62,37 +60,37 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">Item used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, SelectItemsQueryValues item)
+        protected override void SetParameters(DbParameterValues p, QueryValues item)
         {
             p["@low"] = (int)item.Low;
             p["@high"] = (int)item.High;
         }
-    }
 
-    public struct SelectItemsQueryValues
-    {
-        public readonly ItemID High;
-        public readonly ItemID Low;
-
-        public SelectItemsQueryValues(ItemID low, ItemID high)
+        public struct QueryValues
         {
-            if (low > high)
+            public readonly ItemID High;
+            public readonly ItemID Low;
+
+            public QueryValues(ItemID low, ItemID high)
             {
-                Debug.Fail("low is greater than high. Can be fixed, but this is often the indication of a bigger problem.");
+                if (low < 0)
+                    throw new ArgumentOutOfRangeException("low", "Value must be greater than or equal to 0.");
+                if (high < 0)
+                    throw new ArgumentOutOfRangeException("high", "Value must be greater than or equal to 0.");
 
-                // Swap values
-                ItemID tmp = low;
-                low = high;
-                high = tmp;
+                if (low > high)
+                {
+                    Debug.Fail("low is greater than high. Can be fixed, but this is often the indication of a bigger problem.");
+
+                    // Swap values
+                    ItemID tmp = low;
+                    low = high;
+                    high = tmp;
+                }
+
+                Low = low;
+                High = high;
             }
-
-            if (low < 0)
-                throw new ArgumentOutOfRangeException("low", "Value must be greater than or equal to 0.");
-            if (high < 0)
-                throw new ArgumentOutOfRangeException("high", "Value must be greater than or equal to 0.");
-
-            Low = low;
-            High = high;
         }
     }
 }
