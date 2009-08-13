@@ -6,8 +6,6 @@ using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Db;
 
-// TODO: !! Cleanup query
-
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
@@ -19,16 +17,17 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public IEnumerable<SelectMapSpawnQueryValues> Execute(MapIndex id)
+        public IEnumerable<IMapSpawnTable> Execute(MapIndex id)
         {
-            var ret = new List<SelectMapSpawnQueryValues>();
+            var ret = new List<IMapSpawnTable>();
 
             using (IDataReader r = ExecuteReader(id))
             {
                 while (r.Read())
                 {
-                    SelectMapSpawnQueryValues v = MapSpawnQueryHelper.ReadMapSpawnValues(r);
-                    ret.Add(v);
+                    var values = new MapSpawnTable();
+                    values.ReadValues(r);
+                    ret.Add(values);
                 }
             }
 

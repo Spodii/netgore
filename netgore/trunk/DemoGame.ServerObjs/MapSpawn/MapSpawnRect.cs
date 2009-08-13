@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -34,6 +35,10 @@ namespace DemoGame.Server
         /// The Y co-ordinate of the rectangle. If null, the rectangle will be located at the top side of the Map.
         /// </summary>
         public ushort? Y;
+
+        public MapSpawnRect(IMapSpawnTable mapSpawnTable) : this(mapSpawnTable.X, mapSpawnTable.Y, mapSpawnTable.Width, mapSpawnTable.Height)
+        {
+        }
 
         public MapSpawnRect(ushort? x, ushort? y, ushort? width, ushort? height)
         {

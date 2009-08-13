@@ -4,12 +4,10 @@ using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
-// TODO: !! Cleanup query
-
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class UpdateMapSpawnQuery : DbQueryNonReader<MapSpawnValues>
+    public class UpdateMapSpawnQuery : DbQueryNonReader<IMapSpawnTable>
     {
         static readonly string _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", MapSpawnTable.TableName,
                                                             FormatParametersIntoString(MapSpawnTable.DbNonKeyColumns));
@@ -26,7 +24,7 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(MapSpawnQueryHelper.AllDBFields.Select(x => "@" + x));
+            return CreateParameters(MapSpawnTable.DbColumns.Select(x => "@" + x));
         }
 
         /// <summary>
@@ -34,9 +32,9 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">Item used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, MapSpawnValues item)
+        protected override void SetParameters(DbParameterValues p, IMapSpawnTable item)
         {
-            MapSpawnQueryHelper.SetParameters(p, item);
+            item.CopyValues(p);
         }
     }
 }

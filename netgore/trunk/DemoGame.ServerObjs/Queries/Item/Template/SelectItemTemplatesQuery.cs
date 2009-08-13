@@ -4,7 +4,6 @@ using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
-// TODO: !! Cleanup query
 // TODO: Make this a query to just select ONE ItemTemplate, then add a new query to get all ItemTemplateIDs
 
 namespace DemoGame.Server.Queries

@@ -11,7 +11,7 @@ namespace DemoGame.MapEditor
     {
         protected override void Clone(Entity item)
         {
-            // TODO: ...
+            // TODO: Add support for this
             throw new NotImplementedException();
         }
 
