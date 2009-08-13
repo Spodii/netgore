@@ -50,7 +50,7 @@ namespace DemoGame.Server
             if (!_itemTemplates.CanGet((int)index))
                 return null;
 
-            var ret = _itemTemplates[(int)index];
+            IItemTemplateTable ret = _itemTemplates[(int)index];
             Debug.Assert(ret.ID == index);
             return ret;
         }
@@ -67,7 +67,7 @@ namespace DemoGame.Server
 
             // Load the item templates
             var itemTemplates = dbController.GetQuery<SelectItemTemplatesQuery>().Execute();
-            foreach (var it in itemTemplates)
+            foreach (IItemTemplateTable it in itemTemplates)
             {
                 _itemTemplates[(int)it.ID] = it;
 

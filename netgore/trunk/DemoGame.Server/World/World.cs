@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -97,7 +98,7 @@ namespace DemoGame.Server
                 {
                     float x = rand.Next(128, (int)m.Width - 256);
                     float y = rand.Next(128, (int)m.Height - 256);
-                    var template = ItemTemplateManager.GetRandomTemplate();
+                    IItemTemplateTable template = ItemTemplateManager.GetRandomTemplate();
 
                     new ItemEntity(template, new Vector2(x, y), 1, m);
                 }

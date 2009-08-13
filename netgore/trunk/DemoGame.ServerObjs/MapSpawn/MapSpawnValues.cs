@@ -166,7 +166,7 @@ namespace DemoGame.Server
         /// <returns>The MapSpawnValues with ID <paramref name="id"/>.</returns>
         public static MapSpawnValues Load(DBController dbController, MapSpawnValuesID id)
         {
-            var values = dbController.GetQuery<SelectMapSpawnQuery>().Execute(id);
+            IMapSpawnTable values = dbController.GetQuery<SelectMapSpawnQuery>().Execute(id);
             Debug.Assert(id == values.ID);
             return new MapSpawnValues(dbController, values);
         }
@@ -182,7 +182,7 @@ namespace DemoGame.Server
             var ret = new List<MapSpawnValues>();
             var queryValues = dbController.GetQuery<SelectMapSpawnsOnMapQuery>().Execute(mapIndex);
 
-            foreach (var v in queryValues)
+            foreach (IMapSpawnTable v in queryValues)
             {
                 Debug.Assert(v.MapID == mapIndex);
                 ret.Add(new MapSpawnValues(dbController, v));

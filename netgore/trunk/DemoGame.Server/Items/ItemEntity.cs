@@ -98,19 +98,19 @@ namespace DemoGame.Server
             get { return _reqStats; }
         }
 
-        public ItemEntity(IItemTemplateTable t, byte amount)
-            : this(t, Vector2.Zero, amount)
+        public ItemEntity(IItemTemplateTable t, byte amount) : this(t, Vector2.Zero, amount)
         {
         }
 
-        public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, MapBase map)
-            : this(t, pos, amount)
+        public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, MapBase map) : this(t, pos, amount)
         {
             map.AddEntity(this);
         }
 
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
-            : this(pos, new Vector2(t.Width, t.Height), t.Name, t.Description, (ItemType)t.Type, t.Graphic, t.Value, amount, t.HP, t.MP, t.Stats, t.ReqStats)
+            : this(
+                pos, new Vector2(t.Width, t.Height), t.Name, t.Description, (ItemType)t.Type, t.Graphic, t.Value, amount, t.HP,
+                t.MP, t.Stats, t.ReqStats)
         {
         }
 
@@ -154,19 +154,10 @@ namespace DemoGame.Server
             _baseStats = NewItemStats(baseStats, StatCollectionType.Base);
             _reqStats = NewItemStats(reqStats, StatCollectionType.Requirement);
 
-            var itemValues = DeepCopyValues();
+            IItemTable itemValues = DeepCopyValues();
             ReplaceItem.Execute(itemValues);
 
             OnResize += ItemEntity_OnResize;
-        }
-
-        /// <summary>
-        /// Gets a deep copy of the ItemEntity's values, providing a "snapshot" of the values of the ItemEntity.
-        /// </summary>
-        /// <returns>A deep copy of the ItemEntity's values.</returns>
-        public IItemTable DeepCopyValues()
-        {
-            return ((IItemTable)this).DeepCopy();
         }
 
         ItemEntity(ItemEntity s)
@@ -238,6 +229,15 @@ namespace DemoGame.Server
         public override ItemEntityBase DeepCopy()
         {
             return new ItemEntity(this);
+        }
+
+        /// <summary>
+        /// Gets a deep copy of the ItemEntity's values, providing a "snapshot" of the values of the ItemEntity.
+        /// </summary>
+        /// <returns>A deep copy of the ItemEntity's values.</returns>
+        public IItemTable DeepCopyValues()
+        {
+            return ((IItemTable)this).DeepCopy();
         }
 
         /// <summary>
@@ -461,10 +461,7 @@ namespace DemoGame.Server
         /// </summary>
         GrhIndex IItemTable.Graphic
         {
-            get
-            {
-                return GraphicIndex;
-            }
+            get { return GraphicIndex; }
         }
 
         /// <summary>

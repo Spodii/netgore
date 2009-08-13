@@ -36,7 +36,8 @@ namespace DemoGame.Server
         /// </summary>
         public ushort? Y;
 
-        public MapSpawnRect(IMapSpawnTable mapSpawnTable) : this(mapSpawnTable.X, mapSpawnTable.Y, mapSpawnTable.Width, mapSpawnTable.Height)
+        public MapSpawnRect(IMapSpawnTable mapSpawnTable)
+            : this(mapSpawnTable.X, mapSpawnTable.Y, mapSpawnTable.Width, mapSpawnTable.Height)
         {
         }
 

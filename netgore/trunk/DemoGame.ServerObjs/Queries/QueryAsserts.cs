@@ -1,8 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace DemoGame.Server.Queries
 {
@@ -24,7 +23,7 @@ namespace DemoGame.Server.Queries
             if (primaryKeys.Count() != expectedKeys.Length)
                 Debug.Fail(errmsg);
 
-            foreach (var expectedKey in expectedKeys)
+            foreach (string expectedKey in expectedKeys)
             {
                 if (!primaryKeys.Contains(expectedKey, StringComparer.OrdinalIgnoreCase))
                     Debug.Fail(errmsg);
@@ -45,7 +44,7 @@ namespace DemoGame.Server.Queries
             if (primaryKeys.Count() != expectedKeys.Length)
                 Debug.Fail(errmsg);
 
-            foreach (var expectedKey in expectedKeys)
+            foreach (string expectedKey in expectedKeys)
             {
                 if (!primaryKeys.Contains(expectedKey, StringComparer.OrdinalIgnoreCase))
                     Debug.Fail(string.Format(errmsg, expectedKey));

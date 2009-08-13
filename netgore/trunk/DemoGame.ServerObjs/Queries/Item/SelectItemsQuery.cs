@@ -36,7 +36,7 @@ namespace DemoGame.Server.Queries
                     if (!r.Read())
                         throw new DataException("Query contained no results for the specified Item ID range.");
 
-                    var itemValues = new ItemTable();
+                    ItemTable itemValues = new ItemTable();
                     itemValues.ReadValues(r);
                     retValues.Add(itemValues);
                 }
