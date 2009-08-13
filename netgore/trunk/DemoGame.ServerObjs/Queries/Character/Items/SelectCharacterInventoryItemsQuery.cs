@@ -26,8 +26,8 @@ namespace DemoGame.Server.Queries
             {
                 while (r.Read())
                 {
-                    var values = new ItemTable();
-                    values.ReadValues(r); 
+                    ItemTable values = new ItemTable();
+                    values.ReadValues(r);
                     retValues.Add(values);
                 }
             }

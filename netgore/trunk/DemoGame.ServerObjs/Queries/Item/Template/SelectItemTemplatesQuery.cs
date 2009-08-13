@@ -25,7 +25,7 @@ namespace DemoGame.Server.Queries
             {
                 while (r.Read())
                 {
-                    var template = new ItemTemplateTable();
+                    ItemTemplateTable template = new ItemTemplateTable();
                     template.ReadValues(r);
                     ret.Add(template);
                 }

@@ -28,7 +28,7 @@ namespace DemoGame.Server.Queries
                 while (r.Read())
                 {
                     EquipmentSlot slot = r.GetEquipmentSlot("slot");
-                    var values = new ItemTable();
+                    ItemTable values = new ItemTable();
                     values.ReadValues(r);
                     retValues.Add(slot, values);
                 }

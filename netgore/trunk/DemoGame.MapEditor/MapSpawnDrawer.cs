@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using DemoGame.Client;
 using DemoGame.Server;
-using DemoGame.Server.DbObjs;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
@@ -41,7 +40,7 @@ namespace DemoGame.MapEditor
             if (MapSpawns == null)
                 return;
 
-            foreach (var item in MapSpawns)
+            foreach (MapSpawnValues item in MapSpawns)
             {
                 Rectangle rect = item.SpawnArea.ToRectangle(Map);
                 XNARectangle.Draw(spriteBatch, rect, _drawColor);

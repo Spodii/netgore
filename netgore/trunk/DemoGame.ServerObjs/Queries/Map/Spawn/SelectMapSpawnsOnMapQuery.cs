@@ -25,7 +25,7 @@ namespace DemoGame.Server.Queries
             {
                 while (r.Read())
                 {
-                    var values = new MapSpawnTable();
+                    MapSpawnTable values = new MapSpawnTable();
                     values.ReadValues(r);
                     ret.Add(values);
                 }
