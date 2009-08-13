@@ -10,6 +10,9 @@ namespace DemoGame.Server.Queries
     /// </summary>
     public static class QueryAsserts
     {
+        /// <summary>
+        /// The StringComparer used for comparing column names.
+        /// </summary>
         static readonly StringComparer _columnNameComparer = StringComparer.OrdinalIgnoreCase;
 
         /// <summary>
