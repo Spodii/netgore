@@ -2071,6 +2071,21 @@
       <Title>sparse</Title>
     </Category>
   </Grh>
+  <Grh Index="140">
+    <AutomaticSize>False</AutomaticSize>
+    <Frames Count="1" />
+    <Texture>
+      <File>SkillIcon/heal</File>
+      <X>0</X>
+      <Y>0</Y>
+      <W>32</W>
+      <H>32</H>
+    </Texture>
+    <Category>
+      <Name>SkillIcon</Name>
+      <Title>heal</Title>
+    </Category>
+  </Grh>
   <Grh Index="200">
     <AutomaticSize>False</AutomaticSize>
     <Frames Count="1" />

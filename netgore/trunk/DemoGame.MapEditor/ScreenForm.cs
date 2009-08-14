@@ -1180,6 +1180,11 @@ namespace DemoGame.MapEditor
                 Dispose();
                 throw;
             }
+            finally
+            {
+
+                SkillInfoManager.Save();
+            }
         }
 
         /// <summary>
