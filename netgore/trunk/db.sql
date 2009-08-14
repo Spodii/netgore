@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-08-10 14:36:37
+Date: 2009-08-13 17:08:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -126,9 +126,9 @@ CREATE TABLE `character` (
 -- ----------------------------
 -- Records of character
 -- ----------------------------
-INSERT INTO `character` VALUES ('1', null, 'Spodi', 'asdf', '1', '569.2', '498', '1', '500', '200', '1', '1', '17', '509', '65', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
-INSERT INTO `character` VALUES ('2', '1', 'Test A', '', '2', '800', '250', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', '1', 'Test B', '', '2', '500', '250', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('1', null, 'Spodi', 'asdf', '2', '419.2', '338', '1', '500', '200', '1', '41', '19', '549', '75', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('2', '1', 'Test A', '', '2', '897.6', '530', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', '1', 'Test B', '', '2', '450', '434', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
 
 -- ----------------------------
 -- Table structure for `character_equipped`
@@ -138,7 +138,7 @@ CREATE TABLE `character_equipped` (
   `character_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
   `slot` tinyint(3) unsigned NOT NULL,
-  PRIMARY KEY (`character_id`,`item_id`),
+  PRIMARY KEY (`character_id`,`slot`),
   KEY `item_id` (`item_id`),
   CONSTRAINT `character_equipped_ibfk_3` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_equipped_ibfk_4` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -155,7 +155,8 @@ DROP TABLE IF EXISTS `character_inventory`;
 CREATE TABLE `character_inventory` (
   `character_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
-  PRIMARY KEY (`character_id`,`item_id`),
+  `slot` tinyint(3) unsigned NOT NULL,
+  PRIMARY KEY (`character_id`,`slot`),
   KEY `item_id` (`item_id`),
   KEY `character_id` (`character_id`),
   CONSTRAINT `character_inventory_ibfk_3` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -216,9 +217,11 @@ INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', '1', 
 -- ----------------------------
 DROP TABLE IF EXISTS `character_template_equipped`;
 CREATE TABLE `character_template_equipped` (
+  `id` int(11) NOT NULL,
   `character_template_id` smallint(5) unsigned NOT NULL,
   `item_template_id` smallint(5) unsigned NOT NULL,
   `chance` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
   KEY `item_id` (`item_template_id`),
   KEY `character_id` (`character_template_id`),
   CONSTRAINT `character_template_equipped_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -228,20 +231,22 @@ CREATE TABLE `character_template_equipped` (
 -- ----------------------------
 -- Records of character_template_equipped
 -- ----------------------------
-INSERT INTO `character_template_equipped` VALUES ('1', '3', '10000');
-INSERT INTO `character_template_equipped` VALUES ('1', '4', '5000');
-INSERT INTO `character_template_equipped` VALUES ('1', '5', '5000');
+INSERT INTO `character_template_equipped` VALUES ('0', '1', '5', '5000');
+INSERT INTO `character_template_equipped` VALUES ('1', '1', '4', '5000');
+INSERT INTO `character_template_equipped` VALUES ('2', '1', '3', '10000');
 
 -- ----------------------------
 -- Table structure for `character_template_inventory`
 -- ----------------------------
 DROP TABLE IF EXISTS `character_template_inventory`;
 CREATE TABLE `character_template_inventory` (
+  `id` int(11) NOT NULL,
   `character_template_id` smallint(5) unsigned NOT NULL,
   `item_template_id` smallint(5) unsigned NOT NULL,
   `min` tinyint(3) unsigned NOT NULL,
   `max` tinyint(3) unsigned NOT NULL,
   `chance` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
   KEY `item_id` (`item_template_id`),
   KEY `character_id` (`character_template_id`),
   CONSTRAINT `character_template_inventory_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
@@ -251,11 +256,11 @@ CREATE TABLE `character_template_inventory` (
 -- ----------------------------
 -- Records of character_template_inventory
 -- ----------------------------
-INSERT INTO `character_template_inventory` VALUES ('1', '1', '0', '5', '10000');
-INSERT INTO `character_template_inventory` VALUES ('1', '2', '0', '1', '10000');
-INSERT INTO `character_template_inventory` VALUES ('1', '3', '1', '1', '5000');
-INSERT INTO `character_template_inventory` VALUES ('1', '4', '1', '2', '5000');
-INSERT INTO `character_template_inventory` VALUES ('1', '5', '0', '2', '10000');
+INSERT INTO `character_template_inventory` VALUES ('0', '1', '5', '0', '2', '10000');
+INSERT INTO `character_template_inventory` VALUES ('1', '1', '4', '1', '2', '5000');
+INSERT INTO `character_template_inventory` VALUES ('2', '1', '3', '1', '1', '5000');
+INSERT INTO `character_template_inventory` VALUES ('3', '1', '2', '0', '1', '10000');
+INSERT INTO `character_template_inventory` VALUES ('4', '1', '1', '0', '5', '10000');
 
 -- ----------------------------
 -- Table structure for `item`
@@ -381,8 +386,8 @@ CREATE TABLE `map_spawn` (
   PRIMARY KEY (`id`),
   KEY `character_id` (`character_template_id`),
   KEY `map_id` (`map_id`),
-  CONSTRAINT `map_spawn_ibfk_2` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `map_spawn_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `map_spawn_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `map_spawn_ibfk_2` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- ----------------------------

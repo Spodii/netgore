@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -7,13 +8,18 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class InsertCharacterInventoryItemQuery : DbQueryNonReader<CharacterInventoryTable>
+    public class InsertCharacterInventoryItemQuery : DbQueryNonReader<ICharacterInventoryTable>
     {
         static readonly string _queryString = string.Format("INSERT INTO `{0}` SET {1}", CharacterInventoryTable.TableName,
                                                             FormatParametersIntoString(CharacterInventoryTable.DbColumns));
 
         public InsertCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
+        }
+
+        public void Execute(CharacterID characterID, ItemID itemID, InventorySlot slot)
+        {
+            Execute(new CharacterInventoryTable(characterID, itemID, slot));
         }
 
         /// <summary>
@@ -31,7 +37,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">Item used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, CharacterInventoryTable item)
+        protected override void SetParameters(DbParameterValues p, ICharacterInventoryTable item)
         {
             item.CopyValues(p);
         }
