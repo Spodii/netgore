@@ -74,6 +74,7 @@ namespace NetGore.Db.ClassCreator
                 const string grhIndex = "NetGore.GrhIndex";
                 const string spValueType = "DemoGame.SPValueType";
                 const string itemType = "DemoGame.ItemType";
+                const string inventorySlot = "DemoGame.InventorySlot";
 
                 generator.AddCustomType(allianceID, "alliance", "id");
 
@@ -81,6 +82,8 @@ namespace NetGore.Db.ClassCreator
                 generator.AddCustomType(characterTemplateID, "character", "template_id");
 
                 generator.AddCustomType(equipmentSlot, "character_equipped", "slot");
+
+                generator.AddCustomType(inventorySlot, "character_inventory", "slot");
 
                 generator.AddCustomType(itemChance, "character_template_equipped", "chance");
 

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
@@ -9,13 +10,19 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class DeleteCharacterInventoryItemQuery : DbQueryNonReader<ItemID>
+    public class DeleteCharacterInventoryItemQuery : DbQueryNonReader<ICharacterInventoryTable>
     {
-        static readonly string _queryString = string.Format("DELETE FROM `{0}` WHERE `item_id`=@itemID LIMIT 1",
+        static readonly string _queryString = string.Format("DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot",
                                                             CharacterInventoryTable.TableName);
 
         public DeleteCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
+            QueryAsserts.ArePrimaryKeys(CharacterInventoryTable.DbKeyColumns, "character_id", "slot");
+        }
+
+        public void Execute(CharacterID characterID, InventorySlot slot)
+        {
+            Execute(new CharacterInventoryTable(characterID, default(ItemID), slot));
         }
 
         /// <summary>
@@ -25,17 +32,20 @@ namespace DemoGame.Server.Queries
         /// no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters("@itemID");
+            return CreateParameters(CharacterInventoryTable.DbKeyColumns.Select(x => "@" + x));
         }
 
         /// <summary>
         /// When overridden in the derived class, sets the database parameters based on the specified item.
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="itemID">Item used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, ItemID itemID)
+        /// <param name="item">Item used to execute the query.</param>
+        protected override void SetParameters(DbParameterValues p, ICharacterInventoryTable item)
         {
-            p["@itemID"] = (int)itemID;
+            item.TryCopyValues(p);
+
+            Debug.Assert(p["@slot"].Equals(item.Slot));
+            Debug.Assert(p["@character_id"].Equals(item.CharacterID));
         }
     }
 }

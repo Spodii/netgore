@@ -131,7 +131,7 @@ namespace DemoGame.Server
 
                 // Update the database
                 if (!_isLoading)
-                    DbController.GetQuery<DeleteCharacterInventoryItemQuery>().Execute(oldItem.ID);
+                    DbController.GetQuery<DeleteCharacterInventoryItemQuery>().Execute(Character.ID, slot);
 
                 // Stop listening for changes
                 oldItem.OnChangeGraphicOrAmount -= ItemGraphicOrAmountChangeHandler;
@@ -142,10 +142,7 @@ namespace DemoGame.Server
 
                 // Update the database
                 if (!_isLoading)
-                {
-                    CharacterInventoryTable args = new CharacterInventoryTable(Character.ID, newItem.ID);
-                    DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(args);
-                }
+                    DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(Character.ID, newItem.ID, slot);
 
                 // Listen to the item for changes
                 newItem.OnChangeGraphicOrAmount += ItemGraphicOrAmountChangeHandler;

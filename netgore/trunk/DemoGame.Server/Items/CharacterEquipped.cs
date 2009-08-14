@@ -92,7 +92,7 @@ namespace DemoGame.Server
             Debug.Assert(item != null);
 
             if (_isPersistent)
-                DBController.GetQuery<DeleteCharacterEquippedItemQuery>().Execute(item.ID);
+                DBController.GetQuery<DeleteCharacterEquippedItemQuery>().Execute(Character.ID, slot);
 
             // Do not try working with a disposed item! Instead, just let it die off.
             if (item.IsDisposed)
