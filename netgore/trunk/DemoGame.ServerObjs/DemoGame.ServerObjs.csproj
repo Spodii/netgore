@@ -147,7 +147,6 @@
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateQuery.cs" />
     <Compile Include="Queries\DBController.cs" />
     <Compile Include="Queries\DBControllerQueryAttribute.cs" />
-    <Compile Include="Queries\DBTableStatTypes.cs" />
     <Compile Include="Queries\DBTableValidator.cs" />
     <Compile Include="Queries\IDataReaderExtensions.cs" />
     <Compile Include="Queries\Item\DeleteItemQuery.cs" />
@@ -162,8 +161,6 @@
     <Compile Include="Queries\Map\Spawn\UpdateMapSpawnQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\QueryAsserts.cs" />
-    <Compile Include="Queries\StatsQueryHelper.cs" />
-    <Compile Include="Queries\StatTypeField.cs" />
     <Compile Include="Queries\User\SelectUserPasswordQuery.cs" />
     <Compile Include="Queries\User\UserExistsQuery.cs" />
   </ItemGroup>
@@ -200,7 +197,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
     <None Include="DbSettings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

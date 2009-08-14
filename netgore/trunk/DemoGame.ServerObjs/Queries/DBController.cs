@@ -48,8 +48,6 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.InfoFormat("Database connection pool created.");
 
-            DBTableStatTypes.Initialize(this);
-
             // Find the classes marked with our attribute
             var requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
             var types = TypeHelper.FindTypesWithAttribute(typeof(DBControllerQueryAttribute), requiredConstructorParams, false);
