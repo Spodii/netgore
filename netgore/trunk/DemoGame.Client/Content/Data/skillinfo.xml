@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfSkillInfo xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/DemoGame.Client">
+  <SkillInfo>
+    <_x003C_Description_x003E_k__BackingField>Heal your peeps, bro!</_x003C_Description_x003E_k__BackingField>
+    <_x003C_Icon_x003E_k__BackingField xmlns:d3p1="http://schemas.datacontract.org/2004/07/NetGore">
+      <d3p1:_value>140</d3p1:_value>
+    </_x003C_Icon_x003E_k__BackingField>
+    <_x003C_Name_x003E_k__BackingField>Heal</_x003C_Name_x003E_k__BackingField>
+    <_x003C_SkillType_x003E_k__BackingField>Heal</_x003C_SkillType_x003E_k__BackingField>
+  </SkillInfo>
+</ArrayOfSkillInfo>

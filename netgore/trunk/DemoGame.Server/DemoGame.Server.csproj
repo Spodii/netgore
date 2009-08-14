@@ -123,6 +123,8 @@
     <Compile Include="Say\SayHandler.cs" />
     <Compile Include="Networking\ServerPacket.cs" />
     <Compile Include="Networking\ServerPacketHandler.cs" />
+    <Compile Include="Skills\Skill.cs" />
+    <Compile Include="Skills\StatusEffect.cs" />
     <Compile Include="World\DamageTrapEntity.cs" />
     <Compile Include="Items\UserInventory.cs" />
     <Compile Include="Items\ItemEntity.cs" />
