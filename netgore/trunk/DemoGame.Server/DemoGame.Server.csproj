@@ -126,7 +126,10 @@
     <Compile Include="Skills\SkillBase.cs" />
     <Compile Include="Skills\SkillHeal.cs" />
     <Compile Include="Skills\SkillManager.cs" />
-    <Compile Include="Skills\StatusEffect.cs" />
+    <Compile Include="Skills\ActiveStatusEffect.cs" />
+    <Compile Include="Skills\StatusEffectBase.cs" />
+    <Compile Include="Skills\StatusEffectManager.cs" />
+    <Compile Include="Skills\StatusEffectStrengthen.cs" />
     <Compile Include="World\DamageTrapEntity.cs" />
     <Compile Include="Items\UserInventory.cs" />
     <Compile Include="Items\ItemEntity.cs" />
