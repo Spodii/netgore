@@ -97,6 +97,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\SkillsForm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CharacterStats.cs" />
     <Compile Include="GUISettings.cs" />

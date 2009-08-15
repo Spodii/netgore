@@ -82,6 +82,7 @@ namespace DemoGame.Client
         InfoBox _infoBox;
 
         InventoryForm _inventoryForm;
+        SkillsForm _skillsForm;
         ItemInfoTooltip _itemInfoTooltip;
 
         /// <summary>
@@ -355,6 +356,10 @@ namespace DemoGame.Client
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 
             _inventoryForm = new InventoryForm(ItemInfoTooltip, new Vector2(250, 0), cScreen);
+            
+            _skillsForm = new SkillsForm(new Vector2(100, 0), cScreen);
+            _skillsForm.OnUseSkill += SkillsForm_OnUseSkill;
+
             _infoBox = new InfoBox(GameData.ScreenSize - new Vector2(5, 5), _guiFont);
 
             _equippedForm = new EquippedForm(ItemInfoTooltip, new Vector2(500, 0), cScreen);
@@ -375,6 +380,12 @@ namespace DemoGame.Client
             _guiSettings.Add("StatsForm", _statsForm);
             _guiSettings.Add("ChatForm", _chatForm);
             _guiSettings.Add("ToolbarForm", toolbar);
+        }
+
+        void SkillsForm_OnUseSkill(SkillType skillType)
+        {
+            using (var pw = ClientPacket.UseSkill(skillType))
+                Socket.Send(pw);
         }
 
         /// <summary>

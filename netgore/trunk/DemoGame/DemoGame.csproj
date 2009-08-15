@@ -96,6 +96,7 @@
     <Compile Include="GameMessage.cs" />
     <Compile Include="GameMessages.cs" />
     <Compile Include="SkillType.cs" />
+    <Compile Include="SkillTypeExtensions.cs" />
     <Compile Include="SPValueType.cs" />
     <Compile Include="Items\InventoryBase.cs" />
     <Compile Include="Items\InventorySlot.cs" />
@@ -126,7 +127,7 @@
     <Compile Include="Stats\StatFactory.cs" />
     <Compile Include="Stats\StatCollectionType.cs" />
     <Compile Include="Stats\StatType.cs" />
-    <Compile Include="StatTypeExtensions.cs" />
+    <Compile Include="Stats\StatTypeExtensions.cs" />
     <Compile Include="WorldBase.cs" />
   </ItemGroup>
   <ItemGroup>
