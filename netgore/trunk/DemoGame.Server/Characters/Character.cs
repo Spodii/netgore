@@ -57,7 +57,7 @@ namespace DemoGame.Server
     public delegate void CharacterStatPointsEventHandler(Character character, uint oldValue, uint newValue);
 
     /// <summary>
-    /// A game character
+    /// The server representation of a single Character that can be either player-controller or computer-controller.
     /// </summary>
     public abstract class Character : CharacterEntity, IGetTime, IRespawnable
     {
@@ -65,6 +65,45 @@ namespace DemoGame.Server
         /// Amount of time the character must wait between attacks
         /// </summary>
         const int _attackTimeout = 500;
+
+        /// <summary>
+        /// Makes the Character use a skill.
+        /// </summary>
+        /// <param name="skillType">The type of skill to use.</param>
+        /// <returns>True if the skill was successfully used; otherwise false.</returns>
+        public bool UseSkill(SkillType skillType)
+        {
+            return UseSkill(SkillManager.GetSkill(skillType));
+        }
+
+        /// <summary>
+        /// Makes the Character use a skill.
+        /// </summary>
+        /// <param name="skill">The skill to use.</param>
+        /// <returns>True if the skill was successfully used; otherwise false.</returns>
+        public bool UseSkill(SkillBase skill)
+        {
+            if (skill == null)
+            {
+                if (log.IsWarnEnabled)
+                    log.WarnFormat("Character `{0}` tried to use a null skill in UseSkill.", this);
+                return false;
+            }
+
+            bool successful = skill.Use(this);
+            if (successful)
+            {
+                // NOTE: This is just a temporary message
+                User user = this as User;
+                if (user != null)
+                {
+                    using (var pw = ServerPacket.Chat("DEBUG: You used skill " + skill.SkillType + "."))
+                        user.Send(pw);
+                }
+            }
+
+            return successful;
+        }
 
         /// <summary>
         /// Random number generator for Characters

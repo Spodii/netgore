@@ -22,7 +22,7 @@ namespace DemoGame.Client
             _skillInfo = Load(filePath);
 
             if (!File.Exists(filePath))
-                Save();
+                Save(); 
         }
 
         static string GetFilePath(ContentPaths contentPath)

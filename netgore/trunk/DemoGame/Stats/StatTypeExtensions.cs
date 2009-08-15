@@ -1,39 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using System.Text;
 
 namespace DemoGame
 {
+    /// <summary>
+    /// Extensions for the DemoGame.StatType.
+    /// </summary>
     public static class StatTypeExtensions
     {
-        static readonly Dictionary<StatType, StatType> _baseToMod = new Dictionary<StatType, StatType>();
-
         /// <summary>
-        /// Gets the mod StatType for the given base StatType.
+        /// Gets the database field name for a given StatType.
         /// </summary>
-        /// <param name="baseStat">Base StatType to find the mod StatType for.</param>
-        /// <returns>Mod StatType for the given base StatType.</returns>
-        /// <exception cref="ArgumentException">No mod StatType for the given base StatType.</exception>
-        public static StatType GetMod(this StatType baseStat)
+        /// <param name="statType">StatType to get the database field name for.</param>
+        /// <returns>The Database field name for the <paramref name="statType"/>.</returns>
+        public static string GetDatabaseField(this StatType statType, StatCollectionType statCollectionType)
         {
-            StatType modStat;
-            if (_baseToMod.TryGetValue(baseStat, out modStat))
-                return modStat;
-
-            modStat = GetModFromBase(baseStat);
-            _baseToMod.Add(baseStat, modStat);
-
-            return modStat;
+            switch (statCollectionType)
+            {
+                case StatCollectionType.Base:
+                    return statType.ToString().ToLower();
+                case StatCollectionType.Modified:
+                    throw new ArgumentException("StatCollectionType.Modified is not allowed in the database.",
+                                                "statCollectionType");
+                case StatCollectionType.Requirement:
+                    return "req" + statType.GetDatabaseField(StatCollectionType.Base);
+                default:
+                    throw new ArgumentOutOfRangeException("statCollectionType");
+            }
         }
 
-        static StatType GetModFromBase(StatType baseStat)
+        public static byte GetValue(this StatType statType)
         {
-            object value = Enum.Parse(typeof(StatType), "Mod" + baseStat, true);
-            if (value == null)
-                throw new ArgumentException("No mod StatType for the given base StatType", "baseStat");
+            return (byte)statType;
+        }
 
-            return (StatType)value;
+        /// <summary>
+        /// Checks if a specified StatType value is defined by the StatType enum.
+        /// </summary>
+        /// <param name="statType">StatType value to check.</param>
+        /// <returns>True if the <paramref name="statType"/> is defined in the StatType enum, else false.</returns>
+        public static bool IsDefined(this StatType statType)
+        {
+            return Enum.IsDefined(typeof(StatType), statType);
         }
     }
 }

@@ -1420,7 +1420,8 @@ namespace DemoGame.MapEditor
         public void UpdateSelectedWallsList(List<WallEntityBase> selectedWalls)
         {
             lstSelectedWalls.Items.Clear();
-            foreach (WallEntityBase wall in selectedWalls)
+            var tmpSelectedWalls = selectedWalls.ToArray();
+            foreach (WallEntityBase wall in tmpSelectedWalls)
             {
                 lstSelectedWalls.AddItemAndReselect(new ListboxWall(wall));
             }

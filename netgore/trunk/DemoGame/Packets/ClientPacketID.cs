@@ -23,6 +23,7 @@ namespace DemoGame
         SetUDPPort,
         UnequipItem,
         UseInventoryItem,
+        UseSkill,
         UseWorld
     }
 }

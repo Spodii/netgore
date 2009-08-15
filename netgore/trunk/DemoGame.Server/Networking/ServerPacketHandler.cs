@@ -67,6 +67,30 @@ namespace DemoGame.Server
                 user.Attack();
         }
 
+        [MessageHandler((byte)ClientPacketID.UseSkill)]
+        void RecvUseSkill(IIPSocket conn, BitStream r)
+        {
+            SkillType skillType;
+
+            try
+            {
+                skillType = r.ReadSkillType();
+            }
+            catch (InvalidCastException)
+            {
+                const string errmsg = "Failed to read SkillType from stream.";
+                if (log.IsWarnEnabled)
+                    log.Warn(errmsg);
+                return;
+            }
+
+            User user;
+            if (!TryGetUser(conn, out user))
+                return;
+
+            user.UseSkill(skillType);
+        }
+
         [MessageHandler((byte)ClientPacketID.DropInventoryItem)]
         void RecvDropInventoryItem(IIPSocket conn, BitStream r)
         {
