@@ -18,6 +18,11 @@ namespace DemoGame
         public const int MaxClientSayLength = 255;
 
         /// <summary>
+        /// The maximum power of a StatusEffect.
+        /// </summary>
+        public const ushort MaxStatusEffectPower = 500;
+
+        /// <summary>
         /// Maximum length of each parameter string in the server's SendMessage.
         /// </summary>
         public const int MaxServerMessageParameterLength = 250;
