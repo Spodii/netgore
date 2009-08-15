@@ -697,18 +697,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Tests for if the MouseState has changed for a given button
+        /// Gets the ButtonState for the current and last state for a given mouse button.
         /// </summary>
-        /// <param name="button">Button to check</param>
-        /// <param name="state">Current MouseState</param>
-        /// <param name="lastState">Previous MouseState</param>
-        /// <param name="relativePos">Relative position of the Control</param>
-        void TestMouseStateChange(MouseButtons button, MouseState state, MouseState lastState, Vector2 relativePos)
+        /// <param name="button">The mouse button to get the states for.</param>
+        /// <param name="state">The current mouse state.</param>
+        /// <param name="lastState">The last mouse state.</param>
+        /// <param name="buttonState">The output current ButtonState for the given <paramref name="button"/>.</param>
+        /// <param name="lastButtonState">The output last ButtonState for the given <paramref name="button"/>.</param>
+        static void GetButtonStates(MouseButtons button, MouseState state, MouseState lastState, out ButtonState buttonState, out ButtonState lastButtonState)
         {
-            ButtonState lastButtonState;
-            ButtonState buttonState;
-
-            // Store the ButtonStates for the given button
             switch (button)
             {
                 case MouseButtons.Left:
@@ -727,8 +724,23 @@ namespace NetGore.Graphics.GUI
                     break;
 
                 default:
-                    return;
+                    throw new ArgumentOutOfRangeException("button", "Invalid button value!");
             }
+        }
+
+        /// <summary>
+        /// Tests for if the MouseState has changed for a given button
+        /// </summary>
+        /// <param name="button">Button to check</param>
+        /// <param name="state">Current MouseState</param>
+        /// <param name="lastState">Previous MouseState</param>
+        /// <param name="relativePos">Relative position of the Control</param>
+        void TestMouseStateChange(MouseButtons button, MouseState state, MouseState lastState, Vector2 relativePos)
+        {
+            // Store the ButtonStates for the given button
+            ButtonState buttonState;
+            ButtonState lastButtonState;
+            GetButtonStates(button, state, lastState, out buttonState, out lastButtonState);
 
             // Check that the state has changed
             if (lastButtonState == buttonState)
@@ -954,12 +966,9 @@ namespace NetGore.Graphics.GUI
                 }
 
                 // Perform updates based on the buttons
-                if (CanFocus || _isDragging || OnMouseDown != null || OnMouseUp != null)
-                {
-                    TestMouseStateChange(MouseButtons.Left, mouseState, lastMouseState, currCursorPos - sp);
-                    TestMouseStateChange(MouseButtons.Right, mouseState, lastMouseState, currCursorPos - sp);
-                    TestMouseStateChange(MouseButtons.Middle, mouseState, lastMouseState, currCursorPos - sp);
-                }
+                TestMouseStateChange(MouseButtons.Left, mouseState, lastMouseState, currCursorPos - sp);
+                TestMouseStateChange(MouseButtons.Right, mouseState, lastMouseState, currCursorPos - sp);
+                TestMouseStateChange(MouseButtons.Middle, mouseState, lastMouseState, currCursorPos - sp);
             }
             else
             {

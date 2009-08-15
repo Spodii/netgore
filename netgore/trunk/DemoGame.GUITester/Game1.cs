@@ -51,7 +51,7 @@ namespace DemoGame.GUITester
         protected override void LoadContent()
         {
             _sb = new SpriteBatch(GraphicsDevice);
-            _font = Content.Load<SpriteFont>("SpriteFont1");
+            _font = Content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
             GrhInfo.Load(ContentPaths.Build.Data.Join("grhdata.xml"), Content);
 
             _gui = new GUIManager(_font);
@@ -85,6 +85,11 @@ namespace DemoGame.GUITester
             Form f3 = new Form(_gui, "form 3", Vector2.Zero, new Vector2(200, 200), f2);
             Form f4 = new Form(_gui, "form 4", Vector2.Zero, new Vector2(100, 100), f3);
 
+            var testLabelF4 = new Label("Click me", Vector2.Zero, f4);
+            testLabelF4.OnClick += testLabelF4_OnClick;
+            //testLabelF4.OnMouseLeave += testLabelF4_OnMouseLeave;
+            //testLabelF4.OnMouseEnter += testLabelF4_OnMouseEnter;
+
             topForm.OnBeginDrag += OnDrag;
             topForm.OnEndDrag += OnDrag;
             form.OnBeginDrag += OnDrag;
@@ -95,6 +100,25 @@ namespace DemoGame.GUITester
             f3.OnEndDrag += OnDrag;
             f4.OnBeginDrag += OnDrag;
             f4.OnEndDrag += OnDrag;
+        }
+
+        static void testLabelF4_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            ((Label)sender).Text = "Mouse entered";
+        }
+
+        static void testLabelF4_OnMouseLeave(object sender, MouseEventArgs e)
+        {
+            ((Label)sender).Text = "Mouse left";
+        }
+
+        static void testLabelF4_OnClick(object sender, MouseClickEventArgs e)
+        {
+            var source = (Label)sender;
+            if (source.Text == "I was clicked!")
+                source.Text = "Click me!";
+            else
+                source.Text = "I was clicked!";
         }
 
         void OnDrag(Control sender)
