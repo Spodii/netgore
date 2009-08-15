@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Items>
+  <Item>
+    <Type>Strengthen</Type>
+    <Name>Strengthen</Name>
+    <Description>Makes you stronger! Grr!</Description>
+    <Icon>0</Icon>
+  </Item>
+</Items>

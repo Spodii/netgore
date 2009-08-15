@@ -13,7 +13,6 @@ namespace DemoGame.Server
 
         protected override int? InternalTryGetStatModifier(StatType statType, ushort power)
         {
-
             switch (statType)
             {
                 case StatType.Str:
