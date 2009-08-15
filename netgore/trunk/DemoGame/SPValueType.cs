@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
 
@@ -103,6 +104,14 @@ namespace DemoGame
         public static implicit operator SPValueType(short v)
         {
             return new SPValueType(v);
+        }
+
+        public static implicit operator SPValueType(int v)
+        {
+            Debug.Assert(v <= short.MaxValue);
+            Debug.Assert(v >= short.MinValue);
+
+            return new SPValueType((short)v);
         }
     }
 

@@ -313,7 +313,7 @@ namespace DemoGame.Server
                 int max = ModStats[StatType.MaxHP];
                 SPValueType newValue;
                 if (value > max)
-                    newValue = (SPValueType)max;
+                    newValue = max;
                 else if (value < 0)
                     newValue = 0;
                 else
@@ -422,7 +422,7 @@ namespace DemoGame.Server
                 int max = ModStats[StatType.MaxMP];
                 SPValueType newValue;
                 if (value > max)
-                    newValue = (SPValueType)max;
+                    newValue = max;
                 else if (value < 0)
                     newValue = 0;
                 else
@@ -711,7 +711,7 @@ namespace DemoGame.Server
             if (newHP < 0)
                 newHP = 0;
 
-            HP = (SPValueType)newHP;
+            HP = newHP;
 
             // Check if the character died
             if (HP <= 0)
@@ -1199,8 +1199,8 @@ namespace DemoGame.Server
             _spRecoverTime += _spRecoveryRate;
 
             // Recover
-            HP += (SPValueType)(1 + ModStats[StatType.Regen]);
-            MP += (SPValueType)(1 + ModStats[StatType.Recov]);
+            HP += 1 + ModStats[StatType.Regen];
+            MP += 1 + ModStats[StatType.Recov];
         }
 
         protected void UpdateModStats()
@@ -1325,8 +1325,8 @@ namespace DemoGame.Server
             UpdateModStats();
 
             // Restore the NPC's stats
-            HP = (SPValueType)ModStats[StatType.MaxHP];
-            MP = (SPValueType)ModStats[StatType.MaxMP];
+            HP = ModStats[StatType.MaxHP];
+            MP = ModStats[StatType.MaxMP];
 
             // Set the NPC's new location
             Teleport(RespawnPosition);

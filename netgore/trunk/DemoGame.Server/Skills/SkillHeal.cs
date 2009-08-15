@@ -40,7 +40,7 @@ namespace DemoGame.Server.Skills
                 target = user;
 
             int power = user.ModStats[StatType.Int] * 2 + 5;
-            target.HP += (SPValueType)power;
+            target.HP += power;
 
             return true;
         }
