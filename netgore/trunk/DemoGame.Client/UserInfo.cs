@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using NetGore;
+using NetGore.Network;
 
 namespace DemoGame.Client
 {
@@ -13,7 +14,6 @@ namespace DemoGame.Client
         readonly UserEquipped _equipped = new UserEquipped();
         readonly Inventory _inventory;
         readonly CharacterStats _modStats = new CharacterStats(StatCollectionType.Modified);
-        readonly ClientSockets _socket;
 
         public CharacterStats BaseStats
         {
@@ -71,12 +71,11 @@ namespace DemoGame.Client
 
         public uint StatPoints { get; set; }
 
-        public UserInfo(ClientSockets socket)
+        public UserInfo(ISocketSender socket)
         {
             if (socket == null)
                 throw new ArgumentNullException("socket");
 
-            _socket = socket;
             _inventory = new Inventory(socket);
         }
     }
