@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore;
 
 namespace DemoGame.Client
 {
@@ -37,7 +38,8 @@ namespace DemoGame.Client
                 int max = _modStats[StatType.MaxHP];
                 if (max == 0)
                     return 100;
-                return (byte)((HP / max) * 100);
+
+                return (byte)((HP / (float)max) * 100.0f).Clamp(0, 100);
             }
         }
 
@@ -62,7 +64,8 @@ namespace DemoGame.Client
                 int max = _modStats[StatType.MaxMP];
                 if (max == 0)
                     return 100;
-                return (byte)((MP / max) * 100);
+
+                return (byte)((MP / (float)max) * 100.0f).Clamp(0, 100);
             }
         }
 

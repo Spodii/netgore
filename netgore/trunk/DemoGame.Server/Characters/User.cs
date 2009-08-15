@@ -289,8 +289,8 @@ namespace DemoGame.Server
 
             UpdateModStats();
 
-            HP = (SPValueType)ModStats[StatType.MaxHP];
-            MP = (SPValueType)ModStats[StatType.MaxMP];
+            HP = ModStats[StatType.MaxHP];
+            MP = ModStats[StatType.MaxMP];
         }
 
         protected override void LevelUp()

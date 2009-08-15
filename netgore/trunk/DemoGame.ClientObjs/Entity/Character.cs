@@ -120,7 +120,7 @@ namespace DemoGame.Client
 
             Rectangle border = new Rectangle((int)pos.X, (int)pos.Y, (int)spBarWidth, (int)spBarHeight);
             Rectangle bar = border;
-            bar.Width = (int)((spBarWidth * (percent / 100.0f))).Clamp(0, spBarWidth);
+            bar.Width = (int)((spBarWidth * (percent / 100.0f))).Clamp(0.0f, spBarWidth);
 
             XNARectangle.Draw(sb, border, new Color(0, 0, 0, 0), Color.Black);
             XNARectangle.Draw(sb, bar, color);
