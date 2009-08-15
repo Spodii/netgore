@@ -75,6 +75,7 @@ namespace NetGore.Db.ClassCreator
                 const string spValueType = "DemoGame.SPValueType";
                 const string itemType = "DemoGame.ItemType";
                 const string inventorySlot = "DemoGame.InventorySlot";
+                const string statusEffectType = "DemoGame.StatusEffectType";
 
                 generator.AddCustomType(allianceID, "alliance", "id");
 
@@ -84,6 +85,8 @@ namespace NetGore.Db.ClassCreator
                 generator.AddCustomType(equipmentSlot, "character_equipped", "slot");
 
                 generator.AddCustomType(inventorySlot, "character_inventory", "slot");
+
+                generator.AddCustomType(statusEffectType, "character_status_effect", "status_effect_id");
 
                 generator.AddCustomType(itemChance, "character_template_equipped", "chance");
 
@@ -126,6 +129,7 @@ namespace NetGore.Db.ClassCreator
                 formatter.AddAlias("respawn_y", "RespawnY");
                 formatter.AddAlias("give_exp", "GiveExp");
                 formatter.AddAlias("give_cash", "GiveCash");
+                formatter.AddAlias("status_effect_id", "StatusEffect");
 
                 formatter.AddAlias("Name");
                 formatter.AddAlias("ID");

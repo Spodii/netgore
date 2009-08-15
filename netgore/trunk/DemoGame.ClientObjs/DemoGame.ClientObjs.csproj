@@ -93,8 +93,9 @@
     <Compile Include="Map\MapWallDrawer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Map\MapRenderLayer.cs" />
+    <Compile Include="Skills\InfoManager.cs" />
     <Compile Include="Skills\SkillInfo.cs" />
-    <Compile Include="Skills\SkillInfoManager.cs" />
+    <Compile Include="Skills\StatusEffectInfo.cs" />
     <Compile Include="Skin.cs" />
     <Compile Include="UserEquipped.cs" />
     <Compile Include="World.cs" />

@@ -129,6 +129,7 @@
     <Compile Include="Stats\StatType.cs" />
     <Compile Include="Stats\StatTypeExtensions.cs" />
     <Compile Include="StatusEffectType.cs" />
+    <Compile Include="StatusEffectTypeExtensions.cs" />
     <Compile Include="WorldBase.cs" />
   </ItemGroup>
   <ItemGroup>

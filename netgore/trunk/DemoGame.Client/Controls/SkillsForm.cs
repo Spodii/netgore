@@ -26,7 +26,7 @@ namespace DemoGame.Client
 
         void CreateSkillLabel(Vector2 position, SkillType skillType)
         {
-            var skillInfo = SkillInfoManager.GetSkillInfo(skillType);
+            var skillInfo = SkillInfo.GetSkillInfo(skillType);
             var skillLabel = new SkillLabel(this, skillInfo, position);
             skillLabel.OnClick += SkillLabel_OnClick;
         }

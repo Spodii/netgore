@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-08-13 17:08:30
+Date: 2009-08-15 14:13:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -126,8 +126,8 @@ CREATE TABLE `character` (
 -- ----------------------------
 -- Records of character
 -- ----------------------------
-INSERT INTO `character` VALUES ('1', null, 'Spodi', 'asdf', '2', '419.2', '338', '1', '500', '200', '1', '41', '19', '549', '75', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
-INSERT INTO `character` VALUES ('2', '1', 'Test A', '', '2', '897.6', '530', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('1', null, 'Spodi', 'asdf', '2', '502', '402', '1', '500', '200', '1', '41', '19', '549', '75', '50', '48', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('2', '1', 'Test A', '', '2', '930', '530', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
 INSERT INTO `character` VALUES ('3', '1', 'Test B', '', '2', '450', '434', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
 
 -- ----------------------------
@@ -165,6 +165,25 @@ CREATE TABLE `character_inventory` (
 
 -- ----------------------------
 -- Records of character_inventory
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `character_status_effect`
+-- ----------------------------
+DROP TABLE IF EXISTS `character_status_effect`;
+CREATE TABLE `character_status_effect` (
+  `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Unique ID of the status effect instance.',
+  `character_id` int(11) NOT NULL COMMENT 'ID of the Character that the status effect is on.',
+  `status_effect_id` tinyint(3) unsigned NOT NULL COMMENT 'ID of the status effect that this effect is for. This corresponds to the StatusEffectType enum''s value.',
+  `power` smallint(5) unsigned NOT NULL COMMENT 'The power of this status effect instance.',
+  `time_left_secs` smallint(5) unsigned NOT NULL COMMENT 'The amount of time remaining for this status effect in seconds.',
+  PRIMARY KEY (`id`),
+  KEY `character_id` (`character_id`),
+  CONSTRAINT `character_status_effect_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of character_status_effect
 -- ----------------------------
 
 -- ----------------------------

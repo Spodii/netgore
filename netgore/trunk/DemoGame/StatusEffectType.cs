@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DemoGame
 {
-    public enum StatusEffectType
+    public enum StatusEffectType : byte
     {
         Strengthen
     }
