@@ -7,7 +7,14 @@ namespace DemoGame.Server.Skills
 {
     public class SkillHeal : SkillBase
     {
-        public override SPValueType GetMPCost(Character character)
+        /// <summary>
+        /// When overridden in the derived class, gets the MP cost of using this Skill.
+        /// </summary>
+        /// <param name="user">The Character using the skill. Will not be null.</param>
+        /// <param name="target">The optional Character that the skill was used on. Can be null if there was
+        /// no targeted Character.</param>
+        /// <returns>The MP cost of using this Skill.</returns>
+        public override SPValueType GetMPCost(Character user, Character target)
         {
             return 2;
         }
