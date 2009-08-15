@@ -9,15 +9,31 @@ using NetGore.Collections;
 
 namespace DemoGame.Server
 {
+    /// <summary>
+    /// Manages all of the individual SkillBases for the corresponding SkillType. Skill instances should be acquired
+    /// through this manager instead of creating new instances of the class.
+    /// </summary>
     public static class SkillManager
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
+        
+        /// <summary>
+        /// Dictionary that allows for lookup of a SkillBase for the given SkillType.
+        /// </summary>
         static readonly Dictionary<SkillType, SkillBase> _skills = new Dictionary<SkillType, SkillBase>(EnumComparer<SkillType>.Instance); 
 
+        /// <summary>
+        /// SkillManager static constructor.
+        /// </summary>
         static SkillManager()
         {
+            // Get the Types for the classes that inherit SkillBase
             var types = NetGore.TypeHelper.FindTypesThatInherit(typeof(SkillBase), Type.EmptyTypes, false);
+
+            // Filter out the invalid derived Types
+            types = types.Where(x => x.IsClass && !x.IsAbstract);
+
+            // Create an instance of each of the valid derived classes
             foreach (var type in types)
             {
                 var instance = (SkillBase)Activator.CreateInstance(type, true);
@@ -32,6 +48,9 @@ namespace DemoGame.Server
                 }
 
                 _skills.Add(instance.SkillType, instance);
+
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Created skill object for SkillType `{0}`.", instance.SkillType);
             }
         }
 
@@ -46,8 +65,10 @@ namespace DemoGame.Server
             SkillBase value;
             if (!_skills.TryGetValue(skillType, out value))
             {
+                const string errmsg = "Failed to get the SkillBase for SkillType `{0}`.";
                 if (log.IsWarnEnabled)
-                    log.WarnFormat("Failed to get the SkillBase for SkillType `{0}`.", skillType);
+                    log.WarnFormat(errmsg, skillType);
+                Debug.Fail(string.Format(errmsg, skillType));
                 return null;
             }
 
