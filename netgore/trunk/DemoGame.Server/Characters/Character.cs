@@ -1167,10 +1167,40 @@ namespace DemoGame.Server
             _saved = false;
 
             UpdateModStats();
+            UpdateSPRecovery();
 
             base.Update(imap, deltaTime);
 
             _spSync.Synchronize();
+        }
+
+        /// <summary>
+        /// How frequently the SP is recovered in milliseconds.
+        /// </summary>
+        const int _spRecoveryRate = 3000;
+
+        /// <summary>
+        /// The time that the SP will next be recovered.
+        /// </summary>
+        int _spRecoverTime;
+
+        /// <summary>
+        /// Updates the Character's status points recovery.
+        /// </summary>
+        void UpdateSPRecovery()
+        {
+            int time = GetTime();
+
+            // Check that enough time has elapsed
+            if (_spRecoverTime > time)
+                return;
+
+            // Set the new recovery time
+            _spRecoverTime += _spRecoveryRate;
+
+            // Recover
+            HP += (SPValueType)(1 + ModStats[StatType.Regen]);
+            MP += (SPValueType)(1 + ModStats[StatType.Recov]);
         }
 
         protected void UpdateModStats()
