@@ -86,7 +86,7 @@ namespace NetGore
                 // Make sure all the remaining Types have the required constructor
                 foreach (Type type in types)
                 {
-                    if (!type.IsAbstract && type.GetConstructor(constructorParams) == null)
+                    if (!type.IsAbstract && !HasConstructorWithParameters(type, constructorParams))
                     {
                         const string errmsg = "Type `{0}` does not contain a constructor with the specified parameters.";
                         string err = string.Format(errmsg, type);
@@ -99,6 +99,29 @@ namespace NetGore
             }
 
             return types;
+        }
+
+        static bool HasConstructorWithParameters(Type type, Type[] expected)
+        {
+            const BindingFlags bf = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+
+            foreach (var constructor in type.GetConstructors(bf))
+            {
+                Type[] actual = constructor.GetParameters().Select(x => x.ParameterType).ToArray();
+
+                if (expected.Length != actual.Length)
+                    continue;
+
+                for (int i = 0; i < expected.Length; i++)
+                {
+                    if (expected[i] != actual[i])
+                        continue;
+                }
+
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

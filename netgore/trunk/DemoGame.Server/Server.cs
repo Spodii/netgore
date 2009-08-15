@@ -119,6 +119,10 @@ namespace DemoGame.Server
             _world = new World(this);
             _sockets = new ServerSockets(this);
 
+            // NOTE: Temp force-loading of the Skill/StatusEffect managers
+            StatusEffectManager.GetStatusEffect(StatusEffectType.Strengthen);
+            SkillManager.GetSkill(SkillType.Heal);
+
             Console.WriteLine("Server is loaded");
 
             _inputThread = new Thread(HandleInput) { Name = "Input Handler" };

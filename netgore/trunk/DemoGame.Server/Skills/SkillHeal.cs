@@ -7,6 +7,10 @@ namespace DemoGame.Server.Skills
 {
     public class SkillHeal : SkillBase
     {
+        SkillHeal() : base(SkillType.Heal)
+        {
+        }
+
         /// <summary>
         /// When overridden in the derived class, gets the MP cost of using this Skill.
         /// </summary>
@@ -17,14 +21,6 @@ namespace DemoGame.Server.Skills
         public override SPValueType GetMPCost(Character user, Character target)
         {
             return 2;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the type of skill that this class is for.
-        /// </summary>
-        public override SkillType SkillType
-        {
-            get { return SkillType.Heal; }
         }
 
         /// <summary>

@@ -12,6 +12,7 @@ namespace DemoGame.Server
     public abstract class SkillBase
     {
         readonly SkillStatCollection _requiredStats = new SkillStatCollection(StatCollectionType.Requirement);
+        readonly SkillType _skillType;
 
         /// <summary>
         /// Gets the collection of stats required by this Skill.
@@ -30,10 +31,15 @@ namespace DemoGame.Server
             return 0;
         }
 
+        protected SkillBase(SkillType skillType)
+        {
+            _skillType = skillType;
+        }
+
         /// <summary>
-        /// When overridden in the derived class, gets the type of skill that this class is for.
+        /// Gets the type of skill that this class is for.
         /// </summary>
-        public abstract SkillType SkillType { get; }
+        public SkillType SkillType { get { return _skillType; } }
 
         /// <summary>
         /// When overridden in the derived class, gets the HP cost of using this Skill.

@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace DemoGame.Server
+namespace DemoGame
 {
-    public class StatusEffect
+    public enum StatusEffectType
     {
+        Strengthen
     }
 }
