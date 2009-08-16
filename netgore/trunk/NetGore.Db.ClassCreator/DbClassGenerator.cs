@@ -857,7 +857,8 @@ namespace NetGore.Db.ClassCreator
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(Formatter.GetSetValue(parameterName + Formatter.OpenIndexer + "i" + Formatter.CloseIndexer,
-                                                _extensionParamName + "." + cd.GetColumnValueAccessor(column), false, false, cd.GetInternalType(column)));
+                                                _extensionParamName + "." + cd.GetColumnValueAccessor(column), false, false,
+                                                cd.GetInternalType(column)));
             sb.AppendLine("break" + Formatter.EndOfLine);
             return sb.ToString();
         }

@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NetGore;
-using NetGore.Collections;
 
 namespace DemoGame.Server
 {
@@ -80,7 +79,7 @@ namespace DemoGame.Server
             // Randomly test to see if the values are correct
             if (_random.Next(0, 5) == 0)
             {
-                var oldValues = _modStats.DeepCopy();
+                FullStatCollection oldValues = _modStats.DeepCopy();
                 RecalculateStatBonuses();
                 Debug.Assert(_modStats.AreValuesEqual(oldValues), "Somehow, at some point, the ModStats became out of sync!");
             }

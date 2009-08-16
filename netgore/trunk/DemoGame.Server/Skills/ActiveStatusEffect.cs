@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DemoGame.Server
 {
@@ -11,8 +10,25 @@ namespace DemoGame.Server
     public class ActiveStatusEffect : IModStatContainer
     {
         readonly StatusEffectBase _statusEffect;
-        ushort _power;
         int _disableTime;
+        ushort _power;
+
+        /// <summary>
+        /// Gets the game time at which this ActiveStatusEffect will be disabled.
+        /// </summary>
+        public int DisableTime
+        {
+            get { return _disableTime; }
+        }
+
+        /// <summary>
+        /// Gets the power of the StatusEffect. How the status effect's power is utilized depends completely
+        /// on the StatusEffect used.
+        /// </summary>
+        public ushort Power
+        {
+            get { return _power; }
+        }
 
         /// <summary>
         /// Gets the StatusEffectBase that this ActiveStatusEffect
@@ -23,58 +39,53 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the power of the StatusEffect. How the status effect's power is utilized depends completely
-        /// on the StatusEffect used.
+        /// ActiveStatusEffect constructor.
         /// </summary>
-        public ushort Power
+        /// <param name="statusEffect">The StatusEffectBase to use.</param>
+        /// <param name="power">The power of the StatusEffect.</param>
+        /// <param name="disableTime">The game time at which this ActiveStatusEffect will be disabled.</param>
+        public ActiveStatusEffect(StatusEffectBase statusEffect, ushort power, int disableTime)
         {
-            get
-            {
-                return _power;
-            }
-        }
-
-        /// <summary>
-        /// Gets the game time at which this ActiveStatusEffect will be disabled.
-        /// </summary>
-        public int DisableTime { get { return _disableTime; } }
-
-        /// <summary>
-        /// Gets the time remaining, in milliseconds, until this ActiveStatusEffect is disabled.
-        /// </summary>
-        /// <param name="gameTime">The current game time.</param>
-        /// <returns>The time remaining, in milliseconds, until this ActiveStatusEffect is disabled.</returns>
-        public int GetTimeRemaining(int gameTime) { return DisableTime - gameTime; }
-
-        public static int GetTimeRemaining(int gameTime, int disableTime)
-        {
-            return disableTime - gameTime;
+            _statusEffect = statusEffect;
+            _power = power;
+            _disableTime = disableTime;
         }
 
         public void AddBonusesTo(IStatCollection statCollection)
         {
-            foreach (var statType in StatusEffect.ModifiedStats)
+            foreach (StatType statType in StatusEffect.ModifiedStats)
+            {
                 statCollection[statType] += GetStatModBonus(statType);
-        }
-
-        public void SubtractBonusesFrom(IStatCollection statCollection)
-        {
-            foreach (var statType in StatusEffect.ModifiedStats)
-                statCollection[statType] -= GetStatModBonus(statType);
+            }
         }
 
         public IEnumerable<KeyValuePair<StatType, int>> GetStatModBonuses()
         {
-            KeyValuePair<StatType, int>[] ret = new KeyValuePair<StatType, int>[StatusEffect.ModifiedStats.Count()];
+            var ret = new KeyValuePair<StatType, int>[StatusEffect.ModifiedStats.Count()];
 
             int i = 0;
-            foreach (var statType in StatusEffect.ModifiedStats)
+            foreach (StatType statType in StatusEffect.ModifiedStats)
             {
                 ret[i] = new KeyValuePair<StatType, int>(statType, GetStatModBonus(statType));
                 i++;
             }
 
             return ret;
+        }
+
+        public static int GetTimeRemaining(int gameTime, int disableTime)
+        {
+            return disableTime - gameTime;
+        }
+
+        /// <summary>
+        /// Gets the time remaining, in milliseconds, until this ActiveStatusEffect is disabled.
+        /// </summary>
+        /// <param name="gameTime">The current game time.</param>
+        /// <returns>The time remaining, in milliseconds, until this ActiveStatusEffect is disabled.</returns>
+        public int GetTimeRemaining(int gameTime)
+        {
+            return DisableTime - gameTime;
         }
 
         /// <summary>
@@ -106,9 +117,7 @@ namespace DemoGame.Server
 
                 case StatusEffectMergeType.DiscardWeakestUnlessTimeUnder30Secs:
                     if (power == power)
-                    {
                         _disableTime = Math.Max(disableTime, _disableTime);
-                    }
                     else if (_power > power)
                     {
                         if (GetTimeRemaining(currentTime, _disableTime) < 30000 && _disableTime <= disableTime)
@@ -119,7 +128,8 @@ namespace DemoGame.Server
                     }
                     else if (_power < power)
                     {
-                        if (GetTimeRemaining(currentTime,_disableTime) >= 30000 && GetTimeRemaining(currentTime, disableTime) < 30000)
+                        if (GetTimeRemaining(currentTime, _disableTime) >= 30000 &&
+                            GetTimeRemaining(currentTime, disableTime) < 30000)
                         {
                             _power = power;
                             _disableTime = disableTime;
@@ -147,12 +157,12 @@ namespace DemoGame.Server
 
                 case StatusEffectMergeType.CombineTimeOnGreaterPower:
                     _power = Math.Max(power, _power);
-                    _disableTime = GetTimeRemaining(currentTime, disableTime) + GetTimeRemaining(currentTime, _disableTime); 
+                    _disableTime = GetTimeRemaining(currentTime, disableTime) + GetTimeRemaining(currentTime, _disableTime);
                     break;
 
                 case StatusEffectMergeType.CombineTimeOnWeakerPower:
                     _power = Math.Min(power, _power);
-                    _disableTime = GetTimeRemaining(currentTime, disableTime) + GetTimeRemaining(currentTime, _disableTime); 
+                    _disableTime = GetTimeRemaining(currentTime, disableTime) + GetTimeRemaining(currentTime, _disableTime);
                     break;
 
                 case StatusEffectMergeType.CombinePowerOnGreaterTime:
@@ -175,22 +185,21 @@ namespace DemoGame.Server
                 return false;
         }
 
-        /// <summary>
-        /// ActiveStatusEffect constructor.
-        /// </summary>
-        /// <param name="statusEffect">The StatusEffectBase to use.</param>
-        /// <param name="power">The power of the StatusEffect.</param>
-        /// <param name="disableTime">The game time at which this ActiveStatusEffect will be disabled.</param>
-        public ActiveStatusEffect(StatusEffectBase statusEffect, ushort power, int disableTime)
+        public void SubtractBonusesFrom(IStatCollection statCollection)
         {
-            _statusEffect = statusEffect;
-            _power = power;
-            _disableTime = disableTime;
+            foreach (StatType statType in StatusEffect.ModifiedStats)
+            {
+                statCollection[statType] -= GetStatModBonus(statType);
+            }
         }
+
+        #region IModStatContainer Members
 
         public int GetStatModBonus(StatType statType)
         {
             return StatusEffect.GetStatModifier(statType, Power);
         }
+
+        #endregion
     }
 }
