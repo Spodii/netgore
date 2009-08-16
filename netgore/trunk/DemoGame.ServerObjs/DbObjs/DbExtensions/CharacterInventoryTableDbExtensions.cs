@@ -19,9 +19,9 @@ public static  class CharacterInventoryTableDbExtensions
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(this ICharacterInventoryTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@character_id"] = (DemoGame.Server.CharacterID)source.CharacterID;
-paramValues["@item_id"] = (DemoGame.Server.ItemID)source.ItemID;
-paramValues["@slot"] = (DemoGame.InventorySlot)source.Slot;
+paramValues["@character_id"] = (System.Int32)source.CharacterID;
+paramValues["@item_id"] = (System.Int32)source.ItemID;
+paramValues["@slot"] = (System.Byte)source.Slot;
 }
 
 /// <summary>
@@ -98,17 +98,17 @@ for (int i = 0; i < paramValues.Count; i++)
 switch (paramValues.GetParameterName(i))
 {
 case "@character_id":
-paramValues[i] = source.CharacterID;
+paramValues[i] = (System.Int32)source.CharacterID;
 break;
 
 
 case "@item_id":
-paramValues[i] = source.ItemID;
+paramValues[i] = (System.Int32)source.ItemID;
 break;
 
 
 case "@slot":
-paramValues[i] = source.Slot;
+paramValues[i] = (System.Byte)source.Slot;
 break;
 
 

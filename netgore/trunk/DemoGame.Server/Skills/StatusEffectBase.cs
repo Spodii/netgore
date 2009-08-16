@@ -16,7 +16,25 @@ namespace DemoGame.Server
         static readonly StatType[] _allStatTypes = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
         readonly StatType[] _modifiedStats;
         readonly StatusEffectType _statusEffectType;
-        
+        readonly StatusEffectMergeType _mergeType;
+
+        static protected int CalculateEffectTime(int minutes)
+        {
+            return 1000 * 60 * minutes;
+        }
+
+        static protected int CalculateEffectTime(int minutes, int seconds)
+        {
+            return (1000 * 60 * minutes) + (1000 * seconds);
+        }
+
+        static protected int CalculateEffectTime(int minutes, int seconds, int milliseconds)
+        {
+            return (1000 * 60 * minutes) + (1000 * seconds) + milliseconds;
+        }
+
+        public abstract int GetEffectTime(ushort power);
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public StatusEffectType StatusEffectType { get { return _statusEffectType; } }
@@ -37,11 +55,15 @@ namespace DemoGame.Server
             }
         }
 
+        public StatusEffectMergeType MergeType { get { return _mergeType; } }
+
         protected abstract int? InternalTryGetStatModifier(StatType statType, ushort power);
 
-        protected StatusEffectBase(StatusEffectType statusEffectType)
+        protected StatusEffectBase(StatusEffectType statusEffectType, StatusEffectMergeType mergeType)
         {
             _statusEffectType = statusEffectType;
+            _mergeType = mergeType;
+
             _modifiedStats = GetUsedStatTypes();
 
             AssertReturnValuesAreConsistent();

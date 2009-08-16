@@ -7,8 +7,13 @@ namespace DemoGame.Server
 {
     public class StatusEffectStrengthen : StatusEffectBase
     {
-        StatusEffectStrengthen() : base(StatusEffectType.Strengthen)
+        StatusEffectStrengthen() : base(StatusEffectType.Strengthen, DefaultStatusEffectMergeType.Buff)
         {
+        }
+
+        public override int GetEffectTime(ushort power)
+        {
+            return CalculateEffectTime(2);
         }
 
         protected override int? InternalTryGetStatModifier(StatType statType, ushort power)

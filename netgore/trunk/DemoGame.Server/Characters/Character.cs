@@ -527,9 +527,14 @@ namespace DemoGame.Server
 
         protected Character()
         {
+            // TODO: Remove the need for this constructor
             throw new MethodAccessException("Character's empty constructor should never be used on the server since the " +
                                             "server never needs to deserialize a DynamicEntity.");
         }
+
+        readonly CharacterStatusEffects _statusEffects;
+
+        public CharacterStatusEffects StatusEffects { get { return _statusEffects; } }
 
         /// <summary>
         /// Character constructor.
@@ -541,6 +546,11 @@ namespace DemoGame.Server
         {
             _world = world;
             _isPersistent = isPersistent;
+
+            if (IsPersistent)
+                _statusEffects = new PersistentCharacterStatusEffects(this);
+            else
+                _statusEffects = new NonPersistentCharacterStatusEffects(this);
 
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _baseStats = CreateStats(StatCollectionType.Base);

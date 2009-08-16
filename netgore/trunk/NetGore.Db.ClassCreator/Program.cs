@@ -76,6 +76,7 @@ namespace NetGore.Db.ClassCreator
                 const string itemType = "DemoGame.ItemType";
                 const string inventorySlot = "DemoGame.InventorySlot";
                 const string statusEffectType = "DemoGame.StatusEffectType";
+                const string activeStatusEffectID = "DemoGame.Server.ActiveStatusEffectID";
 
                 generator.AddCustomType(allianceID, "alliance", "id");
 
@@ -86,6 +87,7 @@ namespace NetGore.Db.ClassCreator
 
                 generator.AddCustomType(inventorySlot, "character_inventory", "slot");
 
+                generator.AddCustomType(activeStatusEffectID, "character_status_effect", "id");
                 generator.AddCustomType(statusEffectType, "character_status_effect", "status_effect_id");
 
                 generator.AddCustomType(itemChance, "character_template_equipped", "chance");

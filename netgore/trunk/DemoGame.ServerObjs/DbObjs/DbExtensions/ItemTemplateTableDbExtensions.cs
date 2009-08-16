@@ -26,17 +26,17 @@ paramValues["@defence"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGa
 paramValues["@description"] = (System.String)source.Description;
 paramValues["@dex"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
 paramValues["@evade"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
-paramValues["@graphic"] = (NetGore.GrhIndex)source.Graphic;
+paramValues["@graphic"] = (System.UInt16)source.Graphic;
 paramValues["@height"] = (System.Byte)source.Height;
-paramValues["@hp"] = (DemoGame.SPValueType)source.HP;
-paramValues["@id"] = (DemoGame.Server.ItemTemplateID)source.ID;
+paramValues["@hp"] = (System.Int16)source.HP;
+paramValues["@id"] = (System.UInt16)source.ID;
 paramValues["@imm"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
 paramValues["@int"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
 paramValues["@maxhit"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
 paramValues["@maxhp"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
 paramValues["@maxmp"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
 paramValues["@minhit"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
-paramValues["@mp"] = (DemoGame.SPValueType)source.MP;
+paramValues["@mp"] = (System.Int16)source.MP;
 paramValues["@name"] = (System.String)source.Name;
 paramValues["@perc"] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
 paramValues["@reqacc"] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Acc);
@@ -350,157 +350,157 @@ for (int i = 0; i < paramValues.Count; i++)
 switch (paramValues.GetParameterName(i))
 {
 case "@agi":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
 break;
 
 
 case "@armor":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
 break;
 
 
 case "@bra":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Bra);
 break;
 
 
 case "@defence":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Defence);
 break;
 
 
 case "@description":
-paramValues[i] = source.Description;
+paramValues[i] = (System.String)source.Description;
 break;
 
 
 case "@dex":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Dex);
 break;
 
 
 case "@evade":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Evade);
 break;
 
 
 case "@graphic":
-paramValues[i] = source.Graphic;
+paramValues[i] = (System.UInt16)source.Graphic;
 break;
 
 
 case "@height":
-paramValues[i] = source.Height;
+paramValues[i] = (System.Byte)source.Height;
 break;
 
 
 case "@hp":
-paramValues[i] = source.HP;
+paramValues[i] = (System.Int16)source.HP;
 break;
 
 
 case "@id":
-paramValues[i] = source.ID;
+paramValues[i] = (System.UInt16)source.ID;
 break;
 
 
 case "@imm":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
 break;
 
 
 case "@int":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
 break;
 
 
 case "@maxhit":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHit);
 break;
 
 
 case "@maxhp":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxHP);
 break;
 
 
 case "@maxmp":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MaxMP);
 break;
 
 
 case "@minhit":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.MinHit);
 break;
 
 
 case "@mp":
-paramValues[i] = source.MP;
+paramValues[i] = (System.Int16)source.MP;
 break;
 
 
 case "@name":
-paramValues[i] = source.Name;
+paramValues[i] = (System.String)source.Name;
 break;
 
 
 case "@perc":
-paramValues[i] = source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
+paramValues[i] = (System.Int16)source.GetStat((DemoGame.StatType)DemoGame.StatType.Perc);
 break;
 
 
 case "@reqacc":
-paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Acc);
+paramValues[i] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Acc);
 break;
 
 
 case "@reqagi":
-paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Agi);
+paramValues[i] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Agi);
 break;
 
 
 case "@reqarmor":
-paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Armor);
+paramValues[i] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Armor);
 break;
 
 
 case "@reqbra":
-paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Bra);
+paramValues[i] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Bra);
 break;
 
 
 case "@reqdex":
-paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Dex);
+paramValues[i] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Dex);
 break;
 
 
 case "@reqevade":
-paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Evade);
+paramValues[i] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Evade);
 break;
 
 
 case "@reqimm":
-paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Imm);
+paramValues[i] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Imm);
 break;
 
 
 case "@reqint":
-paramValues[i] = source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Int);
+paramValues[i] = (System.Byte)source.GetReqStat((DemoGame.StatType)DemoGame.StatType.Int);
 break;
 
 
 case "@type":
-paramValues[i] = source.Type;
+paramValues[i] = (System.Byte)source.Type;
 break;
 
 
 case "@value":
-paramValues[i] = source.Value;
+paramValues[i] = (System.Int32)source.Value;
 break;
 
 
 case "@width":
-paramValues[i] = source.Width;
+paramValues[i] = (System.Byte)source.Width;
 break;
 
 

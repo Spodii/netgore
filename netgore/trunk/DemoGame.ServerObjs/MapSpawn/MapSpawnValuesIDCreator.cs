@@ -11,6 +11,7 @@ namespace DemoGame.Server
         public MapSpawnValuesIDCreator(DbConnectionPool connectionPool)
             : base(connectionPool, MapSpawnTable.TableName, "id", 1, 0)
         {
+            QueryAsserts.ArePrimaryKeys(MapSpawnTable.DbKeyColumns, "id");
         }
     }
 }

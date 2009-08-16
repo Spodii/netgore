@@ -19,7 +19,7 @@ public static  class MapTableDbExtensions
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(this IMapTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@id"] = (NetGore.MapIndex)source.ID;
+paramValues["@id"] = (System.UInt16)source.ID;
 paramValues["@name"] = (System.String)source.Name;
 }
 
@@ -89,12 +89,12 @@ for (int i = 0; i < paramValues.Count; i++)
 switch (paramValues.GetParameterName(i))
 {
 case "@id":
-paramValues[i] = source.ID;
+paramValues[i] = (System.UInt16)source.ID;
 break;
 
 
 case "@name":
-paramValues[i] = source.Name;
+paramValues[i] = (System.String)source.Name;
 break;
 
 

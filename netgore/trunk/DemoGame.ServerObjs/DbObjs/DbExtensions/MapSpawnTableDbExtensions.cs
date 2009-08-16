@@ -20,10 +20,10 @@ public static  class MapSpawnTableDbExtensions
 public static void CopyValues(this IMapSpawnTable source, NetGore.Db.DbParameterValues paramValues)
 {
 paramValues["@amount"] = (System.Byte)source.Amount;
-paramValues["@character_template_id"] = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
+paramValues["@character_template_id"] = (System.UInt16)source.CharacterTemplateID;
 paramValues["@height"] = (System.Nullable<System.UInt16>)source.Height;
-paramValues["@id"] = (DemoGame.Server.MapSpawnValuesID)source.ID;
-paramValues["@map_id"] = (NetGore.MapIndex)source.MapID;
+paramValues["@id"] = (System.Int32)source.ID;
+paramValues["@map_id"] = (System.UInt16)source.MapID;
 paramValues["@width"] = (System.Nullable<System.UInt16>)source.Width;
 paramValues["@x"] = (System.Nullable<System.UInt16>)source.X;
 paramValues["@y"] = (System.Nullable<System.UInt16>)source.Y;
@@ -143,42 +143,42 @@ for (int i = 0; i < paramValues.Count; i++)
 switch (paramValues.GetParameterName(i))
 {
 case "@amount":
-paramValues[i] = source.Amount;
+paramValues[i] = (System.Byte)source.Amount;
 break;
 
 
 case "@character_template_id":
-paramValues[i] = source.CharacterTemplateID;
+paramValues[i] = (System.UInt16)source.CharacterTemplateID;
 break;
 
 
 case "@height":
-paramValues[i] = source.Height;
+paramValues[i] = (System.Nullable<System.UInt16>)source.Height;
 break;
 
 
 case "@id":
-paramValues[i] = source.ID;
+paramValues[i] = (System.Int32)source.ID;
 break;
 
 
 case "@map_id":
-paramValues[i] = source.MapID;
+paramValues[i] = (System.UInt16)source.MapID;
 break;
 
 
 case "@width":
-paramValues[i] = source.Width;
+paramValues[i] = (System.Nullable<System.UInt16>)source.Width;
 break;
 
 
 case "@x":
-paramValues[i] = source.X;
+paramValues[i] = (System.Nullable<System.UInt16>)source.X;
 break;
 
 
 case "@y":
-paramValues[i] = source.Y;
+paramValues[i] = (System.Nullable<System.UInt16>)source.Y;
 break;
 
 
