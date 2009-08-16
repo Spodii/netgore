@@ -45,8 +45,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.IO", "NetGore.IO\Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.IO.Tests", "NetGore.IO.Tests\NetGore.IO.Tests.csproj", "{07337A05-C38C-44DE-84E7-BA77D6021D0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.Server.Tests", "DemoGame.Server.Tests\DemoGame.Server.Tests.csproj", "{AAD5853E-3D64-472C-802F-B1899235680E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Collections", "NetGore.Collections\NetGore.Collections.csproj", "{C45432C4-D511-4874-8BF9-EB91AD6E8839}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Collections.Tests", "NetGore.Collections.Tests\NetGore.Collections.Tests.csproj", "{9FF7C125-C009-4DE2-9022-BACBE3AFDB30}"
@@ -763,41 +761,6 @@ Global
 		{07337A05-C38C-44DE-84E7-BA77D6021D0F}.Release|x86.ActiveCfg = Release|x86
 		{07337A05-C38C-44DE-84E7-BA77D6021D0F}.Release|x86.Build.0 = Release|x86
 		{07337A05-C38C-44DE-84E7-BA77D6021D0F}.Release|Xbox 360.ActiveCfg = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Mixed Platforms.Build.0 = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|x86.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|x86.Build.0 = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Debug|Xbox 360.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugCS|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugCS|Mixed Platforms.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugCS|Mixed Platforms.Build.0 = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugCS|x86.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugCS|Xbox 360.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugDbClassGen|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugDbClassGen|Mixed Platforms.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugDbClassGen|Mixed Platforms.Build.0 = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugDbClassGen|Xbox 360.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugGUITester|Any CPU.ActiveCfg = Debug|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugGUITester|Any CPU.Build.0 = Debug|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugGUITester|Mixed Platforms.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugGUITester|Mixed Platforms.Build.0 = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugGUITester|x86.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.DebugGUITester|Xbox 360.ActiveCfg = Debug|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Profile|Any CPU.ActiveCfg = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Profile|Mixed Platforms.ActiveCfg = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Profile|Mixed Platforms.Build.0 = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Profile|x86.ActiveCfg = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Profile|x86.Build.0 = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Profile|Xbox 360.ActiveCfg = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Mixed Platforms.ActiveCfg = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Mixed Platforms.Build.0 = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|x86.ActiveCfg = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|x86.Build.0 = Release|x86
-		{AAD5853E-3D64-472C-802F-B1899235680E}.Release|Xbox 360.ActiveCfg = Release|x86
 		{C45432C4-D511-4874-8BF9-EB91AD6E8839}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C45432C4-D511-4874-8BF9-EB91AD6E8839}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C45432C4-D511-4874-8BF9-EB91AD6E8839}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
