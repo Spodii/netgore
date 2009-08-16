@@ -116,8 +116,11 @@ namespace DemoGame.Server
                     break;
 
                 case StatusEffectMergeType.DiscardWeakestUnlessTimeUnder30Secs:
-                    if (power == power)
+                    if (power == _power)
+                    {
+                        // Same power, so just use the longer time
                         _disableTime = Math.Max(disableTime, _disableTime);
+                    }
                     else if (_power > power)
                     {
                         if (GetTimeRemaining(currentTime, _disableTime) < 30000 && _disableTime <= disableTime)
