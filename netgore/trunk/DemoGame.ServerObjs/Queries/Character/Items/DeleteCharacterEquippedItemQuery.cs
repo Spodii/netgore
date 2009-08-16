@@ -10,8 +10,9 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class DeleteCharacterEquippedItemQuery : DbQueryNonReader<ICharacterEquippedTable>
     {
-        static readonly string _queryString = string.Format("DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot",
-                                                            CharacterEquippedTable.TableName);
+        static readonly string _queryString =
+            string.Format("DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot",
+                          CharacterEquippedTable.TableName);
 
         public DeleteCharacterEquippedItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

@@ -102,8 +102,8 @@ namespace DemoGame.Server
             object value;
             if (!_queryObjects.TryGetValue(typeof(T), out value))
             {
-                const string errmsg = "Failed to find a query of Type `{0}`. Make sure the attribute `{1}`" +
-                    " is attached to the specified class.";
+                const string errmsg =
+                    "Failed to find a query of Type `{0}`. Make sure the attribute `{1}`" + " is attached to the specified class.";
                 string err = string.Format(errmsg, typeof(T), typeof(DBControllerQueryAttribute));
                 log.Fatal(err);
                 Debug.Fail(err);

@@ -1,8 +1,6 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -14,8 +12,7 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("REPLACE INTO `{0}` {1}", CharacterStatusEffectTable.TableName,
                                                             FormatParametersIntoValuesString(CharacterStatusEffectTable.DbColumns));
 
-        public ReplaceCharacterStatusEffectQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryString)
+        public ReplaceCharacterStatusEffectQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
