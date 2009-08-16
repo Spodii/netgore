@@ -1,4 +1,5 @@
 using System.Linq;
+using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -13,8 +14,9 @@ namespace DemoGame.Server.Queries
         /// ItemIDCreator constructor.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use to communicate with the database.</param>
-        public ItemIDCreator(DbConnectionPool connectionPool) : base(connectionPool, "item", "id", 2048, 128)
+        public ItemIDCreator(DbConnectionPool connectionPool) : base(connectionPool, ItemTable.TableName, "id", 2048, 128)
         {
+            QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");
         }
     }
 }

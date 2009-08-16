@@ -5,22 +5,10 @@ using System.Text;
 
 namespace DemoGame.Server
 {
-    public class SkillHeal : SkillBase
+    public class SkillStrengthen : SkillBase
     {
-        SkillHeal() : base(SkillType.Heal)
+        SkillStrengthen() : base(SkillType.Strengthen)
         {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the MP cost of using this Skill.
-        /// </summary>
-        /// <param name="user">The Character using the skill. Will not be null.</param>
-        /// <param name="target">The optional Character that the skill was used on. Can be null if there was
-        /// no targeted Character.</param>
-        /// <returns>The MP cost of using this Skill.</returns>
-        public override SPValueType GetMPCost(Character user, Character target)
-        {
-            return 2;
         }
 
         /// <summary>
@@ -35,10 +23,10 @@ namespace DemoGame.Server
             if (target == null)
                 target = user;
 
-            int power = user.ModStats[StatType.Int] * 2 + 5;
-            target.HP += power;
+            int power = user.ModStats[StatType.Int] + user.ModStats[StatType.Bra] / 4;
+            bool successful = target.StatusEffects.TryAdd(StatusEffectType.Strengthen, (ushort)power);
 
-            return true;
+            return successful;
         }
 
         /// <summary>

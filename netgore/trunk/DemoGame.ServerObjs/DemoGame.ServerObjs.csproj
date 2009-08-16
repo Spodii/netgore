@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ActiveStatusEffectID.cs" />
     <Compile Include="Alliance\Alliance.cs" />
     <Compile Include="Alliance\AllianceID.cs" />
     <Compile Include="Alliance\AllianceManager.cs" />
@@ -129,6 +130,9 @@
     <Compile Include="MapSpawn\MapSpawnValues.cs" />
     <Compile Include="MapSpawn\MapSpawnValuesID.cs" />
     <Compile Include="MapSpawn\MapSpawnValuesIDCreator.cs" />
+    <Compile Include="Queries\Character\StatusEffect\ActiveStatusEffectsIDCreator.cs" />
+    <Compile Include="Queries\Character\StatusEffect\DeleteCharacterStatusEffectQuery.cs" />
+    <Compile Include="Queries\Character\StatusEffect\ReplaceChracterStatusEffectQuery.cs" />
     <Compile Include="Queries\Map\InsertMapQuery.cs" />
     <Compile Include="Queries\Map\Spawn\DeleteMapSpawnQuery.cs" />
     <Compile Include="Queries\Map\UpdateMapQuery.cs" />

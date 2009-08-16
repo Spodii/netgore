@@ -19,10 +19,10 @@ public static  class CharacterStatusEffectTableDbExtensions
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(this ICharacterStatusEffectTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@character_id"] = (DemoGame.Server.CharacterID)source.CharacterID;
+paramValues["@character_id"] = (System.Int32)source.CharacterID;
 paramValues["@id"] = (System.Int32)source.ID;
 paramValues["@power"] = (System.UInt16)source.Power;
-paramValues["@status_effect_id"] = (DemoGame.StatusEffectType)source.StatusEffect;
+paramValues["@status_effect_id"] = (System.Byte)source.StatusEffect;
 paramValues["@time_left_secs"] = (System.UInt16)source.TimeLeftSecs;
 }
 
@@ -41,7 +41,7 @@ i = dataReader.GetOrdinal("character_id");
 source.CharacterID = (DemoGame.Server.CharacterID)(DemoGame.Server.CharacterID)dataReader.GetInt32(i);
 
 i = dataReader.GetOrdinal("id");
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (DemoGame.Server.ActiveStatusEffectID)(DemoGame.Server.ActiveStatusEffectID)dataReader.GetInt32(i);
 
 i = dataReader.GetOrdinal("power");
 source.Power = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
@@ -75,7 +75,7 @@ break;
 
 
 case "id":
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (DemoGame.Server.ActiveStatusEffectID)(DemoGame.Server.ActiveStatusEffectID)dataReader.GetInt32(i);
 break;
 
 
@@ -116,27 +116,27 @@ for (int i = 0; i < paramValues.Count; i++)
 switch (paramValues.GetParameterName(i))
 {
 case "@character_id":
-paramValues[i] = source.CharacterID;
+paramValues[i] = (System.Int32)source.CharacterID;
 break;
 
 
 case "@id":
-paramValues[i] = source.ID;
+paramValues[i] = (System.Int32)source.ID;
 break;
 
 
 case "@power":
-paramValues[i] = source.Power;
+paramValues[i] = (System.UInt16)source.Power;
 break;
 
 
 case "@status_effect_id":
-paramValues[i] = source.StatusEffect;
+paramValues[i] = (System.Byte)source.StatusEffect;
 break;
 
 
 case "@time_left_secs":
-paramValues[i] = source.TimeLeftSecs;
+paramValues[i] = (System.UInt16)source.TimeLeftSecs;
 break;
 
 

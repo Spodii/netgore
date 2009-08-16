@@ -19,10 +19,10 @@ public static  class CharacterTemplateEquippedTableDbExtensions
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(this ICharacterTemplateEquippedTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@chance"] = (DemoGame.Server.ItemChance)source.Chance;
-paramValues["@character_template_id"] = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
+paramValues["@chance"] = (System.UInt16)source.Chance;
+paramValues["@character_template_id"] = (System.UInt16)source.CharacterTemplateID;
 paramValues["@id"] = (System.Int32)source.ID;
-paramValues["@item_template_id"] = (DemoGame.Server.ItemTemplateID)source.ItemTemplateID;
+paramValues["@item_template_id"] = (System.UInt16)source.ItemTemplateID;
 }
 
 /// <summary>
@@ -107,22 +107,22 @@ for (int i = 0; i < paramValues.Count; i++)
 switch (paramValues.GetParameterName(i))
 {
 case "@chance":
-paramValues[i] = source.Chance;
+paramValues[i] = (System.UInt16)source.Chance;
 break;
 
 
 case "@character_template_id":
-paramValues[i] = source.CharacterTemplateID;
+paramValues[i] = (System.UInt16)source.CharacterTemplateID;
 break;
 
 
 case "@id":
-paramValues[i] = source.ID;
+paramValues[i] = (System.Int32)source.ID;
 break;
 
 
 case "@item_template_id":
-paramValues[i] = source.ItemTemplateID;
+paramValues[i] = (System.UInt16)source.ItemTemplateID;
 break;
 
 

@@ -99,17 +99,75 @@ namespace NetGore.Db
         /// <summary>
         /// Helps creates multiple DbParameters easily.
         /// </summary>
+        /// <param name="param1">Name of the first parameter.</param>
+        /// <returns>IEnumerable of DbParameters for each of the specified parameter names.</returns>
+        protected IEnumerable<DbParameter> CreateParameters(string param1)
+        {
+            return new DbParameter[] 
+            { 
+                CreateParameter(param1)
+            };
+        }
+
+        /// <summary>
+        /// Helps creates multiple DbParameters easily.
+        /// </summary>
+        /// <param name="param1">Name of the first parameter.</param>
+        /// <param name="param2">Name of the second parameter.</param>
+        /// <returns>IEnumerable of DbParameters for each of the specified parameter names.</returns>
+        protected IEnumerable<DbParameter> CreateParameters(string param1, string param2)
+        {
+            return new DbParameter[] 
+            { 
+                CreateParameter(param1),
+                CreateParameter(param2)
+            };
+        }
+
+        /// <summary>
+        /// Helps creates multiple DbParameters easily.
+        /// </summary>
+        /// <param name="param1">Name of the first parameter.</param>
+        /// <param name="param2">Name of the second parameter.</param>
+        /// <param name="param3">Name of the third parameter.</param>
+        /// <returns>IEnumerable of DbParameters for each of the specified parameter names.</returns>
+        protected IEnumerable<DbParameter> CreateParameters(string param1, string param2, string param3)
+        {
+            return new DbParameter[] 
+            { 
+                CreateParameter(param1),
+                CreateParameter(param2),
+                CreateParameter(param3)
+            };
+        }
+
+        /// <summary>
+        /// Helps creates multiple DbParameters easily.
+        /// </summary>
+        /// <param name="param1">Name of the first parameter.</param>
+        /// <param name="param2">Name of the second parameter.</param>
+        /// <param name="param3">Name of the third parameter.</param>
+        /// <param name="param4">Name of the fourth parameter.</param>
+        /// <returns>IEnumerable of DbParameters for each of the specified parameter names.</returns>
+        protected IEnumerable<DbParameter> CreateParameters(string param1, string param2, string param3, string param4)
+        {
+            return new DbParameter[] 
+            { 
+                CreateParameter(param1),
+                CreateParameter(param2),
+                CreateParameter(param3),
+                CreateParameter(param4)
+            };
+        }
+
+        /// <summary>
+        /// Helps creates multiple DbParameters easily.
+        /// </summary>
         /// <param name="parameterNames">Array of ParameterNames to create.</param>
         /// <returns>IEnumerable of DbParameters, one for each element in the <paramref name="parameterNames"/> array.</returns>
         protected IEnumerable<DbParameter> CreateParameters(params string[] parameterNames)
         {
-            if (parameterNames == null)
-                throw new ArgumentNullException("parameterNames");
-
-            foreach (string parameterName in parameterNames)
-            {
-                yield return CreateParameter(parameterName);
-            }
+            return CreateParameters((IEnumerable<string>)parameterNames);
         }
 
         /// <summary>
@@ -122,10 +180,16 @@ namespace NetGore.Db
             if (parameterNames == null)
                 throw new ArgumentNullException("parameterNames");
 
+            DbParameter[] ret = new DbParameter[parameterNames.Count()];
+            int i = 0;
+
             foreach (string parameterName in parameterNames)
             {
-                yield return CreateParameter(parameterName);
+                ret[i] = CreateParameter(parameterName);
+                i++;
             }
+
+            return ret;
         }
 
         /// <summary>

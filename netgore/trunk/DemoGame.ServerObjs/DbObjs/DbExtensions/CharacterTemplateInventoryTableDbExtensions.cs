@@ -19,10 +19,10 @@ public static  class CharacterTemplateInventoryTableDbExtensions
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(this ICharacterTemplateInventoryTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@chance"] = (DemoGame.Server.ItemChance)source.Chance;
-paramValues["@character_template_id"] = (DemoGame.Server.CharacterTemplateID)source.CharacterTemplateID;
+paramValues["@chance"] = (System.UInt16)source.Chance;
+paramValues["@character_template_id"] = (System.UInt16)source.CharacterTemplateID;
 paramValues["@id"] = (System.Int32)source.ID;
-paramValues["@item_template_id"] = (DemoGame.Server.ItemTemplateID)source.ItemTemplateID;
+paramValues["@item_template_id"] = (System.UInt16)source.ItemTemplateID;
 paramValues["@max"] = (System.Byte)source.Max;
 paramValues["@min"] = (System.Byte)source.Min;
 }
@@ -125,32 +125,32 @@ for (int i = 0; i < paramValues.Count; i++)
 switch (paramValues.GetParameterName(i))
 {
 case "@chance":
-paramValues[i] = source.Chance;
+paramValues[i] = (System.UInt16)source.Chance;
 break;
 
 
 case "@character_template_id":
-paramValues[i] = source.CharacterTemplateID;
+paramValues[i] = (System.UInt16)source.CharacterTemplateID;
 break;
 
 
 case "@id":
-paramValues[i] = source.ID;
+paramValues[i] = (System.Int32)source.ID;
 break;
 
 
 case "@item_template_id":
-paramValues[i] = source.ItemTemplateID;
+paramValues[i] = (System.UInt16)source.ItemTemplateID;
 break;
 
 
 case "@max":
-paramValues[i] = source.Max;
+paramValues[i] = (System.Byte)source.Max;
 break;
 
 
 case "@min":
-paramValues[i] = source.Min;
+paramValues[i] = (System.Byte)source.Min;
 break;
 
 

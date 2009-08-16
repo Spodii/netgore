@@ -10,8 +10,9 @@ namespace DemoGame.Server
     /// </summary>
     public class ActiveStatusEffect
     {
-        readonly StatusEffectBase _statusEffect;
-        readonly ushort _power;
+        StatusEffectBase _statusEffect;
+        ushort _power;
+        int _disableTime;
 
         /// <summary>
         /// Gets the StatusEffectBase that this ActiveStatusEffect
@@ -34,14 +35,131 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the game time at which this ActiveStatusEffect will be disabled.
+        /// </summary>
+        public int DisableTime { get { return _disableTime; } }
+
+        /// <summary>
+        /// Gets the time remaining, in milliseconds, until this ActiveStatusEffect is disabled.
+        /// </summary>
+        /// <param name="gameTime">The current game time.</param>
+        /// <returns>The time remaining, in milliseconds, until this ActiveStatusEffect is disabled.</returns>
+        public int GetTimeRemaining(int gameTime) { return DisableTime - gameTime; }
+
+        public static int GetTimeRemaining(int gameTime, int disableTime)
+        {
+            return disableTime - gameTime;
+        }
+
+        /// <summary>
+        /// Merges this ActiveStatusEffect with the values for another ActiveStatusEffect.
+        /// </summary>
+        /// <param name="currentTime">The current game time.</param>
+        /// <param name="power">The power of the ActiveStatusEffect that is merging with this one.</param>
+        /// <param name="disableTime">The disable time of the ActiveStatusEffect that is merging with this one.</param>
+        /// <returns>True if the merge resulted in this ActiveStatusEffect changing; otherwise false.</returns>
+        public bool MergeWith(int currentTime, ushort power, int disableTime)
+        {
+            int oldPower = _power;
+            int oldDisableTime = _disableTime;
+
+            switch (StatusEffect.MergeType)
+            {
+                case StatusEffectMergeType.DiscardNewer:
+                    break;
+
+                case StatusEffectMergeType.DiscardOlder:
+                    _power = power;
+                    _disableTime = disableTime;
+                    break;
+
+                case StatusEffectMergeType.DiscardWeakest:
+                    _power = Math.Min(power, _power);
+                    _disableTime = Math.Min(disableTime, _disableTime);
+                    break;
+
+                case StatusEffectMergeType.DiscardWeakestUnlessTimeUnder30Secs:
+                    if (power == power)
+                    {
+                        _disableTime = Math.Max(disableTime, _disableTime);
+                    }
+                    else if (_power > power)
+                    {
+                        if (GetTimeRemaining(currentTime, _disableTime) < 30000 && _disableTime <= disableTime)
+                        {
+                            _power = power;
+                            _disableTime = disableTime;
+                        }
+                    }
+                    else if (_power < power)
+                    {
+                        if (GetTimeRemaining(currentTime,_disableTime) >= 30000 && GetTimeRemaining(currentTime, disableTime) < 30000)
+                        {
+                            _power = power;
+                            _disableTime = disableTime;
+                        }
+                    }
+                    break;
+
+                case StatusEffectMergeType.DiscardStrongest:
+                    if (_power > power)
+                    {
+                        _power = power;
+                        _disableTime = disableTime;
+                    }
+                    break;
+
+                case StatusEffectMergeType.UseGreatestTimeAndPower:
+                    _power = Math.Max(power, _power);
+                    _disableTime = Math.Max(disableTime, _disableTime);
+                    break;
+
+                case StatusEffectMergeType.UseLeastTimeAndPower:
+                    _power = Math.Min(power, _power);
+                    _disableTime = Math.Min(disableTime, _disableTime);
+                    break;
+
+                case StatusEffectMergeType.CombineTimeOnGreaterPower:
+                    _power = Math.Max(power, _power);
+                    _disableTime = GetTimeRemaining(currentTime, disableTime) + GetTimeRemaining(currentTime, _disableTime); 
+                    break;
+
+                case StatusEffectMergeType.CombineTimeOnWeakerPower:
+                    _power = Math.Min(power, _power);
+                    _disableTime = GetTimeRemaining(currentTime, disableTime) + GetTimeRemaining(currentTime, _disableTime); 
+                    break;
+
+                case StatusEffectMergeType.CombinePowerOnGreaterTime:
+                    _power = (ushort)(_power + power);
+                    _disableTime = Math.Max(disableTime, _disableTime);
+                    break;
+
+                case StatusEffectMergeType.CombinePowerOnLeastTime:
+                    _power = (ushort)(_power + power);
+                    _disableTime = Math.Min(disableTime, _disableTime);
+                    break;
+
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+
+            if (oldPower != _power || oldDisableTime != _disableTime)
+                return true;
+            else
+                return false;
+        }
+
+        /// <summary>
         /// ActiveStatusEffect constructor.
         /// </summary>
         /// <param name="statusEffect">The StatusEffectBase to use.</param>
         /// <param name="power">The power of the StatusEffect.</param>
-        public ActiveStatusEffect(StatusEffectBase statusEffect, ushort power)
+        /// <param name="disableTime">The game time at which this ActiveStatusEffect will be disabled.</param>
+        public ActiveStatusEffect(StatusEffectBase statusEffect, ushort power, int disableTime)
         {
             _statusEffect = statusEffect;
             _power = power;
+            _disableTime = disableTime;
         }
     }
 }

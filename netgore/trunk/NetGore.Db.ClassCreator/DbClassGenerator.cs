@@ -599,7 +599,7 @@ namespace NetGore.Db.ClassCreator
             {
                 string left = parameterName + "[\"@" + column.Name + "\"]";
                 string right = _extensionParamName + "." + cd.GetColumnValueAccessor(column);
-                string line = Formatter.GetSetValue(left, right, false, false, cd.GetExternalType(column));
+                string line = Formatter.GetSetValue(left, right, false, false, cd.GetInternalType(column));
                 bodySB.AppendLine(line);
             }
             sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
@@ -857,7 +857,7 @@ namespace NetGore.Db.ClassCreator
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine(Formatter.GetSetValue(parameterName + Formatter.OpenIndexer + "i" + Formatter.CloseIndexer,
-                                                _extensionParamName + "." + cd.GetColumnValueAccessor(column), false, false));
+                                                _extensionParamName + "." + cd.GetColumnValueAccessor(column), false, false, cd.GetInternalType(column)));
             sb.AppendLine("break" + Formatter.EndOfLine);
             return sb.ToString();
         }

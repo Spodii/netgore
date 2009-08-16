@@ -19,8 +19,8 @@ public static  class AllianceAttackableTableDbExtensions
 /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
 public static void CopyValues(this IAllianceAttackableTable source, NetGore.Db.DbParameterValues paramValues)
 {
-paramValues["@alliance_id"] = (DemoGame.Server.AllianceID)source.AllianceID;
-paramValues["@attackable_id"] = (DemoGame.Server.AllianceID)source.AttackableID;
+paramValues["@alliance_id"] = (System.Byte)source.AllianceID;
+paramValues["@attackable_id"] = (System.Byte)source.AttackableID;
 paramValues["@placeholder"] = (System.Nullable<System.Byte>)source.Placeholder;
 }
 
@@ -98,17 +98,17 @@ for (int i = 0; i < paramValues.Count; i++)
 switch (paramValues.GetParameterName(i))
 {
 case "@alliance_id":
-paramValues[i] = source.AllianceID;
+paramValues[i] = (System.Byte)source.AllianceID;
 break;
 
 
 case "@attackable_id":
-paramValues[i] = source.AttackableID;
+paramValues[i] = (System.Byte)source.AttackableID;
 break;
 
 
 case "@placeholder":
-paramValues[i] = source.Placeholder;
+paramValues[i] = (System.Nullable<System.Byte>)source.Placeholder;
 break;
 
 

@@ -10,6 +10,7 @@ namespace DemoGame
     /// </summary>
     public enum SkillType : byte
     {
-        Heal
+        Heal,
+        Strengthen
     }
 }
