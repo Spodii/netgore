@@ -23,13 +23,6 @@ namespace DemoGame.Client
             return pw;
         }
 
-        public static PacketWriter UseSkill(SkillType skillType)
-        {
-            PacketWriter pw = GetWriter(ClientPacketID.UseSkill);
-            pw.Write(skillType);
-            return pw;
-        }
-
         public static PacketWriter GetEquipmentItemInfo(EquipmentSlot slot)
         {
             PacketWriter pw = GetWriter(ClientPacketID.GetEquipmentItemInfo);
@@ -123,6 +116,13 @@ namespace DemoGame.Client
         {
             PacketWriter pw = GetWriter(ClientPacketID.UseInventoryItem);
             pw.Write(slot);
+            return pw;
+        }
+
+        public static PacketWriter UseSkill(SkillType skillType)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.UseSkill);
+            pw.Write(skillType);
             return pw;
         }
 

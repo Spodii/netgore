@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
+using NetGore;
 using NetGore.Collections;
 
 namespace DemoGame.Server
@@ -15,12 +15,13 @@ namespace DemoGame.Server
     /// </summary>
     public static class SkillManager
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
         /// <summary>
         /// Dictionary that allows for lookup of a SkillBase for the given SkillType.
         /// </summary>
-        static readonly Dictionary<SkillType, SkillBase> _skills = new Dictionary<SkillType, SkillBase>(EnumComparer<SkillType>.Instance); 
+        static readonly Dictionary<SkillType, SkillBase> _skills =
+            new Dictionary<SkillType, SkillBase>(EnumComparer<SkillType>.Instance);
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// SkillManager static constructor.
@@ -28,15 +29,15 @@ namespace DemoGame.Server
         static SkillManager()
         {
             // Get the Types for the classes that inherit SkillBase
-            var types = NetGore.TypeHelper.FindTypesThatInherit(typeof(SkillBase), Type.EmptyTypes, false);
+            var types = TypeHelper.FindTypesThatInherit(typeof(SkillBase), Type.EmptyTypes, false);
 
             // Filter out the invalid derived Types
             types = types.Where(x => x.IsClass && !x.IsAbstract);
 
             // Create an instance of each of the valid derived classes
-            foreach (var type in types)
+            foreach (Type type in types)
             {
-                var instance = (SkillBase)Activator.CreateInstance(type, true);
+                SkillBase instance = (SkillBase)Activator.CreateInstance(type, true);
 
                 if (_skills.ContainsKey(instance.SkillType))
                 {

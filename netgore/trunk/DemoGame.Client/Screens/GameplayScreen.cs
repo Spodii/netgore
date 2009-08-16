@@ -82,7 +82,6 @@ namespace DemoGame.Client
         InfoBox _infoBox;
 
         InventoryForm _inventoryForm;
-        SkillsForm _skillsForm;
         ItemInfoTooltip _itemInfoTooltip;
 
         /// <summary>
@@ -124,6 +123,8 @@ namespace DemoGame.Client
         /// Label used for displaying the latency.
         /// </summary>
         Label _latencyLabel;
+
+        SkillsForm _skillsForm;
 
         /// <summary>
         /// Client socket system used to handle the networking for the game
@@ -356,7 +357,7 @@ namespace DemoGame.Client
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 
             _inventoryForm = new InventoryForm(ItemInfoTooltip, new Vector2(250, 0), cScreen);
-            
+
             _skillsForm = new SkillsForm(new Vector2(100, 0), cScreen);
             _skillsForm.OnUseSkill += SkillsForm_OnUseSkill;
 
@@ -382,12 +383,6 @@ namespace DemoGame.Client
             _guiSettings.Add("ToolbarForm", toolbar);
         }
 
-        void SkillsForm_OnUseSkill(SkillType skillType)
-        {
-            using (var pw = ClientPacket.UseSkill(skillType))
-                Socket.Send(pw);
-        }
-
         /// <summary>
         /// Load graphics content for the game
         /// </summary>
@@ -403,6 +398,14 @@ namespace DemoGame.Client
             LoginScreen login = (LoginScreen)ScreenManager.GetScreen("login");
             login.SetError("Connection to server lost.");
             Dispose();
+        }
+
+        void SkillsForm_OnUseSkill(SkillType skillType)
+        {
+            using (PacketWriter pw = ClientPacket.UseSkill(skillType))
+            {
+                Socket.Send(pw);
+            }
         }
 
         /// <summary>

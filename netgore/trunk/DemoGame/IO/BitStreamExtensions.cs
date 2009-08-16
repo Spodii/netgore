@@ -90,6 +90,29 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Reads a SkillType from the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read from.</param>
+        /// <returns>SkillType read from the BitStream.</returns>
+        /// <exception cref="InvalidCastException">The SkillType was read from the BitStream, but the value is an invalid
+        /// SkillType value.</exception>
+        public static SkillType ReadSkillType(this BitStream bitStream)
+        {
+            byte value = bitStream.ReadByte();
+            SkillType skillType = (SkillType)value;
+
+            // Ensure the value is a valid SkillType
+            if (!skillType.IsDefined())
+            {
+                const string errmsg = "Value `{0}` is not a valid SkillType.";
+                Debug.Fail(string.Format(errmsg, value));
+                throw new InvalidCastException(string.Format(errmsg, value));
+            }
+
+            return skillType;
+        }
+
+        /// <summary>
         /// Reads an IStat from the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
@@ -149,29 +172,6 @@ namespace DemoGame
             }
 
             return statType;
-        }
-
-        /// <summary>
-        /// Reads a SkillType from the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>SkillType read from the BitStream.</returns>
-        /// <exception cref="InvalidCastException">The SkillType was read from the BitStream, but the value is an invalid
-        /// SkillType value.</exception>
-        public static SkillType ReadSkillType(this BitStream bitStream)
-        {
-            byte value = bitStream.ReadByte();
-            SkillType skillType = (SkillType)value;
-
-            // Ensure the value is a valid SkillType
-            if (!skillType.IsDefined())
-            {
-                const string errmsg = "Value `{0}` is not a valid SkillType.";
-                Debug.Fail(string.Format(errmsg, value));
-                throw new InvalidCastException(string.Format(errmsg, value));
-            }
-
-            return skillType;
         }
 
         /// <summary>

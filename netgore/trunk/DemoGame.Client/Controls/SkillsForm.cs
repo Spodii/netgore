@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
@@ -12,12 +11,14 @@ namespace DemoGame.Client
 
     public class SkillsForm : Form, IRestorableSettings
     {
+        public event UseSkillHandler OnUseSkill;
+
         public SkillsForm(Vector2 position, Control parent)
             : base(parent.GUIManager, "Skills", position, new Vector2(200, 200), parent)
         {
             var allSkillTypes = Enum.GetValues(typeof(SkillType)).Cast<SkillType>();
             Vector2 offset = Vector2.Zero;
-            foreach (var skillType in allSkillTypes)
+            foreach (SkillType skillType in allSkillTypes)
             {
                 CreateSkillLabel(offset, skillType);
                 offset += new Vector2(0, Font.LineSpacing);
@@ -26,8 +27,8 @@ namespace DemoGame.Client
 
         void CreateSkillLabel(Vector2 position, SkillType skillType)
         {
-            var skillInfo = SkillInfo.GetSkillInfo(skillType);
-            var skillLabel = new SkillLabel(this, skillInfo, position);
+            SkillInfo skillInfo = SkillInfo.GetSkillInfo(skillType);
+            SkillLabel skillLabel = new SkillLabel(this, skillInfo, position);
             skillLabel.OnClick += SkillLabel_OnClick;
         }
 
@@ -40,7 +41,7 @@ namespace DemoGame.Client
             }
         }
 
-        public event UseSkillHandler OnUseSkill;
+        #region IRestorableSettings Members
 
         /// <summary>
         /// Loads the values supplied by the <paramref name="items"/> to reconstruct the settings.
@@ -58,15 +59,17 @@ namespace DemoGame.Client
         /// <returns>The key and value pairs needed to restore the settings.</returns>
         public IEnumerable<NodeItem> Save()
         {
-            return new NodeItem[] { new NodeItem("X", Position.X), new NodeItem("Y", Position.Y), new NodeItem("IsVisible", IsVisible) };
+            return new NodeItem[]
+                   { new NodeItem("X", Position.X), new NodeItem("Y", Position.Y), new NodeItem("IsVisible", IsVisible) };
         }
+
+        #endregion
 
         class SkillLabel : Label
         {
             public SkillInfo SkillInfo { get; private set; }
 
-            public SkillLabel(Control parent, SkillInfo skillInfo, Vector2 position)
-                : base(skillInfo.Name, position, parent)
+            public SkillLabel(Control parent, SkillInfo skillInfo, Vector2 position) : base(skillInfo.Name, position, parent)
             {
                 SkillInfo = skillInfo;
             }

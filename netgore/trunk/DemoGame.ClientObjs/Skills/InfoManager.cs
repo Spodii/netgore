@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml;
 using NetGore;
 using NetGore.IO;
@@ -13,17 +12,20 @@ namespace DemoGame.Client
     {
         const string _fileItemElementName = "Item";
 
-        readonly string _fileName;
-
         readonly Dictionary<TKey, TValue> _dict;
+        readonly string _fileName;
+        readonly Func<TValue, TKey> _getKey;
 
         readonly Func<IValueReader, TValue> _reader;
         readonly Action<IValueWriter, TValue> _writer;
-        readonly Func<TValue, TKey> _getKey;
 
-        public TValue this[TKey key] { get { return _dict[key]; } }
+        public TValue this[TKey key]
+        {
+            get { return _dict[key]; }
+        }
 
-        public InfoManager(string fileName, IEqualityComparer<TKey> comparer, Func<IValueReader, TValue> reader, Action<IValueWriter, TValue> writer, Func<TValue, TKey> getKey)
+        public InfoManager(string fileName, IEqualityComparer<TKey> comparer, Func<IValueReader, TValue> reader,
+                           Action<IValueWriter, TValue> writer, Func<TValue, TKey> getKey)
         {
             _fileName = fileName;
             _reader = reader;
@@ -33,7 +35,51 @@ namespace DemoGame.Client
 
             var values = Load(GetFilePath(ContentPaths.Build));
             foreach (var value in values)
+            {
                 _dict.Add(value.Key, value.Value);
+            }
+        }
+
+        public void AddMissingTypes(IEnumerable<TKey> keys, Func<TKey, TValue> creator)
+        {
+            foreach (TKey key in keys)
+            {
+                if (_dict.ContainsKey(key))
+                    continue;
+
+                TValue obj = creator(key);
+                _dict.Add(key, obj);
+            }
+        }
+
+        public string GetFilePath(ContentPaths contentPath)
+        {
+            return contentPath.Data.Join(_fileName);
+        }
+
+        IEnumerable<KeyValuePair<TKey, TValue>> Load(string filePath)
+        {
+            if (!File.Exists(filePath))
+                return Enumerable.Empty<KeyValuePair<TKey, TValue>>();
+
+            var ret = new List<KeyValuePair<TKey, TValue>>();
+
+            using (XmlReader r = XmlReader.Create(filePath))
+            {
+                while (r.Read())
+                {
+                    if (r.NodeType != XmlNodeType.Element || r.Name != _fileItemElementName)
+                        continue;
+
+                    XmlValueReader valueReader = new XmlValueReader(r, _fileItemElementName);
+                    TValue obj = _reader(valueReader);
+                    TKey key = _getKey(obj);
+
+                    ret.Add(new KeyValuePair<TKey, TValue>(key, obj));
+                }
+            }
+
+            return ret;
         }
 
         public void Save()
@@ -51,14 +97,14 @@ namespace DemoGame.Client
 
         void Save(string filePath)
         {
-            using (var w = XmlWriter.Create(filePath, new XmlWriterSettings { Indent = true }))
+            using (XmlWriter w = XmlWriter.Create(filePath, new XmlWriterSettings { Indent = true }))
             {
                 w.WriteStartDocument();
                 w.WriteStartElement(_fileItemElementName + "s");
 
-                foreach (var value in _dict.Values)
+                foreach (TValue value in _dict.Values)
                 {
-                    using (var valueWriter = new XmlValueWriter(w, _fileItemElementName))
+                    using (XmlValueWriter valueWriter = new XmlValueWriter(w, _fileItemElementName))
                     {
                         _writer(valueWriter, value);
                     }
@@ -66,48 +112,6 @@ namespace DemoGame.Client
 
                 w.WriteEndElement();
                 w.WriteEndDocument();
-            }
-        }
-
-        IEnumerable<KeyValuePair<TKey, TValue>> Load(string filePath)
-        {
-            if (!File.Exists(filePath))
-                return Enumerable.Empty<KeyValuePair<TKey, TValue>>();
-
-            List<KeyValuePair<TKey, TValue>> ret = new List<KeyValuePair<TKey, TValue>>();
-
-            using (var r = XmlReader.Create(filePath))
-            {
-                while (r.Read())
-                {
-                    if (r.NodeType != XmlNodeType.Element || r.Name != _fileItemElementName)
-                        continue;
-
-                    XmlValueReader valueReader = new XmlValueReader(r, _fileItemElementName);
-                    var obj = _reader(valueReader);
-                    var key = _getKey(obj);
-
-                    ret.Add(new KeyValuePair<TKey, TValue>(key, obj));
-                }
-            }
-
-            return ret;
-        }
-
-        public string GetFilePath(ContentPaths contentPath)
-        {
-            return contentPath.Data.Join(_fileName);
-        }
-
-        public void AddMissingTypes(IEnumerable<TKey> keys, Func<TKey, TValue> creator)
-        {
-            foreach (var key in keys)
-            {
-                if (_dict.ContainsKey(key))
-                    continue;
-
-                TValue obj = creator(key);
-                _dict.Add(key, obj);
             }
         }
     }

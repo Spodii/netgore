@@ -101,29 +101,6 @@ namespace NetGore
             return types;
         }
 
-        static bool HasConstructorWithParameters(Type type, Type[] expected)
-        {
-            const BindingFlags bf = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
-
-            foreach (var constructor in type.GetConstructors(bf))
-            {
-                Type[] actual = constructor.GetParameters().Select(x => x.ParameterType).ToArray();
-
-                if (expected.Length != actual.Length)
-                    continue;
-
-                for (int i = 0; i < expected.Length; i++)
-                {
-                    if (expected[i] != actual[i])
-                        continue;
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
         /// <summary>
         /// Finds all Types that inherit the specified <paramref name="baseType"/>.
         /// </summary>
@@ -191,6 +168,29 @@ namespace NetGore
         {
             Func<Type, bool> func = (x => x.GetCustomAttributes(attributeType, true).Count() > 0);
             return FindTypes(func, constructorParams, includeGAC);
+        }
+
+        static bool HasConstructorWithParameters(Type type, Type[] expected)
+        {
+            const BindingFlags bf = BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public;
+
+            foreach (ConstructorInfo constructor in type.GetConstructors(bf))
+            {
+                var actual = constructor.GetParameters().Select(x => x.ParameterType).ToArray();
+
+                if (expected.Length != actual.Length)
+                    continue;
+
+                for (int i = 0; i < expected.Length; i++)
+                {
+                    if (expected[i] != actual[i])
+                        continue;
+                }
+
+                return true;
+            }
+
+            return false;
         }
     }
 }

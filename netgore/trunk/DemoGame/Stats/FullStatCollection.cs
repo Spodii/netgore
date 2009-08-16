@@ -1,9 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
 
 namespace DemoGame
 {
@@ -13,12 +10,29 @@ namespace DemoGame
     /// </summary>
     public class FullStatCollection : IStatCollection
     {
-        readonly IStat[] _stats;
         readonly StatCollectionType _collectionType;
+        readonly IStat[] _stats;
 
-        public FullStatCollection DeepCopy()
+        public FullStatCollection(StatCollectionType collectionType)
         {
-            return new FullStatCollection(this);
+            _collectionType = collectionType;
+
+            _stats = new IStat[StatFactory.AllStats.Count()];
+
+            foreach (StatType statType in StatFactory.AllStats)
+            {
+                IStat istat = StatFactory.CreateStat(statType, collectionType);
+                _stats[statType.GetValue()] = istat;
+            }
+        }
+
+        FullStatCollection(FullStatCollection source)
+        {
+            _stats = new IStat[source._stats.Length];
+            for (int i = 0; i < _stats.Length; i++)
+            {
+                _stats[i] = source._stats[i].DeepCopy();
+            }
         }
 
         public bool AreValuesEqual(IStatCollection other)
@@ -33,11 +47,9 @@ namespace DemoGame
             return true;
         }
 
-        FullStatCollection(FullStatCollection source)
+        public FullStatCollection DeepCopy()
         {
-            _stats = new IStat[source._stats.Length];
-            for (int i = 0; i < _stats.Length; i++)
-                _stats[i] = source._stats[i].DeepCopy();
+            return new FullStatCollection(this);
         }
 
         /// <summary>
@@ -46,22 +58,13 @@ namespace DemoGame
         /// <param name="value">Value to set the stats to.</param>
         public void SetAll(int value)
         {
-            foreach (var stat in _stats)
-                stat.Value = value;
-        }
-
-        public FullStatCollection(StatCollectionType collectionType)
-        {
-            _collectionType = collectionType;
-
-            _stats = new IStat[StatFactory.AllStats.Count()];
-
-            foreach (StatType statType in StatFactory.AllStats)
+            foreach (IStat stat in _stats)
             {
-                var istat = StatFactory.CreateStat(statType, collectionType);
-                _stats[statType.GetValue()] = istat;
+                stat.Value = value;
             }
         }
+
+        #region IStatCollection Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -73,7 +76,9 @@ namespace DemoGame
         public IEnumerator<IStat> GetEnumerator()
         {
             for (int i = 0; i < _stats.Length; i++)
+            {
                 yield return _stats[i];
+            }
         }
 
         /// <summary>
@@ -120,5 +125,7 @@ namespace DemoGame
             value = this[statType];
             return true;
         }
+
+        #endregion
     }
 }

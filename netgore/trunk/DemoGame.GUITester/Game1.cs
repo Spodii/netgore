@@ -85,7 +85,7 @@ namespace DemoGame.GUITester
             Form f3 = new Form(_gui, "form 3", Vector2.Zero, new Vector2(200, 200), f2);
             Form f4 = new Form(_gui, "form 4", Vector2.Zero, new Vector2(100, 100), f3);
 
-            var testLabelF4 = new Label("Click me", Vector2.Zero, f4);
+            Label testLabelF4 = new Label("Click me", Vector2.Zero, f4);
             testLabelF4.OnClick += testLabelF4_OnClick;
             //testLabelF4.OnMouseLeave += testLabelF4_OnMouseLeave;
             //testLabelF4.OnMouseEnter += testLabelF4_OnMouseEnter;
@@ -102,6 +102,22 @@ namespace DemoGame.GUITester
             f4.OnEndDrag += OnDrag;
         }
 
+        void OnDrag(Control sender)
+        {
+            TextControl s = (TextControl)sender;
+            s.Text = s.Position.ToString();
+            Window.Title = "Screen Position: " + s.ScreenPosition;
+        }
+
+        static void testLabelF4_OnClick(object sender, MouseClickEventArgs e)
+        {
+            Label source = (Label)sender;
+            if (source.Text == "I was clicked!")
+                source.Text = "Click me!";
+            else
+                source.Text = "I was clicked!";
+        }
+
         static void testLabelF4_OnMouseEnter(object sender, MouseEventArgs e)
         {
             ((Label)sender).Text = "Mouse entered";
@@ -110,22 +126,6 @@ namespace DemoGame.GUITester
         static void testLabelF4_OnMouseLeave(object sender, MouseEventArgs e)
         {
             ((Label)sender).Text = "Mouse left";
-        }
-
-        static void testLabelF4_OnClick(object sender, MouseClickEventArgs e)
-        {
-            var source = (Label)sender;
-            if (source.Text == "I was clicked!")
-                source.Text = "Click me!";
-            else
-                source.Text = "I was clicked!";
-        }
-
-        void OnDrag(Control sender)
-        {
-            TextControl s = (TextControl)sender;
-            s.Text = s.Position.ToString();
-            Window.Title = "Screen Position: " + s.ScreenPosition;
         }
 
         void topForm_OnMouseMove(object sender, MouseEventArgs e)
