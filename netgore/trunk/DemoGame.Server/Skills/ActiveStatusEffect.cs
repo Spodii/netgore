@@ -8,9 +8,9 @@ namespace DemoGame.Server
     /// <summary>
     /// Describes an instance of an active StatusEffectBase on a Character.
     /// </summary>
-    public class ActiveStatusEffect
+    public class ActiveStatusEffect : IModStatContainer
     {
-        StatusEffectBase _statusEffect;
+        readonly StatusEffectBase _statusEffect;
         ushort _power;
         int _disableTime;
 
@@ -49,6 +49,32 @@ namespace DemoGame.Server
         public static int GetTimeRemaining(int gameTime, int disableTime)
         {
             return disableTime - gameTime;
+        }
+
+        public void AddBonusesTo(IStatCollection statCollection)
+        {
+            foreach (var statType in StatusEffect.ModifiedStats)
+                statCollection[statType] += GetStatModBonus(statType);
+        }
+
+        public void SubtractBonusesFrom(IStatCollection statCollection)
+        {
+            foreach (var statType in StatusEffect.ModifiedStats)
+                statCollection[statType] -= GetStatModBonus(statType);
+        }
+
+        public IEnumerable<KeyValuePair<StatType, int>> GetStatModBonuses()
+        {
+            KeyValuePair<StatType, int>[] ret = new KeyValuePair<StatType, int>[StatusEffect.ModifiedStats.Count()];
+
+            int i = 0;
+            foreach (var statType in StatusEffect.ModifiedStats)
+            {
+                ret[i] = new KeyValuePair<StatType, int>(statType, GetStatModBonus(statType));
+                i++;
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -160,6 +186,11 @@ namespace DemoGame.Server
             _statusEffect = statusEffect;
             _power = power;
             _disableTime = disableTime;
+        }
+
+        public int GetStatModBonus(StatType statType)
+        {
+            return StatusEffect.GetStatModifier(statType, Power);
         }
     }
 }

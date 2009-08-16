@@ -26,7 +26,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `id`.
 /// </summary>
-System.Int32 ID
+DemoGame.Server.ActiveStatusEffectID ID
 {
 get;
 }
