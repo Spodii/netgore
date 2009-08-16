@@ -67,43 +67,9 @@ namespace DemoGame.Server
         const int _attackTimeout = 500;
 
         /// <summary>
-        /// Makes the Character use a skill.
+        /// How frequently the SP is recovered in milliseconds.
         /// </summary>
-        /// <param name="skillType">The type of skill to use.</param>
-        /// <returns>True if the skill was successfully used; otherwise false.</returns>
-        public bool UseSkill(SkillType skillType)
-        {
-            return UseSkill(SkillManager.GetSkill(skillType));
-        }
-
-        /// <summary>
-        /// Makes the Character use a skill.
-        /// </summary>
-        /// <param name="skill">The skill to use.</param>
-        /// <returns>True if the skill was successfully used; otherwise false.</returns>
-        public bool UseSkill(SkillBase skill)
-        {
-            if (skill == null)
-            {
-                if (log.IsWarnEnabled)
-                    log.WarnFormat("Character `{0}` tried to use a null skill in UseSkill.", this);
-                return false;
-            }
-
-            bool successful = skill.Use(this);
-            if (successful)
-            {
-                // NOTE: This is just a temporary message
-                User user = this as User;
-                if (user != null)
-                {
-                    using (var pw = ServerPacket.Chat("DEBUG: You used skill " + skill.SkillType + "."))
-                        user.Send(pw);
-                }
-            }
-
-            return successful;
-        }
+        const int _spRecoveryRate = 3000;
 
         /// <summary>
         /// Random number generator for Characters
@@ -117,6 +83,7 @@ namespace DemoGame.Server
         readonly bool _isPersistent;
         readonly CharacterStatsBase _modStats;
         readonly CharacterSPSynchronizer _spSync;
+        readonly CharacterStatusEffects _statusEffects;
 
         readonly World _world;
 
@@ -163,6 +130,11 @@ namespace DemoGame.Server
         /// called back-to-back without any values changing in-between.
         /// </summary>
         bool _saved = false;
+
+        /// <summary>
+        /// The time that the SP will next be recovered.
+        /// </summary>
+        int _spRecoverTime;
 
         uint _statPoints;
 
@@ -497,6 +469,11 @@ namespace DemoGame.Server
             }
         }
 
+        public CharacterStatusEffects StatusEffects
+        {
+            get { return _statusEffects; }
+        }
+
         /// <summary>
         /// Gets or sets the ID of the CharacterTemplate that this Character was created from.
         /// This will not alter the Character in any way except for functions that make use of the
@@ -532,10 +509,6 @@ namespace DemoGame.Server
                                             "server never needs to deserialize a DynamicEntity.");
         }
 
-        readonly CharacterStatusEffects _statusEffects;
-
-        public CharacterStatusEffects StatusEffects { get { return _statusEffects; } }
-
         /// <summary>
         /// Character constructor.
         /// </summary>
@@ -562,26 +535,6 @@ namespace DemoGame.Server
             _inventory = CreateInventory();
             _equipped = CreateEquipped();
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
-        }
-
-        /// <summary>
-        /// Handles when an ActiveStatusEffect is added to this Character's StatusEffects.
-        /// </summary>
-        /// <param name="characterStatusEffects">The CharacterStatusEffects the event took place on.</param>
-        /// <param name="activeStatusEffect">The ActiveStatusEffect that was added.</param>
-        protected virtual void StatusEffects_HandleOnAdd(CharacterStatusEffects characterStatusEffects, ActiveStatusEffect activeStatusEffect)
-        {
-            UpdateModStats();
-        }
-
-        /// <summary>
-        /// Handles when an ActiveStatusEffect is removed from this Character's StatusEffects.
-        /// </summary>
-        /// <param name="characterStatusEffects">The CharacterStatusEffects the event took place on.</param>
-        /// <param name="activeStatusEffect">The ActiveStatusEffect that was removed.</param>
-        protected virtual void StatusEffects_HandleOnRemove(CharacterStatusEffects characterStatusEffects, ActiveStatusEffect activeStatusEffect)
-        {
-            UpdateModStats();
         }
 
         /// <summary>
@@ -1132,6 +1085,28 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Handles when an ActiveStatusEffect is added to this Character's StatusEffects.
+        /// </summary>
+        /// <param name="characterStatusEffects">The CharacterStatusEffects the event took place on.</param>
+        /// <param name="activeStatusEffect">The ActiveStatusEffect that was added.</param>
+        protected virtual void StatusEffects_HandleOnAdd(CharacterStatusEffects characterStatusEffects,
+                                                         ActiveStatusEffect activeStatusEffect)
+        {
+            UpdateModStats();
+        }
+
+        /// <summary>
+        /// Handles when an ActiveStatusEffect is removed from this Character's StatusEffects.
+        /// </summary>
+        /// <param name="characterStatusEffects">The CharacterStatusEffects the event took place on.</param>
+        /// <param name="activeStatusEffect">The ActiveStatusEffect that was removed.</param>
+        protected virtual void StatusEffects_HandleOnRemove(CharacterStatusEffects characterStatusEffects,
+                                                            ActiveStatusEffect activeStatusEffect)
+        {
+            UpdateModStats();
+        }
+
+        /// <summary>
         /// Stops all of the character's horizontal movement.
         /// </summary>
         public override void StopMoving()
@@ -1212,15 +1187,14 @@ namespace DemoGame.Server
             _spSync.Synchronize();
         }
 
-        /// <summary>
-        /// How frequently the SP is recovered in milliseconds.
-        /// </summary>
-        const int _spRecoveryRate = 3000;
-
-        /// <summary>
-        /// The time that the SP will next be recovered.
-        /// </summary>
-        int _spRecoverTime;
+        protected void UpdateModStats()
+        {
+            // FUTURE: This is called every goddamn Update(). That is WAY too much...
+            foreach (IStat modStat in ModStats)
+            {
+                modStat.Value = CharacterModStatCalculator.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
+            }
+        }
 
         /// <summary>
         /// Updates the Character's status points recovery.
@@ -1239,15 +1213,6 @@ namespace DemoGame.Server
             // Recover
             HP += 1 + ModStats[StatType.Regen];
             MP += 1 + ModStats[StatType.Recov];
-        }
-
-        protected void UpdateModStats()
-        {
-            // FUTURE: This is called every goddamn Update(). That is WAY too much...
-            foreach (IStat modStat in ModStats)
-            {
-                modStat.Value = CharacterModStatCalculator.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
-            }
         }
 
         bool UseEquipment(ItemEntity item, InventorySlot? inventorySlot)
@@ -1336,6 +1301,47 @@ namespace DemoGame.Server
                 MP += item.MP;
 
             return true;
+        }
+
+        /// <summary>
+        /// Makes the Character use a skill.
+        /// </summary>
+        /// <param name="skillType">The type of skill to use.</param>
+        /// <returns>True if the skill was successfully used; otherwise false.</returns>
+        public bool UseSkill(SkillType skillType)
+        {
+            return UseSkill(SkillManager.GetSkill(skillType));
+        }
+
+        /// <summary>
+        /// Makes the Character use a skill.
+        /// </summary>
+        /// <param name="skill">The skill to use.</param>
+        /// <returns>True if the skill was successfully used; otherwise false.</returns>
+        public bool UseSkill(SkillBase skill)
+        {
+            if (skill == null)
+            {
+                if (log.IsWarnEnabled)
+                    log.WarnFormat("Character `{0}` tried to use a null skill in UseSkill.", this);
+                return false;
+            }
+
+            bool successful = skill.Use(this);
+            if (successful)
+            {
+                // NOTE: This is just a temporary message
+                User user = this as User;
+                if (user != null)
+                {
+                    using (PacketWriter pw = ServerPacket.Chat("DEBUG: You used skill " + skill.SkillType + "."))
+                    {
+                        user.Send(pw);
+                    }
+                }
+            }
+
+            return successful;
         }
 
         #region IGetTime Members

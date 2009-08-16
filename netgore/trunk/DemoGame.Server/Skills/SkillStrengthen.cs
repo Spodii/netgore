@@ -1,12 +1,18 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DemoGame.Server
 {
     public class SkillStrengthen : SkillBase
     {
+        /// <summary>
+        /// When overridden in the derived class, gets if this Skill requires a target to be specified for the skill
+        /// to be used. If this is false, the skill will never even attempt to be used unless there is a target.
+        /// </summary>
+        public override bool RequiresTarget
+        {
+            get { return false; }
+        }
+
         SkillStrengthen() : base(SkillType.Strengthen)
         {
         }
@@ -27,15 +33,6 @@ namespace DemoGame.Server
             bool successful = target.StatusEffects.TryAdd(StatusEffectType.Strengthen, (ushort)power);
 
             return successful;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets if this Skill requires a target to be specified for the skill
-        /// to be used. If this is false, the skill will never even attempt to be used unless there is a target.
-        /// </summary>
-        public override bool RequiresTarget
-        {
-            get { return false; }
         }
     }
 }

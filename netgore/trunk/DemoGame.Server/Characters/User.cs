@@ -30,28 +30,6 @@ namespace DemoGame.Server
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
 
-        protected override void StatusEffects_HandleOnAdd(CharacterStatusEffects characterStatusEffects, ActiveStatusEffect activeStatusEffect)
-        {
-            base.StatusEffects_HandleOnAdd(characterStatusEffects, activeStatusEffect);
-
-            // NOTE: Temporary message
-            using (var pw = ServerPacket.Chat(string.Format("DEBUG: Added StatusEffect `{0}` of power `{1}`.", activeStatusEffect.StatusEffect.StatusEffectType, activeStatusEffect.Power)))
-                Send(pw);
-
-            // TODO: !! Notify user
-        }
-
-        protected override void StatusEffects_HandleOnRemove(CharacterStatusEffects characterStatusEffects, ActiveStatusEffect activeStatusEffect)
-        {
-            base.StatusEffects_HandleOnRemove(characterStatusEffects, activeStatusEffect);
-
-            // NOTE: Temporary message
-            using (var pw = ServerPacket.Chat(string.Format("DEBUG: Removed StatusEffect `{0}` of power `{1}`.", activeStatusEffect.StatusEffect.StatusEffectType, activeStatusEffect.Power)))
-                Send(pw);
-
-            // TODO: !! Notify user
-        }
-
         /// <summary>
         /// Gets the socket connection info for the user
         /// </summary>
@@ -463,6 +441,40 @@ namespace DemoGame.Server
         public void SendUnreliableBuffered(BitStream data)
         {
             _unreliableBuffer.Enqueue(data);
+        }
+
+        protected override void StatusEffects_HandleOnAdd(CharacterStatusEffects characterStatusEffects,
+                                                          ActiveStatusEffect activeStatusEffect)
+        {
+            base.StatusEffects_HandleOnAdd(characterStatusEffects, activeStatusEffect);
+
+            // NOTE: Temporary message
+            using (
+                PacketWriter pw =
+                    ServerPacket.Chat(string.Format("DEBUG: Added StatusEffect `{0}` of power `{1}`.",
+                                                    activeStatusEffect.StatusEffect.StatusEffectType, activeStatusEffect.Power)))
+            {
+                Send(pw);
+            }
+
+            // TODO: !! Notify user
+        }
+
+        protected override void StatusEffects_HandleOnRemove(CharacterStatusEffects characterStatusEffects,
+                                                             ActiveStatusEffect activeStatusEffect)
+        {
+            base.StatusEffects_HandleOnRemove(characterStatusEffects, activeStatusEffect);
+
+            // NOTE: Temporary message
+            using (
+                PacketWriter pw =
+                    ServerPacket.Chat(string.Format("DEBUG: Removed StatusEffect `{0}` of power `{1}`.",
+                                                    activeStatusEffect.StatusEffect.StatusEffectType, activeStatusEffect.Power)))
+            {
+                Send(pw);
+            }
+
+            // TODO: !! Notify user
         }
 
         /// <summary>

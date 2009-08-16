@@ -1,12 +1,18 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DemoGame.Server
 {
     public class SkillHeal : SkillBase
     {
+        /// <summary>
+        /// When overridden in the derived class, gets if this Skill requires a target to be specified for the skill
+        /// to be used. If this is false, the skill will never even attempt to be used unless there is a target.
+        /// </summary>
+        public override bool RequiresTarget
+        {
+            get { return false; }
+        }
+
         SkillHeal() : base(SkillType.Heal)
         {
         }
@@ -39,15 +45,6 @@ namespace DemoGame.Server
             target.HP += power;
 
             return true;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets if this Skill requires a target to be specified for the skill
-        /// to be used. If this is false, the skill will never even attempt to be used unless there is a target.
-        /// </summary>
-        public override bool RequiresTarget
-        {
-            get { return false; }
         }
     }
 }

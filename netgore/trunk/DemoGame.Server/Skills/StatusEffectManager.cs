@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
+using NetGore;
 using NetGore.Collections;
 
 namespace DemoGame.Server
@@ -15,12 +15,13 @@ namespace DemoGame.Server
     /// </summary>
     public static class StatusEffectManager
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Dictionary that allows for lookup of a StatusEffectBase for the given StatusEffectType.
         /// </summary>
-        static readonly Dictionary<StatusEffectType, StatusEffectBase> _statusEffects = new Dictionary<StatusEffectType, StatusEffectBase>(EnumComparer<StatusEffectType>.Instance); 
+        static readonly Dictionary<StatusEffectType, StatusEffectBase> _statusEffects =
+            new Dictionary<StatusEffectType, StatusEffectBase>(EnumComparer<StatusEffectType>.Instance);
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// StatusEffectManager static constructor.
@@ -28,15 +29,15 @@ namespace DemoGame.Server
         static StatusEffectManager()
         {
             // Get the Types for the classes that inherit StatusEffectBase
-            var types = NetGore.TypeHelper.FindTypesThatInherit(typeof(StatusEffectBase), Type.EmptyTypes, false);
+            var types = TypeHelper.FindTypesThatInherit(typeof(StatusEffectBase), Type.EmptyTypes, false);
 
             // Filter out the invalid derived Types
             types = types.Where(x => x.IsClass && !x.IsAbstract);
 
             // Create an instance of each of the valid derived classes
-            foreach (var type in types)
+            foreach (Type type in types)
             {
-                var instance = (StatusEffectBase)Activator.CreateInstance(type, true);
+                StatusEffectBase instance = (StatusEffectBase)Activator.CreateInstance(type, true);
 
                 if (_statusEffects.ContainsKey(instance.StatusEffectType))
                 {

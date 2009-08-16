@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Text;
 using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
@@ -17,26 +14,19 @@ namespace DemoGame.Client
     {
         const string _fileName = "skillinfo.xml";
 
-        static readonly InfoManager<SkillType, SkillInfo> _infoManager =
-            new InfoManager<SkillType, SkillInfo>(_fileName, EnumComparer<SkillType>.Instance,
-                                                                x => new SkillInfo(x), (x, y) => y.Save(x),
-                                                                x => x.SkillType);
+        static readonly InfoManager<SkillType, SkillInfo> _infoManager = new InfoManager<SkillType, SkillInfo>(_fileName,
+                                                                                                               EnumComparer
+                                                                                                                   <SkillType>.
+                                                                                                                   Instance,
+                                                                                                               x =>
+                                                                                                               new SkillInfo(x),
+                                                                                                               (x, y) => y.Save(x),
+                                                                                                               x => x.SkillType);
 
-        static SkillInfo()
-        {
-            _infoManager.AddMissingTypes(Enum.GetValues(typeof(SkillType)).Cast<SkillType>(), x => new SkillInfo { SkillType = x, Name = x.ToString(), Description = string.Empty });
-            _infoManager.Save();
-        }
-
-        public static SkillInfo GetSkillInfo(SkillType skillType)
-        {
-            return _infoManager[skillType];
-        }
-
-        public static void Save()
-        {
-            _infoManager.Save();
-        }
+        /// <summary>
+        /// Gets or sets the description of this Skill.
+        /// </summary>
+        public string Description { get; set; }
 
         /// <summary>
         /// Gets or sets the GrhIndex for this Skill's icon.
@@ -44,19 +34,21 @@ namespace DemoGame.Client
         public GrhIndex Icon { get; set; }
 
         /// <summary>
-        /// Gets or sets the description of this Skill.
+        /// Gets or sets the name of this SkillType.
         /// </summary>
-        public string Description { get; set; }
-        
+        public string Name { get; set; }
+
         /// <summary>
         /// Gets or sets the SkillType that this SkillInfo is describing.
         /// </summary>
         public SkillType SkillType { get; set; }
 
-        /// <summary>
-        /// Gets or sets the name of this SkillType.
-        /// </summary>
-        public string Name { get; set; }
+        static SkillInfo()
+        {
+            _infoManager.AddMissingTypes(Enum.GetValues(typeof(SkillType)).Cast<SkillType>(),
+                                         x => new SkillInfo { SkillType = x, Name = x.ToString(), Description = string.Empty });
+            _infoManager.Save();
+        }
 
         /// <summary>
         /// SkillInfo constructor.
@@ -85,12 +77,22 @@ namespace DemoGame.Client
             Read(r);
         }
 
+        public static SkillInfo GetSkillInfo(SkillType skillType)
+        {
+            return _infoManager[skillType];
+        }
+
         void Read(IValueReader r)
         {
             SkillType = r.ReadSkillType("Type");
             Name = r.ReadString("Name");
             Description = r.ReadString("Description");
             Icon = r.ReadGrhIndex("Icon");
+        }
+
+        public static void Save()
+        {
+            _infoManager.Save();
         }
 
         public void Save(IValueWriter w)

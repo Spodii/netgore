@@ -18,15 +18,18 @@ namespace DemoGame.Server
         readonly StatType[] _modifiedStats;
         readonly StatusEffectType _statusEffectType;
 
+        public StatusEffectMergeType MergeType
+        {
+            get { return _mergeType; }
+        }
+
         /// <summary>
         /// Gets the StatTypes that this StatusEffect modifies. Any StatType that is not in this IEnumerable is
         /// never affected by this StatusEffect.
         /// </summary>
-        public IEnumerable<StatType> ModifiedStats { get { return _modifiedStats; } }
-
-        public StatusEffectMergeType MergeType
+        public IEnumerable<StatType> ModifiedStats
         {
-            get { return _mergeType; }
+            get { return _modifiedStats; }
         }
 
         public StatusEffectType StatusEffectType

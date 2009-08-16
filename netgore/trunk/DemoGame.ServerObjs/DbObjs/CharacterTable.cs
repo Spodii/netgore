@@ -78,7 +78,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `character_template_id`.
         /// </summary>
-        Nullable<UInt16> _characterTemplateID;
+        ushort? _characterTemplateID;
 
         /// <summary>
         /// The field that maps onto the database column `exp`.
@@ -123,7 +123,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `respawn_map`.
         /// </summary>
-        Nullable<UInt16> _respawnMap;
+        ushort? _respawnMap;
 
         /// <summary>
         /// The field that maps onto the database column `respawn_x`.
@@ -155,7 +155,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public static IEnumerable<String> DbColumns
         {
-            get { return (IEnumerable<String>)_dbColumns; }
+            get { return _dbColumns; }
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public static IEnumerable<String> DbKeyColumns
         {
-            get { return (IEnumerable<String>)_dbColumnsKeys; }
+            get { return _dbColumnsKeys; }
         }
 
         /// <summary>
@@ -171,7 +171,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public static IEnumerable<String> DbNonKeyColumns
         {
-            get { return (IEnumerable<String>)_dbColumnsNonKey; }
+            get { return _dbColumnsNonKey; }
         }
 
         /// <summary>
@@ -180,7 +180,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public static IEnumerable<String> StatColumns
         {
-            get { return (IEnumerable<String>)_statColumns; }
+            get { return _statColumns; }
         }
 
         /// <summary>
@@ -230,49 +230,48 @@ namespace DemoGame.Server.DbObjs
         /// <param name="x">The initial value for the corresponding property.</param>
         /// <param name="y">The initial value for the corresponding property.</param>
         public CharacterTable(Byte @acc, Byte @agi, Byte @armor, BodyIndex @bodyID, Byte @bra, UInt32 @cash,
-                              Nullable<CharacterTemplateID> @characterTemplateID, Byte @defence, Byte @dex, Byte @evade,
-                              UInt32 @exp, SPValueType @hP, CharacterID @iD, Byte @imm, Byte @int, Byte @level, MapIndex @mapID,
-                              Byte @maxHit, Int16 @maxHP, Int16 @maxMP, Byte @minHit, SPValueType @mP, String @name,
-                              String @password, Byte @perc, Byte @recov, Byte @regen, Nullable<MapIndex> @respawnMap,
-                              Single @respawnX, Single @respawnY, UInt32 @statPoints, Byte @str, Byte @tact, Byte @wS, Single @x,
-                              Single @y)
+                              CharacterTemplateID? @characterTemplateID, Byte @defence, Byte @dex, Byte @evade, UInt32 @exp,
+                              SPValueType @hP, CharacterID @iD, Byte @imm, Byte @int, Byte @level, MapIndex @mapID, Byte @maxHit,
+                              Int16 @maxHP, Int16 @maxMP, Byte @minHit, SPValueType @mP, String @name, String @password,
+                              Byte @perc, Byte @recov, Byte @regen, MapIndex? @respawnMap, Single @respawnX, Single @respawnY,
+                              UInt32 @statPoints, Byte @str, Byte @tact, Byte @wS, Single @x, Single @y)
         {
-            SetStat((StatType)StatType.Acc, (Int32)@acc);
-            SetStat((StatType)StatType.Agi, (Int32)@agi);
-            SetStat((StatType)StatType.Armor, (Int32)@armor);
-            BodyID = (BodyIndex)@bodyID;
-            SetStat((StatType)StatType.Bra, (Int32)@bra);
-            Cash = (UInt32)@cash;
-            CharacterTemplateID = (Nullable<CharacterTemplateID>)@characterTemplateID;
-            SetStat((StatType)StatType.Defence, (Int32)@defence);
-            SetStat((StatType)StatType.Dex, (Int32)@dex);
-            SetStat((StatType)StatType.Evade, (Int32)@evade);
-            Exp = (UInt32)@exp;
-            HP = (SPValueType)@hP;
-            ID = (CharacterID)@iD;
-            SetStat((StatType)StatType.Imm, (Int32)@imm);
-            SetStat((StatType)StatType.Int, (Int32)@int);
-            Level = (Byte)@level;
-            MapID = (MapIndex)@mapID;
-            SetStat((StatType)StatType.MaxHit, (Int32)@maxHit);
-            SetStat((StatType)StatType.MaxHP, (Int32)@maxHP);
-            SetStat((StatType)StatType.MaxMP, (Int32)@maxMP);
-            SetStat((StatType)StatType.MinHit, (Int32)@minHit);
-            MP = (SPValueType)@mP;
-            Name = (String)@name;
-            Password = (String)@password;
-            SetStat((StatType)StatType.Perc, (Int32)@perc);
-            SetStat((StatType)StatType.Recov, (Int32)@recov);
-            SetStat((StatType)StatType.Regen, (Int32)@regen);
-            RespawnMap = (Nullable<MapIndex>)@respawnMap;
-            RespawnX = (Single)@respawnX;
-            RespawnY = (Single)@respawnY;
-            StatPoints = (UInt32)@statPoints;
-            SetStat((StatType)StatType.Str, (Int32)@str);
-            SetStat((StatType)StatType.Tact, (Int32)@tact);
-            SetStat((StatType)StatType.WS, (Int32)@wS);
-            X = (Single)@x;
-            Y = (Single)@y;
+            SetStat(StatType.Acc, @acc);
+            SetStat(StatType.Agi, @agi);
+            SetStat(StatType.Armor, @armor);
+            BodyID = @bodyID;
+            SetStat(StatType.Bra, @bra);
+            Cash = @cash;
+            CharacterTemplateID = @characterTemplateID;
+            SetStat(StatType.Defence, @defence);
+            SetStat(StatType.Dex, @dex);
+            SetStat(StatType.Evade, @evade);
+            Exp = @exp;
+            HP = @hP;
+            ID = @iD;
+            SetStat(StatType.Imm, @imm);
+            SetStat(StatType.Int, @int);
+            Level = @level;
+            MapID = @mapID;
+            SetStat(StatType.MaxHit, @maxHit);
+            SetStat(StatType.MaxHP, @maxHP);
+            SetStat(StatType.MaxMP, @maxMP);
+            SetStat(StatType.MinHit, @minHit);
+            MP = @mP;
+            Name = @name;
+            Password = @password;
+            SetStat(StatType.Perc, @perc);
+            SetStat(StatType.Recov, @recov);
+            SetStat(StatType.Regen, @regen);
+            RespawnMap = @respawnMap;
+            RespawnX = @respawnX;
+            RespawnY = @respawnY;
+            StatPoints = @statPoints;
+            SetStat(StatType.Str, @str);
+            SetStat(StatType.Tact, @tact);
+            SetStat(StatType.WS, @wS);
+            X = @x;
+            Y = @y;
         }
 
         /// <summary>
@@ -293,42 +292,42 @@ namespace DemoGame.Server.DbObjs
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(ICharacterTable source, IDictionary<String, Object> dic)
         {
-            dic["@acc"] = (Byte)source.GetStat((StatType)StatType.Acc);
-            dic["@agi"] = (Byte)source.GetStat((StatType)StatType.Agi);
-            dic["@armor"] = (Byte)source.GetStat((StatType)StatType.Armor);
-            dic["@body_id"] = (BodyIndex)source.BodyID;
-            dic["@bra"] = (Byte)source.GetStat((StatType)StatType.Bra);
-            dic["@cash"] = (UInt32)source.Cash;
-            dic["@character_template_id"] = (Nullable<CharacterTemplateID>)source.CharacterTemplateID;
-            dic["@defence"] = (Byte)source.GetStat((StatType)StatType.Defence);
-            dic["@dex"] = (Byte)source.GetStat((StatType)StatType.Dex);
-            dic["@evade"] = (Byte)source.GetStat((StatType)StatType.Evade);
-            dic["@exp"] = (UInt32)source.Exp;
-            dic["@hp"] = (SPValueType)source.HP;
-            dic["@id"] = (CharacterID)source.ID;
-            dic["@imm"] = (Byte)source.GetStat((StatType)StatType.Imm);
-            dic["@int"] = (Byte)source.GetStat((StatType)StatType.Int);
-            dic["@level"] = (Byte)source.Level;
-            dic["@map_id"] = (MapIndex)source.MapID;
-            dic["@maxhit"] = (Byte)source.GetStat((StatType)StatType.MaxHit);
-            dic["@maxhp"] = (Int16)source.GetStat((StatType)StatType.MaxHP);
-            dic["@maxmp"] = (Int16)source.GetStat((StatType)StatType.MaxMP);
-            dic["@minhit"] = (Byte)source.GetStat((StatType)StatType.MinHit);
-            dic["@mp"] = (SPValueType)source.MP;
-            dic["@name"] = (String)source.Name;
-            dic["@password"] = (String)source.Password;
-            dic["@perc"] = (Byte)source.GetStat((StatType)StatType.Perc);
-            dic["@recov"] = (Byte)source.GetStat((StatType)StatType.Recov);
-            dic["@regen"] = (Byte)source.GetStat((StatType)StatType.Regen);
-            dic["@respawn_map"] = (Nullable<MapIndex>)source.RespawnMap;
-            dic["@respawn_x"] = (Single)source.RespawnX;
-            dic["@respawn_y"] = (Single)source.RespawnY;
-            dic["@statpoints"] = (UInt32)source.StatPoints;
-            dic["@str"] = (Byte)source.GetStat((StatType)StatType.Str);
-            dic["@tact"] = (Byte)source.GetStat((StatType)StatType.Tact);
-            dic["@ws"] = (Byte)source.GetStat((StatType)StatType.WS);
-            dic["@x"] = (Single)source.X;
-            dic["@y"] = (Single)source.Y;
+            dic["@acc"] = (Byte)source.GetStat(StatType.Acc);
+            dic["@agi"] = (Byte)source.GetStat(StatType.Agi);
+            dic["@armor"] = (Byte)source.GetStat(StatType.Armor);
+            dic["@body_id"] = source.BodyID;
+            dic["@bra"] = (Byte)source.GetStat(StatType.Bra);
+            dic["@cash"] = source.Cash;
+            dic["@character_template_id"] = source.CharacterTemplateID;
+            dic["@defence"] = (Byte)source.GetStat(StatType.Defence);
+            dic["@dex"] = (Byte)source.GetStat(StatType.Dex);
+            dic["@evade"] = (Byte)source.GetStat(StatType.Evade);
+            dic["@exp"] = source.Exp;
+            dic["@hp"] = source.HP;
+            dic["@id"] = source.ID;
+            dic["@imm"] = (Byte)source.GetStat(StatType.Imm);
+            dic["@int"] = (Byte)source.GetStat(StatType.Int);
+            dic["@level"] = source.Level;
+            dic["@map_id"] = source.MapID;
+            dic["@maxhit"] = (Byte)source.GetStat(StatType.MaxHit);
+            dic["@maxhp"] = (Int16)source.GetStat(StatType.MaxHP);
+            dic["@maxmp"] = (Int16)source.GetStat(StatType.MaxMP);
+            dic["@minhit"] = (Byte)source.GetStat(StatType.MinHit);
+            dic["@mp"] = source.MP;
+            dic["@name"] = source.Name;
+            dic["@password"] = source.Password;
+            dic["@perc"] = (Byte)source.GetStat(StatType.Perc);
+            dic["@recov"] = (Byte)source.GetStat(StatType.Recov);
+            dic["@regen"] = (Byte)source.GetStat(StatType.Regen);
+            dic["@respawn_map"] = source.RespawnMap;
+            dic["@respawn_x"] = source.RespawnX;
+            dic["@respawn_y"] = source.RespawnY;
+            dic["@statpoints"] = source.StatPoints;
+            dic["@str"] = (Byte)source.GetStat(StatType.Str);
+            dic["@tact"] = (Byte)source.GetStat(StatType.Tact);
+            dic["@ws"] = (Byte)source.GetStat(StatType.WS);
+            dic["@x"] = source.X;
+            dic["@y"] = source.Y;
         }
 
         /// <summary>
@@ -348,42 +347,42 @@ namespace DemoGame.Server.DbObjs
         /// <param name="source">The ICharacterTable to copy the values from.</param>
         public void CopyValuesFrom(ICharacterTable source)
         {
-            SetStat((StatType)StatType.Acc, (Int32)source.GetStat((StatType)StatType.Acc));
-            SetStat((StatType)StatType.Agi, (Int32)source.GetStat((StatType)StatType.Agi));
-            SetStat((StatType)StatType.Armor, (Int32)source.GetStat((StatType)StatType.Armor));
-            BodyID = (BodyIndex)source.BodyID;
-            SetStat((StatType)StatType.Bra, (Int32)source.GetStat((StatType)StatType.Bra));
-            Cash = (UInt32)source.Cash;
-            CharacterTemplateID = (Nullable<CharacterTemplateID>)source.CharacterTemplateID;
-            SetStat((StatType)StatType.Defence, (Int32)source.GetStat((StatType)StatType.Defence));
-            SetStat((StatType)StatType.Dex, (Int32)source.GetStat((StatType)StatType.Dex));
-            SetStat((StatType)StatType.Evade, (Int32)source.GetStat((StatType)StatType.Evade));
-            Exp = (UInt32)source.Exp;
-            HP = (SPValueType)source.HP;
-            ID = (CharacterID)source.ID;
-            SetStat((StatType)StatType.Imm, (Int32)source.GetStat((StatType)StatType.Imm));
-            SetStat((StatType)StatType.Int, (Int32)source.GetStat((StatType)StatType.Int));
-            Level = (Byte)source.Level;
-            MapID = (MapIndex)source.MapID;
-            SetStat((StatType)StatType.MaxHit, (Int32)source.GetStat((StatType)StatType.MaxHit));
-            SetStat((StatType)StatType.MaxHP, (Int32)source.GetStat((StatType)StatType.MaxHP));
-            SetStat((StatType)StatType.MaxMP, (Int32)source.GetStat((StatType)StatType.MaxMP));
-            SetStat((StatType)StatType.MinHit, (Int32)source.GetStat((StatType)StatType.MinHit));
-            MP = (SPValueType)source.MP;
-            Name = (String)source.Name;
-            Password = (String)source.Password;
-            SetStat((StatType)StatType.Perc, (Int32)source.GetStat((StatType)StatType.Perc));
-            SetStat((StatType)StatType.Recov, (Int32)source.GetStat((StatType)StatType.Recov));
-            SetStat((StatType)StatType.Regen, (Int32)source.GetStat((StatType)StatType.Regen));
-            RespawnMap = (Nullable<MapIndex>)source.RespawnMap;
-            RespawnX = (Single)source.RespawnX;
-            RespawnY = (Single)source.RespawnY;
-            StatPoints = (UInt32)source.StatPoints;
-            SetStat((StatType)StatType.Str, (Int32)source.GetStat((StatType)StatType.Str));
-            SetStat((StatType)StatType.Tact, (Int32)source.GetStat((StatType)StatType.Tact));
-            SetStat((StatType)StatType.WS, (Int32)source.GetStat((StatType)StatType.WS));
-            X = (Single)source.X;
-            Y = (Single)source.Y;
+            SetStat(StatType.Acc, source.GetStat(StatType.Acc));
+            SetStat(StatType.Agi, source.GetStat(StatType.Agi));
+            SetStat(StatType.Armor, source.GetStat(StatType.Armor));
+            BodyID = source.BodyID;
+            SetStat(StatType.Bra, source.GetStat(StatType.Bra));
+            Cash = source.Cash;
+            CharacterTemplateID = source.CharacterTemplateID;
+            SetStat(StatType.Defence, source.GetStat(StatType.Defence));
+            SetStat(StatType.Dex, source.GetStat(StatType.Dex));
+            SetStat(StatType.Evade, source.GetStat(StatType.Evade));
+            Exp = source.Exp;
+            HP = source.HP;
+            ID = source.ID;
+            SetStat(StatType.Imm, source.GetStat(StatType.Imm));
+            SetStat(StatType.Int, source.GetStat(StatType.Int));
+            Level = source.Level;
+            MapID = source.MapID;
+            SetStat(StatType.MaxHit, source.GetStat(StatType.MaxHit));
+            SetStat(StatType.MaxHP, source.GetStat(StatType.MaxHP));
+            SetStat(StatType.MaxMP, source.GetStat(StatType.MaxMP));
+            SetStat(StatType.MinHit, source.GetStat(StatType.MinHit));
+            MP = source.MP;
+            Name = source.Name;
+            Password = source.Password;
+            SetStat(StatType.Perc, source.GetStat(StatType.Perc));
+            SetStat(StatType.Recov, source.GetStat(StatType.Recov));
+            SetStat(StatType.Regen, source.GetStat(StatType.Regen));
+            RespawnMap = source.RespawnMap;
+            RespawnX = source.RespawnX;
+            RespawnY = source.RespawnY;
+            StatPoints = source.StatPoints;
+            SetStat(StatType.Str, source.GetStat(StatType.Str));
+            SetStat(StatType.Tact, source.GetStat(StatType.Tact));
+            SetStat(StatType.WS, source.GetStat(StatType.WS));
+            X = source.X;
+            Y = source.Y;
         }
 
         /// <summary>
@@ -416,8 +415,8 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("cash", "", "int(10) unsigned", "0", typeof(UInt32), false, false, false);
 
                 case "character_template_id":
-                    return new ColumnMetadata("character_template_id", "", "smallint(5) unsigned", null, typeof(Nullable<UInt16>),
-                                              true, false, true);
+                    return new ColumnMetadata("character_template_id", "", "smallint(5) unsigned", null, typeof(ushort?), true,
+                                              false, true);
 
                 case "defence":
                     return new ColumnMetadata("defence", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
@@ -480,8 +479,7 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("regen", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "respawn_map":
-                    return new ColumnMetadata("respawn_map", "", "smallint(5) unsigned", null, typeof(Nullable<UInt16>), true,
-                                              false, true);
+                    return new ColumnMetadata("respawn_map", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
 
                 case "respawn_x":
                     return new ColumnMetadata("respawn_x", "", "float", null, typeof(Single), false, false, false);
@@ -524,19 +522,19 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "acc":
-                    return GetStat((StatType)StatType.Acc);
+                    return GetStat(StatType.Acc);
 
                 case "agi":
-                    return GetStat((StatType)StatType.Agi);
+                    return GetStat(StatType.Agi);
 
                 case "armor":
-                    return GetStat((StatType)StatType.Armor);
+                    return GetStat(StatType.Armor);
 
                 case "body_id":
                     return BodyID;
 
                 case "bra":
-                    return GetStat((StatType)StatType.Bra);
+                    return GetStat(StatType.Bra);
 
                 case "cash":
                     return Cash;
@@ -545,13 +543,13 @@ namespace DemoGame.Server.DbObjs
                     return CharacterTemplateID;
 
                 case "defence":
-                    return GetStat((StatType)StatType.Defence);
+                    return GetStat(StatType.Defence);
 
                 case "dex":
-                    return GetStat((StatType)StatType.Dex);
+                    return GetStat(StatType.Dex);
 
                 case "evade":
-                    return GetStat((StatType)StatType.Evade);
+                    return GetStat(StatType.Evade);
 
                 case "exp":
                     return Exp;
@@ -563,10 +561,10 @@ namespace DemoGame.Server.DbObjs
                     return ID;
 
                 case "imm":
-                    return GetStat((StatType)StatType.Imm);
+                    return GetStat(StatType.Imm);
 
                 case "int":
-                    return GetStat((StatType)StatType.Int);
+                    return GetStat(StatType.Int);
 
                 case "level":
                     return Level;
@@ -575,16 +573,16 @@ namespace DemoGame.Server.DbObjs
                     return MapID;
 
                 case "maxhit":
-                    return GetStat((StatType)StatType.MaxHit);
+                    return GetStat(StatType.MaxHit);
 
                 case "maxhp":
-                    return GetStat((StatType)StatType.MaxHP);
+                    return GetStat(StatType.MaxHP);
 
                 case "maxmp":
-                    return GetStat((StatType)StatType.MaxMP);
+                    return GetStat(StatType.MaxMP);
 
                 case "minhit":
-                    return GetStat((StatType)StatType.MinHit);
+                    return GetStat(StatType.MinHit);
 
                 case "mp":
                     return MP;
@@ -596,13 +594,13 @@ namespace DemoGame.Server.DbObjs
                     return Password;
 
                 case "perc":
-                    return GetStat((StatType)StatType.Perc);
+                    return GetStat(StatType.Perc);
 
                 case "recov":
-                    return GetStat((StatType)StatType.Recov);
+                    return GetStat(StatType.Recov);
 
                 case "regen":
-                    return GetStat((StatType)StatType.Regen);
+                    return GetStat(StatType.Regen);
 
                 case "respawn_map":
                     return RespawnMap;
@@ -617,13 +615,13 @@ namespace DemoGame.Server.DbObjs
                     return StatPoints;
 
                 case "str":
-                    return GetStat((StatType)StatType.Str);
+                    return GetStat(StatType.Str);
 
                 case "tact":
-                    return GetStat((StatType)StatType.Tact);
+                    return GetStat(StatType.Tact);
 
                 case "ws":
-                    return GetStat((StatType)StatType.WS);
+                    return GetStat(StatType.WS);
 
                 case "x":
                     return X;
@@ -643,7 +641,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="value">The value to assign to the column for the corresponding <paramref name="key"/>.</param>
         public void SetStat(StatType key, Int32 value)
         {
-            _stat[(StatType)key] = (Byte)value;
+            _stat[key] = (Byte)value;
         }
 
         /// <summary>
@@ -656,15 +654,15 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "acc":
-                    SetStat((StatType)StatType.Acc, (Int32)value);
+                    SetStat(StatType.Acc, (Int32)value);
                     break;
 
                 case "agi":
-                    SetStat((StatType)StatType.Agi, (Int32)value);
+                    SetStat(StatType.Agi, (Int32)value);
                     break;
 
                 case "armor":
-                    SetStat((StatType)StatType.Armor, (Int32)value);
+                    SetStat(StatType.Armor, (Int32)value);
                     break;
 
                 case "body_id":
@@ -672,7 +670,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "bra":
-                    SetStat((StatType)StatType.Bra, (Int32)value);
+                    SetStat(StatType.Bra, (Int32)value);
                     break;
 
                 case "cash":
@@ -680,19 +678,19 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "character_template_id":
-                    CharacterTemplateID = (Nullable<CharacterTemplateID>)value;
+                    CharacterTemplateID = (CharacterTemplateID?)value;
                     break;
 
                 case "defence":
-                    SetStat((StatType)StatType.Defence, (Int32)value);
+                    SetStat(StatType.Defence, (Int32)value);
                     break;
 
                 case "dex":
-                    SetStat((StatType)StatType.Dex, (Int32)value);
+                    SetStat(StatType.Dex, (Int32)value);
                     break;
 
                 case "evade":
-                    SetStat((StatType)StatType.Evade, (Int32)value);
+                    SetStat(StatType.Evade, (Int32)value);
                     break;
 
                 case "exp":
@@ -708,11 +706,11 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "imm":
-                    SetStat((StatType)StatType.Imm, (Int32)value);
+                    SetStat(StatType.Imm, (Int32)value);
                     break;
 
                 case "int":
-                    SetStat((StatType)StatType.Int, (Int32)value);
+                    SetStat(StatType.Int, (Int32)value);
                     break;
 
                 case "level":
@@ -724,19 +722,19 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "maxhit":
-                    SetStat((StatType)StatType.MaxHit, (Int32)value);
+                    SetStat(StatType.MaxHit, (Int32)value);
                     break;
 
                 case "maxhp":
-                    SetStat((StatType)StatType.MaxHP, (Int32)value);
+                    SetStat(StatType.MaxHP, (Int32)value);
                     break;
 
                 case "maxmp":
-                    SetStat((StatType)StatType.MaxMP, (Int32)value);
+                    SetStat(StatType.MaxMP, (Int32)value);
                     break;
 
                 case "minhit":
-                    SetStat((StatType)StatType.MinHit, (Int32)value);
+                    SetStat(StatType.MinHit, (Int32)value);
                     break;
 
                 case "mp":
@@ -752,19 +750,19 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "perc":
-                    SetStat((StatType)StatType.Perc, (Int32)value);
+                    SetStat(StatType.Perc, (Int32)value);
                     break;
 
                 case "recov":
-                    SetStat((StatType)StatType.Recov, (Int32)value);
+                    SetStat(StatType.Recov, (Int32)value);
                     break;
 
                 case "regen":
-                    SetStat((StatType)StatType.Regen, (Int32)value);
+                    SetStat(StatType.Regen, (Int32)value);
                     break;
 
                 case "respawn_map":
-                    RespawnMap = (Nullable<MapIndex>)value;
+                    RespawnMap = (MapIndex?)value;
                     break;
 
                 case "respawn_x":
@@ -780,15 +778,15 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "str":
-                    SetStat((StatType)StatType.Str, (Int32)value);
+                    SetStat(StatType.Str, (Int32)value);
                     break;
 
                 case "tact":
-                    SetStat((StatType)StatType.Tact, (Int32)value);
+                    SetStat(StatType.Tact, (Int32)value);
                     break;
 
                 case "ws":
-                    SetStat((StatType)StatType.WS, (Int32)value);
+                    SetStat(StatType.WS, (Int32)value);
                     break;
 
                 case "x":
@@ -812,7 +810,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public IEnumerable<KeyValuePair<StatType, Int32>> Stats
         {
-            get { return (IEnumerable<KeyValuePair<StatType, Int32>>)_stat; }
+            get { return _stat; }
         }
 
         /// <summary>
@@ -824,7 +822,7 @@ namespace DemoGame.Server.DbObjs
         /// </returns>
         public Int32 GetStat(StatType key)
         {
-            return (Byte)_stat[(StatType)key];
+            return (Byte)_stat[key];
         }
 
         /// <summary>
@@ -843,18 +841,18 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public UInt32 Cash
         {
-            get { return (UInt32)_cash; }
-            set { _cash = (UInt32)value; }
+            get { return _cash; }
+            set { _cash = value; }
         }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `character_template_id`.
         /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
-        public Nullable<CharacterTemplateID> CharacterTemplateID
+        public CharacterTemplateID? CharacterTemplateID
         {
-            get { return (Nullable<CharacterTemplateID>)_characterTemplateID; }
-            set { _characterTemplateID = (Nullable<UInt16>)value; }
+            get { return (CharacterTemplateID?)_characterTemplateID; }
+            set { _characterTemplateID = (ushort?)value; }
         }
 
         /// <summary>
@@ -863,8 +861,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public UInt32 Exp
         {
-            get { return (UInt32)_exp; }
-            set { _exp = (UInt32)value; }
+            get { return _exp; }
+            set { _exp = value; }
         }
 
         /// <summary>
@@ -873,8 +871,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public SPValueType HP
         {
-            get { return (SPValueType)_hP; }
-            set { _hP = (Int16)value; }
+            get { return _hP; }
+            set { _hP = value; }
         }
 
         /// <summary>
@@ -893,8 +891,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public Byte Level
         {
-            get { return (Byte)_level; }
-            set { _level = (Byte)value; }
+            get { return _level; }
+            set { _level = value; }
         }
 
         /// <summary>
@@ -913,8 +911,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public SPValueType MP
         {
-            get { return (SPValueType)_mP; }
-            set { _mP = (Int16)value; }
+            get { return _mP; }
+            set { _mP = value; }
         }
 
         /// <summary>
@@ -923,8 +921,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public String Name
         {
-            get { return (String)_name; }
-            set { _name = (String)value; }
+            get { return _name; }
+            set { _name = value; }
         }
 
         /// <summary>
@@ -933,18 +931,18 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public String Password
         {
-            get { return (String)_password; }
-            set { _password = (String)value; }
+            get { return _password; }
+            set { _password = value; }
         }
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `respawn_map`.
         /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
-        public Nullable<MapIndex> RespawnMap
+        public MapIndex? RespawnMap
         {
-            get { return (Nullable<MapIndex>)_respawnMap; }
-            set { _respawnMap = (Nullable<UInt16>)value; }
+            get { return (MapIndex?)_respawnMap; }
+            set { _respawnMap = (ushort?)value; }
         }
 
         /// <summary>
@@ -953,8 +951,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public Single RespawnX
         {
-            get { return (Single)_respawnX; }
-            set { _respawnX = (Single)value; }
+            get { return _respawnX; }
+            set { _respawnX = value; }
         }
 
         /// <summary>
@@ -963,8 +961,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public Single RespawnY
         {
-            get { return (Single)_respawnY; }
-            set { _respawnY = (Single)value; }
+            get { return _respawnY; }
+            set { _respawnY = value; }
         }
 
         /// <summary>
@@ -973,8 +971,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public UInt32 StatPoints
         {
-            get { return (UInt32)_statPoints; }
-            set { _statPoints = (UInt32)value; }
+            get { return _statPoints; }
+            set { _statPoints = value; }
         }
 
         /// <summary>
@@ -983,8 +981,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public Single X
         {
-            get { return (Single)_x; }
-            set { _x = (Single)value; }
+            get { return _x; }
+            set { _x = value; }
         }
 
         /// <summary>
@@ -993,8 +991,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         public Single Y
         {
-            get { return (Single)_y; }
-            set { _y = (Single)value; }
+            get { return _y; }
+            set { _y = value; }
         }
 
         /// <summary>
