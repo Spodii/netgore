@@ -27,7 +27,7 @@ namespace DemoGame
 
         /// <summary>
         /// Creates a deep copy of the IStat, resulting in a new IStat object of the same type as this IStat, and
-        /// containing the same IStatValueType with the same value, same StatType, and same CanWrite property value.
+        /// containing the same IStatValueType with the same value, and same StatType.
         /// </summary>
         /// <returns>The deep copy of the IStat.</returns>
         IStat DeepCopy();

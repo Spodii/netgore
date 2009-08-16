@@ -552,6 +552,9 @@ namespace DemoGame.Server
             else
                 _statusEffects = new NonPersistentCharacterStatusEffects(this);
 
+            _statusEffects.OnAdd += StatusEffects_HandleOnAdd;
+            _statusEffects.OnRemove += StatusEffects_HandleOnRemove;
+
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _baseStats = CreateStats(StatCollectionType.Base);
             _modStats = CreateStats(StatCollectionType.Modified);
@@ -559,6 +562,26 @@ namespace DemoGame.Server
             _inventory = CreateInventory();
             _equipped = CreateEquipped();
 // ReSharper restore DoNotCallOverridableMethodsInConstructor
+        }
+
+        /// <summary>
+        /// Handles when an ActiveStatusEffect is added to this Character's StatusEffects.
+        /// </summary>
+        /// <param name="characterStatusEffects">The CharacterStatusEffects the event took place on.</param>
+        /// <param name="activeStatusEffect">The ActiveStatusEffect that was added.</param>
+        protected virtual void StatusEffects_HandleOnAdd(CharacterStatusEffects characterStatusEffects, ActiveStatusEffect activeStatusEffect)
+        {
+            UpdateModStats();
+        }
+
+        /// <summary>
+        /// Handles when an ActiveStatusEffect is removed from this Character's StatusEffects.
+        /// </summary>
+        /// <param name="characterStatusEffects">The CharacterStatusEffects the event took place on.</param>
+        /// <param name="activeStatusEffect">The ActiveStatusEffect that was removed.</param>
+        protected virtual void StatusEffects_HandleOnRemove(CharacterStatusEffects characterStatusEffects, ActiveStatusEffect activeStatusEffect)
+        {
+            UpdateModStats();
         }
 
         /// <summary>
@@ -898,6 +921,9 @@ namespace DemoGame.Server
             if (Inventory != null)
                 Inventory.Dispose();
 
+            if (StatusEffects != null)
+                StatusEffects.Dispose();
+
             base.HandleDispose();
         }
 
@@ -987,6 +1013,7 @@ namespace DemoGame.Server
 
             BodyInfo = GameData.Body(v.BodyID);
             CB = new CollisionBox(new Vector2(v.X, v.Y), BodyInfo.Width, BodyInfo.Height);
+            ((PersistentCharacterStatusEffects)StatusEffects).Load();
 
             // Set the character information
             _level = v.Level;
@@ -1178,6 +1205,7 @@ namespace DemoGame.Server
 
             UpdateModStats();
             UpdateSPRecovery();
+            StatusEffects.Update();
 
             base.Update(imap, deltaTime);
 
@@ -1218,7 +1246,7 @@ namespace DemoGame.Server
             // FUTURE: This is called every goddamn Update(). That is WAY too much...
             foreach (IStat modStat in ModStats)
             {
-                modStat.Value = CharacterModStatCalculator.Calculate(BaseStats, modStat.StatType, Equipped);
+                modStat.Value = CharacterModStatCalculator.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
             }
         }
 

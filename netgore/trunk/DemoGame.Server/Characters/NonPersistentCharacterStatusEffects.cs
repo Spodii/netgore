@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -8,6 +9,13 @@ namespace DemoGame.Server
     public class NonPersistentCharacterStatusEffects : CharacterStatusEffects
     {
         readonly List<ActiveStatusEffect> _statusEffects = new List<ActiveStatusEffect>();
+
+        protected override void HandleExpired(ActiveStatusEffect activeStatusEffect)
+        {
+            bool wasRemoved = _statusEffects.Remove(activeStatusEffect);
+
+            Debug.Assert(wasRemoved, "Couldn't find the activeStatusEffect in the collection. Where'd it go...?");
+        }
 
         public NonPersistentCharacterStatusEffects(Character character)
             : base(character)
@@ -51,6 +59,7 @@ namespace DemoGame.Server
             {
                 ActiveStatusEffect ase = new ActiveStatusEffect(statusEffect, power, disableTime);
                 _statusEffects.Add(ase);
+                NotifyAdded(ase);
                 return true;
             }
         }

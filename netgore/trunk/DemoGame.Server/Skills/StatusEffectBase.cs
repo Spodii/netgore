@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 
 namespace DemoGame.Server
@@ -14,50 +13,26 @@ namespace DemoGame.Server
     public abstract class StatusEffectBase
     {
         static readonly StatType[] _allStatTypes = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly StatusEffectMergeType _mergeType;
         readonly StatType[] _modifiedStats;
         readonly StatusEffectType _statusEffectType;
-        readonly StatusEffectMergeType _mergeType;
 
-        static protected int CalculateEffectTime(int minutes)
+        /// <summary>
+        /// Gets the StatTypes that this StatusEffect modifies. Any StatType that is not in this IEnumerable is
+        /// never affected by this StatusEffect.
+        /// </summary>
+        public IEnumerable<StatType> ModifiedStats { get { return _modifiedStats; } }
+
+        public StatusEffectMergeType MergeType
         {
-            return 1000 * 60 * minutes;
+            get { return _mergeType; }
         }
 
-        static protected int CalculateEffectTime(int minutes, int seconds)
+        public StatusEffectType StatusEffectType
         {
-            return (1000 * 60 * minutes) + (1000 * seconds);
+            get { return _statusEffectType; }
         }
-
-        static protected int CalculateEffectTime(int minutes, int seconds, int milliseconds)
-        {
-            return (1000 * 60 * minutes) + (1000 * seconds) + milliseconds;
-        }
-
-        public abstract int GetEffectTime(ushort power);
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        public StatusEffectType StatusEffectType { get { return _statusEffectType; } }
-
-        public bool TryGetStatModifier(StatType statType, ushort power, out int value)
-        {
-            int? v = InternalTryGetStatModifier(statType, power);
-
-            if (!v.HasValue)
-            {
-                value = 0;
-                return false;
-            }
-            else
-            {
-                value = v.Value;
-                return true;
-            }
-        }
-
-        public StatusEffectMergeType MergeType { get { return _mergeType; } }
-
-        protected abstract int? InternalTryGetStatModifier(StatType statType, ushort power);
 
         protected StatusEffectBase(StatusEffectType statusEffectType, StatusEffectMergeType mergeType)
         {
@@ -87,14 +62,15 @@ namespace DemoGame.Server
                     power = GameData.MaxStatusEffectPower;
 
                 // Test each StatType that this StatusEffect actually modifies (in opposed to testing every single one)
-                foreach (var statType in _modifiedStats)
+                foreach (StatType statType in _modifiedStats)
                 {
                     int a = GetStatModifier(statType, (ushort)power);
                     int b = GetStatModifier(statType, (ushort)power);
 
                     if (a != b)
                     {
-                        const string errmsg = "StatusEffect `{0}`, handling StatusEffectType `{1}`, failed to return" +
+                        const string errmsg =
+                            "StatusEffect `{0}`, handling StatusEffectType `{1}`, failed to return" +
                             " the same value for StatType `{2}` when using power `{3}`. The values were `{4}` and `{5}`." +
                             " It is vital that a StatusEffect always returns the same value for a given StatType and Power.";
 
@@ -108,11 +84,37 @@ namespace DemoGame.Server
             }
         }
 
+        protected static int CalculateEffectTime(int minutes)
+        {
+            return 1000 * 60 * minutes;
+        }
+
+        protected static int CalculateEffectTime(int minutes, int seconds)
+        {
+            return (1000 * 60 * minutes) + (1000 * seconds);
+        }
+
+        protected static int CalculateEffectTime(int minutes, int seconds, int milliseconds)
+        {
+            return (1000 * 60 * minutes) + (1000 * seconds) + milliseconds;
+        }
+
+        public abstract int GetEffectTime(ushort power);
+
+        public int GetStatModifier(StatType statType, ushort power)
+        {
+            int value;
+            if (!TryGetStatModifier(statType, power, out value))
+                return 0;
+
+            return value;
+        }
+
         StatType[] GetUsedStatTypes()
         {
-            List<StatType> usedStatTypes = new List<StatType>();
+            var usedStatTypes = new List<StatType>();
 
-            foreach (var statType in _allStatTypes)
+            foreach (StatType statType in _allStatTypes)
             {
                 int value;
                 if (TryGetStatModifier(statType, 1, out value))
@@ -122,13 +124,22 @@ namespace DemoGame.Server
             return usedStatTypes.ToArray();
         }
 
-        public int GetStatModifier(StatType statType, ushort power)
-        {
-            int value;
-            if (!TryGetStatModifier(statType, power, out value))
-                return 0;
+        protected abstract int? InternalTryGetStatModifier(StatType statType, ushort power);
 
-            return value;
+        public bool TryGetStatModifier(StatType statType, ushort power, out int value)
+        {
+            var v = InternalTryGetStatModifier(statType, power);
+
+            if (!v.HasValue)
+            {
+                value = 0;
+                return false;
+            }
+            else
+            {
+                value = v.Value;
+                return true;
+            }
         }
     }
 }

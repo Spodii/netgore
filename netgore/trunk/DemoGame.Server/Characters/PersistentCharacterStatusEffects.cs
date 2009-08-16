@@ -2,35 +2,39 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
+using System.Reflection;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
-
-// TODO: !! Apply the bonuses from active effects
-// TODO: !! Delete expired effects
-// TODO: !! Load effects from database
-// TODO: !! Save effects when disposing character
+using log4net;
 
 namespace DemoGame.Server
 {
     public class PersistentCharacterStatusEffects : CharacterStatusEffects
     {
+        /// <summary>
+        /// The minimum amount of time an ActiveStatusEffect must have remaining for it to be saved in the
+        /// database when this object is disposed. Anything with less time remaining than this specified time
+        /// will be deleted instead of updated.
+        /// </summary>
+        const int _minTimeForStatusEffectsOnDispose = 2000;
+
+        static readonly DeleteCharacterStatusEffectQuery _deleteQuery;
+
         static readonly ActiveStatusEffectIDCreator _idCreator;
         static readonly ReplaceCharacterStatusEffectQuery _replaceQuery;
-        static readonly DeleteCharacterStatusEffectQuery _deleteQuery;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly List<ASEWithID> _statusEffects = new List<ASEWithID>();
 
         static PersistentCharacterStatusEffects()
         {
-            var dbController = DBController.GetInstance();
+            DBController dbController = DBController.GetInstance();
             _idCreator = dbController.GetQuery<ActiveStatusEffectIDCreator>();
             _replaceQuery = dbController.GetQuery<ReplaceCharacterStatusEffectQuery>();
             _deleteQuery = dbController.GetQuery<DeleteCharacterStatusEffectQuery>();
         }
 
-        public PersistentCharacterStatusEffects(Character character)
-            : base(character)
+        public PersistentCharacterStatusEffects(Character character) : base(character)
         {
         }
 
@@ -39,19 +43,29 @@ namespace DemoGame.Server
             return _statusEffects.Any(x => x.Value.StatusEffect.StatusEffectType == statusEffectType);
         }
 
-        void DatabaseDelete(ActiveStatusEffectID id)
+        static void DeleteFromDatabase(ActiveStatusEffectID id)
         {
             _deleteQuery.Execute(id);
+            _idCreator.FreeID((int)id);
         }
 
-        void DatabaseUpdate(ASEWithID item)
+        public override void Dispose()
         {
-            int secsLeft = (int)Math.Round((item.Value.DisableTime - GetTime()) / 1000f);
-            if (secsLeft < 1)
-                secsLeft = 1;
-          
-            var values = new CharacterStatusEffectTable(Character.ID, item.ID, item.Value.Power, item.Value.StatusEffect.StatusEffectType, (ushort)secsLeft);
-            _replaceQuery.Execute(values);
+            base.Dispose();
+
+            int currentTime = GetTime();
+
+            // Update or remove each ActiveStatusEffect
+            foreach (ASEWithID item in _statusEffects)
+            {
+                if (item.Value.GetTimeRemaining(currentTime) < _minTimeForStatusEffectsOnDispose)
+                    DeleteFromDatabase(item.ID);
+                else
+                    UpdateInDatabase(item);
+            }
+
+            // Clear the list... just in case
+            _statusEffects.Clear();
         }
 
         /// <summary>
@@ -69,6 +83,53 @@ namespace DemoGame.Server
             }
         }
 
+        protected override void HandleExpired(ActiveStatusEffect activeStatusEffect)
+        {
+            for (int i = 0; i < _statusEffects.Count; i++)
+            {
+                ASEWithID item = _statusEffects[i];
+                if (item.Value != activeStatusEffect)
+                    continue;
+
+                _statusEffects.RemoveAt(i);
+                NotifyRemoved(activeStatusEffect);
+                DeleteFromDatabase(item.ID);
+                return;
+            }
+
+            Debug.Fail("Couldn't find the activeStatusEffect in the collection. Where'd it go...?");
+        }
+
+        public void Load()
+        {
+            Debug.Assert(_statusEffects.Count == 0, "Why is Load() being called while there are active effects here already?");
+
+            var values = Character.DBController.GetQuery<SelectCharacterStatusEffectsQuery>().Execute(Character.ID);
+
+            int currentTime = GetTime();
+
+            // Load in the ActiveStatusEffects using the values read from the database
+            foreach (ICharacterStatusEffectTable value in values)
+            {
+                StatusEffectBase statusEffect = StatusEffectManager.GetStatusEffect(value.StatusEffect);
+                if (statusEffect == null)
+                {
+                    const string errmsg = "Failed to get the StatusEffectBase for StatusEffectType `{0}` on Character `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, value.StatusEffect, Character);
+                    Debug.Fail(string.Format(errmsg, value.StatusEffect, Character));
+                    continue;
+                }
+
+                ActiveStatusEffect ase = new ActiveStatusEffect(statusEffect, value.Power, value.TimeLeftSecs * 1000 + currentTime);
+                ASEWithID aseWithID = new ASEWithID(value.ID, ase);
+                _statusEffects.Add(aseWithID);
+            }
+
+            // Recalculate all the stat bonuses since we skipped doing that earlier (better to just do it all at once)
+            RecalculateStatBonuses();
+        }
+
         public override bool TryAdd(StatusEffectBase statusEffect, ushort power)
         {
             if (statusEffect == null)
@@ -84,7 +145,7 @@ namespace DemoGame.Server
             {
                 bool changed = existingStatusEffect.Value.MergeWith(time, power, disableTime);
                 if (changed)
-                    DatabaseUpdate(existingStatusEffect);
+                    UpdateInDatabase(existingStatusEffect);
                 return changed;
             }
             else
@@ -94,25 +155,11 @@ namespace DemoGame.Server
 
                 ASEWithID aseWithID = new ASEWithID(id, ase);
                 _statusEffects.Add(aseWithID);
-                DatabaseUpdate(aseWithID);
+                NotifyAdded(aseWithID.Value);
+                UpdateInDatabase(aseWithID);
 
                 return true;
             }
-        }
-
-        bool TryGetStatusEffect(StatusEffectType statusEffectType, out ASEWithID statusEffect)
-        {
-            foreach (var item in _statusEffects)
-            {
-                if (item.Value.StatusEffect.StatusEffectType == statusEffectType)
-                {
-                    statusEffect = item;
-                    return true;
-                }
-            }
-
-            statusEffect = default(ASEWithID);
-            return false;
         }
 
         public override bool TryGetStatusEffect(StatusEffectType statusEffectType, out ActiveStatusEffect statusEffect)
@@ -128,6 +175,37 @@ namespace DemoGame.Server
 
             statusEffect = null;
             return false;
+        }
+
+        bool TryGetStatusEffect(StatusEffectType statusEffectType, out ASEWithID statusEffect)
+        {
+            foreach (ASEWithID item in _statusEffects)
+            {
+                if (item.Value.StatusEffect.StatusEffectType == statusEffectType)
+                {
+                    statusEffect = item;
+                    return true;
+                }
+            }
+
+            statusEffect = default(ASEWithID);
+            return false;
+        }
+
+        void UpdateInDatabase(ASEWithID item)
+        {
+            int secsLeft = (int)Math.Round((item.Value.DisableTime - GetTime()) / 1000f);
+            if (secsLeft < 1)
+                secsLeft = 1;
+
+            CharacterStatusEffectTable values = new CharacterStatusEffectTable
+                                                {
+                                                    CharacterID = Character.ID, ID = item.ID, Power = item.Value.Power,
+                                                    TimeLeftSecs = (ushort)secsLeft,
+                                                    StatusEffect = item.Value.StatusEffect.StatusEffectType
+                                                };
+
+            _replaceQuery.Execute(values);
         }
 
         public struct ASEWithID

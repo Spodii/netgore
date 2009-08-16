@@ -100,11 +100,11 @@ this._characterID = (System.Int32)value;
 /// The underlying database type is `int(11)`. The database column contains the comment: 
 /// "Unique ID of the status effect instance.".
 /// </summary>
-public System.Int32 ID
+public DemoGame.Server.ActiveStatusEffectID ID
 {
 get
 {
-return (System.Int32)_iD;
+return (DemoGame.Server.ActiveStatusEffectID)_iD;
 }
 set
 {
@@ -185,10 +185,10 @@ public CharacterStatusEffectTable()
 /// <param name="power">The initial value for the corresponding property.</param>
 /// <param name="statusEffect">The initial value for the corresponding property.</param>
 /// <param name="timeLeftSecs">The initial value for the corresponding property.</param>
-public CharacterStatusEffectTable(DemoGame.Server.CharacterID @characterID, System.Int32 @iD, System.UInt16 @power, DemoGame.StatusEffectType @statusEffect, System.UInt16 @timeLeftSecs)
+public CharacterStatusEffectTable(DemoGame.Server.CharacterID @characterID, DemoGame.Server.ActiveStatusEffectID @iD, System.UInt16 @power, DemoGame.StatusEffectType @statusEffect, System.UInt16 @timeLeftSecs)
 {
 this.CharacterID = (DemoGame.Server.CharacterID)@characterID;
-this.ID = (System.Int32)@iD;
+this.ID = (DemoGame.Server.ActiveStatusEffectID)@iD;
 this.Power = (System.UInt16)@power;
 this.StatusEffect = (DemoGame.StatusEffectType)@statusEffect;
 this.TimeLeftSecs = (System.UInt16)@timeLeftSecs;
@@ -221,7 +221,7 @@ CopyValues(this, dic);
 public static void CopyValues(ICharacterStatusEffectTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
 dic["@character_id"] = (DemoGame.Server.CharacterID)source.CharacterID;
-dic["@id"] = (System.Int32)source.ID;
+dic["@id"] = (DemoGame.Server.ActiveStatusEffectID)source.ID;
 dic["@power"] = (System.UInt16)source.Power;
 dic["@status_effect_id"] = (DemoGame.StatusEffectType)source.StatusEffect;
 dic["@time_left_secs"] = (System.UInt16)source.TimeLeftSecs;
@@ -234,7 +234,7 @@ dic["@time_left_secs"] = (System.UInt16)source.TimeLeftSecs;
 public void CopyValuesFrom(ICharacterStatusEffectTable source)
 {
 this.CharacterID = (DemoGame.Server.CharacterID)source.CharacterID;
-this.ID = (System.Int32)source.ID;
+this.ID = (DemoGame.Server.ActiveStatusEffectID)source.ID;
 this.Power = (System.UInt16)source.Power;
 this.StatusEffect = (DemoGame.StatusEffectType)source.StatusEffect;
 this.TimeLeftSecs = (System.UInt16)source.TimeLeftSecs;
@@ -285,7 +285,7 @@ this.CharacterID = (DemoGame.Server.CharacterID)value;
 break;
 
 case "id":
-this.ID = (System.Int32)value;
+this.ID = (DemoGame.Server.ActiveStatusEffectID)value;
 break;
 
 case "power":

@@ -113,6 +113,7 @@
     <Compile Include="IO\PropertySyncStatType.cs" />
     <Compile Include="Stats\BaseStatValueType.cs" />
     <Compile Include="Stats\CharacterStatsBase.cs" />
+    <Compile Include="Stats\FullStatCollection.cs" />
     <Compile Include="Stats\IModStatContainer.cs" />
     <Compile Include="Stats\IStat.cs" />
     <Compile Include="Stats\IStatCollection.cs" />
