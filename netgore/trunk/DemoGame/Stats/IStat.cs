@@ -14,7 +14,7 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners that the value of the stat has changed.
         /// </summary>
-        event StatChangeHandler OnChange;
+        event IStatEventHandler OnChange;
 
         /// <summary>
         /// Gets the StatType of this IStat.
