@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 
 namespace DemoGame
@@ -81,10 +78,5 @@ namespace DemoGame
         }
 
         #endregion
-
-        public static implicit operator int(StatValueByte v)
-        {
-            return v.GetValue();
-        }
     }
 }
