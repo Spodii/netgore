@@ -955,7 +955,7 @@ namespace DemoGame.Server
             _exp = template.Exp;
             _statPoints = template.StatPoints;
 
-            BaseStats.CopyStatValuesFrom(template.StatValues, true);
+            BaseStats.CopyValuesFrom(template.StatValues, false);
         }
 
         void LoadFromQueryValues(ICharacterTable v)
@@ -979,7 +979,7 @@ namespace DemoGame.Server
             StatPoints = v.StatPoints;
 
             // Load the stats
-            _baseStats.CopyStatValuesFrom(v.Stats, true);
+            _baseStats.CopyValuesFrom(v.Stats, false);
 
             // Set the Map and, if a User, add them to the World
             Map m = World.GetMap(v.MapID);
