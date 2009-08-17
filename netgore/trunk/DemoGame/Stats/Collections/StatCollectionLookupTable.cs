@@ -110,12 +110,20 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// An empty lookup table for when no StatTypes are specified to be used. 
+        /// </summary>
+        static readonly byte[] _emptyLookupTable = new byte[0];
+
+        /// <summary>
         /// Creates the lookup table for the given <paramref name="statTypes"/>.
         /// </summary>
         /// <param name="statTypes">The array of StatTypes to create the lookup table for.</param>
         /// <returns>The lookup table for the given <paramref name="statTypes"/>.</returns>
         static byte[] CreateLookupTable(StatType[] statTypes)
         {
+            if (statTypes.Length == 0)
+                return _emptyLookupTable;
+
             // Get the greatest StatType index value
             int max = statTypes.Select(x => x.GetValue()).Max();
 
