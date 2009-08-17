@@ -150,7 +150,7 @@ namespace DemoGame
                 throw new ArgumentException("The specified type must be for an Enum.", "enumType");
 
             // Get all the values
-            Array values = Enum.GetValues(enumType);
+            var values = Enum.GetValues(enumType);
 
             // Get the values as bytes
             var bytes = values.Cast<byte>();

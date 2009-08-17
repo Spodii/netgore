@@ -16,7 +16,7 @@ namespace DemoGame.Client
         public SkillsForm(Vector2 position, Control parent)
             : base(parent.GUIManager, "Skills", position, new Vector2(200, 200), parent)
         {
-            var allSkillTypes = Enum.GetValues(typeof(SkillType)).Cast<SkillType>();
+            var allSkillTypes = SkillTypeHelper.AllValues;
             Vector2 offset = Vector2.Zero;
             foreach (SkillType skillType in allSkillTypes)
             {

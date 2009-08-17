@@ -14,7 +14,6 @@ namespace DemoGame.Server
     /// </summary>
     public abstract class StatusEffectBase
     {
-        static readonly StatType[] _allStatTypes = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly StatusEffectMergeType _mergeType;
         readonly StatType[] _modifiedStats;
@@ -168,9 +167,9 @@ namespace DemoGame.Server
         /// <returns>The StatTypes that this StatusEffect modifies.</returns>
         StatType[] GetUsedStatTypes()
         {
-            var usedStatTypes = new List<StatType>();
+            var usedStatTypes = new List<StatType>(StatusEffectTypeHelper.AllValues.Count());
 
-            foreach (StatType statType in _allStatTypes)
+            foreach (StatType statType in StatusEffectTypeHelper.AllValues)
             {
                 int value;
                 if (TryGetStatModifier(statType, 1, out value))

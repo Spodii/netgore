@@ -45,7 +45,7 @@ namespace DemoGame.Client
 
         static SkillInfo()
         {
-            _infoManager.AddMissingTypes(Enum.GetValues(typeof(SkillType)).Cast<SkillType>(),
+            _infoManager.AddMissingTypes(SkillTypeHelper.AllValues,
                                          x => new SkillInfo { SkillType = x, Name = x.ToString(), Description = string.Empty });
             _infoManager.Save();
         }
