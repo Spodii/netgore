@@ -10,6 +10,8 @@ using NetGore.Collections;
 
 namespace NetGore.Graphics
 {
+    public delegate void GrhDataEventHandler(GrhData grhData);
+
     /// <summary>
     /// Holds the GrhDatas and related methods.
     /// </summary>
@@ -33,11 +35,27 @@ namespace NetGore.Graphics
         static DArray<GrhData> _grhDatas;
 
         /// <summary>
+        /// Notifies listeners when a GrhData has been added.
+        /// </summary>
+        public static event GrhDataEventHandler OnAdd;
+
+        /// <summary>
+        /// Notifies listeners when a GrhData has been removed.
+        /// </summary>
+        public static event GrhDataEventHandler OnRemove;
+
+        /// <summary>
         /// Gets an IEnumerable of all of the GrhDatas.
         /// </summary>
         public static IEnumerable<GrhData> GrhDatas
         {
-            get { return _grhDatas; }
+            get
+            {
+                if (_grhDatas == null)
+                    return Enumerable.Empty<GrhData>();
+
+                return _grhDatas;
+            }
         }
 
         static GrhInfo()
@@ -74,6 +92,32 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Handles when a GrhData is added to the GrhDatas DArray
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event args</param>
+        static void AddHandler(object sender, DArrayModifyEventArgs<GrhData> e)
+        {
+            GrhData gd = e.Item;
+            if (gd == null)
+            {
+                Debug.Fail("gd is null.");
+                return;
+            }
+
+            // Set the categorization event so we can keep up with any changes to the categorization.
+            gd.OnChangeCategorization += ChangeCategorizationHandler;
+
+            // If the title and category are not null, which would happen if the GrhData
+            // was created and initialized, THEN added to the array, then add it to the dictionary
+            if (gd.Category != null && gd.Title != null)
+                AddToDictionary(gd);
+
+            if (OnAdd != null)
+                OnAdd(gd);
+        }
+
+        /// <summary>
         /// Adds a GrhData to the dictionary
         /// </summary>
         /// <param name="gd">GrhData to add to the dictionary</param>
@@ -91,6 +135,22 @@ namespace NetGore.Graphics
 
             // Add the GrhData to the sub-dictionary by its title
             titleDic.Add(gd.Title, gd);
+        }
+
+        /// <summary>
+        /// Handles when the category of a GrhData in the DArray changes
+        /// </summary>
+        static void ChangeCategorizationHandler(GrhData sender, string oldCategory, string oldTitle)
+        {
+            GrhData gd = sender;
+            if (gd == null)
+            {
+                Debug.Fail("gd is null.");
+                return;
+            }
+
+            RemoveFromDictionary(gd);
+            AddToDictionary(gd);
         }
 
         public static GrhData CreateGrhData(GrhIndex[] frames, float speed, string category, string title)
@@ -314,26 +374,21 @@ namespace NetGore.Graphics
             // Create the GrhData DArray
             _grhDatas = new DArray<GrhData>(1024, false);
             _catDic.Clear();
-            _grhDatas.OnAdd += OnAdd;
-            _grhDatas.OnRemove += OnRemove;
+            _grhDatas.OnAdd += AddHandler;
+            _grhDatas.OnRemove += RemoveHandler;
 
             // Load the GrhData from the file
             var grhDataFile = XmlInfoReader.ReadFile(path, true);
             if (grhDataFile.Count <= 0)
                 throw new Exception("Error loading GrhData information from the specified file.");
 
-            // Go through once to create all the objects to avoid reference conflicts
-            foreach (var dic in grhDataFile)
-            {
-                GrhIndex currGrhIndex = GrhIndex.Parse(dic["Grh.Index"]);
-                _grhDatas[(int)currGrhIndex] = new GrhData();
-            }
+            Stack<GrhData> animatedGrhDatas = new Stack<GrhData>(128);
 
             // Load the information into the objects
             foreach (var dic in grhDataFile)
             {
                 GrhIndex currGrhIndex = GrhIndex.Parse(dic["Grh.Index"]);
-                GrhData currGrh = GetData(currGrhIndex);
+                GrhData currGrh = new GrhData();
                 int numFrames = int.Parse(dic["Grh.Frames.Count"]);
 
                 // Categorization
@@ -354,6 +409,9 @@ namespace NetGore.Graphics
                     if (dic.ContainsKey("Grh.AutomaticResize"))
                         autoSize = bool.Parse(dic["Grh.AutomaticResize"]);
                     currGrh.AutomaticSize = autoSize;
+
+                    // Add to the collection
+                    _grhDatas[(int)currGrh.GrhIndex] = currGrh;
                 }
                 else
                 {
@@ -365,8 +423,15 @@ namespace NetGore.Graphics
                         frames[i] = GrhIndex.Parse(dic["Grh.Frames.F" + (i + 1)]);
                     }
                     currGrh.Load(currGrhIndex, frames, 1f / speed, category, title);
+
+                    // Add to the stack for now
+                    animatedGrhDatas.Push(currGrh);
                 }
             }
+            
+            // Add all the animated GrhDatas to the collection now that we have the frames in
+            foreach (var currGrh in animatedGrhDatas)
+                _grhDatas[(int)currGrh.GrhIndex] = currGrh;
 
             // Trim down the GrhData array, mainly for the client since it will never add/remove any GrhDatas
             _grhDatas.Trim();
@@ -395,55 +460,6 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Handles when a GrhData is added to the GrhDatas DArray
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">Event args</param>
-        static void OnAdd(object sender, DArrayModifyEventArgs<GrhData> e)
-        {
-            GrhData gd = e.Item;
-            if (gd == null)
-            {
-                Debug.Fail("gd is null.");
-                return;
-            }
-
-            // Set the categorization event so we can keep up with any changes to the categorization.
-            gd.OnChangeCategorization += OnChangeCategorization;
-
-            // If the title and category are not null, which would happen if the GrhData
-            // was created and initialized, THEN added to the array, then add it to the dictionary
-            if (gd.Category != null && gd.Title != null)
-                AddToDictionary(gd);
-        }
-
-        /// <summary>
-        /// Handles when the category of a GrhData in the DArray changes
-        /// </summary>
-        static void OnChangeCategorization(GrhData sender, string oldCategory, string oldTitle)
-        {
-            GrhData gd = sender;
-            if (gd == null)
-            {
-                Debug.Fail("gd is null.");
-                return;
-            }
-
-            RemoveFromDictionary(gd);
-            AddToDictionary(gd);
-        }
-
-        /// <summary>
-        /// Handles when a GrhData is removed from the DArray
-        /// </summary>
-        /// <param name="sender">Sender</param>
-        /// <param name="e">Event args</param>
-        static void OnRemove(object sender, DArrayModifyEventArgs<GrhData> e)
-        {
-            RemoveFromDictionary(e.Item);
-        }
-
-        /// <summary>
         /// Removes a GrhData from the dictionary
         /// </summary>
         /// <param name="gd">GrhData to remove</param>
@@ -452,6 +468,19 @@ namespace NetGore.Graphics
             Dictionary<string, GrhData> titleDic;
             if (_catDic.TryGetValue(gd.Category, out titleDic))
                 titleDic.Remove(gd.Title);
+        }
+
+        /// <summary>
+        /// Handles when a GrhData is removed from the DArray
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Event args</param>
+        static void RemoveHandler(object sender, DArrayModifyEventArgs<GrhData> e)
+        {
+            RemoveFromDictionary(e.Item);
+
+            if (OnRemove != null)
+                OnRemove(e.Item);
         }
 
         public static string SanitizeCategory(string category)
