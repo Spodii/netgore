@@ -1,7 +1,5 @@
 using System.Linq;
 
-// TODO: !! The RequiredStats is never populated
-
 namespace DemoGame.Server
 {
     /// <summary>
@@ -178,13 +176,14 @@ namespace DemoGame.Server
         /// <summary>
         /// The StatCollection used for the Skill's required stats.
         /// </summary>
-        class SkillStatCollection : StatCollectionBase
+        class SkillStatCollection : FixedStatCollection
         {
             /// <summary>
             /// SkillStatCollection constructor.
             /// </summary>
-            public SkillStatCollection() : base(StatCollectionType.Requirement)
+            public SkillStatCollection() : base(Enumerable.Empty<StatType>(), StatCollectionType.Requirement)
             {
+                // TODO: !! The RequiredStats is never populated
             }
         }
     }
