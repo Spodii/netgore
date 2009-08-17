@@ -475,13 +475,18 @@ namespace NetGore.Collections
                 throw new ArgumentOutOfRangeException("arrayIndex", "arrayIndex must be greater or equal to 0");
             if (array.Rank > 1)
                 throw new ArgumentException("May not use a multi-dimensional array", "array");
-            if (arrayIndex + _highestIndex > array.Length)
+            if (arrayIndex + array.Length < Count)
                 throw new ArgumentException("Not enough room to fit all the DArray into the Array from the specified arrayIndex",
                                             "array");
 
+            int j = 0;
             for (int i = 0; i <= _highestIndex; i++)
             {
-                array[arrayIndex + i] = this[i];
+                if (_isIndexUsed[i])
+                {
+                    array[arrayIndex + j] = this[i];
+                    j++;
+                }
             }
         }
 
