@@ -4,17 +4,17 @@ using NetGore.IO;
 
 namespace DemoGame
 {
-    class BaseStat<T> : IStat where T : IStatValueType, new()
+    class Stat<T> : IStat where T : IStatValueType, new()
     {
         readonly StatType _statType;
         readonly T _value = new T();
 
-        internal BaseStat(StatType statType)
+        internal Stat(StatType statType)
         {
             _statType = statType;
         }
 
-        internal BaseStat(StatType statType, int initialValue)
+        internal Stat(StatType statType, int initialValue)
         {
             _statType = statType;
             Value = initialValue;
@@ -76,7 +76,7 @@ namespace DemoGame
 
         public IStat DeepCopy()
         {
-            var copy = new BaseStat<T>(_statType);
+            var copy = new Stat<T>(_statType);
             copy._value.SetValue(_value.GetValue());
             return copy;
         }

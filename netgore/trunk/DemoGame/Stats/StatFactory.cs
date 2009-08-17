@@ -26,11 +26,11 @@ namespace DemoGame
             switch (statCollectionType)
             {
                 case StatCollectionType.Base:
-                    return new BaseStat<BaseStatValueType>(statType, initialValue);
+                    return new Stat<BaseStatValueType>(statType, initialValue);
                 case StatCollectionType.Modified:
-                    return new BaseStat<ModStatValueType>(statType, initialValue);
+                    return new Stat<ModStatValueType>(statType, initialValue);
                 case StatCollectionType.Requirement:
-                    return new BaseStat<ReqStatValueType>(statType, initialValue);
+                    return new Stat<ReqStatValueType>(statType, initialValue);
                 default:
                     throw new ArgumentOutOfRangeException("statCollectionType");
             }
