@@ -5,7 +5,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 
-namespace DemoGame.Stats
+namespace DemoGame
 {
     /// <summary>
     /// A lookup table used for a collection of stats.
