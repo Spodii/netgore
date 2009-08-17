@@ -947,7 +947,7 @@ namespace DemoGame.Server.DbObjs
             /// </summary>
             static ReqStatConstDictionary()
             {
-                var asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
+                var asArray = StatTypeHelper.AllValues.ToArray();
                 _lookupTable = new Int32[asArray.Length];
 
                 for (Int32 i = 0; i < _lookupTable.Length; i++)
@@ -1030,7 +1030,7 @@ namespace DemoGame.Server.DbObjs
             /// </summary>
             static StatConstDictionary()
             {
-                var asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
+                var asArray = StatTypeHelper.AllValues.ToArray();
                 _lookupTable = new Int32[asArray.Length];
 
                 for (Int32 i = 0; i < _lookupTable.Length; i++)

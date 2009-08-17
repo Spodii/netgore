@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NetGore;
 
 namespace DemoGame
 {
     public static class StatTypeHelper
     {
-        static readonly StatType[] _allStatTypes = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
-        static readonly int _greatestValue = AllStatTypes.Select(x => x.GetValue()).Max();
+        static readonly StatType[] _allValues = EnumHelper.GetValues<StatType>();
+        static readonly int _greatestValue = AllValues.Select(x => x.GetValue()).Max();
 
         /// <summary>
         /// Gets an IEnumerable of all of the StatTypes.
         /// </summary>
-        public static IEnumerable<StatType> AllStatTypes
+        public static IEnumerable<StatType> AllValues
         {
-            get { return _allStatTypes; }
+            get { return _allValues; }
         }
 
         /// <summary>
@@ -23,7 +24,7 @@ namespace DemoGame
         /// </summary>
         public static IEnumerable<StatType> RaisableStats
         {
-            get { return AllStatTypes; }
+            get { return AllValues; }
         }
 
         /// <summary>

@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 
 namespace DemoGame
 {
     public static class EquipmentSlotHelper
     {
-        static readonly EquipmentSlot[] _allEquipmentSlots = Enum.GetValues(typeof(EquipmentSlot)).Cast<EquipmentSlot>().ToArray();
-        static readonly int _greatestValue = AllEquipmentSlots.Select(x => x.GetValue()).Max();
+        static readonly EquipmentSlot[] _allValues = EnumHelper.GetValues<EquipmentSlot>();
+        static readonly int _greatestValue = AllValues.Select(x => x.GetValue()).Max();
 
         /// <summary>
         /// Gets an IEnumerable of all of the EquipmentSlots.
         /// </summary>
-        public static IEnumerable<EquipmentSlot> AllEquipmentSlots
+        public static IEnumerable<EquipmentSlot> AllValues
         {
-            get { return _allEquipmentSlots; }
+            get { return _allValues; }
         }
 
         /// <summary>
