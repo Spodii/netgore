@@ -125,7 +125,7 @@ namespace DemoGame.Server
 
             Console.WriteLine("Server is loaded");
 
-            _inputThread = new Thread(HandleInput) { Name = "Input Handler" };
+            _inputThread = new Thread(HandleInput) { Name = "Input Handler", IsBackground = true };
         }
 
         /// <summary>
@@ -190,6 +190,9 @@ namespace DemoGame.Server
 
                 // Update the world
                 _world.Update();
+
+                // NOTE: TEMP!
+                _isRunning = false;
 
                 // Check if we can afford sleeping the thread
                 long sleepTime = _serverUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);

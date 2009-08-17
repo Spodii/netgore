@@ -35,6 +35,7 @@ namespace NetGore.Collections
         readonly Func<Type, bool> _typeFilter;
 
         readonly Dictionary<Type, string> _typeToName = new Dictionary<Type, string>();
+        readonly bool _useGAC;
 
         /// <summary>
         /// Notifies listeners when a Type has been loaded into this FactoryTypeCollection.
@@ -70,6 +71,16 @@ namespace NetGore.Collections
         }
 
         /// <summary>
+        /// Gets if Assemblies from the Global Assembly Cache will be included. If false,
+        /// the Assemblies in the Global Assembly Cache will be ignored and no Types from these Assemblies will
+        /// be found by this FactoryTypeCollection.
+        /// </summary>
+        public bool UseGAC
+        {
+            get { return _useGAC; }
+        }
+
+        /// <summary>
         /// FactoryTypeCollection constructor.
         /// </summary>
         /// <param name="typeFilter">Filter that determines the Types to go into this FactoryTypeCollection.</param>
@@ -83,8 +94,22 @@ namespace NetGore.Collections
         /// <param name="typeFilter">Filter that determines the Types to go into this FactoryTypeCollection.</param>
         /// <param name="loadTypeHandler">Initial handler for the OnLoadType event.</param>
         public FactoryTypeCollection(Func<Type, bool> typeFilter, FactoryTypeLoadedHandler loadTypeHandler)
+            : this(typeFilter, loadTypeHandler, false)
+        {
+        }
+
+        /// <summary>
+        /// FactoryTypeCollection constructor.
+        /// </summary>
+        /// <param name="typeFilter">Filter that determines the Types to go into this FactoryTypeCollection.</param>
+        /// <param name="loadTypeHandler">Initial handler for the OnLoadType event.</param>
+        /// <param name="useGAC">If true, Assemblies from the Global Assembly Cache will be included. If false,
+        /// the Assemblies in the Global Assembly Cache will be ignored and no Types from these Assemblies will
+        /// be found by this FactoryTypeCollection.</param>
+        public FactoryTypeCollection(Func<Type, bool> typeFilter, FactoryTypeLoadedHandler loadTypeHandler, bool useGAC)
         {
             _typeFilter = typeFilter;
+            _useGAC = useGAC;
 
             if (loadTypeHandler != null)
                 OnLoadType += loadTypeHandler;
@@ -197,6 +222,10 @@ namespace NetGore.Collections
         /// <param name="assembly">Assembly to load the Types from.</param>
         void LoadAssemblyTypes(Assembly assembly)
         {
+            // Check if this is from the Global Assembly Cache
+            if (!UseGAC && assembly.GlobalAssemblyCache)
+                return;
+
             // Ensure we haven't already loaded this assembly
             lock (_loadedAssemblies)
             {

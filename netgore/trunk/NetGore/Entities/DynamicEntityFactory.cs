@@ -27,7 +27,7 @@ namespace NetGore
         static DynamicEntityFactory()
         {
             var filter = FactoryTypeCollection.CreateFilter(typeof(DynamicEntity));
-            _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler);
+            _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler, false);
         }
 
         /// <summary>
