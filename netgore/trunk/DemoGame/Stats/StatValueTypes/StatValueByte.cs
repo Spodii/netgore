@@ -5,6 +5,7 @@ using NetGore.IO;
 
 namespace DemoGame
 {
+    /*
     public class StatValueByte : IStatValueType
     {
         byte _value;
@@ -79,4 +80,5 @@ namespace DemoGame
 
         #endregion
     }
+    */
 }

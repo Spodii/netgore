@@ -4,19 +4,21 @@ using NetGore.IO;
 
 namespace DemoGame
 {
-    class Stat<T> : IStat where T : IStatValueType, new()
+    public class Stat : IStat
     {
         readonly StatType _statType;
-        readonly T _value = new T();
+        IStatValueType _value;
 
-        internal Stat(StatType statType)
+        protected IStatValueType IStatValueType { get { return _value; }}
+
+        public Stat(StatType statType, IStatValueType statValueType)
         {
             _statType = statType;
+            _value = statValueType;
         }
 
-        internal Stat(StatType statType, int initialValue)
+        public Stat(StatType statType, IStatValueType statValueType, int initialValue) : this(statType, statValueType)
         {
-            _statType = statType;
             Value = initialValue;
         }
 
@@ -55,7 +57,7 @@ namespace DemoGame
                     return;
 
                 // Set the new value, and invoke the OnChange event
-                _value.SetValue(value);
+                _value = _value.SetValue(value);
 
                 if (OnChange != null)
                     OnChange(this);
@@ -69,7 +71,7 @@ namespace DemoGame
         /// <param name="bitStream">BitStream to acquire the value from.</param>
         public void Read(BitStream bitStream)
         {
-            _value.Read(bitStream);
+            _value = _value.Read(bitStream);
         }
 
         /// <summary>
@@ -80,7 +82,7 @@ namespace DemoGame
         /// <param name="ordinal">Ordinal of the field to read the value from.</param>
         public void Read(IDataRecord dataReader, int ordinal)
         {
-            _value.Read(dataReader, ordinal);
+            _value = _value.Read(dataReader, ordinal);
         }
 
         /// <summary>
@@ -91,7 +93,7 @@ namespace DemoGame
         /// <param name="name">Name of the field to read the value from.</param>
         public void Read(IDataReader dataReader, string name)
         {
-            _value.Read(dataReader, dataReader.GetOrdinal(name));
+            _value = _value.Read(dataReader, dataReader.GetOrdinal(name));
         }
 
         /// <summary>
@@ -124,13 +126,32 @@ namespace DemoGame
         /// containing the same IStatValueType with the same value, and same StatType.
         /// </summary>
         /// <returns>The deep copy of the IStat.</returns>
-        public IStat DeepCopy()
+        public virtual IStat DeepCopy()
         {
-            var copy = new Stat<T>(_statType);
-            copy._value.SetValue(_value.GetValue());
-            return copy;
+            return new Stat(StatType, _value, Value);
         }
 
         #endregion
+    }
+
+    public class Stat<T> : Stat where T : IStatValueType, new()
+    {
+        public Stat(StatType statType, int initialValue) : base(statType, new T(), initialValue)
+        {
+        }
+
+        public Stat(StatType statType) : base(statType, new T())
+        {
+        }
+
+        Stat(Stat<T> other)
+            : base(other.StatType, other.IStatValueType.DeepCopy())
+        {
+        }
+
+        public override IStat DeepCopy()
+        {
+            return new Stat<T>(this);
+        }
     }
 }

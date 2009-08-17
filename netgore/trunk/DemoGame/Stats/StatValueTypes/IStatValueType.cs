@@ -26,20 +26,20 @@ namespace DemoGame
         /// Reads the value of this IStatValueType from a <paramref name="bitStream"/>.
         /// </summary>
         /// <param name="bitStream">The BitStream to read the value from.</param>
-        void Read(BitStream bitStream);
+        IStatValueType Read(BitStream bitStream);
 
         /// <summary>
         /// Reads the value of this IStatValueType from a <paramref name="dataRecord"/> at the given <paramref name="ordinal"/>.
         /// </summary>
         /// <param name="dataRecord">The IDataReader to read from.</param>
         /// <param name="ordinal">The ordinal in the <paramref name="dataRecord"/> to read from.</param>
-        void Read(IDataRecord dataRecord, int ordinal);
+        IStatValueType Read(IDataRecord dataRecord, int ordinal);
 
         /// <summary>
         /// Sets the value of this IStatValueType.
         /// </summary>
         /// <param name="value">The integer value to set this IStatValueType.</param>
-        void SetValue(int value);
+        IStatValueType SetValue(int value);
 
         /// <summary>
         /// Writes this IStatValueType's value to the given <paramref name="bitStream"/>.

@@ -4,6 +4,7 @@ using NetGore.IO;
 
 namespace DemoGame
 {
+    /*
     public class StatValueInt : IStatValueType
     {
         int _value;
@@ -77,4 +78,5 @@ namespace DemoGame
 
         #endregion
     }
+    */
 }

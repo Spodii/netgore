@@ -6,13 +6,9 @@ using NetGore.IO;
 
 namespace DemoGame
 {
-    public class StatValueUShort : IStatValueType
+    public struct StatValueUShort : IStatValueType
     {
-        ushort _value;
-
-        public StatValueUShort()
-        {
-        }
+        readonly ushort _value;
 
         public StatValueUShort(ushort value)
         {
@@ -34,10 +30,10 @@ namespace DemoGame
         /// Sets the value of this IStatValueType.
         /// </summary>
         /// <param name="value">The integer value to set this IStatValueType.</param>
-        public void SetValue(int value)
+        public IStatValueType SetValue(int value)
         {
             Debug.Assert(value >= ushort.MinValue && value <= ushort.MaxValue);
-            _value = (ushort)value;
+            return new StatValueUShort((ushort)value);
         }
 
         /// <summary>
@@ -53,9 +49,10 @@ namespace DemoGame
         /// Reads the value of this IStatValueType from a <paramref name="bitStream"/>.
         /// </summary>
         /// <param name="bitStream">The BitStream to read the value from.</param>
-        public void Read(BitStream bitStream)
+        public IStatValueType Read(BitStream bitStream)
         {
-            _value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
+            return new StatValueUShort(value);
         }
 
         /// <summary>
@@ -63,10 +60,11 @@ namespace DemoGame
         /// </summary>
         /// <param name="dataRecord">The IDataReader to read from.</param>
         /// <param name="ordinal">The ordinal in the <paramref name="dataRecord"/> to read from.</param>
-        public void Read(IDataRecord dataRecord, int ordinal)
+        public IStatValueType Read(IDataRecord dataRecord, int ordinal)
         {
             object v = dataRecord.GetValue(ordinal);
-            _value = Convert.ToUInt16(v);
+            var value = Convert.ToUInt16(v);
+            return new StatValueUShort(value);
         }
 
         /// <summary>
