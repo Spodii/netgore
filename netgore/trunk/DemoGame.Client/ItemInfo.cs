@@ -122,7 +122,7 @@ namespace DemoGame.Client
 
             // Set the source
             _source = ItemInfoSource.Equipped;
-            _slot = slot.GetIndex();
+            _slot = slot.GetValue();
 
             // Check for a valid slot
             if (!slot.IsDefined())

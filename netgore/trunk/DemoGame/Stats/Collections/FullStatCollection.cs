@@ -22,9 +22,9 @@ namespace DemoGame
         {
             _collectionType = collectionType;
 
-            _stats = new IStat[StatFactory.AllStatTypes.Count()];
+            _stats = new IStat[StatTypeHelper.GreatestValue + 1];
 
-            foreach (StatType statType in StatFactory.AllStatTypes)
+            foreach (StatType statType in StatTypeHelper.AllStatTypes)
             {
                 IStat istat = StatFactory.CreateStat(statType, collectionType);
                 _stats[statType.GetValue()] = istat;

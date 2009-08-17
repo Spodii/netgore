@@ -69,7 +69,7 @@ namespace DemoGame.Client
             if (UserEquipped[slot] == null)
                 return;
 
-            ItemInfoTooltip.HandleMouseEnter(sender, ItemInfoSource.Equipped, slot.GetIndex());
+            ItemInfoTooltip.HandleMouseEnter(sender, ItemInfoSource.Equipped, slot.GetValue());
         }
 
         void EquippedItemPB_OnMouseLeave(object sender, MouseEventArgs e)
@@ -78,7 +78,7 @@ namespace DemoGame.Client
                 return;
 
             EquipmentSlot slot = ((EquippedItemPB)sender).Slot;
-            ItemInfoTooltip.HandleMouseLeave(sender, ItemInfoSource.Equipped, slot.GetIndex());
+            ItemInfoTooltip.HandleMouseLeave(sender, ItemInfoSource.Equipped, slot.GetValue());
         }
 
         void EquippedItemPB_OnMouseMove(object sender, MouseEventArgs e)
@@ -90,7 +90,7 @@ namespace DemoGame.Client
             if (UserEquipped[slot] == null)
                 return;
 
-            ItemInfoTooltip.HandleMouseMove(sender, ItemInfoSource.Equipped, slot.GetIndex());
+            ItemInfoTooltip.HandleMouseMove(sender, ItemInfoSource.Equipped, slot.GetValue());
         }
 
         void EquippedItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
