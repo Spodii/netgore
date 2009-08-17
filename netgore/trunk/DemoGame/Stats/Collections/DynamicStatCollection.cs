@@ -7,9 +7,10 @@ using NetGore.Collections;
 namespace DemoGame
 {
     /// <summary>
-    /// An IStatCollection implementation that can contain as few or as many StatTypes as needed.
+    /// An IStatCollection implementation that can contain as few or as many StatTypes as needed. New StatTypes
+    /// can be added to the collection whenever needed.
     /// </summary>
-    public class StatCollectionBase : IStatCollection
+    public class DynamicStatCollection : IStatCollection
     {
         readonly StatCollectionType _statCollectionType;
         readonly Dictionary<StatType, IStat> _stats = new Dictionary<StatType, IStat>(EnumComparer<StatType>.Instance);
@@ -17,8 +18,8 @@ namespace DemoGame
         /// <summary>
         /// StatCollectionBase constructor.
         /// </summary>
-        /// <param name="statCollectionType">The type of the collectoin.</param>
-        protected StatCollectionBase(StatCollectionType statCollectionType)
+        /// <param name="statCollectionType">The type of the collection.</param>
+        protected DynamicStatCollection(StatCollectionType statCollectionType)
         {
             _statCollectionType = statCollectionType;
         }
@@ -90,16 +91,35 @@ namespace DemoGame
 
         #region IStatCollection Members
 
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>1</filterpriority>
         public IEnumerator<IStat> GetEnumerator()
         {
             return _stats.Values.GetEnumerator();
         }
 
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// Gets or sets the value of the stat with the given <paramref name="statType"/>.
+        /// </summary>
+        /// <param name="statType">The StatType of the stat to get or set the value for.</param>
+        /// <returns>The value of the stat with the given <paramref name="statType"/>.</returns>
         public int this[StatType statType]
         {
             get
@@ -117,21 +137,48 @@ namespace DemoGame
             }
         }
 
+        /// <summary>
+        /// Checks if this collection contains the stat with the given <paramref name="statType"/>.
+        /// </summary>
+        /// <param name="statType">The StatType to check if exists in the collection.</param>
+        /// <returns>True if this collection contains the stat with the given <paramref name="statType"/>;
+        /// otherwise false.</returns>
         public bool Contains(StatType statType)
         {
             return _stats.ContainsKey(statType);
         }
 
+        /// <summary>
+        /// Gets the IStat for the stat of the given <paramref name="statType"/>.
+        /// </summary>
+        /// <param name="statType">The StatType of the stat to get.</param>
+        /// <returns>The IStat for the stat of the given <paramref name="statType"/>.</returns>
         public virtual IStat GetStat(StatType statType)
         {
             return _stats[statType];
         }
 
+        /// <summary>
+        /// Tries to get the IStat for the stat of the given <paramref name="statType"/>.
+        /// </summary>
+        /// <param name="statType">The StatType of the stat to get.</param>
+        /// <param name="stat">The IStat for the stat of the given <paramref name="statType"/>. If this method
+        /// returns false, this value will be null.</param>
+        /// <returns>True if the stat with the given <paramref name="statType"/> was found and
+        /// successfully returned; otherwise false.</returns>
         public bool TryGetStat(StatType statType, out IStat stat)
         {
             return _stats.TryGetValue(statType, out stat);
         }
 
+        /// <summary>
+        /// Tries to get the value of the stat of the given <paramref name="statType"/>.
+        /// </summary>
+        /// <param name="statType">The StatType of the stat to get.</param>
+        /// <param name="value">The value of the stat of the given <paramref name="statType"/>. If this method
+        /// returns false, this value will be 0.</param>
+        /// <returns>True if the stat with the given <paramref name="statType"/> was found and
+        /// successfully returned; otherwise false.</returns>
         public bool TryGetStatValue(StatType statType, out int value)
         {
             IStat stat;
@@ -183,6 +230,9 @@ namespace DemoGame
             CopyValuesFrom(values.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value)), checkContains);
         }
 
+        /// <summary>
+        /// Gets the StatCollectionType that this collection is for.
+        /// </summary>
         public StatCollectionType StatCollectionType
         {
             get { return _statCollectionType; }

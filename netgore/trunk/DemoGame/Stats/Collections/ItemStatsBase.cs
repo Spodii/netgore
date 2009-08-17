@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace DemoGame
 {
-    public abstract class ItemStatsBase : StatCollectionBase
+    public abstract class ItemStatsBase : DynamicStatCollection
     {
         /// <summary>
         /// Notifies the listener that any of the stats have raised their OnChange event

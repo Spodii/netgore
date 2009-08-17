@@ -125,7 +125,7 @@
     <Compile Include="Stats\ModStatValueType.cs" />
     <Compile Include="Stats\ReqStatValueType.cs" />
     <Compile Include="Stats\StatChangeHandler.cs" />
-    <Compile Include="Stats\Collections\StatCollectionBase.cs" />
+    <Compile Include="Stats\Collections\DynamicStatCollection.cs" />
     <Compile Include="Stats\Collections\StatCollectionLookupTable.cs" />
     <Compile Include="Stats\StatFactory.cs" />
     <Compile Include="Stats\Collections\StatCollectionType.cs" />
