@@ -9,16 +9,6 @@ namespace DemoGame
         readonly StatType _statType;
         readonly T _value = new T();
 
-        public bool CanWrite
-        {
-            get { return true; }
-        }
-
-        public bool IsModStat
-        {
-            get { return false; }
-        }
-
         internal BaseStat(StatType statType)
         {
             _statType = statType;
