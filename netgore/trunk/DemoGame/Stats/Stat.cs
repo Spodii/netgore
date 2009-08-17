@@ -9,7 +9,10 @@ namespace DemoGame
         readonly StatType _statType;
         IStatValueType _value;
 
-        protected IStatValueType IStatValueType { get { return _value; }}
+        protected IStatValueType IStatValueType
+        {
+            get { return _value; }
+        }
 
         public Stat(StatType statType, IStatValueType statValueType)
         {
@@ -144,8 +147,7 @@ namespace DemoGame
         {
         }
 
-        Stat(Stat<T> other)
-            : base(other.StatType, other.IStatValueType.DeepCopy())
+        Stat(Stat<T> other) : base(other.StatType, other.IStatValueType.DeepCopy())
         {
         }
 
