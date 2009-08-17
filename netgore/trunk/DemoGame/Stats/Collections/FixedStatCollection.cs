@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 
-namespace DemoGame.Stats
+namespace DemoGame
 {
     /// <summary>
     /// A specialized collection that contains only a portion of the StatTypes. All StatTypes used must be defined
