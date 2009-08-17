@@ -7,9 +7,9 @@ using NetGore.Collections;
 namespace DemoGame
 {
     /// <summary>
-    /// Base class for a collection of stats.
+    /// An IStatCollection implementation that can contain as few or as many StatTypes as needed.
     /// </summary>
-    public abstract class StatCollectionBase : IStatCollection
+    public class StatCollectionBase : IStatCollection
     {
         readonly StatCollectionType _statCollectionType;
         readonly Dictionary<StatType, IStat> _stats = new Dictionary<StatType, IStat>(EnumComparer<StatType>.Instance);
