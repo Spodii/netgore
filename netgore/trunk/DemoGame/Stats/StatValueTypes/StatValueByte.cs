@@ -5,15 +5,20 @@ using NetGore.IO;
 
 namespace DemoGame
 {
-    /*
-    public class StatValueByte : IStatValueType
+    /// <summary>
+    /// A stat value type with an underlying value type of a byte.
+    /// </summary>
+    public struct StatValueByte : IStatValueType
     {
-        byte _value;
+        /// <summary>
+        /// The underlying value.
+        /// </summary>
+        readonly byte _value;
 
-        public StatValueByte()
-        {
-        }
-
+        /// <summary>
+        /// StatValueByte constructor.
+        /// </summary>
+        /// <param name="value">The initial value.</param>
         public StatValueByte(byte value)
         {
             _value = value;
@@ -34,10 +39,10 @@ namespace DemoGame
         /// Sets the value of this IStatValueType.
         /// </summary>
         /// <param name="value">The integer value to set this IStatValueType.</param>
-        public void SetValue(int value)
+        public IStatValueType SetValue(int value)
         {
             Debug.Assert(value >= byte.MinValue && value <= byte.MaxValue);
-            _value = (byte)value;
+            return new StatValueByte((byte)value);
         }
 
         /// <summary>
@@ -53,9 +58,10 @@ namespace DemoGame
         /// Reads the value of this IStatValueType from a <paramref name="bitStream"/>.
         /// </summary>
         /// <param name="bitStream">The BitStream to read the value from.</param>
-        public void Read(BitStream bitStream)
+        public IStatValueType Read(BitStream bitStream)
         {
-            _value = bitStream.ReadByte();
+            byte value = bitStream.ReadByte();
+            return new StatValueByte(value);
         }
 
         /// <summary>
@@ -63,9 +69,10 @@ namespace DemoGame
         /// </summary>
         /// <param name="dataRecord">The IDataReader to read from.</param>
         /// <param name="ordinal">The ordinal in the <paramref name="dataRecord"/> to read from.</param>
-        public void Read(IDataRecord dataRecord, int ordinal)
+        public IStatValueType Read(IDataRecord dataRecord, int ordinal)
         {
-            _value = dataRecord.GetByte(ordinal);
+            byte value = dataRecord.GetByte(ordinal);
+            return new StatValueByte(value);
         }
 
         /// <summary>
@@ -80,5 +87,4 @@ namespace DemoGame
 
         #endregion
     }
-    */
 }

@@ -6,6 +6,7 @@ namespace DemoGame
 {
     /// <summary>
     /// Interface for a value type for an IStat. This interface allows for the underlying value type to be of any type.
+    /// This interface is designed to be implemented on immutable structs or objects.
     /// </summary>
     public interface IStatValueType
     {

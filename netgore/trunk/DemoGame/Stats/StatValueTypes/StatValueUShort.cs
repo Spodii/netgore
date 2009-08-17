@@ -6,10 +6,20 @@ using NetGore.IO;
 
 namespace DemoGame
 {
+    /// <summary>
+    /// A stat value type with an underlying value type of a ushort.
+    /// </summary>
     public struct StatValueUShort : IStatValueType
     {
+        /// <summary>
+        /// The underlying value.
+        /// </summary>
         readonly ushort _value;
 
+        /// <summary>
+        /// StatValueUShort constructor.
+        /// </summary>
+        /// <param name="value">The initial value.</param>
         public StatValueUShort(ushort value)
         {
             _value = value;
@@ -51,7 +61,7 @@ namespace DemoGame
         /// <param name="bitStream">The BitStream to read the value from.</param>
         public IStatValueType Read(BitStream bitStream)
         {
-            var value = bitStream.ReadUShort();
+            ushort value = bitStream.ReadUShort();
             return new StatValueUShort(value);
         }
 
@@ -63,7 +73,7 @@ namespace DemoGame
         public IStatValueType Read(IDataRecord dataRecord, int ordinal)
         {
             object v = dataRecord.GetValue(ordinal);
-            var value = Convert.ToUInt16(v);
+            ushort value = Convert.ToUInt16(v);
             return new StatValueUShort(value);
         }
 

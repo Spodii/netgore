@@ -4,15 +4,20 @@ using NetGore.IO;
 
 namespace DemoGame
 {
-    /*
-    public class StatValueInt : IStatValueType
+    /// <summary>
+    /// A stat value type with an underlying value type of an int.
+    /// </summary>
+    public struct StatValueInt : IStatValueType
     {
-        int _value;
+        /// <summary>
+        /// The underlying value.
+        /// </summary>
+        readonly int _value;
 
-        public StatValueInt()
-        {
-        }
-
+        /// <summary>
+        /// StatValueInt constructor.
+        /// </summary>
+        /// <param name="value">The initial value.</param>
         public StatValueInt(int value)
         {
             _value = value;
@@ -33,9 +38,9 @@ namespace DemoGame
         /// Sets the value of this IStatValueType.
         /// </summary>
         /// <param name="value">The integer value to set this IStatValueType.</param>
-        public void SetValue(int value)
+        public IStatValueType SetValue(int value)
         {
-            _value = value;
+            return new StatValueInt(value);
         }
 
         /// <summary>
@@ -51,9 +56,10 @@ namespace DemoGame
         /// Reads the value of this IStatValueType from a <paramref name="bitStream"/>.
         /// </summary>
         /// <param name="bitStream">The BitStream to read the value from.</param>
-        public void Read(BitStream bitStream)
+        public IStatValueType Read(BitStream bitStream)
         {
-            _value = bitStream.ReadInt();
+            int value = bitStream.ReadInt();
+            return new StatValueInt(value);
         }
 
         /// <summary>
@@ -61,9 +67,10 @@ namespace DemoGame
         /// </summary>
         /// <param name="dataRecord">The IDataReader to read from.</param>
         /// <param name="ordinal">The ordinal in the <paramref name="dataRecord"/> to read from.</param>
-        public void Read(IDataRecord dataRecord, int ordinal)
+        public IStatValueType Read(IDataRecord dataRecord, int ordinal)
         {
-            _value = dataRecord.GetInt32(ordinal);
+            int value = dataRecord.GetInt32(ordinal);
+            return new StatValueInt(value);
         }
 
         /// <summary>
@@ -78,5 +85,4 @@ namespace DemoGame
 
         #endregion
     }
-    */
 }
