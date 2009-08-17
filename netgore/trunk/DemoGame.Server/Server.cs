@@ -191,9 +191,6 @@ namespace DemoGame.Server
                 // Update the world
                 _world.Update();
 
-                // NOTE: TEMP!
-                _isRunning = false;
-
                 // Check if we can afford sleeping the thread
                 long sleepTime = _serverUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
                 if (sleepTime > 0)
