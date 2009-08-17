@@ -30,6 +30,11 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets the Type that this PropertySync handles.
+        /// </summary>
+        public Type HandledType { get { return typeof(T); } }
+
+        /// <summary>
         /// PropertySyncBase constructor.
         /// </summary>
         /// <param name="bindObject">Object that this property is to be bound to.</param>
@@ -177,7 +182,8 @@ namespace NetGore
             // to the type of the PropertySyncHandler itself
 
             // Get all of the class Types
-            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass);
+            var constructorParams = new Type[] { typeof(object), typeof(PropertyInfo)};
+            var types = TypeHelper.FindTypesThatInherit(typeof(PropertySyncBase), constructorParams, false);
 
             foreach (Type type in types)
             {
