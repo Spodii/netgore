@@ -118,7 +118,7 @@
     <Compile Include="Stats\IModStatContainer.cs" />
     <Compile Include="Stats\IStat.cs" />
     <Compile Include="Stats\Collections\IStatCollection.cs" />
-    <Compile Include="Stats\IStatValueType.cs" />
+    <Compile Include="Stats\StatValueTypes\IStatValueType.cs" />
     <Compile Include="Stats\Collections\ItemStatsBase.cs" />
     <Compile Include="Stats\BaseStat.cs" />
     <Compile Include="Stats\CharacterModStatCalculator.cs" />
@@ -131,6 +131,11 @@
     <Compile Include="Stats\Collections\StatCollectionType.cs" />
     <Compile Include="Stats\StatType.cs" />
     <Compile Include="Stats\StatTypeExtensions.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueByte.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueInt.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueSByte.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueShort.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueUShort.cs" />
     <Compile Include="StatusEffectType.cs" />
     <Compile Include="StatusEffectTypeExtensions.cs" />
     <Compile Include="WorldBase.cs" />
