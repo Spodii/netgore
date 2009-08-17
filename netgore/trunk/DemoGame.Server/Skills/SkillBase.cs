@@ -1,13 +1,15 @@
 using System.Linq;
 
+// TODO: !! The RequiredStats is never populated
+
 namespace DemoGame.Server
 {
     /// <summary>
-    /// The base class for skills.
+    /// The base class for skills that describes each individual skill.
     /// </summary>
     public abstract class SkillBase
     {
-        readonly SkillStatCollection _requiredStats = new SkillStatCollection(StatCollectionType.Requirement);
+        readonly SkillStatCollection _requiredStats = new SkillStatCollection();
         readonly SkillType _skillType;
 
         /// <summary>
@@ -32,6 +34,10 @@ namespace DemoGame.Server
             get { return _skillType; }
         }
 
+        /// <summary>
+        /// SkillBase constructor.
+        /// </summary>
+        /// <param name="skillType">The type of skill that this class is for.</param>
         protected SkillBase(SkillType skillType)
         {
             _skillType = skillType;
@@ -169,9 +175,15 @@ namespace DemoGame.Server
             return true;
         }
 
+        /// <summary>
+        /// The StatCollection used for the Skill's required stats.
+        /// </summary>
         class SkillStatCollection : StatCollectionBase
         {
-            public SkillStatCollection(StatCollectionType statCollectionType) : base(statCollectionType)
+            /// <summary>
+            /// SkillStatCollection constructor.
+            /// </summary>
+            public SkillStatCollection() : base(StatCollectionType.Requirement)
             {
             }
         }
