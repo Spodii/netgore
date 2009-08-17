@@ -120,7 +120,7 @@
     <Compile Include="Stats\Collections\IStatCollection.cs" />
     <Compile Include="Stats\StatValueTypes\IStatValueType.cs" />
     <Compile Include="Stats\Collections\ItemStatsBase.cs" />
-    <Compile Include="Stats\BaseStat.cs" />
+    <Compile Include="Stats\Stat.cs" />
     <Compile Include="Stats\CharacterModStatCalculator.cs" />
     <Compile Include="Stats\ModStatValueType.cs" />
     <Compile Include="Stats\ReqStatValueType.cs" />
