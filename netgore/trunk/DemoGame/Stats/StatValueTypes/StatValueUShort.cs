@@ -80,11 +80,5 @@ namespace DemoGame
         }
 
         #endregion
-
-        public static implicit operator int(StatValueUShort v)
-        {
-            // TODO: Have to decide if I want to do this implicit operator to int on all of these...
-            return v.GetValue();
-        }
     }
 }
