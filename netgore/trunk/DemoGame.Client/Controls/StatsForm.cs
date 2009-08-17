@@ -94,7 +94,7 @@ namespace DemoGame.Client
             new StatLabel(this, statType, pos);
 
             // Add the stat raise button
-            if (StatFactory.RaisableStats.Contains(statType))
+            if (StatTypeHelper.RaisableStats.Contains(statType))
             {
                 RaiseStatPB statPB = new RaiseStatPB(pos - new Vector2(22, 0), _addStatGrh, this, statType);
                 statPB.OnClick += StatPB_OnClick;

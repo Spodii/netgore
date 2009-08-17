@@ -10,27 +10,6 @@ namespace DemoGame
     public static class StatFactory
     {
         /// <summary>
-        /// All of the StatTypes.
-        /// </summary>
-        static readonly StatType[] _allStatTypes = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
-
-        /// <summary>
-        /// Gets an IEnumerable of all of the StatTypes.
-        /// </summary>
-        public static IEnumerable<StatType> AllStatTypes
-        {
-            get { return _allStatTypes; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of all of the StatTypes who's base value can be raised by a Character.
-        /// </summary>
-        public static IEnumerable<StatType> RaisableStats
-        {
-            get { return AllStatTypes; }
-        }
-
-        /// <summary>
         /// Creates an IStat.
         /// </summary>
         /// <param name="statType">The StatType of the IStat to create.</param>

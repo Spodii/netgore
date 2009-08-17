@@ -19,7 +19,7 @@ namespace DemoGame
         /// <summary>
         /// Greatest index of all the EquipmentSlots.
         /// </summary>
-        static readonly int _highestSlotIndex = EquipmentSlotExtensions.HighestIndex;
+        static readonly int _highestSlotIndex = EquipmentSlotHelper.GreatestValue;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -46,7 +46,7 @@ namespace DemoGame
         /// <returns>Item at the specified <paramref name="slot"/>.</returns>
         public T this[EquipmentSlot slot]
         {
-            get { return this[slot.GetIndex()]; }
+            get { return this[slot.GetValue()]; }
         }
 
         /// <summary>
@@ -251,7 +251,7 @@ namespace DemoGame
             }
 
             // Get the array index for the slot
-            byte index = slot.GetIndex();
+            byte index = slot.GetValue();
 
             // If the slot is equal to the value we are trying to set it, we never want
             // to do anything extra, so just abort

@@ -338,7 +338,7 @@ namespace DemoGame
         /// <param name="slot">EquipmentSlot to write.</param>
         public static void Write(this BitStream bitStream, EquipmentSlot slot)
         {
-            byte index = slot.GetIndex();
+            byte index = slot.GetValue();
             bitStream.Write(index);
         }
 

@@ -89,6 +89,8 @@
     <Compile Include="Entity\IUsableEntity.cs" />
     <Compile Include="Entity\TeleportEntityBase.cs" />
     <Compile Include="Entity\WallEntity.cs" />
+    <Compile Include="Items\EquipmentSlotExtensions.cs" />
+    <Compile Include="Items\EquipmentSlotHelper.cs" />
     <Compile Include="Items\EquippedEventHandler.cs" />
     <Compile Include="Items\EquipmentSlot.cs" />
     <Compile Include="Items\EquippedBase.cs" />
@@ -117,6 +119,7 @@
     <Compile Include="Stats\IModStatContainer.cs" />
     <Compile Include="Stats\IStat.cs" />
     <Compile Include="Stats\Collections\IStatCollection.cs" />
+    <Compile Include="Stats\StatTypeHelper.cs" />
     <Compile Include="Stats\StatValueTypes\IStatValueType.cs" />
     <Compile Include="Stats\Collections\ItemStatsBase.cs" />
     <Compile Include="Stats\Stat.cs" />
