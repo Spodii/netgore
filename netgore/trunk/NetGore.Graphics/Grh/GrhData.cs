@@ -112,6 +112,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the source rectangle of the GrhData on the original texture. This value will remain the same even
+        /// when a texture atlas is used.
+        /// </summary>
+        public Rectangle OriginalSourceRect
+        {
+            get { return _sourceRect; }
+        }
+
+        /// <summary>
         /// Gets the zero-base source pixel position (top-left corner) for a single frame GrhData.
         /// </summary>
         public Vector2 Position
@@ -119,7 +128,7 @@ namespace NetGore.Graphics
             get
             {
                 ValidateTexture();
-                return new Vector2(_sourceRect.Left, _sourceRect.Top);
+                return _isUsingAtlas ? new Vector2(_atlasSourceRect.X, _atlasSourceRect.Y) : new Vector2(_sourceRect.X, _sourceRect.Y);
             }
         }
 
