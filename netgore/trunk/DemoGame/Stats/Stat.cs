@@ -50,13 +50,15 @@ namespace DemoGame
             get { return _value.GetValue(); }
             set
             {
+                // Check that the value has changed
                 if (_value.GetValue() == value)
                     return;
 
+                // Set the new value, and invoke the OnChange event
                 _value.SetValue(value);
 
                 if (OnChange != null)
-                    OnChange((IStat)this);
+                    OnChange(this);
             }
         }
 
