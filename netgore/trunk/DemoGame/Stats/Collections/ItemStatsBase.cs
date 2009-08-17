@@ -10,7 +10,7 @@ namespace DemoGame
         /// <summary>
         /// Notifies the listener that any of the stats have raised their OnChange event
         /// </summary>
-        public event StatChangeHandler OnStatChange;
+        public event IStatEventHandler OnStatChange;
 
         protected ItemStatsBase(IEnumerable<KeyValuePair<StatType, int>> src, StatCollectionType statCollectionType)
             : this(statCollectionType)

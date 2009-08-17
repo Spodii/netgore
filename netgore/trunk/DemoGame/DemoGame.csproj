@@ -111,7 +111,6 @@
     <Compile Include="IO\PropertySyncBodyIndex.cs" />
     <Compile Include="IO\PropertySyncItemType.cs" />
     <Compile Include="IO\PropertySyncStatType.cs" />
-    <Compile Include="Stats\BaseStatValueType.cs" />
     <Compile Include="Stats\Collections\CharacterStatsBase.cs" />
     <Compile Include="Stats\Collections\FixedStatCollection.cs" />
     <Compile Include="Stats\Collections\FullStatCollection.cs" />
@@ -121,10 +120,8 @@
     <Compile Include="Stats\StatValueTypes\IStatValueType.cs" />
     <Compile Include="Stats\Collections\ItemStatsBase.cs" />
     <Compile Include="Stats\Stat.cs" />
-    <Compile Include="Stats\CharacterModStatCalculator.cs" />
-    <Compile Include="Stats\ModStatValueType.cs" />
-    <Compile Include="Stats\ReqStatValueType.cs" />
-    <Compile Include="Stats\StatChangeHandler.cs" />
+    <Compile Include="Stats\ModStatHelper.cs" />
+    <Compile Include="Stats\IStatEventHandler.cs" />
     <Compile Include="Stats\Collections\DynamicStatCollection.cs" />
     <Compile Include="Stats\Collections\StatCollectionLookupTable.cs" />
     <Compile Include="Stats\StatFactory.cs" />

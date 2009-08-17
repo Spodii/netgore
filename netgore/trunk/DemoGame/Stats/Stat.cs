@@ -140,7 +140,7 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners that the value of the stat has changed.
         /// </summary>
-        public event StatChangeHandler OnChange;
+        public event IStatEventHandler OnChange;
 
         /// <summary>
         /// Writes the Value property of the IStat directly into the specified BitStream. The BitStream must not be null,

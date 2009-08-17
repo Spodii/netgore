@@ -1192,7 +1192,7 @@ namespace DemoGame.Server
             // FUTURE: This is called every goddamn Update(). That is WAY too much...
             foreach (IStat modStat in ModStats)
             {
-                modStat.Value = CharacterModStatCalculator.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
+                modStat.Value = ModStatHelper.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
             }
         }
 

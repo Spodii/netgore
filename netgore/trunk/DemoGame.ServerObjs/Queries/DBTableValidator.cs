@@ -44,7 +44,7 @@ namespace DemoGame.Server.Queries
         /// <param name="db">The DBController to use for performing the validation checks.</param>
         static void ValidateCharacterTable(DBController db)
         {
-            EnsureStatColumnsExist(db, CharacterTable.TableName, StatFactory.AllStats, StatCollectionType.Base);
+            EnsureStatColumnsExist(db, CharacterTable.TableName, StatFactory.AllStatTypes, StatCollectionType.Base);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace DemoGame.Server.Queries
         /// <param name="db">The DBController to use for performing the validation checks.</param>
         static void ValidateCharacterTemplateTable(DBController db)
         {
-            EnsureStatColumnsExist(db, CharacterTemplateTable.TableName, StatFactory.AllStats, StatCollectionType.Base);
+            EnsureStatColumnsExist(db, CharacterTemplateTable.TableName, StatFactory.AllStatTypes, StatCollectionType.Base);
         }
 
         /// <summary>
