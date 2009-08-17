@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
+using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace NetGore.EditorTools
 {
@@ -15,29 +13,42 @@ namespace NetGore.EditorTools
     /// </summary>
     public static class GrhImageList
     {
+        static readonly Dictionary<GrhIndex, GrhImageListCacheItem> _imageCache =
+            new Dictionary<GrhIndex, GrhImageListCacheItem>();
+
         static readonly ImageList _imageList = new ImageList();
-
-        /// <summary>
-        /// Gets the ImageList used for the GrhDatas.
-        /// </summary>
-        public static ImageList ImageList { get { return _imageList; } }
-
-        /// <summary>
-        /// Gets the key for the special image of an open folder.
-        /// </summary>
-        public static string OpenFolderKey { get { return "_openfolder"; } }
 
         /// <summary>
         /// Gets the key for the special image of a closed folder.
         /// </summary>
-        public static string ClosedFolderKey { get { return "_folder"; } }
+        public static string ClosedFolderKey
+        {
+            get { return "_folder"; }
+        }
 
         /// <summary>
         /// Gets the key for the default image.
         /// </summary>
-        public static string DefaultImageKey { get { return "_default"; } }
+        public static string DefaultImageKey
+        {
+            get { return "_default"; }
+        }
 
-        static readonly Dictionary<GrhIndex, GrhImageListCacheItem> _imageCache = new Dictionary<GrhIndex, GrhImageListCacheItem>();
+        /// <summary>
+        /// Gets the ImageList used for the GrhDatas.
+        /// </summary>
+        public static ImageList ImageList
+        {
+            get { return _imageList; }
+        }
+
+        /// <summary>
+        /// Gets the key for the special image of an open folder.
+        /// </summary>
+        public static string OpenFolderKey
+        {
+            get { return "_openfolder"; }
+        }
 
         /// <summary>
         /// GrhImageList static constructor.
@@ -56,16 +67,42 @@ namespace NetGore.EditorTools
 
             // Load the cache
             var cacheItems = GrhImageListCache.Load();
-            foreach (var item in cacheItems)
+            foreach (GrhImageListCacheItem item in cacheItems)
+            {
                 _imageCache.Add(item.GrhIndex, item);
+            }
 
             // Listen for new GrhDatas being added/removed
             GrhInfo.OnAdd += GrhInfo_OnAdd;
             GrhInfo.OnRemove += GrhInfo_OnRemove;
 
             // Add the existing GrhDatas
-            foreach (var gd in GrhInfo.GrhDatas)
+            foreach (GrhData gd in GrhInfo.GrhDatas)
+            {
                 AddImage(gd);
+            }
+        }
+
+        /// <summary>
+        /// Adds the image for a GrhData to the ImageList.
+        /// </summary>
+        /// <param name="grhData">GrhData to add.</param>
+        static void AddImage(GrhData grhData)
+        {
+            if (grhData == null)
+                return;
+
+            if (string.IsNullOrEmpty(grhData.TextureName))
+                return;
+
+            string key = GetImageKey(grhData);
+
+            Image img = CreateImage(grhData);
+
+            if (ImageList.Images.ContainsKey(key))
+                ImageList.Images.RemoveByKey(key);
+
+            ImageList.Images.Add(key, img);
         }
 
         /// <summary>
@@ -87,10 +124,10 @@ namespace NetGore.EditorTools
 
             int destWidth = ImageList.ImageSize.Width;
             int destHeight = ImageList.ImageSize.Height;
-  
-            var sourceRect = grhData.SourceRect;
-            return ImageHelper.CreateFromTexture(grhData.Texture, sourceRect.X, sourceRect.Y, sourceRect.Width,
-                                                        sourceRect.Height, destWidth, destHeight);
+
+            Rectangle sourceRect = grhData.SourceRect;
+            return ImageHelper.CreateFromTexture(grhData.Texture, sourceRect.X, sourceRect.Y, sourceRect.Width, sourceRect.Height,
+                                                 destWidth, destHeight);
         }
 
         /// <summary>
@@ -104,25 +141,12 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Adds the image for a GrhData to the ImageList.
+        /// Handles when a GrhData is added to the global GrhData list.
         /// </summary>
-        /// <param name="grhData">GrhData to add.</param>
-        static void AddImage(GrhData grhData)
+        /// <param name="grhData">GrhData that was added.</param>
+        static void GrhInfo_OnAdd(GrhData grhData)
         {
-            if (grhData == null)
-                return;
-
-            if (string.IsNullOrEmpty(grhData.TextureName))
-                return;
-            
-            var key = GetImageKey(grhData);
-
-            Image img = CreateImage(grhData);
-
-            if (ImageList.Images.ContainsKey(key))
-                ImageList.Images.RemoveByKey(key);
-
-            ImageList.Images.Add(key, img);
+            AddImage(grhData);
         }
 
         /// <summary>
@@ -131,17 +155,8 @@ namespace NetGore.EditorTools
         /// <param name="grhData">GrhData that was removed.</param>
         static void GrhInfo_OnRemove(GrhData grhData)
         {
-            var key = GetImageKey(grhData);
+            string key = GetImageKey(grhData);
             ImageList.Images.RemoveByKey(key);
-        }
-
-        /// <summary>
-        /// Handles when a GrhData is added to the global GrhData list.
-        /// </summary>
-        /// <param name="grhData">GrhData that was added.</param>
-        static void GrhInfo_OnAdd(GrhData grhData)
-        {
-            AddImage(grhData);
         }
     }
 }
