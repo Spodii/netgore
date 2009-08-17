@@ -4,22 +4,60 @@ using NetGore.IO;
 
 namespace DemoGame
 {
+    /// <summary>
+    /// Describes a single IStat, containing the StatType and value of the IStat.
+    /// </summary>
     public class Stat : IStat
     {
+        /// <summary>
+        /// The type of Stat.
+        /// </summary>
         readonly StatType _statType;
+
+        /// <summary>
+        /// The Stat's value.
+        /// </summary>
         IStatValueType _value;
 
-        protected IStatValueType IStatValueType
+        /// <summary>
+        /// Stat constructor.
+        /// </summary>
+        /// <param name="istatToCopy">The IStat to copy the values from.</param>
+        public Stat(IStat istatToCopy)
         {
-            get { return _value; }
+            _statType = istatToCopy.StatType;
+            _value = istatToCopy.DeepCopyValueType();
         }
 
+        /// <summary>
+        /// Stat constructor.
+        /// </summary>
+        /// <param name="istatToCopy">The IStat to copy the values from.</param>
+        /// <param name="initialValue">The initial value to assign to this Stat. If not specified, the initial value
+        /// will end up being equal to the Value of <paramref name="istatToCopy"/>.</param>
+        public Stat(IStat istatToCopy, int initialValue) : this(istatToCopy)
+        {
+            Value = initialValue;
+        }
+
+        /// <summary>
+        /// Stat constructor.
+        /// </summary>
+        /// <param name="statType">The StatType of this Stat.</param>
+        /// <param name="statValueType">The IStatValueType to store the stat value in.</param>
         public Stat(StatType statType, IStatValueType statValueType)
         {
             _statType = statType;
             _value = statValueType;
         }
 
+        /// <summary>
+        /// Stat constructor.
+        /// </summary>
+        /// <param name="statType">The StatType of this Stat.</param>
+        /// <param name="statValueType">The IStatValueType to store the stat value in.</param>
+        /// <param name="initialValue">The initial value to assign to this Stat. If not specified, the initial value
+        /// will end up being the current value of the <paramref name="statValueType"/>.</param>
         public Stat(StatType statType, IStatValueType statValueType, int initialValue) : this(statType, statValueType)
         {
             Value = initialValue;
@@ -137,23 +175,27 @@ namespace DemoGame
         #endregion
     }
 
+    /// <summary>
+    /// Describes a single IStat, containing the StatType and value of the IStat.
+    /// </summary>
+    /// <typeparam name="T">The Type of IStatValueType.</typeparam>
     public class Stat<T> : Stat where T : IStatValueType, new()
     {
+        /// <summary>
+        /// Stat constructor.
+        /// </summary>
+        /// <param name="statType">The StatType of this Stat.</param>
+        /// <param name="initialValue">The initial value to assign to this Stat.</param>
         public Stat(StatType statType, int initialValue) : base(statType, new T(), initialValue)
         {
         }
 
+        /// <summary>
+        /// Stat constructor.
+        /// </summary>
+        /// <param name="statType">The StatType of this Stat.</param>
         public Stat(StatType statType) : base(statType, new T())
         {
-        }
-
-        Stat(Stat<T> other) : base(other.StatType, other.IStatValueType.DeepCopy())
-        {
-        }
-
-        public override IStat DeepCopy()
-        {
-            return new Stat<T>(this);
         }
     }
 }
