@@ -57,52 +57,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Takes the stat values from the given source and copies them into this collection.
-        /// </summary>
-        /// <param name="sourceStats">The source to copy all the stat values from.</param>
-        /// <param name="errorOnFailure">If true, an ArgumentException will be thrown if the <paramref name="sourceStats"/>
-        /// contains one or more stats that are not in this collection. If false, any key in the
-        /// <paramref name="sourceStats"/> that is not in this collection will just be skipped.</param>
-        public void CopyStatValuesFrom(IEnumerable<KeyValuePair<StatType, int>> sourceStats, bool errorOnFailure)
-        {
-            // Iterate through each stat in the source
-            foreach (var sourceStat in sourceStats)
-            {
-                // Check that this collection handles the given stat
-                IStat stat;
-                if (!TryGetStat(sourceStat.Key, out stat))
-                {
-                    if (errorOnFailure)
-                    {
-                        const string errmsg =
-                            "Tried to copy over the value of StatType `{0}`, but the destination " +
-                            "StatCollection did not contain the stat.";
-                        throw new ArgumentException(string.Format(errmsg, stat.StatType));
-                    }
-                    continue;
-                }
-
-                // This collection contains the stat, too, so copy the value over
-                stat.Value = sourceStat.Value;
-            }
-        }
-
-        /// <summary>
-        /// Copies all of the IStat.Values from each stat in the source enumerable where
-        /// the IStat.CanWrite is true. Any stat that is in the source enumerable that is not
-        /// in the destination, or any stat where CanWrite is false will not have their value copied over.
-        /// </summary>
-        /// <param name="sourceStats">Source collection of IStats</param>
-        /// <param name="errorOnFailure">If true, an ArgumentException will be thrown
-        /// if one or more of the StatTypes in the sourceStats do not exist in this StatCollection. If
-        /// false, this will not be treated like an error and the value will just not be copied over.</param>
-        public void CopyStatValuesFrom(IEnumerable<IStat> sourceStats, bool errorOnFailure)
-        {
-            var keyValuePairs = sourceStats.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value));
-            CopyStatValuesFrom(keyValuePairs, errorOnFailure);
-        }
-
-        /// <summary>
         /// Gets an IStat from this StatCollectionBase, or creates the IStat for the <paramref name="statType"/>
         /// if the IStat did not already exist in the collection.
         /// </summary>
@@ -189,6 +143,44 @@ namespace DemoGame
 
             value = stat.Value;
             return true;
+        }
+
+        /// <summary>
+        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
+        /// into this IStatCollection.
+        /// </summary>
+        /// <param name="values">IEnumerable of StatTypes and stat values to copy into this IStatCollection.</param>
+        /// <param name="checkContains">If true, each StatType in <paramref name="values"/> will first be checked
+        /// if it is in this IStatCollection before trying to copy over the value. Any StatType in
+        /// <paramref name="values"/> but not in this IStatCollection will be skipped. If false, no checking will
+        /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
+        /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
+        /// in any other way.</param>
+        public void CopyValuesFrom(IEnumerable<KeyValuePair<StatType, int>> values, bool checkContains)
+        {
+            foreach (var value in values)
+            {
+                if (checkContains && !Contains(value.Key))
+                    continue;
+
+                this[value.Key] = value.Value;
+            }
+        }
+
+        /// <summary>
+        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
+        /// into this IStatCollection.
+        /// </summary>
+        /// <param name="values">IEnumerable of StatTypes and stat values to copy into this IStatCollection.</param>
+        /// <param name="checkContains">If true, each StatType in <paramref name="values"/> will first be checked
+        /// if it is in this IStatCollection before trying to copy over the value. Any StatType in
+        /// <paramref name="values"/> but not in this IStatCollection will be skipped. If false, no checking will
+        /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
+        /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
+        /// in any other way.</param>
+        public void CopyValuesFrom(IEnumerable<IStat> values, bool checkContains)
+        {
+            CopyValuesFrom(values.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value)), checkContains);
         }
 
         public StatCollectionType StatCollectionType

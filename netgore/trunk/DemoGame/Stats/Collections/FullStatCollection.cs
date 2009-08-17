@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -179,6 +180,44 @@ namespace DemoGame
         {
             value = this[statType];
             return true;
+        }
+
+        /// <summary>
+        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
+        /// into this IStatCollection.
+        /// </summary>
+        /// <param name="values">IEnumerable of StatTypes and stat values to copy into this IStatCollection.</param>
+        /// <param name="checkContains">If true, each StatType in <paramref name="values"/> will first be checked
+        /// if it is in this IStatCollection before trying to copy over the value. Any StatType in
+        /// <paramref name="values"/> but not in this IStatCollection will be skipped. If false, no checking will
+        /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
+        /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
+        /// in any other way.</param>
+        public void CopyValuesFrom(IEnumerable<KeyValuePair<StatType, int>> values, bool checkContains)
+        {
+            foreach (var value in values)
+            {
+                if (checkContains && !Contains(value.Key))
+                    continue;
+
+                this[value.Key] = value.Value;
+            }
+        }
+
+        /// <summary>
+        /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
+        /// into this IStatCollection.
+        /// </summary>
+        /// <param name="values">IEnumerable of StatTypes and stat values to copy into this IStatCollection.</param>
+        /// <param name="checkContains">If true, each StatType in <paramref name="values"/> will first be checked
+        /// if it is in this IStatCollection before trying to copy over the value. Any StatType in
+        /// <paramref name="values"/> but not in this IStatCollection will be skipped. If false, no checking will
+        /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
+        /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
+        /// in any other way.</param>
+        public void CopyValuesFrom(IEnumerable<IStat> values, bool checkContains)
+        {
+            CopyValuesFrom(values.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value)), checkContains);
         }
 
         #endregion

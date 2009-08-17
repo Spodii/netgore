@@ -5,14 +5,10 @@ namespace DemoGame
     /// <summary>
     /// Base class for a collection of stats for Characters.
     /// </summary>
-    public abstract class CharacterStatsBase : StatCollectionBase
+    public abstract class CharacterStatsBase : FullStatCollection
     {
         protected CharacterStatsBase(StatCollectionType statCollectionType) : base(statCollectionType)
         {
-            foreach (StatType statType in StatFactory.AllStats)
-            {
-                Add(StatFactory.CreateStat(statType, statCollectionType));
-            }
         }
     }
 }

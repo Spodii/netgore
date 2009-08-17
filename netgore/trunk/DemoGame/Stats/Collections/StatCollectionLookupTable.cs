@@ -17,6 +17,11 @@ namespace DemoGame
         /// </summary>
         const byte _unusedIndexValue = byte.MaxValue;
 
+        /// <summary>
+        /// An empty lookup table for when no StatTypes are specified to be used. 
+        /// </summary>
+        static readonly byte[] _emptyLookupTable = new byte[0];
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -108,11 +113,6 @@ namespace DemoGame
 
             return ret;
         }
-
-        /// <summary>
-        /// An empty lookup table for when no StatTypes are specified to be used. 
-        /// </summary>
-        static readonly byte[] _emptyLookupTable = new byte[0];
 
         /// <summary>
         /// Creates the lookup table for the given <paramref name="statTypes"/>.
