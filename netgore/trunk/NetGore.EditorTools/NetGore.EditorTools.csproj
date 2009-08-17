@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="AutomaticGrhDataUpdater.cs" />
     <Compile Include="EditorColors.cs" />
+    <Compile Include="GrhImageList.cs" />
     <Compile Include="ListBoxExtensions.cs" />
     <Compile Include="MapItemListBox.cs">
       <SubType>Component</SubType>

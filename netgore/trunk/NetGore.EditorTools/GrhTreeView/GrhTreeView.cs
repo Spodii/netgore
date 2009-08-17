@@ -85,8 +85,8 @@ namespace NetGore.EditorTools
         [Description("Size of the Grh images in pixels")]
         public Size ImageSize
         {
-            get { return _grhImageList.ImageSize; }
-            set { _grhImageList.ImageSize = value; }
+            get { return ImageList.ImageSize; }
+            set { ImageList.ImageSize = value; }
         }
 
         /// <summary>
@@ -121,10 +121,7 @@ namespace NetGore.EditorTools
             TreeViewNodeSorter = this;
 
             // Create the ImageList containing the Grhs as an image
-            Image defaultImg = ImageHelper.CreateSolid(32, 32, Color.Magenta);
-            _grhImageList.TransparentColor = Color.Magenta;
-            _grhImageList.Images.Add(defaultImg);
-            ImageList = _grhImageList;
+            ImageList = GrhImageList.ImageList;
 
             // Event hooks
             AfterSelect += GrhTreeView_AfterSelect;
@@ -136,10 +133,6 @@ namespace NetGore.EditorTools
             DragDrop += GrhTreeView_DragDrop;
             DragOver += GrhTreeView_DragOver;
             AfterLabelEdit += GrhTreeView_AfterLabelEdit;
-
-            // Add the folder image
-            _grhImageList.Images.Add("_folder", Resources.folder);
-            _grhImageList.Images.Add("_folderopen", Resources.folderopen);
 
             //Set up the context menu for the GrhTreeView
             _contextMenu.MenuItems.Add(new MenuItem("Edit", MenuClickEdit));
@@ -176,55 +169,14 @@ namespace NetGore.EditorTools
             // Add to the tree
             string nodePath = string.Format("{0}.{1}", category, title);
             TreeNode node = CreateNode(indexStr, nodePath, '.');
-
+         
             // Set the preview picture
             if (!string.IsNullOrEmpty(gd.TextureName))
             {
-                // Grh contains a valid texture
-                int destWidth = _grhImageList.ImageSize.Width;
-                int destHeight = _grhImageList.ImageSize.Height;
-                try
-                {
-                    // Generate the image from the texture
-                    Image img;
-                    try
-                    {
-                        Rectangle sourceRect = gd.SourceRect;
-                        img = ImageHelper.CreateFromTexture(gd.Texture, sourceRect.X, sourceRect.Y, sourceRect.Width,
-                                                            sourceRect.Height, destWidth, destHeight);
-                    }
-                    catch (Exception ex)
-                    {
-                        Debug.Fail(ex.ToString());
-                        img = null;
-                    }
-
-                    if (img != null)
-                    {
-                        // Remove the old instance of the image if there is one
-                        if (_grhImageList.Images.ContainsKey(indexStr))
-                            _grhImageList.Images.RemoveByKey(indexStr);
-
-                        // Add the new image, apply it to the node
-                        _grhImageList.Images.Add(indexStr, img);
-                        node.ImageKey = indexStr;
-                    }
-                    else
-                    {
-                        // Debug.Fail("Failed to create image for the GrhData for the GrhTreeView.");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Debug.Fail(string.Format("Failed setting ImageKey for node: {0}", ex));
-
-                    // Error setting the image, so just set it to empty
-                    node.ImageKey = string.Empty;
-                }
-
-                // Just use the same image for all images
-                node.SelectedImageKey = node.ImageKey;
-                node.StateImageKey = node.ImageKey;
+                var imageKey = GrhImageList.GetImageKey(gd);
+                node.ImageKey = imageKey;
+                node.SelectedImageKey = imageKey;
+                node.StateImageKey = imageKey;
             }
             else if (gd.Frames != null)
             {
@@ -295,9 +247,9 @@ namespace NetGore.EditorTools
                 if (addNew)
                 {
                     TreeNode newNode = nodeColl.Add(cats[i]);
-                    newNode.ImageKey = "_folder";
-                    newNode.SelectedImageKey = "_folderopen";
-                    newNode.StateImageKey = "_folder";
+                    newNode.ImageKey = GrhImageList.ClosedFolderKey;
+                    newNode.SelectedImageKey = GrhImageList.OpenFolderKey;
+                    newNode.StateImageKey = GrhImageList.ClosedFolderKey;
                     nodeColl = newNode.Nodes;
                 }
             }
@@ -960,9 +912,10 @@ namespace NetGore.EditorTools
                 if (oldGrhIndex != atn.Grh.CurrentGrhData.GrhIndex)
                 {
                     // Change the image
-                    atn.TreeNode.ImageKey = atn.Grh.CurrentGrhData.GrhIndex.ToString();
-                    atn.TreeNode.SelectedImageKey = atn.TreeNode.ImageKey;
-                    atn.TreeNode.StateImageKey = atn.TreeNode.ImageKey;
+                    var imageKey = GrhImageList.GetImageKey(atn.Grh.CurrentGrhData);
+                    atn.TreeNode.ImageKey = imageKey;
+                    atn.TreeNode.SelectedImageKey = imageKey;
+                    atn.TreeNode.StateImageKey = imageKey;
                 }
             }
         }
