@@ -77,6 +77,8 @@
     <Compile Include="AutomaticGrhDataUpdater.cs" />
     <Compile Include="EditorColors.cs" />
     <Compile Include="GrhImageList.cs" />
+    <Compile Include="GrhImageListCache.cs" />
+    <Compile Include="GrhImageListCacheItem.cs" />
     <Compile Include="ListBoxExtensions.cs" />
     <Compile Include="MapItemListBox.cs">
       <SubType>Component</SubType>

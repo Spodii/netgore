@@ -10,10 +10,16 @@ using NetGore.Graphics;
 
 namespace NetGore.EditorTools
 {
+    /// <summary>
+    /// Contains the ImageList used for the GrhDatas.
+    /// </summary>
     public static class GrhImageList
     {
         static readonly ImageList _imageList = new ImageList();
 
+        /// <summary>
+        /// Gets the ImageList used for the GrhDatas.
+        /// </summary>
         public static ImageList ImageList { get { return _imageList; } }
 
         /// <summary>
@@ -31,6 +37,11 @@ namespace NetGore.EditorTools
         /// </summary>
         public static string DefaultImageKey { get { return "_default"; } }
 
+        static readonly Dictionary<GrhIndex, GrhImageListCacheItem> _imageCache = new Dictionary<GrhIndex, GrhImageListCacheItem>();
+
+        /// <summary>
+        /// GrhImageList static constructor.
+        /// </summary>
         static GrhImageList()
         {
             ImageList.TransparentColor = Color.Magenta;
@@ -43,6 +54,11 @@ namespace NetGore.EditorTools
             ImageList.Images.Add(OpenFolderKey, Resources.folderopen);
             ImageList.Images.Add(ClosedFolderKey, Resources.folder);
 
+            // Load the cache
+            var cacheItems = GrhImageListCache.Load();
+            foreach (var item in cacheItems)
+                _imageCache.Add(item.GrhIndex, item);
+
             // Listen for new GrhDatas being added/removed
             GrhInfo.OnAdd += GrhInfo_OnAdd;
             GrhInfo.OnRemove += GrhInfo_OnRemove;
@@ -52,10 +68,22 @@ namespace NetGore.EditorTools
                 AddImage(gd);
         }
 
+        /// <summary>
+        /// Creates the Image for a GrhData.
+        /// </summary>
+        /// <param name="grhData">GrhData to create the image for.</param>
+        /// <returns>The Image for the <paramref name="grhData"/>.</returns>
         static Image CreateImage(GrhData grhData)
         {
             if (grhData == null || string.IsNullOrEmpty(grhData.TextureName))
                 return null;
+
+            GrhImageListCacheItem cacheItem;
+            if (_imageCache.TryGetValue(grhData.GrhIndex, out cacheItem))
+            {
+                if (grhData.OriginalSourceRect == cacheItem.SourceRect)
+                    return cacheItem.Image;
+            }
 
             int destWidth = ImageList.ImageSize.Width;
             int destHeight = ImageList.ImageSize.Height;
@@ -65,11 +93,20 @@ namespace NetGore.EditorTools
                                                         sourceRect.Height, destWidth, destHeight);
         }
 
+        /// <summary>
+        /// Gets the image key for a GrhData.
+        /// </summary>
+        /// <param name="grhData">The GrhData to get the image key for.</param>
+        /// <returns>The image key for the <paramref name="grhData"/>.</returns>
         public static string GetImageKey(GrhData grhData)
         {
             return grhData.GrhIndex.ToString();
         }
 
+        /// <summary>
+        /// Adds the image for a GrhData to the ImageList.
+        /// </summary>
+        /// <param name="grhData">GrhData to add.</param>
         static void AddImage(GrhData grhData)
         {
             if (grhData == null)
@@ -77,10 +114,10 @@ namespace NetGore.EditorTools
 
             if (string.IsNullOrEmpty(grhData.TextureName))
                 return;
+            
+            var key = GetImageKey(grhData);
 
             Image img = CreateImage(grhData);
-
-            var key = GetImageKey(grhData);
 
             if (ImageList.Images.ContainsKey(key))
                 ImageList.Images.RemoveByKey(key);
@@ -88,12 +125,20 @@ namespace NetGore.EditorTools
             ImageList.Images.Add(key, img);
         }
 
+        /// <summary>
+        /// Handles when a GrhData is removed from the global GrhData list.
+        /// </summary>
+        /// <param name="grhData">GrhData that was removed.</param>
         static void GrhInfo_OnRemove(GrhData grhData)
         {
             var key = GetImageKey(grhData);
             ImageList.Images.RemoveByKey(key);
         }
 
+        /// <summary>
+        /// Handles when a GrhData is added to the global GrhData list.
+        /// </summary>
+        /// <param name="grhData">GrhData that was added.</param>
         static void GrhInfo_OnAdd(GrhData grhData)
         {
             AddImage(grhData);

@@ -27,6 +27,14 @@ namespace NetGore.EditorTools
     /// </summary>
     public class GrhTreeView : TreeView, IComparer
     {
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (disposing)
+                GrhImageListCache.Save();
+        }
+
         /// <summary>
         /// Timer to update the animated Grhs in the grh tree
         /// </summary>
