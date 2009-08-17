@@ -18,7 +18,7 @@ namespace DemoGame
         {
             int value = baseStats[statType];
 
-            if (modders.Length == 0)
+            if (modders == null || modders.Length == 0)
                 return value;
 
             foreach (IModStatContainer modder in modders)
