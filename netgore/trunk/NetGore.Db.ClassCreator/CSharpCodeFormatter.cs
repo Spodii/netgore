@@ -7,6 +7,29 @@ namespace NetGore.Db.ClassCreator
 {
     public class CSharpCodeFormatter : CodeFormatter
     {
+        public override string GetAttribute(string attributeType, params string[] args)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append(OpenIndexer);
+            sb.Append(attributeType);
+            sb.Append(OpenParameterString);
+
+            if (args != null)
+            {
+                for (int i = 0; i < args.Length - 1; i++)
+                {
+                    sb.Append(args[i]);
+                    sb.Append(ParameterSpacer);
+                }
+                sb.Append(args[args.Length - 1]);
+            }
+
+            sb.Append(CloseParameterString);
+            sb.Append(CloseIndexer);
+
+            return sb.ToString();
+        }
+
         public override string CloseBrace
         {
             get { return "}"; }
