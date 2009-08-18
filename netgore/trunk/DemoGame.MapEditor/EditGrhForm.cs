@@ -199,7 +199,7 @@ namespace DemoGame.MapEditor
         {
             // Set the wall types
             cmbWallType.Items.Clear();
-            foreach (CollisionType item in Enum.GetValues(typeof(CollisionType)))
+            foreach (CollisionType item in EnumHelper.GetValues<CollisionType>())
             {
                 cmbWallType.Items.Add(item);
             }
