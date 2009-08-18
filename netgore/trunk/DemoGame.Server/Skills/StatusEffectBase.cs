@@ -167,9 +167,9 @@ namespace DemoGame.Server
         /// <returns>The StatTypes that this StatusEffect modifies.</returns>
         StatType[] GetUsedStatTypes()
         {
-            var usedStatTypes = new List<StatType>(StatusEffectTypeHelper.AllValues.Count());
+            var usedStatTypes = new List<StatType>();
 
-            foreach (StatType statType in StatusEffectTypeHelper.AllValues)
+            foreach (StatType statType in StatTypeHelper.AllValues)
             {
                 int value;
                 if (TryGetStatModifier(statType, 1, out value))
