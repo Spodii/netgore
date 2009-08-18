@@ -2,23 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 
 namespace DemoGame.Client
 {
-    /// <summary>
-    /// All of the different ToolbarItems available. The sprite associated with the ToolbarItem is
-    /// based on the string value of the ToolbarItem.
-    /// </summary>
-    enum ToolbarItemType
-    {
-        Inventory,
-        Equipped,
-        Stats
-    }
-
     /// <summary>
     /// Handles an event on the Toolbar.
     /// </summary>
@@ -72,7 +62,7 @@ namespace DemoGame.Client
         ToolbarItem[] CreateToolbarItems()
         {
             // Get the values
-            var values = Enum.GetValues(typeof(ToolbarItemType)).Cast<int>();
+            var values = EnumHelper.GetValues<ToolbarItemType>().Cast<int>();
 
             // Find the largest value, and create the array
             int max = values.Max();
