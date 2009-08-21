@@ -452,6 +452,10 @@ namespace DemoGame.Client
                 case ToolbarItemType.Stats:
                     _statsForm.IsVisible = !_statsForm.IsVisible;
                     break;
+
+                case ToolbarItemType.Skills:
+                    _skillsForm.IsVisible = !_skillsForm.IsVisible;
+                    break;
             }
         }
 

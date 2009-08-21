@@ -13,6 +13,7 @@ namespace DemoGame.Client
     {
         Inventory,
         Equipped,
-        Stats
+        Stats,
+        Skills
     }
 }
