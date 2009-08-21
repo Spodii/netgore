@@ -113,7 +113,7 @@ namespace DemoGame.Client
         static ISprite GetItemSprite(int index)
         {
             string title = Enum.GetName(typeof(ToolbarItemType), index);
-            GrhData gd = Skin.GetSkinGrhData("Toolbar", title);
+            GrhData gd = Skin.GetToolbarItem(title);
             return new Grh(gd, AnimType.Loop, 0); // Start time doesn't matter
         }
 

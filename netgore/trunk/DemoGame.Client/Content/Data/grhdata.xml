@@ -1970,7 +1970,7 @@
     <AutomaticSize>False</AutomaticSize>
     <Frames Count="1" />
     <Texture>
-      <File>GUI/Default/toolbar</File>
+      <File>GUI/Default/Toolbar/Equipped</File>
       <X>0</X>
       <Y>0</Y>
       <W>32</W>
@@ -1978,37 +1978,37 @@
     </Texture>
     <Category>
       <Name>GUI.Default.Toolbar</Name>
-      <Title>inventory</Title>
+      <Title>Equipped</Title>
     </Category>
   </Grh>
   <Grh Index="134">
     <AutomaticSize>False</AutomaticSize>
     <Frames Count="1" />
     <Texture>
-      <File>GUI/Default/toolbar</File>
+      <File>GUI/Default/Toolbar/Inventory</File>
       <X>0</X>
-      <Y>64</Y>
+      <Y>0</Y>
       <W>32</W>
       <H>32</H>
     </Texture>
     <Category>
       <Name>GUI.Default.Toolbar</Name>
-      <Title>stats</Title>
+      <Title>Inventory</Title>
     </Category>
   </Grh>
   <Grh Index="135">
     <AutomaticSize>False</AutomaticSize>
     <Frames Count="1" />
     <Texture>
-      <File>GUI/Default/toolbar</File>
+      <File>GUI/Default/Toolbar/Skills</File>
       <X>0</X>
-      <Y>32</Y>
+      <Y>0</Y>
       <W>32</W>
       <H>32</H>
     </Texture>
     <Category>
       <Name>GUI.Default.Toolbar</Name>
-      <Title>equipped</Title>
+      <Title>Skills</Title>
     </Category>
   </Grh>
   <Grh Index="136">
@@ -2129,6 +2129,21 @@
     <Category>
       <Name>GUI.Default</Name>
       <Title>status icon border</Title>
+    </Category>
+  </Grh>
+  <Grh Index="144">
+    <AutomaticSize>False</AutomaticSize>
+    <Frames Count="1" />
+    <Texture>
+      <File>GUI/Default/Toolbar/Stats</File>
+      <X>0</X>
+      <Y>0</Y>
+      <W>32</W>
+      <H>32</H>
+    </Texture>
+    <Category>
+      <Name>GUI.Default.Toolbar</Name>
+      <Title>Stats</Title>
     </Category>
   </Grh>
   <Grh Index="200">
