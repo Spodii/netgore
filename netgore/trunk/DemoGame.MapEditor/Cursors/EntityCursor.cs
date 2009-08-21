@@ -4,6 +4,7 @@ using DemoGame.Client;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
 {
@@ -19,7 +20,7 @@ namespace DemoGame.MapEditor
         {
             base.DrawInterface(screen);
 
-            screen.DrawShadedText(_toolTipPos, _toolTip, Color.White);
+            screen.SpriteBatch.DrawStringShaded(screen.SpriteFont, _toolTip, _toolTipPos, Color.White, Color.Black);
         }
 
         public override void MouseDown(ScreenForm screen, MouseEventArgs e)

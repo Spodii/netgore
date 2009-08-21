@@ -74,6 +74,7 @@ namespace DemoGame
         /// <summary>
         /// Gets or sets the name of the CharacterEntity.
         /// </summary>
+        [SyncValue]
         public virtual string Name { get; set; }
 
         /// <summary>
