@@ -110,6 +110,21 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Draws the Character's name;
+        /// </summary>
+        /// <param name="sb">SpriteBatch to draw to.</param>
+        void DrawName(SpriteBatch sb)
+        {
+            SpriteFont font = NameFont;
+            if (font != null && !string.IsNullOrEmpty(Name))
+            {
+                Vector2 nameSize = GetNameSize();
+                Vector2 namePos = DrawPosition + new Vector2(Size.X / 2, 0) - new Vector2(nameSize.X / 2f, nameSize.Y);
+                sb.DrawStringShaded(font, Name, namePos, Color.Green, Color.Black);
+            }
+        }
+
+        /// <summary>
         /// Draws a bar for the Character's SP.
         /// </summary>
         /// <param name="sb">SpriteBatch to draw to.</param>
@@ -150,6 +165,11 @@ namespace DemoGame.Client
         protected override IMap GetIMap()
         {
             return _map;
+        }
+
+        Vector2 GetNameSize()
+        {
+            return NameFont.MeasureString(Name);
         }
 
         /// <summary>
@@ -227,21 +247,6 @@ namespace DemoGame.Client
             }
         }
 
-        /// <summary>
-        /// Draws the Character's name;
-        /// </summary>
-        /// <param name="sb">SpriteBatch to draw to.</param>
-        void DrawName(SpriteBatch sb)
-        {
-            var font = NameFont;
-            if (font != null && !string.IsNullOrEmpty(Name))
-            {
-                var nameSize = GetNameSize();
-                var namePos = DrawPosition + new Vector2(Size.X / 2, 0) - new Vector2(nameSize.X / 2f, nameSize.Y);
-                sb.DrawStringShaded(font, Name, namePos, Color.Green, Color.Black);
-            }
-        }
-
         #region IDrawableEntity Members
 
         /// <summary>
@@ -277,11 +282,6 @@ namespace DemoGame.Client
 
             // Draw the name
             DrawName(sb);
-        }
-
-        Vector2 GetNameSize()
-        {
-            return NameFont.MeasureString(Name);
         }
 
         /// <summary>

@@ -15,30 +15,21 @@ namespace DemoGame.Server
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
+        {
+            ushort secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
+
+            PacketWriter pw = GetWriter(ServerPacketID.AddStatusEffect);
+            pw.Write(statusEffectType);
+            pw.Write(power);
+            pw.Write(secsLeft);
+            return pw;
+        }
+
         public static PacketWriter CharAttack(MapEntityIndex mapEntityIndex)
         {
             PacketWriter pw = GetWriter(ServerPacketID.CharAttack);
             pw.Write(mapEntityIndex);
-            return pw;
-        }
-
-        public static PacketWriter UseSkill(MapEntityIndex user, MapEntityIndex? target, SkillType skillType)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.UseSkill);
-            pw.Write(user);
-
-            if (target.HasValue)
-            {
-                pw.Write(true);
-                pw.Write(target.Value);
-            }
-            else
-            {
-                pw.Write(false);
-            }
-
-            pw.Write(skillType);
-
             return pw;
         }
 
@@ -63,24 +54,6 @@ namespace DemoGame.Server
             pw.Write(name, GameData.MaxServerSayNameLength);
             pw.Write(mapEntityIndex);
             pw.Write(text, GameData.MaxServerSayLength);
-            return pw;
-        }
-
-        public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
-        {
-            ushort secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
-
-            PacketWriter pw = GetWriter(ServerPacketID.AddStatusEffect);
-            pw.Write(statusEffectType);
-            pw.Write(power);
-            pw.Write(secsLeft);
-            return pw;
-        }
-
-        public static PacketWriter RemoveStatusEffect(StatusEffectType statusEffectType)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.RemoveStatusEffect);
-            pw.Write(statusEffectType);
             return pw;
         }
 
@@ -184,6 +157,13 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter(ServerPacketID.RemoveDynamicEntity);
             pw.Write(dynamicEntity.MapEntityIndex);
+            return pw;
+        }
+
+        public static PacketWriter RemoveStatusEffect(StatusEffectType statusEffectType)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.RemoveStatusEffect);
+            pw.Write(statusEffectType);
             return pw;
         }
 
@@ -412,6 +392,24 @@ namespace DemoGame.Server
             PacketWriter pw = GetWriter(ServerPacketID.UseEntity);
             pw.Write(usedEntity);
             pw.Write(usedBy);
+            return pw;
+        }
+
+        public static PacketWriter UseSkill(MapEntityIndex user, MapEntityIndex? target, SkillType skillType)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.UseSkill);
+            pw.Write(user);
+
+            if (target.HasValue)
+            {
+                pw.Write(true);
+                pw.Write(target.Value);
+            }
+            else
+                pw.Write(false);
+
+            pw.Write(skillType);
+
             return pw;
         }
     }

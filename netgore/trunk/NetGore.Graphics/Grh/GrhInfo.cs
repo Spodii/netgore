@@ -382,7 +382,7 @@ namespace NetGore.Graphics
             if (grhDataFile.Count <= 0)
                 throw new Exception("Error loading GrhData information from the specified file.");
 
-            Stack<GrhData> animatedGrhDatas = new Stack<GrhData>(128);
+            var animatedGrhDatas = new Stack<GrhData>(128);
 
             // Load the information into the objects
             foreach (var dic in grhDataFile)
@@ -428,10 +428,12 @@ namespace NetGore.Graphics
                     animatedGrhDatas.Push(currGrh);
                 }
             }
-            
+
             // Add all the animated GrhDatas to the collection now that we have the frames in
-            foreach (var currGrh in animatedGrhDatas)
+            foreach (GrhData currGrh in animatedGrhDatas)
+            {
                 _grhDatas[(int)currGrh.GrhIndex] = currGrh;
+            }
 
             // Trim down the GrhData array, mainly for the client since it will never add/remove any GrhDatas
             _grhDatas.Trim();

@@ -20,6 +20,14 @@ namespace NetGore
         SetHandler _setter;
 
         /// <summary>
+        /// Gets the Type that this PropertySync handles.
+        /// </summary>
+        public Type HandledType
+        {
+            get { return typeof(T); }
+        }
+
+        /// <summary>
         /// Gets the Property's value. This is not cached in any way - the value comes from or goes to
         /// the Property directly. Local caching should be used where possible.
         /// </summary>
@@ -28,11 +36,6 @@ namespace NetGore
             get { return _getter(); }
             private set { _setter(value); }
         }
-
-        /// <summary>
-        /// Gets the Type that this PropertySync handles.
-        /// </summary>
-        public Type HandledType { get { return typeof(T); } }
 
         /// <summary>
         /// PropertySyncBase constructor.
@@ -182,7 +185,7 @@ namespace NetGore
             // to the type of the PropertySyncHandler itself
 
             // Get all of the class Types
-            var constructorParams = new Type[] { typeof(object), typeof(PropertyInfo)};
+            var constructorParams = new Type[] { typeof(object), typeof(PropertyInfo) };
             var types = TypeHelper.FindTypesThatInherit(typeof(PropertySyncBase), constructorParams, false);
 
             foreach (Type type in types)

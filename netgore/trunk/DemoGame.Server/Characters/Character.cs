@@ -1332,8 +1332,10 @@ namespace DemoGame.Server
             // Notify the clients that the skill was used
             if (successful)
             {
-                using (var pw = ServerPacket.UseSkill(MapEntityIndex, null, skill.SkillType))
+                using (PacketWriter pw = ServerPacket.UseSkill(MapEntityIndex, null, skill.SkillType))
+                {
                     Map.Send(pw);
+                }
             }
 
             return successful;

@@ -128,7 +128,8 @@ namespace NetGore.Graphics
             get
             {
                 ValidateTexture();
-                return _isUsingAtlas ? new Vector2(_atlasSourceRect.X, _atlasSourceRect.Y) : new Vector2(_sourceRect.X, _sourceRect.Y);
+                return _isUsingAtlas
+                           ? new Vector2(_atlasSourceRect.X, _atlasSourceRect.Y) : new Vector2(_sourceRect.X, _sourceRect.Y);
             }
         }
 
