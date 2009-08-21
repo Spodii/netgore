@@ -110,8 +110,6 @@ namespace DemoGame.Client
                     return;
 
                 _lastUpdateTime = currentTime;
-
-                _statusEffects.RemoveAll(x => x.DisableTime <= currentTime);
             }
         }
 
