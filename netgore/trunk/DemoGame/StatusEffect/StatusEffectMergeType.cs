@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DemoGame.Server
+namespace DemoGame
 {
     /// <summary>
     /// Describes how a StatusEffect handles when the Character the StatusEffect is being added to

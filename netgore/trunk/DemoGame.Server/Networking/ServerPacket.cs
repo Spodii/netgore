@@ -66,6 +66,24 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
+        {
+            ushort secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
+
+            PacketWriter pw = GetWriter(ServerPacketID.AddStatusEffect);
+            pw.Write(statusEffectType);
+            pw.Write(power);
+            pw.Write(secsLeft);
+            return pw;
+        }
+
+        public static PacketWriter RemoveStatusEffect(StatusEffectType statusEffectType)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.RemoveStatusEffect);
+            pw.Write(statusEffectType);
+            return pw;
+        }
+
         public static void CreateDynamicEntity(PacketWriter pw, DynamicEntity dynamicEntity)
         {
             pw.Write(ServerPacketID.CreateDynamicEntity);

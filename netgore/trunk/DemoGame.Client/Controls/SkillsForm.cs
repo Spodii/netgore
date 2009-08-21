@@ -12,11 +12,9 @@ namespace DemoGame.Client
 
     public class SkillsForm : Form, IRestorableSettings
     {
-        public event UseSkillHandler OnUseSkill;
-
-        readonly int _lineSpacing;
-
         static readonly Vector2 _iconSize = new Vector2(32, 32);
+        readonly int _lineSpacing;
+        public event UseSkillHandler OnUseSkill;
 
         public SkillsForm(Vector2 position, Control parent)
             : base(parent.GUIManager, "Skills", position, new Vector2(200, 200), parent)
@@ -47,20 +45,20 @@ namespace DemoGame.Client
             skillLabel.OnClick += SkillLabel_OnClick;
         }
 
-        void SkillPicture_OnClick(object sender, MouseClickEventArgs e)
-        {
-            if (OnUseSkill != null)
-            {
-                SkillPictureBox source = (SkillPictureBox)sender;
-                OnUseSkill(source.SkillInfo.SkillType);
-            }
-        }
-
         void SkillLabel_OnClick(object sender, MouseClickEventArgs e)
         {
             if (OnUseSkill != null)
             {
                 SkillLabel source = (SkillLabel)sender;
+                OnUseSkill(source.SkillInfo.SkillType);
+            }
+        }
+
+        void SkillPicture_OnClick(object sender, MouseClickEventArgs e)
+        {
+            if (OnUseSkill != null)
+            {
+                SkillPictureBox source = (SkillPictureBox)sender;
                 OnUseSkill(source.SkillInfo.SkillType);
             }
         }

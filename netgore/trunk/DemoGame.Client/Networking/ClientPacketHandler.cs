@@ -19,6 +19,7 @@ namespace DemoGame.Client
     public class ClientPacketHandler : IMessageProcessor, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly GameMessages _gameMessages = new GameMessages();
         readonly GameplayScreen _gameplayScreen;
         readonly Stopwatch _pingWatch = new Stopwatch();
@@ -112,36 +113,14 @@ namespace DemoGame.Client
             _pingWatch.Start();
         }
 
-        [MessageHandler((byte)ServerPacketID.UseSkill)]
-        void RecvUseSkill(IIPSocket conn, BitStream r)
+        [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
+        void RecvAddStatusEffect(IIPSocket conn, BitStream r)
         {
-            MapEntityIndex userID = r.ReadMapEntityIndex();
-            bool hasTarget = r.ReadBool();
-            MapEntityIndex? targetID = null;
-            if (hasTarget)
-                targetID = r.ReadMapEntityIndex();
-            SkillType skillType = r.ReadSkillType();
+            StatusEffectType statusEffectType = r.ReadStatusEffectType();
+            ushort power = r.ReadUShort();
+            ushort secsLeft = r.ReadUShort();
 
-            CharacterEntity user = Map.GetDynamicEntity<CharacterEntity>(userID);
-            CharacterEntity target = null;
-            if (targetID.HasValue)
-                target = Map.GetDynamicEntity<CharacterEntity>(targetID.Value);
-
-            if (user == null)
-            {
-                const string errmsg = "Read an invalid MapEntityIndex `{0}` in UseSkill for the skill user.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, userID);
-                return;
-            }
-
-            // NOTE: Temporary output
-            if (target != null)
-                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1} on {2}.", user.Name, skillType, target.Name));
-            else
-                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", user.Name, skillType));
-
-            // TODO: Display the skill usage
+            GameplayScreen.StatusEffectsForm.AddStatusEffect(statusEffectType, power, secsLeft);
         }
 
         [MessageHandler((byte)ServerPacketID.CharAttack)]
@@ -294,6 +273,14 @@ namespace DemoGame.Client
                     log.ErrorFormat(errmsg, mapEntityIndex);
                 Debug.Fail(string.Format(errmsg, mapEntityIndex));
             }
+        }
+
+        [MessageHandler((byte)ServerPacketID.RemoveStatusEffect)]
+        void RecvRemoveStatusEffect(IIPSocket conn, BitStream r)
+        {
+            StatusEffectType statusEffectType = r.ReadStatusEffectType();
+
+            GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);
         }
 
         [MessageHandler((byte)ServerPacketID.SendItemInfo)]
@@ -537,6 +524,38 @@ namespace DemoGame.Client
 
             // Use it
             asUsable.Use(usedBy);
+        }
+
+        [MessageHandler((byte)ServerPacketID.UseSkill)]
+        void RecvUseSkill(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex userID = r.ReadMapEntityIndex();
+            bool hasTarget = r.ReadBool();
+            MapEntityIndex? targetID = null;
+            if (hasTarget)
+                targetID = r.ReadMapEntityIndex();
+            SkillType skillType = r.ReadSkillType();
+
+            CharacterEntity user = Map.GetDynamicEntity<CharacterEntity>(userID);
+            CharacterEntity target = null;
+            if (targetID.HasValue)
+                target = Map.GetDynamicEntity<CharacterEntity>(targetID.Value);
+
+            if (user == null)
+            {
+                const string errmsg = "Read an invalid MapEntityIndex `{0}` in UseSkill for the skill user.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, userID);
+                return;
+            }
+
+            // NOTE: Temporary output
+            if (target != null)
+                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1} on {2}.", user.Name, skillType, target.Name));
+            else
+                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", user.Name, skillType));
+
+            // TODO: Display the skill usage
         }
 
         #region IGetTime Members

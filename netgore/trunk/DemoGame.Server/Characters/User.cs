@@ -443,38 +443,25 @@ namespace DemoGame.Server
             _unreliableBuffer.Enqueue(data);
         }
 
-        protected override void StatusEffects_HandleOnAdd(CharacterStatusEffects characterStatusEffects,
-                                                          ActiveStatusEffect activeStatusEffect)
+        protected override void StatusEffects_HandleOnAdd(CharacterStatusEffects effects,
+                                                          ActiveStatusEffect ase)
         {
-            base.StatusEffects_HandleOnAdd(characterStatusEffects, activeStatusEffect);
+            base.StatusEffects_HandleOnAdd(effects, ase);
 
-            // NOTE: Temporary message
-            using (
-                PacketWriter pw =
-                    ServerPacket.Chat(string.Format("DEBUG: Added StatusEffect `{0}` of power `{1}`.",
-                                                    activeStatusEffect.StatusEffect.StatusEffectType, activeStatusEffect.Power)))
-            {
+            var currentTime = GetTime();
+            var timeLeft = ase.GetTimeRemaining(currentTime);
+
+            using (var pw = ServerPacket.AddStatusEffect(ase.StatusEffect.StatusEffectType, ase.Power, timeLeft))
                 Send(pw);
-            }
-
-            // TODO: !! Notify user
         }
 
-        protected override void StatusEffects_HandleOnRemove(CharacterStatusEffects characterStatusEffects,
-                                                             ActiveStatusEffect activeStatusEffect)
+        protected override void StatusEffects_HandleOnRemove(CharacterStatusEffects effects,
+                                                             ActiveStatusEffect ase)
         {
-            base.StatusEffects_HandleOnRemove(characterStatusEffects, activeStatusEffect);
+            base.StatusEffects_HandleOnRemove(effects, ase);
 
-            // NOTE: Temporary message
-            using (
-                PacketWriter pw =
-                    ServerPacket.Chat(string.Format("DEBUG: Removed StatusEffect `{0}` of power `{1}`.",
-                                                    activeStatusEffect.StatusEffect.StatusEffectType, activeStatusEffect.Power)))
-            {
+            using (var pw = ServerPacket.RemoveStatusEffect(ase.StatusEffect.StatusEffectType))
                 Send(pw);
-            }
-
-            // TODO: !! Notify user
         }
 
         /// <summary>

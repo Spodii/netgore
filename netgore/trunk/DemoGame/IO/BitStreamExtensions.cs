@@ -113,6 +113,29 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Reads a StatusEffectType from the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read from.</param>
+        /// <returns>StatusEffectType read from the BitStream.</returns>
+        /// <exception cref="InvalidCastException">The StatusEffectType was read from the BitStream, but the value is an invalid
+        /// StatusEffectType value.</exception>
+        public static StatusEffectType ReadStatusEffectType(this BitStream bitStream)
+        {
+            byte value = bitStream.ReadByte();
+            StatusEffectType statusEffectType = (StatusEffectType)value;
+
+            // Ensure the value is a valid StatusEffectType
+            if (!statusEffectType.IsDefined())
+            {
+                const string errmsg = "Value `{0}` is not a valid StatusEffectType.";
+                Debug.Fail(string.Format(errmsg, value));
+                throw new InvalidCastException(string.Format(errmsg, value));
+            }
+
+            return statusEffectType;
+        }
+
+        /// <summary>
         /// Reads an IStat from the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
@@ -276,6 +299,16 @@ namespace DemoGame
         public static void Write(this BitStream bitStream, SkillType skillType)
         {
             bitStream.Write((byte)skillType);
+        }
+
+        /// <summary>
+        /// Writes a StatusEffectType to the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="statusEffectType">StatusEffectType to write.</param>
+        public static void Write(this BitStream bitStream, StatusEffectType statusEffectType)
+        {
+            bitStream.Write((byte)statusEffectType);
         }
 
         /// <summary>
