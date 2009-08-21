@@ -22,6 +22,26 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter UseSkill(MapEntityIndex user, MapEntityIndex? target, SkillType skillType)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.UseSkill);
+            pw.Write(user);
+
+            if (target.HasValue)
+            {
+                pw.Write(true);
+                pw.Write(target.Value);
+            }
+            else
+            {
+                pw.Write(false);
+            }
+
+            pw.Write(skillType);
+
+            return pw;
+        }
+
         public static PacketWriter CharDamage(MapEntityIndex mapEntityIndex, int damage)
         {
             PacketWriter pw = GetWriter(ServerPacketID.CharDamage);

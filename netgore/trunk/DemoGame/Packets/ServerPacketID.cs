@@ -35,6 +35,7 @@ namespace DemoGame
         UpdateEquipmentSlot,
         UpdateStat,
         UpdateVelocityAndPosition,
-        UseEntity
+        UseEntity,
+        UseSkill
     }
 }

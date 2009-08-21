@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 
@@ -13,23 +14,46 @@ namespace DemoGame.Client
     {
         public event UseSkillHandler OnUseSkill;
 
+        readonly int _lineSpacing;
+
+        static readonly Vector2 _iconSize = new Vector2(32, 32);
+
         public SkillsForm(Vector2 position, Control parent)
             : base(parent.GUIManager, "Skills", position, new Vector2(200, 200), parent)
         {
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            // Find the spacing to use between lines
+            _lineSpacing = (int)Math.Max(Font.LineSpacing, _iconSize.Y);
+
+            // Create all the skills
             var allSkillTypes = SkillTypeHelper.AllValues;
             Vector2 offset = Vector2.Zero;
             foreach (SkillType skillType in allSkillTypes)
             {
-                CreateSkillLabel(offset, skillType);
-                offset += new Vector2(0, Font.LineSpacing);
+                CreateSkillEntry(offset, skillType);
+                offset += new Vector2(0, _lineSpacing);
             }
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
-        void CreateSkillLabel(Vector2 position, SkillType skillType)
+        void CreateSkillEntry(Vector2 position, SkillType skillType)
         {
             SkillInfo skillInfo = SkillInfo.GetSkillInfo(skillType);
-            SkillLabel skillLabel = new SkillLabel(this, skillInfo, position);
+
+            PictureBox pb = new SkillPictureBox(this, skillInfo, position);
+            pb.OnClick += SkillPicture_OnClick;
+
+            SkillLabel skillLabel = new SkillLabel(this, skillInfo, position + new Vector2(_iconSize.X + 4, 0));
             skillLabel.OnClick += SkillLabel_OnClick;
+        }
+
+        void SkillPicture_OnClick(object sender, MouseClickEventArgs e)
+        {
+            if (OnUseSkill != null)
+            {
+                SkillPictureBox source = (SkillPictureBox)sender;
+                OnUseSkill(source.SkillInfo.SkillType);
+            }
         }
 
         void SkillLabel_OnClick(object sender, MouseClickEventArgs e)
@@ -72,6 +96,18 @@ namespace DemoGame.Client
             public SkillLabel(Control parent, SkillInfo skillInfo, Vector2 position) : base(skillInfo.Name, position, parent)
             {
                 SkillInfo = skillInfo;
+            }
+        }
+
+        class SkillPictureBox : PictureBox
+        {
+            public SkillInfo SkillInfo { get; private set; }
+
+            public SkillPictureBox(Control parent, SkillInfo skillInfo, Vector2 position)
+                : base(position, new Grh(GrhInfo.GetData(skillInfo.Icon)), parent)
+            {
+                SkillInfo = skillInfo;
+                Size = _iconSize;
             }
         }
     }

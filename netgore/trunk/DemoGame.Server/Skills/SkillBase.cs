@@ -1,4 +1,7 @@
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 
 namespace DemoGame.Server
 {
@@ -7,6 +10,7 @@ namespace DemoGame.Server
     /// </summary>
     public abstract class SkillBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly SkillStatCollection _requiredStats = new SkillStatCollection();
         readonly SkillType _skillType;
 
@@ -60,6 +64,10 @@ namespace DemoGame.Server
         /// <returns>True if the <paramref name="user"/> can use this Skill; otherwise false.</returns>
         public virtual bool CanUse(Character user, Character target)
         {
+            // State checks
+            if (!CheckValidCanUseCharacters(user, target))
+                return false;
+
             // Check for a target
             if (RequiresTarget && target == null)
                 return false;
@@ -76,6 +84,75 @@ namespace DemoGame.Server
             // Check for the required stats
             if (!HasRequiredStats(user))
                 return false;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Does the CanUse checks to see if the given Characters are in a valid state.
+        /// </summary>
+        /// <param name="user">The Character to check if can use this Skill.</param>
+        /// <param name="target">The optional Character that the skill was used on. Can be null if there was
+        /// no targeted Character.</param>
+        /// <returns>True if the <paramref name="user"/> can use this Skill; otherwise false.</returns>
+        protected bool CheckValidCanUseCharacters(Character user, Character target)
+        {
+            if (user.Map == null)
+            {
+                const string errmsg = "Character `{0}` attempted to use skill `{1}` while not on a map.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, user, SkillType);
+                Debug.Fail(string.Format(errmsg, user, SkillType));
+                return false;
+            }
+
+            if (!user.IsAlive)
+            {
+                const string errmsg = "Character `{0}` attempted to use skill `{1}` while dead.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, user, SkillType);
+                Debug.Fail(string.Format(errmsg, user, SkillType));
+                return false;
+            }
+
+            if (user.IsDisposed)
+            {
+                const string errmsg = "Character `{0}` attempted to use skill `{1}` while disposed.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, user, SkillType);
+                Debug.Fail(string.Format(errmsg, user, SkillType));
+                return false;
+            }
+
+            if (target != null)
+            {
+                if (target.Map == null)
+                {
+                    const string errmsg = "Character `{0}` attempted to use skill `{1}` on target `{2}` who is not on a map.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, user, SkillType, target);
+                    Debug.Fail(string.Format(errmsg, user, SkillType, target));
+                    return false;
+                }
+
+                if (!target.IsAlive)
+                {
+                    const string errmsg = "Character `{0}` attempted to use skill `{1}` on target `{2}` who is dead.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, user, SkillType, target);
+                    Debug.Fail(string.Format(errmsg, user, SkillType, target));
+                    return false;
+                }
+
+                if (target.IsDisposed)
+                {
+                    const string errmsg = "Character `{0}` attempted to use skill `{1}` on target `{2}` who is disposed.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, user, SkillType, target);
+                    Debug.Fail(string.Format(errmsg, user, SkillType, target));
+                    return false;
+                }
+            }
 
             return true;
         }
