@@ -121,6 +121,7 @@ namespace DemoGame.Client
             ushort secsLeft = r.ReadUShort();
 
             GameplayScreen.StatusEffectsForm.AddStatusEffect(statusEffectType, power, secsLeft);
+            GameplayScreen.AppendToChatOutput(string.Format("Added status effect {0} with power {1}.", statusEffectType, power));
         }
 
         [MessageHandler((byte)ServerPacketID.CharAttack)]
@@ -281,6 +282,7 @@ namespace DemoGame.Client
             StatusEffectType statusEffectType = r.ReadStatusEffectType();
 
             GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);
+            GameplayScreen.AppendToChatOutput(string.Format("Removed status effect {0}.", statusEffectType));
         }
 
         [MessageHandler((byte)ServerPacketID.SendItemInfo)]
