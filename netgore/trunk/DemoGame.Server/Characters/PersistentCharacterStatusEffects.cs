@@ -124,10 +124,8 @@ namespace DemoGame.Server
                 ActiveStatusEffect ase = new ActiveStatusEffect(statusEffect, value.Power, value.TimeLeftSecs * 1000 + currentTime);
                 ASEWithID aseWithID = new ASEWithID(value.ID, ase);
                 _statusEffects.Add(aseWithID);
+                NotifyAdded(ase);
             }
-
-            // Recalculate all the stat bonuses since we skipped doing that earlier (better to just do it all at once)
-            RecalculateStatBonuses();
         }
 
         public override bool TryAdd(StatusEffectBase statusEffect, ushort power)

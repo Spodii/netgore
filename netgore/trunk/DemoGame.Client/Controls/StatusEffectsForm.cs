@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -113,11 +114,12 @@ namespace DemoGame.Client
             }
         }
 
-        class StatusEffectCollectionItem
+        sealed class StatusEffectCollectionItem
         {
             readonly int _disableTime;
             readonly Grh _grh;
             readonly ushort _power;
+            readonly StatusEffectInfo _statusEffectInfo;
             readonly StatusEffectType _statusEffectType;
 
             public int DisableTime
@@ -128,6 +130,11 @@ namespace DemoGame.Client
             public ushort Power
             {
                 get { return _power; }
+            }
+
+            public StatusEffectInfo StatusEffectInfo
+            {
+                get { return _statusEffectInfo; }
             }
 
             public StatusEffectType StatusEffectType
@@ -147,14 +154,21 @@ namespace DemoGame.Client
                 _power = power;
                 _disableTime = disableTime;
 
-                StatusEffectInfo statusEffectInfo = StatusEffectInfo.GetStatusEffectInfo(statusEffectType);
-                _grh = new Grh(statusEffectInfo.Icon);
+                _statusEffectInfo = StatusEffectInfo.GetStatusEffectInfo(statusEffectType);
+                _grh = new Grh(_statusEffectInfo.Icon);
             }
 
             public void Draw(SpriteBatch sb, Vector2 position, int currentTime)
             {
                 _grh.Update(currentTime);
                 _grh.Draw(sb, position);
+            }
+
+            public int GetSecsLeft(int currentTime)
+            {
+                int msRemaining = _disableTime - currentTime;
+                int secsRemaining = (int)Math.Round(msRemaining / 1000f);
+                return Math.Max(secsRemaining, 0);
             }
         }
     }
