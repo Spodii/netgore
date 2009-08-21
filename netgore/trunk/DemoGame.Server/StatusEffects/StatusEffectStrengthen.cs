@@ -10,7 +10,7 @@ namespace DemoGame.Server
 
         public override int GetEffectTime(ushort power)
         {
-            return CalculateEffectTime(0, 2);
+            return CalculateEffectTime(0, 10);
         }
 
         protected override int? InternalTryGetStatModifier(StatType statType, ushort power)
