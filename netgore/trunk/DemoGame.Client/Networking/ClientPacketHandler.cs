@@ -112,6 +112,38 @@ namespace DemoGame.Client
             _pingWatch.Start();
         }
 
+        [MessageHandler((byte)ServerPacketID.UseSkill)]
+        void RecvUseSkill(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex userID = r.ReadMapEntityIndex();
+            bool hasTarget = r.ReadBool();
+            MapEntityIndex? targetID = null;
+            if (hasTarget)
+                targetID = r.ReadMapEntityIndex();
+            SkillType skillType = r.ReadSkillType();
+
+            CharacterEntity user = Map.GetDynamicEntity<CharacterEntity>(userID);
+            CharacterEntity target = null;
+            if (targetID.HasValue)
+                target = Map.GetDynamicEntity<CharacterEntity>(targetID.Value);
+
+            if (user == null)
+            {
+                const string errmsg = "Read an invalid MapEntityIndex `{0}` in UseSkill for the skill user.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, userID);
+                return;
+            }
+
+            // NOTE: Temporary output
+            if (target != null)
+                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1} on {2}.", user.Name, skillType, target.Name));
+            else
+                GameplayScreen.AppendToChatOutput(string.Format("{0} casted {1}.", user.Name, skillType));
+
+            // TODO: Display the skill usage
+        }
+
         [MessageHandler((byte)ServerPacketID.CharAttack)]
         void RecvCharAttack(IIPSocket conn, BitStream r)
         {

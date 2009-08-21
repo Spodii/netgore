@@ -2086,6 +2086,51 @@
       <Title>heal</Title>
     </Category>
   </Grh>
+  <Grh Index="141">
+    <AutomaticSize>False</AutomaticSize>
+    <Frames Count="1" />
+    <Texture>
+      <File>StatusIcon/strengthen</File>
+      <X>0</X>
+      <Y>0</Y>
+      <W>32</W>
+      <H>32</H>
+    </Texture>
+    <Category>
+      <Name>StatusIcon</Name>
+      <Title>strengthen</Title>
+    </Category>
+  </Grh>
+  <Grh Index="142">
+    <AutomaticSize>False</AutomaticSize>
+    <Frames Count="1" />
+    <Texture>
+      <File>SkillIcon/strengthen</File>
+      <X>0</X>
+      <Y>0</Y>
+      <W>32</W>
+      <H>32</H>
+    </Texture>
+    <Category>
+      <Name>SkillIcon</Name>
+      <Title>strengthen</Title>
+    </Category>
+  </Grh>
+  <Grh Index="143">
+    <AutomaticSize>False</AutomaticSize>
+    <Frames Count="1" />
+    <Texture>
+      <File>GUI/Default/status icon border</File>
+      <X>0</X>
+      <Y>0</Y>
+      <W>32</W>
+      <H>32</H>
+    </Texture>
+    <Category>
+      <Name>GUI.Default</Name>
+      <Title>status icon border</Title>
+    </Category>
+  </Grh>
   <Grh Index="200">
     <AutomaticSize>False</AutomaticSize>
     <Frames Count="1" />

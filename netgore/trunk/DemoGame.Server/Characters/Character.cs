@@ -1328,17 +1328,12 @@ namespace DemoGame.Server
             }
 
             bool successful = skill.Use(this);
+
+            // Notify the clients that the skill was used
             if (successful)
             {
-                // NOTE: This is just a temporary message
-                User user = this as User;
-                if (user != null)
-                {
-                    using (PacketWriter pw = ServerPacket.Chat("DEBUG: You used skill " + skill.SkillType + "."))
-                    {
-                        user.Send(pw);
-                    }
-                }
+                using (var pw = ServerPacket.UseSkill(MapEntityIndex, null, skill.SkillType))
+                    Map.Send(pw);
             }
 
             return successful;
