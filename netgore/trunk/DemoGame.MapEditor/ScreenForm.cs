@@ -146,11 +146,6 @@ namespace DemoGame.MapEditor
         /// </summary>
         TreeNode _editNode = null;
 
-        /// <summary>
-        /// The Default SpriteFont.
-        /// </summary>
-        SpriteFont _spriteFont;
-
         KeyEventArgs _keyEventArgs = new KeyEventArgs(Keys.None);
         Map _map;
 
@@ -178,6 +173,11 @@ namespace DemoGame.MapEditor
         /// Currently selected transformation box
         /// </summary>
         TransBox _selTransBox = null;
+
+        /// <summary>
+        /// The Default SpriteFont.
+        /// </summary>
+        SpriteFont _spriteFont;
 
         public event MapChangeEventHandler OnChangeMap;
 

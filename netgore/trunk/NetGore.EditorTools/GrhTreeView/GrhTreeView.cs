@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Content;
-using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
 using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
@@ -27,14 +26,6 @@ namespace NetGore.EditorTools
     /// </summary>
     public class GrhTreeView : TreeView, IComparer
     {
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-
-            if (disposing)
-                GrhImageListCache.Save();
-        }
-
         /// <summary>
         /// Timer to update the animated Grhs in the grh tree
         /// </summary>
@@ -177,11 +168,11 @@ namespace NetGore.EditorTools
             // Add to the tree
             string nodePath = string.Format("{0}.{1}", category, title);
             TreeNode node = CreateNode(indexStr, nodePath, '.');
-         
+
             // Set the preview picture
             if (!string.IsNullOrEmpty(gd.TextureName))
             {
-                var imageKey = GrhImageList.GetImageKey(gd);
+                string imageKey = GrhImageList.GetImageKey(gd);
                 node.ImageKey = imageKey;
                 node.SelectedImageKey = imageKey;
                 node.StateImageKey = imageKey;
@@ -315,6 +306,14 @@ namespace NetGore.EditorTools
 
             // Remove the node from the tree
             root.Remove();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+
+            if (disposing)
+                GrhImageListCache.Save();
         }
 
         /// <summary>
@@ -920,7 +919,7 @@ namespace NetGore.EditorTools
                 if (oldGrhIndex != atn.Grh.CurrentGrhData.GrhIndex)
                 {
                     // Change the image
-                    var imageKey = GrhImageList.GetImageKey(atn.Grh.CurrentGrhData);
+                    string imageKey = GrhImageList.GetImageKey(atn.Grh.CurrentGrhData);
                     atn.TreeNode.ImageKey = imageKey;
                     atn.TreeNode.SelectedImageKey = imageKey;
                     atn.TreeNode.StateImageKey = imageKey;

@@ -443,25 +443,27 @@ namespace DemoGame.Server
             _unreliableBuffer.Enqueue(data);
         }
 
-        protected override void StatusEffects_HandleOnAdd(CharacterStatusEffects effects,
-                                                          ActiveStatusEffect ase)
+        protected override void StatusEffects_HandleOnAdd(CharacterStatusEffects effects, ActiveStatusEffect ase)
         {
             base.StatusEffects_HandleOnAdd(effects, ase);
 
-            var currentTime = GetTime();
-            var timeLeft = ase.GetTimeRemaining(currentTime);
+            int currentTime = GetTime();
+            int timeLeft = ase.GetTimeRemaining(currentTime);
 
-            using (var pw = ServerPacket.AddStatusEffect(ase.StatusEffect.StatusEffectType, ase.Power, timeLeft))
+            using (PacketWriter pw = ServerPacket.AddStatusEffect(ase.StatusEffect.StatusEffectType, ase.Power, timeLeft))
+            {
                 Send(pw);
+            }
         }
 
-        protected override void StatusEffects_HandleOnRemove(CharacterStatusEffects effects,
-                                                             ActiveStatusEffect ase)
+        protected override void StatusEffects_HandleOnRemove(CharacterStatusEffects effects, ActiveStatusEffect ase)
         {
             base.StatusEffects_HandleOnRemove(effects, ase);
 
-            using (var pw = ServerPacket.RemoveStatusEffect(ase.StatusEffect.StatusEffectType))
+            using (PacketWriter pw = ServerPacket.RemoveStatusEffect(ase.StatusEffect.StatusEffectType))
+            {
                 Send(pw);
+            }
         }
 
         /// <summary>

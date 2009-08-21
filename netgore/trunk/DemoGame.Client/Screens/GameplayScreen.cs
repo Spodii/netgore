@@ -141,6 +141,8 @@ namespace DemoGame.Client
         /// </summary>
         StatsForm _statsForm;
 
+        StatusEffectsForm _statusEffectsForm;
+
         UserInfo _userInfo;
 
         /// <summary>
@@ -163,13 +165,6 @@ namespace DemoGame.Client
         {
             get { return _infoBox; }
         }
-
-        public StatusEffectsForm StatusEffectsForm
-        {
-            get { return _statusEffectsForm; }
-        }
-
-        StatusEffectsForm _statusEffectsForm;
 
         public ItemInfoTooltip ItemInfoTooltip
         {
@@ -195,6 +190,11 @@ namespace DemoGame.Client
         public ClientSockets Socket
         {
             get { return _socket; }
+        }
+
+        public StatusEffectsForm StatusEffectsForm
+        {
+            get { return _statusEffectsForm; }
         }
 
         /// <summary>

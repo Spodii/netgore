@@ -15,13 +15,6 @@ namespace NetGore.Db.ClassCreator
             get { return _aliases; }
         }
 
-        public string GetAttribute(Type attributeType, params string[] args)
-        {
-            return GetAttribute(GetTypeString(attributeType), args);
-        }
-
-        public abstract string GetAttribute(string attributeType, params string[] args);
-
         public virtual string ClassMemberQualifier
         {
             get { return "this."; }
@@ -165,6 +158,13 @@ namespace NetGore.Db.ClassCreator
         {
             return entry.Replace(Environment.NewLine, Environment.NewLine + "/// ");
         }
+
+        public string GetAttribute(Type attributeType, params string[] args)
+        {
+            return GetAttribute(GetTypeString(attributeType), args);
+        }
+
+        public abstract string GetAttribute(string attributeType, params string[] args);
 
         public virtual string GetCallMethod(string methodName, params string[] arguments)
         {
