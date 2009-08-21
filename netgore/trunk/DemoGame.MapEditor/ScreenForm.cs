@@ -28,32 +28,32 @@ namespace DemoGame.MapEditor
     partial class ScreenForm : Form, IGetTime
     {
         /// <summary>
-        /// Key to move the camera down
+        /// Key to move the camera down.
         /// </summary>
         const Keys _cameraDown = Keys.S;
 
         /// <summary>
-        /// Key to move the camera left
+        /// Key to move the camera left.
         /// </summary>
         const Keys _cameraLeft = Keys.A;
 
         /// <summary>
-        /// Rate at which the screen scrolls
+        /// Rate at which the screen scrolls.
         /// </summary>
         const float _cameraMoveRate = 15;
 
         /// <summary>
-        /// Key to move the camera right
+        /// Key to move the camera right.
         /// </summary>
         const Keys _cameraRight = Keys.D;
 
         /// <summary>
-        /// Key to move the camera up
+        /// Key to move the camera up.
         /// </summary>
         const Keys _cameraUp = Keys.W;
 
         /// <summary>
-        /// Color of the Grh preview when placing new Grhs
+        /// Color of the Grh preview when placing new Grhs.
         /// </summary>
         static readonly Color _drawPreviewColor = new Color(255, 255, 255, 150);
 
@@ -66,7 +66,7 @@ namespace DemoGame.MapEditor
         readonly Camera2D _camera = new Camera2D(GameData.ScreenSize);
 
         /// <summary>
-        /// Camera used on the Grh edit display
+        /// Camera used on the Grh edit display.
         /// </summary>
         readonly Camera2D _editGrhCamera = new Camera2D(GameData.ScreenSize);
 
@@ -74,25 +74,25 @@ namespace DemoGame.MapEditor
         readonly GrhCursor _grhCursor = new GrhCursor();
 
         /// <summary>
-        /// Draws the grid
+        /// Draws the grid.
         /// </summary>
         readonly ScreenGrid _grid = new ScreenGrid(GameData.ScreenSize);
 
         readonly MapBorderDrawer _mapBorderDrawer = new MapBorderDrawer();
 
         /// <summary>
-        /// Information on the walls bound to MapGrhs
+        /// Information on the walls bound to MapGrhs.
         /// </summary>
         readonly MapGrhWalls _mapGrhWalls;
 
         /// <summary>
-        /// Currently selected Grh to draw to the map
+        /// Currently selected Grh to draw to the map.
         /// </summary>
         readonly Grh _selectedGrh = new Grh(null, AnimType.Loop, 0);
 
         /// <summary>
         /// Stopwatch used for calculating the game time (cant use XNA's GameTime since the
-        /// form does not inherit DrawableGameComponent)
+        /// form does not inherit DrawableGameComponent).
         /// </summary>
         readonly Stopwatch _stopWatch = new Stopwatch();
 
@@ -104,7 +104,7 @@ namespace DemoGame.MapEditor
         readonly WallCursor _wallCursor = new WallCursor();
 
         /// <summary>
-        /// Current world - used for reference by the map being edited only
+        /// Current world - used for reference by the map being edited only.
         /// </summary>
         readonly World _world;
 
@@ -115,41 +115,41 @@ namespace DemoGame.MapEditor
 
         /// <summary>
         /// Current total time in milliseconds - used as the root of all timing
-        /// in external classes through the GetTime method
+        /// in external classes through the GetTime method.
         /// </summary>
         int _currentTime = 0;
 
         /// <summary>
-        /// World position of the cursor
+        /// World position of the cursor.
         /// </summary>
         Vector2 _cursorPos = Vector2.Zero;
 
         DBController _dbController;
 
         /// <summary>
-        /// Grh display of the _editGrhData
+        /// Grh display of the _editGrhData.
         /// </summary>
         Grh _editGrh = null;
 
         /// <summary>
-        /// GrhData currently being edited with the EditGrhForm
+        /// GrhData currently being edited with the EditGrhForm.
         /// </summary>
         GrhData _editGrhData = null;
 
         /// <summary>
-        /// ListBox control object collection containing the walls for the Grh being edited
+        /// ListBox control object collection containing the walls for the Grh being edited.
         /// </summary>
         ListBox.ObjectCollection _editGrhWallItems = null;
 
         /// <summary>
-        /// TreeNode Grh currently being edited with the EditGrhForm
+        /// TreeNode Grh currently being edited with the EditGrhForm.
         /// </summary>
         TreeNode _editNode = null;
 
         /// <summary>
-        /// Default font
+        /// The Default SpriteFont.
         /// </summary>
-        SpriteFont _font;
+        SpriteFont _spriteFont;
 
         KeyEventArgs _keyEventArgs = new KeyEventArgs(Keys.None);
         Map _map;
@@ -325,7 +325,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         public SpriteFont SpriteFont
         {
-            get { return _font; }
+            get { return _spriteFont; }
         }
 
         /// <summary>
@@ -644,7 +644,7 @@ namespace DemoGame.MapEditor
             // Cursor position
             Vector2 cursorPosText = new Vector2(GameScreen.Size.Width, GameScreen.Size.Height);
             cursorPosText -= new Vector2(100, 30);
-            DrawShadedText(cursorPosText, _cursorPos.ToString(), Color.White);
+            _sb.DrawStringShaded(SpriteFont, _cursorPos.ToString(), cursorPosText, Color.White, Color.Black);
 
             // End GUI rendering and present
             _sb.End();
@@ -680,26 +680,6 @@ namespace DemoGame.MapEditor
             // End rendering
             _sb.End();
             GameScreen.GraphicsDevice.Present();
-        }
-
-        /// <summary>
-        /// Draws text with a 1 pixel large black shading
-        /// </summary>
-        /// <param name="pos">Top-left corner to start drawing at</param>
-        /// <param name="text">String to draw</param>
-        /// <param name="color">Font color</param>
-        public void DrawShadedText(Vector2 pos, string text, Color color)
-        {
-            Color shadeColor = Color.Black;
-
-            // Draw the shade
-            _sb.DrawString(_font, text, pos - new Vector2(0, 1), shadeColor);
-            _sb.DrawString(_font, text, pos - new Vector2(1, 0), shadeColor);
-            _sb.DrawString(_font, text, pos + new Vector2(0, 1), shadeColor);
-            _sb.DrawString(_font, text, pos + new Vector2(1, 0), shadeColor);
-
-            // Draw the text
-            _sb.DrawString(_font, text, pos, color);
         }
 
         void EditGrhForm_Close(object sender, FormClosedEventArgs e)
@@ -868,7 +848,8 @@ namespace DemoGame.MapEditor
             _sb = new SpriteBatch(GameScreen.GraphicsDevice);
 
             // Font
-            _font = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
+            _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
+            Character.NameFont = SpriteFont;
 
             // Load the Grh information
             GrhInfo.Load(ContentPaths.Dev.Data.Join("grhdata.xml"), _content);

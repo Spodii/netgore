@@ -358,6 +358,7 @@ namespace DemoGame.Client
         {
             _guiFont = ScreenManager.Content.Load<SpriteFont>("Font/Game");
             _gui = new GUIManager(_guiFont);
+            Character.NameFont = _guiFont;
 
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
             _statsForm = new StatsForm(UserInfo, cScreen);

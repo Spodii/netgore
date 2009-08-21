@@ -27,6 +27,11 @@ namespace DemoGame.Client
         SkeletonManager _skelManager;
 
         /// <summary>
+        /// Gets or sets the SpriteFont used to write the Character's name. If null, the names will not be drawn.
+        /// </summary>
+        public static SpriteFont NameFont { get; set; }
+
+        /// <summary>
         /// Gets the location at which the character is to be drawn
         /// </summary>
         public Vector2 DrawPosition
@@ -222,6 +227,21 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// Draws the Character's name;
+        /// </summary>
+        /// <param name="sb">SpriteBatch to draw to.</param>
+        void DrawName(SpriteBatch sb)
+        {
+            var font = NameFont;
+            if (font != null && !string.IsNullOrEmpty(Name))
+            {
+                var nameSize = GetNameSize();
+                var namePos = DrawPosition + new Vector2(Size.X / 2, 0) - new Vector2(nameSize.X / 2f, nameSize.Y);
+                sb.DrawStringShaded(font, Name, namePos, Color.Green, Color.Black);
+            }
+        }
+
         #region IDrawableEntity Members
 
         /// <summary>
@@ -254,6 +274,14 @@ namespace DemoGame.Client
             // Draw the HP/MP
             DrawSPBar(sb, HPPercent, 0, new Color(255, 0, 0, 175));
             DrawSPBar(sb, MPPercent, 1, new Color(0, 0, 255, 175));
+
+            // Draw the name
+            DrawName(sb);
+        }
+
+        Vector2 GetNameSize()
+        {
+            return NameFont.MeasureString(Name);
         }
 
         /// <summary>
