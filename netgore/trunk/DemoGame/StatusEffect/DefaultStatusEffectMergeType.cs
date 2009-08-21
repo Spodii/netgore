@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DemoGame.Server
+namespace DemoGame
 {
     /// <summary>
     /// Contains the default StatusEffectMergeType used for different kinds of StatusEffects.

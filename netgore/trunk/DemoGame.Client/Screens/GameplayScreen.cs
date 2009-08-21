@@ -164,6 +164,13 @@ namespace DemoGame.Client
             get { return _infoBox; }
         }
 
+        public StatusEffectsForm StatusEffectsForm
+        {
+            get { return _statusEffectsForm; }
+        }
+
+        StatusEffectsForm _statusEffectsForm;
+
         public ItemInfoTooltip ItemInfoTooltip
         {
             get { return _itemInfoTooltip; }
@@ -368,6 +375,8 @@ namespace DemoGame.Client
 
             _chatForm = new ChatForm(cScreen, new Vector2(0, cScreen.Size.Y));
             _chatForm.OnSay += ChatForm_OnSay;
+
+            _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
             _latencyLabel = new Label(string.Format(_latencyString, 0), cScreen.Size - new Vector2(75, 5), cScreen);
 

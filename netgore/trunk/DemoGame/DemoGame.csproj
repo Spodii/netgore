@@ -97,9 +97,9 @@
     <Compile Include="GameData.cs" />
     <Compile Include="GameMessage.cs" />
     <Compile Include="GameMessages.cs" />
-    <Compile Include="SkillType.cs" />
-    <Compile Include="SkillTypeExtensions.cs" />
-    <Compile Include="SkillTypeHelper.cs" />
+    <Compile Include="Skills\SkillType.cs" />
+    <Compile Include="Skills\SkillTypeExtensions.cs" />
+    <Compile Include="Skills\SkillTypeHelper.cs" />
     <Compile Include="SPValueType.cs" />
     <Compile Include="Items\InventoryBase.cs" />
     <Compile Include="Items\InventorySlot.cs" />
@@ -137,9 +137,12 @@
     <Compile Include="Stats\StatValueTypes\StatValueSByte.cs" />
     <Compile Include="Stats\StatValueTypes\StatValueShort.cs" />
     <Compile Include="Stats\StatValueTypes\StatValueUShort.cs" />
-    <Compile Include="StatusEffectType.cs" />
-    <Compile Include="StatusEffectTypeExtensions.cs" />
-    <Compile Include="StatusEffectTypeHelper.cs" />
+    <Compile Include="StatusEffect\DefaultStatusEffectMergeType.cs" />
+    <Compile Include="StatusEffect\StatusEffectBase.cs" />
+    <Compile Include="StatusEffect\StatusEffectMergeType.cs" />
+    <Compile Include="StatusEffect\StatusEffectType.cs" />
+    <Compile Include="StatusEffect\StatusEffectTypeExtensions.cs" />
+    <Compile Include="StatusEffect\StatusEffectTypeHelper.cs" />
     <Compile Include="WorldBase.cs" />
   </ItemGroup>
   <ItemGroup>

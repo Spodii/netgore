@@ -7,6 +7,8 @@ namespace DemoGame
     /// </summary>
     public enum ClientPacketID : byte
     {
+        // First index (0) is reserved, and must not be used
+
         Attack = 1,
         Say,
         DropInventoryItem,

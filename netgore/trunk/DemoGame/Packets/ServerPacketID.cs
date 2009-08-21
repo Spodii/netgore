@@ -7,7 +7,10 @@ namespace DemoGame
     /// </summary>
     public enum ServerPacketID : byte
     {
-        CharAttack = 1,
+        // First index (0) is reserved, and must not be used
+
+        AddStatusEffect = 1,
+        CharAttack,
         CharDamage,
         Chat,
         ChatSay,
@@ -19,6 +22,7 @@ namespace DemoGame
         NotifyGetItem,
         Ping,
         RemoveDynamicEntity,
+        RemoveStatusEffect,
         SendItemInfo,
         SendMessage,
         SetCharacterHPPercent,
