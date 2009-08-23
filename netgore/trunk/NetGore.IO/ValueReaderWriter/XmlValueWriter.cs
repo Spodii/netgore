@@ -107,6 +107,12 @@ namespace NetGore.IO
         /// <param name="name">Name of the child node.</param>
         public void WriteEndNode(string name)
         {
+            if (_nodeStack.Count == 0)
+            {
+                const string errmsg = "Already at the root node.";
+                throw new ArgumentException(errmsg);
+            }
+
             var expectedName = _nodeStack.Pop();
             if (name != expectedName)
             {
@@ -233,7 +239,7 @@ namespace NetGore.IO
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (_disposed)
                 throw new MemberAccessException("Object already disposed!");

@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace NetGore.IO
@@ -8,7 +11,9 @@ namespace NetGore.IO
     /// </summary>
     public class BitStreamValueWriter : IValueWriter
     {
+        Stack<int> _nodeOffsetStack = null;
         readonly BitStream _writer;
+        readonly string _destinationFile = null;
 
         /// <summary>
         /// BitStreamValueReader constructor.
@@ -18,10 +23,22 @@ namespace NetGore.IO
         {
             if (writer == null)
                 throw new ArgumentNullException("writer");
+
             if (writer.Mode != BitStreamMode.Write)
                 throw new ArgumentException("The BitStream must be set to Write.", "writer");
 
             _writer = writer;
+        }
+     
+        /// <summary>
+        /// FileBitStreamValueWriter constructor.
+        /// </summary>
+        /// <param name="filePath">Path to the file to write to.</param>
+        public BitStreamValueWriter(string filePath)
+            : this(new BitStream(BitStreamMode.Write, 8192))
+        {
+            _destinationFile = filePath;
+            File.WriteAllBytes(filePath, new byte[] { 0 });
         }
 
         #region IValueWriter Members
@@ -121,21 +138,40 @@ namespace NetGore.IO
         /// <summary>
         /// Writes the start of a child node in this IValueWriter.
         /// </summary>
-        /// <param name="name">Name of the child node.</param>
+        /// <param name="name">Unused by the BitStreamValueWriter.</param>
         public void WriteStartNode(string name)
         {
-            // TODO: !! Add node support
-            throw new NotSupportedException();
+            const uint reservedValue = 0;
+
+            if (_nodeOffsetStack == null)
+                _nodeOffsetStack = new Stack<int>(4);
+
+            int bitOffset = _writer.PositionBits;
+            Write(null, reservedValue);
+            _nodeOffsetStack.Push(bitOffset);
         }
 
         /// <summary>
         /// Writes the end of a child node in this IValueWriter.
         /// </summary>
-        /// <param name="name">Name of the child node.</param>
+        /// <param name="name">Unused by the BitStreamValueWriter.</param>
         public void WriteEndNode(string name)
         {
-            // TODO: !! Add node support
-            throw new NotSupportedException();
+            if (_nodeOffsetStack == null || _nodeOffsetStack.Count == 0)
+            {
+                const string errmsg = "Already at the root node.";
+                throw new ArgumentException(errmsg);
+            }
+
+            int nodeStart = _nodeOffsetStack.Pop();
+            int nodeEnd = _writer.PositionBits;
+            uint nodeLength = (uint)(nodeEnd - nodeStart - 32);
+
+            Debug.Assert(nodeLength >= 0);
+
+            _writer.Seek(BitStreamSeekOrigin.Beginning, nodeStart);
+            _writer.Write(nodeLength);
+            _writer.Seek(BitStreamSeekOrigin.Beginning, nodeEnd);
         }
 
         /// <summary>
@@ -174,8 +210,13 @@ namespace NetGore.IO
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
+        public virtual void Dispose()
         {
+            if (_destinationFile != null)
+            {
+                var bytes = _writer.GetBufferCopy();
+                File.WriteAllBytes(_destinationFile, bytes);
+            }
         }
 
         #endregion

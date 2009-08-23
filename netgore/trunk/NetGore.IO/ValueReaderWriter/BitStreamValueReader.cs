@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace NetGore.IO
@@ -23,6 +24,19 @@ namespace NetGore.IO
                 throw new ArgumentException("The BitStream must be set to Read.", "reader");
 
             _reader = reader;
+        }
+
+        /// <summary>
+        /// BitStreamValueReader constructor.
+        /// </summary>
+        /// <param name="filePath">The path of the file to read from.</param>
+        public BitStreamValueReader(string filePath)
+        {
+            if (!File.Exists(filePath))
+                throw new ArgumentException("The specified file could not be found.", "filePath");
+
+            byte[] bytes = File.ReadAllBytes(filePath);
+            _reader = new BitStream(bytes);
         }
 
         #region IValueReader Members
@@ -108,8 +122,21 @@ namespace NetGore.IO
         /// <exception cref="ArgumentOutOfRangeException">Count is less than 0.</exception>
         public IEnumerable<IValueReader> ReadNodes(string name, int count)
         {
-            // TODO: !! Add node support
-            throw new NotSupportedException();
+            if (count == 0)
+                return Enumerable.Empty<IValueReader>();
+
+            if (count < 0)
+                throw new ArgumentOutOfRangeException("count");
+
+            IValueReader[] ret = new IValueReader[count];
+            for (int i = 0; i < count; i++)
+            {
+                uint bitLength = ReadUInt(null);
+                var bs = _reader.ReadBits((int)bitLength);
+                ret[i] = new BitStreamValueReader(bs);
+            }
+
+            return ret;
         }
 
         /// <summary>
