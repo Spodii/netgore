@@ -46,10 +46,10 @@ namespace NetGore.NPCChat
         public void Write(IValueWriter writer)
         {
             var items = GetDialogItems();
-            ushort itemCount = (ushort)items.Count();
-
+ 
             writer.Write("Index", Index);
-            writer.Write("ItemCount", itemCount);
+            writer.Write("ItemCount", (ushort)items.Count());
+
             foreach (var item in items)
             {
                 writer.WriteStartNode("Item");
@@ -61,7 +61,9 @@ namespace NetGore.NPCChat
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
-        protected abstract void SetReadValues();
+        /// <param name="index">The index.</param>
+        /// <param name="items">The dialog items.</param>
+        protected abstract void SetReadValues(ushort index, IEnumerable<NPCChatDialogItemBase> items);
 
         /// <summary>
         /// NPCChatDialogBase constructor.
@@ -80,6 +82,13 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// When overridden in the derived class, creates an NPCChatDialogItemBase using the given IValueReader.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <returns>An NPCChatDialogItemBase created using the given IValueReader.</returns>
+        protected abstract NPCChatDialogItemBase CreateDialogItem(IValueReader reader);
+
+        /// <summary>
         /// Reads the values for this NPCChatDialogBase from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -87,8 +96,17 @@ namespace NetGore.NPCChat
         {
             ushort index = reader.ReadUShort("Index");
             ushort itemCount = reader.ReadUShort("ItemCount");
+            var itemReaders = reader.ReadNodes("Item", itemCount);
 
-            SetReadValues();
+            NPCChatDialogItemBase[] items = new NPCChatDialogItemBase[itemCount];
+            int i = 0;
+            foreach (var r in itemReaders)
+            {
+                items[i] = CreateDialogItem(r);
+                i++;
+            }
+
+            SetReadValues(index, items);
         }
     }
 }

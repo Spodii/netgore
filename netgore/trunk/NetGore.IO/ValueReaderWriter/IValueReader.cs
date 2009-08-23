@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -18,9 +19,10 @@ namespace NetGore.IO
         /// Reads one or more child nodes from the IValueReader.
         /// </summary>
         /// <param name="name">Name of the nodes to read.</param>
-        /// <param name="count">The number of nodes to read. Must be greater than 0. An ArgumentOutOfRangeException will
-        /// be thrown if this value exceeds the actual number of nodes available.</param>
+        /// <param name="count">The number of nodes to read. If this value is 0, an empty IEnumerable of IValueReaders
+        /// will be returned, even if the key could not be found.</param>
         /// <returns>An IEnumerable of IValueReaders used to read the nodes.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Count is less than 0.</exception>
         IEnumerable<IValueReader> ReadNodes(string name, int count);
 
         /// <summary>
