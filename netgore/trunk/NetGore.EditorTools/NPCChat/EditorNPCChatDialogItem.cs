@@ -16,7 +16,7 @@ namespace NetGore.EditorTools
     {
         readonly List<TreeNode> _treeNodes = new List<TreeNode>();
         ushort _index;
-        List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
+        readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
         string _text;
         string _title;
 

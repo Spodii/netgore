@@ -96,6 +96,7 @@
     <Compile Include="NPCChat\INPCChatDialogItem.cs" />
     <Compile Include="NPCChat\NPCChatDialogBase.cs" />
     <Compile Include="NPCChat\NPCChatDialogItemBase.cs" />
+    <Compile Include="NPCChat\NPCChatManagerBase.cs" />
     <Compile Include="NPCChat\NPCChatResponseBase.cs" />
     <Compile Include="PropertySync\PropertySyncAlignment.cs" />
     <Compile Include="PropertySync\PropertySyncBool.cs" />
