@@ -18,12 +18,39 @@ namespace NetGore.IO
         /// </summary>
         public const ushort DefaultStringMaxLength = ushort.MaxValue - 1;
 
+        /// <summary>
+        /// The number of bits in a byte.
+        /// </summary>
         const int _bitsByte = sizeof(byte) * 8;
+
+        /// <summary>
+        /// The number of bits in an int.
+        /// </summary>
         const int _bitsInt = sizeof(int) * 8;
+
+        /// <summary>
+        /// The number of bits in a sbyte.
+        /// </summary>
         const int _bitsSByte = sizeof(sbyte) * 8;
+
+        /// <summary>
+        /// The number of bits in a short.
+        /// </summary>
         const int _bitsShort = sizeof(short) * 8;
+
+        /// <summary>
+        /// The number of bits in a uint.
+        /// </summary>
         const int _bitsUInt = sizeof(uint) * 8;
+
+        /// <summary>
+        /// The number of bits in a ushort.
+        /// </summary>
         const int _bitsUShort = sizeof(ushort) * 8;
+
+        /// <summary>
+        /// The 0-based index of the most significant bit in a byte.
+        /// </summary>
         const int _highBit = (sizeof(byte) * 8) - 1;
 
         /// <summary>
@@ -729,6 +756,55 @@ namespace NetGore.IO
             {
                 dest[i] = ReadByte();
             }
+        }
+
+        /// <summary>
+        /// Reads the specified number of bits from the BitStream.
+        /// </summary>
+        /// <param name="bitLength">The number of bits to read.</param>
+        /// <returns>A BitStream filled with the bits read.</returns>
+        public BitStream ReadBits(int bitLength)
+        {
+            if (bitLength < 0)
+                throw new ArgumentOutOfRangeException("bitLength");
+            if (bitLength == 0)
+                return new BitStream(BitStreamMode.Read, 1);
+            
+#if DEBUG
+            int initialBitPosition = PositionBits;
+#endif
+
+            int fullBytes = bitLength / _bitsByte;
+            int remainingBits = bitLength % _bitsByte;
+            int requiredBytes = fullBytes;
+            if (remainingBits > 0)
+                requiredBytes++;
+
+            Debug.Assert(remainingBits < _bitsByte);
+            Debug.Assert(remainingBits >= 0);
+            Debug.Assert(fullBytes >= 0);
+            Debug.Assert(requiredBytes > 0);
+
+            BitStream ret = new BitStream(BitStreamMode.Write, requiredBytes) { WriteMode = BitStreamBufferMode.Static };
+
+            if (fullBytes > 0)
+            {
+                var bytes = ReadBytes(fullBytes);
+                ret.Write(bytes, 0, bytes.Length);
+            }
+
+            if (remainingBits > 0)
+            {
+                var value = ReadByte(remainingBits);
+                ret.Write(value, remainingBits);
+            }
+
+            Debug.Assert(ret.LengthBits == bitLength);
+            Debug.Assert(PositionBits - initialBitPosition == bitLength);
+
+            ret.Mode = BitStreamMode.Read;
+
+            return ret;
         }
 
         /// <summary>
@@ -1647,9 +1723,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Resets the bit stream content and variables to a "like-new" state
+        /// Resets the bit stream content and variables to a "like-new" state.
         /// </summary>
-        /// <param name="mode">Type of BitStreamMode to reset to</param>
+        /// <param name="mode">Type of BitStreamMode to reset to.</param>
         public void Reset(BitStreamMode mode)
         {
             _mode = mode;
@@ -1657,12 +1733,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Moves the current bit position. Can only be used if
-        /// the mode is reading. SeekOrigin.End may not be used
-        /// due to the potential issues that can arise from using it.
+        /// Moves the stream's cursor to the specified location.
         /// </summary>
-        /// <param name="origin">Origin to move from</param>
-        /// <param name="bits">Number of bits to move</param>
+        /// <param name="origin">Origin to move from.</param>
+        /// <param name="bits">Number of bits to move.</param>
         public void Seek(BitStreamSeekOrigin origin, int bits)
         {
             switch (origin)
@@ -1680,9 +1754,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Moves the buffer by a number of bits
+        /// Moves the buffer by a number of bits.
         /// </summary>
-        /// <param name="bits">Number of bits to move</param>
+        /// <param name="bits">Number of bits to move.</param>
         void Seek(int bits)
         {
             // Check if we have anything to move

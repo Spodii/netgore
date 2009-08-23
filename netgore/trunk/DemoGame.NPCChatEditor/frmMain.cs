@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Text;
 using System.Windows.Forms;
 using NetGore;
 using NetGore.EditorTools;
@@ -85,15 +86,18 @@ namespace DemoGame.NPCChatEditor
             npcChatDialogView.NPCChatDialog = _dialog;
             npcChatDialogView.ExpandAll();
 
+            BitStream bs = new BitStream(BitStreamMode.Write, 8192);
+
             // NOTE: Temp
-            using (XmlValueWriter writer = new XmlValueWriter(ContentPaths.Build.Data.Join("TestChat.xml"), "ChatDialogs"))
+            string filePath = ContentPaths.Build.Data.Join("TestChat.xml");
+            using (XmlValueWriter writer = new XmlValueWriter(filePath, "ChatDialogs"))
             {
                 writer.WriteStartNode("ChatDialog");
                 _dialog.Write(writer);
                 writer.WriteEndNode("ChatDialog");
             }
 
-            XmlValueReader reader = new XmlValueReader(ContentPaths.Build.Data.Join("TestChat.xml"), "ChatDialogs");
+            XmlValueReader reader = new XmlValueReader(filePath, "ChatDialogs");
             IValueReader chatDialogReader = reader.ReadNodes("ChatDialog", 1).First();
             EditorNPCChatDialog newChatDialog = new EditorNPCChatDialog();
             newChatDialog.Read(chatDialogReader);
