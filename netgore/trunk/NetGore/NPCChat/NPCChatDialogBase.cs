@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NetGore.IO;
 
 namespace NetGore.NPCChat
 {
@@ -9,6 +11,12 @@ namespace NetGore.NPCChat
     /// </summary>
     public abstract class NPCChatDialogBase
     {
+        /// <summary>
+        /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
+        /// distinguish each NPCChatDialogBase from one another.
+        /// </summary>
+        public abstract ushort Index { get; }
+
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.
         /// </summary>
@@ -23,5 +31,63 @@ namespace NetGore.NPCChat
         /// </summary>
         /// <returns>The initial NPCChatDialogItemBase that is used at the start of a conversation.</returns>
         public abstract NPCChatDialogItemBase GetInitialDialogItem();
+
+        /// <summary>
+        /// When overridden in the derived class, gets an IEnumerable of the NPCChatDialogItemBases in this
+        /// NPCChatDialogBase.
+        /// </summary>
+        /// <returns>An IEnumerable of the NPCChatDialogItemBases in this NPCChatDialogBase.</returns>
+        protected abstract IEnumerable<NPCChatDialogItemBase> GetDialogItems();
+
+        /// <summary>
+        /// Writes the NPCChatDialogBase's values to an IValueWriter.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write the values to.</param>
+        public void Write(IValueWriter writer)
+        {
+            var items = GetDialogItems();
+            ushort itemCount = (ushort)items.Count();
+
+            writer.Write("Index", Index);
+            writer.Write("ItemCount", itemCount);
+            foreach (var item in items)
+            {
+                // TODO: !! 
+                //writer.Write(
+            }
+        }
+        
+        /// <summary>
+        /// When overridden in the derived class, sets the values read from the Read method.
+        /// </summary>
+        protected abstract void SetReadValues();
+
+        /// <summary>
+        /// NPCChatDialogBase constructor.
+        /// </summary>
+        protected NPCChatDialogBase()
+        {
+        }
+
+        /// <summary>
+        /// NPCChatDialogBase constructor.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        protected NPCChatDialogBase(IValueReader reader)
+        {
+            Read(reader);
+        }
+
+        /// <summary>
+        /// Reads the values for this NPCChatDialogBase from an IValueReader.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        public void Read(IValueReader reader)
+        {
+            ushort index = reader.ReadUShort("Index");
+            ushort itemCount = reader.ReadUShort("ItemCount");
+
+            SetReadValues();
+        }
     }
 }

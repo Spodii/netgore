@@ -14,7 +14,7 @@ namespace NetGore.EditorTools
     /// </summary>
     public class EditorNPCChatDialogItem : NPCChatDialogItemBase
     {
-        readonly ushort _index;
+        ushort _index;
         readonly List<TreeNode> _treeNodes = new List<TreeNode>();
         List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
         string _text;
@@ -61,6 +61,19 @@ namespace NetGore.EditorTools
         public override string Title
         {
             get { return _title; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the values read from the Read method.
+        /// </summary>
+        /// <param name="page">The index.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="text">The text.</param>
+        protected override void SetReadValues(ushort page, string title, string text)
+        {
+            _index = page;
+            SetTitle(title);
+            SetText(text);
         }
 
         public List<TreeNode> TreeNodes

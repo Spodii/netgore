@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NetGore.IO;
 using NetGore.NPCChat;
 
 namespace NetGore.EditorTools
@@ -14,6 +15,21 @@ namespace NetGore.EditorTools
     public class EditorNPCChatDialog : NPCChatDialogBase
     {
         EditorNPCChatDialogItem[] _dialogItems = new EditorNPCChatDialogItem[8];
+
+        /// <summary>
+        /// EditorNPCChatDialog constructor.
+        /// </summary>
+        public EditorNPCChatDialog()
+        {
+        }
+
+        /// <summary>
+        /// EditorNPCChatDialog constructor.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        public EditorNPCChatDialog(IValueReader reader) : base(reader)
+        {
+        }
 
         public event EditorNPCChatDialogEventHandler OnChange;
 
@@ -43,6 +59,22 @@ namespace NetGore.EditorTools
                 OnChange(this);
         }
 
+        ushort _index;
+
+        public void SetIndex(ushort value)
+        {
+            _index = value;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
+        /// distinguish each NPCChatDialogBase from one another.
+        /// </summary>
+        public override ushort Index
+        {
+            get { return _index; }
+        }
+
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.
         /// </summary>
@@ -70,6 +102,24 @@ namespace NetGore.EditorTools
         public override NPCChatDialogItemBase GetInitialDialogItem()
         {
             return GetInitialDialogItemCasted();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets an IEnumerable of the NPCChatDialogItemBases in this
+        /// NPCChatDialogBase.
+        /// </summary>
+        /// <returns>An IEnumerable of the NPCChatDialogItemBases in this NPCChatDialogBase.</returns>
+        protected override IEnumerable<NPCChatDialogItemBase> GetDialogItems()
+        {
+            return Items.Cast<NPCChatDialogItemBase>();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the values read from the Read method.
+        /// </summary>
+        protected override void SetReadValues()
+        {
+            throw new NotImplementedException();
         }
 
         public EditorNPCChatDialogItem GetInitialDialogItemCasted()

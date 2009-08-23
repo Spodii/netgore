@@ -7,7 +7,10 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Xml;
+using NetGore;
 using NetGore.EditorTools;
+using NetGore.IO;
 
 namespace DemoGame.NPCChatEditor
 {
@@ -87,6 +90,21 @@ namespace DemoGame.NPCChatEditor
             npcChatDialogView.NPCChatDialog = null;
             npcChatDialogView.NPCChatDialog = _dialog;
             npcChatDialogView.ExpandAll();
+
+            // NOTE: Temp
+            using (XmlWriter w = XmlWriter.Create(ContentPaths.Build.Data.Join("TestChat.xml"), new XmlWriterSettings { Indent = true }))
+            {
+                w.WriteStartDocument();
+                w.WriteStartElement("ChatDialogs");
+
+                using (XmlValueWriter writer = new XmlValueWriter(w, "ChatDialog"))
+                {
+                    _dialog.Write(writer);
+                }
+
+                w.WriteEndElement();
+                w.WriteEndDocument();
+            }
         }
 
         void DisableAllTabsExcept(TabControl tabControl, TabPage enabledTab)
