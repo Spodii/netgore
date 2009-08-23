@@ -86,8 +86,6 @@ namespace DemoGame.NPCChatEditor
             npcChatDialogView.NPCChatDialog = _dialog;
             npcChatDialogView.ExpandAll();
 
-            BitStream bs = new BitStream(BitStreamMode.Write, 8192);
-
             // NOTE: Temp
             string filePath = ContentPaths.Build.Data.Join("TestChat.xml");
             using (XmlValueWriter writer = new XmlValueWriter(filePath, "ChatDialogs"))
