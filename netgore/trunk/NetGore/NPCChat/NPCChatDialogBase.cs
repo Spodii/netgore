@@ -52,8 +52,9 @@ namespace NetGore.NPCChat
             writer.Write("ItemCount", itemCount);
             foreach (var item in items)
             {
-                // TODO: !! 
-                //writer.Write(
+                writer.WriteStartNode("Item");
+                item.Write(writer);
+                writer.WriteEndNode("Item");
             }
         }
         

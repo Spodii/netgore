@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+
+// NOTE: This class won't work if you forget to call Dispose. Would be nice to use a destructor to fix that.
 
 namespace NetGore.IO
 {
@@ -10,7 +13,26 @@ namespace NetGore.IO
     public class XmlValueWriter : IValueWriter
     {
         readonly XmlWriter _writer;
+        readonly bool _disposeWriter;
         bool _disposed;
+        readonly Stack<string> _nodeStack = new Stack<string>(4);
+
+        /// <summary>
+        /// XmlValueWriter constructor.
+        /// </summary>
+        /// <param name="filePath">The path to the file to write to.</param>
+        /// <param name="nodeName">Name to give the root node containing the values.</param>
+        public XmlValueWriter(string filePath, string nodeName)
+        {
+            _disposeWriter = true;
+            _writer = XmlWriter.Create(filePath, new XmlWriterSettings { Indent = true });
+            
+            if (_writer == null)
+                throw new ArgumentException("filePath");
+
+            _writer.WriteStartDocument();
+            _writer.WriteStartElement(nodeName);
+        }
 
         /// <summary>
         /// XmlValueWriter constructor.
@@ -67,6 +89,32 @@ namespace NetGore.IO
         public bool SupportsNameLookup
         {
             get { return true; }
+        }
+
+        /// <summary>
+        /// Writes the start of a child node in this IValueWriter.
+        /// </summary>
+        /// <param name="name">Name of the child node.</param>
+        public void WriteStartNode(string name)
+        {
+            _nodeStack.Push(name);
+            _writer.WriteStartElement(name);
+        }
+
+        /// <summary>
+        /// Writes the end of a child node in this IValueWriter.
+        /// </summary>
+        /// <param name="name">Name of the child node.</param>
+        public void WriteEndNode(string name)
+        {
+            var expectedName = _nodeStack.Pop();
+            if (name != expectedName)
+            {
+                const string errmsg = "Node name `{0}` does not match the expected name `{1}`.";
+                throw new ArgumentException(string.Format(errmsg, name, expectedName), "name");
+            }
+
+            _writer.WriteEndElement();
         }
 
         /// <summary>
@@ -181,6 +229,10 @@ namespace NetGore.IO
             Write(name, value.ToString());
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
             if (_disposed)
@@ -188,6 +240,12 @@ namespace NetGore.IO
 
             _disposed = true;
             _writer.WriteEndElement();
+
+            if (_disposeWriter)
+            {
+                _writer.WriteEndDocument();
+                _writer.Close();
+            }
         }
 
         #endregion
