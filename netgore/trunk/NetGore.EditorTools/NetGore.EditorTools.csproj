@@ -98,6 +98,7 @@
     </Compile>
     <Compile Include="NPCChat\EditorNPCChatDialog.cs" />
     <Compile Include="NPCChat\EditorNPCChatDialogItem.cs" />
+    <Compile Include="NPCChat\EditorNPCChatManager.cs" />
     <Compile Include="NPCChat\EditorNPCChatResponse.cs" />
     <Compile Include="NPCChat\NPCChatDialogView.cs">
       <SubType>Component</SubType>
