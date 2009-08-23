@@ -41,6 +41,14 @@ namespace NetGore.NPCChat
             writer.Write("Index", Index);
             writer.Write("Title", Title ?? string.Empty);
             writer.Write("Text", Text ?? string.Empty);
+            writer.Write("ResponseCount", (byte)Responses.Count());
+
+            foreach (var response in Responses)
+            {
+                writer.WriteStartNode("Response");
+                response.Write(writer);
+                writer.WriteEndNode("Response");
+            }
         }
         
         /// <summary>

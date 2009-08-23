@@ -119,6 +119,26 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Writes the start of a child node in this IValueWriter.
+        /// </summary>
+        /// <param name="name">Name of the child node.</param>
+        public void WriteStartNode(string name)
+        {
+            // TODO: !! Add node support
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
+        /// Writes the end of a child node in this IValueWriter.
+        /// </summary>
+        /// <param name="name">Name of the child node.</param>
+        public void WriteEndNode(string name)
+        {
+            // TODO: !! Add node support
+            throw new NotSupportedException();
+        }
+
+        /// <summary>
         /// Writes a 32-bit signed integer.
         /// </summary>
         /// <param name="name">Unused by the BitStreamValueWriter.</param>

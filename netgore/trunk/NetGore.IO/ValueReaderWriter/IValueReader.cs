@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NetGore.IO
@@ -12,6 +13,15 @@ namespace NetGore.IO
         /// be read back in the same order they were written and the name field will be ignored.
         /// </summary>
         bool SupportsNameLookup { get; }
+
+        /// <summary>
+        /// Reads one or more child nodes from the IValueReader.
+        /// </summary>
+        /// <param name="name">Name of the nodes to read.</param>
+        /// <param name="count">The number of nodes to read. Must be greater than 0. An ArgumentOutOfRangeException will
+        /// be thrown if this value exceeds the actual number of nodes available.</param>
+        /// <returns>An IEnumerable of IValueReaders used to read the nodes.</returns>
+        IEnumerable<IValueReader> ReadNodes(string name, int count);
 
         /// <summary>
         /// Reads a boolean.

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 
 namespace NetGore.IO
@@ -10,19 +12,54 @@ namespace NetGore.IO
     /// </summary>
     public class XmlValueReader : IValueReader
     {
-        readonly Dictionary<string, string> _values;
+        readonly Dictionary<string, List<string>> _values;
 
         /// <summary>
         /// XmlValueReader constructor.
         /// </summary>
         /// <param name="reader">XmlReader that the values will be read from.</param>
         /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
-        public XmlValueReader(XmlReader reader, string rootNodeName)
+        public XmlValueReader(XmlReader reader, string rootNodeName) : this(reader, rootNodeName, false)
+        {
+        }
+
+        /// <summary>
+        /// XmlValueReader constructor.
+        /// </summary>
+        /// <param name="filePath">Path of the file to read.</param>
+        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
+        public XmlValueReader(string filePath, string rootNodeName)
+        {
+            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            {
+                using (var r = XmlReader.Create(stream))
+                {
+                    while (r.Read())
+                    {
+                        if (r.NodeType == XmlNodeType.Element && string.Equals(r.Name, rootNodeName, StringComparison.OrdinalIgnoreCase))
+                            break;
+                    }
+
+                    if (r.EOF)
+                        throw new Exception(string.Format("Failed to find the node `{0}` in the file.", rootNodeName));
+
+                    _values = ReadNodesIntoDictionary(r, rootNodeName, true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// XmlValueReader constructor.
+        /// </summary>
+        /// <param name="reader">XmlReader that the values will be read from.</param>
+        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
+        /// <param name="readAllContent">If true, the XmlReader is expected to be read to the end.</param>
+        XmlValueReader(XmlReader reader, string rootNodeName, bool readAllContent)
         {
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
-            _values = ReadNodesIntoDictionary(reader, rootNodeName);
+            _values = ReadNodesIntoDictionary(reader, rootNodeName, readAllContent);
         }
 
         /// <summary>
@@ -32,25 +69,35 @@ namespace NetGore.IO
         /// <param name="reader">XmlReader to read the values from.</param>
         /// <param name="rootNodeName">Name of the root node that is to be read from. Serves as a means of checking
         /// to ensure the XmlValueReader is at the expected location.</param>
+        /// <param name="readAllContent">If true, the XmlReader is expected to be read to the end.</param>
         /// <returns>Dictionary containing the content of each Element node.</returns>
-        static Dictionary<string, string> ReadNodesIntoDictionary(XmlReader reader, string rootNodeName)
+        static Dictionary<string, List<string>> ReadNodesIntoDictionary(XmlReader reader, string rootNodeName, bool readAllContent)
         {
-            var ret = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+            var ret = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
 
             // Read past the first node if it is the root node
             if (string.Equals(reader.Name, rootNodeName, StringComparison.OrdinalIgnoreCase))
                 reader.Read();
 
             // Read all the values
-            while (true)
+            while (reader.Read())
             {
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
                         // Read the name and value of the element
                         string key = reader.Name;
-                        string value = reader.ReadElementContentAsString();
-                        ret.Add(key, value);
+                        string value = reader.ReadInnerXml();
+
+                        List<string> l;
+                        if (!ret.TryGetValue(key, out l))
+                        {
+                            l = new List<string>();
+                            ret.Add(key, l);
+                        }
+
+                        l.Add(value);
+
                         break;
 
                     case XmlNodeType.EndElement:
@@ -61,10 +108,29 @@ namespace NetGore.IO
                             throw new Exception(string.Format("Was expecting end of element `{0}`, but found `{1}`.", rootNodeName,
                                                               reader.Name));
                 }
-
-                // Keep reading
-                reader.Read();
             }
+
+            if (!readAllContent)
+                throw new Exception("XmlReader was read to the end, but this was not expected to happen.");
+
+            return ret;
+        }
+
+        static ArgumentException CreateKeyNotFoundException(string key)
+        {
+            const string parameterName = "parameterName";
+            const string errmsg = "Cannot read the value of key `{0}` since no key with that name was found.";
+
+            return new ArgumentException(string.Format(errmsg, key), parameterName);
+        }
+
+        static ArgumentException CreateDuplicateKeysException(string key)
+        {
+            const string parameterName = "name";
+            const string errmsg = "Cannot read the value of key `{0}` since multiple values were found with that key." +
+                " This method requires that the key's name is unique.";
+
+            return new ArgumentException(string.Format(errmsg, key), parameterName);
         }
 
         #region IValueReader Members
@@ -85,7 +151,15 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public int ReadInt(string name)
         {
-            return int.Parse(_values[name]);
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return int.Parse(values[0]);
         }
 
         /// <summary>
@@ -106,7 +180,15 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public uint ReadUInt(string name)
         {
-            return uint.Parse(_values[name]);
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return uint.Parse(values[0]);
         }
 
         /// <summary>
@@ -121,13 +203,61 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads one or more child nodes from the IValueReader.
+        /// </summary>
+        /// <param name="name">Name of the nodes to read.</param>
+        /// <param name="count">The number of nodes to read. Must be greater than 0. An ArgumentOutOfRangeException will
+        /// be thrown if this value exceeds the actual number of nodes available.</param>
+        /// <returns>An IEnumerable of IValueReaders used to read the nodes.</returns>
+        public IEnumerable<IValueReader> ReadNodes(string name, int count)
+        {
+            List<string> valuesAsList = _values[name];
+            IEnumerable<string> values;
+
+            if (valuesAsList.Count() < count)
+                throw new ArgumentOutOfRangeException("count", "Value is greater than the actual number of available nodes.");
+
+            if (valuesAsList.Count() > count)
+                values = valuesAsList.Take(count);
+            else
+                values = valuesAsList;
+
+            List<IValueReader> ret = new List<IValueReader>(count);
+
+            foreach (var value in values.Take(count))
+            {
+                var trimmed = value.Trim();
+                var bytes = UTF8Encoding.UTF8.GetBytes(trimmed);
+
+                using (MemoryStream ms = new MemoryStream(bytes))
+                {
+                    using (XmlReader r = XmlReader.Create(ms, new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment } ))
+                    {
+                        XmlValueReader reader = new XmlValueReader(r, name, true);
+                        ret.Add(reader);
+                    }
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
         /// Reads a boolean.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
         public bool ReadBool(string name)
         {
-            return bool.Parse(_values[name]);
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return bool.Parse(values[0]);
         }
 
         /// <summary>
@@ -137,7 +267,15 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public short ReadShort(string name)
         {
-            return short.Parse(_values[name]);
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return short.Parse(values[0]);
         }
 
         /// <summary>
@@ -147,7 +285,15 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public ushort ReadUShort(string name)
         {
-            return ushort.Parse(_values[name]);
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return ushort.Parse(values[0]);
         }
 
         /// <summary>
@@ -157,7 +303,15 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public byte ReadByte(string name)
         {
-            return byte.Parse(_values[name]);
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return byte.Parse(values[0]);
         }
 
         /// <summary>
@@ -167,7 +321,15 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public sbyte ReadSByte(string name)
         {
-            return sbyte.Parse(_values[name]);
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return sbyte.Parse(values[0]);
         }
 
         /// <summary>
@@ -177,7 +339,15 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public float ReadFloat(string name)
         {
-            return float.Parse(_values[name]);
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return float.Parse(values[0]);
         }
 
         /// <summary>
@@ -187,7 +357,15 @@ namespace NetGore.IO
         /// <returns>String read from the reader.</returns>
         public string ReadString(string name)
         {
-            return _values[name];
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return values[0];
         }
 
         #endregion

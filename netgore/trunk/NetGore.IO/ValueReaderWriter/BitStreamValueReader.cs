@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NetGore.IO
@@ -95,6 +96,19 @@ namespace NetGore.IO
         public uint ReadUInt(string name, int bits)
         {
             return _reader.ReadUInt(bits);
+        }
+
+        /// <summary>
+        /// Reads one or more child nodes from the IValueReader.
+        /// </summary>
+        /// <param name="name">Name of the nodes to read.</param>
+        /// <param name="count">The number of nodes to read. Must be greater than 0. An ArgumentOutOfRangeException will
+        /// be thrown if this value exceeds the actual number of nodes available.</param>
+        /// <returns>An IEnumerable of IValueReaders used to read the nodes.</returns>
+        public IEnumerable<IValueReader> ReadNodes(string name, int count)
+        {
+            // TODO: !! Add node support
+            throw new NotSupportedException();
         }
 
         /// <summary>

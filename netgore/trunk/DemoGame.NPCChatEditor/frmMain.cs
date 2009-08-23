@@ -92,19 +92,15 @@ namespace DemoGame.NPCChatEditor
             npcChatDialogView.ExpandAll();
 
             // NOTE: Temp
-            using (XmlWriter w = XmlWriter.Create(ContentPaths.Build.Data.Join("TestChat.xml"), new XmlWriterSettings { Indent = true }))
+            using (var writer = new XmlValueWriter(ContentPaths.Build.Data.Join("TestChat.xml"), "ChatDialogs"))
             {
-                w.WriteStartDocument();
-                w.WriteStartElement("ChatDialogs");
-
-                using (XmlValueWriter writer = new XmlValueWriter(w, "ChatDialog"))
-                {
-                    _dialog.Write(writer);
-                }
-
-                w.WriteEndElement();
-                w.WriteEndDocument();
+                writer.WriteStartNode("ChatDialog");
+                _dialog.Write(writer);
+                writer.WriteEndNode("ChatDialog");
             }
+
+            var reader = new XmlValueReader(ContentPaths.Build.Data.Join("TestChat.xml"), "ChatDialogs");
+            var chatDialog = reader.ReadNodes("ChatDialog", 1).First();
         }
 
         void DisableAllTabsExcept(TabControl tabControl, TabPage enabledTab)
