@@ -57,7 +57,8 @@ namespace NetGore.NPCChat
         /// <param name="page">The index.</param>
         /// <param name="title">The title.</param>
         /// <param name="text">The text.</param>
-        protected abstract void SetReadValues(ushort page, string title, string text);
+        /// <param name="responses">The responses.</param>
+        protected abstract void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses);
 
         /// <summary>
         /// NPCChatDialogItemBase constructor.
@@ -76,6 +77,13 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// When overridden in the derived class, creates a NPCChatResponseBase using the given IValueReader.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <returns>A NPCChatResponseBase created using the given IValueReader</returns>
+        protected abstract NPCChatResponseBase CreateResponse(IValueReader reader);
+
+        /// <summary>
         /// Reads the values for this NPCChatDialogItemBase from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -84,8 +92,18 @@ namespace NetGore.NPCChat
             ushort index = reader.ReadUShort("Index");
             string title = reader.ReadString("Title");
             string text = reader.ReadString("Text");
+            byte responseCount = reader.ReadByte("ResponseCount");
 
-            SetReadValues(index, title, text);
+            var responseReaders = reader.ReadNodes("Response", responseCount);
+            int i = 0;
+            NPCChatResponseBase[] responses = new NPCChatResponseBase[responseCount];
+            foreach (var r in responseReaders)
+            {
+                responses[i] = CreateResponse(r);
+                i++;
+            }
+
+            SetReadValues(index, title, text, responses);
         }
 
         #region INPCChatDialogItem Members

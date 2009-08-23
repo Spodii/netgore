@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
+using NetGore.IO;
 using NetGore.NPCChat;
 
 namespace NetGore.EditorTools
@@ -14,8 +14,8 @@ namespace NetGore.EditorTools
     /// </summary>
     public class EditorNPCChatDialogItem : NPCChatDialogItemBase
     {
-        ushort _index;
         readonly List<TreeNode> _treeNodes = new List<TreeNode>();
+        ushort _index;
         List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
         string _text;
         string _title;
@@ -34,7 +34,25 @@ namespace NetGore.EditorTools
         public List<EditorNPCChatResponse> ResponseList
         {
             get { return _responses; }
-            set { _responses = value; }
+        }
+
+        public void AddResponse(params EditorNPCChatResponse[] responses)
+        {
+            if (responses == null)
+                return;
+
+            foreach (var response in responses)
+                AddResponse(response);
+        }
+
+        public void AddResponse(EditorNPCChatResponse response)
+        {
+            if (response == null)
+                throw new ArgumentNullException("response");
+
+            _responses.Add(response);
+            int index = _responses.IndexOf(response);
+            response.SetValue((byte)index);
         }
 
         /// <summary>
@@ -63,31 +81,20 @@ namespace NetGore.EditorTools
             get { return _title; }
         }
 
-        /// <summary>
-        /// When overridden in the derived class, sets the values read from the Read method.
-        /// </summary>
-        /// <param name="page">The index.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="text">The text.</param>
-        protected override void SetReadValues(ushort page, string title, string text)
-        {
-            _index = page;
-            SetTitle(title);
-            SetText(text);
-        }
-
         public List<TreeNode> TreeNodes
         {
             get { return _treeNodes; }
         }
 
-        public EditorNPCChatDialogItem(ushort index)
-            : this(index, string.Empty)
+        public EditorNPCChatDialogItem(IValueReader reader) : base(reader)
         {
         }
 
-        public EditorNPCChatDialogItem(ushort index, string text)
-            : this(index, text, string.Empty)
+        public EditorNPCChatDialogItem(ushort index) : this(index, string.Empty)
+        {
+        }
+
+        public EditorNPCChatDialogItem(ushort index, string text) : this(index, text, string.Empty)
         {
         }
 
@@ -99,9 +106,36 @@ namespace NetGore.EditorTools
             _index = index;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates a NPCChatResponseBase using the given IValueReader.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <returns>A NPCChatResponseBase created using the given IValueReader</returns>
+        protected override NPCChatResponseBase CreateResponse(IValueReader reader)
+        {
+            return new EditorNPCChatResponse(reader);
+        }
+
         public override ushort GetNextPage(object user, object npc, byte responseIndex)
         {
             return ResponseList[responseIndex].Page;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the values read from the Read method.
+        /// </summary>
+        /// <param name="page">The index.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="responses">The responses.</param>
+        protected override void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses)
+        {
+            _index = page;
+            SetTitle(title);
+            SetText(text);
+
+            _responses.Clear();
+            _responses.AddRange(responses.Cast<EditorNPCChatResponse>());
         }
 
         public void SetText(string value)

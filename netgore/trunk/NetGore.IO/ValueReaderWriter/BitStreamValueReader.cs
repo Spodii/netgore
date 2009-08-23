@@ -105,6 +105,7 @@ namespace NetGore.IO
         /// <param name="count">The number of nodes to read. Must be greater than 0. An ArgumentOutOfRangeException will
         /// be thrown if this value exceeds the actual number of nodes available.</param>
         /// <returns>An IEnumerable of IValueReaders used to read the nodes.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Count is less than 0.</exception>
         public IEnumerable<IValueReader> ReadNodes(string name, int count)
         {
             // TODO: !! Add node support

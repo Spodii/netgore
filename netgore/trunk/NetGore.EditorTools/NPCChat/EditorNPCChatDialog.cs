@@ -117,9 +117,27 @@ namespace NetGore.EditorTools
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
-        protected override void SetReadValues()
+        protected override void SetReadValues(ushort index, IEnumerable<NPCChatDialogItemBase> items)
         {
-            throw new NotImplementedException();
+            _index = index;
+
+            // Clear the array
+            for (int i = 0; i < _dialogItems.Length; i++)
+                _dialogItems[i] = null;
+            
+            // Set the new items
+            foreach (var item in items)
+                Add((EditorNPCChatDialogItem)item);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates an NPCChatDialogItemBase using the given IValueReader.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <returns>An NPCChatDialogItemBase created using the given IValueReader.</returns>
+        protected override NPCChatDialogItemBase CreateDialogItem(IValueReader reader)
+        {
+            return new EditorNPCChatDialogItem(reader);
         }
 
         public EditorNPCChatDialogItem GetInitialDialogItemCasted()
