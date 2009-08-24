@@ -15,6 +15,7 @@ namespace NetGore.EditorTools
     {
         EditorNPCChatDialogItem[] _dialogItems = new EditorNPCChatDialogItem[8];
         ushort _index;
+        string _title;
 
         public event EditorNPCChatDialogEventHandler OnChange;
 
@@ -30,6 +31,15 @@ namespace NetGore.EditorTools
         public IEnumerable<EditorNPCChatDialogItem> Items
         {
             get { return _dialogItems.Where(x => x != null); }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the title for this dialog. The title is primarily
+        /// used for debugging and development purposes only.
+        /// </summary>
+        public override string Title
+        {
+            get { return _title; }
         }
 
         /// <summary>
@@ -144,9 +154,10 @@ namespace NetGore.EditorTools
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
-        protected override void SetReadValues(ushort index, IEnumerable<NPCChatDialogItemBase> items)
+        protected override void SetReadValues(ushort index, string title, IEnumerable<NPCChatDialogItemBase> items)
         {
             _index = index;
+            _title = title;
 
             // Clear the array
             for (int i = 0; i < _dialogItems.Length; i++)
@@ -159,6 +170,11 @@ namespace NetGore.EditorTools
             {
                 Add((EditorNPCChatDialogItem)item);
             }
+        }
+
+        public void SetTitle(string value)
+        {
+            _title = value;
         }
     }
 }

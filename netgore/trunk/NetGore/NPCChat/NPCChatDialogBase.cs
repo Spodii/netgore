@@ -16,6 +16,12 @@ namespace NetGore.NPCChat
         public abstract ushort Index { get; }
 
         /// <summary>
+        /// When overridden in the derived class, gets the title for this dialog. The title is primarily
+        /// used for debugging and development purposes only.
+        /// </summary>
+        public abstract string Title { get; }
+
+        /// <summary>
         /// NPCChatDialogBase constructor.
         /// </summary>
         protected NPCChatDialogBase()
@@ -67,6 +73,7 @@ namespace NetGore.NPCChat
         public void Read(IValueReader reader)
         {
             ushort index = reader.ReadUShort("Index");
+            string title = reader.ReadString("Title");
             ushort itemCount = reader.ReadUShort("ItemCount");
             var itemReaders = reader.ReadNodes("Item", itemCount);
 
@@ -78,15 +85,16 @@ namespace NetGore.NPCChat
                 i++;
             }
 
-            SetReadValues(index, items);
+            SetReadValues(index, title, items);
         }
 
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
         /// <param name="index">The index.</param>
+        /// <param name="title">The title.</param>
         /// <param name="items">The dialog items.</param>
-        protected abstract void SetReadValues(ushort index, IEnumerable<NPCChatDialogItemBase> items);
+        protected abstract void SetReadValues(ushort index, string title, IEnumerable<NPCChatDialogItemBase> items);
 
         /// <summary>
         /// Writes the NPCChatDialogBase's values to an IValueWriter.
@@ -97,6 +105,7 @@ namespace NetGore.NPCChat
             var items = GetDialogItems();
 
             writer.Write("Index", Index);
+            writer.Write("Title", Title);
             writer.Write("ItemCount", (ushort)items.Count());
 
             foreach (NPCChatDialogItemBase item in items)

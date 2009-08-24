@@ -2,17 +2,20 @@
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore;
 using NetGore.EditorTools;
-using NetGore.IO;
+using NetGore.NPCChat;
 
 namespace DemoGame.NPCChatEditor
 {
     public partial class frmMain : Form
     {
-        EditorNPCChatDialog _dialog;
         bool _doNotUpdateObj;
         object _editingObj;
+
+        EditorNPCChatDialog CurrentDialog
+        {
+            get { return npcChatDialogView.NPCChatDialog; }
+        }
 
         EditorNPCChatDialogItem EditingObjAsDialogItem
         {
@@ -66,7 +69,7 @@ namespace DemoGame.NPCChatEditor
             if (EditingObjAsResponse != null)
             {
                 EditorNPCChatDialogItem responseSource =
-                    _dialog.Items.FirstOrDefault(x => x.ResponseList.Contains(EditingObjAsResponse));
+                    CurrentDialog.Items.FirstOrDefault(x => x.ResponseList.Contains(EditingObjAsResponse));
                 if (responseSource != null)
                 {
                     responseSource.ResponseList.Remove(EditingObjAsResponse);
@@ -80,27 +83,57 @@ namespace DemoGame.NPCChatEditor
         void button1_Click(object sender, EventArgs e)
         {
             // This button is just here for debugging purposes. Ideally, we won't even actually "need" it.
-
+            EditorNPCChatDialog dialog = CurrentDialog;
             npcChatDialogView.NPCChatDialog = null;
-            npcChatDialogView.NPCChatDialog = _dialog;
+            npcChatDialogView.NPCChatDialog = dialog;
             npcChatDialogView.ExpandAll();
 
             // NOTE: Temp
-            string filePath = ContentPaths.Build.Data.Join("TestChat.xml");
-            using (XmlValueWriter writer = new XmlValueWriter(filePath, "ChatDialogs"))
-            {
-                writer.WriteStartNode("ChatDialog");
-                _dialog.Write(writer);
-                writer.WriteEndNode("ChatDialog");
-            }
+            EditorNPCChatManager.Save();
+        }
 
-            XmlValueReader reader = new XmlValueReader(filePath, "ChatDialogs");
-            IValueReader chatDialogReader = reader.ReadNodes("ChatDialog", 1).First();
-            EditorNPCChatDialog newChatDialog = new EditorNPCChatDialog();
-            newChatDialog.Read(chatDialogReader);
+        void cmbSelectedDialog_OnChangeDialog(NPCChatDialogComboBox sender, NPCChatDialogBase dialog)
+        {
+            var initialDoNotUpdateValue = _doNotUpdateObj;
+            _doNotUpdateObj = false;
 
-            npcChatDialogView.NPCChatDialog = newChatDialog;
+            EditorNPCChatManager.Save();
+
+            npcChatDialogView.NPCChatDialog = (EditorNPCChatDialog)dialog;
             npcChatDialogView.ExpandAll();
+
+            txtDialogTitle.Text = CurrentDialog.Title;
+
+            _doNotUpdateObj = initialDoNotUpdateValue;
+        }
+
+        /// <summary>
+        /// Creates the test dialog.
+        /// </summary>
+        /// <returns>The test dialog.</returns>
+        // ReSharper disable UnusedMember.Local
+        static EditorNPCChatDialog CreateTestDialog() // ReSharper restore UnusedMember.Local
+        {
+            EditorNPCChatDialog dialog = new EditorNPCChatDialog();
+
+            EditorNPCChatDialogItem haveYouDoneThisQuest = new EditorNPCChatDialogItem(0, "Have you done this quest?");
+            haveYouDoneThisQuest.AddResponse(new EditorNPCChatResponse(1, "False"), new EditorNPCChatResponse(2, "True"));
+
+            EditorNPCChatDialogItem hasNotDoneThisQuest = new EditorNPCChatDialogItem(1, "Think you can help me out?");
+            hasNotDoneThisQuest.AddResponse(new EditorNPCChatResponse(3, "Yes"), new EditorNPCChatResponse(4, "No"));
+
+            EditorNPCChatDialogItem acceptHelp = new EditorNPCChatDialogItem(3, "Sweet, thanks!");
+
+            EditorNPCChatDialogItem declineHelp = new EditorNPCChatDialogItem(4, "Fine. Screw you too, you selfish jerk!");
+
+            EditorNPCChatDialogItem hasDoneThisQuest = new EditorNPCChatDialogItem(2, "Sorry dude, you already did this quest!");
+            hasDoneThisQuest.AddResponse(new EditorNPCChatResponse(1, "So? Just let me fucking do it!"),
+                new EditorNPCChatResponse("Ok, fine, whatever. Asshole."));
+
+            dialog.Add(new EditorNPCChatDialogItem[]
+            { haveYouDoneThisQuest, hasNotDoneThisQuest, acceptHelp, declineHelp, hasDoneThisQuest });
+
+            return dialog;
         }
 
         void DisableAllTabsExcept(TabControl tabControl, TabPage enabledTab)
@@ -121,27 +154,24 @@ namespace DemoGame.NPCChatEditor
 
         void Form1_Load(object sender, EventArgs e)
         {
-            _dialog = new EditorNPCChatDialog();
+            try
+            {
+                cmbSelectedDialog.Items.Clear();
+                cmbSelectedDialog.AddDialog(EditorNPCChatManager.Dialogs.OfType<NPCChatDialogBase>());
 
-            EditorNPCChatDialogItem haveYouDoneThisQuest = new EditorNPCChatDialogItem(0, "Have you done this quest?");
-            haveYouDoneThisQuest.AddResponse(new EditorNPCChatResponse(1, "False"), new EditorNPCChatResponse(2, "True"));
+                if (cmbSelectedDialog.Items.Count > 0)
+                    cmbSelectedDialog.SelectedIndex = 0;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+                throw;
+            }
+        }
 
-            EditorNPCChatDialogItem hasNotDoneThisQuest = new EditorNPCChatDialogItem(1, "Think you can help me out?");
-            hasNotDoneThisQuest.AddResponse(new EditorNPCChatResponse(3, "Yes"), new EditorNPCChatResponse(4, "No"));
-
-            EditorNPCChatDialogItem acceptHelp = new EditorNPCChatDialogItem(3, "Sweet, thanks!");
-
-            EditorNPCChatDialogItem declineHelp = new EditorNPCChatDialogItem(4, "Fine. Screw you too, you selfish jerk!");
-
-            EditorNPCChatDialogItem hasDoneThisQuest = new EditorNPCChatDialogItem(2, "Sorry dude, you already did this quest!");
-            hasDoneThisQuest.AddResponse(new EditorNPCChatResponse(1, "So? Just let me fucking do it!"),
-                new EditorNPCChatResponse("Ok, fine, whatever. Asshole."));
-
-            _dialog.Add(new EditorNPCChatDialogItem[]
-            { haveYouDoneThisQuest, hasNotDoneThisQuest, acceptHelp, declineHelp, hasDoneThisQuest });
-
-            npcChatDialogView.NPCChatDialog = _dialog;
-            npcChatDialogView.ExpandAll();
+        void frmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            EditorNPCChatManager.Save();
         }
 
         void frmMain_Resize(object sender, EventArgs e)
@@ -233,6 +263,15 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetTitle(txtTitle.Text);
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
+        }
+
+        private void txtDialogTitle_TextChanged(object sender, EventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+
+            if (CurrentDialog != null)
+                CurrentDialog.SetTitle(txtDialogTitle.Text);
         }
     }
 }

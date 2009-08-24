@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -15,6 +16,14 @@ namespace NetGore.EditorTools
 
             // Add the new dialog
             _instance[dialog.Index] = dialog;
+        }
+
+        public static IEnumerable<EditorNPCChatDialog> Dialogs
+        {
+            get 
+            {
+                return _instance.Cast<EditorNPCChatDialog>();
+            }
         }
 
         public static EditorNPCChatDialog GetDialog(int index)
