@@ -26,19 +26,6 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Reorganizes the internal buffer to ensure the indices all match up. Only needed if IsReadonly is false
-        /// and you don't manually update the indices.
-        /// </summary>
-        public void Reorganize()
-        {
-            var dialogs = _npcChatDialogs.ToArray();
-            _npcChatDialogs.Clear();
-
-            foreach (var dialog in dialogs)
-                _npcChatDialogs[dialog.Index] = dialog;
-        }
-
-        /// <summary>
         /// Gets the NPCChatDialogBase at the specified index.
         /// </summary>
         /// <param name="index">Index of the NPCChatDialogBase.</param>
@@ -127,6 +114,21 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// Reorganizes the internal buffer to ensure the indices all match up. Only needed if IsReadonly is false
+        /// and you don't manually update the indices.
+        /// </summary>
+        public void Reorganize()
+        {
+            var dialogs = _npcChatDialogs.ToArray();
+            _npcChatDialogs.Clear();
+
+            foreach (NPCChatDialogBase dialog in dialogs)
+            {
+                _npcChatDialogs[dialog.Index] = dialog;
+            }
+        }
+
+        /// <summary>
         /// Saves the NPCChatDialogBases in this NPCChatManagerBase to file.
         /// </summary>
         public void Save()
@@ -166,6 +168,8 @@ namespace NetGore.NPCChat
             File.Delete(tempFilePath);
         }
 
+        #region IEnumerable<NPCChatDialogBase> Members
+
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
@@ -189,5 +193,7 @@ namespace NetGore.NPCChat
         {
             return GetEnumerator();
         }
+
+        #endregion
     }
 }

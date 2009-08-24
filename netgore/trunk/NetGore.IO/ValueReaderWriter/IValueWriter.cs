@@ -16,18 +16,6 @@ namespace NetGore.IO
         bool SupportsNameLookup { get; }
 
         /// <summary>
-        /// Writes the start of a child node in this IValueWriter.
-        /// </summary>
-        /// <param name="name">Name of the child node.</param>
-        void WriteStartNode(string name);
-
-        /// <summary>
-        /// Writes the end of a child node in this IValueWriter.
-        /// </summary>
-        /// <param name="name">Name of the child node.</param>
-        void WriteEndNode(string name);
-
-        /// <summary>
         /// Writes a 32-bit signed integer.
         /// </summary>
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
@@ -116,5 +104,17 @@ namespace NetGore.IO
         /// from other values when reading.</param>
         /// <param name="value">String to write.</param>
         void Write(string name, string value);
+
+        /// <summary>
+        /// Writes the end of a child node in this IValueWriter.
+        /// </summary>
+        /// <param name="name">Name of the child node.</param>
+        void WriteEndNode(string name);
+
+        /// <summary>
+        /// Writes the start of a child node in this IValueWriter.
+        /// </summary>
+        /// <param name="name">Name of the child node.</param>
+        void WriteStartNode(string name);
     }
 }

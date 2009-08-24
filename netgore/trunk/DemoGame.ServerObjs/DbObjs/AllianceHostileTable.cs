@@ -158,7 +158,7 @@ namespace DemoGame.Server.DbObjs
 
                 case "placeholder":
                     return new ColumnMetadata("placeholder", "Unused placeholder column - please do not remove",
-                                              "tinyint(3) unsigned", null, typeof(byte?), true, false, false);
+                        "tinyint(3) unsigned", null, typeof(byte?), true, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");

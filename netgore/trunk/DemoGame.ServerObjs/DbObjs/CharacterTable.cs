@@ -26,13 +26,11 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[]
-                                              {
-                                                  "acc", "agi", "armor", "body_id", "bra", "cash", "character_template_id",
-                                                  "defence", "dex", "evade", "exp", "hp", "id", "imm", "int", "level", "map_id",
-                                                  "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "password", "perc", "recov",
-                                                  "regen", "respawn_map", "respawn_x", "respawn_y", "statpoints", "str", "tact",
-                                                  "ws", "x", "y"
-                                              };
+        {
+            "acc", "agi", "armor", "body_id", "bra", "cash", "character_template_id", "defence", "dex", "evade", "exp", "hp", "id",
+            "imm", "int", "level", "map_id", "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "password", "perc", "recov",
+            "regen", "respawn_map", "respawn_x", "respawn_y", "statpoints", "str", "tact", "ws", "x", "y"
+        };
 
         /// <summary>
         /// Array of the database column names for columns that are primary keys.
@@ -43,22 +41,20 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
-                                                    {
-                                                        "acc", "agi", "armor", "body_id", "bra", "cash", "character_template_id",
-                                                        "defence", "dex", "evade", "exp", "hp", "imm", "int", "level", "map_id",
-                                                        "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "password", "perc",
-                                                        "recov", "regen", "respawn_map", "respawn_x", "respawn_y", "statpoints",
-                                                        "str", "tact", "ws", "x", "y"
-                                                    };
+        {
+            "acc", "agi", "armor", "body_id", "bra", "cash", "character_template_id", "defence", "dex", "evade", "exp", "hp", "imm",
+            "int", "level", "map_id", "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "password", "perc", "recov", "regen",
+            "respawn_map", "respawn_x", "respawn_y", "statpoints", "str", "tact", "ws", "x", "y"
+        };
 
         /// <summary>
         /// The fields that are used in the column collection `Stat`.
         /// </summary>
         static readonly String[] _statColumns = new string[]
-                                                {
-                                                    "acc", "agi", "armor", "bra", "defence", "dex", "evade", "imm", "int", "maxhit",
-                                                    "maxhp", "maxmp", "minhit", "perc", "recov", "regen", "str", "tact", "ws"
-                                                };
+        {
+            "acc", "agi", "armor", "bra", "defence", "dex", "evade", "imm", "int", "maxhit", "maxhp", "maxmp", "minhit", "perc",
+            "recov", "regen", "str", "tact", "ws"
+        };
 
         /// <summary>
         /// Dictionary containing the values for the column collection `Stat`.
@@ -416,7 +412,7 @@ namespace DemoGame.Server.DbObjs
 
                 case "character_template_id":
                     return new ColumnMetadata("character_template_id", "", "smallint(5) unsigned", null, typeof(ushort?), true,
-                                              false, true);
+                        false, true);
 
                 case "defence":
                     return new ColumnMetadata("defence", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);

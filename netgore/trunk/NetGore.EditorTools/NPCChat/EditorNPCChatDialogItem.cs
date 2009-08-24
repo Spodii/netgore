@@ -14,9 +14,9 @@ namespace NetGore.EditorTools
     /// </summary>
     public class EditorNPCChatDialogItem : NPCChatDialogItemBase
     {
+        readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
         readonly List<TreeNode> _treeNodes = new List<TreeNode>();
         ushort _index;
-        readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
         string _text;
         string _title;
 
@@ -34,25 +34,6 @@ namespace NetGore.EditorTools
         public List<EditorNPCChatResponse> ResponseList
         {
             get { return _responses; }
-        }
-
-        public void AddResponse(params EditorNPCChatResponse[] responses)
-        {
-            if (responses == null)
-                return;
-
-            foreach (var response in responses)
-                AddResponse(response);
-        }
-
-        public void AddResponse(EditorNPCChatResponse response)
-        {
-            if (response == null)
-                throw new ArgumentNullException("response");
-
-            _responses.Add(response);
-            int index = _responses.IndexOf(response);
-            response.SetValue((byte)index);
         }
 
         /// <summary>
@@ -104,6 +85,27 @@ namespace NetGore.EditorTools
             SetTitle(title);
 
             _index = index;
+        }
+
+        public void AddResponse(params EditorNPCChatResponse[] responses)
+        {
+            if (responses == null)
+                return;
+
+            foreach (EditorNPCChatResponse response in responses)
+            {
+                AddResponse(response);
+            }
+        }
+
+        public void AddResponse(EditorNPCChatResponse response)
+        {
+            if (response == null)
+                throw new ArgumentNullException("response");
+
+            _responses.Add(response);
+            int index = _responses.IndexOf(response);
+            response.SetValue((byte)index);
         }
 
         /// <summary>

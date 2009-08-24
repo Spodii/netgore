@@ -183,7 +183,7 @@ namespace DemoGame
 
             Debug.Assert(!_dynamicEntities.Contains(entity), "DynamicEntity is already in the DynamicEntity list!");
             Debug.Assert(!_dynamicEntities.CanGet((int)mapEntityIndex) || _dynamicEntities[(int)mapEntityIndex] == null,
-                         "A DynamicEntity already exists at this MapEntityIndex!");
+                "A DynamicEntity already exists at this MapEntityIndex!");
 
             entity.MapEntityIndex = mapEntityIndex;
             _dynamicEntities[(int)mapEntityIndex] = entity;
@@ -1025,13 +1025,13 @@ namespace DemoGame
             // Predicate that will check if an Entity inherits interface IUsableEntity,
             // and if it can be used by the specified CharacterEntity
             Predicate<Entity> pred = delegate(Entity entity)
-                                     {
-                                         IUsableEntity usable = entity as IUsableEntity;
-                                         if (usable == null)
-                                             return false;
+            {
+                IUsableEntity usable = entity as IUsableEntity;
+                if (usable == null)
+                    return false;
 
-                                         return usable.CanUse(charEntity);
-                                     };
+                return usable.CanUse(charEntity);
+            };
 
             return GetEntity(rect, pred) as IUsableEntity;
         }
@@ -1349,7 +1349,7 @@ namespace DemoGame
             if ((dynamicEntity = entity as DynamicEntity) != null)
             {
                 Debug.Assert(_dynamicEntities[(int)dynamicEntity.MapEntityIndex] == dynamicEntity,
-                             "DynamicEntity is holding an invalid MapEntityIndex!");
+                    "DynamicEntity is holding an invalid MapEntityIndex!");
                 _dynamicEntities.RemoveAt((int)dynamicEntity.MapEntityIndex);
             }
 

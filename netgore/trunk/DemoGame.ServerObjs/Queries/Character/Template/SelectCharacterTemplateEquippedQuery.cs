@@ -12,7 +12,7 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString =
             string.Format("SELECT * FROM `{0}` WHERE `character_template_id`=@characterTemplateID",
-                          CharacterTemplateEquippedTable.TableName);
+                CharacterTemplateEquippedTable.TableName);
 
         public SelectCharacterTemplateEquippedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

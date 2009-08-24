@@ -31,25 +31,6 @@ namespace NetGore.NPCChat
         public abstract byte Value { get; }
 
         /// <summary>
-        /// Writes the NPCChatDialogItemBase's values to an IValueWriter.
-        /// </summary>
-        /// <param name="writer">IValueWriter to write the values to.</param>
-        public void Write(IValueWriter writer)
-        {
-            writer.Write("Value", Value);
-            writer.Write("Page", Page);
-            writer.Write("Text", Text ?? string.Empty);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, sets the values read from the Read method.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <param name="page">The page.</param>
-        /// <param name="text">The text.</param>
-        protected abstract void SetReadValues(byte value, ushort page, string text);
-
-        /// <summary>
         /// NPCChatResponseBase constructor.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -76,6 +57,25 @@ namespace NetGore.NPCChat
             string text = reader.ReadString("Text");
 
             SetReadValues(value, page, text);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the values read from the Read method.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <param name="page">The page.</param>
+        /// <param name="text">The text.</param>
+        protected abstract void SetReadValues(byte value, ushort page, string text);
+
+        /// <summary>
+        /// Writes the NPCChatDialogItemBase's values to an IValueWriter.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write the values to.</param>
+        public void Write(IValueWriter writer)
+        {
+            writer.Write("Value", Value);
+            writer.Write("Page", Page);
+            writer.Write("Text", Text ?? string.Empty);
         }
     }
 }

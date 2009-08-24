@@ -45,17 +45,17 @@ namespace NetGore.Db.ClassCreator
             _customTypes =
                 customTypes.Where(
                     x =>
-                    x.Columns.Count() > 0 &&
-                    (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) || x.Tables.Contains(tableNameWildcard))).
-                    ToArray();
+                        x.Columns.Count() > 0 &&
+                            (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) ||
+                                x.Tables.Contains(tableNameWildcard))).ToArray();
 
             // Column collections filter
             ColumnCollections =
                 columnCollections.Where(
                     x =>
-                    x.Columns.Count() > 0 &&
-                    (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) || x.Tables.Contains(tableNameWildcard))).
-                    ToArray();
+                        x.Columns.Count() > 0 &&
+                            (x.Tables.Contains(TableName, StringComparer.OrdinalIgnoreCase) ||
+                                x.Tables.Contains(tableNameWildcard))).ToArray();
 
             // Populate the external types dictionary
             foreach (DbColumnInfo column in columns)
@@ -76,9 +76,9 @@ namespace NetGore.Db.ClassCreator
             foreach (DbColumnInfo column in columns)
             {
                 _privateNames.Add(column,
-                                  formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, GetInternalType(column)));
+                    formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, GetInternalType(column)));
                 _publicNames.Add(column,
-                                 formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, GetExternalType(column)));
+                    formatter.GetFieldName(column.Name, MemberVisibilityLevel.Public, GetExternalType(column)));
                 _parameterNames.Add(column, formatter.GetParameterName(column.Name, column.Type));
             }
         }
@@ -127,7 +127,7 @@ namespace NetGore.Db.ClassCreator
                 {
                     throw new Exception(
                         string.Format("DbColumnInfo for column `{0}` in table `{1}` matched more than one ColumnCollection!",
-                                      dbColumn.Name, TableName));
+                            dbColumn.Name, TableName));
                 }
             }
 

@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     public class InsertCharacterEquippedItemQuery : DbQueryNonReader<CharacterEquippedTable>
     {
         static readonly string _queryString = string.Format("INSERT INTO `{0}` SET {1}", CharacterEquippedTable.TableName,
-                                                            FormatParametersIntoString(CharacterEquippedTable.DbColumns));
+            FormatParametersIntoString(CharacterEquippedTable.DbColumns));
 
         public InsertCharacterEquippedItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

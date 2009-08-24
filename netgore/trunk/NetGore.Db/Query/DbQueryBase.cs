@@ -55,10 +55,10 @@ namespace NetGore.Db
             _connectionPool = connectionPool;
             _commandText = commandText;
 
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             // NOTE: Is this going to be okay? Will the virtual member call in constructor cause problems with this design?
             _parameters = InitializeParameters() ?? Enumerable.Empty<DbParameter>();
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             // Keep track if we have any parameters or not
             _hasParameters = (_parameters.Count() > 0);
@@ -140,7 +140,7 @@ namespace NetGore.Db
         protected IEnumerable<DbParameter> CreateParameters(string param1, string param2, string param3, string param4)
         {
             return new DbParameter[]
-                   { CreateParameter(param1), CreateParameter(param2), CreateParameter(param3), CreateParameter(param4) };
+            { CreateParameter(param1), CreateParameter(param2), CreateParameter(param3), CreateParameter(param4) };
         }
 
         /// <summary>

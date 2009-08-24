@@ -1140,7 +1140,7 @@ namespace NetGore.IO.Tests
             BitStream bs = new BitStream(BitStreamMode.Write, 65536);
 
             var strings = new string[]
-                          { "Hello", "", "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "1234567890!@#$%^&*()" };
+            { "Hello", "", "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "1234567890!@#$%^&*()" };
 
             foreach (string s in strings)
             {

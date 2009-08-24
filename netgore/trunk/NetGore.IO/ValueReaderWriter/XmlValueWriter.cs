@@ -12,10 +12,10 @@ namespace NetGore.IO
     /// </summary>
     public class XmlValueWriter : IValueWriter
     {
-        readonly XmlWriter _writer;
         readonly bool _disposeWriter;
-        bool _disposed;
         readonly Stack<string> _nodeStack = new Stack<string>(4);
+        readonly XmlWriter _writer;
+        bool _disposed;
 
         /// <summary>
         /// XmlValueWriter constructor.
@@ -26,7 +26,7 @@ namespace NetGore.IO
         {
             _disposeWriter = true;
             _writer = XmlWriter.Create(filePath, new XmlWriterSettings { Indent = true });
-            
+
             if (_writer == null)
                 throw new ArgumentException("filePath");
 
@@ -113,7 +113,7 @@ namespace NetGore.IO
                 throw new ArgumentException(errmsg);
             }
 
-            var expectedName = _nodeStack.Pop();
+            string expectedName = _nodeStack.Pop();
             if (name != expectedName)
             {
                 const string errmsg = "Node name `{0}` does not match the expected name `{1}`.";

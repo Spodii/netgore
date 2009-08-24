@@ -94,28 +94,20 @@ namespace NetGore.IO.Tests
             {
                 // Create lookup dictionary
                 var dict = new Dictionary<string, IEnumerable<NodeItem>>
-                           {
-                               {
-                                   "Form1",
-                                   new NodeItem[]
-                                   { new NodeItem("Name", "MyForm1"), new NodeItem("X", 100), new NodeItem("Y", 244) }
-                                   },
-                               {
-                                   "Form2",
-                                   new NodeItem[]
-                                   { new NodeItem("Name", "MyForm2"), new NodeItem("X", 140), new NodeItem("Y", 224) }
-                                   },
-                               {
-                                   "QuickBar1",
-                                   new NodeItem[]
-                                   { new NodeItem("Slot", 1), new NodeItem("Type", "Item"), new NodeItem("Value", 4) }
-                                   },
-                               {
-                                   "QuickBar2",
-                                   new NodeItem[]
-                                   { new NodeItem("Slot", 1), new NodeItem("Type", "Item"), new NodeItem("Value", 10) }
-                                   }
-                           };
+                {
+                    { "Form1", new NodeItem[] { new NodeItem("Name", "MyForm1"), new NodeItem("X", 100), new NodeItem("Y", 244) } },
+                    {
+                        "Form2", new NodeItem[] { new NodeItem("Name", "MyForm2"), new NodeItem("X", 140), new NodeItem("Y", 224) }
+                        },
+                    {
+                        "QuickBar1",
+                        new NodeItem[] { new NodeItem("Slot", 1), new NodeItem("Type", "Item"), new NodeItem("Value", 4) }
+                        },
+                    {
+                        "QuickBar2",
+                        new NodeItem[] { new NodeItem("Slot", 1), new NodeItem("Type", "Item"), new NodeItem("Value", 10) }
+                        }
+                };
 
                 // Write values
                 using (SimpleXmlWriter w = new SimpleXmlWriter(path, "RootTestNode"))

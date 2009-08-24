@@ -16,16 +16,6 @@ namespace NetGore.IO
         bool SupportsNameLookup { get; }
 
         /// <summary>
-        /// Reads one or more child nodes from the IValueReader.
-        /// </summary>
-        /// <param name="name">Name of the nodes to read.</param>
-        /// <param name="count">The number of nodes to read. If this value is 0, an empty IEnumerable of IValueReaders
-        /// will be returned, even if the key could not be found.</param>
-        /// <returns>An IEnumerable of IValueReaders used to read the nodes.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Count is less than 0.</exception>
-        IEnumerable<IValueReader> ReadNodes(string name, int count);
-
-        /// <summary>
         /// Reads a boolean.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
@@ -60,6 +50,16 @@ namespace NetGore.IO
         /// <param name="bits">Number of bits to read.</param>
         /// <returns>Value read from the reader.</returns>
         int ReadInt(string name, int bits);
+
+        /// <summary>
+        /// Reads one or more child nodes from the IValueReader.
+        /// </summary>
+        /// <param name="name">Name of the nodes to read.</param>
+        /// <param name="count">The number of nodes to read. If this value is 0, an empty IEnumerable of IValueReaders
+        /// will be returned, even if the key could not be found.</param>
+        /// <returns>An IEnumerable of IValueReaders used to read the nodes.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Count is less than 0.</exception>
+        IEnumerable<IValueReader> ReadNodes(string name, int count);
 
         /// <summary>
         /// Reads a 8-bit signed integer.

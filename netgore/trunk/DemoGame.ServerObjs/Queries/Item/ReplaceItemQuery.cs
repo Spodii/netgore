@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     public class ReplaceItemQuery : DbQueryNonReader<IItemTable>
     {
         static readonly string _queryString = string.Format("REPLACE INTO `{0}` {1}", ItemTable.TableName,
-                                                            FormatParametersIntoValuesString(ItemTable.DbColumns));
+            FormatParametersIntoValuesString(ItemTable.DbColumns));
 
         public ReplaceItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

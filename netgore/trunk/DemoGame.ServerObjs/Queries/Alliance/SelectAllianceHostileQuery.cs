@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class SelectAllianceHostileQuery : DbQueryReader<AllianceID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `alliance_id`=@id",
-                                                            AllianceHostileTable.TableName);
+            AllianceHostileTable.TableName);
 
         public SelectAllianceHostileQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

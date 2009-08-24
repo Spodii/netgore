@@ -12,7 +12,7 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString =
             string.Format("SELECT {0}.* FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
-                          ItemTable.TableName, CharacterInventoryTable.TableName);
+                ItemTable.TableName, CharacterInventoryTable.TableName);
 
         public SelectCharacterInventoryItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

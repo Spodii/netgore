@@ -24,7 +24,7 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[]
-                                              { "chance", "character_template_id", "id", "item_template_id", "max", "min" };
+        { "chance", "character_template_id", "id", "item_template_id", "max", "min" };
 
         /// <summary>
         /// Array of the database column names for columns that are primary keys.
@@ -35,7 +35,7 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
-                                                    { "chance", "character_template_id", "item_template_id", "max", "min" };
+        { "chance", "character_template_id", "item_template_id", "max", "min" };
 
         /// <summary>
         /// The field that maps onto the database column `chance`.
@@ -185,14 +185,14 @@ namespace DemoGame.Server.DbObjs
 
                 case "character_template_id":
                     return new ColumnMetadata("character_template_id", "", "smallint(5) unsigned", null, typeof(UInt16), false,
-                                              false, true);
+                        false, true);
 
                 case "id":
                     return new ColumnMetadata("id", "", "int(11)", null, typeof(Int32), false, true, false);
 
                 case "item_template_id":
                     return new ColumnMetadata("item_template_id", "", "smallint(5) unsigned", null, typeof(UInt16), false, false,
-                                              true);
+                        true);
 
                 case "max":
                     return new ColumnMetadata("max", "", "tinyint(3) unsigned", null, typeof(Byte), false, false, false);

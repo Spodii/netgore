@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -15,6 +14,23 @@ namespace NetGore.EditorTools
     public class EditorNPCChatDialog : NPCChatDialogBase
     {
         EditorNPCChatDialogItem[] _dialogItems = new EditorNPCChatDialogItem[8];
+        ushort _index;
+
+        public event EditorNPCChatDialogEventHandler OnChange;
+
+        /// <summary>
+        /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
+        /// distinguish each NPCChatDialogBase from one another.
+        /// </summary>
+        public override ushort Index
+        {
+            get { return _index; }
+        }
+
+        public IEnumerable<EditorNPCChatDialogItem> Items
+        {
+            get { return _dialogItems.Where(x => x != null); }
+        }
 
         /// <summary>
         /// EditorNPCChatDialog constructor.
@@ -29,13 +45,6 @@ namespace NetGore.EditorTools
         /// <param name="reader">IValueReader to read the values from.</param>
         public EditorNPCChatDialog(IValueReader reader) : base(reader)
         {
-        }
-
-        public event EditorNPCChatDialogEventHandler OnChange;
-
-        public IEnumerable<EditorNPCChatDialogItem> Items
-        {
-            get { return _dialogItems.Where(x => x != null); }
         }
 
         public void Add(IEnumerable<EditorNPCChatDialogItem> items)
@@ -59,20 +68,14 @@ namespace NetGore.EditorTools
                 OnChange(this);
         }
 
-        ushort _index;
-
-        public void SetIndex(ushort value)
-        {
-            _index = value;
-        }
-
         /// <summary>
-        /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
-        /// distinguish each NPCChatDialogBase from one another.
+        /// When overridden in the derived class, creates an NPCChatDialogItemBase using the given IValueReader.
         /// </summary>
-        public override ushort Index
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <returns>An NPCChatDialogItemBase created using the given IValueReader.</returns>
+        protected override NPCChatDialogItemBase CreateDialogItem(IValueReader reader)
         {
-            get { return _index; }
+            return new EditorNPCChatDialogItem(reader);
         }
 
         /// <summary>
@@ -95,16 +98,6 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the initial NPCChatDialogItemBase that is used at the
-        /// start of a conversation.
-        /// </summary>
-        /// <returns>The initial NPCChatDialogItemBase that is used at the start of a conversation.</returns>
-        public override NPCChatDialogItemBase GetInitialDialogItem()
-        {
-            return GetInitialDialogItemCasted();
-        }
-
-        /// <summary>
         /// When overridden in the derived class, gets an IEnumerable of the NPCChatDialogItemBases in this
         /// NPCChatDialogBase.
         /// </summary>
@@ -115,29 +108,13 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the values read from the Read method.
+        /// When overridden in the derived class, gets the initial NPCChatDialogItemBase that is used at the
+        /// start of a conversation.
         /// </summary>
-        protected override void SetReadValues(ushort index, IEnumerable<NPCChatDialogItemBase> items)
+        /// <returns>The initial NPCChatDialogItemBase that is used at the start of a conversation.</returns>
+        public override NPCChatDialogItemBase GetInitialDialogItem()
         {
-            _index = index;
-
-            // Clear the array
-            for (int i = 0; i < _dialogItems.Length; i++)
-                _dialogItems[i] = null;
-            
-            // Set the new items
-            foreach (var item in items)
-                Add((EditorNPCChatDialogItem)item);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, creates an NPCChatDialogItemBase using the given IValueReader.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        /// <returns>An NPCChatDialogItemBase created using the given IValueReader.</returns>
-        protected override NPCChatDialogItemBase CreateDialogItem(IValueReader reader)
-        {
-            return new EditorNPCChatDialogItem(reader);
+            return GetInitialDialogItemCasted();
         }
 
         public EditorNPCChatDialogItem GetInitialDialogItemCasted()
@@ -157,6 +134,31 @@ namespace NetGore.EditorTools
             }
 
             Array.Resize(ref array, newSize);
+        }
+
+        public void SetIndex(ushort value)
+        {
+            _index = value;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the values read from the Read method.
+        /// </summary>
+        protected override void SetReadValues(ushort index, IEnumerable<NPCChatDialogItemBase> items)
+        {
+            _index = index;
+
+            // Clear the array
+            for (int i = 0; i < _dialogItems.Length; i++)
+            {
+                _dialogItems[i] = null;
+            }
+
+            // Set the new items
+            foreach (NPCChatDialogItemBase item in items)
+            {
+                Add((EditorNPCChatDialogItem)item);
+            }
         }
     }
 }

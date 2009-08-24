@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     public class ReplaceCharacterStatusEffectQuery : DbQueryNonReader<ICharacterStatusEffectTable>
     {
         static readonly string _queryString = string.Format("REPLACE INTO `{0}` {1}", CharacterStatusEffectTable.TableName,
-                                                            FormatParametersIntoValuesString(CharacterStatusEffectTable.DbColumns));
+            FormatParametersIntoValuesString(CharacterStatusEffectTable.DbColumns));
 
         public ReplaceCharacterStatusEffectQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
