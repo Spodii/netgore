@@ -93,7 +93,6 @@
     <Compile Include="MapEntityIndex.cs" />
     <Compile Include="MapIndex.cs" />
     <Compile Include="MethodInfoHelper.cs" />
-    <Compile Include="NPCChat\INPCChatDialogItem.cs" />
     <Compile Include="NPCChat\NPCChatDialogBase.cs" />
     <Compile Include="NPCChat\NPCChatDialogItemBase.cs" />
     <Compile Include="NPCChat\NPCChatManagerBase.cs" />

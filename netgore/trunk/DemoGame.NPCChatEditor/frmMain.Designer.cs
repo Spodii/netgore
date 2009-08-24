@@ -48,7 +48,10 @@ namespace DemoGame.NPCChatEditor
             this.txtRedirectIndex = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
-            this.npcChatDialogView = new NPCChatDialogView();
+            this.label6 = new System.Windows.Forms.Label();
+            this.txtDialogTitle = new System.Windows.Forms.TextBox();
+            this.cmbSelectedDialog = new NetGore.EditorTools.NPCChatDialogComboBox();
+            this.npcChatDialogView = new NetGore.EditorTools.NPCChatDialogView();
             this.gbSelectedNode.SuspendLayout();
             this.tcChatDialogItem.SuspendLayout();
             this.tpDialog.SuspendLayout();
@@ -235,15 +238,41 @@ namespace DemoGame.NPCChatEditor
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 38);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(63, 13);
+            this.label6.TabIndex = 10;
+            this.label6.Text = "Dialog Title:";
+            // 
+            // txtDialogTitle
+            // 
+            this.txtDialogTitle.Location = new System.Drawing.Point(81, 35);
+            this.txtDialogTitle.Name = "txtDialogTitle";
+            this.txtDialogTitle.Size = new System.Drawing.Size(360, 20);
+            this.txtDialogTitle.TabIndex = 11;
+            this.txtDialogTitle.TextChanged += new System.EventHandler(this.txtDialogTitle_TextChanged);
+            // 
+            // cmbSelectedDialog
+            // 
+            this.cmbSelectedDialog.FormattingEnabled = true;
+            this.cmbSelectedDialog.Location = new System.Drawing.Point(12, 8);
+            this.cmbSelectedDialog.Name = "cmbSelectedDialog";
+            this.cmbSelectedDialog.Size = new System.Drawing.Size(429, 21);
+            this.cmbSelectedDialog.TabIndex = 9;
+            this.cmbSelectedDialog.OnChangeDialog += new NetGore.EditorTools.NPCChatDialogComboBoxChangeDialogHandler(this.cmbSelectedDialog_OnChangeDialog);
+            // 
             // npcChatDialogView
             // 
-            this.npcChatDialogView.Location = new System.Drawing.Point(12, 12);
+            this.npcChatDialogView.Location = new System.Drawing.Point(12, 64);
             this.npcChatDialogView.Name = "npcChatDialogView";
             this.npcChatDialogView.NodeForeColorGoTo = System.Drawing.Color.Blue;
             this.npcChatDialogView.NodeForeColorNormal = System.Drawing.Color.Black;
             this.npcChatDialogView.NodeForeColorResponse = System.Drawing.Color.Green;
             this.npcChatDialogView.NPCChatDialog = null;
-            this.npcChatDialogView.Size = new System.Drawing.Size(445, 355);
+            this.npcChatDialogView.Size = new System.Drawing.Size(445, 303);
             this.npcChatDialogView.TabIndex = 0;
             this.npcChatDialogView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.npcChatDialogView_NodeMouseClick);
             // 
@@ -252,6 +281,9 @@ namespace DemoGame.NPCChatEditor
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(469, 631);
+            this.Controls.Add(this.txtDialogTitle);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.cmbSelectedDialog);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.gbSelectedNode);
             this.Controls.Add(this.npcChatDialogView);
@@ -259,6 +291,7 @@ namespace DemoGame.NPCChatEditor
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NPC Chat Editor";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.gbSelectedNode.ResumeLayout(false);
             this.gbSelectedNode.PerformLayout();
@@ -270,6 +303,7 @@ namespace DemoGame.NPCChatEditor
             this.tpRedirect.ResumeLayout(false);
             this.tpRedirect.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -294,6 +328,9 @@ namespace DemoGame.NPCChatEditor
         private System.Windows.Forms.Button btnAddResponse;
         private System.Windows.Forms.Button btnDeleteResponse;
         private System.Windows.Forms.Button button1;
+        private NPCChatDialogComboBox cmbSelectedDialog;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox txtDialogTitle;
 
     }
 }
