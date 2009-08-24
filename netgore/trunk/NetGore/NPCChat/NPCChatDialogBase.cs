@@ -1,7 +1,5 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 
 namespace NetGore.NPCChat
@@ -16,54 +14,6 @@ namespace NetGore.NPCChat
         /// distinguish each NPCChatDialogBase from one another.
         /// </summary>
         public abstract ushort Index { get; }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.
-        /// </summary>
-        /// <param name="page">The page number of the NPCChatDialogItemBase to get.</param>
-        /// <returns>The NPCChatDialogItemBase for the given <paramref name="page"/>, or null if no valid
-        /// NPCChatDialogItemBase existed for the given <paramref name="page"/>.</returns>
-        public abstract NPCChatDialogItemBase GetDialogItem(ushort page);
-
-        /// <summary>
-        /// When overridden in the derived class, gets the initial NPCChatDialogItemBase that is used at the
-        /// start of a conversation.
-        /// </summary>
-        /// <returns>The initial NPCChatDialogItemBase that is used at the start of a conversation.</returns>
-        public abstract NPCChatDialogItemBase GetInitialDialogItem();
-
-        /// <summary>
-        /// When overridden in the derived class, gets an IEnumerable of the NPCChatDialogItemBases in this
-        /// NPCChatDialogBase.
-        /// </summary>
-        /// <returns>An IEnumerable of the NPCChatDialogItemBases in this NPCChatDialogBase.</returns>
-        protected abstract IEnumerable<NPCChatDialogItemBase> GetDialogItems();
-
-        /// <summary>
-        /// Writes the NPCChatDialogBase's values to an IValueWriter.
-        /// </summary>
-        /// <param name="writer">IValueWriter to write the values to.</param>
-        public void Write(IValueWriter writer)
-        {
-            var items = GetDialogItems();
- 
-            writer.Write("Index", Index);
-            writer.Write("ItemCount", (ushort)items.Count());
-
-            foreach (var item in items)
-            {
-                writer.WriteStartNode("Item");
-                item.Write(writer);
-                writer.WriteEndNode("Item");
-            }
-        }
-        
-        /// <summary>
-        /// When overridden in the derived class, sets the values read from the Read method.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <param name="items">The dialog items.</param>
-        protected abstract void SetReadValues(ushort index, IEnumerable<NPCChatDialogItemBase> items);
 
         /// <summary>
         /// NPCChatDialogBase constructor.
@@ -89,6 +39,28 @@ namespace NetGore.NPCChat
         protected abstract NPCChatDialogItemBase CreateDialogItem(IValueReader reader);
 
         /// <summary>
+        /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.
+        /// </summary>
+        /// <param name="page">The page number of the NPCChatDialogItemBase to get.</param>
+        /// <returns>The NPCChatDialogItemBase for the given <paramref name="page"/>, or null if no valid
+        /// NPCChatDialogItemBase existed for the given <paramref name="page"/>.</returns>
+        public abstract NPCChatDialogItemBase GetDialogItem(ushort page);
+
+        /// <summary>
+        /// When overridden in the derived class, gets an IEnumerable of the NPCChatDialogItemBases in this
+        /// NPCChatDialogBase.
+        /// </summary>
+        /// <returns>An IEnumerable of the NPCChatDialogItemBases in this NPCChatDialogBase.</returns>
+        protected abstract IEnumerable<NPCChatDialogItemBase> GetDialogItems();
+
+        /// <summary>
+        /// When overridden in the derived class, gets the initial NPCChatDialogItemBase that is used at the
+        /// start of a conversation.
+        /// </summary>
+        /// <returns>The initial NPCChatDialogItemBase that is used at the start of a conversation.</returns>
+        public abstract NPCChatDialogItemBase GetInitialDialogItem();
+
+        /// <summary>
         /// Reads the values for this NPCChatDialogBase from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -98,15 +70,41 @@ namespace NetGore.NPCChat
             ushort itemCount = reader.ReadUShort("ItemCount");
             var itemReaders = reader.ReadNodes("Item", itemCount);
 
-            NPCChatDialogItemBase[] items = new NPCChatDialogItemBase[itemCount];
+            var items = new NPCChatDialogItemBase[itemCount];
             int i = 0;
-            foreach (var r in itemReaders)
+            foreach (IValueReader r in itemReaders)
             {
                 items[i] = CreateDialogItem(r);
                 i++;
             }
 
             SetReadValues(index, items);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the values read from the Read method.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="items">The dialog items.</param>
+        protected abstract void SetReadValues(ushort index, IEnumerable<NPCChatDialogItemBase> items);
+
+        /// <summary>
+        /// Writes the NPCChatDialogBase's values to an IValueWriter.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write the values to.</param>
+        public void Write(IValueWriter writer)
+        {
+            var items = GetDialogItems();
+
+            writer.Write("Index", Index);
+            writer.Write("ItemCount", (ushort)items.Count());
+
+            foreach (NPCChatDialogItemBase item in items)
+            {
+                writer.WriteStartNode("Item");
+                item.Write(writer);
+                writer.WriteEndNode("Item");
+            }
         }
     }
 }

@@ -477,7 +477,7 @@ namespace NetGore.Collections
                 throw new ArgumentException("May not use a multi-dimensional array", "array");
             if (arrayIndex + array.Length < Count)
                 throw new ArgumentException("Not enough room to fit all the DArray into the Array from the specified arrayIndex",
-                                            "array");
+                    "array");
 
             int j = 0;
             for (int i = 0; i <= _highestIndex; i++)

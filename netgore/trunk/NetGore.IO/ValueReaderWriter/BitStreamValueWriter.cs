@@ -11,9 +11,9 @@ namespace NetGore.IO
     /// </summary>
     public class BitStreamValueWriter : IValueWriter
     {
-        Stack<int> _nodeOffsetStack = null;
-        readonly BitStream _writer;
         readonly string _destinationFile = null;
+        readonly BitStream _writer;
+        Stack<int> _nodeOffsetStack = null;
 
         /// <summary>
         /// BitStreamValueReader constructor.
@@ -29,13 +29,12 @@ namespace NetGore.IO
 
             _writer = writer;
         }
-     
+
         /// <summary>
         /// FileBitStreamValueWriter constructor.
         /// </summary>
         /// <param name="filePath">Path to the file to write to.</param>
-        public BitStreamValueWriter(string filePath)
-            : this(new BitStream(BitStreamMode.Write, 8192))
+        public BitStreamValueWriter(string filePath) : this(new BitStream(BitStreamMode.Write, 8192))
         {
             _destinationFile = filePath;
             File.WriteAllBytes(filePath, new byte[] { 0 });

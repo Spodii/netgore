@@ -35,7 +35,7 @@ namespace NetGore.IO
             if (!File.Exists(filePath))
                 throw new ArgumentException("The specified file could not be found.", "filePath");
 
-            byte[] bytes = File.ReadAllBytes(filePath);
+            var bytes = File.ReadAllBytes(filePath);
             _reader = new BitStream(bytes);
         }
 
@@ -128,11 +128,11 @@ namespace NetGore.IO
             if (count < 0)
                 throw new ArgumentOutOfRangeException("count");
 
-            IValueReader[] ret = new IValueReader[count];
+            var ret = new IValueReader[count];
             for (int i = 0; i < count; i++)
             {
                 uint bitLength = ReadUInt(null);
-                var bs = _reader.ReadBits((int)bitLength);
+                BitStream bs = _reader.ReadBits((int)bitLength);
                 ret[i] = new BitStreamValueReader(bs);
             }
 

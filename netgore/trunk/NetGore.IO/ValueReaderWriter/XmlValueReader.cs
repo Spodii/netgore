@@ -30,13 +30,14 @@ namespace NetGore.IO
         /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
         public XmlValueReader(string filePath, string rootNodeName)
         {
-            using (var stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
+            using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
-                using (var r = XmlReader.Create(stream))
+                using (XmlReader r = XmlReader.Create(stream))
                 {
                     while (r.Read())
                     {
-                        if (r.NodeType == XmlNodeType.Element && string.Equals(r.Name, rootNodeName, StringComparison.OrdinalIgnoreCase))
+                        if (r.NodeType == XmlNodeType.Element &&
+                            string.Equals(r.Name, rootNodeName, StringComparison.OrdinalIgnoreCase))
                             break;
                     }
 
@@ -60,6 +61,24 @@ namespace NetGore.IO
                 throw new ArgumentNullException("reader");
 
             _values = ReadNodesIntoDictionary(reader, rootNodeName, readAllContent);
+        }
+
+        static ArgumentException CreateDuplicateKeysException(string key)
+        {
+            const string parameterName = "name";
+            const string errmsg =
+                "Cannot read the value of key `{0}` since multiple values were found with that key." +
+                    " This method requires that the key's name is unique.";
+
+            return new ArgumentException(string.Format(errmsg, key), parameterName);
+        }
+
+        static ArgumentException CreateKeyNotFoundException(string key)
+        {
+            const string parameterName = "parameterName";
+            const string errmsg = "Cannot read the value of key `{0}` since no key with that name was found.";
+
+            return new ArgumentException(string.Format(errmsg, key), parameterName);
         }
 
         /// <summary>
@@ -106,7 +125,7 @@ namespace NetGore.IO
                             return ret;
                         else
                             throw new Exception(string.Format("Was expecting end of element `{0}`, but found `{1}`.", rootNodeName,
-                                                              reader.Name));
+                                reader.Name));
                 }
             }
 
@@ -114,23 +133,6 @@ namespace NetGore.IO
                 throw new Exception("XmlReader was read to the end, but this was not expected to happen.");
 
             return ret;
-        }
-
-        static ArgumentException CreateKeyNotFoundException(string key)
-        {
-            const string parameterName = "parameterName";
-            const string errmsg = "Cannot read the value of key `{0}` since no key with that name was found.";
-
-            return new ArgumentException(string.Format(errmsg, key), parameterName);
-        }
-
-        static ArgumentException CreateDuplicateKeysException(string key)
-        {
-            const string parameterName = "name";
-            const string errmsg = "Cannot read the value of key `{0}` since multiple values were found with that key." +
-                " This method requires that the key's name is unique.";
-
-            return new ArgumentException(string.Format(errmsg, key), parameterName);
         }
 
         #region IValueReader Members
@@ -218,7 +220,7 @@ namespace NetGore.IO
             if (count < 0)
                 throw new ArgumentOutOfRangeException("count");
 
-            List<string> valuesAsList = _values[name];
+            var valuesAsList = _values[name];
             IEnumerable<string> values;
 
             if (valuesAsList.Count() < count)
@@ -229,16 +231,18 @@ namespace NetGore.IO
             else
                 values = valuesAsList;
 
-            List<IValueReader> ret = new List<IValueReader>(count);
+            var ret = new List<IValueReader>(count);
 
-            foreach (var value in values.Take(count))
+            foreach (string value in values.Take(count))
             {
-                var trimmed = value.Trim();
+                string trimmed = value.Trim();
                 var bytes = UTF8Encoding.UTF8.GetBytes(trimmed);
 
                 using (MemoryStream ms = new MemoryStream(bytes))
                 {
-                    using (XmlReader r = XmlReader.Create(ms, new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment } ))
+                    using (
+                        XmlReader r = XmlReader.Create(ms, new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment })
+                        )
                     {
                         XmlValueReader reader = new XmlValueReader(r, name, true);
                         ret.Add(reader);

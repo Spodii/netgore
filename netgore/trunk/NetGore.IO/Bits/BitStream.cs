@@ -338,7 +338,7 @@ namespace NetGore.IO
             if (segmentLength > bufLen)
             {
                 throw new ArgumentOutOfRangeException("segmentLength",
-                                                      "The dequeue segment length must be less or equal to than the BitStream.Length.");
+                    "The dequeue segment length must be less or equal to than the BitStream.Length.");
             }
             if (segmentLength < 1)
                 throw new ArgumentOutOfRangeException("segmentLength", "The dequeue segment length must be greater than 0.");
@@ -685,6 +685,55 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads the specified number of bits from the BitStream.
+        /// </summary>
+        /// <param name="bitLength">The number of bits to read.</param>
+        /// <returns>A BitStream filled with the bits read.</returns>
+        public BitStream ReadBits(int bitLength)
+        {
+            if (bitLength < 0)
+                throw new ArgumentOutOfRangeException("bitLength");
+            if (bitLength == 0)
+                return new BitStream(BitStreamMode.Read, 1);
+
+#if DEBUG
+            int initialBitPosition = PositionBits;
+#endif
+
+            int fullBytes = bitLength / _bitsByte;
+            int remainingBits = bitLength % _bitsByte;
+            int requiredBytes = fullBytes;
+            if (remainingBits > 0)
+                requiredBytes++;
+
+            Debug.Assert(remainingBits < _bitsByte);
+            Debug.Assert(remainingBits >= 0);
+            Debug.Assert(fullBytes >= 0);
+            Debug.Assert(requiredBytes > 0);
+
+            BitStream ret = new BitStream(BitStreamMode.Write, requiredBytes) { WriteMode = BitStreamBufferMode.Static };
+
+            if (fullBytes > 0)
+            {
+                var bytes = ReadBytes(fullBytes);
+                ret.Write(bytes, 0, bytes.Length);
+            }
+
+            if (remainingBits > 0)
+            {
+                byte value = ReadByte(remainingBits);
+                ret.Write(value, remainingBits);
+            }
+
+            Debug.Assert(ret.LengthBits == bitLength);
+            Debug.Assert(PositionBits - initialBitPosition == bitLength);
+
+            ret.Mode = BitStreamMode.Read;
+
+            return ret;
+        }
+
+        /// <summary>
         /// Reads a bool (one bit) from the BitStream
         /// </summary>
         /// <returns>True if the bit is set, else false</returns>
@@ -756,55 +805,6 @@ namespace NetGore.IO
             {
                 dest[i] = ReadByte();
             }
-        }
-
-        /// <summary>
-        /// Reads the specified number of bits from the BitStream.
-        /// </summary>
-        /// <param name="bitLength">The number of bits to read.</param>
-        /// <returns>A BitStream filled with the bits read.</returns>
-        public BitStream ReadBits(int bitLength)
-        {
-            if (bitLength < 0)
-                throw new ArgumentOutOfRangeException("bitLength");
-            if (bitLength == 0)
-                return new BitStream(BitStreamMode.Read, 1);
-            
-#if DEBUG
-            int initialBitPosition = PositionBits;
-#endif
-
-            int fullBytes = bitLength / _bitsByte;
-            int remainingBits = bitLength % _bitsByte;
-            int requiredBytes = fullBytes;
-            if (remainingBits > 0)
-                requiredBytes++;
-
-            Debug.Assert(remainingBits < _bitsByte);
-            Debug.Assert(remainingBits >= 0);
-            Debug.Assert(fullBytes >= 0);
-            Debug.Assert(requiredBytes > 0);
-
-            BitStream ret = new BitStream(BitStreamMode.Write, requiredBytes) { WriteMode = BitStreamBufferMode.Static };
-
-            if (fullBytes > 0)
-            {
-                var bytes = ReadBytes(fullBytes);
-                ret.Write(bytes, 0, bytes.Length);
-            }
-
-            if (remainingBits > 0)
-            {
-                var value = ReadByte(remainingBits);
-                ret.Write(value, remainingBits);
-            }
-
-            Debug.Assert(ret.LengthBits == bitLength);
-            Debug.Assert(PositionBits - initialBitPosition == bitLength);
-
-            ret.Mode = BitStreamMode.Read;
-
-            return ret;
         }
 
         /// <summary>
@@ -1379,7 +1379,7 @@ namespace NetGore.IO
         {
             if (numBits > maxBits)
                 throw new ArgumentOutOfRangeException("numBits",
-                                                      string.Format("numBits ({0}) must be <= maxBits ({1}).", numBits, maxBits));
+                    string.Format("numBits ({0}) must be <= maxBits ({1}).", numBits, maxBits));
 
             if (numBits == 1)
                 return ReadBitAsInt();
@@ -1553,13 +1553,13 @@ namespace NetGore.IO
 
                     case _bitsByte * 3: // Perfect bigger-than-short-but-not-quite-int-but-we-love-him-anyways copy
                         ret = (_buffer[_bufferPos + 0] << (_bitsByte * 2)) | (_buffer[_bufferPos + 1] << _bitsByte) |
-                              _buffer[_bufferPos + 2];
+                            _buffer[_bufferPos + 2];
                         _bufferPos += 3;
                         break;
 
                     case _bitsByte * 4: // Perfect int copy
                         ret = (_buffer[_bufferPos + 0] << (_bitsByte * 3)) | (_buffer[_bufferPos + 1] << (_bitsByte * 2)) |
-                              (_buffer[_bufferPos + 2] << _bitsByte) | _buffer[_bufferPos + 3];
+                            (_buffer[_bufferPos + 2] << _bitsByte) | _buffer[_bufferPos + 3];
                         _bufferPos += 4;
                         break;
 

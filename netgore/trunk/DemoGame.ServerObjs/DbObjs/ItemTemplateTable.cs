@@ -26,12 +26,11 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[]
-                                              {
-                                                  "agi", "armor", "bra", "defence", "description", "dex", "evade", "graphic",
-                                                  "height", "hp", "id", "imm", "int", "maxhit", "maxhp", "maxmp", "minhit", "mp",
-                                                  "name", "perc", "reqacc", "reqagi", "reqarmor", "reqbra", "reqdex", "reqevade",
-                                                  "reqimm", "reqint", "type", "value", "width"
-                                              };
+        {
+            "agi", "armor", "bra", "defence", "description", "dex", "evade", "graphic", "height", "hp", "id", "imm", "int", "maxhit"
+            , "maxhp", "maxmp", "minhit", "mp", "name", "perc", "reqacc", "reqagi", "reqarmor", "reqbra", "reqdex", "reqevade",
+            "reqimm", "reqint", "type", "value", "width"
+        };
 
         /// <summary>
         /// Array of the database column names for columns that are primary keys.
@@ -42,30 +41,23 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
-                                                    {
-                                                        "agi", "armor", "bra", "defence", "description", "dex", "evade", "graphic",
-                                                        "height", "hp", "imm", "int", "maxhit", "maxhp", "maxmp", "minhit", "mp",
-                                                        "name", "perc", "reqacc", "reqagi", "reqarmor", "reqbra", "reqdex",
-                                                        "reqevade", "reqimm", "reqint", "type", "value", "width"
-                                                    };
+        {
+            "agi", "armor", "bra", "defence", "description", "dex", "evade", "graphic", "height", "hp", "imm", "int", "maxhit",
+            "maxhp", "maxmp", "minhit", "mp", "name", "perc", "reqacc", "reqagi", "reqarmor", "reqbra", "reqdex", "reqevade",
+            "reqimm", "reqint", "type", "value", "width"
+        };
 
         /// <summary>
         /// The fields that are used in the column collection `ReqStat`.
         /// </summary>
         static readonly String[] _reqStatColumns = new string[]
-                                                   {
-                                                       "reqacc", "reqagi", "reqarmor", "reqbra", "reqdex", "reqevade", "reqimm",
-                                                       "reqint"
-                                                   };
+        { "reqacc", "reqagi", "reqarmor", "reqbra", "reqdex", "reqevade", "reqimm", "reqint" };
 
         /// <summary>
         /// The fields that are used in the column collection `Stat`.
         /// </summary>
         static readonly String[] _statColumns = new string[]
-                                                {
-                                                    "agi", "armor", "bra", "defence", "dex", "evade", "imm", "int", "maxhit",
-                                                    "maxhp", "maxmp", "minhit", "perc"
-                                                };
+        { "agi", "armor", "bra", "defence", "dex", "evade", "imm", "int", "maxhit", "maxhp", "maxmp", "minhit", "perc" };
 
         /// <summary>
         /// Dictionary containing the values for the column collection `ReqStat`.

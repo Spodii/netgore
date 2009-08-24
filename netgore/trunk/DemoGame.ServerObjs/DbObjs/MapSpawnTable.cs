@@ -25,7 +25,7 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[]
-                                              { "amount", "character_template_id", "height", "id", "map_id", "width", "x", "y" };
+        { "amount", "character_template_id", "height", "id", "map_id", "width", "x", "y" };
 
         /// <summary>
         /// Array of the database column names for columns that are primary keys.
@@ -36,7 +36,7 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
-                                                    { "amount", "character_template_id", "height", "map_id", "width", "x", "y" };
+        { "amount", "character_template_id", "height", "map_id", "width", "x", "y" };
 
         /// <summary>
         /// The field that maps onto the database column `amount`.
@@ -204,7 +204,7 @@ namespace DemoGame.Server.DbObjs
 
                 case "character_template_id":
                     return new ColumnMetadata("character_template_id", "", "smallint(5) unsigned", null, typeof(UInt16), false,
-                                              false, true);
+                        false, true);
 
                 case "height":
                     return new ColumnMetadata("height", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, false);

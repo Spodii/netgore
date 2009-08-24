@@ -174,10 +174,7 @@ namespace NetGore.Scripting
             using (codeDomProvider)
             {
                 CompilerParameters options = new CompilerParameters
-                                             {
-                                                 GenerateExecutable = false, GenerateInMemory = false,
-                                                 OutputAssembly = GetOutputFilePath(language)
-                                             };
+                { GenerateExecutable = false, GenerateInMemory = false, OutputAssembly = GetOutputFilePath(language) };
 
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 options.ReferencedAssemblies.AddRange(assemblies.Select(x => x.Location).ToArray());

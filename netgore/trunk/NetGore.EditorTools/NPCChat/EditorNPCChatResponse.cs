@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -17,6 +16,7 @@ namespace NetGore.EditorTools
         readonly List<TreeNode> _treeNodes = new List<TreeNode>(1);
         ushort _page;
         string _text;
+        byte _value;
 
         public event EditorNPCChatResponseEventHandler OnChange;
 
@@ -38,7 +38,10 @@ namespace NetGore.EditorTools
             get { return _text; }
         }
 
-        byte _value;
+        public List<TreeNode> TreeNodes
+        {
+            get { return _treeNodes; }
+        }
 
         /// <summary>
         /// When overridden in the derived class, gets the 0-based response index value for this response.
@@ -48,29 +51,11 @@ namespace NetGore.EditorTools
             get { return _value; }
         }
 
-        internal void SetValue(byte value)
-        {
-            if (_value == value)
-                return;
-
-            _value = value;
-
-            if (OnChange != null)
-                OnChange(this);
-        }
-
-        public List<TreeNode> TreeNodes
-        {
-            get { return _treeNodes; }
-        }
-
-        public EditorNPCChatResponse(string text)
-            : this(EndConversationPage, text)
+        public EditorNPCChatResponse(string text) : this(EndConversationPage, text)
         {
         }
 
-        public EditorNPCChatResponse(IValueReader reader)
-            : base(reader)
+        public EditorNPCChatResponse(IValueReader reader) : base(reader)
         {
         }
 
@@ -99,6 +84,17 @@ namespace NetGore.EditorTools
                 return;
 
             _text = value;
+
+            if (OnChange != null)
+                OnChange(this);
+        }
+
+        internal void SetValue(byte value)
+        {
+            if (_value == value)
+                return;
+
+            _value = value;
 
             if (OnChange != null)
                 OnChange(this);

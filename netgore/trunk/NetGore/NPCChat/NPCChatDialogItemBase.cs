@@ -33,34 +33,6 @@ namespace NetGore.NPCChat
         public abstract string Title { get; }
 
         /// <summary>
-        /// Writes the NPCChatDialogItemBase's values to an IValueWriter.
-        /// </summary>
-        /// <param name="writer">IValueWriter to write the values to.</param>
-        public void Write(IValueWriter writer)
-        {
-            writer.Write("Index", Index);
-            writer.Write("Title", Title ?? string.Empty);
-            writer.Write("Text", Text ?? string.Empty);
-            writer.Write("ResponseCount", (byte)Responses.Count());
-
-            foreach (var response in Responses)
-            {
-                writer.WriteStartNode("Response");
-                response.Write(writer);
-                writer.WriteEndNode("Response");
-            }
-        }
-        
-        /// <summary>
-        /// When overridden in the derived class, sets the values read from the Read method.
-        /// </summary>
-        /// <param name="page">The index.</param>
-        /// <param name="title">The title.</param>
-        /// <param name="text">The text.</param>
-        /// <param name="responses">The responses.</param>
-        protected abstract void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses);
-
-        /// <summary>
         /// NPCChatDialogItemBase constructor.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -96,14 +68,42 @@ namespace NetGore.NPCChat
 
             var responseReaders = reader.ReadNodes("Response", responseCount);
             int i = 0;
-            NPCChatResponseBase[] responses = new NPCChatResponseBase[responseCount];
-            foreach (var r in responseReaders)
+            var responses = new NPCChatResponseBase[responseCount];
+            foreach (IValueReader r in responseReaders)
             {
                 responses[i] = CreateResponse(r);
                 i++;
             }
 
             SetReadValues(index, title, text, responses);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the values read from the Read method.
+        /// </summary>
+        /// <param name="page">The index.</param>
+        /// <param name="title">The title.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="responses">The responses.</param>
+        protected abstract void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses);
+
+        /// <summary>
+        /// Writes the NPCChatDialogItemBase's values to an IValueWriter.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write the values to.</param>
+        public void Write(IValueWriter writer)
+        {
+            writer.Write("Index", Index);
+            writer.Write("Title", Title ?? string.Empty);
+            writer.Write("Text", Text ?? string.Empty);
+            writer.Write("ResponseCount", (byte)Responses.Count());
+
+            foreach (NPCChatResponseBase response in Responses)
+            {
+                writer.WriteStartNode("Response");
+                response.Write(writer);
+                writer.WriteEndNode("Response");
+            }
         }
 
         #region INPCChatDialogItem Members

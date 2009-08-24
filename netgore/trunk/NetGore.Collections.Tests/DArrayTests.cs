@@ -346,7 +346,7 @@ namespace NetGore.Collections.Tests
 
             int remainingObjs = objs.Where(obj => obj != -1).Count();
             Assert.AreEqual(0, remainingObjs,
-                            "One or more items failed to be enumerated since all enumerated " + "items should be equal to -1.");
+                "One or more items failed to be enumerated since all enumerated " + "items should be equal to -1.");
         }
 
         static void EnumerateTestSub(bool trackFree)
@@ -380,8 +380,7 @@ namespace NetGore.Collections.Tests
 
             int remainingObjs = objs.Where(obj => obj != null).Count();
             Assert.AreEqual(0, remainingObjs,
-                            "One or more items failed to be enumerated since all enumerated " +
-                            "items should have been removed from objs[].");
+                "One or more items failed to be enumerated since all enumerated " + "items should have been removed from objs[].");
         }
 
         static void RemoveTestSub(bool trackFree)

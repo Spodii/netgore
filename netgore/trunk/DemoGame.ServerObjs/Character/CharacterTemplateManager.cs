@@ -97,14 +97,15 @@ namespace DemoGame.Server
             var items =
                 itemValues.Select(
                     x =>
-                    new CharacterTemplateInventoryItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Min, x.Max, x.Chance));
+                        new CharacterTemplateInventoryItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Min, x.Max,
+                            x.Chance));
 
             var euipped =
                 equippedValues.Select(
                     x => new CharacterTemplateEquipmentItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Chance));
 
             CharacterTemplate template = new CharacterTemplate(id, v.Name, v.AI, alliance, v.BodyID, v.Respawn, v.GiveExp,
-                                                               v.GiveCash, v.Exp, v.StatPoints, v.Level, v.Stats, items, euipped);
+                v.GiveCash, v.Exp, v.StatPoints, v.Level, v.Stats, items, euipped);
 
             return template;
         }

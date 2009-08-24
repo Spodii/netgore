@@ -88,7 +88,7 @@ namespace NetGore.Graphics
 
             // Make sure the GrhData is only in the list once
             Debug.Assert(GrhDatas.Where(x => x == gd).Count() == 1,
-                         "The GrhData should be in the list only once. Somehow, its in there either more times, or not at all.");
+                "The GrhData should be in the list only once. Somehow, its in there either more times, or not at all.");
         }
 
         /// <summary>

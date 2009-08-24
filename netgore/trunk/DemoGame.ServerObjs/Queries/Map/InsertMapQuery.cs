@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     public class InsertMapQuery : DbQueryNonReader<IMapTable>
     {
         static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", MapTable.TableName,
-                                                            FormatParametersIntoValuesString(MapTable.DbColumns));
+            FormatParametersIntoValuesString(MapTable.DbColumns));
 
         public InsertMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
