@@ -32,7 +32,7 @@ namespace DemoGame.Client
         public static SpriteFont NameFont { get; set; }
 
         /// <summary>
-        /// Gets the location at which the character is to be drawn
+        /// Gets the location at which the character is to be drawn.
         /// </summary>
         public Vector2 DrawPosition
         {
@@ -50,7 +50,7 @@ namespace DemoGame.Client
         public byte MPPercent { get; set; }
 
         /// <summary>
-        /// Gets the map the character belongs to
+        /// Gets the map the character belongs to.
         /// </summary>
         public Map Parent
         {
