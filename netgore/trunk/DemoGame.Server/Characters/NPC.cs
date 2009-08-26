@@ -281,27 +281,30 @@ namespace DemoGame.Server
         /// <param name="aiName">Name of the AI to change to. Use a null or empty string to set the AI to null.</param>
         public void SetAI(string aiName)
         {
+            // Check to remove the AI
             if (string.IsNullOrEmpty(aiName))
-                _ai = null;
-            else
             {
-                AIBase newAI;
-                try
-                {
-                    newAI = AIFactory.Create(aiName, this);
-                }
-                catch (KeyNotFoundException)
-                {
-                    const string errmsg = "Failed to change to AI to `{0}` for NPC `{1}` - AI not found.";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, aiName, this);
-                    Debug.Fail(string.Format(errmsg, aiName, this));
-                    return;
-                }
-
-                Debug.Assert(newAI.Actor == this);
-                _ai = newAI;
+                _ai = null;
+                return;
             }
+
+            // Set the NPC's new AI
+            AIBase newAI;
+            try
+            {
+                newAI = AIFactory.Create(aiName, this);
+            }
+            catch (KeyNotFoundException)
+            {
+                const string errmsg = "Failed to change to AI to `{0}` for NPC `{1}` - AI not found.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, aiName, this);
+                Debug.Fail(string.Format(errmsg, aiName, this));
+                return;
+            }
+
+            Debug.Assert(newAI.Actor == this);
+            _ai = newAI;
         }
 
         /// <summary>

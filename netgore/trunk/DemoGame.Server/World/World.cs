@@ -110,6 +110,8 @@ namespace DemoGame.Server
 
             a.SetAI("testAI");
             b.SetAI("testAI");
+
+            NPC talkingGuy = new NPC(this, new CharacterID(4));
 #endif
         }
 
