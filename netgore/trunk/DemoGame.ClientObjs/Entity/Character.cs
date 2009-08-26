@@ -90,7 +90,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Draws the Character's name;
+        /// Draws the Character's name.
         /// </summary>
         /// <param name="sb">SpriteBatch to draw to.</param>
         void DrawName(SpriteBatch sb)
