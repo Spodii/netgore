@@ -65,11 +65,6 @@ namespace DemoGame.Server
             get { return RespawnMapIndex.HasValue; }
         }
 
-        [Obsolete("Do not use this empty constructor on the Server!")]
-        public NPC()
-        {
-        }
-
         public NPC(World parent, CharacterID characterID) : base(parent, true)
         {
             // HACK: This whole constructor is uber hax

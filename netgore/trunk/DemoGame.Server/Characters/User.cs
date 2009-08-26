@@ -38,11 +38,6 @@ namespace DemoGame.Server
             get { return _conn; }
         }
 
-        [Obsolete("Do not use this empty constructor on the Server!")]
-        public User()
-        {
-        }
-
         /// <summary>
         /// User constructor.
         /// </summary>

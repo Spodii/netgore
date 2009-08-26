@@ -8,7 +8,7 @@ using NetGore.Graphics;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Client character
+    /// Represents a Character on the Client.
     /// </summary>
     public class Character : CharacterEntity, IGetTime, IDrawableEntity
     {
@@ -36,16 +36,17 @@ namespace DemoGame.Client
         /// </summary>
         public Vector2 DrawPosition
         {
-            get { return Interpolator.DrawPosition; }
+            get { return _interpolator.DrawPosition; }
         }
 
+        /// <summary>
+        /// Gets or sets the percent of HP the Character has remaining, where 0 is 0% and 100 is 100%.
+        /// </summary>
         public byte HPPercent { get; set; }
 
-        public EntityInterpolator Interpolator
-        {
-            get { return _interpolator; }
-        }
-
+        /// <summary>
+        /// Gets or sets the percent of MP the Character has remaining, where 0 is 0% and 100 is 100%.
+        /// </summary>
         public byte MPPercent { get; set; }
 
         /// <summary>
@@ -56,32 +57,11 @@ namespace DemoGame.Client
             get { return _map; }
         }
 
-        public Character()
-        {
-        }
-
         /// <summary>
         /// Character constructor.
         /// </summary>
-        /// <param name="map">Map the character belongs to.</param>
-        /// <param name="position">Position of the character.</param>
-        /// <param name="bodyInfo">BodyInfo defining the character's body.</param>
-        /// <param name="skelManager">SkeletonManager used to load skeleton information.</param>
-        public Character(Map map, Vector2 position, BodyInfo bodyInfo, SkeletonManager skelManager)
+        protected Character()
         {
-            _map = map;
-            _skelManager = skelManager;
-            _onLoopHandler = skelAnim_OnLoop;
-            BodyInfo = bodyInfo;
-
-            // Set up the skeleton
-            _currSkelSet = BodyInfo.Stand;
-            _skelAnim = new SkeletonAnimation(GetTime(), _skelManager.LoadSet(_currSkelSet));
-            _skelAnim.SkeletonBody = new SkeletonBody(_skelManager.LoadBodyInfo(BodyInfo.Body), _skelAnim.Skeleton);
-
-            // Set the collision box and position
-            CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
-            Position = position;
         }
 
         /// <summary>
@@ -137,7 +117,7 @@ namespace DemoGame.Client
             const float spBarHeight = 6;
 
             Vector2 pos = new Vector2(DrawPosition.X + (CB.Width / 2f) - (spBarWidth / 2f),
-                                      DrawPosition.Y + CB.Height + (spBarHeight * index));
+                DrawPosition.Y + CB.Height + (spBarHeight * index));
 
             Rectangle border = new Rectangle((int)pos.X, (int)pos.Y, (int)spBarWidth, (int)spBarHeight);
             Rectangle bar = border;
@@ -167,6 +147,10 @@ namespace DemoGame.Client
             return _map;
         }
 
+        /// <summary>
+        /// Gets the size of the Character's name string.
+        /// </summary>
+        /// <returns>The size of the Character's name string.</returns>
         Vector2 GetNameSize()
         {
             return NameFont.MeasureString(Name);
@@ -183,7 +167,7 @@ namespace DemoGame.Client
             _map = map;
             _skelManager = skelManager;
             _onLoopHandler = skelAnim_OnLoop;
-            Interpolator.Teleport(Position);
+            _interpolator.Teleport(Position);
 
             // Set up the skeleton
             _currSkelSet = BodyInfo.Stand;
