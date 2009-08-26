@@ -130,59 +130,6 @@ namespace DemoGame.Server
             return new UserStats(this, statCollectionType);
         }
 
-        public bool DropInventoryItem(InventorySlot slot)
-        {
-            return Inventory.Drop(slot);
-        }
-
-        /// <summary>
-        /// Attempts to equip an item from the User's inventory.
-        /// </summary>
-        /// <param name="inventorySlot">Index of the slot containing the item to equip.</param>
-        /// <returns>True if the item was successfully equipped, else false.</returns>
-        public bool Equip(InventorySlot inventorySlot)
-        {
-            // Get the item from the inventory
-            ItemEntity item = Inventory[inventorySlot];
-
-            // Do not try to equip null items
-            if (item == null)
-                return false;
-
-            // If there is more than one of the item, split it first
-            if (item.Amount > 1)
-            {
-                // Split the existing item into two parts
-                item = item.Split(1);
-                if (item == null)
-                {
-                    Debug.Fail("Failed to split item for some reason.");
-                    return false;
-                }
-            }
-            else
-            {
-                // We are using all (1) of the item, so remove it from the inventory
-                Inventory.RemoveAt(inventorySlot);
-            }
-
-            // Try to equip the item
-            bool successful = Equipped.Equip(item);
-
-            // If failed to equip, give the item back to the User
-            if (!successful)
-            {
-                ItemEntity remainder = GiveItem(item);
-                if (remainder != null)
-                {
-                    Debug.Fail("What the hell just happened? Failed to equip the item, and failed to add back to inventory?");
-                    DropItem(remainder);
-                }
-            }
-
-            return successful;
-        }
-
         /// <summary>
         /// Sends all the data buffered for the unreliable channel by SendUnreliableBuffered() to the User.
         /// </summary>

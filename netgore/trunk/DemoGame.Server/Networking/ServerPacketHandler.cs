@@ -76,7 +76,7 @@ namespace DemoGame.Server
             if (!TryGetUser(conn, out user))
                 return;
 
-            user.DropInventoryItem(slot);
+            user.Inventory.Drop(slot);
         }
 
         [MessageHandler((byte)ClientPacketID.GetEquipmentItemInfo)]

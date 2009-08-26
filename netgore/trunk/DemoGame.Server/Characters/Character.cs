@@ -506,7 +506,7 @@ namespace DemoGame.Server
         {
             // TODO: Remove the need for this constructor
             throw new MethodAccessException("Character's empty constructor should never be used on the server since the " +
-                                            "server never needs to deserialize a DynamicEntity.");
+                "server never needs to deserialize a DynamicEntity.");
         }
 
         /// <summary>
@@ -528,13 +528,13 @@ namespace DemoGame.Server
             _statusEffects.OnAdd += StatusEffects_HandleOnAdd;
             _statusEffects.OnRemove += StatusEffects_HandleOnRemove;
 
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             _baseStats = CreateStats(StatCollectionType.Base);
             _modStats = CreateStats(StatCollectionType.Modified);
             _spSync = CreateSPSynchronizer();
             _inventory = CreateInventory();
             _equipped = CreateEquipped();
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         /// <summary>
@@ -762,6 +762,54 @@ namespace DemoGame.Server
 
             if (OnDropItem != null)
                 OnDropItem(this, droppedItem);
+        }
+
+        /// <summary>
+        /// Attempts to equip an item from the User's inventory.
+        /// </summary>
+        /// <param name="inventorySlot">Index of the slot containing the item to equip.</param>
+        /// <returns>True if the item was successfully equipped, else false.</returns>
+        public bool Equip(InventorySlot inventorySlot)
+        {
+            // Get the item from the inventory
+            ItemEntity item = Inventory[inventorySlot];
+
+            // Do not try to equip null items
+            if (item == null)
+                return false;
+
+            // If there is more than one of the item, split it first
+            if (item.Amount > 1)
+            {
+                // Split the existing item into two parts
+                item = item.Split(1);
+                if (item == null)
+                {
+                    Debug.Fail("Failed to split item for some reason.");
+                    return false;
+                }
+            }
+            else
+            {
+                // We are using all (1) of the item, so remove it from the inventory
+                Inventory.RemoveAt(inventorySlot);
+            }
+
+            // Try to equip the item
+            bool successful = Equipped.Equip(item);
+
+            // If failed to equip, give the item back to the User
+            if (!successful)
+            {
+                ItemEntity remainder = GiveItem(item);
+                if (remainder != null)
+                {
+                    Debug.Fail("What the hell just happened? Failed to equip the item, and failed to add back to inventory?");
+                    DropItem(remainder);
+                }
+            }
+
+            return successful;
         }
 
         /// <summary>
@@ -1215,22 +1263,23 @@ namespace DemoGame.Server
             MP += 1 + ModStats[StatType.Recov];
         }
 
+        /// <summary>
+        /// Makes the Character use an equipment item.
+        /// </summary>
+        /// <param name="item">Item to be equipped.</param>
+        /// <param name="inventorySlot">If the item is from the inventory, the inventory slot that the item is in.</param>
+        /// <returns>True if the item was successfully equipped; otherwise false.</returns>
         bool UseEquipment(ItemEntity item, InventorySlot? inventorySlot)
         {
-            // Only allow users to equip items
-            User user = this as User;
-            if (user == null)
-                return false;
-
             if (!inventorySlot.HasValue)
             {
                 // Equip an item not from the inventory
-                return user.Equipped.Equip(item);
+                return Equipped.Equip(item);
             }
             else
             {
                 // Equip an item from the inventory
-                return user.Equip(inventorySlot.Value);
+                return Equip(inventorySlot.Value);
             }
         }
 
@@ -1356,11 +1405,20 @@ namespace DemoGame.Server
 
         #region IRespawnable Members
 
+        /// <summary>
+        /// Checks if the IRespawnable is ready to be respawned. If the object is already spawned, this should
+        /// still return true.
+        /// </summary>
+        /// <param name="currentTime">The current time.</param>
+        /// <returns>True if the IRespawnable is ready to respawn, else false.</returns>
         bool IRespawnable.ReadyToRespawn(int currentTime)
         {
             return IsAlive || CheckRespawnElapsedTime(currentTime);
         }
 
+        /// <summary>
+        /// Handles respawning the DynamicEntity. This must also take care of setting the Map.
+        /// </summary>
         void IRespawnable.Respawn()
         {
             UpdateModStats();
@@ -1401,6 +1459,9 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Gets the DynamicEntity to respawn (typically just "this").
+        /// </summary>
         DynamicEntity IRespawnable.DynamicEntity
         {
             get { return this; }
