@@ -21,6 +21,34 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// When overridden in the derived class, handles additional loading stuff.
+        /// </summary>
+        /// <param name="v">The ICharacterTable containing the database values for this Character.</param>
+        protected override void HandleAdditionalLoading(ICharacterTable v)
+        {
+            base.HandleAdditionalLoading(v);
+
+            _password = v.Password;
+            World.AddUser(this);
+        }
+
+        /// <summary>
+        /// Not used by User.
+        /// </summary>
+        public override NetGore.NPCChat.NPCChatDialogBase ChatDialog
+        {
+            get { return null; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the Character's password.
+        /// </summary>
+        public override string Password
+        {
+            get { return _password; }
+        }
+
+        /// <summary>
         /// The socket used to communicate with the User.
         /// </summary>
         readonly IIPSocket _conn;
@@ -29,6 +57,7 @@ namespace DemoGame.Server
         readonly UserInventory _userInventory;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
+        string _password;
 
         /// <summary>
         /// Gets the socket connection info for the user

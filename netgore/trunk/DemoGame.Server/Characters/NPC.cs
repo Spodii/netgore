@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.NPCChat;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.NPCChat;
 
 namespace DemoGame.Server
 {
@@ -79,6 +81,38 @@ namespace DemoGame.Server
                 log.InfoFormat("Created persistent NPC `{0}` from CharacterID `{1}`.", this, characterID);
 
             LoadPersistentNPCTemplateInfo();
+        }
+
+        NPCChatDialogBase _chatDialog;
+
+        /// <summary>
+        /// Gets the NPC's chat dialog if they have one, or null if they don't.
+        /// </summary>
+        public override NPCChatDialogBase ChatDialog
+        {
+            get { return _chatDialog; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the Character's password.
+        /// </summary>
+        public override string Password
+        {
+            get { return null; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles additional loading stuff.
+        /// </summary>
+        /// <param name="v">The ICharacterTable containing the database values for this Character.</param>
+        protected override void HandleAdditionalLoading(DbObjs.ICharacterTable v)
+        {
+            base.HandleAdditionalLoading(v);
+
+            if (v.ChatDialog.HasValue)
+            {
+                _chatDialog = NPCChatManager.GetDialog(v.ChatDialog.Value);
+            }
         }
 
         /// <summary>
@@ -213,10 +247,10 @@ namespace DemoGame.Server
         /// </summary>
         void LoadPersistentNPCTemplateInfo()
         {
-            if (!TemplateID.HasValue)
+            if (!CharacterTemplateID.HasValue)
                 return;
 
-            CharacterTemplate template = CharacterTemplateManager.GetTemplate(TemplateID.Value);
+            CharacterTemplate template = CharacterTemplateManager.GetTemplate(CharacterTemplateID.Value);
             if (template == null)
                 return;
 
@@ -235,7 +269,7 @@ namespace DemoGame.Server
             Equipped.RemoveAll(true);
 
             // Grab the respawn items from the template
-            var templateID = TemplateID;
+            var templateID = CharacterTemplateID;
             if (!templateID.HasValue)
                 return;
 

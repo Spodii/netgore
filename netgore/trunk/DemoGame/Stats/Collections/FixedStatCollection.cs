@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -179,6 +180,17 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets an IEnumerable of the KeyValuePairs in this IStatCollection, where the key is the StatType and the
+        /// value is the value of for the stat with the corresponding StatType.
+        /// </summary>
+        /// <returns>An IEnumerable of the KeyValuePairs in this IStatCollection, where the key is the StatType and the
+        /// value is the value of for the stat with the corresponding StatType.</returns>
+        public IEnumerable<KeyValuePair<StatType, int>> ToKeyValuePairs()
+        {
+            return this.xxxToKeyValuePairs();
+        }
+
+        /// <summary>
         /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
         /// into this IStatCollection.
         /// </summary>
@@ -191,7 +203,7 @@ namespace DemoGame
         /// in any other way.</param>
         public void CopyValuesFrom(IEnumerable<IStat> values, bool checkContains)
         {
-            CopyValuesFrom(values.Select(x => new KeyValuePair<StatType, int>(x.StatType, x.Value)), checkContains);
+            CopyValuesFrom(values.xxxToKeyValuePairs(), checkContains);
         }
 
         #endregion
