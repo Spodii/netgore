@@ -91,6 +91,10 @@
     <Compile Include="Map\MapEntityBoxDrawer.cs" />
     <Compile Include="Map\MapGrh.cs" />
     <Compile Include="Map\MapWallDrawer.cs" />
+    <Compile Include="NPCChat\NPCChatDialog.cs" />
+    <Compile Include="NPCChat\NPCChatDialogItem.cs" />
+    <Compile Include="NPCChat\NPCChatManager.cs" />
+    <Compile Include="NPCChat\NPCChatResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Map\MapRenderLayer.cs" />
     <Compile Include="Skills\InfoManager.cs" />

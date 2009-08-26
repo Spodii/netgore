@@ -1,5 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.IO;
 
 namespace NetGore.NPCChat
@@ -9,6 +12,8 @@ namespace NetGore.NPCChat
     /// </summary>
     public abstract class NPCChatDialogItemBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// When overridden in the derived class, gets the page index of this NPCChatDialogItemBase in the
         /// NPCChatDialogBase. This value is unique to each NPCChatDialogItemBase in the NPCChatDialogBase.
@@ -104,6 +109,22 @@ namespace NetGore.NPCChat
                 response.Write(writer);
                 writer.WriteEndNode("Response");
             }
+        }
+
+        /// <summary>
+        /// Creates an ArgumentOutOfRangeException for the response index being out of range.
+        /// </summary>
+        /// <param name="parameterName">The name of the response index parameter.</param>
+        /// <param name="value">The specified, invalid response index value.</param>
+        /// <returns>An ArgumentOutOfRangeException for the response index being out of range.</returns>
+        protected ArgumentOutOfRangeException CreateInvalidResponseIndexException(string parameterName, ushort value)
+        {
+            const string errmsg = "Response index `{0}` was out of range for dialog item `{1}`.";
+            string err = string.Format(errmsg, value, Index);
+            if (log.IsErrorEnabled)
+                log.Error(err);
+
+            return new ArgumentOutOfRangeException(err, parameterName);
         }
 
         /// <summary>

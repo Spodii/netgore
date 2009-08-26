@@ -46,6 +46,9 @@ namespace NetGore.EditorTools
             _instance.Save();
         }
 
+        /// <summary>
+        /// Provides the implementation of the NPCChatManagerBase for this NPC chat manager.
+        /// </summary>
         class ManagerImplementation : NPCChatManagerBase
         {
             /// <summary>
