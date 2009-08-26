@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -14,6 +16,8 @@ namespace NetGore.NPCChat
     /// </summary>
     public abstract class NPCChatManagerBase : IEnumerable<NPCChatDialogBase>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly bool _isReadonly;
         readonly DArray<NPCChatDialogBase> _npcChatDialogs = new DArray<NPCChatDialogBase>(32, false);
 
@@ -34,8 +38,15 @@ namespace NetGore.NPCChat
         {
             get
             {
+                // Check for a valid index
                 if (!_npcChatDialogs.CanGet(index))
+                {
+                    const string errmsg = "Invalid NPC chat dialog index `{0}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, index);
+                    Debug.Fail(string.Format(errmsg, index));
                     return null;
+                }
 
                 return _npcChatDialogs[index];
             }

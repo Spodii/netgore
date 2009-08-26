@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -8,6 +9,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Network;
+using NetGore.NPCChat;
 
 namespace DemoGame.Server
 {
@@ -59,7 +61,7 @@ namespace DemoGame.Server
     /// <summary>
     /// The server representation of a single Character that can be either player-controller or computer-controller.
     /// </summary>
-    public abstract class Character : CharacterEntity, IGetTime, IRespawnable
+    public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable
     {
         /// <summary>
         /// Amount of time the character must wait between attacks
@@ -222,21 +224,10 @@ namespace DemoGame.Server
             get { return _baseStats; }
         }
 
-        public uint Cash
-        {
-            get { return _cash; }
-            private set
-            {
-                if (_cash == value)
-                    return;
-
-                uint oldValue = _cash;
-                _cash = value;
-
-                if (OnChangeCash != null)
-                    OnChangeCash(this, oldValue, _cash);
-            }
-        }
+        /// <summary>
+        /// When overridden in the derived class, gets the chat dialog for this Character.
+        /// </summary>
+        public abstract NPCChatDialogBase ChatDialog { get; }
 
         public DBController DBController
         {
@@ -249,67 +240,6 @@ namespace DemoGame.Server
         public CharacterEquipped Equipped
         {
             get { return _equipped; }
-        }
-
-        /// <summary>
-        /// Gets the amount of experience the Character has.
-        /// </summary>
-        public uint Exp
-        {
-            get { return _exp; }
-            private set
-            {
-                if (_exp == value)
-                    return;
-
-                uint oldValue = _exp;
-                _exp = value;
-
-                if (OnChangeExp != null)
-                    OnChangeExp(this, oldValue, _exp);
-
-                // Check if this change in experience has made the Character level
-                while (_exp >= _nextLevelExp)
-                {
-                    LevelUp();
-                }
-            }
-        }
-
-        public SPValueType HP
-        {
-            get { return _hp; }
-            set
-            {
-                // Get the new value, ensuring it is in a valid range
-                int max = ModStats[StatType.MaxHP];
-                SPValueType newValue;
-                if (value > max)
-                    newValue = max;
-                else if (value < 0)
-                    newValue = 0;
-                else
-                    newValue = value;
-
-                // Check that the value has changed
-                SPValueType oldValue = _hp;
-                if (newValue == oldValue)
-                    return;
-
-                // Apply new value
-                _hp = newValue;
-
-                if (OnChangeHP != null)
-                    OnChangeHP(this, oldValue, _hp);
-
-                if (_hp <= 0)
-                    Kill();
-            }
-        }
-
-        public CharacterID ID
-        {
-            get { return _id; }
         }
 
         /// <summary>
@@ -349,23 +279,6 @@ namespace DemoGame.Server
             get { return _isPersistent; }
         }
 
-        public byte Level
-        {
-            get { return _level; }
-            private set
-            {
-                if (_level == value)
-                    return;
-
-                byte oldValue = _level;
-                _level = value;
-                _nextLevelExp = GameData.LevelCost(_level);
-
-                if (OnChangeLevel != null)
-                    OnChangeLevel(this, oldValue, _level);
-            }
-        }
-
         /// <summary>
         /// Gets the Map the Character is currently on. This value can be null if the Character is not currently
         /// on a Map.
@@ -385,60 +298,6 @@ namespace DemoGame.Server
             get { return _modStats; }
         }
 
-        public SPValueType MP
-        {
-            get { return _mp; }
-            set
-            {
-                // Get the new value, ensuring it is in a valid range
-                int max = ModStats[StatType.MaxMP];
-                SPValueType newValue;
-                if (value > max)
-                    newValue = max;
-                else if (value < 0)
-                    newValue = 0;
-                else
-                    newValue = value;
-
-                // Check that the value has changed
-                SPValueType oldValue = _mp;
-                if (newValue == oldValue)
-                    return;
-
-                // Apply new value
-                _mp = newValue;
-
-                if (OnChangeMP != null)
-                    OnChangeMP(this, oldValue, _mp);
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the character.
-        /// </summary>
-        public override string Name
-        {
-            get { return _name; }
-            set
-            {
-                // Check that the name is valid
-                // TODO: Need to find a good way to handle validating the User and NPC names individually
-                /*
-                if (!GameData.IsValidCharName(value))
-                {
-                    const string errmsg = "Attempted to give Character `{0}` an invalid name `{1}`.";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, _name, value);
-                    Debug.Fail(string.Format(errmsg, _name, value));
-                    return;
-                }
-                */
-
-                // Set the new name
-                _name = value;
-            }
-        }
-
         /// <summary>
         /// Gets or sets the index of the Map the Character will respawn on.
         /// </summary>
@@ -450,48 +309,9 @@ namespace DemoGame.Server
         /// </summary>
         public Vector2 RespawnPosition { get; set; }
 
-        /// <summary>
-        /// Gets the number of points the Character can spend on stats.
-        /// </summary>
-        public uint StatPoints
-        {
-            get { return _statPoints; }
-            private set
-            {
-                if (_statPoints == value)
-                    return;
-
-                uint oldValue = _statPoints;
-                _statPoints = value;
-
-                if (OnChangeStatPoints != null)
-                    OnChangeStatPoints(this, oldValue, _statPoints);
-            }
-        }
-
         public CharacterStatusEffects StatusEffects
         {
             get { return _statusEffects; }
-        }
-
-        /// <summary>
-        /// Gets or sets the ID of the CharacterTemplate that this Character was created from.
-        /// This will not alter the Character in any way except for functions that make use of the
-        /// CharacterTemplateID, such as Equipment and Inventory Items a NPC spawns with.
-        /// </summary>
-        public CharacterTemplateID? TemplateID
-        {
-            get { return _templateID; }
-            set
-            {
-                if (_templateID == value)
-                    return;
-
-                _templateID = value;
-
-                if (OnChangeTemplateID != null)
-                    OnChangeTemplateID(this);
-            }
         }
 
         /// <summary>
@@ -903,6 +723,14 @@ namespace DemoGame.Server
             Cash += cash;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, handles additional loading stuff.
+        /// </summary>
+        /// <param name="v">The ICharacterTable containing the database values for this Character.</param>
+        protected virtual void HandleAdditionalLoading(ICharacterTable v)
+        {
+        }
+
         protected override void HandleDispose()
         {
             // Make sure the Character was saved
@@ -990,7 +818,7 @@ namespace DemoGame.Server
             Name = template.Name;
             Alliance = template.Alliance;
             BodyInfo = GameData.Body(template.BodyIndex);
-            TemplateID = template.ID;
+            CharacterTemplateID = template.ID;
             CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
             _level = template.Level;
             _exp = template.Exp;
@@ -1028,18 +856,18 @@ namespace DemoGame.Server
             if (m == null)
                 throw new Exception(string.Format("Unable to get Map with index `{0}`.", v.MapID));
 
-            User asUser = this as User;
-            if (asUser != null)
-                World.AddUser(asUser);
-
-            ChangeMap(m);
-
             // Load the Character's items
             Inventory.Load();
             Equipped.Load();
 
             // Update the mod stats
             UpdateModStats();
+
+            // Additional loading
+            HandleAdditionalLoading(v);
+
+            // Set the map
+            ChangeMap(m);
 
             // Mark the Character as loaded
             SetAsLoaded();
@@ -1382,6 +1210,309 @@ namespace DemoGame.Server
 
             return successful;
         }
+
+        #region ICharacterTable Members
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        ICharacterTable ICharacterTable.DeepCopy()
+        {
+            return new CharacterTable(this);
+        }
+
+        /// <summary>
+        /// Gets the value of the database column in the column collection `Stat`
+        /// that corresponds to the given <paramref name="key"/>.
+        /// </summary>
+        /// <param name="key">The key that represents the column in this column collection.</param>
+        /// <returns>
+        /// The value of the database column with the corresponding <paramref name="key"/>.
+        /// </returns>
+        int ICharacterTable.GetStat(StatType key)
+        {
+            return BaseStats[key];
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of KeyValuePairs containing the values in the `Stat` collection. The
+        /// key is the collection's key and the value is the value for that corresponding key.
+        /// </summary>
+        IEnumerable<KeyValuePair<StatType, int>> ICharacterTable.Stats
+        {
+            get { return BaseStats.ToKeyValuePairs(); }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `body_id`.
+        /// </summary>
+        BodyIndex ICharacterTable.BodyID
+        {
+            get { return BodyInfo.Index; }
+        }
+
+        /// <summary>
+        /// Gets the amount of Cash the Character has on hand.
+        /// </summary>
+        public uint Cash
+        {
+            get { return _cash; }
+            private set
+            {
+                if (_cash == value)
+                    return;
+
+                uint oldValue = _cash;
+                _cash = value;
+
+                if (OnChangeCash != null)
+                    OnChangeCash(this, oldValue, _cash);
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `chat_dialog`.
+        /// </summary>
+        ushort? ICharacterTable.ChatDialog
+        {
+            get
+            {
+                if (ChatDialog == null)
+                    return null;
+
+                return ChatDialog.Index;
+            }
+        }
+
+        /// <summary>
+        /// Gets the amount of experience the Character has.
+        /// </summary>
+        public uint Exp
+        {
+            get { return _exp; }
+            private set
+            {
+                if (_exp == value)
+                    return;
+
+                uint oldValue = _exp;
+                _exp = value;
+
+                if (OnChangeExp != null)
+                    OnChangeExp(this, oldValue, _exp);
+
+                // Check if this change in experience has made the Character level
+                while (_exp >= _nextLevelExp)
+                {
+                    LevelUp();
+                }
+            }
+        }
+
+        public SPValueType HP
+        {
+            get { return _hp; }
+            set
+            {
+                // Get the new value, ensuring it is in a valid range
+                int max = ModStats[StatType.MaxHP];
+                SPValueType newValue;
+                if (value > max)
+                    newValue = max;
+                else if (value < 0)
+                    newValue = 0;
+                else
+                    newValue = value;
+
+                // Check that the value has changed
+                SPValueType oldValue = _hp;
+                if (newValue == oldValue)
+                    return;
+
+                // Apply new value
+                _hp = newValue;
+
+                if (OnChangeHP != null)
+                    OnChangeHP(this, oldValue, _hp);
+
+                if (_hp <= 0)
+                    Kill();
+            }
+        }
+
+        public CharacterID ID
+        {
+            get { return _id; }
+        }
+
+        public byte Level
+        {
+            get { return _level; }
+            private set
+            {
+                if (_level == value)
+                    return;
+
+                byte oldValue = _level;
+                _level = value;
+                _nextLevelExp = GameData.LevelCost(_level);
+
+                if (OnChangeLevel != null)
+                    OnChangeLevel(this, oldValue, _level);
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `map_id`.
+        /// </summary>
+        MapIndex ICharacterTable.MapID
+        {
+            get { return Map.Index; }
+        }
+
+        public SPValueType MP
+        {
+            get { return _mp; }
+            set
+            {
+                // Get the new value, ensuring it is in a valid range
+                int max = ModStats[StatType.MaxMP];
+                SPValueType newValue;
+                if (value > max)
+                    newValue = max;
+                else if (value < 0)
+                    newValue = 0;
+                else
+                    newValue = value;
+
+                // Check that the value has changed
+                SPValueType oldValue = _mp;
+                if (newValue == oldValue)
+                    return;
+
+                // Apply new value
+                _mp = newValue;
+
+                if (OnChangeMP != null)
+                    OnChangeMP(this, oldValue, _mp);
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the name of the character.
+        /// </summary>
+        public override string Name
+        {
+            get { return _name; }
+            set
+            {
+                // Check that the name is valid
+                // TODO: Need to find a good way to handle validating the User and NPC names individually
+                /*
+                if (!GameData.IsValidCharName(value))
+                {
+                    const string errmsg = "Attempted to give Character `{0}` an invalid name `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, _name, value);
+                    Debug.Fail(string.Format(errmsg, _name, value));
+                    return;
+                }
+                */
+
+                // Set the new name
+                _name = value;
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the Character's password.
+        /// </summary>
+        public abstract string Password { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `respawn_map`.
+        /// </summary>
+        MapIndex? ICharacterTable.RespawnMap
+        {
+            get { return RespawnMapIndex; }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `respawn_x`.
+        /// </summary>
+        float ICharacterTable.RespawnX
+        {
+            get { return RespawnPosition.X; }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `respawn_y`.
+        /// </summary>
+        float ICharacterTable.RespawnY
+        {
+            get { return RespawnPosition.Y; }
+        }
+
+        /// <summary>
+        /// Gets the number of points the Character can spend on stats.
+        /// </summary>
+        public uint StatPoints
+        {
+            get { return _statPoints; }
+            private set
+            {
+                if (_statPoints == value)
+                    return;
+
+                uint oldValue = _statPoints;
+                _statPoints = value;
+
+                if (OnChangeStatPoints != null)
+                    OnChangeStatPoints(this, oldValue, _statPoints);
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `x`.
+        /// </summary>
+        float ICharacterTable.X
+        {
+            get { return Position.X; }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `y`.
+        /// </summary>
+        float ICharacterTable.Y
+        {
+            get { return Position.Y; }
+        }
+
+        /// <summary>
+        /// Gets or sets the ID of the CharacterTemplate that this Character was created from.
+        /// This will not alter the Character in any way except for functions that make use of the
+        /// CharacterTemplateID, such as Equipment and Inventory Items a NPC spawns with.
+        /// </summary>
+        public CharacterTemplateID? CharacterTemplateID
+        {
+            get { return _templateID; }
+            set
+            {
+                if (_templateID == value)
+                    return;
+
+                _templateID = value;
+
+                if (OnChangeTemplateID != null)
+                    OnChangeTemplateID(this);
+            }
+        }
+
+        #endregion
 
         #region IGetTime Members
 

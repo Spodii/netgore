@@ -5,7 +5,7 @@ using NetGore;
 namespace DemoGame
 {
     /// <summary>
-    /// Defines the basics of a single item
+    /// Defines the basics of a single item.
     /// </summary>
     public abstract class ItemEntityBase : DynamicEntity, IPickupableEntity
     {

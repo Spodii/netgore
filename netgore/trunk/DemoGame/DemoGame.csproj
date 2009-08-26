@@ -117,6 +117,7 @@
     <Compile Include="Stats\Collections\CharacterStatsBase.cs" />
     <Compile Include="Stats\Collections\FixedStatCollection.cs" />
     <Compile Include="Stats\Collections\FullStatCollection.cs" />
+    <Compile Include="Stats\IStatExtensions.cs" />
     <Compile Include="Stats\IModStatContainer.cs" />
     <Compile Include="Stats\IStat.cs" />
     <Compile Include="Stats\Collections\IStatCollection.cs" />

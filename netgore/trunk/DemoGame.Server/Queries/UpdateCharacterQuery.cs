@@ -9,7 +9,7 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DBControllerQuery]
-    public class UpdateCharacterQuery : DbQueryNonReader<Character>
+    public class UpdateCharacterQuery : DbQueryNonReader<ICharacterTable>
     {
         static readonly string _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", CharacterTable.TableName,
                                                             FormatParametersIntoString(
@@ -17,12 +17,13 @@ namespace DemoGame.Server.Queries
                                                                                                       StringComparer.
                                                                                                           OrdinalIgnoreCase)));
 
+
         /// <summary>
         /// Gets the fields that will not be updated when the Character is updated.
         /// </summary>
         static IEnumerable<string> FieldsToNotUpdate
         {
-            get { yield return "password"; }
+            get { return new string[] { "password" }; }
         }
 
         public UpdateCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
@@ -44,33 +45,9 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="character">Item used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, Character character)
+        protected override void SetParameters(DbParameterValues p, ICharacterTable character)
         {
-            p["@id"] = character.ID;
-            p["@cash"] = character.Cash;
-            p["@character_template_id"] = character.TemplateID;
-            p["@map_id"] = character.Map.Index;
-            p["@x"] = character.Position.X;
-            p["@y"] = character.Position.Y;
-            p["@body_id"] = character.BodyInfo.Index;
-            p["@name"] = character.Name;
-            p["@hp"] = (int)character.HP;
-            p["@mp"] = (int)character.MP;
-            p["@level"] = character.Level;
-            p["@exp"] = character.Exp;
-            p["@statpoints"] = character.StatPoints;
-            p["@respawn_map"] = character.RespawnMapIndex;
-            p["@respawn_x"] = character.RespawnPosition.X;
-            p["@respawn_y"] = character.RespawnPosition.Y;
-
-            foreach (IStat stat in character.BaseStats)
-            {
-                string fieldName = stat.StatType.GetDatabaseField(StatCollectionType.Base);
-                string key = "@" + fieldName;
-
-                Debug.Assert(p.Contains(key), "If any parameter is missing, something is wrong with the initialization.");
-                p[key] = stat.Value;
-            }
+            character.TryCopyValues(p);
         }
     }
 }
