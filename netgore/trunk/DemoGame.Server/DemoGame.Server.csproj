@@ -121,6 +121,10 @@
     <Compile Include="ConsoleCommands.cs" />
     <Compile Include="Items\UserEquipped.cs" />
     <Compile Include="Items\UserInventoryUpdater.cs" />
+    <Compile Include="NPCChat\NPCChatDialog.cs" />
+    <Compile Include="NPCChat\NPCChatDialogItem.cs" />
+    <Compile Include="NPCChat\NPCChatManager.cs" />
+    <Compile Include="NPCChat\NPCChatResponse.cs" />
     <Compile Include="Queries\UpdateCharacterQuery.cs" />
     <Compile Include="Say\SayCommands.cs" />
     <Compile Include="Say\SayHandler.cs" />
