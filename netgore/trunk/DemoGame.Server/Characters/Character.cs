@@ -502,13 +502,6 @@ namespace DemoGame.Server
             get { return _world; }
         }
 
-        protected Character()
-        {
-            // TODO: Remove the need for this constructor
-            throw new MethodAccessException("Character's empty constructor should never be used on the server since the " +
-                "server never needs to deserialize a DynamicEntity.");
-        }
-
         /// <summary>
         /// Character constructor.
         /// </summary>
