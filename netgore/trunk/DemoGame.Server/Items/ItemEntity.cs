@@ -200,7 +200,7 @@ namespace DemoGame.Server
                 // there is no reason this should ever happen intentionally
                 const string errmsg =
                     "Trying to stack an item `{0}` onto itself. Although this is not an error, " +
-                        "it makes no sense why it would be attempted.";
+                    "it makes no sense why it would be attempted.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
@@ -342,7 +342,7 @@ namespace DemoGame.Server
             {
                 const string errmsg =
                     "Unable to convert CharacterEntity `{0}` to Character for some reason. " +
-                        "Is there another type, besides Character, inheriting CharacterEntity?";
+                    "Is there another type, besides Character, inheriting CharacterEntity?";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, charEntity);
                 Debug.Fail(string.Format(errmsg, charEntity));
@@ -394,7 +394,10 @@ namespace DemoGame.Server
                 return null;
 
             // Create the new ItemEntity
-            ItemEntity child = new ItemEntity(this) { Amount = amount };
+            ItemEntity child = new ItemEntity(this)
+            {
+                Amount = amount
+            };
 
             // Lower the amount of this ItemEntity
             Amount -= amount;

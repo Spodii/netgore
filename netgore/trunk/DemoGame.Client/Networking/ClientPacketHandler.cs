@@ -92,10 +92,21 @@ namespace DemoGame.Client
         static List<StyledText> CreateChatText(string name, string method, string message)
         {
             if (string.IsNullOrEmpty(method))
-                return new List<StyledText> { new StyledText(name + ": ", Color.Green), new StyledText(message, Color.Black) };
-            else
+            {
                 return new List<StyledText>
-                { new StyledText(name + " " + method + ": ", Color.Green), new StyledText(message, Color.Black) };
+                {
+                    new StyledText(name + ": ", Color.Green),
+                    new StyledText(message, Color.Black)
+                };
+            }
+            else
+            {
+                return new List<StyledText>
+                {
+                    new StyledText(name + " " + method + ": ", Color.Green),
+                    new StyledText(message, Color.Black)
+                };
+            }
         }
 
         public void Ping()
@@ -185,7 +196,7 @@ namespace DemoGame.Client
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created DynamicEntity with index `{0}` of type `{1}`", dynamicEntity.MapEntityIndex,
-                    dynamicEntity.GetType());
+                               dynamicEntity.GetType());
         }
 
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
@@ -517,7 +528,7 @@ namespace DemoGame.Client
             {
                 const string errmsg =
                     "UseEntity received but usedByIndex `{0}` refers to DynamicEntity `{1}` which does " +
-                        "not implement IUsableEntity.";
+                    "not implement IUsableEntity.";
                 Debug.Fail(string.Format(errmsg, usedEntityIndex, usedEntity));
                 if (log.IsErrorEnabled)
                     log.WarnFormat(errmsg, usedEntityIndex, usedEntity);

@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace NetGore.IO
 {
+    /// <summary>
+    /// Interface for a class that saves and loads its state values managed by a SettingsManager.
+    /// </summary>
     public interface IRestorableSettings
     {
         /// <summary>

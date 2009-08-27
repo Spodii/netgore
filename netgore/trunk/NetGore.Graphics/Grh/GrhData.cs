@@ -129,7 +129,7 @@ namespace NetGore.Graphics
             {
                 ValidateTexture();
                 return _isUsingAtlas
-                    ? new Vector2(_atlasSourceRect.X, _atlasSourceRect.Y) : new Vector2(_sourceRect.X, _sourceRect.Y);
+                           ? new Vector2(_atlasSourceRect.X, _atlasSourceRect.Y) : new Vector2(_sourceRect.X, _sourceRect.Y);
             }
         }
 
@@ -245,8 +245,16 @@ namespace NetGore.Graphics
 
             GrhData gd = new GrhData
             {
-                _category = newCategory, _cm = _cm, _frames = _frames, _grhIndex = index, _sourceRect = _sourceRect, _speed = _speed,
-                _texture = _texture, _textureName = _textureName, _title = newTitle, _isUsingAtlas = _isUsingAtlas,
+                _category = newCategory,
+                _cm = _cm,
+                _frames = _frames,
+                _grhIndex = index,
+                _sourceRect = _sourceRect,
+                _speed = _speed,
+                _texture = _texture,
+                _textureName = _textureName,
+                _title = newTitle,
+                _isUsingAtlas = _isUsingAtlas,
                 _atlasSourceRect = _atlasSourceRect
             };
 

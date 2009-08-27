@@ -125,7 +125,11 @@ namespace DemoGame.Server
 
             Console.WriteLine("Server is loaded");
 
-            _inputThread = new Thread(HandleInput) { Name = "Input Handler", IsBackground = true };
+            _inputThread = new Thread(HandleInput)
+            {
+                Name = "Input Handler",
+                IsBackground = true
+            };
         }
 
         /// <summary>

@@ -27,9 +27,9 @@ namespace DemoGame.MapEditor
         protected override void Initialize()
         {
             Application.Idle += delegate
-            {
-                Invalidate();
-            };
+                                {
+                                    Invalidate();
+                                };
         }
     }
 }

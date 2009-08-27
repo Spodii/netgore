@@ -718,7 +718,7 @@ namespace NetGore.Graphics.GUI
             {
                 const string errmsg =
                     "Attempted to set control `{0}` as the top-most control in `{1}`, " +
-                        "but the control is not in the parent's list of Controls.";
+                    "but the control is not in the parent's list of Controls.";
                 Debug.Fail(string.Format(errmsg, control, this));
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, control, this);

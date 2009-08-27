@@ -68,7 +68,7 @@ namespace NetGore.IO
             const string parameterName = "name";
             const string errmsg =
                 "Cannot read the value of key `{0}` since multiple values were found with that key." +
-                    " This method requires that the key's name is unique.";
+                " This method requires that the key's name is unique.";
 
             return new ArgumentException(string.Format(errmsg, key), parameterName);
         }
@@ -125,7 +125,7 @@ namespace NetGore.IO
                             return ret;
                         else
                             throw new Exception(string.Format("Was expecting end of element `{0}`, but found `{1}`.", rootNodeName,
-                                reader.Name));
+                                                              reader.Name));
                 }
             }
 
@@ -240,9 +240,10 @@ namespace NetGore.IO
 
                 using (MemoryStream ms = new MemoryStream(bytes))
                 {
-                    using (
-                        XmlReader r = XmlReader.Create(ms, new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Fragment })
-                        )
+                    using (XmlReader r = XmlReader.Create(ms, new XmlReaderSettings
+                    {
+                        ConformanceLevel = ConformanceLevel.Fragment
+                    }))
                     {
                         XmlValueReader reader = new XmlValueReader(r, name, true);
                         ret.Add(reader);

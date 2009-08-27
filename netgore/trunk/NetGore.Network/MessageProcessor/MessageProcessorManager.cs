@@ -58,7 +58,7 @@ namespace NetGore.Network
             {
                 const BindingFlags bindFlags =
                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.InvokeMethod |
-                        BindingFlags.Static;
+                    BindingFlags.Static;
 
                 // Search through every method in the class
                 foreach (MethodInfo method in type.GetMethods(bindFlags))

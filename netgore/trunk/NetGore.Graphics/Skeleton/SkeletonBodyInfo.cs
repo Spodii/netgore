@@ -68,7 +68,10 @@ namespace NetGore.Graphics
         {
             using (FileStream fs = new FileStream(filePath, FileMode.Create))
             {
-                XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true
+                };
                 using (XmlWriter w = XmlWriter.Create(fs, settings))
                 {
                     if (w == null)

@@ -203,7 +203,7 @@ namespace NetGore.Network
 #if DEBUG
             const string errmsg =
                 "PacketWriter lived for far too long. Most likely it was never disposed of.{0}" +
-                    "Stack trace from PacketWriter's Activate():{0}{1}";
+                "Stack trace from PacketWriter's Activate():{0}{1}";
 
             string err = string.Format(errmsg, Environment.NewLine, _stackTrace);
             Debug.Fail(err);

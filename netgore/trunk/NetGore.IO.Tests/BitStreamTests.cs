@@ -64,7 +64,10 @@ namespace NetGore.IO.Tests
 
         static BitStreamWriteHandler<T> GetWriteHandler<T>(BitStream bitStream)
         {
-            MethodInfo methodInfo = typeof(BitStream).GetMethod("Write", new Type[] { typeof(T) });
+            MethodInfo methodInfo = typeof(BitStream).GetMethod("Write", new Type[]
+            {
+                typeof(T)
+            });
             return (BitStreamWriteHandler<T>)Delegate.CreateDelegate(typeof(BitStreamWriteHandler<T>), bitStream, methodInfo);
         }
 
@@ -181,7 +184,10 @@ namespace NetGore.IO.Tests
         [Test]
         public void BitIO()
         {
-            var bits = new int[] { 1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0 };
+            var bits = new int[]
+            {
+                1, 0, 1, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 0
+            };
             BitStream bs = new BitStream(BitStreamMode.Write, bits.Length * 2);
 
             for (int j = 0; j < 10; j++)
@@ -206,11 +212,26 @@ namespace NetGore.IO.Tests
         [Test]
         public void BitStreamIO()
         {
-            var a = new int[] { -1, 0, 1, int.MinValue, int.MaxValue };
-            var b = new float[] { -1, 0, 1, float.MinValue, float.MaxValue };
-            var c = new long[] { -1, 0, 1, long.MinValue, long.MaxValue };
-            var d = new bool[] { true, false, false, true, true, false };
-            var e = new byte[] { 0, 1, 2, 3, 100, 200, 225, 254, 255 };
+            var a = new int[]
+            {
+                -1, 0, 1, int.MinValue, int.MaxValue
+            };
+            var b = new float[]
+            {
+                -1, 0, 1, float.MinValue, float.MaxValue
+            };
+            var c = new long[]
+            {
+                -1, 0, 1, long.MinValue, long.MaxValue
+            };
+            var d = new bool[]
+            {
+                true, false, false, true, true, false
+            };
+            var e = new byte[]
+            {
+                0, 1, 2, 3, 100, 200, 225, 254, 255
+            };
 
             BitStream src = new BitStream(BitStreamMode.Write, 1024);
             src.Write(a, 0, a.Length);
@@ -257,7 +278,12 @@ namespace NetGore.IO.Tests
             const int iterations = 5000;
 
             Random rnd = new Random();
-            var values = new List<byte> { byte.MinValue, 1, byte.MaxValue };
+            var values = new List<byte>
+            {
+                byte.MinValue,
+                1,
+                byte.MaxValue
+            };
             for (int i = 0; i < iterations; i++)
             {
                 values.Add((byte)rnd.Next(byte.MinValue, byte.MaxValue));
@@ -284,7 +310,8 @@ namespace NetGore.IO.Tests
         [Test]
         public void ByteIO()
         {
-            BatchIOTester(from value in TRange<byte>() select (byte)value);
+            BatchIOTester(from value in TRange<byte>()
+                          select (byte)value);
         }
 
         [Test]
@@ -329,7 +356,12 @@ namespace NetGore.IO.Tests
             // to wait so goddamn long for any results
             for (int loop = 0; loop < 100; loop++)
             {
-                var values = new List<double> { double.MinValue, 1, double.MaxValue };
+                var values = new List<double>
+                {
+                    double.MinValue,
+                    1,
+                    double.MaxValue
+                };
                 for (int i = 0; i < iterations; i++)
                 {
                     values.Add(rnd.NextDouble());
@@ -363,7 +395,12 @@ namespace NetGore.IO.Tests
             // to wait so goddamn long for any results
             for (int loop = 0; loop < 100; loop++)
             {
-                var values = new List<float> { float.MinValue, 1, float.MaxValue };
+                var values = new List<float>
+                {
+                    float.MinValue,
+                    1,
+                    float.MaxValue
+                };
                 for (int i = 0; i < iterations; i++)
                 {
                     values.Add((float)rnd.NextDouble());
@@ -427,7 +464,14 @@ namespace NetGore.IO.Tests
             {
                 BitStream bs = new BitStream(BitStreamMode.Write, iterations * numBits * 2);
 
-                var values = new List<int> { int.MaxValue, 1, int.MinValue, 0, -1635136632 };
+                var values = new List<int>
+                {
+                    int.MaxValue,
+                    1,
+                    int.MinValue,
+                    0,
+                    -1635136632
+                };
                 for (int i = 0; i < iterations; i++)
                 {
                     values.Add(rnd.Next(int.MinValue, int.MaxValue));
@@ -455,7 +499,8 @@ namespace NetGore.IO.Tests
         [Test]
         public void IntIO()
         {
-            BatchIOTester(from value in TRange<int>() select (int)value);
+            BatchIOTester(from value in TRange<int>()
+                          select (int)value);
         }
 
         [Test]
@@ -530,7 +575,12 @@ namespace NetGore.IO.Tests
             // to wait so goddamn long for any results
             for (int loop = 0; loop < 10; loop++)
             {
-                var values = new List<long> { long.MinValue, 1, long.MaxValue };
+                var values = new List<long>
+                {
+                    long.MinValue,
+                    1,
+                    long.MaxValue
+                };
                 for (long i = 0; i < iterations; i++)
                 {
                     values.Add((long)rnd.NextDouble());
@@ -839,7 +889,10 @@ namespace NetGore.IO.Tests
         [Test]
         public void ReadPastDynamicBufferTest()
         {
-            BitStream bs = new BitStream(BitStreamMode.Read, 10) { ReadMode = BitStreamBufferMode.Dynamic };
+            BitStream bs = new BitStream(BitStreamMode.Read, 10)
+            {
+                ReadMode = BitStreamBufferMode.Dynamic
+            };
 
             for (int i = 0; i < 100; i++)
             {
@@ -850,7 +903,10 @@ namespace NetGore.IO.Tests
         [Test]
         public void ReadPastStaticBufferTest()
         {
-            BitStream bs = new BitStream(BitStreamMode.Read, 10) { ReadMode = BitStreamBufferMode.Static };
+            BitStream bs = new BitStream(BitStreamMode.Read, 10)
+            {
+                ReadMode = BitStreamBufferMode.Static
+            };
 
             try
             {
@@ -890,7 +946,12 @@ namespace NetGore.IO.Tests
             const int iterations = 5000;
 
             Random rnd = new Random();
-            var values = new List<sbyte> { sbyte.MinValue, 1, sbyte.MaxValue };
+            var values = new List<sbyte>
+            {
+                sbyte.MinValue,
+                1,
+                sbyte.MaxValue
+            };
             for (int i = 0; i < iterations; i++)
             {
                 values.Add((sbyte)rnd.Next(sbyte.MinValue, sbyte.MaxValue));
@@ -917,7 +978,8 @@ namespace NetGore.IO.Tests
         [Test]
         public void SByteIO()
         {
-            BatchIOTester(from value in TRange<sbyte>() select (sbyte)value);
+            BatchIOTester(from value in TRange<sbyte>()
+                          select (sbyte)value);
         }
 
         [Test]
@@ -957,7 +1019,12 @@ namespace NetGore.IO.Tests
             const int iterations = 50000;
 
             Random rnd = new Random();
-            var values = new List<int> { int.MinValue, 1, int.MaxValue };
+            var values = new List<int>
+            {
+                int.MinValue,
+                1,
+                int.MaxValue
+            };
             for (int i = 0; i < iterations; i++)
             {
                 values.Add(rnd.Next(int.MinValue, int.MaxValue));
@@ -995,7 +1062,12 @@ namespace NetGore.IO.Tests
             const int iterations = 20000;
 
             Random rnd = new Random();
-            var values = new List<short> { short.MinValue, 1, short.MaxValue };
+            var values = new List<short>
+            {
+                short.MinValue,
+                1,
+                short.MaxValue
+            };
             for (short i = 0; i < iterations; i++)
             {
                 values.Add((short)rnd.Next(short.MinValue, short.MaxValue));
@@ -1024,7 +1096,8 @@ namespace NetGore.IO.Tests
         [Test]
         public void ShortIO()
         {
-            BatchIOTester(from value in TRange<short>() select (short)value);
+            BatchIOTester(from value in TRange<short>()
+                          select (short)value);
         }
 
         [Test]
@@ -1140,7 +1213,9 @@ namespace NetGore.IO.Tests
             BitStream bs = new BitStream(BitStreamMode.Write, 65536);
 
             var strings = new string[]
-            { "Hello", "", "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "1234567890!@#$%^&*()" };
+            {
+                "Hello", "", "abcdefghijklmnopqrstuvwxyz", "ABCDEFGHIJKLMNOPQRSTUVWXYZ", "1234567890!@#$%^&*()"
+            };
 
             foreach (string s in strings)
             {
@@ -1210,7 +1285,10 @@ namespace NetGore.IO.Tests
         public void SuppliedBufferTest()
         {
             var buff = new byte[16];
-            BitStream bs = new BitStream(buff) { Mode = BitStreamMode.Write };
+            BitStream bs = new BitStream(buff)
+            {
+                Mode = BitStreamMode.Write
+            };
             bs.Write((byte)20);
             bs.Write((byte)8);
             bs.Write(true);
@@ -1229,7 +1307,12 @@ namespace NetGore.IO.Tests
             const int iterations = 50000;
 
             Random rnd = new Random();
-            var values = new List<uint> { uint.MinValue, 1, uint.MaxValue };
+            var values = new List<uint>
+            {
+                uint.MinValue,
+                1,
+                uint.MaxValue
+            };
             for (int i = 0; i < iterations; i++)
             {
                 values.Add((uint)rnd.NextDouble());
@@ -1256,7 +1339,8 @@ namespace NetGore.IO.Tests
         [Test]
         public void UIntIO()
         {
-            BatchIOTester(from value in TRange<uint>() select (uint)value);
+            BatchIOTester(from value in TRange<uint>()
+                          select (uint)value);
         }
 
         [Test]
@@ -1271,7 +1355,12 @@ namespace NetGore.IO.Tests
             // to wait so goddamn long for any results
             for (int loop = 0; loop < 10; loop++)
             {
-                var values = new List<ulong> { ulong.MinValue, 1, ulong.MaxValue };
+                var values = new List<ulong>
+                {
+                    ulong.MinValue,
+                    1,
+                    ulong.MaxValue
+                };
                 for (int i = 0; i < iterations; i++)
                 {
                     values.Add((ulong)rnd.NextDouble());
@@ -1300,7 +1389,12 @@ namespace NetGore.IO.Tests
             const int iterations = 20000;
 
             Random rnd = new Random();
-            var values = new List<ushort> { ushort.MinValue, 1, ushort.MaxValue };
+            var values = new List<ushort>
+            {
+                ushort.MinValue,
+                1,
+                ushort.MaxValue
+            };
             for (ushort i = 0; i < iterations; i++)
             {
                 values.Add((ushort)rnd.Next(ushort.MinValue, ushort.MaxValue));
@@ -1327,7 +1421,8 @@ namespace NetGore.IO.Tests
         [Test]
         public void UShortIO()
         {
-            BatchIOTester(from value in TRange<ushort>() select (ushort)value);
+            BatchIOTester(from value in TRange<ushort>()
+                          select (ushort)value);
         }
 
         [Test]
@@ -1389,7 +1484,10 @@ namespace NetGore.IO.Tests
         [Test]
         public void WritePastDynamicBufferTest()
         {
-            BitStream bs = new BitStream(BitStreamMode.Write, 10) { WriteMode = BitStreamBufferMode.Dynamic };
+            BitStream bs = new BitStream(BitStreamMode.Write, 10)
+            {
+                WriteMode = BitStreamBufferMode.Dynamic
+            };
 
             for (int i = 0; i < 100; i++)
             {
@@ -1400,7 +1498,10 @@ namespace NetGore.IO.Tests
         [Test]
         public void WritePastStaticBufferTest()
         {
-            BitStream bs = new BitStream(BitStreamMode.Write, 10) { WriteMode = BitStreamBufferMode.Static };
+            BitStream bs = new BitStream(BitStreamMode.Write, 10)
+            {
+                WriteMode = BitStreamBufferMode.Static
+            };
 
             try
             {

@@ -32,7 +32,10 @@ namespace DemoGame.MapEditor
                 }
             }
 
-            screen.UpdateSelectedWallsList(new List<WallEntityBase>(1) { w });
+            screen.UpdateSelectedWallsList(new List<WallEntityBase>(1)
+            {
+                w
+            });
         }
     }
 }

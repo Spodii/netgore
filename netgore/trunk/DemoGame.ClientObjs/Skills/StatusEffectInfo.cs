@@ -16,7 +16,8 @@ namespace DemoGame.Client
 
         static readonly InfoManager<StatusEffectType, StatusEffectInfo> _infoManager =
             new InfoManager<StatusEffectType, StatusEffectInfo>(_fileName, EnumComparer<StatusEffectType>.Instance,
-                x => new StatusEffectInfo(x), (x, y) => y.Save(x), x => x.StatusEffectType);
+                                                                x => new StatusEffectInfo(x), (x, y) => y.Save(x),
+                                                                x => x.StatusEffectType);
 
         /// <summary>
         /// Gets or sets the description of this status effect.
@@ -40,8 +41,12 @@ namespace DemoGame.Client
 
         static StatusEffectInfo()
         {
-            _infoManager.AddMissingTypes(StatusEffectTypeHelper.AllValues,
-                x => new StatusEffectInfo { StatusEffectType = x, Name = x.ToString(), Description = string.Empty });
+            _infoManager.AddMissingTypes(StatusEffectTypeHelper.AllValues, x => new StatusEffectInfo
+            {
+                StatusEffectType = x,
+                Name = x.ToString(),
+                Description = string.Empty
+            });
             _infoManager.Save();
         }
 

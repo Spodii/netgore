@@ -234,7 +234,10 @@ namespace NetGore
             string op = match.Value;
 
             // Find the values (should only be 2 - left and right side of the operator)
-            var values = text.Split(new[] { op }, StringSplitOptions.RemoveEmptyEntries);
+            var values = text.Split(new[]
+            {
+                op
+            }, StringSplitOptions.RemoveEmptyEntries);
             if (values.Length != 2)
                 throw new Exception(string.Format("Failed to acquire values in the text '{0}'", text));
 

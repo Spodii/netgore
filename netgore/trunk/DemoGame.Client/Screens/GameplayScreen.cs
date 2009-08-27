@@ -320,7 +320,7 @@ namespace DemoGame.Client
 
             // Draw the world layer
             _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None,
-                World.Camera.Matrix);
+                                         World.Camera.Matrix);
             World.Draw(_spriteBatch);
             _damageTextPool.Draw(_spriteBatch, _damageFont);
             _spriteBatch.End();
@@ -360,7 +360,10 @@ namespace DemoGame.Client
             _gui = new GUIManager(_guiFont);
             Character.NameFont = _guiFont;
 
-            Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
+            Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize)
+            {
+                CanFocus = false
+            };
             _statsForm = new StatsForm(UserInfo, cScreen);
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 

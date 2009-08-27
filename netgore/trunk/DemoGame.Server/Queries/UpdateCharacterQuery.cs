@@ -11,14 +11,23 @@ namespace DemoGame.Server.Queries
     public class UpdateCharacterQuery : DbQueryNonReader<ICharacterTable>
     {
         static readonly string _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", CharacterTable.TableName,
-            FormatParametersIntoString(CharacterTable.DbNonKeyColumns.Except(FieldsToNotUpdate, StringComparer.OrdinalIgnoreCase)));
+                                                            FormatParametersIntoString(
+                                                                CharacterTable.DbNonKeyColumns.Except(FieldsToNotUpdate,
+                                                                                                      StringComparer.
+                                                                                                          OrdinalIgnoreCase)));
 
         /// <summary>
         /// Gets the fields that will not be updated when the Character is updated.
         /// </summary>
         static IEnumerable<string> FieldsToNotUpdate
         {
-            get { return new string[] { "password" }; }
+            get
+            {
+                return new string[]
+                {
+                    "password"
+                };
+            }
         }
 
         public UpdateCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)

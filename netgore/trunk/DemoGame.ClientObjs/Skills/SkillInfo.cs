@@ -15,7 +15,13 @@ namespace DemoGame.Client
         const string _fileName = "skillinfo.xml";
 
         static readonly InfoManager<SkillType, SkillInfo> _infoManager = new InfoManager<SkillType, SkillInfo>(_fileName,
-            EnumComparer<SkillType>.Instance, x => new SkillInfo(x), (x, y) => y.Save(x), x => x.SkillType);
+                                                                                                               EnumComparer
+                                                                                                                   <SkillType>.
+                                                                                                                   Instance,
+                                                                                                               x =>
+                                                                                                               new SkillInfo(x),
+                                                                                                               (x, y) => y.Save(x),
+                                                                                                               x => x.SkillType);
 
         /// <summary>
         /// Gets or sets the description of this Skill.
@@ -39,8 +45,12 @@ namespace DemoGame.Client
 
         static SkillInfo()
         {
-            _infoManager.AddMissingTypes(SkillTypeHelper.AllValues,
-                x => new SkillInfo { SkillType = x, Name = x.ToString(), Description = string.Empty });
+            _infoManager.AddMissingTypes(SkillTypeHelper.AllValues, x => new SkillInfo
+            {
+                SkillType = x,
+                Name = x.ToString(),
+                Description = string.Empty
+            });
             _infoManager.Save();
         }
 

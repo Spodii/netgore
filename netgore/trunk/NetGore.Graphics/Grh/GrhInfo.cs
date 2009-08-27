@@ -88,7 +88,7 @@ namespace NetGore.Graphics
 
             // Make sure the GrhData is only in the list once
             Debug.Assert(GrhDatas.Where(x => x == gd).Count() == 1,
-                "The GrhData should be in the list only once. Somehow, its in there either more times, or not at all.");
+                         "The GrhData should be in the list only once. Somehow, its in there either more times, or not at all.");
         }
 
         /// <summary>
@@ -508,7 +508,10 @@ namespace NetGore.Graphics
             using (FileStream stream = new FileStream(tempPath, FileMode.Create))
             {
                 // Create the XmlWriter and settings
-                XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true
+                };
                 using (XmlWriter w = XmlWriter.Create(stream, settings))
                 {
                     if (w == null)

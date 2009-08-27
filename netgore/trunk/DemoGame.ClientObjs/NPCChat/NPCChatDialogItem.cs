@@ -97,7 +97,7 @@ namespace DemoGame.Client.NPCChat
         {
             Debug.Assert(
                 _index == default(ushort) && _title == default(string) && _text == default(string) &&
-                    _responses == default(IEnumerable<NPCChatResponseBase>), "Values were already set?");
+                _responses == default(IEnumerable<NPCChatResponseBase>), "Values were already set?");
 
             _index = page;
             _title = title;

@@ -42,7 +42,7 @@ namespace DemoGame.Server
                 _oldValues = oldValues;
 
             Debug.Assert(_item != null || _oldValues != null,
-                "item and oldValues can not both be null. " + "This would imply that the item changed from null to null.");
+                         "item and oldValues can not both be null. " + "This would imply that the item changed from null to null.");
         }
     }
 }

@@ -14,7 +14,10 @@ namespace NetGore.IO
         /// <summary>
         /// Default settings to use if no settings or invalid settings are specified.
         /// </summary>
-        static readonly XmlWriterSettings _defaultSettings = new XmlWriterSettings { Indent = true };
+        static readonly XmlWriterSettings _defaultSettings = new XmlWriterSettings
+        {
+            Indent = true
+        };
 
         readonly XmlWriter _w;
         bool _isDisposed = false;

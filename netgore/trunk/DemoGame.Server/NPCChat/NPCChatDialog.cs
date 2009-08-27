@@ -96,7 +96,7 @@ namespace DemoGame.Server.NPCChat
         protected override void SetReadValues(ushort index, string title, IEnumerable<NPCChatDialogItemBase> items)
         {
             Debug.Assert(_index == default(ushort) && _items == default(IEnumerable<NPCChatDialogItemBase>),
-                "Values were already set?");
+                         "Values were already set?");
 
             _index = index;
             _items = items.ToArray();

@@ -154,7 +154,7 @@ namespace DemoGame.Server
             {
                 const string errmsg =
                     "Send to `{0}` failed - Conn is null or not connected." +
-                        " Connection by client was probably not closed properly. Usually not a big deal. Disposing User...";
+                    " Connection by client was probably not closed properly. Usually not a big deal. Disposing User...";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, this);
                 DelayedDispose();

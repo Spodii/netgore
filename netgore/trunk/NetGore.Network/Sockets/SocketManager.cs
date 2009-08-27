@@ -208,7 +208,7 @@ namespace NetGore.Network
             {
                 var remaining = connsToRemove.Intersect(_connections);
                 Debug.Assert(remaining.Count() == 0,
-                    "Why is there items left in Connections after calling Dispose() on all of them?");
+                             "Why is there items left in Connections after calling Dispose() on all of them?");
             }
 #endif
         }
@@ -349,7 +349,7 @@ namespace NetGore.Network
                     if (log.IsWarnEnabled)
                     {
                         log.WarnFormat("Connection from address {0} rejected - too many connections from this IP [{1}/{2}]",
-                            conn.Address, _connections.Count, _maxDupeIP);
+                                       conn.Address, _connections.Count, _maxDupeIP);
                     }
                     conn.Dispose();
                     return;

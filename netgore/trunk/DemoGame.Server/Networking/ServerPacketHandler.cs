@@ -304,7 +304,7 @@ namespace DemoGame.Server
             {
                 const string errmsg =
                     "UseEntity received but useByIndex `{0}` refers to DynamicEntity `{1}` which does " +
-                        "not implement IUsableEntity.";
+                    "not implement IUsableEntity.";
                 Debug.Fail(string.Format(errmsg, useEntityIndex, useEntity));
                 if (log.IsErrorEnabled)
                     log.WarnFormat(errmsg, useEntityIndex, useEntity);

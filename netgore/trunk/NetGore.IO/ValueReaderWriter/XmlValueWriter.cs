@@ -25,7 +25,10 @@ namespace NetGore.IO
         public XmlValueWriter(string filePath, string nodeName)
         {
             _disposeWriter = true;
-            _writer = XmlWriter.Create(filePath, new XmlWriterSettings { Indent = true });
+            _writer = XmlWriter.Create(filePath, new XmlWriterSettings
+            {
+                Indent = true
+            });
 
             if (_writer == null)
                 throw new ArgumentException("filePath");

@@ -77,12 +77,12 @@ namespace Microsoft.Xna.Framework
             float num = amount * amount;
             float num2 = amount * num;
             vector.X = 0.5f *
-                ((((2f * value2.X) + ((-value1.X + value3.X) * amount)) +
-                    (((((2f * value1.X) - (5f * value2.X)) + (4f * value3.X)) - value4.X) * num)) +
+                       ((((2f * value2.X) + ((-value1.X + value3.X) * amount)) +
+                         (((((2f * value1.X) - (5f * value2.X)) + (4f * value3.X)) - value4.X) * num)) +
                         ((((-value1.X + (3f * value2.X)) - (3f * value3.X)) + value4.X) * num2));
             vector.Y = 0.5f *
-                ((((2f * value2.Y) + ((-value1.Y + value3.Y) * amount)) +
-                    (((((2f * value1.Y) - (5f * value2.Y)) + (4f * value3.Y)) - value4.Y) * num)) +
+                       ((((2f * value2.Y) + ((-value1.Y + value3.Y) * amount)) +
+                         (((((2f * value1.Y) - (5f * value2.Y)) + (4f * value3.Y)) - value4.Y) * num)) +
                         ((((-value1.Y + (3f * value2.Y)) - (3f * value3.Y)) + value4.Y) * num2));
             return vector;
         }
@@ -93,12 +93,12 @@ namespace Microsoft.Xna.Framework
             float num = amount * amount;
             float num2 = amount * num;
             result.X = 0.5f *
-                ((((2f * value2.X) + ((-value1.X + value3.X) * amount)) +
-                    (((((2f * value1.X) - (5f * value2.X)) + (4f * value3.X)) - value4.X) * num)) +
+                       ((((2f * value2.X) + ((-value1.X + value3.X) * amount)) +
+                         (((((2f * value1.X) - (5f * value2.X)) + (4f * value3.X)) - value4.X) * num)) +
                         ((((-value1.X + (3f * value2.X)) - (3f * value3.X)) + value4.X) * num2));
             result.Y = 0.5f *
-                ((((2f * value2.Y) + ((-value1.Y + value3.Y) * amount)) +
-                    (((((2f * value1.Y) - (5f * value2.Y)) + (4f * value3.Y)) - value4.Y) * num)) +
+                       ((((2f * value2.Y) + ((-value1.Y + value3.Y) * amount)) +
+                         (((((2f * value1.Y) - (5f * value2.Y)) + (4f * value3.Y)) - value4.Y) * num)) +
                         ((((-value1.Y + (3f * value2.Y)) - (3f * value3.Y)) + value4.Y) * num2));
         }
 
@@ -400,7 +400,10 @@ namespace Microsoft.Xna.Framework
 
         public override string ToString()
         {
-            return string.Format("{{X:{0} Y:{1}}}", new object[] { X.ToString(), Y.ToString() });
+            return string.Format("{{X:{0} Y:{1}}}", new object[]
+            {
+                X.ToString(), Y.ToString()
+            });
         }
 
         public static Vector2 Transform(Vector2 position, Matrix matrix)

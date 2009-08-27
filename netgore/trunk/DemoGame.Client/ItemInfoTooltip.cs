@@ -53,7 +53,12 @@ namespace DemoGame.Client
             int numNonZeroStats = nonZeroStats.Count();
 
             // Basic item information
-            var lines = new List<string>(numNonZeroStats + 10) { ItemInfo.Name, ItemInfo.Description, "Value: " + ItemInfo.Value };
+            var lines = new List<string>(numNonZeroStats + 10)
+            {
+                ItemInfo.Name,
+                ItemInfo.Description,
+                "Value: " + ItemInfo.Value
+            };
 
             if (ItemInfo.HP != 0)
                 lines.Add(string.Format(" +{0} HP", ItemInfo.HP));
@@ -100,7 +105,7 @@ namespace DemoGame.Client
 
             // Create the dest rectangle
             Rectangle rect = new Rectangle((int)pos.X - borderSize, (int)pos.Y - borderSize, width + borderSize * 2,
-                height + borderSize * 2);
+                                           height + borderSize * 2);
 
             // Draw the background rectangle
             XNARectangle.Draw(sb, rect, new Color(0, 0, 0, 150), new Color(0, 0, 0, 225));
