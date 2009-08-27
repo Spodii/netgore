@@ -87,22 +87,6 @@ namespace DemoGame.Server
         readonly CharacterSPSynchronizer _spSync;
         readonly CharacterStatusEffects _statusEffects;
 
-        /// <summary>
-        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
-        /// has a chat dialog.
-        /// </summary>
-        public override bool HasChatDialog
-        {
-            get
-            {
-                return ChatDialog != null;
-            }
-            protected set
-            {
-                throw new NotSupportedException();
-            }
-        }
-
         readonly World _world;
 
         /// <summary>
@@ -256,6 +240,16 @@ namespace DemoGame.Server
         public CharacterEquipped Equipped
         {
             get { return _equipped; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
+        /// has a chat dialog.
+        /// </summary>
+        public override bool HasChatDialog
+        {
+            get { return ChatDialog != null; }
+            protected set { throw new NotSupportedException("This value should never be set directly in the Server."); }
         }
 
         /// <summary>

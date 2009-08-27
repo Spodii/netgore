@@ -1,4 +1,3 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,15 +16,6 @@ namespace DemoGame.Client.NPCChat
         NPCChatResponseBase[] _responses;
         string _text;
         string _title;
-
-        /// <summary>
-        /// NPCChatDialogItem constructor.
-        /// </summary>
-        /// <param name="r">IValueReader to read the values from.</param>
-        internal NPCChatDialogItem(IValueReader r)
-            : base(r)
-        {
-        }
 
         /// <summary>
         /// When overridden in the derived class, gets the page index of this NPCChatDialogItemBase in the
@@ -60,6 +50,14 @@ namespace DemoGame.Client.NPCChat
         public override string Title
         {
             get { return _title; }
+        }
+
+        /// <summary>
+        /// NPCChatDialogItem constructor.
+        /// </summary>
+        /// <param name="r">IValueReader to read the values from.</param>
+        internal NPCChatDialogItem(IValueReader r) : base(r)
+        {
         }
 
         /// <summary>

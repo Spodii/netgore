@@ -54,11 +54,37 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// Creates an ArgumentOutOfRangeException for the response index being out of range.
+        /// </summary>
+        /// <param name="parameterName">The name of the response index parameter.</param>
+        /// <param name="value">The specified, invalid response index value.</param>
+        /// <returns>An ArgumentOutOfRangeException for the response index being out of range.</returns>
+        protected ArgumentOutOfRangeException CreateInvalidResponseIndexException(string parameterName, ushort value)
+        {
+            const string errmsg = "Response index `{0}` was out of range for dialog item `{1}`.";
+            string err = string.Format(errmsg, value, Index);
+            if (log.IsErrorEnabled)
+                log.Error(err);
+
+            return new ArgumentOutOfRangeException(err, parameterName);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, creates a NPCChatResponseBase using the given IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
         /// <returns>A NPCChatResponseBase created using the given IValueReader</returns>
         protected abstract NPCChatResponseBase CreateResponse(IValueReader reader);
+
+        /// <summary>
+        /// When overridden in the derived class, gets the index of the next NPCChatDialogItemBase to use from
+        /// the given response.
+        /// </summary>
+        /// <param name="user">The user that is participating in the chatting.</param>
+        /// <param name="npc">The NPC chat is participating in the chatting.</param>
+        /// <param name="responseIndex">The index of the response used.</param>
+        /// <returns>The index of the NPCChatDialogItemBase to go to based off of the given response.</returns>
+        public abstract ushort GetNextPage(object user, object npc, byte responseIndex);
 
         /// <summary>
         /// Reads the values for this NPCChatDialogItemBase from an IValueReader.
@@ -110,31 +136,5 @@ namespace NetGore.NPCChat
                 writer.WriteEndNode("Response");
             }
         }
-
-        /// <summary>
-        /// Creates an ArgumentOutOfRangeException for the response index being out of range.
-        /// </summary>
-        /// <param name="parameterName">The name of the response index parameter.</param>
-        /// <param name="value">The specified, invalid response index value.</param>
-        /// <returns>An ArgumentOutOfRangeException for the response index being out of range.</returns>
-        protected ArgumentOutOfRangeException CreateInvalidResponseIndexException(string parameterName, ushort value)
-        {
-            const string errmsg = "Response index `{0}` was out of range for dialog item `{1}`.";
-            string err = string.Format(errmsg, value, Index);
-            if (log.IsErrorEnabled)
-                log.Error(err);
-
-            return new ArgumentOutOfRangeException(err, parameterName);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the index of the next NPCChatDialogItemBase to use from
-        /// the given response.
-        /// </summary>
-        /// <param name="user">The user that is participating in the chatting.</param>
-        /// <param name="npc">The NPC chat is participating in the chatting.</param>
-        /// <param name="responseIndex">The index of the response used.</param>
-        /// <returns>The index of the NPCChatDialogItemBase to go to based off of the given response.</returns>
-        public abstract ushort GetNextPage(object user, object npc, byte responseIndex);
     }
 }

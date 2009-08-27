@@ -166,7 +166,7 @@ namespace NetGore.Db
             {
                 throw new ArgumentException(
                     "Failed to find the IPoolableDbConnection for the specified IDbConnection. " +
-                        "Item was either already popped or never pushed in the first place.", "conn");
+                    "Item was either already popped or never pushed in the first place.", "conn");
             }
 
             return poolableConn;

@@ -38,7 +38,10 @@ namespace NetGore.Collections
                 return (MeanFinder<T>)del;
 
             // Find the method to handle the type
-            MethodInfo method = typeof(MeanStack).GetMethod("Mean", new Type[] { typeof(T[]), typeof(int), typeof(int) });
+            MethodInfo method = typeof(MeanStack).GetMethod("Mean", new Type[]
+            {
+                typeof(T[]), typeof(int), typeof(int)
+            });
 
             // Ensure we got a valid method
             if (method == null)

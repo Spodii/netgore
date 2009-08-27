@@ -243,7 +243,7 @@ namespace NetGore
         {
             const BindingFlags flags =
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetProperty |
-                BindingFlags.SetProperty;
+                    BindingFlags.SetProperty;
 
             var tempPropInfos = new List<PropertyInfoData>();
 

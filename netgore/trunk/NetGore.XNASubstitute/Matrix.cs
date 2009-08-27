@@ -294,37 +294,37 @@ namespace Microsoft.Xna.Framework
         public static void Multiply(ref Matrix matrix1, ref Matrix matrix2, out Matrix result)
         {
             float num16 = (((matrix1.M11 * matrix2.M11) + (matrix1.M12 * matrix2.M21)) + (matrix1.M13 * matrix2.M31)) +
-                          (matrix1.M14 * matrix2.M41);
+                (matrix1.M14 * matrix2.M41);
             float num15 = (((matrix1.M11 * matrix2.M12) + (matrix1.M12 * matrix2.M22)) + (matrix1.M13 * matrix2.M32)) +
-                          (matrix1.M14 * matrix2.M42);
+                (matrix1.M14 * matrix2.M42);
             float num14 = (((matrix1.M11 * matrix2.M13) + (matrix1.M12 * matrix2.M23)) + (matrix1.M13 * matrix2.M33)) +
-                          (matrix1.M14 * matrix2.M43);
+                (matrix1.M14 * matrix2.M43);
             float num13 = (((matrix1.M11 * matrix2.M14) + (matrix1.M12 * matrix2.M24)) + (matrix1.M13 * matrix2.M34)) +
-                          (matrix1.M14 * matrix2.M44);
+                (matrix1.M14 * matrix2.M44);
             float num12 = (((matrix1.M21 * matrix2.M11) + (matrix1.M22 * matrix2.M21)) + (matrix1.M23 * matrix2.M31)) +
-                          (matrix1.M24 * matrix2.M41);
+                (matrix1.M24 * matrix2.M41);
             float num11 = (((matrix1.M21 * matrix2.M12) + (matrix1.M22 * matrix2.M22)) + (matrix1.M23 * matrix2.M32)) +
-                          (matrix1.M24 * matrix2.M42);
+                (matrix1.M24 * matrix2.M42);
             float num10 = (((matrix1.M21 * matrix2.M13) + (matrix1.M22 * matrix2.M23)) + (matrix1.M23 * matrix2.M33)) +
-                          (matrix1.M24 * matrix2.M43);
+                (matrix1.M24 * matrix2.M43);
             float num9 = (((matrix1.M21 * matrix2.M14) + (matrix1.M22 * matrix2.M24)) + (matrix1.M23 * matrix2.M34)) +
-                         (matrix1.M24 * matrix2.M44);
+                (matrix1.M24 * matrix2.M44);
             float num8 = (((matrix1.M31 * matrix2.M11) + (matrix1.M32 * matrix2.M21)) + (matrix1.M33 * matrix2.M31)) +
-                         (matrix1.M34 * matrix2.M41);
+                (matrix1.M34 * matrix2.M41);
             float num7 = (((matrix1.M31 * matrix2.M12) + (matrix1.M32 * matrix2.M22)) + (matrix1.M33 * matrix2.M32)) +
-                         (matrix1.M34 * matrix2.M42);
+                (matrix1.M34 * matrix2.M42);
             float num6 = (((matrix1.M31 * matrix2.M13) + (matrix1.M32 * matrix2.M23)) + (matrix1.M33 * matrix2.M33)) +
-                         (matrix1.M34 * matrix2.M43);
+                (matrix1.M34 * matrix2.M43);
             float num5 = (((matrix1.M31 * matrix2.M14) + (matrix1.M32 * matrix2.M24)) + (matrix1.M33 * matrix2.M34)) +
-                         (matrix1.M34 * matrix2.M44);
+                (matrix1.M34 * matrix2.M44);
             float num4 = (((matrix1.M41 * matrix2.M11) + (matrix1.M42 * matrix2.M21)) + (matrix1.M43 * matrix2.M31)) +
-                         (matrix1.M44 * matrix2.M41);
+                (matrix1.M44 * matrix2.M41);
             float num3 = (((matrix1.M41 * matrix2.M12) + (matrix1.M42 * matrix2.M22)) + (matrix1.M43 * matrix2.M32)) +
-                         (matrix1.M44 * matrix2.M42);
+                (matrix1.M44 * matrix2.M42);
             float num2 = (((matrix1.M41 * matrix2.M13) + (matrix1.M42 * matrix2.M23)) + (matrix1.M43 * matrix2.M33)) +
-                         (matrix1.M44 * matrix2.M43);
+                (matrix1.M44 * matrix2.M43);
             float num = (((matrix1.M41 * matrix2.M14) + (matrix1.M42 * matrix2.M24)) + (matrix1.M43 * matrix2.M34)) +
-                        (matrix1.M44 * matrix2.M44);
+                (matrix1.M44 * matrix2.M44);
             result.M11 = num16;
             result.M12 = num15;
             result.M13 = num14;

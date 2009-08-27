@@ -13,7 +13,7 @@ namespace DemoGame.Server.Queries
     public class SelectItemsQuery : DbQueryReader<SelectItemsQuery.QueryValues>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id` BETWEEN @low AND @high",
-            ItemTable.TableName);
+                                                            ItemTable.TableName);
 
         public SelectItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

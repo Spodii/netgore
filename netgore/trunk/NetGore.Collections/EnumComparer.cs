@@ -21,7 +21,9 @@ namespace NetGore.Collections
         /// The underlying Enum types that are supported.
         /// </summary>
         static readonly ICollection<Type> _supportedUnderlyingTypes = new Type[]
-        { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong) };
+        {
+            typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int), typeof(uint), typeof(long), typeof(ulong)
+        };
 
         readonly Func<T, T, bool> _equals;
         readonly Func<T, int> _getHashCode;
@@ -76,7 +78,10 @@ namespace NetGore.Collections
             ParameterExpression xParam = Expression.Parameter(typeof(T), "x");
             ParameterExpression yParam = Expression.Parameter(typeof(T), "y");
             BinaryExpression equalExpression = Expression.Equal(xParam, yParam);
-            return Expression.Lambda<Func<T, T, bool>>(equalExpression, new[] { xParam, yParam }).Compile();
+            return Expression.Lambda<Func<T, T, bool>>(equalExpression, new[]
+            {
+                xParam, yParam
+            }).Compile();
         }
 
         /// <summary>
@@ -90,7 +95,10 @@ namespace NetGore.Collections
             UnaryExpression convertExpression = Expression.Convert(objParam, underlyingType);
             MethodInfo getHashCodeMethod = underlyingType.GetMethod("GetHashCode");
             MethodCallExpression getHashCodeExpression = Expression.Call(convertExpression, getHashCodeMethod);
-            return Expression.Lambda<Func<T, int>>(getHashCodeExpression, new[] { objParam }).Compile();
+            return Expression.Lambda<Func<T, int>>(getHashCodeExpression, new[]
+            {
+                objParam
+            }).Compile();
         }
 
         #region IEqualityComparer<T> Members

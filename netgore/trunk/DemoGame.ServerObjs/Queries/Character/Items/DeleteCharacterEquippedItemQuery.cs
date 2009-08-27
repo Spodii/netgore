@@ -12,7 +12,7 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString =
             string.Format("DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot",
-                CharacterEquippedTable.TableName);
+                          CharacterEquippedTable.TableName);
 
         public DeleteCharacterEquippedItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

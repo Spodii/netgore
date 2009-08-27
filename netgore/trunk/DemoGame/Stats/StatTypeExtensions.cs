@@ -26,7 +26,7 @@ namespace DemoGame
 
                 case StatCollectionType.Modified:
                     throw new ArgumentException("StatCollectionType.Modified is not allowed in the database.",
-                        "statCollectionType");
+                                                "statCollectionType");
 
                 default:
                     throw new ArgumentOutOfRangeException("statCollectionType");

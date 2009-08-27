@@ -221,7 +221,7 @@ namespace NetGore
         /// <param name="commandName">The name of the command called. Not guarenteed to be an existant command.</param>
         /// <param name="args">Arguments used to invoke the command. Can be null.</param>
         /// <returns>A string containing a message about why the command failed to be handled.</returns>
-// ReSharper disable UnusedParameter.Global
+        // ReSharper disable UnusedParameter.Global
         protected virtual string HandleInvalidCommand(string commandName, string[] args)
             // ReSharper restore UnusedParameter.Global
         {

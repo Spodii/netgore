@@ -67,7 +67,7 @@ namespace NetGore.Network
         void BeginReceiveFrom()
         {
             _socket.BeginReceiveFrom(_receiveBuffer, 0, _receiveBuffer.Length, SocketFlags.None, ref _bindEndPoint,
-                                     ReceiveFromCallback, this);
+                ReceiveFromCallback, this);
         }
 
         /// <summary>
@@ -164,9 +164,9 @@ namespace NetGore.Network
             }
 
             // Push the received data into the receive queue
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
+            // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if (received != null)
-// ReSharper restore ConditionIsAlwaysTrueOrFalse
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 lock (_receiveQueue)
                     _receiveQueue.Enqueue(new AddressedPacket(received, remoteEndPoint));

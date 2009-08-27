@@ -482,7 +482,7 @@ namespace DemoGame.MapEditor
         {
             if (
                 MessageBox.Show("Are you sure you wish to create a new map? All changes to the current map will be lost.",
-                                "Create new map?", MessageBoxButtons.YesNo) == DialogResult.No)
+                    "Create new map?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             MapIndex index = Map.GetNextFreeIndex(ContentPaths.Dev);
@@ -536,7 +536,7 @@ namespace DemoGame.MapEditor
         /// <typeparam name="T">Type of MapDrawExtensionBase to create.</typeparam>
         /// <param name="checkBox">The CheckBox that is used to set the Enabled property.</param>
         /// <returns>The instanced MapDrawExtensionBase of type <typeparamref name="T"/>.</returns>
-// ReSharper disable UnusedMethodReturnValue.Local
+        // ReSharper disable UnusedMethodReturnValue.Local
         T CreateMapDrawExtensionBase<T>(CheckBox checkBox) where T : MapDrawExtensionBase, new()
             // ReSharper restore UnusedMethodReturnValue.Local
         {
@@ -624,9 +624,9 @@ namespace DemoGame.MapEditor
                 {
                     _selectedGrh.Draw(_sb, drawPos, _drawPreviewColor);
                 }
-// ReSharper disable EmptyGeneralCatchClause
+                    // ReSharper disable EmptyGeneralCatchClause
                 catch
-// ReSharper restore EmptyGeneralCatchClause
+                    // ReSharper restore EmptyGeneralCatchClause
                 {
                 }
             }
@@ -1230,9 +1230,9 @@ namespace DemoGame.MapEditor
             // Disable this form until the rename one closes
             Enabled = false;
             frm.FormClosed += delegate
-                              {
-                                  Enabled = true;
-                              };
+            {
+                Enabled = true;
+            };
             frm.Show();
         }
 

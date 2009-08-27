@@ -60,7 +60,7 @@ namespace NetGore.EditorTools
 
             // Ensure we got everything
             Debug.Assert(GrhInfo.GrhDatas.Where(x => x.TextureName == currTexture).Count() == 0,
-                         "One or more textures failed to be changed!");
+                "One or more textures failed to be changed!");
 
             RemoveSelectedTextureListItem();
         }

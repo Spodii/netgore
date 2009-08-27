@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DemoGame
 {
@@ -30,7 +28,7 @@ namespace DemoGame
 
             // Enumerate through each element in the IEnumerable, adding each one to the next index in the return array
             int i = 0;
-            foreach (var stat in stats)
+            foreach (T stat in stats)
             {
                 ret[i] = new KeyValuePair<StatType, int>(stat.StatType, stat.Value);
                 i++;

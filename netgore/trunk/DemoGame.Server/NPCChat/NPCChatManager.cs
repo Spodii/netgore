@@ -1,7 +1,5 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -43,8 +41,7 @@ namespace DemoGame.Server.NPCChat
             /// <summary>
             /// NPCChatManagerBase constructor.
             /// </summary>
-            public ManagerImplementation()
-                : base(true)
+            public ManagerImplementation() : base(true)
             {
             }
 

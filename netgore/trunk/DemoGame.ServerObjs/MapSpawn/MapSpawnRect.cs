@@ -112,7 +112,7 @@ namespace DemoGame.Server
 
             const string errmsgMoved =
                 "A spawn rectangle was being drawn off of the map." +
-                    " Its previous {0} location was {1} and has been moved to {2}.";
+                " Its previous {0} location was {1} and has been moved to {2}.";
 
             const string errmsgSize =
                 "A spawn rectangle was to big on the {0} axis" + " and has been resized to fit into the map.";

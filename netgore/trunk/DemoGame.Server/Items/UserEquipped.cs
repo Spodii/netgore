@@ -24,7 +24,7 @@ namespace DemoGame.Server
         /// UserEquipped constructor.
         /// </summary>
         /// <param name="user">User that this UserEquipped belongs to.</param>
-// ReSharper disable SuggestBaseTypeForParameter
+        // ReSharper disable SuggestBaseTypeForParameter
         public UserEquipped(User user) : base(user) // ReSharper restore SuggestBaseTypeForParameter
         {
             _user = user;

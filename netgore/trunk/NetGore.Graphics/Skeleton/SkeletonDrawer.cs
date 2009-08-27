@@ -15,10 +15,10 @@ namespace NetGore.Graphics
         /// List of colors to draw with
         /// </summary>
         static readonly Color[] _colorList = new[]
-                                             {
-                                                 new Color(0, 255, 255), new Color(255, 64, 160), new Color(255, 128, 64),
-                                                 new Color(0, 255, 0), new Color(255, 255, 0), new Color(35, 25, 255)
-                                             };
+        {
+            new Color(0, 255, 255), new Color(255, 64, 160), new Color(255, 128, 64), new Color(0, 255, 0), new Color(255, 255, 0),
+            new Color(35, 25, 255)
+        };
 
         /// <summary>
         /// XNALine for drawing lines. Because the points and color are always set before

@@ -19,8 +19,8 @@ namespace NetGore.Db.ClassCreator
 
             public static readonly string Summary =
                 "Copies the column values into the given Dictionary using the database column name" + Environment.NewLine +
-                    "with a prefixed @ as the key. The keys must already exist in the Dictionary;" + Environment.NewLine +
-                        "this method will not create them if they are missing.";
+                "with a prefixed @ as the key. The keys must already exist in the Dictionary;" + Environment.NewLine +
+                "this method will not create them if they are missing.";
         }
 
         /// <summary>
@@ -34,8 +34,8 @@ namespace NetGore.Db.ClassCreator
 
             public static readonly string Summary =
                 "Copies the column values into the given DbParameterValues using the database column name" + Environment.NewLine +
-                    "with a prefixed @ as the key. The keys must already exist in the DbParameterValues;" + Environment.NewLine +
-                        " this method will not create them if they are missing.";
+                "with a prefixed @ as the key. The keys must already exist in the DbParameterValues;" + Environment.NewLine +
+                " this method will not create them if they are missing.";
         }
 
         /// <summary>
@@ -96,26 +96,27 @@ namespace NetGore.Db.ClassCreator
 
             public static readonly string ColumnCollectionProperty =
                 "Gets an IEnumerable of strings containing the name of the database" + Environment.NewLine +
-                    "columns used in the column collection `{0}`.";
+                "columns used in the column collection `{0}`.";
 
             public static readonly string ColumnCollectionValueProperty =
                 "Gets an IEnumerable of KeyValuePairs containing the values in the `{0}` collection. The" + Environment.NewLine +
-                    "key is the collection's key and the value is the value for that corresponding key.";
+                "key is the collection's key and the value is the value for that corresponding key.";
 
             public static readonly string DeepCopySummary = "Creates a deep copy of this table. All the values will be the same" +
-                Environment.NewLine + "but they will be contained in a different object instance.";
+                                                            Environment.NewLine +
+                                                            "but they will be contained in a different object instance.";
 
             public static readonly string ExtensionClassSummary =
                 "Contains extension methods for class {0} that assist in performing" + Environment.NewLine +
-                    "reads and writes to and from a database.";
+                "reads and writes to and from a database.";
 
             public static readonly string InterfaceCollectionGetter =
                 "Gets the value of the database column in the column collection `{0}`" + Environment.NewLine +
-                    "that corresponds to the given key.";
+                "that corresponds to the given key.";
 
             public static readonly string InterfaceCollectionSetter =
                 "Sets the value of the database column in the column collection `{0}`" + Environment.NewLine +
-                    "that corresponds to the given key.";
+                "that corresponds to the given key.";
         }
 
         /// <summary>
@@ -151,10 +152,10 @@ namespace NetGore.Db.ClassCreator
 
             public static readonly string Property =
                 "Gets or sets the value for the field that maps onto the database column `{0}`." + Environment.NewLine +
-                    "The underlying database type is `{1}`";
+                "The underlying database type is `{1}`";
 
             public static readonly string PropertyDbComment = " The database column contains the comment: " + Environment.NewLine +
-                "\"{0}\".";
+                                                              "\"{0}\".";
         }
 
         /// <summary>
@@ -196,8 +197,10 @@ namespace NetGore.Db.ClassCreator
                 "The IDataReader to read the values from. Must already be ready to be read from.";
 
             public static readonly string Summary = "Reads the values from an IDataReader and assigns the read values to this" +
-                Environment.NewLine + "object's properties. The database column's name is used to as the key, so the value" +
-                    Environment.NewLine + "will not be found if any aliases are used or not all columns were selected.";
+                                                    Environment.NewLine +
+                                                    "object's properties. The database column's name is used to as the key, so the value" +
+                                                    Environment.NewLine +
+                                                    "will not be found if any aliases are used or not all columns were selected.";
         }
 
         /// <summary>
@@ -221,13 +224,11 @@ namespace NetGore.Db.ClassCreator
 
             public static readonly string Summary =
                 "Copies the column values into the given DbParameterValues using the database column name" + Environment.NewLine +
-                    "with a prefixed @ as the key. The key must already exist in the DbParameterValues" + Environment.NewLine +
-                        "for the value to be copied over. If any of the keys in the DbParameterValues do not" +
-                            Environment.NewLine +
-                                "match one of the column names, or if there is no field for a key, then it will be" +
-                                    Environment.NewLine +
-                                        "ignored. Because of this, it is important to be careful when using this method" +
-                                            Environment.NewLine + "since columns or keys can be skipped without any indication.";
+                "with a prefixed @ as the key. The key must already exist in the DbParameterValues" + Environment.NewLine +
+                "for the value to be copied over. If any of the keys in the DbParameterValues do not" + Environment.NewLine +
+                "match one of the column names, or if there is no field for a key, then it will be" + Environment.NewLine +
+                "ignored. Because of this, it is important to be careful when using this method" + Environment.NewLine +
+                "since columns or keys can be skipped without any indication.";
         }
 
         /// <summary>
@@ -239,11 +240,15 @@ namespace NetGore.Db.ClassCreator
                 "The IDataReader to read the values from. Must already be ready to be read from.";
 
             public static readonly string Summary = "Reads the values from an IDataReader and assigns the read values to this" +
-                Environment.NewLine + "object's properties. Unlike ReadValues(), this method not only doesn't require" +
-                    Environment.NewLine + "all values to be in the IDataReader, but also does not require the values in" +
-                        Environment.NewLine + "the IDataReader to be a defined field for the table this class represents." +
-                            Environment.NewLine + "Because of this, you need to be careful when using this method because values" +
-                                Environment.NewLine + "can easily be skipped without any indication.";
+                                                    Environment.NewLine +
+                                                    "object's properties. Unlike ReadValues(), this method not only doesn't require" +
+                                                    Environment.NewLine +
+                                                    "all values to be in the IDataReader, but also does not require the values in" +
+                                                    Environment.NewLine +
+                                                    "the IDataReader to be a defined field for the table this class represents." +
+                                                    Environment.NewLine +
+                                                    "Because of this, you need to be careful when using this method because values" +
+                                                    Environment.NewLine + "can easily be skipped without any indication.";
         }
     }
 }

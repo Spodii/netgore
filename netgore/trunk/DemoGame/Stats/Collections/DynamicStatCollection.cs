@@ -83,6 +83,8 @@ namespace DemoGame
         {
         }
 
+        #region IStatCollection Members
+
         /// <summary>
         /// Gets an IEnumerable of the KeyValuePairs in this IStatCollection, where the key is the StatType and the
         /// value is the value of for the stat with the corresponding StatType.
@@ -93,8 +95,6 @@ namespace DemoGame
         {
             return this.xxxToKeyValuePairs();
         }
-
-        #region IStatCollection Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.

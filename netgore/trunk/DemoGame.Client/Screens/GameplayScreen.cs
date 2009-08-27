@@ -320,7 +320,7 @@ namespace DemoGame.Client
 
             // Draw the world layer
             _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None,
-                                         World.Camera.Matrix);
+                World.Camera.Matrix);
             World.Draw(_spriteBatch);
             _damageTextPool.Draw(_spriteBatch, _damageFont);
             _spriteBatch.End();

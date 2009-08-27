@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -16,15 +14,6 @@ namespace DemoGame.Server.NPCChat
     {
         ushort _page;
         byte _value;
-
-        /// <summary>
-        /// NPCChatResponse constructor.
-        /// </summary>
-        /// <param name="r">IValueReader to read the values from.</param>
-        internal NPCChatResponse(IValueReader r)
-            : base(r)
-        {
-        }
 
         /// <summary>
         /// When overridden in the derived class, gets the page of the NPCChatDialogItemBase to go to if this
@@ -50,6 +39,14 @@ namespace DemoGame.Server.NPCChat
         public override byte Value
         {
             get { return _value; }
+        }
+
+        /// <summary>
+        /// NPCChatResponse constructor.
+        /// </summary>
+        /// <param name="r">IValueReader to read the values from.</param>
+        internal NPCChatResponse(IValueReader r) : base(r)
+        {
         }
 
         /// <summary>

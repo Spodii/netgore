@@ -530,7 +530,7 @@ namespace NetGore.Graphics
             foreach (AtlasNode node in atlasInfo.Nodes)
             {
                 Rectangle r = new Rectangle(node.X + Padding, node.Y + Padding, node.Width - Padding * 2,
-                                            node.Height - Padding * 2);
+                    node.Height - Padding * 2);
                 node.ITextureAtlas.SetAtlas(tex, r);
             }
         }

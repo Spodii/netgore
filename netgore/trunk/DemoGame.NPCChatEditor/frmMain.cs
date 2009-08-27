@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
@@ -94,7 +94,7 @@ namespace DemoGame.NPCChatEditor
 
         void cmbSelectedDialog_OnChangeDialog(NPCChatDialogComboBox sender, NPCChatDialogBase dialog)
         {
-            var initialDoNotUpdateValue = _doNotUpdateObj;
+            bool initialDoNotUpdateValue = _doNotUpdateObj;
             _doNotUpdateObj = false;
 
             EditorNPCChatManager.Save();
@@ -128,10 +128,12 @@ namespace DemoGame.NPCChatEditor
 
             EditorNPCChatDialogItem hasDoneThisQuest = new EditorNPCChatDialogItem(2, "Sorry dude, you already did this quest!");
             hasDoneThisQuest.AddResponse(new EditorNPCChatResponse(1, "So? Just let me fucking do it!"),
-                new EditorNPCChatResponse("Ok, fine, whatever. Asshole."));
+                                         new EditorNPCChatResponse("Ok, fine, whatever. Asshole."));
 
             dialog.Add(new EditorNPCChatDialogItem[]
-            { haveYouDoneThisQuest, hasNotDoneThisQuest, acceptHelp, declineHelp, hasDoneThisQuest });
+            {
+                haveYouDoneThisQuest, hasNotDoneThisQuest, acceptHelp, declineHelp, hasDoneThisQuest
+            });
 
             return dialog;
         }
@@ -254,6 +256,15 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetText(txtDialogText.Text);
         }
 
+        void txtDialogTitle_TextChanged(object sender, EventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+
+            if (CurrentDialog != null)
+                CurrentDialog.SetTitle(txtDialogTitle.Text);
+        }
+
         void txtTitle_TextChanged(object sender, EventArgs e)
         {
             if (_doNotUpdateObj)
@@ -263,15 +274,6 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetTitle(txtTitle.Text);
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
-        }
-
-        private void txtDialogTitle_TextChanged(object sender, EventArgs e)
-        {
-            if (_doNotUpdateObj)
-                return;
-
-            if (CurrentDialog != null)
-                CurrentDialog.SetTitle(txtDialogTitle.Text);
         }
     }
 }

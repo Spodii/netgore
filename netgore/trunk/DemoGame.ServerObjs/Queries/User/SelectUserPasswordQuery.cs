@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class SelectUserPasswordQuery : DbQueryReader<string>
     {
         static readonly string _queryString = string.Format("SELECT `password` FROM `{0}` WHERE `name`=@name",
-            CharacterTable.TableName);
+                                                            CharacterTable.TableName);
 
         public SelectUserPasswordQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

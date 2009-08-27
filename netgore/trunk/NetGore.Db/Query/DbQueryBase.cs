@@ -103,7 +103,10 @@ namespace NetGore.Db
         /// <returns>IEnumerable of DbParameters for each of the specified parameter names.</returns>
         protected IEnumerable<DbParameter> CreateParameters(string param1)
         {
-            return new DbParameter[] { CreateParameter(param1) };
+            return new DbParameter[]
+            {
+                CreateParameter(param1)
+            };
         }
 
         /// <summary>
@@ -114,7 +117,10 @@ namespace NetGore.Db
         /// <returns>IEnumerable of DbParameters for each of the specified parameter names.</returns>
         protected IEnumerable<DbParameter> CreateParameters(string param1, string param2)
         {
-            return new DbParameter[] { CreateParameter(param1), CreateParameter(param2) };
+            return new DbParameter[]
+            {
+                CreateParameter(param1), CreateParameter(param2)
+            };
         }
 
         /// <summary>
@@ -126,7 +132,10 @@ namespace NetGore.Db
         /// <returns>IEnumerable of DbParameters for each of the specified parameter names.</returns>
         protected IEnumerable<DbParameter> CreateParameters(string param1, string param2, string param3)
         {
-            return new DbParameter[] { CreateParameter(param1), CreateParameter(param2), CreateParameter(param3) };
+            return new DbParameter[]
+            {
+                CreateParameter(param1), CreateParameter(param2), CreateParameter(param3)
+            };
         }
 
         /// <summary>
@@ -140,7 +149,9 @@ namespace NetGore.Db
         protected IEnumerable<DbParameter> CreateParameters(string param1, string param2, string param3, string param4)
         {
             return new DbParameter[]
-            { CreateParameter(param1), CreateParameter(param2), CreateParameter(param3), CreateParameter(param4) };
+            {
+                CreateParameter(param1), CreateParameter(param2), CreateParameter(param3), CreateParameter(param4)
+            };
         }
 
         /// <summary>

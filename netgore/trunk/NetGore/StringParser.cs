@@ -17,11 +17,10 @@ namespace NetGore
         /// System Types that are handled directly in TryParseSystemType.
         /// </summary>
         static readonly Type[] _handledSystemTypes = new Type[]
-                                                     {
-                                                         typeof(string), typeof(float), typeof(double), typeof(long), typeof(ulong),
-                                                         typeof(int), typeof(uint), typeof(short), typeof(ushort), typeof(byte),
-                                                         typeof(sbyte), typeof(DateTime), typeof(bool)
-                                                     };
+        {
+            typeof(string), typeof(float), typeof(double), typeof(long), typeof(ulong), typeof(int), typeof(uint), typeof(short),
+            typeof(ushort), typeof(byte), typeof(sbyte), typeof(DateTime), typeof(bool)
+        };
 
         /// <summary>
         /// Lock for the _parsers Dictionary.

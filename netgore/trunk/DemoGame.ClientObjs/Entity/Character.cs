@@ -14,6 +14,7 @@ namespace DemoGame.Client
     {
         readonly EntityInterpolator _interpolator = new EntityInterpolator();
         string _currSkelSet;
+        bool _hasChatDialog;
 
         /// <summary>
         /// The time that Draw() was last called.
@@ -37,6 +38,16 @@ namespace DemoGame.Client
         public Vector2 DrawPosition
         {
             get { return _interpolator.DrawPosition; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
+        /// has a chat dialog. The setter for this method should never be called directly.
+        /// </summary>
+        public override bool HasChatDialog
+        {
+            get { return _hasChatDialog; }
+            protected set { _hasChatDialog = value; }
         }
 
         /// <summary>
@@ -135,19 +146,6 @@ namespace DemoGame.Client
         {
             Vector2 p1 = DrawPosition + (Size / 2.0f) - (GameData.ScreenSize / 2.0f);
             return new Vector2((float)Math.Round(p1.X), (float)Math.Round(p1.Y));
-        }
-
-        bool _hasChatDialog;
-
-        /// <summary>
-        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
-        /// has a chat dialog. The setter for this method should never be called directly.
-        /// </summary>
-        public override bool HasChatDialog
-        {
-            get {
-                return _hasChatDialog; }
-            protected set { _hasChatDialog = value; }
         }
 
         /// <summary>

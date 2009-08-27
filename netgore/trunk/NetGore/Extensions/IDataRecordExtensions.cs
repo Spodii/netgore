@@ -24,7 +24,7 @@ namespace NetGore
             {
                 const string errmsg =
                     "Could not convert ordinal value `{0}` from field `{1}` on IDataRecordSet `{2}` " +
-                    "to a byte since the operation would result in data loss.";
+                        "to a byte since the operation would result in data loss.";
                 throw new InvalidCastException(string.Format(errmsg, ordinal, name, dataRecord));
             }
 

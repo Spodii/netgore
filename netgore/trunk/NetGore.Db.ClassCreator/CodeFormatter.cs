@@ -7,7 +7,11 @@ namespace NetGore.Db.ClassCreator
 {
     public abstract class CodeFormatter
     {
-        protected readonly char[] separatorCharacters = new char[] { '_', ' ', '-' };
+        protected readonly char[] separatorCharacters = new char[]
+        {
+            '_', ' ', '-'
+        };
+
         readonly Dictionary<string, string> _aliases = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 
         public IDictionary<string, string> Aliases
@@ -481,7 +485,7 @@ namespace NetGore.Db.ClassCreator
                                   bool isVirtual, bool isStatic)
         {
             return GetProperty(propertyName, GetTypeString(externalType), GetTypeString(internalType), getterVisibility,
-                setterVisibility, member, isVirtual, isStatic);
+                               setterVisibility, member, isVirtual, isStatic);
         }
 
         public virtual string GetProperty(string propertyName, string externalType, string internalType,

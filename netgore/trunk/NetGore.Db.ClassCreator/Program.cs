@@ -13,21 +13,24 @@ namespace NetGore.Db.ClassCreator
         /// <summary>
         /// Contains the of the tables that will be exposed to the whole project instead of just the server.
         /// </summary>
-        static readonly ICollection<string> _globalTables = new string[] { "map" };
+        static readonly ICollection<string> _globalTables = new string[]
+        {
+            "map"
+        };
 
         /// <summary>
         /// Output directory for the generated code that is referenced by the whole project.
         /// Points to the ...\DemoGame\DbObjs\ folder.
         /// </summary>
         static readonly string _outputGameDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame{1}DbObjs{1}",
-            AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+                                                              AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
         /// <summary>
         /// Output directory for the generated code that is referenced only by the server.
         /// Points to the ...\DemoGame.ServerObjs\DbObjs\ folder.
         /// </summary>
         static readonly string _outputServerDir = string.Format("{0}..{1}..{1}..{1}..{1}DemoGame.ServerObjs{1}DbObjs{1}",
-            AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
+                                                                AppDomain.CurrentDomain.BaseDirectory, Path.DirectorySeparatorChar);
 
         static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(StatCollectionType statCollectionType)
         {
@@ -54,8 +57,14 @@ namespace NetGore.Db.ClassCreator
                 generator.AddUsing("DemoGame.DbObjs");
 
                 // Custom column collections
-                var baseStatTables = new string[] { "character", "character_template", "item", "item_template" };
-                var reqStatTables = new string[] { "item", "item_template" };
+                var baseStatTables = new string[]
+                {
+                    "character", "character_template", "item", "item_template"
+                };
+                var reqStatTables = new string[]
+                {
+                    "item", "item_template"
+                };
 
                 generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), baseStatTables, baseStatColumns);
                 generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), reqStatTables, reqStatColumns);

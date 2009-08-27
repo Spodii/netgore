@@ -1,4 +1,3 @@
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -21,14 +20,6 @@ namespace DemoGame
         public BodyInfo BodyInfo { get; protected set; }
 
         /// <summary>
-        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
-        /// has a chat dialog.
-        /// </summary>
-        [SyncValue("HasChatDialog")]
-        [Browsable(false)]
-        public abstract bool HasChatDialog { get; protected set; }
-
-        /// <summary>
         /// Synchronizes the BodyInfo index for the CharacterEntity.
         /// </summary>
         [SyncValue("BodyIndex")]
@@ -46,6 +37,14 @@ namespace DemoGame
         {
             get { return OnGround; }
         }
+
+        /// <summary>
+        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
+        /// has a chat dialog.
+        /// </summary>
+        [SyncValue("HasChatDialog")]
+        [Browsable(false)]
+        public abstract bool HasChatDialog { get; protected set; }
 
         /// <summary>
         /// Gets the direction the character is currently facing.
