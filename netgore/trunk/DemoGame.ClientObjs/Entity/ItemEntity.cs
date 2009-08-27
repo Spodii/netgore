@@ -146,7 +146,7 @@ namespace DemoGame.Client
         public override bool CanStack(ItemEntityBase source)
         {
             throw new MethodAccessException("Client has no way to know if two ItemEntities can stack since it doesn't" +
-                                            " always know everything about two items.");
+                " always know everything about two items.");
         }
 
         /// <summary>

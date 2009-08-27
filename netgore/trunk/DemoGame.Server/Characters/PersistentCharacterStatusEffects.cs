@@ -197,11 +197,10 @@ namespace DemoGame.Server
                 secsLeft = 1;
 
             CharacterStatusEffectTable values = new CharacterStatusEffectTable
-                                                {
-                                                    CharacterID = Character.ID, ID = item.ID, Power = item.Value.Power,
-                                                    TimeLeftSecs = (ushort)secsLeft,
-                                                    StatusEffect = item.Value.StatusEffect.StatusEffectType
-                                                };
+            {
+                CharacterID = Character.ID, ID = item.ID, Power = item.Value.Power, TimeLeftSecs = (ushort)secsLeft,
+                StatusEffect = item.Value.StatusEffect.StatusEffectType
+            };
 
             _replaceQuery.Execute(values);
         }

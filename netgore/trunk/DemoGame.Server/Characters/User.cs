@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -10,6 +9,7 @@ using MySql.Data.MySqlClient;
 using NetGore;
 using NetGore.IO;
 using NetGore.Network;
+using NetGore.NPCChat;
 
 namespace DemoGame.Server
 {
@@ -19,34 +19,6 @@ namespace DemoGame.Server
     public class User : Character
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// When overridden in the derived class, handles additional loading stuff.
-        /// </summary>
-        /// <param name="v">The ICharacterTable containing the database values for this Character.</param>
-        protected override void HandleAdditionalLoading(ICharacterTable v)
-        {
-            base.HandleAdditionalLoading(v);
-
-            _password = v.Password;
-            World.AddUser(this);
-        }
-
-        /// <summary>
-        /// Not used by User.
-        /// </summary>
-        public override NetGore.NPCChat.NPCChatDialogBase ChatDialog
-        {
-            get { return null; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the Character's password.
-        /// </summary>
-        public override string Password
-        {
-            get { return _password; }
-        }
 
         /// <summary>
         /// The socket used to communicate with the User.
@@ -60,11 +32,27 @@ namespace DemoGame.Server
         string _password;
 
         /// <summary>
+        /// Not used by User.
+        /// </summary>
+        public override NPCChatDialogBase ChatDialog
+        {
+            get { return null; }
+        }
+
+        /// <summary>
         /// Gets the socket connection info for the user
         /// </summary>
         public IIPSocket Conn
         {
             get { return _conn; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the Character's password.
+        /// </summary>
+        public override string Password
+        {
+            get { return _password; }
         }
 
         /// <summary>
@@ -166,7 +154,7 @@ namespace DemoGame.Server
             {
                 const string errmsg =
                     "Send to `{0}` failed - Conn is null or not connected." +
-                    " Connection by client was probably not closed properly. Usually not a big deal. Disposing User...";
+                        " Connection by client was probably not closed properly. Usually not a big deal. Disposing User...";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, this);
                 DelayedDispose();
@@ -223,6 +211,18 @@ namespace DemoGame.Server
             {
                 Send(pw);
             }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles additional loading stuff.
+        /// </summary>
+        /// <param name="v">The ICharacterTable containing the database values for this Character.</param>
+        protected override void HandleAdditionalLoading(ICharacterTable v)
+        {
+            base.HandleAdditionalLoading(v);
+
+            _password = v.Password;
+            World.AddUser(this);
         }
 
         protected override void HandleDispose()

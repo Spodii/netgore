@@ -97,6 +97,7 @@ namespace NetGore
         /// </summary>
         [SyncValue("CollisionType")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
         // ReSharper disable UnusedMember.Local
             protected internal CollisionType CollisionTypeSync // ReSharper restore UnusedMember.Local
@@ -152,6 +153,7 @@ namespace NetGore
         /// </summary>
         [SyncValue("Position", SkipNetworkSync = true)]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
         // ReSharper disable UnusedMember.Local
             protected internal Vector2 PositionSync // ReSharper restore UnusedMember.Local
@@ -165,6 +167,7 @@ namespace NetGore
         /// </summary>
         [SyncValue("Size")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
         // ReSharper disable UnusedMember.Local
             protected internal Vector2 SizeSync // ReSharper restore UnusedMember.Local
@@ -178,6 +181,7 @@ namespace NetGore
         /// </summary>
         [SyncValue("Velocity", SkipNetworkSync = true)]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
         // ReSharper disable UnusedMember.Local
             protected internal Vector2 VelocitySync // ReSharper restore UnusedMember.Local
@@ -191,6 +195,7 @@ namespace NetGore
         /// </summary>
         [SyncValue("Weight")]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
         // ReSharper disable UnusedMember.Local
             protected internal float WeightSync // ReSharper restore UnusedMember.Local

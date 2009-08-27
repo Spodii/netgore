@@ -137,6 +137,19 @@ namespace DemoGame.Client
             return new Vector2((float)Math.Round(p1.X), (float)Math.Round(p1.Y));
         }
 
+        bool _hasChatDialog;
+
+        /// <summary>
+        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
+        /// has a chat dialog. The setter for this method should never be called directly.
+        /// </summary>
+        public override bool HasChatDialog
+        {
+            get {
+                return _hasChatDialog; }
+            protected set { _hasChatDialog = value; }
+        }
+
         /// <summary>
         /// Gets the map interface used by the Character, primarily for when referencing by the CharacterEntity.
         /// Can return null if the Character is not on a map, and null returns should be supported.
