@@ -1,8 +1,6 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -15,16 +13,8 @@ namespace DemoGame.Client.NPCChat
     public class NPCChatDialog : NPCChatDialogBase
     {
         ushort _index;
-        string _title;
         NPCChatDialogItemBase[] _items;
-
-        /// <summary>
-        /// NPCChatDialog constructor.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        internal NPCChatDialog(IValueReader reader) : base(reader)
-        {
-        }
+        string _title;
 
         /// <summary>
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
@@ -42,6 +32,14 @@ namespace DemoGame.Client.NPCChat
         public override string Title
         {
             get { return _title; }
+        }
+
+        /// <summary>
+        /// NPCChatDialog constructor.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        internal NPCChatDialog(IValueReader reader) : base(reader)
+        {
         }
 
         /// <summary>
@@ -98,7 +96,9 @@ namespace DemoGame.Client.NPCChat
         /// <param name="items">The dialog items.</param>
         protected override void SetReadValues(ushort index, string title, IEnumerable<NPCChatDialogItemBase> items)
         {
-            Debug.Assert(_index == default(ushort) && _title == default(string) && _items == default(IEnumerable<NPCChatDialogItemBase>), "Values were already set?");
+            Debug.Assert(
+                _index == default(ushort) && _title == default(string) && _items == default(IEnumerable<NPCChatDialogItemBase>),
+                "Values were already set?");
 
             _index = index;
             _title = title;

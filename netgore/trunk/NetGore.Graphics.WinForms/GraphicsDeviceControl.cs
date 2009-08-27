@@ -58,10 +58,7 @@ namespace NetGore.Graphics.WinForms
             // a smaller control? To avoid unwanted stretching, we set the
             // viewport to only use the top left portion of the full backbuffer.
             GraphicsDevice.Viewport = new Viewport
-                                      {
-                                          X = 0, Y = 0, Width = ClientSize.Width, Height = ClientSize.Height, MinDepth = 0,
-                                          MaxDepth = 1
-                                      };
+            { X = 0, Y = 0, Width = ClientSize.Width, Height = ClientSize.Height, MinDepth = 0, MaxDepth = 1 };
 
             return null;
         }

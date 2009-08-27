@@ -11,7 +11,7 @@ namespace DemoGame.Server.Queries
     public class SelectAllianceAttackableQuery : DbQueryReader<AllianceID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `alliance_id`=@id",
-            AllianceAttackableTable.TableName);
+                                                            AllianceAttackableTable.TableName);
 
         public SelectAllianceAttackableQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

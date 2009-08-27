@@ -75,8 +75,14 @@ namespace NetGore.Db.MySql.Tests
 
                     cmd.CommandText = "SELECT @left + @right";
 
-                    MySqlParameter left = new MySqlParameter("@left", null) { Value = 500 };
-                    MySqlParameter right = new MySqlParameter("@right", null) { Value = 100 };
+                    MySqlParameter left = new MySqlParameter("@left", null)
+                    {
+                        Value = 500
+                    };
+                    MySqlParameter right = new MySqlParameter("@right", null)
+                    {
+                        Value = 100
+                    };
                     cmd.Parameters.Add(left);
                     cmd.Parameters.Add(right);
 

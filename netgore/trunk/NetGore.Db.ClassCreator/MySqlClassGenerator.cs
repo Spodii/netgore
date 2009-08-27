@@ -14,7 +14,12 @@ namespace NetGore.Db.ClassCreator
         public MySqlClassGenerator(string server, string userID, string password, string database)
         {
             MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder
-            { Server = server, UserID = userID, Password = password, Database = database };
+            {
+                Server = server,
+                UserID = userID,
+                Password = password,
+                Database = database
+            };
 
             _conn = new MySqlConnection(sb.ToString());
 
@@ -83,7 +88,7 @@ namespace NetGore.Db.ClassCreator
 
                 if (type == null)
                     throw new Exception(string.Format("Failed to get the type for column `{0}` on table `{1}`.", column.Name,
-                        table));
+                                                      table));
 
                 column.Type = type;
             }

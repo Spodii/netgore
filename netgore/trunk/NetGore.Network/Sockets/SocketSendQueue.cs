@@ -56,7 +56,7 @@ namespace NetGore.Network
             _maxMessageSize = (ushort)maxMessageSize;
 
             _sendStream = new BitStream(new byte[MaxMessageSize])
-                          { WriteMode = BitStreamBufferMode.Static, Mode = BitStreamMode.Write };
+            { WriteMode = BitStreamBufferMode.Static, Mode = BitStreamMode.Write };
         }
 
         /// <summary>

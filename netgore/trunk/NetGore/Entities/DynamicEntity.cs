@@ -93,20 +93,6 @@ namespace NetGore
         int _syncPnVLastTime;
 
         /// <summary>
-        /// Synchronizes the CollisionType for the base Entity.
-        /// </summary>
-        [SyncValue("CollisionType")]
-        [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        [Browsable(false)]
-        // ReSharper disable UnusedMember.Local
-            protected internal CollisionType CollisionTypeSync // ReSharper restore UnusedMember.Local
-        {
-            get { return CollisionType; }
-            set { SetCollisionTypeRaw(value); }
-        }
-
-        /// <summary>
         /// Gets if the DynamicEntity's values are already synchronized.
         /// </summary>
         [Browsable(false)]
@@ -149,14 +135,26 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Synchronizes the CollisionType for the base Entity.
+        /// </summary>
+        [SyncValue("CollisionType")]
+        [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        [Browsable(false)]
+        protected internal CollisionType syncCollisionType
+        {
+            get { return CollisionType; }
+            set { SetCollisionTypeRaw(value); }
+        }
+
+        /// <summary>
         /// Synchronizes the Position for the base Entity.
         /// </summary>
         [SyncValue("Position", SkipNetworkSync = true)]
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
-        // ReSharper disable UnusedMember.Local
-            protected internal Vector2 PositionSync // ReSharper restore UnusedMember.Local
+        protected internal Vector2 syncPosition
         {
             get { return Position; }
             set { SetPositionRaw(value); }
@@ -169,8 +167,7 @@ namespace NetGore
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
-        // ReSharper disable UnusedMember.Local
-            protected internal Vector2 SizeSync // ReSharper restore UnusedMember.Local
+        protected internal Vector2 syncSize
         {
             get { return Size; }
             set { SetSizeRaw(value); }
@@ -183,8 +180,7 @@ namespace NetGore
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
-        // ReSharper disable UnusedMember.Local
-            protected internal Vector2 VelocitySync // ReSharper restore UnusedMember.Local
+        protected internal Vector2 syncVelocity
         {
             get { return Velocity; }
             set { SetVelocityRaw(value); }
@@ -197,8 +193,7 @@ namespace NetGore
         [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Browsable(false)]
-        // ReSharper disable UnusedMember.Local
-            protected internal float WeightSync // ReSharper restore UnusedMember.Local
+        protected internal float syncWeight
         {
             get { return Weight; }
             set { SetWeightRaw(value); }

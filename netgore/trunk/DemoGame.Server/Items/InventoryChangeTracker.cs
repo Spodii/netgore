@@ -21,7 +21,7 @@ namespace DemoGame.Server
         public InventoryChangeTracker(CharacterInventory inventory)
         {
             Debug.Assert(CharacterInventory.MaxInventorySize <= byte.MaxValue,
-                         "Too many inventory slots to index them with a byte.");
+                "Too many inventory slots to index them with a byte.");
 
             _inventory = inventory;
         }

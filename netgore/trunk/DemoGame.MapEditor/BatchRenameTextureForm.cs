@@ -61,7 +61,7 @@ namespace DemoGame.MapEditor
 
             // Change successful
             string txt = string.Format("Texture successfully changed from {2}{0}{2} -- to -- {2}{1}", oldTexture, newTexture,
-                                       Environment.NewLine);
+                Environment.NewLine);
             MessageBox.Show(txt, "Change successful!", MessageBoxButtons.OK);
         }
 

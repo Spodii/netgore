@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     public class UpdateMapSpawnQuery : DbQueryNonReader<IMapSpawnTable>
     {
         static readonly string _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", MapSpawnTable.TableName,
-            FormatParametersIntoString(MapSpawnTable.DbNonKeyColumns));
+                                                            FormatParametersIntoString(MapSpawnTable.DbNonKeyColumns));
 
         public UpdateMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {

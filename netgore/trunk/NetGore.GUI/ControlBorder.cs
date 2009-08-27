@@ -288,7 +288,7 @@ namespace NetGore.Graphics.GUI
             if (_bg != null)
             {
                 r = new Rectangle(cX + _l.Source.Width, cY + _t.Source.Height, cW - _l.Source.Width - _r.Source.Width,
-                                  cH - _t.Source.Height - _b.Source.Height);
+                    cH - _t.Source.Height - _b.Source.Height);
                 _bg.Draw(sb, r, _color);
             }
 
@@ -302,12 +302,12 @@ namespace NetGore.Graphics.GUI
 
             // Right side
             r = new Rectangle(cX + cW - _r.Source.Width, cY + _tr.Source.Height, _r.Source.Width,
-                              cH - _tr.Source.Height - _br.Source.Height);
+                cH - _tr.Source.Height - _br.Source.Height);
             _r.Draw(sb, r, _color);
 
             // Bottom side
             r = new Rectangle(cX + _bl.Source.Width, cY + cH - _b.Source.Height, cW - _bl.Source.Width - _br.Source.Width,
-                              _b.Source.Height);
+                _b.Source.Height);
             _b.Draw(sb, r, _color);
 
             // Top-left corner

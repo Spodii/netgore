@@ -96,7 +96,7 @@ namespace DemoGame.Client
         public bool HitTest(Vector2 p)
         {
             return (Destination.X <= p.X && Destination.X + Grh.Width >= p.X && Destination.Y <= p.Y &&
-                    Destination.Y + Grh.Height >= p.Y);
+                Destination.Y + Grh.Height >= p.Y);
         }
 
         /// <summary>

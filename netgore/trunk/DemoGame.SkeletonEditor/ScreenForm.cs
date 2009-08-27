@@ -139,7 +139,7 @@ namespace DemoGame.SkeletonEditor
         {
             Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length + 1);
             SkeletonBodyItemInfo bodyItemInfo = new SkeletonBodyItemInfo(new GrhIndex(0), _skeleton.RootNode.Name, string.Empty,
-                                                                         Vector2.Zero, Vector2.Zero);
+                Vector2.Zero, Vector2.Zero);
             SkeletonBodyItem bodyItem = new SkeletonBodyItem(bodyItemInfo);
             SkeletonBody.BodyItems[SkeletonBody.BodyItems.Length - 1] = bodyItem;
             UpdateBodyList();
@@ -773,11 +773,11 @@ namespace DemoGame.SkeletonEditor
                     break;
                 case Keys.NumPad9:
                     _camera.Zoom(_camera.Min + ((GameData.ScreenSize / 2) / _camera.Scale), GameData.ScreenSize,
-                                 _camera.Scale + ScaleRate);
+                        _camera.Scale + ScaleRate);
                     break;
                 case Keys.NumPad7:
                     _camera.Zoom(_camera.Min + ((GameData.ScreenSize / 2) / _camera.Scale), GameData.ScreenSize,
-                                 _camera.Scale - ScaleRate);
+                        _camera.Scale - ScaleRate);
                     break;
                 case Keys.Delete:
                     if (chkCanAlter.Checked && SelectedNode != null)

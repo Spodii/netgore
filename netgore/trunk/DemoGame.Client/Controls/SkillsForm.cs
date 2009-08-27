@@ -19,7 +19,7 @@ namespace DemoGame.Client
         public SkillsForm(Vector2 position, Control parent)
             : base(parent.GUIManager, "Skills", position, new Vector2(200, 200), parent)
         {
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             // Find the spacing to use between lines
             _lineSpacing = (int)Math.Max(Font.LineSpacing, _iconSize.Y);
 
@@ -31,7 +31,7 @@ namespace DemoGame.Client
                 CreateSkillEntry(offset, skillType);
                 offset += new Vector2(0, _lineSpacing);
             }
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         void CreateSkillEntry(Vector2 position, SkillType skillType)
@@ -82,7 +82,7 @@ namespace DemoGame.Client
         public IEnumerable<NodeItem> Save()
         {
             return new NodeItem[]
-                   { new NodeItem("X", Position.X), new NodeItem("Y", Position.Y), new NodeItem("IsVisible", IsVisible) };
+            { new NodeItem("X", Position.X), new NodeItem("Y", Position.Y), new NodeItem("IsVisible", IsVisible) };
         }
 
         #endregion

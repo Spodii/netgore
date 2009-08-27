@@ -492,7 +492,7 @@ namespace NetGore.Graphics
                 else
                     parentNode = _parent.Skeleton.RootNode;
                 RecursiveUpdate(CurrentFrame.Skeleton.RootNode, NextFrame.Skeleton.RootNode, parentNode, _skel.RootNode,
-                                framePercent);
+                    framePercent);
             }
 
             // Update the body

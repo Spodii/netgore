@@ -70,7 +70,7 @@ namespace DemoGame.Server
 
                 // Neither are null, so check that all values are equal
                 return (_amount == item.Amount) && (_value == item.Value) && (_graphicIndex == item.GraphicIndex) &&
-                       (_name == item.Name) && (_description == item.Description);
+                    (_name == item.Name) && (_description == item.Description);
             }
         }
 

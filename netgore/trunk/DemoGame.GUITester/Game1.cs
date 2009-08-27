@@ -60,15 +60,15 @@ namespace DemoGame.GUITester
             topForm.OnMouseMove += topForm_OnMouseMove;
 
             TextBoxMultiLineLocked tbmll = new TextBoxMultiLineLocked(string.Empty, new Vector2(10, 10), new Vector2(150, 300),
-                                                                      topForm);
+                topForm);
 
             var styledTexts = new List<StyledText>
-                              {
-                                  new StyledText("Black ", Color.Black), new StyledText("Red ", Color.Red),
-                                  new StyledText("Green ", Color.Green), new StyledText("Yellow ", Color.Yellow),
-                                  new StyledText("Voilet ", Color.Violet), new StyledText("Orange ", Color.Orange),
-                                  new StyledText("Tomato ", Color.Tomato), new StyledText("DarkRed ", Color.DarkRed),
-                              };
+            {
+                new StyledText("Black ", Color.Black), new StyledText("Red ", Color.Red), new StyledText("Green ", Color.Green),
+                new StyledText("Yellow ", Color.Yellow), new StyledText("Voilet ", Color.Violet),
+                new StyledText("Orange ", Color.Orange), new StyledText("Tomato ", Color.Tomato),
+                new StyledText("DarkRed ", Color.DarkRed),
+            };
             tbmll.Append(styledTexts);
 
             _topBorder = topForm.Border;

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
 using NetGore.NPCChat;
@@ -9,6 +9,11 @@ namespace NetGore.EditorTools
     {
         static readonly ManagerImplementation _instance = new ManagerImplementation();
 
+        public static IEnumerable<EditorNPCChatDialog> Dialogs
+        {
+            get { return _instance.Cast<EditorNPCChatDialog>(); }
+        }
+
         public static void AddDialog(EditorNPCChatDialog dialog)
         {
             // Just always reorganize, since I'm not very trusting that things are always done right
@@ -16,14 +21,6 @@ namespace NetGore.EditorTools
 
             // Add the new dialog
             _instance[dialog.Index] = dialog;
-        }
-
-        public static IEnumerable<EditorNPCChatDialog> Dialogs
-        {
-            get 
-            {
-                return _instance.Cast<EditorNPCChatDialog>();
-            }
         }
 
         public static EditorNPCChatDialog GetDialog(int index)

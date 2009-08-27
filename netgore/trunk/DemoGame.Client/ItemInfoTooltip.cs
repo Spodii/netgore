@@ -100,7 +100,7 @@ namespace DemoGame.Client
 
             // Create the dest rectangle
             Rectangle rect = new Rectangle((int)pos.X - borderSize, (int)pos.Y - borderSize, width + borderSize * 2,
-                                           height + borderSize * 2);
+                height + borderSize * 2);
 
             // Draw the background rectangle
             XNARectangle.Draw(sb, rect, new Color(0, 0, 0, 150), new Color(0, 0, 0, 225));
@@ -141,10 +141,10 @@ namespace DemoGame.Client
             _slot = slot;
         }
 
-// ReSharper disable UnusedParameter.Global
+        // ReSharper disable UnusedParameter.Global
         public void HandleMouseLeave(object sender, ItemInfoSource source, int slot)
         {
-// ReSharper restore UnusedParameter.Global
+            // ReSharper restore UnusedParameter.Global
             // Only set the hoverObject to null if it came from the sender
             if (_hoverObject != sender)
                 return;
@@ -153,10 +153,10 @@ namespace DemoGame.Client
             _sentItemInfoRequest = false;
         }
 
-// ReSharper disable UnusedParameter.Global
+        // ReSharper disable UnusedParameter.Global
         public void HandleMouseMove(object sender, ItemInfoSource source, int slot)
         {
-// ReSharper restore UnusedParameter.Global
+            // ReSharper restore UnusedParameter.Global
             _hoverStartTime = GetTime();
         }
 

@@ -42,14 +42,6 @@ namespace DemoGame
         void CopyValuesFrom(IEnumerable<KeyValuePair<StatType, int>> values, bool checkContains);
 
         /// <summary>
-        /// Gets an IEnumerable of the KeyValuePairs in this IStatCollection, where the key is the StatType and the
-        /// value is the value of for the stat with the corresponding StatType.
-        /// </summary>
-        /// <returns>An IEnumerable of the KeyValuePairs in this IStatCollection, where the key is the StatType and the
-        /// value is the value of for the stat with the corresponding StatType.</returns>
-        IEnumerable<KeyValuePair<StatType, int>> ToKeyValuePairs();
-
-        /// <summary>
         /// Copies the values from the given IEnumerable of <paramref name="values"/> using the given StatType
         /// into this IStatCollection.
         /// </summary>
@@ -68,6 +60,14 @@ namespace DemoGame
         /// <param name="statType">The StatType of the stat to get.</param>
         /// <returns>The IStat for the stat of the given <paramref name="statType"/>.</returns>
         IStat GetStat(StatType statType);
+
+        /// <summary>
+        /// Gets an IEnumerable of the KeyValuePairs in this IStatCollection, where the key is the StatType and the
+        /// value is the value of for the stat with the corresponding StatType.
+        /// </summary>
+        /// <returns>An IEnumerable of the KeyValuePairs in this IStatCollection, where the key is the StatType and the
+        /// value is the value of for the stat with the corresponding StatType.</returns>
+        IEnumerable<KeyValuePair<StatType, int>> ToKeyValuePairs();
 
         /// <summary>
         /// Tries to get the IStat for the stat of the given <paramref name="statType"/>.

@@ -205,10 +205,10 @@ namespace NetGore.EditorTools
             Enabled = false;
             MissingTexturesForm frm = new MissingTexturesForm(hashCollection, missing, cm);
             frm.FormClosed += delegate
-                              {
-                                  RebuildTree();
-                                  Enabled = true;
-                              };
+            {
+                RebuildTree();
+                Enabled = true;
+            };
             frm.Show();
         }
 

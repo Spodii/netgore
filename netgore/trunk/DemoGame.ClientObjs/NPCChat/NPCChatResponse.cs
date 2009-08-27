@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -17,14 +14,6 @@ namespace DemoGame.Client.NPCChat
         ushort _page;
         string _text;
         byte _value;
-
-        /// <summary>
-        /// NPCChatResponse constructor.
-        /// </summary>
-        /// <param name="r">IValueReader to read the values from.</param>
-        internal NPCChatResponse(IValueReader r) : base(r)
-        {
-        }
 
         /// <summary>
         /// When overridden in the derived class, gets the page of the NPCChatDialogItemBase to go to if this
@@ -53,6 +42,14 @@ namespace DemoGame.Client.NPCChat
         }
 
         /// <summary>
+        /// NPCChatResponse constructor.
+        /// </summary>
+        /// <param name="r">IValueReader to read the values from.</param>
+        internal NPCChatResponse(IValueReader r) : base(r)
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
         /// <param name="value">The value.</param>
@@ -60,7 +57,8 @@ namespace DemoGame.Client.NPCChat
         /// <param name="text">The text.</param>
         protected override void SetReadValues(byte value, ushort page, string text)
         {
-            Debug.Assert(_value == default(byte) && _page == default(ushort) && _text == default(string), "Values were already set?");
+            Debug.Assert(_value == default(byte) && _page == default(ushort) && _text == default(string),
+                "Values were already set?");
 
             _value = value;
             _page = page;

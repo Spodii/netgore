@@ -127,7 +127,7 @@ namespace NetGore.EditorTools
 
             Rectangle sourceRect = grhData.SourceRect;
             return ImageHelper.CreateFromTexture(grhData.Texture, sourceRect.X, sourceRect.Y, sourceRect.Width, sourceRect.Height,
-                                                 destWidth, destHeight);
+                destWidth, destHeight);
         }
 
         /// <summary>
