@@ -89,7 +89,7 @@ namespace DemoGame.NPCChatEditor
             npcChatDialogView.ExpandAll();
 
             // NOTE: Temp
-            EditorNPCChatManager.Save();
+            EditorNPCChatManager.SaveDialogs();
         }
 
         void cmbSelectedDialog_OnChangeDialog(NPCChatDialogComboBox sender, NPCChatDialogBase dialog)
@@ -97,7 +97,7 @@ namespace DemoGame.NPCChatEditor
             bool initialDoNotUpdateValue = _doNotUpdateObj;
             _doNotUpdateObj = false;
 
-            EditorNPCChatManager.Save();
+            EditorNPCChatManager.SaveDialogs();
 
             npcChatDialogView.NPCChatDialog = (EditorNPCChatDialog)dialog;
             npcChatDialogView.ExpandAll();
@@ -173,7 +173,7 @@ namespace DemoGame.NPCChatEditor
 
         void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            EditorNPCChatManager.Save();
+            EditorNPCChatManager.SaveDialogs();
         }
 
         void frmMain_Resize(object sender, EventArgs e)
