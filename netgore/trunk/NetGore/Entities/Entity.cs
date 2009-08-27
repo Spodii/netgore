@@ -141,7 +141,7 @@ namespace NetGore
         [DisplayName("Weight")]
         [Description(
             "The weight of the Entity. Higher the weight, the greater the effects of the gravity," +
-            " where 0 is unaffected by gravity.")]
+                " where 0 is unaffected by gravity.")]
         [DefaultValue(0.0f)]
         [Browsable(true)]
         public virtual float Weight

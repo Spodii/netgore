@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.NPCChat;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -19,6 +20,7 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         AIBase _ai;
+        NPCChatDialogBase _chatDialog;
 
         ushort _giveCash;
         ushort _giveExp;
@@ -37,6 +39,14 @@ namespace DemoGame.Server
             get { return _ai; }
         }
 
+        /// <summary>
+        /// Gets the NPC's chat dialog if they have one, or null if they don't.
+        /// </summary>
+        public override NPCChatDialogBase ChatDialog
+        {
+            get { return _chatDialog; }
+        }
+
         public ushort GiveCash
         {
             get { return _giveCash; }
@@ -47,6 +57,14 @@ namespace DemoGame.Server
         {
             get { return _giveExp; }
             protected set { _giveExp = value; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the Character's password.
+        /// </summary>
+        public override string Password
+        {
+            get { return null; }
         }
 
         /// <summary>
@@ -61,7 +79,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets if this NPC will respawn after dieing.
         /// </summary>
-// ReSharper disable MemberCanBeMadeStatic.Global
+        // ReSharper disable MemberCanBeMadeStatic.Global
         public bool WillRespawn // ReSharper restore MemberCanBeMadeStatic.Global
         {
             get { return RespawnMapIndex.HasValue; }
@@ -81,38 +99,6 @@ namespace DemoGame.Server
                 log.InfoFormat("Created persistent NPC `{0}` from CharacterID `{1}`.", this, characterID);
 
             LoadPersistentNPCTemplateInfo();
-        }
-
-        NPCChatDialogBase _chatDialog;
-
-        /// <summary>
-        /// Gets the NPC's chat dialog if they have one, or null if they don't.
-        /// </summary>
-        public override NPCChatDialogBase ChatDialog
-        {
-            get { return _chatDialog; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the Character's password.
-        /// </summary>
-        public override string Password
-        {
-            get { return null; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles additional loading stuff.
-        /// </summary>
-        /// <param name="v">The ICharacterTable containing the database values for this Character.</param>
-        protected override void HandleAdditionalLoading(DbObjs.ICharacterTable v)
-        {
-            base.HandleAdditionalLoading(v);
-
-            if (v.ChatDialog.HasValue)
-            {
-                _chatDialog = NPCChatManager.GetDialog(v.ChatDialog.Value);
-            }
         }
 
         /// <summary>
@@ -149,9 +135,9 @@ namespace DemoGame.Server
                 log.InfoFormat("Created NPC instance from template `{0}`.", template);
 
             // Spawn
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Teleport(position);
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
             ChangeMap(map);
         }
 
@@ -179,6 +165,18 @@ namespace DemoGame.Server
         protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
         {
             return new NPCStats(this, statCollectionType);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles additional loading stuff.
+        /// </summary>
+        /// <param name="v">The ICharacterTable containing the database values for this Character.</param>
+        protected override void HandleAdditionalLoading(ICharacterTable v)
+        {
+            base.HandleAdditionalLoading(v);
+
+            if (v.ChatDialog.HasValue)
+                _chatDialog = NPCChatManager.GetDialog(v.ChatDialog.Value);
         }
 
         /// <summary>

@@ -87,6 +87,22 @@ namespace DemoGame.Server
         readonly CharacterSPSynchronizer _spSync;
         readonly CharacterStatusEffects _statusEffects;
 
+        /// <summary>
+        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
+        /// has a chat dialog.
+        /// </summary>
+        public override bool HasChatDialog
+        {
+            get
+            {
+                return ChatDialog != null;
+            }
+            protected set
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         readonly World _world;
 
         /// <summary>

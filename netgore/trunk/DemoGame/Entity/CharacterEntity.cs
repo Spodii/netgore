@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -20,10 +21,17 @@ namespace DemoGame
         public BodyInfo BodyInfo { get; protected set; }
 
         /// <summary>
+        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
+        /// has a chat dialog.
+        /// </summary>
+        [SyncValue("HasChatDialog")]
+        [Browsable(false)]
+        public abstract bool HasChatDialog { get; protected set; }
+
+        /// <summary>
         /// Synchronizes the BodyInfo index for the CharacterEntity.
         /// </summary>
         [SyncValue("BodyIndex")]
-        [Obsolete("This property is not to be called directly. It is only to be used for value synchronization.")]
         // ReSharper disable UnusedMember.Local
             protected internal BodyIndex BodyInfoIndex // ReSharper restore UnusedMember.Local
         {
@@ -184,7 +192,7 @@ namespace DemoGame
             base.Teleport(position);
         }
 
-// ReSharper disable UnusedParameter.Global
+        // ReSharper disable UnusedParameter.Global
         protected virtual void UpdatePostCollision(float deltaTime) // ReSharper restore UnusedParameter.Global
         {
             // Update the character's state
