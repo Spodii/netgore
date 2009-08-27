@@ -8,12 +8,12 @@ namespace DemoGame.Server.NPCChat
     /// <summary>
     /// Provides a means for accessing the NPC chat dialogs.
     /// </summary>
-    public static class NPCChatManager
+    public class NPCChatManager : NPCChatManagerBase
     {
         /// <summary>
         /// The NPCChatManagerBase implementation instance.
         /// </summary>
-        static readonly NPCChatManagerBase _instance = new ManagerImplementation();
+        static readonly NPCChatManager _instance = new NPCChatManager();
 
         /// <summary>
         /// Gets an IEnumerable of all the NPC chat dialogs in this manager.
@@ -34,26 +34,20 @@ namespace DemoGame.Server.NPCChat
         }
 
         /// <summary>
-        /// Provides the implementation of the NPCChatManagerBase for this NPC chat manager.
+        /// Initializes a new instance of the <see cref="NPCChatManager"/> class.
         /// </summary>
-        class ManagerImplementation : NPCChatManagerBase
+        NPCChatManager() : base(true)
         {
-            /// <summary>
-            /// NPCChatManagerBase constructor.
-            /// </summary>
-            public ManagerImplementation() : base(true)
-            {
-            }
+        }
 
-            /// <summary>
-            /// When overridden in the derived class, creates a NPCChatDialogBase from the given IValueReader.
-            /// </summary>
-            /// <param name="reader">IValueReader to read the values from.</param>
-            /// <returns>A NPCChatDialogBase created from the given IValueReader.</returns>
-            protected override NPCChatDialogBase CreateDialog(IValueReader reader)
-            {
-                return new NPCChatDialog(reader);
-            }
+        /// <summary>
+        /// When overridden in the derived class, creates a NPCChatDialogBase from the given IValueReader.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <returns>A NPCChatDialogBase created from the given IValueReader.</returns>
+        protected override NPCChatDialogBase CreateDialog(IValueReader reader)
+        {
+            return new NPCChatDialog(reader);
         }
     }
 }

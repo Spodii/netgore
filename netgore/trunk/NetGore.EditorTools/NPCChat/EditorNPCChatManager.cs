@@ -5,9 +5,9 @@ using NetGore.NPCChat;
 
 namespace NetGore.EditorTools
 {
-    public static class EditorNPCChatManager
+    public class EditorNPCChatManager : NPCChatManagerBase
     {
-        static readonly ManagerImplementation _instance = new ManagerImplementation();
+        static readonly EditorNPCChatManager _instance = new EditorNPCChatManager();
 
         public static IEnumerable<EditorNPCChatDialog> Dialogs
         {
@@ -18,7 +18,7 @@ namespace NetGore.EditorTools
         {
             // Just always reorganize, since I'm not very trusting that things are always done right
             _instance.Reorganize();
-
+   
             // Add the new dialog
             _instance[dialog.Index] = dialog;
         }
@@ -38,32 +38,26 @@ namespace NetGore.EditorTools
             return (EditorNPCChatDialog)ret;
         }
 
-        public static void Save()
+        public static void SaveDialogs()
         {
             _instance.Save();
         }
+    
+        /// <summary>
+        /// ManagerImplementation constructor.
+        /// </summary>
+        EditorNPCChatManager() : base(false)
+        {
+        }
 
         /// <summary>
-        /// Provides the implementation of the NPCChatManagerBase for this NPC chat manager.
+        /// When overridden in the derived class, creates a NPCChatDialogBase from the given IValueReader.
         /// </summary>
-        class ManagerImplementation : NPCChatManagerBase
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <returns>A NPCChatDialogBase created from the given IValueReader.</returns>
+        protected override NPCChatDialogBase CreateDialog(IValueReader reader)
         {
-            /// <summary>
-            /// ManagerImplementation constructor.
-            /// </summary>
-            public ManagerImplementation() : base(false)
-            {
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, creates a NPCChatDialogBase from the given IValueReader.
-            /// </summary>
-            /// <param name="reader">IValueReader to read the values from.</param>
-            /// <returns>A NPCChatDialogBase created from the given IValueReader.</returns>
-            protected override NPCChatDialogBase CreateDialog(IValueReader reader)
-            {
-                return new EditorNPCChatDialog(reader);
-            }
+            return new EditorNPCChatDialog(reader);
         }
     }
 }
