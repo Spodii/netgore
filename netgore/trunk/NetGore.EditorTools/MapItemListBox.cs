@@ -86,7 +86,11 @@ namespace NetGore.EditorTools
 
             // Create the menu
             var menuItems = new List<MenuItem>
-            { new MenuItem("Locate", LocateHandler), new MenuItem("Clone", CloneHandler), new MenuItem("Delete", DeleteHandler), };
+            {
+                new MenuItem("Locate", LocateHandler),
+                new MenuItem("Clone", CloneHandler),
+                new MenuItem("Delete", DeleteHandler),
+            };
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             ContextMenu = new ContextMenu(menuItems.ToArray());

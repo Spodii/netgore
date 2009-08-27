@@ -164,7 +164,7 @@ namespace DemoGame.MapEditor
             {
                 CollisionBox cursorCB = new CollisionBox(screen.CursorPos, 1, 1);
                 CollisionBox boxCB = new CollisionBox(_mapGrhMoveBox.Position, _mapGrhMoveBox.Area.Width,
-                    _mapGrhMoveBox.Area.Height);
+                                                      _mapGrhMoveBox.Area.Height);
                 isOverBox = CollisionBox.Intersect(cursorCB, boxCB);
             }
 

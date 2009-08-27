@@ -106,7 +106,7 @@ namespace DemoGame.Server
             {
                 const string errmsg =
                     "Character `{0}` removed equipped item `{1}` from slot `{2}`, " +
-                        "but not all could be added back to their Inventory.";
+                    "but not all could be added back to their Inventory.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, Character, item, slot);
 

@@ -18,6 +18,10 @@ namespace NetGore.IO.Tests
 
         #region IRestorableSettings Members
 
+        /// <summary>
+        /// Loads the values supplied by the <paramref name="items"/> to reconstruct the settings.
+        /// </summary>
+        /// <param name="items">NodeItems containing the values to restore.</param>
         public void Load(IDictionary<string, string> items)
         {
             A = items["A"];
@@ -25,9 +29,16 @@ namespace NetGore.IO.Tests
             C = float.Parse(items["C"]);
         }
 
+        /// <summary>
+        /// Returns the key and value pairs needed to restore the settings.
+        /// </summary>
+        /// <returns>The key and value pairs needed to restore the settings.</returns>
         public IEnumerable<NodeItem> Save()
         {
-            return new NodeItem[] { new NodeItem("A", A), new NodeItem("B", B), new NodeItem("C", C) };
+            return new NodeItem[]
+            {
+                new NodeItem("A", A), new NodeItem("B", B), new NodeItem("C", C)
+            };
         }
 
         #endregion
@@ -53,8 +64,18 @@ namespace NetGore.IO.Tests
             string path = Path.GetTempFileName();
             try
             {
-                InterfaceTester t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
-                InterfaceTester t2 = new InterfaceTester { A = "Goodbye", B = 44, C = 1897.01f };
+                InterfaceTester t1 = new InterfaceTester
+                {
+                    A = "Hello",
+                    B = 10,
+                    C = 5.135f
+                };
+                InterfaceTester t2 = new InterfaceTester
+                {
+                    A = "Goodbye",
+                    B = 44,
+                    C = 1897.01f
+                };
 
                 using (SimpleXmlWriter w = new SimpleXmlWriter(path, "Tester"))
                 {
@@ -95,17 +116,29 @@ namespace NetGore.IO.Tests
                 // Create lookup dictionary
                 var dict = new Dictionary<string, IEnumerable<NodeItem>>
                 {
-                    { "Form1", new NodeItem[] { new NodeItem("Name", "MyForm1"), new NodeItem("X", 100), new NodeItem("Y", 244) } },
                     {
-                        "Form2", new NodeItem[] { new NodeItem("Name", "MyForm2"), new NodeItem("X", 140), new NodeItem("Y", 224) }
+                        "Form1", new NodeItem[]
+                        {
+                            new NodeItem("Name", "MyForm1"), new NodeItem("X", 100), new NodeItem("Y", 244)
+                        }
                         },
                     {
-                        "QuickBar1",
-                        new NodeItem[] { new NodeItem("Slot", 1), new NodeItem("Type", "Item"), new NodeItem("Value", 4) }
+                        "Form2", new NodeItem[]
+                        {
+                            new NodeItem("Name", "MyForm2"), new NodeItem("X", 140), new NodeItem("Y", 224)
+                        }
                         },
                     {
-                        "QuickBar2",
-                        new NodeItem[] { new NodeItem("Slot", 1), new NodeItem("Type", "Item"), new NodeItem("Value", 10) }
+                        "QuickBar1", new NodeItem[]
+                        {
+                            new NodeItem("Slot", 1), new NodeItem("Type", "Item"), new NodeItem("Value", 4)
+                        }
+                        },
+                    {
+                        "QuickBar2", new NodeItem[]
+                        {
+                            new NodeItem("Slot", 1), new NodeItem("Type", "Item"), new NodeItem("Value", 10)
+                        }
                         }
                 };
 

@@ -372,11 +372,19 @@ namespace NetGore.Network
             _socket.SendBufferSize = MaxSendSize + SizeHeaderLength;
 
             // Make the send/recv event args
-            _sendEventArgs = new SocketAsyncEventArgs { UserToken = this, SocketFlags = SocketFlags.None };
+            _sendEventArgs = new SocketAsyncEventArgs
+            {
+                UserToken = this,
+                SocketFlags = SocketFlags.None
+            };
             _sendEventArgs.SetBuffer(_sendBuffer, 0, 0);
             _sendEventArgs.Completed += EndSend;
 
-            _recvEventArgs = new SocketAsyncEventArgs { UserToken = this, SocketFlags = SocketFlags.None };
+            _recvEventArgs = new SocketAsyncEventArgs
+            {
+                UserToken = this,
+                SocketFlags = SocketFlags.None
+            };
             _recvEventArgs.SetBuffer(_recvBuffer, 0, MaxRecvSize);
             _recvEventArgs.Completed += EndRecv;
 
@@ -583,7 +591,7 @@ namespace NetGore.Network
         public void Send(byte[] data)
         {
             Debug.Fail("Try to avoid using this whenever possible. Despite how it may seem, it actually performs MUCH worse" +
-                " than if you were to send a BitStream.");
+                       " than if you were to send a BitStream.");
 
             _sendQueue.Enqueue(data);
         }

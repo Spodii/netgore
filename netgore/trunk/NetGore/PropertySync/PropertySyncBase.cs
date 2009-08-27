@@ -13,6 +13,7 @@ namespace NetGore
     /// aspects of a PropertySyncBase. It is highly recommended you never override any of the methods you
     /// do not have to, and that each derived class is sealed.
     /// </summary>
+    /// <typeparam name="T">The type to synchronize.</typeparam>
     public abstract class PropertySyncBase<T> : PropertySyncBase
     {
         GetHandler _getter;
@@ -185,7 +186,10 @@ namespace NetGore
             // to the type of the PropertySyncHandler itself
 
             // Get all of the class Types
-            var constructorParams = new Type[] { typeof(object), typeof(PropertyInfo) };
+            var constructorParams = new Type[]
+            {
+                typeof(object), typeof(PropertyInfo)
+            };
             var types = TypeHelper.FindTypesThatInherit(typeof(PropertySyncBase), constructorParams, false);
 
             foreach (Type type in types)
@@ -243,7 +247,7 @@ namespace NetGore
         {
             const BindingFlags flags =
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.GetProperty |
-                    BindingFlags.SetProperty;
+                BindingFlags.SetProperty;
 
             var tempPropInfos = new List<PropertyInfoData>();
 

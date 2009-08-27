@@ -41,7 +41,10 @@ namespace DemoGame.MapEditor
             if (radioAnimated.Checked)
             {
                 // Generate the frames
-                var framesText = txtFrames.Text.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                var framesText = txtFrames.Text.Split(new[]
+                {
+                    "\r\n"
+                }, StringSplitOptions.RemoveEmptyEntries);
                 frames = new GrhIndex[framesText.Length];
                 for (int i = 0; i < framesText.Length; i++)
                 {
@@ -77,7 +80,7 @@ namespace DemoGame.MapEditor
                 {
                     if (
                         MessageBox.Show("Are you sure you wish to change the index? Changes will not be reflected on maps!",
-                            "Change GrhIndex", MessageBoxButtons.YesNo) == DialogResult.No)
+                                        "Change GrhIndex", MessageBoxButtons.YesNo) == DialogResult.No)
                         return;
 
                     if (GrhInfo.GetData(newIndex) != null)
@@ -480,7 +483,7 @@ namespace DemoGame.MapEditor
                 if (showMessage)
                 {
                     MessageBox.Show("A GrhData with the given title and category already exists." +
-                        "Each GrhData must contain a unique title and category combination.");
+                                    "Each GrhData must contain a unique title and category combination.");
                 }
                 return false;
             }

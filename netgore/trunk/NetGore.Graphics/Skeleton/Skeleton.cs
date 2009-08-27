@@ -114,7 +114,10 @@ namespace NetGore.Graphics
         /// <returns>Deep-copy of the skeleton and all its joints</returns>
         public Skeleton DeepCopy()
         {
-            return new Skeleton { RootNode = RootNode.Duplicate() };
+            return new Skeleton
+            {
+                RootNode = RootNode.Duplicate()
+            };
         }
 
         /// <summary>
@@ -297,7 +300,10 @@ namespace NetGore.Graphics
             // Save the file
             using (Stream s = File.Open(filePath, FileMode.Create))
             {
-                XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true
+                };
                 using (XmlWriter w = XmlWriter.Create(s, settings))
                 {
                     skeleton.Save(w);

@@ -172,7 +172,10 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="time">Current time</param>
         /// <param name="frame">Single frame to use for the keyframe</param>
-        public SkeletonAnimation(int time, SkeletonFrame frame) : this(time, new SkeletonSet(new[] { frame }))
+        public SkeletonAnimation(int time, SkeletonFrame frame) : this(time, new SkeletonSet(new[]
+        {
+            frame
+        }))
         {
         }
 
@@ -492,7 +495,7 @@ namespace NetGore.Graphics
                 else
                     parentNode = _parent.Skeleton.RootNode;
                 RecursiveUpdate(CurrentFrame.Skeleton.RootNode, NextFrame.Skeleton.RootNode, parentNode, _skel.RootNode,
-                    framePercent);
+                                framePercent);
             }
 
             // Update the body

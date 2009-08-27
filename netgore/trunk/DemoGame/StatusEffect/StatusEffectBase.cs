@@ -91,8 +91,8 @@ namespace DemoGame
                     {
                         const string errmsg =
                             "StatusEffect `{0}`, handling StatusEffectType `{1}`, failed to return" +
-                                " the same value for StatType `{2}` when using power `{3}`. The values were `{4}` and `{5}`." +
-                                    " It is vital that a StatusEffect always returns the same value for a given StatType and Power.";
+                            " the same value for StatType `{2}` when using power `{3}`. The values were `{4}` and `{5}`." +
+                            " It is vital that a StatusEffect always returns the same value for a given StatType and Power.";
 
                         string err = string.Format(errmsg, GetType(), StatusEffectType, statType, power, a, b);
                         if (log.IsFatalEnabled)

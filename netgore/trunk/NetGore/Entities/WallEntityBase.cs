@@ -14,6 +14,10 @@ namespace NetGore
     /// </summary>
     public abstract class WallEntityBase : Entity
     {
+        /// <summary>
+        /// Gets or sets the weight of the Entity (used in gravity calculations).
+        /// </summary>
+        /// <value></value>
         [Browsable(false)]
         public override float Weight
         {
@@ -21,15 +25,30 @@ namespace NetGore
             set { }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WallEntityBase"/> class.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="size">The size.</param>
         protected WallEntityBase(Vector2 position, Vector2 size) : this(position, size, CollisionType.Full)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WallEntityBase"/> class.
+        /// </summary>
+        /// <param name="r">The r.</param>
         protected WallEntityBase(IValueReader r)
         {
             Read(r);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="WallEntityBase"/> class.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="collisionType">Type of the collision.</param>
         protected WallEntityBase(Vector2 position, Vector2 size, CollisionType collisionType) : base(position, size)
         {
             CollisionType = collisionType;

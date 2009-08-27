@@ -384,7 +384,10 @@ namespace DemoGame.MapEditor
             _editGrhCamera.Zoom(pos, GameData.ScreenSize, 4f);
             _editGrh = new Grh(_editGrhData.GrhIndex, AnimType.Loop, GetTime());
 
-            EditGrhForm f = new EditGrhForm(gd, _mapGrhWalls) { Location = new Point(0, 0) };
+            EditGrhForm f = new EditGrhForm(gd, _mapGrhWalls)
+            {
+                Location = new Point(0, 0)
+            };
             f.FormClosed += EditGrhForm_Close;
             AddOwnedForm(f);
             f.Show();
@@ -482,7 +485,7 @@ namespace DemoGame.MapEditor
         {
             if (
                 MessageBox.Show("Are you sure you wish to create a new map? All changes to the current map will be lost.",
-                    "Create new map?", MessageBoxButtons.YesNo) == DialogResult.No)
+                                "Create new map?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             MapIndex index = Map.GetNextFreeIndex(ContentPaths.Dev);
@@ -541,7 +544,11 @@ namespace DemoGame.MapEditor
             // ReSharper restore UnusedMethodReturnValue.Local
         {
             // Create the instance of the MapDrawExtensionBase
-            T instance = new T { Map = Map, Enabled = checkBox.Checked };
+            T instance = new T
+            {
+                Map = Map,
+                Enabled = checkBox.Checked
+            };
 
             // Handle when the CheckBox value changes
             checkBox.CheckedChanged += ((obj, e) => instance.Enabled = ((CheckBox)obj).Checked);
@@ -769,7 +776,10 @@ namespace DemoGame.MapEditor
 
         static IEnumerable<Control> GetAllControls(Control root)
         {
-            var ret = new List<Control> { root };
+            var ret = new List<Control>
+            {
+                root
+            };
 
             foreach (Control child in root.Controls)
             {
@@ -1103,7 +1113,10 @@ namespace DemoGame.MapEditor
 
             using (FileStream stream = new FileStream("MapEditorSettings.xml", FileMode.Create))
             {
-                XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true
+                };
                 using (XmlWriter w = XmlWriter.Create(stream, settings))
                 {
                     if (w == null)
@@ -1230,9 +1243,9 @@ namespace DemoGame.MapEditor
             // Disable this form until the rename one closes
             Enabled = false;
             frm.FormClosed += delegate
-            {
-                Enabled = true;
-            };
+                              {
+                                  Enabled = true;
+                              };
             frm.Show();
         }
 

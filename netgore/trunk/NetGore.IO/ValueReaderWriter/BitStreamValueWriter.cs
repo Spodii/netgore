@@ -37,7 +37,10 @@ namespace NetGore.IO
         public BitStreamValueWriter(string filePath) : this(new BitStream(BitStreamMode.Write, 8192))
         {
             _destinationFile = filePath;
-            File.WriteAllBytes(filePath, new byte[] { 0 });
+            File.WriteAllBytes(filePath, new byte[]
+            {
+                0
+            });
         }
 
         #region IValueWriter Members

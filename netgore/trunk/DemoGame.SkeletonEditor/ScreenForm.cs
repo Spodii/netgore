@@ -139,7 +139,7 @@ namespace DemoGame.SkeletonEditor
         {
             Array.Resize(ref SkeletonBody.BodyItems, SkeletonBody.BodyItems.Length + 1);
             SkeletonBodyItemInfo bodyItemInfo = new SkeletonBodyItemInfo(new GrhIndex(0), _skeleton.RootNode.Name, string.Empty,
-                Vector2.Zero, Vector2.Zero);
+                                                                         Vector2.Zero, Vector2.Zero);
             SkeletonBodyItem bodyItem = new SkeletonBodyItem(bodyItemInfo);
             SkeletonBody.BodyItems[SkeletonBody.BodyItems.Length - 1] = bodyItem;
             UpdateBodyList();
@@ -326,7 +326,10 @@ namespace DemoGame.SkeletonEditor
             else
                 return;
 
-            SkeletonSet ss = new SkeletonSet(new[] { frame1, frame2 });
+            SkeletonSet ss = new SkeletonSet(new[]
+            {
+                frame1, frame2
+            });
             SkeletonAnimation sa = new SkeletonAnimation(GetTime(), ss);
             sa.Update(5);
             LoadFrame(sa.Skeleton);
@@ -394,7 +397,10 @@ namespace DemoGame.SkeletonEditor
 
             Skeleton newSkeleton = Skeleton.Load(ContentPaths.Dev.Skeletons.Join("stand.skel"));
             SkeletonFrame nFrame0 = new SkeletonFrame("stand", newSkeleton);
-            _skeletonAnim.ChangeSet(new SkeletonSet(new[] { nFrame0 }));
+            _skeletonAnim.ChangeSet(new SkeletonSet(new[]
+            {
+                nFrame0
+            }));
         }
 
         void btnUp_Click(object sender, EventArgs e)
@@ -773,11 +779,11 @@ namespace DemoGame.SkeletonEditor
                     break;
                 case Keys.NumPad9:
                     _camera.Zoom(_camera.Min + ((GameData.ScreenSize / 2) / _camera.Scale), GameData.ScreenSize,
-                        _camera.Scale + ScaleRate);
+                                 _camera.Scale + ScaleRate);
                     break;
                 case Keys.NumPad7:
                     _camera.Zoom(_camera.Min + ((GameData.ScreenSize / 2) / _camera.Scale), GameData.ScreenSize,
-                        _camera.Scale - ScaleRate);
+                                 _camera.Scale - ScaleRate);
                     break;
                 case Keys.Delete:
                     if (chkCanAlter.Checked && SelectedNode != null)

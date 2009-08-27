@@ -89,7 +89,10 @@ namespace NetGore.Graphics
             for (int i = 0; i < frames.Length; i++)
             {
                 // Split up the time and frame name
-                var frameInfo = framesTxt[i].Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
+                var frameInfo = framesTxt[i].Split(new[]
+                {
+                    "/"
+                }, StringSplitOptions.RemoveEmptyEntries);
 
                 // If there is a defined time, use it
                 float frameTime;
@@ -113,7 +116,10 @@ namespace NetGore.Graphics
         /// <returns>New SkeletonSet object</returns>
         public static SkeletonSet Load(string text, string separator)
         {
-            return Load(text.Split(new[] { separator }, StringSplitOptions.RemoveEmptyEntries));
+            return Load(text.Split(new[]
+            {
+                separator
+            }, StringSplitOptions.RemoveEmptyEntries));
         }
 
         /// <summary>
@@ -125,7 +131,10 @@ namespace NetGore.Graphics
         {
             using (Stream s = File.Open(filePath, FileMode.Create))
             {
-                XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true
+                };
                 using (XmlWriter w = XmlWriter.Create(s, settings))
                 {
                     if (w == null)

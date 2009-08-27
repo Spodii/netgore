@@ -95,7 +95,7 @@ namespace DemoGame.Server.NPCChat
         protected override void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses)
         {
             Debug.Assert(_index == default(ushort) && _responses == default(IEnumerable<NPCChatResponseBase>),
-                "Values were already set?");
+                         "Values were already set?");
 
             _index = page;
             _responses = responses.ToArray();

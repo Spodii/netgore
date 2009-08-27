@@ -36,7 +36,7 @@ namespace NetGore
         {
             const BindingFlags flags =
                 BindingFlags.InvokeMethod | BindingFlags.Instance | BindingFlags.Static | BindingFlags.NonPublic |
-                    BindingFlags.Public;
+                BindingFlags.Public;
             return types.SelectMany(x => x.GetMethods(flags));
         }
 

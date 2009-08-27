@@ -198,7 +198,10 @@ namespace DemoGame.Server
 
             CharacterStatusEffectTable values = new CharacterStatusEffectTable
             {
-                CharacterID = Character.ID, ID = item.ID, Power = item.Value.Power, TimeLeftSecs = (ushort)secsLeft,
+                CharacterID = Character.ID,
+                ID = item.ID,
+                Power = item.Value.Power,
+                TimeLeftSecs = (ushort)secsLeft,
                 StatusEffect = item.Value.StatusEffect.StatusEffectType
             };
 

@@ -95,16 +95,26 @@ namespace DemoGame.Client
 
         #region IRestorableSettings Members
 
+        /// <summary>
+        /// Loads the values supplied by the <paramref name="items"/> to reconstruct the settings.
+        /// </summary>
+        /// <param name="items">NodeItems containing the values to restore.</param>
         public void Load(IDictionary<string, string> items)
         {
             Position = new Vector2(float.Parse(items["X"]), float.Parse(items["Y"]));
             IsVisible = bool.Parse(items["IsVisible"]);
         }
 
+        /// <summary>
+        /// Returns the key and value pairs needed to restore the settings.
+        /// </summary>
+        /// <returns>The key and value pairs needed to restore the settings.</returns>
         public IEnumerable<NodeItem> Save()
         {
             return new NodeItem[]
-            { new NodeItem("X", Position.X), new NodeItem("Y", Position.Y), new NodeItem("IsVisible", IsVisible) };
+            {
+                new NodeItem("X", Position.X), new NodeItem("Y", Position.Y), new NodeItem("IsVisible", IsVisible)
+            };
         }
 
         #endregion

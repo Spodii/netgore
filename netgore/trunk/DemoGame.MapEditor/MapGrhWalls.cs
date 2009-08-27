@@ -137,7 +137,10 @@ namespace DemoGame.MapEditor
         {
             using (FileStream stream = new FileStream(path, FileMode.Create))
             {
-                XmlWriterSettings settings = new XmlWriterSettings { Indent = true };
+                XmlWriterSettings settings = new XmlWriterSettings
+                {
+                    Indent = true
+                };
                 using (XmlWriter w = XmlWriter.Create(stream, settings))
                 {
                     if (w == null)

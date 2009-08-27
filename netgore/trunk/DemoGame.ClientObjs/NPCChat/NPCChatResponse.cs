@@ -58,7 +58,7 @@ namespace DemoGame.Client.NPCChat
         protected override void SetReadValues(byte value, ushort page, string text)
         {
             Debug.Assert(_value == default(byte) && _page == default(ushort) && _text == default(string),
-                "Values were already set?");
+                         "Values were already set?");
 
             _value = value;
             _page = page;
