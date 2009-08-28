@@ -83,6 +83,7 @@
     <Compile Include="Entities\DynamicEntityFactory.cs" />
     <Compile Include="Entities\Entity.cs" />
     <Compile Include="Entities\EntityEventHandler.cs" />
+    <Compile Include="Extensions\IDictionaryExtensions.cs" />
     <Compile Include="GrhIndex.cs" />
     <Compile Include="Extensions\IDataRecordExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
