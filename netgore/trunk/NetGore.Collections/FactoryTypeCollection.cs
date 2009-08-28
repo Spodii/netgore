@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using log4net;
 
 namespace NetGore.Collections
@@ -132,9 +134,94 @@ namespace NetGore.Collections
         /// <param name="constructorParams">Array of Types for the parameters the constructor must have.</param>
         /// <returns>A filter to use on the FactoryTypeCollection used to find instanceable classes that fit the specified
         /// conditions.</returns>
-        public static Func<Type, bool> CreateFilter(Type subclass, Type[] constructorParams)
+        public static Func<Type, bool> CreateFilter(Type subclass, params Type[] constructorParams)
         {
-            return x => x.IsClass && !x.IsAbstract && x.IsSubclassOf(subclass) && x.GetConstructor(constructorParams) != null;
+            return x => SubclassFilter(x, subclass, constructorParams, false);
+        }
+
+        /// <summary>
+        /// Creates a filter to use on the FactoryTypeCollection used to find instanceable classes that fit the specified
+        /// conditions.
+        /// </summary>
+        /// <param name="subclass">Type of the subclass required.</param>
+        /// <param name="requireConstructor">If True, then any instanceable Type found that is a subclass of
+        /// <paramref name="subclass"/>, but does not have a constructor with parameters that match
+        /// <paramref name="constructorParams"/> will result in an Exception being thrown.</param>
+        /// <param name="constructorParams">Array of Types for the parameters the constructor must have.</param>
+        /// <returns>A filter to use on the FactoryTypeCollection used to find instanceable classes that fit the specified
+        /// conditions.</returns>
+        public static Func<Type, bool> CreateFilter(Type subclass, bool requireConstructor, params Type[] constructorParams)
+        {
+            return x => SubclassFilter(x, subclass, constructorParams, requireConstructor);
+        }
+
+        /// <summary>
+        /// Gets a string containing the name of the <paramref name="types"/>.
+        /// </summary>
+        /// <param name="types">The Types.</param>
+        /// <returns>A string containing the name of the <paramref name="types"/>.</returns>
+        static string GetTypeString(Type[] types)
+        {
+            if (types == null || types.Length == 0)
+                return string.Empty;
+
+            if (types.Length == 1)
+                return types[0].Name;
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i < types.Length; i++)
+            {
+                sb.Append(types[i].Name);
+                sb.Append(", ");
+            }
+            sb.Length -= 2;
+
+            return sb.ToString();
+        }
+
+
+        /// <summary>
+        /// The method used to check if the <paramref name="type"/> meets the given conditions.
+        /// </summary>
+        /// <param name="type">The type.</param>
+        /// <param name="subclass">The subclass.</param>
+        /// <param name="constructorParams">The constructor params.</param>
+        /// <param name="requireConstructor">If True, then any instanceable Type found that is a subclass of
+        /// <paramref name="subclass"/>, but does not have a constructor with parameters that match
+        /// <paramref name="constructorParams"/> will result in an Exception being thrown.</param>
+        /// <returns>True if the Type should be used; otherwise false.</returns>
+        static bool SubclassFilter(Type type, Type subclass, Type[] constructorParams, bool requireConstructor)
+        {
+            if (!type.IsClass)
+                return false;
+
+            if (type.IsAbstract)
+                return false;
+
+            if (!type.IsSubclassOf(subclass))
+                return false;
+
+            if (constructorParams != null)
+            {
+                if (type.GetConstructor(constructorParams) == null)
+                {
+                    if (requireConstructor)
+                    {
+                        const string errmsg = "Type `{0}` does not have the required constructor containing the parameters: `{1}`.";
+                        string err = string.Format(errmsg, type, GetTypeString(constructorParams));
+                        if (log.IsFatalEnabled)
+                            log.Fatal(err);
+                        Debug.Fail(err);
+                        throw new Exception(err);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
