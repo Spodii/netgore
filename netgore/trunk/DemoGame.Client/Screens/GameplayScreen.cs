@@ -391,6 +391,7 @@ namespace DemoGame.Client
 
             _chatDialogForm = new NPCChatDialogForm(new Vector2(50, 50), cScreen);
             _chatDialogForm.OnSelectResponse += ChatDialogForm_OnSelectResponse;
+            _chatDialogForm.OnRequestEndDialog += ChatDialogForm_OnRequestEndDialog;
 
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
@@ -406,6 +407,12 @@ namespace DemoGame.Client
             _guiSettings.Add("StatsForm", _statsForm);
             _guiSettings.Add("ChatForm", _chatForm);
             _guiSettings.Add("ToolbarForm", toolbar);
+        }
+
+        void ChatDialogForm_OnRequestEndDialog(NPCChatDialogForm sender)
+        {
+            using (var pw = ClientPacket.EndNPCChatDialog())
+                Socket.Send(pw);
         }
 
         public NPCChatDialogForm ChatDialogForm { get { return _chatDialogForm; } }

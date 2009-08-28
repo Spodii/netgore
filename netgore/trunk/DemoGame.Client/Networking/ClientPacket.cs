@@ -23,6 +23,11 @@ namespace DemoGame.Client
             return pw;
         }
 
+        public static PacketWriter EndNPCChatDialog()
+        {
+            return GetWriter(ClientPacketID.EndNPCChatDialog);
+        }
+
         public static PacketWriter SelectNPCChatDialogResponse(byte responseIndex)
         {
             PacketWriter pw = GetWriter(ClientPacketID.SelectNPCChatDialogResponse);

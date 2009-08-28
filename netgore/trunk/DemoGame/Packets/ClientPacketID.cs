@@ -11,6 +11,7 @@ namespace DemoGame
 
         Attack = 1,
         DropInventoryItem,
+        EndNPCChatDialog,
         GetEquipmentItemInfo,
         GetInventoryItemInfo,
         Jump,
