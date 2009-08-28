@@ -57,6 +57,16 @@ namespace DemoGame.Server
             _ppManager = new MessageProcessorManager(this, GameData.ClientMessageIDBitLength);
         }
 
+        [MessageHandler((byte)ClientPacketID.EndNPCChatDialog)]
+        void RecvEndNPCChatDialog(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if (!TryGetUser(conn, out user))
+                return;
+
+            user.ChatState.EndChat();
+        }
+
         [MessageHandler((byte)ClientPacketID.SelectNPCChatDialogResponse)]
         void RecvSelectNPCChatDialogResponse(IIPSocket conn, BitStream r)
         {

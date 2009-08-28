@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Client.NPCChat;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore.Graphics.GUI;
@@ -10,7 +12,8 @@ using NetGore.NPCChat;
 
 namespace DemoGame.Client
 {
-    delegate void SelectChatDialogResponseHandler(NPCChatDialogForm sender, NPCChatResponseBase response);
+    delegate void ChatDialogSelectResponseHandler(NPCChatDialogForm sender, NPCChatResponseBase response);
+    delegate void ChatDialogRequestEndDialogHandler(NPCChatDialogForm sender);
 
     class NPCChatDialogForm : Form, IRestorableSettings
     {
@@ -27,14 +30,22 @@ namespace DemoGame.Client
         NPCChatResponseBase[] _responses;
 
         /// <summary>
-        /// Gets if a dialog is currently open.
-        /// </summary>
-        public bool IsChatting { get { return _dialog != null; } }
-
-        /// <summary>
         /// Notifies listeners when a dialog response was chosen.
         /// </summary>
-        public event SelectChatDialogResponseHandler OnSelectResponse;
+        public event ChatDialogSelectResponseHandler OnSelectResponse;
+
+        /// <summary>
+        /// Notifies listeners when this NPCChatDialogForm wants to end the chat dialog.
+        /// </summary>
+        public event ChatDialogRequestEndDialogHandler OnRequestEndDialog;
+
+        /// <summary>
+        /// Gets if a dialog is currently open.
+        /// </summary>
+        public bool IsChatting
+        {
+            get { return _dialog != null; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatDialogForm"/> class.
@@ -46,21 +57,36 @@ namespace DemoGame.Client
         {
             IsVisible = false;
 
+            OnKeyPress += NPCChatDialogForm_OnKeyPress;
+
             // NOTE: We want to use a scrollable textbox here... when we finally make one
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             float spacing = Font.LineSpacing;
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-            var responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
-            var textboxSize = ClientSize - new Vector2(0, ClientSize.Y - responseStartY);
+            float responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
+            Vector2 textboxSize = ClientSize - new Vector2(0, ClientSize.Y - responseStartY);
             _dialogTextControl = new TextBoxMultiLineLocked(string.Empty, Vector2.Zero, textboxSize, this);
-   
+            _dialogTextControl.OnKeyPress += NPCChatDialogForm_OnKeyPress;
+
             for (byte i = 0; i < _numDisplayedResponses; i++)
             {
-                ResponseText r = new ResponseText(new Vector2(0, responseStartY + (spacing * i)), this) { IsVisible = true };
+                ResponseText r = new ResponseText(new Vector2(0, responseStartY + (spacing * i)), this)
+                {
+                    IsVisible = true
+                };
                 r.OnClick += ResponseText_OnClick;
                 _responseTextControls[i] = r;
+            }
+        }
+
+        void NPCChatDialogForm_OnKeyPress(object sender, KeyboardEventArgs e)
+        {
+            if (e.Keys.Contains(Microsoft.Xna.Framework.Input.Keys.Escape))
+            {
+                if (OnRequestEndDialog != null)
+                    OnRequestEndDialog(this);
             }
         }
 
