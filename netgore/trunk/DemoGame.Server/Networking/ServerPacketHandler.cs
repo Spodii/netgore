@@ -57,10 +57,37 @@ namespace DemoGame.Server
             _ppManager = new MessageProcessorManager(this, GameData.ClientMessageIDBitLength);
         }
 
+        [MessageHandler((byte)ClientPacketID.SelectNPCChatDialogResponse)]
+        void RecvSelectNPCChatDialogResponse(IIPSocket conn, BitStream r)
+        {
+            byte responseIndex = r.ReadByte();
+
+            User user;
+            if (!TryGetUser(conn, out user))
+                return;
+
+            user.ChatState.EnterResponse(responseIndex);
+        }
+
+        [MessageHandler((byte)ClientPacketID.StartNPCChatDialog)]
+        void RecvStartNPCChatDialog(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex npcIndex = r.ReadMapEntityIndex();
+
+            User user;
+            Map map;
+            if (!TryGetMap(conn, out user, out map))
+                return;
+
+            var npc = map.GetDynamicEntity<NPC>(npcIndex);
+            if (npc == null)
+                return;
+
+            user.ChatState.StartChat(npc);
+        }
+
         [MessageHandler((byte)ClientPacketID.Attack)]
-#pragma warning disable 168
         void RecvAttack(IIPSocket conn, BitStream r)
-#pragma warning restore 168
         {
             User user;
             if (TryGetUser(conn, out user))
@@ -100,9 +127,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.Jump)]
-#pragma warning disable 168
         void RecvJump(IIPSocket conn, BitStream r)
-#pragma warning restore 168
         {
             User user;
             if (TryGetUser(conn, out user) && user.CanJump)
@@ -119,9 +144,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.MoveLeft)]
-#pragma warning disable 168
         void RecvMoveLeft(IIPSocket conn, BitStream r)
-#pragma warning restore 168
         {
             User user;
             if (TryGetUser(conn, out user) && !user.IsMovingLeft)
@@ -129,9 +152,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.MoveRight)]
-#pragma warning disable 168
         void RecvMoveRight(IIPSocket conn, BitStream r)
-#pragma warning restore 168
         {
             User user;
             if (TryGetUser(conn, out user) && !user.IsMovingRight)
@@ -139,9 +160,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.MoveStop)]
-#pragma warning disable 168
         void RecvMoveStop(IIPSocket conn, BitStream r)
-#pragma warning restore 168
         {
             User user;
             if (TryGetUser(conn, out user) && user.IsMoving)
@@ -166,9 +185,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.Ping)]
-#pragma warning disable 168
         void RecvPing(IIPSocket conn, BitStream r)
-#pragma warning restore 168
         {
             // Get the User
             User user;
@@ -275,9 +292,7 @@ namespace DemoGame.Server
         }
 
         [MessageHandler((byte)ClientPacketID.UseWorld)]
-#pragma warning disable 168
         void RecvUseWorld(IIPSocket conn, BitStream r)
-#pragma warning restore 168
         {
             MapEntityIndex useEntityIndex = r.ReadMapEntityIndex();
 
@@ -414,6 +429,10 @@ namespace DemoGame.Server
 
         #region IGetTime Members
 
+        /// <summary>
+        /// Gets the current time.
+        /// </summary>
+        /// <returns>Current time.</returns>
         public int GetTime()
         {
             return Server.GetTime();
@@ -423,16 +442,29 @@ namespace DemoGame.Server
 
         #region IMessageProcessor Members
 
+        /// <summary>
+        /// Handles received data and forwards it to the corresponding MessageProcessors.
+        /// </summary>
+        /// <param name="rec">SocketReceiveData to process.</param>
         public void Process(SocketReceiveData rec)
         {
             _ppManager.Process(rec);
         }
 
+        /// <summary>
+        /// Handles received data and forwards it to the corresponding MessageProcessors.
+        /// </summary>
+        /// <param name="socket">Socket the data came from.</param>
+        /// <param name="data">Data to process.</param>
         public void Process(IIPSocket socket, byte[] data)
         {
             _ppManager.Process(socket, data);
         }
 
+        /// <summary>
+        /// Handles a list of received data and forwards it to the corresponding MessageProcessors.
+        /// </summary>
+        /// <param name="recvData">List of SocketReceiveData to process.</param>
         public void Process(IEnumerable<SocketReceiveData> recvData)
         {
             _ppManager.Process(recvData);

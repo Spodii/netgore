@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -23,6 +24,44 @@ namespace DemoGame.Server
             pw.Write(statusEffectType);
             pw.Write(power);
             pw.Write(secsLeft);
+            return pw;
+        }
+
+        public static PacketWriter StartChatDialog(MapEntityIndex npcIndex, ushort dialogIndex)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.StartChatDialog);
+            pw.Write(npcIndex);
+            pw.Write(dialogIndex);
+            return pw;
+        }
+
+        public static PacketWriter EndChatDialog()
+        {
+            return GetWriter(ServerPacketID.EndChatDialog);
+        }
+
+        public static PacketWriter SetChatDialogPage(ushort pageIndex, IEnumerable<byte> responsesToSkip)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SetChatDialogPage);
+            pw.Write(pageIndex);
+
+            // Get the number of responses to skip
+            byte skipCount;
+            if (responsesToSkip == null)
+                skipCount = 0;
+            else
+                skipCount = (byte)responsesToSkip.Count();
+
+            pw.Write(skipCount);
+
+            // List off the responses to skip, if any
+            if (skipCount > 0)
+            {
+                Debug.Assert(responsesToSkip != null);
+                foreach (var responseToSkip in responsesToSkip)
+                    pw.Write(responseToSkip);
+            }
+
             return pw;
         }
 

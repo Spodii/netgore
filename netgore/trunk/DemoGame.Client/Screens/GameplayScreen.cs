@@ -14,7 +14,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Screen for the actual game
     /// </summary>
-    public class GameplayScreen : GameScreen, IDisposable, IGetTime
+    class GameplayScreen : GameScreen, IDisposable, IGetTime
     {
         const string _latencyString = "Latency: {0} ms";
 
@@ -37,6 +37,11 @@ namespace DemoGame.Client
         /// Minimum time the user must wait before using something
         /// </summary>
         const int _minUseRate = 150;
+
+        /// <summary>
+        /// Minimum time the user must wait before chatting to a NPC
+        /// </summary>
+        const int _minNPCChatRate = 150;
 
         /// <summary>
         /// Pool for the damage text
@@ -63,6 +68,8 @@ namespace DemoGame.Client
 
         bool _disposed;
         EquippedForm _equippedForm;
+
+        NPCChatDialogForm _chatDialogForm;
 
         /// <summary>
         /// GUI Manager
@@ -118,6 +125,8 @@ namespace DemoGame.Client
         /// Time when the user last used something
         /// </summary>
         int _lastUseTime;
+
+        int _lastNPCChatTime;
 
         /// <summary>
         /// Label used for displaying the latency.
@@ -380,6 +389,9 @@ namespace DemoGame.Client
             _chatForm = new ChatForm(cScreen, new Vector2(0, cScreen.Size.Y));
             _chatForm.OnSay += ChatForm_OnSay;
 
+            _chatDialogForm = new NPCChatDialogForm(new Vector2(50, 50), cScreen);
+            _chatDialogForm.OnSelectResponse += ChatDialogForm_OnSelectResponse;
+
             _statusEffectsForm = new StatusEffectsForm(cScreen, new Vector2(cScreen.Size.X, 0), this);
 
             _latencyLabel = new Label(string.Format(_latencyString, 0), cScreen.Size - new Vector2(75, 5), cScreen);
@@ -394,6 +406,14 @@ namespace DemoGame.Client
             _guiSettings.Add("StatsForm", _statsForm);
             _guiSettings.Add("ChatForm", _chatForm);
             _guiSettings.Add("ToolbarForm", toolbar);
+        }
+
+        public NPCChatDialogForm ChatDialogForm { get { return _chatDialogForm; } }
+
+        void ChatDialogForm_OnSelectResponse(NPCChatDialogForm sender, NetGore.NPCChat.NPCChatResponseBase response)
+        {
+            using (var pw = ClientPacket.SelectNPCChatDialogResponse(response.Value))
+                Socket.Send(pw);
         }
 
         /// <summary>
@@ -556,6 +576,20 @@ namespace DemoGame.Client
                 if (useEntity != null)
                 {
                     using (PacketWriter pw = ClientPacket.UseWorld(useEntity.MapEntityIndex))
+                    {
+                        Socket.Send(pw);
+                    }
+                }
+            }
+
+            // NPC chat
+            if (_currentTime - _lastNPCChatTime > _minNPCChatRate && ks.IsKeyDown(Keys.LeftAlt))
+            {
+                _lastNPCChatTime = _currentTime;
+                var npc = Map.GetEntity<CharacterEntity>(UserChar.CB.ToRectangle(), x => x.HasChatDialog);
+                if (npc != null)
+                {
+                    using (var pw = ClientPacket.StartNPCChatDialog(npc.MapEntityIndex))
                     {
                         Socket.Send(pw);
                     }

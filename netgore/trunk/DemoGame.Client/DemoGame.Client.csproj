@@ -97,6 +97,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controls\NPCChatDialogForm.cs" />
     <Compile Include="Controls\SkillsForm.cs" />
     <Compile Include="Controls\StatusEffectsForm.cs" />
     <Compile Include="Controls\ToolbarItemType.cs" />

@@ -9,7 +9,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Client socket manager
     /// </summary>
-    public class ClientSockets : SocketManager, IGetTime, ISocketSender
+    class ClientSockets : SocketManager, IGetTime, ISocketSender
     {
         const int _updateLatencyInterval = 5000;
         readonly ClientPacketHandler _packetHandler;

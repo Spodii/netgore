@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+using log4net;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -20,6 +22,11 @@ namespace NetGore.EditorTools
         string _text;
         string _title;
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        
+        /// <summary>
+        /// Notifies listeners when any of the object's property values have changed.
+        /// </summary>
         public event EditorNPCChatDialogItemEventHandler OnChange;
 
         /// <summary>
@@ -43,6 +50,26 @@ namespace NetGore.EditorTools
         public override IEnumerable<NPCChatResponseBase> Responses
         {
             get { return ResponseList.Cast<NPCChatResponseBase>(); }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the NPCChatResponseBase of the response with the given
+        /// <paramref name="responseIndex"/>.
+        /// </summary>
+        /// <param name="responseIndex">Index of the response.</param>
+        /// <returns>The NPCChatResponseBase for the response at index <paramref name="responseIndex"/>, or null
+        /// if the response is invalid or ends the chat dialog.</returns>
+        public override NPCChatResponseBase GetResponse(byte responseIndex)
+        {
+            if (responseIndex >= _responses.Count)
+            {
+                const string errmsg = "Invalid response index `{0}` for page `{1}`. Max response index is `{2}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, responseIndex, Index, _responses.Count - 1);
+                return null;
+            }
+
+            return _responses[responseIndex];
         }
 
         /// <summary>

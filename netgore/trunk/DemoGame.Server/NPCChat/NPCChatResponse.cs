@@ -62,5 +62,16 @@ namespace DemoGame.Server.NPCChat
             _value = value;
             _page = page;
         }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format(string.Format("{0} [Value: {1}]", GetType().Name, Value));
+        }
     }
 }

@@ -19,6 +19,7 @@ namespace DemoGame.Server
     public class User : Character
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly UserChatDialogState _chatState;
 
         /// <summary>
         /// The socket used to communicate with the User.
@@ -64,16 +65,16 @@ namespace DemoGame.Server
         public User(IIPSocket conn, World world, string name) : base(world, true)
         {
             if (log.IsInfoEnabled)
-                log.InfoFormat("User {0} logged in", name);
+                log.InfoFormat("User {0} logged in.", name);
 
             // Set the connection information
             _conn = conn;
             _conn.Tag = this;
 
+            // Create some objects
+            _chatState = new UserChatDialogState(this);
             _userStatsBase = (UserStats)BaseStats;
             _userStatsMod = (UserStats)ModStats;
-
-            // Create some objects
             _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
 
             // Load the character data
@@ -413,6 +414,11 @@ namespace DemoGame.Server
         {
             _unreliableBuffer.Enqueue(data);
         }
+
+        /// <summary>
+        /// Gets the UserChatDialogState for this User.
+        /// </summary>
+        public UserChatDialogState ChatState { get { return _chatState; } }
 
         protected override void StatusEffects_HandleOnAdd(CharacterStatusEffects effects, ActiveStatusEffect ase)
         {

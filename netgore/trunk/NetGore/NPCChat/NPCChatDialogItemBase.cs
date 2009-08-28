@@ -27,6 +27,15 @@ namespace NetGore.NPCChat
         public abstract IEnumerable<NPCChatResponseBase> Responses { get; }
 
         /// <summary>
+        /// When overridden in the derived class, gets the NPCChatResponseBase of the response with the given
+        /// <paramref name="responseIndex"/>.
+        /// </summary>
+        /// <param name="responseIndex">Index of the response.</param>
+        /// <returns>The NPCChatResponseBase for the response at index <paramref name="responseIndex"/>, or null
+        /// if the response is invalid or ends the chat dialog.</returns>
+        public abstract NPCChatResponseBase GetResponse(byte responseIndex);
+
+        /// <summary>
         /// When overridden in the derived class, gets the main dialog text in this page of dialog.
         /// </summary>
         public abstract string Text { get; }
@@ -135,6 +144,17 @@ namespace NetGore.NPCChat
                 response.Write(writer);
                 writer.WriteEndNode("Response");
             }
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format(string.Format("{0} [Index: {1}, Title: {2}]", GetType().Name, Index, Title));
         }
     }
 }

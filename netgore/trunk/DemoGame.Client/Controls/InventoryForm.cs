@@ -33,6 +33,12 @@ namespace DemoGame.Client
             get { return _itemInfoTooltip; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InventoryForm"/> class.
+        /// </summary>
+        /// <param name="itemInfoTooltip">The item info tooltip.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="parent">The parent.</param>
         public InventoryForm(ItemInfoTooltip itemInfoTooltip, Vector2 position, Control parent)
             : base(parent.GUIManager, "Inventory", position, new Vector2(200, 200), parent)
         {
