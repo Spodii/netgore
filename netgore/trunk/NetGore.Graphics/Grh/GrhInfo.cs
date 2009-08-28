@@ -405,10 +405,7 @@ namespace NetGore.Graphics
                     int h = int.Parse(dic["Grh.Texture.H"]);
                     currGrh.Load(cm, currGrhIndex, file, x, y, w, h, category, title);
 
-                    bool autoSize = false;
-                    if (dic.ContainsKey("Grh.AutomaticResize"))
-                        autoSize = bool.Parse(dic["Grh.AutomaticResize"]);
-                    currGrh.AutomaticSize = autoSize;
+                    currGrh.AutomaticSize = dic.AsBool("Grh.AutomaticResize", false);
 
                     // Add to the collection
                     _grhDatas[(int)currGrh.GrhIndex] = currGrh;
