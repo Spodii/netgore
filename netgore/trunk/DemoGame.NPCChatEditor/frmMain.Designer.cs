@@ -53,6 +53,8 @@ namespace DemoGame.NPCChatEditor
             this.cmbSelectedDialog = new NetGore.EditorTools.NPCChatDialogComboBox();
             this.npcChatDialogView = new NetGore.EditorTools.NPCChatDialogView();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtResponseValue = new System.Windows.Forms.TextBox();
             this.gbSelectedNode.SuspendLayout();
             this.tcChatDialogItem.SuspendLayout();
             this.tpDialog.SuspendLayout();
@@ -134,7 +136,6 @@ namespace DemoGame.NPCChatEditor
             this.txtDialogPage.Name = "txtDialogPage";
             this.txtDialogPage.Size = new System.Drawing.Size(45, 20);
             this.txtDialogPage.TabIndex = 5;
-            this.txtDialogPage.EnabledChanged += new System.EventHandler(this.AlwaysDisabledControl_EnabledChanged);
             // 
             // label5
             // 
@@ -165,6 +166,8 @@ namespace DemoGame.NPCChatEditor
             // 
             // tpResponse
             // 
+            this.tpResponse.Controls.Add(this.txtResponseValue);
+            this.tpResponse.Controls.Add(this.label7);
             this.tpResponse.Controls.Add(this.btnDeleteResponse);
             this.tpResponse.Controls.Add(this.txtResponseIndex);
             this.tpResponse.Controls.Add(this.label2);
@@ -188,7 +191,8 @@ namespace DemoGame.NPCChatEditor
             // 
             // txtResponseIndex
             // 
-            this.txtResponseIndex.Location = new System.Drawing.Point(48, 6);
+            this.txtResponseIndex.Enabled = false;
+            this.txtResponseIndex.Location = new System.Drawing.Point(76, 32);
             this.txtResponseIndex.Name = "txtResponseIndex";
             this.txtResponseIndex.Size = new System.Drawing.Size(48, 20);
             this.txtResponseIndex.TabIndex = 5;
@@ -196,11 +200,11 @@ namespace DemoGame.NPCChatEditor
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 9);
+            this.label2.Location = new System.Drawing.Point(6, 35);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(36, 13);
+            this.label2.Size = new System.Drawing.Size(64, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Index:";
+            this.label2.Text = "Page Index:";
             // 
             // tpRedirect
             // 
@@ -285,6 +289,23 @@ namespace DemoGame.NPCChatEditor
             this.comboBox1.Size = new System.Drawing.Size(125, 21);
             this.comboBox1.TabIndex = 12;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(6, 9);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(37, 13);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "Value:";
+            // 
+            // txtResponseValue
+            // 
+            this.txtResponseValue.Enabled = false;
+            this.txtResponseValue.Location = new System.Drawing.Point(49, 6);
+            this.txtResponseValue.Name = "txtResponseValue";
+            this.txtResponseValue.Size = new System.Drawing.Size(48, 20);
+            this.txtResponseValue.TabIndex = 9;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -342,6 +363,8 @@ namespace DemoGame.NPCChatEditor
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtDialogTitle;
         private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.TextBox txtResponseValue;
+        private System.Windows.Forms.Label label7;
 
     }
 }

@@ -38,15 +38,6 @@ namespace DemoGame.NPCChatEditor
             InitializeComponent();
         }
 
-        void AlwaysDisabledControl_EnabledChanged(object sender, EventArgs e)
-        {
-            Control c = sender as Control;
-            if (c == null)
-                return;
-
-            c.Enabled = false;
-        }
-
         void btnAddResponse_Click(object sender, EventArgs e)
         {
             if (_doNotUpdateObj)
@@ -159,9 +150,19 @@ namespace DemoGame.NPCChatEditor
         {
             try
             {
+                // Set controls that are initially disabled in the tab control to always be disabled
+                var controls = GetAllControls(tcChatDialogItem);
+                foreach (var control in controls)
+                {
+                    if (control.Enabled == false)
+                        control.EnabledChanged += ((obj, eArgs) => ((Control)obj).Enabled = false);
+                }
+
+                // Add the dialogs
                 cmbSelectedDialog.Items.Clear();
                 cmbSelectedDialog.AddDialog(EditorNPCChatManager.Dialogs.OfType<NPCChatDialogBase>());
 
+                // Select the first one
                 if (cmbSelectedDialog.Items.Count > 0)
                     cmbSelectedDialog.SelectedIndex = 0;
 
@@ -200,6 +201,16 @@ namespace DemoGame.NPCChatEditor
         void npcChatDialogView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             SetEditingObject(e.Node.Tag);
+        }
+
+        static System.Collections.Generic.IEnumerable<Control> GetAllControls(Control root)
+        {
+            foreach (var child in root.Controls.Cast<Control>())
+            {
+                yield return child;
+                foreach (var c2 in GetAllControls(child))
+                    yield return c2;
+            }
         }
 
         static void SetAllChildrenEnabled(IEnumerable controls, bool enabled)
