@@ -94,6 +94,13 @@
     <Compile Include="MapEntityIndex.cs" />
     <Compile Include="MapIndex.cs" />
     <Compile Include="MethodInfoHelper.cs" />
+    <Compile Include="NPCChat\Conditionals\Parameters\INPCChatConditionalParameter.cs" />
+    <Compile Include="NPCChat\Conditionals\NPCChatConditionalBase.cs" />
+    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameter.cs" />
+    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterFloat.cs" />
+    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterInteger.cs" />
+    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterString.cs" />
+    <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterType.cs" />
     <Compile Include="NPCChat\NPCChatDialogBase.cs" />
     <Compile Include="NPCChat\NPCChatDialogItemBase.cs" />
     <Compile Include="NPCChat\NPCChatManagerBase.cs" />

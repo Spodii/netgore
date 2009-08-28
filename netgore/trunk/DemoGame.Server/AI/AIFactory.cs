@@ -22,10 +22,7 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.Info("Initializing the AI factory.");
 
-            var filter = FactoryTypeCollection.CreateFilter(typeof(AIBase), new Type[]
-            {
-                typeof(Character)
-            });
+            var filter = FactoryTypeCollection.CreateFilter(typeof(AIBase), true, typeof(Character));
             _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler, false);
         }
 
