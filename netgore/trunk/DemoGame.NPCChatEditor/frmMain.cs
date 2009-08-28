@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame.Server.NPCChat.Conditionals;
 using NetGore.EditorTools;
 using NetGore.NPCChat;
 
@@ -163,6 +164,10 @@ namespace DemoGame.NPCChatEditor
 
                 if (cmbSelectedDialog.Items.Count > 0)
                     cmbSelectedDialog.SelectedIndex = 0;
+
+                comboBox1.Items.Clear();
+                foreach (var item in NPCChatConditional.Conditionals)
+                    comboBox1.Items.Add(item.Name);
             }
             catch (Exception ex)
             {

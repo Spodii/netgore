@@ -55,17 +55,8 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
-    <Reference Include="System.Xml.Linq">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.DataSetExtensions">
-      <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="frmMain.cs">
@@ -99,6 +90,18 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DemoGame.ServerObjs\DemoGame.ServerObjs.csproj">
+      <Project>{20E83735-4A5F-426C-9759-F9A1AD51B00E}</Project>
+      <Name>DemoGame.ServerObjs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoGame.Server\DemoGame.Server.csproj">
+      <Project>{78D0AD30-FFCE-4410-96C6-8063C3E41ED6}</Project>
+      <Name>DemoGame.Server</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DemoGame\DemoGame.csproj">
+      <Project>{772C6932-6CAF-48A0-88ED-C2BF5E9153F2}</Project>
+      <Name>DemoGame</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.EditorTools\NetGore.EditorTools.csproj">
       <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
       <Name>NetGore.EditorTools</Name>

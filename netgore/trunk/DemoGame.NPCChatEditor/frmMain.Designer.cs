@@ -52,6 +52,7 @@ namespace DemoGame.NPCChatEditor
             this.txtDialogTitle = new System.Windows.Forms.TextBox();
             this.cmbSelectedDialog = new NetGore.EditorTools.NPCChatDialogComboBox();
             this.npcChatDialogView = new NetGore.EditorTools.NPCChatDialogView();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.gbSelectedNode.SuspendLayout();
             this.tcChatDialogItem.SuspendLayout();
             this.tpDialog.SuspendLayout();
@@ -276,11 +277,20 @@ namespace DemoGame.NPCChatEditor
             this.npcChatDialogView.TabIndex = 0;
             this.npcChatDialogView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.npcChatDialogView_NodeMouseClick);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(332, 628);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(125, 21);
+            this.comboBox1.TabIndex = 12;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(469, 631);
+            this.ClientSize = new System.Drawing.Size(469, 661);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.txtDialogTitle);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.cmbSelectedDialog);
@@ -331,6 +341,7 @@ namespace DemoGame.NPCChatEditor
         private NPCChatDialogComboBox cmbSelectedDialog;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtDialogTitle;
+        private System.Windows.Forms.ComboBox comboBox1;
 
     }
 }
