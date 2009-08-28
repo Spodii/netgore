@@ -10,6 +10,7 @@ using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.Network;
+using NetGore.NPCChat;
 
 #pragma warning disable 168
 // ReSharper disable UnusedMember.Local
@@ -200,35 +201,10 @@ namespace DemoGame.Client
                                dynamicEntity.GetType());
         }
 
-        [MessageHandler((byte)ServerPacketID.StartChatDialog)]
-        void RecvStartChatDialog(IIPSocket conn, BitStream r)
-        {
-            MapEntityIndex npcIndex = r.ReadMapEntityIndex();
-            ushort dialogIndex = r.ReadUShort();
-
-            var dialog = NPCChatManager.GetDialog(dialogIndex);
-            GameplayScreen.ChatDialogForm.StartDialog(dialog);
-        }
-
         [MessageHandler((byte)ServerPacketID.EndChatDialog)]
         void RecvEndChatDialog(IIPSocket conn, BitStream r)
         {
             GameplayScreen.ChatDialogForm.EndDialog();
-        }
-
-        [MessageHandler((byte)ServerPacketID.SetChatDialogPage)]
-        void RecvSetChatDialogPage(IIPSocket conn, BitStream r)
-        {
-            ushort pageIndex = r.ReadUShort();
-            byte skipCount = r.ReadByte();
-
-            byte[] responsesToSkip = new byte[skipCount];
-            for (int i = 0; i < skipCount; i++)
-            {
-                responsesToSkip[i] = r.ReadByte();
-            }
-
-            GameplayScreen.ChatDialogForm.SetPageIndex(pageIndex, responsesToSkip);
         }
 
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
@@ -395,6 +371,21 @@ namespace DemoGame.Client
             character.MPPercent = percent;
         }
 
+        [MessageHandler((byte)ServerPacketID.SetChatDialogPage)]
+        void RecvSetChatDialogPage(IIPSocket conn, BitStream r)
+        {
+            ushort pageIndex = r.ReadUShort();
+            byte skipCount = r.ReadByte();
+
+            var responsesToSkip = new byte[skipCount];
+            for (int i = 0; i < skipCount; i++)
+            {
+                responsesToSkip[i] = r.ReadByte();
+            }
+
+            GameplayScreen.ChatDialogForm.SetPageIndex(pageIndex, responsesToSkip);
+        }
+
         [MessageHandler((byte)ServerPacketID.SetExp)]
         void RecvSetExp(IIPSocket conn, BitStream r)
         {
@@ -471,6 +462,16 @@ namespace DemoGame.Client
         {
             MapEntityIndex mapCharIndex = r.ReadMapEntityIndex();
             World.UserCharIndex = mapCharIndex;
+        }
+
+        [MessageHandler((byte)ServerPacketID.StartChatDialog)]
+        void RecvStartChatDialog(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex npcIndex = r.ReadMapEntityIndex();
+            ushort dialogIndex = r.ReadUShort();
+
+            NPCChatDialogBase dialog = NPCChatManager.GetDialog(dialogIndex);
+            GameplayScreen.ChatDialogForm.StartDialog(dialog);
         }
 
         [MessageHandler((byte)ServerPacketID.UpdateEquipmentSlot)]

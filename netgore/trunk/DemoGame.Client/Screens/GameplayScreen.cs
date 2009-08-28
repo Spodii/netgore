@@ -8,6 +8,7 @@ using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
+using NetGore.NPCChat;
 
 namespace DemoGame.Client
 {
@@ -29,6 +30,11 @@ namespace DemoGame.Client
         const int _minMoveRate = 150;
 
         /// <summary>
+        /// Minimum time the user must wait before chatting to a NPC
+        /// </summary>
+        const int _minNPCChatRate = 150;
+
+        /// <summary>
         /// Minimum time the user must wait before picking up something
         /// </summary>
         const int _minPickupRate = 150;
@@ -39,11 +45,6 @@ namespace DemoGame.Client
         const int _minUseRate = 150;
 
         /// <summary>
-        /// Minimum time the user must wait before chatting to a NPC
-        /// </summary>
-        const int _minNPCChatRate = 150;
-
-        /// <summary>
         /// Pool for the damage text
         /// </summary>
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
@@ -52,6 +53,8 @@ namespace DemoGame.Client
         /// Skeleton templates that will remain in memory at all times
         /// </summary>
         readonly SkeletonManager _skelManager = new SkeletonManager(ContentPaths.Build.Skeletons);
+
+        NPCChatDialogForm _chatDialogForm;
 
         ChatForm _chatForm;
 
@@ -68,8 +71,6 @@ namespace DemoGame.Client
 
         bool _disposed;
         EquippedForm _equippedForm;
-
-        NPCChatDialogForm _chatDialogForm;
 
         /// <summary>
         /// GUI Manager
@@ -116,6 +117,8 @@ namespace DemoGame.Client
         /// </summary>
         int _lastMoveStopTime;
 
+        int _lastNPCChatTime;
+
         /// <summary>
         /// Time when the user last picked up something
         /// </summary>
@@ -125,8 +128,6 @@ namespace DemoGame.Client
         /// Time when the user last used something
         /// </summary>
         int _lastUseTime;
-
-        int _lastNPCChatTime;
 
         /// <summary>
         /// Label used for displaying the latency.
@@ -158,6 +159,11 @@ namespace DemoGame.Client
         /// Root world of the game
         /// </summary>
         World _world;
+
+        public NPCChatDialogForm ChatDialogForm
+        {
+            get { return _chatDialogForm; }
+        }
 
         /// <summary>
         /// Gets the DamageTextPool
@@ -260,6 +266,22 @@ namespace DemoGame.Client
         public void AppendToChatOutput(List<StyledText> text)
         {
             _chatForm.AppendToOutput(text);
+        }
+
+        void ChatDialogForm_OnRequestEndDialog(NPCChatDialogForm sender)
+        {
+            using (PacketWriter pw = ClientPacket.EndNPCChatDialog())
+            {
+                Socket.Send(pw);
+            }
+        }
+
+        void ChatDialogForm_OnSelectResponse(NPCChatDialogForm sender, NPCChatResponseBase response)
+        {
+            using (PacketWriter pw = ClientPacket.SelectNPCChatDialogResponse(response.Value))
+            {
+                Socket.Send(pw);
+            }
         }
 
         void ChatForm_OnSay(ChatForm sender, string text)
@@ -407,20 +429,6 @@ namespace DemoGame.Client
             _guiSettings.Add("StatsForm", _statsForm);
             _guiSettings.Add("ChatForm", _chatForm);
             _guiSettings.Add("ToolbarForm", toolbar);
-        }
-
-        void ChatDialogForm_OnRequestEndDialog(NPCChatDialogForm sender)
-        {
-            using (var pw = ClientPacket.EndNPCChatDialog())
-                Socket.Send(pw);
-        }
-
-        public NPCChatDialogForm ChatDialogForm { get { return _chatDialogForm; } }
-
-        void ChatDialogForm_OnSelectResponse(NPCChatDialogForm sender, NetGore.NPCChat.NPCChatResponseBase response)
-        {
-            using (var pw = ClientPacket.SelectNPCChatDialogResponse(response.Value))
-                Socket.Send(pw);
         }
 
         /// <summary>
@@ -602,10 +610,10 @@ namespace DemoGame.Client
             if (_currentTime - _lastNPCChatTime > _minNPCChatRate && ks.IsKeyDown(Keys.LeftAlt))
             {
                 _lastNPCChatTime = _currentTime;
-                var npc = Map.GetEntity<CharacterEntity>(UserChar.CB.ToRectangle(), x => x.HasChatDialog);
+                CharacterEntity npc = Map.GetEntity<CharacterEntity>(UserChar.CB.ToRectangle(), x => x.HasChatDialog);
                 if (npc != null)
                 {
-                    using (var pw = ClientPacket.StartNPCChatDialog(npc.MapEntityIndex))
+                    using (PacketWriter pw = ClientPacket.StartNPCChatDialog(npc.MapEntityIndex))
                     {
                         Socket.Send(pw);
                     }

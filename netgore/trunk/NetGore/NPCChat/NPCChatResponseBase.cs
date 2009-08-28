@@ -68,17 +68,6 @@ namespace NetGore.NPCChat
         protected abstract void SetReadValues(byte value, ushort page, string text);
 
         /// <summary>
-        /// Writes the NPCChatDialogItemBase's values to an IValueWriter.
-        /// </summary>
-        /// <param name="writer">IValueWriter to write the values to.</param>
-        public void Write(IValueWriter writer)
-        {
-            writer.Write("Value", Value);
-            writer.Write("Page", Page);
-            writer.Write("Text", Text ?? string.Empty);
-        }
-
-        /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
         /// </summary>
         /// <returns>
@@ -87,6 +76,17 @@ namespace NetGore.NPCChat
         public override string ToString()
         {
             return string.Format(string.Format("{0} [Value: {1}, Text: {2}]", GetType().Name, Value, Text));
+        }
+
+        /// <summary>
+        /// Writes the NPCChatDialogItemBase's values to an IValueWriter.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write the values to.</param>
+        public void Write(IValueWriter writer)
+        {
+            writer.Write("Value", Value);
+            writer.Write("Page", Page);
+            writer.Write("Text", Text ?? string.Empty);
         }
     }
 }

@@ -13,6 +13,11 @@ namespace DemoGame
     public static class GameData
     {
         /// <summary>
+        /// If a User is allowed to move while they have a chat dialog open with a NPC.
+        /// </summary>
+        public const bool AllowMovementWhileChattingToNPC = false;
+
+        /// <summary>
         /// Maximum length of a Say packet's string from the client to the server.
         /// </summary>
         public const int MaxClientSayLength = 255;
@@ -54,11 +59,6 @@ namespace DemoGame
 
         static int _clientMessageIDBitLength = -1;
         static int _serverMessageIDBitLength = -1;
-
-        /// <summary>
-        /// If a User is allowed to move while they have a chat dialog open with a NPC.
-        /// </summary>
-        public const bool AllowMovementWhileChattingToNPC = false;
 
         /// <summary>
         /// Gets the length of the ID for messages that are sent from the Client to the Server.
