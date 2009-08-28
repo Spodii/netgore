@@ -97,7 +97,6 @@
     <Compile Include="GameData.cs" />
     <Compile Include="GameMessage.cs" />
     <Compile Include="GameMessages.cs" />
-    <Compile Include="NPCChatHelper.cs" />
     <Compile Include="Skills\SkillType.cs" />
     <Compile Include="Skills\SkillTypeExtensions.cs" />
     <Compile Include="Skills\SkillTypeHelper.cs" />

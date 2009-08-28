@@ -10,7 +10,6 @@ namespace DemoGame
         // First index (0) is reserved, and must not be used
 
         Attack = 1,
-        Say,
         DropInventoryItem,
         GetEquipmentItemInfo,
         GetInventoryItemInfo,
@@ -22,7 +21,10 @@ namespace DemoGame
         PickupItem,
         Ping,
         RaiseStat,
+        Say,
+        SelectNPCChatDialogResponse,
         SetUDPPort,
+        StartNPCChatDialog,
         UnequipItem,
         UseInventoryItem,
         UseSkill,

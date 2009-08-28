@@ -105,6 +105,7 @@
     <Compile Include="Characters\NPC.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Characters\UserChatDialogState.cs" />
     <Compile Include="Characters\UserSPSynchronizer.cs" />
     <Compile Include="CharacterTemplateEquipmentItemExtensions.cs" />
     <Compile Include="CharacterTemplateInventoryItemExtensions.cs" />

@@ -16,6 +16,20 @@ namespace DemoGame.Client
             return GetWriter(ClientPacketID.Attack);
         }
 
+        public static PacketWriter StartNPCChatDialog(MapEntityIndex npcIndex)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.StartNPCChatDialog);
+            pw.Write(npcIndex);
+            return pw;
+        }
+
+        public static PacketWriter SelectNPCChatDialogResponse(byte responseIndex)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.SelectNPCChatDialogResponse);
+            pw.Write(responseIndex);
+            return pw;
+        }
+
         public static PacketWriter DropInventoryItem(InventorySlot slot)
         {
             PacketWriter pw = GetWriter(ClientPacketID.DropInventoryItem);

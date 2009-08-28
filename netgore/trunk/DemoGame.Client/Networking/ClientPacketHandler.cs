@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Client.NPCChat;
 using log4net;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -16,7 +17,7 @@ using NetGore.Network;
 
 namespace DemoGame.Client
 {
-    public class ClientPacketHandler : IMessageProcessor, IGetTime
+    class ClientPacketHandler : IMessageProcessor, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -197,6 +198,37 @@ namespace DemoGame.Client
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created DynamicEntity with index `{0}` of type `{1}`", dynamicEntity.MapEntityIndex,
                                dynamicEntity.GetType());
+        }
+
+        [MessageHandler((byte)ServerPacketID.StartChatDialog)]
+        void RecvStartChatDialog(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex npcIndex = r.ReadMapEntityIndex();
+            ushort dialogIndex = r.ReadUShort();
+
+            var dialog = NPCChatManager.GetDialog(dialogIndex);
+            GameplayScreen.ChatDialogForm.StartDialog(dialog);
+        }
+
+        [MessageHandler((byte)ServerPacketID.EndChatDialog)]
+        void RecvEndChatDialog(IIPSocket conn, BitStream r)
+        {
+            GameplayScreen.ChatDialogForm.EndDialog();
+        }
+
+        [MessageHandler((byte)ServerPacketID.SetChatDialogPage)]
+        void RecvSetChatDialogPage(IIPSocket conn, BitStream r)
+        {
+            ushort pageIndex = r.ReadUShort();
+            byte skipCount = r.ReadByte();
+
+            byte[] responsesToSkip = new byte[skipCount];
+            for (int i = 0; i < skipCount; i++)
+            {
+                responsesToSkip[i] = r.ReadByte();
+            }
+
+            GameplayScreen.ChatDialogForm.SetPageIndex(pageIndex, responsesToSkip);
         }
 
         [MessageHandler((byte)ServerPacketID.LoginSuccessful)]
