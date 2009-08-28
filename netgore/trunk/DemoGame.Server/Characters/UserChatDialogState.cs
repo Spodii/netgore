@@ -17,11 +17,18 @@ namespace DemoGame.Server
         NPCChatDialogItemBase _page;
         readonly User _user;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserChatDialogState"/> class.
+        /// </summary>
+        /// <param name="user">The user.</param>
         public UserChatDialogState(User user)
         {
             _user = user;
         }
 
+        /// <summary>
+        /// Gets the current NPCChatDialogBase, or null if the User is not currently chatting.
+        /// </summary>
         public NPCChatDialogBase ChatDialog
         {
             get
@@ -34,11 +41,19 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Gets if the User is currently chatting.
+        /// </summary>
         public bool IsChatting
         {
             get { return _chattingWith != null; }
         }
 
+        /// <summary>
+        /// Checks if the User can start a dialog with the given <paramref name="npc"/>.
+        /// </summary>
+        /// <param name="npc">The NPC to start the dialog with.</param>
+        /// <returns>True if the User can start a dialog with the given <paramref name="npc"/>; otherwise false.</returns>
         bool CanStartChat(Character npc)
         {
             const string errmsg = "Cannot start chat between `{0}` and `{1}` - {2}.";
@@ -108,6 +123,11 @@ namespace DemoGame.Server
             return true;
         }
 
+        /// <summary>
+        /// Attempts to start a chat dialog with the given <paramref name="npc"/>.
+        /// </summary>
+        /// <param name="npc">NPC to start the chat dialog with.</param>
+        /// <returns>True if the dialog was started with the <paramref name="npc"/>; otherwise false.</returns>
         public bool StartChat(NPC npc)
         {
             // Check if the chat can be started
@@ -188,8 +208,16 @@ namespace DemoGame.Server
                 Debug.Fail(string.Format(errmsg, responseIndex));
                 return;
             }
+            
+            // Check for a valid range
+            if (!_user.CB.Intersect(_chattingWith.CB))
+            {
+                if (log.IsInfoEnabled)
+                    log.Info("Dialog aborted since the User is no longer near the target.");
+                EndChat();
+                return;
+            }
 
-            // TODO: !! Ensure the User is still in valid range of the NPC
             // TODO: !! Ensure the selected response index is allowed (response conditionals check)
 
             // Get the response
