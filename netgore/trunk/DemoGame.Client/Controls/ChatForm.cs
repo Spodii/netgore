@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 
@@ -101,8 +102,8 @@ namespace DemoGame.Client
         /// <param name="items">NodeItems containing the values to restore.</param>
         public void Load(IDictionary<string, string> items)
         {
-            Position = new Vector2(float.Parse(items["X"]), float.Parse(items["Y"]));
-            IsVisible = bool.Parse(items["IsVisible"]);
+            Position = new Vector2(items.AsFloat("X", Position.X), items.AsFloat("Y", Position.Y));
+            IsVisible = items.AsBool("IsVisible", IsVisible);
         }
 
         /// <summary>
