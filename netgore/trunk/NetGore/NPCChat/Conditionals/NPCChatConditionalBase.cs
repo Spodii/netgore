@@ -58,6 +58,7 @@ namespace NetGore.NPCChat
         {
             var filter = FactoryTypeCollection.CreateFilter(typeof(NPCChatConditionalBase<TUser, TNPC>), true, Type.EmptyTypes);
             _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler, false);
+            _typeCollection.BeginLoading();
         }
 
         /// <summary>

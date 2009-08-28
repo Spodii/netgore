@@ -24,6 +24,7 @@ namespace DemoGame.Server
 
             var filter = FactoryTypeCollection.CreateFilter(typeof(AIBase), true, typeof(Character));
             _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler, false);
+            _typeCollection.BeginLoading();
         }
 
         /// <summary>
