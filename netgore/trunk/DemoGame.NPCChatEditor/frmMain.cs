@@ -167,7 +167,7 @@ namespace DemoGame.NPCChatEditor
 
                 comboBox1.Items.Clear();
                 foreach (var item in NPCChatConditional.Conditionals)
-                    comboBox1.Items.Add(item.Name);
+                    comboBox1.Items.Add(item);
             }
             catch (Exception ex)
             {
