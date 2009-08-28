@@ -164,8 +164,10 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Perform character updating post-collision.
+        /// Updates the Entity.
         /// </summary>
+        /// <param name="imap">Map that this Entity is on.</param>
+        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
         public override void Update(IMap imap, float deltaTime)
         {
             Debug.Assert(imap != null, "How the hell is a null Map updating?");

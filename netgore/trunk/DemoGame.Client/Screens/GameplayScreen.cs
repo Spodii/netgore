@@ -518,10 +518,13 @@ namespace DemoGame.Client
             // Jump
             if (_currentTime - _lastMoveLeftTime > _minMoveRate && UserChar.CanJump && ks.IsKeyDown(Keys.Up))
             {
-                _lastMoveLeftTime = _currentTime;
-                using (PacketWriter pw = ClientPacket.Jump())
+                if (GameData.AllowMovementWhileChattingToNPC || !ChatDialogForm.IsChatting)
                 {
-                    Socket.Send(pw);
+                    _lastMoveLeftTime = _currentTime;
+                    using (PacketWriter pw = ClientPacket.Jump())
+                    {
+                        Socket.Send(pw);
+                    }
                 }
             }
 
@@ -529,10 +532,13 @@ namespace DemoGame.Client
             if (_currentTime - _lastMoveRightTime > _minMoveRate && ks.IsKeyDown(Keys.Left) && ks.IsKeyUp(Keys.Right) &&
                 !UserChar.IsMovingLeft)
             {
-                _lastMoveRightTime = _currentTime;
-                using (PacketWriter pw = ClientPacket.MoveLeft())
+                if (GameData.AllowMovementWhileChattingToNPC || !ChatDialogForm.IsChatting)
                 {
-                    Socket.Send(pw);
+                    _lastMoveRightTime = _currentTime;
+                    using (PacketWriter pw = ClientPacket.MoveLeft())
+                    {
+                        Socket.Send(pw);
+                    }
                 }
             }
 
@@ -540,10 +546,13 @@ namespace DemoGame.Client
             if (_currentTime - _lastJumpTime > _minMoveRate && ks.IsKeyDown(Keys.Right) && ks.IsKeyUp(Keys.Left) &&
                 !UserChar.IsMovingRight)
             {
-                _lastJumpTime = _currentTime;
-                using (PacketWriter pw = ClientPacket.MoveRight())
+                if (GameData.AllowMovementWhileChattingToNPC || !ChatDialogForm.IsChatting)
                 {
-                    Socket.Send(pw);
+                    _lastJumpTime = _currentTime;
+                    using (PacketWriter pw = ClientPacket.MoveRight())
+                    {
+                        Socket.Send(pw);
+                    }
                 }
             }
 

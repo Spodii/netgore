@@ -27,6 +27,11 @@ namespace DemoGame.Client
         NPCChatResponseBase[] _responses;
 
         /// <summary>
+        /// Gets if a dialog is currently open.
+        /// </summary>
+        public bool IsChatting { get { return _dialog != null; } }
+
+        /// <summary>
         /// Notifies listeners when a dialog response was chosen.
         /// </summary>
         public event SelectChatDialogResponseHandler OnSelectResponse;

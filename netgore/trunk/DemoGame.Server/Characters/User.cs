@@ -41,6 +41,14 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the UserChatDialogState for this User.
+        /// </summary>
+        public UserChatDialogState ChatState
+        {
+            get { return _chatState; }
+        }
+
+        /// <summary>
         /// Gets the socket connection info for the user
         /// </summary>
         public IIPSocket Conn
@@ -416,10 +424,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the UserChatDialogState for this User.
+        /// Handles when an ActiveStatusEffect is added to this Character's StatusEffects.
         /// </summary>
-        public UserChatDialogState ChatState { get { return _chatState; } }
-
+        /// <param name="effects">The CharacterStatusEffects the event took place on.</param>
+        /// <param name="ase">The ActiveStatusEffect that was added.</param>
         protected override void StatusEffects_HandleOnAdd(CharacterStatusEffects effects, ActiveStatusEffect ase)
         {
             base.StatusEffects_HandleOnAdd(effects, ase);
@@ -433,6 +441,11 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Handles when an ActiveStatusEffect is removed from this Character's StatusEffects.
+        /// </summary>
+        /// <param name="effects">The CharacterStatusEffects the event took place on.</param>
+        /// <param name="ase">The ActiveStatusEffect that was removed.</param>
         protected override void StatusEffects_HandleOnRemove(CharacterStatusEffects effects, ActiveStatusEffect ase)
         {
             base.StatusEffects_HandleOnRemove(effects, ase);
@@ -444,10 +457,19 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Updates the user
+        /// Updates the Entity.
         /// </summary>
+        /// <param name="imap">Map that this Entity is on.</param>
+        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
         public override void Update(IMap imap, float deltaTime)
         {
+            // Don't allow movement while chatting
+            if (!GameData.AllowMovementWhileChattingToNPC)
+            {
+                if (ChatState.IsChatting && Velocity != Vector2.Zero)
+                    SetVelocity(Vector2.Zero);
+            }
+
             // Perform the general character updating
             base.Update(imap, deltaTime);
 

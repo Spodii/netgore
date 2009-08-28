@@ -466,10 +466,10 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Updates the Entity
+        /// Updates the Entity.
         /// </summary>
-        /// <param name="imap">Map that the Entity is on</param>
-        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update</param>
+        /// <param name="imap">Map that this Entity is on.</param>
+        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
         public override void Update(IMap imap, float deltaTime)
         {
             base.Update(imap, deltaTime);

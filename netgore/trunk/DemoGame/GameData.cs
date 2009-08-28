@@ -56,6 +56,11 @@ namespace DemoGame
         static int _serverMessageIDBitLength = -1;
 
         /// <summary>
+        /// If a User is allowed to move while they have a chat dialog open with a NPC.
+        /// </summary>
+        public const bool AllowMovementWhileChattingToNPC = false;
+
+        /// <summary>
         /// Gets the length of the ID for messages that are sent from the Client to the Server.
         /// </summary>
         public static int ClientMessageIDBitLength

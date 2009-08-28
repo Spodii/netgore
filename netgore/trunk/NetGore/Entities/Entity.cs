@@ -360,10 +360,10 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Updates the Entity
+        /// Updates the Entity.
         /// </summary>
-        /// <param name="imap">Map that the Entity is on</param>
-        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update</param>
+        /// <param name="imap">Map that this Entity is on.</param>
+        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
         public virtual void Update(IMap imap, float deltaTime)
         {
             // If the Y velocity is non-zero, assume not on the ground

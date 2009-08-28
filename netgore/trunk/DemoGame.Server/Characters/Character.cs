@@ -1037,8 +1037,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Updates the Character and their state.
+        /// Updates the Entity.
         /// </summary>
+        /// <param name="imap">Map that this Entity is on.</param>
+        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
         public override void Update(IMap imap, float deltaTime)
         {
             Debug.Assert(imap == Map, "Character.Update()'s imap is, for whatever reason, not equal to the set Map.");
