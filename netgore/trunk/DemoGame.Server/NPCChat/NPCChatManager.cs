@@ -24,16 +24,6 @@ namespace DemoGame.Server.NPCChat
         }
 
         /// <summary>
-        /// Gets the NPCChatDialogBase for the dialog with the given index.
-        /// </summary>
-        /// <param name="dialogIndex">Index of the dialog to get.</param>
-        /// <returns>The NPCChatDialogBase for the dialog with the given index.</returns>
-        public static NPCChatDialogBase GetDialog(int dialogIndex)
-        {
-            return _instance[dialogIndex];
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatManager"/> class.
         /// </summary>
         NPCChatManager() : base(true)
@@ -48,6 +38,16 @@ namespace DemoGame.Server.NPCChat
         protected override NPCChatDialogBase CreateDialog(IValueReader reader)
         {
             return new NPCChatDialog(reader);
+        }
+
+        /// <summary>
+        /// Gets the NPCChatDialogBase for the dialog with the given index.
+        /// </summary>
+        /// <param name="dialogIndex">Index of the dialog to get.</param>
+        /// <returns>The NPCChatDialogBase for the dialog with the given index.</returns>
+        public static NPCChatDialogBase GetDialog(int dialogIndex)
+        {
+            return _instance[dialogIndex];
         }
     }
 }

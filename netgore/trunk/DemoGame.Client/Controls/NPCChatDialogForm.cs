@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.Client.NPCChat;
 using log4net;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.NPCChat;
@@ -13,6 +12,7 @@ using NetGore.NPCChat;
 namespace DemoGame.Client
 {
     delegate void ChatDialogSelectResponseHandler(NPCChatDialogForm sender, NPCChatResponseBase response);
+
     delegate void ChatDialogRequestEndDialogHandler(NPCChatDialogForm sender);
 
     class NPCChatDialogForm : Form, IRestorableSettings
@@ -30,14 +30,14 @@ namespace DemoGame.Client
         NPCChatResponseBase[] _responses;
 
         /// <summary>
-        /// Notifies listeners when a dialog response was chosen.
-        /// </summary>
-        public event ChatDialogSelectResponseHandler OnSelectResponse;
-
-        /// <summary>
         /// Notifies listeners when this NPCChatDialogForm wants to end the chat dialog.
         /// </summary>
         public event ChatDialogRequestEndDialogHandler OnRequestEndDialog;
+
+        /// <summary>
+        /// Notifies listeners when a dialog response was chosen.
+        /// </summary>
+        public event ChatDialogSelectResponseHandler OnSelectResponse;
 
         /// <summary>
         /// Gets if a dialog is currently open.
@@ -81,19 +81,19 @@ namespace DemoGame.Client
             }
         }
 
-        void NPCChatDialogForm_OnKeyPress(object sender, KeyboardEventArgs e)
-        {
-            if (e.Keys.Contains(Microsoft.Xna.Framework.Input.Keys.Escape))
-            {
-                if (OnRequestEndDialog != null)
-                    OnRequestEndDialog(this);
-            }
-        }
-
         public void EndDialog()
         {
             IsVisible = false;
             _dialog = null;
+        }
+
+        void NPCChatDialogForm_OnKeyPress(object sender, KeyboardEventArgs e)
+        {
+            if (e.Keys.Contains(Keys.Escape))
+            {
+                if (OnRequestEndDialog != null)
+                    OnRequestEndDialog(this);
+            }
         }
 
         void ResponseText_OnClick(object sender, MouseClickEventArgs e)

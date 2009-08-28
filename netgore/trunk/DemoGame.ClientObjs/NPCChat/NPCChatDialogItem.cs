@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,6 +14,7 @@ namespace DemoGame.Client.NPCChat
     /// </summary>
     public class NPCChatDialogItem : NPCChatDialogItemBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         ushort _index;
         NPCChatResponseBase[] _responses;
         string _text;
@@ -36,28 +36,6 @@ namespace DemoGame.Client.NPCChat
         public override IEnumerable<NPCChatResponseBase> Responses
         {
             get { return _responses; }
-        }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// When overridden in the derived class, gets the NPCChatResponseBase of the response with the given
-        /// <paramref name="responseIndex"/>.
-        /// </summary>
-        /// <param name="responseIndex">Index of the response.</param>
-        /// <returns>The NPCChatResponseBase for the response at index <paramref name="responseIndex"/>, or null
-        /// if the response is invalid.</returns>
-        public override NPCChatResponseBase GetResponse(byte responseIndex)
-        {
-            if (responseIndex >= _responses.Length)
-            {
-                const string errmsg = "Invalid response index `{0}` for page `{1}`. Max response index is `{2}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, responseIndex, Index, _responses.Length - 1);
-                return null;
-            }
-
-            return _responses[responseIndex];
         }
 
         /// <summary>
@@ -109,6 +87,26 @@ namespace DemoGame.Client.NPCChat
                 throw CreateInvalidResponseIndexException("responseIndex", responseIndex);
 
             return _responses[responseIndex].Page;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the NPCChatResponseBase of the response with the given
+        /// <paramref name="responseIndex"/>.
+        /// </summary>
+        /// <param name="responseIndex">Index of the response.</param>
+        /// <returns>The NPCChatResponseBase for the response at index <paramref name="responseIndex"/>, or null
+        /// if the response is invalid.</returns>
+        public override NPCChatResponseBase GetResponse(byte responseIndex)
+        {
+            if (responseIndex >= _responses.Length)
+            {
+                const string errmsg = "Invalid response index `{0}` for page `{1}`. Max response index is `{2}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, responseIndex, Index, _responses.Length - 1);
+                return null;
+            }
+
+            return _responses[responseIndex];
         }
 
         /// <summary>

@@ -27,15 +27,6 @@ namespace NetGore.NPCChat
         public abstract IEnumerable<NPCChatResponseBase> Responses { get; }
 
         /// <summary>
-        /// When overridden in the derived class, gets the NPCChatResponseBase of the response with the given
-        /// <paramref name="responseIndex"/>.
-        /// </summary>
-        /// <param name="responseIndex">Index of the response.</param>
-        /// <returns>The NPCChatResponseBase for the response at index <paramref name="responseIndex"/>, or null
-        /// if the response is invalid or ends the chat dialog.</returns>
-        public abstract NPCChatResponseBase GetResponse(byte responseIndex);
-
-        /// <summary>
         /// When overridden in the derived class, gets the main dialog text in this page of dialog.
         /// </summary>
         public abstract string Text { get; }
@@ -96,6 +87,15 @@ namespace NetGore.NPCChat
         public abstract ushort GetNextPage(object user, object npc, byte responseIndex);
 
         /// <summary>
+        /// When overridden in the derived class, gets the NPCChatResponseBase of the response with the given
+        /// <paramref name="responseIndex"/>.
+        /// </summary>
+        /// <param name="responseIndex">Index of the response.</param>
+        /// <returns>The NPCChatResponseBase for the response at index <paramref name="responseIndex"/>, or null
+        /// if the response is invalid or ends the chat dialog.</returns>
+        public abstract NPCChatResponseBase GetResponse(byte responseIndex);
+
+        /// <summary>
         /// Reads the values for this NPCChatDialogItemBase from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -128,6 +128,17 @@ namespace NetGore.NPCChat
         protected abstract void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses);
 
         /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format(string.Format("{0} [Index: {1}, Title: {2}]", GetType().Name, Index, Title));
+        }
+
+        /// <summary>
         /// Writes the NPCChatDialogItemBase's values to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write the values to.</param>
@@ -144,17 +155,6 @@ namespace NetGore.NPCChat
                 response.Write(writer);
                 writer.WriteEndNode("Response");
             }
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return string.Format(string.Format("{0} [Index: {1}, Title: {2}]", GetType().Name, Index, Title));
         }
     }
 }

@@ -57,45 +57,6 @@ namespace DemoGame.Server
             _ppManager = new MessageProcessorManager(this, GameData.ClientMessageIDBitLength);
         }
 
-        [MessageHandler((byte)ClientPacketID.EndNPCChatDialog)]
-        void RecvEndNPCChatDialog(IIPSocket conn, BitStream r)
-        {
-            User user;
-            if (!TryGetUser(conn, out user))
-                return;
-
-            user.ChatState.EndChat();
-        }
-
-        [MessageHandler((byte)ClientPacketID.SelectNPCChatDialogResponse)]
-        void RecvSelectNPCChatDialogResponse(IIPSocket conn, BitStream r)
-        {
-            byte responseIndex = r.ReadByte();
-
-            User user;
-            if (!TryGetUser(conn, out user))
-                return;
-
-            user.ChatState.EnterResponse(responseIndex);
-        }
-
-        [MessageHandler((byte)ClientPacketID.StartNPCChatDialog)]
-        void RecvStartNPCChatDialog(IIPSocket conn, BitStream r)
-        {
-            MapEntityIndex npcIndex = r.ReadMapEntityIndex();
-
-            User user;
-            Map map;
-            if (!TryGetMap(conn, out user, out map))
-                return;
-
-            var npc = map.GetDynamicEntity<NPC>(npcIndex);
-            if (npc == null)
-                return;
-
-            user.ChatState.StartChat(npc);
-        }
-
         [MessageHandler((byte)ClientPacketID.Attack)]
         void RecvAttack(IIPSocket conn, BitStream r)
         {
@@ -114,6 +75,16 @@ namespace DemoGame.Server
                 return;
 
             user.Inventory.Drop(slot);
+        }
+
+        [MessageHandler((byte)ClientPacketID.EndNPCChatDialog)]
+        void RecvEndNPCChatDialog(IIPSocket conn, BitStream r)
+        {
+            User user;
+            if (!TryGetUser(conn, out user))
+                return;
+
+            user.ChatState.EndChat();
         }
 
         [MessageHandler((byte)ClientPacketID.GetEquipmentItemInfo)]
@@ -248,11 +219,40 @@ namespace DemoGame.Server
             _sayHandler.Process(user, text);
         }
 
+        [MessageHandler((byte)ClientPacketID.SelectNPCChatDialogResponse)]
+        void RecvSelectNPCChatDialogResponse(IIPSocket conn, BitStream r)
+        {
+            byte responseIndex = r.ReadByte();
+
+            User user;
+            if (!TryGetUser(conn, out user))
+                return;
+
+            user.ChatState.EnterResponse(responseIndex);
+        }
+
         [MessageHandler((byte)ClientPacketID.SetUDPPort)]
         void RecvSetUDPPort(IIPSocket conn, BitStream r)
         {
             ushort remotePort = r.ReadUShort();
             conn.SetRemoteUnreliablePort(remotePort);
+        }
+
+        [MessageHandler((byte)ClientPacketID.StartNPCChatDialog)]
+        void RecvStartNPCChatDialog(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex npcIndex = r.ReadMapEntityIndex();
+
+            User user;
+            Map map;
+            if (!TryGetMap(conn, out user, out map))
+                return;
+
+            NPC npc = map.GetDynamicEntity<NPC>(npcIndex);
+            if (npc == null)
+                return;
+
+            user.ChatState.StartChat(npc);
         }
 
         [MessageHandler((byte)ClientPacketID.UnequipItem)]

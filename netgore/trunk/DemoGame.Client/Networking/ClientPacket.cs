@@ -16,30 +16,16 @@ namespace DemoGame.Client
             return GetWriter(ClientPacketID.Attack);
         }
 
-        public static PacketWriter StartNPCChatDialog(MapEntityIndex npcIndex)
+        public static PacketWriter DropInventoryItem(InventorySlot slot)
         {
-            PacketWriter pw = GetWriter(ClientPacketID.StartNPCChatDialog);
-            pw.Write(npcIndex);
+            PacketWriter pw = GetWriter(ClientPacketID.DropInventoryItem);
+            pw.Write(slot);
             return pw;
         }
 
         public static PacketWriter EndNPCChatDialog()
         {
             return GetWriter(ClientPacketID.EndNPCChatDialog);
-        }
-
-        public static PacketWriter SelectNPCChatDialogResponse(byte responseIndex)
-        {
-            PacketWriter pw = GetWriter(ClientPacketID.SelectNPCChatDialogResponse);
-            pw.Write(responseIndex);
-            return pw;
-        }
-
-        public static PacketWriter DropInventoryItem(InventorySlot slot)
-        {
-            PacketWriter pw = GetWriter(ClientPacketID.DropInventoryItem);
-            pw.Write(slot);
-            return pw;
         }
 
         public static PacketWriter GetEquipmentItemInfo(EquipmentSlot slot)
@@ -117,10 +103,24 @@ namespace DemoGame.Client
             return pw;
         }
 
+        public static PacketWriter SelectNPCChatDialogResponse(byte responseIndex)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.SelectNPCChatDialogResponse);
+            pw.Write(responseIndex);
+            return pw;
+        }
+
         public static PacketWriter SetUDPPort(int port)
         {
             PacketWriter pw = GetWriter(ClientPacketID.SetUDPPort);
             pw.Write((ushort)port);
+            return pw;
+        }
+
+        public static PacketWriter StartNPCChatDialog(MapEntityIndex npcIndex)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.StartNPCChatDialog);
+            pw.Write(npcIndex);
             return pw;
         }
 

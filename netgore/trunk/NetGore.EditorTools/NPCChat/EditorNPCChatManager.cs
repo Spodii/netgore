@@ -14,13 +14,30 @@ namespace NetGore.EditorTools
             get { return _instance.Cast<EditorNPCChatDialog>(); }
         }
 
+        /// <summary>
+        /// ManagerImplementation constructor.
+        /// </summary>
+        EditorNPCChatManager() : base(false)
+        {
+        }
+
         public static void AddDialog(EditorNPCChatDialog dialog)
         {
             // Just always reorganize, since I'm not very trusting that things are always done right
             _instance.Reorganize();
-   
+
             // Add the new dialog
             _instance[dialog.Index] = dialog;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a NPCChatDialogBase from the given IValueReader.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <returns>A NPCChatDialogBase created from the given IValueReader.</returns>
+        protected override NPCChatDialogBase CreateDialog(IValueReader reader)
+        {
+            return new EditorNPCChatDialog(reader);
         }
 
         public static EditorNPCChatDialog GetDialog(int index)
@@ -41,23 +58,6 @@ namespace NetGore.EditorTools
         public static void SaveDialogs()
         {
             _instance.Save();
-        }
-    
-        /// <summary>
-        /// ManagerImplementation constructor.
-        /// </summary>
-        EditorNPCChatManager() : base(false)
-        {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, creates a NPCChatDialogBase from the given IValueReader.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        /// <returns>A NPCChatDialogBase created from the given IValueReader.</returns>
-        protected override NPCChatDialogBase CreateDialog(IValueReader reader)
-        {
-            return new EditorNPCChatDialog(reader);
         }
     }
 }

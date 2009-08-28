@@ -118,6 +118,17 @@ namespace NetGore.NPCChat
         protected abstract void SetReadValues(ushort index, string title, IEnumerable<NPCChatDialogItemBase> items);
 
         /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return string.Format(string.Format("{0} [Index: {1}, Title: {2}]", GetType().Name, Index, Title));
+        }
+
+        /// <summary>
         /// Writes the NPCChatDialogBase's values to an IValueWriter.
         /// </summary>
         /// <param name="writer">IValueWriter to write the values to.</param>
@@ -135,17 +146,6 @@ namespace NetGore.NPCChat
                 item.Write(writer);
                 writer.WriteEndNode("Item");
             }
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return string.Format(string.Format("{0} [Index: {1}, Title: {2}]", GetType().Name, Index, Title));
         }
     }
 }

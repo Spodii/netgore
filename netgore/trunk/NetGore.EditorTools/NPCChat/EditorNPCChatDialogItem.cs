@@ -16,14 +16,13 @@ namespace NetGore.EditorTools
     /// </summary>
     public class EditorNPCChatDialogItem : NPCChatDialogItemBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
         readonly List<TreeNode> _treeNodes = new List<TreeNode>();
         ushort _index;
         string _text;
         string _title;
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
         /// <summary>
         /// Notifies listeners when any of the object's property values have changed.
         /// </summary>
@@ -50,26 +49,6 @@ namespace NetGore.EditorTools
         public override IEnumerable<NPCChatResponseBase> Responses
         {
             get { return ResponseList.Cast<NPCChatResponseBase>(); }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the NPCChatResponseBase of the response with the given
-        /// <paramref name="responseIndex"/>.
-        /// </summary>
-        /// <param name="responseIndex">Index of the response.</param>
-        /// <returns>The NPCChatResponseBase for the response at index <paramref name="responseIndex"/>, or null
-        /// if the response is invalid or ends the chat dialog.</returns>
-        public override NPCChatResponseBase GetResponse(byte responseIndex)
-        {
-            if (responseIndex >= _responses.Count)
-            {
-                const string errmsg = "Invalid response index `{0}` for page `{1}`. Max response index is `{2}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, responseIndex, Index, _responses.Count - 1);
-                return null;
-            }
-
-            return _responses[responseIndex];
         }
 
         /// <summary>
@@ -156,6 +135,26 @@ namespace NetGore.EditorTools
         public override ushort GetNextPage(object user, object npc, byte responseIndex)
         {
             return ResponseList[responseIndex].Page;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the NPCChatResponseBase of the response with the given
+        /// <paramref name="responseIndex"/>.
+        /// </summary>
+        /// <param name="responseIndex">Index of the response.</param>
+        /// <returns>The NPCChatResponseBase for the response at index <paramref name="responseIndex"/>, or null
+        /// if the response is invalid or ends the chat dialog.</returns>
+        public override NPCChatResponseBase GetResponse(byte responseIndex)
+        {
+            if (responseIndex >= _responses.Count)
+            {
+                const string errmsg = "Invalid response index `{0}` for page `{1}`. Max response index is `{2}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, responseIndex, Index, _responses.Count - 1);
+                return null;
+            }
+
+            return _responses[responseIndex];
         }
 
         /// <summary>
