@@ -14,7 +14,7 @@ namespace NetGore.NPCChat
     /// </summary>
     /// <typeparam name="TUser">The Type of User.</typeparam>
     /// <typeparam name="TNPC">The Type of NPC.</typeparam>
-    public abstract class NPCChatConditionalBase<TUser, TNPC> where TUser : class where TNPC : class
+    public abstract class NPCChatConditionalBase<TUser, TNPC> : INPCChatConditional where TUser : class where TNPC : class
     {
         /// <summary>
         /// Array used for an empty set of INPCChatConditionalParameters.
@@ -44,27 +44,11 @@ namespace NetGore.NPCChat
         readonly NPCChatConditionalParameterType[] _parameterTypes;
 
         /// <summary>
-        /// Gets the unique name for this NPCChatConditionalBase. This string is case-sensitive.
+        /// Gets an IEnumerable of the NPCChatConditionalBases.
         /// </summary>
-        public string Name
+        public static IEnumerable<NPCChatConditionalBase<TUser, TNPC>> Conditionals
         {
-            get { return _name; }
-        }
-
-        /// <summary>
-        /// Gets the number of parameters required by this NPCChatConditionalBase.
-        /// </summary>
-        public int ParameterCount
-        {
-            get { return _parameterTypes.Length; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of the NPCChatConditionalParameterTypes used in this NPCChatConditionalBase.
-        /// </summary>
-        public IEnumerable<NPCChatConditionalParameterType> ParameterTypes
-        {
-            get { return _parameterTypes; }
+            get { return _instances.Values; }
         }
 
         /// <summary>
@@ -156,7 +140,8 @@ namespace NetGore.NPCChat
         /// <param name="user">The User.</param>
         /// <param name="npc">The NPC.</param>
         /// <param name="parameters">The parameters to use. </param>
-        /// <returns></returns>
+        /// <returns>True if the conditional returns true for the given <paramref name="user"/>,
+        /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
         protected abstract bool DoCheck(TUser user, TNPC npc, INPCChatConditionalParameter[] parameters);
 
         /// <summary>
@@ -167,21 +152,6 @@ namespace NetGore.NPCChat
         public static NPCChatConditionalBase<TUser, TNPC> GetConditional(string name)
         {
             return _instances[name];
-        }
-
-        /// <summary>
-        /// Gets the NPCChatConditionalParameterType for the parameter at the given <paramref name="index"/>.
-        /// </summary>
-        /// <param name="index">Index of the parameter to get the NPCChatConditionalParameterType for.</param>
-        /// <returns>The NPCChatConditionalParameterType for the parameter at the given <paramref name="index"/>.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The <paramref name="index"/> is less than 0 or greater
-        /// than ParameterCount.</exception>
-        public NPCChatConditionalParameterType GetParameter(int index)
-        {
-            if (index < 0 || index >= _parameterTypes.Length)
-                throw new ArgumentOutOfRangeException("index");
-
-            return _parameterTypes[index];
         }
 
         /// <summary>
@@ -212,5 +182,48 @@ namespace NetGore.NPCChat
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded NPC chat conditional `{0}` from Type `{1}`.", instance.Name, loadedType);
         }
+
+        #region INPCChatConditional Members
+
+        /// <summary>
+        /// Gets the unique name for this INPCChatConditional. This string is case-sensitive.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        /// <summary>
+        /// Gets the number of parameters required by this NPCChatConditionalBase.
+        /// </summary>
+        public int ParameterCount
+        {
+            get { return _parameterTypes.Length; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of the NPCChatConditionalParameterTypes used in this NPCChatConditionalBase.
+        /// </summary>
+        public IEnumerable<NPCChatConditionalParameterType> ParameterTypes
+        {
+            get { return _parameterTypes; }
+        }
+
+        /// <summary>
+        /// Gets the NPCChatConditionalParameterType for the parameter at the given <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">Index of the parameter to get the NPCChatConditionalParameterType for.</param>
+        /// <returns>The NPCChatConditionalParameterType for the parameter at the given <paramref name="index"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The <paramref name="index"/> is less than 0 or greater
+        /// than ParameterCount.</exception>
+        public NPCChatConditionalParameterType GetParameter(int index)
+        {
+            if (index < 0 || index >= _parameterTypes.Length)
+                throw new ArgumentOutOfRangeException("index");
+
+            return _parameterTypes[index];
+        }
+
+        #endregion
     }
 }
