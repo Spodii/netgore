@@ -42,6 +42,7 @@ namespace DemoGame.NPCChatEditor
             this.txtDialogText = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.tpResponse = new System.Windows.Forms.TabPage();
+            this.btnAddRedirect = new System.Windows.Forms.Button();
             this.btnAddDialog = new System.Windows.Forms.Button();
             this.txtResponseValue = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -58,7 +59,6 @@ namespace DemoGame.NPCChatEditor
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.cmbSelectedDialog = new NetGore.EditorTools.NPCChatDialogComboBox();
             this.npcChatDialogView = new NetGore.EditorTools.NPCChatDialogView();
-            this.btnAddRedirect = new System.Windows.Forms.Button();
             this.gbSelectedNode.SuspendLayout();
             this.tcChatDialogItem.SuspendLayout();
             this.tpDialog.SuspendLayout();
@@ -196,6 +196,16 @@ namespace DemoGame.NPCChatEditor
             this.tpResponse.Text = "Response";
             this.tpResponse.UseVisualStyleBackColor = true;
             // 
+            // btnAddRedirect
+            // 
+            this.btnAddRedirect.Location = new System.Drawing.Point(177, 136);
+            this.btnAddRedirect.Name = "btnAddRedirect";
+            this.btnAddRedirect.Size = new System.Drawing.Size(89, 27);
+            this.btnAddRedirect.TabIndex = 11;
+            this.btnAddRedirect.Text = "Add Redirect";
+            this.btnAddRedirect.UseVisualStyleBackColor = true;
+            this.btnAddRedirect.Click += new System.EventHandler(this.btnAddRedirect_Click);
+            // 
             // btnAddDialog
             // 
             this.btnAddDialog.Location = new System.Drawing.Point(272, 136);
@@ -278,6 +288,8 @@ namespace DemoGame.NPCChatEditor
             this.txtRedirectIndex.Name = "txtRedirectIndex";
             this.txtRedirectIndex.Size = new System.Drawing.Size(48, 20);
             this.txtRedirectIndex.TabIndex = 6;
+            this.txtRedirectIndex.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtRedirectIndex_KeyDown);
+            this.txtRedirectIndex.Leave += new System.EventHandler(this.txtRedirectIndex_Leave);
             // 
             // label4
             // 
@@ -343,16 +355,6 @@ namespace DemoGame.NPCChatEditor
             this.npcChatDialogView.Size = new System.Drawing.Size(445, 303);
             this.npcChatDialogView.TabIndex = 0;
             this.npcChatDialogView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.npcChatDialogView_NodeMouseClick);
-            // 
-            // btnAddRedirect
-            // 
-            this.btnAddRedirect.Location = new System.Drawing.Point(177, 136);
-            this.btnAddRedirect.Name = "btnAddRedirect";
-            this.btnAddRedirect.Size = new System.Drawing.Size(89, 27);
-            this.btnAddRedirect.TabIndex = 11;
-            this.btnAddRedirect.Text = "Add Redirect";
-            this.btnAddRedirect.UseVisualStyleBackColor = true;
-            this.btnAddRedirect.Click += new System.EventHandler(this.btnAddRedirect_Click);
             // 
             // frmMain
             // 
