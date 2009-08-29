@@ -19,6 +19,20 @@ namespace NetGore.EditorTools
 
         public event EditorNPCChatDialogEventHandler OnChange;
 
+        public bool RemoveDialogItem(EditorNPCChatDialogItem dialogItem)
+        {
+            for (int i = 0; i < _dialogItems.Length; i++)
+            {
+                if (_dialogItems[i] != dialogItem)
+                    continue;
+
+                _dialogItems[i] = null;
+                return true;
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
         /// distinguish each NPCChatDialogBase from one another.

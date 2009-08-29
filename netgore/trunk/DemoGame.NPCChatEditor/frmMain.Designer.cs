@@ -55,6 +55,7 @@ namespace DemoGame.NPCChatEditor
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.txtResponseValue = new System.Windows.Forms.TextBox();
+            this.btnDeleteDialog = new System.Windows.Forms.Button();
             this.gbSelectedNode.SuspendLayout();
             this.tcChatDialogItem.SuspendLayout();
             this.tpDialog.SuspendLayout();
@@ -106,6 +107,7 @@ namespace DemoGame.NPCChatEditor
             // 
             // tpDialog
             // 
+            this.tpDialog.Controls.Add(this.btnDeleteDialog);
             this.tpDialog.Controls.Add(this.btnAddResponse);
             this.tpDialog.Controls.Add(this.txtDialogPage);
             this.tpDialog.Controls.Add(this.label5);
@@ -121,7 +123,7 @@ namespace DemoGame.NPCChatEditor
             // 
             // btnAddResponse
             // 
-            this.btnAddResponse.Location = new System.Drawing.Point(330, 136);
+            this.btnAddResponse.Location = new System.Drawing.Point(272, 136);
             this.btnAddResponse.Name = "btnAddResponse";
             this.btnAddResponse.Size = new System.Drawing.Size(89, 27);
             this.btnAddResponse.TabIndex = 6;
@@ -181,9 +183,9 @@ namespace DemoGame.NPCChatEditor
             // 
             // btnDeleteResponse
             // 
-            this.btnDeleteResponse.Location = new System.Drawing.Point(330, 136);
+            this.btnDeleteResponse.Location = new System.Drawing.Point(367, 136);
             this.btnDeleteResponse.Name = "btnDeleteResponse";
-            this.btnDeleteResponse.Size = new System.Drawing.Size(89, 27);
+            this.btnDeleteResponse.Size = new System.Drawing.Size(52, 27);
             this.btnDeleteResponse.TabIndex = 7;
             this.btnDeleteResponse.Text = "Delete";
             this.btnDeleteResponse.UseVisualStyleBackColor = true;
@@ -306,6 +308,16 @@ namespace DemoGame.NPCChatEditor
             this.txtResponseValue.Size = new System.Drawing.Size(48, 20);
             this.txtResponseValue.TabIndex = 9;
             // 
+            // btnDeleteDialog
+            // 
+            this.btnDeleteDialog.Location = new System.Drawing.Point(367, 136);
+            this.btnDeleteDialog.Name = "btnDeleteDialog";
+            this.btnDeleteDialog.Size = new System.Drawing.Size(52, 27);
+            this.btnDeleteDialog.TabIndex = 8;
+            this.btnDeleteDialog.Text = "Delete";
+            this.btnDeleteDialog.UseVisualStyleBackColor = true;
+            this.btnDeleteDialog.Click += new System.EventHandler(this.btnDeleteDialog_Click);
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -365,6 +377,7 @@ namespace DemoGame.NPCChatEditor
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox txtResponseValue;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Button btnDeleteDialog;
 
     }
 }
