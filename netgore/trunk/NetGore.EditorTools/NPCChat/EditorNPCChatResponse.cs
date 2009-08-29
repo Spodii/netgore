@@ -65,6 +65,17 @@ namespace NetGore.EditorTools
             _text = text;
         }
 
+        public void SetPage(ushort page)
+        {
+            if (_page == page)
+                return;
+
+            _page = page;
+
+            if (OnChange != null)
+                OnChange(this);
+        }
+
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
@@ -76,17 +87,6 @@ namespace NetGore.EditorTools
             _value = value;
             _page = page;
             SetText(text);
-        }
-
-        public void SetPage(ushort page)
-        {
-            if (_page == page)
-                return;
-
-            _page = page;
-
-            if (OnChange != null)
-                OnChange(this);
         }
 
         public void SetText(string value)

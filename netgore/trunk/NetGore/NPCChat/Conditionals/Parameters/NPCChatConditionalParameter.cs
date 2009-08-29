@@ -5,23 +5,6 @@ namespace NetGore.NPCChat
 {
     public static class NPCChatConditionalParameter
     {
-        internal static MethodAccessException GetInvalidValueAsException()
-        {
-            const string errmsg =
-                "Cannot cast the value to the requested Type." +
-                " The ValueAs... methods are only valid when the base Type equals the requested Type.";
-            return new MethodAccessException(errmsg);
-        }
-
-        static ArgumentException GetInvalidTypeForValueException(NPCChatConditionalParameterType valueType, object value)
-        {
-            const string errmsg = "The given value [{0}] is of Type `{1}`, which is not a"
-                                  + " valid type for NPCChatConditionalParameterType `{2}`.";
-            const string paramName = "value";
-
-            return new ArgumentException(string.Format(errmsg, value, value.GetType(), valueType), paramName);
-        }
-
         /// <summary>
         /// Creates a INPCChatConditionalParameter for the given <paramref name="valueType"/> that contains
         /// the given <paramref name="value"/>.
@@ -56,19 +39,37 @@ namespace NetGore.NPCChat
             }
         }
 
-        public static INPCChatConditionalParameter CreateParameterAsInteger(int value)
-        {
-            return new NPCChatConditionalParameterInteger(value);
-        }
-
         public static INPCChatConditionalParameter CreateParameterAsFloat(float value)
         {
             return new NPCChatConditionalParameterFloat(value);
         }
 
+        public static INPCChatConditionalParameter CreateParameterAsInteger(int value)
+        {
+            return new NPCChatConditionalParameterInteger(value);
+        }
+
         public static INPCChatConditionalParameter CreateParameterAsString(string value)
         {
             return new NPCChatConditionalParameterString(value);
+        }
+
+        static ArgumentException GetInvalidTypeForValueException(NPCChatConditionalParameterType valueType, object value)
+        {
+            const string errmsg =
+                "The given value [{0}] is of Type `{1}`, which is not a" +
+                " valid type for NPCChatConditionalParameterType `{2}`.";
+            const string paramName = "value";
+
+            return new ArgumentException(string.Format(errmsg, value, value.GetType(), valueType), paramName);
+        }
+
+        internal static MethodAccessException GetInvalidValueAsException()
+        {
+            const string errmsg =
+                "Cannot cast the value to the requested Type." +
+                " The ValueAs... methods are only valid when the base Type equals the requested Type.";
+            return new MethodAccessException(errmsg);
         }
     }
 }
