@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>9.0.30729</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{EE6959A2-B5BD-4817-8D05-6A01AE107E31}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -77,6 +77,11 @@
     <Compile Include="Vector2Tests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">
+      <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
+      <Name>NetGore.Globalization</Name>
+      <Private>True</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
       <Name>NetGore</Name>

@@ -175,6 +175,10 @@
       <Name>NetGore.EditorTools</Name>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">
+      <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
+      <Name>NetGore.Globalization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics.WinForms\NetGore.Graphics.WinForms.csproj">
       <Project>{B2AC0C73-29FE-4184-97E7-929A98769248}</Project>
       <Name>NetGore.Graphics.WinForms</Name>

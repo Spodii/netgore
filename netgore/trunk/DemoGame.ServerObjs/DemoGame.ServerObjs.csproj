@@ -193,6 +193,11 @@
       <Name>NetGore.Db</Name>
       <Private>False</Private>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">
+      <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
+      <Name>NetGore.Globalization</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
       <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
       <Name>NetGore.IO</Name>

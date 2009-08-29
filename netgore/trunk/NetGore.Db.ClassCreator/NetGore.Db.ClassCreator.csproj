@@ -94,6 +94,10 @@
       <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
       <Name>NetGore.Db</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">
+      <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
+      <Name>NetGore.Globalization</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
