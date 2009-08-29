@@ -13,14 +13,14 @@ namespace DemoGame.Server.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// When overridden in the derived class, performs the actual conditional checking.
+        /// When overridden in the derived class, performs the actual conditional evaluation.
         /// </summary>
         /// <param name="user">The User.</param>
         /// <param name="npc">The NPC.</param>
         /// <param name="parameters">The parameters to use. </param>
         /// <returns>True if the conditional returns true for the given <paramref name="user"/>,
         /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
-        protected override bool DoCheck(User user, NPC npc, INPCChatConditionalParameter[] parameters)
+        protected override bool DoEvaluate(User user, NPC npc, INPCChatConditionalParameter[] parameters)
         {
             float percent = GetPercent(user.MP, user.ModStats[StatType.MaxMP]);
 

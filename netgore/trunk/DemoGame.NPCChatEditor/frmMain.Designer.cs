@@ -56,9 +56,16 @@ namespace DemoGame.NPCChatEditor
             this.button1 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.txtDialogTitle = new System.Windows.Forms.TextBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.cmbSelectedDialog = new NetGore.EditorTools.NPCChatDialogComboBox();
             this.npcChatDialogView = new NetGore.EditorTools.NPCChatDialogView();
+            this.label8 = new System.Windows.Forms.Label();
+            this.lstConditionals = new System.Windows.Forms.ListBox();
+            this.btnDeleteConditional = new System.Windows.Forms.Button();
+            this.btnAddConditional = new System.Windows.Forms.Button();
+            this.label10 = new System.Windows.Forms.Label();
+            this.cmbConditionalType = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.txtConditionalValue = new System.Windows.Forms.TextBox();
             this.gbSelectedNode.SuspendLayout();
             this.tcChatDialogItem.SuspendLayout();
             this.tpDialog.SuspendLayout();
@@ -68,12 +75,20 @@ namespace DemoGame.NPCChatEditor
             // 
             // gbSelectedNode
             // 
+            this.gbSelectedNode.Controls.Add(this.txtConditionalValue);
+            this.gbSelectedNode.Controls.Add(this.label9);
+            this.gbSelectedNode.Controls.Add(this.cmbConditionalType);
+            this.gbSelectedNode.Controls.Add(this.label10);
+            this.gbSelectedNode.Controls.Add(this.btnAddConditional);
+            this.gbSelectedNode.Controls.Add(this.btnDeleteConditional);
+            this.gbSelectedNode.Controls.Add(this.lstConditionals);
+            this.gbSelectedNode.Controls.Add(this.label8);
             this.gbSelectedNode.Controls.Add(this.txtTitle);
             this.gbSelectedNode.Controls.Add(this.label1);
             this.gbSelectedNode.Controls.Add(this.tcChatDialogItem);
             this.gbSelectedNode.Location = new System.Drawing.Point(12, 373);
             this.gbSelectedNode.Name = "gbSelectedNode";
-            this.gbSelectedNode.Size = new System.Drawing.Size(445, 246);
+            this.gbSelectedNode.Size = new System.Drawing.Size(815, 246);
             this.gbSelectedNode.TabIndex = 2;
             this.gbSelectedNode.TabStop = false;
             this.gbSelectedNode.Text = "Selected Node";
@@ -327,14 +342,6 @@ namespace DemoGame.NPCChatEditor
             this.txtDialogTitle.TabIndex = 11;
             this.txtDialogTitle.TextChanged += new System.EventHandler(this.txtDialogTitle_TextChanged);
             // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(332, 628);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(125, 21);
-            this.comboBox1.TabIndex = 12;
-            // 
             // cmbSelectedDialog
             // 
             this.cmbSelectedDialog.FormattingEnabled = true;
@@ -356,12 +363,82 @@ namespace DemoGame.NPCChatEditor
             this.npcChatDialogView.TabIndex = 0;
             this.npcChatDialogView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.npcChatDialogView_NodeMouseClick);
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(445, 16);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(67, 13);
+            this.label8.TabIndex = 5;
+            this.label8.Text = "Conditionals:";
+            // 
+            // lstConditionals
+            // 
+            this.lstConditionals.FormattingEnabled = true;
+            this.lstConditionals.Location = new System.Drawing.Point(445, 32);
+            this.lstConditionals.Name = "lstConditionals";
+            this.lstConditionals.Size = new System.Drawing.Size(364, 134);
+            this.lstConditionals.TabIndex = 6;
+            this.lstConditionals.SelectedIndexChanged += new System.EventHandler(this.lstConditionals_SelectedIndexChanged);
+            // 
+            // btnDeleteConditional
+            // 
+            this.btnDeleteConditional.Location = new System.Drawing.Point(757, 211);
+            this.btnDeleteConditional.Name = "btnDeleteConditional";
+            this.btnDeleteConditional.Size = new System.Drawing.Size(52, 27);
+            this.btnDeleteConditional.TabIndex = 8;
+            this.btnDeleteConditional.Text = "Delete";
+            this.btnDeleteConditional.UseVisualStyleBackColor = true;
+            // 
+            // btnAddConditional
+            // 
+            this.btnAddConditional.Location = new System.Drawing.Point(699, 211);
+            this.btnAddConditional.Name = "btnAddConditional";
+            this.btnAddConditional.Size = new System.Drawing.Size(52, 27);
+            this.btnAddConditional.TabIndex = 9;
+            this.btnAddConditional.Text = "Add";
+            this.btnAddConditional.UseVisualStyleBackColor = true;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(458, 175);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(34, 13);
+            this.label10.TabIndex = 11;
+            this.label10.Text = "Type:";
+            // 
+            // cmbConditionalType
+            // 
+            this.cmbConditionalType.Enabled = false;
+            this.cmbConditionalType.FormattingEnabled = true;
+            this.cmbConditionalType.Location = new System.Drawing.Point(498, 172);
+            this.cmbConditionalType.Name = "cmbConditionalType";
+            this.cmbConditionalType.Size = new System.Drawing.Size(152, 21);
+            this.cmbConditionalType.TabIndex = 12;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(656, 175);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(37, 13);
+            this.label9.TabIndex = 13;
+            this.label9.Text = "Value:";
+            // 
+            // txtConditionalValue
+            // 
+            this.txtConditionalValue.Enabled = false;
+            this.txtConditionalValue.Location = new System.Drawing.Point(699, 172);
+            this.txtConditionalValue.Name = "txtConditionalValue";
+            this.txtConditionalValue.Size = new System.Drawing.Size(110, 20);
+            this.txtConditionalValue.TabIndex = 14;
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(469, 661);
-            this.Controls.Add(this.comboBox1);
+            this.ClientSize = new System.Drawing.Size(839, 628);
             this.Controls.Add(this.txtDialogTitle);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.cmbSelectedDialog);
@@ -412,13 +489,20 @@ namespace DemoGame.NPCChatEditor
         private NPCChatDialogComboBox cmbSelectedDialog;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox txtDialogTitle;
-        private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.TextBox txtResponseValue;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button btnDeleteDialog;
         private System.Windows.Forms.Button btnDeleteRedirect;
         private System.Windows.Forms.Button btnAddDialog;
         private System.Windows.Forms.Button btnAddRedirect;
+        private System.Windows.Forms.Button btnAddConditional;
+        private System.Windows.Forms.Button btnDeleteConditional;
+        private System.Windows.Forms.ListBox lstConditionals;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.TextBox txtConditionalValue;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox cmbConditionalType;
+        private System.Windows.Forms.Label label10;
 
     }
 }

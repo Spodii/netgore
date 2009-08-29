@@ -88,7 +88,7 @@ namespace NetGore.NPCChat
         /// <exception cref="ArgumentException">An invalid number of INPCChatConditionalParameters specified in the
         /// <paramref name="parameters"/>, or one or more of the ValueTypes in the <paramref name="parameters"/>
         /// are not of the correct type.</exception>
-        public bool Check(TUser user, TNPC npc, params INPCChatConditionalParameter[] parameters)
+        public bool Evaluate(TUser user, TNPC npc, params INPCChatConditionalParameter[] parameters)
         {
             const string errmsgNumberOfParameters = "Invalid number of parameters. Expected {0}, but was given {1}.";
             const string errmsgValueType = "Invalid ValueType for parameter {0}. Expected `{1}`, but was given `{2}`.";
@@ -122,7 +122,7 @@ namespace NetGore.NPCChat
             }
 
             // Parameters are all valid, so process the conditional
-            return DoCheck(user, npc, parameters);
+            return DoEvaluate(user, npc, parameters);
         }
 
         /// <summary>
@@ -136,14 +136,14 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, performs the actual conditional checking.
+        /// When overridden in the derived class, performs the actual conditional evaluation.
         /// </summary>
         /// <param name="user">The User.</param>
         /// <param name="npc">The NPC.</param>
         /// <param name="parameters">The parameters to use. </param>
         /// <returns>True if the conditional returns true for the given <paramref name="user"/>,
         /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
-        protected abstract bool DoCheck(TUser user, TNPC npc, INPCChatConditionalParameter[] parameters);
+        protected abstract bool DoEvaluate(TUser user, TNPC npc, INPCChatConditionalParameter[] parameters);
 
         /// <summary>
         /// Gets the NPCChatConditionalBase with the given <paramref name="name"/>.

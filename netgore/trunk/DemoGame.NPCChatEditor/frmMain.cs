@@ -293,11 +293,9 @@ namespace DemoGame.NPCChatEditor
                 if (cmbSelectedDialog.Items.Count > 0)
                     cmbSelectedDialog.SelectedIndex = 0;
 
-                comboBox1.Items.Clear();
-                foreach (var item in NPCChatConditional.Conditionals)
-                {
-                    comboBox1.Items.Add(item);
-                }
+                // Populate the conditional types
+                cmbConditionalType.Items.Clear();
+                cmbConditionalType.Items.AddRange(NPCChatConditional.Conditionals.OrderBy(x => x.Name).ToArray());
             }
             catch (Exception ex)
             {
@@ -437,6 +435,13 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsResponse.SetText(txtTitle.Text);
         }
 
+        void SetConditionalsEnabled(bool enabled)
+        {
+            cmbConditionalType.Enabled = enabled;
+            lstConditionals.Enabled = enabled;
+            txtConditionalValue.Enabled = enabled;
+        }
+
         private void btnAddRedirect_Click(object sender, EventArgs e)
         {
             if (_doNotUpdateObj)
@@ -505,6 +510,10 @@ namespace DemoGame.NPCChatEditor
         {
             if (e.KeyCode == Keys.Return)
                 txtRedirectIndex_Leave(this, e);
+        }
+
+        private void lstConditionals_SelectedIndexChanged(object sender, EventArgs e)
+        {
         }
     }
 }
