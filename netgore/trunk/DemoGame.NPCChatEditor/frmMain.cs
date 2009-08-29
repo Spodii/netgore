@@ -437,5 +437,29 @@ namespace DemoGame.NPCChatEditor
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
         }
+
+        private void btnAddRedirect_Click(object sender, EventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+
+            if (EditingObjAsResponse == null)
+                return;
+
+            // Make sure there isn't already a dialog item
+            if (EditingObjAsResponse.Page != EditorNPCChatResponse.EndConversationPage)
+            {
+                MessageBox.Show("This response already has a dialog item.");
+                return;
+            }
+
+            // Set the redirection
+            EditingObjAsResponse.SetPage(0);
+
+            // TODO: Properly update the tree
+            npcChatDialogView.UpdateItems();
+
+            // TODO: Select the new dialog item in the tree
+        }
     }
 }
