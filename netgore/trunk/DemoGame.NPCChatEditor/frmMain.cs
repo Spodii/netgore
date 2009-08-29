@@ -48,6 +48,26 @@ namespace DemoGame.NPCChatEditor
 
             if (EditingObjAsResponse == null)
                 return;
+
+            // Make sure there isn't already a dialog item
+            if (EditingObjAsResponse.Page != EditorNPCChatResponse.EndConversationPage)
+            {
+                MessageBox.Show("This response already has a dialog item.");
+                return;
+            }
+
+            // Create the new dialog item
+            ushort index = CurrentDialog.GetFreeDialogItemIndex();
+            var newDialogItem = new EditorNPCChatDialogItem(index, "New dialog item");
+            CurrentDialog.Add(newDialogItem);
+
+            // Hook it to the response
+            EditingObjAsResponse.SetPage(index);
+
+            // Update the tree
+            npcChatDialogView.UpdateItems();
+
+            // TODO: Select the new dialog item in the tree
         }
 
         void btnAddResponse_Click(object sender, EventArgs e)
@@ -55,14 +75,14 @@ namespace DemoGame.NPCChatEditor
             if (_doNotUpdateObj)
                 return;
 
-            if (EditingObjAsDialogItem != null)
-            {
-                EditorNPCChatResponse response = new EditorNPCChatResponse("<New Response>");
-                EditingObjAsDialogItem.ResponseList.Add(response);
-                npcChatDialogView.UpdateItems();
+            if (EditingObjAsDialogItem == null)
+                return;
 
-                // TODO: Auto-select the new node for the response
-            }
+            EditorNPCChatResponse response = new EditorNPCChatResponse("<New Response>");
+            EditingObjAsDialogItem.ResponseList.Add(response);
+            npcChatDialogView.UpdateItems();
+
+            // TODO: Auto-select the new node for the response
         }
 
         void btnDeleteDialog_Click(object sender, EventArgs e)
@@ -82,7 +102,7 @@ namespace DemoGame.NPCChatEditor
             // Make sure this isn't the dialog
             if (EditingObjAsDialogItem.Index == 0)
             {
-                MessageBox.Show("Cannot delete the root dialog item.", "Cannot delete", MessageBoxButtons.OK);
+                MessageBox.Show("Cannot delete the root dialog item.");
                 return;
             }
 
@@ -92,9 +112,8 @@ namespace DemoGame.NPCChatEditor
             int redirectCount = responsesToThisDialog.Count() - 1;
             if (redirectCount > 0)
             {
-                string redirectToThisMsg = string.Format("Cannot delete this dialog because there are {0} redirects to it.",
-                                                         redirectCount);
-                MessageBox.Show(redirectToThisMsg, "Cannot delete", MessageBoxButtons.OK);
+                MessageBox.Show(string.Format("Cannot delete this dialog because there are {0} redirects to it.",
+                                                         redirectCount));
                 return;
             }
 
@@ -116,7 +135,7 @@ namespace DemoGame.NPCChatEditor
                 {
                     sb.AppendLine(" " + item.Index + ": " + item.Title);
                 }
-                MessageBox.Show(sb.ToString(), "Cannot delete", MessageBoxButtons.OK);
+                MessageBox.Show(sb.ToString());
                 return;
             }
 

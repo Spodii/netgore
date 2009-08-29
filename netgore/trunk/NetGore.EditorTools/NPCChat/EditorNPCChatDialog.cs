@@ -31,6 +31,17 @@ namespace NetGore.EditorTools
             get { return _index; }
         }
 
+        public ushort GetFreeDialogItemIndex()
+        {
+            for (int i = 0; i < _dialogItems.Length; i++)
+            {
+                if (_dialogItems[i] == null)
+                    return (ushort)i;
+            }
+
+            return (ushort)_dialogItems.Length;
+        }
+
         public IEnumerable<EditorNPCChatDialogItem> Items
         {
             get { return _dialogItems.Where(x => x != null); }
@@ -142,16 +153,20 @@ namespace NetGore.EditorTools
         /// <returns>True if the <paramref name="dialogItem"/> was successfully removed; otherwise false.</returns>
         public bool RemoveDialogItem(EditorNPCChatDialogItem dialogItem)
         {
-            for (int i = 0; i < _dialogItems.Length; i++)
-            {
-                if (_dialogItems[i] != dialogItem)
-                    continue;
+            // Find the responses that reference this dialog
+            var sourceResponses = GetSourceResponses(dialogItem).Cast<EditorNPCChatResponse>();
 
-                _dialogItems[i] = null;
-                return true;
-            }
+            // Remove the dialog from the collection
+            if (_dialogItems[dialogItem.Index] != dialogItem)
+                return false;
 
-            return false;
+            _dialogItems[dialogItem.Index] = null;
+
+            // Remove references to the dialog
+            foreach (var r in sourceResponses)
+                r.SetPage(EditorNPCChatResponse.EndConversationPage);
+
+            return true;
         }
 
         static void ResizeArrayToFitIndex<T>(ref T[] array, int index)
