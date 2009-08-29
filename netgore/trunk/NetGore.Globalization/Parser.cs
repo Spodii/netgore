@@ -182,6 +182,156 @@ namespace NetGore.Globalization
             return ushort.Parse(s, _info);
         }
 
+        public string ToString(bool value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(byte value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(byte value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(sbyte value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(sbyte value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(short value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(short value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(ushort value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(ushort value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(int value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(int value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(uint value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(uint value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(long value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(long value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(ulong value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(ulong value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(float value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(float value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(double value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(double value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(decimal value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(decimal value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(IFormattable f, string format)
+        {
+            return f.ToString(format, _info);
+        }
+
+        public string ToString(DateTime value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(DateTime value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(DateTimeOffset value)
+        {
+            return value.ToString(_info);
+        }
+
+        public string ToString(DateTimeOffset value, string format)
+        {
+            return value.ToString(format, _info);
+        }
+
+        public string ToString(TimeSpan value)
+        {
+            return value.ToString();
+        }
+
+        public string ToString(char value)
+        {
+            return value.ToString(_info);
+        }
+
         public bool TryParseBool(string s, out bool value)
         {
             return bool.TryParse(s, out value);
