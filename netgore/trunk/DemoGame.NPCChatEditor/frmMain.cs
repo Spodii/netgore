@@ -178,9 +178,8 @@ namespace DemoGame.NPCChatEditor
 
             parent.SetPage(EditorNPCChatResponse.EndConversationPage);
 
-            // TODO: Refresh correctly instead of refreshing the whole thing
-            npcChatDialogView.UpdateItems();
-            //button1_Click(null, null);
+            // TODO: Properly update the view
+            button1_Click(null, null);
         }
 
         void btnDeleteResponse_Click(object sender, EventArgs e)
@@ -457,9 +456,55 @@ namespace DemoGame.NPCChatEditor
             EditingObjAsResponse.SetPage(0);
 
             // TODO: Properly update the tree
-            npcChatDialogView.UpdateItems();
+            button1_Click(null, null);
 
             // TODO: Select the new dialog item in the tree
+        }
+
+        private void txtRedirectIndex_Leave(object sender, EventArgs e)
+        {
+            if (EditingObjAsTreeNode == null || npcChatDialogView.SelectedNode.Tag != _editingObj)
+                return;
+
+            if (npcChatDialogView.SelectedNode.Parent == null)
+                return;
+
+            var response = npcChatDialogView.SelectedNode.Parent.Tag as EditorNPCChatResponse;
+            if (response == null)
+                return;
+
+            if (_doNotUpdateObj)
+            {
+                txtRedirectIndex.Text = response.Page.ToString();
+                return;
+            }
+
+            ushort newIndex;
+            if (!ushort.TryParse(txtRedirectIndex.Text, out newIndex))
+            {
+                MessageBox.Show("Invalid value entered.");
+                txtRedirectIndex.Focus();
+                return;
+            }
+
+            var newNode = CurrentDialog.GetDialogItem(newIndex);
+            if (newNode == null)
+            {
+                MessageBox.Show("Invalid node page index entered.");
+                txtRedirectIndex.Focus();
+                return;
+            }
+
+            response.SetPage(newIndex);
+
+            // TODO: Properly update the view
+            button1_Click(null, null);
+        }
+
+        private void txtRedirectIndex_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Return)
+                txtRedirectIndex_Leave(this, e);
         }
     }
 }
