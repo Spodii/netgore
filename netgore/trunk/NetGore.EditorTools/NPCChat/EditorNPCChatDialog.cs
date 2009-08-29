@@ -17,8 +17,16 @@ namespace NetGore.EditorTools
         ushort _index;
         string _title;
 
+        /// <summary>
+        /// Notifies listeners when the EditorNPCChatDialog has changed.
+        /// </summary>
         public event EditorNPCChatDialogEventHandler OnChange;
 
+        /// <summary>
+        /// Removes a EditorNPCChatDialogItem.
+        /// </summary>
+        /// <param name="dialogItem">EditorNPCChatDialogItem to remove.</param>
+        /// <returns>True if the <paramref name="dialogItem"/> was successfully removed; otherwise false.</returns>
         public bool RemoveDialogItem(EditorNPCChatDialogItem dialogItem)
         {
             for (int i = 0; i < _dialogItems.Length; i++)
