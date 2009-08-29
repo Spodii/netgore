@@ -360,7 +360,7 @@ namespace DemoGame.NPCChatEditor
             foreach (var item in dialogNodes.Select(x => (EditorNPCChatDialogItem)x.Tag))
                 CurrentDialog.RemoveDialogItem(item);
 
-            // TODO: Refresh correctly instead of "this crap"
+            // TODO: Refresh correctly instead of refreshing the whole thing
             button1_Click(null, null);
         }
 
@@ -372,6 +372,40 @@ namespace DemoGame.NPCChatEditor
                 foreach (var n2 in GetChildNodes(node))
                     yield return n2;
             }
+        }
+
+        private void btnDeleteRedirect_Click(object sender, EventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+
+            if (EditingObjAsTreeNode == null)
+                return;
+
+            var parentNode = npcChatDialogView.SelectedNode.Parent;
+            if (parentNode == null)
+                return;
+
+            var parent = parentNode.Tag as EditorNPCChatResponse;
+            if (parent == null)
+                return;
+
+            parent.SetPage(EditorNPCChatResponse.EndConversationPage);
+
+            // TODO: Refresh correctly instead of refreshing the whole thing
+            npcChatDialogView.UpdateItems();
+            //button1_Click(null, null);
+        }
+
+        private void btnAddDialog_Click(object sender, EventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+
+            if (EditingObjAsResponse == null)
+                return;
+
+
         }
     }
 }

@@ -213,10 +213,9 @@ namespace NetGore.EditorTools
                 var nodesToRemove = new List<TreeNode>(2);
                 foreach (TreeNode childNode in node.Nodes.OfType<TreeNode>())
                 {
-                    TreeNode childNodeLocal = childNode;
-                    if (childNode.Tag is EditorNPCChatResponse &&
-                        !item.ResponseList.Any(x => x.TreeNodes.Contains(childNodeLocal)))
-                        nodesToRemove.Add(childNodeLocal);
+                    TreeNode n = childNode;
+                    if (n.Tag is EditorNPCChatResponse && !item.ResponseList.Any(x => x.TreeNodes.Contains(n)))
+                        nodesToRemove.Add(n);
                 }
 
                 foreach (TreeNode removeNode in nodesToRemove)

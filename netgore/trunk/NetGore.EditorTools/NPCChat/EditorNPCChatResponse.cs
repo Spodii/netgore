@@ -78,6 +78,17 @@ namespace NetGore.EditorTools
             SetText(text);
         }
 
+        public void SetPage(ushort page)
+        {
+            if (_page == page)
+                return;
+
+            _page = page;
+
+            if (OnChange != null)
+                OnChange(this);
+        }
+
         public void SetText(string value)
         {
             if (_text == value)
