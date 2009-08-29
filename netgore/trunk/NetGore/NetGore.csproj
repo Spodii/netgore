@@ -96,9 +96,8 @@
     <Compile Include="MethodInfoHelper.cs" />
     <Compile Include="NPCChat\Conditionals\INPCChatConditional.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
-    <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionItem.cs" />
+    <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalEvaluationType.cs" />
-    <Compile Include="NPCChat\Conditionals\Parameters\INPCChatConditionalParameter.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalBase.cs" />
     <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameter.cs" />
     <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterFloat.cs" />

@@ -20,7 +20,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <param name="parameters">The parameters to use. </param>
         /// <returns>True if the conditional returns true for the given <paramref name="user"/>,
         /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
-        protected override bool DoEvaluate(User user, NPC npc, INPCChatConditionalParameter[] parameters)
+        protected override bool DoEvaluate(User user, NPC npc, NPCChatConditionalParameter[] parameters)
         {
             float percent = GetPercent(user.HP, user.ModStats[StatType.MaxHP]);
 

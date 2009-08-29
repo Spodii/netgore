@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore.Collections;
+using NetGore.IO;
 
 namespace NetGore.NPCChat
 {
@@ -19,7 +20,7 @@ namespace NetGore.NPCChat
         /// <summary>
         /// Array used for an empty set of INPCChatConditionalParameters.
         /// </summary>
-        static readonly INPCChatConditionalParameter[] _emptyParameters = new INPCChatConditionalParameter[0];
+        static readonly NPCChatConditionalParameter[] _emptyParameters = new NPCChatConditionalParameter[0];
 
         /// <summary>
         /// Array used for an empty set of NPCChatConditionalParameterTypes.
@@ -88,7 +89,7 @@ namespace NetGore.NPCChat
         /// <exception cref="ArgumentException">An invalid number of INPCChatConditionalParameters specified in the
         /// <paramref name="parameters"/>, or one or more of the ValueTypes in the <paramref name="parameters"/>
         /// are not of the correct type.</exception>
-        public bool Evaluate(TUser user, TNPC npc, params INPCChatConditionalParameter[] parameters)
+        public bool Evaluate(TUser user, TNPC npc, params NPCChatConditionalParameter[] parameters)
         {
             const string errmsgNumberOfParameters = "Invalid number of parameters. Expected {0}, but was given {1}.";
             const string errmsgValueType = "Invalid ValueType for parameter {0}. Expected `{1}`, but was given `{2}`.";
@@ -143,7 +144,7 @@ namespace NetGore.NPCChat
         /// <param name="parameters">The parameters to use. </param>
         /// <returns>True if the conditional returns true for the given <paramref name="user"/>,
         /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
-        protected abstract bool DoEvaluate(TUser user, TNPC npc, INPCChatConditionalParameter[] parameters);
+        protected abstract bool DoEvaluate(TUser user, TNPC npc, NPCChatConditionalParameter[] parameters);
 
         /// <summary>
         /// Gets the NPCChatConditionalBase with the given <paramref name="name"/>.

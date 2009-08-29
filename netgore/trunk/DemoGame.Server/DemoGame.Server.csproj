@@ -123,8 +123,10 @@
     <Compile Include="Items\UserEquipped.cs" />
     <Compile Include="Items\UserInventoryUpdater.cs" />
     <Compile Include="NPCChat\Conditionals\HPPercentLessThanOrEqualTo.cs" />
+    <Compile Include="NPCChat\Conditionals\Implementations\NPCChatConditionalCollection.cs" />
+    <Compile Include="NPCChat\Conditionals\Implementations\NPCChatConditionalCollectionItem.cs" />
     <Compile Include="NPCChat\Conditionals\MPPercentLessThanOrEqualTo.cs" />
-    <Compile Include="NPCChat\Conditionals\NPCChatConditional.cs" />
+    <Compile Include="NPCChat\Conditionals\Implementations\NPCChatConditional.cs" />
     <Compile Include="NPCChat\NPCChatDialog.cs" />
     <Compile Include="NPCChat\NPCChatDialogItem.cs" />
     <Compile Include="NPCChat\NPCChatManager.cs" />

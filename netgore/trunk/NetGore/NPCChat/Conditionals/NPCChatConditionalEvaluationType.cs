@@ -8,7 +8,7 @@ namespace NetGore.NPCChat
     /// <summary>
     /// Enum of the different operators that can be used for evaluating multiple conditionals.
     /// </summary>
-    public enum NPCChatConditionalEvaluationType
+    public enum NPCChatConditionalEvaluationType : byte
     {
         /// <summary>
         /// Requires all conditionals to be true.

@@ -1,14 +1,15 @@
 using System;
 using System.Linq;
+using NetGore.IO;
 
 namespace NetGore.NPCChat
 {
     /// <summary>
     /// A INPCChatConditionalParameter with a value of type Float.
     /// </summary>
-    class NPCChatConditionalParameterFloat : INPCChatConditionalParameter
+    class NPCChatConditionalParameterFloat : NPCChatConditionalParameter
     {
-        readonly float _value;
+        float _value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatConditionalParameterFloat"/> struct.
@@ -24,27 +25,37 @@ namespace NetGore.NPCChat
         /// <summary>
         /// The NPCChatConditionalParameterType that describes the native value type of this parameter's Value.
         /// </summary>
-        public NPCChatConditionalParameterType ValueType
+        public override NPCChatConditionalParameterType ValueType
         {
             get { return NPCChatConditionalParameterType.Integer; }
         }
 
         /// <summary>
-        /// Gets this parameter's Value as an object.
+        /// When overridden in the derived class, reads the underlying value from the <paramref name="reader"/>.
         /// </summary>
-        public object Value
+        /// <param name="reader">The IValueReader to read from.</param>
+        /// <param name="valueName">The name to of the value in the <paramref name="reader"/>.</param>
+        protected override void ReadValue(IValueReader reader, string valueName)
         {
-            get { return _value; }
+            _value = reader.ReadFloat(valueName);
         }
 
         /// <summary>
-        /// Gets this parameter's Value as an Integer.
+        /// When overridden in the derived class, writes the underlying value to the <paramref name="writer"/>.
         /// </summary>
-        /// <exception cref="MethodAccessException">The ValueType is not equal to
-        /// NPCChatConditionalParameterType.Integer.</exception>
-        public int ValueAsInteger
+        /// <param name="writer">The IValueWriter to write to.</param>
+        /// <param name="valueName">The name to of the value to use in the <paramref name="writer"/>.</param>
+        protected override void WriteValue(IValueWriter writer, string valueName)
         {
-            get { throw NPCChatConditionalParameter.GetInvalidValueAsException(); }
+            writer.Write(valueName, _value);
+        }
+
+        /// <summary>
+        /// Gets this parameter's Value as an object.
+        /// </summary>
+        public override object Value
+        {
+            get { return _value; }
         }
 
         /// <summary>
@@ -52,19 +63,9 @@ namespace NetGore.NPCChat
         /// </summary>
         /// <exception cref="MethodAccessException">The ValueType is not equal to
         /// NPCChatConditionalParameterType.Float.</exception>
-        public float ValueAsFloat
+        public override float ValueAsFloat
         {
             get { return _value; }
-        }
-
-        /// <summary>
-        /// Gets this parameter's Value as a String.
-        /// </summary>
-        /// <exception cref="MethodAccessException">The ValueType is not equal to
-        /// NPCChatConditionalParameterType.String.</exception>
-        public string ValueAsString
-        {
-            get { throw NPCChatConditionalParameter.GetInvalidValueAsException(); }
         }
 
         #endregion
