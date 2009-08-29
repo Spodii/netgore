@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,6 @@ using System.Windows.Forms;
 using DemoGame.Server.NPCChat.Conditionals;
 using NetGore.EditorTools;
 using NetGore.NPCChat;
-using System.Collections.Generic;
 
 namespace DemoGame.NPCChatEditor
 {
@@ -41,6 +41,15 @@ namespace DemoGame.NPCChatEditor
             InitializeComponent();
         }
 
+        void btnAddDialog_Click(object sender, EventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+
+            if (EditingObjAsResponse == null)
+                return;
+        }
+
         void btnAddResponse_Click(object sender, EventArgs e)
         {
             if (_doNotUpdateObj)
@@ -54,6 +63,105 @@ namespace DemoGame.NPCChatEditor
 
                 // TODO: Auto-select the new node for the response
             }
+        }
+
+        void btnDeleteDialog_Click(object sender, EventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+
+            if (EditingObjAsDialogItem == null)
+                return;
+
+            if (npcChatDialogView.SelectedNode == null || npcChatDialogView.SelectedNode.Tag != _editingObj)
+            {
+                Debug.Fail("...");
+                return;
+            }
+
+            // Make sure this isn't the dialog
+            if (EditingObjAsDialogItem.Index == 0)
+            {
+                MessageBox.Show("Cannot delete the root dialog item.", "Cannot delete", MessageBoxButtons.OK);
+                return;
+            }
+
+            // Make sure nothing is redirecting to this node
+            var responsesToThisDialog = CurrentDialog.GetSourceResponses(EditingObjAsDialogItem);
+
+            int redirectCount = responsesToThisDialog.Count() - 1;
+            if (redirectCount > 0)
+            {
+                string redirectToThisMsg = string.Format("Cannot delete this dialog because there are {0} redirects to it.",
+                                                         redirectCount);
+                MessageBox.Show(redirectToThisMsg, "Cannot delete", MessageBoxButtons.OK);
+                return;
+            }
+
+            // Grab the child nodes
+            var children = GetChildNodes(npcChatDialogView.SelectedNode);
+            var redirectNodes = children.Where(x => x.Tag is TreeNode);
+            var dialogNodes = children.Where(x => x.Tag is EditorNPCChatDialogItem);
+            var responseNodes = children.Where(x => x.Tag is EditorNPCChatResponse);
+
+            // Make sure none of the child nodes are being redirected to
+            var redirectedToItems =
+                dialogNodes.Select(x => (EditorNPCChatDialogItem)x.Tag).Where(x => CurrentDialog.GetSourceResponses(x).Count() > 1);
+
+            if (redirectedToItems.Count() > 0)
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine("Cannot delete this node because the following child node(s) are being redirect to:");
+                foreach (EditorNPCChatDialogItem item in redirectedToItems)
+                {
+                    sb.AppendLine(" " + item.Index + ": " + item.Title);
+                }
+                MessageBox.Show(sb.ToString(), "Cannot delete", MessageBoxButtons.OK);
+                return;
+            }
+
+            // Ask for confirmation to delete
+            const string dialogInfoMsgBase =
+                "This dialog contains the following:" + "{0}Redirects: {1}{0}Dialogs: {2}{0}Responses: {3}" +
+                "{0}{0}Are you sure you wish to delete it?";
+            string dialogInfoMsg = string.Format(dialogInfoMsgBase, Environment.NewLine, redirectNodes.Count(),
+                                                 dialogNodes.Count(), responseNodes.Count());
+
+            if (MessageBox.Show(dialogInfoMsg, "Delete dialog?", MessageBoxButtons.YesNo) == DialogResult.No)
+                return;
+
+            // Delete
+            CurrentDialog.RemoveDialogItem(EditingObjAsDialogItem);
+            foreach (EditorNPCChatDialogItem item in dialogNodes.Select(x => (EditorNPCChatDialogItem)x.Tag))
+            {
+                CurrentDialog.RemoveDialogItem(item);
+            }
+
+            // TODO: Refresh correctly instead of refreshing the whole thing
+            button1_Click(null, null);
+        }
+
+        void btnDeleteRedirect_Click(object sender, EventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+
+            if (EditingObjAsTreeNode == null)
+                return;
+
+            TreeNode parentNode = npcChatDialogView.SelectedNode.Parent;
+            if (parentNode == null)
+                return;
+
+            EditorNPCChatResponse parent = parentNode.Tag as EditorNPCChatResponse;
+            if (parent == null)
+                return;
+
+            parent.SetPage(EditorNPCChatResponse.EndConversationPage);
+
+            // TODO: Refresh correctly instead of refreshing the whole thing
+            npcChatDialogView.UpdateItems();
+            //button1_Click(null, null);
         }
 
         void btnDeleteResponse_Click(object sender, EventArgs e)
@@ -153,7 +261,7 @@ namespace DemoGame.NPCChatEditor
             {
                 // Set controls that are initially disabled in the tab control to always be disabled
                 var controls = GetAllControls(tcChatDialogItem);
-                foreach (var control in controls)
+                foreach (Control control in controls)
                 {
                     if (control.Enabled == false)
                         control.EnabledChanged += ((obj, eArgs) => ((Control)obj).Enabled = false);
@@ -169,7 +277,9 @@ namespace DemoGame.NPCChatEditor
 
                 comboBox1.Items.Clear();
                 foreach (var item in NPCChatConditional.Conditionals)
+                {
                     comboBox1.Items.Add(item);
+                }
             }
             catch (Exception ex)
             {
@@ -200,19 +310,33 @@ namespace DemoGame.NPCChatEditor
             txtTitle.Width = gbSelectedNode.ClientSize.Width - txtTitle.Left - 6;
         }
 
+        static IEnumerable<Control> GetAllControls(Control root)
+        {
+            foreach (Control child in root.Controls.Cast<Control>())
+            {
+                yield return child;
+                foreach (Control c2 in GetAllControls(child))
+                {
+                    yield return c2;
+                }
+            }
+        }
+
+        static IEnumerable<TreeNode> GetChildNodes(TreeNode root)
+        {
+            foreach (TreeNode node in root.Nodes.Cast<TreeNode>())
+            {
+                yield return node;
+                foreach (TreeNode n2 in GetChildNodes(node))
+                {
+                    yield return n2;
+                }
+            }
+        }
+
         void npcChatDialogView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             SetEditingObject(e.Node.Tag);
-        }
-
-        static System.Collections.Generic.IEnumerable<Control> GetAllControls(Control root)
-        {
-            foreach (var child in root.Controls.Cast<Control>())
-            {
-                yield return child;
-                foreach (var c2 in GetAllControls(child))
-                    yield return c2;
-            }
         }
 
         static void SetAllChildrenEnabled(IEnumerable controls, bool enabled)
@@ -293,119 +417,6 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetTitle(txtTitle.Text);
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
-        }
-
-        private void btnDeleteDialog_Click(object sender, EventArgs e)
-        {
-            if (_doNotUpdateObj)
-                return;
-
-            if (EditingObjAsDialogItem == null)
-                return;
-
-            if (npcChatDialogView.SelectedNode == null || npcChatDialogView.SelectedNode.Tag != _editingObj)
-            {
-                Debug.Fail("...");
-                return;
-            }
-
-            // Make sure this isn't the dialog
-            if (EditingObjAsDialogItem.Index == 0)
-            {
-                MessageBox.Show("Cannot delete the root dialog item.", "Cannot delete", MessageBoxButtons.OK);
-                return;
-            }
-
-            // Make sure nothing is redirecting to this node
-            var responsesToThisDialog = CurrentDialog.GetSourceResponses(EditingObjAsDialogItem);
-
-            int redirectCount = responsesToThisDialog.Count() - 1;
-            if (redirectCount > 0)
-            {
-                string redirectToThisMsg = string.Format("Cannot delete this dialog because there are {0} redirects to it.", redirectCount);
-                MessageBox.Show(redirectToThisMsg, "Cannot delete", MessageBoxButtons.OK);
-                return;
-            }
-
-            // Grab the child nodes
-            var children = GetChildNodes(npcChatDialogView.SelectedNode);
-            var redirectNodes = children.Where(x => x.Tag is TreeNode);
-            var dialogNodes = children.Where(x => x.Tag is EditorNPCChatDialogItem);
-            var responseNodes = children.Where(x => x.Tag is EditorNPCChatResponse);
-
-            // Make sure none of the child nodes are being redirected to
-            var redirectedToItems = dialogNodes.Select(x => (EditorNPCChatDialogItem)x.Tag).Where(x => CurrentDialog.GetSourceResponses(x).Count() > 1);
-
-            if (redirectedToItems.Count() > 0)
-            {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendLine("Cannot delete this node because the following child node(s) are being redirect to:");
-                foreach (var item in redirectedToItems)
-                    sb.AppendLine(" " + item.Index + ": " + item.Title);
-                MessageBox.Show(sb.ToString(), "Cannot delete", MessageBoxButtons.OK);
-                return;
-            }
-
-            // Ask for confirmation to delete
-            const string dialogInfoMsgBase = "This dialog contains the following:" +
-                "{0}Redirects: {1}{0}Dialogs: {2}{0}Responses: {3}" +
-                "{0}{0}Are you sure you wish to delete it?";
-            string dialogInfoMsg = string.Format(dialogInfoMsgBase, Environment.NewLine, redirectNodes.Count(), dialogNodes.Count(), responseNodes.Count());
-
-            if (MessageBox.Show(dialogInfoMsg, "Delete dialog?", MessageBoxButtons.YesNo) == DialogResult.No)
-                return;
-
-            // Delete
-            CurrentDialog.RemoveDialogItem(EditingObjAsDialogItem);
-            foreach (var item in dialogNodes.Select(x => (EditorNPCChatDialogItem)x.Tag))
-                CurrentDialog.RemoveDialogItem(item);
-
-            // TODO: Refresh correctly instead of refreshing the whole thing
-            button1_Click(null, null);
-        }
-
-        static IEnumerable<TreeNode> GetChildNodes(TreeNode root)
-        {
-            foreach (var node in root.Nodes.Cast<TreeNode>())
-            {
-                yield return node;
-                foreach (var n2 in GetChildNodes(node))
-                    yield return n2;
-            }
-        }
-
-        private void btnDeleteRedirect_Click(object sender, EventArgs e)
-        {
-            if (_doNotUpdateObj)
-                return;
-
-            if (EditingObjAsTreeNode == null)
-                return;
-
-            var parentNode = npcChatDialogView.SelectedNode.Parent;
-            if (parentNode == null)
-                return;
-
-            var parent = parentNode.Tag as EditorNPCChatResponse;
-            if (parent == null)
-                return;
-
-            parent.SetPage(EditorNPCChatResponse.EndConversationPage);
-
-            // TODO: Refresh correctly instead of refreshing the whole thing
-            npcChatDialogView.UpdateItems();
-            //button1_Click(null, null);
-        }
-
-        private void btnAddDialog_Click(object sender, EventArgs e)
-        {
-            if (_doNotUpdateObj)
-                return;
-
-            if (EditingObjAsResponse == null)
-                return;
-
-
         }
     }
 }

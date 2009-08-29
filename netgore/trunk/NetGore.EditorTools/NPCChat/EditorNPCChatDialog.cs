@@ -23,25 +23,6 @@ namespace NetGore.EditorTools
         public event EditorNPCChatDialogEventHandler OnChange;
 
         /// <summary>
-        /// Removes a EditorNPCChatDialogItem.
-        /// </summary>
-        /// <param name="dialogItem">EditorNPCChatDialogItem to remove.</param>
-        /// <returns>True if the <paramref name="dialogItem"/> was successfully removed; otherwise false.</returns>
-        public bool RemoveDialogItem(EditorNPCChatDialogItem dialogItem)
-        {
-            for (int i = 0; i < _dialogItems.Length; i++)
-            {
-                if (_dialogItems[i] != dialogItem)
-                    continue;
-
-                _dialogItems[i] = null;
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
         /// distinguish each NPCChatDialogBase from one another.
         /// </summary>
@@ -152,6 +133,25 @@ namespace NetGore.EditorTools
         public EditorNPCChatDialogItem GetInitialDialogItemCasted()
         {
             return GetDialogItemCasted(0);
+        }
+
+        /// <summary>
+        /// Removes a EditorNPCChatDialogItem.
+        /// </summary>
+        /// <param name="dialogItem">EditorNPCChatDialogItem to remove.</param>
+        /// <returns>True if the <paramref name="dialogItem"/> was successfully removed; otherwise false.</returns>
+        public bool RemoveDialogItem(EditorNPCChatDialogItem dialogItem)
+        {
+            for (int i = 0; i < _dialogItems.Length; i++)
+            {
+                if (_dialogItems[i] != dialogItem)
+                    continue;
+
+                _dialogItems[i] = null;
+                return true;
+            }
+
+            return false;
         }
 
         static void ResizeArrayToFitIndex<T>(ref T[] array, int index)

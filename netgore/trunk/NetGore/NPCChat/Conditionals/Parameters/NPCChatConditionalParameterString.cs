@@ -6,7 +6,7 @@ namespace NetGore.NPCChat
     /// <summary>
     /// A INPCChatConditionalParameter with a value of type String.
     /// </summary>
-    internal class NPCChatConditionalParameterString : INPCChatConditionalParameter
+    class NPCChatConditionalParameterString : INPCChatConditionalParameter
     {
         readonly string _value;
 

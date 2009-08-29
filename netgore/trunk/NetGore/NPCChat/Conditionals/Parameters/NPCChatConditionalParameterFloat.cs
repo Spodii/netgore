@@ -6,7 +6,7 @@ namespace NetGore.NPCChat
     /// <summary>
     /// A INPCChatConditionalParameter with a value of type Float.
     /// </summary>
-    internal class NPCChatConditionalParameterFloat : INPCChatConditionalParameter
+    class NPCChatConditionalParameterFloat : INPCChatConditionalParameter
     {
         readonly float _value;
 

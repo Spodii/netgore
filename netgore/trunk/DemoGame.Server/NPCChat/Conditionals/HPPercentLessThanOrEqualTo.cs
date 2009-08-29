@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.NPCChat;
 
 namespace DemoGame.Server.NPCChat.Conditionals
@@ -9,10 +6,9 @@ namespace DemoGame.Server.NPCChat.Conditionals
     public class HPPercentLessThanOrEqualTo : NPCChatConditional
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatConditionalBase&lt;TUser, TNPC&gt;"/> class.
+        /// Initializes a new instance of the <see cref="NPCChatConditionalBase{TUser,TNPC}"/> class.
         /// </summary>
-        public HPPercentLessThanOrEqualTo()
-            : base("HP% <=", NPCChatConditionalParameterType.Float)
+        public HPPercentLessThanOrEqualTo() : base("HP% <=", NPCChatConditionalParameterType.Float)
         {
         }
 

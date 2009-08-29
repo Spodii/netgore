@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using NetGore.NPCChat;
 
 namespace DemoGame.Server.NPCChat.Conditionals
@@ -19,7 +16,8 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <param name="name">The unique display name of this NPCChatConditionalBase. This name must be unique
         /// for each derived class type. This string is case-sensitive.</param>
         /// <param name="parameterTypes">The parameter types.</param>
-        protected NPCChatConditional(string name, params NPCChatConditionalParameterType[] parameterTypes) : base(name, parameterTypes)
+        protected NPCChatConditional(string name, params NPCChatConditionalParameterType[] parameterTypes)
+            : base(name, parameterTypes)
         {
         }
 
