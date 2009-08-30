@@ -12,15 +12,22 @@ namespace NetGore.NPCChat
         float _value;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatConditionalParameterFloat"/> struct.
+        /// Gets this parameter's Value as an object.
         /// </summary>
-        /// <param name="value">The parameter value.</param>
-        public NPCChatConditionalParameterFloat(float value)
+        public override object Value
         {
-            _value = value;
+            get { return _value; }
         }
 
-        #region INPCChatConditionalParameter Members
+        /// <summary>
+        /// Gets this parameter's Value as a Float.
+        /// </summary>
+        /// <exception cref="MethodAccessException">The ValueType is not equal to
+        /// NPCChatConditionalParameterType.Float.</exception>
+        public override float ValueAsFloat
+        {
+            get { return _value; }
+        }
 
         /// <summary>
         /// The NPCChatConditionalParameterType that describes the native value type of this parameter's Value.
@@ -28,6 +35,15 @@ namespace NetGore.NPCChat
         public override NPCChatConditionalParameterType ValueType
         {
             get { return NPCChatConditionalParameterType.Integer; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NPCChatConditionalParameterFloat"/> struct.
+        /// </summary>
+        /// <param name="value">The parameter value.</param>
+        public NPCChatConditionalParameterFloat(float value)
+        {
+            _value = value;
         }
 
         /// <summary>
@@ -49,25 +65,5 @@ namespace NetGore.NPCChat
         {
             writer.Write(valueName, _value);
         }
-
-        /// <summary>
-        /// Gets this parameter's Value as an object.
-        /// </summary>
-        public override object Value
-        {
-            get { return _value; }
-        }
-
-        /// <summary>
-        /// Gets this parameter's Value as a Float.
-        /// </summary>
-        /// <exception cref="MethodAccessException">The ValueType is not equal to
-        /// NPCChatConditionalParameterType.Float.</exception>
-        public override float ValueAsFloat
-        {
-            get { return _value; }
-        }
-
-        #endregion
     }
 }

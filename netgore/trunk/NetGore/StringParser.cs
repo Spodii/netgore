@@ -36,6 +36,14 @@ namespace NetGore
         static readonly Dictionary<Type, MethodInfo> _parsers = new Dictionary<Type, MethodInfo>();
 
         /// <summary>
+        /// Gets the Parser to use for all the parsing done in this class.
+        /// </summary>
+        static Parser ParserToUse
+        {
+            get { return Parser.Invariant; }
+        }
+
+        /// <summary>
         /// Checks if the <paramref name="type"/> has the ability to parse a string.
         /// </summary>
         /// <param name="type">Type to check for having the ability to parse a string.</param>
@@ -196,11 +204,6 @@ namespace NetGore
             // Parse successful
             return true;
         }
-
-        /// <summary>
-        /// Gets the Parser to use for all the parsing done in this class.
-        /// </summary>
-        static Parser ParserToUse { get { return Parser.Invariant; } }
 
         /// <summary>
         /// Tries to parse a system Type. Every Type handled in here should also defined in _handledSystemTypes.

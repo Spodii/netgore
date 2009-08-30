@@ -12,6 +12,32 @@ namespace NetGore.NPCChat
         string _value;
 
         /// <summary>
+        /// Gets this parameter's Value as an object.
+        /// </summary>
+        public override object Value
+        {
+            get { return _value; }
+        }
+
+        /// <summary>
+        /// Gets this parameter's Value as a String.
+        /// </summary>
+        /// <exception cref="MethodAccessException">The ValueType is not equal to
+        /// NPCChatConditionalParameterType.String.</exception>
+        public override string ValueAsString
+        {
+            get { return _value; }
+        }
+
+        /// <summary>
+        /// The NPCChatConditionalParameterType that describes the native value type of this parameter's Value.
+        /// </summary>
+        public override NPCChatConditionalParameterType ValueType
+        {
+            get { return NPCChatConditionalParameterType.String; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatConditionalParameterString"/> struct.
         /// </summary>
         /// <param name="value">The parameter value.</param>
@@ -39,35 +65,5 @@ namespace NetGore.NPCChat
         {
             writer.Write(valueName, _value);
         }
-
-        #region INPCChatConditionalParameter Members
-
-        /// <summary>
-        /// The NPCChatConditionalParameterType that describes the native value type of this parameter's Value.
-        /// </summary>
-        public override NPCChatConditionalParameterType ValueType
-        {
-            get { return NPCChatConditionalParameterType.String; }
-        }
-
-        /// <summary>
-        /// Gets this parameter's Value as an object.
-        /// </summary>
-        public override object Value
-        {
-            get { return _value; }
-        }
-
-        /// <summary>
-        /// Gets this parameter's Value as a String.
-        /// </summary>
-        /// <exception cref="MethodAccessException">The ValueType is not equal to
-        /// NPCChatConditionalParameterType.String.</exception>
-        public override string ValueAsString
-        {
-            get { return _value; }
-        }
-
-        #endregion
     }
 }

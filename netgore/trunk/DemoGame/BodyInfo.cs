@@ -86,7 +86,7 @@ namespace DemoGame
             BodyIndex highestIndex = new BodyIndex(0);
             foreach (var d in results)
             {
-                var currentBodyIndex = d.AsBodyIndex("Body.Index");
+                BodyIndex currentBodyIndex = d.AsBodyIndex("Body.Index");
                 if (highestIndex < currentBodyIndex)
                     highestIndex = currentBodyIndex;
             }
