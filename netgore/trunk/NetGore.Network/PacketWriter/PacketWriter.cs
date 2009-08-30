@@ -125,10 +125,9 @@ namespace NetGore.Network
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
         void IValueWriter.WriteMany<T>(string nodeName, IEnumerable<T> values, WriteManyHandler<T> writeHandler)
         {
-            // TODO: ...
             // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
             // be nearly identical to that used in the BitStreamValueWriter.
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -142,8 +141,9 @@ namespace NetGore.Network
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
         public void WriteManyNodes<T>(string nodeName, IEnumerable<T> values, WriteManyNodesHandler<T> writeHandler)
         {
-            // TODO: !! ...
-            throw new NotImplementedException();
+            // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
+            // be nearly identical to that used in the BitStreamValueWriter.
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -157,8 +157,9 @@ namespace NetGore.Network
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
         public void WriteManyNodes<T>(string nodeName, T[] values, WriteManyNodesHandler<T> writeHandler)
         {
-            // TODO: !! ...
-            throw new NotImplementedException();
+            // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
+            // be nearly identical to that used in the BitStreamValueWriter.
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -172,10 +173,9 @@ namespace NetGore.Network
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
         void IValueWriter.WriteMany<T>(string nodeName, T[] values, WriteManyHandler<T> writeHandler)
         {
-            // TODO: ...
             // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
             // be nearly identical to that used in the BitStreamValueWriter.
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         /// <summary>
@@ -184,7 +184,6 @@ namespace NetGore.Network
         /// <param name="name">Name of the child node.</param>
         void IValueWriter.WriteStartNode(string name)
         {
-            // TODO: ...
             // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
             // be nearly identical to that used in the BitStreamValueWriter.
             throw new NotSupportedException();
@@ -196,7 +195,6 @@ namespace NetGore.Network
         /// <param name="name">Name of the child node.</param>
         void IValueWriter.WriteEndNode(string name)
         {
-            // TODO: ...
             // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
             // be nearly identical to that used in the BitStreamValueWriter.
             throw new NotSupportedException();

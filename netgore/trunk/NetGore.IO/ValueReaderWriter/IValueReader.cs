@@ -55,8 +55,22 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         int ReadInt(string name, int bits);
 
+        /// <summary>
+        /// Reads multiple values that were written with WriteMany.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to read.</typeparam>
+        /// <param name="nodeName">The name of the node containing the values.</param>
+        /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
+        /// <returns>Array of the values read the IValueReader.</returns>
         T[] ReadMany<T>(string nodeName, ReadManyHandler<T> readHandler);
 
+        /// <summary>
+        /// Reads multiple nodes that were written with WriteMany.
+        /// </summary>
+        /// <typeparam name="T">The Type of nodes to read.</typeparam>
+        /// <param name="nodeName">The name of the root node containing the values.</param>
+        /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
+        /// <returns>Array of the values read the IValueReader.</returns>
         T[] ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler);
 
         /// <summary>

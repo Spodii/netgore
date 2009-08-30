@@ -190,6 +190,13 @@ namespace NetGore.IO
             return GetXmlValueReaderFromNodeString(key, nodeContents);
         }
 
+        /// <summary>
+        /// Reads multiple values that were written with WriteMany.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to read.</typeparam>
+        /// <param name="nodeName">The name of the node containing the values.</param>
+        /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
+        /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadMany<T>(string nodeName, ReadManyHandler<T> readHandler)
         {
             IValueReader nodeReader = ReadNode(nodeName);
@@ -205,6 +212,13 @@ namespace NetGore.IO
             return ret;
         }
 
+        /// <summary>
+        /// Reads multiple nodes that were written with WriteMany.
+        /// </summary>
+        /// <typeparam name="T">The Type of nodes to read.</typeparam>
+        /// <param name="nodeName">The name of the root node containing the values.</param>
+        /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
+        /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler)
         {
             IValueReader nodeReader = ReadNode(nodeName);
