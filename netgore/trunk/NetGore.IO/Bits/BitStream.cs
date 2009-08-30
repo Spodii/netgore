@@ -695,6 +695,8 @@ namespace NetGore.IO
                 throw new ArgumentOutOfRangeException("bitLength");
             if (bitLength == 0)
                 return new BitStream(BitStreamMode.Read, 1);
+            if (PositionBits + bitLength > LengthBits)
+                throw new ArgumentOutOfRangeException("bitLength");
 
 #if DEBUG
             int initialBitPosition = PositionBits;

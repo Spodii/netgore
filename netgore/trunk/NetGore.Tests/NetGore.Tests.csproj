@@ -64,10 +64,13 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClampTests.cs" />
     <Compile Include="EntityTests.cs" />
+    <Compile Include="EnumHelperTests.cs" />
     <Compile Include="IEnumerableTests.cs" />
     <Compile Include="IsBetweenTests.cs" />
     <Compile Include="MathStringTests.cs" />

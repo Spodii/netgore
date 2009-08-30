@@ -13,7 +13,7 @@ namespace DemoGame.MapEditor
         [STAThread]
         static void Main(string[] args)
         {
-            var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args);
+            var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args).ToArray();
 
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);

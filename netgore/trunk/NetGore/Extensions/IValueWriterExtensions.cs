@@ -161,6 +161,10 @@ namespace NetGore
         /// <param name="value">Value to write.</param>
         public static void WriteEnum<T>(IValueWriter writer, string name, T value)
         {
+            if (!typeof(T).IsEnum)
+                throw new MethodAccessException("Generic type parameter T must be an enum.");
+
+            // Write using the enum's name
             writer.Write(name, value.ToString());
         }
     }

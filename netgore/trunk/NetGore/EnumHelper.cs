@@ -57,6 +57,59 @@ namespace NetGore
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
         /// <param name="value">A string containing the name or value to convert.</param>
+        /// <param name="outValue">When this method returns true, contains the parsed enum value.</param>
+        /// <returns>The enum value parsed from <paramref name="value"/>.</returns>
+        public static bool TryParse<T>(string value, out T outValue) where T : struct
+        {
+            if (!typeof(T).IsEnum)
+                throw CreateGenericTypeIsNotEnumException<T>();
+
+            try
+            {
+                outValue = (T)Enum.Parse(typeof(T), value);
+            }
+            catch (ArgumentException)
+            {
+                outValue = default(T);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Converts the string representation of the name or numeric value of one or more enumerated
+        /// constants to an equivalent enumerated object.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="value">A string containing the name or value to convert.</param>
+        /// <param name="ignoreCase">If true, ignore case; otherwise, regard case.</param>
+        /// <param name="outValue">When this method returns true, contains the parsed enum value.</param>
+        /// <returns>The enum value parsed from <paramref name="value"/>.</returns>
+        public static bool TryParse<T>(string value, bool ignoreCase, out T outValue) where T : struct
+        {
+            if (!typeof(T).IsEnum)
+                throw CreateGenericTypeIsNotEnumException<T>();
+
+            try
+            {
+                outValue = (T)Enum.Parse(typeof(T), value, ignoreCase);
+            }
+            catch (ArgumentException)
+            {
+                outValue = default(T);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Converts the string representation of the name or numeric value of one or more enumerated
+        /// constants to an equivalent enumerated object.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="value">A string containing the name or value to convert.</param>
         /// <param name="ignoreCase">If true, ignore case; otherwise, regard case.</param>
         /// <returns>The enum value parsed from <paramref name="value"/>.</returns>
         public static T Parse<T>(string value, bool ignoreCase) where T : struct
