@@ -6,17 +6,17 @@ using System.Linq;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Implementation of the IValueReader using a BitStream.
+    /// Implementation of the IValueReader using a BitStream to perform binary I/O.
     /// </summary>
-    public class BitStreamValueReader : IValueReader
+    public class BinaryValueReader : IValueReader
     {
         readonly BitStream _reader;
 
         /// <summary>
-        /// BitStreamValueReader constructor.
+        /// BinaryValueReader constructor.
         /// </summary>
         /// <param name="reader">BitStream that will be used to read from.</param>
-        public BitStreamValueReader(BitStream reader)
+        public BinaryValueReader(BitStream reader)
         {
             if (reader == null)
                 throw new ArgumentNullException("reader");
@@ -27,10 +27,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// BitStreamValueReader constructor.
+        /// BinaryValueReader constructor.
         /// </summary>
         /// <param name="filePath">The path of the file to read from.</param>
-        public BitStreamValueReader(string filePath)
+        public BinaryValueReader(string filePath)
         {
             if (!File.Exists(filePath))
                 throw new ArgumentException("The specified file could not be found.", "filePath");
@@ -47,7 +47,7 @@ namespace NetGore.IO
         {
             uint bitLength = ReadUInt(null);
             BitStream bs = _reader.ReadBits((int)bitLength);
-            return new BitStreamValueReader(bs);
+            return new BinaryValueReader(bs);
         }
 
         #region IValueReader Members
@@ -55,7 +55,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads a 8-bit unsigned integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <returns>Value read from the reader.</returns>
         public byte ReadByte(string name)
         {
@@ -65,7 +65,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads a 32-bit floating-point number.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <returns>Value read from the reader.</returns>
         public float ReadFloat(string name)
         {
@@ -76,7 +76,7 @@ namespace NetGore.IO
         /// Reads multiple values that were written with WriteMany.
         /// </summary>
         /// <typeparam name="T">The Type of value to read.</typeparam>
-        /// <param name="nodeName">Unused by the BitStreamValueReader.</param>
+        /// <param name="nodeName">Unused by the BinaryValueReader.</param>
         /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
         /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadMany<T>(string nodeName, ReadManyHandler<T> readHandler)
@@ -95,7 +95,7 @@ namespace NetGore.IO
         /// Reads multiple nodes that were written with WriteMany.
         /// </summary>
         /// <typeparam name="T">The Type of nodes to read.</typeparam>
-        /// <param name="nodeName">Unused by the BitStreamValueReader.</param>
+        /// <param name="nodeName">Unused by the BinaryValueReader.</param>
         /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
         /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler)
@@ -123,9 +123,18 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets if this IValueReader supports reading nodes. If false, any attempt to use nodes in this IValueReader
+        /// will result in a NotSupportedException being thrown.
+        /// </summary>
+        public bool SupportsNodes
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Reads a 32-bit signed integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <returns>Value read from the reader.</returns>
         public int ReadInt(string name)
         {
@@ -135,7 +144,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads a signed integer of up to 32 bits.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <param name="bits">Number of bits to read.</param>
         /// <returns>Value read from the reader.</returns>
         public int ReadInt(string name, int bits)
@@ -146,7 +155,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads a 8-bit signed integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <returns>Value read from the reader.</returns>
         public sbyte ReadSByte(string name)
         {
@@ -156,7 +165,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads an unsigned integer of up to 32 bits.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <param name="bits">Number of bits to read.</param>
         /// <returns>Value read from the reader.</returns>
         public uint ReadUInt(string name, int bits)
@@ -167,7 +176,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads one or more child nodes from the IValueReader.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <param name="count">The number of nodes to read. Must be greater than 0. An ArgumentOutOfRangeException will
         /// be thrown if this value exceeds the actual number of nodes available.</param>
         /// <returns>An IEnumerable of IValueReaders used to read the nodes.</returns>
@@ -194,7 +203,7 @@ namespace NetGore.IO
         /// in the key. If there is more than one node for the given <paramref name="key"/>, an
         /// ArgumentException will be thrown.
         /// </summary>
-        /// <param name="key">Unused by the BitStreamValueReader.</param>
+        /// <param name="key">Unused by the BinaryValueReader.</param>
         /// <returns>An IValueReader to read the child node.</returns>
         /// <exception cref="ArgumentException">Zero or more than one values found for the given
         /// <paramref name="key"/>.</exception>
@@ -206,7 +215,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads a boolean.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <returns>Value read from the reader.</returns>
         public bool ReadBool(string name)
         {
@@ -216,7 +225,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads a 16-bit signed integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <returns>Value read from the reader.</returns>
         public short ReadShort(string name)
         {
@@ -226,7 +235,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads a variable-length string of up to 65535 characters in length.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <returns>String read from the reader.</returns>
         public string ReadString(string name)
         {
@@ -236,7 +245,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads a 32-bit unsigned integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <returns>Value read from the reader.</returns>
         public uint ReadUInt(string name)
         {
@@ -246,7 +255,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads a 16-bit unsigned integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueReader.</param>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
         /// <returns>Value read from the reader.</returns>
         public ushort ReadUShort(string name)
         {

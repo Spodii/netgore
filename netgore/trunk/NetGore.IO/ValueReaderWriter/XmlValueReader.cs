@@ -245,6 +245,15 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets if this IValueReader supports reading nodes. If false, any attempt to use nodes in this IValueReader
+        /// will result in a NotSupportedException being thrown.
+        /// </summary>
+        public bool SupportsNodes
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Reads a 32-bit signed integer.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>

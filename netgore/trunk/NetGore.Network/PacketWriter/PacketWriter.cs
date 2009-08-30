@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -18,219 +17,9 @@ namespace NetGore.Network
     /// a given amount of time will throw an Exception since it was likely lost and the equivilant of a memory leak.
     /// It is preferred that a PacketWriter is never used directly, and is only used from the PacketWriterPool.
     /// </summary>
-    public class PacketWriter : BitStream, IPoolable<PacketWriter>, IValueWriter
+    public class PacketWriter : BitStream, IPoolable<PacketWriter>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        /// <summary>
-        /// Writes an unsigned integer of up to 32 bits.
-        /// </summary>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
-        /// <param name="value">Value to write.</param>
-        /// <param name="bits">Number of bits to write.</param>
-        void IValueWriter.Write(string name, uint value, int bits)
-        {
-            Write(value, bits);
-        }
-
-        /// <summary>
-        /// Writes a boolean.
-        /// </summary>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
-        /// <param name="value">Value to write.</param>
-        void IValueWriter.Write(string name, bool value)
-        {
-            Write(value);
-        }
-
-        /// <summary>
-        /// Writes a 32-bit unsigned integer.
-        /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
-        /// <param name="value">Value to write.</param>
-        void IValueWriter.Write(string name, uint value)
-        {
-            Write(value);
-        }
-
-        /// <summary>
-        /// Writes a 16-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
-        /// <param name="value">Value to write.</param>
-        void IValueWriter.Write(string name, short value)
-        {
-            Write(value);
-        }
-
-        /// <summary>
-        /// Writes a 16-bit unsigned integer.
-        /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
-        /// <param name="value">Value to write.</param>
-        void IValueWriter.Write(string name, ushort value)
-        {
-            Write(value);
-        }
-
-        /// <summary>
-        /// Writes a 8-bit unsigned integer.
-        /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
-        /// <param name="value">Value to write.</param>
-        void IValueWriter.Write(string name, byte value)
-        {
-            Write(value);
-        }
-
-        /// <summary>
-        /// Writes a 8-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
-        /// <param name="value">Value to write.</param>
-        void IValueWriter.Write(string name, sbyte value)
-        {
-            Write(value);
-        }
-
-        /// <summary>
-        /// Writes a variable-length string of up to 65535 characters in length.
-        /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
-        /// <param name="value">String to write.</param>
-        void IValueWriter.Write(string name, string value)
-        {
-            Write(value);
-        }
-
-        /// <summary>
-        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
-        /// be read back in the same order they were written and the name field will be ignored.
-        /// </summary>
-        bool IValueWriter.SupportsNameLookup
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Writes multiple values of the same type to the IValueWriter all under the same node name.
-        /// Ordering is not guarenteed.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Name of the node that will contain the values.</param>
-        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
-        /// the same as if it were an empty IEnumerable.</param>
-        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
-        void IValueWriter.WriteMany<T>(string nodeName, IEnumerable<T> values, WriteManyHandler<T> writeHandler)
-        {
-            // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
-            // be nearly identical to that used in the BitStreamValueWriter.
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Writes multiple values of type <typeparamref name="T"/>, where each value will result in its own
-        /// node being created. Ordering is not guarenteed.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Name of the node that will contain the values.</param>
-        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
-        /// the same as if it were an empty IEnumerable.</param>
-        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
-        public void WriteManyNodes<T>(string nodeName, IEnumerable<T> values, WriteManyNodesHandler<T> writeHandler)
-        {
-            // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
-            // be nearly identical to that used in the BitStreamValueWriter.
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Writes multiple values of type <typeparamref name="T"/>, where each value will result in its own
-        /// node being created. Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Name of the node that will contain the values.</param>
-        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
-        /// the same as if it were an empty IEnumerable.</param>
-        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
-        public void WriteManyNodes<T>(string nodeName, T[] values, WriteManyNodesHandler<T> writeHandler)
-        {
-            // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
-            // be nearly identical to that used in the BitStreamValueWriter.
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Writes multiple values of the same type to the IValueWriter all under the same node name.
-        /// Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Name of the node that will contain the values.</param>
-        /// <param name="values">Array of values to write. If this value is null, it will be treated
-        /// the same as if it were an empty array.</param>
-        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
-        void IValueWriter.WriteMany<T>(string nodeName, T[] values, WriteManyHandler<T> writeHandler)
-        {
-            // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
-            // be nearly identical to that used in the BitStreamValueWriter.
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Writes the start of a child node in this IValueWriter.
-        /// </summary>
-        /// <param name="name">Name of the child node.</param>
-        void IValueWriter.WriteStartNode(string name)
-        {
-            // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
-            // be nearly identical to that used in the BitStreamValueWriter.
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Writes the end of a child node in this IValueWriter.
-        /// </summary>
-        /// <param name="name">Name of the child node.</param>
-        void IValueWriter.WriteEndNode(string name)
-        {
-            // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
-            // be nearly identical to that used in the BitStreamValueWriter.
-            throw new NotSupportedException();
-        }
-
-        /// <summary>
-        /// Writes a 32-bit signed integer.
-        /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
-        /// <param name="value">Value to write.</param>
-        void IValueWriter.Write(string name, int value)
-        {
-            Write(value);
-        }
-
-        /// <summary>
-        /// Writes a signed integer of up to 32 bits.
-        /// </summary>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
-        /// <param name="value">Value to write.</param>
-        /// <param name="bits">Number of bits to write.</param>
-        void IValueWriter.Write(string name, int value, int bits)
-        {
-            Write(value, bits);
-        }
-
-        /// <summary>
-        /// Writes a 32-bit floating-point number.
-        /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
-        /// <param name="value">Value to write.</param>
-        void IValueWriter.Write(string name, float value)
-        {
-            Write(value);
-        }
 
 #if DEBUG
         /// <summary>
@@ -293,11 +82,18 @@ namespace NetGore.Network
 
         #region IPoolable<PacketWriter> Members
 
+        /// <summary>
+        /// Gets the PoolData associated with this poolable item
+        /// </summary>
         PoolData<PacketWriter> IPoolable<PacketWriter>.PoolData
         {
             get { return _poolData; }
         }
 
+        /// <summary>
+        /// Notifies the item that it has been activated by the pool and that it will start being used.
+        /// All preperation work that could not be done in the constructor should be done here.
+        /// </summary>
         void IPoolable<PacketWriter>.Activate()
         {
             Reset(BitStreamMode.Write);
@@ -308,6 +104,10 @@ namespace NetGore.Network
 #endif
         }
 
+        /// <summary>
+        /// Notifies the item that it has been deactivated by the pool. The item may or may not ever be
+        /// activated again, so clean up where needed.
+        /// </summary>
         void IPoolable<PacketWriter>.Deactivate()
         {
 #if DEBUG
@@ -315,6 +115,12 @@ namespace NetGore.Network
 #endif
         }
 
+        /// <summary>
+        /// Sets the PoolData for this item. This is only called once in the object's lifetime;
+        /// right after the object is constructed.
+        /// </summary>
+        /// <param name="objectPool">Pool that created this object</param>
+        /// <param name="poolData">PoolData assigned to this object</param>
         void IPoolable<PacketWriter>.SetPoolData(ObjectPool<PacketWriter> objectPool, PoolData<PacketWriter> poolData)
         {
             _objectPool = objectPool;

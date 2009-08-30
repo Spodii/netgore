@@ -20,6 +20,12 @@ namespace NetGore.IO
         bool SupportsNameLookup { get; }
 
         /// <summary>
+        /// Gets if this IValueReader supports reading nodes. If false, any attempt to use nodes in this IValueReader
+        /// will result in a NotSupportedException being thrown.
+        /// </summary>
+        bool SupportsNodes { get; }
+
+        /// <summary>
         /// Reads a boolean.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>

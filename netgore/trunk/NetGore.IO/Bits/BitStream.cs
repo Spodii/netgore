@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace NetGore.IO
     /// A stream that supports performing I/O on a bit level. No parts of this class are
     /// guarenteed to be thread safe.
     /// </summary>
-    public class BitStream
+    public class BitStream : IValueReader, IValueWriter
     {
         /// <summary>
         /// Default maximum length of a string when the maximum length is not specified.
@@ -1703,7 +1704,8 @@ namespace NetGore.IO
         {
             if (Mode != requiredMode)
             {
-                string s = string.Format("Operation requires the BitStream to be in mode `{0}`.", requiredMode);
+                const string errmsg = "Operation requires the BitStream to be in mode `{0}`.";
+                string s = string.Format(errmsg, requiredMode);
                 throw new InvalidOperationException(s);
             }
         }
@@ -1842,7 +1844,24 @@ namespace NetGore.IO
             _workBuffer = _buffer[0];
         }
 
-        static byte[] ToByteArray(string value)
+        /// <summary>
+        /// Gets a NotSupportedException to use for when trying to use nodes for the IValueReader and IValueWriter.
+        /// </summary>
+        /// <returns>A NotSupportedException to use for when trying to use nodes.</returns>
+        protected internal static NotSupportedException CreateNodesNotSupportedException()
+        {
+            const string errmsg =
+                "Nodes are not supported by the BitStream. If you want node support, use the" +
+                " BinaryValueReader and BinaryValueWriter instead of the BitStream directly.";
+            return new NotSupportedException(errmsg);
+        }
+
+        /// <summary>
+        /// Converts a string to a byte array.
+        /// </summary>
+        /// <param name="s">The string.</param>
+        /// <returns>The byte array for the given string <paramref name="s"/>.</returns>
+        static byte[] ToByteArray(string s)
         {
             /*
             // This commented-out method is no good since results may not be the same over the network
@@ -1852,7 +1871,7 @@ namespace NetGore.IO
                 b[i] = (byte)c[i];
             return b;
             */
-            return ASCIIEncoding.ASCII.GetBytes(value);
+            return ASCIIEncoding.ASCII.GetBytes(s);
         }
 
         /// <summary>
@@ -2909,5 +2928,402 @@ namespace NetGore.IO
                 while (true);
             }
         }
+
+
+        #region IValueReader Members
+
+        /// <summary>
+        /// Reads a 8-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        byte IValueReader.ReadByte(string name)
+        {
+            return ReadByte();
+        }
+
+        /// <summary>
+        /// Reads a 32-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        float IValueReader.ReadFloat(string name)
+        {
+            return ReadFloat();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to read.</typeparam>
+        /// <param name="nodeName">Unused by the BitStream.</param>
+        /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
+        /// <returns>Array of the values read the IValueReader.</returns>
+        T[] IValueReader.ReadMany<T>(string nodeName, ReadManyHandler<T> readHandler)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <typeparam name="T">The Type of nodes to read.</typeparam>
+        /// <param name="nodeName">Unused by the BitStream.</param>
+        /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
+        /// <returns>Array of the values read the IValueReader.</returns>
+        T[] IValueReader.ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
+        /// be read back in the same order they were written and the name field will be ignored.
+        /// </summary>
+        bool IValueReader.SupportsNameLookup
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if this IValueReader supports reading nodes. If false, any attempt to use nodes in this IValueReader
+        /// will result in a NotSupportedException being thrown.
+        /// </summary>
+        bool IValueReader.SupportsNodes
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Reads a 32-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        int IValueReader.ReadInt(string name)
+        {
+            return ReadInt();
+        }
+
+        /// <summary>
+        /// Reads a signed integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        int IValueReader.ReadInt(string name, int bits)
+        {
+            return ReadInt(bits);
+        }
+
+        /// <summary>
+        /// Reads a 8-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        sbyte IValueReader.ReadSByte(string name)
+        {
+            return ReadSByte();
+        }
+
+        /// <summary>
+        /// Reads an unsigned integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="bits">Number of bits to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        uint IValueReader.ReadUInt(string name, int bits)
+        {
+            return ReadUInt(bits);
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="count">The number of nodes to read. Must be greater than 0. An ArgumentOutOfRangeException will
+        /// be thrown if this value exceeds the actual number of nodes available.</param>
+        /// <returns>An IEnumerable of IValueReaders used to read the nodes.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Count is less than 0.</exception>
+        IEnumerable<IValueReader> IValueReader.ReadNodes(string name, int count)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <param name="key">Unused by the BitStream.</param>
+        /// <returns>An IValueReader to read the child node.</returns>
+        /// <exception cref="ArgumentException">Zero or more than one values found for the given
+        /// <paramref name="key"/>.</exception>
+        IValueReader IValueReader.ReadNode(string key)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Reads a boolean.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        bool IValueReader.ReadBool(string name)
+        {
+            return ReadBool();
+        }
+
+        /// <summary>
+        /// Reads a 16-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        short IValueReader.ReadShort(string name)
+        {
+            return ReadShort();
+        }
+
+        /// <summary>
+        /// Reads a variable-length string of up to 65535 characters in length.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>String read from the reader.</returns>
+        string IValueReader.ReadString(string name)
+        {
+            return ReadString();
+        }
+
+        /// <summary>
+        /// Reads a 32-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        uint IValueReader.ReadUInt(string name)
+        {
+            return ReadUInt();
+        }
+
+        /// <summary>
+        /// Reads a 16-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        ushort IValueReader.ReadUShort(string name)
+        {
+            return ReadUShort();
+        }
+
+        #endregion
+
+
+        #region IValueWriter Members
+
+        /// <summary>
+        /// Writes an unsigned integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        /// <param name="bits">Number of bits to write.</param>
+        void IValueWriter.Write(string name, uint value, int bits)
+        {
+            Write(value, bits);
+        }
+
+        /// <summary>
+        /// Writes a boolean.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        void IValueWriter.Write(string name, bool value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Writes a 32-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        void IValueWriter.Write(string name, uint value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Writes a 16-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        void IValueWriter.Write(string name, short value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Writes a 16-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        void IValueWriter.Write(string name, ushort value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Writes a 8-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        void IValueWriter.Write(string name, byte value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Writes a 8-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        void IValueWriter.Write(string name, sbyte value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Writes a variable-length string of up to 65535 characters in length.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">String to write.</param>
+        void IValueWriter.Write(string name, string value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Gets if this IValueWriter supports using the name field to look up values. If false, values will have to
+        /// be read back in the same order they were written and the name field will be ignored.
+        /// </summary>
+        bool IValueWriter.SupportsNameLookup
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if this IValueWriter supports reading nodes. If false, any attempt to use nodes in this IValueWriter
+        /// will result in a NotSupportedException being thrown.
+        /// </summary>
+        bool IValueWriter.SupportsNodes
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        void IValueWriter.WriteStartNode(string name)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        void IValueWriter.WriteEndNode(string name)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Unused by the BitStream.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void IValueWriter.WriteMany<T>(string nodeName, IEnumerable<T> values, WriteManyHandler<T> writeHandler)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Unused by the BitStream.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void IValueWriter.WriteManyNodes<T>(string nodeName, IEnumerable<T> values, WriteManyNodesHandler<T> writeHandler)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Unused by the BitStream.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void IValueWriter.WriteManyNodes<T>(string nodeName, T[] values, WriteManyNodesHandler<T> writeHandler)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Unsupported by the BitStream.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Unused by the BitStream.</param>
+        /// <param name="values">Array of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty array.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void IValueWriter.WriteMany<T>(string nodeName, T[] values, WriteManyHandler<T> writeHandler)
+        {
+            throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Writes a 32-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        void IValueWriter.Write(string name, int value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Writes a signed integer of up to 32 bits.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        /// <param name="bits">Number of bits to write.</param>
+        void IValueWriter.Write(string name, int value, int bits)
+        {
+            Write(value, bits);
+        }
+
+        /// <summary>
+        /// Writes a 32-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        void IValueWriter.Write(string name, float value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        void IDisposable.Dispose()
+        {
+        }
+
+        #endregion
     }
 }

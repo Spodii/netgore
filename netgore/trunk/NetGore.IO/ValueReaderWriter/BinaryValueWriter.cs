@@ -7,19 +7,19 @@ using System.Linq;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Implementation of the IValueWriter using a BitStream.
+    /// Implementation of the IValueWriter using a BitStream to perform binary I/O.
     /// </summary>
-    public class BitStreamValueWriter : IValueWriter
+    public class BinaryValueWriter : IValueWriter
     {
         readonly string _destinationFile = null;
         readonly BitStream _writer;
         Stack<int> _nodeOffsetStack = null;
 
         /// <summary>
-        /// BitStreamValueReader constructor.
+        /// BinaryValueReader constructor.
         /// </summary>
         /// <param name="writer">BitStream that will be written to.</param>
-        public BitStreamValueWriter(BitStream writer)
+        public BinaryValueWriter(BitStream writer)
         {
             if (writer == null)
                 throw new ArgumentNullException("writer");
@@ -34,7 +34,7 @@ namespace NetGore.IO
         /// FileBitStreamValueWriter constructor.
         /// </summary>
         /// <param name="filePath">Path to the file to write to.</param>
-        public BitStreamValueWriter(string filePath) : this(new BitStream(BitStreamMode.Write, 8192))
+        public BinaryValueWriter(string filePath) : this(new BitStream(BitStreamMode.Write, 8192))
         {
             _destinationFile = filePath;
             File.WriteAllBytes(filePath, new byte[]
@@ -48,8 +48,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes an unsigned integer of up to 32 bits.
         /// </summary>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         /// <param name="value">Value to write.</param>
         /// <param name="bits">Number of bits to write.</param>
         public void Write(string name, uint value, int bits)
@@ -60,8 +59,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a boolean.
         /// </summary>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, bool value)
         {
@@ -71,7 +69,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 32-bit unsigned integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, uint value)
         {
@@ -81,7 +79,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 16-bit signed integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, short value)
         {
@@ -91,7 +89,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 16-bit unsigned integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, ushort value)
         {
@@ -101,7 +99,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 8-bit unsigned integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, byte value)
         {
@@ -111,7 +109,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 8-bit signed integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, sbyte value)
         {
@@ -121,7 +119,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a variable-length string of up to 65535 characters in length.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         /// <param name="value">String to write.</param>
         public void Write(string name, string value)
         {
@@ -129,7 +127,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
+        /// Gets if this IValueWriter supports using the name field to look up values. If false, values will have to
         /// be read back in the same order they were written and the name field will be ignored.
         /// </summary>
         public bool SupportsNameLookup
@@ -138,9 +136,18 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets if this IValueWriter supports reading nodes. If false, any attempt to use nodes in this IValueWriter
+        /// will result in a NotSupportedException being thrown.
+        /// </summary>
+        public bool SupportsNodes
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Writes the start of a child node in this IValueWriter.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         public void WriteStartNode(string name)
         {
             const uint reservedValue = 0;
@@ -156,7 +163,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes the end of a child node in this IValueWriter.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         public void WriteEndNode(string name)
         {
             if (_nodeOffsetStack == null || _nodeOffsetStack.Count == 0)
@@ -181,7 +188,7 @@ namespace NetGore.IO
         /// Ordering is not guarenteed.
         /// </summary>
         /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="nodeName">Unused by the BinaryValueWriter.</param>
         /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
         /// the same as if it were an empty IEnumerable.</param>
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
@@ -212,7 +219,7 @@ namespace NetGore.IO
         /// node being created. Ordering is not guarenteed.
         /// </summary>
         /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="nodeName">Unused by the BinaryValueWriter.</param>
         /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
         /// the same as if it were an empty IEnumerable.</param>
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
@@ -245,7 +252,7 @@ namespace NetGore.IO
         /// node being created. Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
         /// </summary>
         /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="nodeName">Unused by the BinaryValueWriter.</param>
         /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
         /// the same as if it were an empty IEnumerable.</param>
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
@@ -278,7 +285,7 @@ namespace NetGore.IO
         /// Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
         /// </summary>
         /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="nodeName">Unused by the BinaryValueWriter.</param>
         /// <param name="values">Array of values to write. If this value is null, it will be treated
         /// the same as if it were an empty array.</param>
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
@@ -307,7 +314,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 32-bit signed integer.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, int value)
         {
@@ -317,8 +324,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a signed integer of up to 32 bits.
         /// </summary>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         /// <param name="value">Value to write.</param>
         /// <param name="bits">Number of bits to write.</param>
         public void Write(string name, int value, int bits)
@@ -329,7 +335,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 32-bit floating-point number.
         /// </summary>
-        /// <param name="name">Unused by the BitStreamValueWriter.</param>
+        /// <param name="name">Unused by the BinaryValueWriter.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, float value)
         {

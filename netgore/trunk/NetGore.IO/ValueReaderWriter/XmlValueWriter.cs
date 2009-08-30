@@ -87,10 +87,19 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
+        /// Gets if this IValueWriter supports using the name field to look up values. If false, values will have to
         /// be read back in the same order they were written and the name field will be ignored.
         /// </summary>
         public bool SupportsNameLookup
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Gets if this IValueWriter supports reading nodes. If false, any attempt to use nodes in this IValueWriter
+        /// will result in a NotSupportedException being thrown.
+        /// </summary>
+        public bool SupportsNodes
         {
             get { return true; }
         }
