@@ -342,7 +342,7 @@ namespace DemoGame.MapEditor
             get { return _wallCursor; }
         }
 
-        public ScreenForm()
+        public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
         {
             InitializeComponent();
             GameScreen.Screen = this;
@@ -363,6 +363,40 @@ namespace DemoGame.MapEditor
 
             // Create the world
             _world = new World(this, _camera);
+
+            HandleSwitches(switches);
+        }
+
+        void HandleSwitches(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
+        {
+            if (switches == null || switches.Count() == 0)
+                return;
+
+            bool willClose = false;
+
+            foreach (var item in switches)
+            {
+                switch (item.Key)
+                {
+                    case CommandLineSwitch.SaveAllMaps:
+                        break;
+
+                    case CommandLineSwitch.Close:
+                        willClose = true;
+                        break;
+                }
+            }
+
+            // To close, we actually will create a timer to close the form one ms from now
+            if (willClose)
+            {
+                Timer t = new Timer
+                {
+                    Interval = 1
+                };
+                t.Tick += delegate { Close(); };
+                t.Start();
+            }
         }
 
         void BeginEditGrhData(TreeNode node, GrhData gd)

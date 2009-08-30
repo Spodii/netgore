@@ -49,7 +49,7 @@ namespace NetGore
 
             foreach (var item in items)
             {
-                T parsed = EnumHelper.Parse<T>(item.Key);
+                T parsed = EnumHelper.Parse<T>(item.Key, true);
                 if (EnumHelper.IsDefined(parsed))
                     yield return new KeyValuePair<T, string[]>(parsed, item.Value);
             }
