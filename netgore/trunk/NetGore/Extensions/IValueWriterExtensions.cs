@@ -137,7 +137,6 @@ namespace NetGore
                 sb.Append(Parser.Invariant.ToString(value.B));
                 sb.Append(delimiter);
                 sb.Append(Parser.Invariant.ToString(value.A));
-                sb.Append(delimiter);
                 writer.Write(name, sb.ToString());
             }
             else
