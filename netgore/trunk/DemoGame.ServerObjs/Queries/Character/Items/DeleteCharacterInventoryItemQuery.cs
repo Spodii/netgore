@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Diagnostics;
@@ -42,9 +43,8 @@ namespace DemoGame.Server.Queries
         protected override void SetParameters(DbParameterValues p, ICharacterInventoryTable item)
         {
             item.TryCopyValues(p);
-
-            Debug.Assert(p["@slot"].Equals(item.Slot));
-            Debug.Assert(p["@character_id"].Equals(item.CharacterID));
+            Debug.Assert(Convert.ToInt32(p["@slot"]) == (int)item.Slot);
+            Debug.Assert(Convert.ToInt32(p["@character_id"]) == (int)item.CharacterID);
         }
     }
 }
