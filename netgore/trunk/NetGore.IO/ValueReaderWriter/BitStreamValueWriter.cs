@@ -218,8 +218,26 @@ namespace NetGore.IO
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
         public void WriteManyNodes<T>(string nodeName, IEnumerable<T> values, WriteManyNodesHandler<T> writeHandler)
         {
-            // TODO: !! ...
-            throw new NotImplementedException();
+            int count;
+            if (values != null)
+                count = values.Count();
+            else
+                count = 0;
+
+            WriteStartNode(nodeName);
+            {
+                Write(null, count);
+                if (values != null && count > 0)
+                {
+                    foreach (T value in values)
+                    {
+                        WriteStartNode(null);
+                        writeHandler(this, value);
+                        WriteEndNode(null);
+                    }
+                }
+            }
+            WriteEndNode(nodeName);
         }
 
         /// <summary>
@@ -233,8 +251,26 @@ namespace NetGore.IO
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
         public void WriteManyNodes<T>(string nodeName, T[] values, WriteManyNodesHandler<T> writeHandler)
         {
-            // TODO: !! ...
-            throw new NotImplementedException();
+            int count;
+            if (values != null)
+                count = values.Length;
+            else
+                count = 0;
+
+            WriteStartNode(nodeName);
+            {
+                Write(null, count);
+                if (values != null && count > 0)
+                {
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        WriteStartNode(null);
+                        writeHandler(this, values[i]);
+                        WriteEndNode(null);
+                    }
+                }
+            }
+            WriteEndNode(nodeName);
         }
 
         /// <summary>
@@ -256,7 +292,7 @@ namespace NetGore.IO
 
             WriteStartNode(nodeName);
             {
-                Write("Count", count);
+                Write(null, count);
                 if (values != null && count > 0)
                 {
                     for (int i = 0; i < values.Length; i++)
