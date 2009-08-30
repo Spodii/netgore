@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     /// </summary>
     public static class IDataReaderExtensions
     {
-        static void CheckIfDefined<T>(T value)
+        static void CheckIfDefined<T>(T value) where T : struct
         {
             if (!EnumHelper.IsDefined(value))
                 throw new InvalidCastException(string.Format("Value `{0}` is not defined for enum `{1}`.", value, typeof(T)));
