@@ -186,7 +186,7 @@ namespace DemoGame.Client
         void RecvCreateDynamicEntity(IIPSocket conn, BitStream r)
         {
             MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-            DynamicEntity dynamicEntity = DynamicEntityFactory.Read(new BinaryValueReader(r));
+            DynamicEntity dynamicEntity = DynamicEntityFactory.Read(r);
             Map.AddDynamicEntity(dynamicEntity, mapEntityIndex);
 
             Character character = dynamicEntity as Character;
@@ -515,16 +515,15 @@ namespace DemoGame.Client
             }
 
             // Deserialize
-            IValueReader valueReader = new BinaryValueReader(r);
             if (dynamicEntity != null)
             {
                 // Read the value into the DynamicEntity
-                dynamicEntity.DeserializePositionAndVelocity(valueReader);
+                dynamicEntity.DeserializePositionAndVelocity(r);
             }
             else
             {
                 // Just flush the values from the reader
-                DynamicEntity.FlushPositionAndVelocity(valueReader);
+                DynamicEntity.FlushPositionAndVelocity(r);
             }
         }
 
