@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Alignment.cs" />
     <Compile Include="AlignmentHelper.cs" />
+    <Compile Include="CommandLineSwitchHelper.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Extensions\ClampExtensions.cs" />
     <Compile Include="Entities\BoxSide.cs" />
