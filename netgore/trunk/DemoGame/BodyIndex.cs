@@ -1,7 +1,10 @@
 using System;
 using System.Data;
-using System.Linq;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Runtime.InteropServices;
+using NetGore.Globalization;
 using NetGore.IO;
 
 namespace DemoGame
@@ -14,14 +17,14 @@ namespace DemoGame
     public struct BodyIndex : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
-        /// The maximum value.
+        /// Represents the largest possible value of BodyIndex. This field is constant.
         /// </summary>
-        const int _maxValue = ushort.MaxValue;
+        public const int MaxValue = ushort.MaxValue;
 
         /// <summary>
-        /// The minimum value.
+        /// Represents the smallest possible value of BodyIndex. This field is constant.
         /// </summary>
-        const int _minValue = ushort.MinValue;
+        public const int MinValue = ushort.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
@@ -34,7 +37,7 @@ namespace DemoGame
         /// <param name="value">Value to assign to the new BodyIndex.</param>
         public BodyIndex(int value)
         {
-            if (value < _minValue || value > _maxValue)
+            if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
 
             _value = (ushort)value;
@@ -91,11 +94,6 @@ namespace DemoGame
             return _value;
         }
 
-        public static BodyIndex Parse(string value)
-        {
-            return new BodyIndex(ushort.Parse(value));
-        }
-
         /// <summary>
         /// Reads an BodyIndex from an IValueReader.
         /// </summary>
@@ -147,23 +145,13 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Returns the fully qualified type name of this instance.
+        /// Converts the numeric value of this instance to its equivalent string representation.
         /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> containing a fully qualified type name.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
+        /// <returns>The string representation of the value of this instance, consisting of a sequence
+        /// of digits ranging from 0 to 9, without leading zeroes.</returns>
         public override string ToString()
         {
             return _value.ToString();
-        }
-
-        public static bool TryParse(string value, out BodyIndex grhIndex)
-        {
-            ushort outValue;
-            bool success = ushort.TryParse(value, out outValue);
-            grhIndex = new BodyIndex(outValue);
-            return success;
         }
 
         /// <summary>
@@ -441,7 +429,7 @@ namespace DemoGame
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
         ///                 </param><filterpriority>2</filterpriority>
-        string IConvertible.ToString(IFormatProvider provider)
+        public string ToString(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToString(provider);
         }
@@ -500,6 +488,26 @@ namespace DemoGame
         }
 
         #endregion
+
+        /// <summary>
+        /// Implements operator ++.
+        /// </summary>
+        /// <param name="l">The BodyIndex to increment.</param>
+        /// <returns>The incremented BodyIndex.</returns>
+        public static BodyIndex operator ++(BodyIndex l)
+        {
+            return new BodyIndex(l._value + 1);
+        }
+
+        /// <summary>
+        /// Implements operator --.
+        /// </summary>
+        /// <param name="l">The BodyIndex to decrement.</param>
+        /// <returns>The decremented BodyIndex.</returns>
+        public static BodyIndex operator --(BodyIndex l)
+        {
+            return new BodyIndex(l._value - 1);
+        }
 
         /// <summary>
         /// Implements operator +.
@@ -750,43 +758,104 @@ namespace DemoGame
     public static class BodyIndexReadWriteExtensions
     {
         /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type BodyIndex.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
-        /// <param name="i">The field index to read.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static BodyIndex GetBodyIndex(this IDataReader dataReader, int i)
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as a BodyIndex.</returns>
+        public static BodyIndex AsBodyIndex<T>(this IDictionary<T, string> dict, T key)
         {
-            return BodyIndex.Read(dataReader, i);
+            return Parser.Invariant.ParseBodyIndex(dict[key]);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type BodyIndex.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
-        /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static BodyIndex GetBodyIndex(this IDataReader dataReader, string name)
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <param name="defaultValue">The value to use if the value at the <paramref name="key"/> could not be parsed.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
+        /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
+        /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
+        public static BodyIndex AsBodyIndex<T>(this IDictionary<T, string> dict, T key, BodyIndex defaultValue)
         {
-            return BodyIndex.Read(dataReader, name);
+            string value;
+            if (!dict.TryGetValue(key, out value))
+                return defaultValue;
+
+            BodyIndex parsed;
+            if (!Parser.Invariant.TryParse(value, out parsed))
+                return defaultValue;
+
+            return parsed;
         }
 
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
+        /// Parses the BodyIndex from a string.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The BodyIndex parsed from the string.</returns>
+        public static BodyIndex ParseBodyIndex(this Parser parser, string value)
+        {
+            return new BodyIndex(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Tries to parse the BodyIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed BodyIndex.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out BodyIndex outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new BodyIndex(tmp);
+            return ret;
+        }
+
+        /// <summary>
+        /// Reads the BodyIndex from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the BodyIndex from.</param>
+        /// <returns>The BodyIndex read from the BitStream.</returns>
         public static BodyIndex ReadBodyIndex(this BitStream bitStream)
         {
             return BodyIndex.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IValueReader.
+        /// Reads the BodyIndex from an IDataReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
+        /// <param name="dataReader">IDataReader to read the BodyIndex from.</param>
+        /// <param name="i">The field index to read.</param>
+        /// <returns>The BodyIndex read from the IDataReader.</returns>
+        public static BodyIndex GetBodyIndex(this IDataReader dataReader, int i)
+        {
+            return BodyIndex.Read(dataReader, i);
+        }
+
+        /// <summary>
+        /// Reads the BodyIndex from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the BodyIndex from.</param>
+        /// <param name="name">The name of the field to read the value from.</param>
+        /// <returns>The BodyIndex read from the IDataReader.</returns>
+        public static BodyIndex GetBodyIndex(this IDataReader dataReader, string name)
+        {
+            return BodyIndex.Read(dataReader, name);
+        }
+
+        /// <summary>
+        /// Reads the BodyIndex from an IValueReader.
+        /// </summary>
+        /// <param name="valueReader">IValueReader to read the BodyIndex from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The CustomValueType read from the IValueReader.</returns>
+        /// <returns>The BodyIndex read from the IValueReader.</returns>
         public static BodyIndex ReadBodyIndex(this IValueReader valueReader, string name)
         {
             return BodyIndex.Read(valueReader, name);

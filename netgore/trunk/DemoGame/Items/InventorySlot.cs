@@ -1,8 +1,10 @@
 using System;
 using System.Data;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
+using System.IO;
 using System.Runtime.InteropServices;
+using NetGore.Globalization;
 using NetGore.IO;
 
 namespace DemoGame
@@ -93,56 +95,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Converts the string representation of a number to its InventorySlot equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <returns>The parsed InventorySlot.</returns>
-        public static InventorySlot Parse(string s)
-        {
-            return new InventorySlot(byte.Parse(s));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its InventorySlot equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <returns>The parsed InventorySlot.</returns>
-        public static InventorySlot Parse(string s, NumberStyles style)
-        {
-            return new InventorySlot(byte.Parse(s, style));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its InventorySlot equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <returns>The parsed InventorySlot.</returns>
-        public static InventorySlot Parse(string s, IFormatProvider provider)
-        {
-            return new InventorySlot(byte.Parse(s, provider));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its InventorySlot equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <returns>The parsed InventorySlot.</returns>
-        public static InventorySlot Parse(string s, NumberStyles style, IFormatProvider provider)
-        {
-            return new InventorySlot(byte.Parse(s, style, provider));
-        }
-
-        /// <summary>
         /// Reads an InventorySlot from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
@@ -200,41 +152,6 @@ namespace DemoGame
         public override string ToString()
         {
             return _value.ToString();
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its InventorySlot equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed InventorySlot.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out InventorySlot parsedValue)
-        {
-            byte outValue;
-            bool success = byte.TryParse(s, style, provider, out outValue);
-            parsedValue = new InventorySlot(outValue);
-            return success;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its InventorySlot equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed InventorySlot.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, out InventorySlot parsedValue)
-        {
-            byte outValue;
-            bool success = byte.TryParse(s, out outValue);
-            parsedValue = new InventorySlot(outValue);
-            return success;
         }
 
         /// <summary>
@@ -571,7 +488,7 @@ namespace DemoGame
         }
 
         #endregion
-
+        
         /// <summary>
         /// Implements operator ++.
         /// </summary>
@@ -581,7 +498,7 @@ namespace DemoGame
         {
             return new InventorySlot(l._value + 1);
         }
-
+        
         /// <summary>
         /// Implements operator --.
         /// </summary>
@@ -840,44 +757,105 @@ namespace DemoGame
     /// </summary>
     public static class InventorySlotReadWriteExtensions
     {
-        /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
+		/// <summary>
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type InventorySlot.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
-        /// <param name="i">The field index to read.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static InventorySlot GetInventorySlot(this IDataReader dataReader, int i)
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as a InventorySlot.</returns>
+        public static InventorySlot AsInventorySlot<T>(this IDictionary<T, string> dict, T key)
         {
-            return InventorySlot.Read(dataReader, i);
+            return Parser.Invariant.ParseInventorySlot(dict[key]);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type InventorySlot.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
-        /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static InventorySlot GetInventorySlot(this IDataReader dataReader, string name)
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <param name="defaultValue">The value to use if the value at the <paramref name="key"/> could not be parsed.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
+        /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
+        /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
+        public static InventorySlot AsInventorySlot<T>(this IDictionary<T, string> dict, T key, InventorySlot defaultValue)
         {
-            return InventorySlot.Read(dataReader, name);
-        }
+            string value;
+            if (!dict.TryGetValue(key, out value))
+                return defaultValue;
 
+            InventorySlot parsed;
+            if (!Parser.Invariant.TryParse(value, out parsed))
+                return defaultValue;
+
+            return parsed;
+        }
+        
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
+        /// Parses the InventorySlot from a string.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The InventorySlot parsed from the string.</returns>
+        public static InventorySlot ParseInventorySlot(this Parser parser, string value)
+        {
+            return new InventorySlot(parser.ParseByte(value));
+        }
+        
+		/// <summary>
+        /// Tries to parse the InventorySlot from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed InventorySlot.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out InventorySlot outValue)
+        {
+            byte tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new InventorySlot(tmp);
+            return ret;
+        }
+        
+        /// <summary>
+        /// Reads the InventorySlot from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the InventorySlot from.</param>
+        /// <returns>The InventorySlot read from the BitStream.</returns>
         public static InventorySlot ReadInventorySlot(this BitStream bitStream)
         {
             return InventorySlot.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IValueReader.
+        /// Reads the InventorySlot from an IDataReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
+        /// <param name="dataReader">IDataReader to read the InventorySlot from.</param>
+        /// <param name="i">The field index to read.</param>
+        /// <returns>The InventorySlot read from the IDataReader.</returns>
+        public static InventorySlot GetInventorySlot(this IDataReader dataReader, int i)
+        {
+            return InventorySlot.Read(dataReader, i);
+        }
+
+        /// <summary>
+        /// Reads the InventorySlot from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the InventorySlot from.</param>
+        /// <param name="name">The name of the field to read the value from.</param>
+        /// <returns>The InventorySlot read from the IDataReader.</returns>
+        public static InventorySlot GetInventorySlot(this IDataReader dataReader, string name)
+        {
+            return InventorySlot.Read(dataReader, name);
+        }
+
+        /// <summary>
+        /// Reads the InventorySlot from an IValueReader.
+        /// </summary>
+        /// <param name="valueReader">IValueReader to read the InventorySlot from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The CustomValueType read from the IValueReader.</returns>
+        /// <returns>The InventorySlot read from the IValueReader.</returns>
         public static InventorySlot ReadInventorySlot(this IValueReader valueReader, string name)
         {
             return InventorySlot.Read(valueReader, name);

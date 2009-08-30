@@ -1,7 +1,10 @@
 using System;
 using System.Data;
-using System.Linq;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Runtime.InteropServices;
+using NetGore.Globalization;
 using NetGore.IO;
 
 namespace DemoGame.Server
@@ -14,14 +17,14 @@ namespace DemoGame.Server
     public struct ItemTemplateID : IComparable, IConvertible, IFormattable, IComparable<int>, IEquatable<int>
     {
         /// <summary>
-        /// The maximum value.
+        /// Represents the largest possible value of ItemTemplateID. This field is constant.
         /// </summary>
-        const int _maxValue = int.MaxValue;
+        public const int MaxValue = int.MaxValue;
 
         /// <summary>
-        /// The minimum value.
+        /// Represents the smallest possible value of ItemTemplateID. This field is constant.
         /// </summary>
-        const int _minValue = int.MinValue;
+        public const int MinValue = int.MinValue;
 
         /// <summary>
         /// The underlying value. This contains the actual value of the struct instance.
@@ -34,7 +37,7 @@ namespace DemoGame.Server
         /// <param name="value">Value to assign to the new ItemTemplateID.</param>
         public ItemTemplateID(int value)
         {
-            if (value < _minValue || value > _maxValue)
+            if (value < MinValue || value > MaxValue)
                 throw new ArgumentOutOfRangeException("value");
 
             _value = value;
@@ -142,12 +145,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Returns the fully qualified type name of this instance.
+        /// Converts the numeric value of this instance to its equivalent string representation.
         /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> containing a fully qualified type name.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
+        /// <returns>The string representation of the value of this instance, consisting of a sequence
+        /// of digits ranging from 0 to 9, without leading zeroes.</returns>
         public override string ToString()
         {
             return _value.ToString();
@@ -428,7 +429,7 @@ namespace DemoGame.Server
         /// </returns>
         /// <param name="provider">An <see cref="T:System.IFormatProvider"/> interface implementation that supplies culture-specific formatting information. 
         ///                 </param><filterpriority>2</filterpriority>
-        string IConvertible.ToString(IFormatProvider provider)
+        public string ToString(IFormatProvider provider)
         {
             return ((IConvertible)_value).ToString(provider);
         }
@@ -487,6 +488,26 @@ namespace DemoGame.Server
         }
 
         #endregion
+
+        /// <summary>
+        /// Implements operator ++.
+        /// </summary>
+        /// <param name="l">The ItemTemplateID to increment.</param>
+        /// <returns>The incremented ItemTemplateID.</returns>
+        public static ItemTemplateID operator ++(ItemTemplateID l)
+        {
+            return new ItemTemplateID(l._value + 1);
+        }
+
+        /// <summary>
+        /// Implements operator --.
+        /// </summary>
+        /// <param name="l">The ItemTemplateID to decrement.</param>
+        /// <returns>The decremented ItemTemplateID.</returns>
+        public static ItemTemplateID operator --(ItemTemplateID l)
+        {
+            return new ItemTemplateID(l._value - 1);
+        }
 
         /// <summary>
         /// Implements operator +.
@@ -602,6 +623,28 @@ namespace DemoGame.Server
         /// <param name="left">Left side argument.</param>
         /// <param name="right">Right side argument.</param>
         /// <returns>If the left argument is greater than the right.</returns>
+        public static bool operator >(ItemTemplateID left, ItemTemplateID right)
+        {
+            return left._value > right._value;
+        }
+
+        /// <summary>
+        /// Implements operator <.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than the left.</returns>
+        public static bool operator <(ItemTemplateID left, ItemTemplateID right)
+        {
+            return left._value < right._value;
+        }
+
+        /// <summary>
+        /// Implements operator >.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the left argument is greater than the right.</returns>
         public static bool operator >(ItemTemplateID left, int right)
         {
             return left._value > right;
@@ -663,6 +706,28 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Implements operator >=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the left argument is greater than or equal to the right.</returns>
+        public static bool operator >=(ItemTemplateID left, ItemTemplateID right)
+        {
+            return left._value >= right._value;
+        }
+
+        /// <summary>
+        /// Implements operator <=.
+        /// </summary>
+        /// <param name="left">Left side argument.</param>
+        /// <param name="right">Right side argument.</param>
+        /// <returns>If the right argument is greater than or equal to the left.</returns>
+        public static bool operator <=(ItemTemplateID left, ItemTemplateID right)
+        {
+            return left._value <= right._value;
+        }
+
+        /// <summary>
         /// Implements operator !=.
         /// </summary>
         /// <param name="left">Left side argument.</param>
@@ -693,43 +758,104 @@ namespace DemoGame.Server
     public static class ItemTemplateIDReadWriteExtensions
     {
         /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type ItemTemplateID.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
-        /// <param name="i">The field index to read.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static ItemTemplateID GetItemTemplateID(this IDataReader dataReader, int i)
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as a ItemTemplateID.</returns>
+        public static ItemTemplateID AsItemTemplateID<T>(this IDictionary<T, string> dict, T key)
         {
-            return ItemTemplateID.Read(dataReader, i);
+            return Parser.Invariant.ParseItemTemplateID(dict[key]);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type ItemTemplateID.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
-        /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static ItemTemplateID GetItemTemplateID(this IDataReader dataReader, string name)
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <param name="defaultValue">The value to use if the value at the <paramref name="key"/> could not be parsed.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
+        /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
+        /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
+        public static ItemTemplateID AsItemTemplateID<T>(this IDictionary<T, string> dict, T key, ItemTemplateID defaultValue)
         {
-            return ItemTemplateID.Read(dataReader, name);
+            string value;
+            if (!dict.TryGetValue(key, out value))
+                return defaultValue;
+
+            ItemTemplateID parsed;
+            if (!Parser.Invariant.TryParse(value, out parsed))
+                return defaultValue;
+
+            return parsed;
         }
 
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
+        /// Parses the ItemTemplateID from a string.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The ItemTemplateID parsed from the string.</returns>
+        public static ItemTemplateID ParseItemTemplateID(this Parser parser, string value)
+        {
+            return new ItemTemplateID(parser.ParseInt(value));
+        }
+
+        /// <summary>
+        /// Tries to parse the ItemTemplateID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed ItemTemplateID.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out ItemTemplateID outValue)
+        {
+            int tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new ItemTemplateID(tmp);
+            return ret;
+        }
+
+        /// <summary>
+        /// Reads the ItemTemplateID from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the ItemTemplateID from.</param>
+        /// <returns>The ItemTemplateID read from the BitStream.</returns>
         public static ItemTemplateID ReadItemTemplateID(this BitStream bitStream)
         {
             return ItemTemplateID.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IValueReader.
+        /// Reads the ItemTemplateID from an IDataReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
+        /// <param name="dataReader">IDataReader to read the ItemTemplateID from.</param>
+        /// <param name="i">The field index to read.</param>
+        /// <returns>The ItemTemplateID read from the IDataReader.</returns>
+        public static ItemTemplateID GetItemTemplateID(this IDataReader dataReader, int i)
+        {
+            return ItemTemplateID.Read(dataReader, i);
+        }
+
+        /// <summary>
+        /// Reads the ItemTemplateID from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the ItemTemplateID from.</param>
+        /// <param name="name">The name of the field to read the value from.</param>
+        /// <returns>The ItemTemplateID read from the IDataReader.</returns>
+        public static ItemTemplateID GetItemTemplateID(this IDataReader dataReader, string name)
+        {
+            return ItemTemplateID.Read(dataReader, name);
+        }
+
+        /// <summary>
+        /// Reads the ItemTemplateID from an IValueReader.
+        /// </summary>
+        /// <param name="valueReader">IValueReader to read the ItemTemplateID from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The CustomValueType read from the IValueReader.</returns>
+        /// <returns>The ItemTemplateID read from the IValueReader.</returns>
         public static ItemTemplateID ReadItemTemplateID(this IValueReader valueReader, string name)
         {
             return ItemTemplateID.Read(valueReader, name);

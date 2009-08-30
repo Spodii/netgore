@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using NetGore.Globalization;
 
 namespace DemoGame.Server
 {
@@ -61,7 +62,7 @@ namespace DemoGame.Server
             {
                 try
                 {
-                    CharacterTemplateID id = CharacterTemplateID.Parse((string)value);
+                    CharacterTemplateID id = Parser.Current.ParseCharacterTemplateID((string)value);
                     if (!id.TemplateExists())
                         throw new InvalidCastException(string.Format("No CharacterTemplate with ID `{0}`.", id));
                     return id;
