@@ -626,6 +626,324 @@ namespace NetGore.IO.Tests
         }
 
         [Test]
+        public void TestNameLookupWithNodesCaseSensitivity()
+        {
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    if (!creator.SupportsNameLookup)
+                        continue;
+
+                    // Name lookups should be case-insensitive
+
+                    const bool a1 = true;
+                    const int b1 = 10;
+                    const float c1 = 133.2f;
+                    const int d1 = 2051;
+                    const bool e1 = false;
+                    const string f1 = "asdf asdf lkjwreoiuwalj jk wark qoiuwer";
+                    const int g1 = 2092142;
+
+                    const bool a2 = true;
+                    const int b2 = 578;
+                    const float c2 = 17833.2f;
+                    const int d2 = 204551;
+                    const bool e2 = false;
+                    const string f2 = "asdfaasdfasdfwerqwerasdvxcvasdfaewalj jk wark qoiuwer";
+                    const int g2 = 2092142;
+
+                    const bool a3 = false;
+                    const int b3 = 1054;
+                    const float c3 = 13993.2f;
+                    const int d3 = 201151;
+                    const bool e3 = false;
+                    const string f3 = "asdf asdasfwerqwreadsahhewwqrqwreqref lkjwreoiuwalj jk wark qoiuwer";
+                    const int g3 = 2342;
+
+                    using (var w = creator.GetWriter())
+                    {
+                        w.WriteStartNode("NodeA");
+                        w.Write("a", a1);
+                        w.Write("B", b1);
+                        w.Write("c", c1);
+                        w.Write("D", d1);
+                        w.Write("E", e1);
+                        w.Write("f", f1);
+                        w.Write("g", g1);
+                        w.WriteEndNode("NodeA");
+
+                        w.WriteStartNode("NodeB");
+                        w.Write("D", d2);
+                        w.Write("E", e2);
+                        w.Write("F", f2);
+                        w.Write("G", g2);
+                        w.Write("a", a2);
+                        w.Write("b", b2);
+                        w.Write("c", c2);
+                        w.WriteEndNode("NodeB");
+
+                        w.WriteStartNode("NodeC");
+                        w.Write("d", d3);
+                        w.Write("e", e3);
+                        w.Write("f", f3);
+                        w.Write("g", g3);
+                        w.Write("A", a3);
+                        w.Write("B", b3);
+                        w.Write("c", c3);
+                        w.WriteEndNode("NodeC");
+                    }
+
+                    var r = creator.GetReader();
+                    {
+                        var nodeB = r.ReadNode("NodeB");
+                        var nodeC = r.ReadNode("NodeC");
+                        var nodeA = r.ReadNode("NodeA");
+
+                        Assert.AreEqual(f2, nodeB.ReadString("f"));
+                        Assert.AreEqual(c2, nodeB.ReadFloat("c"));
+                        Assert.AreEqual(b2, nodeB.ReadInt("b"));
+                        Assert.AreEqual(g2, nodeB.ReadInt("g"));
+                        Assert.AreEqual(d2, nodeB.ReadInt("d"));
+                        Assert.AreEqual(e2, nodeB.ReadBool("e"));
+                        Assert.AreEqual(f2, nodeB.ReadString("f"));
+                        Assert.AreEqual(d2, nodeB.ReadInt("d"));
+                        Assert.AreEqual(e2, nodeB.ReadBool("e"));
+                        Assert.AreEqual(f2, nodeB.ReadString("f"));
+
+                        Assert.AreEqual(f1, nodeA.ReadString("f"));
+                        Assert.AreEqual(c1, nodeA.ReadFloat("c"));
+                        Assert.AreEqual(b1, nodeA.ReadInt("b"));
+                        Assert.AreEqual(g1, nodeA.ReadInt("g"));
+                        Assert.AreEqual(d1, nodeA.ReadInt("d"));
+                        Assert.AreEqual(e1, nodeA.ReadBool("e"));
+                        Assert.AreEqual(f1, nodeA.ReadString("f"));
+                        Assert.AreEqual(d1, nodeA.ReadInt("d"));
+                        Assert.AreEqual(e1, nodeA.ReadBool("e"));
+                        Assert.AreEqual(f1, nodeA.ReadString("f"));
+
+                        Assert.AreEqual(f3, nodeC.ReadString("f"));
+                        Assert.AreEqual(c3, nodeC.ReadFloat("c"));
+                        Assert.AreEqual(b3, nodeC.ReadInt("b"));
+                        Assert.AreEqual(g3, nodeC.ReadInt("g"));
+                        Assert.AreEqual(d3, nodeC.ReadInt("d"));
+                        Assert.AreEqual(e3, nodeC.ReadBool("e"));
+                        Assert.AreEqual(f3, nodeC.ReadString("f"));
+                        Assert.AreEqual(d3, nodeC.ReadInt("d"));
+                        Assert.AreEqual(e3, nodeC.ReadBool("e"));
+                        Assert.AreEqual(f3, nodeC.ReadString("f"));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void TestNameLookupWithNodes()
+        {
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    if (!creator.SupportsNameLookup)
+                        continue;
+
+                    // Name lookups should be case-insensitive
+
+                    const bool a1 = true;
+                    const int b1 = 10;
+                    const float c1 = 133.2f;
+                    const int d1 = 2051;
+                    const bool e1 = false;
+                    const string f1 = "asdf asdf lkjwreoiuwalj jk wark qoiuwer";
+                    const int g1 = 2092142;
+
+                    const bool a2 = true;
+                    const int b2 = 578;
+                    const float c2 = 17833.2f;
+                    const int d2 = 204551;
+                    const bool e2 = false;
+                    const string f2 = "asdfaasdfasdfwerqwerasdvxcvasdfaewalj jk wark qoiuwer";
+                    const int g2 = 2092142;
+
+                    const bool a3 = false;
+                    const int b3 = 1054;
+                    const float c3 = 13993.2f;
+                    const int d3 = 201151;
+                    const bool e3 = false;
+                    const string f3 = "asdf asdasfwerqwreadsahhewwqrqwreqref lkjwreoiuwalj jk wark qoiuwer";
+                    const int g3 = 2342;
+
+                    using (var w = creator.GetWriter())
+                    {
+                        w.WriteStartNode("NodeA");
+                        w.Write("a", a1);
+                        w.Write("b", b1);
+                        w.Write("c", c1);
+                        w.Write("d", d1);
+                        w.Write("e", e1);
+                        w.Write("f", f1);
+                        w.Write("g", g1);
+                        w.WriteEndNode("NodeA");
+
+                        w.WriteStartNode("NodeB");
+                        w.Write("d", d2);
+                        w.Write("e", e2);
+                        w.Write("f", f2);
+                        w.Write("g", g2);
+                        w.Write("a", a2);
+                        w.Write("b", b2);
+                        w.Write("c", c2);
+                        w.WriteEndNode("NodeB");
+
+                        w.WriteStartNode("NodeC");
+                        w.Write("d", d3);
+                        w.Write("e", e3);
+                        w.Write("f", f3);
+                        w.Write("g", g3);
+                        w.Write("a", a3);
+                        w.Write("b", b3);
+                        w.Write("c", c3);
+                        w.WriteEndNode("NodeC");
+                    }
+
+                    var r = creator.GetReader();
+                    {
+                        var nodeB = r.ReadNode("NodeB");
+                        var nodeC = r.ReadNode("NodeC");
+                        var nodeA = r.ReadNode("NodeA");
+
+                        Assert.AreEqual(f2, nodeB.ReadString("f"));
+                        Assert.AreEqual(c2, nodeB.ReadFloat("c"));
+                        Assert.AreEqual(b2, nodeB.ReadInt("b"));
+                        Assert.AreEqual(g2, nodeB.ReadInt("g"));
+                        Assert.AreEqual(d2, nodeB.ReadInt("d"));
+                        Assert.AreEqual(e2, nodeB.ReadBool("e"));
+                        Assert.AreEqual(f2, nodeB.ReadString("f"));
+                        Assert.AreEqual(d2, nodeB.ReadInt("d"));
+                        Assert.AreEqual(e2, nodeB.ReadBool("e"));
+                        Assert.AreEqual(f2, nodeB.ReadString("f"));
+
+                        Assert.AreEqual(f1, nodeA.ReadString("f"));
+                        Assert.AreEqual(c1, nodeA.ReadFloat("c"));
+                        Assert.AreEqual(b1, nodeA.ReadInt("b"));
+                        Assert.AreEqual(g1, nodeA.ReadInt("g"));
+                        Assert.AreEqual(d1, nodeA.ReadInt("d"));
+                        Assert.AreEqual(e1, nodeA.ReadBool("e"));
+                        Assert.AreEqual(f1, nodeA.ReadString("f"));
+                        Assert.AreEqual(d1, nodeA.ReadInt("d"));
+                        Assert.AreEqual(e1, nodeA.ReadBool("e"));
+                        Assert.AreEqual(f1, nodeA.ReadString("f"));
+
+                        Assert.AreEqual(f3, nodeC.ReadString("f"));
+                        Assert.AreEqual(c3, nodeC.ReadFloat("c"));
+                        Assert.AreEqual(b3, nodeC.ReadInt("b"));
+                        Assert.AreEqual(g3, nodeC.ReadInt("g"));
+                        Assert.AreEqual(d3, nodeC.ReadInt("d"));
+                        Assert.AreEqual(e3, nodeC.ReadBool("e"));
+                        Assert.AreEqual(f3, nodeC.ReadString("f"));
+                        Assert.AreEqual(d3, nodeC.ReadInt("d"));
+                        Assert.AreEqual(e3, nodeC.ReadBool("e"));
+                        Assert.AreEqual(f3, nodeC.ReadString("f"));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void TestNameLookupCaseSensitivity()
+        {
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    if (!creator.SupportsNameLookup)
+                        continue;
+
+                    // Name lookups should be case-insensitive
+
+                    const bool a = true;
+                    const int b = 10;
+                    const float c = 133.2f;
+                    const int d = 2051;
+                    const bool e = false;
+                    const string f = "asdf asdf lkjwreoiuwalj jk wark qoiuwer";
+                    const int g = 2092142;
+
+                    using (var w = creator.GetWriter())
+                    {
+                        w.Write("A", a);
+                        w.Write("B", b);
+                        w.Write("c", c);
+                        w.Write("D", d);
+                        w.Write("e", e);
+                        w.Write("F", f);
+                        w.Write("G", g);
+                    }
+
+                    var r = creator.GetReader();
+                    {
+                        Assert.AreEqual(f, r.ReadString("f"));
+                        Assert.AreEqual(c, r.ReadFloat("c"));
+                        Assert.AreEqual(b, r.ReadInt("b"));
+                        Assert.AreEqual(g, r.ReadInt("g"));
+                        Assert.AreEqual(d, r.ReadInt("d"));
+                        Assert.AreEqual(e, r.ReadBool("e"));
+                        Assert.AreEqual(f, r.ReadString("f"));
+                        Assert.AreEqual(d, r.ReadInt("d"));
+                        Assert.AreEqual(e, r.ReadBool("e"));
+                        Assert.AreEqual(f, r.ReadString("f"));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void TestNameLookup()
+        {
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    if (!creator.SupportsNameLookup)
+                        continue;
+
+                    const bool a = true;
+                    const int b = 10;
+                    const float c = 133.2f;
+                    const int d = 2051;
+                    const bool e = false;
+                    const string f = "asdf asdf lkjwreoiuwalj jk wark qoiuwer";
+                    const int g = 2092142;
+
+                    using (var w = creator.GetWriter())
+                    {
+                        w.Write("a", a);
+                        w.Write("b", b);
+                        w.Write("c", c);
+                        w.Write("d", d);
+                        w.Write("e", e);
+                        w.Write("f", f);
+                        w.Write("g", g);
+                    }
+
+                    var r = creator.GetReader();
+                    {
+                        Assert.AreEqual(f, r.ReadString("f"));
+                        Assert.AreEqual(c, r.ReadFloat("c"));
+                        Assert.AreEqual(b, r.ReadInt("b"));
+                        Assert.AreEqual(g, r.ReadInt("g"));
+                        Assert.AreEqual(d, r.ReadInt("d"));
+                        Assert.AreEqual(e, r.ReadBool("e"));
+                        Assert.AreEqual(f, r.ReadString("f"));
+                        Assert.AreEqual(d, r.ReadInt("d"));
+                        Assert.AreEqual(e, r.ReadBool("e"));
+                        Assert.AreEqual(f, r.ReadString("f"));
+                    }
+                }
+            }
+        }
+
+        [Test]
         public void TestNodesBoolsOnly()
         {
             foreach (CreateCreatorHandler createCreator in _createCreators)
