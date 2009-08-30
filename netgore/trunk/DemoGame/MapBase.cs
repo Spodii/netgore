@@ -938,18 +938,18 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Finds the map's index from its file path
+        /// Tries to get the Map's index from the file path.
         /// </summary>
-        /// <param name="path">File path to the map</param>
-        /// <returns>Index of the map</returns>
-        public static MapIndex GetIndexFromPath(string path)
+        /// <param name="path">File path to the map.</param>
+        /// <param name="mapIndex">If this method returns true, contains the index of the map.</param>
+        /// <returns>True if the parsing was successful; otherwise false.</returns>
+        public static bool TryGetIndexFromPath(string path, out MapIndex mapIndex)
         {
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
             string fileName = Path.GetFileNameWithoutExtension(path);
-            int value = Parser.Invariant.ParseInt(fileName);
-            return new MapIndex(value);
+            return Parser.Invariant.TryParse(fileName, out mapIndex);
         }
 
         /// <summary>
@@ -998,14 +998,23 @@ namespace DemoGame
         public static MapIndex GetNextFreeIndex(ContentPaths path)
         {
             var mapFiles = GetMapFiles(path);
-            var indices = mapFiles.Select(x => GetIndexFromPath(x)).ToList();
-            indices.Sort();
+
+            // Get the used map indices
+            var usedIndices = new List<MapIndex>(mapFiles.Count());
+            foreach (var file in mapFiles)
+            {
+                MapIndex o;
+                if (TryGetIndexFromPath(file, out o))
+                    usedIndices.Add(o);
+            }
+
+            usedIndices.Sort();
 
             // Check every map index starting at 1, returning the first free value found
             int expected = 1;
-            for (int i = 0; i < indices.Count; i++)
+            for (int i = 0; i < usedIndices.Count; i++)
             {
-                if ((int)indices[i] != expected)
+                if ((int)usedIndices[i] != expected)
                     return new MapIndex(expected);
 
                 expected++;
@@ -1097,11 +1106,11 @@ namespace DemoGame
                 return false;
 
             // Check the suffix
-            if (!filePath.ToLower().EndsWith("." + MapFileSuffix))
+            if (!filePath.EndsWith("." + MapFileSuffix, StringComparison.OrdinalIgnoreCase))
                 return false;
 
             // Check if the file is named properly
-            ushort index;
+            MapIndex index;
             if (!Parser.Invariant.TryParse(Path.GetFileNameWithoutExtension(filePath), out index))
                 return false;
 

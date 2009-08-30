@@ -342,8 +342,15 @@ namespace DemoGame.MapEditor
             get { return _wallCursor; }
         }
 
+        /// <summary>
+        /// The switches used when creating this form.
+        /// </summary>
+        readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
+
         public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
         {
+            _switches = switches;
+
             InitializeComponent();
             GameScreen.Screen = this;
 
@@ -363,8 +370,25 @@ namespace DemoGame.MapEditor
 
             // Create the world
             _world = new World(this, _camera);
+        }
 
-            HandleSwitches(switches);
+        void HandleSwitch_SaveAllMaps(string[] parameters)
+        {
+            foreach (var file in MapBase.GetMapFiles(ContentPaths.Dev))
+            {
+                if (!MapBase.IsValidMapFile(file))
+                    continue;
+
+                MapIndex index;
+                if (!MapBase.TryGetIndexFromPath(file, out index))
+                    continue;
+
+                using (Map tempMap = new Map(index, _world, GameScreen.GraphicsDevice))
+                {
+                    tempMap.Load(ContentPaths.Dev, true);
+                    tempMap.Save(index, ContentPaths.Dev);
+                }
+            }
         }
 
         void HandleSwitches(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
@@ -379,6 +403,7 @@ namespace DemoGame.MapEditor
                 switch (item.Key)
                 {
                     case CommandLineSwitch.SaveAllMaps:
+                        HandleSwitch_SaveAllMaps(item.Value);
                         break;
 
                     case CommandLineSwitch.Close:
@@ -1199,6 +1224,7 @@ namespace DemoGame.MapEditor
             try
             {
                 LoadEditor();
+                HandleSwitches(_switches);
             }
             catch (Exception ex)
             {
@@ -1217,8 +1243,17 @@ namespace DemoGame.MapEditor
         /// <param name="filePath">Path to the map to use</param>
         void SetMap(string filePath)
         {
-            MapIndex index = Map.GetIndexFromPath(filePath);
-            Map = new Map(index, _world, GameScreen.GraphicsDevice);
+            if (MapBase.IsValidMapFile(filePath))
+            {
+                MapIndex index;
+                if (Map.TryGetIndexFromPath(filePath, out index))
+                {
+                    Map = new Map(index, _world, GameScreen.GraphicsDevice);
+                    return;
+                }
+            }
+
+            MessageBox.Show(string.Format("Invalid map file selected:{0}{1}", Environment.NewLine, filePath));
         }
 
         void tabPageGrhs_Enter(object sender, EventArgs e)

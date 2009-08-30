@@ -80,7 +80,10 @@ namespace DemoGame.Server
             _maps = new DArray<Map>(mapFiles.Count() + 10, false);
             foreach (string mapFile in mapFiles)
             {
-                MapIndex mapIndex = Map.GetIndexFromPath(mapFile);
+                MapIndex mapIndex;
+                if (!Map.TryGetIndexFromPath(mapFile, out mapIndex))
+                    throw new Exception(string.Format("Failed to get the index of map file `{0}`.", mapFile));
+
                 Map m = new Map(mapIndex, this);
                 _maps[(int)mapIndex] = m;
             }
