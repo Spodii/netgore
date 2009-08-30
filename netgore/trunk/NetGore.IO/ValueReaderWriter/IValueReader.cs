@@ -4,16 +4,34 @@ using System.Linq;
 
 namespace NetGore.IO
 {
+    public delegate T ReadManyHandler<T>(IValueReader r, string name);
+
+    public delegate T ReadManyNodesHandler<T>(IValueReader r);
+
     /// <summary>
     /// Interface for an object that reads values written by an IValueReader.
     /// </summary>
     public interface IValueReader
     {
+        T[] ReadMany<T>(string nodeName, ReadManyHandler<T> readHandler);
+        T[] ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler);
+
         /// <summary>
         /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
         /// be read back in the same order they were written and the name field will be ignored.
         /// </summary>
         bool SupportsNameLookup { get; }
+
+        /// <summary>
+        /// Reads a single child node, while enforcing the idea that there should only be one node
+        /// in the key. If there is more than one node for the given <paramref name="key"/>, an
+        /// ArgumentException will be thrown.
+        /// </summary>
+        /// <param name="key">The key of the child node to read.</param>
+        /// <returns>An IValueReader to read the child node.</returns>
+        /// <exception cref="ArgumentException">Zero or more than one values found for the given
+        /// <paramref name="key"/>.</exception>
+        IValueReader ReadNode(string key);
 
         /// <summary>
         /// Reads a boolean.

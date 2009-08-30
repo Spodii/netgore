@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -108,17 +109,82 @@ namespace NetGore.Network
         /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
         /// be read back in the same order they were written and the name field will be ignored.
         /// </summary>
-        public bool SupportsNameLookup
+        bool IValueWriter.SupportsNameLookup
         {
             get { return false; }
+        }
+
+        /// <summary>
+        /// Writes multiple values of the same type to the IValueWriter all under the same node name.
+        /// Ordering is not guarenteed.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void IValueWriter.WriteMany<T>(string nodeName, IEnumerable<T> values, WriteManyHandler<T> writeHandler)
+        {
+            // TODO: ...
+            // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
+            // be nearly identical to that used in the BitStreamValueWriter.
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Writes multiple values of type <typeparamref name="T"/>, where each value will result in its own
+        /// node being created. Ordering is not guarenteed.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        public void WriteManyNodes<T>(string nodeName, IEnumerable<T> values, WriteManyNodesHandler<T> writeHandler)
+        {
+            // TODO: !! ...
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Writes multiple values of type <typeparamref name="T"/>, where each value will result in its own
+        /// node being created. Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        public void WriteManyNodes<T>(string nodeName, T[] values, WriteManyNodesHandler<T> writeHandler)
+        {
+            // TODO: !! ...
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Writes multiple values of the same type to the IValueWriter all under the same node name.
+        /// Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">Array of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty array.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void IValueWriter.WriteMany<T>(string nodeName, T[] values, WriteManyHandler<T> writeHandler)
+        {
+            // TODO: ...
+            // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
+            // be nearly identical to that used in the BitStreamValueWriter.
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Writes the start of a child node in this IValueWriter.
         /// </summary>
         /// <param name="name">Name of the child node.</param>
-        public void WriteStartNode(string name)
+        void IValueWriter.WriteStartNode(string name)
         {
+            // TODO: ...
             // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
             // be nearly identical to that used in the BitStreamValueWriter.
             throw new NotSupportedException();
@@ -128,8 +194,9 @@ namespace NetGore.Network
         /// Writes the end of a child node in this IValueWriter.
         /// </summary>
         /// <param name="name">Name of the child node.</param>
-        public void WriteEndNode(string name)
+        void IValueWriter.WriteEndNode(string name)
         {
+            // TODO: ...
             // If this exception ever comes up, maybe it is time to add support for this. Implementation would probably
             // be nearly identical to that used in the BitStreamValueWriter.
             throw new NotSupportedException();

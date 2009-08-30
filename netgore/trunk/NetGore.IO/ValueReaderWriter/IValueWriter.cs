@@ -1,8 +1,25 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NetGore.IO
 {
+    /// <summary>
+    /// Delegate for writing many items. 
+    /// </summary>
+    /// <typeparam name="T">The Type to write.</typeparam>
+    /// <param name="name">The unique name of the value.</param>
+    /// <param name="value">The value to write.</param>
+    public delegate void WriteManyHandler<T>(string name, T value);
+
+    /// <summary>
+    /// Delegate for writing many nodes.
+    /// </summary>
+    /// <typeparam name="T">The Type to write.</typeparam>
+    /// <param name="w">IValueWriter to write to.</param>
+    /// <param name="item">The item to write.</param>
+    public delegate void WriteManyNodesHandler<T>(IValueWriter w, T item);
+
     /// <summary>
     /// Interface for an object that can write basic values for read-back later by using the unique name
     /// given to each individual value.
@@ -110,6 +127,50 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="name">Name of the child node.</param>
         void WriteEndNode(string name);
+
+        /// <summary>
+        /// Writes multiple values of the same type to the IValueWriter all under the same node name.
+        /// Ordering is not guarenteed.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void WriteMany<T>(string nodeName, IEnumerable<T> values, WriteManyHandler<T> writeHandler);
+
+        /// <summary>
+        /// Writes multiple values of the same type to the IValueWriter all under the same node name.
+        /// Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">Array of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty array.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void WriteMany<T>(string nodeName, T[] values, WriteManyHandler<T> writeHandler);
+
+        /// <summary>
+        /// Writes multiple values of type <typeparamref name="T"/>, where each value will result in its own
+        /// node being created. Ordering is not guarenteed.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void WriteManyNodes<T>(string nodeName, IEnumerable<T> values, WriteManyNodesHandler<T> writeHandler);
+
+        /// <summary>
+        /// Writes multiple values of type <typeparamref name="T"/>, where each value will result in its own
+        /// node being created. Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        void WriteManyNodes<T>(string nodeName, T[] values, WriteManyNodesHandler<T> writeHandler);
 
         /// <summary>
         /// Writes the start of a child node in this IValueWriter.

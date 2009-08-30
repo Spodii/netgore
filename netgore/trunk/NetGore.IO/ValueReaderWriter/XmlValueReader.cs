@@ -13,6 +13,14 @@ namespace NetGore.IO
     /// </summary>
     public class XmlValueReader : IValueReader
     {
+        /// <summary>
+        /// XmlReaderSettings used for ReadNodes().
+        /// </summary>
+        static readonly XmlReaderSettings _readNodesReaderSettings = new XmlReaderSettings
+        {
+            ConformanceLevel = ConformanceLevel.Fragment
+        };
+
         readonly Dictionary<string, List<string>> _values;
 
         /// <summary>
@@ -83,6 +91,29 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Creates a new XmlValueReader from a string of a child Xml node.
+        /// </summary>
+        /// <param name="name">The name of the root node.</param>
+        /// <param name="s">The node contents.</param>
+        /// <returns>A new XmlValueReader from a string of a child Xml node.</returns>
+        static XmlValueReader GetXmlValueReaderFromNodeString(string name, string s)
+        {
+            string trimmed = s.Trim();
+            var bytes = UTF8Encoding.UTF8.GetBytes(trimmed);
+
+            XmlValueReader ret;
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                using (XmlReader r = XmlReader.Create(ms, _readNodesReaderSettings))
+                {
+                    ret = new XmlValueReader(r, name, true);
+                }
+            }
+
+            return ret;
+        }
+
+        /// <summary>
         /// Reads the contents of each Element node and places it into a dictionary. Attributes will be ignored and
         /// any Element node containing child Element nodes, not a value, will result in an exception being thrown.
         /// </summary>
@@ -137,6 +168,58 @@ namespace NetGore.IO
         }
 
         #region IValueReader Members
+
+        /// <summary>
+        /// Reads a single child node, while enforcing the idea that there should only be one node
+        /// in the key. If there is more than one node for the given <paramref name="key"/>, an
+        /// ArgumentException will be thrown.
+        /// </summary>
+        /// <param name="key">The key of the child node to read.</param>
+        /// <returns>An IValueReader to read the child node.</returns>
+        /// <exception cref="ArgumentException">Zero or more than one values found for the given
+        /// <paramref name="key"/>.</exception>
+        public IValueReader ReadNode(string key)
+        {
+            if (_values[key].Count != 1)
+            {
+                const string errmsg = "ReadNode() requires there to be one and only one value for the given key.";
+                throw new ArgumentException(errmsg, "key");
+            }
+
+            string nodeContents = _values[key][0];
+            return GetXmlValueReaderFromNodeString(key, nodeContents);
+        }
+
+        public T[] ReadMany<T>(string nodeName, ReadManyHandler<T> readHandler)
+        {
+            IValueReader nodeReader = ReadNode(nodeName);
+            int count = nodeReader.ReadInt(XmlValueHelper.CountValueKey);
+
+            var ret = new T[count];
+            for (int i = 0; i < count; i++)
+            {
+                string key = XmlValueHelper.GetItemKey(i);
+                ret[i] = readHandler(nodeReader, key);
+            }
+
+            return ret;
+        }
+
+        public T[] ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler)
+        {
+            IValueReader nodeReader = ReadNode(nodeName);
+            int count = nodeReader.ReadInt(XmlValueHelper.CountValueKey);
+
+            var ret = new T[count];
+            for (int i = 0; i < count; i++)
+            {
+                string key = XmlValueHelper.GetItemKey(i);
+                IValueReader childNodeReader = nodeReader.ReadNode(key);
+                ret[i] = readHandler(childNodeReader);
+            }
+
+            return ret;
+        }
 
         /// <summary>
         /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
@@ -236,20 +319,8 @@ namespace NetGore.IO
 
             foreach (string value in values.Take(count))
             {
-                string trimmed = value.Trim();
-                var bytes = UTF8Encoding.UTF8.GetBytes(trimmed);
-
-                using (MemoryStream ms = new MemoryStream(bytes))
-                {
-                    using (XmlReader r = XmlReader.Create(ms, new XmlReaderSettings
-                    {
-                        ConformanceLevel = ConformanceLevel.Fragment
-                    }))
-                    {
-                        XmlValueReader reader = new XmlValueReader(r, name, true);
-                        ret.Add(reader);
-                    }
-                }
+                XmlValueReader reader = GetXmlValueReaderFromNodeString(name, value);
+                ret.Add(reader);
             }
 
             return ret;

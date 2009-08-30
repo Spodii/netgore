@@ -13,11 +13,6 @@ namespace NetGore
     /// </summary>
     public static class DynamicEntityFactory
     {
-        /// <summary>
-        /// The name given to each DynamicEntity instance when using an IValueWriter that supports nodes.
-        /// </summary>
-        public const string NodeName = "DynamicEntity";
-
         static readonly FactoryTypeCollection _typeCollection;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -47,49 +42,30 @@ namespace NetGore
         /// <summary>
         /// Reads and constructs a DynamicEntity from a stream.
         /// </summary>
-        /// <param name="reader">BitStream to read the DynamicEntity from.</param>
-        /// <returns>The DynamicEntity created from the <paramref name="reader"/>.</returns>
-        public static DynamicEntity Read(BitStream reader)
-        {
-            if (reader == null)
-                throw new ArgumentNullException("reader");
-
-            string typeName = reader.ReadString();
-
-            DynamicEntity dEntity = (DynamicEntity)_typeCollection.GetTypeInstance(typeName);
-            dEntity.ReadAll(new BitStreamValueReader(reader));
-
-            return dEntity;
-        }
-
-        /// <summary>
-        /// Reads and constructs a DynamicEntity from a stream.
-        /// </summary>
         /// <param name="reader">XmlReader to read the DynamicEntity from.</param>
         /// <returns>The DynamicEntity created from the <paramref name="reader"/>.</returns>
-        public static DynamicEntity Read(XmlReader reader)
+        public static DynamicEntity Read(IValueReader reader)
         {
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
-            string nodeName = reader.Name;
-            if (nodeName != NodeName)
-                throw new ArgumentException("XmlReader was not at a valid location", "reader");
-
-            reader.MoveToAttribute("Type");
-            string typeName = reader.ReadContentAsString();
+            string typeName = reader.ReadString(TypeNameStringKey);
 
             DynamicEntity dEntity = (DynamicEntity)_typeCollection.GetTypeInstance(typeName);
-            dEntity.ReadAll(new XmlValueReader(reader, NodeName));
+
+            dEntity.ReadAll(reader);
+
             return dEntity;
         }
 
+        public const string TypeNameStringKey = "DynamicEntityType";
+
         /// <summary>
         /// Writes a DynamicEntity to a stream.
         /// </summary>
-        /// <param name="writer">BitStream to write the DynamicEntity to.</param>
+        /// <param name="writer">IValueWriter to write the DynamicEntity to.</param>
         /// <param name="dEntity">DynamicEntity to write to the stream.</param>
-        public static void Write(BitStream writer, DynamicEntity dEntity)
+        public static void Write(IValueWriter writer, DynamicEntity dEntity)
         {
             if (writer == null)
                 throw new ArgumentNullException("writer");
@@ -99,32 +75,8 @@ namespace NetGore
             Type type = dEntity.GetType();
             string typeName = _typeCollection[type];
 
-            using (BitStreamValueWriter valueWriter = new BitStreamValueWriter(writer))
-            {
-                valueWriter.Write(null, typeName);
-                dEntity.WriteAll(valueWriter);
-            }
-        }
-
-        /// <summary>
-        /// Writes a DynamicEntity to a stream.
-        /// </summary>
-        /// <param name="writer">XmlWriter to write the DynamicEntity to.</param>
-        /// <param name="dEntity">DynamicEntity to write to the stream.</param>
-        public static void Write(XmlWriter writer, DynamicEntity dEntity)
-        {
-            if (writer == null)
-                throw new ArgumentNullException("writer");
-            if (dEntity == null)
-                throw new ArgumentNullException("dEntity");
-
-            Type type = dEntity.GetType();
-            string typeName = _typeCollection[type];
-
-            using (XmlValueWriter valueWriter = new XmlValueWriter(writer, NodeName, "Type", typeName))
-            {
-                dEntity.WriteAll(valueWriter);
-            }
+            writer.Write(TypeNameStringKey, typeName);
+            dEntity.WriteAll(writer);
         }
     }
 }

@@ -1179,53 +1179,27 @@ namespace DemoGame
                 throw new ArgumentException("filePath");
             }
 
-            using (FileStream stream = new FileStream(filePath, FileMode.Open))
-            {
-                using (XmlReader r = XmlReader.Create(stream))
-                {
-                    while (r.Read())
-                    {
-                        if (r.NodeType != XmlNodeType.Element)
-                            continue;
-
-                        // subtree, allowing the new reader to ONLY handle that Xml, and advance the reader past it no matter
-                        // how much the child reads
-                        switch (r.Name)
-                        {
-                            case "Map":
-                                break;
-                            case "Header":
-                                LoadHeader(r.ReadSubtree());
-                                break;
-                            case "Walls":
-                                LoadWalls(r.ReadSubtree());
-                                break;
-                            case "DynamicEntities":
-                                if (loadDynamicEntities)
-                                    LoadDynamicEntities(r.ReadSubtree());
-                                else
-                                    r.ReadOuterXml();
-                                break;
-                            case "Misc":
-                                LoadMiscs(r.ReadSubtree());
-                                break;
-                            default:
-                                throw new Exception(string.Format("Unknown map element '{0}'", r.Name));
-                        }
-                    }
-                }
-            }
+            var r = new XmlValueReader(filePath, _rootNodeName);
+            LoadHeader(r);
+            LoadWalls(r);
+            LoadDynamicEntities(r, loadDynamicEntities);
+            LoadMisc(r.ReadNode(_miscNodeName));
         }
 
-        void LoadDynamicEntities(XmlReader r)
+        void SaveDynamicEntities(IValueWriter w)
         {
-            while (r.Read())
-            {
-                if (r.NodeType != XmlNodeType.Element || r.Name != DynamicEntityFactory.NodeName)
-                    continue;
+            w.WriteManyNodes(_dynamicEntitiesNodeName, DynamicEntities, DynamicEntityFactory.Write);
+        }
 
-                DynamicEntity dynamicEntity = DynamicEntityFactory.Read(r);
-                AddEntity(dynamicEntity);
+        void LoadDynamicEntities(IValueReader r, bool loadDynamicEntities)
+        {
+            var loadedDynamicEntities = r.ReadManyNodes<DynamicEntity>(_dynamicEntitiesNodeName, DynamicEntityFactory.Read); 
+
+            // Add the loaded DynamicEntities to the map
+            if (loadDynamicEntities)
+            {
+                foreach (var dynamicEntity in loadedDynamicEntities)
+                    AddEntity(dynamicEntity);
             }
         }
 
@@ -1233,106 +1207,57 @@ namespace DemoGame
         /// Loads the header information for the map
         /// </summary>
         /// <param name="r">XmlReader used to load the map file</param>
-        void LoadHeader(XmlReader r)
+        void LoadHeader(IValueReader r)
         {
             if (r == null)
                 throw new ArgumentNullException("r");
-            if (r.ReadState == ReadState.Closed || r.ReadState == ReadState.Error)
-                throw new ArgumentException("Invalid XmlReader state", "r");
 
-            float width = 0;
-            float height = 0;
+            var nodeReader = r.ReadNode(_headerNodeName);
 
-            while (r.Read())
-            {
-                if (r.NodeType != XmlNodeType.Element)
-                    continue;
+            // Read the values
+            string name = nodeReader.ReadString(_headerNodeNameKey);
+            _width = nodeReader.ReadFloat(_headerNodeWidthKey);
+            _height = nodeReader.ReadFloat(_headerNodeHeightKey);
 
-                switch (r.Name)
-                {
-                    case "Name":
-                        _name = r.ReadElementContentAsString();
-                        break;
-                    case "Width":
-                        width = r.ReadElementContentAsFloat();
-                        break;
-                    case "Height":
-                        height = r.ReadElementContentAsFloat();
-                        break;
-                }
-            }
-
-            if (width <= 0 || height <= 0)
-                throw new Exception("Failed to load the Map's Width and/or Height, or an invalid value was supplied.");
-
-            _width = width;
-            _height = height;
+            // Build the entity grid
             _entityGrid = BuildEntityGrid(Width, Height);
         }
 
         /// <summary>
-        /// Handles loading of custom entities. Will be called for each subtree in the Misc
-        /// tree. <paramref name="r"/> will only contain the subtree, so there are no concerns 
-        /// with over or under-parsing, or running into any unknowns.
+        /// Handles loading of custom values.
         /// </summary>
-        /// <param name="r">XmlReader containing the subtree for the custom Misc element</param>
-        protected virtual void LoadMisc(XmlReader r)
+        /// <param name="r">IValueReader to read the misc values from.</param>
+        protected virtual void LoadMisc(IValueReader r)
         {
         }
 
         /// <summary>
-        /// Handles loading the misc elements
+        /// Saves the map walls
         /// </summary>
-        /// <param name="r">XmlReader containing the subtree of the Misc element</param>
-        void LoadMiscs(XmlReader r)
+        /// <param name="w">IValueWriter to write to.</param>
+        void SaveWalls(IValueWriter w)
         {
-            // Parse the whole subtree
-            while (r.Read())
-            {
-                // Call LoadMisc for each element
-                if (r.NodeType == XmlNodeType.Element && r.Name != "Misc")
-                {
-                    XmlReader subTreeReader = r.ReadSubtree();
-                    subTreeReader.MoveToContent();
-                    LoadMisc(subTreeReader);
-                }
-            }
-        }
+            if (w == null)
+                throw new ArgumentNullException("w");
 
-        WallEntityBase LoadWall(XmlReader r)
-        {
-            return CreateWall(new XmlValueReader(r, _wallNodeName));
+            var wallsToSave = Entities.OfType<WallEntityBase>();
+            w.WriteManyNodes(_wallsNodeName, wallsToSave, ((writer, item) => item.Write(writer)));
         }
 
         /// <summary>
         /// Loads the wall information for the map
         /// </summary>
         /// <param name="r">XmlReader used to load the map file</param>
-        void LoadWalls(XmlReader r)
+        void LoadWalls(IValueReader r)
         {
             if (r == null)
                 throw new ArgumentNullException("r");
-            if (r.ReadState == ReadState.Closed || r.ReadState == ReadState.Error)
-                throw new ArgumentException("Invalid XmlReader state", "r");
 
-            while (r.Read())
-            {
-                if (r.NodeType != XmlNodeType.Element)
-                    continue;
+            var loadedWalls = r.ReadManyNodes<WallEntityBase>(_wallsNodeName, CreateWall);
 
-                if (r.Name == _wallNodeName)
-                {
-                    WallEntityBase wall = LoadWall(r);
-                    AddEntity(wall);
-                }
-                else if (r.Name != "Walls")
-                {
-                    const string errmsg = "Found element name `{0}` when expecting `Wall`";
-                    Debug.Fail(string.Format(errmsg, r.Name));
-                    if (log.IsFatalEnabled)
-                        log.FatalFormat(errmsg, r.Name);
-                }
-            }
+            // Add the loaded walls to the map
+            foreach (var wall in loadedWalls)
+                AddEntity(wall);
         }
 
         /// <summary>
@@ -1468,6 +1393,9 @@ namespace DemoGame
                 OnSave(this);
         }
 
+        const string _rootNodeName = "Map";
+        const string _miscNodeName = "Misc";
+
         /// <summary>
         /// Saves the map to a file to the specified file path.
         /// </summary>
@@ -1478,95 +1406,54 @@ namespace DemoGame
                 throw new ArgumentNullException("filePath");
 
             Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            using (IValueWriter w = new XmlValueWriter(filePath, _rootNodeName))
             {
-                XmlWriterSettings settings = new XmlWriterSettings
-                {
-                    Indent = true
-                };
-                using (XmlWriter w = XmlWriter.Create(stream, settings))
-                {
-                    if (w == null)
-                        throw new Exception("Failed to create XmlWriter for map saving.");
+                SaveHeader(w);
+                SaveWalls(w);
+                SaveDynamicEntities(w);
 
-                    // Write the start of the XML document
-                    w.WriteStartDocument();
-                    w.WriteStartElement("Map");
-
-                    // Write the different parts of the map
-                    SaveHeader(w);
-                    SaveWalls(w);
-                    SaveDynamicEntities(w);
-
-                    // Save the misc stuff
-                    w.WriteStartElement("Misc");
-                    SaveMisc(w);
-                    w.WriteEndElement();
-
-                    // Write the end of the XML document
-                    w.WriteEndElement();
-                    w.WriteEndDocument();
-                }
+                w.WriteStartNode(_miscNodeName);
+                SaveMisc(w);
+                w.WriteEndNode(_miscNodeName);
             }
         }
 
-        void SaveDynamicEntities(XmlWriter w)
-        {
-            w.WriteStartElement("DynamicEntities");
-            foreach (DynamicEntity dynamicEntity in DynamicEntities)
-            {
-                DynamicEntityFactory.Write(w, dynamicEntity);
-            }
-            w.WriteEndElement();
-        }
+        const string _dynamicEntitiesNodeName = "DynamicEntities";
+
+
+        const string _headerNodeName = "Header";
+        const string _headerNodeNameKey = "Name";
+        const string _headerNodeWidthKey = "Width";
+        const string _headerNodeHeightKey = "Height";
 
         /// <summary>
         /// Saves the map header
         /// </summary>
-        /// <param name="w">XmlWriter to write to the file</param>
-        void SaveHeader(XmlWriter w)
+        /// <param name="w">IValueWriter to write to.</param>
+        void SaveHeader(IValueWriter w)
         {
             if (w == null)
                 throw new ArgumentNullException("w");
-            if (w.WriteState == WriteState.Closed || w.WriteState == WriteState.Error)
-                throw new ArgumentException("XmlWriter is in an invalid state", "w");
 
-            w.WriteStartElement("Header");
-            w.WriteElementString("Name", "INSERT VALUE");
-            w.WriteElementString("Width", Width.ToString());
-            w.WriteElementString("Height", Height.ToString());
-            w.WriteEndElement();
-        }
-
-        /// <summary>
-        /// Saves misc map information
-        /// </summary>
-        /// <param name="w">XmlWriter to write to the file</param>
-        protected virtual void SaveMisc(XmlWriter w)
-        {
-        }
-
-        /// <summary>
-        /// Saves the map walls
-        /// </summary>
-        /// <param name="w">XmlWriter to write to the file</param>
-        void SaveWalls(XmlWriter w)
-        {
-            if (w == null)
-                throw new ArgumentNullException("w");
-            if (w.WriteState == WriteState.Closed || w.WriteState == WriteState.Error)
-                throw new ArgumentException("XmlWriter is in an invalid state", "w");
-
-            w.WriteStartElement("Walls");
-            foreach (WallEntityBase wall in Entities.OfType<WallEntityBase>())
+            w.WriteStartNode(_headerNodeName);
             {
-                using (XmlValueWriter valueWriter = new XmlValueWriter(w, _wallNodeName))
-                {
-                    wall.Write(valueWriter);
-                }
+                w.Write(_headerNodeNameKey, "INSERT VALUE");
+                w.Write(_headerNodeWidthKey, Width);
+                w.Write(_headerNodeHeightKey, Height);
             }
-            w.WriteEndElement();
+            w.WriteEndNode(_headerNodeName);
         }
+
+        /// <summary>
+        /// When overridden in the derived class, saves misc map information specific to the derived class.
+        /// </summary>
+        /// <param name="w">IValueWriter to write to.</param>
+        protected virtual void SaveMisc(IValueWriter w)
+        {
+        }
+
+        const string _wallsNodeName = "Walls";
+
 
         /// <summary>
         /// Sets the new dimensions of the map and trims
