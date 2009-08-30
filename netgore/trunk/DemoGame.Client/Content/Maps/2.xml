@@ -6,496 +6,510 @@
     <Height>640</Height>
   </Header>
   <Walls>
-    <Wall>
+    <Count>47</Count>
+    <Item0>
       <Position>0,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item0>
+    <Item1>
       <Position>32,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item1>
+    <Item2>
       <Position>64,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item2>
+    <Item3>
       <Position>96,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item3>
+    <Item4>
       <Position>128,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item4>
+    <Item5>
       <Position>160,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item5>
+    <Item6>
       <Position>192,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item6>
+    <Item7>
       <Position>224,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item7>
+    <Item8>
       <Position>256,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item8>
+    <Item9>
       <Position>288,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item9>
+    <Item10>
       <Position>320,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item10>
+    <Item11>
       <Position>352,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item11>
+    <Item12>
       <Position>384,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item12>
+    <Item13>
       <Position>416,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item13>
+    <Item14>
       <Position>448,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item14>
+    <Item15>
       <Position>480,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item15>
+    <Item16>
       <Position>512,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item16>
+    <Item17>
       <Position>544,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item17>
+    <Item18>
       <Position>576,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item18>
+    <Item19>
       <Position>640,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item19>
+    <Item20>
       <Position>672,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item20>
+    <Item21>
       <Position>704,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item21>
+    <Item22>
       <Position>736,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item22>
+    <Item23>
       <Position>608,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item23>
+    <Item24>
       <Position>928,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item24>
+    <Item25>
       <Position>896,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item25>
+    <Item26>
       <Position>864,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item26>
+    <Item27>
       <Position>832,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item27>
+    <Item28>
       <Position>800,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item28>
+    <Item29>
       <Position>768,608</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item29>
+    <Item30>
       <Position>480,480</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item30>
+    <Item31>
       <Position>512,480</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item31>
+    <Item32>
       <Position>544,480</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item32>
+    <Item33>
       <Position>576,480</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item33>
+    <Item34>
       <Position>448,512</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item34>
+    <Item35>
       <Position>416,544</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item35>
+    <Item36>
       <Position>640,544</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item36>
+    <Item37>
       <Position>704,576</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item37>
+    <Item38>
       <Position>416,416</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item38>
+    <Item39>
       <Position>384,416</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item39>
+    <Item40>
       <Position>320,416</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item40>
+    <Item41>
       <Position>352,416</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item41>
+    <Item42>
       <Position>288,416</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item42>
+    <Item43>
       <Position>256,416</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item43>
+    <Item44>
       <Position>256,384</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item44>
+    <Item45>
       <Position>256,352</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
-    <Wall>
+    </Item45>
+    <Item46>
       <Position>256,320</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Wall>
+    </Item46>
   </Walls>
   <DynamicEntities>
-    <DynamicEntity Type="TeleportEntity">
-      <CollisionType>Full</CollisionType>
-      <Destination>50,50</Destination>
-      <DestinationMap>1</DestinationMap>
-      <Position>292,326</Position>
-      <Size>26,52</Size>
-      <Velocity>0,0</Velocity>
-      <Weight>1</Weight>
-    </DynamicEntity>
+    <Count>1</Count>
+    <Item0>
+        <DynamicEntityType>TeleportEntity</DynamicEntityType>
+        <CollisionType>Full</CollisionType>
+        <Size>26,52</Size>
+        <Weight>1</Weight>
+        <Destination>50,50</Destination>
+        <DestinationMap>1</DestinationMap>
+        <Position>292,326</Position>
+        <Velocity>0,0</Velocity>
+    </Item0>
   </DynamicEntities>
   <Misc>
     <MapGrhs>
-      <UsedIndices>2,5,125</UsedIndices>
-      <MapGrh>
-        <Position>0,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>32,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>64,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>96,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>128,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>160,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>192,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>224,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>256,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>288,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>320,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>352,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>384,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>416,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>448,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>480,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>512,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>544,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>576,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>640,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>672,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>704,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>736,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>608,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>928,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>896,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>864,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>832,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>800,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>768,608</Position>
-        <GrhIndex>2</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>480,480</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>512,480</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>544,480</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>576,480</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>448,512</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>416,544</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>640,544</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>704,576</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>416,416</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>384,416</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>320,416</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>352,416</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>288,416</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>256,416</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>256,384</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>256,352</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>256,320</Position>
-        <GrhIndex>5</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
-      <MapGrh>
-        <Position>288,320</Position>
-        <GrhIndex>125</GrhIndex>
-        <IsForeground>False</IsForeground>
-      </MapGrh>
+      <UsedIndicies>
+        <Count>3</Count>
+        <Item0>2</Item0>
+        <Item1>5</Item1>
+        <Item2>125</Item2>
+      </UsedIndicies>
+      <MapGrhs>
+        <Count>48</Count>
+        <Item0>
+          <Position>0,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item0>
+        <Item1>
+          <Position>32,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item1>
+        <Item2>
+          <Position>64,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item2>
+        <Item3>
+          <Position>96,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item3>
+        <Item4>
+          <Position>128,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item4>
+        <Item5>
+          <Position>160,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item5>
+        <Item6>
+          <Position>192,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item6>
+        <Item7>
+          <Position>224,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item7>
+        <Item8>
+          <Position>256,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item8>
+        <Item9>
+          <Position>288,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item9>
+        <Item10>
+          <Position>320,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item10>
+        <Item11>
+          <Position>352,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item11>
+        <Item12>
+          <Position>384,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item12>
+        <Item13>
+          <Position>416,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item13>
+        <Item14>
+          <Position>448,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item14>
+        <Item15>
+          <Position>480,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item15>
+        <Item16>
+          <Position>512,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item16>
+        <Item17>
+          <Position>544,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item17>
+        <Item18>
+          <Position>576,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item18>
+        <Item19>
+          <Position>640,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item19>
+        <Item20>
+          <Position>672,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item20>
+        <Item21>
+          <Position>704,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item21>
+        <Item22>
+          <Position>736,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item22>
+        <Item23>
+          <Position>608,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item23>
+        <Item24>
+          <Position>928,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item24>
+        <Item25>
+          <Position>896,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item25>
+        <Item26>
+          <Position>864,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item26>
+        <Item27>
+          <Position>832,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item27>
+        <Item28>
+          <Position>800,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item28>
+        <Item29>
+          <Position>768,608</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item29>
+        <Item30>
+          <Position>480,480</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item30>
+        <Item31>
+          <Position>512,480</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item31>
+        <Item32>
+          <Position>544,480</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item32>
+        <Item33>
+          <Position>576,480</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item33>
+        <Item34>
+          <Position>448,512</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item34>
+        <Item35>
+          <Position>416,544</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item35>
+        <Item36>
+          <Position>640,544</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item36>
+        <Item37>
+          <Position>704,576</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item37>
+        <Item38>
+          <Position>416,416</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item38>
+        <Item39>
+          <Position>384,416</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item39>
+        <Item40>
+          <Position>320,416</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item40>
+        <Item41>
+          <Position>352,416</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item41>
+        <Item42>
+          <Position>288,416</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item42>
+        <Item43>
+          <Position>256,416</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item43>
+        <Item44>
+          <Position>256,384</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item44>
+        <Item45>
+          <Position>256,352</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item45>
+        <Item46>
+          <Position>256,320</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item46>
+        <Item47>
+          <Position>288,320</Position>
+          <GrhIndex>125</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item47>
+      </MapGrhs>
     </MapGrhs>
+    <BackgroundImages>
+      <Count>0</Count>
+    </BackgroundImages>
   </Misc>
 </Map>
