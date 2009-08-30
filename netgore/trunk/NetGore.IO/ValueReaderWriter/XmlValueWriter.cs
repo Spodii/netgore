@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using NetGore.Globalization;
 
 // NOTE: This class won't work if you forget to call Dispose. Would be nice to use a destructor to fix that.
 
@@ -134,7 +135,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void Write(string name, int value)
         {
-            Write(name, value.ToString());
+            Write(name, Parser.Invariant.ToString(value));
         }
 
         /// <summary>
@@ -169,7 +170,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void Write(string name, bool value)
         {
-            Write(name, value.ToString());
+            Write(name, Parser.Invariant.ToString(value));
         }
 
         /// <summary>
@@ -180,7 +181,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void Write(string name, float value)
         {
-            Write(name, value.ToString());
+            Write(name, Parser.Invariant.ToString(value));
         }
 
         /// <summary>
@@ -191,7 +192,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void Write(string name, uint value)
         {
-            Write(name, value.ToString());
+            Write(name, Parser.Invariant.ToString(value));
         }
 
         /// <summary>
@@ -202,7 +203,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void Write(string name, short value)
         {
-            Write(name, value.ToString());
+            Write(name, Parser.Invariant.ToString(value));
         }
 
         /// <summary>
@@ -213,7 +214,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void Write(string name, ushort value)
         {
-            Write(name, value.ToString());
+            Write(name, Parser.Invariant.ToString(value));
         }
 
         /// <summary>
@@ -224,7 +225,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void Write(string name, byte value)
         {
-            Write(name, value.ToString());
+            Write(name, Parser.Invariant.ToString(value));
         }
 
         /// <summary>
@@ -235,7 +236,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void Write(string name, sbyte value)
         {
-            Write(name, value.ToString());
+            Write(name, Parser.Invariant.ToString(value));
         }
 
         /// <summary>

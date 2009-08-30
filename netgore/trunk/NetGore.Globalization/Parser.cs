@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Globalization;
 
+// ReSharper disable MemberCanBeMadeStatic.Global
+
 namespace NetGore.Globalization
 {
     /// <summary>

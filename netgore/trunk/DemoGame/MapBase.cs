@@ -10,6 +10,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
+using NetGore.Globalization;
 using NetGore.IO;
 
 // FUTURE: Improve how characters handle when they hit the map's borders
@@ -947,7 +948,7 @@ namespace DemoGame
                 throw new ArgumentNullException("path");
 
             string fileName = Path.GetFileNameWithoutExtension(path);
-            int value = int.Parse(fileName);
+            int value = Parser.Invariant.ParseInt(fileName);
             return new MapIndex(value);
         }
 
@@ -1101,7 +1102,7 @@ namespace DemoGame
 
             // Check if the file is named properly
             ushort index;
-            if (!ushort.TryParse(Path.GetFileNameWithoutExtension(filePath), out index))
+            if (!Parser.Invariant.TryParse(Path.GetFileNameWithoutExtension(filePath), out index))
                 return false;
 
             // Validate the file index

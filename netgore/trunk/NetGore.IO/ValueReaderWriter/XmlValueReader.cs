@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using NetGore.Globalization;
 
 namespace NetGore.IO
 {
@@ -161,7 +162,7 @@ namespace NetGore.IO
             if (values.Count > 1)
                 throw CreateDuplicateKeysException(name);
 
-            return int.Parse(values[0]);
+            return Parser.Invariant.ParseInt(values[0]);
         }
 
         /// <summary>
@@ -190,7 +191,7 @@ namespace NetGore.IO
             if (values.Count > 1)
                 throw CreateDuplicateKeysException(name);
 
-            return uint.Parse(values[0]);
+            return Parser.Invariant.ParseUInt(values[0]);
         }
 
         /// <summary>
@@ -269,7 +270,7 @@ namespace NetGore.IO
             if (values.Count > 1)
                 throw CreateDuplicateKeysException(name);
 
-            return bool.Parse(values[0]);
+            return Parser.Invariant.ParseBool(values[0]);
         }
 
         /// <summary>
@@ -287,7 +288,7 @@ namespace NetGore.IO
             if (values.Count > 1)
                 throw CreateDuplicateKeysException(name);
 
-            return short.Parse(values[0]);
+            return Parser.Invariant.ParseShort(values[0]);
         }
 
         /// <summary>
@@ -305,7 +306,7 @@ namespace NetGore.IO
             if (values.Count > 1)
                 throw CreateDuplicateKeysException(name);
 
-            return ushort.Parse(values[0]);
+            return Parser.Invariant.ParseUShort(values[0]);
         }
 
         /// <summary>
@@ -323,7 +324,7 @@ namespace NetGore.IO
             if (values.Count > 1)
                 throw CreateDuplicateKeysException(name);
 
-            return byte.Parse(values[0]);
+            return Parser.Invariant.ParseByte(values[0]);
         }
 
         /// <summary>
@@ -341,7 +342,7 @@ namespace NetGore.IO
             if (values.Count > 1)
                 throw CreateDuplicateKeysException(name);
 
-            return sbyte.Parse(values[0]);
+            return Parser.Invariant.ParseSByte(values[0]);
         }
 
         /// <summary>
@@ -359,7 +360,7 @@ namespace NetGore.IO
             if (values.Count > 1)
                 throw CreateDuplicateKeysException(name);
 
-            return float.Parse(values[0]);
+            return Parser.Invariant.ParseFloat(values[0]);
         }
 
         /// <summary>

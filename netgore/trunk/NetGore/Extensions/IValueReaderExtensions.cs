@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.Globalization;
 using NetGore.IO;
 
 namespace NetGore
@@ -47,10 +48,10 @@ namespace NetGore
             {
                 string value = reader.ReadString(name);
                 var split = value.Split(',');
-                r = byte.Parse(split[0]);
-                g = byte.Parse(split[1]);
-                b = byte.Parse(split[2]);
-                a = byte.Parse(split[3]);
+                r = Parser.Invariant.ParseByte(split[0]);
+                g = Parser.Invariant.ParseByte(split[1]);
+                b = Parser.Invariant.ParseByte(split[2]);
+                a = Parser.Invariant.ParseByte(split[3]);
             }
             else
             {
@@ -135,8 +136,8 @@ namespace NetGore
             {
                 string value = reader.ReadString(name);
                 var split = value.Split(',');
-                float x = float.Parse(split[0]);
-                float y = float.Parse(split[1]);
+                float x = Parser.Invariant.ParseFloat(split[0]);
+                float y = Parser.Invariant.ParseFloat(split[1]);
                 return new Vector2(x, y);
             }
             else

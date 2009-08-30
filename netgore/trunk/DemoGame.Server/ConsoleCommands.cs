@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NetGore;
+using NetGore.Globalization;
 
 namespace DemoGame.Server
 {
@@ -67,7 +68,9 @@ namespace DemoGame.Server
         [ConsoleCommand("FindItem")]
         public string FindItem(string itemID)
         {
-            ItemID id = new ItemID(int.Parse(itemID));
+            ItemID id;
+            if (!Parser.Current.TryParse(itemID, out id))
+                return string.Format("Invalid ItemID `{0}`.", id);
 
             object source;
             ItemEntity item = FindItem(id, out source);

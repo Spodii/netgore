@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using NetGore.Globalization;
 
 namespace NetGore.Graphics
 {
@@ -64,7 +65,7 @@ namespace NetGore.Graphics
             // Loop through every frame block, load the info and place it into the frames list
             foreach (var dic in fileInfo)
             {
-                float delay = float.Parse(dic["Frame.Delay"]);
+                float delay = dic.AsFloat("Frame.Delay");
                 string fileName = dic["Frame.FileName"];
                 string path = Path.Combine(localPath, fileName + ".skel");
                 Skeleton skel = Skeleton.Load(path);
@@ -96,7 +97,7 @@ namespace NetGore.Graphics
 
                 // If there is a defined time, use it
                 float frameTime;
-                if (frameInfo.Length == 1 || !float.TryParse(frameInfo[1], out frameTime))
+                if (frameInfo.Length == 1 || !Parser.Invariant.TryParse(frameInfo[1], out frameTime))
                     frameTime = 200f;
 
                 // Create the keyframe

@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.Globalization;
 using NetGore.Graphics;
 
 namespace NetGore.EditorTools
@@ -47,7 +48,7 @@ namespace NetGore.EditorTools
                 string title = m.Groups["Title"].Value;
                 int speed = DefaultAnimationSpeed; // HACK: Default speed for new animations
                 if (m.Groups["Speed"].Success)
-                    speed = int.Parse(m.Groups["Speed"].Value);
+                    speed = Parser.Invariant.ParseInt(m.Groups["Speed"].Value);
 
                 ret.Add(new AnimationRegexInfo(dir, title, speed));
             }
@@ -76,7 +77,7 @@ namespace NetGore.EditorTools
             {
                 string fileName = Path.GetFileNameWithoutExtension(file);
                 int i;
-                if (int.TryParse(fileName, out i))
+                if (Parser.Current.TryParse(fileName, out i))
                     fileInts.Add(new KeyValuePair<int, string>(i, file));
             }
 
