@@ -976,14 +976,14 @@
   <DynamicEntities>
     <Count>1</Count>
     <Item0>
-        <DynamicEntityType>TeleportEntity</DynamicEntityType>
-        <CollisionType>Full</CollisionType>
-        <Size>23,56</Size>
-        <Weight>1</Weight>
-        <Destination>575,160</Destination>
-        <DestinationMap>2</DestinationMap>
-        <Position>436,646</Position>
-        <Velocity>0,0</Velocity>
+      <DynamicEntityType>TeleportEntity</DynamicEntityType>
+      <CollisionType>Full</CollisionType>
+      <Size>23,56</Size>
+      <Weight>1</Weight>
+      <Destination>575,160</Destination>
+      <DestinationMap>2</DestinationMap>
+      <Position>436,646</Position>
+      <Velocity>0,0</Velocity>
     </Item0>
   </DynamicEntities>
   <Misc>
