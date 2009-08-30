@@ -1173,7 +1173,7 @@ namespace DemoGame
                 throw new ArgumentException("filePath");
             }
 
-            var r = new XmlValueReader(filePath, _rootNodeName);
+            XmlValueReader r = new XmlValueReader(filePath, _rootNodeName);
             LoadHeader(r);
             LoadWalls(r);
             LoadDynamicEntities(r, loadDynamicEntities);

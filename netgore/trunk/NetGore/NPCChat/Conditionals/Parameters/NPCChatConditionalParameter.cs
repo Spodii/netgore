@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
 
@@ -93,6 +92,29 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// Creates a NPCChatConditionalParameter for the given NPCChatConditionalParameterType.
+        /// </summary>
+        /// <param name="valueType">The NPCChatConditionalParameterType to create the parameter for.</param>
+        /// <returns>A NPCChatConditionalParameter for the given NPCChatConditionalParameterType.</returns>
+        static NPCChatConditionalParameter CreateParameter(NPCChatConditionalParameterType valueType)
+        {
+            switch (valueType)
+            {
+                case NPCChatConditionalParameterType.Float:
+                    return CreateParameterAsFloat(default(float));
+
+                case NPCChatConditionalParameterType.Integer:
+                    return CreateParameterAsInteger(default(int));
+
+                case NPCChatConditionalParameterType.String:
+                    return CreateParameterAsString(default(string));
+
+                default:
+                    throw new ArgumentOutOfRangeException("valueType", "Invalid NPCChatConditionalParameterType.");
+            }
+        }
+
+        /// <summary>
         /// Creates a NPCChatConditionalParameter with the underlying value type as a float.
         /// </summary>
         /// <param name="value">The value.</param>
@@ -154,33 +176,10 @@ namespace NetGore.NPCChat
                 throw new Exception(string.Format("Invalid NPCChatConditionalParameterType `{0}`.", valueType));
 
             // Create the parameter and read the value
-            var parameter = CreateParameter(valueType);
+            NPCChatConditionalParameter parameter = CreateParameter(valueType);
             parameter.ReadValue(reader, "Value");
 
             return parameter;
-        }
-
-        /// <summary>
-        /// Creates a NPCChatConditionalParameter for the given NPCChatConditionalParameterType.
-        /// </summary>
-        /// <param name="valueType">The NPCChatConditionalParameterType to create the parameter for.</param>
-        /// <returns>A NPCChatConditionalParameter for the given NPCChatConditionalParameterType.</returns>
-        static NPCChatConditionalParameter CreateParameter(NPCChatConditionalParameterType valueType)
-        {
-            switch (valueType)
-            {
-                case NPCChatConditionalParameterType.Float:
-                    return CreateParameterAsFloat(default(float));
-
-                case NPCChatConditionalParameterType.Integer:
-                    return CreateParameterAsInteger(default(int));
-
-                case NPCChatConditionalParameterType.String:
-                    return CreateParameterAsString(default(string));
-
-                default:
-                    throw new ArgumentOutOfRangeException("valueType", "Invalid NPCChatConditionalParameterType.");
-            }
         }
 
         /// <summary>

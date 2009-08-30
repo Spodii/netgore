@@ -12,6 +12,32 @@ namespace NetGore.NPCChat
         int _value;
 
         /// <summary>
+        /// Gets this parameter's Value as an object.
+        /// </summary>
+        public override object Value
+        {
+            get { return _value; }
+        }
+
+        /// <summary>
+        /// Gets this parameter's Value as an Integer.
+        /// </summary>
+        /// <exception cref="MethodAccessException">The ValueType is not equal to
+        /// NPCChatConditionalParameterType.Integer.</exception>
+        public override int ValueAsInteger
+        {
+            get { return _value; }
+        }
+
+        /// <summary>
+        /// The NPCChatConditionalParameterType that describes the native value type of this parameter's Value.
+        /// </summary>
+        public override NPCChatConditionalParameterType ValueType
+        {
+            get { return NPCChatConditionalParameterType.Integer; }
+        }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatConditionalParameterInteger"/> struct.
         /// </summary>
         /// <param name="value">The parameter value.</param>
@@ -39,35 +65,5 @@ namespace NetGore.NPCChat
         {
             writer.Write(valueName, _value);
         }
-
-        #region INPCChatConditionalParameter Members
-
-        /// <summary>
-        /// The NPCChatConditionalParameterType that describes the native value type of this parameter's Value.
-        /// </summary>
-        public override NPCChatConditionalParameterType ValueType
-        {
-            get { return NPCChatConditionalParameterType.Integer; }
-        }
-
-        /// <summary>
-        /// Gets this parameter's Value as an object.
-        /// </summary>
-        public override object Value
-        {
-            get { return _value; }
-        }
-
-        /// <summary>
-        /// Gets this parameter's Value as an Integer.
-        /// </summary>
-        /// <exception cref="MethodAccessException">The ValueType is not equal to
-        /// NPCChatConditionalParameterType.Integer.</exception>
-        public override int ValueAsInteger
-        {
-            get { return _value; }
-        }
-
-        #endregion
     }
 }

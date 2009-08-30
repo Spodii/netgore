@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NUnit.Framework;
 
@@ -23,6 +23,7 @@ namespace NetGore.Tests
             lmno,
             p
         }
+
         // ReSharper restore UnusedMember.Local
 
         static readonly Random r = new Random();

@@ -324,6 +324,18 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets a NotSupportedException to use for when trying to use nodes for the IValueReader and IValueWriter.
+        /// </summary>
+        /// <returns>A NotSupportedException to use for when trying to use nodes.</returns>
+        protected internal static NotSupportedException CreateNodesNotSupportedException()
+        {
+            const string errmsg =
+                "Nodes are not supported by the BitStream. If you want node support, use the" +
+                " BinaryValueReader and BinaryValueWriter instead of the BitStream directly.";
+            return new NotSupportedException(errmsg);
+        }
+
+        /// <summary>
         /// Gets a part of the buffer, returns it, and shifts all bytes in the buffer down
         /// to fill in the gap. Can be used to grab a segment of the buffer without having to
         /// flush the current partial bit being written (as is the case with GetBuffer()), and
@@ -1847,18 +1859,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets a NotSupportedException to use for when trying to use nodes for the IValueReader and IValueWriter.
-        /// </summary>
-        /// <returns>A NotSupportedException to use for when trying to use nodes.</returns>
-        protected internal static NotSupportedException CreateNodesNotSupportedException()
-        {
-            const string errmsg =
-                "Nodes are not supported by the BitStream. If you want node support, use the" +
-                " BinaryValueReader and BinaryValueWriter instead of the BitStream directly.";
-            return new NotSupportedException(errmsg);
-        }
-
-        /// <summary>
         /// Converts a string to a byte array.
         /// </summary>
         /// <param name="s">The string.</param>
@@ -2931,7 +2931,6 @@ namespace NetGore.IO
             }
         }
 
-
         #region IValueReader Members
 
         /// <summary>
@@ -3114,7 +3113,6 @@ namespace NetGore.IO
         }
 
         #endregion
-
 
         #region IValueWriter Members
 

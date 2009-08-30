@@ -86,7 +86,9 @@ namespace NetGore.IO
 
             var ret = new T[count];
             for (int i = 0; i < count; i++)
+            {
                 ret[i] = readHandler(nodeReader, null);
+            }
 
             return ret;
         }
