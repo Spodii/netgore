@@ -46,11 +46,6 @@ namespace DemoGame
         const string _miscNodeName = "Misc";
         const string _rootNodeName = "Map";
 
-        /// <summary>
-        /// The name of the node for each individual WallEntity.
-        /// </summary>
-        const string _wallNodeName = "Wall";
-
         const string _wallsNodeName = "Walls";
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
