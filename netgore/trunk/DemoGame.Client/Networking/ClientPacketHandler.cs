@@ -186,7 +186,7 @@ namespace DemoGame.Client
         void RecvCreateDynamicEntity(IIPSocket conn, BitStream r)
         {
             MapEntityIndex mapEntityIndex = r.ReadMapEntityIndex();
-            DynamicEntity dynamicEntity = DynamicEntityFactory.Read(r);
+            DynamicEntity dynamicEntity = DynamicEntityFactory.Read(new BitStreamValueReader(r));
             Map.AddDynamicEntity(dynamicEntity, mapEntityIndex);
 
             Character character = dynamicEntity as Character;

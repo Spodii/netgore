@@ -128,6 +128,138 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Writes multiple values of the same type to the IValueWriter all under the same node name.
+        /// Ordering is not guarenteed.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        public void WriteMany<T>(string nodeName, IEnumerable<T> values, WriteManyHandler<T> writeHandler)
+        {
+            int count;
+            if (values != null)
+                count = values.Count();
+            else
+                count = 0;
+
+            WriteStartNode(nodeName);
+            {
+                Write(XmlValueHelper.CountValueKey, count);
+                if (values != null && count > 0)
+                {
+                    int i = 0;
+                    foreach (var value in values)
+                    {
+                        writeHandler(XmlValueHelper.GetItemKey(i), value);
+                        i++;
+                    }
+                }
+            }
+            WriteEndNode(nodeName);
+        }
+
+        /// <summary>
+        /// Writes multiple values of type <typeparamref name="T"/>, where each value will result in its own
+        /// node being created. Ordering is not guarenteed.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        public void WriteManyNodes<T>(string nodeName, IEnumerable<T> values, WriteManyNodesHandler<T> writeHandler)
+        {
+            int count;
+            if (values != null)
+                count = values.Count();
+            else
+                count = 0;
+
+            WriteStartNode(nodeName);
+            {
+                Write("Count", count);
+                if (values != null && count > 0)
+                {
+                    int i = 0;
+                    foreach (var value in values)
+                    {
+                        string childNodeName = XmlValueHelper.GetItemKey(i);
+                        WriteStartNode(childNodeName);
+                        writeHandler(this, value);
+                        WriteEndNode(childNodeName);
+                        i++;
+                    }
+                }
+            }
+            WriteEndNode(nodeName);
+        }
+
+        /// <summary>
+        /// Writes multiple values of type <typeparamref name="T"/>, where each value will result in its own
+        /// node being created. Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty IEnumerable.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        public void WriteManyNodes<T>(string nodeName, T[] values, WriteManyNodesHandler<T> writeHandler)
+        {
+            int count;
+            if (values != null)
+                count = values.Length;
+            else
+                count = 0;
+
+            WriteStartNode(nodeName);
+            {
+                Write(XmlValueHelper.CountValueKey, count);
+                if (values != null && count > 0)
+                {
+                    for (int i = 0; i < values.Length; i++)
+                    {
+                        string childNodeName = XmlValueHelper.GetItemKey(i);
+                        WriteStartNode(childNodeName);
+                        writeHandler(this, values[i]);
+                        WriteEndNode(childNodeName);
+                    }
+                }
+            }
+            WriteEndNode(nodeName);
+        }
+
+        /// <summary>
+        /// Writes multiple values of the same type to the IValueWriter all under the same node name.
+        /// Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="nodeName">Name of the node that will contain the values.</param>
+        /// <param name="values">Array of values to write. If this value is null, it will be treated
+        /// the same as if it were an empty array.</param>
+        /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
+        public void WriteMany<T>(string nodeName, T[] values, WriteManyHandler<T> writeHandler)
+        {
+            int count;
+            if (values != null)
+                count = values.Length;
+            else
+                count = 0;
+
+            WriteStartNode(nodeName);
+            {
+                Write(XmlValueHelper.CountValueKey, count);
+                if (values != null && count > 0)
+                {
+                    for (int i = 0; i < values.Length; i++)
+                        writeHandler(XmlValueHelper.GetItemKey(i), values[i]);
+                }
+            }
+            WriteEndNode(nodeName);
+        }
+
+        /// <summary>
         /// Writes a 32-bit signed integer.
         /// </summary>
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it

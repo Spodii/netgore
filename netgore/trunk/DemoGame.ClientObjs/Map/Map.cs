@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Xml;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Collections;
-using NetGore.Globalization;
 using NetGore.Graphics;
 using NetGore.IO;
 
@@ -34,9 +31,7 @@ namespace DemoGame.Client
     /// </summary>
     public class Map : MapBase, IDisposable
     {
-        const string _bgImageNodeName = "BackgroundImage";
         const string _bgImagesNodeName = "BackgroundImages";
-        const string _mapGrhNodeName = "MapGrh";
         const string _mapGrhsNodeName = "MapGrhs";
         const string _usedIndiciesNodeName = "UsedIndicies";
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -213,30 +208,22 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Constructs an atlas from a given set of Grhs
+        /// Constructs an atlas for the map using the given set of GrhIndexes.
         /// </summary>
-        /// <param name="grhs">Comma-delimited string of GrhData indices</param>
-        void BuildAtlas(string grhs)
+        /// <param name="grhIndexes">The GrhIndexes.</param>
+        void BuildAtlas(IEnumerable<GrhIndex> grhIndexes)
         {
-            // Check if theres any Grhs
-            if (grhs.Length == 0)
+            if (grhIndexes == null || grhIndexes.Count() == 0)
+            {
+                _mapAtlases = new List<Texture2D>(0);
                 return;
+            }
 
-            // Split up the list of indices
-            var split = grhs.Split(',');
-
-            // Create the atlasing object
             TextureAtlas ta = new TextureAtlas();
 
             // Loop through each index (they're still a string at this point)
-            foreach (string s in split)
+            foreach (GrhIndex index in grhIndexes)
             {
-                // Validate the length of the string
-                if (s.Length == 0)
-                    continue;
-
-                // Convert the index to a ushort and get the GrhData for it
-                GrhIndex index = Parser.Invariant.ParseGrhIndex(s);
                 GrhData gd = GrhInfo.GetData(index);
 
                 // Every frame of the GrhData gets added
@@ -485,100 +472,51 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Creates a list of the GrhData indices used in the map
+        /// Gets an IEnumerable of the GrhIndexes used in the map.
         /// </summary>
-        /// <returns>Comma-delimited string of GrhData indices used in the map</returns>
-        string GetMapGrhList()
+        /// <returns>An IEnumerable of the GrhIndexes used in the map.</returns>
+        IEnumerable<GrhIndex> GetMapGrhList()
         {
-            // StringBuilder to generate the comma-delimited string of indices
-            StringBuilder sb = new StringBuilder(32);
-
-            // List containing each index added to the StringBuilder to prevent duplicates
-            var grhIndices = new List<GrhIndex>(32);
-
-            // Check through every MapGrh, adding all unique values to the grhIndices list
-            foreach (MapGrh mg in _mapGrhs)
-            {
-                GrhIndex grhIndex = mg.Grh.GrhData.GrhIndex;
-
-                // If the list does not contain the value, add it to both the list and string
-                if (!grhIndices.Contains(grhIndex))
-                {
-                    grhIndices.Add(grhIndex);
-                    sb.Append(grhIndex);
-                    sb.Append(",");
-                }
-            }
-
-            // Remove the extra comma at the end
-            if (sb.Length > 0)
-                sb.Remove(sb.Length - 1, 1);
-
-            return sb.ToString();
+            return _mapGrhs.Select(x => x.Grh.GrhData.GrhIndex).Distinct();
         }
 
-        void LoadBackgroundImages(XmlReader r)
+        void LoadBackgroundImages(IValueReader r)
         {
             int currentTime = World.GetTime();
+            var loadedBGImages = r.ReadManyNodes<BackgroundImage>(_bgImagesNodeName, x => new BackgroundLayer(x, currentTime));
 
-            while (r.Read())
+            // Add the loaded background images
+            foreach (BackgroundImage bgImage in loadedBGImages)
             {
-                if (r.NodeType != XmlNodeType.Element)
-                    continue;
-
-                switch (r.Name)
-                {
-                    case _bgImageNodeName:
-                        BackgroundLayer bgLayer = new BackgroundLayer(new XmlValueReader(r, _bgImageNodeName), currentTime);
-                        AddBackgroundImage(bgLayer);
-                        break;
-                }
+                AddBackgroundImage(bgImage);
             }
         }
 
-        void LoadGrhs(XmlReader r)
+        void LoadGrhs(IValueReader r)
         {
+            IValueReader nodeReader = r.ReadNode(_mapGrhsNodeName);
+
+            // Used GrhIndexes
+            var usedGrhIndexes = nodeReader.ReadMany(_usedIndiciesNodeName, ((reader, key) => reader.ReadGrhIndex(key)));
+            BuildAtlas(usedGrhIndexes);
+
+            // MapGrhs
             int currentTime = World.GetTime();
-
-            while (r.Read())
+            var loadedMapGrhs = nodeReader.ReadManyNodes(_mapGrhsNodeName, x => new MapGrh(x, currentTime));
+            foreach (MapGrh mapGrh in loadedMapGrhs)
             {
-                if (r.NodeType != XmlNodeType.Element)
-                    continue;
-
-                switch (r.Name)
-                {
-                    case _usedIndiciesNodeName:
-                        // Build an atlas out of the MapGrhs
-                        BuildAtlas(r.ReadElementContentAsString());
-                        break;
-
-                    case _mapGrhNodeName:
-                        // Load the MapGrh
-                        MapGrh mapGrh = new MapGrh(new XmlValueReader(r, _mapGrhNodeName), currentTime);
-                        AddMapGrh(mapGrh);
-                        break;
-                }
+                AddMapGrh(mapGrh);
             }
         }
 
         /// <summary>
-        /// Handles loading of custom entities. Will be called for each subtree in the Misc
-        /// tree. <paramref name="r"/> will only contain the subtree, so there are no concerns 
-        /// with over or under-parsing, or running into any unknowns.
+        /// Handles loading of custom values.
         /// </summary>
-        /// <param name="r">XmlReader containing the subtree for the custom Misc element.</param>
-        protected override void LoadMisc(XmlReader r)
+        /// <param name="r">IValueReader to read the misc values from.</param>
+        protected override void LoadMisc(IValueReader r)
         {
-            switch (r.Name)
-            {
-                case _mapGrhsNodeName:
-                    LoadGrhs(r);
-                    break;
-
-                case _bgImagesNodeName:
-                    LoadBackgroundImages(r);
-                    break;
-            }
+            LoadGrhs(r);
+            LoadBackgroundImages(r);
         }
 
         /// <summary>
@@ -612,49 +550,37 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Writes all the BackgroundImages to a XmlWriter.
+        /// Writes all the BackgroundImages.
         /// </summary>
-        /// <param name="w">XmlWriter to write to.</param>
-        void SaveBackgroundImages(XmlWriter w)
+        /// <param name="w">IValueWriter to write to..</param>
+        void SaveBackgroundImages(IValueWriter w)
         {
-            w.WriteStartElement(_bgImagesNodeName);
-
-            foreach (BackgroundImage bgImage in _backgroundImages)
-            {
-                using (XmlValueWriter valueWriter = new XmlValueWriter(w, _bgImageNodeName))
-                {
-                    bgImage.Write(valueWriter);
-                }
-            }
-
-            w.WriteEndElement();
+            var bgImagesToWrite = _backgroundImages.Where(x => x != null);
+            w.WriteManyNodes(_bgImagesNodeName, bgImagesToWrite, ((writer, item) => item.Write(writer)));
         }
 
         /// <summary>
         /// Writes all the MapGrhs to a XmlWriter.
         /// </summary>
-        /// <param name="w">XmlWriter to write to.</param>
-        void SaveGrhs(XmlWriter w)
+        /// <param name="w">IValueWriter to write to.</param>
+        void SaveGrhs(IValueWriter w)
         {
-            w.WriteStartElement(_mapGrhsNodeName);
-            w.WriteElementString(_usedIndiciesNodeName, GetMapGrhList());
-
-            foreach (MapGrh mg in _mapGrhs)
+            w.WriteStartNode(_mapGrhsNodeName);
             {
-                using (XmlValueWriter valueWriter = new XmlValueWriter(w, _mapGrhNodeName))
-                {
-                    mg.Write(valueWriter);
-                }
-            }
+                // Used GrhIndexes
+                w.WriteMany(_usedIndiciesNodeName, GetMapGrhList(), w.Write);
 
-            w.WriteEndElement();
+                // MapGrhs
+                w.WriteManyNodes(_mapGrhsNodeName, _mapGrhs, ((writer, item) => item.Write(writer)));
+            }
+            w.WriteEndNode(_mapGrhsNodeName);
         }
 
         /// <summary>
-        /// Writes out the misc map information
+        /// When overridden in the derived class, saves misc map information specific to the derived class.
         /// </summary>
-        /// <param name="w">XmlWriter to write to</param>
-        protected override void SaveMisc(XmlWriter w)
+        /// <param name="w">IValueWriter to write to.</param>
+        protected override void SaveMisc(IValueWriter w)
         {
             SaveGrhs(w);
             SaveBackgroundImages(w);
