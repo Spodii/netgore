@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore;
 
 namespace DemoGame
 {
@@ -17,7 +18,7 @@ namespace DemoGame
         /// <returns>True if the <paramref name="skillType"/> is defined in the SkillType enum, else false.</returns>
         public static bool IsDefined(this SkillType skillType)
         {
-            return Enum.IsDefined(typeof(SkillType), skillType);
+            return EnumHelper.IsDefined(skillType);
         }
     }
 }

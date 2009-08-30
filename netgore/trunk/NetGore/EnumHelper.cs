@@ -8,6 +8,12 @@ namespace NetGore
     /// </summary>
     public static class EnumHelper
     {
+        static MethodAccessException CreateGenericTypeIsNotEnumException<T>()
+        {
+            const string errmsg = "Type parameter T ({0}) must be an Enum.";
+            return new MethodAccessException(string.Format(errmsg, typeof(T)));
+        }
+
         /// <summary>
         /// Gets all of the values in an Enum of the given Type.
         /// </summary>
@@ -17,9 +23,48 @@ namespace NetGore
         public static T[] GetValues<T>()
         {
             if (!typeof(T).IsEnum)
-                throw new MethodAccessException("Type parameter T must be an enum.");
+                throw CreateGenericTypeIsNotEnumException<T>();
 
             return Enum.GetValues(typeof(T)).Cast<T>().ToArray();
+        }
+
+        /// <summary>
+        /// Converts the string representation of the name or numeric value of one or more enumerated
+        /// constants to an equivalent enumerated object.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="value">A string containing the name or value to convert.</param>
+        /// <returns>The enum value parsed from <paramref name="value"/>.</returns>
+        public static T Parse<T>(string value)
+        {
+            if (!typeof(T).IsEnum)
+                throw CreateGenericTypeIsNotEnumException<T>();
+
+            return (T)Enum.Parse(typeof(T), value);
+        }
+
+        public static bool IsDefined<T>(T value)
+        {
+            if (!typeof(T).IsEnum)
+                throw CreateGenericTypeIsNotEnumException<T>();
+
+            return Enum.IsDefined(typeof(T), value);
+        }
+
+        /// <summary>
+        /// Converts the string representation of the name or numeric value of one or more enumerated
+        /// constants to an equivalent enumerated object.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="value">A string containing the name or value to convert.</param>
+        /// <param name="ignoreCase">If true, ignore case; otherwise, regard case.</param>
+        /// <returns>The enum value parsed from <paramref name="value"/>.</returns>
+        public static T Parse<T>(string value, bool ignoreCase)
+        {
+            if (!typeof(T).IsEnum)
+                throw CreateGenericTypeIsNotEnumException<T>();
+
+            return (T)Enum.Parse(typeof(T), value, ignoreCase);
         }
     }
 }

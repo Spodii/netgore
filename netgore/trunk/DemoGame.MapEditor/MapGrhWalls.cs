@@ -7,6 +7,7 @@ using DemoGame.Client;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
+using NetGore.Globalization;
 using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
@@ -102,26 +103,23 @@ namespace DemoGame.MapEditor
             // Grab the wall information
             var wallInfoFile = XmlInfoReader.ReadFile(path, true);
 
-            // Store the type for the CollisionType since we will be using it quite a bit
-            Type typeofCT = typeof(CollisionType);
-
             // Iterate through each entry in the WallInfo file
             foreach (var wallInfo in wallInfoFile)
             {
                 // Get the list information
-                GrhIndex grhIndex = GrhIndex.Parse(wallInfo["Wall.GrhData"]);
-                int wallCount = int.Parse(wallInfo["Wall.WallCount"]);
+                GrhIndex grhIndex = wallInfo.AsGrhIndex("Wall.GrhData");
+                int wallCount = wallInfo.AsInt("Wall.WallCount");
                 var walls = new List<WallEntityBase>(wallCount);
                 _walls[(int)grhIndex] = walls;
 
                 // Create the individual walls
                 for (int i = 0; i < wallCount; i++)
                 {
-                    CollisionType ct = (CollisionType)Enum.Parse(typeofCT, wallInfo["Wall.Wall" + i + ".Type"]);
-                    float x = float.Parse(wallInfo["Wall.Wall" + i + ".X"]);
-                    float y = float.Parse(wallInfo["Wall.Wall" + i + ".Y"]);
-                    float w = float.Parse(wallInfo["Wall.Wall" + i + ".W"]);
-                    float h = float.Parse(wallInfo["Wall.Wall" + i + ".H"]);
+                    CollisionType ct = wallInfo.AsEnum<string, CollisionType>("Wall.Wall" + i + ".Type");
+                    float x = wallInfo.AsFloat("Wall.Wall" + i + ".X");
+                    float y = wallInfo.AsFloat("Wall.Wall" + i + ".Y");
+                    float w = wallInfo.AsFloat("Wall.Wall" + i + ".W");
+                    float h = wallInfo.AsFloat("Wall.Wall" + i + ".H");
 
                     WallEntity newWall = new WallEntity(new Vector2(x, y), new Vector2(w, h), ct);
                     walls.Add(newWall);

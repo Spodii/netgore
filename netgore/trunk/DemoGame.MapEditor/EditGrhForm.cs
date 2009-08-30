@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
+using NetGore.Globalization;
 using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
@@ -105,10 +106,10 @@ namespace DemoGame.MapEditor
             {
                 // Stationary
                 ContentManager cm = _gd.ContentManager;
-                int x = int.Parse(txtX.Text);
-                int y = int.Parse(txtY.Text);
-                int w = int.Parse(txtW.Text);
-                int h = int.Parse(txtH.Text);
+                int x = Parser.Current.ParseInt(txtX.Text);
+                int y = Parser.Current.ParseInt(txtY.Text);
+                int w = Parser.Current.ParseInt(txtW.Text);
+                int h = Parser.Current.ParseInt(txtH.Text);
                 string textureName = txtTexture.Text;
                 bool autoSize = chkAutoSize.Checked;
 
@@ -129,7 +130,7 @@ namespace DemoGame.MapEditor
             else
             {
                 // Animated
-                float speed = float.Parse(txtSpeed.Text);
+                float speed = Parser.Current.ParseFloat(txtSpeed.Text);
                 _gd.Load(newIndex, frames, 1f / speed, txtCategory.Text, txtTitle.Text);
             }
 
@@ -387,7 +388,7 @@ namespace DemoGame.MapEditor
 
             try
             {
-                wall.Resize(new Vector2(wall.Size.X, float.Parse(txtWallH.Text)));
+                wall.Resize(new Vector2(wall.Size.X, Parser.Current.ParseFloat(txtWallH.Text)));
                 txtWallH.BackColor = EditorColors.Normal;
             }
             catch
@@ -404,7 +405,7 @@ namespace DemoGame.MapEditor
 
             try
             {
-                wall.Resize(new Vector2(float.Parse(txtWallW.Text), wall.Size.Y));
+                wall.Resize(new Vector2(Parser.Current.ParseFloat(txtWallW.Text), wall.Size.Y));
                 txtWallW.BackColor = EditorColors.Normal;
             }
             catch
@@ -421,7 +422,7 @@ namespace DemoGame.MapEditor
 
             try
             {
-                wall.Position = new Vector2(float.Parse(txtWallX.Text), wall.CB.Min.Y);
+                wall.Position = new Vector2(Parser.Current.ParseFloat(txtWallX.Text), wall.CB.Min.Y);
                 txtWallX.BackColor = EditorColors.Normal;
             }
             catch
@@ -438,7 +439,7 @@ namespace DemoGame.MapEditor
 
             try
             {
-                wall.Position = new Vector2(wall.CB.Min.X, float.Parse(txtWallY.Text));
+                wall.Position = new Vector2(wall.CB.Min.X, Parser.Current.ParseFloat(txtWallY.Text));
                 txtWallY.BackColor = EditorColors.Normal;
             }
             catch

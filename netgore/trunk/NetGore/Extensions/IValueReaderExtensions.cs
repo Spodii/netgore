@@ -72,9 +72,8 @@ namespace NetGore
         /// <returns>Value read from the reader.</returns>
         public static T ReadEnum<T>(IValueReader reader, string name)
         {
-            Type type = typeof(T);
             string str = reader.ReadString(name);
-            T value = (T)Enum.Parse(type, str);
+            T value = EnumHelper.Parse<T>(str);
             return value;
         }
 

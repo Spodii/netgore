@@ -331,102 +331,102 @@ namespace NetGore.Globalization
             return value.ToString(_info);
         }
 
-        public bool TryParseBool(string s, out bool value)
+        public bool TryParse(string s, out bool value)
         {
             return bool.TryParse(s, out value);
         }
 
-        public bool TryParseByte(string s, out byte value)
-        {
-            return byte.TryParse(s, _nsByte, _info, out value);
-        }
-
-        public bool TryParseChar(string s, out char value)
+        public bool TryParse(string s, out char value)
         {
             return char.TryParse(s, out value);
         }
 
-        public bool TryParseDateTime(string s, out DateTime value)
-        {
-            return DateTime.TryParse(s, _dateTimeInfo, _nsDateTime, out value);
-        }
-
-        public bool TryParseDateTimeExact(string s, string format, out DateTime value)
-        {
-            return DateTime.TryParseExact(s, format, _dateTimeInfo, _nsDateTime, out value);
-        }
-
-        public bool TryParseDateTimeExact(string s, string[] formats, out DateTime value)
-        {
-            return DateTime.TryParseExact(s, formats, _dateTimeInfo, _nsDateTime, out value);
-        }
-
-        public bool TryParseDateTimeOffset(string s, out DateTimeOffset value)
-        {
-            return DateTimeOffset.TryParse(s, _dateTimeInfo, _nsDateTime, out value);
-        }
-
-        public bool TryParseDateTimeOffsetExact(string s, string format, out DateTimeOffset value)
-        {
-            return DateTimeOffset.TryParseExact(s, format, _dateTimeInfo, _nsDateTime, out value);
-        }
-
-        public bool TryParseDateTimeOffsetExact(string s, string[] formats, out DateTimeOffset value)
-        {
-            return DateTimeOffset.TryParseExact(s, formats, _dateTimeInfo, _nsDateTime, out value);
-        }
-
-        public bool TryParseDecimal(string s, out decimal value)
-        {
-            return decimal.TryParse(s, _nsDecimal, _info, out value);
-        }
-
-        public bool TryParseDouble(string s, out double value)
-        {
-            return double.TryParse(s, _nsDouble, _info, out value);
-        }
-
-        public bool TryParseFloat(string s, out float value)
-        {
-            return float.TryParse(s, _nsFloat, _info, out value);
-        }
-
-        public bool TryParseInt(string s, out int value)
-        {
-            return int.TryParse(s, _nsInt, _info, out value);
-        }
-
-        public bool TryParseLong(string s, out long value)
-        {
-            return long.TryParse(s, _nsLong, _info, out value);
-        }
-
-        public bool TryParseSByte(string s, out sbyte value)
-        {
-            return sbyte.TryParse(s, _nsSByte, _info, out value);
-        }
-
-        public bool TryParseShort(string s, out short value)
-        {
-            return short.TryParse(s, _nsShort, _info, out value);
-        }
-
-        public bool TryParseTimeSpan(string s, out TimeSpan value)
+        public bool TryParse(string s, out TimeSpan value)
         {
             return TimeSpan.TryParse(s, out value);
         }
 
-        public bool TryParseUInt(string s, out uint value)
+        public bool TryParse(string s, out byte value)
+        {
+            return byte.TryParse(s, _nsByte, _info, out value);
+        }
+
+        public bool TryParse(string s, out DateTime value)
+        {
+            return DateTime.TryParse(s, _dateTimeInfo, _nsDateTime, out value);
+        }
+
+        public bool TryParse(string s, string format, out DateTime value)
+        {
+            return DateTime.TryParseExact(s, format, _dateTimeInfo, _nsDateTime, out value);
+        }
+
+        public bool TryParse(string s, string[] formats, out DateTime value)
+        {
+            return DateTime.TryParseExact(s, formats, _dateTimeInfo, _nsDateTime, out value);
+        }
+
+        public bool TryParse(string s, out DateTimeOffset value)
+        {
+            return DateTimeOffset.TryParse(s, _dateTimeInfo, _nsDateTime, out value);
+        }
+
+        public bool TryParse(string s, string format, out DateTimeOffset value)
+        {
+            return DateTimeOffset.TryParseExact(s, format, _dateTimeInfo, _nsDateTime, out value);
+        }
+
+        public bool TryParse(string s, string[] formats, out DateTimeOffset value)
+        {
+            return DateTimeOffset.TryParseExact(s, formats, _dateTimeInfo, _nsDateTime, out value);
+        }
+
+        public bool TryParse(string s, out decimal value)
+        {
+            return decimal.TryParse(s, _nsDecimal, _info, out value);
+        }
+
+        public bool TryParse(string s, out double value)
+        {
+            return double.TryParse(s, _nsDouble, _info, out value);
+        }
+
+        public bool TryParse(string s, out float value)
+        {
+            return float.TryParse(s, _nsFloat, _info, out value);
+        }
+
+        public bool TryParse(string s, out int value)
+        {
+            return int.TryParse(s, _nsInt, _info, out value);
+        }
+
+        public bool TryParse(string s, out long value)
+        {
+            return long.TryParse(s, _nsLong, _info, out value);
+        }
+
+        public bool TryParse(string s, out sbyte value)
+        {
+            return sbyte.TryParse(s, _nsSByte, _info, out value);
+        }
+
+        public bool TryParse(string s, out short value)
+        {
+            return short.TryParse(s, _nsShort, _info, out value);
+        }
+
+        public bool TryParse(string s, out uint value)
         {
             return uint.TryParse(s, _nsUInt, _info, out value);
         }
 
-        public bool TryParseULong(string s, out ulong value)
+        public bool TryParse(string s, out ulong value)
         {
             return ulong.TryParse(s, _nsULong, _info, out value);
         }
 
-        public bool TryParseUShort(string s, out ushort value)
+        public bool TryParse(string s, out ushort value)
         {
             return ushort.TryParse(s, _nsUShort, _info, out value);
         }

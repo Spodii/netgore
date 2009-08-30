@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore;
 
 namespace DemoGame
 {
@@ -51,7 +52,7 @@ namespace DemoGame
         /// <returns>True if the <paramref name="statType"/> is defined in the StatType enum, else false.</returns>
         public static bool IsDefined(this StatType statType)
         {
-            return Enum.IsDefined(typeof(StatType), statType);
+            return EnumHelper.IsDefined(statType);
         }
     }
 }

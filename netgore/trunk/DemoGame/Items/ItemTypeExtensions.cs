@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 
 namespace DemoGame
 {
@@ -56,7 +57,7 @@ namespace DemoGame
         /// <returns>True if the <paramref name="itemType"/> is defined in the ItemType enum, else false.</returns>
         public static bool IsDefined(this ItemType itemType)
         {
-            return Enum.IsDefined(typeof(ItemType), itemType);
+            return EnumHelper.IsDefined(itemType);
         }
     }
 }

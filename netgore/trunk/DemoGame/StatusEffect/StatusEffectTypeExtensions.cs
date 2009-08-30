@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore;
 
 namespace DemoGame
 {
@@ -17,7 +18,7 @@ namespace DemoGame
         /// <returns>True if the <paramref name="statusEffectType"/> is defined in the StatusEffectType enum, else false.</returns>
         public static bool IsDefined(this StatusEffectType statusEffectType)
         {
-            return Enum.IsDefined(typeof(StatusEffectType), statusEffectType);
+            return EnumHelper.IsDefined(statusEffectType);
         }
     }
 }

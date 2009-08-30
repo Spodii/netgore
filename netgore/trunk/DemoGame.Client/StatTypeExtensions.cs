@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 
 namespace DemoGame.Client
 {
@@ -28,11 +29,11 @@ namespace DemoGame.Client
 
         static StatType GetModFromBase(StatType baseStat)
         {
-            object value = Enum.Parse(typeof(StatType), "Mod" + baseStat, true);
-            if (value == null)
+            StatType value = EnumHelper.Parse<StatType>("Mod" + baseStat, true);
+            if (!EnumHelper.IsDefined(value))
                 throw new ArgumentException("No mod StatType for the given base StatType", "baseStat");
 
-            return (StatType)value;
+            return value;
         }
     }
 }

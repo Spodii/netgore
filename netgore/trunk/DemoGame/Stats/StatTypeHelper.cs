@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 
 namespace DemoGame
 {
     public static class StatTypeHelper
     {
-        static readonly StatType[] _allValues = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
+        static readonly StatType[] _allValues = EnumHelper.GetValues<StatType>();
         static readonly int _greatestValue = AllValues.Select(x => x.GetValue()).Max();
 
         /// <summary>
