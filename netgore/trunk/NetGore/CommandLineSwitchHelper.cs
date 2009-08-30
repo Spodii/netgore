@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore
 {
@@ -12,6 +11,12 @@ namespace NetGore
     public static class CommandLineSwitchHelper
     {
         /// <summary>
+        /// The name of the primary key. This is the key used for arguments that come before any switches.
+        /// This key is only present if it has any arguments.
+        /// </summary>
+        public const string PrimaryKeyName = "Main";
+
+        /// <summary>
         /// The prefix used to denote a switch. Any word after a word with this prefix that does not
         /// have this prefix will be considered as an argument to the switch. For example:
         /// -switch1 arg1 arg2 -switch2 -switch3 arg1
@@ -19,10 +24,36 @@ namespace NetGore
         public const string SwitchPrefix = "-";
 
         /// <summary>
-        /// The name of the primary key. This is the key used for arguments that come before any switches.
-        /// This key is only present if it has any arguments.
+        /// Gets the switches and their arguments from the given string array.
         /// </summary>
-        public const string PrimaryKeyName = "Main";
+        /// <param name="args">The array of strings.</param>
+        /// <returns>The switches and their arguments from the given string array.</returns>
+        public static IEnumerable<KeyValuePair<string, string[]>> GetCommands(string[] args)
+        {
+            return GroupValuesToSwitches(args);
+        }
+
+        /// <summary>
+        /// Gets the switches and their arguments from the given string array. Only switches that can be parsed to
+        /// type <typeparamref name="T"/> will be returned.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum to use as the key.</typeparam>
+        /// <param name="args">The array of strings.</param>
+        /// <returns>The switches and their arguments from the given string array.</returns>
+        public static IEnumerable<KeyValuePair<T, string[]>> GetCommandsUsingEnum<T>(string[] args) where T : struct
+        {
+            if (!typeof(T).IsEnum)
+                throw new MethodAccessException("Generic type T must be an Enum.");
+
+            var items = GetCommands(args);
+
+            foreach (var item in items)
+            {
+                T parsed = EnumHelper.Parse<T>(item.Key);
+                if (EnumHelper.IsDefined(parsed))
+                    yield return new KeyValuePair<T, string[]>(parsed, item.Value);
+            }
+        }
 
         /// <summary>
         /// Groups the values after a switch to a switch.
@@ -36,10 +67,10 @@ namespace NetGore
 
             var switchPrefixAsCharArray = SwitchPrefix.ToCharArray();
 
-            List<KeyValuePair<string, string[]>> ret = new List<KeyValuePair<string, string[]>>(args.Length);
+            var ret = new List<KeyValuePair<string, string[]>>(args.Length);
 
             string currentKey = PrimaryKeyName;
-            List<string> currentArgs = new List<string>(args.Length);
+            var currentArgs = new List<string>(args.Length);
 
             // Iterate through all the strings
             for (int i = 0; i < args.Length; i++)
@@ -70,38 +101,6 @@ namespace NetGore
                 ret.Add(new KeyValuePair<string, string[]>(currentKey, currentArgs.ToArray()));
 
             return ret;
-        }
-
-        /// <summary>
-        /// Gets the switches and their arguments from the given string array.
-        /// </summary>
-        /// <param name="args">The array of strings.</param>
-        /// <returns>The switches and their arguments from the given string array.</returns>
-        public static IEnumerable<KeyValuePair<string, string[]>> GetCommands(string[] args)
-        {
-            return GroupValuesToSwitches(args);
-        }
-
-        /// <summary>
-        /// Gets the switches and their arguments from the given string array. Only switches that can be parsed to
-        /// type <typeparamref name="T"/> will be returned.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum to use as the key.</typeparam>
-        /// <param name="args">The array of strings.</param>
-        /// <returns>The switches and their arguments from the given string array.</returns>
-        public static IEnumerable<KeyValuePair<T, string[]>> GetCommandsUsingEnum<T>(string[] args) where T : struct
-        {
-            if (!typeof(T).IsEnum)
-                throw new MethodAccessException("Generic type T must be an Enum.");
-
-            var items = GetCommands(args);
-
-            foreach (var item in items)
-            {
-                var parsed = EnumHelper.Parse<T>(item.Key);
-                if (EnumHelper.IsDefined(parsed))
-                    yield return new KeyValuePair<T, string[]>(parsed, item.Value);
-            }
         }
     }
 }
