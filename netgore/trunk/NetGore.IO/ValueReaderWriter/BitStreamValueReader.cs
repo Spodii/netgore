@@ -39,6 +39,17 @@ namespace NetGore.IO
             _reader = new BitStream(bytes);
         }
 
+        /// <summary>
+        /// Reads the next node.
+        /// </summary>
+        /// <returns>An IValueReader for reading the next node.</returns>
+        IValueReader ReadNode()
+        {
+            uint bitLength = ReadUInt(null);
+            BitStream bs = _reader.ReadBits((int)bitLength);
+            return new BitStreamValueReader(bs);
+        }
+
         #region IValueReader Members
 
         /// <summary>
@@ -65,26 +76,42 @@ namespace NetGore.IO
         /// Reads multiple values that were written with WriteMany.
         /// </summary>
         /// <typeparam name="T">The Type of value to read.</typeparam>
-        /// <param name="nodeName">The name of the node containing the values.</param>
+        /// <param name="nodeName">Unused by the BitStreamValueReader.</param>
         /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
         /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadMany<T>(string nodeName, ReadManyHandler<T> readHandler)
         {
-            // TODO: !! ...
-            throw new NotImplementedException();
+            int count = ReadInt(null);
+            var ret = new T[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                IValueReader childNodeReader = ReadNode();
+                ret[i] = readHandler(childNodeReader, null);
+            }
+
+            return ret;
         }
 
         /// <summary>
         /// Reads multiple nodes that were written with WriteMany.
         /// </summary>
         /// <typeparam name="T">The Type of nodes to read.</typeparam>
-        /// <param name="nodeName">The name of the root node containing the values.</param>
+        /// <param name="nodeName">Unused by the BitStreamValueReader.</param>
         /// <param name="readHandler">Delegate that reads the values from the IValueReader.</param>
         /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler)
         {
-            // TODO: !! ...
-            throw new NotImplementedException();
+            int count = ReadInt(null);
+            var ret = new T[count];
+
+            for (int i = 0; i < count; i++)
+            {
+                IValueReader childNodeReader = ReadNode();
+                ret[i] = readHandler(childNodeReader);
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -109,7 +136,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads a signed integer of up to 32 bits.
         /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <param name="bits">Number of bits to read.</param>
         /// <returns>Value read from the reader.</returns>
         public int ReadInt(string name, int bits)
@@ -130,7 +157,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads an unsigned integer of up to 32 bits.
         /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <param name="bits">Number of bits to read.</param>
         /// <returns>Value read from the reader.</returns>
         public uint ReadUInt(string name, int bits)
@@ -141,7 +168,7 @@ namespace NetGore.IO
         /// <summary>
         /// Reads one or more child nodes from the IValueReader.
         /// </summary>
-        /// <param name="name">Name of the nodes to read.</param>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <param name="count">The number of nodes to read. Must be greater than 0. An ArgumentOutOfRangeException will
         /// be thrown if this value exceeds the actual number of nodes available.</param>
         /// <returns>An IEnumerable of IValueReaders used to read the nodes.</returns>
@@ -157,9 +184,7 @@ namespace NetGore.IO
             var ret = new IValueReader[count];
             for (int i = 0; i < count; i++)
             {
-                uint bitLength = ReadUInt(null);
-                BitStream bs = _reader.ReadBits((int)bitLength);
-                ret[i] = new BitStreamValueReader(bs);
+                ret[i] = ReadNode();
             }
 
             return ret;
@@ -170,20 +195,19 @@ namespace NetGore.IO
         /// in the key. If there is more than one node for the given <paramref name="key"/>, an
         /// ArgumentException will be thrown.
         /// </summary>
-        /// <param name="key">The key of the child node to read.</param>
+        /// <param name="key">Unused by the BitStreamValueReader.</param>
         /// <returns>An IValueReader to read the child node.</returns>
         /// <exception cref="ArgumentException">Zero or more than one values found for the given
         /// <paramref name="key"/>.</exception>
         public IValueReader ReadNode(string key)
         {
-            // TODO: !! ...
-            throw new NotImplementedException();
+            return ReadNode();
         }
 
         /// <summary>
         /// Reads a boolean.
         /// </summary>
-        /// <param name="name">Unique name of the value to read.</param>
+        /// <param name="name">Unused by the BitStreamValueReader.</param>
         /// <returns>Value read from the reader.</returns>
         public bool ReadBool(string name)
         {
