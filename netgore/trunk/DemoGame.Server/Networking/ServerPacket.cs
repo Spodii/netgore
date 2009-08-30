@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
-using NetGore.IO;
 using NetGore.Network;
 
 namespace DemoGame.Server

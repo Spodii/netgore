@@ -1,8 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+using System.Data;
+using System.Linq;
 using System.Runtime.InteropServices;
 using NetGore.Globalization;
 using NetGore.IO;
@@ -793,42 +792,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Parses the CharacterID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The CharacterID parsed from the string.</returns>
-        public static CharacterID ParseCharacterID(this Parser parser, string value)
-        {
-            return new CharacterID(parser.ParseInt(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the CharacterID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed CharacterID.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out CharacterID outValue)
-        {
-            int tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new CharacterID(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the CharacterID from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the CharacterID from.</param>
-        /// <returns>The CharacterID read from the BitStream.</returns>
-        public static CharacterID ReadCharacterID(this BitStream bitStream)
-        {
-            return CharacterID.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the CharacterID from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the CharacterID from.</param>
@@ -851,6 +814,27 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Parses the CharacterID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The CharacterID parsed from the string.</returns>
+        public static CharacterID ParseCharacterID(this Parser parser, string value)
+        {
+            return new CharacterID(parser.ParseInt(value));
+        }
+
+        /// <summary>
+        /// Reads the CharacterID from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CharacterID from.</param>
+        /// <returns>The CharacterID read from the BitStream.</returns>
+        public static CharacterID ReadCharacterID(this BitStream bitStream)
+        {
+            return CharacterID.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the CharacterID from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the CharacterID from.</param>
@@ -859,6 +843,21 @@ namespace DemoGame.Server
         public static CharacterID ReadCharacterID(this IValueReader valueReader, string name)
         {
             return CharacterID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the CharacterID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed CharacterID.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out CharacterID outValue)
+        {
+            int tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new CharacterID(tmp);
+            return ret;
         }
 
         /// <summary>

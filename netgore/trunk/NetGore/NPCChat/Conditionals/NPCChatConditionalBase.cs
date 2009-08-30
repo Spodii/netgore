@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore.Collections;
-using NetGore.IO;
 
 namespace NetGore.NPCChat
 {
@@ -78,6 +77,26 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// Gets if a NPCChatConditionalBase with the given <paramref name="name"/> exists.
+        /// </summary>
+        /// <param name="name">The name of the NPCChatConditionalBase.</param>
+        /// <returns>True if a NPCChatConditionalBase with the given <paramref name="name"/> exists; otherwise false.</returns>
+        public static bool ContainsConditional(string name)
+        {
+            return _instances.ContainsKey(name);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, performs the actual conditional evaluation.
+        /// </summary>
+        /// <param name="user">The User.</param>
+        /// <param name="npc">The NPC.</param>
+        /// <param name="parameters">The parameters to use. </param>
+        /// <returns>True if the conditional returns true for the given <paramref name="user"/>,
+        /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
+        protected abstract bool DoEvaluate(TUser user, TNPC npc, NPCChatConditionalParameter[] parameters);
+
+        /// <summary>
         /// Checks the conditional against the given <paramref name="user"/> and <paramref name="npc"/>.
         /// </summary>
         /// <param name="user">The User.</param>
@@ -125,26 +144,6 @@ namespace NetGore.NPCChat
             // Parameters are all valid, so process the conditional
             return DoEvaluate(user, npc, parameters);
         }
-
-        /// <summary>
-        /// Gets if a NPCChatConditionalBase with the given <paramref name="name"/> exists.
-        /// </summary>
-        /// <param name="name">The name of the NPCChatConditionalBase.</param>
-        /// <returns>True if a NPCChatConditionalBase with the given <paramref name="name"/> exists; otherwise false.</returns>
-        public static bool ContainsConditional(string name)
-        {
-            return _instances.ContainsKey(name);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, performs the actual conditional evaluation.
-        /// </summary>
-        /// <param name="user">The User.</param>
-        /// <param name="npc">The NPC.</param>
-        /// <param name="parameters">The parameters to use. </param>
-        /// <returns>True if the conditional returns true for the given <paramref name="user"/>,
-        /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
-        protected abstract bool DoEvaluate(TUser user, TNPC npc, NPCChatConditionalParameter[] parameters);
 
         /// <summary>
         /// Gets the NPCChatConditionalBase with the given <paramref name="name"/>.

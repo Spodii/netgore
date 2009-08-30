@@ -1,8 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+using System.Data;
+using System.Linq;
 using System.Runtime.InteropServices;
 using NetGore.Globalization;
 using NetGore.IO;
@@ -793,42 +792,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Parses the BodyIndex from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The BodyIndex parsed from the string.</returns>
-        public static BodyIndex ParseBodyIndex(this Parser parser, string value)
-        {
-            return new BodyIndex(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the BodyIndex from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed BodyIndex.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out BodyIndex outValue)
-        {
-            ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new BodyIndex(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the BodyIndex from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the BodyIndex from.</param>
-        /// <returns>The BodyIndex read from the BitStream.</returns>
-        public static BodyIndex ReadBodyIndex(this BitStream bitStream)
-        {
-            return BodyIndex.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the BodyIndex from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the BodyIndex from.</param>
@@ -851,6 +814,27 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Parses the BodyIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The BodyIndex parsed from the string.</returns>
+        public static BodyIndex ParseBodyIndex(this Parser parser, string value)
+        {
+            return new BodyIndex(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Reads the BodyIndex from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the BodyIndex from.</param>
+        /// <returns>The BodyIndex read from the BitStream.</returns>
+        public static BodyIndex ReadBodyIndex(this BitStream bitStream)
+        {
+            return BodyIndex.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the BodyIndex from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the BodyIndex from.</param>
@@ -859,6 +843,21 @@ namespace DemoGame
         public static BodyIndex ReadBodyIndex(this IValueReader valueReader, string name)
         {
             return BodyIndex.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the BodyIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed BodyIndex.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out BodyIndex outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new BodyIndex(tmp);
+            return ret;
         }
 
         /// <summary>

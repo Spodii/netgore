@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore.Globalization;
@@ -10,48 +10,6 @@ namespace NetGore
     /// </summary>
     public static class IDictionaryExtensions
     {
-        /// <summary>
-        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as enum type
-        /// <typeparamref name="TEnum"/>.
-        /// </summary>
-        /// <typeparam name="T">The key Type.</typeparam>
-        /// <typeparam name="TEnum">The enum Type.</typeparam>
-        /// <param name="dict">The IDictionary.</param>
-        /// <param name="key">The key for the value to get.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as a GrhIndex.</returns>
-        public static TEnum AsEnum<T, TEnum>(this IDictionary<T, string> dict, T key) where TEnum : struct
-        {
-            return EnumHelper.Parse<TEnum>(dict[key]);
-        }
-
-        /// <summary>
-        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as enum type
-        /// <typeparamref name="TEnum"/>.
-        /// </summary>
-        /// <typeparam name="T">The key Type.</typeparam>
-        /// <typeparam name="TEnum">The enum Type.</typeparam>
-        /// <param name="dict">The IDictionary.</param>
-        /// <param name="key">The key for the value to get.</param>
-        /// <param name="defaultValue">The value to use if the value at the <paramref name="key"/> could not be parsed.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
-        /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
-        /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static TEnum AsEnum<T, TEnum>(this IDictionary<T, string> dict, T key, TEnum defaultValue) where TEnum : struct
-        {
-            string value;
-            if (!dict.TryGetValue(key, out value))
-                return defaultValue;
-
-            if (string.IsNullOrEmpty(value))
-                return defaultValue;
-
-            TEnum enumValue = EnumHelper.Parse<TEnum>(value);
-            if (!EnumHelper.IsDefined(enumValue))
-                return defaultValue;
-
-            return enumValue;
-        }
-
         /// <summary>
         /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type bool.
         /// </summary>
@@ -295,6 +253,48 @@ namespace NetGore
                 return defaultValue;
 
             return parsed;
+        }
+
+        /// <summary>
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as enum type
+        /// <typeparamref name="TEnum"/>.
+        /// </summary>
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <typeparam name="TEnum">The enum Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as a GrhIndex.</returns>
+        public static TEnum AsEnum<T, TEnum>(this IDictionary<T, string> dict, T key) where TEnum : struct
+        {
+            return EnumHelper.Parse<TEnum>(dict[key]);
+        }
+
+        /// <summary>
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as enum type
+        /// <typeparamref name="TEnum"/>.
+        /// </summary>
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <typeparam name="TEnum">The enum Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <param name="defaultValue">The value to use if the value at the <paramref name="key"/> could not be parsed.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
+        /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
+        /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
+        public static TEnum AsEnum<T, TEnum>(this IDictionary<T, string> dict, T key, TEnum defaultValue) where TEnum : struct
+        {
+            string value;
+            if (!dict.TryGetValue(key, out value))
+                return defaultValue;
+
+            if (string.IsNullOrEmpty(value))
+                return defaultValue;
+
+            TEnum enumValue = EnumHelper.Parse<TEnum>(value);
+            if (!EnumHelper.IsDefined(enumValue))
+                return defaultValue;
+
+            return enumValue;
         }
 
         /// <summary>

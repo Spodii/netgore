@@ -1,8 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+using System.Data;
+using System.Linq;
 using System.Runtime.InteropServices;
 using NetGore.Globalization;
 using NetGore.IO;
@@ -793,42 +792,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Parses the ItemTemplateID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The ItemTemplateID parsed from the string.</returns>
-        public static ItemTemplateID ParseItemTemplateID(this Parser parser, string value)
-        {
-            return new ItemTemplateID(parser.ParseInt(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the ItemTemplateID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed ItemTemplateID.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out ItemTemplateID outValue)
-        {
-            int tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new ItemTemplateID(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the ItemTemplateID from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the ItemTemplateID from.</param>
-        /// <returns>The ItemTemplateID read from the BitStream.</returns>
-        public static ItemTemplateID ReadItemTemplateID(this BitStream bitStream)
-        {
-            return ItemTemplateID.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the ItemTemplateID from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the ItemTemplateID from.</param>
@@ -851,6 +814,27 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Parses the ItemTemplateID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The ItemTemplateID parsed from the string.</returns>
+        public static ItemTemplateID ParseItemTemplateID(this Parser parser, string value)
+        {
+            return new ItemTemplateID(parser.ParseInt(value));
+        }
+
+        /// <summary>
+        /// Reads the ItemTemplateID from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the ItemTemplateID from.</param>
+        /// <returns>The ItemTemplateID read from the BitStream.</returns>
+        public static ItemTemplateID ReadItemTemplateID(this BitStream bitStream)
+        {
+            return ItemTemplateID.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the ItemTemplateID from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the ItemTemplateID from.</param>
@@ -859,6 +843,21 @@ namespace DemoGame.Server
         public static ItemTemplateID ReadItemTemplateID(this IValueReader valueReader, string name)
         {
             return ItemTemplateID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the ItemTemplateID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed ItemTemplateID.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out ItemTemplateID outValue)
+        {
+            int tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new ItemTemplateID(tmp);
+            return ret;
         }
 
         /// <summary>

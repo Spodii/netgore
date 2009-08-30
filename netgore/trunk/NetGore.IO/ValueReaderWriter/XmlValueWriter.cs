@@ -150,7 +150,7 @@ namespace NetGore.IO
                 if (values != null && count > 0)
                 {
                     int i = 0;
-                    foreach (var value in values)
+                    foreach (T value in values)
                     {
                         writeHandler(XmlValueHelper.GetItemKey(i), value);
                         i++;
@@ -183,7 +183,7 @@ namespace NetGore.IO
                 if (values != null && count > 0)
                 {
                     int i = 0;
-                    foreach (var value in values)
+                    foreach (T value in values)
                     {
                         string childNodeName = XmlValueHelper.GetItemKey(i);
                         WriteStartNode(childNodeName);
@@ -253,7 +253,9 @@ namespace NetGore.IO
                 if (values != null && count > 0)
                 {
                     for (int i = 0; i < values.Length; i++)
+                    {
                         writeHandler(XmlValueHelper.GetItemKey(i), values[i]);
+                    }
                 }
             }
             WriteEndNode(nodeName);

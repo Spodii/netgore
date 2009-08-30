@@ -237,7 +237,7 @@ namespace NetGore.Graphics
             {
                 if (dic.ContainsKey("Nodes"))
                     continue;
-                
+
                 string name = dic["Node.Name"];
                 float x = dic.AsFloat("Node.X");
                 float y = dic.AsFloat("Node.Y");

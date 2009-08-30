@@ -7,7 +7,6 @@ using DemoGame.Client;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
-using NetGore.Globalization;
 using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
