@@ -86,8 +86,9 @@ namespace DemoGame
             BodyIndex highestIndex = new BodyIndex(0);
             foreach (var d in results)
             {
-                if (highestIndex < BodyIndex.Parse(d["Body.Index"]))
-                    highestIndex = BodyIndex.Parse(d["Body.Index"]);
+                var currentBodyIndex = d.AsBodyIndex("Body.Index");
+                if (highestIndex < currentBodyIndex)
+                    highestIndex = currentBodyIndex;
             }
 
             // Create the return array
@@ -96,7 +97,7 @@ namespace DemoGame
             // Create the return values
             foreach (var d in results)
             {
-                BodyIndex index = BodyIndex.Parse(d["Body.Index"]);
+                BodyIndex index = d.AsBodyIndex("Body.Index");
                 float width = float.Parse(d["Body.Size.Width"]);
                 float height = float.Parse(d["Body.Size.Height"]);
 

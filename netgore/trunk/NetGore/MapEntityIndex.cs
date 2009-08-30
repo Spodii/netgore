@@ -1,11 +1,13 @@
 using System;
 using System.Data;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
+using System.IO;
 using System.Runtime.InteropServices;
+using NetGore.Globalization;
 using NetGore.IO;
 
-namespace NetGore
+namespace NetGore 
 {
     /// <summary>
     /// Represents the integral value of the index of an Entity in respect to the Map it is on.
@@ -93,56 +95,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Converts the string representation of a number to its MapEntityIndex equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <returns>The parsed MapEntityIndex.</returns>
-        public static MapEntityIndex Parse(string s)
-        {
-            return new MapEntityIndex(ushort.Parse(s));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its MapEntityIndex equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <returns>The parsed MapEntityIndex.</returns>
-        public static MapEntityIndex Parse(string s, NumberStyles style)
-        {
-            return new MapEntityIndex(ushort.Parse(s, style));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its MapEntityIndex equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <returns>The parsed MapEntityIndex.</returns>
-        public static MapEntityIndex Parse(string s, IFormatProvider provider)
-        {
-            return new MapEntityIndex(ushort.Parse(s, provider));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its MapEntityIndex equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <returns>The parsed MapEntityIndex.</returns>
-        public static MapEntityIndex Parse(string s, NumberStyles style, IFormatProvider provider)
-        {
-            return new MapEntityIndex(ushort.Parse(s, style, provider));
-        }
-
-        /// <summary>
         /// Reads an MapEntityIndex from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
@@ -200,41 +152,6 @@ namespace NetGore
         public override string ToString()
         {
             return _value.ToString();
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its MapEntityIndex equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed MapEntityIndex.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out MapEntityIndex parsedValue)
-        {
-            ushort outValue;
-            bool success = ushort.TryParse(s, style, provider, out outValue);
-            parsedValue = new MapEntityIndex(outValue);
-            return success;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its MapEntityIndex equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed MapEntityIndex.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, out MapEntityIndex parsedValue)
-        {
-            ushort outValue;
-            bool success = ushort.TryParse(s, out outValue);
-            parsedValue = new MapEntityIndex(outValue);
-            return success;
         }
 
         /// <summary>
@@ -841,43 +758,104 @@ namespace NetGore
     public static class MapEntityIndexReadWriteExtensions
     {
         /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type MapEntityIndex.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
-        /// <param name="i">The field index to read.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static MapEntityIndex GetMapEntityIndex(this IDataReader dataReader, int i)
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as a MapEntityIndex.</returns>
+        public static MapEntityIndex AsMapEntityIndex<T>(this IDictionary<T, string> dict, T key)
         {
-            return MapEntityIndex.Read(dataReader, i);
+            return Parser.Invariant.ParseMapEntityIndex(dict[key]);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IDataReader.
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type MapEntityIndex.
         /// </summary>
-        /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
-        /// <param name="name">The name of the field to read the value from.</param>
-        /// <returns>The CustomValueType read from the IDataReader.</returns>
-        public static MapEntityIndex GetMapEntityIndex(this IDataReader dataReader, string name)
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <param name="defaultValue">The value to use if the value at the <paramref name="key"/> could not be parsed.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
+        /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
+        /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
+        public static MapEntityIndex AsMapEntityIndex<T>(this IDictionary<T, string> dict, T key, MapEntityIndex defaultValue)
         {
-            return MapEntityIndex.Read(dataReader, name);
+            string value;
+            if (!dict.TryGetValue(key, out value))
+                return defaultValue;
+
+            MapEntityIndex parsed;
+            if (!Parser.Invariant.TryParse(value, out parsed))
+                return defaultValue;
+
+            return parsed;
         }
 
         /// <summary>
-        /// Reads the CustomValueType from a BitStream.
+        /// Parses the MapEntityIndex from a string.
         /// </summary>
-        /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
-        /// <returns>The CustomValueType read from the BitStream.</returns>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The MapEntityIndex parsed from the string.</returns>
+        public static MapEntityIndex ParseMapEntityIndex(this Parser parser, string value)
+        {
+            return new MapEntityIndex(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Tries to parse the MapEntityIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed MapEntityIndex.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out MapEntityIndex outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new MapEntityIndex(tmp);
+            return ret;
+        }
+
+        /// <summary>
+        /// Reads the MapEntityIndex from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the MapEntityIndex from.</param>
+        /// <returns>The MapEntityIndex read from the BitStream.</returns>
         public static MapEntityIndex ReadMapEntityIndex(this BitStream bitStream)
         {
             return MapEntityIndex.Read(bitStream);
         }
 
         /// <summary>
-        /// Reads the CustomValueType from an IValueReader.
+        /// Reads the MapEntityIndex from an IDataReader.
         /// </summary>
-        /// <param name="valueReader">IValueReader to read the CustomValueType from.</param>
+        /// <param name="dataReader">IDataReader to read the MapEntityIndex from.</param>
+        /// <param name="i">The field index to read.</param>
+        /// <returns>The MapEntityIndex read from the IDataReader.</returns>
+        public static MapEntityIndex GetMapEntityIndex(this IDataReader dataReader, int i)
+        {
+            return MapEntityIndex.Read(dataReader, i);
+        }
+
+        /// <summary>
+        /// Reads the MapEntityIndex from an IDataReader.
+        /// </summary>
+        /// <param name="dataReader">IDataReader to read the MapEntityIndex from.</param>
+        /// <param name="name">The name of the field to read the value from.</param>
+        /// <returns>The MapEntityIndex read from the IDataReader.</returns>
+        public static MapEntityIndex GetMapEntityIndex(this IDataReader dataReader, string name)
+        {
+            return MapEntityIndex.Read(dataReader, name);
+        }
+
+        /// <summary>
+        /// Reads the MapEntityIndex from an IValueReader.
+        /// </summary>
+        /// <param name="valueReader">IValueReader to read the MapEntityIndex from.</param>
         /// <param name="name">The unique name of the value to read.</param>
-        /// <returns>The CustomValueType read from the IValueReader.</returns>
+        /// <returns>The MapEntityIndex read from the IValueReader.</returns>
         public static MapEntityIndex ReadMapEntityIndex(this IValueReader valueReader, string name)
         {
             return MapEntityIndex.Read(valueReader, name);
