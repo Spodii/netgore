@@ -268,7 +268,7 @@ namespace NetGore.IO.Tests
             _createCreators = new CreateCreatorHandler[]
             {
                 () => new MemoryBinaryValueReaderWriterCreator(), () => new FileBinaryValueReaderWriterCreator(),
-                //() => new XmlValueReaderWriterCreator()
+                () => new XmlValueReaderWriterCreator()
             };
         }
 
@@ -459,34 +459,25 @@ namespace NetGore.IO.Tests
         [Test]
         public void TestNodesBoolsOnly()
         {
-
             foreach (CreateCreatorHandler createCreator in _createCreators)
             {
-                ReaderWriterCreatorBase creator = createCreator();
-
-                var v1 = Range(0, 7, 1, x => true);
-
-                using (IValueWriter w = creator.GetWriter())
+                for (int i = 1; i < 100; i++)
                 {
-                    w.WriteStartNode(null);
-                    w.Write(null, (uint)v1.Length);
-                    for (int i = 0; i < v1.Length; i++)
-                        w.Write(null, v1[i]);
-                    w.WriteEndNode(null);
-                    //w.WriteMany("v1", v1, w.Write);
-                }
+                    ReaderWriterCreatorBase creator = createCreator();
 
-                IValueReader r = creator.GetReader();
-                {
-                    r.ReadInt(null);
-                    int len = (int)r.ReadUInt(null);
-                    var r1 = new bool[len];
-                    for (int i = 0; i < len; i++)
-                        r1[i] = r.ReadBool(null);
+                    var v1 = Range(0, i, 1, x => x % 3 == 0);
 
-                    //var r1 = r.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname)));
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        w.WriteMany("v1", v1, w.Write);
+                    }
 
-                    AssertArraysEqual(v1, r1);
+                    IValueReader r = creator.GetReader();
+                    {
+                        var r1 = r.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname)));
+
+                        AssertArraysEqual(v1, r1);
+                    }
                 }
             }
         }
@@ -498,7 +489,7 @@ namespace NetGore.IO.Tests
             {
                 ReaderWriterCreatorBase creator = createCreator();
 
-                var v1 = Range(0, 100, 1, x => true);
+                var v1 = Range(0, 100, 1, x => x % 3 == 0);
                 var v2 = Range(0, 100, 1, x => (int)x);
                 var v3 = Range(0, 100, 1, x => (float)x);
                 var v4 = Range(0, 100, 1, x => (byte)x);
