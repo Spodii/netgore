@@ -7,6 +7,7 @@ using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using NetGore.Collections;
+using NetGore.Globalization;
 
 namespace NetGore.Graphics
 {
@@ -387,7 +388,7 @@ namespace NetGore.Graphics
             // Load the information into the objects
             foreach (var dic in grhDataFile)
             {
-                GrhIndex currGrhIndex = GrhIndex.Parse(dic["Grh.Index"]);
+                GrhIndex currGrhIndex = Parser.Invariant.ParseGrhIndex(dic["Grh.Index"]);
                 GrhData currGrh = new GrhData();
                 int numFrames = int.Parse(dic["Grh.Frames.Count"]);
 
@@ -417,7 +418,7 @@ namespace NetGore.Graphics
                     var frames = new GrhIndex[numFrames];
                     for (int i = 0; i < frames.Length; i++)
                     {
-                        frames[i] = GrhIndex.Parse(dic["Grh.Frames.F" + (i + 1)]);
+                        frames[i] = Parser.Invariant.ParseGrhIndex(dic["Grh.Frames.F" + (i + 1)]);
                     }
                     currGrh.Load(currGrhIndex, frames, 1f / speed, category, title);
 
