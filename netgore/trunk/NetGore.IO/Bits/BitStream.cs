@@ -1744,32 +1744,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="origin">Origin to move from.</param>
         /// <param name="bits">Number of bits to move.</param>
-        public void Seek(BitStreamSeekOrigin origin, int bits)
+        public void SeekFromCurrentPosition(BitStreamSeekOrigin origin, int bits)
         {
-            switch (origin)
-            {
-                case BitStreamSeekOrigin.Beginning:
-                    _bufferPos = 0;
-                    _workBufferPos = 7;
-                    Seek(bits);
-                    break;
-
-                case BitStreamSeekOrigin.Current:
-                    Seek(bits);
-                    break;
-            }
-        }
-
-        /// <summary>
-        /// Moves the buffer by a number of bits.
-        /// </summary>
-        /// <param name="bits">Number of bits to move.</param>
-        void Seek(int bits)
-        {
-            // Check if we have anything to move
-            if (bits == 0)
-                return;
-
             // Check if the buffer position needs to roll over
             if (_workBufferPos == -1)
             {
@@ -1779,12 +1755,38 @@ namespace NetGore.IO
             }
 
             // If writing, flush the current work buffer
+            // It is vital we do this before moving the buffer
             if (Mode == BitStreamMode.Write && _workBufferPos != _highBit)
             {
                 _buffer[_bufferPos] = (byte)_workBuffer;
                 if (HighestWrittenIndex < _bufferPos)
                     _highestWrittenIndex = _bufferPos;
             }
+
+            // Now that the work buffer has been flushed and we're safe, we can seek
+            switch (origin)
+            {
+                case BitStreamSeekOrigin.Beginning:
+                    _bufferPos = 0;
+                    _workBufferPos = 7;
+                    SeekFromCurrentPosition(bits);
+                    break;
+
+                case BitStreamSeekOrigin.Current:
+                    SeekFromCurrentPosition(bits);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// Moves the buffer by a number of bits.
+        /// </summary>
+        /// <param name="bits">Number of bits to move.</param>
+        void SeekFromCurrentPosition(int bits)
+        {
+            // Check if we have anything to move
+            if (bits == 0)
+                return;
 
             if (bits % _bitsByte == 0)
             {
@@ -1795,7 +1797,7 @@ namespace NetGore.IO
             {
                 int moveBits = bits;
 
-                // Seek forward
+                // SeekFromCurrentPosition forward
                 while (moveBits > 0)
                 {
                     _workBufferPos--;
@@ -1807,7 +1809,7 @@ namespace NetGore.IO
                     }
                 }
 
-                // Seek backwards
+                // SeekFromCurrentPosition backwards
                 while (moveBits < 0)
                 {
                     _workBufferPos++;

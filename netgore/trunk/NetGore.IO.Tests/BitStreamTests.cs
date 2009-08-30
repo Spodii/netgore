@@ -1047,7 +1047,7 @@ namespace NetGore.IO.Tests
 
                 if (i % 2 == 0)
                 {
-                    bs.Seek(BitStreamSeekOrigin.Current, bits);
+                    bs.SeekFromCurrentPosition(BitStreamSeekOrigin.Current, bits);
                     continue;
                 }
 
