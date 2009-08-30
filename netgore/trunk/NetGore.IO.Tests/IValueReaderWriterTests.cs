@@ -70,7 +70,7 @@ namespace NetGore.IO.Tests
                     Debug.Fail("Too many objects are using the destructor to clear the temp files. Use IDisposable, damnit!");
             }
 
-            var ret = Path.GetTempFileName();
+            string ret = Path.GetTempFileName();
             _createdTempFiles.Add(ret);
             return ret;
         }
@@ -143,6 +143,94 @@ namespace NetGore.IO.Tests
             public override IValueWriter GetWriter()
             {
                 return new BinaryValueWriter(_filePath);
+            }
+        }
+
+        /// <summary>
+        /// BitStream using the ByteArray to transfer data from the reader to writer
+        /// </summary>
+        class BitStreamByteArrayReaderWriterCreator : ReaderWriterCreatorBase
+        {
+            readonly BitStream _writeStream = new BitStream(BitStreamMode.Write, _bufferSize);
+
+            /// <summary>
+            /// When overridden in the derived class, gets if name lookup is supported.
+            /// </summary>
+            public override bool SupportsNameLookup
+            {
+                get { return false; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets if nodes are supported.
+            /// </summary>
+            public override bool SupportsNodes
+            {
+                get { return false; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueReader instance used to read the values
+            /// written by the IValueWriter created with GetWriter().
+            /// </summary>
+            /// <returns>The IValueWriter instance.</returns>
+            public override IValueReader GetReader()
+            {
+                var buffer = _writeStream.GetBuffer();
+                return new BitStream(buffer);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
+            /// </summary>
+            /// <returns>The IValueReader instance.</returns>
+            public override IValueWriter GetWriter()
+            {
+                return _writeStream;
+            }
+        }
+
+        /// <summary>
+        /// BitStream
+        /// </summary>
+        class BitStreamReaderWriterCreator : ReaderWriterCreatorBase
+        {
+            readonly BitStream _stream = new BitStream(BitStreamMode.Write, _bufferSize);
+
+            /// <summary>
+            /// When overridden in the derived class, gets if name lookup is supported.
+            /// </summary>
+            public override bool SupportsNameLookup
+            {
+                get { return false; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets if nodes are supported.
+            /// </summary>
+            public override bool SupportsNodes
+            {
+                get { return false; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueReader instance used to read the values
+            /// written by the IValueWriter created with GetWriter().
+            /// </summary>
+            /// <returns>The IValueWriter instance.</returns>
+            public override IValueReader GetReader()
+            {
+                _stream.Mode = BitStreamMode.Read;
+                return _stream;
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
+            /// </summary>
+            /// <returns>The IValueReader instance.</returns>
+            public override IValueWriter GetWriter()
+            {
+                return _stream;
             }
         }
 
@@ -297,7 +385,8 @@ namespace NetGore.IO.Tests
             _createCreators = new CreateCreatorHandler[]
             {
                 () => new MemoryBinaryValueReaderWriterCreator(), () => new FileBinaryValueReaderWriterCreator(),
-                () => new XmlValueReaderWriterCreator()
+                () => new XmlValueReaderWriterCreator(), () => new BitStreamReaderWriterCreator(),
+                () => new BitStreamByteArrayReaderWriterCreator()
             };
         }
 
