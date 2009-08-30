@@ -73,6 +73,9 @@ namespace NetGore
         /// <returns>Value read from the reader.</returns>
         public static T ReadEnum<T>(IValueReader reader, string name) where T : struct
         {
+            if (!typeof(T).IsEnum)
+                throw new MethodAccessException("Generic type parameter T must be an enum.");
+
             string str = reader.ReadString(name);
             T value = EnumHelper.Parse<T>(str);
             return value;

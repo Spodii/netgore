@@ -56,9 +56,13 @@ namespace NetGore
 
         void Read(IValueReader r)
         {
-            SetPositionRaw(r.ReadVector2("Position"));
-            SetSizeRaw(r.ReadVector2("Size"));
-            SetCollisionTypeRaw(r.ReadCollisionType("CollisionType"));
+            Vector2 position = r.ReadVector2("Position");
+            Vector2 size = r.ReadVector2("Size");
+            CollisionType ct = r.ReadCollisionType("CollisionType");
+
+            SetPositionRaw(position);
+            SetSizeRaw(size);
+            SetCollisionTypeRaw(ct);
         }
 
         public void Write(IValueWriter w)

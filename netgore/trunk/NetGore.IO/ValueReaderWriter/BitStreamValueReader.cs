@@ -81,14 +81,12 @@ namespace NetGore.IO
         /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadMany<T>(string nodeName, ReadManyHandler<T> readHandler)
         {
-            int count = ReadInt(null);
-            var ret = new T[count];
+            IValueReader nodeReader = ReadNode(null);
+            int count = nodeReader.ReadInt(null);
 
+            var ret = new T[count];
             for (int i = 0; i < count; i++)
-            {
-                IValueReader childNodeReader = ReadNode();
-                ret[i] = readHandler(childNodeReader, null);
-            }
+                ret[i] = readHandler(nodeReader, null);
 
             return ret;
         }
@@ -102,12 +100,13 @@ namespace NetGore.IO
         /// <returns>Array of the values read the IValueReader.</returns>
         public T[] ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler)
         {
-            int count = ReadInt(null);
-            var ret = new T[count];
+            IValueReader nodeReader = ReadNode(nodeName);
+            int count = nodeReader.ReadInt(null);
 
+            var ret = new T[count];
             for (int i = 0; i < count; i++)
             {
-                IValueReader childNodeReader = ReadNode();
+                IValueReader childNodeReader = nodeReader.ReadNode(null);
                 ret[i] = readHandler(childNodeReader);
             }
 
