@@ -178,9 +178,13 @@ namespace NetGore.IO
 
             Debug.Assert(nodeLength >= 0);
 
-            _writer.Seek(BitStreamSeekOrigin.Beginning, nodeStart);
+            _writer.SeekFromCurrentPosition(BitStreamSeekOrigin.Beginning, nodeStart);
+            Debug.Assert(_writer.PositionBits == nodeStart);
+
             _writer.Write(nodeLength);
-            _writer.Seek(BitStreamSeekOrigin.Beginning, nodeEnd);
+
+            _writer.SeekFromCurrentPosition(BitStreamSeekOrigin.Beginning, nodeEnd);
+            Debug.Assert(_writer.PositionBits == nodeEnd);
         }
 
         /// <summary>
