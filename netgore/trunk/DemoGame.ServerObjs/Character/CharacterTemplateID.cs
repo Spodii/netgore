@@ -1,8 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+using System.Data;
+using System.Linq;
 using System.Runtime.InteropServices;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
@@ -781,7 +780,8 @@ namespace DemoGame.Server
         /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
         /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
         /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static CharacterTemplateID AsCharacterTemplateID<T>(this IDictionary<T, string> dict, T key, CharacterTemplateID defaultValue)
+        public static CharacterTemplateID AsCharacterTemplateID<T>(this IDictionary<T, string> dict, T key,
+                                                                   CharacterTemplateID defaultValue)
         {
             string value;
             if (!dict.TryGetValue(key, out value))
@@ -792,42 +792,6 @@ namespace DemoGame.Server
                 return defaultValue;
 
             return parsed;
-        }
-
-        /// <summary>
-        /// Parses the CharacterTemplateID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The CharacterTemplateID parsed from the string.</returns>
-        public static CharacterTemplateID ParseCharacterTemplateID(this Parser parser, string value)
-        {
-            return new CharacterTemplateID(parser.ParseInt(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the CharacterTemplateID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed CharacterTemplateID.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out CharacterTemplateID outValue)
-        {
-            int tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new CharacterTemplateID(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the CharacterTemplateID from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the CharacterTemplateID from.</param>
-        /// <returns>The CharacterTemplateID read from the BitStream.</returns>
-        public static CharacterTemplateID ReadCharacterTemplateID(this BitStream bitStream)
-        {
-            return CharacterTemplateID.Read(bitStream);
         }
 
         /// <summary>
@@ -853,6 +817,27 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Parses the CharacterTemplateID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The CharacterTemplateID parsed from the string.</returns>
+        public static CharacterTemplateID ParseCharacterTemplateID(this Parser parser, string value)
+        {
+            return new CharacterTemplateID(parser.ParseInt(value));
+        }
+
+        /// <summary>
+        /// Reads the CharacterTemplateID from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the CharacterTemplateID from.</param>
+        /// <returns>The CharacterTemplateID read from the BitStream.</returns>
+        public static CharacterTemplateID ReadCharacterTemplateID(this BitStream bitStream)
+        {
+            return CharacterTemplateID.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the CharacterTemplateID from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the CharacterTemplateID from.</param>
@@ -861,6 +846,21 @@ namespace DemoGame.Server
         public static CharacterTemplateID ReadCharacterTemplateID(this IValueReader valueReader, string name)
         {
             return CharacterTemplateID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the CharacterTemplateID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed CharacterTemplateID.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out CharacterTemplateID outValue)
+        {
+            int tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new CharacterTemplateID(tmp);
+            return ret;
         }
 
         /// <summary>

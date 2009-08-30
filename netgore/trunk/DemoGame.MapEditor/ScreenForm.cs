@@ -98,6 +98,11 @@ namespace DemoGame.MapEditor
         readonly Stopwatch _stopWatch = new Stopwatch();
 
         /// <summary>
+        /// The switches used when creating this form.
+        /// </summary>
+        readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
+
+        /// <summary>
         /// List of all the active transformation boxes
         /// </summary>
         readonly List<TransBox> _transBoxes = new List<TransBox>(9);
@@ -342,11 +347,6 @@ namespace DemoGame.MapEditor
             get { return _wallCursor; }
         }
 
-        /// <summary>
-        /// The switches used when creating this form.
-        /// </summary>
-        readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
-
         public ScreenForm(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
         {
             _switches = switches;
@@ -370,58 +370,6 @@ namespace DemoGame.MapEditor
 
             // Create the world
             _world = new World(this, _camera);
-        }
-
-        void HandleSwitch_SaveAllMaps(string[] parameters)
-        {
-            foreach (var file in MapBase.GetMapFiles(ContentPaths.Dev))
-            {
-                if (!MapBase.IsValidMapFile(file))
-                    continue;
-
-                MapIndex index;
-                if (!MapBase.TryGetIndexFromPath(file, out index))
-                    continue;
-
-                using (Map tempMap = new Map(index, _world, GameScreen.GraphicsDevice))
-                {
-                    tempMap.Load(ContentPaths.Dev, true);
-                    tempMap.Save(index, ContentPaths.Dev);
-                }
-            }
-        }
-
-        void HandleSwitches(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
-        {
-            if (switches == null || switches.Count() == 0)
-                return;
-
-            bool willClose = false;
-
-            foreach (var item in switches)
-            {
-                switch (item.Key)
-                {
-                    case CommandLineSwitch.SaveAllMaps:
-                        HandleSwitch_SaveAllMaps(item.Value);
-                        break;
-
-                    case CommandLineSwitch.Close:
-                        willClose = true;
-                        break;
-                }
-            }
-
-            // To close, we actually will create a timer to close the form one ms from now
-            if (willClose)
-            {
-                Timer t = new Timer
-                {
-                    Interval = 1
-                };
-                t.Tick += delegate { Close(); };
-                t.Start();
-            }
         }
 
         void BeginEditGrhData(TreeNode node, GrhData gd)
@@ -872,6 +820,61 @@ namespace DemoGame.MapEditor
             }
 
             return category;
+        }
+
+        void HandleSwitch_SaveAllMaps(string[] parameters)
+        {
+            foreach (string file in MapBase.GetMapFiles(ContentPaths.Dev))
+            {
+                if (!MapBase.IsValidMapFile(file))
+                    continue;
+
+                MapIndex index;
+                if (!MapBase.TryGetIndexFromPath(file, out index))
+                    continue;
+
+                using (Map tempMap = new Map(index, _world, GameScreen.GraphicsDevice))
+                {
+                    tempMap.Load(ContentPaths.Dev, true);
+                    tempMap.Save(index, ContentPaths.Dev);
+                }
+            }
+        }
+
+        void HandleSwitches(IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> switches)
+        {
+            if (switches == null || switches.Count() == 0)
+                return;
+
+            bool willClose = false;
+
+            foreach (var item in switches)
+            {
+                switch (item.Key)
+                {
+                    case CommandLineSwitch.SaveAllMaps:
+                        HandleSwitch_SaveAllMaps(item.Value);
+                        break;
+
+                    case CommandLineSwitch.Close:
+                        willClose = true;
+                        break;
+                }
+            }
+
+            // To close, we actually will create a timer to close the form one ms from now
+            if (willClose)
+            {
+                Timer t = new Timer
+                {
+                    Interval = 1
+                };
+                t.Tick += delegate
+                          {
+                              Close();
+                          };
+                t.Start();
+            }
         }
 
         static void HookFormKeyEvents(Control root, KeyEventHandler kehDown, KeyEventHandler kehUp)

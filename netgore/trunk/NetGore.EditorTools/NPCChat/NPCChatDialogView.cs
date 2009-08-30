@@ -143,6 +143,16 @@ namespace NetGore.EditorTools
             return null;
         }
 
+        IEnumerable<TreeNode> GetParents(TreeNode node)
+        {
+            TreeNode current = node;
+            while (current.Parent != null)
+            {
+                yield return current.Parent;
+                current = current.Parent;
+            }
+        }
+
         static string GetTextForDialogItem(EditorNPCChatDialogItem item)
         {
             string text = item.Title;
@@ -184,16 +194,6 @@ namespace NetGore.EditorTools
             base.OnNodeMouseDoubleClick(e);
         }
 
-        IEnumerable<TreeNode> GetParents(TreeNode node)
-        {
-            TreeNode current = node;
-            while (current.Parent != null)
-            {
-                yield return current.Parent;
-                current = current.Parent;
-            }
-        }
-
         void RecursiveUpdateItems(TreeNode node, TreeNode parentNode, EditorNPCChatDialogItem item)
         {
             // Create the main node
@@ -217,7 +217,9 @@ namespace NetGore.EditorTools
 
                     // This GetParents() thing will check to make sure that it is not redirecting to any of it's own parents
                     // because doing so would otherwise cause an infinite recursion of updates
-                    if (responseItem != null && !GetParents(node).Any(x => x.Tag is EditorNPCChatDialogItem && ((EditorNPCChatDialogItem)x.Tag).Index == responsePage))
+                    if (responseItem != null &&
+                        !GetParents(node).Any(
+                             x => x.Tag is EditorNPCChatDialogItem && ((EditorNPCChatDialogItem)x.Tag).Index == responsePage))
                         RecursiveUpdateItems(existingPageNode, childNode, responseItem);
                 }
 

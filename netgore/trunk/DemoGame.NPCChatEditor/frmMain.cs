@@ -59,7 +59,7 @@ namespace DemoGame.NPCChatEditor
 
             // Create the new dialog item
             ushort index = CurrentDialog.GetFreeDialogItemIndex();
-            var newDialogItem = new EditorNPCChatDialogItem(index, "New dialog item");
+            EditorNPCChatDialogItem newDialogItem = new EditorNPCChatDialogItem(index, "New dialog item");
             CurrentDialog.Add(newDialogItem);
 
             // Hook it to the response
@@ -67,6 +67,30 @@ namespace DemoGame.NPCChatEditor
 
             // Update the tree
             npcChatDialogView.UpdateItems();
+
+            // TODO: Select the new dialog item in the tree
+        }
+
+        void btnAddRedirect_Click(object sender, EventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+
+            if (EditingObjAsResponse == null)
+                return;
+
+            // Make sure there isn't already a dialog item
+            if (EditingObjAsResponse.Page != EditorNPCChatResponse.EndConversationPage)
+            {
+                MessageBox.Show("This response already has a dialog item.");
+                return;
+            }
+
+            // Set the redirection
+            EditingObjAsResponse.SetPage(0);
+
+            // TODO: Properly update the tree
+            button1_Click(null, null);
 
             // TODO: Select the new dialog item in the tree
         }
@@ -113,8 +137,7 @@ namespace DemoGame.NPCChatEditor
             int redirectCount = responsesToThisDialog.Count() - 1;
             if (redirectCount > 0)
             {
-                MessageBox.Show(string.Format("Cannot delete this dialog because there are {0} redirects to it.",
-                                                         redirectCount));
+                MessageBox.Show(string.Format("Cannot delete this dialog because there are {0} redirects to it.", redirectCount));
                 return;
             }
 
@@ -351,6 +374,10 @@ namespace DemoGame.NPCChatEditor
             }
         }
 
+        void lstConditionals_SelectedIndexChanged(object sender, EventArgs e)
+        {
+        }
+
         void npcChatDialogView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             SetEditingObject(e.Node.Tag);
@@ -363,6 +390,13 @@ namespace DemoGame.NPCChatEditor
                 SetAllChildrenEnabled(child.Controls, enabled);
                 child.Enabled = enabled;
             }
+        }
+
+        void SetConditionalsEnabled(bool enabled)
+        {
+            cmbConditionalType.Enabled = enabled;
+            lstConditionals.Enabled = enabled;
+            txtConditionalValue.Enabled = enabled;
         }
 
         void SetEditingObject(object obj)
@@ -425,49 +459,13 @@ namespace DemoGame.NPCChatEditor
                 CurrentDialog.SetTitle(txtDialogTitle.Text);
         }
 
-        void txtTitle_TextChanged(object sender, EventArgs e)
+        void txtRedirectIndex_KeyDown(object sender, KeyEventArgs e)
         {
-            if (_doNotUpdateObj)
-                return;
-
-            if (EditingObjAsDialogItem != null)
-                EditingObjAsDialogItem.SetTitle(txtTitle.Text);
-            else if (EditingObjAsResponse != null)
-                EditingObjAsResponse.SetText(txtTitle.Text);
+            if (e.KeyCode == Keys.Return)
+                txtRedirectIndex_Leave(this, e);
         }
 
-        void SetConditionalsEnabled(bool enabled)
-        {
-            cmbConditionalType.Enabled = enabled;
-            lstConditionals.Enabled = enabled;
-            txtConditionalValue.Enabled = enabled;
-        }
-
-        private void btnAddRedirect_Click(object sender, EventArgs e)
-        {
-            if (_doNotUpdateObj)
-                return;
-
-            if (EditingObjAsResponse == null)
-                return;
-
-            // Make sure there isn't already a dialog item
-            if (EditingObjAsResponse.Page != EditorNPCChatResponse.EndConversationPage)
-            {
-                MessageBox.Show("This response already has a dialog item.");
-                return;
-            }
-
-            // Set the redirection
-            EditingObjAsResponse.SetPage(0);
-
-            // TODO: Properly update the tree
-            button1_Click(null, null);
-
-            // TODO: Select the new dialog item in the tree
-        }
-
-        private void txtRedirectIndex_Leave(object sender, EventArgs e)
+        void txtRedirectIndex_Leave(object sender, EventArgs e)
         {
             if (EditingObjAsTreeNode == null || npcChatDialogView.SelectedNode.Tag != _editingObj)
                 return;
@@ -475,7 +473,7 @@ namespace DemoGame.NPCChatEditor
             if (npcChatDialogView.SelectedNode.Parent == null)
                 return;
 
-            var response = npcChatDialogView.SelectedNode.Parent.Tag as EditorNPCChatResponse;
+            EditorNPCChatResponse response = npcChatDialogView.SelectedNode.Parent.Tag as EditorNPCChatResponse;
             if (response == null)
                 return;
 
@@ -493,7 +491,7 @@ namespace DemoGame.NPCChatEditor
                 return;
             }
 
-            var newNode = CurrentDialog.GetDialogItem(newIndex);
+            NPCChatDialogItemBase newNode = CurrentDialog.GetDialogItem(newIndex);
             if (newNode == null)
             {
                 MessageBox.Show("Invalid node page index entered.");
@@ -507,14 +505,15 @@ namespace DemoGame.NPCChatEditor
             button1_Click(null, null);
         }
 
-        private void txtRedirectIndex_KeyDown(object sender, KeyEventArgs e)
+        void txtTitle_TextChanged(object sender, EventArgs e)
         {
-            if (e.KeyCode == Keys.Return)
-                txtRedirectIndex_Leave(this, e);
-        }
+            if (_doNotUpdateObj)
+                return;
 
-        private void lstConditionals_SelectedIndexChanged(object sender, EventArgs e)
-        {
+            if (EditingObjAsDialogItem != null)
+                EditingObjAsDialogItem.SetTitle(txtTitle.Text);
+            else if (EditingObjAsResponse != null)
+                EditingObjAsResponse.SetText(txtTitle.Text);
         }
     }
 }

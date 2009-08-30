@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
 using log4net;
 using NetGore.Collections;
 using NetGore.IO;
@@ -13,6 +12,7 @@ namespace NetGore
     /// </summary>
     public static class DynamicEntityFactory
     {
+        public const string TypeNameStringKey = "DynamicEntityType";
         static readonly FactoryTypeCollection _typeCollection;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -57,8 +57,6 @@ namespace NetGore
 
             return dEntity;
         }
-
-        public const string TypeNameStringKey = "DynamicEntityType";
 
         /// <summary>
         /// Writes a DynamicEntity to a stream.

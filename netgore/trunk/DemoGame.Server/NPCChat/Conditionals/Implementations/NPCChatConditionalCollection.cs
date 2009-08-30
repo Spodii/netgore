@@ -1,14 +1,11 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.NPCChat;
 
 namespace DemoGame.Server.NPCChat.Conditionals
 {
-    class NPCChatConditionalCollection<TUser, TNPC> : NPCChatConditionalCollectionBase<TUser, TNPC>
-        where TUser : class
-        where TNPC : class
+    class NPCChatConditionalCollection<TUser, TNPC> : NPCChatConditionalCollectionBase<TUser, TNPC> where TUser : class
+                                                                                                    where TNPC : class
     {
         NPCChatConditionalEvaluationType _evaluationType;
         NPCChatConditionalCollectionItemBase<TUser, TNPC>[] _items;
@@ -20,15 +17,6 @@ namespace DemoGame.Server.NPCChat.Conditionals
         public override NPCChatConditionalEvaluationType EvaluationType
         {
             get { return _evaluationType; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, sets the values read from the Read method.
-        /// </summary>
-        protected override void SetReadValues(NPCChatConditionalEvaluationType evaluationType, NPCChatConditionalCollectionItemBase<TUser, TNPC>[] items)
-        {
-            _evaluationType = evaluationType;
-            _items = items;
         }
 
         /// <summary>
@@ -50,7 +38,19 @@ namespace DemoGame.Server.NPCChat.Conditionals
         public override IEnumerator<NPCChatConditionalCollectionItemBase<TUser, TNPC>> GetEnumerator()
         {
             foreach (var item in _items)
+            {
                 yield return item;
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, sets the values read from the Read method.
+        /// </summary>
+        protected override void SetReadValues(NPCChatConditionalEvaluationType evaluationType,
+                                              NPCChatConditionalCollectionItemBase<TUser, TNPC>[] items)
+        {
+            _evaluationType = evaluationType;
+            _items = items;
         }
     }
 }

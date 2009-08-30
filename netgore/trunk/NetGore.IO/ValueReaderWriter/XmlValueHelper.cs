@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.Globalization;
 
 namespace NetGore.IO
 {
-    internal static class XmlValueHelper
+    static class XmlValueHelper
     {
         /// <summary>
         /// The key name used for the Count value when writing a collection.

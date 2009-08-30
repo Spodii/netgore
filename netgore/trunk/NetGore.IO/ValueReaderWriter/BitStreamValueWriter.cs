@@ -176,7 +176,6 @@ namespace NetGore.IO
             _writer.Seek(BitStreamSeekOrigin.Beginning, nodeEnd);
         }
 
-
         /// <summary>
         /// Writes multiple values of the same type to the IValueWriter all under the same node name.
         /// Ordering is not guarenteed.
@@ -199,8 +198,10 @@ namespace NetGore.IO
                 Write(null, count);
                 if (values != null && count > 0)
                 {
-                    foreach (var value in values)
+                    foreach (T value in values)
+                    {
                         writeHandler(null, value);
+                    }
                 }
             }
             WriteEndNode(nodeName);
@@ -259,7 +260,9 @@ namespace NetGore.IO
                 if (values != null && count > 0)
                 {
                     for (int i = 0; i < values.Length; i++)
+                    {
                         writeHandler(null, values[i]);
+                    }
                 }
             }
             WriteEndNode(nodeName);

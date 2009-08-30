@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
@@ -29,17 +29,6 @@ namespace NetGore.EditorTools
         public override ushort Index
         {
             get { return _index; }
-        }
-
-        public ushort GetFreeDialogItemIndex()
-        {
-            for (int i = 0; i < _dialogItems.Length; i++)
-            {
-                if (_dialogItems[i] == null)
-                    return (ushort)i;
-            }
-
-            return (ushort)_dialogItems.Length;
         }
 
         public IEnumerable<EditorNPCChatDialogItem> Items
@@ -131,6 +120,17 @@ namespace NetGore.EditorTools
             return Items.Cast<NPCChatDialogItemBase>();
         }
 
+        public ushort GetFreeDialogItemIndex()
+        {
+            for (int i = 0; i < _dialogItems.Length; i++)
+            {
+                if (_dialogItems[i] == null)
+                    return (ushort)i;
+            }
+
+            return (ushort)_dialogItems.Length;
+        }
+
         /// <summary>
         /// When overridden in the derived class, gets the initial NPCChatDialogItemBase that is used at the
         /// start of a conversation.
@@ -163,8 +163,10 @@ namespace NetGore.EditorTools
             _dialogItems[dialogItem.Index] = null;
 
             // Remove references to the dialog
-            foreach (var r in sourceResponses)
+            foreach (EditorNPCChatResponse r in sourceResponses)
+            {
                 r.SetPage(EditorNPCChatResponse.EndConversationPage);
+            }
 
             return true;
         }

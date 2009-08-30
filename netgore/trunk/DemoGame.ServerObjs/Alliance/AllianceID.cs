@@ -1,8 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+using System.Data;
+using System.Linq;
 using System.Runtime.InteropServices;
 using NetGore.Globalization;
 using NetGore.IO;
@@ -793,42 +792,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Parses the AllianceID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The AllianceID parsed from the string.</returns>
-        public static AllianceID ParseAllianceID(this Parser parser, string value)
-        {
-            return new AllianceID(parser.ParseByte(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the AllianceID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed AllianceID.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out AllianceID outValue)
-        {
-            byte tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new AllianceID(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the AllianceID from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the AllianceID from.</param>
-        /// <returns>The AllianceID read from the BitStream.</returns>
-        public static AllianceID ReadAllianceID(this BitStream bitStream)
-        {
-            return AllianceID.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the AllianceID from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the AllianceID from.</param>
@@ -851,6 +814,27 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Parses the AllianceID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The AllianceID parsed from the string.</returns>
+        public static AllianceID ParseAllianceID(this Parser parser, string value)
+        {
+            return new AllianceID(parser.ParseByte(value));
+        }
+
+        /// <summary>
+        /// Reads the AllianceID from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the AllianceID from.</param>
+        /// <returns>The AllianceID read from the BitStream.</returns>
+        public static AllianceID ReadAllianceID(this BitStream bitStream)
+        {
+            return AllianceID.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the AllianceID from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the AllianceID from.</param>
@@ -859,6 +843,21 @@ namespace DemoGame.Server
         public static AllianceID ReadAllianceID(this IValueReader valueReader, string name)
         {
             return AllianceID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the AllianceID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed AllianceID.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out AllianceID outValue)
+        {
+            byte tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new AllianceID(tmp);
+            return ret;
         }
 
         /// <summary>

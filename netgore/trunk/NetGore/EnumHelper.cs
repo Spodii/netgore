@@ -28,6 +28,14 @@ namespace NetGore
             return Enum.GetValues(typeof(T)).Cast<T>().ToArray();
         }
 
+        public static bool IsDefined<T>(T value) where T : struct
+        {
+            if (!typeof(T).IsEnum)
+                throw CreateGenericTypeIsNotEnumException<T>();
+
+            return Enum.IsDefined(typeof(T), value);
+        }
+
         /// <summary>
         /// Converts the string representation of the name or numeric value of one or more enumerated
         /// constants to an equivalent enumerated object.
@@ -41,14 +49,6 @@ namespace NetGore
                 throw CreateGenericTypeIsNotEnumException<T>();
 
             return (T)Enum.Parse(typeof(T), value);
-        }
-
-        public static bool IsDefined<T>(T value) where T : struct
-        {
-            if (!typeof(T).IsEnum)
-                throw CreateGenericTypeIsNotEnumException<T>();
-
-            return Enum.IsDefined(typeof(T), value);
         }
 
         /// <summary>

@@ -1,13 +1,12 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+using System.Data;
+using System.Linq;
 using System.Runtime.InteropServices;
 using NetGore.Globalization;
 using NetGore.IO;
 
-namespace NetGore 
+namespace NetGore
 {
     /// <summary>
     /// Represents the integral value of the index of an Entity in respect to the Map it is on.
@@ -793,42 +792,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Parses the MapEntityIndex from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The MapEntityIndex parsed from the string.</returns>
-        public static MapEntityIndex ParseMapEntityIndex(this Parser parser, string value)
-        {
-            return new MapEntityIndex(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the MapEntityIndex from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed MapEntityIndex.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out MapEntityIndex outValue)
-        {
-            ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new MapEntityIndex(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the MapEntityIndex from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the MapEntityIndex from.</param>
-        /// <returns>The MapEntityIndex read from the BitStream.</returns>
-        public static MapEntityIndex ReadMapEntityIndex(this BitStream bitStream)
-        {
-            return MapEntityIndex.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the MapEntityIndex from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the MapEntityIndex from.</param>
@@ -851,6 +814,27 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Parses the MapEntityIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The MapEntityIndex parsed from the string.</returns>
+        public static MapEntityIndex ParseMapEntityIndex(this Parser parser, string value)
+        {
+            return new MapEntityIndex(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Reads the MapEntityIndex from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the MapEntityIndex from.</param>
+        /// <returns>The MapEntityIndex read from the BitStream.</returns>
+        public static MapEntityIndex ReadMapEntityIndex(this BitStream bitStream)
+        {
+            return MapEntityIndex.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the MapEntityIndex from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the MapEntityIndex from.</param>
@@ -859,6 +843,21 @@ namespace NetGore
         public static MapEntityIndex ReadMapEntityIndex(this IValueReader valueReader, string name)
         {
             return MapEntityIndex.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the MapEntityIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed MapEntityIndex.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out MapEntityIndex outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new MapEntityIndex(tmp);
+            return ret;
         }
 
         /// <summary>

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
 using DemoGame.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -39,10 +38,20 @@ namespace DemoGame
         /// </summary>
         protected const int WallGridSize = 128;
 
+        const string _dynamicEntitiesNodeName = "DynamicEntities";
+        const string _headerNodeHeightKey = "Height";
+        const string _headerNodeName = "Header";
+        const string _headerNodeNameKey = "Name";
+        const string _headerNodeWidthKey = "Width";
+        const string _miscNodeName = "Misc";
+        const string _rootNodeName = "Map";
+
         /// <summary>
         /// The name of the node for each individual WallEntity.
         /// </summary>
         const string _wallNodeName = "Wall";
+
+        const string _wallsNodeName = "Walls";
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -938,21 +947,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Tries to get the Map's index from the file path.
-        /// </summary>
-        /// <param name="path">File path to the map.</param>
-        /// <param name="mapIndex">If this method returns true, contains the index of the map.</param>
-        /// <returns>True if the parsing was successful; otherwise false.</returns>
-        public static bool TryGetIndexFromPath(string path, out MapIndex mapIndex)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            string fileName = Path.GetFileNameWithoutExtension(path);
-            return Parser.Invariant.TryParse(fileName, out mapIndex);
-        }
-
-        /// <summary>
         /// Gets all the items that intersect a specified area
         /// </summary>
         /// <param name="rect">Rectangle of the area to check</param>
@@ -1001,7 +995,7 @@ namespace DemoGame
 
             // Get the used map indices
             var usedIndices = new List<MapIndex>(mapFiles.Count());
-            foreach (var file in mapFiles)
+            foreach (string file in mapFiles)
             {
                 MapIndex o;
                 if (TryGetIndexFromPath(file, out o))
@@ -1179,27 +1173,24 @@ namespace DemoGame
                 throw new ArgumentException("filePath");
             }
 
-            var r = new XmlValueReader(filePath, _rootNodeName);
+            XmlValueReader r = new XmlValueReader(filePath, _rootNodeName);
             LoadHeader(r);
             LoadWalls(r);
             LoadDynamicEntities(r, loadDynamicEntities);
             LoadMisc(r.ReadNode(_miscNodeName));
         }
 
-        void SaveDynamicEntities(IValueWriter w)
-        {
-            w.WriteManyNodes(_dynamicEntitiesNodeName, DynamicEntities, DynamicEntityFactory.Write);
-        }
-
         void LoadDynamicEntities(IValueReader r, bool loadDynamicEntities)
         {
-            var loadedDynamicEntities = r.ReadManyNodes<DynamicEntity>(_dynamicEntitiesNodeName, DynamicEntityFactory.Read); 
+            var loadedDynamicEntities = r.ReadManyNodes<DynamicEntity>(_dynamicEntitiesNodeName, DynamicEntityFactory.Read);
 
             // Add the loaded DynamicEntities to the map
             if (loadDynamicEntities)
             {
-                foreach (var dynamicEntity in loadedDynamicEntities)
+                foreach (DynamicEntity dynamicEntity in loadedDynamicEntities)
+                {
                     AddEntity(dynamicEntity);
+                }
             }
         }
 
@@ -1212,7 +1203,7 @@ namespace DemoGame
             if (r == null)
                 throw new ArgumentNullException("r");
 
-            var nodeReader = r.ReadNode(_headerNodeName);
+            IValueReader nodeReader = r.ReadNode(_headerNodeName);
 
             // Read the values
             string name = nodeReader.ReadString(_headerNodeNameKey);
@@ -1232,19 +1223,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Saves the map walls
-        /// </summary>
-        /// <param name="w">IValueWriter to write to.</param>
-        void SaveWalls(IValueWriter w)
-        {
-            if (w == null)
-                throw new ArgumentNullException("w");
-
-            var wallsToSave = Entities.OfType<WallEntityBase>();
-            w.WriteManyNodes(_wallsNodeName, wallsToSave, ((writer, item) => item.Write(writer)));
-        }
-
-        /// <summary>
         /// Loads the wall information for the map
         /// </summary>
         /// <param name="r">XmlReader used to load the map file</param>
@@ -1256,8 +1234,10 @@ namespace DemoGame
             var loadedWalls = r.ReadManyNodes<WallEntityBase>(_wallsNodeName, CreateWall);
 
             // Add the loaded walls to the map
-            foreach (var wall in loadedWalls)
+            foreach (WallEntityBase wall in loadedWalls)
+            {
                 AddEntity(wall);
+            }
         }
 
         /// <summary>
@@ -1393,9 +1373,6 @@ namespace DemoGame
                 OnSave(this);
         }
 
-        const string _rootNodeName = "Map";
-        const string _miscNodeName = "Misc";
-
         /// <summary>
         /// Saves the map to a file to the specified file path.
         /// </summary>
@@ -1418,13 +1395,10 @@ namespace DemoGame
             }
         }
 
-        const string _dynamicEntitiesNodeName = "DynamicEntities";
-
-
-        const string _headerNodeName = "Header";
-        const string _headerNodeNameKey = "Name";
-        const string _headerNodeWidthKey = "Width";
-        const string _headerNodeHeightKey = "Height";
+        void SaveDynamicEntities(IValueWriter w)
+        {
+            w.WriteManyNodes(_dynamicEntitiesNodeName, DynamicEntities, DynamicEntityFactory.Write);
+        }
 
         /// <summary>
         /// Saves the map header
@@ -1452,8 +1426,18 @@ namespace DemoGame
         {
         }
 
-        const string _wallsNodeName = "Walls";
+        /// <summary>
+        /// Saves the map walls
+        /// </summary>
+        /// <param name="w">IValueWriter to write to.</param>
+        void SaveWalls(IValueWriter w)
+        {
+            if (w == null)
+                throw new ArgumentNullException("w");
 
+            var wallsToSave = Entities.OfType<WallEntityBase>();
+            w.WriteManyNodes(_wallsNodeName, wallsToSave, ((writer, item) => item.Write(writer)));
+        }
 
         /// <summary>
         /// Sets the new dimensions of the map and trims
@@ -1589,6 +1573,21 @@ namespace DemoGame
                 dynamicEntity = _dynamicEntities[(int)index] as T;
 
             return (dynamicEntity != null);
+        }
+
+        /// <summary>
+        /// Tries to get the Map's index from the file path.
+        /// </summary>
+        /// <param name="path">File path to the map.</param>
+        /// <param name="mapIndex">If this method returns true, contains the index of the map.</param>
+        /// <returns>True if the parsing was successful; otherwise false.</returns>
+        public static bool TryGetIndexFromPath(string path, out MapIndex mapIndex)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
+            string fileName = Path.GetFileNameWithoutExtension(path);
+            return Parser.Invariant.TryParse(fileName, out mapIndex);
         }
 
         /// <summary>
