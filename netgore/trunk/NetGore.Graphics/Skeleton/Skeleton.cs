@@ -239,9 +239,9 @@ namespace NetGore.Graphics
                     continue;
                 
                 string name = dic["Node.Name"];
-                float x = float.Parse(dic["Node.X"]);
-                float y = float.Parse(dic["Node.Y"]);
-                bool isMod = dic.ContainsKey("Node.IsModifier") && bool.Parse(dic["Node.IsModifier"]);
+                float x = dic.AsFloat("Node.X");
+                float y = dic.AsFloat("Node.Y");
+                bool isMod = dic.AsBool("Node.IsModifier", false);
 
                 SkeletonNode node = new SkeletonNode(new Vector2(x, y));
                 nodes.Add(node);

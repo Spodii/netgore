@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Linq;
+using NetGore;
 
 namespace DemoGame.Server.Queries
 {
@@ -11,7 +12,7 @@ namespace DemoGame.Server.Queries
     {
         static void CheckIfDefined<T>(T value)
         {
-            if (!Enum.IsDefined(typeof(T), value))
+            if (!EnumHelper.IsDefined(value))
                 throw new InvalidCastException(string.Format("Value `{0}` is not defined for enum `{1}`.", value, typeof(T)));
         }
 

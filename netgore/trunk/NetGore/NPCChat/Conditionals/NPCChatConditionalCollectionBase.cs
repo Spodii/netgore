@@ -70,7 +70,7 @@ namespace NetGore.NPCChat
 
             var evaluationType = (NPCChatConditionalEvaluationType)evaluationTypeValue;
 
-            if (!Enum.IsDefined(typeof(NPCChatConditionalEvaluationType), evaluationType))
+            if (!EnumHelper.IsDefined(evaluationType))
                 throw new Exception(string.Format("Invalid NPCChatConditionalEvaluationType `{0}`.", evaluationTypeValue));
 
             SetReadValues(evaluationType, items);

@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using NetGore;
 
 namespace DemoGame
 {
@@ -25,7 +26,7 @@ namespace DemoGame
         /// <returns>True if the <paramref name="slot"/> is defined in the EquipmentSlot enum, else false.</returns>
         public static bool IsDefined(this EquipmentSlot slot)
         {
-            return Enum.IsDefined(typeof(EquipmentSlot), slot);
+            return EnumHelper.IsDefined(slot);
         }
     }
 }

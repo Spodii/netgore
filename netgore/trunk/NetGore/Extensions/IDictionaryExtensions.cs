@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.Globalization;
 
 namespace NetGore
 {
@@ -10,6 +11,86 @@ namespace NetGore
     public static class IDictionaryExtensions
     {
         /// <summary>
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as enum type
+        /// <typeparamref name="TEnum"/>.
+        /// </summary>
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <typeparam name="TEnum">The enum Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as a GrhIndex.</returns>
+        public static TEnum AsEnum<T, TEnum>(this IDictionary<T, string> dict, T key)
+        {
+            return EnumHelper.Parse<TEnum>(dict[key]);
+        }
+
+        /// <summary>
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as enum type
+        /// <typeparamref name="TEnum"/>.
+        /// </summary>
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <typeparam name="TEnum">The enum Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <param name="defaultValue">The value to use if the value at the <paramref name="key"/> could not be parsed.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
+        /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
+        /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
+        public static TEnum AsEnum<T, TEnum>(this IDictionary<T, string> dict, T key, TEnum defaultValue)
+        {
+            string value;
+            if (!dict.TryGetValue(key, out value))
+                return defaultValue;
+
+            if (string.IsNullOrEmpty(value))
+                return defaultValue;
+
+            TEnum enumValue = EnumHelper.Parse<TEnum>(value);
+            if (!EnumHelper.IsDefined(enumValue))
+                return defaultValue;
+
+            return enumValue;
+        }
+
+        /// <summary>
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type GrhIndex.
+        /// </summary>
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as a GrhIndex.</returns>
+        public static GrhIndex AsGrhIndex<T>(this IDictionary<T, string> dict, T key)
+        {
+            return GrhIndex.Parse(dict[key]);
+        }
+
+        /// <summary>
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type GrhIndex.
+        /// </summary>
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <param name="defaultValue">The value to use if the value at the <paramref name="key"/> could not be parsed.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
+        /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
+        /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
+        public static GrhIndex AsGrhIndex<T>(this IDictionary<T, string> dict, T key, GrhIndex defaultValue)
+        {
+            string value;
+            if (!dict.TryGetValue(key, out value))
+                return defaultValue;
+
+            GrhIndex parsed;
+            if (!GrhIndex.TryParse(value, out parsed))
+                return defaultValue;
+
+            return parsed;
+        }
+
+
+
+
+        /// <summary>
         /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type bool.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>
@@ -18,7 +99,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static bool AsBool<T>(this IDictionary<T, string> dict, T key)
         {
-            return bool.Parse(dict[key]);
+            return Parser.Invariant.ParseBool(dict[key]);
         }
 
         /// <summary>
@@ -38,7 +119,7 @@ namespace NetGore
                 return defaultValue;
 
             bool parsed;
-            if (!bool.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -53,7 +134,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static byte AsByte<T>(this IDictionary<T, string> dict, T key)
         {
-            return byte.Parse(dict[key]);
+            return Parser.Invariant.ParseByte(dict[key]);
         }
 
         /// <summary>
@@ -73,7 +154,7 @@ namespace NetGore
                 return defaultValue;
 
             byte parsed;
-            if (!byte.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -88,7 +169,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static char AsChar<T>(this IDictionary<T, string> dict, T key)
         {
-            return char.Parse(dict[key]);
+            return Parser.Invariant.ParseChar(dict[key]);
         }
 
         /// <summary>
@@ -108,7 +189,7 @@ namespace NetGore
                 return defaultValue;
 
             char parsed;
-            if (!char.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -123,7 +204,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static DateTime AsDateTime<T>(this IDictionary<T, string> dict, T key)
         {
-            return DateTime.Parse(dict[key]);
+            return Parser.Invariant.ParseDateTime(dict[key]);
         }
 
         /// <summary>
@@ -143,7 +224,7 @@ namespace NetGore
                 return defaultValue;
 
             DateTime parsed;
-            if (!DateTime.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -158,7 +239,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static DateTimeOffset AsDateTimeOffset<T>(this IDictionary<T, string> dict, T key)
         {
-            return DateTimeOffset.Parse(dict[key]);
+            return Parser.Invariant.ParseDateTimeOffset(dict[key]);
         }
 
         /// <summary>
@@ -178,7 +259,7 @@ namespace NetGore
                 return defaultValue;
 
             DateTimeOffset parsed;
-            if (!DateTimeOffset.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -193,7 +274,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static decimal AsDecimal<T>(this IDictionary<T, string> dict, T key)
         {
-            return decimal.Parse(dict[key]);
+            return Parser.Invariant.ParseDecimal(dict[key]);
         }
 
         /// <summary>
@@ -213,7 +294,7 @@ namespace NetGore
                 return defaultValue;
 
             decimal parsed;
-            if (!decimal.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -228,7 +309,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static double AsDouble<T>(this IDictionary<T, string> dict, T key)
         {
-            return double.Parse(dict[key]);
+            return Parser.Invariant.ParseDouble(dict[key]);
         }
 
         /// <summary>
@@ -248,7 +329,7 @@ namespace NetGore
                 return defaultValue;
 
             double parsed;
-            if (!double.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -263,7 +344,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static float AsFloat<T>(this IDictionary<T, string> dict, T key)
         {
-            return float.Parse(dict[key]);
+            return Parser.Invariant.ParseFloat(dict[key]);
         }
 
         /// <summary>
@@ -283,7 +364,7 @@ namespace NetGore
                 return defaultValue;
 
             float parsed;
-            if (!float.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -298,7 +379,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static int AsInt<T>(this IDictionary<T, string> dict, T key)
         {
-            return int.Parse(dict[key]);
+            return Parser.Invariant.ParseInt(dict[key]);
         }
 
         /// <summary>
@@ -318,7 +399,7 @@ namespace NetGore
                 return defaultValue;
 
             int parsed;
-            if (!int.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -333,7 +414,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static long AsLong<T>(this IDictionary<T, string> dict, T key)
         {
-            return long.Parse(dict[key]);
+            return Parser.Invariant.ParseLong(dict[key]);
         }
 
         /// <summary>
@@ -353,7 +434,7 @@ namespace NetGore
                 return defaultValue;
 
             long parsed;
-            if (!long.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -368,7 +449,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static sbyte AsSByte<T>(this IDictionary<T, string> dict, T key)
         {
-            return sbyte.Parse(dict[key]);
+            return Parser.Invariant.ParseSByte(dict[key]);
         }
 
         /// <summary>
@@ -388,7 +469,7 @@ namespace NetGore
                 return defaultValue;
 
             sbyte parsed;
-            if (!sbyte.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -403,7 +484,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static short AsShort<T>(this IDictionary<T, string> dict, T key)
         {
-            return short.Parse(dict[key]);
+            return Parser.Invariant.ParseShort(dict[key]);
         }
 
         /// <summary>
@@ -423,7 +504,7 @@ namespace NetGore
                 return defaultValue;
 
             short parsed;
-            if (!short.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -438,7 +519,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static TimeSpan AsTimeSpan<T>(this IDictionary<T, string> dict, T key)
         {
-            return TimeSpan.Parse(dict[key]);
+            return Parser.Invariant.ParseTimeSpan(dict[key]);
         }
 
         /// <summary>
@@ -458,7 +539,7 @@ namespace NetGore
                 return defaultValue;
 
             TimeSpan parsed;
-            if (!TimeSpan.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -473,7 +554,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static uint AsUInt<T>(this IDictionary<T, string> dict, T key)
         {
-            return uint.Parse(dict[key]);
+            return Parser.Invariant.ParseUInt(dict[key]);
         }
 
         /// <summary>
@@ -493,7 +574,7 @@ namespace NetGore
                 return defaultValue;
 
             uint parsed;
-            if (!uint.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -508,7 +589,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static ulong AsULong<T>(this IDictionary<T, string> dict, T key)
         {
-            return ulong.Parse(dict[key]);
+            return Parser.Invariant.ParseULong(dict[key]);
         }
 
         /// <summary>
@@ -528,7 +609,7 @@ namespace NetGore
                 return defaultValue;
 
             ulong parsed;
-            if (!ulong.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
@@ -543,7 +624,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int.</returns>
         public static ushort AsUShort<T>(this IDictionary<T, string> dict, T key)
         {
-            return ushort.Parse(dict[key]);
+            return Parser.Invariant.ParseUShort(dict[key]);
         }
 
         /// <summary>
@@ -563,7 +644,7 @@ namespace NetGore
                 return defaultValue;
 
             ushort parsed;
-            if (!ushort.TryParse(value, out parsed))
+            if (!Parser.Invariant.TryParse(value, out parsed))
                 return defaultValue;
 
             return parsed;
