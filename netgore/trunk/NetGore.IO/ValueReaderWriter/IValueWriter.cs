@@ -27,10 +27,16 @@ namespace NetGore.IO
     public interface IValueWriter : IDisposable
     {
         /// <summary>
-        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
+        /// Gets if this IValueWriter supports using the name field to look up values. If false, values will have to
         /// be read back in the same order they were written and the name field will be ignored.
         /// </summary>
         bool SupportsNameLookup { get; }
+
+        /// <summary>
+        /// Gets if this IValueWriter supports reading nodes. If false, any attempt to use nodes in this IValueWriter
+        /// will result in a NotSupportedException being thrown.
+        /// </summary>
+        bool SupportsNodes { get; }
 
         /// <summary>
         /// Writes a 32-bit signed integer.

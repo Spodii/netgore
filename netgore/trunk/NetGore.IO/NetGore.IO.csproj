@@ -75,8 +75,8 @@
     <Compile Include="Bits\BitStreamSeekOrigin.cs" />
     <Compile Include="ContentPaths.cs" />
     <Compile Include="FilePathString.cs" />
-    <Compile Include="ValueReaderWriter\BitStreamValueReader.cs" />
-    <Compile Include="ValueReaderWriter\BitStreamValueWriter.cs" />
+    <Compile Include="ValueReaderWriter\BinaryValueReader.cs" />
+    <Compile Include="ValueReaderWriter\BinaryValueWriter.cs" />
     <Compile Include="ValueReaderWriter\IValueReader.cs" />
     <Compile Include="ValueReaderWriter\IValueWriter.cs" />
     <Compile Include="MessageCollectionBase.cs" />
