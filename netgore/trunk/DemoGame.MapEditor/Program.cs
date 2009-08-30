@@ -13,6 +13,7 @@ namespace DemoGame.MapEditor
         [STAThread]
         static void Main(string[] args)
         {
+            args = new string[] { "--saveallmaps", "--close" };
             var switches = CommandLineSwitchHelper.GetCommandsUsingEnum<CommandLineSwitch>(args);
 
             Application.EnableVisualStyles();
