@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using NetGore.Globalization;
 
 namespace NetGore
 {
@@ -197,6 +198,11 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Gets the Parser to use for all the parsing done in this class.
+        /// </summary>
+        static Parser ParserToUse { get { return Parser.Invariant; } }
+
+        /// <summary>
         /// Tries to parse a system Type. Every Type handled in here should also defined in _handledSystemTypes.
         /// </summary>
         /// <param name="s">String to parse.</param>
@@ -216,7 +222,7 @@ namespace NetGore
             if (type == typeof(float))
             {
                 float v;
-                bool ret = float.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -224,7 +230,7 @@ namespace NetGore
             if (type == typeof(double))
             {
                 double v;
-                bool ret = double.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -232,7 +238,7 @@ namespace NetGore
             if (type == typeof(long))
             {
                 long v;
-                bool ret = long.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -240,7 +246,7 @@ namespace NetGore
             if (type == typeof(ulong))
             {
                 ulong v;
-                bool ret = ulong.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -248,7 +254,7 @@ namespace NetGore
             if (type == typeof(int))
             {
                 int v;
-                bool ret = int.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -256,7 +262,7 @@ namespace NetGore
             if (type == typeof(uint))
             {
                 uint v;
-                bool ret = uint.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -264,7 +270,7 @@ namespace NetGore
             if (type == typeof(short))
             {
                 short v;
-                bool ret = short.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -272,7 +278,7 @@ namespace NetGore
             if (type == typeof(ushort))
             {
                 ushort v;
-                bool ret = ushort.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -280,7 +286,7 @@ namespace NetGore
             if (type == typeof(byte))
             {
                 byte v;
-                bool ret = byte.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -288,7 +294,7 @@ namespace NetGore
             if (type == typeof(sbyte))
             {
                 sbyte v;
-                bool ret = sbyte.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -296,7 +302,7 @@ namespace NetGore
             if (type == typeof(DateTime))
             {
                 DateTime v;
-                bool ret = DateTime.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }
@@ -304,7 +310,7 @@ namespace NetGore
             if (type == typeof(bool))
             {
                 bool v;
-                bool ret = bool.TryParse(s, out v);
+                bool ret = ParserToUse.TryParse(s, out v);
                 value = v;
                 return ret;
             }

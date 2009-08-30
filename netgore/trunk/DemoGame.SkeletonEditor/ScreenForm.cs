@@ -870,7 +870,7 @@ namespace DemoGame.SkeletonEditor
         {
             try
             {
-                SelectedNode.SetAngle(float.Parse(txtAngle.Text));
+                SelectedNode.SetAngle(Parser.Current.ParseFloat(txtAngle.Text));
                 txtAngle.BackColor = ColorNormal;
             }
             catch
@@ -903,7 +903,7 @@ namespace DemoGame.SkeletonEditor
         {
             try
             {
-                SelectedNode.SetLength(float.Parse(txtLength.Text));
+                SelectedNode.SetLength(Parser.Current.ParseFloat(txtLength.Text));
                 txtLength.BackColor = ColorNormal;
             }
             catch
@@ -932,7 +932,8 @@ namespace DemoGame.SkeletonEditor
         {
             try
             {
-                SelectedDSI.ItemInfo.Offset = new Vector2(float.Parse(txtOffsetX.Text), SelectedDSI.ItemInfo.Offset.Y);
+                float x = Parser.Current.ParseFloat(txtOffsetX.Text);
+                SelectedDSI.ItemInfo.Offset = new Vector2(x, SelectedDSI.ItemInfo.Offset.Y);
                 txtOffsetX.BackColor = ColorNormal;
             }
             catch
@@ -945,7 +946,8 @@ namespace DemoGame.SkeletonEditor
         {
             try
             {
-                SelectedDSI.ItemInfo.Offset = new Vector2(SelectedDSI.ItemInfo.Offset.X, float.Parse(txtOffsetY.Text));
+                float y = Parser.Current.ParseFloat(txtOffsetY.Text);
+                SelectedDSI.ItemInfo.Offset = new Vector2(SelectedDSI.ItemInfo.Offset.X, y);
                 txtOffsetY.BackColor = ColorNormal;
             }
             catch
@@ -958,7 +960,8 @@ namespace DemoGame.SkeletonEditor
         {
             try
             {
-                SelectedDSI.ItemInfo.Origin = new Vector2(float.Parse(txtOriginX.Text), SelectedDSI.ItemInfo.Origin.Y);
+                float x = Parser.Current.ParseFloat(txtOriginX.Text);
+                SelectedDSI.ItemInfo.Origin = new Vector2(x, SelectedDSI.ItemInfo.Origin.Y);
                 txtOriginX.BackColor = ColorNormal;
             }
             catch
@@ -971,7 +974,8 @@ namespace DemoGame.SkeletonEditor
         {
             try
             {
-                SelectedDSI.ItemInfo.Origin = new Vector2(SelectedDSI.ItemInfo.Origin.X, float.Parse(txtOriginY.Text));
+                float y = Parser.Current.ParseFloat(txtOriginY.Text);
+                SelectedDSI.ItemInfo.Origin = new Vector2(SelectedDSI.ItemInfo.Origin.X, y);
                 txtOriginY.BackColor = ColorNormal;
             }
             catch
@@ -985,9 +989,9 @@ namespace DemoGame.SkeletonEditor
             try
             {
                 if (SelectedNode.Parent == null)
-                    SelectedNode.MoveTo(new Vector2(float.Parse(txtX.Text), SelectedNode.Y));
+                    SelectedNode.MoveTo(new Vector2(Parser.Current.ParseFloat(txtX.Text), SelectedNode.Y));
                 else
-                    SelectedNode.X = float.Parse(txtX.Text);
+                    SelectedNode.X = Parser.Current.ParseFloat(txtX.Text);
                 txtX.BackColor = ColorNormal;
             }
             catch
@@ -1001,9 +1005,9 @@ namespace DemoGame.SkeletonEditor
             try
             {
                 if (SelectedNode.Parent == null)
-                    SelectedNode.MoveTo(new Vector2(SelectedNode.X, float.Parse(txtY.Text)));
+                    SelectedNode.MoveTo(new Vector2(SelectedNode.X, Parser.Current.ParseFloat(txtY.Text)));
                 else
-                    SelectedNode.Y = float.Parse(txtY.Text);
+                    SelectedNode.Y = Parser.Current.ParseFloat(txtY.Text);
                 txtY.BackColor = ColorNormal;
             }
             catch

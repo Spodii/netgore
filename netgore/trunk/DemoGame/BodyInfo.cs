@@ -60,14 +60,14 @@ namespace DemoGame
         {
             if (c.Heading == Direction.East)
             {
-                int x = (int)c.Position.X + rect.X;
-                int y = (int)c.Position.Y + rect.Y;
+                int x = (int)(c.Position.X + rect.X);
+                int y = (int)(c.Position.Y + rect.Y);
                 return new Rectangle(x, y, rect.Width, rect.Height);
             }
             else
             {
-                int x = (int)c.CB.Max.X - rect.X - rect.Width;
-                int y = (int)c.CB.Max.Y - rect.Y - rect.Height;
+                int x = (int)(c.CB.Max.X - rect.X - rect.Width);
+                int y = (int)(c.CB.Max.Y - rect.Y - rect.Height);
                 return new Rectangle(x, y, rect.Width, rect.Height);
             }
         }
@@ -98,8 +98,8 @@ namespace DemoGame
             foreach (var d in results)
             {
                 BodyIndex index = d.AsBodyIndex("Body.Index");
-                float width = float.Parse(d["Body.Size.Width"]);
-                float height = float.Parse(d["Body.Size.Height"]);
+                float width = d.AsFloat("Body.Size.Width");
+                float height = d.AsFloat("Body.Size.Height");
 
                 // Set the MathString variables
                 ms.Variables.Clear();

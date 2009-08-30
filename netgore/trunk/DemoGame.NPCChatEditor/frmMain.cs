@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using DemoGame.Server.NPCChat.Conditionals;
 using NetGore.EditorTools;
+using NetGore.Globalization;
 using NetGore.NPCChat;
 
 namespace DemoGame.NPCChatEditor
@@ -485,7 +486,7 @@ namespace DemoGame.NPCChatEditor
             }
 
             ushort newIndex;
-            if (!ushort.TryParse(txtRedirectIndex.Text, out newIndex))
+            if (!Parser.Current.TryParse(txtRedirectIndex.Text, out newIndex))
             {
                 MessageBox.Show("Invalid value entered.");
                 txtRedirectIndex.Focus();

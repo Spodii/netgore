@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
+using NetGore.Globalization;
 using NetGore.Graphics;
 using Point=System.Drawing.Point;
 
@@ -460,7 +461,7 @@ namespace DemoGame.MapEditor
             uint width;
             uint height;
 
-            if (uint.TryParse(txtMapWidth.Text, out width) && uint.TryParse(txtMapHeight.Text, out height))
+            if (Parser.Current.TryParse(txtMapWidth.Text, out width) && Parser.Current.TryParse(txtMapHeight.Text, out height))
                 Map.SetDimensions(new Vector2(width, height));
 
             txtMapWidth_TextChanged(null, null);
@@ -1315,7 +1316,7 @@ namespace DemoGame.MapEditor
                 return;
 
             float result;
-            if (float.TryParse(txtGridHeight.Text, out result))
+            if (Parser.Current.TryParse(txtGridHeight.Text, out result))
                 _grid.Height = result;
         }
 
@@ -1325,14 +1326,14 @@ namespace DemoGame.MapEditor
                 return;
 
             float result;
-            if (float.TryParse(txtGridWidth.Text, out result))
+            if (Parser.Current.TryParse(txtGridWidth.Text, out result))
                 _grid.Width = result;
         }
 
         void txtMapHeight_TextChanged(object sender, EventArgs e)
         {
             uint o;
-            if (uint.TryParse(txtMapHeight.Text, out o))
+            if (Parser.Current.TryParse(txtMapHeight.Text, out o))
             {
                 if (o == Map.Height)
                     txtMapHeight.BackColor = EditorColors.Normal;
@@ -1346,7 +1347,7 @@ namespace DemoGame.MapEditor
         void txtMapWidth_TextChanged(object sender, EventArgs e)
         {
             uint o;
-            if (uint.TryParse(txtMapWidth.Text, out o))
+            if (Parser.Current.TryParse(txtMapWidth.Text, out o))
             {
                 if (o == Map.Width)
                     txtMapWidth.BackColor = EditorColors.Normal;

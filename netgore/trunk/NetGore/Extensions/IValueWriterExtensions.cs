@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.Globalization;
 using NetGore.IO;
 
 namespace NetGore
@@ -80,7 +82,7 @@ namespace NetGore
             if (writer.SupportsNameLookup)
             {
                 // We are using name lookup, so we have to combine the values so we use only one name
-                writer.Write(name, value.X + "," + value.Y);
+                writer.Write(name, Parser.Invariant.ToString(value.X) + "," + Parser.Invariant.ToString(value.Y));
             }
             else
             {
@@ -126,7 +128,17 @@ namespace NetGore
             if (writer.SupportsNameLookup)
             {
                 // We are using name lookup, so we have to combine the values so we use only one name
-                writer.Write(name, string.Format("{0},{1},{2},{3}", value.R, value.G, value.B, value.A));
+                const string delimiter = ",";
+                StringBuilder sb = new StringBuilder(16);
+                sb.Append(Parser.Invariant.ToString(value.R));
+                sb.Append(delimiter);
+                sb.Append(Parser.Invariant.ToString(value.G));
+                sb.Append(delimiter);
+                sb.Append(Parser.Invariant.ToString(value.B));
+                sb.Append(delimiter);
+                sb.Append(Parser.Invariant.ToString(value.A));
+                sb.Append(delimiter);
+                writer.Write(name, sb.ToString());
             }
             else
             {

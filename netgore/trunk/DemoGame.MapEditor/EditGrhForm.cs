@@ -307,7 +307,7 @@ namespace DemoGame.MapEditor
         void txtH_TextChanged(object sender, EventArgs e)
         {
             uint o;
-            if (uint.TryParse(txtH.Text, out o))
+            if (Parser.Current.TryParse(txtH.Text, out o))
             {
                 if (o == _gd.GetOriginalSource().Height)
                     txtH.BackColor = EditorColors.Normal;
@@ -321,7 +321,7 @@ namespace DemoGame.MapEditor
         void txtIndex_TextChanged(object sender, EventArgs e)
         {
             ushort o;
-            if (ushort.TryParse(txtIndex.Text, out o))
+            if (Parser.Current.TryParse(txtIndex.Text, out o))
             {
                 if (o == _gd.GrhIndex)
                     txtIndex.BackColor = EditorColors.Normal;
@@ -369,7 +369,7 @@ namespace DemoGame.MapEditor
         void txtW_TextChanged(object sender, EventArgs e)
         {
             uint o;
-            if (uint.TryParse(txtW.Text, out o))
+            if (Parser.Current.TryParse(txtW.Text, out o))
             {
                 if (o == _gd.GetOriginalSource().Width)
                     txtW.BackColor = EditorColors.Normal;
@@ -451,7 +451,7 @@ namespace DemoGame.MapEditor
         void txtX_TextChanged(object sender, EventArgs e)
         {
             uint o;
-            if (uint.TryParse(txtX.Text, out o))
+            if (Parser.Current.TryParse(txtX.Text, out o))
             {
                 if (o == _gd.GetOriginalSource().X)
                     txtX.BackColor = EditorColors.Normal;
@@ -465,7 +465,7 @@ namespace DemoGame.MapEditor
         void txtY_TextChanged(object sender, EventArgs e)
         {
             uint o;
-            if (uint.TryParse(txtY.Text, out o))
+            if (Parser.Current.TryParse(txtY.Text, out o))
             {
                 if (o == _gd.GetOriginalSource().Y)
                     txtY.BackColor = EditorColors.Normal;

@@ -390,7 +390,7 @@ namespace NetGore.Graphics
             {
                 GrhIndex currGrhIndex = Parser.Invariant.ParseGrhIndex(dic["Grh.Index"]);
                 GrhData currGrh = new GrhData();
-                int numFrames = int.Parse(dic["Grh.Frames.Count"]);
+                int numFrames = dic.AsInt("Grh.Frames.Count");
 
                 // Categorization
                 string category = dic["Grh.Category.Name"];
@@ -400,10 +400,10 @@ namespace NetGore.Graphics
                 {
                     // Single frame
                     string file = dic["Grh.Texture.File"];
-                    int x = int.Parse(dic["Grh.Texture.X"]);
-                    int y = int.Parse(dic["Grh.Texture.Y"]);
-                    int w = int.Parse(dic["Grh.Texture.W"]);
-                    int h = int.Parse(dic["Grh.Texture.H"]);
+                    int x = dic.AsInt("Grh.Texture.X");
+                    int y = dic.AsInt("Grh.Texture.Y");
+                    int w = dic.AsInt("Grh.Texture.W");
+                    int h = dic.AsInt("Grh.Texture.H");
                     currGrh.Load(cm, currGrhIndex, file, x, y, w, h, category, title);
 
                     currGrh.AutomaticSize = dic.AsBool("Grh.AutomaticResize", false);
@@ -414,7 +414,7 @@ namespace NetGore.Graphics
                 else
                 {
                     // Multiple frames
-                    float speed = float.Parse(dic["Grh.Anim.Speed"]);
+                    float speed = dic.AsFloat("Grh.Anim.Speed");
                     var frames = new GrhIndex[numFrames];
                     for (int i = 0; i < frames.Length; i++)
                     {

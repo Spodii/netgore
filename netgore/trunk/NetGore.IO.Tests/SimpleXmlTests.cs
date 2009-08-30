@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NetGore.Globalization;
 using NUnit.Framework;
 
 namespace NetGore.IO.Tests
@@ -25,8 +26,8 @@ namespace NetGore.IO.Tests
         public void Load(IDictionary<string, string> items)
         {
             A = items["A"];
-            B = int.Parse(items["B"]);
-            C = float.Parse(items["C"]);
+            B = Parser.Invariant.ParseInt(items["B"]);
+            C = Parser.Invariant.ParseFloat(items["C"]);
         }
 
         /// <summary>

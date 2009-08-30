@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Collections;
+using NetGore.Globalization;
 using NetGore.Graphics;
 using NetGore.IO;
 
@@ -235,7 +236,7 @@ namespace DemoGame.Client
                     continue;
 
                 // Convert the index to a ushort and get the GrhData for it
-                GrhIndex index = new GrhIndex(int.Parse(s));
+                GrhIndex index = Parser.Invariant.ParseGrhIndex(s);
                 GrhData gd = GrhInfo.GetData(index);
 
                 // Every frame of the GrhData gets added
