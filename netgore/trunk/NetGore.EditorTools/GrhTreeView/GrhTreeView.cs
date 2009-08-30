@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Content;
+using NetGore.Globalization;
 using NetGore.Graphics;
 using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
@@ -397,7 +398,7 @@ namespace NetGore.EditorTools
 
             // Get the index
             GrhIndex grhIndex;
-            if (!GrhIndex.TryParse(node.Name, out grhIndex))
+            if (!Parser.Current.TryParse(node.Name, out grhIndex))
             {
                 Debug.Fail("Failed to parse GrhIndex of the node.");
                 return null;
@@ -847,7 +848,7 @@ namespace NetGore.EditorTools
 
             // Get the index
             GrhIndex grhIndex;
-            if (!GrhIndex.TryParse(node.Name, out grhIndex))
+            if (!Parser.Current.TryParse(node.Name, out grhIndex))
             {
                 Debug.Fail("Failed to parse GrhIndex of the node.");
                 gd = null;
@@ -880,7 +881,7 @@ namespace NetGore.EditorTools
 
             // Get the index
             GrhIndex grhIndex;
-            if (!GrhIndex.TryParse(node.Name, out grhIndex))
+            if (!Parser.Current.TryParse(node.Name, out grhIndex))
             {
                 Debug.Fail("Failed to parse GrhIndex of the node.");
                 return false;

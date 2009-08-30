@@ -53,44 +53,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type GrhIndex.
-        /// </summary>
-        /// <typeparam name="T">The key Type.</typeparam>
-        /// <param name="dict">The IDictionary.</param>
-        /// <param name="key">The key for the value to get.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as a GrhIndex.</returns>
-        public static GrhIndex AsGrhIndex<T>(this IDictionary<T, string> dict, T key)
-        {
-            return GrhIndex.Parse(dict[key]);
-        }
-
-        /// <summary>
-        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type GrhIndex.
-        /// </summary>
-        /// <typeparam name="T">The key Type.</typeparam>
-        /// <param name="dict">The IDictionary.</param>
-        /// <param name="key">The key for the value to get.</param>
-        /// <param name="defaultValue">The value to use if the value at the <paramref name="key"/> could not be parsed.</param>
-        /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
-        /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
-        /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static GrhIndex AsGrhIndex<T>(this IDictionary<T, string> dict, T key, GrhIndex defaultValue)
-        {
-            string value;
-            if (!dict.TryGetValue(key, out value))
-                return defaultValue;
-
-            GrhIndex parsed;
-            if (!GrhIndex.TryParse(value, out parsed))
-                return defaultValue;
-
-            return parsed;
-        }
-
-
-
-
-        /// <summary>
         /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type bool.
         /// </summary>
         /// <typeparam name="T">The key Type.</typeparam>

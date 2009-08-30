@@ -50,7 +50,7 @@ namespace DemoGame.MapEditor
                 for (int i = 0; i < framesText.Length; i++)
                 {
                     // First check if it was entered as by the index
-                    if (!GrhIndex.TryParse(framesText[i], out frames[i]))
+                    if (!Parser.Current.TryParse(framesText[i], out frames[i]))
                     {
                         // Support it being entered by category
                         int lastPeriod = framesText[i].LastIndexOf('.');
@@ -75,7 +75,7 @@ namespace DemoGame.MapEditor
 
             // Validate the strings
             GrhIndex newIndex;
-            if (GrhIndex.TryParse(txtIndex.Text, out newIndex))
+            if (Parser.Current.TryParse(txtIndex.Text, out newIndex))
             {
                 if (newIndex != _gd.GrhIndex)
                 {

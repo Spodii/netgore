@@ -1,8 +1,9 @@
 using System;
+using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
+using NetGore.Globalization;
 using NetGore.IO;
 
 namespace NetGore
@@ -93,56 +94,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Converts the string representation of a number to its GrhIndex equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <returns>The parsed GrhIndex.</returns>
-        public static GrhIndex Parse(string s)
-        {
-            return new GrhIndex(ushort.Parse(s));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its GrhIndex equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <returns>The parsed GrhIndex.</returns>
-        public static GrhIndex Parse(string s, NumberStyles style)
-        {
-            return new GrhIndex(ushort.Parse(s, style));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its GrhIndex equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <returns>The parsed GrhIndex.</returns>
-        public static GrhIndex Parse(string s, IFormatProvider provider)
-        {
-            return new GrhIndex(ushort.Parse(s, provider));
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its GrhIndex equivalent.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <returns>The parsed GrhIndex.</returns>
-        public static GrhIndex Parse(string s, NumberStyles style, IFormatProvider provider)
-        {
-            return new GrhIndex(ushort.Parse(s, style, provider));
-        }
-
-        /// <summary>
         /// Reads an GrhIndex from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
@@ -200,41 +151,6 @@ namespace NetGore
         public override string ToString()
         {
             return _value.ToString();
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its GrhIndex equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="style">A bitwise combination of System.Globalization.NumberStyles values that indicates the
-        /// permitted format of <paramref name="s"/>. A typical value to specify is
-        /// System.Globalization.NumberStyles.Integer.</param>
-        /// <param name="provider">An System.IFormatProvider object that supplies culture-specific formatting information
-        /// about <paramref name="s"/>.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed GrhIndex.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, NumberStyles style, IFormatProvider provider, out GrhIndex parsedValue)
-        {
-            ushort outValue;
-            bool success = ushort.TryParse(s, style, provider, out outValue);
-            parsedValue = new GrhIndex(outValue);
-            return success;
-        }
-
-        /// <summary>
-        /// Converts the string representation of a number to its GrhIndex equivalent. A return value 
-        /// indicates whether the conversion succeeded or failed.
-        /// </summary>
-        /// <param name="s">A string representing the number to convert.</param>
-        /// <param name="parsedValue">If the parsing was successful, contains the parsed GrhIndex.</param>
-        /// <returns>True if <paramref name="s"/> the value was converted successfully; otherwise, false.</returns>
-        public static bool TryParse(string s, out GrhIndex parsedValue)
-        {
-            ushort outValue;
-            bool success = ushort.TryParse(s, out outValue);
-            parsedValue = new GrhIndex(outValue);
-            return success;
         }
 
         /// <summary>
@@ -841,6 +757,41 @@ namespace NetGore
     public static class GrhIndexReadWriteExtensions
     {
         /// <summary>
+        /// Gets the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type GrhIndex.
+        /// </summary>
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as a GrhIndex.</returns>
+        public static GrhIndex AsGrhIndex<T>(this IDictionary<T, string> dict, T key)
+        {
+            return Parser.Invariant.ParseGrhIndex(dict[key]);
+        }
+
+        /// <summary>
+        /// Tries to get the value in the <paramref name="dict"/> entry at the given <paramref name="key"/> as type GrhIndex.
+        /// </summary>
+        /// <typeparam name="T">The key Type.</typeparam>
+        /// <param name="dict">The IDictionary.</param>
+        /// <param name="key">The key for the value to get.</param>
+        /// <param name="defaultValue">The value to use if the value at the <paramref name="key"/> could not be parsed.</param>
+        /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
+        /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
+        /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
+        public static GrhIndex AsGrhIndex<T>(this IDictionary<T, string> dict, T key, GrhIndex defaultValue)
+        {
+            string value;
+            if (!dict.TryGetValue(key, out value))
+                return defaultValue;
+
+            GrhIndex parsed;
+            if (!Parser.Invariant.TryParse(value, out parsed))
+                return defaultValue;
+
+            return parsed;
+        }
+
+        /// <summary>
         /// Reads the CustomValueType from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the CustomValueType from.</param>
@@ -863,6 +814,17 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Parses the GrhIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The GrhIndex parsed from the string.</returns>
+        public static GrhIndex ParseGrhIndex(this Parser parser, string value)
+        {
+            return new GrhIndex(parser.ParseUShort(value));
+        }
+
+        /// <summary>
         /// Reads the CustomValueType from a BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read the CustomValueType from.</param>
@@ -881,6 +843,21 @@ namespace NetGore
         public static GrhIndex ReadGrhIndex(this IValueReader valueReader, string name)
         {
             return GrhIndex.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the GrhIndex from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed GrhIndex.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out GrhIndex outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new GrhIndex(tmp);
+            return ret;
         }
 
         /// <summary>

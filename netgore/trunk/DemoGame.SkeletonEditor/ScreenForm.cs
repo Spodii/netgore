@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
+using NetGore.Globalization;
 using NetGore.Graphics;
 using Color=System.Drawing.Color;
 
@@ -887,7 +888,7 @@ namespace DemoGame.SkeletonEditor
         {
             try
             {
-                GrhIndex grhIndex = GrhIndex.Parse(txtGrhIndex.Text);
+                GrhIndex grhIndex = Parser.Current.ParseGrhIndex(txtGrhIndex.Text);
                 SelectedDSI.Grh = new Grh(grhIndex, AnimType.Loop, (int)_watch.ElapsedMilliseconds);
                 txtGrhIndex.BackColor = ColorNormal;
                 UpdateSelectedDSI();
