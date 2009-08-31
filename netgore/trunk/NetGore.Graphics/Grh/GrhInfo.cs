@@ -397,17 +397,19 @@ namespace NetGore.Graphics
         const string _animatedGrhDatasNodeName = "Animated";
 
         /// <summary>
-        /// Loads all of the GrhData information
+        /// Loads the GrhDatas. This must be called before trying to access or use any GrhDatas.
         /// </summary>
-        /// <param name="path">Path to the file containing the GrhData information</param>
-        /// <param name="cm">ContentManager to apply to the created GrhDatas</param>
-        public static void Load(string path, ContentManager cm)
+        /// <param name="contentPath">The ContentPaths to load the GrhDatas from.</param>
+        /// <param name="cm">The ContentManager to use for loaded GrhDatas.</param>
+        public static void Load(ContentPaths contentPath, ContentManager cm)
         {
+            var path = contentPath.Data.Join("grhdata.xml");
+
             if (cm == null)
                 throw new ArgumentNullException("cm");
 
             if (!File.Exists(path))
-                throw new ArgumentException("Specified file path does not exist.", "path");
+                throw new FileNotFoundException("GrhData file not found.", path);
 
             // Create the GrhData DArray
             _grhDatas = new DArray<GrhData>(1024, false);
