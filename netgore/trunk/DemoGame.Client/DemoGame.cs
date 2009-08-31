@@ -86,7 +86,7 @@ namespace DemoGame.Client
             // Load the Grh info, using the MapContent for the ContentManager since all
             // but the map GrhDatas should end up in an atlas. For anything that does not
             // end up in an atlas, this will provide them a way to load still.
-            GrhInfo.Load(ContentPaths.Build.Data.Join("grhdata.xml"), screenManager.MapContent);
+            GrhInfo.Load(ContentPaths.Build, screenManager.MapContent);
 
             // Build the texture atlases
             TextureAtlas atlasChars = new TextureAtlas();

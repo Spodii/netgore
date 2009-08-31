@@ -52,7 +52,7 @@ namespace DemoGame.GUITester
         {
             _sb = new SpriteBatch(GraphicsDevice);
             _font = Content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
-            GrhInfo.Load(ContentPaths.Build.Data.Join("grhdata.xml"), Content);
+            GrhInfo.Load(ContentPaths.Build, Content);
 
             _gui = new GUIManager(_font);
 

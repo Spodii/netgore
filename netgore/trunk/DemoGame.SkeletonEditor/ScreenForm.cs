@@ -828,7 +828,7 @@ namespace DemoGame.SkeletonEditor
             _content = new ContentManager(GameScreen.Services, "Content");
             _sb = new SpriteBatch(GameScreen.GraphicsDevice);
             _camera = new Camera2D(GameData.ScreenSize);
-            GrhInfo.Load(ContentPaths.Dev.Data.Join("grhdata.xml"), _content);
+            GrhInfo.Load(ContentPaths.Dev, _content);
 
             // Create the skeleton-related objects
             _skeleton = new Skeleton();

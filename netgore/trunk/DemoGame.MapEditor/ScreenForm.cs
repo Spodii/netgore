@@ -925,7 +925,7 @@ namespace DemoGame.MapEditor
             Character.NameFont = SpriteFont;
 
             // Load the Grh information
-            GrhInfo.Load(ContentPaths.Dev.Data.Join("grhdata.xml"), _content);
+            GrhInfo.Load(ContentPaths.Dev, _content);
             treeGrhs.Initialize(_content);
             TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
 
