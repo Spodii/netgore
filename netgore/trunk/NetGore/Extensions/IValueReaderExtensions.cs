@@ -34,6 +34,30 @@ namespace NetGore
             return ReadEnum<CollisionType>(reader, name);
         }
 
+        public static Rectangle ReadRectangle(this IValueReader reader, string name)
+        {
+            int x, y, w, h;
+
+            if (reader.SupportsNameLookup)
+            {
+                string value = reader.ReadString(name);
+                var split = value.Split(',');
+                x = Parser.Invariant.ParseInt(split[0]);
+                y = Parser.Invariant.ParseInt(split[1]);
+                w = Parser.Invariant.ParseInt(split[2]);
+                h = Parser.Invariant.ParseInt(split[3]);
+            }
+            else
+            {
+                x = reader.ReadInt(null);
+                y = reader.ReadInt(null);
+                w = reader.ReadInt(null);
+                h = reader.ReadInt(null);
+            }
+
+            return new Rectangle(x, y, w, h);
+        }
+
         /// <summary>
         /// Reads a Color.
         /// </summary>
