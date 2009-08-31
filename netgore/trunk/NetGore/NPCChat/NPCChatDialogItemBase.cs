@@ -147,7 +147,7 @@ namespace NetGore.NPCChat
             writer.Write("Index", Index);
             writer.Write("Title", Title ?? string.Empty);
             writer.Write("Text", Text ?? string.Empty);
-            writer.Write("ResponseCount", (byte)Responses.Count());
+            writer.Write("ResponseCount", (byte)Responses.Count()); // NOTE: $$!!$$
 
             foreach (NPCChatResponseBase response in Responses)
             {

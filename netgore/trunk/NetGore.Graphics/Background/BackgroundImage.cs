@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -273,9 +274,14 @@ namespace NetGore.Graphics
             writer.Write("Depth", Depth);
             writer.Write("Offset", Offset);
 
-            GrhIndex grhIndex = new GrhIndex(0);
+            GrhIndex grhIndex;
             if (Sprite != null && Sprite.GrhData != null)
                 grhIndex = Sprite.GrhData.GrhIndex;
+            else
+            {
+                grhIndex = new GrhIndex(0);
+                Debug.Fail("Why is the Sprite not set? That doesn't seem right...");
+            }
 
             writer.Write("GrhIndex", grhIndex);
         }

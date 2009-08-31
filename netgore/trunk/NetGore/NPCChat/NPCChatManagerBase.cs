@@ -154,7 +154,7 @@ namespace NetGore.NPCChat
             var dialogs = _npcChatDialogs.Where(x => x != null);
             using (XmlValueWriter writer = new XmlValueWriter(tempFilePath, "ChatDialogs"))
             {
-                writer.Write("DialogCount", (ushort)dialogs.Count());
+                writer.Write("DialogCount", (ushort)dialogs.Count()); // NOTE: $$!!$$
 
                 foreach (NPCChatDialogBase dialog in dialogs)
                 {
