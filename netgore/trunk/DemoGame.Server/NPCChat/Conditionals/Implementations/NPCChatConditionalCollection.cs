@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NetGore.IO;
 using NetGore.NPCChat;
 
 namespace DemoGame.Server.NPCChat.Conditionals
@@ -20,12 +21,15 @@ namespace DemoGame.Server.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates a NPCChatConditionalCollectionItemBase instance.
+        /// Creates a NPCChatConditionalCollectionItemBase instance then reades the values for it from the
+        /// given IValueReader.
         /// </summary>
-        /// <returns>A NPCChatConditionalCollectionItemBase instance.</returns>
-        protected override NPCChatConditionalCollectionItemBase<TUser, TNPC> CreateItem()
+        /// <param name="reader">The IValueReader to read from.</param>
+        /// <returns>A NPCChatConditionalCollectionItemBase instance with values read from
+        /// the <paramref name="reader"/>.</returns>
+        protected override NPCChatConditionalCollectionItemBase<TUser, TNPC> CreateItem(IValueReader reader)
         {
-            return new NPCChatConditionalCollectionItem<TUser, TNPC>();
+            return new NPCChatConditionalCollectionItem<TUser, TNPC>(reader);
         }
 
         /// <summary>

@@ -50,23 +50,13 @@ namespace NetGore.NPCChat
         /// Reads the values for this NPCChatConditionalCollectionItemBase from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
-        public void Read(IValueReader reader)
+        protected void Read(IValueReader reader)
         {
             bool not = reader.ReadBool("Not");
             string conditionalName = reader.ReadString("ConditionalName");
-            byte parameterCount = reader.ReadByte("ParameterCount");
-
-            var parameterReaders = reader.ReadNodes("Parameter", parameterCount);
-            var parameters = new NPCChatConditionalParameter[parameterCount];
-            foreach (IValueReader r in parameterReaders)
-            {
-                byte index = r.ReadByte("Index");
-                NPCChatConditionalParameter parameter = NPCChatConditionalParameter.Read(r);
-                parameters[index] = parameter;
-            }
+            var parameters = reader.ReadManyNodes<NPCChatConditionalParameter>("Parameters", NPCChatConditionalParameter.Read);
 
             var conditional = NPCChatConditionalBase<TUser, TNPC>.GetConditional(conditionalName);
-
             if (conditional == null)
                 throw new Exception(string.Format("Failed to get conditional `{0}`.", conditionalName));
 
@@ -90,15 +80,7 @@ namespace NetGore.NPCChat
         {
             writer.Write("Not", Not);
             writer.Write("ConditionalName", Conditional.Name);
-            writer.Write("ParameterCount", (byte)Parameters.Count()); // NOTE: $$!!$$
-
-            for (int i = 0; i < Parameters.Length; i++)
-            {
-                writer.WriteStartNode("Parameter");
-                writer.Write("Index", (byte)i);
-                Parameters[i].Write(writer);
-                writer.WriteEndNode("Parameter");
-            }
+            writer.WriteManyNodes("Parameters", Parameters, ((w, item) => item.Write(w)));
         }
     }
 }

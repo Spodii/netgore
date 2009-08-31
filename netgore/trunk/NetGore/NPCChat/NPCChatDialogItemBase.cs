@@ -99,21 +99,12 @@ namespace NetGore.NPCChat
         /// Reads the values for this NPCChatDialogItemBase from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
-        public void Read(IValueReader reader)
+        protected void Read(IValueReader reader)
         {
             ushort index = reader.ReadUShort("Index");
             string title = reader.ReadString("Title");
             string text = reader.ReadString("Text");
-            byte responseCount = reader.ReadByte("ResponseCount");
-
-            var responseReaders = reader.ReadNodes("Response", responseCount);
-            int i = 0;
-            var responses = new NPCChatResponseBase[responseCount];
-            foreach (IValueReader r in responseReaders)
-            {
-                responses[i] = CreateResponse(r);
-                i++;
-            }
+            var responses = reader.ReadManyNodes("Responses", x => CreateResponse(x));
 
             SetReadValues(index, title, text, responses);
         }
@@ -147,14 +138,7 @@ namespace NetGore.NPCChat
             writer.Write("Index", Index);
             writer.Write("Title", Title ?? string.Empty);
             writer.Write("Text", Text ?? string.Empty);
-            writer.Write("ResponseCount", (byte)Responses.Count()); // NOTE: $$!!$$
-
-            foreach (NPCChatResponseBase response in Responses)
-            {
-                writer.WriteStartNode("Response");
-                response.Write(writer);
-                writer.WriteEndNode("Response");
-            }
+            writer.WriteManyNodes("Responses", Responses, ((w, item) => item.Write(w)));
         }
     }
 }

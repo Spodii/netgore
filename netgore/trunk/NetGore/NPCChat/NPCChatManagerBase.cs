@@ -112,13 +112,12 @@ namespace NetGore.NPCChat
             }
 
             XmlValueReader reader = new XmlValueReader(filePath, "ChatDialogs");
-            ushort dialogCount = reader.ReadUShort("DialogCount");
-            var chatDialogReaders = reader.ReadNodes("ChatDialog", dialogCount);
+            var items = reader.ReadManyNodes("ChatDialogs", x => CreateDialog(x));
 
-            foreach (IValueReader r in chatDialogReaders)
+            for (int i = 0; i < items.Length; i++)
             {
-                NPCChatDialogBase dialog = CreateDialog(r);
-                _npcChatDialogs[dialog.Index] = dialog;
+                if (items[i] != null)
+                    _npcChatDialogs[i] = items[i];
             }
 
             _npcChatDialogs.Trim();
@@ -154,16 +153,7 @@ namespace NetGore.NPCChat
             var dialogs = _npcChatDialogs.Where(x => x != null);
             using (XmlValueWriter writer = new XmlValueWriter(tempFilePath, "ChatDialogs"))
             {
-                writer.Write("DialogCount", (ushort)dialogs.Count()); // NOTE: $$!!$$
-
-                foreach (NPCChatDialogBase dialog in dialogs)
-                {
-                    Debug.Assert(dialog != null, "Huh, I thought the DArray would ensure these would never be null...");
-
-                    writer.WriteStartNode("ChatDialog");
-                    dialog.Write(writer);
-                    writer.WriteEndNode("ChatDialog");
-                }
+                writer.WriteManyNodes("ChatDialogs", dialogs, ((w, item) => item.Write(w)));
             }
 
             if (File.Exists(filePath))
