@@ -3112,6 +3112,14 @@ namespace NetGore.IO
             return ReadUShort();
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        void IDisposable.Dispose()
+        {
+        }
+
         #endregion
 
         #region IValueWriter Members
@@ -3314,14 +3322,6 @@ namespace NetGore.IO
         void IValueWriter.Write(string name, float value)
         {
             Write(value);
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        void IDisposable.Dispose()
-        {
         }
 
         #endregion
