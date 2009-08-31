@@ -134,6 +134,7 @@
     <Compile Include="Queries\Character\StatusEffect\DeleteCharacterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ReplaceChracterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\SelectCharacterStatusEffectsQuery.cs" />
+    <Compile Include="Queries\TableColumnPair.cs" />
     <Compile Include="Queries\Map\InsertMapQuery.cs" />
     <Compile Include="Queries\Map\Spawn\DeleteMapSpawnQuery.cs" />
     <Compile Include="Queries\Map\UpdateMapQuery.cs" />

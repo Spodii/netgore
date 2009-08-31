@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
@@ -25,6 +27,10 @@ namespace DemoGame.Server
 
         bool _disposed;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DBController"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
         public DBController(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
@@ -86,6 +92,18 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the name of the table and column that reference a the given primary key.
+        /// </summary>
+        /// <param name="database">Database of the <paramref name="table"/>.</param>
+        /// <param name="table">The table of the primary key.</param>
+        /// <param name="column">The column of the primary key.</param>
+        /// <returns>An IEnumerable of the name of the tables and columns that reference a the given primary key.</returns>
+        public IEnumerable<TableColumnPair> GetPrimaryKeyReferences(string database, string table, string column)
+        {
+            return GetQuery<FindReferencedTableColumnsQuery>().Execute(database, table, column);
+        }
+
+        /// <summary>
         /// Gets an instance of the DbController. A DbController must have already been constructed for this to work.
         /// </summary>
         /// <returns>An instance of the DbController.</returns>
@@ -100,6 +118,11 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Gets a query that was marked with the attribute DBControllerQueryAttribute.
+        /// </summary>
+        /// <typeparam name="T">The Type of query.</typeparam>
+        /// <returns>The query instance of type <typeparamref name="T"/>.</returns>
         public T GetQuery<T>()
         {
             object value;
@@ -116,6 +139,11 @@ namespace DemoGame.Server
             return (T)value;
         }
 
+        /// <summary>
+        /// Finds all of the column names in the given <paramref name="table"/>.
+        /// </summary>
+        /// <param name="table">The table.</param>
+        /// <returns>All of the column names in the given <paramref name="table"/>.</returns>
         public IEnumerable<string> GetTableColumns(string table)
         {
             var ret = new List<string>();
@@ -142,6 +170,9 @@ namespace DemoGame.Server
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             if (_disposed)
@@ -163,5 +194,78 @@ namespace DemoGame.Server
         }
 
         #endregion
+
+        [DBControllerQuery]
+// ReSharper disable ClassNeverInstantiated.Local
+        class FindReferencedTableColumnsQuery : DbQueryReader<FindReferencedTableColumnsQuery.QueryArgs>
+// ReSharper restore ClassNeverInstantiated.Local
+        {
+            const string _queryStr =
+                "SELECT `TABLE_NAME`, `COLUMN_NAME`" + " FROM information_schema.KEY_COLUMN_USAGE" +
+                " WHERE `TABLE_SCHEMA` = @db AND" + " `REFERENCED_TABLE_SCHEMA` = @db AND" +
+                " `REFERENCED_TABLE_NAME` = @table AND" + " `REFERENCED_COLUMN_NAME` = @column;";
+
+            /// <summary>
+            /// Initializes a new instance of the <see cref="FindReferencedTableColumnsQuery"/> class.
+            /// </summary>
+            /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+            public FindReferencedTableColumnsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+            {
+            }
+
+            public IEnumerable<TableColumnPair> Execute(string database, string table, string column)
+            {
+                var ret = new List<TableColumnPair>();
+
+                QueryArgs args = new QueryArgs(database, table, column);
+                using (IDataReader r = ExecuteReader(args))
+                {
+                    while (r.Read())
+                    {
+                        string retTable = r.GetString("TABLE_NAME");
+                        string retColumn = r.GetString("COLUMN_NAME");
+                        ret.Add(new TableColumnPair(retTable, retColumn));
+                    }
+                }
+
+                return ret;
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
+            /// </summary>
+            /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
+            /// no parameters will be used.</returns>
+            protected override IEnumerable<DbParameter> InitializeParameters()
+            {
+                return CreateParameters("@db", "@table", "@column");
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, sets the database parameters based on the specified item.
+            /// </summary>
+            /// <param name="p">Collection of database parameters to set the values for.</param>
+            /// <param name="item">Item used to execute the query.</param>
+            protected override void SetParameters(DbParameterValues p, QueryArgs item)
+            {
+                p["@db"] = item.Database;
+                p["@table"] = item.Table;
+                p["@column"] = item.Column;
+            }
+
+            public struct QueryArgs
+            {
+                public readonly string Column;
+                public readonly string Database;
+                public readonly string Table;
+
+                public QueryArgs(string database, string table, string column)
+                {
+                    Database = database;
+                    Table = table;
+                    Column = column;
+                }
+            }
+        }
     }
 }
