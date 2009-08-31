@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using NetGore.Collections;
 using NetGore.Globalization;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
@@ -360,6 +361,42 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Saves all of the GrhData information to the specified file.
+        /// </summary>
+        /// <param name="path">Path of the file to save the GrhData information to.</param>
+        public static void Save(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+                throw new ArgumentNullException("path");
+
+            string tempPath = path + ".temp";
+
+            // Ensure the directory exists
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            // Organize the GrhDatas by if they are animated or not
+            var nonNullGrhDatas = GrhDatas.Where(x => x != null);
+            var nonAnimatedGrhDatas = nonNullGrhDatas.Where(x => !x.IsAnimated).ToArray();
+            var animatedGrhDatas = nonNullGrhDatas.Where(x => x.IsAnimated).ToArray();
+
+            // Write
+            using (IValueWriter writer = new XmlValueWriter(tempPath, _rootNodeName))
+            {
+                writer.WriteManyNodes(_nonAnimatedGrhDatasNodeName, nonAnimatedGrhDatas, ((w, item) => item.Write(w)));
+                writer.WriteManyNodes(_animatedGrhDatasNodeName, animatedGrhDatas, ((w, item) => item.Write(w)));
+            }
+
+            // Now that the temporary file has been successfully written, replace the existing file with it
+            File.Delete(path);
+            File.Move(tempPath, path);
+        }
+
+        const string _rootNodeName = "GrhDatas";
+
+        const string _nonAnimatedGrhDatasNodeName = "Stationary";
+        const string _animatedGrhDatasNodeName = "Animated";
+
+        /// <summary>
         /// Loads all of the GrhData information
         /// </summary>
         /// <param name="path">Path to the file containing the GrhData information</param>
@@ -378,62 +415,19 @@ namespace NetGore.Graphics
             _grhDatas.OnAdd += AddHandler;
             _grhDatas.OnRemove += RemoveHandler;
 
-            // Load the GrhData from the file
-            var grhDataFile = XmlInfoReader.ReadFile(path, true);
-            if (grhDataFile.Count <= 0)
-                throw new Exception("Error loading GrhData information from the specified file.");
+            // Load the GrhDatas (non-aniamted first, followed by animated)
+            var reader = new XmlValueReader(path, _rootNodeName);
 
-            var animatedGrhDatas = new Stack<GrhData>(128);
+            var nonAnimatedGrhDatas = reader.ReadManyNodes(_nonAnimatedGrhDatasNodeName, x => new GrhData(x, cm));
+            foreach (var gd in nonAnimatedGrhDatas)
+                _grhDatas[(int)gd.GrhIndex] = gd;
 
-            // Load the information into the objects
-            foreach (var dic in grhDataFile)
-            {
-                GrhIndex currGrhIndex = Parser.Invariant.ParseGrhIndex(dic["Grh.Index"]);
-                GrhData currGrh = new GrhData();
-                int numFrames = dic.AsInt("Grh.Frames.Count");
-
-                // Categorization
-                string category = dic["Grh.Category.Name"];
-                string title = dic["Grh.Category.Title"];
-
-                if (numFrames == 1)
-                {
-                    // Single frame
-                    string file = dic["Grh.Texture.File"];
-                    int x = dic.AsInt("Grh.Texture.X");
-                    int y = dic.AsInt("Grh.Texture.Y");
-                    int w = dic.AsInt("Grh.Texture.W");
-                    int h = dic.AsInt("Grh.Texture.H");
-                    currGrh.Load(cm, currGrhIndex, file, x, y, w, h, category, title);
-
-                    currGrh.AutomaticSize = dic.AsBool("Grh.AutomaticResize", false);
-
-                    // Add to the collection
-                    _grhDatas[(int)currGrh.GrhIndex] = currGrh;
-                }
-                else
-                {
-                    // Multiple frames
-                    float speed = dic.AsFloat("Grh.Anim.Speed");
-                    var frames = new GrhIndex[numFrames];
-                    for (int i = 0; i < frames.Length; i++)
-                    {
-                        frames[i] = Parser.Invariant.ParseGrhIndex(dic["Grh.Frames.F" + (i + 1)]);
-                    }
-                    currGrh.Load(currGrhIndex, frames, 1f / speed, category, title);
-
-                    // Add to the stack for now
-                    animatedGrhDatas.Push(currGrh);
-                }
-            }
-
-            // Add all the animated GrhDatas to the collection now that we have the frames in
-            foreach (GrhData currGrh in animatedGrhDatas)
-            {
-                _grhDatas[(int)currGrh.GrhIndex] = currGrh;
-            }
+            var animatedGrhDatas = reader.ReadManyNodes(_animatedGrhDatasNodeName, x => new GrhData(x, cm));
+            foreach (var gd in animatedGrhDatas)
+                _grhDatas[(int)gd.GrhIndex] = gd;
 
             // Trim down the GrhData array, mainly for the client since it will never add/remove any GrhDatas
+            // while in the Client, and the Client is what counts, baby!
             _grhDatas.Trim();
         }
 
@@ -486,64 +480,6 @@ namespace NetGore.Graphics
         public static string SanitizeCategory(string category)
         {
             return category.Replace('/', '.').Replace('\\', '.');
-        }
-
-        /// <summary>
-        /// Saves all of the GrhData information to the specified file.
-        /// </summary>
-        /// <param name="path">Path of the file to save the GrhData information to.</param>
-        public static void Save(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            string tempPath = path + ".temp";
-
-            // Ensure the directory exists
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-
-            // Open the FileStream
-            using (FileStream stream = new FileStream(tempPath, FileMode.Create))
-            {
-                // Create the XmlWriter and settings
-                XmlWriterSettings settings = new XmlWriterSettings
-                {
-                    Indent = true
-                };
-                using (XmlWriter w = XmlWriter.Create(stream, settings))
-                {
-                    if (w == null)
-                        throw new Exception("Failed to create XmlWriter for saving GrhInfo.");
-
-                    // Begin
-                    w.WriteStartDocument();
-                    w.WriteStartElement("Grhs");
-
-                    // Get all of the single and multiple frame GrhDatas
-                    var nonNullDatas = GrhDatas.Where(gd => gd != null);
-                    var singleFrames = nonNullDatas.Where(gd => gd.Frames == null);
-                    var multiFrames = nonNullDatas.Where(gd => gd.Frames != null);
-
-                    // Save the single frame GrhDatas first, then the animated GrhDatas
-                    foreach (GrhData grhData in singleFrames)
-                    {
-                        grhData.Save(w);
-                    }
-                    foreach (GrhData grhData in multiFrames)
-                    {
-                        grhData.Save(w);
-                    }
-
-                    // End
-                    w.WriteEndElement();
-                    w.WriteEndDocument();
-                    w.Flush();
-                }
-            }
-
-            // Now that the temporary file has been successfully written, replace the existing file with it
-            File.Delete(path);
-            File.Move(tempPath, path);
         }
 
         public static void SplitCategoryAndTitle(string categoryAndTitle, out string category, out string title)

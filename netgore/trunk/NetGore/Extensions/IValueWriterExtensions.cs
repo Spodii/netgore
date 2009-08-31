@@ -82,13 +82,36 @@ namespace NetGore
             if (writer.SupportsNameLookup)
             {
                 // We are using name lookup, so we have to combine the values so we use only one name
-                writer.Write(name, Parser.Invariant.ToString(value.X) + "," + Parser.Invariant.ToString(value.Y));
+                string x = Parser.Invariant.ToString(value.X);
+                string y = Parser.Invariant.ToString(value.Y);
+                writer.Write(name, x + "," + y);
             }
             else
             {
                 // Not using name lookup, so just write them out
                 writer.Write(null, value.X);
                 writer.Write(null, value.Y);
+            }
+        }
+
+        public static void Write(this IValueWriter writer, string name, Rectangle value)
+        {
+            if (writer.SupportsNameLookup)
+            {
+                // We are using name lookup, so we have to combine the values so we use only one name
+                string x = Parser.Invariant.ToString(value.X);
+                string y = Parser.Invariant.ToString(value.Y);
+                string w = Parser.Invariant.ToString(value.Width);
+                string h = Parser.Invariant.ToString(value.Height);
+                writer.Write(name, x + "," + y + "," + w + "," + h);
+            }
+            else
+            {
+                // Not using name lookup, so just write them out
+                writer.Write(null, value.X);
+                writer.Write(null, value.Y);
+                writer.Write(null, value.Width);
+                writer.Write(null, value.Height);
             }
         }
 

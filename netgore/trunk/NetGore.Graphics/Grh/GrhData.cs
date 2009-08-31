@@ -7,6 +7,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
@@ -108,7 +109,7 @@ namespace NetGore.Graphics
         /// </summary>
         public bool IsAnimated
         {
-            get { return _frames.Length > 1 && _frames[0] != this; }
+            get { return _frames.Length > 1; }
         }
 
         /// <summary>
@@ -323,6 +324,12 @@ namespace NetGore.Graphics
             for (int i = 0; i < frames.Length; i++)
             {
                 _frames[i] = GrhInfo.GetData(frames[i]);
+                if (_frames[i] == null)
+                {
+                    const string errmsg = "Failed to load GrhData `{0}`. GrhData `{1}` needs it for frame index `{2}` (0-based), out of `{3}` frames total.";
+                    string err = string.Format(errmsg, _frames[i], grhIndex, i, frames.Length);
+                    throw new Exception(err);
+                }
             }
 
             // Store some values and references
@@ -338,19 +345,48 @@ namespace NetGore.Graphics
             SetCategorization(category, title);
         }
 
-        /// <summary>
-        /// Writes the XML information for a single GrhData to a file
-        /// </summary>
-        /// <param name="w">XmlWriter to write with</param>
-        public virtual void Save(XmlWriter w)
+        public GrhData(IValueReader r, ContentManager cm)
+        {
+            Read(r, cm);
+        }
+
+        public void Read(IValueReader r, ContentManager cm)
+        {
+            var grhIndex = r.ReadGrhIndex("Index");
+            var frames = r.ReadMany(_framesNodeName, ((reader, name) => reader.ReadGrhIndex(name)));
+
+            var categoryNodeReader = r.ReadNode(_categoryNodeName);
+            string categoryName = categoryNodeReader.ReadString("Name");
+            string categoryTitle = categoryNodeReader.ReadString("Title");
+
+            if (frames.Length <= 1)
+            {
+                // Single frame
+                bool automaticSize = r.ReadBool("AutomaticSize");
+
+                var textureNodeReader = r.ReadNode(_textureNodeName);
+                string textureName = textureNodeReader.ReadString("Name");
+                Rectangle source = textureNodeReader.ReadRectangle("Source");
+
+                Load(cm, grhIndex, textureName, source.X, source.Y, source.Width, source.Height, categoryName, categoryTitle);
+                AutomaticSize = automaticSize;
+            }
+            else
+            {
+                // Animated
+                float speed = r.ReadFloat("Speed");
+
+                Load(grhIndex, frames, speed, categoryName, categoryTitle);
+            }
+        }
+
+        public void Write(IValueWriter w)
         {
             // Check for valid data
             if (GrhIndex <= 0)
                 throw new Exception("GrhIndex invalid.");
             if (w == null)
                 throw new ArgumentNullException("w");
-            if (w.WriteState == WriteState.Error || w.WriteState == WriteState.Closed)
-                throw new ArgumentException("XmlWriter's state is invalid.", "w");
 
             if (string.IsNullOrEmpty(Category))
                 throw new NullReferenceException("Category is null or invalid.");
@@ -358,12 +394,20 @@ namespace NetGore.Graphics
                 throw new NullReferenceException("Title is null or invalid.");
 
             // Header
-            w.WriteStartElement("Grh");
-            w.WriteAttributeString("Index", GrhIndex.ToString());
+            w.Write("Index", GrhIndex);
+            w.WriteMany(_framesNodeName, Frames.Select(x => x.GrhIndex).ToArray(), w.Write);
 
-            // Single frame
-            if (Frames == null || Frames.Length == 1)
+            // Category
+            w.WriteStartNode(_categoryNodeName);
             {
+                w.Write("Name", Category);
+                w.Write("Title", Title);
+            }
+            w.WriteEndNode(_categoryNodeName);
+
+            if (!IsAnimated)
+            {
+                // Single frame
                 if (string.IsNullOrEmpty(TextureName))
                     throw new NullReferenceException("TextureName is null or invalid for a non-animation.");
                 if (SourceRect.Width <= 0)
@@ -371,46 +415,25 @@ namespace NetGore.Graphics
                 if (SourceRect.Height <= 0)
                     throw new Exception("SourceRect.Height must be > 0.");
 
-                w.WriteElementString("AutomaticSize", AutomaticSize.ToString());
+                w.Write("AutomaticSize", AutomaticSize);
 
-                w.WriteStartElement("Frames");
-                w.WriteAttributeString("Count", "1");
-                w.WriteEndElement();
-
-                w.WriteStartElement("Texture");
-                Rectangle r = GetOriginalSource();
-                w.WriteElementString("File", TextureName);
-                w.WriteElementString("X", r.X.ToString());
-                w.WriteElementString("Y", r.Y.ToString());
-                w.WriteElementString("W", r.Width.ToString());
-                w.WriteElementString("H", r.Height.ToString());
-                w.WriteEndElement();
+                w.WriteStartNode(_textureNodeName);
+                {
+                    w.Write("Name", TextureName);
+                    w.Write("Source", GetOriginalSource());
+                }
+                w.WriteEndNode(_textureNodeName);
             }
             else
             {
                 // Animated
-                w.WriteStartElement("Frames");
-                w.WriteAttributeString("Count", Frames.Length.ToString());
-                for (int i = 0; i < Frames.Length; i++)
-                {
-                    w.WriteAttributeString("F" + (i + 1), Frames[i].GrhIndex.ToString());
-                }
-                w.WriteEndElement();
-
-                w.WriteStartElement("Anim");
-                w.WriteAttributeString("Speed", (1f / Speed).ToString());
-                w.WriteEndElement();
+                w.Write("Speed", (1f / Speed));
             }
-
-            // Category
-            w.WriteStartElement("Category");
-            w.WriteElementString("Name", Category);
-            w.WriteElementString("Title", Title);
-            w.WriteEndElement();
-
-            // End <Grh> element
-            w.WriteEndElement();
         }
+
+        const string _categoryNodeName = "Category";
+        const string _textureNodeName = "Texture";
+        const string _framesNodeName = "Frames";
 
         /// <summary>
         /// Sets the category and title for the GrhData and raises an OnChangeCategorization event if

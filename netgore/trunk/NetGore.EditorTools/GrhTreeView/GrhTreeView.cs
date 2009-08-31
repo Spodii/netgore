@@ -448,6 +448,9 @@ namespace NetGore.EditorTools
                     sb.Append(framePadding);
                     for (int i = 0; i < gd.Frames.Length; i++)
                     {
+                        if (gd.Frames[i] == null)
+                        {
+                        }
                         sb.Append(gd.Frames[i].GrhIndex);
                         if (i < gd.Frames.Length - 1)
                         {
