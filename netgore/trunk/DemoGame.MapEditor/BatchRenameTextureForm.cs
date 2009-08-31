@@ -98,7 +98,7 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Checks if a texture is valid
         /// </summary>
-        /// <param name="texture">Content path of the texture to check</param>
+        /// <param name="texture">Content filePath of the texture to check</param>
         /// <returns>True if a value texture, else false</returns>
         bool IsValidTexture(string texture)
         {

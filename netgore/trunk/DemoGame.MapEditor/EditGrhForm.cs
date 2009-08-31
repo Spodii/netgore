@@ -147,7 +147,7 @@ namespace DemoGame.MapEditor
             // Save
             Enabled = false;
             GrhInfo.Save(ContentPaths.Dev);
-            _mapGrhWalls.Save(ContentPaths.Dev.Data.Join("grhdatawalls.xml"));
+            _mapGrhWalls.Save(ContentPaths.Dev);
             Enabled = true;
             Close();
         }

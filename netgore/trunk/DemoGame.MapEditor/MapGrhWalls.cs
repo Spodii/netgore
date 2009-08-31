@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -8,6 +9,7 @@ using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace DemoGame.MapEditor
 {
@@ -51,12 +53,12 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// MapGrhWalls constructor
+        /// Initializes a new instance of the <see cref="MapGrhWalls"/> class.
         /// </summary>
-        /// <param name="path">Path to the file containing the bound wall information</param>
-        public MapGrhWalls(string path)
+        /// <param name="contentPath">The content path.</param>
+        public MapGrhWalls(ContentPaths contentPath)
         {
-            Load(path);
+            Load(contentPath);
         }
 
         /// <summary>
@@ -87,20 +89,18 @@ namespace DemoGame.MapEditor
             return ret;
         }
 
-        /// <summary>
-        /// Loads the bound wall information for MapGrhs
-        /// </summary>
-        /// <param name="path">Path to the file containing the bound wall information</param>
-        public void Load(string path)
+        public void Load(ContentPaths contentPath)
         {
-            if (!File.Exists(path))
-                throw new FileLoadException("File requested for the MapGrhWalls does not exist.", path);
+            var filePath = GetFilePath(contentPath);
 
             // Clear the old walls in case this isn't the first load
             _walls.Clear();
 
+            if (!File.Exists(filePath))
+                return;
+
             // Grab the wall information
-            var wallInfoFile = XmlInfoReader.ReadFile(path, true);
+            var wallInfoFile = XmlInfoReader.ReadFile(filePath, true);
 
             // Iterate through each entry in the WallInfo file
             foreach (var wallInfo in wallInfoFile)
@@ -126,13 +126,18 @@ namespace DemoGame.MapEditor
             }
         }
 
-        /// <summary>
-        /// Saves the bound wall information for MapGrhs
-        /// </summary>
-        /// <param name="path">Path to the file to save to</param>
-        public void Save(string path)
+        public static string GetFilePath(ContentPaths contentPath)
         {
-            using (FileStream stream = new FileStream(path, FileMode.Create))
+            return contentPath.Data.Join("grhdatawalls.xml");
+        }
+
+        const string _rootNodeName = "GrhDataWalls";
+
+        public void Save(ContentPaths contentPath)
+        {
+            var filePath = GetFilePath(contentPath);
+
+            using (FileStream stream = new FileStream(filePath, FileMode.Create))
             {
                 XmlWriterSettings settings = new XmlWriterSettings
                 {

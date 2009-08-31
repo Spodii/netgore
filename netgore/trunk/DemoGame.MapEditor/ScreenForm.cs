@@ -366,7 +366,7 @@ namespace DemoGame.MapEditor
 
             // Load the settings
             LoadSettings();
-            _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev.Data.Join("grhdatawalls.xml"));
+            _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev);
 
             // Create the world
             _world = new World(this, _camera);
@@ -814,7 +814,7 @@ namespace DemoGame.MapEditor
                 }
                 else if (treeGrhs.SelectedNode.Name.Length == 0)
                 {
-                    // No GrhData found, so if the node has no name (is a folder), use its path
+                    // No GrhData found, so if the node has no name (is a folder), use its filePath
                     category = treeGrhs.SelectedNode.FullPath.Replace(treeGrhs.PathSeparator, ".");
                 }
             }
