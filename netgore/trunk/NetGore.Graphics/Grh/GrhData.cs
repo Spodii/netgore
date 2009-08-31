@@ -2,7 +2,6 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -16,6 +15,16 @@ namespace NetGore.Graphics
     /// </summary>
     public class GrhData : ITextureAtlas
     {
+        const string _automaticSizeValueKey = "AutomaticSize";
+        const string _categoryNameValueKey = "Name";
+        const string _categoryNodeName = "Category";
+        const string _categoryTitleValueKey = "Title";
+        const string _framesNodeName = "Frames";
+        const string _indexKey = "Index";
+        const string _speedValueKey = "Speed";
+        const string _textureNameValueKey = "Name";
+        const string _textureNodeName = "Texture";
+        const string _textureSourceValueKey = "Source";
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         Rectangle _atlasSourceRect;
         bool _automaticSize = false;
@@ -200,6 +209,16 @@ namespace NetGore.Graphics
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhData"/> class.
+        /// </summary>
+        /// <param name="r">IValueReader to read the values from.</param>
+        /// <param name="cm">ContentManager to use.</param>
+        public GrhData(IValueReader r, ContentManager cm)
+        {
+            Read(r, cm);
+        }
+
         internal GrhData()
         {
             // Restrict construction to internal only
@@ -326,7 +345,8 @@ namespace NetGore.Graphics
                 _frames[i] = GrhInfo.GetData(frames[i]);
                 if (_frames[i] == null)
                 {
-                    const string errmsg = "Failed to load GrhData `{0}`. GrhData `{1}` needs it for frame index `{2}` (0-based), out of `{3}` frames total.";
+                    const string errmsg =
+                        "Failed to load GrhData `{0}`. GrhData `{1}` needs it for frame index `{2}` (0-based), out of `{3}` frames total.";
                     string err = string.Format(errmsg, _frames[i], grhIndex, i, frames.Length);
                     throw new Exception(err);
                 }
@@ -345,28 +365,28 @@ namespace NetGore.Graphics
             SetCategorization(category, title);
         }
 
-        public GrhData(IValueReader r, ContentManager cm)
+        /// <summary>
+        /// Reads and loads the GrhData from an IValueReader.
+        /// </summary>
+        /// <param name="r">IValueReader to read the values from.</param>
+        /// <param name="cm">ContentManager to use.</param>
+        void Read(IValueReader r, ContentManager cm)
         {
-            Read(r, cm);
-        }
-
-        public void Read(IValueReader r, ContentManager cm)
-        {
-            var grhIndex = r.ReadGrhIndex("Index");
+            GrhIndex grhIndex = r.ReadGrhIndex(_indexKey);
             var frames = r.ReadMany(_framesNodeName, ((reader, name) => reader.ReadGrhIndex(name)));
 
-            var categoryNodeReader = r.ReadNode(_categoryNodeName);
-            string categoryName = categoryNodeReader.ReadString("Name");
-            string categoryTitle = categoryNodeReader.ReadString("Title");
+            IValueReader categoryNodeReader = r.ReadNode(_categoryNodeName);
+            string categoryName = categoryNodeReader.ReadString(_categoryNameValueKey);
+            string categoryTitle = categoryNodeReader.ReadString(_categoryTitleValueKey);
 
             if (frames.Length <= 1)
             {
                 // Single frame
-                bool automaticSize = r.ReadBool("AutomaticSize");
+                bool automaticSize = r.ReadBool(_automaticSizeValueKey);
 
-                var textureNodeReader = r.ReadNode(_textureNodeName);
-                string textureName = textureNodeReader.ReadString("Name");
-                Rectangle source = textureNodeReader.ReadRectangle("Source");
+                IValueReader textureNodeReader = r.ReadNode(_textureNodeName);
+                string textureName = textureNodeReader.ReadString(_textureNameValueKey);
+                Rectangle source = textureNodeReader.ReadRectangle(_textureSourceValueKey);
 
                 Load(cm, grhIndex, textureName, source.X, source.Y, source.Width, source.Height, categoryName, categoryTitle);
                 AutomaticSize = automaticSize;
@@ -374,66 +394,11 @@ namespace NetGore.Graphics
             else
             {
                 // Animated
-                float speed = r.ReadFloat("Speed");
+                float speed = r.ReadFloat(_speedValueKey);
 
                 Load(grhIndex, frames, speed, categoryName, categoryTitle);
             }
         }
-
-        public void Write(IValueWriter w)
-        {
-            // Check for valid data
-            if (GrhIndex <= 0)
-                throw new Exception("GrhIndex invalid.");
-            if (w == null)
-                throw new ArgumentNullException("w");
-
-            if (string.IsNullOrEmpty(Category))
-                throw new NullReferenceException("Category is null or invalid.");
-            if (string.IsNullOrEmpty(Title))
-                throw new NullReferenceException("Title is null or invalid.");
-
-            // Header
-            w.Write("Index", GrhIndex);
-            w.WriteMany(_framesNodeName, Frames.Select(x => x.GrhIndex).ToArray(), w.Write);
-
-            // Category
-            w.WriteStartNode(_categoryNodeName);
-            {
-                w.Write("Name", Category);
-                w.Write("Title", Title);
-            }
-            w.WriteEndNode(_categoryNodeName);
-
-            if (!IsAnimated)
-            {
-                // Single frame
-                if (string.IsNullOrEmpty(TextureName))
-                    throw new NullReferenceException("TextureName is null or invalid for a non-animation.");
-                if (SourceRect.Width <= 0)
-                    throw new Exception("SourceRect.Width must be > 0.");
-                if (SourceRect.Height <= 0)
-                    throw new Exception("SourceRect.Height must be > 0.");
-
-                w.Write("AutomaticSize", AutomaticSize);
-
-                w.WriteStartNode(_textureNodeName);
-                {
-                    w.Write("Name", TextureName);
-                    w.Write("Source", GetOriginalSource());
-                }
-                w.WriteEndNode(_textureNodeName);
-            }
-            else
-            {
-                // Animated
-                w.Write("Speed", (1f / Speed));
-            }
-        }
-
-        const string _categoryNodeName = "Category";
-        const string _textureNodeName = "Texture";
-        const string _framesNodeName = "Frames";
 
         /// <summary>
         /// Sets the category and title for the GrhData and raises an OnChangeCategorization event if
@@ -510,6 +475,61 @@ namespace NetGore.Graphics
 
                 // If we were using an atlas, we'll have to remove it because the texture was reloaded
                 _isUsingAtlas = false;
+            }
+        }
+
+        /// <summary>
+        /// Writes the GrhData to an IValueWriter.
+        /// </summary>
+        /// <param name="w">IValueWriter to write to.</param>
+        public void Write(IValueWriter w)
+        {
+            // Check for valid data
+            if (GrhIndex <= 0)
+                throw new Exception("GrhIndex invalid.");
+            if (w == null)
+                throw new ArgumentNullException("w");
+
+            if (string.IsNullOrEmpty(Category))
+                throw new NullReferenceException("Category is null or invalid.");
+            if (string.IsNullOrEmpty(Title))
+                throw new NullReferenceException("Title is null or invalid.");
+
+            // Header
+            w.Write(_indexKey, GrhIndex);
+            w.WriteMany(_framesNodeName, Frames.Select(x => x.GrhIndex).ToArray(), w.Write);
+
+            // Category
+            w.WriteStartNode(_categoryNodeName);
+            {
+                w.Write(_categoryNameValueKey, Category);
+                w.Write(_categoryTitleValueKey, Title);
+            }
+            w.WriteEndNode(_categoryNodeName);
+
+            if (!IsAnimated)
+            {
+                // Single frame
+                if (string.IsNullOrEmpty(TextureName))
+                    throw new NullReferenceException("TextureName is null or invalid for a non-animation.");
+                if (SourceRect.Width <= 0)
+                    throw new Exception("SourceRect.Width must be > 0.");
+                if (SourceRect.Height <= 0)
+                    throw new Exception("SourceRect.Height must be > 0.");
+
+                w.Write(_automaticSizeValueKey, AutomaticSize);
+
+                w.WriteStartNode(_textureNodeName);
+                {
+                    w.Write(_textureNameValueKey, TextureName);
+                    w.Write(_textureSourceValueKey, GetOriginalSource());
+                }
+                w.WriteEndNode(_textureNodeName);
+            }
+            else
+            {
+                // Animated
+                w.Write(_speedValueKey, (1f / Speed));
             }
         }
 
