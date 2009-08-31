@@ -13,7 +13,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Holds information representing how a Grh is displayed and functions
     /// </summary>
-    public class GrhData : ITextureAtlas
+    public sealed class GrhData : ITextureAtlas
     {
         const string _automaticSizeValueKey = "AutomaticSize";
         const string _categoryNameValueKey = "Name";
@@ -25,6 +25,7 @@ namespace NetGore.Graphics
         const string _textureNameValueKey = "Name";
         const string _textureNodeName = "Texture";
         const string _textureSourceValueKey = "Source";
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         Rectangle _atlasSourceRect;
         bool _automaticSize = false;
@@ -370,7 +371,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="r">IValueReader to read the values from.</param>
         /// <param name="cm">ContentManager to use.</param>
-        void Read(IValueReader r, ContentManager cm)
+        public void Read(IValueReader r, ContentManager cm)
         {
             GrhIndex grhIndex = r.ReadGrhIndex(_indexKey);
             var frames = r.ReadMany(_framesNodeName, ((reader, name) => reader.ReadGrhIndex(name)));
