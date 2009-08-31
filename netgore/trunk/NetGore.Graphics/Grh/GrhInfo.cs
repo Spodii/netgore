@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using NetGore.Collections;
-using NetGore.Globalization;
 using NetGore.IO;
 
 namespace NetGore.Graphics
@@ -19,6 +17,10 @@ namespace NetGore.Graphics
     /// </summary>
     public static class GrhInfo
     {
+        const string _animatedGrhDatasNodeName = "Animated";
+        const string _nonAnimatedGrhDatasNodeName = "Stationary";
+        const string _rootNodeName = "GrhDatas";
+
         /// <summary>
         /// Dictionary of categories, which contains a dictionary of all the names of the GrhDatas in
         /// that category, which contains the GrhData of that given name and category
@@ -314,6 +316,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Gets the absolute file path to the GrhData file.
+        /// </summary>
+        /// <param name="contentPath">ContentPath to use.</param>
+        /// <returns>The absolute file path to the GrhData file.</returns>
+        public static string GetGrhDataFilePath(ContentPaths contentPath)
+        {
+            return contentPath.Data.Join("grhdata.xml");
+        }
+
+        /// <summary>
         /// Checks if the specified Grh texture exists.
         /// </summary>
         /// <param name="textureName">Name of the Grh texture to check.</param>
@@ -361,49 +373,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Saves all of the GrhData information to the specified file.
-        /// </summary>
-        /// <param name="path">Path of the file to save the GrhData information to.</param>
-        public static void Save(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-                throw new ArgumentNullException("path");
-
-            string tempPath = path + ".temp";
-
-            // Ensure the directory exists
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-
-            // Organize the GrhDatas by if they are animated or not
-            var nonNullGrhDatas = GrhDatas.Where(x => x != null);
-            var nonAnimatedGrhDatas = nonNullGrhDatas.Where(x => !x.IsAnimated).ToArray();
-            var animatedGrhDatas = nonNullGrhDatas.Where(x => x.IsAnimated).ToArray();
-
-            // Write
-            using (IValueWriter writer = new XmlValueWriter(tempPath, _rootNodeName))
-            {
-                writer.WriteManyNodes(_nonAnimatedGrhDatasNodeName, nonAnimatedGrhDatas, ((w, item) => item.Write(w)));
-                writer.WriteManyNodes(_animatedGrhDatasNodeName, animatedGrhDatas, ((w, item) => item.Write(w)));
-            }
-
-            // Now that the temporary file has been successfully written, replace the existing file with it
-            File.Delete(path);
-            File.Move(tempPath, path);
-        }
-
-        const string _rootNodeName = "GrhDatas";
-
-        const string _nonAnimatedGrhDatasNodeName = "Stationary";
-        const string _animatedGrhDatasNodeName = "Animated";
-
-        /// <summary>
         /// Loads the GrhDatas. This must be called before trying to access or use any GrhDatas.
         /// </summary>
         /// <param name="contentPath">The ContentPaths to load the GrhDatas from.</param>
         /// <param name="cm">The ContentManager to use for loaded GrhDatas.</param>
         public static void Load(ContentPaths contentPath, ContentManager cm)
         {
-            var path = contentPath.Data.Join("grhdata.xml");
+            string path = GetGrhDataFilePath(contentPath);
 
             if (cm == null)
                 throw new ArgumentNullException("cm");
@@ -418,15 +394,19 @@ namespace NetGore.Graphics
             _grhDatas.OnRemove += RemoveHandler;
 
             // Load the GrhDatas (non-aniamted first, followed by animated)
-            var reader = new XmlValueReader(path, _rootNodeName);
+            XmlValueReader reader = new XmlValueReader(path, _rootNodeName);
 
             var nonAnimatedGrhDatas = reader.ReadManyNodes(_nonAnimatedGrhDatasNodeName, x => new GrhData(x, cm));
-            foreach (var gd in nonAnimatedGrhDatas)
+            foreach (GrhData gd in nonAnimatedGrhDatas)
+            {
                 _grhDatas[(int)gd.GrhIndex] = gd;
+            }
 
             var animatedGrhDatas = reader.ReadManyNodes(_animatedGrhDatasNodeName, x => new GrhData(x, cm));
-            foreach (var gd in animatedGrhDatas)
+            foreach (GrhData gd in animatedGrhDatas)
+            {
                 _grhDatas[(int)gd.GrhIndex] = gd;
+            }
 
             // Trim down the GrhData array, mainly for the client since it will never add/remove any GrhDatas
             // while in the Client, and the Client is what counts, baby!
@@ -482,6 +462,36 @@ namespace NetGore.Graphics
         public static string SanitizeCategory(string category)
         {
             return category.Replace('/', '.').Replace('\\', '.');
+        }
+
+        /// <summary>
+        /// Saves all of the GrhData information to the specified file.
+        /// </summary>
+        /// <param name="contentPath">ContentPath to save the GrhData to.</param>
+        public static void Save(ContentPaths contentPath)
+        {
+            string path = GetGrhDataFilePath(contentPath);
+
+            string tempPath = path + ".temp";
+
+            // Ensure the directory exists
+            Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+            // Organize the GrhDatas by if they are animated or not
+            var nonNullGrhDatas = GrhDatas.Where(x => x != null);
+            var nonAnimatedGrhDatas = nonNullGrhDatas.Where(x => !x.IsAnimated).ToArray();
+            var animatedGrhDatas = nonNullGrhDatas.Where(x => x.IsAnimated).ToArray();
+
+            // Write
+            using (IValueWriter writer = new XmlValueWriter(tempPath, _rootNodeName))
+            {
+                writer.WriteManyNodes(_nonAnimatedGrhDatasNodeName, nonAnimatedGrhDatas, ((w, item) => item.Write(w)));
+                writer.WriteManyNodes(_animatedGrhDatasNodeName, animatedGrhDatas, ((w, item) => item.Write(w)));
+            }
+
+            // Now that the temporary file has been successfully written, replace the existing file with it
+            File.Delete(path);
+            File.Move(tempPath, path);
         }
 
         public static void SplitCategoryAndTitle(string categoryAndTitle, out string category, out string title)

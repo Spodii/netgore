@@ -1218,7 +1218,7 @@ namespace DemoGame.MapEditor
 
         void ScreenForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            GrhInfo.Save(ContentPaths.Dev.Data.Join("grhdata.xml"));
+            GrhInfo.Save(ContentPaths.Dev);
             SaveSettings();
         }
 
