@@ -98,7 +98,7 @@ namespace NetGore.NPCChat
         public void Write(IValueWriter writer)
         {
             writer.Write("EvaluationType", (byte)EvaluationType);
-            writer.Write("ItemCount", (byte)this.Count());
+            writer.Write("ItemCount", (byte)this.Count()); // NOTE: $$!!$$
 
             foreach (var item in this)
             {

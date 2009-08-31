@@ -90,7 +90,7 @@ namespace NetGore.NPCChat
         {
             writer.Write("Not", Not);
             writer.Write("ConditionalName", Conditional.Name);
-            writer.Write("ParameterCount", (byte)Parameters.Count());
+            writer.Write("ParameterCount", (byte)Parameters.Count()); // NOTE: $$!!$$
 
             for (int i = 0; i < Parameters.Length; i++)
             {
