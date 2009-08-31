@@ -21,10 +21,13 @@ namespace NetGore.NPCChat
         public abstract NPCChatConditionalEvaluationType EvaluationType { get; }
 
         /// <summary>
-        /// When overridden in the derived class, creates a NPCChatConditionalCollectionItemBase instance.
+        /// Creates a NPCChatConditionalCollectionItemBase instance then reades the values for it from the
+        /// given IValueReader.
         /// </summary>
-        /// <returns>A NPCChatConditionalCollectionItemBase instance.</returns>
-        protected abstract NPCChatConditionalCollectionItemBase<TUser, TNPC> CreateItem();
+        /// <param name="reader">The IValueReader to read from.</param>
+        /// <returns>A NPCChatConditionalCollectionItemBase instance with values read from
+        /// the <paramref name="reader"/>.</returns>
+        protected abstract NPCChatConditionalCollectionItemBase<TUser, TNPC> CreateItem(IValueReader reader);
 
         /// <summary>
         /// Evaluates every conditional in this collection using the provided EvaluationType.
@@ -61,24 +64,12 @@ namespace NetGore.NPCChat
         /// Reads the values for this NPCChatConditionalCollectionBase from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
-        public void Read(IValueReader reader)
+        protected void Read(IValueReader reader)
         {
             byte evaluationTypeValue = reader.ReadByte("EvaluationType");
-            byte itemCount = reader.ReadByte("ItemCount");
-
-            var items = new NPCChatConditionalCollectionItemBase<TUser, TNPC>[itemCount];
-            var itemReaders = reader.ReadNodes("Item", itemCount);
-            int i = 0;
-            foreach (IValueReader r in itemReaders)
-            {
-                var item = CreateItem();
-                item.Read(r);
-                items[i] = item;
-                i++;
-            }
+            var items = reader.ReadManyNodes("Items", x => CreateItem(x));
 
             NPCChatConditionalEvaluationType evaluationType = (NPCChatConditionalEvaluationType)evaluationTypeValue;
-
             if (!EnumHelper.IsDefined(evaluationType))
                 throw new Exception(string.Format("Invalid NPCChatConditionalEvaluationType `{0}`.", evaluationTypeValue));
 
@@ -98,14 +89,7 @@ namespace NetGore.NPCChat
         public void Write(IValueWriter writer)
         {
             writer.Write("EvaluationType", (byte)EvaluationType);
-            writer.Write("ItemCount", (byte)this.Count()); // NOTE: $$!!$$
-
-            foreach (var item in this)
-            {
-                writer.WriteStartNode("Item");
-                item.Write(writer);
-                writer.WriteEndNode("Item");
-            }
+            writer.WriteManyNodes("Items", this, ((w, item) => item.Write(w)));
         }
 
         #region IEnumerable<NPCChatConditionalCollectionItemBase<TUser,TNPC>> Members

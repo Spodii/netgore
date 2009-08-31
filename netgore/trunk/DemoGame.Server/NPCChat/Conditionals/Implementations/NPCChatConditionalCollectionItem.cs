@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore.IO;
 using NetGore.NPCChat;
 
 namespace DemoGame.Server.NPCChat.Conditionals
@@ -9,6 +10,15 @@ namespace DemoGame.Server.NPCChat.Conditionals
         NPCChatConditionalBase<TUser, TNPC> _conditional;
         bool _not;
         NPCChatConditionalParameter[] _parameters;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NPCChatConditionalCollectionItem&lt;TUser, TNPC&gt;"/> class.
+        /// </summary>
+        /// <param name="r">The IValueReader to read from.</param>
+        public NPCChatConditionalCollectionItem(IValueReader r)
+        {
+            Read(r);
+        }
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalBase.
