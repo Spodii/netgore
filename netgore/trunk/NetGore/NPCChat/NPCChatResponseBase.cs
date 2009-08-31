@@ -50,7 +50,7 @@ namespace NetGore.NPCChat
         /// Reads the values for this NPCChatResponseBase from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
-        public void Read(IValueReader reader)
+        protected void Read(IValueReader reader)
         {
             byte value = reader.ReadByte("Value");
             ushort page = reader.ReadUShort("Page");
