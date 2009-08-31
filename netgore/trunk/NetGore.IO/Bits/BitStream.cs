@@ -3112,6 +3112,10 @@ namespace NetGore.IO
             return ReadUShort();
         }
 
+        #endregion
+
+        #region IValueWriter Members
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -3119,10 +3123,6 @@ namespace NetGore.IO
         void IDisposable.Dispose()
         {
         }
-
-        #endregion
-
-        #region IValueWriter Members
 
         /// <summary>
         /// Writes an unsigned integer of up to 32 bits.

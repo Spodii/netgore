@@ -24,7 +24,7 @@ namespace NetGore.IO
     /// <summary>
     /// Interface for an object that reads values written by an IValueReader.
     /// </summary>
-    public interface IValueReader : IDisposable
+    public interface IValueReader
     {
         /// <summary>
         /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
