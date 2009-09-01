@@ -96,7 +96,7 @@ namespace DemoGame.Client
             if (setName == _currSkelSet)
                 return;
 
-            var newSet = _skelManager.LoadSet(setName, ContentPaths.Build);
+            SkeletonSet newSet = _skelManager.LoadSet(setName, ContentPaths.Build);
             _skelAnim.ChangeSet(newSet);
             _currSkelSet = setName;
         }
@@ -183,9 +183,9 @@ namespace DemoGame.Client
 
             // Set up the skeleton
             _currSkelSet = BodyInfo.Stand;
-            var newSet = _skelManager.LoadSet(_currSkelSet, ContentPaths.Build);
+            SkeletonSet newSet = _skelManager.LoadSet(_currSkelSet, ContentPaths.Build);
             _skelAnim = new SkeletonAnimation(GetTime(), newSet);
-            var bodyInfo = _skelManager.LoadBodyInfo(BodyInfo.Body, ContentPaths.Build);
+            SkeletonBodyInfo bodyInfo = _skelManager.LoadBodyInfo(BodyInfo.Body, ContentPaths.Build);
             _skelAnim.SkeletonBody = new SkeletonBody(bodyInfo, _skelAnim.Skeleton);
         }
 

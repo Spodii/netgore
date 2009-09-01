@@ -35,10 +35,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Array of the database column names for columns that are primary keys.
         /// </summary>
-        static readonly String[] _dbColumnsKeys = new string[]
-        {
-            "id"
-        };
+        static readonly String[] _dbColumnsKeys = new string[] { "id" };
 
         /// <summary>
         /// Array of the database column names for columns that are not primary keys.

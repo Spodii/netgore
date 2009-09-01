@@ -136,10 +136,7 @@ namespace NetGore.Graphics
         /// <returns>Deep-copy of the skeleton and all its joints</returns>
         public Skeleton DeepCopy()
         {
-            return new Skeleton
-            {
-                RootNode = RootNode.Duplicate()
-            };
+            return new Skeleton { RootNode = RootNode.Duplicate() };
         }
 
         /// <summary>

@@ -41,12 +41,10 @@ namespace DemoGame.Client
 
         static StatusEffectInfo()
         {
-            _infoManager.AddMissingTypes(StatusEffectTypeHelper.AllValues, x => new StatusEffectInfo
-            {
-                StatusEffectType = x,
-                Name = x.ToString(),
-                Description = string.Empty
-            });
+            _infoManager.AddMissingTypes(StatusEffectTypeHelper.AllValues,
+                                         x =>
+                                         new StatusEffectInfo
+                                         { StatusEffectType = x, Name = x.ToString(), Description = string.Empty });
             _infoManager.Save();
         }
 

@@ -113,10 +113,7 @@ namespace NetGore
                 if (!_parsers.TryGetValue(type, out method))
                 {
                     // Find the Parse method for the type
-                    method = GetMethodInfo("parse", type, new Type[]
-                    {
-                        typeof(string)
-                    });
+                    method = GetMethodInfo("parse", type, new Type[] { typeof(string) });
 
                     // ReSharper disable ConvertIfStatementToNullCoalescingExpression
                     // Check for any implicit or explicit operators that we can use
@@ -181,18 +178,12 @@ namespace NetGore
                         return false;
                     }
 
-                    value = method.Invoke(null, new object[]
-                    {
-                        parsedSystemType
-                    });
+                    value = method.Invoke(null, new object[] { parsedSystemType });
                 }
                 else
                 {
                     // A parse method - nice and easy
-                    value = method.Invoke(null, new object[]
-                    {
-                        s
-                    });
+                    value = method.Invoke(null, new object[] { s });
                 }
             }
             catch (Exception)

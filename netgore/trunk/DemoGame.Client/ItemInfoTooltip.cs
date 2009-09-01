@@ -53,12 +53,7 @@ namespace DemoGame.Client
             int numNonZeroStats = nonZeroStats.Count();
 
             // Basic item information
-            var lines = new List<string>(numNonZeroStats + 10)
-            {
-                ItemInfo.Name,
-                ItemInfo.Description,
-                "Value: " + ItemInfo.Value
-            };
+            var lines = new List<string>(numNonZeroStats + 10) { ItemInfo.Name, ItemInfo.Description, "Value: " + ItemInfo.Value };
 
             if (ItemInfo.HP != 0)
                 lines.Add(string.Format(" +{0} HP", ItemInfo.HP));

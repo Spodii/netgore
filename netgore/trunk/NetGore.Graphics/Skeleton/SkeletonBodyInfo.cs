@@ -1,6 +1,4 @@
-using System.IO;
 using System.Linq;
-using System.Xml;
 using NetGore.IO;
 
 namespace NetGore.Graphics
@@ -17,17 +15,6 @@ namespace NetGore.Graphics
 
         const string _itemsNodeName = "BodyItems";
         const string _rootNodeName = "SkeletonBody";
-
-        /// <summary>
-        /// Gets the absolute file path for a SkeletonBody file.
-        /// </summary>
-        /// <param name="skeletonSetName">The name of the SkeletonBody.</param>
-        /// <param name="contentPath">The content path to use.</param>
-        /// <returns>The absolute file path for a SkeletonBody file.</returns>
-        public static string GetFilePath(string skeletonSetName, ContentPaths contentPath)
-        {
-            return contentPath.Skeletons.Join(skeletonSetName + FileSuffix);
-        }
 
         /// <summary>
         /// An array of all the SkeletonBodyItemInfos in this SkeletonBodyInfo
@@ -51,7 +38,7 @@ namespace NetGore.Graphics
             _items = items;
         }
 
-        public SkeletonBodyInfo(string skeletonBodyName, ContentPaths contentPath) 
+        public SkeletonBodyInfo(string skeletonBodyName, ContentPaths contentPath)
             : this(new XmlValueReader(GetFilePath(skeletonBodyName, contentPath), _rootNodeName))
         {
         }
@@ -59,6 +46,17 @@ namespace NetGore.Graphics
         public SkeletonBodyInfo(IValueReader reader)
         {
             Read(reader);
+        }
+
+        /// <summary>
+        /// Gets the absolute file path for a SkeletonBody file.
+        /// </summary>
+        /// <param name="skeletonSetName">The name of the SkeletonBody.</param>
+        /// <param name="contentPath">The content path to use.</param>
+        /// <returns>The absolute file path for a SkeletonBody file.</returns>
+        public static string GetFilePath(string skeletonSetName, ContentPaths contentPath)
+        {
+            return contentPath.Skeletons.Join(skeletonSetName + FileSuffix);
         }
 
         public void Read(IValueReader reader)

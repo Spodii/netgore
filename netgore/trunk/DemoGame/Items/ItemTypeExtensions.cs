@@ -18,22 +18,13 @@ namespace DemoGame
             switch (itemType)
             {
                 case ItemType.Body:
-                    return new EquipmentSlot[]
-                    {
-                        EquipmentSlot.Body
-                    };
+                    return new EquipmentSlot[] { EquipmentSlot.Body };
 
                 case ItemType.Helmet:
-                    return new EquipmentSlot[]
-                    {
-                        EquipmentSlot.Head
-                    };
+                    return new EquipmentSlot[] { EquipmentSlot.Head };
 
                 case ItemType.Weapon:
-                    return new EquipmentSlot[]
-                    {
-                        EquipmentSlot.RightHand
-                    };
+                    return new EquipmentSlot[] { EquipmentSlot.RightHand };
 
                 case ItemType.Unusable:
                     return null;

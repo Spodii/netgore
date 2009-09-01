@@ -17,9 +17,7 @@ namespace NetGore.IO
         /// XmlReaderSettings used for ReadNodes().
         /// </summary>
         static readonly XmlReaderSettings _readNodesReaderSettings = new XmlReaderSettings
-        {
-            ConformanceLevel = ConformanceLevel.Fragment
-        };
+        { ConformanceLevel = ConformanceLevel.Fragment };
 
         readonly Dictionary<string, List<string>> _values;
 

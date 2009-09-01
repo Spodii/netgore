@@ -394,10 +394,7 @@ namespace DemoGame.MapEditor
             _editGrhCamera.Zoom(pos, GameData.ScreenSize, 4f);
             _editGrh = new Grh(_editGrhData.GrhIndex, AnimType.Loop, GetTime());
 
-            EditGrhForm f = new EditGrhForm(gd, _mapGrhWalls)
-            {
-                Location = new Point(0, 0)
-            };
+            EditGrhForm f = new EditGrhForm(gd, _mapGrhWalls) { Location = new Point(0, 0) };
             f.FormClosed += EditGrhForm_Close;
             AddOwnedForm(f);
             f.Show();
@@ -554,11 +551,7 @@ namespace DemoGame.MapEditor
             // ReSharper restore UnusedMethodReturnValue.Local
         {
             // Create the instance of the MapDrawExtensionBase
-            T instance = new T
-            {
-                Map = Map,
-                Enabled = checkBox.Checked
-            };
+            T instance = new T { Map = Map, Enabled = checkBox.Checked };
 
             // Handle when the CheckBox value changes
             checkBox.CheckedChanged += ((obj, e) => instance.Enabled = ((CheckBox)obj).Checked);
@@ -786,10 +779,7 @@ namespace DemoGame.MapEditor
 
         static IEnumerable<Control> GetAllControls(Control root)
         {
-            var ret = new List<Control>
-            {
-                root
-            };
+            var ret = new List<Control> { root };
 
             foreach (Control child in root.Controls)
             {
@@ -867,14 +857,8 @@ namespace DemoGame.MapEditor
             // To close, we actually will create a timer to close the form one ms from now
             if (willClose)
             {
-                Timer t = new Timer
-                {
-                    Interval = 1
-                };
-                t.Tick += delegate
-                          {
-                              Close();
-                          };
+                Timer t = new Timer { Interval = 1 };
+                t.Tick += delegate { Close(); };
                 t.Start();
             }
         }
@@ -1205,10 +1189,7 @@ namespace DemoGame.MapEditor
 
             // Disable this form until the rename one closes
             Enabled = false;
-            frm.FormClosed += delegate
-                              {
-                                  Enabled = true;
-                              };
+            frm.FormClosed += delegate { Enabled = true; };
             frm.Show();
         }
 
@@ -1413,9 +1394,8 @@ namespace DemoGame.MapEditor
             const string _wallsNodeName = "Walls";
             readonly ScreenForm _screenForm;
 
-// ReSharper disable MemberCanBePrivate.Local
-            public static string FilePath
-// ReSharper restore MemberCanBePrivate.Local
+            // ReSharper disable MemberCanBePrivate.Local
+            public static string FilePath // ReSharper restore MemberCanBePrivate.Local
             {
                 get { return ContentPaths.Build.Settings.Join("MapEditorSettings.xml"); }
             }

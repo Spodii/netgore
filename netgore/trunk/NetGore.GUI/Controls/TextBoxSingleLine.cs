@@ -268,10 +268,7 @@ namespace NetGore.Graphics.GUI
                     return;
 
                 // Last pressed key was held down
-                keysDown = new Keys[]
-                {
-                    LastKey
-                };
+                keysDown = new Keys[] { LastKey };
             }
 
             // Update the text with newly pressed keys

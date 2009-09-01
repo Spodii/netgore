@@ -7,10 +7,7 @@ namespace NetGore.Db.ClassCreator
 {
     public abstract class CodeFormatter
     {
-        protected readonly char[] separatorCharacters = new char[]
-        {
-            '_', ' ', '-'
-        };
+        protected readonly char[] separatorCharacters = new char[] { '_', ' ', '-' };
 
         readonly Dictionary<string, string> _aliases = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
 

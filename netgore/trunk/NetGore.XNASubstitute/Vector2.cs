@@ -400,10 +400,7 @@ namespace Microsoft.Xna.Framework
 
         public override string ToString()
         {
-            return string.Format("{{X:{0} Y:{1}}}", new object[]
-            {
-                X.ToString(), Y.ToString()
-            });
+            return string.Format("{{X:{0} Y:{1}}}", new object[] { X.ToString(), Y.ToString() });
         }
 
         public static Vector2 Transform(Vector2 position, Matrix matrix)

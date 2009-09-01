@@ -372,19 +372,11 @@ namespace NetGore.Network
             _socket.SendBufferSize = MaxSendSize + SizeHeaderLength;
 
             // Make the send/recv event args
-            _sendEventArgs = new SocketAsyncEventArgs
-            {
-                UserToken = this,
-                SocketFlags = SocketFlags.None
-            };
+            _sendEventArgs = new SocketAsyncEventArgs { UserToken = this, SocketFlags = SocketFlags.None };
             _sendEventArgs.SetBuffer(_sendBuffer, 0, 0);
             _sendEventArgs.Completed += EndSend;
 
-            _recvEventArgs = new SocketAsyncEventArgs
-            {
-                UserToken = this,
-                SocketFlags = SocketFlags.None
-            };
+            _recvEventArgs = new SocketAsyncEventArgs { UserToken = this, SocketFlags = SocketFlags.None };
             _recvEventArgs.SetBuffer(_recvBuffer, 0, MaxRecvSize);
             _recvEventArgs.Completed += EndRecv;
 

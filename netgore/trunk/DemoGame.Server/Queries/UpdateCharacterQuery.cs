@@ -21,13 +21,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         static IEnumerable<string> FieldsToNotUpdate
         {
-            get
-            {
-                return new string[]
-                {
-                    "password"
-                };
-            }
+            get { return new string[] { "password" }; }
         }
 
         public UpdateCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)

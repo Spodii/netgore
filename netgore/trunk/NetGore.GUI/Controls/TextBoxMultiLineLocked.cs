@@ -173,10 +173,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="color">Color of the text to append.</param>
         public void Append(string text, Color color)
         {
-            Append(new List<StyledText>
-            {
-                new StyledText(text, color)
-            });
+            Append(new List<StyledText> { new StyledText(text, color) });
         }
 
         /// <summary>

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -73,10 +73,7 @@ namespace DemoGame.Client
 
             for (byte i = 0; i < _numDisplayedResponses; i++)
             {
-                ResponseText r = new ResponseText(new Vector2(0, responseStartY + (spacing * i)), this)
-                {
-                    IsVisible = true
-                };
+                ResponseText r = new ResponseText(new Vector2(0, responseStartY + (spacing * i)), this) { IsVisible = true };
                 r.OnClick += ResponseText_OnClick;
                 _responseTextControls[i] = r;
             }
@@ -180,10 +177,7 @@ namespace DemoGame.Client
         /// <returns>The key and value pairs needed to restore the settings.</returns>
         public IEnumerable<NodeItem> Save()
         {
-            return new NodeItem[]
-            {
-                new NodeItem("X", Position.X), new NodeItem("Y", Position.Y)
-            };
+            return new NodeItem[] { new NodeItem("X", Position.X), new NodeItem("Y", Position.Y) };
         }
 
         #endregion

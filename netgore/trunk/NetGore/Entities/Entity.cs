@@ -202,10 +202,7 @@ namespace NetGore
         /// <returns>A new entity</returns>
         public static T Create<T>(Vector2 position, float width, float height) where T : Entity, new()
         {
-            T entity = new T
-            {
-                CB = new CollisionBox(width, height)
-            };
+            T entity = new T { CB = new CollisionBox(width, height) };
             entity.Teleport(position);
             return entity;
         }

@@ -999,10 +999,7 @@ namespace NetGore.EditorTools
                 string title = path.Substring(lastPeriodIndex + 1);
 
                 // Ensure both the title and category do not start or end with a space or period
-                var trimChars = new char[]
-                {
-                    ' ', '.'
-                };
+                var trimChars = new char[] { ' ', '.' };
                 category = category.Trim(trimChars);
                 title = title.Trim(trimChars);
 

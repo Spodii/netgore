@@ -394,10 +394,7 @@ namespace DemoGame.Server
                 return null;
 
             // Create the new ItemEntity
-            ItemEntity child = new ItemEntity(this)
-            {
-                Amount = amount
-            };
+            ItemEntity child = new ItemEntity(this) { Amount = amount };
 
             // Lower the amount of this ItemEntity
             Amount -= amount;

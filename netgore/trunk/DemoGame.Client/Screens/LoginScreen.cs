@@ -94,10 +94,7 @@ namespace DemoGame.Client
             Button cLogin = new Button("Login", new Vector2(60, 380), new Vector2(250, 45), cScreen);
             Button cBack = new Button("Back", new Vector2(60, 440), new Vector2(250, 45), cScreen);
 
-            _cError = new Label(string.Empty, new Vector2(60, 500), cScreen)
-            {
-                ForeColor = Color.Red
-            };
+            _cError = new Label(string.Empty, new Vector2(60, 500), cScreen) { ForeColor = Color.Red };
 
             cLogin.OnClick += cLogin_OnClick;
             cBack.OnClick += cBack_OnClick;

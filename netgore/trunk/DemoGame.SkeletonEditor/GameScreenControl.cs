@@ -16,10 +16,7 @@ namespace DemoGame.SkeletonEditor
 
         protected override void Initialize()
         {
-            Application.Idle += delegate
-                                {
-                                    Invalidate();
-                                };
+            Application.Idle += delegate { Invalidate(); };
         }
     }
 }
