@@ -88,6 +88,7 @@
     <Compile Include="IValueWriterExtensions.cs" />
     <Compile Include="MapBorderDrawer.cs" />
     <Compile Include="Skeleton\SkeletonBodyInfo.cs" />
+    <Compile Include="Skeleton\SkeletonBodyItemInfo.cs" />
     <Compile Include="Skeleton\SkeletonFrame.cs" />
     <Compile Include="SpriteBatchExtensions.cs" />
     <Compile Include="XNAArrow.cs" />

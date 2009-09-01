@@ -58,7 +58,7 @@ namespace DemoGame.Client.NPCChat
         /// <summary>
         /// NPCChatDialogItem constructor.
         /// </summary>
-        /// <param name="r">IValueReader to read the values from.</param>
+        /// <param name="reader">IValueReader to read the values from.</param>
         internal NPCChatDialogItem(IValueReader r) : base(r)
         {
         }

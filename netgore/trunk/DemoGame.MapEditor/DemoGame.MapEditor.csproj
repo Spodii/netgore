@@ -78,7 +78,7 @@
     <Compile Include="BatchRenameTextureForm.Designer.cs">
       <DependentUpon>BatchRenameTextureForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="CommandLineSwitches.cs" />
+    <Compile Include="CommandLineSwitch.cs" />
     <Compile Include="Cursors\AddGrhCursor.cs" />
     <Compile Include="Cursors\AddWallCursor.cs" />
     <Compile Include="Cursors\EditorCursorBase.cs" />

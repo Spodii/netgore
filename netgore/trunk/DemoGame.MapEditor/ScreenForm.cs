@@ -364,7 +364,7 @@ namespace DemoGame.MapEditor
             cmbEntityTypes.Items.AddRange(MapFileEntityAttribute.GetTypes().ToArray());
             cmbEntityTypes.SelectedIndex = 0;
 
-            // Load the settings
+            // Read the settings
             LoadSettings();
             _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev);
 
@@ -479,7 +479,7 @@ namespace DemoGame.MapEditor
         {
             using (FileDialog ofd = new OpenFileDialog())
             {
-                ofd.Title = "Load map";
+                ofd.Title = "Read map";
                 ofd.InitialDirectory = ContentPaths.Dev.Maps;
                 ofd.RestoreDirectory = true;
 
@@ -528,7 +528,7 @@ namespace DemoGame.MapEditor
                 Map.AddEntity(wall);
             }
 
-            // Save the map
+            // Write the map
             Map.Save(Map.Index, ContentPaths.Dev);
 
             // Remove the extra walls
@@ -909,7 +909,7 @@ namespace DemoGame.MapEditor
 
         void LoadEditor()
         {
-            // Load the database connection
+            // Read the database connection
             DBConnectionSettings settings = new DBConnectionSettings();
             _dbController = new DBController(settings.SqlConnectionString());
             AllianceManager.Initialize(DBController);
@@ -924,7 +924,7 @@ namespace DemoGame.MapEditor
             _spriteFont = _content.Load<SpriteFont>(ContentPaths.Build.Fonts.Join("Game"));
             Character.NameFont = SpriteFont;
 
-            // Load the Grh information
+            // Read the Grh information
             GrhInfo.Load(ContentPaths.Dev, _content);
             treeGrhs.Initialize(_content);
             TransBox.Initialize(GrhInfo.GetData("System", "Move"), GrhInfo.GetData("System", "Resize"));
@@ -958,7 +958,7 @@ namespace DemoGame.MapEditor
             KeyEventHandler kehUp = OnKeyUpForward;
             HookFormKeyEvents(this, kehDown, kehUp);
 
-            // Load the first map
+            // Read the first map
             SetMap(ContentPaths.Dev.Maps.Join("1." + Map.MapFileSuffix));
 
             // Set up the MapItemListBoxes

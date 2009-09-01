@@ -113,7 +113,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Inserts an area into the node
         /// </summary>
-        /// <param name="w">Width of the area to insert</param>
+        /// <param name="writer">Width of the area to insert</param>
         /// <param name="h">Height of the area to insert</param>
         /// <returns>Node representing the new area</returns>
         public AtlasNode Insert(int w, int h)

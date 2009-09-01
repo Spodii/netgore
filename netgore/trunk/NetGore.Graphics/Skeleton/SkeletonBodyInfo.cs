@@ -1,19 +1,27 @@
-using System;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Describes a SkeletonBody
+    /// Describes a SkeletonBody.
     /// </summary>
     public class SkeletonBodyInfo
     {
         /// <summary>
+        /// The file suffix used for the SkeletonBody.
+        /// </summary>
+        public const string FileSuffix = ".skelb";
+
+        const string _itemsNodeName = "BodyItems";
+        const string _rootNodeName = "SkeletonBody";
+
+        /// <summary>
         /// An array of all the SkeletonBodyItemInfos in this SkeletonBodyInfo
         /// </summary>
-        readonly SkeletonBodyItemInfo[] _items;
+        SkeletonBodyItemInfo[] _items;
 
         /// <summary>
         /// Gets an array of all the SkeletonBodyItemInfos in this SkeletonBodyInfo
@@ -32,64 +40,31 @@ namespace NetGore.Graphics
             _items = items;
         }
 
-        /// <summary>
-        /// SkeletonBodyInfo constructor
-        /// </summary>
-        /// <param name="filePath">File to load the SkeletonBodyInfo from</param>
-        public SkeletonBodyInfo(string filePath)
+        public SkeletonBodyInfo(string filePath) : this(new XmlValueReader(filePath, _rootNodeName))
         {
-            using (FileStream fs = new FileStream(filePath, FileMode.Open))
-            {
-                using (XmlReader r = XmlReader.Create(fs))
-                {
-                    int currBodyIndex = 0;
-                    while (r.Read())
-                    {
-                        if (r.NodeType == XmlNodeType.Element)
-                        {
-                            if (r.Name == "ItemsCount")
-                                _items = new SkeletonBodyItemInfo[r.ReadElementContentAsInt()];
-                            else if (r.Name == "BodyItem")
-                            {
-                                _items[currBodyIndex] = SkeletonBodyItemInfo.Load(r.ReadSubtree());
-                                currBodyIndex++;
-                            }
-                        }
-                    }
-                }
-            }
         }
 
-        /// <summary>
-        /// Saves the SkeletonBodyInfo to a file
-        /// </summary>
-        /// <param name="filePath"></param>
-        public void Save(string filePath)
+        public SkeletonBodyInfo(IValueReader reader)
         {
-            using (FileStream fs = new FileStream(filePath, FileMode.Create))
+            Read(reader);
+        }
+
+        public void Read(IValueReader reader)
+        {
+            var loadedItems = reader.ReadManyNodes(_itemsNodeName, x => new SkeletonBodyItemInfo(x));
+            _items = loadedItems;
+        }
+
+        public void Write(IValueWriter writer)
+        {
+            writer.WriteManyNodes(_itemsNodeName, Items, ((w, item) => item.Write(w)));
+        }
+
+        public void Write(string filePath)
+        {
+            using (XmlValueWriter writer = new XmlValueWriter(filePath, _rootNodeName))
             {
-                XmlWriterSettings settings = new XmlWriterSettings
-                {
-                    Indent = true
-                };
-                using (XmlWriter w = XmlWriter.Create(fs, settings))
-                {
-                    if (w == null)
-                        throw new Exception("Failed to create XmlWriter for saving SkeletonBodyInfo.");
-
-                    w.WriteStartDocument();
-                    w.WriteStartElement("BodyInfo");
-
-                    // BodyInfo items
-                    w.WriteElementString("ItemsCount", _items.Length.ToString());
-                    for (int i = 0; i < _items.Length; i++)
-                    {
-                        _items[i].Save(w);
-                    }
-
-                    w.WriteEndElement();
-                    w.WriteEndDocument();
-                }
+                Write(writer);
             }
         }
     }

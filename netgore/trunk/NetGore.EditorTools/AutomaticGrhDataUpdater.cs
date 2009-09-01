@@ -307,7 +307,7 @@ namespace NetGore.EditorTools
                 if (GrhInfo.GetData(category, title) != null)
                     continue;
 
-                // Load the texture size from the file
+                // Read the texture size from the file
                 Vector2 size = GetTextureSize(texture);
 
                 // Create the GrhData

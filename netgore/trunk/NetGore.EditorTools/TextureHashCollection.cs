@@ -201,7 +201,7 @@ namespace NetGore.EditorTools
                 }
             }
 
-            // Save the updates
+            // Write the updates
             Save();
         }
 

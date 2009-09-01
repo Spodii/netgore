@@ -104,7 +104,7 @@ namespace DemoGame.MapEditor
         {
             try
             {
-                // Load the texture into the content manager
+                // Read the texture into the content manager
                 _cm.Load<Texture2D>(texture);
             }
             catch

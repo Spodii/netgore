@@ -44,7 +44,7 @@ namespace DemoGame.MapEditor
                 // Generate the frames
                 var framesText = txtFrames.Text.Split(new[]
                 {
-                    "\r\n"
+                    "\reader\n"
                 }, StringSplitOptions.RemoveEmptyEntries);
                 frames = new GrhIndex[framesText.Length];
                 for (int i = 0; i < framesText.Length; i++)
@@ -120,7 +120,7 @@ namespace DemoGame.MapEditor
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show("Unable to load texture [" + textureName + "]! Aborting save...\r\n" + ex);
+                    MessageBox.Show("Unable to load texture [" + textureName + "]! Aborting save...\reader\n" + ex);
                     return;
                 }
 
@@ -144,7 +144,7 @@ namespace DemoGame.MapEditor
             }
             _mapGrhWalls[_gd] = walls;
 
-            // Save
+            // Write
             Enabled = false;
             GrhInfo.Save(ContentPaths.Dev);
             _mapGrhWalls.Save(ContentPaths.Dev);
@@ -279,7 +279,7 @@ namespace DemoGame.MapEditor
                 txtFrames.Text = string.Empty;
                 for (int i = 0; i < _gd.Frames.Length; i++)
                 {
-                    txtFrames.Text += _gd.Frames[i].GrhIndex + "\r\n";
+                    txtFrames.Text += _gd.Frames[i].GrhIndex + "\reader\n";
                 }
                 txtSpeed.Text = (1f / _gd.Speed).ToString();
             }

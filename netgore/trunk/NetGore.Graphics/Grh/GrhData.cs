@@ -71,7 +71,7 @@ namespace NetGore.Graphics
 
         /// <summary>
         /// Gets the category of the GrhData (delimited by a period). If the category has not yet
-        /// been set (Load() has not been called on this GrhData), this value will be null. Other
+        /// been set (Read() has not been called on this GrhData), this value will be null. Other
         /// than that, this value will never be null.
         /// </summary>
         public string Category
@@ -170,7 +170,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the title of the GrhData. If the category has not yet been set (Load() has not been 
+        /// Gets the title of the GrhData. If the category has not yet been set (Read() has not been 
         /// called on this GrhData), this value will be null. Other than that, this value will never be null.
         /// </summary>
         public string Title
@@ -213,7 +213,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhData"/> class.
         /// </summary>
-        /// <param name="r">IValueReader to read the values from.</param>
+        /// <param name="reader">IValueReader to read the values from.</param>
         /// <param name="cm">ContentManager to use.</param>
         public GrhData(IValueReader r, ContentManager cm)
         {
@@ -369,7 +369,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Reads and loads the GrhData from an IValueReader.
         /// </summary>
-        /// <param name="r">IValueReader to read the values from.</param>
+        /// <param name="reader">IValueReader to read the values from.</param>
         /// <param name="cm">ContentManager to use.</param>
         public void Read(IValueReader r, ContentManager cm)
         {
@@ -482,14 +482,14 @@ namespace NetGore.Graphics
         /// <summary>
         /// Writes the GrhData to an IValueWriter.
         /// </summary>
-        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="writer">IValueWriter to write to.</param>
         public void Write(IValueWriter w)
         {
             // Check for valid data
             if (GrhIndex <= 0)
                 throw new Exception("GrhIndex invalid.");
             if (w == null)
-                throw new ArgumentNullException("w");
+                throw new ArgumentNullException("writer");
 
             if (string.IsNullOrEmpty(Category))
                 throw new NullReferenceException("Category is null or invalid.");
