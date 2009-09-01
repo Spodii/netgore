@@ -3,6 +3,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace NetGore.EditorTools
 {

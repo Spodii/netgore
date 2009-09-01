@@ -73,6 +73,16 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads a 64-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public double ReadDouble(string name)
+        {
+            return _reader.ReadDouble();
+        }
+
+        /// <summary>
         /// Reads multiple values that were written with WriteMany.
         /// </summary>
         /// <typeparam name="T">The Type of value to read.</typeparam>
@@ -141,6 +151,26 @@ namespace NetGore.IO
         public int ReadInt(string name)
         {
             return _reader.ReadInt();
+        }
+
+        /// <summary>
+        /// Reads a 64-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
+        /// <returns>Value read from the reader.</returns>
+        public long ReadLong(string name)
+        {
+            return _reader.ReadLong();
+        }
+
+        /// <summary>
+        /// Reads a 64-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the BinaryValueReader.</param>
+        /// <returns>Value read from the reader.</returns>
+        public ulong ReadULong(string name)
+        {
+            return _reader.ReadULong();
         }
 
         /// <summary>

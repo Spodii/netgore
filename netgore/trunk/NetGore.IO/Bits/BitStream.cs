@@ -277,36 +277,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Converts a signed long to a series of bytes
-        /// </summary>
-        /// <param name="value">Signed long value</param>
-        static long BytesToLong(byte[] value)
-        {
-            if (value == null)
-            {
-                Debug.Fail("value is null.");
-                return 0;
-            }
-
-            return BitConverter.ToInt64(value, 0);
-        }
-
-        /// <summary>
-        /// Converts a series of bytes to an unsigned long
-        /// </summary>
-        /// <param name="value">8 bytes for the unsigned long</param>
-        static ulong BytesToULong(byte[] value)
-        {
-            if (value == null)
-            {
-                Debug.Fail("value is null.");
-                return 0;
-            }
-
-            return BitConverter.ToUInt64(value, 0);
-        }
-
-        /// <summary>
         /// If a number of bits can fit into the buffer without overflowing. If
         /// the buffer is set to automatically expand, this will always be true.
         /// </summary>
@@ -372,15 +342,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Convert a double to a long
-        /// </summary>
-        /// <param name="value">Double value of the long</param>
-        static long DoubleToLong(double value)
-        {
-            return BitOps.DoubleToLong(value);
-        }
-
-        /// <summary>
         /// Expands the buffer if the BitStreamMode for the current Mode is set to Dynamic, or throws an
         /// OverflowException if the Mode is set to Static.
         /// </summary>
@@ -404,15 +365,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Convert a float to an int
-        /// </summary>
-        /// <param name="value">Float value of the int</param>
-        static int FloatToInt(float value)
-        {
-            return BitOps.FloatToInt(value);
-        }
-
-        /// <summary>
         /// Writes out the current work buffer to the buffer and sets up a new one.
         /// </summary>
         void FlushWorkBuffer()
@@ -430,18 +382,6 @@ namespace NetGore.IO
             // Reset the work buffer
             _workBufferPos = _highBit;
             _workBuffer = 0;
-        }
-
-        static string FromByteArray(byte[] value)
-        {
-            /*
-            // This commented-out method is no good since results may not be the same over the network
-            char[] c = new char[value.Length];
-            for (int i = 0; i < value.Length; i++)
-                c[i] = (char)value[i];
-            return new string(c);
-            */
-            return ASCIIEncoding.ASCII.GetString(value);
         }
 
         /*
@@ -508,38 +448,6 @@ namespace NetGore.IO
         static int GetStringLengthBits(uint maxLength)
         {
             return BitOps.RequiredBits(maxLength);
-        }
-
-        /// <summary>
-        /// Convert an int to a float
-        /// </summary>
-        /// <param name="value">Int value of the float</param>
-        static float IntToFloat(int value)
-        {
-            return BitOps.IntToFloat(value);
-        }
-
-        /// <summary>
-        /// Converts a series of bytes to a signed long
-        /// </summary>
-        /// <param name="value">8 bytes for the signed long</param>
-        static byte[] LongToBytes(long value)
-        {
-            var b = new byte[8];
-            for (int i = 0; i < sizeof(long); i++)
-            {
-                b[i] = (byte)(value >> (i * 8));
-            }
-            return b;
-        }
-
-        /// <summary>
-        /// Convert a long to a double
-        /// </summary>
-        /// <param name="value">Long value of the double</param>
-        static double LongToDouble(long value)
-        {
-            return BitOps.LongToDouble(value);
         }
 
         /// <summary>
@@ -843,7 +751,8 @@ namespace NetGore.IO
         /// <returns>Value of the next 64 bits in the BitStream as a double</returns>
         public double ReadDouble()
         {
-            return LongToDouble(ReadLong());
+            var b = ReadBytes(sizeof(double));
+            return BitConverter.ToDouble(b, 0);
         }
 
         /// <summary>
@@ -856,7 +765,7 @@ namespace NetGore.IO
         {
             for (int i = offset; i < offset + length; i++)
             {
-                dest[i] = LongToDouble(ReadLong());
+                dest[i] = ReadDouble();
             }
         }
 
@@ -866,7 +775,8 @@ namespace NetGore.IO
         /// <returns>Value of the next 32 bits in the BitStream as a float</returns>
         public float ReadFloat()
         {
-            return IntToFloat(ReadInt());
+            var b = ReadBytes(sizeof(float));
+            return BitConverter.ToSingle(b, 0);
         }
 
         /// <summary>
@@ -922,7 +832,8 @@ namespace NetGore.IO
         /// <returns>Value of the next 64 bits in the BitStream as a long</returns>
         public long ReadLong()
         {
-            return BytesToLong(ReadBytes(sizeof(long)));
+            var b = ReadBytes(sizeof(long));
+            return BitConverter.ToInt64(b, 0);
         }
 
         /// <summary>
@@ -1034,7 +945,7 @@ namespace NetGore.IO
             if (!hasValue)
                 return null;
 
-            return LongToDouble(ReadLong());
+            return ReadDouble();
         }
 
         /// <summary>
@@ -1051,7 +962,7 @@ namespace NetGore.IO
                 if (!hasValue)
                     dest[i] = null;
                 else
-                    dest[i] = LongToDouble(ReadLong());
+                    dest[i] = ReadDouble();
             }
         }
 
@@ -1065,7 +976,7 @@ namespace NetGore.IO
             if (!hasValue)
                 return null;
 
-            return IntToFloat(ReadInt());
+            return ReadFloat();
         }
 
         /// <summary>
@@ -1129,7 +1040,7 @@ namespace NetGore.IO
             if (!hasValue)
                 return null;
 
-            return BytesToLong(ReadBytes(sizeof(long)));
+            return ReadLong();
         }
 
         /// <summary>
@@ -1244,7 +1155,7 @@ namespace NetGore.IO
             if (!hasValue)
                 return null;
 
-            return BytesToULong(ReadBytes(sizeof(ulong)));
+            return ReadULong();
         }
 
         /// <summary>
@@ -1459,7 +1370,7 @@ namespace NetGore.IO
             var b = new byte[length];
             ReadByte(b, 0, (int)length);
 
-            return FromByteArray(b);
+            return StringFromByteArray(b);
         }
 
         /// <summary>
@@ -1519,7 +1430,8 @@ namespace NetGore.IO
         /// <returns>Value of the next 64 bits in the BitStream as a ulong</returns>
         public ulong ReadULong()
         {
-            return BytesToULong(ReadBytes(sizeof(ulong)));
+            var b = ReadBytes(sizeof(ulong));
+            return BitConverter.ToUInt64(b, 0);
         }
 
         /// <summary>
@@ -1858,21 +1770,18 @@ namespace NetGore.IO
             _workBuffer = _buffer[0];
         }
 
+        static string StringFromByteArray(byte[] value)
+        {
+            return ASCIIEncoding.ASCII.GetString(value);
+        }
+
         /// <summary>
         /// Converts a string to a byte array.
         /// </summary>
         /// <param name="s">The string.</param>
         /// <returns>The byte array for the given string <paramref name="s"/>.</returns>
-        static byte[] ToByteArray(string s)
+        static byte[] StringToByteArray(string s)
         {
-            /*
-            // This commented-out method is no good since results may not be the same over the network
-            char[] c = value.ToCharArray();
-            byte[] b = new byte[c.Length];
-            for (int i = 0; i < c.Length; i++)
-                b[i] = (byte)c[i];
-            return b;
-            */
             return ASCIIEncoding.ASCII.GetBytes(s);
         }
 
@@ -1892,39 +1801,24 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Converts an unsigned long to a series of bytes
-        /// </summary>
-        /// <param name="value">Unsigned long value</param>
-        static byte[] ULongToBytes(ulong value)
-        {
-            var b = new byte[sizeof(ulong)];
-            for (int i = 0; i < sizeof(ulong); i++)
-            {
-                b[i] = (byte)(value >> (i * sizeof(ulong)));
-            }
-            return b;
-        }
-
-        /// <summary>
         /// Writes a double (64 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the double to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(double value)
         {
-            Write(DoubleToLong(value));
+            var b = BitConverter.GetBytes(value);
+            Write(b, 0, b.Length);
         }
 
         /// <summary>
         /// Writes a nullable double (64 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the double to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(double? value)
         {
             Write(value.HasValue);
             if (value.HasValue)
-                Write(DoubleToLong(value.Value));
+                Write(value.Value);
         }
 
         /// <summary>
@@ -1933,7 +1827,6 @@ namespace NetGore.IO
         /// <param name="value">Array of values to write</param>
         /// <param name="offset">Initial index of array <paramref name="value"/> to start with</param>
         /// <param name="length">Number of indices to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(double[] value, int offset, int length)
         {
             for (int i = offset; i < offset + length; i++)
@@ -1948,7 +1841,6 @@ namespace NetGore.IO
         /// <param name="value">Array of values to write</param>
         /// <param name="offset">Initial index of array <paramref name="value"/> to start with</param>
         /// <param name="length">Number of indices to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(double?[] value, int offset, int length)
         {
             for (int i = offset; i < offset + length; i++)
@@ -1961,22 +1853,21 @@ namespace NetGore.IO
         /// Writes a long (64 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the long to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(long value)
         {
-            Write(LongToBytes(value), 0, sizeof(long));
+            var b = BitConverter.GetBytes(value);
+            Write(b, 0, b.Length);
         }
 
         /// <summary>
         /// Writes a nullable long (64 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the long to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(long? value)
         {
             Write(value.HasValue);
             if (value.HasValue)
-                Write(LongToBytes(value.Value), 0, sizeof(long));
+                Write(value.Value);
         }
 
         /// <summary>
@@ -1985,7 +1876,6 @@ namespace NetGore.IO
         /// <param name="value">Array of values to write</param>
         /// <param name="offset">Initial index of array <paramref name="value"/> to start with</param>
         /// <param name="length">Number of indices to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(long[] value, int offset, int length)
         {
             for (int i = offset; i < offset + length; i++)
@@ -2000,7 +1890,6 @@ namespace NetGore.IO
         /// <param name="value">Array of values to write</param>
         /// <param name="offset">Initial index of array <paramref name="value"/> to start with</param>
         /// <param name="length">Number of indices to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(long?[] value, int offset, int length)
         {
             for (int i = offset; i < offset + length; i++)
@@ -2013,22 +1902,21 @@ namespace NetGore.IO
         /// Writes a ulong (64 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the ulong to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(ulong value)
         {
-            Write(ULongToBytes(value), 0, sizeof(ulong));
+            var b = BitConverter.GetBytes(value);
+            Write(b, 0, b.Length);
         }
 
         /// <summary>
         /// Writes a nullable ulong (64 bits) to the BitStream
         /// </summary>
         /// <param name="value">Value of the ulong to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(ulong? value)
         {
             Write(value.HasValue);
             if (value.HasValue)
-                Write(ULongToBytes(value.Value), 0, sizeof(ulong));
+                Write(value.Value);
         }
 
         /// <summary>
@@ -2037,7 +1925,6 @@ namespace NetGore.IO
         /// <param name="value">Array of values to write</param>
         /// <param name="offset">Initial index of array <paramref name="value"/> to start with</param>
         /// <param name="length">Number of indices to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(ulong[] value, int offset, int length)
         {
             for (int i = offset; i < offset + length; i++)
@@ -2052,7 +1939,6 @@ namespace NetGore.IO
         /// <param name="value">Array of values to write</param>
         /// <param name="offset">Initial index of array <paramref name="value"/> to start with</param>
         /// <param name="length">Number of indices to write</param>
-        [Obsolete("Fails to pass unit tests or has not been thuroughly tested.", false)]
         public void Write(ulong?[] value, int offset, int length)
         {
             for (int i = offset; i < offset + length; i++)
@@ -2481,7 +2367,7 @@ namespace NetGore.IO
                 throw new ArgumentOutOfRangeException("value", "String length exceeds maximum length.");
 
             WriteUnsigned(value.Length, GetStringLengthBits(maxLength));
-            var b = ToByteArray(value);
+            var b = StringToByteArray(value);
             Write(b, 0, b.Length);
         }
 
@@ -2571,7 +2457,8 @@ namespace NetGore.IO
         /// <param name="value">Value of the float to write</param>
         public void Write(float value)
         {
-            Write(FloatToInt(value));
+            var b = BitConverter.GetBytes(value);
+            Write(b, 0, b.Length);
         }
 
         /// <summary>
@@ -2582,7 +2469,7 @@ namespace NetGore.IO
         {
             Write(value.HasValue);
             if (value.HasValue)
-                Write(FloatToInt(value.Value));
+                Write(value.Value);
         }
 
         /// <summary>
@@ -2954,6 +2841,16 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads a 64-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        double IValueReader.ReadDouble(string name)
+        {
+            return ReadDouble();
+        }
+
+        /// <summary>
         /// Unsupported by the BitStream.
         /// </summary>
         /// <typeparam name="T">The Type of value to read.</typeparam>
@@ -3103,6 +3000,26 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads a 64-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        ulong IValueReader.ReadULong(string name)
+        {
+            return ReadULong();
+        }
+
+        /// <summary>
+        /// Reads a 64-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        long IValueReader.ReadLong(string name)
+        {
+            return ReadLong();
+        }
+
+        /// <summary>
         /// Reads a 16-bit unsigned integer.
         /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
@@ -3151,6 +3068,26 @@ namespace NetGore.IO
         /// <param name="name">Unused by the BitStream.</param>
         /// <param name="value">Value to write.</param>
         void IValueWriter.Write(string name, uint value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Writes a 64-bit usigned integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        void IValueWriter.Write(string name, ulong value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Writes a 64-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        void IValueWriter.Write(string name, long value)
         {
             Write(value);
         }
@@ -3320,6 +3257,16 @@ namespace NetGore.IO
         /// <param name="name">Unused by the BitStream.</param>
         /// <param name="value">Value to write.</param>
         void IValueWriter.Write(string name, float value)
+        {
+            Write(value);
+        }
+
+        /// <summary>
+        /// Writes a 64-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <param name="value">Value to write.</param>
+        void IValueWriter.Write(string name, double value)
         {
             Write(value);
         }

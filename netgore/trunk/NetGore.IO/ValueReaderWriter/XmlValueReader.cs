@@ -254,6 +254,60 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads a 64-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public long ReadLong(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseLong(values[0]);
+        }
+
+        /// <summary>
+        /// Reads a 64-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public ulong ReadULong(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseULong(values[0]);
+        }
+
+        /// <summary>
+        /// Reads a 64-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public double ReadDouble(string name)
+        {
+            var values = _values[name];
+
+            if (values.Count == 0)
+                throw CreateKeyNotFoundException(name);
+
+            if (values.Count > 1)
+                throw CreateDuplicateKeysException(name);
+
+            return Parser.Invariant.ParseDouble(values[0]);
+        }
+
+        /// <summary>
         /// Reads a 32-bit signed integer.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>

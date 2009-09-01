@@ -76,6 +76,17 @@ namespace NetGore.IO
         #region IValueWriter Members
 
         /// <summary>
+        /// Writes a 64-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void Write(string name, double value)
+        {
+            Write(name, Parser.Invariant.ToString(value));
+        }
+
+        /// <summary>
         /// Writes a variable-length string of up to 65535 characters in length.
         /// </summary>
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
@@ -277,6 +288,28 @@ namespace NetGore.IO
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, int value)
+        {
+            Write(name, Parser.Invariant.ToString(value));
+        }
+
+        /// <summary>
+        /// Writes a 64-bit usigned integer.
+        /// </summary>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void Write(string name, ulong value)
+        {
+            Write(name, Parser.Invariant.ToString(value));
+        }
+
+        /// <summary>
+        /// Writes a 64-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void Write(string name, long value)
         {
             Write(name, Parser.Invariant.ToString(value));
         }
