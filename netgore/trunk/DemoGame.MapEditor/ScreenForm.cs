@@ -1413,7 +1413,9 @@ namespace DemoGame.MapEditor
             const string _wallsNodeName = "Walls";
             readonly ScreenForm _screenForm;
 
+// ReSharper disable MemberCanBePrivate.Local
             public static string FilePath
+// ReSharper restore MemberCanBePrivate.Local
             {
                 get { return ContentPaths.Build.Settings.Join("MapEditorSettings.xml"); }
             }
