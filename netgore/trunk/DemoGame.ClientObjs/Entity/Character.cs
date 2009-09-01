@@ -80,7 +80,7 @@ namespace DemoGame.Client
         /// </summary>
         public void Attack()
         {
-            SkeletonSet set = _skelManager.LoadSet(BodyInfo.Punch);
+            SkeletonSet set = _skelManager.LoadSet(BodyInfo.Punch, ContentPaths.Build);
             set = SkeletonAnimation.CreateSmoothedSet(set, _skelAnim.Skeleton);
             SkeletonAnimation mod = new SkeletonAnimation(GetTime(), set);
             _skelAnim.AddModifier(mod);
@@ -96,7 +96,8 @@ namespace DemoGame.Client
             if (setName == _currSkelSet)
                 return;
 
-            _skelAnim.ChangeSet(_skelManager.LoadSet(setName));
+            var newSet = _skelManager.LoadSet(setName, ContentPaths.Build);
+            _skelAnim.ChangeSet(newSet);
             _currSkelSet = setName;
         }
 
@@ -182,7 +183,8 @@ namespace DemoGame.Client
 
             // Set up the skeleton
             _currSkelSet = BodyInfo.Stand;
-            _skelAnim = new SkeletonAnimation(GetTime(), _skelManager.LoadSet(_currSkelSet));
+            var newSet = _skelManager.LoadSet(_currSkelSet, ContentPaths.Build);
+            _skelAnim = new SkeletonAnimation(GetTime(), newSet);
             _skelAnim.SkeletonBody = new SkeletonBody(_skelManager.LoadBodyInfo(BodyInfo.Body), _skelAnim.Skeleton);
         }
 
