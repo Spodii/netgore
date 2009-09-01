@@ -1,7 +1,5 @@
-using System;
 using System.Linq;
 using System.Text;
-using NetGore.Globalization;
 using NetGore.IO;
 
 namespace NetGore.Graphics
@@ -47,75 +45,36 @@ namespace NetGore.Graphics
         }
 
         public SkeletonSet(string skeletonSetName, ContentPaths contentPath)
-            : this(new XmlValueReader(contentPath.Skeletons.Join(skeletonSetName + FileSuffix), _rootNodeName), contentPath)
+            : this(new XmlValueReader(GetFilePath(skeletonSetName, contentPath), _rootNodeName), contentPath)
         {
         }
 
         /// <summary>
-        /// Creates a string to represent the SkeletonSet
+        /// Gets the absolute file path for a SkeletonSet file.
         /// </summary>
-        /// <returns>String representing the SkeletonSet</returns>
+        /// <param name="skeletonSetName">The name of the SkeletonSet.</param>
+        /// <param name="contentPath">The content path to use.</param>
+        /// <returns>The absolute file path for a SkeletonSet file.</returns>
+        public static string GetFilePath(string skeletonSetName, ContentPaths contentPath)
+        {
+            return contentPath.Skeletons.Join(skeletonSetName + FileSuffix);
+        }
+
+        /// <summary>
+        /// Creates a string to represent the SkeletonSet.
+        /// </summary>
+        /// <returns>String representing the SkeletonSet.</returns>
         public string GetFramesString()
         {
-            StringBuilder sb = new StringBuilder(1000);
+            StringBuilder sb = new StringBuilder(512);
             foreach (SkeletonFrame frame in _keyFrames)
             {
-                sb.AppendLine(frame.FileName + "/" + frame.Delay);
+                sb.Append(frame.FileName);
+                sb.Append("/");
+                sb.Append(frame.Delay);
+                sb.AppendLine();
             }
             return sb.ToString();
-        }
-
-        /// <summary>
-        /// Loads a SkeletonSet from a string array
-        /// </summary>
-        /// <param name="framesTxt">Array containing the text for each frame in the format name/time, where
-        /// name is the name of the skeleton model and time is the delay time of the frame</param>
-        /// <returns>New skeletonSet object</returns>
-        public static SkeletonSet Read(string[] framesTxt)
-        {
-            if (framesTxt.Length == 0)
-                throw new ArgumentException("framesTxt");
-
-            var sep = new[]
-            {
-                "/"
-            };
-
-            var frames = new SkeletonFrame[framesTxt.Length];
-            for (int i = 0; i < frames.Length; i++)
-            {
-                // Split up the time and frame name
-                var frameInfo = framesTxt[i].Split(sep, StringSplitOptions.RemoveEmptyEntries);
-
-                // If there is a defined time, use it
-                float frameTime;
-                if (frameInfo.Length == 1 || !Parser.Invariant.TryParse(frameInfo[1], out frameTime))
-                    frameTime = 200f;
-
-                // Create the keyframe
-                string filePath = ContentPaths.Build.Skeletons.Join(frameInfo[0] + Skeleton.FileSuffix);
-                Skeleton newSkeleton = Skeleton.Load(filePath);
-                frames[i] = new SkeletonFrame(frameInfo[0], newSkeleton, frameTime);
-            }
-            return new SkeletonSet(frames);
-        }
-
-        /// <summary>
-        /// Loads a SkeletonSet from a string
-        /// </summary>
-        /// <param name="text">Delimited string containing the text for each frame in the format name/time, where
-        /// name is the name of the skeleton model and time is the delay time of the frame</param>
-        /// <param name="separator">String to use to split the frames</param>
-        /// <returns>New SkeletonSet object</returns>
-        public static SkeletonSet Read(string text, string separator)
-        {
-            var sep = new[]
-            {
-                separator
-            };
-
-            var splitText = text.Split(sep, StringSplitOptions.RemoveEmptyEntries);
-            return Read(splitText);
         }
 
         public void Read(IValueReader reader, ContentPaths contentPath)

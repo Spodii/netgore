@@ -26,6 +26,7 @@ namespace DemoGame.SkeletonEditor
         static readonly Color ColorNormal = SystemColors.Window;
 
         readonly List<XNALine> _centerLines = new List<XNALine>();
+        readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
         readonly Stopwatch _watch = new Stopwatch();
 
         Camera2D _camera = new Camera2D(GameData.ScreenSize);
@@ -161,10 +162,12 @@ namespace DemoGame.SkeletonEditor
         {
             if (FileAnim != null && FileAnim.Length > 1)
             {
-                var skelSet = SkeletonSet.Read(txtFrames.Text, "\reader\n");
+                SkeletonSet skelSet = SkeletonLoaderHelper.LoadSkeletonSetFromString(txtFrames.Text, _skeletonSetFromStringDelimiter);
                 skelSet.Write(FileAnim);
             }
         }
+
+        const string _skeletonSetFromStringDelimiter = "\reader\n";
 
         void btnAnimSaveAs_Click(object sender, EventArgs e)
         {
@@ -172,7 +175,7 @@ namespace DemoGame.SkeletonEditor
 
             if (result != null && result.Length > 1)
             {
-                var skelSet = SkeletonSet.Read(txtFrames.Text, "\reader\n");
+                SkeletonSet skelSet = SkeletonLoaderHelper.LoadSkeletonSetFromString(txtFrames.Text, _skeletonSetFromStringDelimiter);
                 skelSet.Write(result);
                 FileAnim = result;
             }
@@ -215,8 +218,8 @@ namespace DemoGame.SkeletonEditor
                 if (!File.Exists(s))
                     continue;
 
-                Skeleton tmpSkel = Skeleton.Load(s);
-                Skeleton.CopyIsModifier(_skeleton, tmpSkel);
+                Skeleton tmpSkel = SkeletonLoaderHelper.LoadSkeleton(s);
+                _skeleton.CopyIsModifier(tmpSkel);
                 tmpSkel.Write(s);
             }
         }
@@ -233,7 +236,7 @@ namespace DemoGame.SkeletonEditor
                 if (!File.Exists(s))
                     continue;
 
-                Skeleton tmpSkel = Skeleton.Load(s);
+                Skeleton tmpSkel = SkeletonLoaderHelper.LoadSkeleton(s);
                 Skeleton.CopyLength(_skeleton, tmpSkel);
                 tmpSkel.Write(s);
             }
@@ -261,7 +264,7 @@ namespace DemoGame.SkeletonEditor
                     if (!File.Exists(s))
                         continue;
 
-                    Skeleton tmpSkel = Skeleton.Load(s);
+                    Skeleton tmpSkel = SkeletonLoaderHelper.LoadSkeleton(s);
                     Vector2 newPos = _skeleton.RootNode.Position;
                     if (rX == DialogResult.Yes)
                         newPos.X = tmpSkel.RootNode.X;
@@ -320,25 +323,25 @@ namespace DemoGame.SkeletonEditor
         {
             string result = GetLoadSkeletonDialogResult(_filterFrame);
 
-            SkeletonFrame frame1;
-            if (result != null && result.Length > 1)
-                frame1 = new SkeletonFrame(result, Skeleton.Load(result), 10);
-            else
+            if (result == null || result.Length <= 1)
                 return;
+
+            Skeleton frame1Skeleton = SkeletonLoaderHelper.LoadSkeleton(result);
+            SkeletonFrame frame1 = new SkeletonFrame(result, frame1Skeleton, 10);
 
             result = GetLoadSkeletonDialogResult(_filterFrame);
 
-            SkeletonFrame frame2;
-            if (result != null && result.Length > 1)
-                frame2 = new SkeletonFrame(result, Skeleton.Load(result), 10);
-            else
+            if (result == null || result.Length <= 1)
                 return;
 
-            SkeletonSet ss = new SkeletonSet(new[]
-            {
-                frame1, frame2
-            });
+            Skeleton frame2Skeleton = SkeletonLoaderHelper.LoadSkeleton(result);
+            SkeletonFrame frame2 = new SkeletonFrame(result, frame2Skeleton, 10);
+
+            var frames = new[] { frame1, frame2 };
+
+            SkeletonSet ss = new SkeletonSet(frames);
             SkeletonAnimation sa = new SkeletonAnimation(GetTime(), ss);
+
             sa.Update(5);
             LoadFrame(sa.Skeleton);
         }
@@ -403,12 +406,8 @@ namespace DemoGame.SkeletonEditor
             if (!radioAnimate.Checked)
                 return;
 
-            Skeleton newSkeleton = Skeleton.Load(ContentPaths.Dev.Skeletons.Join("stand.skel"));
-            SkeletonFrame nFrame0 = new SkeletonFrame("stand", newSkeleton);
-            _skeletonAnim.ChangeSet(new SkeletonSet(new[]
-            {
-                nFrame0
-            }));
+            var standingSet = SkeletonLoaderHelper.GetStandingSkeletonSet();
+            _skeletonAnim.ChangeSet(standingSet);
         }
 
         void btnUp_Click(object sender, EventArgs e)
@@ -685,57 +684,29 @@ namespace DemoGame.SkeletonEditor
             return _currentTime;
         }
 
-        void HookInput()
-        {
-            RecursiveHookInput(this);
-        }
-
-        void KeyDownForward(object sender, KeyEventArgs e)
-        {
-            OnKeyDown(e);
-        }
-
-        void KeyUpForward(object sender, KeyEventArgs e)
-        {
-            OnKeyUp(e);
-        }
-
-        public void LoadAnim(string filePath)
-        {
-            string fileName = Path.GetFileNameWithoutExtension(filePath);
-            var newSet = new SkeletonSet(fileName, ContentPaths.Dev);
-            _skeletonAnim.ChangeSet(newSet);
-
-            FileAnim = filePath;
-            txtFrames.Text = _skeletonAnim.SkeletonSet.GetFramesString();
-            UpdateAnimationNodeCBs();
-        }
-
-        readonly IEnumerable<KeyValuePair<CommandLineSwitch, string[]>> _switches;
-
         static void HandleSwitch_SaveAll(string[] args)
         {
             var files = Directory.GetFiles(ContentPaths.Dev.Skeletons);
 
             // Frames
-            foreach (var file in files.Where(x => x.EndsWith(Skeleton.FileSuffix, StringComparison.OrdinalIgnoreCase)))
+            foreach (string file in files.Where(x => x.EndsWith(Skeleton.FileSuffix, StringComparison.OrdinalIgnoreCase)))
             {
-                var skeleton = Skeleton.Load(file);
+                Skeleton skeleton = SkeletonLoaderHelper.LoadSkeleton(file);
                 skeleton.Write(file);
             }
 
             // Sets
-            foreach (var file in files.Where(x => x.EndsWith(SkeletonSet.FileSuffix, StringComparison.OrdinalIgnoreCase)))
+            foreach (string file in files.Where(x => x.EndsWith(SkeletonSet.FileSuffix, StringComparison.OrdinalIgnoreCase)))
             {
-                var fileName = Path.GetFileNameWithoutExtension(file);
-                var set = new SkeletonSet(fileName, ContentPaths.Dev);
+                string fileName = Path.GetFileNameWithoutExtension(file);
+                SkeletonSet set = new SkeletonSet(fileName, ContentPaths.Dev);
                 set.Write(file);
             }
 
             // Bodies
-            foreach (var file in files.Where(x => x.EndsWith(SkeletonBodyInfo.FileSuffix, StringComparison.OrdinalIgnoreCase)))
+            foreach (string file in files.Where(x => x.EndsWith(SkeletonBodyInfo.FileSuffix, StringComparison.OrdinalIgnoreCase)))
             {
-                var body = new SkeletonBodyInfo(file);
+                SkeletonBodyInfo body = new SkeletonBodyInfo(file);
                 body.Write(file);
             }
         }
@@ -769,11 +740,37 @@ namespace DemoGame.SkeletonEditor
                     Interval = 1
                 };
                 t.Tick += delegate
-                {
-                    Close();
-                };
+                          {
+                              Close();
+                          };
                 t.Start();
             }
+        }
+
+        void HookInput()
+        {
+            RecursiveHookInput(this);
+        }
+
+        void KeyDownForward(object sender, KeyEventArgs e)
+        {
+            OnKeyDown(e);
+        }
+
+        void KeyUpForward(object sender, KeyEventArgs e)
+        {
+            OnKeyUp(e);
+        }
+
+        public void LoadAnim(string filePath)
+        {
+            string fileName = Path.GetFileNameWithoutExtension(filePath);
+            SkeletonSet newSet = new SkeletonSet(fileName, ContentPaths.Dev);
+            _skeletonAnim.ChangeSet(newSet);
+
+            FileAnim = filePath;
+            txtFrames.Text = _skeletonAnim.SkeletonSet.GetFramesString();
+            UpdateAnimationNodeCBs();
         }
 
         public void LoadBody(string filePath)
@@ -787,7 +784,8 @@ namespace DemoGame.SkeletonEditor
 
         public void LoadFrame(string filePath)
         {
-            LoadFrame(Skeleton.Load(filePath));
+            Skeleton newSkeleton = SkeletonLoaderHelper.LoadSkeleton(filePath);
+            LoadFrame(newSkeleton);
             FileFrame = filePath;
         }
 
@@ -909,19 +907,21 @@ namespace DemoGame.SkeletonEditor
 
                 // Create the skeleton-related objects
                 _skeleton = new Skeleton();
-                SkeletonFrame frame = new SkeletonFrame("stand", Skeleton.Load(ContentPaths.Dev.Skeletons.Join("stand.skel")));
+                Skeleton frameSkeleton = new Skeleton(SkeletonLoaderHelper.StandingSkeletonName, ContentPaths.Dev);
+                SkeletonFrame frame = new SkeletonFrame(SkeletonLoaderHelper.StandingSkeletonName, frameSkeleton);
                 _skeletonAnim = new SkeletonAnimation(GetTime(), frame);
                 _skeletonDrawer = new SkeletonDrawer();
 
                 _sb = new SpriteBatch(GameScreen.GraphicsDevice);
 
                 _camera.Min = new Vector2(-400, -400);
-                LoadFrame(ContentPaths.Dev.Skeletons.Join("stand.skel"));
+                LoadFrame(Skeleton.GetFilePath(SkeletonLoaderHelper.StandingSkeletonName, ContentPaths.Dev));
                 LoadAnim(ContentPaths.Dev.Skeletons.Join("walk.skels"));
                 LoadBody(ContentPaths.Dev.Skeletons.Join("basic.skelb"));
 
                 // Center lines
-                _centerLines.Add(new XNALine(new Vector2(-100, 0), new Vector2(100, 0), Microsoft.Xna.Framework.Graphics.Color.Lime));
+                _centerLines.Add(new XNALine(new Vector2(-100, 0), new Vector2(100, 0),
+                                             Microsoft.Xna.Framework.Graphics.Color.Lime));
                 _centerLines.Add(new XNALine(new Vector2(0, -5), new Vector2(0, 5), Microsoft.Xna.Framework.Graphics.Color.Red));
 
                 _watch.Start();
@@ -939,9 +939,10 @@ namespace DemoGame.SkeletonEditor
         {
             try
             {
-                SkeletonSet newSet = SkeletonSet.Read(txtFrames.Text, "\reader\n");
+                SkeletonSet newSet = SkeletonLoaderHelper.LoadSkeletonSetFromString(txtFrames.Text, _skeletonSetFromStringDelimiter);
                 if (newSet == null)
                     throw new Exception();
+
                 _skeletonAnim.ChangeSet(newSet);
                 txtFrames.BackColor = ColorNormal;
             }
