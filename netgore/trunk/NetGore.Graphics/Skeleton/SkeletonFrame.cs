@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using NetGore.IO;
 
@@ -25,7 +26,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Skeleton used for the frame
         /// </summary>
-        readonly Skeleton _skeleton;
+        Skeleton _skeleton;
 
         /// <summary>
         /// Gets the amount of time the animation will stay on this frame in milliseconds.
@@ -78,15 +79,21 @@ namespace NetGore.Graphics
         {
         }
 
-        public SkeletonFrame(IValueReader reader)
+        public SkeletonFrame(IValueReader reader, ContentPaths contentPath)
         {
-            Read(reader);
+            Read(reader, contentPath);
+
+            if (Skeleton == null)
+                throw new Exception("Skeleton is null.");
         }
 
-        public void Read(IValueReader reader)
+        public void Read(IValueReader reader, ContentPaths contentPath)
         {
             _delay = reader.ReadFloat(_delayValueKey);
             _fileName = reader.ReadString(_fileNameValueKey);
+
+            string skeletonFilePath = contentPath.Skeletons.Join(_fileName + Skeleton.FileSuffix);
+            _skeleton = Skeleton.Load(skeletonFilePath);
         }
 
         public void Write(IValueWriter writer)

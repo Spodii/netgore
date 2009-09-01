@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -11,12 +12,12 @@ namespace NetGore.Graphics
         /// <summary>
         /// Dictionary of SkeletonBodyInfos, identified by their partial file name
         /// </summary>
-        readonly Dictionary<string, SkeletonBodyInfo> _bodyInfo = new Dictionary<string, SkeletonBodyInfo>();
+        readonly Dictionary<string, SkeletonBodyInfo> _bodyInfo = new Dictionary<string, SkeletonBodyInfo>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Dictionary of SkeletonSets, identified by their partial file name
         /// </summary>
-        readonly Dictionary<string, SkeletonSet> _sets = new Dictionary<string, SkeletonSet>();
+        readonly Dictionary<string, SkeletonSet> _sets = new Dictionary<string, SkeletonSet>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Directory to load from
@@ -56,38 +57,27 @@ namespace NetGore.Graphics
         {
             SkeletonBodyInfo ret;
 
-            // Keep dictionary entries and checks lowercase
-            string nameLower = name.ToLower();
-
             // Get the value from the dictionary
-            if (!_bodyInfo.TryGetValue(nameLower, out ret))
+            if (!_bodyInfo.TryGetValue(name, out ret))
             {
                 // Value did not already exist, load it
                 ret = new SkeletonBodyInfo(_dir + name + ".skelb");
-                _bodyInfo.Add(nameLower, ret);
+                _bodyInfo.Add(name, ret);
             }
 
             return ret;
         }
 
-        /// <summary>
-        /// Loads a SkeletonSet by the given name or a cached copy of it
-        /// </summary>
-        /// <param name="name">Name of the SkeletonSet</param>
-        /// <returns>SkeletonSet by the given name</returns>
-        public SkeletonSet LoadSet(string name)
+        public SkeletonSet LoadSet(string skeletonSetName, ContentPaths contentPath)
         {
             SkeletonSet ret;
 
-            // Keep dictionary entries and checks lowercase
-            string nameLower = name.ToLower();
-
             // Get the value from the dictionary
-            if (!_sets.TryGetValue(nameLower, out ret))
+            if (!_sets.TryGetValue(skeletonSetName, out ret))
             {
-                // Value did not already exist, load it
-                ret = new SkeletonSet(_dir + name + SkeletonSet.FileSuffix);
-                _sets.Add(nameLower, ret);
+                // Value did not already exist, so load it
+                ret = new SkeletonSet(skeletonSetName, contentPath);
+                _sets.Add(skeletonSetName, ret);
             }
 
             return ret;

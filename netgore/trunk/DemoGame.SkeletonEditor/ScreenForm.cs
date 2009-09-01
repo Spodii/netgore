@@ -312,7 +312,7 @@ namespace DemoGame.SkeletonEditor
             if (!radioAnimate.Checked)
                 return;
 
-            SkeletonSet newSet = new SkeletonSet(ContentPaths.Dev.Skeletons.Join("fall.skels"));
+            SkeletonSet newSet = new SkeletonSet("fall", ContentPaths.Dev);
             _skeletonAnim.ChangeSet(newSet);
         }
 
@@ -348,7 +348,7 @@ namespace DemoGame.SkeletonEditor
             if (!radioAnimate.Checked)
                 return;
 
-            SkeletonSet newSet = new SkeletonSet(ContentPaths.Dev.Skeletons.Join("jump.skels"));
+            SkeletonSet newSet = new SkeletonSet("jump", ContentPaths.Dev);
             _skeletonAnim.ChangeSet(newSet);
         }
 
@@ -435,7 +435,7 @@ namespace DemoGame.SkeletonEditor
             if (!radioAnimate.Checked)
                 return;
 
-            SkeletonSet newSet = new SkeletonSet(ContentPaths.Dev.Skeletons.Join("walk.skels"));
+            SkeletonSet newSet = new SkeletonSet("walk", ContentPaths.Dev);
             _skeletonAnim.ChangeSet(newSet);
         }
 
@@ -702,7 +702,10 @@ namespace DemoGame.SkeletonEditor
 
         public void LoadAnim(string filePath)
         {
-            _skeletonAnim.ChangeSet(new SkeletonSet(filePath));
+            string fileName = Path.GetFileNameWithoutExtension(filePath);
+            var newSet = new SkeletonSet(fileName, ContentPaths.Dev);
+            _skeletonAnim.ChangeSet(newSet);
+
             FileAnim = filePath;
             txtFrames.Text = _skeletonAnim.SkeletonSet.GetFramesString();
             UpdateAnimationNodeCBs();
@@ -724,7 +727,8 @@ namespace DemoGame.SkeletonEditor
             // Sets
             foreach (var file in files.Where(x => x.EndsWith(SkeletonSet.FileSuffix, StringComparison.OrdinalIgnoreCase)))
             {
-                var set = new SkeletonSet(file);
+                var fileName = Path.GetFileNameWithoutExtension(file);
+                var set = new SkeletonSet(fileName, ContentPaths.Dev);
                 set.Write(file);
             }
 

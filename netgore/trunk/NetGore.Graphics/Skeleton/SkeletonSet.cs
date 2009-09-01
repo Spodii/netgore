@@ -41,9 +41,14 @@ namespace NetGore.Graphics
             _keyFrames = keyFrames;
         }
 
-        public SkeletonSet(IValueReader reader)
+        public SkeletonSet(IValueReader reader, ContentPaths contentPath)
         {
-            Read(reader);
+            Read(reader, contentPath);
+        }
+
+        public SkeletonSet(string skeletonSetName, ContentPaths contentPath)
+            : this(new XmlValueReader(contentPath.Skeletons.Join(skeletonSetName + FileSuffix), _rootNodeName), contentPath)
+        {
         }
 
         /// <summary>
@@ -113,13 +118,9 @@ namespace NetGore.Graphics
             return Read(splitText);
         }
 
-        public SkeletonSet(string filePath) : this(new XmlValueReader(filePath, _rootNodeName))
+        public void Read(IValueReader reader, ContentPaths contentPath)
         {
-        }
-
-        public void Read(IValueReader reader)
-        {
-            var loadedFrames = reader.ReadManyNodes(_framesNodeName, x => new SkeletonFrame(x));
+            var loadedFrames = reader.ReadManyNodes(_framesNodeName, x => new SkeletonFrame(x, contentPath));
             _keyFrames = loadedFrames;
         }
 
