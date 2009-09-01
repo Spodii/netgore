@@ -11,11 +11,13 @@ namespace DemoGame.SkeletonEditor
     /// <summary>
     /// Provides helper methods for loading Skeletons in ways that only the editor will need to load the.m
     /// </summary>
-    public static class SkeletonLoaderHelper
+    public static class SkeletonLoader
     {
         public const string BasicSkeletonBodyName = "basic";
         public const string StandingSkeletonName = "stand";
         public const string WalkingSkeletonSetName = "walk";
+        public const string FallingSkeletonSetName = "fall";
+        public const string JumpingSkeletonSetName = "jump";
 
         /// <summary>
         /// Gets a SkeletonSet for the standing Skeleton.
@@ -27,6 +29,78 @@ namespace DemoGame.SkeletonEditor
             SkeletonFrame nFrame0 = new SkeletonFrame(StandingSkeletonName, newSkeleton);
             SkeletonSet newSet = new SkeletonSet(new[] { nFrame0 });
             return newSet;
+        }
+
+        /// <summary>
+        /// Loads a SkeletonBodyInfo from the given FilePath. Assumes the loading is from the ContentPaths.Dev.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns>The loaded SkeletonBodyInfo, or null if the SkeletonBodyInfo failed to load.</returns>
+        public static SkeletonBodyInfo LoadSkeletonBodyInfo(string filePath)
+        {
+            string bodyName = Path.GetFileNameWithoutExtension(filePath);
+            string realFilePath = SkeletonBodyInfo.GetFilePath(bodyName, ContentPaths.Dev);
+
+            // Make sure the file exists
+            if (!File.Exists(realFilePath))
+            {
+                const string errmsg = "Failed to load SkeletonBodyInfo `{0}` from `{1}` - file does not exist.";
+                string err = string.Format(errmsg, bodyName, filePath);
+                MessageBox.Show(err);
+                return null;
+            }
+
+            // Try to load the skeleton
+            SkeletonBodyInfo ret;
+            try
+            {
+                ret = new SkeletonBodyInfo(bodyName, ContentPaths.Dev);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to load SkeletonBodyInfo `{0}` from `{1}`:{2}{3})";
+                string err = string.Format(errmsg, bodyName, filePath, Environment.NewLine, ex);
+                MessageBox.Show(err);
+                return null;
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Loads a SkeletonSet from the given FilePath. Assumes the loading is from the ContentPaths.Dev.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns>The loaded SkeletonSet, or null if the SkeletonSet failed to load.</returns>
+        public static SkeletonSet LoadSkeletonSet(string filePath)
+        {
+            string skeletonSetName = Path.GetFileNameWithoutExtension(filePath);
+            string realFilePath = SkeletonSet.GetFilePath(skeletonSetName, ContentPaths.Dev);
+
+            // Make sure the file exists
+            if (!File.Exists(realFilePath))
+            {
+                const string errmsg = "Failed to load SkeletonSet `{0}` from `{1}` - file does not exist.";
+                string err = string.Format(errmsg, skeletonSetName, filePath);
+                MessageBox.Show(err);
+                return null;
+            }
+
+            // Try to load the skeleton
+            SkeletonSet ret;
+            try
+            {
+                ret = new SkeletonSet(skeletonSetName, ContentPaths.Dev);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to load SkeletonSet `{0}` from `{1}`:{2}{3})";
+                string err = string.Format(errmsg, skeletonSetName, filePath, Environment.NewLine, ex);
+                MessageBox.Show(err);
+                return null;
+            }
+
+            return ret;
         }
 
         /// <summary>

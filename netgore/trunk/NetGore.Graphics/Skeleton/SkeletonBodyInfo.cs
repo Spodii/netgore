@@ -19,6 +19,17 @@ namespace NetGore.Graphics
         const string _rootNodeName = "SkeletonBody";
 
         /// <summary>
+        /// Gets the absolute file path for a SkeletonBody file.
+        /// </summary>
+        /// <param name="skeletonSetName">The name of the SkeletonBody.</param>
+        /// <param name="contentPath">The content path to use.</param>
+        /// <returns>The absolute file path for a SkeletonBody file.</returns>
+        public static string GetFilePath(string skeletonSetName, ContentPaths contentPath)
+        {
+            return contentPath.Skeletons.Join(skeletonSetName + FileSuffix);
+        }
+
+        /// <summary>
         /// An array of all the SkeletonBodyItemInfos in this SkeletonBodyInfo
         /// </summary>
         SkeletonBodyItemInfo[] _items;
@@ -32,15 +43,16 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// SkeletonBodyInfo constructor
+        /// Initializes a new instance of the <see cref="SkeletonBodyInfo"/> class.
         /// </summary>
-        /// <param name="items">SkeletonBodyItemInfos to create the SkeletonBodyInfo from</param>
+        /// <param name="items">SkeletonBodyItemInfos to create the SkeletonBodyInfo from.</param>
         public SkeletonBodyInfo(SkeletonBodyItemInfo[] items)
         {
             _items = items;
         }
 
-        public SkeletonBodyInfo(string filePath) : this(new XmlValueReader(filePath, _rootNodeName))
+        public SkeletonBodyInfo(string skeletonBodyName, ContentPaths contentPath) 
+            : this(new XmlValueReader(GetFilePath(skeletonBodyName, contentPath), _rootNodeName))
         {
         }
 
