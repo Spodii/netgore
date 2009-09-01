@@ -1,24 +1,83 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Walls>
-  <Wall GrhData="1" WallCount="1">
-    <Wall0 Type="TriangleTopLeft" X="0" Y="0" W="32" H="32" />
-  </Wall>
-  <Wall GrhData="2" WallCount="1">
-    <Wall0 Type="Full" X="0" Y="0" W="32" H="32" />
-  </Wall>
-  <Wall GrhData="3" WallCount="1">
-    <Wall0 Type="TriangleTopRight" X="0" Y="0" W="32" H="32" />
-  </Wall>
-  <Wall GrhData="4" WallCount="1">
-    <Wall0 Type="Full" X="0" Y="0" W="32" H="32" />
-  </Wall>
-  <Wall GrhData="5" WallCount="1">
-    <Wall0 Type="Full" X="0" Y="0" W="32" H="32" />
-  </Wall>
-  <Wall GrhData="6" WallCount="1">
-    <Wall0 Type="Full" X="0" Y="0" W="32" H="32" />
-  </Wall>
-  <Wall GrhData="7" WallCount="1">
-    <Wall0 Type="Full" X="0" Y="0" W="32" H="1" />
-  </Wall>
-</Walls>
+<GrhDataWalls>
+  <GrhDataWalls>
+    <Count>7</Count>
+    <Item0>
+      <GrhData>1</GrhData>
+      <Walls>
+        <Count>1</Count>
+        <Item0>
+          <Position>0,0</Position>
+          <Size>32,32</Size>
+          <CollisionType>TriangleTopLeft</CollisionType>
+        </Item0>
+      </Walls>
+    </Item0>
+    <Item1>
+      <GrhData>2</GrhData>
+      <Walls>
+        <Count>1</Count>
+        <Item0>
+          <Position>0,0</Position>
+          <Size>32,32</Size>
+          <CollisionType>Full</CollisionType>
+        </Item0>
+      </Walls>
+    </Item1>
+    <Item2>
+      <GrhData>3</GrhData>
+      <Walls>
+        <Count>1</Count>
+        <Item0>
+          <Position>0,0</Position>
+          <Size>32,32</Size>
+          <CollisionType>TriangleTopRight</CollisionType>
+        </Item0>
+      </Walls>
+    </Item2>
+    <Item3>
+      <GrhData>4</GrhData>
+      <Walls>
+        <Count>1</Count>
+        <Item0>
+          <Position>0,0</Position>
+          <Size>32,32</Size>
+          <CollisionType>Full</CollisionType>
+        </Item0>
+      </Walls>
+    </Item3>
+    <Item4>
+      <GrhData>5</GrhData>
+      <Walls>
+        <Count>1</Count>
+        <Item0>
+          <Position>0,0</Position>
+          <Size>32,32</Size>
+          <CollisionType>Full</CollisionType>
+        </Item0>
+      </Walls>
+    </Item4>
+    <Item5>
+      <GrhData>6</GrhData>
+      <Walls>
+        <Count>1</Count>
+        <Item0>
+          <Position>0,0</Position>
+          <Size>32,32</Size>
+          <CollisionType>Full</CollisionType>
+        </Item0>
+      </Walls>
+    </Item5>
+    <Item6>
+      <GrhData>7</GrhData>
+      <Walls>
+        <Count>1</Count>
+        <Item0>
+          <Position>0,0</Position>
+          <Size>32,1</Size>
+          <CollisionType>Full</CollisionType>
+        </Item0>
+      </Walls>
+    </Item6>
+  </GrhDataWalls>
+</GrhDataWalls>

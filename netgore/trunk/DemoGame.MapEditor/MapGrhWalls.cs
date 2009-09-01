@@ -1,11 +1,7 @@
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using DemoGame.Client;
-using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
 using NetGore.Graphics;
@@ -18,6 +14,10 @@ namespace DemoGame.MapEditor
     /// </summary>
     public class MapGrhWalls
     {
+        const string _grhIndexValueKey = "GrhData";
+        const string _rootNodeName = "GrhDataWalls";
+        const string _wallsNodeName = "Walls";
+
         /// <summary>
         /// Array containing a list of WallEntities for each valid GrhData by index
         /// </summary>
@@ -89,9 +89,14 @@ namespace DemoGame.MapEditor
             return ret;
         }
 
+        public static string GetFilePath(ContentPaths contentPath)
+        {
+            return contentPath.Data.Join("grhdatawalls.xml");
+        }
+
         public void Load(ContentPaths contentPath)
         {
-            var filePath = GetFilePath(contentPath);
+            string filePath = GetFilePath(contentPath);
 
             // Clear the old walls in case this isn't the first load
             _walls.Clear();
@@ -99,95 +104,54 @@ namespace DemoGame.MapEditor
             if (!File.Exists(filePath))
                 return;
 
-            // Grab the wall information
-            var wallInfoFile = XmlInfoReader.ReadFile(filePath, true);
+            // Read the values
+            XmlValueReader reader = new XmlValueReader(filePath, _rootNodeName);
+            var loadedWalls = reader.ReadManyNodes<KeyValuePair<GrhIndex, List<WallEntityBase>>>(_rootNodeName, ReadWalls);
 
-            // Iterate through each entry in the WallInfo file
-            foreach (var wallInfo in wallInfoFile)
+            foreach (var wall in loadedWalls)
             {
-                // Get the list information
-                GrhIndex grhIndex = wallInfo.AsGrhIndex("Wall.GrhData");
-                int wallCount = wallInfo.AsInt("Wall.WallCount");
-                var walls = new List<WallEntityBase>(wallCount);
-                _walls[(int)grhIndex] = walls;
-
-                // Create the individual walls
-                for (int i = 0; i < wallCount; i++)
-                {
-                    CollisionType ct = wallInfo.AsEnum<string, CollisionType>("Wall.Wall" + i + ".Type");
-                    float x = wallInfo.AsFloat("Wall.Wall" + i + ".X");
-                    float y = wallInfo.AsFloat("Wall.Wall" + i + ".Y");
-                    float w = wallInfo.AsFloat("Wall.Wall" + i + ".W");
-                    float h = wallInfo.AsFloat("Wall.Wall" + i + ".H");
-
-                    WallEntity newWall = new WallEntity(new Vector2(x, y), new Vector2(w, h), ct);
-                    walls.Add(newWall);
-                }
+                _walls[(int)wall.Key] = wall.Value;
             }
         }
 
-        public static string GetFilePath(ContentPaths contentPath)
+        static KeyValuePair<GrhIndex, List<WallEntityBase>> ReadWalls(IValueReader r)
         {
-            return contentPath.Data.Join("grhdatawalls.xml");
-        }
+            GrhIndex grhIndex = r.ReadGrhIndex(_grhIndexValueKey);
+            var walls = r.ReadManyNodes<WallEntityBase>(_wallsNodeName, x => new WallEntity(x));
 
-        const string _rootNodeName = "GrhDataWalls";
+            return new KeyValuePair<GrhIndex, List<WallEntityBase>>(grhIndex, walls.ToList());
+        }
 
         public void Save(ContentPaths contentPath)
         {
-            var filePath = GetFilePath(contentPath);
+            string filePath = GetFilePath(contentPath);
 
-            using (FileStream stream = new FileStream(filePath, FileMode.Create))
+            // Build up a list of the valid walls, and join them with their GrhIndex
+            var wallsToWrite = new List<KeyValuePair<GrhIndex, List<WallEntityBase>>>(_walls.Count);
+            for (int i = 0; i < _walls.Length; i++)
             {
-                XmlWriterSettings settings = new XmlWriterSettings
-                {
-                    Indent = true
-                };
-                using (XmlWriter w = XmlWriter.Create(stream, settings))
-                {
-                    if (w == null)
-                        throw new Exception("Failed to create XmlWriter for saving MapGrhWalls.");
+                var walls = _walls[i];
+                if (walls == null || walls.Count == 0)
+                    continue;
 
-                    // Begin
-                    w.WriteStartDocument();
-                    w.WriteStartElement("Walls");
-
-                    // List of walls
-                    for (int i = 0; i < _walls.Length; i++)
-                    {
-                        var walls = _walls[i];
-
-                        // Ignore if there are no walls
-                        if (walls == null || walls.Count == 0)
-                            continue;
-
-                        w.WriteStartElement("Wall");
-                        w.WriteAttributeString("GrhData", i.ToString());
-                        w.WriteAttributeString("WallCount", walls.Count.ToString());
-
-                        // Individual walls
-                        int wallIndex = 0;
-                        foreach (WallEntityBase wall in walls)
-                        {
-                            w.WriteStartElement("Wall" + wallIndex);
-                            w.WriteAttributeString("Type", wall.CollisionType.ToString());
-                            w.WriteAttributeString("X", wall.Position.X.ToString());
-                            w.WriteAttributeString("Y", wall.Position.Y.ToString());
-                            w.WriteAttributeString("W", wall.CB.Width.ToString());
-                            w.WriteAttributeString("H", wall.CB.Height.ToString());
-                            w.WriteEndElement();
-                            wallIndex++;
-                        }
-
-                        w.WriteEndElement();
-                    }
-
-                    // End
-                    w.WriteEndElement();
-                    w.WriteEndDocument();
-                    w.Flush();
-                }
+                var kvp = new KeyValuePair<GrhIndex, List<WallEntityBase>>(new GrhIndex(i), walls);
+                wallsToWrite.Add(kvp);
             }
+
+            // Write the values
+            using (XmlValueWriter writer = new XmlValueWriter(filePath, _rootNodeName))
+            {
+                writer.WriteManyNodes(_rootNodeName, wallsToWrite, WriteWalls);
+            }
+        }
+
+        static void WriteWalls(IValueWriter w, KeyValuePair<GrhIndex, List<WallEntityBase>> item)
+        {
+            GrhIndex grhIndex = item.Key;
+            var walls = item.Value;
+
+            w.Write(_grhIndexValueKey, grhIndex);
+            w.WriteManyNodes(_wallsNodeName, walls, ((pwriter, pitem) => pitem.Write(pwriter)));
         }
     }
 }
