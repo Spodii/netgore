@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using System.Xml;
 using DemoGame.Client;
 using DemoGame.Server;
 using DemoGame.Server.Queries;
@@ -15,6 +14,7 @@ using NetGore;
 using NetGore.EditorTools;
 using NetGore.Globalization;
 using NetGore.Graphics;
+using NetGore.IO;
 using Point=System.Drawing.Point;
 
 // LATER: Grid-snapping for batch movement
@@ -90,6 +90,8 @@ namespace DemoGame.MapEditor
         /// Currently selected Grh to draw to the map.
         /// </summary>
         readonly Grh _selectedGrh = new Grh(null, AnimType.Loop, 0);
+
+        readonly MapEditorSettings _settings;
 
         /// <summary>
         /// Stopwatch used for calculating the game time (cant use XNA's GameTime since the
@@ -365,7 +367,7 @@ namespace DemoGame.MapEditor
             cmbEntityTypes.SelectedIndex = 0;
 
             // Read the settings
-            LoadSettings();
+            _settings = new MapEditorSettings(this);
             _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev);
 
             // Create the world
@@ -976,69 +978,6 @@ namespace DemoGame.MapEditor
             lstNPCSpawns.SelectedIndexChanged += ((o, e) => v.MapSpawns = ((NPCSpawnsListBox)o).GetMapSpawnValues());
         }
 
-        /// <summary>
-        /// Loads the map editor settings
-        /// </summary>
-        void LoadSettings()
-        {
-            if (!File.Exists("MapEditorSettings.xml"))
-                return;
-
-            var data = XmlInfoReader.ReadFile("MapEditorSettings.xml");
-            if (data == null)
-                return;
-
-            foreach (var d in data)
-            {
-                foreach (string key in d.Keys)
-                {
-                    string value;
-                    if (!d.TryGetValue(key, out value))
-                        continue;
-
-                    switch (key)
-                    {
-                        case "Grid.Width":
-                            txtGridWidth.Text = value;
-                            break;
-                        case "Grid.Height":
-                            txtGridHeight.Text = value;
-                            break;
-                        case "Walls.SnapWallsToWalls":
-                            chkSnapWallWall.Checked = bool.Parse(value);
-                            break;
-                        case "Walls.SnapWallsToGrid":
-                            chkSnapWallGrid.Checked = bool.Parse(value);
-                            break;
-                        case "Display.Grid":
-                            chkDrawGrid.Checked = bool.Parse(value);
-                            break;
-                        case "Display.Grhs":
-                            chkShowGrhs.Checked = bool.Parse(value);
-                            break;
-                        case "Display.Walls":
-                            chkShowWalls.Checked = bool.Parse(value);
-                            break;
-                        case "Display.AutoWalls":
-                            chkDrawAutoWalls.Checked = bool.Parse(value);
-                            break;
-                        case "Display.Entities":
-                            chkDrawEntities.Checked = bool.Parse(value);
-                            break;
-                        case "Display.Background":
-                            chkDrawBackground.Checked = bool.Parse(value);
-                            break;
-                        case "Display.SpawnAreas":
-                            chkDrawSpawnAreas.Checked = bool.Parse(value);
-                            break;
-                        case "Display.PersistentNPCs":
-                            chkDrawPersistentNPCs.Checked = bool.Parse(value);
-                            break;
-                    }
-                }
-            }
-        }
-
         void lstBGItems_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (pgBGItem.SelectedObject != lstBGItems.SelectedItem)
@@ -1167,59 +1106,10 @@ namespace DemoGame.MapEditor
             tcMenu.SelectTab(tabPageGrhs);
         }
 
-        /// <summary>
-        /// Saves the map editor settings
-        /// </summary>
-        void SaveSettings()
-        {
-            // TODO: Use the IRestorableSettings instead
-
-            using (FileStream stream = new FileStream("MapEditorSettings.xml", FileMode.Create))
-            {
-                XmlWriterSettings settings = new XmlWriterSettings
-                {
-                    Indent = true
-                };
-                using (XmlWriter w = XmlWriter.Create(stream, settings))
-                {
-                    if (w == null)
-                        throw new Exception("Failed to create XmlWriter to save settings.");
-
-                    w.WriteStartDocument();
-                    w.WriteStartElement("Settings");
-
-                    w.WriteStartElement("Walls");
-                    w.WriteElementString("SnapWallsToWalls", chkSnapWallWall.Checked.ToString());
-                    w.WriteElementString("SnapWallsToGrid", chkSnapWallGrid.Checked.ToString());
-                    w.WriteEndElement();
-
-                    w.WriteStartElement("Grid");
-                    w.WriteElementString("Width", _grid.Width.ToString());
-                    w.WriteElementString("Height", _grid.Height.ToString());
-                    w.WriteEndElement();
-
-                    w.WriteStartElement("Display");
-                    w.WriteElementString("Grid", chkDrawGrid.Checked.ToString().ToLower());
-                    w.WriteElementString("Grhs", chkShowGrhs.Checked.ToString().ToLower());
-                    w.WriteElementString("Walls", chkShowWalls.Checked.ToString().ToLower());
-                    w.WriteElementString("AutoWalls", chkDrawAutoWalls.Checked.ToString().ToLower());
-                    w.WriteElementString("Entities", chkDrawEntities.Checked.ToString().ToLower());
-                    w.WriteElementString("Background", chkDrawBackground.Checked.ToString().ToLower());
-                    w.WriteElementString("SpawnAreas", chkDrawSpawnAreas.Checked.ToString().ToLower());
-                    w.WriteElementString("PersistentNPCs", chkDrawPersistentNPCs.Checked.ToString().ToLower());
-                    w.WriteEndElement();
-
-                    w.WriteEndElement();
-                    w.WriteEndDocument();
-                    w.Flush();
-                }
-            }
-        }
-
         void ScreenForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             GrhInfo.Save(ContentPaths.Dev);
-            SaveSettings();
+            _settings.Save();
         }
 
         void ScreenForm_Load(object sender, EventArgs e)
@@ -1514,5 +1404,85 @@ namespace DemoGame.MapEditor
         }
 
         #endregion
+
+        class MapEditorSettings
+        {
+            const string _displayNodeName = "Display";
+            const string _gridNodeName = "Grid";
+            const string _rootNodeName = "MapEditorSettings";
+            const string _wallsNodeName = "Walls";
+            readonly ScreenForm _screenForm;
+
+            public static string FilePath
+            {
+                get { return ContentPaths.Build.Settings.Join("MapEditorSettings.xml"); }
+            }
+
+            public MapEditorSettings(ScreenForm screenForm)
+            {
+                _screenForm = screenForm;
+                Load();
+            }
+
+            // ReSharper disable MemberCanBePrivate.Local
+            public void Load() // ReSharper restore MemberCanBePrivate.Local
+            {
+                if (!File.Exists(FilePath))
+                    return;
+
+                XmlValueReader r = new XmlValueReader(FilePath, _rootNodeName);
+
+                IValueReader rWalls = r.ReadNode(_wallsNodeName);
+                _screenForm.chkSnapWallWall.Checked = rWalls.ReadBool("SnapWallsToWalls");
+                _screenForm.chkSnapWallGrid.Checked = rWalls.ReadBool("SnapWallsToGrid");
+
+                IValueReader rGrid = r.ReadNode(_gridNodeName);
+                _screenForm._grid.Width = rGrid.ReadFloat("Width");
+                _screenForm._grid.Height = rGrid.ReadFloat("Height");
+
+                IValueReader rDisplay = r.ReadNode(_displayNodeName);
+                _screenForm.chkDrawGrid.Checked = rDisplay.ReadBool("Grid");
+                _screenForm.chkShowGrhs.Checked = rDisplay.ReadBool("Grhs");
+                _screenForm.chkShowWalls.Checked = rDisplay.ReadBool("Walls");
+                _screenForm.chkDrawAutoWalls.Checked = rDisplay.ReadBool("AutoWalls");
+                _screenForm.chkDrawEntities.Checked = rDisplay.ReadBool("Entities");
+                _screenForm.chkDrawBackground.Checked = rDisplay.ReadBool("Background");
+                _screenForm.chkDrawSpawnAreas.Checked = rDisplay.ReadBool("SpawnAreas");
+                _screenForm.chkDrawPersistentNPCs.Checked = rDisplay.ReadBool("PersistentNPCs");
+            }
+
+            public void Save()
+            {
+                using (XmlValueWriter w = new XmlValueWriter(FilePath, _rootNodeName))
+                {
+                    w.WriteStartNode(_wallsNodeName);
+                    {
+                        w.Write("SnapWallsToWalls", _screenForm.chkSnapWallWall.Checked);
+                        w.Write("SnapWallsToGrid", _screenForm.chkSnapWallGrid.Checked);
+                    }
+                    w.WriteEndNode(_wallsNodeName);
+
+                    w.WriteStartNode(_gridNodeName);
+                    {
+                        w.Write("Width", _screenForm._grid.Width);
+                        w.Write("Height", _screenForm._grid.Height);
+                    }
+                    w.WriteEndNode(_gridNodeName);
+
+                    w.WriteStartNode(_displayNodeName);
+                    {
+                        w.Write("Grid", _screenForm.chkDrawGrid.Checked);
+                        w.Write("Grhs", _screenForm.chkShowGrhs.Checked);
+                        w.Write("Walls", _screenForm.chkShowWalls.Checked);
+                        w.Write("AutoWalls", _screenForm.chkDrawAutoWalls.Checked);
+                        w.Write("Entities", _screenForm.chkDrawEntities.Checked);
+                        w.Write("Background", _screenForm.chkDrawBackground.Checked);
+                        w.Write("SpawnAreas", _screenForm.chkDrawSpawnAreas.Checked);
+                        w.Write("PersistentNPCs", _screenForm.chkDrawPersistentNPCs.Checked);
+                    }
+                    w.WriteEndNode(_displayNodeName);
+                }
+            }
+        }
     }
 }
