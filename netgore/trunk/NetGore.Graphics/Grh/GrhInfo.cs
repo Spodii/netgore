@@ -393,7 +393,7 @@ namespace NetGore.Graphics
             _grhDatas.OnAdd += AddHandler;
             _grhDatas.OnRemove += RemoveHandler;
 
-            // Load the GrhDatas (non-aniamted first, followed by animated)
+            // Read the GrhDatas (non-aniamted first, followed by animated)
             XmlValueReader reader = new XmlValueReader(path, _rootNodeName);
 
             var nonAnimatedGrhDatas = reader.ReadManyNodes(_nonAnimatedGrhDatasNodeName, x => new GrhData(x, cm));

@@ -26,7 +26,7 @@ namespace DemoGame.Client
             // Create the graphics manager and device
             graphics = new GraphicsDeviceManager(this);
 
-            // Load the game data
+            // Read the game data
             GameData.Load();
 
             // No need to use a time step since we use delta time in our updating
@@ -42,7 +42,7 @@ namespace DemoGame.Client
             screenManager = new ScreenManager(this);
             Components.Add(screenManager);
 
-            // Load the GrhInfo
+            // Read the GrhInfo
             LoadGrhInfo();
 
             // Create the screens
@@ -83,7 +83,7 @@ namespace DemoGame.Client
         /// </summary>
         void LoadGrhInfo()
         {
-            // Load the Grh info, using the MapContent for the ContentManager since all
+            // Read the Grh info, using the MapContent for the ContentManager since all
             // but the map GrhDatas should end up in an atlas. For anything that does not
             // end up in an atlas, this will provide them a way to load still.
             GrhInfo.Load(ContentPaths.Build, screenManager.MapContent);

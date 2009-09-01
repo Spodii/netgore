@@ -432,7 +432,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Load graphics content for the game
+        /// Read graphics content for the game
         /// </summary>
         public override void LoadContent()
         {

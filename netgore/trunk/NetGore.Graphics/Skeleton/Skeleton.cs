@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Xml;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
@@ -13,6 +13,14 @@ namespace NetGore.Graphics
     /// </summary>
     public class Skeleton
     {
+        /// <summary>
+        /// The file suffix used for the Skeleton.
+        /// </summary>
+        public const string FileSuffix = ".skel";
+
+        const string _nodesNodeName = "Nodes";
+        const string _rootNodeName = "SkeletonFrame";
+
         /// <summary>
         /// Root node of the skeleton
         /// </summary>
@@ -228,139 +236,86 @@ namespace NetGore.Graphics
                 throw new ArgumentException("File not found.", "filePath");
 
             Skeleton ret = new Skeleton();
-            var nodes = new List<SkeletonNode>();
-
-            var fileInfo = XmlInfoReader.ReadFile(filePath, true);
-
-            // Load all the node information except for the parent/child references
-            foreach (var dic in fileInfo)
-            {
-                if (dic.ContainsKey("Nodes"))
-                    continue;
-
-                string name = dic["Node.Name"];
-                float x = dic.AsFloat("Node.X");
-                float y = dic.AsFloat("Node.Y");
-                bool isMod = dic.AsBool("Node.IsModifier", false);
-
-                SkeletonNode node = new SkeletonNode(new Vector2(x, y));
-                nodes.Add(node);
-                node.Name = name;
-                node.IsModifier = isMod;
-            }
-
-            // Now that we have all node objects created, we can properly link the references
-            foreach (var dic in fileInfo)
-            {
-                if (dic.ContainsKey("Nodes"))
-                    continue;
-
-                // Find the node this block is for
-                SkeletonNode node = FindNode(nodes, dic["Node.Name"]);
-
-                // Check for no parent which means this is the root
-                if (!dic.ContainsKey("Node.ParentName"))
-                {
-                    // This is the root node
-                    node.Parent = null;
-                    ret.RootNode = node;
-                }
-                else
-                {
-                    // Find the parent node by its name
-                    SkeletonNode parent = FindNode(nodes, dic["Node.ParentName"]);
-                    if (parent == null)
-                        throw new Exception("Unable to find parent node with name '" + dic["Node.ParentName"] + "'.");
-
-                    // Set the references
-                    node.Parent = parent;
-                    parent.Nodes.Add(node);
-                }
-            }
-
+            var reader = new XmlValueReader(filePath, _rootNodeName);
+            ret.Read(reader);
+ 
             return ret;
         }
 
-        /// <summary>
-        /// Saves the skeleton to a file
-        /// </summary>
-        /// <param name="skeleton">Skeleton to save</param>
-        /// <param name="filePath">Path to the file to save</param>
-        public static void Save(Skeleton skeleton, string filePath)
+        public void Read(IValueReader reader)
         {
-            if (skeleton == null)
-                throw new ArgumentNullException("skeleton");
+            if (reader == null)
+                throw new ArgumentNullException("reader");
+
+            var nodesWithParents = new List<KeyValuePair<SkeletonNode, string>>();
+
+            var loadedNodes = reader.ReadManyNodes(_nodesNodeName, x => SkeletonNodeReadHandler(x, nodesWithParents));
+
+            // Add the root node (which should be the only one without a parent)
+            var nodesWithoutParents = loadedNodes.Except(nodesWithParents.Select(x => x.Key));
+            if (nodesWithoutParents.Count() != 1)
+                throw new Exception("Invalid number of parentless nodes. Was only expected one!");
+
+            _rootNode = nodesWithoutParents.First();
+
+            // Set up the parents
+            foreach (var nodeWithParent in nodesWithParents)
+            {
+                SkeletonNode node = nodeWithParent.Key;
+                string parentName = nodeWithParent.Value;
+
+                SkeletonNode parentNode =
+                    loadedNodes.FirstOrDefault(x => parentName.Equals(x.Name, StringComparison.OrdinalIgnoreCase));
+
+                if (parentNode == null)
+                {
+                    const string errmsg = "Unable to find parent node `{0}` for node `{1}`.";
+                    string err = string.Format(errmsg, parentName, node.Name);
+                    throw new Exception(err);
+                }
+
+                node.Parent = parentNode;
+                parentNode.Nodes.Add(node);
+            }
+        }
+
+        static SkeletonNode SkeletonNodeReadHandler(IValueReader r,
+                                                    ICollection<KeyValuePair<SkeletonNode, string>> nodesWithParents)
+        {
+            string parentName;
+            SkeletonNode node = new SkeletonNode(r, out parentName);
+
+            if (parentName != null)
+            {
+                var kvp = new KeyValuePair<SkeletonNode, string>(node, parentName);
+                nodesWithParents.Add(kvp);
+            }
+
+            return node;
+        }
+
+        public void Write(string filePath)
+        {
             if (filePath == null)
                 throw new ArgumentNullException("filePath");
 
             // Validate the skeleton
-            if (!skeleton.IsValid())
+            if (!IsValid())
                 throw new Exception("Skeleton returned false for IsValid() - unable to save!");
 
-            // Save the file
-            using (Stream s = File.Open(filePath, FileMode.Create))
+            // Write the file
+            using (XmlValueWriter writer = new XmlValueWriter(filePath, _rootNodeName))
             {
-                XmlWriterSettings settings = new XmlWriterSettings
-                {
-                    Indent = true
-                };
-                using (XmlWriter w = XmlWriter.Create(s, settings))
-                {
-                    skeleton.Save(w);
-                }
+                Write(writer);
             }
         }
 
-        /// <summary>
-        /// Saves the skeleton to a stream with a binary writer
-        /// </summary>
-        /// <param name="skeleton">Skeleton to save</param>
-        /// <param name="w">XmlWriter to write to</param>
-        public static void Save(Skeleton skeleton, XmlWriter w)
+        public void Write(IValueWriter writer)
         {
-            if (skeleton == null)
-                throw new ArgumentNullException("skeleton");
-            if (w == null)
-                throw new ArgumentNullException("w");
-            if (w.WriteState == WriteState.Closed || w.WriteState == WriteState.Error)
-                throw new Exception("XmlWriter w is in an invalid WriteState.");
+            if (writer == null)
+                throw new ArgumentNullException("writer");
 
-            var nodes = skeleton.RootNode.GetAllNodes();
-            w.WriteStartElement("Skeleton");
-
-            // Save the node information of each node
-            foreach (SkeletonNode node in nodes)
-            {
-                w.WriteStartElement("Node");
-                w.WriteElementString("Name", node.Name);
-                w.WriteElementString("X", node.Position.X.ToString());
-                w.WriteElementString("Y", node.Position.Y.ToString());
-                if (node.IsModifier)
-                    w.WriteElementString("IsModifier", true.ToString());
-                if (node.Parent != null)
-                    w.WriteElementString("ParentName", node.Parent.Name);
-                w.WriteEndElement();
-            }
-
-            w.WriteEndElement();
-        }
-
-        /// <summary>
-        /// Saves the skeleton to a file
-        /// </summary>
-        /// <param name="filePath">Path to the file to save</param>
-        public void Save(string filePath)
-        {
-            Save(this, filePath);
-        }
-
-        /// <summary>
-        /// Saves the skeleton to a stream with a binary writer
-        /// </summary>
-        /// <param name="w">XmlWriter to write to</param>
-        public void Save(XmlWriter w)
-        {
-            Save(this, w);
+            writer.WriteManyNodes(_nodesNodeName, RootNode.GetAllNodes(), ((w, item) => item.Write(w)));
         }
     }
 }

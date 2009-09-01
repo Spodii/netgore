@@ -35,7 +35,7 @@ namespace NetGore.EditorTools
             if (texture == null)
                 return null;
 
-            // Save the texture to a file
+            // Write the texture to a file
             string filePath = Path.GetTempFileName();
             texture.Save(filePath, ImageFileFormat.Png);
             if (!File.Exists(filePath))
@@ -78,7 +78,7 @@ namespace NetGore.EditorTools
                                 g.DrawImage(tmp, destRect, srcRect, GraphicsUnit.Pixel);
                             }
 
-                            // Save the bitmap into a memory stream, then use that stream to load the image
+                            // Write the bitmap into a memory stream, then use that stream to load the image
                             // Keep in mind we do not dispose of the bitmapStream since that will be used by the
                             // image we return, so we need it to live
                             MemoryStream bitmapStream = new MemoryStream();

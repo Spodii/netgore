@@ -138,7 +138,7 @@ namespace NetGore.Graphics.GUI
 
         protected override void LoadContent()
         {
-            // Load the global content used between screens
+            // Read the global content used between screens
             _sb = new SpriteBatch(GraphicsDevice);
             _menuFont = _content.Load<SpriteFont>("Font/Menu");
 

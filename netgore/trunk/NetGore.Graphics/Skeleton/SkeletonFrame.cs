@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
@@ -8,15 +9,18 @@ namespace NetGore.Graphics
     /// </summary>
     public class SkeletonFrame
     {
+        const string _delayValueKey = "Delay";
+        const string _fileNameValueKey = "FileName";
+
         /// <summary>
         /// Amount of time the animation will stay on this frame in milliseconds
         /// </summary>
-        readonly float _delay;
+        float _delay;
 
         /// <summary>
         /// File name of the frame
         /// </summary>
-        readonly string _fileName;
+        string _fileName;
 
         /// <summary>
         /// Skeleton used for the frame
@@ -72,6 +76,23 @@ namespace NetGore.Graphics
         /// <param name="skeleton">Skeleton to use for the frame</param>
         public SkeletonFrame(string fileName, Skeleton skeleton) : this(fileName, skeleton, 0f)
         {
+        }
+
+        public SkeletonFrame(IValueReader reader)
+        {
+            Read(reader);
+        }
+
+        public void Read(IValueReader reader)
+        {
+            _delay = reader.ReadFloat(_delayValueKey);
+            _fileName = reader.ReadString(_fileNameValueKey);
+        }
+
+        public void Write(IValueWriter writer)
+        {
+            writer.Write(_delayValueKey, Delay);
+            writer.Write(_fileNameValueKey, FileName);
         }
     }
 }

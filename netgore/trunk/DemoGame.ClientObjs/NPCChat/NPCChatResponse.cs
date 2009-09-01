@@ -44,7 +44,7 @@ namespace DemoGame.Client.NPCChat
         /// <summary>
         /// NPCChatResponse constructor.
         /// </summary>
-        /// <param name="r">IValueReader to read the values from.</param>
+        /// <param name="reader">IValueReader to read the values from.</param>
         internal NPCChatResponse(IValueReader r) : base(r)
         {
         }

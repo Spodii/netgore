@@ -65,7 +65,7 @@ namespace NetGore.EditorTools
             ImageList.Images.Add(OpenFolderKey, Resources.folderopen);
             ImageList.Images.Add(ClosedFolderKey, Resources.folder);
 
-            // Load the cache
+            // Read the cache
             var cacheItems = GrhImageListCache.Load();
             foreach (GrhImageListCacheItem item in cacheItems)
             {

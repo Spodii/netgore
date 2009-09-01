@@ -173,7 +173,7 @@ namespace NetGore.Graphics.GUI
                 case Keys.Q:
                     return "q";
                 case Keys.R:
-                    return "r";
+                    return "reader";
                 case Keys.S:
                     return "s";
                 case Keys.T:
@@ -183,7 +183,7 @@ namespace NetGore.Graphics.GUI
                 case Keys.V:
                     return "v";
                 case Keys.W:
-                    return "w";
+                    return "writer";
                 case Keys.X:
                     return "x";
                 case Keys.Y:

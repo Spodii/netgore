@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
@@ -20,6 +21,12 @@ namespace NetGore.Graphics
         /// Half the size of the joint
         /// </summary>
         internal const float HalfJointSize = JointSize / 2.0f;
+
+        const string _hasParentValueKey = "HasParent";
+        const string _isModifierValueKey = "IsModifier";
+        const string _nameValueKey = "Name";
+        const string _parentNameValueKey = "ParentName";
+        const string _positionValueKey = "Position";
 
         /// <summary>
         /// A vector representing half the size of the joint
@@ -115,6 +122,17 @@ namespace NetGore.Graphics
             _parent = parent;
             _parent.Nodes.Add(this);
             _position = position;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkeletonNode"/> class.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <param name="parentName">Name of this SkeletonNode's parent, or null if the SkeletonNode
+        /// has no parent. This value must be used to manually set the SkeletonNode's parent.</param>
+        public SkeletonNode(IValueReader reader, out string parentName)
+        {
+            parentName = Read(reader);
         }
 
         /// <summary>
@@ -301,6 +319,26 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Reads the SkeletonNode's values from an IValueReader.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <returns>The name of the parent SkeletonNode, or null if the SkeletonNode has no parent (root node).
+        /// The SkeletonNode's parent must be set manually using this value.</returns>
+        public string Read(IValueReader reader)
+        {
+            Name = reader.ReadString(_nameValueKey);
+            Position = reader.ReadVector2(_positionValueKey);
+            IsModifier = reader.ReadBool(_isModifierValueKey);
+            bool hasParent = reader.ReadBool(_hasParentValueKey);
+
+            string parentName = null;
+            if (hasParent)
+                parentName = reader.ReadString(_parentNameValueKey);
+
+            return parentName;
+        }
+
+        /// <summary>
         /// Recursively moves a node and all its children by a given value
         /// </summary>
         /// <param name="node">Root node to move</param>
@@ -411,6 +449,21 @@ namespace NetGore.Graphics
         {
             Vector2 newPos = new Vector2((float)Math.Cos(radians) * length, (float)Math.Sin(radians) * length);
             MoveTo(newPos + Parent.Position);
+        }
+
+        /// <summary>
+        /// Writes the SkeletonNode to an IValueWriter.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write to.</param>
+        public void Write(IValueWriter writer)
+        {
+            writer.Write(_nameValueKey, Name);
+            writer.Write(_positionValueKey, Position);
+            writer.Write(_isModifierValueKey, IsModifier);
+            writer.Write(_hasParentValueKey, Parent != null);
+
+            if (Parent != null)
+                writer.Write(_parentNameValueKey, Parent.Name);
         }
     }
 }

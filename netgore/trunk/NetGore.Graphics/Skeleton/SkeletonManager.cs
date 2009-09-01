@@ -86,7 +86,7 @@ namespace NetGore.Graphics
             if (!_sets.TryGetValue(nameLower, out ret))
             {
                 // Value did not already exist, load it
-                ret = SkeletonSet.Load(_dir + name + ".skels");
+                ret = new SkeletonSet(_dir + name + SkeletonSet.FileSuffix);
                 _sets.Add(nameLower, ret);
             }
 

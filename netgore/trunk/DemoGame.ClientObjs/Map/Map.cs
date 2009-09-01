@@ -512,7 +512,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles loading of custom values.
         /// </summary>
-        /// <param name="r">IValueReader to read the misc values from.</param>
+        /// <param name="reader">IValueReader to read the misc values from.</param>
         protected override void LoadMisc(IValueReader r)
         {
             LoadGrhs(r);
@@ -552,7 +552,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Writes all the BackgroundImages.
         /// </summary>
-        /// <param name="w">IValueWriter to write to..</param>
+        /// <param name="writer">IValueWriter to write to..</param>
         void SaveBackgroundImages(IValueWriter w)
         {
             var bgImagesToWrite = _backgroundImages.Where(x => x != null);
@@ -562,7 +562,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Writes all the MapGrhs to a XmlWriter.
         /// </summary>
-        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="writer">IValueWriter to write to.</param>
         void SaveGrhs(IValueWriter w)
         {
             w.WriteStartNode(_mapGrhsNodeName);
@@ -579,7 +579,7 @@ namespace DemoGame.Client
         /// <summary>
         /// When overridden in the derived class, saves misc map information specific to the derived class.
         /// </summary>
-        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="writer">IValueWriter to write to.</param>
         protected override void SaveMisc(IValueWriter w)
         {
             SaveGrhs(w);

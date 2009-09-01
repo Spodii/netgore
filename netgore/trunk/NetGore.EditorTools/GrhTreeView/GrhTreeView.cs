@@ -679,7 +679,7 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Generates the tree information. Must be called after GrhInfo.Load().
+        /// Generates the tree information. Must be called after GrhInfo.Read().
         /// </summary>
         public void Initialize(ContentManager cm)
         {

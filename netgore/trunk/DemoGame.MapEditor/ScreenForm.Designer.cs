@@ -601,7 +601,7 @@ namespace DemoGame.MapEditor
             this.cmdSave.Name = "cmdSave";
             this.cmdSave.Size = new System.Drawing.Size(65, 24);
             this.cmdSave.TabIndex = 2;
-            this.cmdSave.Text = "Save";
+            this.cmdSave.Text = "Write";
             this.cmdSave.UseVisualStyleBackColor = true;
             this.cmdSave.Click += new System.EventHandler(this.cmdSave_Click);
             // 
@@ -611,7 +611,7 @@ namespace DemoGame.MapEditor
             this.cmdLoad.Name = "cmdLoad";
             this.cmdLoad.Size = new System.Drawing.Size(65, 24);
             this.cmdLoad.TabIndex = 3;
-            this.cmdLoad.Text = "Load";
+            this.cmdLoad.Text = "Read";
             this.cmdLoad.UseVisualStyleBackColor = true;
             this.cmdLoad.Click += new System.EventHandler(this.cmdLoad_Click);
             // 
