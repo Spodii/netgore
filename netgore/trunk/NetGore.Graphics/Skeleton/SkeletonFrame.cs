@@ -91,9 +91,7 @@ namespace NetGore.Graphics
         {
             _delay = reader.ReadFloat(_delayValueKey);
             _fileName = reader.ReadString(_fileNameValueKey);
-
-            string skeletonFilePath = contentPath.Skeletons.Join(_fileName + Skeleton.FileSuffix);
-            _skeleton = Skeleton.Load(skeletonFilePath);
+            _skeleton = new Skeleton(_fileName, contentPath);
         }
 
         public void Write(IValueWriter writer)

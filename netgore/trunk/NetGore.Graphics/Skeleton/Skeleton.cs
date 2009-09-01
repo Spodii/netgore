@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using Microsoft.Xna.Framework;
 using NetGore.IO;
 
 namespace NetGore.Graphics
@@ -35,14 +33,30 @@ namespace NetGore.Graphics
             set { _rootNode = value; }
         }
 
-        /// <summary>
-        /// Recursively copies the IsModifier property of one set of nodes to another set of nodes
-        /// </summary>
-        /// <param name="src">Source skeleton to copy from</param>
-        /// <param name="dest">Destination skeleton to copy to</param>
-        public static void CopyIsModifier(Skeleton src, Skeleton dest)
+        public Skeleton()
         {
-            CopyIsModifier(src._rootNode, dest._rootNode);
+        }
+
+        public Skeleton(string skeletonName, ContentPaths contentPath)
+        {
+            string filePath = GetFilePath(skeletonName, contentPath);
+            XmlValueReader reader = new XmlValueReader(filePath, _rootNodeName);
+            Read(reader);
+        }
+
+        public Skeleton(IValueReader reader)
+        {
+            Read(reader);
+        }
+
+        /// <summary>
+        /// Recursively copies the IsModifier property of the nodes in the <paramref name="source"/> Skeleton
+        /// to this Skeleton.
+        /// </summary>
+        /// <param name="source">Source skeleton to copy the IsModifier property values from.</param>
+        public void CopyIsModifier(Skeleton source)
+        {
+            CopyIsModifier(source._rootNode, _rootNode);
         }
 
         /// <summary>
@@ -50,7 +64,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="src">Source root SkeletonNode to copy from</param>
         /// <param name="dest">Destination root SkeletonNode to copy to</param>
-        public static void CopyIsModifier(SkeletonNode src, SkeletonNode dest)
+        static void CopyIsModifier(SkeletonNode src, SkeletonNode dest)
         {
             if (src == null)
             {
@@ -205,9 +219,20 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Checks is a skeleton is valid
+        /// Gets the absolute file path for a Skeleton file.
         /// </summary>
-        /// <returns>True if a valid skeleton, else false</returns>
+        /// <param name="skeletonSetName">The name of the Skeleton.</param>
+        /// <param name="contentPath">The content path to use.</param>
+        /// <returns>The absolute file path for a Skeleton file.</returns>
+        public static string GetFilePath(string skeletonName, ContentPaths contentPath)
+        {
+            return contentPath.Skeletons.Join(skeletonName + FileSuffix);
+        }
+
+        /// <summary>
+        /// Checks is the Skeleton is valid.
+        /// </summary>
+        /// <returns>True if a valid Skeleton; otherwise false.</returns>
         public bool IsValid()
         {
             var nodes = RootNode.GetAllNodes();
@@ -223,23 +248,6 @@ namespace NetGore.Graphics
             }
 
             return true;
-        }
-
-        /// <summary>
-        /// Loads a skeleton from a file
-        /// </summary>
-        /// <param name="filePath">Path to the file to load</param>
-        /// <returns>New skeleton object</returns>
-        public static Skeleton Load(string filePath)
-        {
-            if (!File.Exists(filePath))
-                throw new ArgumentException("File not found.", "filePath");
-
-            Skeleton ret = new Skeleton();
-            var reader = new XmlValueReader(filePath, _rootNodeName);
-            ret.Read(reader);
- 
-            return ret;
         }
 
         public void Read(IValueReader reader)

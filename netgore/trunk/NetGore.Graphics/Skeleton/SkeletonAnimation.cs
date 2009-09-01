@@ -276,7 +276,7 @@ namespace NetGore.Graphics
             // The last frame is used instead of the first since it is more important that
             // we transist out of the animation smoother than translating in, under the rare
             // and undesirable case that all IsModifier properties are not equal
-            Skeleton.CopyIsModifier(frames[lastFrame - 1].Skeleton, frames[0].Skeleton);
+            frames[0].Skeleton.CopyIsModifier(frames[lastFrame - 1].Skeleton);
 
             return new SkeletonSet(frames);
         }
