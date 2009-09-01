@@ -125,14 +125,26 @@ namespace NetGore.IO
         static Dictionary<string, List<string>> ReadNodesIntoDictionary(XmlReader reader, string rootNodeName, bool readAllContent)
         {
             var ret = new Dictionary<string, List<string>>(StringComparer.OrdinalIgnoreCase);
+            int expectedEndDepth = reader.Depth + 1;
+            bool skipRead = false;
+
+            if (reader.NodeType == XmlNodeType.Element)
+            {
+                expectedEndDepth--;
+                skipRead = true;
+            }
 
             // Read past the first node if it is the root node
             if (string.Equals(reader.Name, rootNodeName, StringComparison.OrdinalIgnoreCase))
                 reader.Read();
+            else
+                expectedEndDepth--;
 
             // Read all the values
-            while (reader.Read())
+            while (skipRead || reader.Read())
             {
+                skipRead = false;
+
                 switch (reader.NodeType)
                 {
                     case XmlNodeType.Element:
@@ -153,6 +165,9 @@ namespace NetGore.IO
 
                     case XmlNodeType.EndElement:
                         // Check if we hit the end of the nodes
+                        if (reader.Depth != expectedEndDepth)
+                            continue;
+
                         if (string.Equals(reader.Name, rootNodeName, StringComparison.OrdinalIgnoreCase))
                             return ret;
                         else
