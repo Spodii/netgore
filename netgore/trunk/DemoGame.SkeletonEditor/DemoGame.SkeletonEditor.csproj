@@ -106,7 +106,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="SkeletonLoaderHelper.cs" />
+    <Compile Include="SkeletonLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoGame\DemoGame.csproj">

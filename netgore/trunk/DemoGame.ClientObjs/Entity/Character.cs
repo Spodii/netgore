@@ -185,7 +185,8 @@ namespace DemoGame.Client
             _currSkelSet = BodyInfo.Stand;
             var newSet = _skelManager.LoadSet(_currSkelSet, ContentPaths.Build);
             _skelAnim = new SkeletonAnimation(GetTime(), newSet);
-            _skelAnim.SkeletonBody = new SkeletonBody(_skelManager.LoadBodyInfo(BodyInfo.Body), _skelAnim.Skeleton);
+            var bodyInfo = _skelManager.LoadBodyInfo(BodyInfo.Body, ContentPaths.Build);
+            _skelAnim.SkeletonBody = new SkeletonBody(bodyInfo, _skelAnim.Skeleton);
         }
 
         /// <summary>
