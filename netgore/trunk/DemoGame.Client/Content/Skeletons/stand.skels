@@ -1,7 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Set>
-  <Frame>
-    <Delay>120</Delay>
-    <FileName>stand</FileName>
-  </Frame>
-</Set>
+<SkeletonSet>
+  <Frames>
+    <Count>1</Count>
+    <Item0>
+      <Delay>120</Delay>
+      <FileName>stand</FileName>
+    </Item0>
+  </Frames>
+</SkeletonSet>
