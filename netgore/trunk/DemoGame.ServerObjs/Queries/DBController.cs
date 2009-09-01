@@ -5,7 +5,6 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
@@ -92,18 +91,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the name of the table and column that reference a the given primary key.
-        /// </summary>
-        /// <param name="database">Database of the <paramref name="table"/>.</param>
-        /// <param name="table">The table of the primary key.</param>
-        /// <param name="column">The column of the primary key.</param>
-        /// <returns>An IEnumerable of the name of the tables and columns that reference a the given primary key.</returns>
-        public IEnumerable<TableColumnPair> GetPrimaryKeyReferences(string database, string table, string column)
-        {
-            return GetQuery<FindReferencedTableColumnsQuery>().Execute(database, table, column);
-        }
-
-        /// <summary>
         /// Gets an instance of the DbController. A DbController must have already been constructed for this to work.
         /// </summary>
         /// <returns>An instance of the DbController.</returns>
@@ -116,6 +103,18 @@ namespace DemoGame.Server
 
                 return _instances[_instances.Count - 1];
             }
+        }
+
+        /// <summary>
+        /// Gets the name of the table and column that reference a the given primary key.
+        /// </summary>
+        /// <param name="database">Database of the <paramref name="table"/>.</param>
+        /// <param name="table">The table of the primary key.</param>
+        /// <param name="column">The column of the primary key.</param>
+        /// <returns>An IEnumerable of the name of the tables and columns that reference a the given primary key.</returns>
+        public IEnumerable<TableColumnPair> GetPrimaryKeyReferences(string database, string table, string column)
+        {
+            return GetQuery<FindReferencedTableColumnsQuery>().Execute(database, table, column);
         }
 
         /// <summary>
@@ -196,9 +195,9 @@ namespace DemoGame.Server
         #endregion
 
         [DBControllerQuery]
-// ReSharper disable ClassNeverInstantiated.Local
-        class FindReferencedTableColumnsQuery : DbQueryReader<FindReferencedTableColumnsQuery.QueryArgs>
-// ReSharper restore ClassNeverInstantiated.Local
+        // ReSharper disable ClassNeverInstantiated.Local
+            class FindReferencedTableColumnsQuery : DbQueryReader<FindReferencedTableColumnsQuery.QueryArgs>
+            // ReSharper restore ClassNeverInstantiated.Local
         {
             const string _queryStr =
                 "SELECT `TABLE_NAME`, `COLUMN_NAME`" + " FROM information_schema.KEY_COLUMN_USAGE" +
