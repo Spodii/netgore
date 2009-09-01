@@ -60,11 +60,32 @@ namespace NetGore.IO
         float ReadFloat(string name);
 
         /// <summary>
+        /// Reads a 64-bit floating-point number.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        double ReadDouble(string name);
+
+        /// <summary>
         /// Reads a 32-bit signed integer.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
         int ReadInt(string name);
+
+        /// <summary>
+        /// Reads a 64-bit signed integer.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        long ReadLong(string name);
+
+        /// <summary>
+        /// Reads a 64-bit unsigned integer.
+        /// </summary>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        ulong ReadULong(string name);
 
         /// <summary>
         /// Reads a signed integer of up to 32 bits.

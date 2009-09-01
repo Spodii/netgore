@@ -209,30 +209,6 @@ namespace NetGore.IO.Tests
         }
 
         [Test]
-        public void DoubleToLongTest()
-        {
-            // NOTE: Do not worry that this test fails until we actually need to write a Double to the BitStream.
-            Assert.Fail("Unsupported test.");
-
-            const long iterations = 10000000;
-
-            const long step = (long.MaxValue / iterations) / 2;
-            for (long l = long.MinValue; l < long.MaxValue - step; l += step)
-            {
-                double d = BitOps.LongToDouble(l);
-                long l2 = BitOps.DoubleToLong(d);
-
-                if (l == l2)
-                    continue;
-
-                const string details = "Original bits: {0}   New bits: {1}";
-                string lBits = Convert.ToString(l, 2);
-                string l2Bits = Convert.ToString(l2, 2);
-                Assert.AreEqual(l, l2, string.Format(details, lBits, l2Bits));
-            }
-        }
-
-        [Test]
         public void PowerOf2Test()
         {
             const string errDetails = "Iterator: {0}    Value: {1}    Type: {2}";

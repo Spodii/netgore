@@ -171,33 +171,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Convert a double to a long, preserving the bit sequence
-        /// </summary>
-        /// <param name="value">Double value of the long</param>
-        public static unsafe long DoubleToLong(double value)
-        {
-            return *(long*)&value;
-        }
-
-        /// <summary>
-        /// Convert a float to an int, preserving the bit sequence
-        /// </summary>
-        /// <param name="value">Float value of the int</param>
-        public static unsafe int FloatToInt(float value)
-        {
-            return *(int*)&value;
-        }
-
-        /// <summary>
-        /// Convert an int to a float, preserving the bit sequence
-        /// </summary>
-        /// <param name="value">Int value of the float</param>
-        public static unsafe float IntToFloat(int value)
-        {
-            return *(float*)&value;
-        }
-
-        /// <summary>
         /// Checks if a value is a power of two
         /// </summary>
         /// <param name="value">Value to check</param>

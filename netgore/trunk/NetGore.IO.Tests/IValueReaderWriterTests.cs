@@ -557,6 +557,28 @@ namespace NetGore.IO.Tests
         }
 
         [Test]
+        public void TestDoubles()
+        {
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    var v1 = Range(0, 100, 1, x => x);
+
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
+                    }
+
+                    IValueReader r = creator.GetReader();
+                    {
+                        ReadTestValues(r, v1, ((preader, pname) => preader.ReadDouble(pname)));
+                    }
+                }
+            }
+        }
+
+        [Test]
         public void TestInts()
         {
             foreach (CreateCreatorHandler createCreator in _createCreators)
@@ -573,6 +595,50 @@ namespace NetGore.IO.Tests
                     IValueReader r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadInt(pname)));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void TestLongs()
+        {
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    var v1 = Range(0, 100, 1, x => (long)x);
+
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
+                    }
+
+                    IValueReader r = creator.GetReader();
+                    {
+                        ReadTestValues(r, v1, ((preader, pname) => preader.ReadLong(pname)));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void TestULongs()
+        {
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    var v1 = Range(0, 100, 1, x => (ulong)x);
+
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
+                    }
+
+                    IValueReader r = creator.GetReader();
+                    {
+                        ReadTestValues(r, v1, ((preader, pname) => preader.ReadULong(pname)));
                     }
                 }
             }

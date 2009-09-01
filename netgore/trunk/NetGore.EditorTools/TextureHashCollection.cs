@@ -1,15 +1,26 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using log4net;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace NetGore.EditorTools
 {
     public class TextureHashCollection
     {
+        const string _fileSizeValueKey = "FileSize";
+        const string _hashValueKey = "Hash";
+        const string _lastModifiedValueKey = "LastModified";
+        const string _rootNodeName = "TextureHashes";
+        const string _textureNameValueKey = "TextureName";
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly string _dataFile;
         readonly string _rootTextureDir;
 
@@ -24,7 +35,7 @@ namespace NetGore.EditorTools
 
         public TextureHashCollection()
         {
-            _dataFile = ContentPaths.Build.Data.Join("grhhashes.dat");
+            _dataFile = ContentPaths.Build.Data.Join("grhhashes.xml");
             _rootTextureDir = ContentPaths.Build.Grhs;
 
             if (!_rootTextureDir.EndsWith(Path.DirectorySeparatorChar.ToString()))
@@ -101,28 +112,41 @@ namespace NetGore.EditorTools
 
         void Load()
         {
-            // TODO: If there are problems loading the hash file, should just force-rebuild it all
+            Clear();
+
             if (!File.Exists(_dataFile))
                 return;
 
-            Clear();
-
-            using (FileStream fs = File.Open(_dataFile, FileMode.Open, FileAccess.Read))
+            try
             {
-                using (BinaryReader r = new BinaryReader(fs))
-                {
-                    int entries = r.ReadInt32();
-                    for (int i = 0; i < entries; i++)
-                    {
-                        string textureName = r.ReadString();
-                        string hash = r.ReadString();
-                        int fileSize = r.ReadInt32();
-                        long lastMod = r.ReadInt64();
+                XmlValueReader reader = new XmlValueReader(_dataFile, _rootNodeName);
+                var loadedHashes = reader.ReadManyNodes<KeyValuePair<string, HashInfo>>(_rootNodeName, Read);
 
-                        this[textureName] = new HashInfo(hash, fileSize, lastMod);
-                    }
+                foreach (var hash in loadedHashes)
+                {
+                    this[hash.Key] = hash.Value;
                 }
             }
+            catch (Exception ex)
+            {
+                Clear();
+
+                const string errmsg = "Failed to load TextureHashCollection from file `{0}`.";
+                Debug.Fail(string.Format(errmsg, _dataFile));
+                if (log.IsErrorEnabled)
+                    log.Error(string.Format(errmsg, _dataFile), ex);
+            }
+        }
+
+        static KeyValuePair<string, HashInfo> Read(IValueReader r)
+        {
+            string key = r.ReadString(_textureNameValueKey);
+            string hash = r.ReadString(_hashValueKey);
+            int fileSize = r.ReadInt(_fileSizeValueKey);
+            long lastModified = r.ReadLong(_lastModifiedValueKey);
+
+            HashInfo hashInfo = new HashInfo(hash, fileSize, lastModified);
+            return new KeyValuePair<string, HashInfo>(key, hashInfo);
         }
 
         static string SanitizeTextureName(string textureName)
@@ -132,24 +156,9 @@ namespace NetGore.EditorTools
 
         void Save()
         {
-            using (FileStream fs = File.Open(_dataFile, FileMode.Create, FileAccess.Write))
+            using (IValueWriter w = new XmlValueWriter(_dataFile, _rootNodeName))
             {
-                using (BinaryWriter w = new BinaryWriter(fs))
-                {
-                    w.Write(_textureHash.Count);
-                    foreach (var kvp in _textureHash)
-                    {
-                        string textureName = kvp.Key;
-                        string hash = kvp.Value.Hash;
-                        int fileSize = kvp.Value.FileSize;
-                        long lastMod = kvp.Value.LastModifiedTime;
-
-                        w.Write(textureName);
-                        w.Write(hash);
-                        w.Write(fileSize);
-                        w.Write(lastMod);
-                    }
-                }
+                w.WriteManyNodes(_rootNodeName, _textureHash, Write);
             }
         }
 
@@ -194,6 +203,14 @@ namespace NetGore.EditorTools
 
             // Save the updates
             Save();
+        }
+
+        static void Write(IValueWriter w, KeyValuePair<string, HashInfo> item)
+        {
+            w.Write(_textureNameValueKey, item.Key);
+            w.Write(_hashValueKey, item.Value.Hash);
+            w.Write(_fileSizeValueKey, item.Value.FileSize);
+            w.Write(_lastModifiedValueKey, item.Value.LastModifiedTime);
         }
 
         class HashInfo

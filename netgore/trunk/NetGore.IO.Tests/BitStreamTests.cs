@@ -72,16 +72,15 @@ namespace NetGore.IO.Tests
             return (BitStreamWriteHandler<T>)Delegate.CreateDelegate(typeof(BitStreamWriteHandler<T>), bitStream, methodInfo);
         }
 
+        static readonly IEnumerable<MethodInfo> _bitStreamReaderHandlerMethods = typeof(BitStream).GetMethods().Where(x => x.Name.StartsWith("Read") &&
+            x.Name != "Read" && !x.Name.StartsWith("ReadBit") && x.GetParameters().Count() == 0);
+
         static BitStreamReadHandler<T> GetReadHandler<T>(BitStream bitStream)
         {
             MethodInfo methodInfo = null;
-            foreach (MethodInfo mi in typeof(BitStream).GetMethods())
+            foreach (MethodInfo mi in _bitStreamReaderHandlerMethods)
             {
                 if (mi.ReturnType != typeof(T))
-                    continue;
-                if (!mi.Name.StartsWith("Read"))
-                    continue;
-                if (mi.Name == "Read" || mi.Name.StartsWith("ReadBit"))
                     continue;
 
                 methodInfo = mi;
