@@ -274,9 +274,7 @@ namespace DemoGame.NPCChatEditor
                                          new EditorNPCChatResponse("Ok, fine, whatever. Asshole."));
 
             dialog.Add(new EditorNPCChatDialogItem[]
-            {
-                haveYouDoneThisQuest, hasNotDoneThisQuest, acceptHelp, declineHelp, hasDoneThisQuest
-            });
+            { haveYouDoneThisQuest, hasNotDoneThisQuest, acceptHelp, declineHelp, hasDoneThisQuest });
 
             return dialog;
         }

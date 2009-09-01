@@ -94,21 +94,10 @@ namespace DemoGame.Client
         static List<StyledText> CreateChatText(string name, string method, string message)
         {
             if (string.IsNullOrEmpty(method))
-            {
-                return new List<StyledText>
-                {
-                    new StyledText(name + ": ", Color.Green),
-                    new StyledText(message, Color.Black)
-                };
-            }
+                return new List<StyledText> { new StyledText(name + ": ", Color.Green), new StyledText(message, Color.Black) };
             else
-            {
                 return new List<StyledText>
-                {
-                    new StyledText(name + " " + method + ": ", Color.Green),
-                    new StyledText(message, Color.Black)
-                };
-            }
+                { new StyledText(name + " " + method + ": ", Color.Green), new StyledText(message, Color.Black) };
         }
 
         public void Ping()

@@ -154,9 +154,7 @@ namespace DemoGame.Client
         public IEnumerable<NodeItem> Save()
         {
             return new NodeItem[]
-            {
-                new NodeItem("X", Position.X), new NodeItem("Y", Position.Y), new NodeItem("IsVisible", IsVisible)
-            };
+            { new NodeItem("X", Position.X), new NodeItem("Y", Position.Y), new NodeItem("IsVisible", IsVisible) };
         }
 
         #endregion

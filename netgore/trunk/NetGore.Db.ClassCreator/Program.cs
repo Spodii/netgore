@@ -13,10 +13,7 @@ namespace NetGore.Db.ClassCreator
         /// <summary>
         /// Contains the of the tables that will be exposed to the whole project instead of just the server.
         /// </summary>
-        static readonly ICollection<string> _globalTables = new string[]
-        {
-            "map"
-        };
+        static readonly ICollection<string> _globalTables = new string[] { "map" };
 
         /// <summary>
         /// Output directory for the generated code that is referenced by the whole project.
@@ -57,14 +54,8 @@ namespace NetGore.Db.ClassCreator
                 generator.AddUsing("DemoGame.DbObjs");
 
                 // Custom column collections
-                var baseStatTables = new string[]
-                {
-                    "character", "character_template", "item", "item_template"
-                };
-                var reqStatTables = new string[]
-                {
-                    "item", "item_template"
-                };
+                var baseStatTables = new string[] { "character", "character_template", "item", "item_template" };
+                var reqStatTables = new string[] { "item", "item_template" };
 
                 generator.AddColumnCollection("Stat", typeof(StatType), typeof(int), baseStatTables, baseStatColumns);
                 generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), reqStatTables, reqStatColumns);

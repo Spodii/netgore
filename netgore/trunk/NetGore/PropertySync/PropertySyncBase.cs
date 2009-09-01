@@ -186,10 +186,7 @@ namespace NetGore
             // to the type of the PropertySyncHandler itself
 
             // Get all of the class Types
-            var constructorParams = new Type[]
-            {
-                typeof(object), typeof(PropertyInfo)
-            };
+            var constructorParams = new Type[] { typeof(object), typeof(PropertyInfo) };
             var types = TypeHelper.FindTypesThatInherit(typeof(PropertySyncBase), constructorParams, false);
 
             foreach (Type type in types)

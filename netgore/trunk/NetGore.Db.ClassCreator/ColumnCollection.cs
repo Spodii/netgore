@@ -6,10 +6,7 @@ namespace NetGore.Db.ClassCreator
 {
     public class ColumnCollection
     {
-        static readonly char[] _vowels = new char[]
-        {
-            'a', 'e', 'i', 'o', 'u'
-        };
+        static readonly char[] _vowels = new char[] { 'a', 'e', 'i', 'o', 'u' };
 
         public string CollectionPropertyName
         {

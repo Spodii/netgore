@@ -1,5 +1,4 @@
 using System.Linq;
-using System.Xml;
 using Microsoft.Xna.Framework;
 using NetGore.IO;
 

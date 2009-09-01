@@ -97,10 +97,7 @@ namespace DemoGame.Client
 
         void Save(string filePath)
         {
-            using (XmlWriter w = XmlWriter.Create(filePath, new XmlWriterSettings
-            {
-                Indent = true
-            }))
+            using (XmlWriter w = XmlWriter.Create(filePath, new XmlWriterSettings { Indent = true }))
             {
                 w.WriteStartDocument();
                 w.WriteStartElement(_fileItemElementName + "s");

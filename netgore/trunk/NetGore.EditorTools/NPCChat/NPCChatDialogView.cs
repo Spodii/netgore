@@ -60,10 +60,7 @@ namespace NetGore.EditorTools
             }
 
             // Create the new node
-            TreeNode ret = new TreeNode
-            {
-                Tag = item
-            };
+            TreeNode ret = new TreeNode { Tag = item };
             item.TreeNodes.Add(ret);
             item.OnChange += HandleChangeDialogItem;
 
@@ -90,10 +87,7 @@ namespace NetGore.EditorTools
             }
 
             // Create the new node
-            TreeNode ret = new TreeNode
-            {
-                Tag = item
-            };
+            TreeNode ret = new TreeNode { Tag = item };
             item.TreeNodes.Add(ret);
             item.OnChange += HandleChangeResponse;
             parent.Nodes.Add(ret);
@@ -115,10 +109,7 @@ namespace NetGore.EditorTools
             // Create the new node
             EditorNPCChatDialogItem redirectTo = (EditorNPCChatDialogItem)item.Tag;
 
-            TreeNode ret = new TreeNode
-            {
-                Tag = item
-            };
+            TreeNode ret = new TreeNode { Tag = item };
             redirectTo.TreeNodes.Add(ret);
             redirectTo.OnChange += HandleChangeDialogItem;
             parent.Nodes.Add(ret);

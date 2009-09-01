@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace NetGore.Graphics
@@ -13,14 +12,15 @@ namespace NetGore.Graphics
         /// <summary>
         /// Dictionary of SkeletonBodyInfos, identified by their partial file name
         /// </summary>
-        readonly Dictionary<string, SkeletonBodyInfo> _bodyInfo = new Dictionary<string, SkeletonBodyInfo>(StringComparer.OrdinalIgnoreCase);
+        readonly Dictionary<string, SkeletonBodyInfo> _bodyInfo =
+            new Dictionary<string, SkeletonBodyInfo>(StringComparer.OrdinalIgnoreCase);
+
+        readonly string _dir;
 
         /// <summary>
         /// Dictionary of SkeletonSets, identified by their partial file name
         /// </summary>
         readonly Dictionary<string, SkeletonSet> _sets = new Dictionary<string, SkeletonSet>(StringComparer.OrdinalIgnoreCase);
-
-        readonly string _dir;
 
         /// <summary>
         /// Gets or the directory to load from.

@@ -42,10 +42,7 @@ namespace DemoGame.MapEditor
             if (radioAnimated.Checked)
             {
                 // Generate the frames
-                var framesText = txtFrames.Text.Split(new[]
-                {
-                    "\reader\n"
-                }, StringSplitOptions.RemoveEmptyEntries);
+                var framesText = txtFrames.Text.Split(new[] { "\reader\n" }, StringSplitOptions.RemoveEmptyEntries);
                 frames = new GrhIndex[framesText.Length];
                 for (int i = 0; i < framesText.Length; i++)
                 {

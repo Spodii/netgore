@@ -35,10 +35,7 @@ namespace DemoGame.Server
         /// <returns>An AIBase instance.</returns>
         public static AIBase Create(string aiName, Character character)
         {
-            return (AIBase)_typeCollection.GetTypeInstance(aiName, new object[]
-            {
-                character
-            });
+            return (AIBase)_typeCollection.GetTypeInstance(aiName, new object[] { character });
         }
 
         /// <summary>

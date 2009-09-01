@@ -14,10 +14,10 @@ namespace DemoGame.SkeletonEditor
     public static class SkeletonLoader
     {
         public const string BasicSkeletonBodyName = "basic";
-        public const string StandingSkeletonName = "stand";
-        public const string WalkingSkeletonSetName = "walk";
         public const string FallingSkeletonSetName = "fall";
         public const string JumpingSkeletonSetName = "jump";
+        public const string StandingSkeletonName = "stand";
+        public const string WalkingSkeletonSetName = "walk";
 
         /// <summary>
         /// Gets a SkeletonSet for the standing Skeleton.
@@ -29,6 +29,42 @@ namespace DemoGame.SkeletonEditor
             SkeletonFrame nFrame0 = new SkeletonFrame(StandingSkeletonName, newSkeleton);
             SkeletonSet newSet = new SkeletonSet(new[] { nFrame0 });
             return newSet;
+        }
+
+        /// <summary>
+        /// Loads a Skeleton from the given FilePath. Assumes the loading is from the ContentPaths.Dev.
+        /// </summary>
+        /// <param name="filePath">The file path.</param>
+        /// <returns>The loaded Skeleton, or null if the Skeleton failed to load.</returns>
+        public static Skeleton LoadSkeleton(string filePath)
+        {
+            string skeletonName = Path.GetFileNameWithoutExtension(filePath);
+            string realFilePath = Skeleton.GetFilePath(skeletonName, ContentPaths.Dev);
+
+            // Make sure the file exists
+            if (!File.Exists(realFilePath))
+            {
+                const string errmsg = "Failed to load Skeleton `{0}` from `{1}` - file does not exist.";
+                string err = string.Format(errmsg, skeletonName, filePath);
+                MessageBox.Show(err);
+                return null;
+            }
+
+            // Try to load the skeleton
+            Skeleton ret;
+            try
+            {
+                ret = new Skeleton(skeletonName, ContentPaths.Dev);
+            }
+            catch (Exception ex)
+            {
+                const string errmsg = "Failed to load Skeleton `{0}` from `{1}`:{2}{3})";
+                string err = string.Format(errmsg, skeletonName, filePath, Environment.NewLine, ex);
+                MessageBox.Show(err);
+                return null;
+            }
+
+            return ret;
         }
 
         /// <summary>
@@ -96,42 +132,6 @@ namespace DemoGame.SkeletonEditor
             {
                 const string errmsg = "Failed to load SkeletonSet `{0}` from `{1}`:{2}{3})";
                 string err = string.Format(errmsg, skeletonSetName, filePath, Environment.NewLine, ex);
-                MessageBox.Show(err);
-                return null;
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Loads a Skeleton from the given FilePath. Assumes the loading is from the ContentPaths.Dev.
-        /// </summary>
-        /// <param name="filePath">The file path.</param>
-        /// <returns>The loaded Skeleton, or null if the Skeleton failed to load.</returns>
-        public static Skeleton LoadSkeleton(string filePath)
-        {
-            string skeletonName = Path.GetFileNameWithoutExtension(filePath);
-            string realFilePath = Skeleton.GetFilePath(skeletonName, ContentPaths.Dev);
-
-            // Make sure the file exists
-            if (!File.Exists(realFilePath))
-            {
-                const string errmsg = "Failed to load Skeleton `{0}` from `{1}` - file does not exist.";
-                string err = string.Format(errmsg, skeletonName, filePath);
-                MessageBox.Show(err);
-                return null;
-            }
-
-            // Try to load the skeleton
-            Skeleton ret;
-            try
-            {
-                ret = new Skeleton(skeletonName, ContentPaths.Dev);
-            }
-            catch (Exception ex)
-            {
-                const string errmsg = "Failed to load Skeleton `{0}` from `{1}`:{2}{3})";
-                string err = string.Format(errmsg, skeletonName, filePath, Environment.NewLine, ex);
                 MessageBox.Show(err);
                 return null;
             }

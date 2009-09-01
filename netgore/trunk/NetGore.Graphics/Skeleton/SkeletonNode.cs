@@ -173,10 +173,7 @@ namespace NetGore.Graphics
                 return null;
             }
 
-            SkeletonNode ret = new SkeletonNode(new Vector2(root.Position.X, root.Position.Y))
-            {
-                Name = root.Name
-            };
+            SkeletonNode ret = new SkeletonNode(new Vector2(root.Position.X, root.Position.Y)) { Name = root.Name };
             foreach (SkeletonNode n in root.Nodes)
             {
                 SkeletonNode newChild = Duplicate(n);

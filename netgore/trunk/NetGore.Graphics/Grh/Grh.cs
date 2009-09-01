@@ -307,10 +307,7 @@ namespace NetGore.Graphics
         /// <returns>Duplicate of the Grh</returns>
         public Grh Duplicate()
         {
-            return new Grh(_grhData, _anim, _lastUpdated)
-            {
-                _frame = _frame
-            };
+            return new Grh(_grhData, _anim, _lastUpdated) { _frame = _frame };
         }
 
         /// <summary>

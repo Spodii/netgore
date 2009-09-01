@@ -391,10 +391,7 @@ namespace DemoGame.Client
             _gui = new GUIManager(_guiFont);
             Character.NameFont = _guiFont;
 
-            Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize)
-            {
-                CanFocus = false
-            };
+            Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize) { CanFocus = false };
             _statsForm = new StatsForm(UserInfo, cScreen);
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 

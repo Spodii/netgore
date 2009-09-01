@@ -109,27 +109,18 @@ namespace NetGore.Db.ClassCreator
             if (!(keyType.IsEnum))
                 throw new ArgumentException("Only Enums are supported for the keyType at the present.", "keyType");
 
-            ColumnCollection columnCollection = new ColumnCollection(name, keyType, valueType, new string[]
-            {
-                table
-            }, columns);
+            ColumnCollection columnCollection = new ColumnCollection(name, keyType, valueType, new string[] { table }, columns);
             _columnCollections.Add(columnCollection);
         }
 
         public void AddCustomType(Type type, string table, params string[] columns)
         {
-            AddCustomType(type, new string[]
-            {
-                table
-            }, columns);
+            AddCustomType(type, new string[] { table }, columns);
         }
 
         public void AddCustomType(string type, string table, params string[] columns)
         {
-            AddCustomType(type, new string[]
-            {
-                table
-            }, columns);
+            AddCustomType(type, new string[] { table }, columns);
         }
 
         public void AddCustomType(Type type, IEnumerable<string> tables, params string[] columns)
@@ -196,10 +187,7 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(8192);
 
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ClassSummary, cd.TableName)));
-            sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, false, new string[]
-            {
-                cd.InterfaceName
-            }));
+            sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, false, new string[] { cd.InterfaceName }));
             sb.AppendLine(Formatter.OpenBrace);
             {
                 // Other Fields/Properties
@@ -306,10 +294,7 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateConstructor(cd, fullConstructorBody, true));
 
                 // Constructor (self-referencing interface)
-                var sriConstructorParams = new MethodParameter[]
-                {
-                    new MethodParameter("source", cd.InterfaceName)
-                };
+                var sriConstructorParams = new MethodParameter[] { new MethodParameter("source", cd.InterfaceName) };
                 sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ConstructorSummary, cd.ClassName), null,
                                                       new KeyValuePair<string, string>("source",
                                                                                        string.Format(
@@ -530,10 +515,8 @@ namespace NetGore.Db.ClassCreator
                                                           new KeyValuePair<string, string>("key",
                                                                                            Comments.CreateFields.
                                                                                                PublicMethodGetKeyParameter)));
-                    sb.AppendLine(Formatter.GetMethodHeader("Get" + name, MemberVisibilityLevel.Public, new MethodParameter[]
-                    {
-                        keyParameter
-                    }, coll.ValueType, false, false));
+                    sb.AppendLine(Formatter.GetMethodHeader("Get" + name, MemberVisibilityLevel.Public,
+                                                            new MethodParameter[] { keyParameter }, coll.ValueType, false, false));
                     sb.AppendLine(
                         Formatter.GetMethodBody("return " + Formatter.GetCast(cd.GetExternalType(column)) + field +
                                                 Formatter.EndOfLine));
@@ -546,10 +529,13 @@ namespace NetGore.Db.ClassCreator
                                                           new KeyValuePair<string, string>("value",
                                                                                            Comments.CreateFields.
                                                                                                PublicMethodValueParameter)));
-                    sb.AppendLine(Formatter.GetMethodHeader("Set" + name, MemberVisibilityLevel.Public, new MethodParameter[]
-                    {
-                        keyParameter, new MethodParameter("value", coll.ValueType, Formatter)
-                    }, typeof(void), false, false));
+                    sb.AppendLine(Formatter.GetMethodHeader("Set" + name, MemberVisibilityLevel.Public,
+                                                            new MethodParameter[]
+                                                            {
+                                                                keyParameter,
+                                                                new MethodParameter("value", coll.ValueType, Formatter)
+                                                            },
+                                                            typeof(void), false, false));
 
                     sb.AppendLine(
                         Formatter.GetMethodBody(Formatter.GetSetValue(field, "value", true, false, cd.GetInternalType(column))));
@@ -563,10 +549,7 @@ namespace NetGore.Db.ClassCreator
         {
             const string sourceName = "source";
 
-            var parameters = new MethodParameter[]
-            {
-                new MethodParameter(sourceName, cd.InterfaceName)
-            };
+            var parameters = new MethodParameter[] { new MethodParameter(sourceName, cd.InterfaceName) };
 
             StringBuilder sb = new StringBuilder(2048);
 
@@ -630,13 +613,9 @@ namespace NetGore.Db.ClassCreator
             const string sourceName = "source";
 
             var iParameters = new MethodParameter[]
-            {
-                new MethodParameter(parameterName, typeof(IDictionary<string, object>), Formatter)
-            };
-            var sParameters = new MethodParameter[]
-            {
-                new MethodParameter(sourceName, cd.InterfaceName)
-            }.Concat(iParameters).ToArray();
+            { new MethodParameter(parameterName, typeof(IDictionary<string, object>), Formatter) };
+            var sParameters =
+                new MethodParameter[] { new MethodParameter(sourceName, cd.InterfaceName) }.Concat(iParameters).ToArray();
 
             StringBuilder sb = new StringBuilder(2048);
 
@@ -679,10 +658,7 @@ namespace NetGore.Db.ClassCreator
             const string methodName = "GetColumnData";
             const string parameterName = "columnName";
 
-            var parameters = new MethodParameter[]
-            {
-                new MethodParameter(parameterName, typeof(string), Formatter)
-            };
+            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
 
             StringBuilder sb = new StringBuilder(4096);
 
@@ -739,10 +715,7 @@ namespace NetGore.Db.ClassCreator
             const string parameterName = "columnName";
             const string methodName = "GetValue";
 
-            var parameters = new MethodParameter[]
-            {
-                new MethodParameter(parameterName, typeof(string), Formatter)
-            };
+            var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
 
             StringBuilder sb = new StringBuilder(2048);
 
@@ -781,8 +754,7 @@ namespace NetGore.Db.ClassCreator
             sb.AppendLine(Formatter.GetExtensionMethodHeader("ReadValues", new MethodParameter(_extensionParamName, cd.ClassName),
                                                              new MethodParameter[]
                                                              {
-                                                                 new MethodParameter(DataReaderName, typeof(IDataReader),
-                                                                                     Formatter)
+                                                                 new MethodParameter(DataReaderName, typeof(IDataReader), Formatter)
                                                              }, typeof(void)));
 
             // Body
@@ -906,8 +878,7 @@ namespace NetGore.Db.ClassCreator
                                                              new MethodParameter(_extensionParamName, cd.ClassName),
                                                              new MethodParameter[]
                                                              {
-                                                                 new MethodParameter(DataReaderName, typeof(IDataReader),
-                                                                                     Formatter)
+                                                                 new MethodParameter(DataReaderName, typeof(IDataReader), Formatter)
                                                              }, typeof(void)));
 
             // Body
@@ -1063,10 +1034,7 @@ namespace NetGore.Db.ClassCreator
             StringBuilder sb = new StringBuilder(code.Length + 512);
 
             // Header
-            IEnumerable<string> usings = new string[]
-            {
-                "System", "System.Linq"
-            };
+            IEnumerable<string> usings = new string[] { "System", "System.Linq" };
             if (!isInterface)
                 usings = usings.Concat(_usings);
 
