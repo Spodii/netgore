@@ -1,80 +1,96 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Skeleton>
-  <Node>
-    <Name>Back Knee</Name>
-    <X>-4.071892</X>
-    <Y>-22.02681</Y>
-    <ParentName>Pelvis</ParentName>
-  </Node>
-  <Node>
-    <Name>Back Foot</Name>
-    <X>-11.7368</X>
-    <Y>-7.982269</Y>
-    <ParentName>Back Knee</ParentName>
-  </Node>
-  <Node>
-    <Name>Back Toe</Name>
-    <X>-3.205183</X>
-    <Y>-1.038821</Y>
-    <ParentName>Back Foot</ParentName>
-  </Node>
-  <Node>
-    <Name>Front Knee</Name>
-    <X>11.92386</X>
-    <Y>-26.83128</Y>
-    <ParentName>Pelvis</ParentName>
-  </Node>
-  <Node>
-    <Name>Front Foot</Name>
-    <X>0.746294</X>
-    <Y>-15.38305</Y>
-    <ParentName>Front Knee</ParentName>
-  </Node>
-  <Node>
-    <Name>Front Toe</Name>
-    <X>8.998465</X>
-    <Y>-8.109699</Y>
-    <ParentName>Front Foot</ParentName>
-  </Node>
-  <Node>
-    <Name>Neck</Name>
-    <X>-1.072884E-06</X>
-    <Y>-61.5</Y>
-    <ParentName>Pelvis</ParentName>
-  </Node>
-  <Node>
-    <Name>Back Elbow</Name>
-    <X>0.6478975</X>
-    <Y>-55.53508</Y>
-    <ParentName>Neck</ParentName>
-  </Node>
-  <Node>
-    <Name>Back Hand</Name>
-    <X>6.762151</X>
-    <Y>-38.60534</Y>
-    <ParentName>Back Elbow</ParentName>
-  </Node>
-  <Node>
-    <Name>Front Elbow</Name>
-    <X>-1.627494</X>
-    <Y>-55.72495</Y>
-    <ParentName>Neck</ParentName>
-  </Node>
-  <Node>
-    <Name>Front Hand</Name>
-    <X>0.5235097</X>
-    <Y>-37.85393</Y>
-    <ParentName>Front Elbow</ParentName>
-  </Node>
-  <Node>
-    <Name>Head</Name>
-    <X>-2.384186E-07</X>
-    <Y>-71.5</Y>
-    <ParentName>Neck</ParentName>
-  </Node>
-  <Node>
-    <Name>Pelvis</Name>
-    <X>0</X>
-    <Y>-37.5</Y>
-  </Node>
-</Skeleton>
+<SkeletonFrame>
+  <Nodes>
+    <Count>13</Count>
+    <Item0>
+      <Name>Back Knee</Name>
+      <Position>-4.071892,-22.02681</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Pelvis</ParentName>
+    </Item0>
+    <Item1>
+      <Name>Back Foot</Name>
+      <Position>-11.7368,-7.982269</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Back Knee</ParentName>
+    </Item1>
+    <Item2>
+      <Name>Back Toe</Name>
+      <Position>-3.205183,-1.038821</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Back Foot</ParentName>
+    </Item2>
+    <Item3>
+      <Name>Front Knee</Name>
+      <Position>11.92386,-26.83128</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Pelvis</ParentName>
+    </Item3>
+    <Item4>
+      <Name>Front Foot</Name>
+      <Position>0.746294,-15.38305</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Front Knee</ParentName>
+    </Item4>
+    <Item5>
+      <Name>Front Toe</Name>
+      <Position>8.998465,-8.109699</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Front Foot</ParentName>
+    </Item5>
+    <Item6>
+      <Name>Neck</Name>
+      <Position>-1.072884E-06,-61.5</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Pelvis</ParentName>
+    </Item6>
+    <Item7>
+      <Name>Back Elbow</Name>
+      <Position>0.6478975,-55.53508</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Neck</ParentName>
+    </Item7>
+    <Item8>
+      <Name>Back Hand</Name>
+      <Position>6.762151,-38.60534</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Back Elbow</ParentName>
+    </Item8>
+    <Item9>
+      <Name>Front Elbow</Name>
+      <Position>-1.627494,-55.72495</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Neck</ParentName>
+    </Item9>
+    <Item10>
+      <Name>Front Hand</Name>
+      <Position>0.5235097,-37.85393</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Front Elbow</ParentName>
+    </Item10>
+    <Item11>
+      <Name>Head</Name>
+      <Position>-2.384186E-07,-71.5</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>True</HasParent>
+      <ParentName>Neck</ParentName>
+    </Item11>
+    <Item12>
+      <Name>Pelvis</Name>
+      <Position>0,-37.5</Position>
+      <IsModifier>False</IsModifier>
+      <HasParent>False</HasParent>
+    </Item12>
+  </Nodes>
+</SkeletonFrame>
