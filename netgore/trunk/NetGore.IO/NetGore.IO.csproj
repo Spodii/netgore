@@ -84,10 +84,10 @@
     <Compile Include="ValueReaderWriter\XmlValueHelper.cs" />
     <Compile Include="ValueReaderWriter\XmlValueReader.cs" />
     <Compile Include="ValueReaderWriter\XmlValueWriter.cs" />
-    <Compile Include="Xml\IRestorableSettings.cs" />
-    <Compile Include="Xml\NodeItem.cs" />
-    <Compile Include="Xml\NodeItems.cs" />
-    <Compile Include="Xml\SettingsManager.cs" />
+    <Compile Include="RestorableSettings\IRestorableSettings.cs" />
+    <Compile Include="RestorableSettings\NodeItem.cs" />
+    <Compile Include="RestorableSettings\NodeItems.cs" />
+    <Compile Include="RestorableSettings\SettingsManager.cs" />
     <Compile Include="Xml\XmlInfoReader.cs" />
   </ItemGroup>
   <ItemGroup>
