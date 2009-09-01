@@ -1,4 +1,6 @@
+using System;
 using System.Linq;
+using NetGore.Globalization;
 
 namespace NetGore.IO
 {
@@ -7,20 +9,74 @@ namespace NetGore.IO
     /// </summary>
     public struct NodeItem
     {
-        /// <summary>
-        /// Name of the node item.
-        /// </summary>
-        public readonly string Name;
+        readonly string _name;
+        readonly string _value;
 
         /// <summary>
-        /// Value of the node item.
+        /// Gets the name of the node item.
         /// </summary>
-        public readonly string Value;
+        public string Name
+        {
+            get { return _name; }
+        }
 
+        /// <summary>
+        /// Gets the value of the node item.
+        /// </summary>
+        public string Value
+        {
+            get { return _value; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NodeItem"/> struct.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        public NodeItem(string name, IFormattable value)
+        {
+            _name = name;
+            _value = value.ToString(null, Parser.Invariant.CultureInfo);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NodeItem"/> struct.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
+        public NodeItem(string name, string value)
+        {
+            _name = name;
+            _value = value ?? string.Empty;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NodeItem"/> struct.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="value">The value.</param>
         public NodeItem(string name, object value)
         {
-            Name = name;
-            Value = value.ToString();
+            _name = name;
+            _value = value == null ? string.Empty : value.ToString();
+        }
+
+        const string _nameValueKey = "Name";
+        const string _valueValueKey = "Value";
+
+        public NodeItem(IValueReader reader)
+        {
+            string name = reader.ReadString(_nameValueKey);
+            string value = reader.ReadString(_valueValueKey);
+
+            _name = name;
+            _value = value;
+        }
+
+        public void Write(IValueWriter writer)
+        {
+            writer.Write(_nameValueKey, Name);
+            writer.Write(_valueValueKey, Value);
         }
     }
 }

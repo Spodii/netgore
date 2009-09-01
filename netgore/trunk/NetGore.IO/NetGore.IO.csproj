@@ -88,8 +88,6 @@
     <Compile Include="Xml\NodeItem.cs" />
     <Compile Include="Xml\NodeItems.cs" />
     <Compile Include="Xml\SettingsManager.cs" />
-    <Compile Include="Xml\SimpleXmlReader.cs" />
-    <Compile Include="Xml\SimpleXmlWriter.cs" />
     <Compile Include="Xml\XmlInfoReader.cs" />
   </ItemGroup>
   <ItemGroup>

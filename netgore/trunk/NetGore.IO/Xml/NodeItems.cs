@@ -9,20 +9,34 @@ namespace NetGore.IO
     /// </summary>
     public struct NodeItems
     {
-        /// <summary>
-        /// Items that belong to the node.
-        /// </summary>
-        public readonly IEnumerable<NodeItem> Items;
+        readonly IEnumerable<NodeItem> _items;
+        readonly string _name;
 
         /// <summary>
-        /// Name of the node that the items belong to.
+        /// Gets the items that belong to the node.
         /// </summary>
-        public readonly string Name;
+        public IEnumerable<NodeItem> Items
+        {
+            get { return _items; }
+        }
 
+        /// <summary>
+        /// Gets the name of the node that the items belong to.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NodeItems"/> struct.
+        /// </summary>
+        /// <param name="node">The node.</param>
+        /// <param name="items">The items.</param>
         public NodeItems(string node, IEnumerable<NodeItem> items)
         {
-            Name = node;
-            Items = new List<NodeItem>(items);
+            _name = node;
+            _items = new List<NodeItem>(items);
         }
 
         /// <summary>
@@ -31,8 +45,8 @@ namespace NetGore.IO
         /// <returns>The Items in the form of a Dictionary indexed by the item's name.</returns>
         public IDictionary<string, string> ToDictionary()
         {
-            var ret = new Dictionary<string, string>(Items.Count(), StringComparer.OrdinalIgnoreCase);
-            foreach (NodeItem item in Items)
+            var ret = new Dictionary<string, string>(_items.Count(), StringComparer.OrdinalIgnoreCase);
+            foreach (NodeItem item in _items)
             {
                 ret.Add(item.Name, item.Value);
             }
