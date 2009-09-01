@@ -367,7 +367,7 @@ namespace DemoGame.MapEditor
             // Load the settings
             LoadSettings();
             _mapGrhWalls = new MapGrhWalls(ContentPaths.Dev);
-            _mapGrhWalls.Save(ContentPaths.Dev);
+
             // Create the world
             _world = new World(this, _camera);
         }
