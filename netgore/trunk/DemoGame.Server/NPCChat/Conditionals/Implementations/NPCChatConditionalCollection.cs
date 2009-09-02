@@ -5,11 +5,10 @@ using NetGore.NPCChat;
 
 namespace DemoGame.Server.NPCChat.Conditionals
 {
-    class NPCChatConditionalCollection<TUser, TNPC> : NPCChatConditionalCollectionBase<TUser, TNPC> where TUser : class
-                                                                                                    where TNPC : class
+    class NPCChatConditionalCollection : NPCChatConditionalCollectionBase
     {
         NPCChatConditionalEvaluationType _evaluationType;
-        NPCChatConditionalCollectionItemBase<TUser, TNPC>[] _items;
+        NPCChatConditionalCollectionItemBase[] _items;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalEvaluationType
@@ -27,9 +26,9 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <param name="reader">The IValueReader to read from.</param>
         /// <returns>A NPCChatConditionalCollectionItemBase instance with values read from
         /// the <paramref name="reader"/>.</returns>
-        protected override NPCChatConditionalCollectionItemBase<TUser, TNPC> CreateItem(IValueReader reader)
+        protected override NPCChatConditionalCollectionItemBase CreateItem(IValueReader reader)
         {
-            return new NPCChatConditionalCollectionItem<TUser, TNPC>(reader);
+            return new NPCChatConditionalCollectionItem(reader);
         }
 
         /// <summary>
@@ -39,7 +38,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public override IEnumerator<NPCChatConditionalCollectionItemBase<TUser, TNPC>> GetEnumerator()
+        public override IEnumerator<NPCChatConditionalCollectionItemBase> GetEnumerator()
         {
             foreach (var item in _items)
             {
@@ -50,8 +49,10 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
+        /// <param name="evaluationType">The NPCChatConditionalEvaluationType.</param>
+        /// <param name="items">The NPCChatConditionalCollectionItemBases.</param>
         protected override void SetReadValues(NPCChatConditionalEvaluationType evaluationType,
-                                              NPCChatConditionalCollectionItemBase<TUser, TNPC>[] items)
+                                              NPCChatConditionalCollectionItemBase[] items)
         {
             _evaluationType = evaluationType;
             _items = items;

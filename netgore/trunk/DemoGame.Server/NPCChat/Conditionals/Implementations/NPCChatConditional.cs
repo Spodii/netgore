@@ -8,10 +8,10 @@ namespace DemoGame.Server.NPCChat.Conditionals
     /// The base class for a conditional used in the NPC chatting. Each instanceable derived class
     /// must include a parameterless constructor (preferably private).
     /// </summary>
-    public abstract class NPCChatConditional : NPCChatConditionalBase<User, NPC>
+    public abstract class NPCChatConditional : NPCChatConditionalBase
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatConditionalBase&lt;TUser, TNPC&gt;"/> class.
+        /// Initializes a new instance of the <see cref="NPCChatConditional"/> class.
         /// </summary>
         /// <param name="name">The unique display name of this NPCChatConditionalBase. This name must be unique
         /// for each derived class type. This string is case-sensitive.</param>
@@ -67,6 +67,29 @@ namespace DemoGame.Server.NPCChat.Conditionals
             Debug.Assert(p <= 100f);
 
             return p;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, performs the actual conditional evaluation.
+        /// </summary>
+        /// <param name="user">The User.</param>
+        /// <param name="npc">The NPC.</param>
+        /// <param name="parameters">The parameters to use. </param>
+        /// <returns>True if the conditional returns true for the given <paramref name="user"/>,
+        /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
+        protected abstract bool DoEvaluate(User user, NPC npc, NPCChatConditionalParameter[] parameters);
+
+        /// <summary>
+        /// When overridden in the derived class, performs the actual conditional evaluation.
+        /// </summary>
+        /// <param name="user">The User.</param>
+        /// <param name="npc">The NPC.</param>
+        /// <param name="parameters">The parameters to use. </param>
+        /// <returns>True if the conditional returns true for the given <paramref name="user"/>,
+        /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
+        protected override bool DoEvaluate(object user, object npc, NPCChatConditionalParameter[] parameters)
+        {
+            return DoEvaluate((User)user, (NPC)npc, parameters);
         }
 
         /// <summary>

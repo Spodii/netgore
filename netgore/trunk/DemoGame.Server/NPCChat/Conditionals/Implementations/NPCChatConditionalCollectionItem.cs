@@ -4,17 +4,16 @@ using NetGore.NPCChat;
 
 namespace DemoGame.Server.NPCChat.Conditionals
 {
-    public class NPCChatConditionalCollectionItem<TUser, TNPC> : NPCChatConditionalCollectionItemBase<TUser, TNPC>
-        where TUser : class where TNPC : class
+    public class NPCChatConditionalCollectionItem : NPCChatConditionalCollectionItemBase
     {
-        NPCChatConditionalBase<TUser, TNPC> _conditional;
+        NPCChatConditionalBase _conditional;
         bool _not;
         NPCChatConditionalParameter[] _parameters;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalBase.
         /// </summary>
-        public override NPCChatConditionalBase<TUser, TNPC> Conditional
+        public override NPCChatConditionalBase Conditional
         {
             get { return _conditional; }
         }
@@ -39,7 +38,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatConditionalCollectionItem&lt;TUser, TNPC&gt;"/> class.
+        /// Initializes a new instance of the <see cref="NPCChatConditionalCollectionItem"/> class.
         /// </summary>
         /// <param name="r">The IValueReader to read from.</param>
         public NPCChatConditionalCollectionItem(IValueReader r)
@@ -53,7 +52,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <param name="conditional">The conditional.</param>
         /// <param name="not">The Not value.</param>
         /// <param name="parameters">The parameters.</param>
-        protected override void SetReadValues(NPCChatConditionalBase<TUser, TNPC> conditional, bool not,
+        protected override void SetReadValues(NPCChatConditionalBase conditional, bool not,
                                               NPCChatConditionalParameter[] parameters)
         {
             _conditional = conditional;

@@ -12,9 +12,7 @@ namespace NetGore.NPCChat
     /// The base class for a conditional used in the NPC chatting. Each instanceable derived class
     /// must include a parameterless constructor (preferably private).
     /// </summary>
-    /// <typeparam name="TUser">The Type of User.</typeparam>
-    /// <typeparam name="TNPC">The Type of NPC.</typeparam>
-    public abstract class NPCChatConditionalBase<TUser, TNPC> : INPCChatConditional where TUser : class where TNPC : class
+    public abstract class NPCChatConditionalBase
     {
         /// <summary>
         /// Array used for an empty set of INPCChatConditionalParameters.
@@ -29,8 +27,8 @@ namespace NetGore.NPCChat
         /// <summary>
         /// Dictionary that contains the NPCChatConditionalBase instance of each derived class, with the Name as the key.
         /// </summary>
-        static readonly Dictionary<string, NPCChatConditionalBase<TUser, TNPC>> _instances =
-            new Dictionary<string, NPCChatConditionalBase<TUser, TNPC>>(_nameComparer);
+        static readonly Dictionary<string, NPCChatConditionalBase> _instances =
+            new Dictionary<string, NPCChatConditionalBase>(_nameComparer);
 
         /// <summary>
         /// StringComparer used for the Name.
@@ -46,23 +44,23 @@ namespace NetGore.NPCChat
         /// <summary>
         /// Gets an IEnumerable of the NPCChatConditionalBases.
         /// </summary>
-        public static IEnumerable<NPCChatConditionalBase<TUser, TNPC>> Conditionals
+        public static IEnumerable<NPCChatConditionalBase> Conditionals
         {
             get { return _instances.Values; }
         }
 
         /// <summary>
-        /// Initializes the <see cref="NPCChatConditionalBase&lt;TUser, TNPC&gt;"/> class.
+        /// Initializes the <see cref="NPCChatConditionalBase"/> class.
         /// </summary>
         static NPCChatConditionalBase()
         {
-            var filter = FactoryTypeCollection.CreateFilter(typeof(NPCChatConditionalBase<TUser, TNPC>), true, Type.EmptyTypes);
+            var filter = FactoryTypeCollection.CreateFilter(typeof(NPCChatConditionalBase), true, Type.EmptyTypes);
             _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler, false);
             _typeCollection.BeginLoading();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatConditionalBase&lt;TUser, TNPC&gt;"/> class.
+        /// Initializes a new instance of the <see cref="NPCChatConditionalBase"/> class.
         /// </summary>
         /// <param name="name">The unique display name of this NPCChatConditionalBase. This name must be unique
         /// for each derived class type. This string is case-sensitive.</param>
@@ -94,7 +92,7 @@ namespace NetGore.NPCChat
         /// <param name="parameters">The parameters to use. </param>
         /// <returns>True if the conditional returns true for the given <paramref name="user"/>,
         /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
-        protected abstract bool DoEvaluate(TUser user, TNPC npc, NPCChatConditionalParameter[] parameters);
+        protected abstract bool DoEvaluate(object user, object npc, NPCChatConditionalParameter[] parameters);
 
         /// <summary>
         /// Checks the conditional against the given <paramref name="user"/> and <paramref name="npc"/>.
@@ -108,7 +106,7 @@ namespace NetGore.NPCChat
         /// <exception cref="ArgumentException">An invalid number of INPCChatConditionalParameters specified in the
         /// <paramref name="parameters"/>, or one or more of the ValueTypes in the <paramref name="parameters"/>
         /// are not of the correct type.</exception>
-        public bool Evaluate(TUser user, TNPC npc, params NPCChatConditionalParameter[] parameters)
+        public bool Evaluate(object user, object npc, params NPCChatConditionalParameter[] parameters)
         {
             const string errmsgNumberOfParameters = "Invalid number of parameters. Expected {0}, but was given {1}.";
             const string errmsgValueType = "Invalid ValueType for parameter {0}. Expected `{1}`, but was given `{2}`.";
@@ -150,7 +148,7 @@ namespace NetGore.NPCChat
         /// </summary>
         /// <param name="name">The name of the NPCChatConditionalBase to get.</param>
         /// <returns>The NPCChatConditionalBase with the given <paramref name="name"/>.</returns>
-        public static NPCChatConditionalBase<TUser, TNPC> GetConditional(string name)
+        public static NPCChatConditionalBase GetConditional(string name)
         {
             return _instances[name];
         }
@@ -163,7 +161,7 @@ namespace NetGore.NPCChat
         /// <param name="name">Name of the Type.</param>
         static void OnLoadTypeHandler(FactoryTypeCollection factoryTypeCollection, Type loadedType, string name)
         {
-            var instance = (NPCChatConditionalBase<TUser, TNPC>)_typeCollection.GetTypeInstance(name);
+            var instance = (NPCChatConditionalBase)_typeCollection.GetTypeInstance(name);
 
             // Make sure the name is not already in use
             if (_instances.ContainsKey(instance.Name))
@@ -183,8 +181,6 @@ namespace NetGore.NPCChat
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded NPC chat conditional `{0}` from Type `{1}`.", instance.Name, loadedType);
         }
-
-        #region INPCChatConditional Members
 
         /// <summary>
         /// Gets the unique name for this INPCChatConditional. This string is case-sensitive.
@@ -224,7 +220,5 @@ namespace NetGore.NPCChat
 
             return _parameterTypes[index];
         }
-
-        #endregion
     }
 }
