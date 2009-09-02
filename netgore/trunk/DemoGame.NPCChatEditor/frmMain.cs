@@ -307,6 +307,9 @@ namespace DemoGame.NPCChatEditor
                         control.EnabledChanged += ((obj, eArgs) => ((Control)obj).Enabled = false);
                 }
 
+                // Disable conditional controls by default
+                SetConditionalsEnabled(false);
+
                 // Add the dialogs
                 cmbSelectedDialog.Items.Clear();
                 cmbSelectedDialog.AddDialog(EditorNPCChatManager.Dialogs.OfType<NPCChatDialogBase>());
@@ -318,6 +321,9 @@ namespace DemoGame.NPCChatEditor
                 // Populate the conditional types
                 cmbConditionalType.Items.Clear();
                 cmbConditionalType.Items.AddRange(NPCChatConditional.Conditionals.OrderBy(x => x.Name).ToArray());
+
+                // Perform the initial resize
+                frmMain_Resize(this, null);
             }
             catch (Exception ex)
             {
@@ -338,14 +344,9 @@ namespace DemoGame.NPCChatEditor
             gbSelectedNode.Width = ClientSize.Width - (gbSelectedNode.Left * 2);
 
             npcChatDialogView.Width = ClientSize.Width - (npcChatDialogView.Left * 2);
-            npcChatDialogView.Height = gbSelectedNode.Top - (npcChatDialogView.Top * 2) + 6;
+            npcChatDialogView.Height = gbSelectedNode.Top - npcChatDialogView.Top - 6;
 
             button1.Left = ClientSize.Width - button1.Width - 3;
-        }
-
-        void gbSelectedNode_Resize(object sender, EventArgs e)
-        {
-            txtTitle.Width = gbSelectedNode.ClientSize.Width - txtTitle.Left - 6;
         }
 
         static IEnumerable<Control> GetAllControls(Control root)
@@ -392,9 +393,7 @@ namespace DemoGame.NPCChatEditor
 
         void SetConditionalsEnabled(bool enabled)
         {
-            cmbConditionalType.Enabled = enabled;
-            lstConditionals.Enabled = enabled;
-            txtConditionalValue.Enabled = enabled;
+            gbConditionals.Enabled = enabled;
         }
 
         void SetEditingObject(object obj)
