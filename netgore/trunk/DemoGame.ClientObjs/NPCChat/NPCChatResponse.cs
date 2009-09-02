@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
@@ -42,11 +43,29 @@ namespace DemoGame.Client.NPCChat
         }
 
         /// <summary>
+        /// Not used by the Client, and will always return null.
+        /// </summary>
+        public override NPCChatConditionalCollectionBase Conditionals
+        {
+            get { return null; }
+        }
+
+        /// <summary>
         /// NPCChatResponse constructor.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
-        internal NPCChatResponse(IValueReader r) : base(r)
+        internal NPCChatResponse(IValueReader reader) : base(reader)
         {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
+        /// </summary>
+        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
+        /// want to load the conditionals when using Read.</returns>
+        protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
+        {
+            return null;
         }
 
         /// <summary>
@@ -55,7 +74,8 @@ namespace DemoGame.Client.NPCChat
         /// <param name="value">The value.</param>
         /// <param name="page">The page.</param>
         /// <param name="text">The text.</param>
-        protected override void SetReadValues(byte value, ushort page, string text)
+        /// <param name="conditionals">The conditionals.</param>
+        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals)
         {
             Debug.Assert(_value == default(byte) && _page == default(ushort) && _text == default(string),
                          "Values were already set?");

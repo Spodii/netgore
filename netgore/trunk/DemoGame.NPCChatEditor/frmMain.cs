@@ -296,7 +296,25 @@ namespace DemoGame.NPCChatEditor
             }
         }
 
-        void Form1_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Contains the NPCChatConditionalBases available.
+        /// </summary>
+        static readonly NPCChatConditionalBase[] _npcChatConditionals;
+
+        /// <summary>
+        /// Initializes the <see cref="frmMain"/> class.
+        /// </summary>
+        static frmMain()
+        {
+            _npcChatConditionals = NPCChatConditionalBase.Conditionals.OrderBy(x => x.Name).ToArray();
+        }
+
+        /// <summary>
+        /// Handles the Load event of the frmMain control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void frmMain_Load(object sender, EventArgs e)
         {
             try
             {
@@ -319,10 +337,6 @@ namespace DemoGame.NPCChatEditor
                 if (cmbSelectedDialog.Items.Count > 0)
                     cmbSelectedDialog.SelectedIndex = 0;
 
-                // Populate the conditional types
-                cmbConditionalType.Items.Clear();
-                cmbConditionalType.Items.AddRange(NPCChatConditional.Conditionals.OrderBy(x => x.Name).ToArray());
-
                 // Populate the evaluation types
                 var chatConditionalTypes = EnumHelper.GetValues<NPCChatConditionalEvaluationType>();
                 cmbEvaluateType.Items.Clear();
@@ -338,12 +352,22 @@ namespace DemoGame.NPCChatEditor
             }
         }
 
+        /// <summary>
+        /// Handles the FormClosing event of the frmMain control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.FormClosingEventArgs"/> instance containing the event data.</param>
         void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             // NOTE: Temp removal of saving
             // EditorNPCChatManager.SaveDialogs();
         }
 
+        /// <summary>
+        /// Handles the Resize event of the frmMain control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void frmMain_Resize(object sender, EventArgs e)
         {
             gbSelectedNode.Top = ClientSize.Height - gbSelectedNode.Height - gbSelectedNode.Left;
@@ -428,8 +452,8 @@ namespace DemoGame.NPCChatEditor
                 txtResponseValue.Text = EditingObjAsResponse.Value.ToString();
 
                 SetConditionalsEnabled(true);
-
-                //lstConditionals.ConditionalCollection = new NetGore.EditorTools.NPCChat.EditorNPCChatConditionalCollection(
+                lstConditionals.SetConditionalCollection(EditingObjAsResponse.Conditionals);
+                EditingObjAsResponse.SetConditionals(lstConditionals.ConditionalCollection);
             }
             else if (obj is TreeNode)
             {
@@ -523,7 +547,13 @@ namespace DemoGame.NPCChatEditor
 
         private void lstConditionals_DoubleClick(object sender, EventArgs e)
         {
-            lstConditionals.EditCurrentItem();
+            lstConditionals.EditCurrentItem(_npcChatConditionals);
+        }
+
+        private void btnAddConditional_Click(object sender, EventArgs e)
+        {
+            var newItem = new EditorNPCChatConditionalCollectionItem(_npcChatConditionals[0]);
+            lstConditionals.TryAddToConditionalCollection(newItem);
         }
     }
 }
