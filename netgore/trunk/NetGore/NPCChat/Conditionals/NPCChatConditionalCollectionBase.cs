@@ -11,15 +11,11 @@ namespace NetGore.NPCChat
     /// </summary>
     /// <typeparam name="TUser">The Type of User.</typeparam>
     /// <typeparam name="TNPC">The Type of NPC.</typeparam>
-    public abstract class NPCChatConditionalCollectionBase<TUser, TNPC> :
-        IEnumerable<NPCChatConditionalCollectionItemBase<TUser, TNPC>> where TUser : class where TNPC : class
+    public abstract class NPCChatConditionalCollectionBase<TUser, TNPC> : INPCChatConditionalCollection,
+                                                                          IEnumerable
+                                                                              <NPCChatConditionalCollectionItemBase<TUser, TNPC>>
+        where TUser : class where TNPC : class
     {
-        /// <summary>
-        /// When overridden in the derived class, gets the NPCChatConditionalEvaluationType
-        /// used when evaluating this conditional collection.
-        /// </summary>
-        public abstract NPCChatConditionalEvaluationType EvaluationType { get; }
-
         /// <summary>
         /// Creates a NPCChatConditionalCollectionItemBase instance then reades the values for it from the
         /// given IValueReader.
@@ -113,6 +109,34 @@ namespace NetGore.NPCChat
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
+        }
+
+        #endregion
+
+        #region INPCChatConditionalCollection Members
+
+        /// <summary>
+        /// When overridden in the derived class, gets the NPCChatConditionalEvaluationType
+        /// used when evaluating this conditional collection.
+        /// </summary>
+        public abstract NPCChatConditionalEvaluationType EvaluationType { get; }
+
+        /// <summary>
+        /// Reads the values for this NPCChatConditionalCollectionBase from an IValueReader.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        void INPCChatConditionalCollection.Read(IValueReader reader)
+        {
+            Read(reader);
+        }
+
+        /// <summary>
+        /// Writes the NPCChatConditionalCollectionBase's values to an IValueWriter.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write the values to.</param>
+        void INPCChatConditionalCollection.Write(IValueWriter writer)
+        {
+            Write(writer);
         }
 
         #endregion

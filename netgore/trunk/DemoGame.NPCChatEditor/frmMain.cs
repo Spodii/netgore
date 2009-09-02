@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using DemoGame.Server.NPCChat.Conditionals;
+using NetGore;
 using NetGore.EditorTools;
 using NetGore.Globalization;
 using NetGore.NPCChat;
@@ -322,6 +323,11 @@ namespace DemoGame.NPCChatEditor
                 cmbConditionalType.Items.Clear();
                 cmbConditionalType.Items.AddRange(NPCChatConditional.Conditionals.OrderBy(x => x.Name).ToArray());
 
+                // Populate the evaluation types
+                var chatConditionalTypes = EnumHelper.GetValues<NPCChatConditionalEvaluationType>();
+                cmbEvaluateType.Items.Clear();
+                cmbEvaluateType.Items.AddRange(chatConditionalTypes.Select(x => (object)x).ToArray());
+
                 // Perform the initial resize
                 frmMain_Resize(this, null);
             }
@@ -373,10 +379,6 @@ namespace DemoGame.NPCChatEditor
             }
         }
 
-        void lstConditionals_SelectedIndexChanged(object sender, EventArgs e)
-        {
-        }
-
         void npcChatDialogView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             SetEditingObject(e.Node.Tag);
@@ -404,6 +406,8 @@ namespace DemoGame.NPCChatEditor
             _doNotUpdateObj = true;
             _editingObj = obj;
 
+            SetConditionalsEnabled(false);
+
             if (obj is EditorNPCChatDialogItem)
             {
                 DisableAllTabsExcept(tcChatDialogItem, tpDialog);
@@ -422,6 +426,10 @@ namespace DemoGame.NPCChatEditor
                 txtDialogText.Text = EditingObjAsResponse.Text;
                 txtResponseIndex.Text = EditingObjAsResponse.Page.ToString();
                 txtResponseValue.Text = EditingObjAsResponse.Value.ToString();
+
+                SetConditionalsEnabled(true);
+
+                //lstConditionals.ConditionalCollection = new NetGore.EditorTools.NPCChat.EditorNPCChatConditionalCollection(
             }
             else if (obj is TreeNode)
             {
@@ -511,6 +519,11 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetTitle(txtTitle.Text);
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
+        }
+
+        private void lstConditionals_DoubleClick(object sender, EventArgs e)
+        {
+            lstConditionals.EditCurrentItem();
         }
     }
 }
