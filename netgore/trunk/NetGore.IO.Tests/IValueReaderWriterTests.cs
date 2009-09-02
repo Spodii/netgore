@@ -535,28 +535,6 @@ namespace NetGore.IO.Tests
         }
 
         [Test]
-        public void TestFloats()
-        {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
-            {
-                using (ReaderWriterCreatorBase creator = createCreator())
-                {
-                    var v1 = Range(0, 100, 1, x => (float)x);
-
-                    using (IValueWriter w = creator.GetWriter())
-                    {
-                        WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
-                    }
-
-                    IValueReader r = creator.GetReader();
-                    {
-                        ReadTestValues(r, v1, ((preader, pname) => preader.ReadFloat(pname)));
-                    }
-                }
-            }
-        }
-
-        [Test]
         public void TestDoubles()
         {
             foreach (CreateCreatorHandler createCreator in _createCreators)
@@ -573,6 +551,28 @@ namespace NetGore.IO.Tests
                     IValueReader r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadDouble(pname)));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void TestFloats()
+        {
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    var v1 = Range(0, 100, 1, x => (float)x);
+
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
+                    }
+
+                    IValueReader r = creator.GetReader();
+                    {
+                        ReadTestValues(r, v1, ((preader, pname) => preader.ReadFloat(pname)));
                     }
                 }
             }
@@ -617,28 +617,6 @@ namespace NetGore.IO.Tests
                     IValueReader r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadLong(pname)));
-                    }
-                }
-            }
-        }
-
-        [Test]
-        public void TestULongs()
-        {
-            foreach (CreateCreatorHandler createCreator in _createCreators)
-            {
-                using (ReaderWriterCreatorBase creator = createCreator())
-                {
-                    var v1 = Range(0, 100, 1, x => (ulong)x);
-
-                    using (IValueWriter w = creator.GetWriter())
-                    {
-                        WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
-                    }
-
-                    IValueReader r = creator.GetReader();
-                    {
-                        ReadTestValues(r, v1, ((preader, pname) => preader.ReadULong(pname)));
                     }
                 }
             }
@@ -1043,6 +1021,460 @@ namespace NetGore.IO.Tests
         }
 
         [Test]
+        public void TestNodesDeepLinear()
+        {
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    if (!creator.SupportsNodes)
+                        continue;
+
+                    var v1 = Range(0, 100, 1, x => x % 3 == 0);
+                    var v2 = Range(0, 100, 1, x => (int)x);
+                    var v3 = Range(0, 100, 1, x => (float)x);
+                    var v4 = Range(0, 100, 1, x => (byte)x);
+                    var v5 = Range(0, 100, 1, x => (ushort)x);
+                    var v6 = Range(0, 100, 1, x => Parser.Invariant.ToString(x));
+
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        w.WriteStartNode("a1");
+                        {
+                            w.WriteMany("v1", v1, w.Write);
+                            w.WriteMany("v2", v2, w.Write);
+                            w.WriteMany("v3", v3, w.Write);
+                            w.WriteMany("v4", v4, w.Write);
+                            w.WriteMany("v5", v5, w.Write);
+                            w.WriteMany("v6", v6, w.Write);
+
+                            w.WriteStartNode("b1");
+                            {
+                                w.WriteMany("v1", v1, w.Write);
+                                w.WriteMany("v2", v2, w.Write);
+                                w.WriteMany("v3", v3, w.Write);
+                                w.WriteMany("v4", v4, w.Write);
+                                w.WriteMany("v5", v5, w.Write);
+                                w.WriteMany("v6", v6, w.Write);
+
+                                w.WriteStartNode("c1");
+                                {
+                                    w.WriteMany("v1", v1, w.Write);
+                                    w.WriteMany("v2", v2, w.Write);
+                                    w.WriteMany("v3", v3, w.Write);
+                                    w.WriteMany("v4", v4, w.Write);
+                                    w.WriteMany("v5", v5, w.Write);
+                                    w.WriteMany("v6", v6, w.Write);
+                                }
+                                w.WriteEndNode("c1");
+
+                                w.WriteStartNode("c2");
+                                {
+                                    w.WriteMany("v1", v1, w.Write);
+                                    w.WriteMany("v2", v2, w.Write);
+                                    w.WriteMany("v3", v3, w.Write);
+                                    w.WriteMany("v4", v4, w.Write);
+                                    w.WriteMany("v5", v5, w.Write);
+                                    w.WriteMany("v6", v6, w.Write);
+
+                                    w.WriteStartNode("d1");
+                                    {
+                                        w.WriteMany("v1", v1, w.Write);
+                                        w.WriteMany("v2", v2, w.Write);
+                                        w.WriteMany("v3", v3, w.Write);
+                                        w.WriteMany("v4", v4, w.Write);
+                                        w.WriteMany("v5", v5, w.Write);
+                                        w.WriteMany("v6", v6, w.Write);
+                                    }
+                                    w.WriteEndNode("d1");
+                                }
+                                w.WriteEndNode("c2");
+                            }
+                            w.WriteEndNode("b1");
+
+                            w.WriteStartNode("b2");
+                            {
+                                w.WriteMany("v1", v1, w.Write);
+                                w.WriteMany("v2", v2, w.Write);
+                                w.WriteMany("v3", v3, w.Write);
+                                w.WriteMany("v4", v4, w.Write);
+                                w.WriteMany("v5", v5, w.Write);
+                                w.WriteMany("v6", v6, w.Write);
+
+                                w.WriteStartNode("c1");
+                                {
+                                    w.WriteMany("v1", v1, w.Write);
+                                    w.WriteMany("v2", v2, w.Write);
+                                    w.WriteMany("v3", v3, w.Write);
+                                    w.WriteMany("v4", v4, w.Write);
+                                    w.WriteMany("v5", v5, w.Write);
+                                    w.WriteMany("v6", v6, w.Write);
+                                }
+                                w.WriteEndNode("c1");
+                            }
+                            w.WriteEndNode("b2");
+                        }
+                        w.WriteEndNode("a1");
+
+                        w.WriteStartNode("a2");
+                        {
+                            w.WriteMany("v1", v1, w.Write);
+                            w.WriteMany("v2", v2, w.Write);
+                            w.WriteMany("v3", v3, w.Write);
+                            w.WriteMany("v4", v4, w.Write);
+                            w.WriteMany("v5", v5, w.Write);
+                            w.WriteMany("v6", v6, w.Write);
+
+                            w.WriteStartNode("b1");
+                            {
+                                w.WriteMany("v1", v1, w.Write);
+                                w.WriteMany("v2", v2, w.Write);
+                                w.WriteMany("v3", v3, w.Write);
+                                w.WriteMany("v4", v4, w.Write);
+                                w.WriteMany("v5", v5, w.Write);
+                                w.WriteMany("v6", v6, w.Write);
+                            }
+                            w.WriteEndNode("b1");
+
+                            w.WriteStartNode("b2");
+                            {
+                                w.WriteMany("v1", v1, w.Write);
+                                w.WriteMany("v2", v2, w.Write);
+                                w.WriteMany("v3", v3, w.Write);
+                                w.WriteMany("v4", v4, w.Write);
+                                w.WriteMany("v5", v5, w.Write);
+                                w.WriteMany("v6", v6, w.Write);
+                            }
+                            w.WriteEndNode("b2");
+                        }
+                        w.WriteEndNode("a2");
+                    }
+
+                    IValueReader r = creator.GetReader();
+                    {
+                        IValueReader a1 = r.ReadNode("a1");
+                        IValueReader c = a1;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        IValueReader a1b1 = a1.ReadNode("b1");
+                        c = a1b1;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        IValueReader a1b1c1 = a1b1.ReadNode("c1");
+                        c = a1b1c1;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        IValueReader a1b1c2 = a1b1.ReadNode("c2");
+                        c = a1b1c2;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        IValueReader a1b1c2d1 = a1b1c2.ReadNode("d1");
+                        c = a1b1c2d1;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        IValueReader a1b2 = a1.ReadNode("b2");
+                        c = a1b2;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        IValueReader a1b2c1 = a1b2.ReadNode("c1");
+                        c = a1b2c1;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        IValueReader a2 = r.ReadNode("a2");
+                        c = a2;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        IValueReader a2b1 = a2.ReadNode("b1");
+                        c = a2b1;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        IValueReader a2b2 = a2.ReadNode("b2");
+                        c = a2b2;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void TestNodesDeepRandom()
+        {
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    if (!creator.SupportsNodes || !creator.SupportsNameLookup)
+                        continue;
+
+                    var v1 = Range(0, 100, 1, x => x % 3 == 0);
+                    var v2 = Range(0, 100, 1, x => (int)x);
+                    var v3 = Range(0, 100, 1, x => (float)x);
+                    var v4 = Range(0, 100, 1, x => (byte)x);
+                    var v5 = Range(0, 100, 1, x => (ushort)x);
+                    var v6 = Range(0, 100, 1, x => Parser.Invariant.ToString(x));
+
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        w.WriteStartNode("a1");
+                        {
+                            w.WriteMany("v1", v1, w.Write);
+                            w.WriteMany("v2", v2, w.Write);
+                            w.WriteMany("v3", v3, w.Write);
+                            w.WriteMany("v4", v4, w.Write);
+                            w.WriteMany("v5", v5, w.Write);
+                            w.WriteMany("v6", v6, w.Write);
+
+                            w.WriteStartNode("b1");
+                            {
+                                w.WriteMany("v1", v1, w.Write);
+                                w.WriteMany("v2", v2, w.Write);
+                                w.WriteMany("v3", v3, w.Write);
+                                w.WriteMany("v4", v4, w.Write);
+                                w.WriteMany("v5", v5, w.Write);
+                                w.WriteMany("v6", v6, w.Write);
+
+                                w.WriteStartNode("c1");
+                                {
+                                    w.WriteMany("v1", v1, w.Write);
+                                    w.WriteMany("v2", v2, w.Write);
+                                    w.WriteMany("v3", v3, w.Write);
+                                    w.WriteMany("v4", v4, w.Write);
+                                    w.WriteMany("v5", v5, w.Write);
+                                    w.WriteMany("v6", v6, w.Write);
+                                }
+                                w.WriteEndNode("c1");
+
+                                w.WriteStartNode("c2");
+                                {
+                                    w.WriteMany("v1", v1, w.Write);
+                                    w.WriteMany("v2", v2, w.Write);
+                                    w.WriteMany("v3", v3, w.Write);
+                                    w.WriteMany("v4", v4, w.Write);
+                                    w.WriteMany("v5", v5, w.Write);
+                                    w.WriteMany("v6", v6, w.Write);
+
+                                    w.WriteStartNode("d1");
+                                    {
+                                        w.WriteMany("v1", v1, w.Write);
+                                        w.WriteMany("v2", v2, w.Write);
+                                        w.WriteMany("v3", v3, w.Write);
+                                        w.WriteMany("v4", v4, w.Write);
+                                        w.WriteMany("v5", v5, w.Write);
+                                        w.WriteMany("v6", v6, w.Write);
+                                    }
+                                    w.WriteEndNode("d1");
+                                }
+                                w.WriteEndNode("c2");
+                            }
+                            w.WriteEndNode("b1");
+
+                            w.WriteStartNode("b2");
+                            {
+                                w.WriteMany("v1", v1, w.Write);
+                                w.WriteMany("v2", v2, w.Write);
+                                w.WriteMany("v3", v3, w.Write);
+                                w.WriteMany("v4", v4, w.Write);
+                                w.WriteMany("v5", v5, w.Write);
+                                w.WriteMany("v6", v6, w.Write);
+
+                                w.WriteStartNode("c1");
+                                {
+                                    w.WriteMany("v1", v1, w.Write);
+                                    w.WriteMany("v2", v2, w.Write);
+                                    w.WriteMany("v3", v3, w.Write);
+                                    w.WriteMany("v4", v4, w.Write);
+                                    w.WriteMany("v5", v5, w.Write);
+                                    w.WriteMany("v6", v6, w.Write);
+                                }
+                                w.WriteEndNode("c1");
+                            }
+                            w.WriteEndNode("b2");
+                        }
+                        w.WriteEndNode("a1");
+
+                        w.WriteStartNode("a2");
+                        {
+                            w.WriteMany("v1", v1, w.Write);
+                            w.WriteMany("v2", v2, w.Write);
+                            w.WriteMany("v3", v3, w.Write);
+                            w.WriteMany("v4", v4, w.Write);
+                            w.WriteMany("v5", v5, w.Write);
+                            w.WriteMany("v6", v6, w.Write);
+
+                            w.WriteStartNode("b1");
+                            {
+                                w.WriteMany("v1", v1, w.Write);
+                                w.WriteMany("v2", v2, w.Write);
+                                w.WriteMany("v3", v3, w.Write);
+                                w.WriteMany("v4", v4, w.Write);
+                                w.WriteMany("v5", v5, w.Write);
+                                w.WriteMany("v6", v6, w.Write);
+                            }
+                            w.WriteEndNode("b1");
+
+                            w.WriteStartNode("b2");
+                            {
+                                w.WriteMany("v1", v1, w.Write);
+                                w.WriteMany("v2", v2, w.Write);
+                                w.WriteMany("v3", v3, w.Write);
+                                w.WriteMany("v4", v4, w.Write);
+                                w.WriteMany("v5", v5, w.Write);
+                                w.WriteMany("v6", v6, w.Write);
+                            }
+                            w.WriteEndNode("b2");
+                        }
+                        w.WriteEndNode("a2");
+                    }
+
+                    IValueReader r = creator.GetReader();
+                    {
+                        IValueReader a1 = r.ReadNode("a1");
+                        IValueReader a1b1 = a1.ReadNode("b1");
+                        IValueReader a1b1c1 = a1b1.ReadNode("c1");
+                        IValueReader a1b1c2 = a1b1.ReadNode("c2");
+                        IValueReader a1b1c2d1 = a1b1c2.ReadNode("d1");
+                        IValueReader a1b2 = a1.ReadNode("b2");
+                        IValueReader a1b2c1 = a1b2.ReadNode("c1");
+
+                        IValueReader a2 = r.ReadNode("a2");
+                        IValueReader a2b1 = a2.ReadNode("b1");
+                        IValueReader a2b2 = a2.ReadNode("b2");
+
+                        IValueReader c = a1;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        c = a1b2c1;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        c = a1b2;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        c = a1b1c2d1;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        c = a1b2;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        c = a1b1c2;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        c = a1b1c1;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        c = a2b2;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        c = a2b1;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+
+                        c = a2;
+                        AssertArraysEqual(v1, c.ReadMany("v1", ((preader, pname) => preader.ReadBool(pname))));
+                        AssertArraysEqual(v2, c.ReadMany("v2", ((preader, pname) => preader.ReadInt(pname))));
+                        AssertArraysEqual(v3, c.ReadMany("v3", ((preader, pname) => preader.ReadFloat(pname))));
+                        AssertArraysEqual(v4, c.ReadMany("v4", ((preader, pname) => preader.ReadByte(pname))));
+                        AssertArraysEqual(v5, c.ReadMany("v5", ((preader, pname) => preader.ReadUShort(pname))));
+                        AssertArraysEqual(v6, c.ReadMany("v6", ((preader, pname) => preader.ReadString(pname))));
+                    }
+                }
+            }
+        }
+
+        [Test]
         public void TestSBytes()
         {
             foreach (CreateCreatorHandler createCreator in _createCreators)
@@ -1125,6 +1557,28 @@ namespace NetGore.IO.Tests
                     IValueReader r = creator.GetReader();
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadUInt(pname)));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void TestULongs()
+        {
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    var v1 = Range(0, 100, 1, x => (ulong)x);
+
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        WriteTestValues(w, v1, ((pwriter, pname, pvalue) => pwriter.Write(pname, pvalue)));
+                    }
+
+                    IValueReader r = creator.GetReader();
+                    {
+                        ReadTestValues(r, v1, ((preader, pname) => preader.ReadULong(pname)));
                     }
                 }
             }
