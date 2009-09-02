@@ -95,12 +95,10 @@
     <Compile Include="MapEntityIndex.cs" />
     <Compile Include="MapIndex.cs" />
     <Compile Include="MethodInfoHelper.cs" />
-    <Compile Include="NPCChat\Conditionals\INPCChatConditional.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalEvaluationType.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalBase.cs" />
-    <Compile Include="NPCChat\Conditionals\INPCChatConditionalCollection.cs" />
     <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameter.cs" />
     <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterFloat.cs" />
     <Compile Include="NPCChat\Conditionals\Parameters\NPCChatConditionalParameterInteger.cs" />

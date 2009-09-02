@@ -7,16 +7,16 @@ using NetGore.NPCChat;
 
 namespace NetGore.EditorTools
 {
-    public class EditorNPCChatConditionalCollectionItem : NPCChatConditionalCollectionItemBase<object, object>
+    public class EditorNPCChatConditionalCollectionItem : NPCChatConditionalCollectionItemBase
     {
-        NPCChatConditionalBase<object, object> _conditional;
+        NPCChatConditionalBase _conditional;
         bool _not;
         NPCChatConditionalParameter[] _parameters;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalBase.
         /// </summary>
-        public override NPCChatConditionalBase<object, object> Conditional
+        public override NPCChatConditionalBase Conditional
         {
             get { return _conditional; }
         }
@@ -31,11 +31,21 @@ namespace NetGore.EditorTools
             get { return _not; }
         }
 
+        /// <summary>
+        /// Sets the Not property's value.
+        /// </summary>
+        /// <param name="value">The new value.</param>
         public void SetNot(bool value)
         {
             _not = value;
         }
 
+        /// <summary>
+        /// Tries the set one of the Parameters.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>True if set successfully; otherwise false.</returns>
         public bool TrySetParameter(int index, NPCChatConditionalParameter value)
         {
             _parameters[index] = value;
@@ -66,7 +76,7 @@ namespace NetGore.EditorTools
         /// <param name="conditional">The conditional.</param>
         /// <param name="not">The Not value.</param>
         /// <param name="parameters">The parameters.</param>
-        protected override void SetReadValues(NPCChatConditionalBase<object, object> conditional, bool not,
+        protected override void SetReadValues(NPCChatConditionalBase conditional, bool not,
                                               NPCChatConditionalParameter[] parameters)
         {
             _conditional = conditional;
