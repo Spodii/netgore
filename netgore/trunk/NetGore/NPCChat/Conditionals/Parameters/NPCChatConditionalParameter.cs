@@ -1,18 +1,28 @@
 using System;
 using System.Linq;
+using NetGore.Globalization;
 using NetGore.IO;
 
 namespace NetGore.NPCChat
 {
     /// <summary>
-    /// Base class for a NPCChatConditionalParameter.
+    /// Base class for a parameter used on a conditional in the NPC chat.
     /// </summary>
     public abstract class NPCChatConditionalParameter
     {
         /// <summary>
         /// When overridden in the derived class, gets this parameter's Value as an object.
         /// </summary>
-        public abstract object Value { get; }
+        public abstract object Value { get; set; }
+
+        /// <summary>
+        /// When overridden in the derived class, tries to set the Value of this NPCChatConditionalParameter
+        /// from a string.
+        /// </summary>
+        /// <param name="value">The string containing the new value.</param>
+        /// <param name="parser">The parser to use.</param>
+        /// <returns>True if the value was successfully set; otherwise false.</returns>
+        public abstract bool TrySetValue(string value, Parser parser);
 
         /// <summary>
         /// When overridden in the derived class, gets this parameter's Value as a Float.
@@ -96,7 +106,7 @@ namespace NetGore.NPCChat
         /// </summary>
         /// <param name="valueType">The NPCChatConditionalParameterType to create the parameter for.</param>
         /// <returns>A NPCChatConditionalParameter for the given NPCChatConditionalParameterType.</returns>
-        static NPCChatConditionalParameter CreateParameter(NPCChatConditionalParameterType valueType)
+        public static NPCChatConditionalParameter CreateParameter(NPCChatConditionalParameterType valueType)
         {
             switch (valueType)
             {

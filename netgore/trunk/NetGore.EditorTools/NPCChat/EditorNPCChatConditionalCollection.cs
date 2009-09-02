@@ -5,10 +5,17 @@ using NetGore.NPCChat;
 
 namespace NetGore.EditorTools.NPCChat
 {
+    public delegate void EditorNPCChatConditionalCollectionChangeHandler(EditorNPCChatConditionalCollection source);
+
     public class EditorNPCChatConditionalCollection : NPCChatConditionalCollectionBase
     {
+        readonly List<EditorNPCChatConditionalCollectionItem> _items = new List<EditorNPCChatConditionalCollectionItem>();
         NPCChatConditionalEvaluationType _evaluationType;
-        NPCChatConditionalCollectionItemBase[] _items;
+
+        /// <summary>
+        /// Notifies listeners when this EditorNPCChatConditionalCollection changes.
+        /// </summary>
+        public event EditorNPCChatConditionalCollectionChangeHandler OnChange;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalEvaluationType
@@ -22,9 +29,13 @@ namespace NetGore.EditorTools.NPCChat
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollection"/> class.
         /// </summary>
-        /// <param name="source">The source INPCChatConditionalCollection to copy the values from.</param>
+        /// <param name="source">The source NPCChatConditionalCollectionBase to copy the values from. If null,
+        /// no values are copied.</param>
         public EditorNPCChatConditionalCollection(NPCChatConditionalCollectionBase source)
         {
+            if (source == null)
+                return;
+
             BitStream stream = new BitStream(BitStreamMode.Write, 256);
 
             using (BinaryValueWriter writer = new BinaryValueWriter(stream))
@@ -56,9 +67,9 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
-        /// Copies the values of this INPCChatConditionalCollection to another INPCChatConditionalCollection.
+        /// Copies the values of this NPCChatConditionalCollectionBase to another NPCChatConditionalCollectionBase.
         /// </summary>
-        /// <param name="dest">The INPCChatConditionalCollection to copy the values into.</param>
+        /// <param name="dest">The NPCChatConditionalCollectionBase to copy the values into.</param>
         public void CopyValuesTo(NPCChatConditionalCollectionBase dest)
         {
             BitStream stream = new BitStream(BitStreamMode.Write, 256);
@@ -96,10 +107,25 @@ namespace NetGore.EditorTools.NPCChat
         /// <filterpriority>1</filterpriority>
         public override IEnumerator<NPCChatConditionalCollectionItemBase> GetEnumerator()
         {
-            foreach (NPCChatConditionalCollectionItemBase item in _items)
+            foreach (EditorNPCChatConditionalCollectionItem item in _items)
             {
+                if (item == null)
+                    continue;
+
                 yield return item;
             }
+        }
+
+        /// <summary>
+        /// Sets the EvaluationType.
+        /// </summary>
+        /// <param name="value">The new value.</param>
+        public void SetEvaluationType(NPCChatConditionalEvaluationType value)
+        {
+            _evaluationType = value;
+
+            if (OnChange != null)
+                OnChange(this);
         }
 
         /// <summary>
@@ -111,7 +137,49 @@ namespace NetGore.EditorTools.NPCChat
                                               NPCChatConditionalCollectionItemBase[] items)
         {
             _evaluationType = evaluationType;
-            _items = items;
+            _items.Clear();
+            _items.AddRange(items.Cast<EditorNPCChatConditionalCollectionItem>());
+
+            if (OnChange != null)
+                OnChange(this);
+        }
+
+        /// <summary>
+        /// Tries to add a NPCChatConditionalCollectionItemBase to the collection.
+        /// </summary>
+        /// <param name="item">The NPCChatConditionalCollectionItemBase to add.</param>
+        /// <returns>True if the <paramref name="item"/> was successfully added; otherwise false.</returns>
+        public bool TryAddItem(NPCChatConditionalCollectionItemBase item)
+        {
+            if (item == null)
+                return false;
+
+            if (item is EditorNPCChatConditionalCollectionItem)
+                return TryAddItem((EditorNPCChatConditionalCollectionItem)item);
+
+            var newItem = new EditorNPCChatConditionalCollectionItem(item);
+            return TryAddItem(newItem);
+        }
+
+        /// <summary>
+        /// Tries to add a EditorNPCChatConditionalCollectionItem to the collection.
+        /// </summary>
+        /// <param name="item">The NPCChatConditionalCollectionItemBase to add.</param>
+        /// <returns>True if the <paramref name="item"/> was successfully added; otherwise false.</returns>
+        public bool TryAddItem(EditorNPCChatConditionalCollectionItem item)
+        {
+            if (item == null)
+                return false;
+
+            if (_items.Contains(item))
+                return false;
+
+            _items.Add(item);
+
+            if (OnChange != null)
+                OnChange(this);
+
+            return true;
         }
     }
 }

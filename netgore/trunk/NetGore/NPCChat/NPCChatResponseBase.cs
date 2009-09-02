@@ -31,6 +31,31 @@ namespace NetGore.NPCChat
         public abstract byte Value { get; }
 
         /// <summary>
+        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
+        /// conditionals used to evaluate if this NPCChatResponseBase may be used. If this value is null, it
+        /// is assumed that there are no conditionals attached to this NPCChatResponseBase, and should be treated
+        /// the same way as if the conditionals evaluated to true.
+        /// </summary>
+        public abstract NPCChatConditionalCollectionBase Conditionals { get; }
+
+        /// <summary>
+        /// Checks if the conditionals to use this NPCChatResponseBase pass for the given <paramref name="user"/>
+        /// and <paramref name="npc"/>.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="npc">The NPC.</param>
+        /// <returns>True if the conditionals to use this NPCChatResponseBase pass for the given <paramref name="user"/>
+        /// and <paramref name="npc"/>; otherwise false.</returns>
+        public bool CheckConditionals(object user, object npc)
+        {
+            var c = Conditionals;
+            if (c == null)
+                return true;
+
+            return Conditionals.Evaluate(user, npc);
+        }
+
+        /// <summary>
         /// NPCChatResponseBase constructor.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -47,6 +72,13 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
+        /// </summary>
+        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
+        /// want to load the conditionals when using Read.</returns>
+        protected abstract NPCChatConditionalCollectionBase CreateConditionalCollection();
+
+        /// <summary>
         /// Reads the values for this NPCChatResponseBase from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -56,7 +88,17 @@ namespace NetGore.NPCChat
             ushort page = reader.ReadUShort("Page");
             string text = reader.ReadString("Text");
 
-            SetReadValues(value, page, text);
+            var cReader = reader.ReadNode("Conditionals");
+            bool hasConditionals = cReader.ReadBool("HasConditionals");
+            NPCChatConditionalCollectionBase conditionals = null;
+            if (hasConditionals)
+            {
+                conditionals = CreateConditionalCollection();
+                if (conditionals != null)
+                    conditionals.Read(cReader);
+            }
+
+            SetReadValues(value, page, text, conditionals);
         }
 
         /// <summary>
@@ -65,7 +107,8 @@ namespace NetGore.NPCChat
         /// <param name="value">The value.</param>
         /// <param name="page">The page.</param>
         /// <param name="text">The text.</param>
-        protected abstract void SetReadValues(byte value, ushort page, string text);
+        /// <param name="conditionals">The conditionals.</param>
+        protected abstract void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -87,6 +130,16 @@ namespace NetGore.NPCChat
             writer.Write("Value", Value);
             writer.Write("Page", Page);
             writer.Write("Text", Text ?? string.Empty);
+
+            writer.WriteStartNode("Conditionals");
+            {
+                var c = Conditionals;
+                bool hasConditionals = (c != null) && (c.Count() > 0);
+                writer.Write("HasConditionals", hasConditionals);
+                if (hasConditionals)
+                    c.Write(writer);
+            }
+            writer.WriteEndNode("Conditionals");
         }
     }
 }

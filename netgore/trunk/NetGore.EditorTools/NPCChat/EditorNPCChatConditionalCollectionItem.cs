@@ -9,9 +9,9 @@ namespace NetGore.EditorTools
 {
     public class EditorNPCChatConditionalCollectionItem : NPCChatConditionalCollectionItemBase
     {
+        readonly List<NPCChatConditionalParameter> _parameters = new List<NPCChatConditionalParameter>();
         NPCChatConditionalBase _conditional;
         bool _not;
-        NPCChatConditionalParameter[] _parameters;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalBase.
@@ -32,33 +32,36 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Sets the Not property's value.
-        /// </summary>
-        /// <param name="value">The new value.</param>
-        public void SetNot(bool value)
-        {
-            _not = value;
-        }
-
-        /// <summary>
-        /// Tries the set one of the Parameters.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <param name="value">The value.</param>
-        /// <returns>True if set successfully; otherwise false.</returns>
-        public bool TrySetParameter(int index, NPCChatConditionalParameter value)
-        {
-            _parameters[index] = value;
-            return true;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, gets the collection of parameters to use when evaluating
         /// the conditional.
         /// </summary>
         public override NPCChatConditionalParameter[] Parameters
         {
-            get { return _parameters; }
+            get { return _parameters.ToArray(); }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollectionItem"/> class.
+        /// </summary>
+        /// <param name="source">The source NPCChatConditionalCollectionBase to copy the values from. If null,
+        /// no values are copied.</param>
+        public EditorNPCChatConditionalCollectionItem(NPCChatConditionalCollectionItemBase source)
+        {
+            if (source == null)
+                return;
+
+            BitStream stream = new BitStream(BitStreamMode.Write, 256);
+
+            using (BinaryValueWriter writer = new BinaryValueWriter(stream))
+            {
+                source.Write(writer);
+            }
+
+            stream.Mode = BitStreamMode.Read;
+
+            IValueReader reader = new BinaryValueReader(stream);
+
+            Read(reader);
         }
 
         /// <summary>
@@ -68,6 +71,95 @@ namespace NetGore.EditorTools
         public EditorNPCChatConditionalCollectionItem(IValueReader r)
         {
             Read(r);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollectionItem"/> class.
+        /// </summary>
+        public EditorNPCChatConditionalCollectionItem()
+        {
+            _not = false;
+            SetConditional(NPCChatConditionalBase.Conditionals.First());
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollectionItem"/> class.
+        /// </summary>
+        /// <param name="conditional">The conditional to use.</param>
+        public EditorNPCChatConditionalCollectionItem(NPCChatConditionalBase conditional)
+        {
+            if (conditional == null)
+                throw new ArgumentNullException("conditional");
+
+            _not = false;
+            SetConditional(conditional);
+        }
+
+        /// <summary>
+        /// Copies the values of this EditorNPCChatConditionalCollectionItem to another EditorNPCChatConditionalCollectionItem.
+        /// </summary>
+        /// <param name="dest">The EditorNPCChatConditionalCollectionItem to copy the values into.</param>
+        public void CopyValuesTo(EditorNPCChatConditionalCollectionItem dest)
+        {
+            BitStream stream = new BitStream(BitStreamMode.Write, 256);
+
+            using (BinaryValueWriter writer = new BinaryValueWriter(stream))
+            {
+                Write(writer);
+            }
+
+            stream.Mode = BitStreamMode.Read;
+
+            IValueReader reader = new BinaryValueReader(stream);
+
+            dest.Read(reader);
+        }
+
+        /// <summary>
+        /// Sets the Conditional.
+        /// </summary>
+        /// <param name="conditional">The new NPCChatConditionalBase.</param>
+        public void SetConditional(NPCChatConditionalBase conditional)
+        {
+            if (conditional == null)
+                throw new ArgumentNullException("conditional");
+
+            if (_conditional == conditional)
+                return;
+
+            // Set the new conditional
+            _conditional = conditional;
+
+            // Re-create all the parameters to the appropriate type for the new conditional
+            var newParameters = new NPCChatConditionalParameter[Conditional.ParameterCount];
+
+            for (int i = 0; i < Conditional.ParameterCount; i++)
+            {
+                var neededType = Conditional.GetParameter(i);
+                if (i < _parameters.Count && _parameters[i].ValueType == neededType)
+                {
+                    // The type matches the old type, so just reuse it
+                    newParameters[i] = _parameters[i];
+                }
+                else
+                {
+                    // Different type or out of range, so make a new one
+                    newParameters[i] = NPCChatConditionalParameter.CreateParameter(neededType);
+                }
+            }
+
+            // Set the new parameters
+            _parameters.Clear();
+            _parameters.AddRange(newParameters);
+        }
+
+        /// <summary>
+        /// Sets the Not property's value.
+        /// </summary>
+        /// <param name="value">The new value.</param>
+        public void SetNot(bool value)
+        {
+            _not = value;
         }
 
         /// <summary>
@@ -81,7 +173,50 @@ namespace NetGore.EditorTools
         {
             _conditional = conditional;
             _not = not;
-            _parameters = parameters;
+            _parameters.Clear();
+            _parameters.AddRange(parameters);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            if (Not)
+                sb.Append("NOT ");
+            sb.Append(Conditional.Name);
+            sb.Append("(");
+            if (_parameters.Count > 0)
+            {
+                foreach (NPCChatConditionalParameter item in _parameters)
+                {
+                    string itemStr = item.Value.ToString();
+                    if (itemStr.Length > 30)
+                        itemStr = itemStr.Substring(0, 25) + "...";
+                    sb.Append(itemStr);
+                    sb.Append(", ");
+                }
+                sb.Length -= 2;
+            }
+            sb.Append(")");
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Tries the set one of the Parameters.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="value">The value.</param>
+        /// <returns>True if set successfully; otherwise false.</returns>
+        public bool TrySetParameter(int index, NPCChatConditionalParameter value)
+        {
+            _parameters[index] = value;
+            return true;
         }
     }
 }

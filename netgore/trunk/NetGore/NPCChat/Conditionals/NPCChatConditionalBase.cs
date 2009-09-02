@@ -50,6 +50,30 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// Gets the unique name for this INPCChatConditional. This string is case-sensitive.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        /// <summary>
+        /// Gets the number of parameters required by this NPCChatConditionalBase.
+        /// </summary>
+        public int ParameterCount
+        {
+            get { return _parameterTypes.Length; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of the NPCChatConditionalParameterTypes used in this NPCChatConditionalBase.
+        /// </summary>
+        public IEnumerable<NPCChatConditionalParameterType> ParameterTypes
+        {
+            get { return _parameterTypes; }
+        }
+
+        /// <summary>
         /// Initializes the <see cref="NPCChatConditionalBase"/> class.
         /// </summary>
         static NPCChatConditionalBase()
@@ -154,6 +178,21 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// Gets the NPCChatConditionalParameterType for the parameter at the given <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">Index of the parameter to get the NPCChatConditionalParameterType for.</param>
+        /// <returns>The NPCChatConditionalParameterType for the parameter at the given <paramref name="index"/>.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">The <paramref name="index"/> is less than 0 or greater
+        /// than ParameterCount.</exception>
+        public NPCChatConditionalParameterType GetParameter(int index)
+        {
+            if (index < 0 || index >= _parameterTypes.Length)
+                throw new ArgumentOutOfRangeException("index");
+
+            return _parameterTypes[index];
+        }
+
+        /// <summary>
         /// Handles when a new type has been loaded into a FactoryTypeCollection.
         /// </summary>
         /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
@@ -161,10 +200,10 @@ namespace NetGore.NPCChat
         /// <param name="name">Name of the Type.</param>
         static void OnLoadTypeHandler(FactoryTypeCollection factoryTypeCollection, Type loadedType, string name)
         {
-            var instance = (NPCChatConditionalBase)_typeCollection.GetTypeInstance(name);
+            NPCChatConditionalBase instance = (NPCChatConditionalBase)_typeCollection.GetTypeInstance(name);
 
             // Make sure the name is not already in use
-            if (_instances.ContainsKey(instance.Name))
+            if (ContainsConditional(instance.Name))
             {
                 const string errmsg =
                     "Could not add Type `{0}` - a NPC chat conditional named `{1}` already exists as Type `{2}`.";
@@ -180,45 +219,6 @@ namespace NetGore.NPCChat
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded NPC chat conditional `{0}` from Type `{1}`.", instance.Name, loadedType);
-        }
-
-        /// <summary>
-        /// Gets the unique name for this INPCChatConditional. This string is case-sensitive.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        /// <summary>
-        /// Gets the number of parameters required by this NPCChatConditionalBase.
-        /// </summary>
-        public int ParameterCount
-        {
-            get { return _parameterTypes.Length; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of the NPCChatConditionalParameterTypes used in this NPCChatConditionalBase.
-        /// </summary>
-        public IEnumerable<NPCChatConditionalParameterType> ParameterTypes
-        {
-            get { return _parameterTypes; }
-        }
-
-        /// <summary>
-        /// Gets the NPCChatConditionalParameterType for the parameter at the given <paramref name="index"/>.
-        /// </summary>
-        /// <param name="index">Index of the parameter to get the NPCChatConditionalParameterType for.</param>
-        /// <returns>The NPCChatConditionalParameterType for the parameter at the given <paramref name="index"/>.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">The <paramref name="index"/> is less than 0 or greater
-        /// than ParameterCount.</exception>
-        public NPCChatConditionalParameterType GetParameter(int index)
-        {
-            if (index < 0 || index >= _parameterTypes.Length)
-                throw new ArgumentOutOfRangeException("index");
-
-            return _parameterTypes[index];
         }
     }
 }

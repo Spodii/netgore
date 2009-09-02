@@ -6,7 +6,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
     public class MPPercentLessThanOrEqualTo : NPCChatConditional
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="NPCChatConditionalBase{TUser,TNPC}"/> class.
+        /// Initializes a new instance of the <see cref="MPPercentLessThanOrEqualTo"/> class.
         /// </summary>
         public MPPercentLessThanOrEqualTo() : base("MP% <=", NPCChatConditionalParameterType.Float)
         {

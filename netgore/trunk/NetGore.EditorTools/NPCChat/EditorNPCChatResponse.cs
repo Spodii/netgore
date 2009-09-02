@@ -1,6 +1,8 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore.EditorTools.NPCChat;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -14,11 +16,26 @@ namespace NetGore.EditorTools
     public class EditorNPCChatResponse : NPCChatResponseBase
     {
         readonly List<TreeNode> _treeNodes = new List<TreeNode>(1);
+        NPCChatConditionalCollectionBase _conditionals;
         ushort _page;
         string _text;
         byte _value;
 
+        /// <summary>
+        /// Notifies listeners when the EditorNPCChatResponse has changed.
+        /// </summary>
         public event EditorNPCChatResponseEventHandler OnChange;
+
+        /// <summary>
+        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
+        /// conditionals used to evaluate if this NPCChatResponseBase may be used. If this value is null, it
+        /// is assumed that there are no conditionals attached to this NPCChatResponseBase, and should be treated
+        /// the same way as if the conditionals evaluated to true.
+        /// </summary>
+        public override NPCChatConditionalCollectionBase Conditionals
+        {
+            get { return _conditionals; }
+        }
 
         /// <summary>
         /// When overridden in the derived class, gets the page of the NPCChatDialogItemBase to go to if this
@@ -51,18 +68,49 @@ namespace NetGore.EditorTools
             get { return _value; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatResponse"/> class.
+        /// </summary>
+        /// <param name="text">The text.</param>
         public EditorNPCChatResponse(string text) : this(EndConversationPage, text)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatResponse"/> class.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
         public EditorNPCChatResponse(IValueReader reader) : base(reader)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatResponse"/> class.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <param name="text">The text.</param>
         public EditorNPCChatResponse(ushort page, string text)
         {
             _page = page;
             _text = text;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
+        /// </summary>
+        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
+        /// want to load the conditionals when using Read.</returns>
+        protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
+        {
+            return new EditorNPCChatConditionalCollection();
+        }
+
+        public void SetConditionals(NPCChatConditionalCollectionBase value)
+        {
+            if (value == null)
+                throw new ArgumentNullException("value");
+
+            _conditionals = value;
         }
 
         public void SetPage(ushort page)
@@ -82,11 +130,15 @@ namespace NetGore.EditorTools
         /// <param name="value">The value.</param>
         /// <param name="page">The page.</param>
         /// <param name="text">The text.</param>
-        protected override void SetReadValues(byte value, ushort page, string text)
+        /// <param name="conditionals">The conditionals.</param>
+        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals)
         {
             _value = value;
             _page = page;
             SetText(text);
+
+            var c = conditionals as EditorNPCChatConditionalCollection;
+            _conditionals = c ?? new EditorNPCChatConditionalCollection();
         }
 
         public void SetText(string value)

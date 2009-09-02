@@ -96,10 +96,10 @@
     <Compile Include="MissingTexturesForm.Designer.cs">
       <DependentUpon>MissingTexturesForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="NPCChatConditionalEditorForm.cs">
+    <Compile Include="NPCChat\NPCChatConditionalEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="NPCChatConditionalEditorForm.Designer.cs">
+    <Compile Include="NPCChat\NPCChatConditionalEditorForm.Designer.cs">
       <DependentUpon>NPCChatConditionalEditorForm.cs</DependentUpon>
     </Compile>
     <Compile Include="NPCChat\EditorNPCChatConditionalCollection.cs" />
@@ -156,7 +156,7 @@
       <DependentUpon>MissingTexturesForm.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="NPCChatConditionalEditorForm.resx">
+    <EmbeddedResource Include="NPCChat\NPCChatConditionalEditorForm.resx">
       <DependentUpon>NPCChatConditionalEditorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

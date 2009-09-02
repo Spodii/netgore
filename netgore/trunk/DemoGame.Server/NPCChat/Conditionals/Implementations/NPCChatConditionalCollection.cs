@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
 using NetGore.NPCChat;
@@ -41,9 +43,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         public override IEnumerator<NPCChatConditionalCollectionItemBase> GetEnumerator()
         {
             foreach (var item in _items)
-            {
                 yield return item;
-            }
         }
 
         /// <summary>
@@ -56,6 +56,8 @@ namespace DemoGame.Server.NPCChat.Conditionals
         {
             _evaluationType = evaluationType;
             _items = items;
+
+            Debug.Assert(items.All(x => x != null), "We shouldn't have null items in this array...");
         }
     }
 }

@@ -117,6 +117,7 @@ namespace DemoGame.NPCChatEditor
             this.btnAddConditional.TabIndex = 20;
             this.btnAddConditional.Text = "Add";
             this.btnAddConditional.UseVisualStyleBackColor = true;
+            this.btnAddConditional.Click += new System.EventHandler(this.btnAddConditional_Click);
             // 
             // btnDeleteConditional
             // 
@@ -438,7 +439,7 @@ namespace DemoGame.NPCChatEditor
             this.Name = "frmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NPC Chat Editor";
-            this.Load += new System.EventHandler(this.Form1_Load);
+            this.Load += new System.EventHandler(this.frmMain_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmMain_FormClosing);
             this.Resize += new System.EventHandler(this.frmMain_Resize);
             this.gbSelectedNode.ResumeLayout(false);

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore.Globalization;
 using NetGore.IO;
 
 namespace NetGore.NPCChat
@@ -12,11 +13,32 @@ namespace NetGore.NPCChat
         float _value;
 
         /// <summary>
-        /// Gets this parameter's Value as an object.
+        /// Gets or sets this parameter's Value as an object.
         /// </summary>
         public override object Value
         {
             get { return _value; }
+            set { _value = (float)value; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, tries to set the Value of this NPCChatConditionalParameter
+        /// from a string.
+        /// </summary>
+        /// <param name="value">The string containing the new value.</param>
+        /// <param name="parser">The parser to use.</param>
+        /// <returns>True if the value was successfully set; otherwise false.</returns>
+        public override bool TrySetValue(string value, Parser parser)
+        {
+            if (string.IsNullOrEmpty(value))
+                return false;
+
+            float outValue;
+            if (!parser.TryParse(value, out outValue))
+                return false;
+
+            _value = outValue;
+            return true;
         }
 
         /// <summary>
@@ -34,7 +56,7 @@ namespace NetGore.NPCChat
         /// </summary>
         public override NPCChatConditionalParameterType ValueType
         {
-            get { return NPCChatConditionalParameterType.Integer; }
+            get { return NPCChatConditionalParameterType.Float; }
         }
 
         /// <summary>

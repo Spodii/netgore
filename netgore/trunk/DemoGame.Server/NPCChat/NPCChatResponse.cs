@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame.Server.NPCChat.Conditionals;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -42,6 +43,19 @@ namespace DemoGame.Server.NPCChat
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
+        /// conditionals used to evaluate if this NPCChatResponseBase may be used. If this value is null, it
+        /// is assumed that there are no conditionals attached to this NPCChatResponseBase, and should be treated
+        /// the same way as if the conditionals evaluated to true.
+        /// </summary>
+        public override NPCChatConditionalCollectionBase Conditionals
+        {
+            get { return _conditionals; }
+        }
+
+        NPCChatConditionalCollectionBase _conditionals;
+
+        /// <summary>
         /// NPCChatResponse constructor.
         /// </summary>
         /// <param name="r">IValueReader to read the values from.</param>
@@ -55,12 +69,24 @@ namespace DemoGame.Server.NPCChat
         /// <param name="value">The value.</param>
         /// <param name="page">The page.</param>
         /// <param name="text">The text.</param>
-        protected override void SetReadValues(byte value, ushort page, string text)
+        /// <param name="conditionals">The conditionals.</param>
+        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals)
         {
             Debug.Assert(_value == default(byte) && _page == default(ushort), "Values were already set?");
 
             _value = value;
             _page = page;
+            _conditionals = conditionals;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
+        /// </summary>
+        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
+        /// want to load the conditionals when using Read.</returns>
+        protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
+        {
+            return new NPCChatConditionalCollection();
         }
 
         /// <summary>
