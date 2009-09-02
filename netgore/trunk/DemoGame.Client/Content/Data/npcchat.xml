@@ -17,11 +17,17 @@
               <Value>0</Value>
               <Page>1</Page>
               <Text>False</Text>
+			  <Conditionals>
+				<HasConditionals>False</HasConditionals>
+			  </Conditionals>
             </Item0>
             <Item1>
               <Value>1</Value>
               <Page>2</Page>
               <Text>True</Text>
+			  <Conditionals>
+				<HasConditionals>False</HasConditionals>
+			  </Conditionals>
             </Item1>
           </Responses>
         </Item0>
@@ -35,11 +41,17 @@
               <Value>0</Value>
               <Page>3</Page>
               <Text>Yes</Text>
+			  <Conditionals>
+				<HasConditionals>False</HasConditionals>
+			  </Conditionals>
             </Item0>
             <Item1>
               <Value>1</Value>
               <Page>4</Page>
               <Text>No</Text>
+			  <Conditionals>
+				<HasConditionals>False</HasConditionals>
+			  </Conditionals>
             </Item1>
           </Responses>
         </Item1>
@@ -53,11 +65,17 @@
               <Value>0</Value>
               <Page>1</Page>
               <Text>So? Just let me fucking do it!</Text>
+			  <Conditionals>
+				<HasConditionals>False</HasConditionals>
+			  </Conditionals>
             </Item0>
             <Item1>
               <Value>1</Value>
               <Page>65535</Page>
               <Text>Ok, fine, whatever. Asshole.</Text>
+			  <Conditionals>
+				<HasConditionals>False</HasConditionals>
+			  </Conditionals>
             </Item1>
           </Responses>
         </Item2>
