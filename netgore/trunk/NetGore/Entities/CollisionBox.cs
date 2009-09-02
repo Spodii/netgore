@@ -113,6 +113,16 @@ namespace NetGore
             }
         }
 
+        public bool Contains(CollisionBox other)
+        {
+            return ToRectangle().Contains(other.ToRectangle());
+        }
+
+        public bool Contains(Rectangle other)
+        {
+            return ToRectangle().Contains(other);
+        }
+
         /// <summary>
         /// Checks if the CollisionBox contains a point
         /// </summary>
