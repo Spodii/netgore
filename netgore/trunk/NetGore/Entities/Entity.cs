@@ -13,7 +13,6 @@ namespace NetGore
     /// </summary>
     public abstract class Entity : IDisposable
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly object _disposeLock = new object();
 
         CollisionBox _collisionBox;
@@ -190,21 +189,6 @@ namespace NetGore
         /// <param name="displacement">Displacement between the two Entities</param>
         public virtual void CollideInto(Entity collideWith, Vector2 displacement)
         {
-        }
-
-        /// <summary>
-        /// Creates a new entity
-        /// </summary>
-        /// <typeparam name="T">Type of entity to create</typeparam>
-        /// <param name="position">Position to create the entity at</param>
-        /// <param name="width">Width of the collision box</param>
-        /// <param name="height">Height of the collision box</param>
-        /// <returns>A new entity</returns>
-        public static T Create<T>(Vector2 position, float width, float height) where T : Entity, new()
-        {
-            T entity = new T { CB = new CollisionBox(width, height) };
-            entity.Teleport(position);
-            return entity;
         }
 
         /// <summary>
