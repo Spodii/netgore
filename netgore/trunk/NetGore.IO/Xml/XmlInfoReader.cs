@@ -10,8 +10,10 @@ namespace NetGore
     /// Assists in reading Xml files by creating a period-delimited dictionary for all
     /// attributes and values
     /// </summary>
-    public class XmlInfoReader
+    public static class XmlInfoReader
     {
+        static readonly StringComparer _stringComparer = StringComparer.OrdinalIgnoreCase;
+
         /// <summary>
         /// Combines two dictionaries together
         /// </summary>
@@ -42,10 +44,11 @@ namespace NetGore
 
         /// <summary>
         /// Parses a XML file and returns a list of the base elements containing a
-        /// dictionary holding the attribute values of the elements found
+        /// dictionary holding the attribute values of the elements found.
         /// </summary>
-        /// <param name="filePath">Path to file to parse</param>
-        /// <param name="splitList">If true, splits all of the 2nd level nodes into individual list entries</param>
+        /// <param name="filePath">Path to file to parse.</param>
+        /// <param name="splitList">If true, splits all of the 2nd level nodes into individual list entries. This
+        /// should be used when each Xml element directly under the root do not all have unique names.</param>
         public static List<Dictionary<string, string>> ReadFile(string filePath, bool splitList)
         {
             if (!File.Exists(filePath))
@@ -95,7 +98,7 @@ namespace NetGore
             if (nodeList == null)
                 throw new ArgumentNullException("nodeList", "Parameter nodeList is null.");
 
-            var ret = new Dictionary<string, string>();
+            var ret = new Dictionary<string, string>(_stringComparer);
 
             // Read through every node in the list
             foreach (XmlNode node in nodeList)
@@ -148,7 +151,7 @@ namespace NetGore
             if (node.Attributes == null)
                 return null;
 
-            var ret = new Dictionary<string, string>();
+            var ret = new Dictionary<string, string>(_stringComparer);
 
             foreach (XmlAttribute attr in node.Attributes)
             {
