@@ -137,7 +137,6 @@
     <Compile Include="PropertySync\PropertySyncInt.cs" />
     <Compile Include="PropertySync\PropertySyncString.cs" />
     <Compile Include="PropertySync\SyncValueAttribute.cs" />
-    <Compile Include="Converters\SimpleMemberDescriptor.cs" />
     <Compile Include="Extensions\StackExtensions.cs" />
     <Compile Include="StringCommandBaseAttribute.cs" />
     <Compile Include="StringCommandParser.cs" />
