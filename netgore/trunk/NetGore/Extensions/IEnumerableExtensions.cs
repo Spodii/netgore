@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,12 +15,12 @@ namespace NetGore
         /// <param name="source">A sequence that contains elements to be imploded.</param>
         /// <param name="delimiter">Character to use when combining the characters.</param>
         /// <returns>All items in an IEnumerable together into a delimited string.</returns>
-        public static string Implode(this IEnumerable source, char delimiter)
+        public static string Implode(this IEnumerable<string> source, char delimiter)
         {
             StringBuilder sb = new StringBuilder(128);
 
             // Add all to the StringBuilder
-            foreach (object item in source)
+            foreach (string item in source)
             {
                 sb.Append(item);
                 sb.Append(delimiter);
@@ -40,12 +39,12 @@ namespace NetGore
         /// <param name="source">A sequence that contains elements to be imploded.</param>
         /// <param name="delimiter">Character to use when combining the characters.</param>
         /// <returns>All items in an IEnumerable together into a delimited string.</returns>
-        public static string Implode(this IEnumerable source, string delimiter)
+        public static string Implode(this IEnumerable<string> source, string delimiter)
         {
             StringBuilder sb = new StringBuilder(128);
 
             // Add all to the StringBuilder
-            foreach (object item in source)
+            foreach (string item in source)
             {
                 sb.Append(item);
                 sb.Append(delimiter);
