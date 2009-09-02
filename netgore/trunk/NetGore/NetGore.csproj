@@ -113,12 +113,15 @@
     <Compile Include="PropertySync\PropertySyncBool.cs" />
     <Compile Include="PropertySync\PropertySyncCollisionType.cs" />
     <Compile Include="PropertySync\PropertySyncColor.cs" />
+    <Compile Include="PropertySync\PropertySyncDouble.cs" />
     <Compile Include="PropertySync\PropertySyncGrhIndex.cs" />
+    <Compile Include="PropertySync\PropertySyncLong.cs" />
     <Compile Include="PropertySync\PropertySyncMapEntityIndex.cs" />
     <Compile Include="PropertySync\PropertySyncMapIndex.cs" />
     <Compile Include="PropertySync\PropertySyncSByte.cs" />
     <Compile Include="PropertySync\PropertySyncShort.cs" />
     <Compile Include="PropertySync\PropertySyncUInt.cs" />
+    <Compile Include="PropertySync\PropertySyncULong.cs" />
     <Compile Include="PropertySync\PropertySyncUShort.cs" />
     <Compile Include="PropertySync\PropertySyncVector2.cs" />
     <Compile Include="Entities\WallEntityBase.cs" />
