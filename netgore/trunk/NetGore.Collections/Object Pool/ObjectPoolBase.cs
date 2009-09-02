@@ -137,13 +137,16 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Deactivates the item, placing it back in the pool for later use
+        /// Deactivates the item, placing it back in the pool for later use.
         /// </summary>
-        /// <param name="item">Item to deactivate</param>
+        /// <param name="item">Item to deactivate.</param>
         public virtual void Destroy(T item)
         {
             var poolData = item.PoolData;
             var node = poolData.PoolNode;
+
+            // Call the deactivation
+            poolData.Deactivate();
 
             if (node == null)
             {
@@ -153,9 +156,6 @@ namespace NetGore.Collections
                     log.Fatal(errmsg);
                 throw new Exception(errmsg);
             }
-
-            // Call the deactivation
-            poolData.Deactivate();
 
             lock (_poolLock)
             {

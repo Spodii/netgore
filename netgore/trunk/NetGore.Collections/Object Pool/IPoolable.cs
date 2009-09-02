@@ -3,14 +3,14 @@ using System.Linq;
 namespace NetGore.Collections
 {
     /// <summary>
-    /// Interface for an object that can be placed in an object pool
+    /// Interface for an object that can be placed in an object pool.
     /// </summary>
-    /// <typeparam name="T">Type of the object being placed in the pool (often the same as the
-    /// class the interface is placed on)</typeparam>
+    /// <typeparam name="T">Type of the object being placed in the pool. This is often the same as the
+    /// class the interface is placed on.</typeparam>
     public interface IPoolable<T> where T : IPoolable<T>, new()
     {
         /// <summary>
-        /// Gets the PoolData associated with this poolable item
+        /// Gets the PoolData associated with this poolable item.
         /// </summary>
         PoolData<T> PoolData { get; }
 
@@ -30,8 +30,8 @@ namespace NetGore.Collections
         /// Sets the PoolData for this item. This is only called once in the object's lifetime;
         /// right after the object is constructed.
         /// </summary>
-        /// <param name="objectPool">Pool that created this object</param>
-        /// <param name="poolData">PoolData assigned to this object</param>
+        /// <param name="objectPool">Pool that created this object.</param>
+        /// <param name="poolData">PoolData assigned to this object.</param>
         void SetPoolData(ObjectPool<T> objectPool, PoolData<T> poolData);
     }
 }

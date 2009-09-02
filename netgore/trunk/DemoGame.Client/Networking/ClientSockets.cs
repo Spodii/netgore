@@ -92,7 +92,7 @@ namespace DemoGame.Client
 
             // Make sure the very first thing we send is the Client's UDP port so the server knows what
             // port to use when sending the data
-            using (PacketWriter pw = ClientPacket.SetUDPPort(_udpPort))
+            using (var pw = ClientPacket.SetUDPPort(_udpPort))
             {
                 Send(pw);
             }
