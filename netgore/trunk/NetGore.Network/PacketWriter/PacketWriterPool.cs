@@ -10,6 +10,5 @@ namespace NetGore.Network
     /// </summary>
     public class PacketWriterPool : ObjectPool<PacketWriter>
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
     }
 }

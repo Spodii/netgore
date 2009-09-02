@@ -10,16 +10,23 @@ using NetGore.IO;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Assists in writing packets to a BitStream, along with writing and reading custom data types.
-    /// Can be used with the PacketWriterPool to recycle the PacketWriters instead of creating a new
-    /// one for each individual write. The PacketWriter must call Dispose() when done writing to return
-    /// it back to the pool. If the DEBUG flag is defined, any PacketWriter that is not returned after
-    /// a given amount of time will throw an Exception since it was likely lost and the equivilant of a memory leak.
-    /// It is preferred that a PacketWriter is never used directly, and is only used from the PacketWriterPool.
+    /// Assists in writing packets to a BitStream. Can be used with the PacketWriterPool to recycle the
+    /// PacketWriters instead of creating a new one for each individual write. The PacketWriter
+    /// must call Dispose() when done writing to return it back to the pool. If the DEBUG flag is
+    /// defined, any PacketWriter that is not returned after a given amount of time will throw an
+    /// Exception since it was likely lost and the equivilant of a memory leak. It is preferred that a
+    /// PacketWriter is never constructed directly, and is only used from the PacketWriterPool.
     /// </summary>
-    public class PacketWriter : BitStream, IPoolable<PacketWriter>
+    public class PacketWriter : BitStream, IPoolable<PacketWriter>, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+#if DEBUG
+        /// <summary>
+        /// How many milliseconds must elapse before a PacketWriter is considered lost and undisposed.
+        /// </summary>
+        const int _disposeTimeoutTime = 1000 * 15;
+#endif
 
 #if DEBUG
         /// <summary>
@@ -39,7 +46,7 @@ namespace NetGore.Network
 #endif
 
         /// <summary>
-        /// PacketWriter constructor
+        /// Initializes a new instance of the <see cref="PacketWriter"/> class.
         /// </summary>
         public PacketWriter() : base(BitStreamMode.Write, 128)
         {
@@ -47,8 +54,9 @@ namespace NetGore.Network
             WriteMode = BitStreamBufferMode.Dynamic;
 
 #if DEBUG
+            _expireTimer.AutoReset = true;
             _expireTimer.Elapsed += ExpireTimerElapsed;
-            _expireTimer.Interval = 1000 * 100; // 1000 * seconds
+            _expireTimer.Interval = _disposeTimeoutTime;
 #endif
         }
 
@@ -63,10 +71,10 @@ namespace NetGore.Network
             Debug.Fail(err);
             if (log.IsErrorEnabled)
                 log.ErrorFormat(err, Environment.NewLine, _stackTrace);
+
+            _expireTimer.Stop();
 #endif
         }
-
-        #region IDisposable Members
 
         /// <summary>
         /// Returns the PacketWriter back to the ObjectPool whence it came. After this is called, it is
@@ -75,15 +83,21 @@ namespace NetGore.Network
         /// </summary>
         public void Dispose()
         {
-            _objectPool.Destroy(this);
+            HandleDispose();
         }
 
-        #endregion
+        /// <summary>
+        /// When overridden in the derived class, performs disposing of the object.
+        /// </summary>
+        protected override void HandleDispose()
+        {
+            _objectPool.Destroy(this);
+        }
 
         #region IPoolable<PacketWriter> Members
 
         /// <summary>
-        /// Gets the PoolData associated with this poolable item
+        /// Gets the PoolData associated with this poolable item.
         /// </summary>
         PoolData<PacketWriter> IPoolable<PacketWriter>.PoolData
         {
@@ -119,8 +133,8 @@ namespace NetGore.Network
         /// Sets the PoolData for this item. This is only called once in the object's lifetime;
         /// right after the object is constructed.
         /// </summary>
-        /// <param name="objectPool">Pool that created this object</param>
-        /// <param name="poolData">PoolData assigned to this object</param>
+        /// <param name="objectPool">Pool that created this object.</param>
+        /// <param name="poolData">PoolData assigned to this object.</param>
         void IPoolable<PacketWriter>.SetPoolData(ObjectPool<PacketWriter> objectPool, PoolData<PacketWriter> poolData)
         {
             _objectPool = objectPool;

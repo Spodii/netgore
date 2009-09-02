@@ -3031,6 +3031,13 @@ namespace NetGore.IO
 
         #endregion
 
+        /// <summary>
+        /// When overridden in the derived class, performs disposing of the object.
+        /// </summary>
+        protected virtual void HandleDispose()
+        {
+        }
+
         #region IValueWriter Members
 
         /// <summary>
@@ -3039,6 +3046,7 @@ namespace NetGore.IO
         /// <filterpriority>2</filterpriority>
         void IDisposable.Dispose()
         {
+            HandleDispose();
         }
 
         /// <summary>

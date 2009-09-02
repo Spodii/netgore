@@ -148,8 +148,6 @@ namespace NetGore.Network
                     log.Warn("Unable to connect to host: {0}", ex);
                 if (OnFailedConnect != null)
                     OnFailedConnect(ipSocket);
-
-                conn = null;
             }
 
             return ipSocket;
