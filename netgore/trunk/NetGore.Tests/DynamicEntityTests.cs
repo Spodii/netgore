@@ -65,6 +65,12 @@ namespace NetGore.Tests
             [SyncValue]
             public Alignment P { get; set; }
 
+            public int SkipA { get; set; }
+            public byte SkipB { get; set; }
+
+            [SyncValue(SkipNetworkSync = true)]
+            public short SkipC { get; set; }
+
             public DE()
             {
                 A = true;
@@ -238,6 +244,332 @@ namespace NetGore.Tests
             Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
             Assert.AreEqual(src.CollisionType, dest.CollisionType);
             Assert.AreEqual(src.Center, dest.Center);
+        }
+
+        [Test]
+        public void TestWriteReadValuesAndUpdateExtensive()
+        {
+            BitStream writer = new BitStream(BitStreamMode.Write, 2048);
+            DE src = new DE();
+            DynamicEntityFactory.Write(writer, src);
+            var buffer = writer.GetBuffer();
+
+            BitStream reader = new BitStream(buffer);
+            DE dest = (DE)DynamicEntityFactory.Read(reader);
+
+            Assert.AreEqual(src.Position, dest.Position);
+            Assert.AreEqual(src.Size, dest.Size);
+            Assert.AreEqual(src.Velocity, dest.Velocity);
+            Assert.AreEqual(src.Weight, dest.Weight);
+            Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
+            Assert.AreEqual(src.CollisionType, dest.CollisionType);
+            Assert.AreEqual(src.Center, dest.Center);
+
+            Assert.AreEqual(src.A, dest.A);
+            Assert.AreEqual(src.B, dest.B);
+            Assert.AreEqual(src.C, dest.C);
+            Assert.AreEqual(src.D, dest.D);
+            Assert.AreEqual(src.E, dest.E);
+            Assert.AreEqual(src.F, dest.F);
+            Assert.AreEqual(src.G, dest.G);
+            Assert.AreEqual(src.H, dest.H);
+            Assert.AreEqual(src.I, dest.I);
+            Assert.AreEqual(src.J, dest.J);
+            Assert.AreEqual(src.K, dest.K);
+            Assert.AreEqual(src.L, dest.L);
+            Assert.AreEqual(src.M, dest.M);
+            Assert.AreEqual(src.N, dest.N);
+            Assert.AreEqual(src.O, dest.O);
+            Assert.AreEqual(src.P, dest.P);
+
+            src.A = false;
+            src.D = 100;
+            src.K = 5123;
+            src.N = "asfdoiuweroijsadf";
+            src.P = Alignment.Left;
+            src.M = new GrhIndex(10091);
+            src.L = new Vector2(213, 123);
+
+            writer = new BitStream(BitStreamMode.Write, 2048);
+            src.Serialize(writer);
+
+            buffer = writer.GetBuffer();
+
+            reader = new BitStream(buffer);
+            dest.Deserialize(reader);
+
+            Assert.AreEqual(src.Position, dest.Position);
+            Assert.AreEqual(src.Size, dest.Size);
+            Assert.AreEqual(src.Velocity, dest.Velocity);
+            Assert.AreEqual(src.Weight, dest.Weight);
+            Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
+            Assert.AreEqual(src.CollisionType, dest.CollisionType);
+            Assert.AreEqual(src.Center, dest.Center);
+
+            Assert.AreEqual(src.A, dest.A);
+            Assert.AreEqual(src.B, dest.B);
+            Assert.AreEqual(src.C, dest.C);
+            Assert.AreEqual(src.D, dest.D);
+            Assert.AreEqual(src.E, dest.E);
+            Assert.AreEqual(src.F, dest.F);
+            Assert.AreEqual(src.G, dest.G);
+            Assert.AreEqual(src.H, dest.H);
+            Assert.AreEqual(src.I, dest.I);
+            Assert.AreEqual(src.J, dest.J);
+            Assert.AreEqual(src.K, dest.K);
+            Assert.AreEqual(src.L, dest.L);
+            Assert.AreEqual(src.M, dest.M);
+            Assert.AreEqual(src.N, dest.N);
+            Assert.AreEqual(src.O, dest.O);
+            Assert.AreEqual(src.P, dest.P);
+        }
+
+        [Test]
+        public void TestSkipNonSyncValues()
+        {
+            BitStream writer = new BitStream(BitStreamMode.Write, 2048);
+            DE src = new DE { SkipA = 1, SkipB = 2, SkipC = 3 };
+            DynamicEntityFactory.Write(writer, src);
+            var buffer = writer.GetBuffer();
+
+            BitStream reader = new BitStream(buffer);
+            DE dest = (DE)DynamicEntityFactory.Read(reader);
+
+            Assert.AreEqual(src.Position, dest.Position);
+            Assert.AreEqual(src.Size, dest.Size);
+            Assert.AreEqual(src.Velocity, dest.Velocity);
+            Assert.AreEqual(src.Weight, dest.Weight);
+            Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
+            Assert.AreEqual(src.CollisionType, dest.CollisionType);
+            Assert.AreEqual(src.Center, dest.Center);
+
+            Assert.AreEqual(src.A, dest.A);
+            Assert.AreEqual(src.B, dest.B);
+            Assert.AreEqual(src.C, dest.C);
+            Assert.AreEqual(src.D, dest.D);
+            Assert.AreEqual(src.E, dest.E);
+            Assert.AreEqual(src.F, dest.F);
+            Assert.AreEqual(src.G, dest.G);
+            Assert.AreEqual(src.H, dest.H);
+            Assert.AreEqual(src.I, dest.I);
+            Assert.AreEqual(src.J, dest.J);
+            Assert.AreEqual(src.K, dest.K);
+            Assert.AreEqual(src.L, dest.L);
+            Assert.AreEqual(src.M, dest.M);
+            Assert.AreEqual(src.N, dest.N);
+            Assert.AreEqual(src.O, dest.O);
+            Assert.AreEqual(src.P, dest.P);
+
+            Assert.AreNotEqual(src.SkipA, dest.SkipA);
+            Assert.AreNotEqual(src.SkipB, dest.SkipB);
+            Assert.AreEqual(src.SkipC, dest.SkipC);
+
+            src.A = false;
+            src.D = 100;
+            src.K = 5123;
+            src.N = "asfdoiuweroijsadf";
+            src.P = Alignment.Left;
+            src.M = new GrhIndex(10091);
+            src.L = new Vector2(213, 123);
+            src.SkipA = 111;
+            src.SkipB = 111;
+            src.SkipC = 111;
+
+            writer = new BitStream(BitStreamMode.Write, 2048);
+            src.Serialize(writer);
+
+            buffer = writer.GetBuffer();
+
+            reader = new BitStream(buffer);
+            dest.Deserialize(reader);
+
+            Assert.AreEqual(src.Position, dest.Position);
+            Assert.AreEqual(src.Size, dest.Size);
+            Assert.AreEqual(src.Velocity, dest.Velocity);
+            Assert.AreEqual(src.Weight, dest.Weight);
+            Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
+            Assert.AreEqual(src.CollisionType, dest.CollisionType);
+            Assert.AreEqual(src.Center, dest.Center);
+
+            Assert.AreEqual(src.A, dest.A);
+            Assert.AreEqual(src.B, dest.B);
+            Assert.AreEqual(src.C, dest.C);
+            Assert.AreEqual(src.D, dest.D);
+            Assert.AreEqual(src.E, dest.E);
+            Assert.AreEqual(src.F, dest.F);
+            Assert.AreEqual(src.G, dest.G);
+            Assert.AreEqual(src.H, dest.H);
+            Assert.AreEqual(src.I, dest.I);
+            Assert.AreEqual(src.J, dest.J);
+            Assert.AreEqual(src.K, dest.K);
+            Assert.AreEqual(src.L, dest.L);
+            Assert.AreEqual(src.M, dest.M);
+            Assert.AreEqual(src.N, dest.N);
+            Assert.AreEqual(src.O, dest.O);
+            Assert.AreEqual(src.P, dest.P);
+
+            Assert.AreNotEqual(src.SkipA, dest.SkipA);
+            Assert.AreNotEqual(src.SkipB, dest.SkipB);
+            Assert.AreNotEqual(src.SkipC, dest.SkipC);
+        }
+
+        [Test]
+        public void TestSkipNonSyncNetworkValues()
+        {
+            BitStream writer = new BitStream(BitStreamMode.Write, 2048);
+            DE src = new DE { SkipA = 1, SkipB = 2, SkipC = 3 };
+            DynamicEntityFactory.Write(writer, src);
+            var buffer = writer.GetBuffer();
+
+            BitStream reader = new BitStream(buffer);
+            DE dest = (DE)DynamicEntityFactory.Read(reader);
+
+            Assert.AreEqual(src.Position, dest.Position);
+            Assert.AreEqual(src.Size, dest.Size);
+            Assert.AreEqual(src.Velocity, dest.Velocity);
+            Assert.AreEqual(src.Weight, dest.Weight);
+            Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
+            Assert.AreEqual(src.CollisionType, dest.CollisionType);
+            Assert.AreEqual(src.Center, dest.Center);
+
+            Assert.AreEqual(src.A, dest.A);
+            Assert.AreEqual(src.B, dest.B);
+            Assert.AreEqual(src.C, dest.C);
+            Assert.AreEqual(src.D, dest.D);
+            Assert.AreEqual(src.E, dest.E);
+            Assert.AreEqual(src.F, dest.F);
+            Assert.AreEqual(src.G, dest.G);
+            Assert.AreEqual(src.H, dest.H);
+            Assert.AreEqual(src.I, dest.I);
+            Assert.AreEqual(src.J, dest.J);
+            Assert.AreEqual(src.K, dest.K);
+            Assert.AreEqual(src.L, dest.L);
+            Assert.AreEqual(src.M, dest.M);
+            Assert.AreEqual(src.N, dest.N);
+            Assert.AreEqual(src.O, dest.O);
+            Assert.AreEqual(src.P, dest.P);
+
+            Assert.AreNotEqual(src.SkipA, dest.SkipA);
+            Assert.AreNotEqual(src.SkipB, dest.SkipB);
+            Assert.AreEqual(src.SkipC, dest.SkipC);
+
+            src.A = false;
+            src.D = 100;
+            src.K = 5123;
+            src.N = "asfdoiuweroijsadf";
+            src.P = Alignment.Left;
+            src.M = new GrhIndex(10091);
+            src.L = new Vector2(213, 123);
+
+            writer = new BitStream(BitStreamMode.Write, 2048);
+            src.Serialize(writer);
+
+            buffer = writer.GetBuffer();
+
+            reader = new BitStream(buffer);
+            dest.Deserialize(reader);
+
+            Assert.AreEqual(src.Position, dest.Position);
+            Assert.AreEqual(src.Size, dest.Size);
+            Assert.AreEqual(src.Velocity, dest.Velocity);
+            Assert.AreEqual(src.Weight, dest.Weight);
+            Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
+            Assert.AreEqual(src.CollisionType, dest.CollisionType);
+            Assert.AreEqual(src.Center, dest.Center);
+
+            Assert.AreEqual(src.A, dest.A);
+            Assert.AreEqual(src.B, dest.B);
+            Assert.AreEqual(src.C, dest.C);
+            Assert.AreEqual(src.D, dest.D);
+            Assert.AreEqual(src.E, dest.E);
+            Assert.AreEqual(src.F, dest.F);
+            Assert.AreEqual(src.G, dest.G);
+            Assert.AreEqual(src.H, dest.H);
+            Assert.AreEqual(src.I, dest.I);
+            Assert.AreEqual(src.J, dest.J);
+            Assert.AreEqual(src.K, dest.K);
+            Assert.AreEqual(src.L, dest.L);
+            Assert.AreEqual(src.M, dest.M);
+            Assert.AreEqual(src.N, dest.N);
+            Assert.AreEqual(src.O, dest.O);
+            Assert.AreEqual(src.P, dest.P);
+
+            Assert.AreNotEqual(src.SkipA, dest.SkipA);
+            Assert.AreNotEqual(src.SkipB, dest.SkipB);
+            Assert.AreEqual(src.SkipC, dest.SkipC);
+        }
+
+        [Test]
+        public void TestWriteReadValuesAndUpdatePositionVelocity()
+        {
+            BitStream writer = new BitStream(BitStreamMode.Write, 2048);
+            DE src = new DE();
+            DynamicEntityFactory.Write(writer, src);
+            var buffer = writer.GetBuffer();
+
+            BitStream reader = new BitStream(buffer);
+            DE dest = (DE)DynamicEntityFactory.Read(reader);
+
+            Assert.AreEqual(src.Position, dest.Position);
+            Assert.AreEqual(src.Size, dest.Size);
+            Assert.AreEqual(src.Velocity, dest.Velocity);
+            Assert.AreEqual(src.Weight, dest.Weight);
+            Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
+            Assert.AreEqual(src.CollisionType, dest.CollisionType);
+            Assert.AreEqual(src.Center, dest.Center);
+
+            Assert.AreEqual(src.A, dest.A);
+            Assert.AreEqual(src.B, dest.B);
+            Assert.AreEqual(src.C, dest.C);
+            Assert.AreEqual(src.D, dest.D);
+            Assert.AreEqual(src.E, dest.E);
+            Assert.AreEqual(src.F, dest.F);
+            Assert.AreEqual(src.G, dest.G);
+            Assert.AreEqual(src.H, dest.H);
+            Assert.AreEqual(src.I, dest.I);
+            Assert.AreEqual(src.J, dest.J);
+            Assert.AreEqual(src.K, dest.K);
+            Assert.AreEqual(src.L, dest.L);
+            Assert.AreEqual(src.M, dest.M);
+            Assert.AreEqual(src.N, dest.N);
+            Assert.AreEqual(src.O, dest.O);
+            Assert.AreEqual(src.P, dest.P);
+
+            src.Position = new Vector2(10981, -123);
+            src.SetVelocity(new Vector2(0.114f, 10.181f));
+
+            writer = new BitStream(BitStreamMode.Write, 2048);
+            src.SerializePositionAndVelocity(writer, 0);
+
+            buffer = writer.GetBuffer();
+
+            reader = new BitStream(buffer);
+            dest.DeserializePositionAndVelocity(reader);
+
+            Assert.AreEqual(src.Position, dest.Position);
+            Assert.AreEqual(src.Size, dest.Size);
+            Assert.AreEqual(src.Velocity, dest.Velocity);
+            Assert.AreEqual(src.Weight, dest.Weight);
+            Assert.AreEqual(src.MapEntityIndex, dest.MapEntityIndex);
+            Assert.AreEqual(src.CollisionType, dest.CollisionType);
+            Assert.AreEqual(src.Center, dest.Center);
+
+            Assert.AreEqual(src.A, dest.A);
+            Assert.AreEqual(src.B, dest.B);
+            Assert.AreEqual(src.C, dest.C);
+            Assert.AreEqual(src.D, dest.D);
+            Assert.AreEqual(src.E, dest.E);
+            Assert.AreEqual(src.F, dest.F);
+            Assert.AreEqual(src.G, dest.G);
+            Assert.AreEqual(src.H, dest.H);
+            Assert.AreEqual(src.I, dest.I);
+            Assert.AreEqual(src.J, dest.J);
+            Assert.AreEqual(src.K, dest.K);
+            Assert.AreEqual(src.L, dest.L);
+            Assert.AreEqual(src.M, dest.M);
+            Assert.AreEqual(src.N, dest.N);
+            Assert.AreEqual(src.O, dest.O);
+            Assert.AreEqual(src.P, dest.P);
         }
 
         [Test]
