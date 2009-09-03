@@ -7,11 +7,15 @@ using NetGore.NPCChat;
 
 namespace NetGore.EditorTools
 {
+    public delegate void EditorNPCChatConditionalCollectionItemHandler(EditorNPCChatConditionalCollectionItem sender);
+
     public class EditorNPCChatConditionalCollectionItem : NPCChatConditionalCollectionItemBase
     {
         readonly List<NPCChatConditionalParameter> _parameters = new List<NPCChatConditionalParameter>();
         NPCChatConditionalBase _conditional;
         bool _not;
+
+        public event EditorNPCChatConditionalCollectionItemHandler OnChange;
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalBase.
@@ -151,6 +155,9 @@ namespace NetGore.EditorTools
             // Set the new parameters
             _parameters.Clear();
             _parameters.AddRange(newParameters);
+
+            if (OnChange != null)
+                OnChange(this);
         }
 
         /// <summary>
@@ -160,6 +167,9 @@ namespace NetGore.EditorTools
         public void SetNot(bool value)
         {
             _not = value;
+
+            if (OnChange != null)
+                OnChange(this);
         }
 
         /// <summary>
@@ -175,6 +185,9 @@ namespace NetGore.EditorTools
             _not = not;
             _parameters.Clear();
             _parameters.AddRange(parameters);
+
+            if (OnChange != null)
+                OnChange(this);
         }
 
         /// <summary>
@@ -215,7 +228,18 @@ namespace NetGore.EditorTools
         /// <returns>True if set successfully; otherwise false.</returns>
         public bool TrySetParameter(int index, NPCChatConditionalParameter value)
         {
+            if (index < 0)
+                return false;
+            if (index >= _parameters.Count)
+                return false;
+            if (value == null)
+                return false;
+
             _parameters[index] = value;
+
+            if (OnChange != null)
+                OnChange(this);
+
             return true;
         }
     }

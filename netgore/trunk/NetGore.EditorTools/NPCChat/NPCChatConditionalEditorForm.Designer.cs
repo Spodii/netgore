@@ -1,4 +1,6 @@
-﻿namespace NetGore.EditorTools
+﻿using NetGore.EditorTools.NPCChat;
+
+namespace NetGore.EditorTools
 {
     partial class NPCChatConditionalEditorForm
     {
@@ -31,9 +33,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.chkNot = new System.Windows.Forms.CheckBox();
             this.cmbConditionalType = new System.Windows.Forms.ComboBox();
-            this.lstParameters = new System.Windows.Forms.ListBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtValue = new System.Windows.Forms.TextBox();
+            this.lstParameters = new NetGore.EditorTools.NPCChat.NPCChatParameterListBox();
             this.SuspendLayout();
             // 
             // label1
@@ -54,6 +56,7 @@
             this.chkNot.TabIndex = 1;
             this.chkNot.Text = "NOT";
             this.chkNot.UseVisualStyleBackColor = true;
+            this.chkNot.CheckedChanged += new System.EventHandler(this.chkNot_CheckedChanged);
             // 
             // cmbConditionalType
             // 
@@ -63,15 +66,6 @@
             this.cmbConditionalType.Size = new System.Drawing.Size(210, 21);
             this.cmbConditionalType.TabIndex = 2;
             this.cmbConditionalType.SelectedIndexChanged += new System.EventHandler(this.cmbConditionalType_SelectedIndexChanged);
-            // 
-            // lstParameters
-            // 
-            this.lstParameters.FormattingEnabled = true;
-            this.lstParameters.Location = new System.Drawing.Point(12, 55);
-            this.lstParameters.Name = "lstParameters";
-            this.lstParameters.Size = new System.Drawing.Size(265, 134);
-            this.lstParameters.TabIndex = 3;
-            this.lstParameters.SelectedIndexChanged += new System.EventHandler(this.lstParameters_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -89,7 +83,16 @@
             this.txtValue.Name = "txtValue";
             this.txtValue.Size = new System.Drawing.Size(210, 20);
             this.txtValue.TabIndex = 5;
-            this.txtValue.TextChanged += new System.EventHandler(this.txtValue_TextChanged);
+            // 
+            // lstParameters
+            // 
+            this.lstParameters.ConditionalCollectionItem = null;
+            this.lstParameters.FormattingEnabled = true;
+            this.lstParameters.Location = new System.Drawing.Point(12, 55);
+            this.lstParameters.Name = "lstParameters";
+            this.lstParameters.Size = new System.Drawing.Size(265, 134);
+            this.lstParameters.TabIndex = 3;
+            this.lstParameters.ValueTextBox = this.txtValue;
             // 
             // NPCChatConditionalEditorForm
             // 
@@ -118,7 +121,7 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox chkNot;
         private System.Windows.Forms.ComboBox cmbConditionalType;
-        private System.Windows.Forms.ListBox lstParameters;
+        private NPCChatParameterListBox lstParameters;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtValue;
     }

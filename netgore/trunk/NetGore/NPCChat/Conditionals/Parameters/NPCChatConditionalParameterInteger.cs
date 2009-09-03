@@ -31,7 +31,10 @@ namespace NetGore.NPCChat
         public override bool TrySetValue(string value, Parser parser)
         {
             if (string.IsNullOrEmpty(value))
-                return false;
+            {
+                _value = 0;
+                return true;
+            }
 
             int outValue;
             if (!parser.TryParse(value, out outValue))

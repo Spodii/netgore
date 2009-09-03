@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
@@ -9,6 +10,31 @@ namespace NetGore
     /// </summary>
     public static class IEnumerableExtensions
     {
+        /// <summary>
+        /// Checks if two IEnumerables contain the exact same elements. Order does not matter.
+        /// </summary>
+        /// <typeparam name="T">The Type of object.</typeparam>
+        /// <param name="a">The first collection.</param>
+        /// <param name="b">The second collection.</param>
+        /// <returns>True if both IEnumerables contain the same items, and same number of items; otherwise, false.</returns>
+        public static bool ContainSameElements<T>(this IEnumerable<T> a, IEnumerable<T> b)
+        {
+            if (a.Count() != b.Count())
+                return false;
+
+            var listB = b.ToList();
+
+            foreach (var item in a)
+            {
+                if (!listB.Remove(item))
+                    return false;
+            }
+
+            Debug.Assert(listB.Count == 0);
+
+            return true;
+        }
+
         /// <summary>
         /// Combines all items in an IEnumerable together into a delimited string.
         /// </summary>

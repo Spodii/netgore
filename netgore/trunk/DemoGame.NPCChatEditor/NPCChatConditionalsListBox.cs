@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
@@ -36,9 +35,7 @@ namespace DemoGame.NPCChatEditor
                     return;
 
                 if (_conditionalCollection != null)
-                {
                     _conditionalCollection.OnChange -= ConditionalCollection_OnChange;
-                }
 
                 _conditionalCollection = value;
 
@@ -50,63 +47,6 @@ namespace DemoGame.NPCChatEditor
                     _conditionalCollection.OnChange += ConditionalCollection_OnChange;
                 }
             }
-        }
-
-        static bool CollectionsContainSameItems<T>(IEnumerable<T> a, IEnumerable<T> b)
-        {
-            if (a.Count() != b.Count())
-                return false;
-
-            foreach (var item in a)
-            {
-                if (!b.Contains(item))
-                    return false;
-            }
-
-            return true;
-        }
-
-        void RebuildItemList()
-        {
-            // No conditional collection? Clear the list
-            if (ConditionalCollection == null)
-            {
-                Items.Clear();
-                return;
-            }
-
-            var thisItemsCasted = Items.Cast<NPCChatConditionalCollectionItemBase>();
-
-            // Only do something if there are any items missing
-            if (CollectionsContainSameItems(ConditionalCollection, thisItemsCasted))
-                return;
-
-            var buffer = new List<NPCChatConditionalCollectionItemBase>();
-
-            // Remove
-            foreach (var item in thisItemsCasted)
-            {
-                if (!ConditionalCollection.Contains(item))
-                    buffer.Add(item);
-            }
-
-            foreach (var item in buffer)
-                Items.Remove(item);
-
-            // Add
-            buffer.Clear();
-            foreach (var item in ConditionalCollection)
-            {
-                if (!thisItemsCasted.Contains(item))
-                    buffer.Add(item);
-            }
-
-            Items.AddRange(buffer.ToArray());
-        }
-
-        void ConditionalCollection_OnChange(EditorNPCChatConditionalCollection source)
-        {
-            RebuildItemList();
         }
 
         /// <summary>
@@ -134,26 +74,35 @@ namespace DemoGame.NPCChatEditor
             get { return _selectedConditionalItem; }
         }
 
+        void ConditionalCollection_OnChange(EditorNPCChatConditionalCollection source)
+        {
+            RebuildItemList();
+        }
+
+        /// <summary>
+        /// Handles the FormClosed event of the conditionalEditorForm control.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.FormClosedEventArgs"/> instance containing the event data.</param>
+        void conditionalEditorForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            RefreshItems();
+        }
+
+        /// <summary>
+        /// Edits the SelectedConditionalItem.
+        /// </summary>
+        /// <param name="npcChatConditionals">The NPCChatConditionalBases that can be chosen.</param>
         public void EditCurrentItem(NPCChatConditionalBase[] npcChatConditionals)
         {
             if (SelectedConditionalItem == null)
                 return;
 
-            NPCChatConditionalEditorForm f = new NPCChatConditionalEditorForm(SelectedConditionalItem, npcChatConditionals);
-            f.Show();
-        }
-
-        /// <summary>
-        /// Tries to add a NPCChatConditionalCollectionItemBase to the ConditionalCollection.
-        /// </summary>
-        /// <param name="item">The NPCChatConditionalCollectionItemBase to add.</param>
-        /// <returns>True if the <paramref name="item"/> was successfully added; otherwise false.</returns>
-        public bool TryAddToConditionalCollection(NPCChatConditionalCollectionItemBase item)
-        {
-            if (ConditionalCollection == null)
-                return false;
-
-            return ConditionalCollection.TryAddItem(item);
+            NPCChatConditionalEditorForm conditionalEditorForm = new NPCChatConditionalEditorForm(SelectedConditionalItem,
+                                                                                                  npcChatConditionals)
+            { StartPosition = FormStartPosition.CenterScreen };
+            conditionalEditorForm.Show();
+            conditionalEditorForm.FormClosed += conditionalEditorForm_FormClosed;
         }
 
         protected override void OnSelectedIndexChanged(EventArgs e)
@@ -167,6 +116,18 @@ namespace DemoGame.NPCChatEditor
                 if (OnChangeConditionalItem != null)
                     OnChangeConditionalItem(this, item);
             }
+        }
+
+        void RebuildItemList()
+        {
+            // No conditional collection? Clear the list
+            if (ConditionalCollection == null)
+            {
+                Items.Clear();
+                return;
+            }
+
+            this.SynchronizeItemList(ConditionalCollection);
         }
 
         /// <summary>
@@ -185,6 +146,19 @@ namespace DemoGame.NPCChatEditor
 
             EditorNPCChatConditionalCollection newCollection = new EditorNPCChatConditionalCollection(value);
             ConditionalCollection = newCollection;
+        }
+
+        /// <summary>
+        /// Tries to add a NPCChatConditionalCollectionItemBase to the ConditionalCollection.
+        /// </summary>
+        /// <param name="item">The NPCChatConditionalCollectionItemBase to add.</param>
+        /// <returns>True if the <paramref name="item"/> was successfully added; otherwise false.</returns>
+        public bool TryAddToConditionalCollection(NPCChatConditionalCollectionItemBase item)
+        {
+            if (ConditionalCollection == null)
+                return false;
+
+            return ConditionalCollection.TryAddItem(item);
         }
     }
 }
