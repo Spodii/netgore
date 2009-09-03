@@ -637,7 +637,7 @@ namespace DemoGame.NPCChatEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtRedirectIndex_Leave(object sender, EventArgs e)
         {
-            if (EditingObjAsTreeNode == null || npcChatDialogView.SelectedNode.Tag != _editingObj)
+            if (EditingObjAsTreeNode == null || npcChatDialogView.SelectedNode == null || npcChatDialogView.SelectedNode.Tag != _editingObj)
                 return;
 
             if (npcChatDialogView.SelectedNode.Parent == null)
