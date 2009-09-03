@@ -37,11 +37,11 @@ namespace DemoGame.NPCChatEditor
             this.cmbEvaluateType = new System.Windows.Forms.ComboBox();
             this.btnAddConditional = new System.Windows.Forms.Button();
             this.btnDeleteConditional = new System.Windows.Forms.Button();
-            this.lstConditionals = new DemoGame.NPCChatEditor.NPCChatConditionalsListBox();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tcChatDialogItem = new System.Windows.Forms.TabControl();
             this.tpDialog = new System.Windows.Forms.TabPage();
+            this.chkIsBranch = new System.Windows.Forms.CheckBox();
             this.btnDeleteDialog = new System.Windows.Forms.Button();
             this.btnAddResponse = new System.Windows.Forms.Button();
             this.txtDialogPage = new System.Windows.Forms.TextBox();
@@ -64,8 +64,8 @@ namespace DemoGame.NPCChatEditor
             this.label6 = new System.Windows.Forms.Label();
             this.txtDialogTitle = new System.Windows.Forms.TextBox();
             this.cmbSelectedDialog = new NetGore.EditorTools.NPCChat.NPCChatDialogComboBox();
+            this.lstConditionals = new DemoGame.NPCChatEditor.NPCChatConditionalsListBox();
             this.npcChatDialogView = new NetGore.EditorTools.NPCChat.NPCChatDialogView();
-            this.chkIsBranch = new System.Windows.Forms.CheckBox();
             this.gbSelectedNode.SuspendLayout();
             this.gbConditionals.SuspendLayout();
             this.tcChatDialogItem.SuspendLayout();
@@ -137,17 +137,6 @@ namespace DemoGame.NPCChatEditor
             this.btnDeleteConditional.Text = "Delete";
             this.btnDeleteConditional.UseVisualStyleBackColor = true;
             // 
-            // lstConditionals
-            // 
-            this.lstConditionals.ConditionalCollection = null;
-            this.lstConditionals.EvaluationTypeComboBox = this.cmbEvaluateType;
-            this.lstConditionals.FormattingEnabled = true;
-            this.lstConditionals.Location = new System.Drawing.Point(6, 19);
-            this.lstConditionals.Name = "lstConditionals";
-            this.lstConditionals.Size = new System.Drawing.Size(351, 173);
-            this.lstConditionals.TabIndex = 8;
-            this.lstConditionals.DoubleClick += new System.EventHandler(this.lstConditionals_DoubleClick);
-            // 
             // txtTitle
             // 
             this.txtTitle.Enabled = false;
@@ -193,6 +182,17 @@ namespace DemoGame.NPCChatEditor
             this.tpDialog.TabIndex = 0;
             this.tpDialog.Text = "Dialog";
             this.tpDialog.UseVisualStyleBackColor = true;
+            // 
+            // chkIsBranch
+            // 
+            this.chkIsBranch.AutoSize = true;
+            this.chkIsBranch.Location = new System.Drawing.Point(98, 139);
+            this.chkIsBranch.Name = "chkIsBranch";
+            this.chkIsBranch.Size = new System.Drawing.Size(71, 17);
+            this.chkIsBranch.TabIndex = 9;
+            this.chkIsBranch.Text = "Is Branch";
+            this.chkIsBranch.UseVisualStyleBackColor = true;
+            this.chkIsBranch.CheckedChanged += new System.EventHandler(this.chkIsBranch_CheckedChanged);
             // 
             // btnDeleteDialog
             // 
@@ -406,10 +406,22 @@ namespace DemoGame.NPCChatEditor
             this.cmbSelectedDialog.TabIndex = 9;
             this.cmbSelectedDialog.OnChangeDialog += new NetGore.EditorTools.NPCChat.NPCChatDialogComboBoxChangeDialogHandler(this.cmbSelectedDialog_OnChangeDialog);
             // 
+            // lstConditionals
+            // 
+            this.lstConditionals.ConditionalCollection = null;
+            this.lstConditionals.EvaluationTypeComboBox = this.cmbEvaluateType;
+            this.lstConditionals.FormattingEnabled = true;
+            this.lstConditionals.Location = new System.Drawing.Point(6, 19);
+            this.lstConditionals.Name = "lstConditionals";
+            this.lstConditionals.Size = new System.Drawing.Size(351, 173);
+            this.lstConditionals.TabIndex = 8;
+            this.lstConditionals.DoubleClick += new System.EventHandler(this.lstConditionals_DoubleClick);
+            // 
             // npcChatDialogView
             // 
             this.npcChatDialogView.Location = new System.Drawing.Point(12, 35);
             this.npcChatDialogView.Name = "npcChatDialogView";
+            this.npcChatDialogView.NodeForeColorBranch = System.Drawing.Color.DarkRed;
             this.npcChatDialogView.NodeForeColorGoTo = System.Drawing.Color.Blue;
             this.npcChatDialogView.NodeForeColorNormal = System.Drawing.Color.Black;
             this.npcChatDialogView.NodeForeColorResponse = System.Drawing.Color.Green;
@@ -417,17 +429,6 @@ namespace DemoGame.NPCChatEditor
             this.npcChatDialogView.Size = new System.Drawing.Size(815, 332);
             this.npcChatDialogView.TabIndex = 0;
             this.npcChatDialogView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.npcChatDialogView_NodeMouseClick);
-            // 
-            // chkIsBranch
-            // 
-            this.chkIsBranch.AutoSize = true;
-            this.chkIsBranch.Location = new System.Drawing.Point(98, 139);
-            this.chkIsBranch.Name = "chkIsBranch";
-            this.chkIsBranch.Size = new System.Drawing.Size(71, 17);
-            this.chkIsBranch.TabIndex = 9;
-            this.chkIsBranch.Text = "Is Branch";
-            this.chkIsBranch.UseVisualStyleBackColor = true;
-            this.chkIsBranch.CheckedChanged += new System.EventHandler(this.chkIsBranch_CheckedChanged);
             // 
             // frmMain
             // 

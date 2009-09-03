@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -124,24 +126,6 @@ namespace NetGore.EditorTools.NPCChat
             UpdateTreeNode(ret);
         }
 
-        public TreeNode FindNode(Predicate<TreeNode> p)
-        {
-            return FindTreeNode(Nodes, p);
-        }
-
-        static TreeNode FindTreeNode(TreeNodeCollection nodes, Predicate<TreeNode> predicate)
-        {
-            foreach (TreeNode node in nodes.OfType<TreeNode>())
-            {
-                if (predicate(node))
-                    return node;
-
-                return FindTreeNode(node.Nodes, predicate);
-            }
-
-            return null;
-        }
-
         IEnumerable<TreeNode> GetParents(TreeNode node)
         {
             TreeNode current = node;
@@ -193,6 +177,30 @@ namespace NetGore.EditorTools.NPCChat
             base.OnNodeMouseDoubleClick(e);
         }
 
+        /// <summary>
+        /// Gets an IEnumerable of all the TreeNodes in this TreeView.
+        /// </summary>
+        /// <returns>An IEnumerable of all the TreeNodes in this TreeView.</returns>
+        public IEnumerable<TreeNode> GetAllNodes()
+        {
+            return GetAllNodes(Nodes);
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all the TreeNodes from the given <paramref name="root"/>.
+        /// </summary>
+        /// <param name="root">The root collection of TreeNodes.</param>
+        /// <returns>An IEnumerable of all the TreeNodes from the given <paramref name="root"/>.</returns>
+        public static IEnumerable<TreeNode> GetAllNodes(IEnumerable root)
+        {
+            foreach (var node in root.Cast<TreeNode>())
+            {
+                yield return node;
+                foreach (var r in GetAllNodes(node.Nodes))
+                    yield return r;
+            }
+        }
+
         void RecursiveUpdateItems(TreeNode node, TreeNode parentNode, EditorNPCChatDialogItem item)
         {
             // Create the main node
@@ -206,20 +214,27 @@ namespace NetGore.EditorTools.NPCChat
                 {
                     EditorNPCChatDialogItem responseItem = NPCChatDialog.GetDialogItemCasted(response.Page);
                     ushort responsePage = response.Page;
-                    TreeNode existingPageNode = FindNode(x => TreeNodeIsForDialogItem(x, responsePage));
+                    TreeNode existingPageNode = GetAllNodes(Nodes).FirstOrDefault(x => TreeNodeIsForDialogItem(x, responsePage));
 
                     bool createdNew;
                     TreeNode childNode = CreateTreeNode(response, node, out createdNew);
 
-                    if (existingPageNode != null && createdNew)
+                    if (existingPageNode != null)
+                    {
                         CreateTreeNode(existingPageNode, childNode);
-
-                    // This GetParents() thing will check to make sure that it is not redirecting to any of it's own parents
-                    // because doing so would otherwise cause an infinite recursion of updates
-                    if (responseItem != null &&
-                        !GetParents(node).Any(
-                             x => x.Tag is EditorNPCChatDialogItem && ((EditorNPCChatDialogItem)x.Tag).Index == responsePage))
-                        RecursiveUpdateItems(existingPageNode, childNode, responseItem);
+                    }
+                    else
+                    {
+                        if (responseItem != null)
+                        {
+                            // This GetParents() thing will check to make sure that it is not redirecting to any of it's own parents
+                            // because doing so would otherwise cause an infinite recursion of updates
+                            if (!GetParents(node).Any(x => TreeNodeIsForDialogItem(x, responsePage)))
+                            {
+                                RecursiveUpdateItems(existingPageNode, childNode, responseItem);
+                            }
+                        }
+                    }
                 }
 
                 // Delete obsolete nodes
@@ -240,6 +255,9 @@ namespace NetGore.EditorTools.NPCChat
 
         static bool TreeNodeIsForDialogItem(TreeNode treeNode, ushort dialogItemIndex)
         {
+            if (treeNode == null || treeNode.Tag == null)
+                return false;
+
             EditorNPCChatDialogItem castedTag = treeNode.Tag as EditorNPCChatDialogItem;
             if (castedTag == null)
                 return false;
