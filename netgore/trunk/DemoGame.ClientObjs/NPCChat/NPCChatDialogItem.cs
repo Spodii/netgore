@@ -66,6 +66,14 @@ namespace DemoGame.Client.NPCChat
         }
 
         /// <summary>
+        /// Unused by the Client and will always return false.
+        /// </summary>
+        public override bool IsBranch
+        {
+            get { return false; }
+        }
+
+        /// <summary>
         /// NPCChatDialogItem constructor.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -135,9 +143,10 @@ namespace DemoGame.Client.NPCChat
         /// <param name="page">The index.</param>
         /// <param name="title">The title.</param>
         /// <param name="text">The text.</param>
+        /// <param name="isBranch">The IsBranch value.</param>
         /// <param name="responses">The responses.</param>
         /// <param name="conditionals">The conditionals.</param>
-        protected override void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses, NPCChatConditionalCollectionBase conditionals)
+        protected override void SetReadValues(ushort page, string title, string text, bool isBranch, IEnumerable<NPCChatResponseBase> responses, NPCChatConditionalCollectionBase conditionals)
         {
             Debug.Assert(
                 _index == default(ushort) && _title == default(string) && _text == default(string) &&

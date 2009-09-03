@@ -33,6 +33,7 @@ namespace DemoGame.NPCChatEditor
         {
             this.gbSelectedNode = new System.Windows.Forms.GroupBox();
             this.gbConditionals = new System.Windows.Forms.GroupBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.cmbEvaluateType = new System.Windows.Forms.ComboBox();
             this.btnAddConditional = new System.Windows.Forms.Button();
             this.btnDeleteConditional = new System.Windows.Forms.Button();
@@ -64,7 +65,7 @@ namespace DemoGame.NPCChatEditor
             this.txtDialogTitle = new System.Windows.Forms.TextBox();
             this.cmbSelectedDialog = new NetGore.EditorTools.NPCChat.NPCChatDialogComboBox();
             this.npcChatDialogView = new NetGore.EditorTools.NPCChat.NPCChatDialogView();
-            this.label8 = new System.Windows.Forms.Label();
+            this.chkIsBranch = new System.Windows.Forms.CheckBox();
             this.gbSelectedNode.SuspendLayout();
             this.gbConditionals.SuspendLayout();
             this.tcChatDialogItem.SuspendLayout();
@@ -99,6 +100,15 @@ namespace DemoGame.NPCChatEditor
             this.gbConditionals.TabIndex = 15;
             this.gbConditionals.TabStop = false;
             this.gbConditionals.Text = "Conditionals";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 202);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(87, 13);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Evaluation Type:";
             // 
             // cmbEvaluateType
             // 
@@ -169,6 +179,7 @@ namespace DemoGame.NPCChatEditor
             // 
             // tpDialog
             // 
+            this.tpDialog.Controls.Add(this.chkIsBranch);
             this.tpDialog.Controls.Add(this.btnDeleteDialog);
             this.tpDialog.Controls.Add(this.btnAddResponse);
             this.tpDialog.Controls.Add(this.txtDialogPage);
@@ -407,14 +418,16 @@ namespace DemoGame.NPCChatEditor
             this.npcChatDialogView.TabIndex = 0;
             this.npcChatDialogView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.npcChatDialogView_NodeMouseClick);
             // 
-            // label8
+            // chkIsBranch
             // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(6, 202);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(87, 13);
-            this.label8.TabIndex = 23;
-            this.label8.Text = "Evaluation Type:";
+            this.chkIsBranch.AutoSize = true;
+            this.chkIsBranch.Location = new System.Drawing.Point(98, 139);
+            this.chkIsBranch.Name = "chkIsBranch";
+            this.chkIsBranch.Size = new System.Drawing.Size(71, 17);
+            this.chkIsBranch.TabIndex = 9;
+            this.chkIsBranch.Text = "Is Branch";
+            this.chkIsBranch.UseVisualStyleBackColor = true;
+            this.chkIsBranch.CheckedChanged += new System.EventHandler(this.chkIsBranch_CheckedChanged);
             // 
             // frmMain
             // 
@@ -485,6 +498,7 @@ namespace DemoGame.NPCChatEditor
         private NPCChatConditionalsListBox lstConditionals;
         private System.Windows.Forms.ComboBox cmbEvaluateType;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox chkIsBranch;
 
     }
 }

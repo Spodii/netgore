@@ -110,6 +110,17 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
+        /// Clears the Conditionals.
+        /// </summary>
+        public void ClearConditionals()
+        {
+            _conditionals = new EditorNPCChatConditionalCollection();
+
+            if (OnChange != null)
+                OnChange(this);
+        }
+
+        /// <summary>
         /// Sets the Conditionals property.
         /// </summary>
         /// <param name="value">The value.</param>

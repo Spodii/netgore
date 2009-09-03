@@ -11,6 +11,9 @@ using NetGore.Globalization;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
+// TODO: Do not allow responses to be added to a EditorNPCChatDialogItem where IsBranch is set
+// TODO: Do not allow responses immediately under a branch to be altered in any ways
+
 namespace DemoGame.NPCChatEditor
 {
     public partial class frmMain : Form
@@ -550,10 +553,14 @@ namespace DemoGame.NPCChatEditor
                 txtTitle.Text = EditingObjAsDialogItem.Title;
                 txtDialogText.Text = EditingObjAsDialogItem.Text;
                 txtDialogPage.Text = EditingObjAsDialogItem.Index.ToString();
+                chkIsBranch.Checked = EditingObjAsDialogItem.IsBranch;
 
-                SetConditionalsEnabled(true);
-                lstConditionals.SetConditionalCollection(EditingObjAsDialogItem.Conditionals);
-                EditingObjAsDialogItem.SetConditionals(lstConditionals.ConditionalCollection);
+                if (EditingObjAsDialogItem.IsBranch)
+                {
+                    SetConditionalsEnabled(true);
+                    lstConditionals.SetConditionalCollection(EditingObjAsDialogItem.Conditionals);
+                    EditingObjAsDialogItem.SetConditionals(lstConditionals.ConditionalCollection);
+                }
             }
             else if (obj is EditorNPCChatResponse)
             {
@@ -682,6 +689,63 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetTitle(txtTitle.Text);
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
+        }
+
+        private void chkIsBranch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+            if (EditingObjAsDialogItem == null)
+                return;
+
+            if (EditingObjAsDialogItem.IsBranch == chkIsBranch.Checked)
+            {
+                Debug.Fail("Uh-oh - an inconsistency!");
+                return;
+            }
+
+            _doNotUpdateObj = true;
+
+            const string msgSetAsNonBranch = "Are you sure you wish to change this dialog to a normal dialog?" +
+                " Changing to a normal dialog will result in all conditionals for this dialog item to be lost.";
+
+            const string msgSetAsBranch = "Are you sure you wish to change this dialog to a conditional branch?" +
+                " Changing to a conditional branch will result in some alterations being made to your existing responses.";
+
+            try
+            {
+                string error;
+                bool success;
+
+                if (EditingObjAsDialogItem.IsBranch)
+                {
+                    if (MessageBox.Show(msgSetAsNonBranch, "Accept changes?", MessageBoxButtons.YesNo) == DialogResult.No)
+                        return;
+
+                    success = EditingObjAsDialogItem.TrySetAsNonBranch(out error);
+                }
+                else
+                {
+                    if (MessageBox.Show(msgSetAsBranch, "Accept changes?", MessageBoxButtons.YesNo) == DialogResult.No)
+                        return;
+
+                    success = EditingObjAsDialogItem.TrySetAsBranch(out error);
+                }
+
+                if (!success)
+                {
+                    const string errmsg = "Failed to apply changes. Reason: {0}";
+                    MessageBox.Show(string.Format(errmsg, error));
+                }
+            }
+            finally
+            {
+                chkIsBranch.Checked = EditingObjAsDialogItem.IsBranch;
+                _doNotUpdateObj = false;
+            }
+
+            // TODO: Proper updating
+            button1_Click(this, null);
         }
     }
 }
