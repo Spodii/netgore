@@ -35,8 +35,6 @@ namespace DemoGame.NPCChatEditor
             this.cmbEvaluateType = new System.Windows.Forms.ComboBox();
             this.btnAddConditional = new System.Windows.Forms.Button();
             this.btnDeleteConditional = new System.Windows.Forms.Button();
-            this.cmbConditionalType = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
             this.lstConditionals = new DemoGame.NPCChatEditor.NPCChatConditionalsListBox();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -65,6 +63,7 @@ namespace DemoGame.NPCChatEditor
             this.txtDialogTitle = new System.Windows.Forms.TextBox();
             this.cmbSelectedDialog = new NetGore.EditorTools.NPCChatDialogComboBox();
             this.npcChatDialogView = new NetGore.EditorTools.NPCChatDialogView();
+            this.label8 = new System.Windows.Forms.Label();
             this.gbSelectedNode.SuspendLayout();
             this.gbConditionals.SuspendLayout();
             this.tcChatDialogItem.SuspendLayout();
@@ -88,11 +87,10 @@ namespace DemoGame.NPCChatEditor
             // 
             // gbConditionals
             // 
+            this.gbConditionals.Controls.Add(this.label8);
             this.gbConditionals.Controls.Add(this.cmbEvaluateType);
             this.gbConditionals.Controls.Add(this.btnAddConditional);
             this.gbConditionals.Controls.Add(this.btnDeleteConditional);
-            this.gbConditionals.Controls.Add(this.cmbConditionalType);
-            this.gbConditionals.Controls.Add(this.label10);
             this.gbConditionals.Controls.Add(this.lstConditionals);
             this.gbConditionals.Location = new System.Drawing.Point(445, 12);
             this.gbConditionals.Name = "gbConditionals";
@@ -104,9 +102,9 @@ namespace DemoGame.NPCChatEditor
             // cmbEvaluateType
             // 
             this.cmbEvaluateType.FormattingEnabled = true;
-            this.cmbEvaluateType.Location = new System.Drawing.Point(6, 164);
+            this.cmbEvaluateType.Location = new System.Drawing.Point(99, 199);
             this.cmbEvaluateType.Name = "cmbEvaluateType";
-            this.cmbEvaluateType.Size = new System.Drawing.Size(67, 21);
+            this.cmbEvaluateType.Size = new System.Drawing.Size(72, 21);
             this.cmbEvaluateType.TabIndex = 22;
             // 
             // btnAddConditional
@@ -128,23 +126,6 @@ namespace DemoGame.NPCChatEditor
             this.btnDeleteConditional.Text = "Delete";
             this.btnDeleteConditional.UseVisualStyleBackColor = true;
             // 
-            // cmbConditionalType
-            // 
-            this.cmbConditionalType.FormattingEnabled = true;
-            this.cmbConditionalType.Location = new System.Drawing.Point(90, 203);
-            this.cmbConditionalType.Name = "cmbConditionalType";
-            this.cmbConditionalType.Size = new System.Drawing.Size(43, 21);
-            this.cmbConditionalType.TabIndex = 16;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(50, 206);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(34, 13);
-            this.label10.TabIndex = 15;
-            this.label10.Text = "Type:";
-            // 
             // lstConditionals
             // 
             this.lstConditionals.ConditionalCollection = null;
@@ -152,7 +133,7 @@ namespace DemoGame.NPCChatEditor
             this.lstConditionals.FormattingEnabled = true;
             this.lstConditionals.Location = new System.Drawing.Point(6, 19);
             this.lstConditionals.Name = "lstConditionals";
-            this.lstConditionals.Size = new System.Drawing.Size(351, 147);
+            this.lstConditionals.Size = new System.Drawing.Size(351, 173);
             this.lstConditionals.TabIndex = 8;
             this.lstConditionals.DoubleClick += new System.EventHandler(this.lstConditionals_DoubleClick);
             // 
@@ -425,6 +406,15 @@ namespace DemoGame.NPCChatEditor
             this.npcChatDialogView.TabIndex = 0;
             this.npcChatDialogView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.npcChatDialogView_NodeMouseClick);
             // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(6, 202);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(87, 13);
+            this.label8.TabIndex = 23;
+            this.label8.Text = "Evaluation Type:";
+            // 
             // frmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -491,10 +481,9 @@ namespace DemoGame.NPCChatEditor
         private System.Windows.Forms.GroupBox gbConditionals;
         private System.Windows.Forms.Button btnAddConditional;
         private System.Windows.Forms.Button btnDeleteConditional;
-        private System.Windows.Forms.ComboBox cmbConditionalType;
-        private System.Windows.Forms.Label label10;
         private NPCChatConditionalsListBox lstConditionals;
         private System.Windows.Forms.ComboBox cmbEvaluateType;
+        private System.Windows.Forms.Label label8;
 
     }
 }

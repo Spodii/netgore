@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore;
 using NetGore.EditorTools;
 using NetGore.EditorTools.NPCChat;
 using NetGore.NPCChat;
@@ -45,6 +46,9 @@ namespace DemoGame.NPCChatEditor
                 {
                     Items.AddRange(_conditionalCollection.ToArray());
                     _conditionalCollection.OnChange += ConditionalCollection_OnChange;
+
+                    if (EvaluationTypeComboBox != null)
+                        EvaluationTypeComboBox.SelectedItem = ConditionalCollection.EvaluationType;
                 }
             }
         }
@@ -61,8 +65,38 @@ namespace DemoGame.NPCChatEditor
                 if (_evaluationTypeComboBox == value)
                     return;
 
+                if (_evaluationTypeComboBox != null)
+                    _evaluationTypeComboBox.SelectedIndexChanged -= EvaluationTypeComboBox_SelectedIndexChanged;
+
                 _evaluationTypeComboBox = value;
+
+                if (_evaluationTypeComboBox != null)
+                {
+                    if (ConditionalCollection != null)
+                        _evaluationTypeComboBox.SelectedItem = ConditionalCollection.EvaluationType;
+
+                    _evaluationTypeComboBox.SelectedIndexChanged += EvaluationTypeComboBox_SelectedIndexChanged;
+                }
             }
+        }
+
+        void EvaluationTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ConditionalCollection == null || EvaluationTypeComboBox == null)
+                return;
+
+            var item = EvaluationTypeComboBox.SelectedItem;
+            if (item == null)
+                return;
+
+            var t = (NPCChatConditionalEvaluationType)item;
+            if (!EnumHelper.IsDefined(t))
+            {
+                EvaluationTypeComboBox.SelectedItem = ConditionalCollection.EvaluationType;
+                return;
+            }
+
+            ConditionalCollection.SetEvaluationType(t);
         }
 
         /// <summary>
