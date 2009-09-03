@@ -11,6 +11,7 @@ namespace NetGore.EditorTools.NPCChat
     {
         Color _nodeForeColorGoTo = Color.Blue;
         Color _nodeForeColorNormal = Color.Black;
+        Color _nodeForeColorBranch = Color.DarkRed;
         Color _nodeForeColorResponse = Color.Green;
         EditorNPCChatDialog _npcChatDialog;
 
@@ -19,6 +20,13 @@ namespace NetGore.EditorTools.NPCChat
         {
             get { return _nodeForeColorGoTo; }
             set { _nodeForeColorGoTo = value; }
+        }
+
+        [Description("The font color of branch chat dialog nodes.")]
+        public Color NodeForeColorBranch
+        {
+            get { return _nodeForeColorBranch; }
+            set { _nodeForeColorBranch = value; }
         }
 
         [Description("The font color of normal chat dialog nodes.")]
@@ -268,7 +276,10 @@ namespace NetGore.EditorTools.NPCChat
             {
                 text = GetTextForDialogItem(asItem);
 
-                foreColor = NodeForeColorNormal;
+                if (asItem.IsBranch)
+                    foreColor = NodeForeColorBranch;
+                else
+                    foreColor = NodeForeColorNormal;
             }
             else if ((asResponse = node.Tag as EditorNPCChatResponse) != null)
             {

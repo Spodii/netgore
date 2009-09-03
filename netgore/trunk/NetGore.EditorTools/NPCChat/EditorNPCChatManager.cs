@@ -9,6 +9,9 @@ namespace NetGore.EditorTools.NPCChat
     {
         static readonly EditorNPCChatManager _instance = new EditorNPCChatManager();
 
+        /// <summary>
+        /// Gets an IEnmerable of the EditorNPCChatDialogs in this collection.
+        /// </summary>
         public static IEnumerable<EditorNPCChatDialog> Dialogs
         {
             get { return _instance.Cast<EditorNPCChatDialog>(); }
@@ -21,6 +24,10 @@ namespace NetGore.EditorTools.NPCChat
         {
         }
 
+        /// <summary>
+        /// Adds a EditorNPCChatDialog.
+        /// </summary>
+        /// <param name="dialog">The EditorNPCChatDialog to add.</param>
         public static void AddDialog(EditorNPCChatDialog dialog)
         {
             // Just always reorganize, since I'm not very trusting that things are always done right
@@ -40,6 +47,11 @@ namespace NetGore.EditorTools.NPCChat
             return new EditorNPCChatDialog(reader);
         }
 
+        /// <summary>
+        /// Gets the EditorNPCChatDialog at the specified <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The index of the EditorNPCChatDialog to get.</param>
+        /// <returns>The EditorNPCChatDialog at the specified <paramref name="index"/>.</returns>
         public static EditorNPCChatDialog GetDialog(int index)
         {
             NPCChatDialogBase ret = _instance[index];
@@ -55,6 +67,9 @@ namespace NetGore.EditorTools.NPCChat
             return (EditorNPCChatDialog)ret;
         }
 
+        /// <summary>
+        /// Saves this collection to file.
+        /// </summary>
         public static void SaveDialogs()
         {
             _instance.Save();

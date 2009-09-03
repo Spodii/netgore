@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
@@ -22,6 +23,7 @@ namespace NetGore.EditorTools.NPCChat
         readonly List<TreeNode> _treeNodes = new List<TreeNode>();
         NPCChatConditionalCollectionBase _conditionals;
         ushort _index;
+        bool _isBranch;
         string _text;
         string _title;
 
@@ -48,6 +50,16 @@ namespace NetGore.EditorTools.NPCChat
         public override ushort Index
         {
             get { return _index; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this NPCChatDialogItemBase is a branch dialog or not. If
+        /// true, the dialog should be automatically progressed by using EvaluateBranch() instead of waiting for
+        /// and accepting input from the user for a response.
+        /// </summary>
+        public override bool IsBranch
+        {
+            get { return _isBranch; }
         }
 
         /// <summary>
@@ -238,12 +250,15 @@ namespace NetGore.EditorTools.NPCChat
         /// <param name="page">The index.</param>
         /// <param name="title">The title.</param>
         /// <param name="text">The text.</param>
+        /// <param name="isBranch">The IsBranch value.</param>
         /// <param name="responses">The responses.</param>
         /// <param name="conditionals">The conditionals.</param>
-        protected override void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses,
+        protected override void SetReadValues(ushort page, string title, string text, bool isBranch,
+                                              IEnumerable<NPCChatResponseBase> responses,
                                               NPCChatConditionalCollectionBase conditionals)
         {
             _index = page;
+            _isBranch = isBranch;
             SetTitle(title);
             SetText(text);
 
@@ -282,6 +297,72 @@ namespace NetGore.EditorTools.NPCChat
 
             if (OnChange != null)
                 OnChange(this);
+        }
+
+        /// <summary>
+        /// Tries to set the EditorNPCChatDialogItem as a branch dialog.
+        /// </summary>
+        /// <param name="error">Contains the message for the error if there was one, or an empty string
+        /// if there was no error.</param>
+        /// <returns>True if the EditorNPCChatDialogItem was successfully set as a branch; otherwise false.</returns>
+        public bool TrySetAsBranch(out string error)
+        {
+            if (IsBranch)
+            {
+                error = "Already set as a branch dialog item.";
+                return false;
+            }
+
+            if (ResponseList.Count > 2)
+            {
+                error = "Cannot change to a branch dialog item when there are more than 2 responses.";
+                return false;
+            }
+
+            // Add responses until we have exactly 2
+            int responsesNeeded = 2 - ResponseList.Count;
+            for (int i = 0; i < responsesNeeded; i++)
+            {
+                AddResponse(new EditorNPCChatResponse("New response"));
+            }
+
+            Debug.Assert(ResponseList.Count == 2);
+
+            // Set up the responses
+            _responses[0].SetText("False");
+            _responses[0].ClearConditionals();
+            _responses[1].SetText("True");
+            _responses[1].ClearConditionals();
+
+            if (_conditionals == null)
+                _conditionals = new EditorNPCChatConditionalCollection();
+
+            _isBranch = true;
+
+            error = string.Empty;
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to set the EditorNPCChatDialogItem as a normal (non-branch) dialog.
+        /// </summary>
+        /// <param name="error">Contains the message for the error if there was one, or an empty string
+        /// if there was no error.</param>
+        /// <returns>True if the EditorNPCChatDialogItem was successfully set as a non-branch; otherwise false.</returns>
+        public bool TrySetAsNonBranch(out string error)
+        {
+            if (!IsBranch)
+            {
+                error = "Already set as a non-branch dialog item.";
+                return false;
+            }
+
+            // Clear the conditionals
+            _conditionals = new EditorNPCChatConditionalCollection();
+
+            _isBranch = false;
+            error = string.Empty;
+            return true;
         }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -28,7 +29,8 @@ namespace NetGore.NPCChat
         public abstract IEnumerable<NPCChatResponseBase> Responses { get; }
 
         /// <summary>
-        /// When overridden in the derived class, gets the main dialog text in this page of dialog.
+        /// When overridden in the derived class, gets the main dialog text in this page of dialog. If IsBranch is
+        /// true, this should return an empty string.
         /// </summary>
         public abstract string Text { get; }
 
@@ -37,6 +39,36 @@ namespace NetGore.NPCChat
         /// used for debugging and development purposes only.
         /// </summary>
         public abstract string Title { get; }
+
+        /// <summary>
+        /// Gets the NPCChatResponseBase to use by evaluating the conditionals of this EditorNPCChatDialogItem.
+        /// </summary>
+        /// <param name="user">The User used to evaluate the conditionals.</param>
+        /// <param name="npc">The NPC used to evaluate the conditionals.</param>
+        /// <returns>The NPCChatResponseBase to use by evaluating the conditionals of this
+        /// EditorNPCChatDialogItem.</returns>
+        /// <exception cref="MethodAccessException">IsBranch is false.</exception>
+        public NPCChatResponseBase EvaluateBranch(object user, object npc)
+        {
+            if (!IsBranch)
+                throw new MethodAccessException("This method may only be called if IsBranch is true.");
+
+            Debug.Assert(Conditionals.Count() == 2, "There should always be exactly 2 conditionals on a branch...");
+
+            bool result = CheckConditionals(user, npc);
+
+            if (!result)
+                return GetResponse(0);
+            else
+                return GetResponse(1);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this NPCChatDialogItemBase is a branch dialog or not. If
+        /// true, the dialog should be automatically progressed by using EvaluateBranch() instead of waiting for
+        /// and accepting input from the user for a response.
+        /// </summary>
+        public abstract bool IsBranch { get; }
 
         /// <summary>
         /// NPCChatDialogItemBase constructor.
@@ -137,19 +169,27 @@ namespace NetGore.NPCChat
             ushort index = reader.ReadUShort("Index");
             string title = reader.ReadString("Title");
             string text = reader.ReadString("Text");
+            bool isBranch = reader.ReadBool("IsBranch");
+
             var responses = reader.ReadManyNodes("Responses", x => CreateResponse(x));
 
-            IValueReader cReader = reader.ReadNode("Conditionals");
-            bool hasConditionals = cReader.ReadBool("HasConditionals");
             NPCChatConditionalCollectionBase conditionals = null;
-            if (hasConditionals)
+            if (isBranch)
             {
-                conditionals = CreateConditionalCollection();
-                if (conditionals != null)
-                    conditionals.Read(cReader);
+                IValueReader cReader = reader.ReadNode("Conditionals");
+                bool hasConditionals = cReader.ReadBool("HasConditionals");
+                if (hasConditionals)
+                {
+                    conditionals = CreateConditionalCollection();
+                    if (conditionals != null)
+                        conditionals.Read(cReader);
+                }
             }
 
-            SetReadValues(index, title, text, responses, conditionals);
+            Debug.Assert(!isBranch || (isBranch && responses.Count() == 2), "There should be exactly 2 responses for a branch.");
+            Debug.Assert(isBranch || (!isBranch && conditionals == null), "Conditionals should never be set for a non-branch.");
+
+            SetReadValues(index, title, text, isBranch, responses, conditionals);
         }
 
         /// <summary>
@@ -158,9 +198,10 @@ namespace NetGore.NPCChat
         /// <param name="page">The index.</param>
         /// <param name="title">The title.</param>
         /// <param name="text">The text.</param>
+        /// <param name="isBranch">The IsBranch value.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="responses">The responses.</param>
-        protected abstract void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses, NPCChatConditionalCollectionBase conditionals);
+        protected abstract void SetReadValues(ushort page, string title, string text, bool isBranch, IEnumerable<NPCChatResponseBase> responses, NPCChatConditionalCollectionBase conditionals);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -182,17 +223,23 @@ namespace NetGore.NPCChat
             writer.Write("Index", Index);
             writer.Write("Title", Title ?? string.Empty);
             writer.Write("Text", Text ?? string.Empty);
+            writer.Write("IsBranch", IsBranch);
             writer.WriteManyNodes("Responses", Responses, ((w, item) => item.Write(w)));
 
-            writer.WriteStartNode("Conditionals");
+            if (IsBranch)
             {
-                NPCChatConditionalCollectionBase c = Conditionals;
-                bool hasConditionals = (c != null) && (c.Count() > 0);
-                writer.Write("HasConditionals", hasConditionals);
-                if (hasConditionals)
-                    c.Write(writer);
+                writer.WriteStartNode("Conditionals");
+                {
+                    NPCChatConditionalCollectionBase c = Conditionals;
+                    bool hasConditionals = (c != null) && (c.Count() > 0);
+                    writer.Write("HasConditionals", hasConditionals);
+                    if (hasConditionals)
+                        c.Write(writer);
+                }
+                writer.WriteEndNode("Conditionals");
             }
-            writer.WriteEndNode("Conditionals");
+
+            Debug.Assert(!IsBranch || (IsBranch && Responses.Count() == 2), "There should be exactly 2 responses for a branch.");
         }
     }
 }
