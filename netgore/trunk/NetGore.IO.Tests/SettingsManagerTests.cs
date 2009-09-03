@@ -51,6 +51,56 @@ namespace NetGore.IO.Tests
     [TestFixture]
     public class SettingsManagerTests
     {
+        static readonly Random r = new Random();
+
+        static InterfaceTester GetRandomInterfaceTester()
+        {
+            return new InterfaceTester
+            { A = CreateRandomString(), B = r.Next(int.MinValue, int.MaxValue), C = (r.Next(-1000, 1000)) };
+        }
+
+        static string CreateRandomString()
+        {
+            int length = r.Next(2, 10);
+            var ret = new char[length];
+
+            for (int i = 0; i < ret.Length; i++)
+            {
+                int j;
+                if (i == 0)
+                    j = r.Next(1, 3); // Don't let the first character be numeric
+                else
+                    j = r.Next(0, 3);
+
+                int min;
+                int max;
+
+                // ReSharper disable RedundantCast
+                switch (j)
+                {
+                    case 0:
+                        min = (int)'0';
+                        max = (int)'9';
+                        break;
+
+                    case 1:
+                        min = (int)'a';
+                        max = (int)'z';
+                        break;
+
+                    default:
+                        min = (int)'A';
+                        max = (int)'Z';
+                        break;
+                }
+                // ReSharper restore RedundantCast
+
+                ret[i] = (char)r.Next(min, max + 1);
+            }
+
+            return new string(ret);
+        }
+
         [Test]
         public void AddNewItemTest()
         {
@@ -233,6 +283,47 @@ namespace NetGore.IO.Tests
         }
 
         [Test]
+        public void ReadWriteTonsOfCrapTest()
+        {
+            const int iterations = 10000;
+
+            var items = new List<InterfaceTester>(iterations);
+
+            for (int i = 0; i < iterations; i++)
+            {
+                items.Add(GetRandomInterfaceTester());
+            }
+
+            string filePath = Path.GetTempFileName();
+
+            try
+            {
+                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
+                {
+                    for (int i = 0; i < items.Count; i++)
+                    {
+                        settingsWriter.Add("item" + Parser.Invariant.ToString(i), items[i]);
+                    }
+                }
+
+                using (SettingsManager settingsReader = new SettingsManager("TestSettings", filePath))
+                {
+                    for (int i = 0; i < items.Count; i++)
+                    {
+                        InterfaceTester newItem = new InterfaceTester();
+                        settingsReader.Add("item" + Parser.Invariant.ToString(i), newItem);
+                        Assert.IsTrue(items[i].HaveSameValues(newItem), "Index: {0}", i);
+                    }
+                }
+            }
+            finally
+            {
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
+            }
+        }
+
+        [Test]
         public void VariableLoadOrderTest()
         {
             InterfaceTester t1 = new InterfaceTester { A = "Hello", B = 10, C = 5.135f };
@@ -347,103 +438,17 @@ namespace NetGore.IO.Tests
             Assert.IsTrue(t2.HaveSameValues(retT2));
         }
 
-        static readonly Random r = new Random();
-
-        static InterfaceTester GetRandomInterfaceTester()
-        {
-            return new InterfaceTester { A = CreateRandomString(), B = r.Next(int.MinValue, int.MaxValue), C = (r.Next(-1000, 1000)) };
-        }
-
-        static string CreateRandomString()
-        {
-            int length = r.Next(2, 10);
-            var ret = new char[length];
-
-            for (int i = 0; i < ret.Length; i++)
-            {
-                int j;
-                if (i == 0)
-                    j = r.Next(1, 3); // Don't let the first character be numeric
-                else
-                    j = r.Next(0, 3);
-
-                int min;
-                int max;
-
-                // ReSharper disable RedundantCast
-                switch (j)
-                {
-                    case 0:
-                        min = (int)'0';
-                        max = (int)'9';
-                        break;
-
-                    case 1:
-                        min = (int)'a';
-                        max = (int)'z';
-                        break;
-
-                    default:
-                        min = (int)'A';
-                        max = (int)'Z';
-                        break;
-                }
-                // ReSharper restore RedundantCast
-
-                ret[i] = (char)r.Next(min, max + 1);
-            }
-
-            return new string(ret);
-        }
-
-        [Test]
-        public void ReadWriteTonsOfCrapTest()
-        {
-            const int iterations = 10000;
-
-            List<InterfaceTester> items = new List<InterfaceTester>(iterations);
-
-            for (int i = 0; i < iterations; i++)
-                items.Add(GetRandomInterfaceTester());
-
-            string filePath = Path.GetTempFileName();
-
-            try
-            {
-                using (SettingsManager settingsWriter = new SettingsManager("TestSettings", filePath))
-                {
-                    for (int i = 0; i < items.Count; i++)
-                    {
-                        settingsWriter.Add("item" + Parser.Invariant.ToString(i), items[i]);
-                    }
-                }
-
-                using (SettingsManager settingsReader = new SettingsManager("TestSettings", filePath))
-                {
-                    for (int i = 0; i < items.Count; i++)
-                    {
-                        var newItem = new InterfaceTester();
-                        settingsReader.Add("item" + Parser.Invariant.ToString(i), newItem);
-                        Assert.IsTrue(items[i].HaveSameValues(newItem), "Index: {0}", i);
-                    }
-                }
-            }
-            finally
-            {
-                if (File.Exists(filePath))
-                    File.Delete(filePath);
-            }
-        }
-
         [Test]
         public void WriteTonsOfCrapReadOnlySomeTest()
         {
             const int iterations = 10000;
 
-            List<InterfaceTester> items = new List<InterfaceTester>(iterations);
+            var items = new List<InterfaceTester>(iterations);
 
             for (int i = 0; i < iterations; i++)
+            {
                 items.Add(GetRandomInterfaceTester());
+            }
 
             string filePath = Path.GetTempFileName();
 
@@ -461,7 +466,7 @@ namespace NetGore.IO.Tests
                 {
                     for (int i = items.Count - 1; i > 0; i -= 22)
                     {
-                        var newItem = new InterfaceTester();
+                        InterfaceTester newItem = new InterfaceTester();
                         settingsReader.Add("item" + Parser.Invariant.ToString(i), newItem);
                         Assert.IsTrue(items[i].HaveSameValues(newItem), "Index: {0}", i);
                     }

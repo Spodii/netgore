@@ -5,9 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using DemoGame.Server.NPCChat.Conditionals;
 using NetGore;
-using NetGore.EditorTools;
 using NetGore.EditorTools.NPCChat;
 using NetGore.Globalization;
 using NetGore.NPCChat;
@@ -17,6 +15,11 @@ namespace DemoGame.NPCChatEditor
 {
     public partial class frmMain : Form
     {
+        /// <summary>
+        /// Contains the NPCChatConditionalBases available.
+        /// </summary>
+        static readonly NPCChatConditionalBase[] _npcChatConditionals;
+
         bool _doNotUpdateObj;
         object _editingObj;
 
@@ -40,9 +43,23 @@ namespace DemoGame.NPCChatEditor
             get { return _editingObj as TreeNode; }
         }
 
+        /// <summary>
+        /// Initializes the <see cref="frmMain"/> class.
+        /// </summary>
+        static frmMain()
+        {
+            _npcChatConditionals = NPCChatConditionalBase.Conditionals.OrderBy(x => x.Name).ToArray();
+        }
+
         public frmMain()
         {
             InitializeComponent();
+        }
+
+        void btnAddConditional_Click(object sender, EventArgs e)
+        {
+            EditorNPCChatConditionalCollectionItem newItem = new EditorNPCChatConditionalCollectionItem(_npcChatConditionals[0]);
+            lstConditionals.TryAddToConditionalCollection(newItem);
         }
 
         void btnAddDialog_Click(object sender, EventArgs e)
@@ -299,16 +316,14 @@ namespace DemoGame.NPCChatEditor
         }
 
         /// <summary>
-        /// Contains the NPCChatConditionalBases available.
+        /// Handles the FormClosing event of the frmMain control.
         /// </summary>
-        static readonly NPCChatConditionalBase[] _npcChatConditionals;
-
-        /// <summary>
-        /// Initializes the <see cref="frmMain"/> class.
-        /// </summary>
-        static frmMain()
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="System.Windows.Forms.FormClosingEventArgs"/> instance containing the event data.</param>
+        void frmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            _npcChatConditionals = NPCChatConditionalBase.Conditionals.OrderBy(x => x.Name).ToArray();
+            // NOTE: Temp removal of saving
+            // EditorNPCChatManager.SaveDialogs();
         }
 
         /// <summary>
@@ -355,17 +370,6 @@ namespace DemoGame.NPCChatEditor
         }
 
         /// <summary>
-        /// Handles the FormClosing event of the frmMain control.
-        /// </summary>
-        /// <param name="sender">The source of the event.</param>
-        /// <param name="e">The <see cref="System.Windows.Forms.FormClosingEventArgs"/> instance containing the event data.</param>
-        void frmMain_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            // NOTE: Temp removal of saving
-            // EditorNPCChatManager.SaveDialogs();
-        }
-
-        /// <summary>
         /// Handles the Resize event of the frmMain control.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -403,6 +407,11 @@ namespace DemoGame.NPCChatEditor
                     yield return n2;
                 }
             }
+        }
+
+        void lstConditionals_DoubleClick(object sender, EventArgs e)
+        {
+            lstConditionals.EditCurrentItem(_npcChatConditionals);
         }
 
         void npcChatDialogView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -545,17 +554,6 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetTitle(txtTitle.Text);
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
-        }
-
-        private void lstConditionals_DoubleClick(object sender, EventArgs e)
-        {
-            lstConditionals.EditCurrentItem(_npcChatConditionals);
-        }
-
-        private void btnAddConditional_Click(object sender, EventArgs e)
-        {
-            var newItem = new EditorNPCChatConditionalCollectionItem(_npcChatConditionals[0]);
-            lstConditionals.TryAddToConditionalCollection(newItem);
         }
     }
 }

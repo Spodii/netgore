@@ -24,7 +24,7 @@ namespace NetGore
 
             var listB = b.ToList();
 
-            foreach (var item in a)
+            foreach (T item in a)
             {
                 if (!listB.Remove(item))
                     return false;

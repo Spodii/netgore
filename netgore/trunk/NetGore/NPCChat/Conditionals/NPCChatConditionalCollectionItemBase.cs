@@ -54,7 +54,7 @@ namespace NetGore.NPCChat.Conditionals
             string conditionalName = reader.ReadString("ConditionalName");
             var parameters = reader.ReadManyNodes<NPCChatConditionalParameter>("Parameters", NPCChatConditionalParameter.Read);
 
-            var conditional = NPCChatConditionalBase.GetConditional(conditionalName);
+            NPCChatConditionalBase conditional = NPCChatConditionalBase.GetConditional(conditionalName);
             if (conditional == null)
                 throw new Exception(string.Format("Failed to get conditional `{0}`.", conditionalName));
 

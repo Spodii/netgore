@@ -235,14 +235,10 @@ namespace NetGore.Collections.Tests
         [Test]
         public void SkipDefaultDefaultValueTest()
         {
-            var o = new SafeEnumerator<object>(new object[]
-            {
-            });
+            var o = new SafeEnumerator<object>(new object[] { });
             Assert.IsTrue(o.SkipDefault);
 
-            var v = new SafeEnumerator<int>(new int[]
-            {
-            });
+            var v = new SafeEnumerator<int>(new int[] { });
             Assert.IsFalse(v.SkipDefault);
         }
 

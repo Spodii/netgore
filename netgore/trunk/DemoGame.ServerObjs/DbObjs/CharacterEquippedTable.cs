@@ -23,26 +23,17 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Array of the database column names.
         /// </summary>
-        static readonly String[] _dbColumns = new string[]
-        {
-            "character_id", "item_id", "slot"
-        };
+        static readonly String[] _dbColumns = new string[] { "character_id", "item_id", "slot" };
 
         /// <summary>
         /// Array of the database column names for columns that are primary keys.
         /// </summary>
-        static readonly String[] _dbColumnsKeys = new string[]
-        {
-            "character_id", "slot"
-        };
+        static readonly String[] _dbColumnsKeys = new string[] { "character_id", "slot" };
 
         /// <summary>
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
-        static readonly String[] _dbColumnsNonKey = new string[]
-        {
-            "item_id"
-        };
+        static readonly String[] _dbColumnsNonKey = new string[] { "item_id" };
 
         /// <summary>
         /// The field that maps onto the database column `character_id`.

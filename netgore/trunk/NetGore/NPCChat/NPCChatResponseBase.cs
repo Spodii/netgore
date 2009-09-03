@@ -15,6 +15,14 @@ namespace NetGore.NPCChat
         public const ushort EndConversationPage = ushort.MaxValue;
 
         /// <summary>
+        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
+        /// conditionals used to evaluate if this NPCChatResponseBase may be used. If this value is null, it
+        /// is assumed that there are no conditionals attached to this NPCChatResponseBase, and should be treated
+        /// the same way as if the conditionals evaluated to true.
+        /// </summary>
+        public abstract NPCChatConditionalCollectionBase Conditionals { get; }
+
+        /// <summary>
         /// When overridden in the derived class, gets the page of the NPCChatDialogItemBase to go to if this
         /// response is chosen. If this value is equal to the EndConversationPage constant, then the dialog
         /// will end instead of going to a new page.
@@ -32,31 +40,6 @@ namespace NetGore.NPCChat
         public abstract byte Value { get; }
 
         /// <summary>
-        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
-        /// conditionals used to evaluate if this NPCChatResponseBase may be used. If this value is null, it
-        /// is assumed that there are no conditionals attached to this NPCChatResponseBase, and should be treated
-        /// the same way as if the conditionals evaluated to true.
-        /// </summary>
-        public abstract NPCChatConditionalCollectionBase Conditionals { get; }
-
-        /// <summary>
-        /// Checks if the conditionals to use this NPCChatResponseBase pass for the given <paramref name="user"/>
-        /// and <paramref name="npc"/>.
-        /// </summary>
-        /// <param name="user">The user.</param>
-        /// <param name="npc">The NPC.</param>
-        /// <returns>True if the conditionals to use this NPCChatResponseBase pass for the given <paramref name="user"/>
-        /// and <paramref name="npc"/>; otherwise false.</returns>
-        public bool CheckConditionals(object user, object npc)
-        {
-            var c = Conditionals;
-            if (c == null)
-                return true;
-
-            return Conditionals.Evaluate(user, npc);
-        }
-
-        /// <summary>
         /// NPCChatResponseBase constructor.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -70,6 +53,23 @@ namespace NetGore.NPCChat
         /// </summary>
         protected NPCChatResponseBase()
         {
+        }
+
+        /// <summary>
+        /// Checks if the conditionals to use this NPCChatResponseBase pass for the given <paramref name="user"/>
+        /// and <paramref name="npc"/>.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="npc">The NPC.</param>
+        /// <returns>True if the conditionals to use this NPCChatResponseBase pass for the given <paramref name="user"/>
+        /// and <paramref name="npc"/>; otherwise false.</returns>
+        public bool CheckConditionals(object user, object npc)
+        {
+            NPCChatConditionalCollectionBase c = Conditionals;
+            if (c == null)
+                return true;
+
+            return Conditionals.Evaluate(user, npc);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ namespace NetGore.NPCChat
             ushort page = reader.ReadUShort("Page");
             string text = reader.ReadString("Text");
 
-            var cReader = reader.ReadNode("Conditionals");
+            IValueReader cReader = reader.ReadNode("Conditionals");
             bool hasConditionals = cReader.ReadBool("HasConditionals");
             NPCChatConditionalCollectionBase conditionals = null;
             if (hasConditionals)
@@ -134,7 +134,7 @@ namespace NetGore.NPCChat
 
             writer.WriteStartNode("Conditionals");
             {
-                var c = Conditionals;
+                NPCChatConditionalCollectionBase c = Conditionals;
                 bool hasConditionals = (c != null) && (c.Count() > 0);
                 writer.Write("HasConditionals", hasConditionals);
                 if (hasConditionals)

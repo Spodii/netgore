@@ -132,7 +132,7 @@ namespace NetGore.IO
             var loadedItems = LoadSettings(filePath);
             if (loadedItems == null)
             {
-                foreach (var secondaryPath in secondaryPaths.Where(x => !string.IsNullOrEmpty(x)))
+                foreach (string secondaryPath in secondaryPaths.Where(x => !string.IsNullOrEmpty(x)))
                 {
                     loadedItems = LoadSettings(secondaryPath);
                     if (loadedItems != null)
@@ -187,18 +187,6 @@ namespace NetGore.IO
         static void AsyncSaveCallback(object sender)
         {
             ((SettingsManager)sender).Save();
-        }
-
-        /// <summary>
-        /// Disposes the GUISettings and flushes out the stored settings.
-        /// </summary>
-        public void Dispose()
-        {
-            if (_disposed)
-                return;
-            _disposed = true;
-
-            Save();
         }
 
         /// <summary>
@@ -273,5 +261,21 @@ namespace NetGore.IO
             writer.Write(_objectValueKey, item.Key);
             writer.WriteManyNodes(_valuesNodeName, values, ((pwriter, pitem) => pitem.Write(pwriter)));
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Disposes the GUISettings and flushes out the stored settings.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_disposed)
+                return;
+            _disposed = true;
+
+            Save();
+        }
+
+        #endregion
     }
 }
