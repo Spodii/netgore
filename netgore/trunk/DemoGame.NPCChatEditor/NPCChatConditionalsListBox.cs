@@ -5,7 +5,6 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.EditorTools.NPCChat;
-using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
 namespace DemoGame.NPCChatEditor
@@ -81,25 +80,6 @@ namespace DemoGame.NPCChatEditor
             }
         }
 
-        void EvaluationTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ConditionalCollection == null || EvaluationTypeComboBox == null)
-                return;
-
-            var item = EvaluationTypeComboBox.SelectedItem;
-            if (item == null)
-                return;
-
-            var t = (NPCChatConditionalEvaluationType)item;
-            if (!EnumHelper.IsDefined(t))
-            {
-                EvaluationTypeComboBox.SelectedItem = ConditionalCollection.EvaluationType;
-                return;
-            }
-
-            ConditionalCollection.SetEvaluationType(t);
-        }
-
         /// <summary>
         /// Gets the currently selected EditorNPCChatConditionalCollectionItem.
         /// </summary>
@@ -138,6 +118,25 @@ namespace DemoGame.NPCChatEditor
             { StartPosition = FormStartPosition.CenterScreen };
             conditionalEditorForm.Show();
             conditionalEditorForm.FormClosed += conditionalEditorForm_FormClosed;
+        }
+
+        void EvaluationTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (ConditionalCollection == null || EvaluationTypeComboBox == null)
+                return;
+
+            object item = EvaluationTypeComboBox.SelectedItem;
+            if (item == null)
+                return;
+
+            NPCChatConditionalEvaluationType t = (NPCChatConditionalEvaluationType)item;
+            if (!EnumHelper.IsDefined(t))
+            {
+                EvaluationTypeComboBox.SelectedItem = ConditionalCollection.EvaluationType;
+                return;
+            }
+
+            ConditionalCollection.SetEvaluationType(t);
         }
 
         protected override void OnSelectedIndexChanged(EventArgs e)

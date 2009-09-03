@@ -69,13 +69,7 @@ namespace DemoGame.Server
         public string SqlConnectionString()
         {
             MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder
-            {
-                Database = SqlDatabase,
-                UserID = SqlUser,
-                Password = SqlPass,
-                Server = SqlHost,
-                IgnorePrepare = false
-            };
+            { Database = SqlDatabase, UserID = SqlUser, Password = SqlPass, Server = SqlHost, IgnorePrepare = false };
             return sb.ToString();
         }
     }

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore.EditorTools.NPCChat;
 using NetGore.IO;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
@@ -138,7 +137,7 @@ namespace NetGore.EditorTools.NPCChat
             _page = page;
             SetText(text);
 
-            var c = conditionals as EditorNPCChatConditionalCollection;
+            EditorNPCChatConditionalCollection c = conditionals as EditorNPCChatConditionalCollection;
             _conditionals = c ?? new EditorNPCChatConditionalCollection();
         }
 

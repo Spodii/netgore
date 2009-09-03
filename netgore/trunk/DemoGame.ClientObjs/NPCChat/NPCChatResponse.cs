@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
@@ -16,6 +15,14 @@ namespace DemoGame.Client.NPCChat
         ushort _page;
         string _text;
         byte _value;
+
+        /// <summary>
+        /// Not used by the Client, and will always return null.
+        /// </summary>
+        public override NPCChatConditionalCollectionBase Conditionals
+        {
+            get { return null; }
+        }
 
         /// <summary>
         /// When overridden in the derived class, gets the page of the NPCChatDialogItemBase to go to if this
@@ -41,14 +48,6 @@ namespace DemoGame.Client.NPCChat
         public override byte Value
         {
             get { return _value; }
-        }
-
-        /// <summary>
-        /// Not used by the Client, and will always return null.
-        /// </summary>
-        public override NPCChatConditionalCollectionBase Conditionals
-        {
-            get { return null; }
         }
 
         /// <summary>

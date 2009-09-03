@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 

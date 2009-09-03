@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using NetGore.Globalization;
-using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat
@@ -30,6 +26,11 @@ namespace NetGore.EditorTools.NPCChat
             InitializeComponent();
         }
 
+        void chkNot_CheckedChanged(object sender, EventArgs e)
+        {
+            _item.SetNot(chkNot.Checked);
+        }
+
         void cmbConditionalType_SelectedIndexChanged(object sender, EventArgs e)
         {
             NPCChatConditionalBase item = cmbConditionalType.SelectedItem as NPCChatConditionalBase;
@@ -52,11 +53,6 @@ namespace NetGore.EditorTools.NPCChat
             cmbConditionalType.Items.AddRange(_conditionals);
 
             InitGUI(_item);
-        }
-
-        private void chkNot_CheckedChanged(object sender, EventArgs e)
-        {
-            _item.SetNot(chkNot.Checked);
         }
     }
 }

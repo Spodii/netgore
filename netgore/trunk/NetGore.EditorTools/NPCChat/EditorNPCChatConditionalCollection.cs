@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
-using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat
@@ -158,7 +157,7 @@ namespace NetGore.EditorTools.NPCChat
             if (item is EditorNPCChatConditionalCollectionItem)
                 return TryAddItem((EditorNPCChatConditionalCollectionItem)item);
 
-            var newItem = new EditorNPCChatConditionalCollectionItem(item);
+            EditorNPCChatConditionalCollectionItem newItem = new EditorNPCChatConditionalCollectionItem(item);
             return TryAddItem(newItem);
         }
 

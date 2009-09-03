@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;

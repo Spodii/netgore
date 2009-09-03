@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NetGore.IO;
-using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat
@@ -140,7 +139,7 @@ namespace NetGore.EditorTools.NPCChat
 
             for (int i = 0; i < Conditional.ParameterCount; i++)
             {
-                var neededType = Conditional.GetParameter(i);
+                NPCChatConditionalParameterType neededType = Conditional.GetParameter(i);
                 if (i < _parameters.Count && _parameters[i].ValueType == neededType)
                 {
                     // The type matches the old type, so just reuse it

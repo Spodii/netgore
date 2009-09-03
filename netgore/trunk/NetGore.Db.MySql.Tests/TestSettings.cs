@@ -27,13 +27,9 @@ namespace NetGore.Db.MySql.Tests
         /// </summary>
         public const string UserID = "root";
 
-        static readonly string _connectionString = new MySqlConnectionStringBuilder
-        {
-            Server = Server,
-            UserID = UserID,
-            Database = Database,
-            Password = Password
-        }.ToString();
+        static readonly string _connectionString =
+            new MySqlConnectionStringBuilder { Server = Server, UserID = UserID, Database = Database, Password = Password }.
+                ToString();
 
         /// <summary>
         /// Gets the ConnectionString to be used for the tests.

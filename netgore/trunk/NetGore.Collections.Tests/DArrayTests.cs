@@ -245,10 +245,7 @@ namespace NetGore.Collections.Tests
                 usedIndices.Add(d.Insert(new object()));
             }
 
-            var expected = new int[]
-            {
-                0, 5, 6, 9, 10, 11, 12
-            };
+            var expected = new int[] { 0, 5, 6, 9, 10, 11, 12 };
 
             Assert.AreEqual(usedIndices.Count(), expected.Length);
 
@@ -262,11 +259,7 @@ namespace NetGore.Collections.Tests
         {
             object o1 = new object();
             object o2 = new object();
-            var d = new DArray<object>(trackFree)
-            {
-                o1,
-                o2
-            };
+            var d = new DArray<object>(trackFree) { o1, o2 };
 
             Assert.IsTrue(d.Contains(o1), "TrackFree = " + trackFree);
             Assert.IsTrue(d.Contains(o2), "TrackFree = " + trackFree);
@@ -277,11 +270,7 @@ namespace NetGore.Collections.Tests
         {
             const int o1 = new int();
             const int o2 = new int();
-            var d = new DArray<object>(trackFree)
-            {
-                o1,
-                o2
-            };
+            var d = new DArray<object>(trackFree) { o1, o2 };
 
             Assert.IsTrue(d.Contains(o1), "TrackFree = " + trackFree);
             Assert.IsTrue(d.Contains(o2), "TrackFree = " + trackFree);
@@ -290,11 +279,7 @@ namespace NetGore.Collections.Tests
 
         static void EnumerateVersionTestSub(bool trackFree)
         {
-            var d = new DArray<object>(50, trackFree)
-            {
-                new object(),
-                new object()
-            };
+            var d = new DArray<object>(50, trackFree) { new object(), new object() };
 
             try
             {

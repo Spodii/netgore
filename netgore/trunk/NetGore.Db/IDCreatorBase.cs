@@ -68,10 +68,7 @@ namespace NetGore.Db
                 _isRefilling = true;
 
                 // Start the refill thread
-                Thread refillThread = new Thread(Refill)
-                {
-                    Name = "ID Refiller"
-                };
+                Thread refillThread = new Thread(Refill) { Name = "ID Refiller" };
                 refillThread.Start();
             }
         }

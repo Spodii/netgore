@@ -143,10 +143,7 @@ namespace NetGore.Collections.Tests
         public void IndexOutOfRangeExceptionTest()
         {
             BoolArray b = new BoolArray(8);
-            var testValues = new int[]
-            {
-                -10000, -100, -1, 8, 9, 100, 1000, 100000
-            };
+            var testValues = new int[] { -10000, -100, -1, 8, 9, 100, 1000, 100000 };
 
             foreach (int value in testValues)
             {

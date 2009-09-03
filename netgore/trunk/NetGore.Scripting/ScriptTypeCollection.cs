@@ -149,12 +149,7 @@ namespace NetGore.Scripting
             Debug.Assert(files.Count() > 0);
 
             // Set the .NET framework version
-            var providerOptions = new Dictionary<string, string>
-            {
-                {
-                    "CompilerVersion", "v3.5"
-                    }
-            };
+            var providerOptions = new Dictionary<string, string> { { "CompilerVersion", "v3.5" } };
 
             // Get the CodeDomProvider to use
             CodeDomProvider codeDomProvider;
@@ -179,11 +174,7 @@ namespace NetGore.Scripting
             using (codeDomProvider)
             {
                 CompilerParameters options = new CompilerParameters
-                {
-                    GenerateExecutable = false,
-                    GenerateInMemory = false,
-                    OutputAssembly = GetOutputFilePath(language)
-                };
+                { GenerateExecutable = false, GenerateInMemory = false, OutputAssembly = GetOutputFilePath(language) };
 
                 var assemblies = AppDomain.CurrentDomain.GetAssemblies();
                 options.ReferencedAssemblies.AddRange(assemblies.Select(x => x.Location).ToArray());
