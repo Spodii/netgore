@@ -1,4 +1,5 @@
 ﻿using NetGore.EditorTools;
+using NetGore.EditorTools.NPCChat;
 
 namespace DemoGame.NPCChatEditor
 {
@@ -61,8 +62,8 @@ namespace DemoGame.NPCChatEditor
             this.button1 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.txtDialogTitle = new System.Windows.Forms.TextBox();
-            this.cmbSelectedDialog = new NetGore.EditorTools.NPCChatDialogComboBox();
-            this.npcChatDialogView = new NetGore.EditorTools.NPCChatDialogView();
+            this.cmbSelectedDialog = new NetGore.EditorTools.NPCChat.NPCChatDialogComboBox();
+            this.npcChatDialogView = new NetGore.EditorTools.NPCChat.NPCChatDialogView();
             this.label8 = new System.Windows.Forms.Label();
             this.gbSelectedNode.SuspendLayout();
             this.gbConditionals.SuspendLayout();
@@ -392,7 +393,7 @@ namespace DemoGame.NPCChatEditor
             this.cmbSelectedDialog.Name = "cmbSelectedDialog";
             this.cmbSelectedDialog.Size = new System.Drawing.Size(455, 21);
             this.cmbSelectedDialog.TabIndex = 9;
-            this.cmbSelectedDialog.OnChangeDialog += new NetGore.EditorTools.NPCChatDialogComboBoxChangeDialogHandler(this.cmbSelectedDialog_OnChangeDialog);
+            this.cmbSelectedDialog.OnChangeDialog += new NetGore.EditorTools.NPCChat.NPCChatDialogComboBoxChangeDialogHandler(this.cmbSelectedDialog_OnChangeDialog);
             // 
             // npcChatDialogView
             // 

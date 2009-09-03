@@ -3,7 +3,7 @@ using System.Linq;
 using NetGore.Globalization;
 using NetGore.IO;
 
-namespace NetGore.NPCChat
+namespace NetGore.NPCChat.Conditionals
 {
     /// <summary>
     /// A INPCChatConditionalParameter with a value of type String.

@@ -7,7 +7,7 @@ using log4net;
 using NetGore.IO;
 using NetGore.NPCChat;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.NPCChat
 {
     public delegate void EditorNPCChatDialogItemEventHandler(EditorNPCChatDialogItem dialogItem);
 

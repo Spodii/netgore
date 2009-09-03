@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows.Forms;
 using NetGore.NPCChat;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.NPCChat
 {
     public delegate void NPCChatDialogComboBoxChangeDialogHandler(NPCChatDialogComboBox sender, NPCChatDialogBase dialog);
 

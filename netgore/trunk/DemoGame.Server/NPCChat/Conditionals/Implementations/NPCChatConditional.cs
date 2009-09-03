@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Linq;
 using NetGore.NPCChat;
+using NetGore.NPCChat.Conditionals;
 
 namespace DemoGame.Server.NPCChat.Conditionals
 {

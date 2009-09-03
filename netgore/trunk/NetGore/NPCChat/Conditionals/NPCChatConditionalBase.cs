@@ -6,7 +6,7 @@ using System.Reflection;
 using log4net;
 using NetGore.Collections;
 
-namespace NetGore.NPCChat
+namespace NetGore.NPCChat.Conditionals
 {
     /// <summary>
     /// The base class for a conditional used in the NPC chatting. Each instanceable derived class

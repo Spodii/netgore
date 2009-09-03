@@ -4,6 +4,7 @@ using System.Linq;
 using DemoGame.Server.NPCChat.Conditionals;
 using NetGore.IO;
 using NetGore.NPCChat;
+using NetGore.NPCChat.Conditionals;
 
 namespace DemoGame.Server.NPCChat
 {

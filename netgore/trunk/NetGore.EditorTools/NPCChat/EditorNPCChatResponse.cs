@@ -5,8 +5,9 @@ using System.Windows.Forms;
 using NetGore.EditorTools.NPCChat;
 using NetGore.IO;
 using NetGore.NPCChat;
+using NetGore.NPCChat.Conditionals;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.NPCChat
 {
     public delegate void EditorNPCChatResponseEventHandler(EditorNPCChatResponse response);
 

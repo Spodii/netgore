@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using NetGore.IO;
 using NetGore.NPCChat;
+using NetGore.NPCChat.Conditionals;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.NPCChat
 {
     public delegate void EditorNPCChatConditionalCollectionItemHandler(EditorNPCChatConditionalCollectionItem sender);
 

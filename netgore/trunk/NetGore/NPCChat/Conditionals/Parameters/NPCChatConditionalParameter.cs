@@ -3,7 +3,7 @@ using System.Linq;
 using NetGore.Globalization;
 using NetGore.IO;
 
-namespace NetGore.NPCChat
+namespace NetGore.NPCChat.Conditionals
 {
     /// <summary>
     /// Base class for a parameter used on a conditional in the NPC chat.

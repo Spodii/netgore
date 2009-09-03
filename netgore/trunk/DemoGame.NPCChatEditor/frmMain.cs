@@ -8,8 +8,10 @@ using System.Windows.Forms;
 using DemoGame.Server.NPCChat.Conditionals;
 using NetGore;
 using NetGore.EditorTools;
+using NetGore.EditorTools.NPCChat;
 using NetGore.Globalization;
 using NetGore.NPCChat;
+using NetGore.NPCChat.Conditionals;
 
 namespace DemoGame.NPCChatEditor
 {

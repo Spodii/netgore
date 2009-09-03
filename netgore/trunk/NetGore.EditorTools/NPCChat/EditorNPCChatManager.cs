@@ -3,7 +3,7 @@ using System.Linq;
 using NetGore.IO;
 using NetGore.NPCChat;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.NPCChat
 {
     public class EditorNPCChatManager : NPCChatManagerBase
     {
