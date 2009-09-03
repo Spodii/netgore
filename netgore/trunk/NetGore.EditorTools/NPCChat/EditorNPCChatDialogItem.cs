@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using log4net;
 using NetGore.IO;
 using NetGore.NPCChat;
+using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat
 {
@@ -19,6 +20,7 @@ namespace NetGore.EditorTools.NPCChat
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
         readonly List<TreeNode> _treeNodes = new List<TreeNode>();
+        NPCChatConditionalCollectionBase _conditionals;
         ushort _index;
         string _text;
         string _title;
@@ -29,6 +31,17 @@ namespace NetGore.EditorTools.NPCChat
         public event EditorNPCChatDialogItemEventHandler OnChange;
 
         /// <summary>
+        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
+        /// conditionals used to evaluate if this NPCChatDialogItemBase may be used. If this value is null, it
+        /// is assumed that there are no conditionals attached to this NPCChatDialogItemBase, and should be treated
+        /// the same way as if the conditionals evaluated to true.
+        /// </summary>
+        public override NPCChatConditionalCollectionBase Conditionals
+        {
+            get { return _conditionals; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the page index of this NPCChatDialogItemBase in the
         /// NPCChatDialogBase. This value is unique to each NPCChatDialogItemBase in the NPCChatDialogBase.
         /// </summary>
@@ -37,6 +50,9 @@ namespace NetGore.EditorTools.NPCChat
             get { return _index; }
         }
 
+        /// <summary>
+        /// Gets the response list.
+        /// </summary>
         public List<EditorNPCChatResponse> ResponseList
         {
             get { return _responses; }
@@ -68,23 +84,46 @@ namespace NetGore.EditorTools.NPCChat
             get { return _title; }
         }
 
-        public List<TreeNode> TreeNodes
+        /// <summary>
+        /// Gets the List of TreeNodes that use this EditorNPCChatDialogItem. This should only be used by the
+        /// <see cref="EditorNPCChatDialogItem"/>.
+        /// </summary>
+        internal List<TreeNode> TreeNodes
         {
             get { return _treeNodes; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
         public EditorNPCChatDialogItem(IValueReader reader) : base(reader)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
+        /// </summary>
+        /// <param name="index">The index.</param>
         public EditorNPCChatDialogItem(ushort index) : this(index, string.Empty)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="text">The text.</param>
         public EditorNPCChatDialogItem(ushort index, string text) : this(index, text, string.Empty)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="title">The title.</param>
         public EditorNPCChatDialogItem(ushort index, string text, string title)
         {
             SetText(text);
@@ -93,6 +132,10 @@ namespace NetGore.EditorTools.NPCChat
             _index = index;
         }
 
+        /// <summary>
+        /// Adds multiple EditorNPCChatResponses.
+        /// </summary>
+        /// <param name="responses">The EditorNPCChatResponses to add.</param>
         public void AddResponse(params EditorNPCChatResponse[] responses)
         {
             if (responses == null)
@@ -104,6 +147,10 @@ namespace NetGore.EditorTools.NPCChat
             }
         }
 
+        /// <summary>
+        /// Adds a EditorNPCChatResponse.
+        /// </summary>
+        /// <param name="response">The EditorNPCChatResponse to add.</param>
         public void AddResponse(EditorNPCChatResponse response)
         {
             if (response == null)
@@ -112,6 +159,16 @@ namespace NetGore.EditorTools.NPCChat
             _responses.Add(response);
             int index = _responses.IndexOf(response);
             response.SetValue((byte)index);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
+        /// </summary>
+        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
+        /// want to load the conditionals when using Read.</returns>
+        protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
+        {
+            return new EditorNPCChatConditionalCollection();
         }
 
         /// <summary>
@@ -158,13 +215,33 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
+        /// Sets the Conditionals property.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        public void SetConditionals(NPCChatConditionalCollectionBase value)
+        {
+            if (value == null)
+                throw new ArgumentNullException("value");
+
+            if (_conditionals == value)
+                return;
+
+            _conditionals = value;
+
+            if (OnChange != null)
+                OnChange(this);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
         /// <param name="page">The index.</param>
         /// <param name="title">The title.</param>
         /// <param name="text">The text.</param>
         /// <param name="responses">The responses.</param>
-        protected override void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses)
+        /// <param name="conditionals">The conditionals.</param>
+        protected override void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses,
+                                              NPCChatConditionalCollectionBase conditionals)
         {
             _index = page;
             SetTitle(title);
@@ -172,8 +249,15 @@ namespace NetGore.EditorTools.NPCChat
 
             _responses.Clear();
             _responses.AddRange(responses.Cast<EditorNPCChatResponse>());
+
+            EditorNPCChatConditionalCollection c = conditionals as EditorNPCChatConditionalCollection;
+            _conditionals = c ?? new EditorNPCChatConditionalCollection();
         }
 
+        /// <summary>
+        /// Sets the Text.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public void SetText(string value)
         {
             if (_text == value)
@@ -185,6 +269,10 @@ namespace NetGore.EditorTools.NPCChat
                 OnChange(this);
         }
 
+        /// <summary>
+        /// Sets the Title.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public void SetTitle(string value)
         {
             if (_title == value)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -5,6 +6,7 @@ using System.Reflection;
 using log4net;
 using NetGore.IO;
 using NetGore.NPCChat;
+using NetGore.NPCChat.Conditionals;
 
 namespace DemoGame.Client.NPCChat
 {
@@ -19,6 +21,14 @@ namespace DemoGame.Client.NPCChat
         NPCChatResponseBase[] _responses;
         string _text;
         string _title;
+
+        /// <summary>
+        /// Not used by the Client and always returns null.
+        /// </summary>
+        public override NPCChatConditionalCollectionBase Conditionals
+        {
+            get { return null; }
+        }
 
         /// <summary>
         /// When overridden in the derived class, gets the page index of this NPCChatDialogItemBase in the
@@ -59,7 +69,7 @@ namespace DemoGame.Client.NPCChat
         /// NPCChatDialogItem constructor.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
-        internal NPCChatDialogItem(IValueReader r) : base(r)
+        internal NPCChatDialogItem(IValueReader reader) : base(reader)
         {
         }
 
@@ -110,13 +120,24 @@ namespace DemoGame.Client.NPCChat
         }
 
         /// <summary>
+        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
+        /// </summary>
+        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
+        /// want to load the conditionals when using Read.</returns>
+        protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
         /// <param name="page">The index.</param>
         /// <param name="title">The title.</param>
         /// <param name="text">The text.</param>
         /// <param name="responses">The responses.</param>
-        protected override void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses)
+        /// <param name="conditionals">The conditionals.</param>
+        protected override void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses, NPCChatConditionalCollectionBase conditionals)
         {
             Debug.Assert(
                 _index == default(ushort) && _title == default(string) && _text == default(string) &&

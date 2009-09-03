@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore.IO;
+using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.NPCChat
 {
@@ -54,6 +55,31 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// Checks if the conditionals to use this NPCChatDialogItemBase pass for the given <paramref name="user"/>
+        /// and <paramref name="npc"/>.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="npc">The NPC.</param>
+        /// <returns>True if the conditionals to use this NPCChatDialogItemBase pass for the given <paramref name="user"/>
+        /// and <paramref name="npc"/>; otherwise false.</returns>
+        public bool CheckConditionals(object user, object npc)
+        {
+            NPCChatConditionalCollectionBase c = Conditionals;
+            if (c == null)
+                return true;
+
+            return Conditionals.Evaluate(user, npc);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
+        /// conditionals used to evaluate if this NPCChatDialogItemBase may be used. If this value is null, it
+        /// is assumed that there are no conditionals attached to this NPCChatDialogItemBase, and should be treated
+        /// the same way as if the conditionals evaluated to true.
+        /// </summary>
+        public abstract NPCChatConditionalCollectionBase Conditionals { get; }
+
+        /// <summary>
         /// Creates an ArgumentOutOfRangeException for the response index being out of range.
         /// </summary>
         /// <param name="parameterName">The name of the response index parameter.</param>
@@ -96,6 +122,13 @@ namespace NetGore.NPCChat
         public abstract NPCChatResponseBase GetResponse(byte responseIndex);
 
         /// <summary>
+        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
+        /// </summary>
+        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
+        /// want to load the conditionals when using Read.</returns>
+        protected abstract NPCChatConditionalCollectionBase CreateConditionalCollection();
+
+        /// <summary>
         /// Reads the values for this NPCChatDialogItemBase from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -106,7 +139,17 @@ namespace NetGore.NPCChat
             string text = reader.ReadString("Text");
             var responses = reader.ReadManyNodes("Responses", x => CreateResponse(x));
 
-            SetReadValues(index, title, text, responses);
+            IValueReader cReader = reader.ReadNode("Conditionals");
+            bool hasConditionals = cReader.ReadBool("HasConditionals");
+            NPCChatConditionalCollectionBase conditionals = null;
+            if (hasConditionals)
+            {
+                conditionals = CreateConditionalCollection();
+                if (conditionals != null)
+                    conditionals.Read(cReader);
+            }
+
+            SetReadValues(index, title, text, responses, conditionals);
         }
 
         /// <summary>
@@ -115,8 +158,9 @@ namespace NetGore.NPCChat
         /// <param name="page">The index.</param>
         /// <param name="title">The title.</param>
         /// <param name="text">The text.</param>
+        /// <param name="conditionals">The conditionals.</param>
         /// <param name="responses">The responses.</param>
-        protected abstract void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses);
+        protected abstract void SetReadValues(ushort page, string title, string text, IEnumerable<NPCChatResponseBase> responses, NPCChatConditionalCollectionBase conditionals);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -139,6 +183,16 @@ namespace NetGore.NPCChat
             writer.Write("Title", Title ?? string.Empty);
             writer.Write("Text", Text ?? string.Empty);
             writer.WriteManyNodes("Responses", Responses, ((w, item) => item.Write(w)));
+
+            writer.WriteStartNode("Conditionals");
+            {
+                NPCChatConditionalCollectionBase c = Conditionals;
+                bool hasConditionals = (c != null) && (c.Count() > 0);
+                writer.Write("HasConditionals", hasConditionals);
+                if (hasConditionals)
+                    c.Write(writer);
+            }
+            writer.WriteEndNode("Conditionals");
         }
     }
 }

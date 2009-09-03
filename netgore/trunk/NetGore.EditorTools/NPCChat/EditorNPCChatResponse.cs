@@ -55,7 +55,11 @@ namespace NetGore.EditorTools.NPCChat
             get { return _text; }
         }
 
-        public List<TreeNode> TreeNodes
+        /// <summary>
+        /// Gets the List of TreeNodes that use this EditorNPCChatResponse. This should only be used by the
+        /// <see cref="EditorNPCChatDialogItem"/>.
+        /// </summary>
+        internal List<TreeNode> TreeNodes
         {
             get { return _treeNodes; }
         }
@@ -105,14 +109,28 @@ namespace NetGore.EditorTools.NPCChat
             return new EditorNPCChatConditionalCollection();
         }
 
+        /// <summary>
+        /// Sets the Conditionals property.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public void SetConditionals(NPCChatConditionalCollectionBase value)
         {
             if (value == null)
                 throw new ArgumentNullException("value");
 
+            if (_conditionals == value)
+                return;
+
             _conditionals = value;
+
+            if (OnChange != null)
+                OnChange(this);
         }
 
+        /// <summary>
+        /// Sets the Page property.
+        /// </summary>
+        /// <param name="page">The new page.</param>
         public void SetPage(ushort page)
         {
             if (_page == page)
@@ -141,6 +159,10 @@ namespace NetGore.EditorTools.NPCChat
             _conditionals = c ?? new EditorNPCChatConditionalCollection();
         }
 
+        /// <summary>
+        /// Sets the Text property.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public void SetText(string value)
         {
             if (_text == value)
@@ -152,6 +174,10 @@ namespace NetGore.EditorTools.NPCChat
                 OnChange(this);
         }
 
+        /// <summary>
+        /// Sets the Value property.
+        /// </summary>
+        /// <param name="value">The value.</param>
         internal void SetValue(byte value)
         {
             if (_value == value)
