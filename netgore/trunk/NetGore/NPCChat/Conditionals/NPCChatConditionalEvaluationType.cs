@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore.NPCChat
+namespace NetGore.NPCChat.Conditionals
 {
     /// <summary>
     /// Enum of the different operators that can be used for evaluating multiple conditionals.

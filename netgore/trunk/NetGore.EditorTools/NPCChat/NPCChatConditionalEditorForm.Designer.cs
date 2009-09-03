@@ -1,8 +1,8 @@
 ﻿using NetGore.EditorTools.NPCChat;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.NPCChat
 {
-    partial class NPCChatConditionalEditorForm
+    public partial class NPCChatConditionalEditorForm
     {
         /// <summary>
         /// Required designer variable.

@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace NetGore.NPCChat
+namespace NetGore.NPCChat.Conditionals
 {
     /// <summary>
     /// Contains the allowed value types for a NPCChatConditionalParameter.

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
 
-namespace NetGore.NPCChat
+namespace NetGore.NPCChat.Conditionals
 {
     /// <summary>
     /// Base class for a collection of conditionals.

@@ -5,6 +5,7 @@ using System.Text;
 using System.Windows.Forms;
 using NetGore.Globalization;
 using NetGore.NPCChat;
+using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat
 {

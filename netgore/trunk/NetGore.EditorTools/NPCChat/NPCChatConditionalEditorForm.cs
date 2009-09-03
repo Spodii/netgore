@@ -5,8 +5,9 @@ using System.Text;
 using System.Windows.Forms;
 using NetGore.Globalization;
 using NetGore.NPCChat;
+using NetGore.NPCChat.Conditionals;
 
-namespace NetGore.EditorTools
+namespace NetGore.EditorTools.NPCChat
 {
     public partial class NPCChatConditionalEditorForm : Form
     {

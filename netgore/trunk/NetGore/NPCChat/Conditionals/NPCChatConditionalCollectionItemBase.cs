@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using NetGore.IO;
 
-namespace NetGore.NPCChat
+namespace NetGore.NPCChat.Conditionals
 {
     /// <summary>
     /// Describes an item used in the NPCChatConditionalCollectionBase, which contains the conditional to use

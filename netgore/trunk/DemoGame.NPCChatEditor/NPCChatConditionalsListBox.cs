@@ -6,6 +6,7 @@ using NetGore;
 using NetGore.EditorTools;
 using NetGore.EditorTools.NPCChat;
 using NetGore.NPCChat;
+using NetGore.NPCChat.Conditionals;
 
 namespace DemoGame.NPCChatEditor
 {
