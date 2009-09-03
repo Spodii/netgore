@@ -11,104 +11,104 @@
           <Index>0</Index>
           <Title />
           <Text>Have you done this quest?</Text>
-		  <Conditionals>
-			<HasConditionals>False</HasConditionals>
-		  </Conditionals>
           <Responses>
             <Count>2</Count>
             <Item0>
               <Value>0</Value>
               <Page>1</Page>
               <Text>False</Text>
-			  <Conditionals>
-				<HasConditionals>False</HasConditionals>
-			  </Conditionals>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
             </Item0>
             <Item1>
               <Value>1</Value>
               <Page>2</Page>
               <Text>True</Text>
-			  <Conditionals>
-				<HasConditionals>False</HasConditionals>
-			  </Conditionals>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
             </Item1>
           </Responses>
+          <Conditionals>
+            <HasConditionals>False</HasConditionals>
+          </Conditionals>
         </Item0>
         <Item1>
           <Index>1</Index>
           <Title />
           <Text>Think you can help me out?</Text>
-		  <Conditionals>
-			<HasConditionals>False</HasConditionals>
-		  </Conditionals>
           <Responses>
             <Count>2</Count>
             <Item0>
               <Value>0</Value>
               <Page>3</Page>
               <Text>Yes</Text>
-			  <Conditionals>
-				<HasConditionals>False</HasConditionals>
-			  </Conditionals>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
             </Item0>
             <Item1>
               <Value>1</Value>
               <Page>4</Page>
               <Text>No</Text>
-			  <Conditionals>
-				<HasConditionals>False</HasConditionals>
-			  </Conditionals>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
             </Item1>
           </Responses>
+          <Conditionals>
+            <HasConditionals>False</HasConditionals>
+          </Conditionals>
         </Item1>
         <Item2>
           <Index>2</Index>
           <Title />
           <Text>Sorry dude, you already did this quest!</Text>
-		  <Conditionals>
-			<HasConditionals>False</HasConditionals>
-		  </Conditionals>
           <Responses>
             <Count>2</Count>
             <Item0>
               <Value>0</Value>
               <Page>1</Page>
               <Text>So? Just let me fucking do it!</Text>
-			  <Conditionals>
-				<HasConditionals>False</HasConditionals>
-			  </Conditionals>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
             </Item0>
             <Item1>
               <Value>1</Value>
               <Page>65535</Page>
               <Text>Ok, fine, whatever. Asshole.</Text>
-			  <Conditionals>
-				<HasConditionals>False</HasConditionals>
-			  </Conditionals>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
             </Item1>
           </Responses>
+          <Conditionals>
+            <HasConditionals>False</HasConditionals>
+          </Conditionals>
         </Item2>
         <Item3>
           <Index>3</Index>
           <Title />
           <Text>Sweet, thanks!</Text>
-		  <Conditionals>
-			<HasConditionals>False</HasConditionals>
-		  </Conditionals>
           <Responses>
             <Count>0</Count>
           </Responses>
+          <Conditionals>
+            <HasConditionals>False</HasConditionals>
+          </Conditionals>
         </Item3>
         <Item4>
           <Index>4</Index>
           <Title />
           <Text>Fine. Screw you too, you selfish jerk!</Text>
-		  <Conditionals>
-			<HasConditionals>False</HasConditionals>
-		  </Conditionals>
           <Responses>
             <Count>0</Count>
           </Responses>
+          <Conditionals>
+            <HasConditionals>False</HasConditionals>
+          </Conditionals>
         </Item4>
       </Items>
     </Item0>
