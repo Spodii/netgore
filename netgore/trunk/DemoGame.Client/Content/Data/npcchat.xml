@@ -6,11 +6,11 @@
       <Index>0</Index>
       <Title>Test dialog for a MP restoring dude</Title>
       <Items>
-        <Count>5</Count>
+        <Count>9</Count>
         <Item0>
           <Index>0</Index>
           <Title />
-          <Text>Have you done this quest?</Text>
+          <Text>Care for some MP-restoring goodness?</Text>
           <IsBranch>False</IsBranch>
           <Responses>
             <Count>2</Count>
@@ -35,47 +35,50 @@
         <Item1>
           <Index>1</Index>
           <Title />
-          <Text>Think you can help me out?</Text>
-          <IsBranch>False</IsBranch>
+          <Text>Is MP is not at 100%?</Text>
+          <IsBranch>True</IsBranch>
           <Responses>
             <Count>2</Count>
             <Item0>
               <Value>0</Value>
-              <Page>3</Page>
-              <Text>Yes</Text>
+              <Page>5</Page>
+              <Text>False</Text>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
             </Item0>
             <Item1>
               <Value>1</Value>
-              <Page>4</Page>
-              <Text>No</Text>
+              <Page>6</Page>
+              <Text>True</Text>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
             </Item1>
           </Responses>
+          <Conditionals>
+            <HasConditionals>False</HasConditionals>
+          </Conditionals>
         </Item1>
         <Item2>
           <Index>2</Index>
           <Title />
-          <Text>Sorry dude, you already did this quest!</Text>
+          <Text>Ok, now I just need you to stand still for a second.</Text>
           <IsBranch>False</IsBranch>
           <Responses>
             <Count>2</Count>
             <Item0>
               <Value>0</Value>
-              <Page>1</Page>
-              <Text>So? Just let me fucking do it!</Text>
+              <Page>7</Page>
+              <Text>[Stand still]</Text>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
             </Item0>
             <Item1>
-              <Value>1</Value>
-              <Page>65535</Page>
-              <Text>Ok, fine, whatever. Asshole.</Text>
+              <Value>0</Value>
+              <Page>8</Page>
+              <Text>[Start doing the Humpty Dance</Text>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -100,6 +103,76 @@
             <Count>0</Count>
           </Responses>
         </Item4>
+        <Item5>
+          <Index>5</Index>
+          <Title />
+          <Text>Well fine, screw you. Not like you needed it, anyways. Stop wasting my time!</Text>
+          <IsBranch>False</IsBranch>
+          <Responses>
+            <Count>0</Count>
+          </Responses>
+        </Item5>
+        <Item6>
+          <Index>6</Index>
+          <Title />
+          <Text>Whatever. Your loss.</Text>
+          <IsBranch>False</IsBranch>
+          <Responses>
+            <Count>2</Count>
+            <Item0>
+              <Value>0</Value>
+              <Page>2</Page>
+              <Text>I changed my mind. Gimmie gimmie!</Text>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
+            </Item0>
+            <Item1>
+              <Value>0</Value>
+              <Page>65535</Page>
+              <Text>[Leave]</Text>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
+            </Item1>
+          </Responses>
+        </Item6>
+        <Item7>
+          <Index>7</Index>
+          <Title />
+          <Text>All done. Enjoy! 
+
+TODO: Actually restore the MP!</Text>
+          <IsBranch>False</IsBranch>
+          <Responses>
+            <Count>0</Count>
+          </Responses>
+        </Item7>
+        <Item8>
+          <Index>8</Index>
+          <Title />
+          <Text>I said stand still, goddamnit!</Text>
+          <IsBranch>False</IsBranch>
+          <Responses>
+            <Count>2</Count>
+            <Item0>
+              <Value>0</Value>
+              <Page>7</Page>
+              <Text>[Stand still]</Text>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
+            </Item0>
+            <Item1>
+              <Value>0</Value>
+              <Page>8</Page>
+              <Text>[Start doing the Humpty Dance]</Text>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
+            </Item1>
+          </Responses>
+        </Item8>
       </Items>
     </Item0>
   </ChatDialogs>

@@ -126,7 +126,7 @@ namespace NetGore.EditorTools.NPCChat
             UpdateTreeNode(ret);
         }
 
-        IEnumerable<TreeNode> GetParents(TreeNode node)
+        static IEnumerable<TreeNode> GetParents(TreeNode node)
         {
             TreeNode current = node;
             while (current.Parent != null)
@@ -201,6 +201,18 @@ namespace NetGore.EditorTools.NPCChat
             }
         }
 
+        static int GetDepth(TreeNode node)
+        {
+            int depth = 0;
+            while (node.Parent != null)
+            {
+                depth++;
+                node = node.Parent;
+            }
+
+            return depth;
+        }
+
         void RecursiveUpdateItems(TreeNode node, TreeNode parentNode, EditorNPCChatDialogItem item)
         {
             // Create the main node
@@ -249,6 +261,10 @@ namespace NetGore.EditorTools.NPCChat
                 foreach (TreeNode removeNode in nodesToRemove)
                 {
                     removeNode.Remove();
+                    if (removeNode.Tag is EditorNPCChatDialogItem)
+                        ((EditorNPCChatDialogItem)removeNode.Tag).TreeNodes.Remove(removeNode);
+                    if (removeNode.Tag is EditorNPCChatResponse)
+                        ((EditorNPCChatResponse)removeNode.Tag).TreeNodes.Remove(removeNode);
                 }
             }
         }

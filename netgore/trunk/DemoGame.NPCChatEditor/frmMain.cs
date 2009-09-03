@@ -13,6 +13,8 @@ using NetGore.NPCChat.Conditionals;
 
 // TODO: Do not allow responses to be added to a EditorNPCChatDialogItem where IsBranch is set
 // TODO: Do not allow responses immediately under a branch to be altered in any ways
+// TODO: The display of nodes is still pretty buggy
+// TODO: Redirects should appear in the deepest level of the tree possible
 
 namespace DemoGame.NPCChatEditor
 {
