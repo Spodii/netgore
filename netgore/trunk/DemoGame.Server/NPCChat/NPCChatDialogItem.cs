@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -22,6 +21,24 @@ namespace DemoGame.Server.NPCChat
         ushort _index;
         bool _isBranch;
         NPCChatResponseBase[] _responses;
+
+#if DEBUG
+        // ReSharper disable UnaccessedField.Local
+        /// <summary>
+        /// The text. Only available in debug builds.
+        /// </summary>
+        string _text;
+        // ReSharper restore UnaccessedField.Local
+#endif
+
+#if DEBUG
+        // ReSharper disable UnaccessedField.Local
+        /// <summary>
+        /// The title. Only available in debug builds.
+        /// </summary>
+        string _title;
+        // ReSharper restore UnaccessedField.Local
+#endif
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
@@ -63,20 +80,27 @@ namespace DemoGame.Server.NPCChat
         }
 
         /// <summary>
-        /// This property is not supported by the Server's NPCChatDialog.
+        /// This property is not supported by the Server's NPCChatDialogItem, and will always return String.Empty.
         /// </summary>
         public override string Text
         {
-            get { throw new NotSupportedException("This property is not supported by the Server's NPCChatDialog."); }
+            get
+            {
+                Debug.Fail("This property is not supported by the Server.");
+                return string.Empty;
+            }
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the title for this page of dialog. The title is primarily
-        /// used for debugging and development purposes only.
+        /// This property is not supported by the Server's NPCChatDialogItem, and will always return String.Empty.
         /// </summary>
         public override string Title
         {
-            get { throw new NotSupportedException("This property is not supported by the Server's NPCChatDialog."); }
+            get
+            {
+                Debug.Fail("This property is not supported by the Server.");
+                return string.Empty;
+            }
         }
 
         /// <summary>
@@ -163,6 +187,11 @@ namespace DemoGame.Server.NPCChat
             _isBranch = isBranch;
             _responses = responses.ToArray();
             _conditionals = conditionals;
+
+#if DEBUG
+            _text = text;
+            _title = title;
+#endif
         }
 
         /// <summary>
