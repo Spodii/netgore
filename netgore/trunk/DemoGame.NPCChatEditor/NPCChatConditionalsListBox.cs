@@ -7,6 +7,8 @@ using NetGore.EditorTools;
 using NetGore.EditorTools.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
+// TODO: Clean this up enough so that it can be added to the NetGore.EditorTools
+
 namespace DemoGame.NPCChatEditor
 {
     public delegate void SelectedConditionalItemChangeHandler(
