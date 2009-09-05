@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -16,6 +15,15 @@ namespace DemoGame.Server.NPCChat
         ushort _index;
         NPCChatDialogItemBase[] _items;
 
+#if DEBUG
+        // ReSharper disable UnaccessedField.Local  
+        /// <summary>
+        /// The title. Only available in debug builds.
+        /// </summary>
+        string _title;
+        // ReSharper restore UnaccessedField.Local
+#endif
+
         /// <summary>
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
         /// distinguish each NPCChatDialogBase from one another.
@@ -26,11 +34,15 @@ namespace DemoGame.Server.NPCChat
         }
 
         /// <summary>
-        /// This property is not supported by the Server's NPCChatDialog.
+        /// This property is not supported by the Server's NPCChatDialog, and will always return String.Empty.
         /// </summary>
         public override string Title
         {
-            get { throw new NotSupportedException("This property is not supported by the Server's NPCChatDialog."); }
+            get
+            {
+                Debug.Fail("This property is not supported by the Server.");
+                return string.Empty;
+            }
         }
 
         /// <summary>
@@ -100,6 +112,10 @@ namespace DemoGame.Server.NPCChat
 
             _index = index;
             _items = items.ToArray();
+
+#if DEBUG
+            _title = title;
+#endif
         }
 
         /// <summary>

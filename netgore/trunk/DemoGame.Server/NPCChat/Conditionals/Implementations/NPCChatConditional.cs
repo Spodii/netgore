@@ -26,7 +26,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// </summary>
         /// <param name="user">The User.</param>
         /// <param name="npc">The NPC.</param>
-        /// <param name="parameters">The parameters to use. </param>
+        /// <param name="parameters">The parameters to use.</param>
         /// <returns>True if the conditional returns true for the given <paramref name="user"/>,
         /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
         protected abstract bool DoEvaluate(User user, NPC npc, NPCChatConditionalParameter[] parameters);
