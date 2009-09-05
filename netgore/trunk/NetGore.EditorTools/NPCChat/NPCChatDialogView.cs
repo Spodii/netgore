@@ -21,10 +21,10 @@ namespace NetGore.EditorTools.NPCChat
             new Dictionary<object, List<NPCChatDialogViewNode>>();
 
         Color _nodeForeColorBranch = Color.DarkRed;
-
         Color _nodeForeColorGoTo = Color.Blue;
         Color _nodeForeColorNormal = Color.Black;
         Color _nodeForeColorResponse = Color.Green;
+
         EditorNPCChatDialog _npcChatDialog;
 
         /// <summary>
