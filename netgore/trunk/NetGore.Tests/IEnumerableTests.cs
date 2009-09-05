@@ -33,6 +33,27 @@ namespace NetGore.Tests
         }
 
         [Test]
+        public void ImplodeSplitWithStringTest()
+        {
+            var l = new List<int>(50);
+            for (int i = 0; i < 50; i++)
+            {
+                l.Add(rnd.Next(0, 100));
+            }
+
+            string implode = l.Implode(",");
+
+            var elements = implode.Split(',');
+
+            Assert.AreEqual(l.Count, elements.Length);
+
+            for (int i = 0; i < l.Count; i++)
+            {
+                Assert.AreEqual(l[i].ToString(), elements[i]);
+            }
+        }
+
+        [Test]
         public void ImplodeStringsSplitWithCharTest()
         {
             var l = new List<string>(50);
@@ -71,27 +92,6 @@ namespace NetGore.Tests
             for (int i = 0; i < l.Count; i++)
             {
                 Assert.AreEqual(l[i], elements[i]);
-            }
-        }
-
-        [Test]
-        public void ImplodeSplitWithStringTest()
-        {
-            var l = new List<int>(50);
-            for (int i = 0; i < 50; i++)
-            {
-                l.Add(rnd.Next(0, 100));
-            }
-
-            string implode = l.Implode(",");
-
-            var elements = implode.Split(',');
-
-            Assert.AreEqual(l.Count, elements.Length);
-
-            for (int i = 0; i < l.Count; i++)
-            {
-                Assert.AreEqual(l[i].ToString(), elements[i]);
             }
         }
     }

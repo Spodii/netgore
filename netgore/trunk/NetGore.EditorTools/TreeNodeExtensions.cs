@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace NetGore.EditorTools
@@ -12,6 +10,24 @@ namespace NetGore.EditorTools
     /// </summary>
     public static class TreeNodeExtensions
     {
+        /// <summary>
+        /// Gets the 0-based depth of the given TreeNode.
+        /// </summary>
+        /// <param name="node">The TreeNode to get the depth of.</param>
+        /// <returns>The depth of the <paramref name="node"/>, where 0 means this is the root node and it has
+        /// no parent nodes.</returns>
+        public static int GetDepth(this TreeNode node)
+        {
+            int depth = 0;
+            while (node.Parent != null)
+            {
+                depth++;
+                node = node.Parent;
+            }
+
+            return depth;
+        }
+
         /// <summary>
         /// Gets an IEnumerable of all the parent TreeNodes for the given <paramref name="node"/>.
         /// </summary>
@@ -57,11 +73,11 @@ namespace NetGore.EditorTools
         /// <param name="swapChildren">If true, the child nodes are also swapped.</param>
         public static void SwapNode(this TreeNode node, TreeNode other, bool swapChildren)
         {
-            var a = node;
-            var b = other;
+            TreeNode a = node;
+            TreeNode b = other;
 
-            var aParentNodes = a.Parent != null ? a.Parent.Nodes : a.TreeView.Nodes;
-            var bParentNodes = b.Parent != null ? b.Parent.Nodes : b.TreeView.Nodes;
+            TreeNodeCollection aParentNodes = a.Parent != null ? a.Parent.Nodes : a.TreeView.Nodes;
+            TreeNodeCollection bParentNodes = b.Parent != null ? b.Parent.Nodes : b.TreeView.Nodes;
 
             var aChildNodes = a.Nodes.ToArray<TreeNode>();
             var bChildNodes = b.Nodes.ToArray<TreeNode>();
@@ -87,24 +103,6 @@ namespace NetGore.EditorTools
             // Swap parents
             aParentNodes.Add(b);
             bParentNodes.Add(a);
-        }
-
-        /// <summary>
-        /// Gets the 0-based depth of the given TreeNode.
-        /// </summary>
-        /// <param name="node">The TreeNode to get the depth of.</param>
-        /// <returns>The depth of the <paramref name="node"/>, where 0 means this is the root node and it has
-        /// no parent nodes.</returns>
-        public static int GetDepth(this TreeNode node)
-        {
-            int depth = 0;
-            while (node.Parent != null)
-            {
-                depth++;
-                node = node.Parent;
-            }
-
-            return depth;
         }
     }
 }

@@ -100,16 +100,6 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
-        /// </summary>
-        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
-        /// want to load the conditionals when using Read.</returns>
-        protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
-        {
-            return new EditorNPCChatConditionalCollection();
-        }
-
-        /// <summary>
         /// Clears the Conditionals.
         /// </summary>
         public void ClearConditionals()
@@ -118,6 +108,16 @@ namespace NetGore.EditorTools.NPCChat
 
             if (OnChange != null)
                 OnChange(this);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
+        /// </summary>
+        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
+        /// want to load the conditionals when using Read.</returns>
+        protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
+        {
+            return new EditorNPCChatConditionalCollection();
         }
 
         /// <summary>

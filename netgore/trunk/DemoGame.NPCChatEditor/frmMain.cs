@@ -314,6 +314,65 @@ namespace DemoGame.NPCChatEditor
             npcChatDialogView.ExpandAll();
         }
 
+        void chkIsBranch_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+            if (EditingObjAsDialogItem == null)
+                return;
+
+            if (EditingObjAsDialogItem.IsBranch == chkIsBranch.Checked)
+            {
+                Debug.Fail("Uh-oh - an inconsistency!");
+                return;
+            }
+
+            _doNotUpdateObj = true;
+
+            const string msgSetAsNonBranch =
+                "Are you sure you wish to change this dialog to a normal dialog?" +
+                " Changing to a normal dialog will result in all conditionals for this dialog item to be lost.";
+
+            const string msgSetAsBranch =
+                "Are you sure you wish to change this dialog to a conditional branch?" +
+                " Changing to a conditional branch will result in some alterations being made to your existing responses.";
+
+            try
+            {
+                string error;
+                bool success;
+
+                if (EditingObjAsDialogItem.IsBranch)
+                {
+                    if (MessageBox.Show(msgSetAsNonBranch, "Accept changes?", MessageBoxButtons.YesNo) == DialogResult.No)
+                        return;
+
+                    success = EditingObjAsDialogItem.TrySetAsNonBranch(out error);
+                }
+                else
+                {
+                    if (MessageBox.Show(msgSetAsBranch, "Accept changes?", MessageBoxButtons.YesNo) == DialogResult.No)
+                        return;
+
+                    success = EditingObjAsDialogItem.TrySetAsBranch(out error);
+                }
+
+                if (!success)
+                {
+                    const string errmsg = "Failed to apply changes. Reason: {0}";
+                    MessageBox.Show(string.Format(errmsg, error));
+                }
+            }
+            finally
+            {
+                chkIsBranch.Checked = EditingObjAsDialogItem.IsBranch;
+                _doNotUpdateObj = false;
+            }
+
+            // TODO: Proper updating
+            button1_Click(this, null);
+        }
+
         /// <summary>
         /// CMBs the selected dialog_ on change dialog.
         /// </summary>
@@ -639,7 +698,8 @@ namespace DemoGame.NPCChatEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void txtRedirectIndex_Leave(object sender, EventArgs e)
         {
-            if (EditingObjAsTreeNode == null || npcChatDialogView.SelectedNode == null || npcChatDialogView.SelectedNode.Tag != _editingObj)
+            if (EditingObjAsTreeNode == null || npcChatDialogView.SelectedNode == null ||
+                npcChatDialogView.SelectedNode.Tag != _editingObj)
                 return;
 
             if (npcChatDialogView.SelectedNode.Parent == null)
@@ -691,63 +751,6 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetTitle(txtTitle.Text);
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
-        }
-
-        private void chkIsBranch_CheckedChanged(object sender, EventArgs e)
-        {
-            if (_doNotUpdateObj)
-                return;
-            if (EditingObjAsDialogItem == null)
-                return;
-
-            if (EditingObjAsDialogItem.IsBranch == chkIsBranch.Checked)
-            {
-                Debug.Fail("Uh-oh - an inconsistency!");
-                return;
-            }
-
-            _doNotUpdateObj = true;
-
-            const string msgSetAsNonBranch = "Are you sure you wish to change this dialog to a normal dialog?" +
-                " Changing to a normal dialog will result in all conditionals for this dialog item to be lost.";
-
-            const string msgSetAsBranch = "Are you sure you wish to change this dialog to a conditional branch?" +
-                " Changing to a conditional branch will result in some alterations being made to your existing responses.";
-
-            try
-            {
-                string error;
-                bool success;
-
-                if (EditingObjAsDialogItem.IsBranch)
-                {
-                    if (MessageBox.Show(msgSetAsNonBranch, "Accept changes?", MessageBoxButtons.YesNo) == DialogResult.No)
-                        return;
-
-                    success = EditingObjAsDialogItem.TrySetAsNonBranch(out error);
-                }
-                else
-                {
-                    if (MessageBox.Show(msgSetAsBranch, "Accept changes?", MessageBoxButtons.YesNo) == DialogResult.No)
-                        return;
-
-                    success = EditingObjAsDialogItem.TrySetAsBranch(out error);
-                }
-
-                if (!success)
-                {
-                    const string errmsg = "Failed to apply changes. Reason: {0}";
-                    MessageBox.Show(string.Format(errmsg, error));
-                }
-            }
-            finally
-            {
-                chkIsBranch.Checked = EditingObjAsDialogItem.IsBranch;
-                _doNotUpdateObj = false;
-            }
-
-            // TODO: Proper updating
-            button1_Click(this, null);
         }
     }
 }

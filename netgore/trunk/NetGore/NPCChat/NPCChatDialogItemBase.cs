@@ -17,10 +17,25 @@ namespace NetGore.NPCChat
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
+        /// conditionals used to evaluate if this NPCChatDialogItemBase may be used. If this value is null, it
+        /// is assumed that there are no conditionals attached to this NPCChatDialogItemBase, and should be treated
+        /// the same way as if the conditionals evaluated to true.
+        /// </summary>
+        public abstract NPCChatConditionalCollectionBase Conditionals { get; }
+
+        /// <summary>
         /// When overridden in the derived class, gets the page index of this NPCChatDialogItemBase in the
         /// NPCChatDialogBase. This value is unique to each NPCChatDialogItemBase in the NPCChatDialogBase.
         /// </summary>
         public abstract ushort Index { get; }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this NPCChatDialogItemBase is a branch dialog or not. If
+        /// true, the dialog should be automatically progressed by using EvaluateBranch() instead of waiting for
+        /// and accepting input from the user for a response.
+        /// </summary>
+        public abstract bool IsBranch { get; }
 
         /// <summary>
         /// When overridden in the derived class, gets an IEnumerable of the EditorNPCChatResponses available
@@ -39,36 +54,6 @@ namespace NetGore.NPCChat
         /// used for debugging and development purposes only.
         /// </summary>
         public abstract string Title { get; }
-
-        /// <summary>
-        /// Gets the NPCChatResponseBase to use by evaluating the conditionals of this EditorNPCChatDialogItem.
-        /// </summary>
-        /// <param name="user">The User used to evaluate the conditionals.</param>
-        /// <param name="npc">The NPC used to evaluate the conditionals.</param>
-        /// <returns>The NPCChatResponseBase to use by evaluating the conditionals of this
-        /// EditorNPCChatDialogItem.</returns>
-        /// <exception cref="MethodAccessException">IsBranch is false.</exception>
-        public NPCChatResponseBase EvaluateBranch(object user, object npc)
-        {
-            if (!IsBranch)
-                throw new MethodAccessException("This method may only be called if IsBranch is true.");
-
-            Debug.Assert(Conditionals.Count() == 2, "There should always be exactly 2 conditionals on a branch...");
-
-            bool result = CheckConditionals(user, npc);
-
-            if (!result)
-                return GetResponse(0);
-            else
-                return GetResponse(1);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets if this NPCChatDialogItemBase is a branch dialog or not. If
-        /// true, the dialog should be automatically progressed by using EvaluateBranch() instead of waiting for
-        /// and accepting input from the user for a response.
-        /// </summary>
-        public abstract bool IsBranch { get; }
 
         /// <summary>
         /// NPCChatDialogItemBase constructor.
@@ -104,12 +89,11 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
-        /// conditionals used to evaluate if this NPCChatDialogItemBase may be used. If this value is null, it
-        /// is assumed that there are no conditionals attached to this NPCChatDialogItemBase, and should be treated
-        /// the same way as if the conditionals evaluated to true.
+        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
         /// </summary>
-        public abstract NPCChatConditionalCollectionBase Conditionals { get; }
+        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
+        /// want to load the conditionals when using Read.</returns>
+        protected abstract NPCChatConditionalCollectionBase CreateConditionalCollection();
 
         /// <summary>
         /// Creates an ArgumentOutOfRangeException for the response index being out of range.
@@ -135,6 +119,29 @@ namespace NetGore.NPCChat
         protected abstract NPCChatResponseBase CreateResponse(IValueReader reader);
 
         /// <summary>
+        /// Gets the NPCChatResponseBase to use by evaluating the conditionals of this EditorNPCChatDialogItem.
+        /// </summary>
+        /// <param name="user">The User used to evaluate the conditionals.</param>
+        /// <param name="npc">The NPC used to evaluate the conditionals.</param>
+        /// <returns>The NPCChatResponseBase to use by evaluating the conditionals of this
+        /// EditorNPCChatDialogItem.</returns>
+        /// <exception cref="MethodAccessException">IsBranch is false.</exception>
+        public NPCChatResponseBase EvaluateBranch(object user, object npc)
+        {
+            if (!IsBranch)
+                throw new MethodAccessException("This method may only be called if IsBranch is true.");
+
+            Debug.Assert(Conditionals.Count() == 2, "There should always be exactly 2 conditionals on a branch...");
+
+            bool result = CheckConditionals(user, npc);
+
+            if (!result)
+                return GetResponse(0);
+            else
+                return GetResponse(1);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the index of the next NPCChatDialogItemBase to use from
         /// the given response.
         /// </summary>
@@ -152,13 +159,6 @@ namespace NetGore.NPCChat
         /// <returns>The NPCChatResponseBase for the response at index <paramref name="responseIndex"/>, or null
         /// if the response is invalid or ends the chat dialog.</returns>
         public abstract NPCChatResponseBase GetResponse(byte responseIndex);
-
-        /// <summary>
-        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
-        /// </summary>
-        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
-        /// want to load the conditionals when using Read.</returns>
-        protected abstract NPCChatConditionalCollectionBase CreateConditionalCollection();
 
         /// <summary>
         /// Reads the values for this NPCChatDialogItemBase from an IValueReader.
@@ -201,7 +201,9 @@ namespace NetGore.NPCChat
         /// <param name="isBranch">The IsBranch value.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="responses">The responses.</param>
-        protected abstract void SetReadValues(ushort page, string title, string text, bool isBranch, IEnumerable<NPCChatResponseBase> responses, NPCChatConditionalCollectionBase conditionals);
+        protected abstract void SetReadValues(ushort page, string title, string text, bool isBranch,
+                                              IEnumerable<NPCChatResponseBase> responses,
+                                              NPCChatConditionalCollectionBase conditionals);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

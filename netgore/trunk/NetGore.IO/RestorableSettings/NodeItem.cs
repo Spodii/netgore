@@ -9,6 +9,8 @@ namespace NetGore.IO
     /// </summary>
     public struct NodeItem
     {
+        const string _nameValueKey = "Name";
+        const string _valueValueKey = "Value";
         readonly string _name;
         readonly string _value;
 
@@ -60,9 +62,6 @@ namespace NetGore.IO
             _name = name;
             _value = value == null ? string.Empty : value.ToString();
         }
-
-        const string _nameValueKey = "Name";
-        const string _valueValueKey = "Value";
 
         public NodeItem(IValueReader reader)
         {

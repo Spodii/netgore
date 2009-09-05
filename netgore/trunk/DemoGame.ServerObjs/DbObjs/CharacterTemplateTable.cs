@@ -26,27 +26,24 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumns = new string[]
         {
-            "acc", "agi", "ai", "alliance_id", "armor", "body_id", "bra", "defence", "dex", "evade", "exp", "give_cash",
-            "give_exp", "id", "imm", "int", "level", "maxhit", "maxhp", "maxmp", "minhit", "name", "perc", "recov", "regen",
-            "respawn", "statpoints", "str", "tact", "ws"
+            "acc", "agi", "ai", "alliance_id", "armor", "body_id", "bra", "defence", "dex", "evade", "exp", "give_cash", "give_exp",
+            "id", "imm", "int", "level", "maxhit", "maxhp", "maxmp", "minhit", "name", "perc", "recov", "regen", "respawn",
+            "statpoints", "str", "tact", "ws"
         };
 
         /// <summary>
         /// Array of the database column names for columns that are primary keys.
         /// </summary>
-        static readonly String[] _dbColumnsKeys = new string[]
-        {
-            "id"
-        };
+        static readonly String[] _dbColumnsKeys = new string[] { "id" };
 
         /// <summary>
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         {
-            "acc", "agi", "ai", "alliance_id", "armor", "body_id", "bra", "defence", "dex", "evade", "exp", "give_cash",
-            "give_exp", "imm", "int", "level", "maxhit", "maxhp", "maxmp", "minhit", "name", "perc", "recov", "regen", "respawn",
-            "statpoints", "str", "tact", "ws"
+            "acc", "agi", "ai", "alliance_id", "armor", "body_id", "bra", "defence", "dex", "evade", "exp", "give_cash", "give_exp",
+            "imm", "int", "level", "maxhit", "maxhp", "maxmp", "minhit", "name", "perc", "recov", "regen", "respawn", "statpoints",
+            "str", "tact", "ws"
         };
 
         /// <summary>
