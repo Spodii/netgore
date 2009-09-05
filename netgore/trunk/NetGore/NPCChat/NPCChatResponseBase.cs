@@ -35,7 +35,7 @@ namespace NetGore.NPCChat
         public abstract string Text { get; }
 
         /// <summary>
-        /// When overridden in the derived class, gets the 0-based response index value for this response.
+        /// When overridden in the derived class, gets the unique 0-based response index value for this response.
         /// </summary>
         public abstract byte Value { get; }
 

@@ -197,10 +197,25 @@ namespace NetGore.NPCChat
                 }
             }
 
+            SetReadValues(index, title, text, isBranch, responses, conditionals);
+
             AssertBranchHasTwoResponses();
             AssertNonBranchHasNoConditionals();
+            AssertResponsesHaveValidValues();
+        }
 
-            SetReadValues(index, title, text, isBranch, responses, conditionals);
+        [Conditional("DEBUG")]
+        void AssertResponsesHaveValidValues()
+        {
+            if (Responses == null)
+                return;
+
+            foreach (var response in Responses)
+            {
+                var r = response;
+                Debug.Assert(Responses.Count(x => x.Value == r.Value) == 1, "Response values should be unique.");
+                Debug.Assert(GetResponse(r.Value) == response, "...ok, now that is just messed up.");
+            }
         }
 
         /// <summary>
@@ -233,6 +248,12 @@ namespace NetGore.NPCChat
         /// <param name="writer">IValueWriter to write the values to.</param>
         public void Write(IValueWriter writer)
         {
+            // TODO: Make the editor objects ensure that the response values are property updated and such
+
+            AssertBranchHasTwoResponses();
+            AssertNonBranchHasNoConditionals();
+            AssertResponsesHaveValidValues();
+
             writer.Write("Index", Index);
             writer.Write("Title", Title ?? string.Empty);
             writer.Write("Text", Text ?? string.Empty);
@@ -251,9 +272,6 @@ namespace NetGore.NPCChat
                 }
                 writer.WriteEndNode("Conditionals");
             }
-
-            AssertBranchHasTwoResponses();
-            AssertNonBranchHasNoConditionals();
         }
     }
 }

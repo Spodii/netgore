@@ -384,9 +384,8 @@ namespace NetGore.EditorTools.NPCChat
                     break;
 
                 case NPCChatDialogViewNodeItemType.Response:
-                    asDialogItem = ParentCasted.ChatItemAsDialogItem;
                     asResponse = ChatItemAsResponse;
-                    text = "[" + asDialogItem.ResponseList.IndexOf(asResponse) + ": " + asResponse.Text + "]";
+                    text = "[" + asResponse.Value + ": " + asResponse.Text + "]";
                     foreColor = TreeViewCasted.NodeForeColorResponse;
                     break;
 

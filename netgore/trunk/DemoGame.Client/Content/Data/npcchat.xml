@@ -6,7 +6,7 @@
       <Index>0</Index>
       <Title>Test dialog for a MP restoring dude</Title>
       <Items>
-        <Count>9</Count>
+        <Count>11</Count>
         <Item0>
           <Index>0</Index>
           <Title />
@@ -34,8 +34,8 @@
         </Item0>
         <Item1>
           <Index>1</Index>
-          <Title />
-          <Text>Is MP is not at 100%?</Text>
+          <Title>Is MP not at 100%?</Title>
+          <Text />
           <IsBranch>True</IsBranch>
           <Responses>
             <Count>2</Count>
@@ -63,7 +63,7 @@
               <Count>1</Count>
               <Item0>
                 <Not>False</Not>
-                <ConditionalName>MP% &lt;=</ConditionalName>
+                <ConditionalName>MP% &lt;</ConditionalName>
                 <Parameters>
                   <Count>1</Count>
                   <Item0>
@@ -145,7 +145,7 @@
                   <Count>1</Count>
                   <Item0>
                     <Not>False</Not>
-                    <ConditionalName>MP% &lt;=</ConditionalName>
+                    <ConditionalName>MP% &lt;</ConditionalName>
                     <Parameters>
                       <Count>1</Count>
                       <Item0>
@@ -169,14 +169,46 @@
         </Item6>
         <Item7>
           <Index>7</Index>
-          <Title />
-          <Text>All done. Enjoy! 
-
-TODO: Actually restore the MP!</Text>
-          <IsBranch>False</IsBranch>
+          <Title>Is MP not at 100%?</Title>
+          <Text />
+          <IsBranch>True</IsBranch>
           <Responses>
-            <Count>0</Count>
+            <Count>2</Count>
+            <Item0>
+              <Value>0</Value>
+              <Page>9</Page>
+              <Text>False</Text>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
+            </Item0>
+            <Item1>
+              <Value>1</Value>
+              <Page>10</Page>
+              <Text>True</Text>
+              <Conditionals>
+                <HasConditionals>False</HasConditionals>
+              </Conditionals>
+            </Item1>
           </Responses>
+          <Conditionals>
+            <HasConditionals>True</HasConditionals>
+            <EvaluationType>0</EvaluationType>
+            <Items>
+              <Count>1</Count>
+              <Item0>
+                <Not>False</Not>
+                <ConditionalName>MP% &lt;</ConditionalName>
+                <Parameters>
+                  <Count>1</Count>
+                  <Item0>
+                    <ValueType>0</ValueType>
+                    <Value>100</Value>
+                  </Item0>
+                </Parameters>
+              </Item0>
+            </Items>
+          </Conditionals>
         </Item7>
         <Item8>
           <Index>8</Index>
@@ -203,6 +235,26 @@ TODO: Actually restore the MP!</Text>
             </Item1>
           </Responses>
         </Item8>
+        <Item9>
+          <Index>9</Index>
+          <Title />
+          <Text>Hey, your MP is fine. Get the hell out of here!</Text>
+          <IsBranch>False</IsBranch>
+          <Responses>
+            <Count>0</Count>
+          </Responses>
+        </Item9>
+        <Item10>
+          <Index>10</Index>
+          <Title />
+          <Text>MP all restored. Enjoy!
+
+TODO: Actually restore the MP.</Text>
+          <IsBranch>False</IsBranch>
+          <Responses>
+            <Count>0</Count>
+          </Responses>
+        </Item10>
       </Items>
     </Item0>
   </ChatDialogs>
