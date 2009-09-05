@@ -116,7 +116,7 @@ namespace DemoGame.NPCChatEditor
             EditingObjAsResponse.SetPage(index);
 
             // Update the tree
-            npcChatDialogView.UpdateItems();
+            npcChatDialogView.UpdateTree();
 
             // TODO: Select the new dialog item in the tree
         }
@@ -165,7 +165,7 @@ namespace DemoGame.NPCChatEditor
 
             EditorNPCChatResponse response = new EditorNPCChatResponse("<New Response>");
             EditingObjAsDialogItem.ResponseList.Add(response);
-            npcChatDialogView.UpdateItems();
+            npcChatDialogView.UpdateTree();
 
             // TODO: Auto-select the new node for the response
         }
@@ -293,7 +293,7 @@ namespace DemoGame.NPCChatEditor
                 if (responseSource != null)
                 {
                     responseSource.ResponseList.Remove(EditingObjAsResponse);
-                    npcChatDialogView.UpdateItems();
+                    npcChatDialogView.UpdateTree();
                 }
 
                 // TODO: Even though the node is deleted from the view, it still exists in the NPCChatDialog

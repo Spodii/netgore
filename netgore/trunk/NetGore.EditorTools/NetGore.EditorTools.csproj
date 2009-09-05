@@ -114,6 +114,8 @@
     <Compile Include="NPCChat\NPCChatDialogView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="NPCChat\NPCChatDialogViewNode.cs" />
+    <Compile Include="NPCChat\NPCChatDialogViewNodeItemType.cs" />
     <Compile Include="NPCChat\NPCChatParameterListBox.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -125,6 +127,8 @@
     </Compile>
     <Compile Include="TextureHashCollection.cs" />
     <Compile Include="ImageHelper.cs" />
+    <Compile Include="TreeNodeCollectionExtensions.cs" />
+    <Compile Include="TreeNodeExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
