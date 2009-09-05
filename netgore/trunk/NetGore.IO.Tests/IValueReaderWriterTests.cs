@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using NetGore.Globalization;
 using NUnit.Framework;
 
@@ -664,6 +665,43 @@ namespace NetGore.IO.Tests
                         Assert.AreEqual(e, r.ReadBool("e"));
                         Assert.AreEqual(f, r.ReadString("f"));
                     }
+                }
+            }
+        }
+
+        static string Implode(IEnumerable<string> src)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var s in src)
+                sb.Append(s);
+
+            return sb.ToString();
+        }
+
+        [Test]
+        public void TestIllegalXmlCharactersInStrings()
+        {
+            string[] illegalStrs = new string[] { "<", ">", "\\", "/", "&", "'", "\"", Environment.NewLine};
+            var allStrings = Implode(illegalStrs);
+
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        for (int i = 0; i < illegalStrs.Length; i++)
+                            w.Write(GetValueKey(i), illegalStrs[i]);
+
+                        w.Write("All", allStrings);
+                    }
+
+                    IValueReader r = creator.GetReader();
+
+                    for (int i = 0; i < illegalStrs.Length; i++)
+                        Assert.AreEqual(illegalStrs[i], r.ReadString(GetValueKey(i)));
+
+                    Assert.AreEqual(allStrings, r.ReadString("All"));
                 }
             }
         }
