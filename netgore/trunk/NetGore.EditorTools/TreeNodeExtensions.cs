@@ -54,7 +54,8 @@ namespace NetGore.EditorTools
         /// </summary>
         /// <param name="node">This TreeNode.</param>
         /// <param name="other">The TreeNode to swap with.</param>
-        public static void SwapNode(this TreeNode node, TreeNode other)
+        /// <param name="swapChildren">If true, the child nodes are also swapped.</param>
+        public static void SwapNode(this TreeNode node, TreeNode other, bool swapChildren)
         {
             var a = node;
             var b = other;
@@ -72,8 +73,16 @@ namespace NetGore.EditorTools
             b.Remove();
 
             // Swap child nodes
-            a.Nodes.AddRange(bChildNodes);
-            b.Nodes.AddRange(aChildNodes);
+            if (swapChildren)
+            {
+                a.Nodes.AddRange(bChildNodes);
+                b.Nodes.AddRange(aChildNodes);
+            }
+            else
+            {
+                a.Nodes.AddRange(aChildNodes);
+                b.Nodes.AddRange(bChildNodes);
+            }
 
             // Swap parents
             aParentNodes.Add(b);
