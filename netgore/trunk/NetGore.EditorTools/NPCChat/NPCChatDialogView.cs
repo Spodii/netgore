@@ -259,6 +259,10 @@ namespace NetGore.EditorTools.NPCChat
             l.Remove(node);
         }
 
+        /// <summary>
+        /// Handles when the NPCChatDialogView is double-clicked.
+        /// </summary>
+        /// <param name="e">Event args.</param>
         protected override void OnNodeMouseDoubleClick(TreeNodeMouseClickEventArgs e)
         {
             if (e.Node != null)
