@@ -120,7 +120,10 @@ namespace DemoGame.Client
                 return;
             }
 
-            _responses = _page.Responses.Where(x => !responsesToSkip.Contains(x.Value)).OrderBy(x => x.Value).ToArray();
+            if (responsesToSkip != null)
+                _responses = _page.Responses.Where(x => !responsesToSkip.Contains(x.Value)).OrderBy(x => x.Value).ToArray();
+            else
+                _responses = _page.Responses.OrderBy(x => x.Value).ToArray();
 
             _dialogTextControl.Text = _page.Text;
             SetResponseOffset(0);
