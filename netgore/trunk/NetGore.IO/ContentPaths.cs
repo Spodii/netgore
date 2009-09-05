@@ -240,11 +240,7 @@ namespace NetGore
                 return false;
 
             // Check for the required child directories
-            var reqFolders = new List<string>
-            {
-                _dataFolder,
-                _grhsFolder
-            };
+            var reqFolders = new List<string> { _dataFolder, _grhsFolder };
             var req = reqFolders.Select(d => Path.GetFileNameWithoutExtension(d).ToLower());
 
             var dirs = Directory.GetDirectories(path);

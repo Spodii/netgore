@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using NetGore.Globalization;
-using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat
@@ -47,9 +46,9 @@ namespace NetGore.EditorTools.NPCChat
         [Browsable(false)]
         public NPCChatConditionalParameter SelectedParameter
         {
-            get 
-            { 
-                var o = SelectedItem as ParameterListItem;
+            get
+            {
+                ParameterListItem o = SelectedItem as ParameterListItem;
                 if (o == null)
                     return null;
 
@@ -115,7 +114,7 @@ namespace NetGore.EditorTools.NPCChat
 
         void RebuildItemList()
         {
-            var si = SelectedIndex;
+            int si = SelectedIndex;
             Items.Clear();
             if (ConditionalCollectionItem != null)
             {
@@ -144,8 +143,8 @@ namespace NetGore.EditorTools.NPCChat
 
             bool wasValueSet = SelectedParameter.TrySetValue(ValueTextBox.Text, Parser.Current);
 
-            var selStart = ValueTextBox.SelectionStart;
-            var selLen = ValueTextBox.SelectionLength;
+            int selStart = ValueTextBox.SelectionStart;
+            int selLen = ValueTextBox.SelectionLength;
 
             if (!wasValueSet)
                 ValueTextBox.BackColor = EditorColors.Error;

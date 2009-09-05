@@ -33,15 +33,6 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
-        /// Gets if the <see cref="NPCChatDialogViewNode"/> is dead (has been removed from the
-        /// <see cref="TreeView"/> and is not coming back).
-        /// </summary>
-        public bool IsDead
-        {
-            get { return TreeView == null; }
-        }
-
-        /// <summary>
         /// Gets the ChatItem as a <see cref="EditorNPCChatDialogItem"/>. If this is a ChatItemType is
         /// <see cref="NPCChatDialogViewNodeItemType.Redirect"/>, this will
         /// return the <see cref="EditorNPCChatDialogItem"/> that the node redirects to.
@@ -97,6 +88,15 @@ namespace NetGore.EditorTools.NPCChat
         public NPCChatDialogViewNodeItemType ChatItemType
         {
             get { return _chatItemType; }
+        }
+
+        /// <summary>
+        /// Gets if the <see cref="NPCChatDialogViewNode"/> is dead (has been removed from the
+        /// <see cref="TreeView"/> and is not coming back).
+        /// </summary>
+        public bool IsDead
+        {
+            get { return TreeView == null; }
         }
 
         /// <summary>
@@ -306,8 +306,10 @@ namespace NetGore.EditorTools.NPCChat
             // Remove the marked nodes to be removed
             if (nodesToRemove != null)
             {
-                foreach (var node in nodesToRemove)
+                foreach (NPCChatDialogViewNode node in nodesToRemove)
+                {
                     node.Remove();
+                }
             }
 
             // Update the text of this node
@@ -327,11 +329,13 @@ namespace NetGore.EditorTools.NPCChat
             // and some nodes will end up not appearing in the tree
             if (checkToSwapRedirectNodes)
             {
-                foreach (var child in childNodes.Where(x => x.ChatItemType == NPCChatDialogViewNodeItemType.Redirect))
+                foreach (
+                    NPCChatDialogViewNode child in childNodes.Where(x => x.ChatItemType == NPCChatDialogViewNodeItemType.Redirect)
+                    )
                 {
-                    var existing = TreeViewCasted.GetNodeForDialogItem(child.ChatItemAsDialogItem);
-                    var existingDepth = existing.GetDepth();
-                    var childDepth = child.GetDepth();
+                    NPCChatDialogViewNode existing = TreeViewCasted.GetNodeForDialogItem(child.ChatItemAsDialogItem);
+                    int existingDepth = existing.GetDepth();
+                    int childDepth = child.GetDepth();
 
                     if (existingDepth > childDepth)
                         existing.SwapNode(child, existing.Nodes.Count <= 0);

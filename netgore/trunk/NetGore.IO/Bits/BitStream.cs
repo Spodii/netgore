@@ -451,6 +451,13 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// When overridden in the derived class, performs disposing of the object.
+        /// </summary>
+        protected virtual void HandleDispose()
+        {
+        }
+
+        /// <summary>
         /// Increases the position to the next perfect byte. If you
         /// plan on doing multiple reads or writes in a row by a multiple
         /// of 8 bits, this can help increase the I/O performance.
@@ -634,10 +641,7 @@ namespace NetGore.IO
             Debug.Assert(fullBytes >= 0);
             Debug.Assert(requiredBytes > 0);
 
-            BitStream ret = new BitStream(BitStreamMode.Write, requiredBytes)
-            {
-                WriteMode = BitStreamBufferMode.Static
-            };
+            BitStream ret = new BitStream(BitStreamMode.Write, requiredBytes) { WriteMode = BitStreamBufferMode.Static };
 
             if (fullBytes > 0)
             {
@@ -3030,13 +3034,6 @@ namespace NetGore.IO
         }
 
         #endregion
-
-        /// <summary>
-        /// When overridden in the derived class, performs disposing of the object.
-        /// </summary>
-        protected virtual void HandleDispose()
-        {
-        }
 
         #region IValueWriter Members
 

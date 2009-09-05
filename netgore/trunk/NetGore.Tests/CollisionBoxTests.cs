@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using NUnit.Framework;
 
@@ -10,6 +7,25 @@ namespace NetGore.Tests
     [TestFixture]
     public class CollisionBoxTests
     {
+        [Test]
+        public void ContainsTest()
+        {
+            CollisionBox cb = new CollisionBox(new Vector2(10, 10), 16, 16);
+
+            for (int x = 0; x < 50; x++)
+            {
+                for (int y = 0; y < 50; y++)
+                {
+                    Rectangle r = new Rectangle(x, y, 2, 3);
+
+                    bool hitTestPassed = cb.Contains(r);
+                    bool shouldPass = cb.Contains(r);
+
+                    Assert.AreEqual(shouldPass, hitTestPassed, "Position: {0},{1}", x, y);
+                }
+            }
+        }
+
         [Test]
         public void HitTestTest()
         {
@@ -33,26 +49,6 @@ namespace NetGore.Tests
                     Assert.AreEqual(shouldPass, hitTestPassed, "Position: {0},{1}", x, y);
                 }
             }
-        }
-
-        [Test]
-        public void PropertyLogicTest()
-        {
-            CollisionBox cb = new CollisionBox(new Vector2(10, 10), 16, 16);
-            Assert.AreEqual(cb.Size, cb.Max - cb.Min);
-            Assert.AreEqual(cb.Size.X, cb.Width);
-            Assert.AreEqual(cb.Size.Y, cb.Height);
-        }
-
-        [Test]
-        public void ToRectangleTest()
-        {
-            CollisionBox cb = new CollisionBox(new Vector2(10, 10), 16, 16);
-            Rectangle r = cb.ToRectangle();
-            Assert.AreEqual(r.X, 10);
-            Assert.AreEqual(r.Y, 10);
-            Assert.AreEqual(r.Width, 16);
-            Assert.AreEqual(r.Width, 16);
         }
 
         [Test]
@@ -83,22 +79,23 @@ namespace NetGore.Tests
         }
 
         [Test]
-        public void ContainsTest()
+        public void PropertyLogicTest()
         {
             CollisionBox cb = new CollisionBox(new Vector2(10, 10), 16, 16);
+            Assert.AreEqual(cb.Size, cb.Max - cb.Min);
+            Assert.AreEqual(cb.Size.X, cb.Width);
+            Assert.AreEqual(cb.Size.Y, cb.Height);
+        }
 
-            for (int x = 0; x < 50; x++)
-            {
-                for (int y = 0; y < 50; y++)
-                {
-                    Rectangle r = new Rectangle(x, y, 2, 3);
-
-                    bool hitTestPassed = cb.Contains(r);
-                    bool shouldPass = cb.Contains(r);
-
-                    Assert.AreEqual(shouldPass, hitTestPassed, "Position: {0},{1}", x, y);
-                }
-            }
+        [Test]
+        public void ToRectangleTest()
+        {
+            CollisionBox cb = new CollisionBox(new Vector2(10, 10), 16, 16);
+            Rectangle r = cb.ToRectangle();
+            Assert.AreEqual(r.X, 10);
+            Assert.AreEqual(r.Y, 10);
+            Assert.AreEqual(r.Width, 16);
+            Assert.AreEqual(r.Width, 16);
         }
     }
 }
