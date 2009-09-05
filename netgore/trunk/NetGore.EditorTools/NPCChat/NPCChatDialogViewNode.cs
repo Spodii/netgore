@@ -7,12 +7,15 @@ using NetGore.NPCChat;
 
 namespace NetGore.EditorTools.NPCChat
 {
+    /// <summary>
+    /// A TreeNode for the <see cref="NPCChatDialogView"/>.
+    /// </summary>
     public class NPCChatDialogViewNode : TreeNode
     {
         NPCChatDialogViewNodeItemType _chatItemType;
 
         /// <summary>
-        /// Gets the NPC chat item that this NPCChatDialogViewNode handles.
+        /// Gets the NPC chat item that this <see cref="NPCChatDialogViewNode"/> handles.
         /// </summary>
         public object ChatItem
         {
@@ -29,14 +32,19 @@ namespace NetGore.EditorTools.NPCChat
             }
         }
 
+        /// <summary>
+        /// Gets if the <see cref="NPCChatDialogViewNode"/> is dead (has been removed from the
+        /// <see cref="TreeView"/> and is not coming back).
+        /// </summary>
         public bool IsDead
         {
             get { return TreeView == null; }
         }
 
         /// <summary>
-        /// Gets the ChatItem as a EditorNPCChatDialogItem. If this is a ChatItemType is Redirect, this will
-        /// return the EditorNPCChatDialogItem that the node redirects to.
+        /// Gets the ChatItem as a <see cref="EditorNPCChatDialogItem"/>. If this is a ChatItemType is
+        /// <see cref="NPCChatDialogViewNodeItemType.Redirect"/>, this will
+        /// return the <see cref="EditorNPCChatDialogItem"/> that the node redirects to.
         /// </summary>
         /// <exception cref="MethodAccessException">Unsupported ChatItemType for this operation.</exception>
         public EditorNPCChatDialogItem ChatItemAsDialogItem
