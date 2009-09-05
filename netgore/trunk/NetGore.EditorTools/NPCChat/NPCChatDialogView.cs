@@ -9,6 +9,9 @@ using System.Windows.Forms;
 
 namespace NetGore.EditorTools.NPCChat
 {
+    /// <summary>
+    /// A TreeView specifically for displaying a NPC chat dialog.
+    /// </summary>
     public class NPCChatDialogView : TreeView
     {
         Color _nodeForeColorGoTo = Color.Blue;
@@ -17,6 +20,9 @@ namespace NetGore.EditorTools.NPCChat
         Color _nodeForeColorResponse = Color.Green;
         EditorNPCChatDialog _npcChatDialog;
 
+        /// <summary>
+        /// Gets or sets the font color of GOTO nodes.
+        /// </summary>
         [Description("The font color of GOTO nodes.")]
         public Color NodeForeColorGoTo
         {
@@ -24,6 +30,9 @@ namespace NetGore.EditorTools.NPCChat
             set { _nodeForeColorGoTo = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the font color of branch chat dialog nodes.
+        /// </summary>
         [Description("The font color of branch chat dialog nodes.")]
         public Color NodeForeColorBranch
         {
@@ -31,6 +40,9 @@ namespace NetGore.EditorTools.NPCChat
             set { _nodeForeColorBranch = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the font color of normal chat dialog nodes.
+        /// </summary>
         [Description("The font color of normal chat dialog nodes.")]
         public Color NodeForeColorNormal
         {
@@ -38,6 +50,9 @@ namespace NetGore.EditorTools.NPCChat
             set { _nodeForeColorNormal = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the font color of dialog response value nodes.
+        /// </summary>
         [Description("The font color of dialog response value nodes.")]
         public Color NodeForeColorResponse
         {
@@ -45,6 +60,9 @@ namespace NetGore.EditorTools.NPCChat
             set { _nodeForeColorResponse = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the NPCChatDialog currently being displayed.
+        /// </summary>
         public EditorNPCChatDialog NPCChatDialog
         {
             get { return _npcChatDialog; }
