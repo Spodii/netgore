@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.Network;
 using NetGore.NPCChat;
 
@@ -13,6 +15,30 @@ namespace DemoGame.Server
     /// </summary>
     public class UserChatDialogState
     {
+        /// <summary>
+        /// Enum of the different ways to handle having the conditionals to a response chosen by the client
+        /// being invalid.
+        /// </summary>
+        enum ResponseConditionalFailureHandleType
+        {
+            /// <summary>
+            /// The dialog is ended immediately.
+            /// </summary>
+            EndDialog,
+
+            /// <summary>
+            /// The dialog item is resent to the user under the assumption that the response was valid when
+            /// the page was opened, but was no longer valid by the time a response was chosen (User's state
+            /// has changed).
+            /// </summary>
+            ResendDialogItem,
+        }
+
+        /// <summary>
+        /// Defines how the to handle when the conditionals to a response chosen by the client evaluate to false.
+        /// </summary>
+        const ResponseConditionalFailureHandleType _responseConditionalFailureType = ResponseConditionalFailureHandleType.ResendDialogItem;
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly User _user;
         NPC _chattingWith;
@@ -48,6 +74,18 @@ namespace DemoGame.Server
         public UserChatDialogState(User user)
         {
             _user = user;
+        }
+
+        static UserChatDialogState()
+        {
+            if (!EnumHelper.IsDefined(_responseConditionalFailureType))
+            {
+                const string errmsg = "Invalid _responseConditionalFailureType value `{0}`.";
+                string err = string.Format(errmsg, _responseConditionalFailureType);
+                log.Fatal(err);
+                Debug.Fail(err);
+                throw new Exception(err);
+            }
         }
 
         /// <summary>
@@ -163,14 +201,32 @@ namespace DemoGame.Server
                 return;
             }
 
-            // TODO: !! Ensure the selected response index is allowed (response conditionals check)
-
             // Get the response
             NPCChatResponseBase response = _page.GetResponse(responseIndex);
             if (response == null)
             {
                 EndChat();
                 return;
+            }
+
+            // Ensure the selected response index is allowed (response conditionals check)
+            if (!response.CheckConditionals(_user, _chattingWith))
+            {
+#pragma warning disable 162
+                switch (_responseConditionalFailureType)
+                {
+                    case ResponseConditionalFailureHandleType.EndDialog:
+                        EndChat();
+                        return;
+
+                    case ResponseConditionalFailureHandleType.ResendDialogItem:
+                        NotifyUserOfNewPage();
+                        return;
+
+                    default:
+                        throw new Exception("Invalid _responseConditionalFailureType.");
+                }
+#pragma warning restore 162
             }
 
             Debug.Assert(response.Value == responseIndex, "Something went wrong, and we got the wrong response.");
@@ -196,13 +252,33 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="page">The page to attempt to skip through.</param>
         /// <returns>The page to use, or null if the dialog has ended.</returns>
-        static NPCChatDialogItemBase GetNextDialogPage(NPCChatDialogItemBase page)
+        NPCChatDialogItemBase GetNextDialogPage(NPCChatDialogItemBase page)
         {
-            // TODO: !! Add support for page skipping, and pages that are conditionals instead of actual dialog
-            if (page == null)
-                return null;
+            while (page != null && page.IsBranch)
+            {
+                var branchResponse = page.EvaluateBranch(_user, _chattingWith);
+                page = ChatDialog.GetDialogItem(branchResponse.Page);
+            }
 
             return page;
+        }
+
+        IEnumerable<byte> GetResponsesToSkip()
+        {
+            List<byte> retValues = null;
+
+            foreach (var response in _page.Responses)
+            {
+                if (!response.CheckConditionals(_user, _chattingWith))
+                {
+                    if (retValues == null)
+                        retValues = new List<byte>();
+
+                    retValues.Add(response.Value);
+                }
+            }
+
+            return retValues;
         }
 
         /// <summary>
@@ -221,8 +297,7 @@ namespace DemoGame.Server
             else
             {
                 // New page
-                // TODO: !! Conditional checks on responses
-                using (PacketWriter pw = ServerPacket.SetChatDialogPage(_page.Index, null))
+                using (PacketWriter pw = ServerPacket.SetChatDialogPage(_page.Index, GetResponsesToSkip()))
                 {
                     _user.Send(pw);
                 }

@@ -9,7 +9,8 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <summary>
         /// Initializes a new instance of the <see cref="HPPercentLessThanOrEqualTo"/> class.
         /// </summary>
-        public HPPercentLessThanOrEqualTo() : base("HP% <=", NPCChatConditionalParameterType.Float)
+        public HPPercentLessThanOrEqualTo()
+            : base("HP% <=", NPCChatConditionalParameterType.Float)
         {
         }
 

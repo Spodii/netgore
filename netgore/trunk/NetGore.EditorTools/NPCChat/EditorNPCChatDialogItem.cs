@@ -194,19 +194,6 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the index of the next NPCChatDialogItemBase to use from
-        /// the given response.
-        /// </summary>
-        /// <param name="user">The user that is participating in the chatting.</param>
-        /// <param name="npc">The NPC chat is participating in the chatting.</param>
-        /// <param name="responseIndex">The index of the response used.</param>
-        /// <returns>The index of the NPCChatDialogItemBase to go to based off of the given response.</returns>
-        public override ushort GetNextPage(object user, object npc, byte responseIndex)
-        {
-            return ResponseList[responseIndex].Page;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, gets the NPCChatResponseBase of the response with the given
         /// <paramref name="responseIndex"/>.
         /// </summary>
