@@ -57,7 +57,22 @@
             </Item1>
           </Responses>
           <Conditionals>
-            <HasConditionals>False</HasConditionals>
+            <HasConditionals>True</HasConditionals>
+            <EvaluationType>0</EvaluationType>
+            <Items>
+              <Count>1</Count>
+              <Item0>
+                <Not>False</Not>
+                <ConditionalName>MP% &lt;=</ConditionalName>
+                <Parameters>
+                  <Count>1</Count>
+                  <Item0>
+                    <ValueType>0</ValueType>
+                    <Value>100</Value>
+                  </Item0>
+                </Parameters>
+              </Item0>
+            </Items>
           </Conditionals>
         </Item1>
         <Item2>
@@ -124,7 +139,22 @@
               <Page>2</Page>
               <Text>I changed my mind. Gimmie gimmie!</Text>
               <Conditionals>
-                <HasConditionals>False</HasConditionals>
+                <HasConditionals>True</HasConditionals>
+                <EvaluationType>0</EvaluationType>
+                <Items>
+                  <Count>1</Count>
+                  <Item0>
+                    <Not>False</Not>
+                    <ConditionalName>MP% &lt;=</ConditionalName>
+                    <Parameters>
+                      <Count>1</Count>
+                      <Item0>
+                        <ValueType>0</ValueType>
+                        <Value>100</Value>
+                      </Item0>
+                    </Parameters>
+                  </Item0>
+                </Items>
               </Conditionals>
             </Item0>
             <Item1>

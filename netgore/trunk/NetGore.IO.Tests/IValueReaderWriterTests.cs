@@ -681,7 +681,7 @@ namespace NetGore.IO.Tests
         [Test]
         public void TestIllegalXmlCharactersInStrings()
         {
-            string[] illegalStrs = new string[] { "<", ">", "\\", "/", "&", "'", "\"", Environment.NewLine};
+            string[] illegalStrs = new string[] { "<", ">", "\\", "/", "&", "'", "\"", "?", Environment.NewLine};
             var allStrings = Implode(illegalStrs);
 
             foreach (CreateCreatorHandler createCreator in _createCreators)
