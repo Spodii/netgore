@@ -72,6 +72,27 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// Asserts that, if IsBranch is true, there are only 2 responses.
+        /// </summary>
+        [Conditional("DEBUG")]
+        void AssertBranchHasTwoResponses()
+        {
+            if (IsBranch)
+                Debug.Assert(Responses.Count() == 2, "There should be exactly 2 responses for a branch.");
+        }
+
+        /// <summary>
+        /// Asserts that, if IsBranch is false, there are no conditionals set.
+        /// </summary>
+        [Conditional("DEBUG")]
+        void AssertNonBranchHasNoConditionals()
+        {
+            if (!IsBranch)
+                Debug.Assert(Conditionals == null || Conditionals.Count() == 0,
+                             "Conditionals should never be set for a non-branch.");
+        }
+
+        /// <summary>
         /// Checks if the conditionals to use this NPCChatDialogItemBase pass for the given <paramref name="user"/>
         /// and <paramref name="npc"/>.
         /// </summary>
@@ -131,7 +152,7 @@ namespace NetGore.NPCChat
             if (!IsBranch)
                 throw new MethodAccessException("This method may only be called if IsBranch is true.");
 
-            Debug.Assert(Conditionals.Count() == 2, "There should always be exactly 2 conditionals on a branch...");
+            AssertBranchHasTwoResponses();
 
             bool result = CheckConditionals(user, npc);
 
@@ -140,16 +161,6 @@ namespace NetGore.NPCChat
             else
                 return GetResponse(1);
         }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the index of the next NPCChatDialogItemBase to use from
-        /// the given response.
-        /// </summary>
-        /// <param name="user">The user that is participating in the chatting.</param>
-        /// <param name="npc">The NPC chat is participating in the chatting.</param>
-        /// <param name="responseIndex">The index of the response used.</param>
-        /// <returns>The index of the NPCChatDialogItemBase to go to based off of the given response.</returns>
-        public abstract ushort GetNextPage(object user, object npc, byte responseIndex);
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatResponseBase of the response with the given
@@ -186,8 +197,8 @@ namespace NetGore.NPCChat
                 }
             }
 
-            Debug.Assert(!isBranch || (isBranch && responses.Count() == 2), "There should be exactly 2 responses for a branch.");
-            Debug.Assert(isBranch || (!isBranch && conditionals == null), "Conditionals should never be set for a non-branch.");
+            AssertBranchHasTwoResponses();
+            AssertNonBranchHasNoConditionals();
 
             SetReadValues(index, title, text, isBranch, responses, conditionals);
         }
@@ -241,7 +252,8 @@ namespace NetGore.NPCChat
                 writer.WriteEndNode("Conditionals");
             }
 
-            Debug.Assert(!IsBranch || (IsBranch && Responses.Count() == 2), "There should be exactly 2 responses for a branch.");
+            AssertBranchHasTwoResponses();
+            AssertNonBranchHasNoConditionals();
         }
     }
 }

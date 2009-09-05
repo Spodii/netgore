@@ -1,16 +1,15 @@
 using System.Linq;
-using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
 namespace DemoGame.Server.NPCChat.Conditionals
 {
-    public class HPPercentLessThanOrEqualTo : NPCChatConditional
+    public class MPPercentGreaterThan : NPCChatConditional
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HPPercentLessThanOrEqualTo"/> class.
+        /// Initializes a new instance of the <see cref="MPPercentGreaterThan"/> class.
         /// </summary>
-        public HPPercentLessThanOrEqualTo()
-            : base("HP% <=", NPCChatConditionalParameterType.Float)
+        public MPPercentGreaterThan()
+            : base("MP% >", NPCChatConditionalParameterType.Float)
         {
         }
 
@@ -24,9 +23,9 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <paramref name="npc"/>, and <paramref name="parameters"/>; otherwise false.</returns>
         protected override bool DoEvaluate(User user, NPC npc, NPCChatConditionalParameter[] parameters)
         {
-            float percent = GetPercent(user.HP, user.ModStats[StatType.MaxHP]);
+            float percent = GetPercent(user.MP, user.ModStats[StatType.MaxMP]);
 
-            return percent <= parameters[0].ValueAsFloat;
+            return percent > parameters[0].ValueAsFloat;
         }
     }
 }

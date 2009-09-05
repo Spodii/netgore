@@ -1,16 +1,15 @@
 using System.Linq;
-using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
 namespace DemoGame.Server.NPCChat.Conditionals
 {
-    public class HPPercentLessThanOrEqualTo : NPCChatConditional
+    public class HPPercentLessThan : NPCChatConditional
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="HPPercentLessThanOrEqualTo"/> class.
+        /// Initializes a new instance of the <see cref="HPPercentLessThan"/> class.
         /// </summary>
-        public HPPercentLessThanOrEqualTo()
-            : base("HP% <=", NPCChatConditionalParameterType.Float)
+        public HPPercentLessThan()
+            : base("HP% <", NPCChatConditionalParameterType.Float)
         {
         }
 
@@ -26,7 +25,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         {
             float percent = GetPercent(user.HP, user.ModStats[StatType.MaxHP]);
 
-            return percent <= parameters[0].ValueAsFloat;
+            return percent < parameters[0].ValueAsFloat;
         }
     }
 }
