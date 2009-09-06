@@ -91,7 +91,7 @@
               </Conditionals>
             </Item0>
             <Item1>
-              <Value>0</Value>
+              <Value>1</Value>
               <Page>8</Page>
               <Text>[Start doing the Humpty Dance</Text>
               <Conditionals>
@@ -158,7 +158,7 @@
               </Conditionals>
             </Item0>
             <Item1>
-              <Value>0</Value>
+              <Value>1</Value>
               <Page>65535</Page>
               <Text>[Leave]</Text>
               <Conditionals>
@@ -226,7 +226,7 @@
               </Conditionals>
             </Item0>
             <Item1>
-              <Value>0</Value>
+              <Value>1</Value>
               <Page>8</Page>
               <Text>[Start doing the Humpty Dance]</Text>
               <Conditionals>
