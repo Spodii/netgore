@@ -8,7 +8,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <summary>
         /// Initializes a new instance of the <see cref="MPPercentGreaterThanOrEqualTo"/> class.
         /// </summary>
-        public MPPercentGreaterThanOrEqualTo()
+        MPPercentGreaterThanOrEqualTo()
             : base("MP% >=", NPCChatConditionalParameterType.Float)
         {
         }
