@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using NetGore.IO;
 using NetGore.NPCChat.Conditionals;
@@ -21,6 +22,13 @@ namespace NetGore.NPCChat
         /// the same way as if the conditionals evaluated to true.
         /// </summary>
         public abstract NPCChatConditionalCollectionBase Conditionals { get; }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="NPCChatResponseActionBase"/>s that are
+        /// executed when selecting this <see cref="NPCChatResponseBase"/>. This value will never be null, but
+        /// it can be an empty IEnumerable.
+        /// </summary>
+        public abstract IEnumerable<NPCChatResponseActionBase> Actions { get; }
 
         /// <summary>
         /// When overridden in the derived class, gets the page of the NPCChatDialogItemBase to go to if this
@@ -88,6 +96,8 @@ namespace NetGore.NPCChat
             byte value = reader.ReadByte("Value");
             ushort page = reader.ReadUShort("Page");
             string text = reader.ReadString("Text");
+            var actionNames = reader.ReadMany("Actions", ((r, name) => r.ReadString(name)));
+            var actions = GetActionsFromNames(actionNames);
 
             IValueReader cReader = reader.ReadNode("Conditionals");
             bool hasConditionals = cReader.ReadBool("HasConditionals");
@@ -99,7 +109,24 @@ namespace NetGore.NPCChat
                     conditionals.Read(cReader);
             }
 
-            SetReadValues(value, page, text, conditionals);
+            SetReadValues(value, page, text, conditionals, actions);
+        }
+
+        /// <summary>
+        /// Gets an array of <see cref="NPCChatResponseActionBase"/> from the <paramref name="names"/>.
+        /// </summary>
+        /// <param name="names">The array of names of the <see cref="NPCChatResponseActionBase"/>s to get.</param>
+        /// <returns>An array of <see cref="NPCChatResponseActionBase"/> from the <paramref name="names"/>.</returns>
+        static NPCChatResponseActionBase[] GetActionsFromNames(string[] names)
+        {
+            if (names == null || names.Length == 0)
+                return NPCChatResponseActionBase.EmptyActions;
+
+            var ret = new NPCChatResponseActionBase[names.Length];
+            for (int i = 0; i < names.Length; i++)
+                ret[i] = NPCChatResponseActionBase.GetResponseAction(names[i]);
+
+            return ret;
         }
 
         /// <summary>
@@ -109,7 +136,8 @@ namespace NetGore.NPCChat
         /// <param name="page">The page.</param>
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
-        protected abstract void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals);
+        /// <param name="actions">The actions.</param>
+        protected abstract void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals, NPCChatResponseActionBase[] actions);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.
@@ -131,6 +159,7 @@ namespace NetGore.NPCChat
             writer.Write("Value", Value);
             writer.Write("Page", Page);
             writer.Write("Text", Text ?? string.Empty);
+            writer.WriteMany("Actions", Actions.Select(x => x.Name), writer.Write);
 
             writer.WriteStartNode("Conditionals");
             {

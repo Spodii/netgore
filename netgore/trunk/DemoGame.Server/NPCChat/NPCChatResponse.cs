@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.NPCChat.Conditionals;
@@ -16,6 +17,7 @@ namespace DemoGame.Server.NPCChat
         NPCChatConditionalCollectionBase _conditionals;
         ushort _page;
         byte _value;
+        NPCChatResponseActionBase[] _actions;
 
 #if DEBUG
         // ReSharper disable UnaccessedField.Local  
@@ -23,6 +25,7 @@ namespace DemoGame.Server.NPCChat
         /// The text. Only available in debug builds.
         /// </summary>
         string _text;
+
         // ReSharper restore UnaccessedField.Local  
 #endif
 
@@ -35,6 +38,20 @@ namespace DemoGame.Server.NPCChat
         public override NPCChatConditionalCollectionBase Conditionals
         {
             get { return _conditionals; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="NPCChatResponseActionBase"/>s that are
+        /// executed when selecting this <see cref="NPCChatResponseBase"/>. This value will never be null, but
+        /// it can be an empty IEnumerable.
+        /// </summary>
+        public override IEnumerable<NPCChatResponseActionBase> Actions
+        {
+            get
+            {
+                Debug.Assert(_actions != null);
+                return _actions;
+            }
         }
 
         /// <summary>
@@ -92,7 +109,8 @@ namespace DemoGame.Server.NPCChat
         /// <param name="page">The page.</param>
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
-        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals)
+        /// <param name="actions">The actions.</param>
+        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals, NPCChatResponseActionBase[] actions)
         {
             Debug.Assert(_value == default(byte) && _page == default(ushort), "Values were already set?");
 
@@ -100,6 +118,7 @@ namespace DemoGame.Server.NPCChat
             _page = page;
             _conditionals = conditionals;
             _text = text;
+            _actions = actions;
         }
 
         /// <summary>

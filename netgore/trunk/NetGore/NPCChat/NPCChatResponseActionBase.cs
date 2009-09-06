@@ -16,16 +16,21 @@ namespace NetGore.NPCChat
     public abstract class NPCChatResponseActionBase
     {
         /// <summary>
+        /// An empty array of <see cref="NPCChatResponseActionBase"/>s.
+        /// </summary>
+        public static readonly NPCChatResponseActionBase[] EmptyActions = new NPCChatResponseActionBase[0];
+
+        /// <summary>
         /// Dictionary that contains the <see cref="NPCChatResponseActionBase"/> instance
         /// of each derived class, with the <see cref="Name"/> as the key.
         /// </summary>
-        static readonly Dictionary<string, NPCChatConditionalBase> _instances =
-            new Dictionary<string, NPCChatConditionalBase>(_nameComparer);
+        static readonly Dictionary<string, NPCChatResponseActionBase> _instances =
+            new Dictionary<string, NPCChatResponseActionBase>(_nameComparer);
 
         /// <summary>
-        /// Gets an IEnumerable of the <see cref="NPCChatConditionalBase"/>s.
+        /// Gets an IEnumerable of the <see cref="NPCChatResponseActionBase"/>s.
         /// </summary>
-        public static IEnumerable<NPCChatConditionalBase> Conditionals
+        public static IEnumerable<NPCChatResponseActionBase> Conditionals
         {
             get { return _instances.Values; }
         }
@@ -57,7 +62,7 @@ namespace NetGore.NPCChat
         /// </summary>
         static NPCChatResponseActionBase()
         {
-            var filter = FactoryTypeCollection.CreateFilter(typeof(NPCChatConditionalBase), true, Type.EmptyTypes);
+            var filter = FactoryTypeCollection.CreateFilter(typeof(NPCChatResponseActionBase), true, Type.EmptyTypes);
             _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler, false);
             _typeCollection.BeginLoading();
         }
@@ -102,7 +107,7 @@ namespace NetGore.NPCChat
         /// </summary>
         /// <param name="name">The name of the <see cref="NPCChatResponseActionBase"/> to get.</param>
         /// <returns>The <see cref="NPCChatResponseActionBase"/> with the given <paramref name="name"/>.</returns>
-        public static NPCChatConditionalBase GetResponseAction(string name)
+        public static NPCChatResponseActionBase GetResponseAction(string name)
         {
             return _instances[name];
         }
@@ -115,7 +120,7 @@ namespace NetGore.NPCChat
         /// <param name="name">Name of the Type.</param>
         static void OnLoadTypeHandler(FactoryTypeCollection factoryTypeCollection, Type loadedType, string name)
         {
-            NPCChatConditionalBase instance = (NPCChatConditionalBase)_typeCollection.GetTypeInstance(name);
+            NPCChatResponseActionBase instance = (NPCChatResponseActionBase)_typeCollection.GetTypeInstance(name);
 
             // Make sure the name is not already in use
             if (ContainsResponseAction(instance.Name))
@@ -142,7 +147,7 @@ namespace NetGore.NPCChat
         /// <param name="value">If the method returns true, contains the <see cref="NPCChatResponseActionBase"/>
         /// with the given <paramref name="name"/>.</param>
         /// <returns>True if the <paramref name="value"/> was successfully acquired; otherwise false.</returns>
-        public static bool TryGetResponseAction(string name, out NPCChatConditionalBase value)
+        public static bool TryGetResponseAction(string name, out NPCChatResponseActionBase value)
         {
             return _instances.TryGetValue(name, out value);
         }
