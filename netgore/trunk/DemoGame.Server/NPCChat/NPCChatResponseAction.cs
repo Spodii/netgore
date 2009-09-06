@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using NetGore.NPCChat;
 
 namespace DemoGame.Server.NPCChat
-{    
+{
     /// <summary>
     /// Class for an action that takes place after choosing a <see cref="NPCChatResponse"/> in
     /// a <see cref="NPCChatDialog"/>.
@@ -31,13 +28,7 @@ namespace DemoGame.Server.NPCChat
         /// </summary>
         /// <param name="user">The user.</param>
         /// <param name="npc">The npc.</param>
-        public override void Execute(object user, object npc)
-        {
-            if (log.IsInfoEnabled)
-                log.InfoFormat("User `{0}` invoked response action `{1}` with NPC `{2}`.", user, Name, npc);
-
-            DoExecute((User)user, (NPC)npc);
-        }
+        protected abstract void DoExecute(User user, NPC npc);
 
         /// <summary>
         /// When overridden in the derived class, performs the actions implemented by this
@@ -45,6 +36,12 @@ namespace DemoGame.Server.NPCChat
         /// </summary>
         /// <param name="user">The user.</param>
         /// <param name="npc">The npc.</param>
-        protected abstract void DoExecute(User user, NPC npc);
+        public override void Execute(object user, object npc)
+        {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("User `{0}` invoked response action `{1}` with NPC `{2}`.", user, Name, npc);
+
+            DoExecute((User)user, (NPC)npc);
+        }
     }
 }

@@ -16,6 +16,13 @@ namespace NetGore.NPCChat
         public const ushort EndConversationPage = ushort.MaxValue;
 
         /// <summary>
+        /// When overridden in the derived class, gets the <see cref="NPCChatResponseActionBase"/>s that are
+        /// executed when selecting this <see cref="NPCChatResponseBase"/>. This value will never be null, but
+        /// it can be an empty IEnumerable.
+        /// </summary>
+        public abstract IEnumerable<NPCChatResponseActionBase> Actions { get; }
+
+        /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
         /// conditionals used to evaluate if this NPCChatResponseBase may be used. If this value is null, it
         /// is assumed that there are no conditionals attached to this NPCChatResponseBase, and should be treated
@@ -24,11 +31,12 @@ namespace NetGore.NPCChat
         public abstract NPCChatConditionalCollectionBase Conditionals { get; }
 
         /// <summary>
-        /// When overridden in the derived class, gets the <see cref="NPCChatResponseActionBase"/>s that are
-        /// executed when selecting this <see cref="NPCChatResponseBase"/>. This value will never be null, but
-        /// it can be an empty IEnumerable.
+        /// When overridden in the derived class, gets if this <see cref="NPCChatResponseBase"/> will load
+        /// the <see cref="NPCChatResponseActionBase"/>s. If true, the <see cref="NPCChatResponseActionBase"/>s
+        /// will be loaded. If false, <see cref="SetReadValues"/> will always contain an empty array for the
+        /// actions.
         /// </summary>
-        public abstract IEnumerable<NPCChatResponseActionBase> Actions { get; }
+        protected abstract bool LoadActions { get; }
 
         /// <summary>
         /// When overridden in the derived class, gets the page of the NPCChatDialogItemBase to go to if this
@@ -88,6 +96,28 @@ namespace NetGore.NPCChat
         protected abstract NPCChatConditionalCollectionBase CreateConditionalCollection();
 
         /// <summary>
+        /// Gets an array of <see cref="NPCChatResponseActionBase"/> from the <paramref name="names"/>.
+        /// </summary>
+        /// <param name="names">The array of names of the <see cref="NPCChatResponseActionBase"/>s to get.</param>
+        /// <returns>An array of <see cref="NPCChatResponseActionBase"/> from the <paramref name="names"/>.</returns>
+        NPCChatResponseActionBase[] GetActionsFromNames(string[] names)
+        {
+            if (!LoadActions)
+                return NPCChatResponseActionBase.EmptyActions;
+
+            if (names == null || names.Length == 0)
+                return NPCChatResponseActionBase.EmptyActions;
+
+            var ret = new NPCChatResponseActionBase[names.Length];
+            for (int i = 0; i < names.Length; i++)
+            {
+                ret[i] = NPCChatResponseActionBase.GetResponseAction(names[i]);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
         /// Reads the values for this NPCChatResponseBase from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
@@ -113,34 +143,6 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets if this <see cref="NPCChatResponseBase"/> will load
-        /// the <see cref="NPCChatResponseActionBase"/>s. If true, the <see cref="NPCChatResponseActionBase"/>s
-        /// will be loaded. If false, <see cref="SetReadValues"/> will always contain an empty array for the
-        /// actions.
-        /// </summary>
-        protected abstract bool LoadActions { get; }
-
-        /// <summary>
-        /// Gets an array of <see cref="NPCChatResponseActionBase"/> from the <paramref name="names"/>.
-        /// </summary>
-        /// <param name="names">The array of names of the <see cref="NPCChatResponseActionBase"/>s to get.</param>
-        /// <returns>An array of <see cref="NPCChatResponseActionBase"/> from the <paramref name="names"/>.</returns>
-        NPCChatResponseActionBase[] GetActionsFromNames(string[] names)
-        {
-            if (!LoadActions)
-                return NPCChatResponseActionBase.EmptyActions;
-
-            if (names == null || names.Length == 0)
-                return NPCChatResponseActionBase.EmptyActions;
-
-            var ret = new NPCChatResponseActionBase[names.Length];
-            for (int i = 0; i < names.Length; i++)
-                ret[i] = NPCChatResponseActionBase.GetResponseAction(names[i]);
-
-            return ret;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
         /// <param name="value">The value.</param>
@@ -148,7 +150,8 @@ namespace NetGore.NPCChat
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="actions">The actions.</param>
-        protected abstract void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals, NPCChatResponseActionBase[] actions);
+        protected abstract void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals,
+                                              NPCChatResponseActionBase[] actions);
 
         /// <summary>
         /// Returns a <see cref="System.String"/> that represents this instance.

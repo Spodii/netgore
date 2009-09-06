@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework.Graphics;
 using NUnit.Framework;
 
@@ -8,31 +8,26 @@ namespace NetGore.Graphics.GUI.Tests
     public class StyledTextTests
     {
         [Test]
-        public void SubstringTest()
+        public void ConstructorCopyStyleTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
             StyledText s = new StyledText(originalString, Color.Black);
-            var s2 = s.Substring(5);
+            StyledText s2 = new StyledText("ffjfjfj", s);
 
-            Assert.AreEqual(s.Text, originalString);
+            Assert.AreEqual(originalString, s.Text);
+            Assert.AreEqual("ffjfjfj", s2.Text);
+
             Assert.AreEqual(Color.Black, s.Color);
-
-            Assert.AreEqual(originalString.Substring(5), s2.Text);
             Assert.AreEqual(Color.Black, s2.Color);
         }
 
         [Test]
-        public void SubstringWithLengthTest()
+        public void ConstructorTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
             StyledText s = new StyledText(originalString, Color.Black);
-            var s2 = s.Substring(5, 4);
-
-            Assert.AreEqual(s.Text, originalString);
+            Assert.AreEqual(originalString, s.Text);
             Assert.AreEqual(Color.Black, s.Color);
-
-            Assert.AreEqual(originalString.Substring(5, 4), s2.Text);
-            Assert.AreEqual(Color.Black, s2.Color);
         }
 
         [Test]
@@ -49,7 +44,7 @@ namespace NetGore.Graphics.GUI.Tests
         public void OperatorAddTest2()
         {
             StyledText s = new StyledText("asdf", Color.Black);
-            var s2 = s + "ff";
+            StyledText s2 = s + "ff";
 
             Assert.AreEqual("asdf", s.Text);
             Assert.AreEqual(Color.Black, s.Color);
@@ -89,12 +84,12 @@ namespace NetGore.Graphics.GUI.Tests
         }
 
         [Test]
-        public void SplitCharsWithOptionsTest()
+        public void SplitCharsWithOptionsAndCountTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
             StyledText s = new StyledText(originalString, Color.Black);
-            var split = s.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            var expected = originalString.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var split = s.Split(new char[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
+            var expected = originalString.Split(new char[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
 
             for (int i = 0; i < expected.Length; i++)
             {
@@ -104,12 +99,12 @@ namespace NetGore.Graphics.GUI.Tests
         }
 
         [Test]
-        public void SplitStringsWithOptionsTest()
+        public void SplitCharsWithOptionsTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
             StyledText s = new StyledText(originalString, Color.Black);
-            var split = s.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
-            var expected = originalString.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            var split = s.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            var expected = originalString.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
             for (int i = 0; i < expected.Length; i++)
             {
@@ -134,12 +129,12 @@ namespace NetGore.Graphics.GUI.Tests
         }
 
         [Test]
-        public void SplitCharsWithOptionsAndCountTest()
+        public void SplitStringsWithOptionsTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
             StyledText s = new StyledText(originalString, Color.Black);
-            var split = s.Split(new char[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
-            var expected = originalString.Split(new char[] { ' ' }, 3, StringSplitOptions.RemoveEmptyEntries);
+            var split = s.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
+            var expected = originalString.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
             for (int i = 0; i < expected.Length; i++)
             {
@@ -149,25 +144,30 @@ namespace NetGore.Graphics.GUI.Tests
         }
 
         [Test]
-        public void ConstructorTest()
+        public void SubstringTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
             StyledText s = new StyledText(originalString, Color.Black);
-            Assert.AreEqual(originalString, s.Text);
+            StyledText s2 = s.Substring(5);
+
+            Assert.AreEqual(s.Text, originalString);
             Assert.AreEqual(Color.Black, s.Color);
+
+            Assert.AreEqual(originalString.Substring(5), s2.Text);
+            Assert.AreEqual(Color.Black, s2.Color);
         }
 
         [Test]
-        public void ConstructorCopyStyleTest()
+        public void SubstringWithLengthTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
             StyledText s = new StyledText(originalString, Color.Black);
-            StyledText s2 = new StyledText("ffjfjfj", s);
+            StyledText s2 = s.Substring(5, 4);
 
-            Assert.AreEqual(originalString, s.Text);
-            Assert.AreEqual("ffjfjfj", s2.Text);
-
+            Assert.AreEqual(s.Text, originalString);
             Assert.AreEqual(Color.Black, s.Color);
+
+            Assert.AreEqual(originalString.Substring(5, 4), s2.Text);
             Assert.AreEqual(Color.Black, s2.Color);
         }
     }

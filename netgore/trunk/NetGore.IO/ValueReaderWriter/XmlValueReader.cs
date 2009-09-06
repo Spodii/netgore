@@ -180,6 +180,26 @@ namespace NetGore.IO
             return ret;
         }
 
+        /// <summary>
+        /// Unescapes a string, replacing the Xml characters with the proper string characters.
+        /// </summary>
+        /// <param name="s">The string to unescape.</param>
+        /// <returns>The unescaped string.</returns>
+        static string UnescapeString(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return s;
+
+            s = s.Replace("&lt;", "<");
+            s = s.Replace("&gt;", ">");
+            s = s.Replace("&quot;", "\"");
+            s = s.Replace("&apos;", "'");
+            s = s.Replace("&amp;", "&");
+            s = s.Replace("\n", Environment.NewLine);
+
+            return s;
+        }
+
         #region IValueReader Members
 
         /// <summary>
@@ -539,31 +559,11 @@ namespace NetGore.IO
             if (values.Count > 1)
                 throw CreateDuplicateKeysException(name);
 
-            var ret = values[0];
+            string ret = values[0];
             ret = UnescapeString(ret);
             return ret;
         }
 
         #endregion
-
-        /// <summary>
-        /// Unescapes a string, replacing the Xml characters with the proper string characters.
-        /// </summary>
-        /// <param name="s">The string to unescape.</param>
-        /// <returns>The unescaped string.</returns>
-        static string UnescapeString(string s)
-        {
-            if (string.IsNullOrEmpty(s))
-                return s;
-
-            s = s.Replace("&lt;", "<");
-            s = s.Replace("&gt;", ">");
-            s = s.Replace("&quot;", "\"");
-            s = s.Replace("&apos;", "'");
-            s = s.Replace("&amp;", "&");
-            s = s.Replace("\n", Environment.NewLine);
-
-            return s;
-        }
     }
 }

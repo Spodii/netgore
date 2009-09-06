@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -122,7 +121,8 @@ namespace DemoGame.Server.NPCChat
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="actions">The actions.</param>
-        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals, NPCChatResponseActionBase[] actions)
+        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals,
+                                              NPCChatResponseActionBase[] actions)
         {
             Debug.Assert(_value == default(byte) && _page == default(ushort), "Values were already set?");
 

@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Reflection;
-using Microsoft.Xna.Framework.Graphics;
 using NetGore.IO;
 
 namespace NetGore
@@ -16,8 +15,7 @@ namespace NetGore
         /// </summary>
         /// <param name="bindObject">Object that this property is to be bound to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
-        public PropertySyncLong(object bindObject, PropertyInfo p)
-            : base(bindObject, p)
+        public PropertySyncLong(object bindObject, PropertyInfo p) : base(bindObject, p)
         {
         }
 

@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using log4net;
 using NetGore.IO;
 
 namespace NetGore.NPCChat

@@ -1,9 +1,7 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
-using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
 namespace DemoGame.Server.NPCChat.Conditionals
@@ -43,8 +41,10 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <filterpriority>1</filterpriority>
         public override IEnumerator<NPCChatConditionalCollectionItemBase> GetEnumerator()
         {
-            foreach (var item in _items)
+            foreach (NPCChatConditionalCollectionItemBase item in _items)
+            {
                 yield return item;
+            }
         }
 
         /// <summary>

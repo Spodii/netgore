@@ -1,5 +1,4 @@
 using System.Linq;
-using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
 namespace DemoGame.Server.NPCChat.Conditionals
@@ -9,8 +8,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <summary>
         /// Initializes a new instance of the <see cref="HPPercentLessThanOrEqualTo"/> class.
         /// </summary>
-        HPPercentLessThanOrEqualTo()
-            : base("HP% <=", NPCChatConditionalParameterType.Float)
+        HPPercentLessThanOrEqualTo() : base("HP% <=", NPCChatConditionalParameterType.Float)
         {
         }
 

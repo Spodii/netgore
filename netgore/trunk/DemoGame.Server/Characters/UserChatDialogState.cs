@@ -16,31 +16,13 @@ namespace DemoGame.Server
     public class UserChatDialogState
     {
         /// <summary>
-        /// Enum of the different ways to handle having the conditionals to a response chosen by the client
-        /// being invalid.
-        /// </summary>
-        enum ResponseConditionalFailureHandleType
-        {
-            /// <summary>
-            /// The dialog is ended immediately.
-            /// </summary>
-            EndDialog,
-
-            /// <summary>
-            /// The dialog item is resent to the user under the assumption that the response was valid when
-            /// the page was opened, but was no longer valid by the time a response was chosen (User's state
-            /// has changed).
-            /// </summary>
-            ResendDialogItem,
-        }
-
-        /// <summary>
         /// Defines how the to handle when the conditionals to a response chosen by the client evaluate to false.
         /// </summary>
-        const ResponseConditionalFailureHandleType _responseConditionalFailureType = ResponseConditionalFailureHandleType.ResendDialogItem;
+        const ResponseConditionalFailureHandleType _responseConditionalFailureType =
+            ResponseConditionalFailureHandleType.ResendDialogItem;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        
+
         /// <summary>
         /// The User that the dialog is taking place with.
         /// </summary>
@@ -80,15 +62,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UserChatDialogState"/> class.
-        /// </summary>
-        /// <param name="user">The user.</param>
-        public UserChatDialogState(User user)
-        {
-            _user = user;
-        }
-
-        /// <summary>
         /// Initializes the <see cref="UserChatDialogState"/> class.
         /// </summary>
         static UserChatDialogState()
@@ -101,6 +74,15 @@ namespace DemoGame.Server
                 Debug.Fail(err);
                 throw new Exception(err);
             }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UserChatDialogState"/> class.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        public UserChatDialogState(User user)
+        {
+            _user = user;
         }
 
         /// <summary>
@@ -249,8 +231,10 @@ namespace DemoGame.Server
             // Execute the actions
             if (response.Actions != null)
             {
-                foreach (var action in response.Actions)
+                foreach (NPCChatResponseActionBase action in response.Actions)
+                {
                     action.Execute(_user, _chattingWith);
+                }
             }
 
             // Get the next page
@@ -280,13 +264,15 @@ namespace DemoGame.Server
             while (page != null && page.IsBranch)
             {
                 // Evaluate the branch to get the response
-                var branchResponse = page.EvaluateBranch(_user, _chattingWith);
+                NPCChatResponseBase branchResponse = page.EvaluateBranch(_user, _chattingWith);
 
                 // Make sure we execute any actions on the response
                 if (branchResponse.Actions != null)
                 {
-                    foreach (var action in branchResponse.Actions)
+                    foreach (NPCChatResponseActionBase action in branchResponse.Actions)
+                    {
                         action.Execute(_user, _chattingWith);
+                    }
                 }
 
                 // Get the next dialog item page from the response
@@ -304,7 +290,7 @@ namespace DemoGame.Server
         {
             List<byte> retValues = null;
 
-            foreach (var response in _dialogItem.Responses)
+            foreach (NPCChatResponseBase response in _dialogItem.Responses)
             {
                 if (!response.CheckConditionals(_user, _chattingWith))
                 {
@@ -369,6 +355,25 @@ namespace DemoGame.Server
             NotifyUserOfNewPage();
 
             return true;
+        }
+
+        /// <summary>
+        /// Enum of the different ways to handle having the conditionals to a response chosen by the client
+        /// being invalid.
+        /// </summary>
+        enum ResponseConditionalFailureHandleType
+        {
+            /// <summary>
+            /// The dialog is ended immediately.
+            /// </summary>
+            EndDialog,
+
+            /// <summary>
+            /// The dialog item is resent to the user under the assumption that the response was valid when
+            /// the page was opened, but was no longer valid by the time a response was chosen (User's state
+            /// has changed).
+            /// </summary>
+            ResendDialogItem,
         }
     }
 }

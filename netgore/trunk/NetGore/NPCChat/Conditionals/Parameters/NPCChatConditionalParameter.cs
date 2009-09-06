@@ -16,15 +16,6 @@ namespace NetGore.NPCChat.Conditionals
         public abstract object Value { get; set; }
 
         /// <summary>
-        /// When overridden in the derived class, tries to set the Value of this NPCChatConditionalParameter
-        /// from a string.
-        /// </summary>
-        /// <param name="value">The string containing the new value.</param>
-        /// <param name="parser">The parser to use.</param>
-        /// <returns>True if the value was successfully set; otherwise false.</returns>
-        public abstract bool TrySetValue(string value, Parser parser);
-
-        /// <summary>
         /// When overridden in the derived class, gets this parameter's Value as a Float.
         /// </summary>
         /// <exception cref="MethodAccessException">The ValueType is not equal to
@@ -198,6 +189,15 @@ namespace NetGore.NPCChat.Conditionals
         /// <param name="reader">The IValueReader to read from.</param>
         /// <param name="valueName">The name to of the value in the <paramref name="reader"/>.</param>
         protected abstract void ReadValue(IValueReader reader, string valueName);
+
+        /// <summary>
+        /// When overridden in the derived class, tries to set the Value of this NPCChatConditionalParameter
+        /// from a string.
+        /// </summary>
+        /// <param name="value">The string containing the new value.</param>
+        /// <param name="parser">The parser to use.</param>
+        /// <returns>True if the value was successfully set; otherwise false.</returns>
+        public abstract bool TrySetValue(string value, Parser parser);
 
         /// <summary>
         /// Writes the NPCChatConditionalParameter to the given IValueWriter.

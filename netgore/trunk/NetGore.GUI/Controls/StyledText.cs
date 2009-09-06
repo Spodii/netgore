@@ -18,28 +18,8 @@ namespace NetGore.Graphics.GUI
         readonly Color _color;
         readonly string _text;
 
-        float _width;
         SpriteFont _fontUsedToMeasure;
-
-        /// <summary>
-        /// Gets the width of this StyledText for the given <paramref name="font"/>.
-        /// </summary>
-        /// <param name="font">The SpriteFont to use to measure.</param>
-        /// <returns>The width of this StyledText for the given <paramref name="font"/>.</returns>
-        public float GetWidth(SpriteFont font)
-        {
-            if (font == null)
-                throw new ArgumentNullException("font");
-
-            // Re-measure (or measure for the first time
-            if (_fontUsedToMeasure == null || _fontUsedToMeasure != font)
-            {
-                _width = font.MeasureString(Text).X;
-                _fontUsedToMeasure = font;
-            }
-
-            return _width;
-        }
+        float _width;
 
         /// <summary>
         /// Gets the color of the text.
@@ -88,6 +68,26 @@ namespace NetGore.Graphics.GUI
         public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont, Vector2 position)
         {
             spriteBatch.DrawString(spriteFont, Text, position, Color);
+        }
+
+        /// <summary>
+        /// Gets the width of this StyledText for the given <paramref name="font"/>.
+        /// </summary>
+        /// <param name="font">The SpriteFont to use to measure.</param>
+        /// <returns>The width of this StyledText for the given <paramref name="font"/>.</returns>
+        public float GetWidth(SpriteFont font)
+        {
+            if (font == null)
+                throw new ArgumentNullException("font");
+
+            // Re-measure (or measure for the first time
+            if (_fontUsedToMeasure == null || _fontUsedToMeasure != font)
+            {
+                _width = font.MeasureString(Text).X;
+                _fontUsedToMeasure = font;
+            }
+
+            return _width;
         }
 
         /// <summary>

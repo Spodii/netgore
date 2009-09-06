@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -32,6 +31,17 @@ namespace DemoGame.Client.NPCChat
         public override NPCChatConditionalCollectionBase Conditionals
         {
             get { return null; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this <see cref="NPCChatResponseBase"/> will load
+        /// the <see cref="NPCChatResponseActionBase"/>s. If true, the <see cref="NPCChatResponseActionBase"/>s
+        /// will be loaded. If false, <see cref="NPCChatResponseBase.SetReadValues"/> will always contain an empty array for the
+        /// actions.
+        /// </summary>
+        protected override bool LoadActions
+        {
+            get { return false; }
         }
 
         /// <summary>
@@ -79,17 +89,6 @@ namespace DemoGame.Client.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets if this <see cref="NPCChatResponseBase"/> will load
-        /// the <see cref="NPCChatResponseActionBase"/>s. If true, the <see cref="NPCChatResponseActionBase"/>s
-        /// will be loaded. If false, <see cref="NPCChatResponseBase.SetReadValues"/> will always contain an empty array for the
-        /// actions.
-        /// </summary>
-        protected override bool LoadActions
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
         /// <param name="value">The value.</param>
@@ -97,7 +96,8 @@ namespace DemoGame.Client.NPCChat
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
         /// <param name="actions">The actions.</param>
-        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals, NPCChatResponseActionBase[] actions)
+        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals,
+                                              NPCChatResponseActionBase[] actions)
         {
             Debug.Assert(_value == default(byte) && _page == default(ushort) && _text == default(string),
                          "Values were already set?");
