@@ -32,7 +32,7 @@ namespace NetGore.NPCChat.Conditionals
             new Dictionary<string, NPCChatConditionalBase>(_nameComparer);
 
         /// <summary>
-        /// StringComparer used for the <see cref="Name"/>.
+        /// <see cref="StringComparer"/> used for the <see cref="Name"/>.
         /// </summary>
         static readonly StringComparer _nameComparer = StringComparer.Ordinal;
 
@@ -47,7 +47,7 @@ namespace NetGore.NPCChat.Conditionals
         readonly NPCChatConditionalParameterType[] _parameterTypes;
 
         /// <summary>
-        /// Gets an IEnumerable of the NPCChatConditionalBases.
+        /// Gets an IEnumerable of the <see cref="NPCChatConditionalBase"/>s.
         /// </summary>
         public static IEnumerable<NPCChatConditionalBase> Conditionals
         {
@@ -119,18 +119,6 @@ namespace NetGore.NPCChat.Conditionals
                 return false;
 
             return _instances.ContainsKey(name);
-        }
-
-        /// <summary>
-        /// Tries to get the <see cref="NPCChatConditionalBase"/> with the given <paramref name="name"/>.
-        /// </summary>
-        /// <param name="name">The name of the <see cref="NPCChatConditionalBase"/> to get.</param>
-        /// <param name="value">If the method returns true, contains the <see cref="NPCChatConditionalBase"/>
-        /// with the given <paramref name="name"/>.</param>
-        /// <returns>True if the <paramref name="value"/> was successfully acquired; otherwise false.</returns>
-        public static bool TryGetResponseAction(string name, out NPCChatConditionalBase value)
-        {
-            return _instances.TryGetValue(name, out value);
         }
 
         /// <summary>
@@ -244,6 +232,18 @@ namespace NetGore.NPCChat.Conditionals
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded NPC chat conditional `{0}` from Type `{1}`.", instance.Name, loadedType);
+        }
+
+        /// <summary>
+        /// Tries to get the <see cref="NPCChatConditionalBase"/> with the given <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name">The name of the <see cref="NPCChatConditionalBase"/> to get.</param>
+        /// <param name="value">If the method returns true, contains the <see cref="NPCChatConditionalBase"/>
+        /// with the given <paramref name="name"/>.</param>
+        /// <returns>True if the <paramref name="value"/> was successfully acquired; otherwise false.</returns>
+        public static bool TryGetResponseAction(string name, out NPCChatConditionalBase value)
+        {
+            return _instances.TryGetValue(name, out value);
         }
     }
 }

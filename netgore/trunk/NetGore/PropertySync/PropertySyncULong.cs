@@ -11,9 +11,9 @@ namespace NetGore
     public sealed class PropertySyncULong : PropertySyncBase<ulong>
     {
         /// <summary>
-        /// PropertySyncULong constructor.
+        /// Initializes a new instance of the <see cref="PropertySyncULong"/> class.
         /// </summary>
-        /// <param name="bindObject">Object to bind to.</param>
+        /// <param name="bindObject">Object that this property is to be bound to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
         public PropertySyncULong(object bindObject, PropertyInfo p) : base(bindObject, p)
         {

@@ -11,9 +11,9 @@ namespace NetGore
     public sealed class PropertySyncCollisionType : PropertySyncBase<CollisionType>
     {
         /// <summary>
-        /// PropertySyncCollisionType constructor.
+        /// Initializes a new instance of the <see cref="PropertySyncCollisionType"/> class.
         /// </summary>
-        /// <param name="bindObject">Object to bind to.</param>
+        /// <param name="bindObject">Object that this property is to be bound to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
         public PropertySyncCollisionType(object bindObject, PropertyInfo p) : base(bindObject, p)
         {

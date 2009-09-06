@@ -11,9 +11,9 @@ namespace NetGore
     public sealed class PropertySyncBool : PropertySyncBase<bool>
     {
         /// <summary>
-        /// PropertySyncString constructor.
+        /// Initializes a new instance of the <see cref="PropertySyncBool"/> class.
         /// </summary>
-        /// <param name="bindObject">Object to bind to.</param>
+        /// <param name="bindObject">Object that this property is to be bound to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
         public PropertySyncBool(object bindObject, PropertyInfo p) : base(bindObject, p)
         {

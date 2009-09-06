@@ -11,9 +11,9 @@ namespace NetGore
     public sealed class PropertySyncString : PropertySyncBase<string>
     {
         /// <summary>
-        /// PropertySyncString constructor.
+        /// Initializes a new instance of the <see cref="PropertySyncString"/> class.
         /// </summary>
-        /// <param name="bindObject">Object to bind to.</param>
+        /// <param name="bindObject">Object that this property is to be bound to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
         public PropertySyncString(object bindObject, PropertyInfo p) : base(bindObject, p)
         {

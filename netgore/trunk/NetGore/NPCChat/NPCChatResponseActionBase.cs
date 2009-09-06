@@ -23,7 +23,15 @@ namespace NetGore.NPCChat
             new Dictionary<string, NPCChatConditionalBase>(_nameComparer);
 
         /// <summary>
-        /// StringComparer used for the Name.
+        /// Gets an IEnumerable of the <see cref="NPCChatConditionalBase"/>s.
+        /// </summary>
+        public static IEnumerable<NPCChatConditionalBase> Conditionals
+        {
+            get { return _instances.Values; }
+        }
+
+        /// <summary>
+        /// <see cref="StringComparer"/> used for the Name.
         /// </summary>
         static readonly StringComparer _nameComparer = StringComparer.Ordinal;
 
@@ -100,7 +108,7 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// Handles when a new type has been loaded into the FactoryTypeCollection.
+        /// Handles when a new type has been loaded into the <see cref="FactoryTypeCollection"/>.
         /// </summary>
         /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
