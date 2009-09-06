@@ -1,11 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore.Collections;
-using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.NPCChat
 {
@@ -28,14 +27,6 @@ namespace NetGore.NPCChat
             new Dictionary<string, NPCChatResponseActionBase>(_nameComparer);
 
         /// <summary>
-        /// Gets an IEnumerable of the <see cref="NPCChatResponseActionBase"/>s.
-        /// </summary>
-        public static IEnumerable<NPCChatResponseActionBase> Conditionals
-        {
-            get { return _instances.Values; }
-        }
-
-        /// <summary>
         /// <see cref="StringComparer"/> used for the Name.
         /// </summary>
         static readonly StringComparer _nameComparer = StringComparer.Ordinal;
@@ -48,6 +39,14 @@ namespace NetGore.NPCChat
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly string _name;
+
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="NPCChatResponseActionBase"/>s.
+        /// </summary>
+        public static IEnumerable<NPCChatResponseActionBase> Conditionals
+        {
+            get { return _instances.Values; }
+        }
 
         /// <summary>
         /// Gets the unique name for this <see cref="NPCChatResponseActionBase"/>. This string is case-sensitive.
@@ -81,14 +80,6 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, performs the actions implemented by this
-        /// <see cref="NPCChatResponseActionBase"/>.
-        /// </summary>
-        /// <param name="user">The user.</param>
-        /// <param name="npc">The npc.</param>
-        public abstract void Execute(object user, object npc);
-
-        /// <summary>
         /// Gets if a <see cref="NPCChatResponseActionBase"/> with the given <paramref name="name"/> exists.
         /// </summary>
         /// <param name="name">The name of the <see cref="NPCChatResponseActionBase"/>.</param>
@@ -101,6 +92,14 @@ namespace NetGore.NPCChat
 
             return _instances.ContainsKey(name);
         }
+
+        /// <summary>
+        /// When overridden in the derived class, performs the actions implemented by this
+        /// <see cref="NPCChatResponseActionBase"/>.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="npc">The npc.</param>
+        public abstract void Execute(object user, object npc);
 
         /// <summary>
         /// Gets the <see cref="NPCChatResponseActionBase"/> with the given <paramref name="name"/>.
@@ -141,6 +140,17 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return Name;
+        }
+
+        /// <summary>
         /// Tries to get the <see cref="NPCChatResponseActionBase"/> with the given <paramref name="name"/>.
         /// </summary>
         /// <param name="name">The name of the <see cref="NPCChatResponseActionBase"/> to get.</param>
@@ -150,17 +160,6 @@ namespace NetGore.NPCChat
         public static bool TryGetResponseAction(string name, out NPCChatResponseActionBase value)
         {
             return _instances.TryGetValue(name, out value);
-        }
-
-        /// <summary>
-        /// Returns a <see cref="System.String"/> that represents this instance.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="System.String"/> that represents this instance.
-        /// </returns>
-        public override string ToString()
-        {
-            return Name;
         }
     }
 }

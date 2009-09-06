@@ -90,6 +90,16 @@ namespace NetGore
             Teleport(min);
         }
 
+        public bool Contains(CollisionBox other)
+        {
+            return ToRectangle().Contains(other.ToRectangle());
+        }
+
+        public bool Contains(Rectangle other)
+        {
+            return ToRectangle().Contains(other);
+        }
+
         /// <summary>
         /// Creates a Vector2 for the MTD based on the side
         /// </summary>
@@ -111,16 +121,6 @@ namespace NetGore
                 default:
                     return Vector2.Zero;
             }
-        }
-
-        public bool Contains(CollisionBox other)
-        {
-            return ToRectangle().Contains(other.ToRectangle());
-        }
-
-        public bool Contains(Rectangle other)
-        {
-            return ToRectangle().Contains(other);
         }
 
         /// <summary>

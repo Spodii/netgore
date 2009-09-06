@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.NPCChat;
 
 namespace DemoGame.Server.NPCChat.ResponseActions
@@ -11,8 +8,7 @@ namespace DemoGame.Server.NPCChat.ResponseActions
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatResponseActionBase"/> class.
         /// </summary>
-        RestoreHP()
-            : base("Restore HP")
+        RestoreHP() : base("Restore HP")
         {
         }
 

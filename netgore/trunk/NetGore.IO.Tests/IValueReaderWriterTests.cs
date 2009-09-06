@@ -491,6 +491,17 @@ namespace NetGore.IO.Tests
             }
         }
 
+        static string Implode(IEnumerable<string> src)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (string s in src)
+            {
+                sb.Append(s);
+            }
+
+            return sb.ToString();
+        }
+
         [Test]
         public void TestBools()
         {
@@ -575,6 +586,38 @@ namespace NetGore.IO.Tests
                     {
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadFloat(pname)));
                     }
+                }
+            }
+        }
+
+        [Test]
+        public void TestIllegalXmlCharactersInStrings()
+        {
+            var illegalStrs = new string[] { "<", ">", "\\", "/", "&", "'", "\"", "?", Environment.NewLine };
+            string allStrings = Implode(illegalStrs);
+
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        for (int i = 0; i < illegalStrs.Length; i++)
+                        {
+                            w.Write(GetValueKey(i), illegalStrs[i]);
+                        }
+
+                        w.Write("All", allStrings);
+                    }
+
+                    IValueReader r = creator.GetReader();
+
+                    for (int i = 0; i < illegalStrs.Length; i++)
+                    {
+                        Assert.AreEqual(illegalStrs[i], r.ReadString(GetValueKey(i)));
+                    }
+
+                    Assert.AreEqual(allStrings, r.ReadString("All"));
                 }
             }
         }
@@ -665,43 +708,6 @@ namespace NetGore.IO.Tests
                         Assert.AreEqual(e, r.ReadBool("e"));
                         Assert.AreEqual(f, r.ReadString("f"));
                     }
-                }
-            }
-        }
-
-        static string Implode(IEnumerable<string> src)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (var s in src)
-                sb.Append(s);
-
-            return sb.ToString();
-        }
-
-        [Test]
-        public void TestIllegalXmlCharactersInStrings()
-        {
-            string[] illegalStrs = new string[] { "<", ">", "\\", "/", "&", "'", "\"", "?", Environment.NewLine};
-            var allStrings = Implode(illegalStrs);
-
-            foreach (CreateCreatorHandler createCreator in _createCreators)
-            {
-                using (ReaderWriterCreatorBase creator = createCreator())
-                {
-                    using (IValueWriter w = creator.GetWriter())
-                    {
-                        for (int i = 0; i < illegalStrs.Length; i++)
-                            w.Write(GetValueKey(i), illegalStrs[i]);
-
-                        w.Write("All", allStrings);
-                    }
-
-                    IValueReader r = creator.GetReader();
-
-                    for (int i = 0; i < illegalStrs.Length; i++)
-                        Assert.AreEqual(illegalStrs[i], r.ReadString(GetValueKey(i)));
-
-                    Assert.AreEqual(allStrings, r.ReadString("All"));
                 }
             }
         }

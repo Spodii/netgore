@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -40,6 +39,14 @@ namespace DemoGame.Client.NPCChat
         }
 
         /// <summary>
+        /// Unused by the Client and will always return false.
+        /// </summary>
+        public override bool IsBranch
+        {
+            get { return false; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets an IEnumerable of the EditorNPCChatResponses available
         /// for this page of dialog.
         /// </summary>
@@ -66,19 +73,21 @@ namespace DemoGame.Client.NPCChat
         }
 
         /// <summary>
-        /// Unused by the Client and will always return false.
-        /// </summary>
-        public override bool IsBranch
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// NPCChatDialogItem constructor.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
         internal NPCChatDialogItem(IValueReader reader) : base(reader)
         {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
+        /// </summary>
+        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
+        /// want to load the conditionals when using Read.</returns>
+        protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
+        {
+            return null;
         }
 
         /// <summary>
@@ -112,16 +121,6 @@ namespace DemoGame.Client.NPCChat
         }
 
         /// <summary>
-        /// When overridden in the derived class, creates a NPCChatConditionalCollectionBase.
-        /// </summary>
-        /// <returns>A new NPCChatConditionalCollectionBase instance, or null if the derived class does not
-        /// want to load the conditionals when using Read.</returns>
-        protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
-        {
-            return null;
-        }
-
-        /// <summary>
         /// When overridden in the derived class, sets the values read from the Read method.
         /// </summary>
         /// <param name="page">The index.</param>
@@ -130,7 +129,9 @@ namespace DemoGame.Client.NPCChat
         /// <param name="isBranch">The IsBranch value.</param>
         /// <param name="responses">The responses.</param>
         /// <param name="conditionals">The conditionals.</param>
-        protected override void SetReadValues(ushort page, string title, string text, bool isBranch, IEnumerable<NPCChatResponseBase> responses, NPCChatConditionalCollectionBase conditionals)
+        protected override void SetReadValues(ushort page, string title, string text, bool isBranch,
+                                              IEnumerable<NPCChatResponseBase> responses,
+                                              NPCChatConditionalCollectionBase conditionals)
         {
             Debug.Assert(
                 _index == default(ushort) && _title == default(string) && _text == default(string) &&

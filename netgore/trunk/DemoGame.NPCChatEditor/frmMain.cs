@@ -78,6 +78,19 @@ namespace DemoGame.NPCChatEditor
             InitializeComponent();
         }
 
+        void btnAddAction_Click(object sender, EventArgs e)
+        {
+            if (EditingObjAsResponse == null)
+                return;
+
+            NPCChatResponseActionBase item = cmbAddAction.SelectedItem as NPCChatResponseActionBase;
+            if (item == null)
+                return;
+
+            EditingObjAsResponse.ActionsList.Add(item);
+            UpdateActionsList();
+        }
+
         /// <summary>
         /// Handles the Click event of the btnAddConditional control.
         /// </summary>
@@ -553,6 +566,24 @@ namespace DemoGame.NPCChatEditor
             }
         }
 
+        void lstActions_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+            if (EditingObjAsResponse == null)
+                return;
+
+            if (e.KeyCode == Keys.Delete)
+            {
+                NPCChatResponseActionBase item = cmbAddAction.SelectedItem as NPCChatResponseActionBase;
+                if (item == null)
+                    return;
+
+                EditingObjAsResponse.ActionsList.RemoveAt(lstActions.SelectedIndex);
+                lstActions.RemoveItemAtAndReselect(lstActions.SelectedIndex);
+            }
+        }
+
         /// <summary>
         /// Handles the DoubleClick event of the lstConditionals control.
         /// </summary>
@@ -763,19 +794,6 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsResponse.SetText(txtTitle.Text);
         }
 
-        private void btnAddAction_Click(object sender, EventArgs e)
-        {
-            if (EditingObjAsResponse == null)
-                return;
-
-            var item = cmbAddAction.SelectedItem as NPCChatResponseActionBase;
-            if (item == null)
-                return;
-
-            EditingObjAsResponse.ActionsList.Add(item);
-            UpdateActionsList();
-        }
-
         void UpdateActionsList()
         {
             if (EditingObjAsResponse == null)
@@ -785,24 +803,6 @@ namespace DemoGame.NPCChatEditor
             }
 
             lstActions.SynchronizeItemList(EditingObjAsResponse.Actions);
-        }
-
-        private void lstActions_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (_doNotUpdateObj)
-                return;
-            if (EditingObjAsResponse == null)
-                return;
-
-            if (e.KeyCode == Keys.Delete)
-            {
-                var item = cmbAddAction.SelectedItem as NPCChatResponseActionBase;
-                if (item == null)
-                    return;
-
-                EditingObjAsResponse.ActionsList.RemoveAt(lstActions.SelectedIndex);
-                lstActions.RemoveItemAtAndReselect(lstActions.SelectedIndex);
-            }
         }
     }
 }

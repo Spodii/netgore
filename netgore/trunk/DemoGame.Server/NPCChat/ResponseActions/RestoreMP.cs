@@ -8,8 +8,7 @@ namespace DemoGame.Server.NPCChat.ResponseActions
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatResponseActionBase"/> class.
         /// </summary>
-        RestoreMP()
-            : base("Restore MP")
+        RestoreMP() : base("Restore MP")
         {
         }
 

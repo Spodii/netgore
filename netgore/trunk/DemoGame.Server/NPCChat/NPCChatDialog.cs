@@ -23,6 +23,7 @@ namespace DemoGame.Server.NPCChat
         /// The title. Only available in debug builds.
         /// </summary>
         string _title;
+
         // ReSharper restore UnaccessedField.Local
 #endif
 

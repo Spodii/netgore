@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Windows.Forms;
 using NetGore.NPCChat.Conditionals;
@@ -47,18 +47,18 @@ namespace NetGore.EditorTools.NPCChat
             lstParameters.ConditionalCollectionItem = item;
         }
 
+        void NPCChatConditionalEditorForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                Close();
+        }
+
         void NPCChatConditionalEditorForm_Load(object sender, EventArgs e)
         {
             cmbConditionalType.Items.Clear();
             cmbConditionalType.Items.AddRange(_conditionals);
 
             InitGUI(_item);
-        }
-
-        private void NPCChatConditionalEditorForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-                Close();
         }
     }
 }

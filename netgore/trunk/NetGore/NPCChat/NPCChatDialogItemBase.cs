@@ -92,6 +92,20 @@ namespace NetGore.NPCChat
                              "Conditionals should never be set for a non-branch.");
         }
 
+        [Conditional("DEBUG")]
+        void AssertResponsesHaveValidValues()
+        {
+            if (Responses == null)
+                return;
+
+            foreach (NPCChatResponseBase response in Responses)
+            {
+                NPCChatResponseBase r = response;
+                Debug.Assert(Responses.Count(x => x.Value == r.Value) == 1, "Response values should be unique.");
+                Debug.Assert(GetResponse(r.Value) == response, "...ok, now that is just messed up.");
+            }
+        }
+
         /// <summary>
         /// Checks if the conditionals to use this NPCChatDialogItemBase pass for the given <paramref name="user"/>
         /// and <paramref name="npc"/>.
@@ -202,20 +216,6 @@ namespace NetGore.NPCChat
             AssertBranchHasTwoResponses();
             AssertNonBranchHasNoConditionals();
             AssertResponsesHaveValidValues();
-        }
-
-        [Conditional("DEBUG")]
-        void AssertResponsesHaveValidValues()
-        {
-            if (Responses == null)
-                return;
-
-            foreach (var response in Responses)
-            {
-                var r = response;
-                Debug.Assert(Responses.Count(x => x.Value == r.Value) == 1, "Response values should be unique.");
-                Debug.Assert(GetResponse(r.Value) == response, "...ok, now that is just messed up.");
-            }
         }
 
         /// <summary>

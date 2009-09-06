@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using System.Windows.Forms;
 using log4net;
 using NetGore.IO;
 using NetGore.NPCChat;
@@ -186,6 +185,18 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
+        /// Ensures that the <see cref="EditorNPCChatResponse.Value"/> for each <see cref="EditorNPCChatResponse"/> is valid.
+        /// </summary>
+        void EnsureResponseValuesAreValid()
+        {
+            for (int i = 0; i < _responses.Count; i++)
+            {
+                if (_responses[i].Value != i)
+                    _responses[i].SetValue((byte)i);
+            }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the NPCChatResponseBase of the response with the given
         /// <paramref name="responseIndex"/>.
         /// </summary>
@@ -247,18 +258,6 @@ namespace NetGore.EditorTools.NPCChat
 
             EditorNPCChatConditionalCollection c = conditionals as EditorNPCChatConditionalCollection;
             _conditionals = c ?? new EditorNPCChatConditionalCollection();
-        }
-
-        /// <summary>
-        /// Ensures that the <see cref="EditorNPCChatResponse.Value"/> for each <see cref="EditorNPCChatResponse"/> is valid.
-        /// </summary>
-        void EnsureResponseValuesAreValid()
-        {
-            for (int i = 0; i < _responses.Count; i++)
-            {
-                if (_responses[i].Value != i)
-                    _responses[i].SetValue((byte)i);
-            }
         }
 
         /// <summary>

@@ -22,29 +22,6 @@ namespace NetGore.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// When overridden in the derived class, tries to set the Value of this NPCChatConditionalParameter
-        /// from a string.
-        /// </summary>
-        /// <param name="value">The string containing the new value.</param>
-        /// <param name="parser">The parser to use.</param>
-        /// <returns>True if the value was successfully set; otherwise false.</returns>
-        public override bool TrySetValue(string value, Parser parser)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                _value = 0;
-                return true;
-            }
-
-            int outValue;
-            if (!parser.TryParse(value, out outValue))
-                return false;
-
-            _value = outValue;
-            return true;
-        }
-
-        /// <summary>
         /// Gets this parameter's Value as an Integer.
         /// </summary>
         /// <exception cref="MethodAccessException">The ValueType is not equal to
@@ -79,6 +56,29 @@ namespace NetGore.NPCChat.Conditionals
         protected override void ReadValue(IValueReader reader, string valueName)
         {
             _value = reader.ReadInt(valueName);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, tries to set the Value of this NPCChatConditionalParameter
+        /// from a string.
+        /// </summary>
+        /// <param name="value">The string containing the new value.</param>
+        /// <param name="parser">The parser to use.</param>
+        /// <returns>True if the value was successfully set; otherwise false.</returns>
+        public override bool TrySetValue(string value, Parser parser)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                _value = 0;
+                return true;
+            }
+
+            int outValue;
+            if (!parser.TryParse(value, out outValue))
+                return false;
+
+            _value = outValue;
+            return true;
         }
 
         /// <summary>

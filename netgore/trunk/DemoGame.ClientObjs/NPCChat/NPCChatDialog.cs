@@ -14,6 +14,7 @@ namespace DemoGame.Client.NPCChat
     /// </summary>
     public class NPCChatDialog : NPCChatDialogBase
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         ushort _index;
         NPCChatDialogItemBase[] _items;
         string _title;
@@ -53,8 +54,6 @@ namespace DemoGame.Client.NPCChat
         {
             return new NPCChatDialogItem(reader);
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.

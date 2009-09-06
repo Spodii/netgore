@@ -22,11 +22,6 @@ namespace NetGore.EditorTools.NPCChat
         byte _value;
 
         /// <summary>
-        /// Gets a list of the <see cref="NPCChatResponseActionBase"/>s in this <see cref="EditorNPCChatResponse"/>.
-        /// </summary>
-        public List<NPCChatResponseActionBase> ActionsList { get { return _actions; } }
-
-        /// <summary>
         /// Notifies listeners when the EditorNPCChatResponse has changed.
         /// </summary>
         public event EditorNPCChatResponseEventHandler OnChange;
@@ -46,6 +41,14 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
+        /// Gets a list of the <see cref="NPCChatResponseActionBase"/>s in this <see cref="EditorNPCChatResponse"/>.
+        /// </summary>
+        public List<NPCChatResponseActionBase> ActionsList
+        {
+            get { return _actions; }
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
         /// conditionals used to evaluate if this NPCChatResponseBase may be used. If this value is null, it
         /// is assumed that there are no conditionals attached to this NPCChatResponseBase, and should be treated
@@ -54,6 +57,17 @@ namespace NetGore.EditorTools.NPCChat
         public override NPCChatConditionalCollectionBase Conditionals
         {
             get { return _conditionals; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this <see cref="NPCChatResponseBase"/> will load
+        /// the <see cref="NPCChatResponseActionBase"/>s. If true, the <see cref="NPCChatResponseActionBase"/>s
+        /// will be loaded. If false, <see cref="NPCChatResponseBase.SetReadValues"/> will always contain an empty array for the
+        /// actions.
+        /// </summary>
+        protected override bool LoadActions
+        {
+            get { return true; }
         }
 
         /// <summary>
@@ -128,17 +142,6 @@ namespace NetGore.EditorTools.NPCChat
         protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
         {
             return new EditorNPCChatConditionalCollection();
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets if this <see cref="NPCChatResponseBase"/> will load
-        /// the <see cref="NPCChatResponseActionBase"/>s. If true, the <see cref="NPCChatResponseActionBase"/>s
-        /// will be loaded. If false, <see cref="NPCChatResponseBase.SetReadValues"/> will always contain an empty array for the
-        /// actions.
-        /// </summary>
-        protected override bool LoadActions
-        {
-            get { return true; }
         }
 
         /// <summary>
