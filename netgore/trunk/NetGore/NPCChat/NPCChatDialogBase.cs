@@ -12,8 +12,6 @@ namespace NetGore.NPCChat
     /// </summary>
     public abstract class NPCChatDialogBase
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
         /// distinguish each NPCChatDialogBase from one another.

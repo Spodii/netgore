@@ -12,9 +12,9 @@ namespace NetGore
     public sealed class PropertySyncColor : PropertySyncBase<Color>
     {
         /// <summary>
-        /// PropertySyncColor constructor.
+        /// Initializes a new instance of the <see cref="PropertySyncColor"/> class.
         /// </summary>
-        /// <param name="bindObject">Object to bind to.</param>
+        /// <param name="bindObject">Object that this property is to be bound to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
         public PropertySyncColor(object bindObject, PropertyInfo p) : base(bindObject, p)
         {

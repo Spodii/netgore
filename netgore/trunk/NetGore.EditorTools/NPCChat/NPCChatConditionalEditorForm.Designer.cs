@@ -111,6 +111,7 @@ namespace NetGore.EditorTools.NPCChat
             this.Name = "NPCChatConditionalEditorForm";
             this.Text = "NPC Chat Conditional Editor";
             this.Load += new System.EventHandler(this.NPCChatConditionalEditorForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.NPCChatConditionalEditorForm_KeyDown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

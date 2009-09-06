@@ -54,5 +54,11 @@ namespace NetGore.EditorTools.NPCChat
 
             InitGUI(_item);
         }
+
+        private void NPCChatConditionalEditorForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                Close();
+        }
     }
 }

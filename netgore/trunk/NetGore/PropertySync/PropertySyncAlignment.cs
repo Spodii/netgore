@@ -11,9 +11,9 @@ namespace NetGore
     public sealed class PropertySyncAlignment : PropertySyncBase<Alignment>
     {
         /// <summary>
-        /// PropertySyncAlignment constructor.
+        /// Initializes a new instance of the <see cref="PropertySyncAlignment"/> class.
         /// </summary>
-        /// <param name="bindObject">Object to bind to.</param>
+        /// <param name="bindObject">Object that this property is to be bound to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
         public PropertySyncAlignment(object bindObject, PropertyInfo p) : base(bindObject, p)
         {

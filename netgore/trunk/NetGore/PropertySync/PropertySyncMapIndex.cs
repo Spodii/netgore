@@ -11,9 +11,9 @@ namespace NetGore
     public sealed class PropertySyncMapIndex : PropertySyncBase<MapIndex>
     {
         /// <summary>
-        /// PropertySyncMapIndex constructor.
+        /// Initializes a new instance of the <see cref="PropertySyncMapIndex"/> class.
         /// </summary>
-        /// <param name="bindObject">Object to bind to.</param>
+        /// <param name="bindObject">Object that this property is to be bound to.</param>
         /// <param name="p">PropertyInfo for the property to bind to.</param>
         public PropertySyncMapIndex(object bindObject, PropertyInfo p) : base(bindObject, p)
         {
