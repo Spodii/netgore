@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using NetGore;
+using NetGore.EditorTools;
 using NetGore.EditorTools.NPCChat;
 using NetGore.Globalization;
 using NetGore.NPCChat;
@@ -13,15 +14,16 @@ using NetGore.NPCChat.Conditionals;
 
 // TODO: Do not allow responses to be added to a EditorNPCChatDialogItem where IsBranch is set
 // TODO: Do not allow responses immediately under a branch to be altered in any ways
-// TODO: The display of nodes is still pretty buggy
-// TODO: Redirects should appear in the deepest level of the tree possible
+// TODO: Ability to change the order of the actions
+// TODO: An indicator for when a dialog item or response has conditionals
+// TODO: An indicator for when a response has actions
 
 namespace DemoGame.NPCChatEditor
 {
     public partial class frmMain : Form
     {
         /// <summary>
-        /// Contains the NPCChatConditionalBases available.
+        /// Contains the <see cref="NPCChatConditionalBase"/>s available.
         /// </summary>
         static readonly NPCChatConditionalBase[] _npcChatConditionals;
 
@@ -482,9 +484,14 @@ namespace DemoGame.NPCChatEditor
                     cmbSelectedDialog.SelectedIndex = 0;
 
                 // Populate the evaluation types
-                var chatConditionalTypes = EnumHelper.GetValues<NPCChatConditionalEvaluationType>();
+                var evaluationTypes = EnumHelper.GetValues<NPCChatConditionalEvaluationType>();
                 cmbEvaluateType.Items.Clear();
-                cmbEvaluateType.Items.AddRange(chatConditionalTypes.Select(x => (object)x).ToArray());
+                cmbEvaluateType.Items.AddRange(evaluationTypes.Select(x => (object)x).ToArray());
+
+                // Population the response action types
+                var actionTypes = NPCChatResponseActionBase.Conditionals.OrderBy(x => x.Name);
+                cmbAddAction.Items.Clear();
+                cmbAddAction.Items.AddRange(actionTypes.Select(x => (object)x).ToArray());
 
                 // Perform the initial resize
                 frmMain_Resize(this, null);
@@ -636,6 +643,9 @@ namespace DemoGame.NPCChatEditor
                 SetConditionalsEnabled(true);
                 lstConditionals.SetConditionalCollection(EditingObjAsResponse.Conditionals);
                 EditingObjAsResponse.SetConditionals(lstConditionals.ConditionalCollection);
+
+                lstActions.Items.Clear();
+                lstActions.Items.AddRange(EditingObjAsResponse.Actions.ToArray());
             }
             else if (obj is TreeNode)
             {
@@ -751,6 +761,48 @@ namespace DemoGame.NPCChatEditor
                 EditingObjAsDialogItem.SetTitle(txtTitle.Text);
             else if (EditingObjAsResponse != null)
                 EditingObjAsResponse.SetText(txtTitle.Text);
+        }
+
+        private void btnAddAction_Click(object sender, EventArgs e)
+        {
+            if (EditingObjAsResponse == null)
+                return;
+
+            var item = cmbAddAction.SelectedItem as NPCChatResponseActionBase;
+            if (item == null)
+                return;
+
+            EditingObjAsResponse.ActionsList.Add(item);
+            UpdateActionsList();
+        }
+
+        void UpdateActionsList()
+        {
+            if (EditingObjAsResponse == null)
+            {
+                lstActions.Items.Clear();
+                return;
+            }
+
+            lstActions.SynchronizeItemList(EditingObjAsResponse.Actions);
+        }
+
+        private void lstActions_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (_doNotUpdateObj)
+                return;
+            if (EditingObjAsResponse == null)
+                return;
+
+            if (e.KeyCode == Keys.Delete)
+            {
+                var item = cmbAddAction.SelectedItem as NPCChatResponseActionBase;
+                if (item == null)
+                    return;
+
+                EditingObjAsResponse.ActionsList.RemoveAt(lstActions.SelectedIndex);
+                lstActions.RemoveItemAtAndReselect(lstActions.SelectedIndex);
+            }
         }
     }
 }

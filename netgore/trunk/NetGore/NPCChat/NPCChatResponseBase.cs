@@ -113,12 +113,23 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets if this <see cref="NPCChatResponseBase"/> will load
+        /// the <see cref="NPCChatResponseActionBase"/>s. If true, the <see cref="NPCChatResponseActionBase"/>s
+        /// will be loaded. If false, <see cref="SetReadValues"/> will always contain an empty array for the
+        /// actions.
+        /// </summary>
+        protected abstract bool LoadActions { get; }
+
+        /// <summary>
         /// Gets an array of <see cref="NPCChatResponseActionBase"/> from the <paramref name="names"/>.
         /// </summary>
         /// <param name="names">The array of names of the <see cref="NPCChatResponseActionBase"/>s to get.</param>
         /// <returns>An array of <see cref="NPCChatResponseActionBase"/> from the <paramref name="names"/>.</returns>
-        static NPCChatResponseActionBase[] GetActionsFromNames(string[] names)
+        NPCChatResponseActionBase[] GetActionsFromNames(string[] names)
         {
+            if (!LoadActions)
+                return NPCChatResponseActionBase.EmptyActions;
+
             if (names == null || names.Length == 0)
                 return NPCChatResponseActionBase.EmptyActions;
 

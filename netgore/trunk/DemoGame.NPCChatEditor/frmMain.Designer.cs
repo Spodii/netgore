@@ -63,15 +63,20 @@ namespace DemoGame.NPCChatEditor
             this.button1 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.txtDialogTitle = new System.Windows.Forms.TextBox();
+            this.gbActions = new System.Windows.Forms.GroupBox();
+            this.lstActions = new System.Windows.Forms.ListBox();
+            this.cmbAddAction = new System.Windows.Forms.ComboBox();
+            this.btnAddAction = new System.Windows.Forms.Button();
             this.cmbSelectedDialog = new NetGore.EditorTools.NPCChat.NPCChatDialogComboBox();
-            this.lstConditionals = new DemoGame.NPCChatEditor.NPCChatConditionalsListBox();
             this.npcChatDialogView = new NetGore.EditorTools.NPCChat.NPCChatDialogView();
+            this.lstConditionals = new DemoGame.NPCChatEditor.NPCChatConditionalsListBox();
             this.gbSelectedNode.SuspendLayout();
             this.gbConditionals.SuspendLayout();
             this.tcChatDialogItem.SuspendLayout();
             this.tpDialog.SuspendLayout();
             this.tpResponse.SuspendLayout();
             this.tpRedirect.SuspendLayout();
+            this.gbActions.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbSelectedNode
@@ -251,6 +256,7 @@ namespace DemoGame.NPCChatEditor
             // 
             // tpResponse
             // 
+            this.tpResponse.Controls.Add(this.gbActions);
             this.tpResponse.Controls.Add(this.btnAddRedirect);
             this.tpResponse.Controls.Add(this.btnAddDialog);
             this.tpResponse.Controls.Add(this.txtResponseValue);
@@ -268,9 +274,9 @@ namespace DemoGame.NPCChatEditor
             // 
             // btnAddRedirect
             // 
-            this.btnAddRedirect.Location = new System.Drawing.Point(177, 136);
+            this.btnAddRedirect.Location = new System.Drawing.Point(210, 136);
             this.btnAddRedirect.Name = "btnAddRedirect";
-            this.btnAddRedirect.Size = new System.Drawing.Size(89, 27);
+            this.btnAddRedirect.Size = new System.Drawing.Size(77, 27);
             this.btnAddRedirect.TabIndex = 11;
             this.btnAddRedirect.Text = "Add Redirect";
             this.btnAddRedirect.UseVisualStyleBackColor = true;
@@ -278,9 +284,9 @@ namespace DemoGame.NPCChatEditor
             // 
             // btnAddDialog
             // 
-            this.btnAddDialog.Location = new System.Drawing.Point(272, 136);
+            this.btnAddDialog.Location = new System.Drawing.Point(293, 136);
             this.btnAddDialog.Name = "btnAddDialog";
-            this.btnAddDialog.Size = new System.Drawing.Size(89, 27);
+            this.btnAddDialog.Size = new System.Drawing.Size(68, 27);
             this.btnAddDialog.TabIndex = 10;
             this.btnAddDialog.Text = "Add Dialog";
             this.btnAddDialog.UseVisualStyleBackColor = true;
@@ -289,7 +295,7 @@ namespace DemoGame.NPCChatEditor
             // txtResponseValue
             // 
             this.txtResponseValue.Enabled = false;
-            this.txtResponseValue.Location = new System.Drawing.Point(49, 6);
+            this.txtResponseValue.Location = new System.Drawing.Point(253, 6);
             this.txtResponseValue.Name = "txtResponseValue";
             this.txtResponseValue.Size = new System.Drawing.Size(48, 20);
             this.txtResponseValue.TabIndex = 9;
@@ -297,7 +303,7 @@ namespace DemoGame.NPCChatEditor
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(6, 9);
+            this.label7.Location = new System.Drawing.Point(210, 9);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(37, 13);
             this.label7.TabIndex = 8;
@@ -316,7 +322,7 @@ namespace DemoGame.NPCChatEditor
             // txtResponseIndex
             // 
             this.txtResponseIndex.Enabled = false;
-            this.txtResponseIndex.Location = new System.Drawing.Point(76, 32);
+            this.txtResponseIndex.Location = new System.Drawing.Point(280, 32);
             this.txtResponseIndex.Name = "txtResponseIndex";
             this.txtResponseIndex.Size = new System.Drawing.Size(48, 20);
             this.txtResponseIndex.TabIndex = 5;
@@ -324,7 +330,7 @@ namespace DemoGame.NPCChatEditor
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(6, 35);
+            this.label2.Location = new System.Drawing.Point(210, 35);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(64, 13);
             this.label2.TabIndex = 4;
@@ -397,6 +403,45 @@ namespace DemoGame.NPCChatEditor
             this.txtDialogTitle.TabIndex = 11;
             this.txtDialogTitle.TextChanged += new System.EventHandler(this.txtDialogTitle_TextChanged);
             // 
+            // gbActions
+            // 
+            this.gbActions.Controls.Add(this.btnAddAction);
+            this.gbActions.Controls.Add(this.cmbAddAction);
+            this.gbActions.Controls.Add(this.lstActions);
+            this.gbActions.Location = new System.Drawing.Point(6, 6);
+            this.gbActions.Name = "gbActions";
+            this.gbActions.Size = new System.Drawing.Size(198, 157);
+            this.gbActions.TabIndex = 12;
+            this.gbActions.TabStop = false;
+            this.gbActions.Text = "Actions";
+            // 
+            // lstActions
+            // 
+            this.lstActions.FormattingEnabled = true;
+            this.lstActions.Location = new System.Drawing.Point(6, 16);
+            this.lstActions.Name = "lstActions";
+            this.lstActions.Size = new System.Drawing.Size(186, 108);
+            this.lstActions.TabIndex = 0;
+            this.lstActions.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstActions_KeyDown);
+            // 
+            // cmbAddAction
+            // 
+            this.cmbAddAction.FormattingEnabled = true;
+            this.cmbAddAction.Location = new System.Drawing.Point(6, 130);
+            this.cmbAddAction.Name = "cmbAddAction";
+            this.cmbAddAction.Size = new System.Drawing.Size(141, 21);
+            this.cmbAddAction.TabIndex = 1;
+            // 
+            // btnAddAction
+            // 
+            this.btnAddAction.Location = new System.Drawing.Point(153, 130);
+            this.btnAddAction.Name = "btnAddAction";
+            this.btnAddAction.Size = new System.Drawing.Size(39, 21);
+            this.btnAddAction.TabIndex = 8;
+            this.btnAddAction.Text = "Add";
+            this.btnAddAction.UseVisualStyleBackColor = true;
+            this.btnAddAction.Click += new System.EventHandler(this.btnAddAction_Click);
+            // 
             // cmbSelectedDialog
             // 
             this.cmbSelectedDialog.FormattingEnabled = true;
@@ -405,17 +450,6 @@ namespace DemoGame.NPCChatEditor
             this.cmbSelectedDialog.Size = new System.Drawing.Size(455, 21);
             this.cmbSelectedDialog.TabIndex = 9;
             this.cmbSelectedDialog.OnChangeDialog += new NetGore.EditorTools.NPCChat.NPCChatDialogComboBoxChangeDialogHandler(this.cmbSelectedDialog_OnChangeDialog);
-            // 
-            // lstConditionals
-            // 
-            this.lstConditionals.ConditionalCollection = null;
-            this.lstConditionals.EvaluationTypeComboBox = this.cmbEvaluateType;
-            this.lstConditionals.FormattingEnabled = true;
-            this.lstConditionals.Location = new System.Drawing.Point(6, 19);
-            this.lstConditionals.Name = "lstConditionals";
-            this.lstConditionals.Size = new System.Drawing.Size(351, 173);
-            this.lstConditionals.TabIndex = 8;
-            this.lstConditionals.DoubleClick += new System.EventHandler(this.lstConditionals_DoubleClick);
             // 
             // npcChatDialogView
             // 
@@ -429,6 +463,17 @@ namespace DemoGame.NPCChatEditor
             this.npcChatDialogView.Size = new System.Drawing.Size(815, 332);
             this.npcChatDialogView.TabIndex = 0;
             this.npcChatDialogView.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.npcChatDialogView_NodeMouseClick);
+            // 
+            // lstConditionals
+            // 
+            this.lstConditionals.ConditionalCollection = null;
+            this.lstConditionals.EvaluationTypeComboBox = this.cmbEvaluateType;
+            this.lstConditionals.FormattingEnabled = true;
+            this.lstConditionals.Location = new System.Drawing.Point(6, 19);
+            this.lstConditionals.Name = "lstConditionals";
+            this.lstConditionals.Size = new System.Drawing.Size(351, 173);
+            this.lstConditionals.TabIndex = 8;
+            this.lstConditionals.DoubleClick += new System.EventHandler(this.lstConditionals_DoubleClick);
             // 
             // frmMain
             // 
@@ -458,6 +503,7 @@ namespace DemoGame.NPCChatEditor
             this.tpResponse.PerformLayout();
             this.tpRedirect.ResumeLayout(false);
             this.tpRedirect.PerformLayout();
+            this.gbActions.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -500,6 +546,10 @@ namespace DemoGame.NPCChatEditor
         private System.Windows.Forms.ComboBox cmbEvaluateType;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.CheckBox chkIsBranch;
+        private System.Windows.Forms.GroupBox gbActions;
+        private System.Windows.Forms.ComboBox cmbAddAction;
+        private System.Windows.Forms.ListBox lstActions;
+        private System.Windows.Forms.Button btnAddAction;
 
     }
 }

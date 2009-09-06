@@ -18,6 +18,9 @@
               <Value>0</Value>
               <Page>1</Page>
               <Text>False</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -26,6 +29,9 @@
               <Value>1</Value>
               <Page>2</Page>
               <Text>True</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -43,6 +49,9 @@
               <Value>0</Value>
               <Page>5</Page>
               <Text>False</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -51,6 +60,9 @@
               <Value>1</Value>
               <Page>6</Page>
               <Text>True</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -86,6 +98,9 @@
               <Value>0</Value>
               <Page>7</Page>
               <Text>[Stand still]</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -93,7 +108,10 @@
             <Item1>
               <Value>1</Value>
               <Page>8</Page>
-              <Text>[Start doing the Humpty Dance</Text>
+              <Text>[Start doing the Humpty Dance]</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -138,6 +156,9 @@
               <Value>0</Value>
               <Page>2</Page>
               <Text>I changed my mind. Gimmie gimmie!</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
               <Conditionals>
                 <HasConditionals>True</HasConditionals>
                 <EvaluationType>0</EvaluationType>
@@ -161,6 +182,9 @@
               <Value>1</Value>
               <Page>65535</Page>
               <Text>[Leave]</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -178,6 +202,9 @@
               <Value>0</Value>
               <Page>9</Page>
               <Text>False</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -186,6 +213,10 @@
               <Value>1</Value>
               <Page>10</Page>
               <Text>True</Text>
+              <Actions>
+                <Count>1</Count>
+                <Item0>Restore MP</Item0>
+              </Actions>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -221,6 +252,9 @@
               <Value>0</Value>
               <Page>7</Page>
               <Text>[Stand still]</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -229,6 +263,9 @@
               <Value>1</Value>
               <Page>8</Page>
               <Text>[Start doing the Humpty Dance]</Text>
+              <Actions>
+                <Count>0</Count>
+              </Actions>
               <Conditionals>
                 <HasConditionals>False</HasConditionals>
               </Conditionals>
@@ -247,9 +284,7 @@
         <Item10>
           <Index>10</Index>
           <Title />
-          <Text>MP all restored. Enjoy!
-
-TODO: Actually restore the MP.</Text>
+          <Text>MP all restored. Enjoy!</Text>
           <IsBranch>False</IsBranch>
           <Responses>
             <Count>0</Count>
