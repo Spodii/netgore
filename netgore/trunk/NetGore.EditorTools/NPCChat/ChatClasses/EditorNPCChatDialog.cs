@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -13,8 +16,9 @@ namespace NetGore.EditorTools.NPCChat
     /// </summary>
     public class EditorNPCChatDialog : NPCChatDialogBase
     {
-        EditorNPCChatDialogItem[] _dialogItems = new EditorNPCChatDialogItem[8];
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         ushort _index;
+        EditorNPCChatDialogItem[] _items = new EditorNPCChatDialogItem[8];
         string _title;
 
         /// <summary>
@@ -31,9 +35,12 @@ namespace NetGore.EditorTools.NPCChat
             get { return _index; }
         }
 
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="EditorNPCChatDialogItem"/>s in this <see cref="EditorNPCChatDialog"/>.
+        /// </summary>
         public IEnumerable<EditorNPCChatDialogItem> Items
         {
-            get { return _dialogItems.Where(x => x != null); }
+            get { return _items.Where(x => x != null); }
         }
 
         /// <summary>
@@ -60,6 +67,10 @@ namespace NetGore.EditorTools.NPCChat
         {
         }
 
+        /// <summary>
+        /// Adds multiple <see cref="EditorNPCChatDialogItem"/>s to this <see cref="EditorNPCChatDialog"/>.
+        /// </summary>
+        /// <param name="items">The <see cref="EditorNPCChatDialogItem"/>s to add.</param>
         public void Add(IEnumerable<EditorNPCChatDialogItem> items)
         {
             foreach (EditorNPCChatDialogItem item in items)
@@ -68,14 +79,18 @@ namespace NetGore.EditorTools.NPCChat
             }
         }
 
+        /// <summary>
+        /// Adds a <see cref="EditorNPCChatDialogItem"/> to this <see cref="EditorNPCChatDialog"/>.
+        /// </summary>
+        /// <param name="item">The <see cref="EditorNPCChatDialogItem"/> to add.</param>
         public void Add(EditorNPCChatDialogItem item)
         {
-            ResizeArrayToFitIndex(ref _dialogItems, item.Index);
+            ResizeArrayToFitIndex(ref _items, item.Index);
 
-            if (_dialogItems[item.Index] == item)
+            if (_items[item.Index] == item)
                 return;
 
-            _dialogItems[item.Index] = item;
+            _items[item.Index] = item;
 
             if (OnChange != null)
                 OnChange(this);
@@ -94,20 +109,38 @@ namespace NetGore.EditorTools.NPCChat
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.
         /// </summary>
-        /// <param name="page">The page number of the NPCChatDialogItemBase to get.</param>
-        /// <returns>The NPCChatDialogItemBase for the given <paramref name="page"/>, or null if no valid
-        /// NPCChatDialogItemBase existed for the given <paramref name="page"/>.</returns>
-        public override NPCChatDialogItemBase GetDialogItem(ushort page)
+        /// <param name="chatDialogItemIndex">The page number of the NPCChatDialogItemBase to get.</param>
+        /// <returns>The NPCChatDialogItemBase for the given <paramref name="chatDialogItemIndex"/>, or null if
+        /// no valid NPCChatDialogItemBase existed for the given <paramref name="chatDialogItemIndex"/> or if
+        /// the <paramref name="chatDialogItemIndex"/> is equal to
+        /// <see cref="NPCChatResponseBase.EndConversationPage"/>.</returns>
+        public override NPCChatDialogItemBase GetDialogItem(ushort chatDialogItemIndex)
         {
-            return GetDialogItemCasted(page);
+            return GetDialogItemCasted(chatDialogItemIndex);
         }
 
-        public EditorNPCChatDialogItem GetDialogItemCasted(ushort page)
+        /// <summary>
+        /// Same as <see cref="GetDialogItem"/>, but gets the <see cref="NPCChatDialogItemBase"/> as a
+        /// <see cref="EditorNPCChatDialogItem"/>.
+        /// </summary>
+        /// <param name="chatDialogItemIndex">The <see cref="EditorNPCChatDialogItem"/> index.</param>
+        /// <returns>The <see cref="EditorNPCChatDialogItem"/> with the given index
+        /// <paramref name="chatDialogItemIndex"/>.</returns>
+        public EditorNPCChatDialogItem GetDialogItemCasted(ushort chatDialogItemIndex)
         {
-            if (page == EditorNPCChatResponse.EndConversationPage)
+            if (chatDialogItemIndex == EditorNPCChatResponse.EndConversationPage)
                 return null;
 
-            return _dialogItems[page];
+            if (chatDialogItemIndex < 0 || chatDialogItemIndex >= _items.Length)
+            {
+                const string errmsg = "Invalid NPCChatDialogItemBase index `{0}`.";
+                Debug.Fail(string.Format(errmsg, chatDialogItemIndex));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, chatDialogItemIndex);
+                return null;
+            }
+
+            return _items[chatDialogItemIndex];
         }
 
         /// <summary>
@@ -120,15 +153,19 @@ namespace NetGore.EditorTools.NPCChat
             return Items.Cast<NPCChatDialogItemBase>();
         }
 
+        /// <summary>
+        /// Gets the next free index for a <see cref="EditorNPCChatDialogItem"/>.
+        /// </summary>
+        /// <returns>The next free index for a <see cref="EditorNPCChatDialogItem"/>.</returns>
         public ushort GetFreeDialogItemIndex()
         {
-            for (int i = 0; i < _dialogItems.Length; i++)
+            for (int i = 0; i < _items.Length; i++)
             {
-                if (_dialogItems[i] == null)
+                if (_items[i] == null)
                     return (ushort)i;
             }
 
-            return (ushort)_dialogItems.Length;
+            return (ushort)_items.Length;
         }
 
         /// <summary>
@@ -141,6 +178,11 @@ namespace NetGore.EditorTools.NPCChat
             return GetInitialDialogItemCasted();
         }
 
+        /// <summary>
+        /// Same as <see cref="GetInitialDialogItem"/> but gets the <see cref="NPCChatDialogItemBase"/> as
+        /// a <see cref="EditorNPCChatDialogItem"/>.
+        /// </summary>
+        /// <returns>The initial EditorNPCChatDialogItem that is used at the start of a conversation.</returns>
         public EditorNPCChatDialogItem GetInitialDialogItemCasted()
         {
             return GetDialogItemCasted(0);
@@ -157,10 +199,10 @@ namespace NetGore.EditorTools.NPCChat
             var sourceResponses = GetSourceResponses(dialogItem).Cast<EditorNPCChatResponse>();
 
             // Remove the dialog from the collection
-            if (_dialogItems[dialogItem.Index] != dialogItem)
+            if (_items[dialogItem.Index] != dialogItem)
                 return false;
 
-            _dialogItems[dialogItem.Index] = null;
+            _items[dialogItem.Index] = null;
 
             // Remove references to the dialog
             foreach (EditorNPCChatResponse r in sourceResponses)
@@ -171,6 +213,12 @@ namespace NetGore.EditorTools.NPCChat
             return true;
         }
 
+        /// <summary>
+        /// Ensures an array is large enough to fit the given <paramref name="index"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of array.</typeparam>
+        /// <param name="array">The array.</param>
+        /// <param name="index">The index needed to fit in the array.</param>
         static void ResizeArrayToFitIndex<T>(ref T[] array, int index)
         {
             if (array.Length > index)
@@ -185,6 +233,10 @@ namespace NetGore.EditorTools.NPCChat
             Array.Resize(ref array, newSize);
         }
 
+        /// <summary>
+        /// Sets the <see cref="Index"/>.
+        /// </summary>
+        /// <param name="value">The new value.</param>
         public void SetIndex(ushort value)
         {
             _index = value;
@@ -199,9 +251,9 @@ namespace NetGore.EditorTools.NPCChat
             _title = title;
 
             // Clear the array
-            for (int i = 0; i < _dialogItems.Length; i++)
+            for (int i = 0; i < _items.Length; i++)
             {
-                _dialogItems[i] = null;
+                _items[i] = null;
             }
 
             // Set the new items
@@ -211,6 +263,10 @@ namespace NetGore.EditorTools.NPCChat
             }
         }
 
+        /// <summary>
+        /// Sets the <see cref="Title"/>.
+        /// </summary>
+        /// <param name="value">The new value.</param>
         public void SetTitle(string value)
         {
             _title = value;

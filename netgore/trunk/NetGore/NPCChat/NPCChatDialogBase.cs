@@ -50,22 +50,6 @@ namespace NetGore.NPCChat
         protected abstract NPCChatDialogItemBase CreateDialogItem(IValueReader reader);
 
         /// <summary>
-        /// Creates an ArgumentOutOfRangeException for the response index being out of range.
-        /// </summary>
-        /// <param name="parameterName">The name of the dialog page index parameter.</param>
-        /// <param name="value">The specified, invalid dialog page index value.</param>
-        /// <returns>An ArgumentOutOfRangeException for the response index being out of range.</returns>
-        protected ArgumentOutOfRangeException CreateInvalidResponseIndexException(string parameterName, ushort value)
-        {
-            const string errmsg = "Dialog page index `{0}` was out of range for dialog `{1}`.";
-            string err = string.Format(errmsg, value, Index);
-            if (log.IsErrorEnabled)
-                log.Error(err);
-
-            return new ArgumentOutOfRangeException(err, parameterName);
-        }
-
-        /// <summary>
         /// Gets all of the NPCChatDialogItemBases that <paramref name="root"/> can go to from any response
         /// and assuming an infinite number of branches can be taken.
         /// </summary>
@@ -101,10 +85,12 @@ namespace NetGore.NPCChat
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.
         /// </summary>
-        /// <param name="page">The page number of the NPCChatDialogItemBase to get.</param>
-        /// <returns>The NPCChatDialogItemBase for the given <paramref name="page"/>, or null if no valid
-        /// NPCChatDialogItemBase existed for the given <paramref name="page"/>.</returns>
-        public abstract NPCChatDialogItemBase GetDialogItem(ushort page);
+        /// <param name="chatDialogItemIndex">The page number of the NPCChatDialogItemBase to get.</param>
+        /// <returns>The NPCChatDialogItemBase for the given <paramref name="chatDialogItemIndex"/>, or null if
+        /// no valid NPCChatDialogItemBase existed for the given <paramref name="chatDialogItemIndex"/> or if
+        /// the <paramref name="chatDialogItemIndex"/> is equal to
+        /// <see cref="NPCChatResponseBase.EndConversationPage"/>.</returns>
+        public abstract NPCChatDialogItemBase GetDialogItem(ushort chatDialogItemIndex);
 
         /// <summary>
         /// When overridden in the derived class, gets an IEnumerable of the NPCChatDialogItemBases in this
