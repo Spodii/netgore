@@ -15,11 +15,16 @@ namespace NetGore.EditorTools.NPCChat
     /// </summary>
     public class EditorNPCChatResponse : NPCChatResponseBase
     {
-        NPCChatResponseActionBase[] _actions;
+        readonly List<NPCChatResponseActionBase> _actions = new List<NPCChatResponseActionBase>();
         NPCChatConditionalCollectionBase _conditionals;
         ushort _page;
         string _text;
         byte _value;
+
+        /// <summary>
+        /// Gets a list of the <see cref="NPCChatResponseActionBase"/>s in this <see cref="EditorNPCChatResponse"/>.
+        /// </summary>
+        public List<NPCChatResponseActionBase> ActionsList { get { return _actions; } }
 
         /// <summary>
         /// Notifies listeners when the EditorNPCChatResponse has changed.
@@ -126,6 +131,17 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets if this <see cref="NPCChatResponseBase"/> will load
+        /// the <see cref="NPCChatResponseActionBase"/>s. If true, the <see cref="NPCChatResponseActionBase"/>s
+        /// will be loaded. If false, <see cref="NPCChatResponseBase.SetReadValues"/> will always contain an empty array for the
+        /// actions.
+        /// </summary>
+        protected override bool LoadActions
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// Sets the Conditionals property.
         /// </summary>
         /// <param name="value">The value.</param>
@@ -165,13 +181,16 @@ namespace NetGore.EditorTools.NPCChat
         /// <param name="page">The page.</param>
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
+        /// <param name="actions">The actions.</param>
         protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals,
                                               NPCChatResponseActionBase[] actions)
         {
             _value = value;
             _page = page;
-            _actions = actions;
             SetText(text);
+
+            _actions.Clear();
+            _actions.AddRange(actions);
 
             EditorNPCChatConditionalCollection c = conditionals as EditorNPCChatConditionalCollection;
             _conditionals = c ?? new EditorNPCChatConditionalCollection();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -75,6 +76,17 @@ namespace DemoGame.Client.NPCChat
         protected override NPCChatConditionalCollectionBase CreateConditionalCollection()
         {
             return null;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if this <see cref="NPCChatResponseBase"/> will load
+        /// the <see cref="NPCChatResponseActionBase"/>s. If true, the <see cref="NPCChatResponseActionBase"/>s
+        /// will be loaded. If false, <see cref="NPCChatResponseBase.SetReadValues"/> will always contain an empty array for the
+        /// actions.
+        /// </summary>
+        protected override bool LoadActions
+        {
+            get { return false; }
         }
 
         /// <summary>

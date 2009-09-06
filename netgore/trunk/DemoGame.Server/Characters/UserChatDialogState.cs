@@ -40,9 +40,21 @@ namespace DemoGame.Server
         const ResponseConditionalFailureHandleType _responseConditionalFailureType = ResponseConditionalFailureHandleType.ResendDialogItem;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        
+        /// <summary>
+        /// The User that the dialog is taking place with.
+        /// </summary>
         readonly User _user;
+
+        /// <summary>
+        /// The NPC that the dialog is taking place with.
+        /// </summary>
         NPC _chattingWith;
-        NPCChatDialogItemBase _page;
+
+        /// <summary>
+        /// The current dialog item.
+        /// </summary>
+        NPCChatDialogItemBase _dialogItem;
 
         /// <summary>
         /// Gets the current NPCChatDialogBase, or null if the User is not currently chatting.
@@ -76,6 +88,9 @@ namespace DemoGame.Server
             _user = user;
         }
 
+        /// <summary>
+        /// Initializes the <see cref="UserChatDialogState"/> class.
+        /// </summary>
         static UserChatDialogState()
         {
             if (!EnumHelper.IsDefined(_responseConditionalFailureType))
@@ -170,7 +185,7 @@ namespace DemoGame.Server
             if (!IsChatting)
                 return;
 
-            _page = null;
+            _dialogItem = null;
             _chattingWith = null;
 
             NotifyUserOfNewPage();
@@ -202,12 +217,14 @@ namespace DemoGame.Server
             }
 
             // Get the response
-            NPCChatResponseBase response = _page.GetResponse(responseIndex);
+            NPCChatResponseBase response = _dialogItem.GetResponse(responseIndex);
             if (response == null)
             {
                 EndChat();
                 return;
             }
+
+            Debug.Assert(response.Value == responseIndex, "Something went wrong, and we got the wrong response. lolwtf?");
 
             // Ensure the selected response index is allowed (response conditionals check)
             if (!response.CheckConditionals(_user, _chattingWith))
@@ -229,17 +246,22 @@ namespace DemoGame.Server
 #pragma warning restore 162
             }
 
-            Debug.Assert(response.Value == responseIndex, "Something went wrong, and we got the wrong response.");
+            // Execute the actions
+            if (response.Actions != null)
+            {
+                foreach (var action in response.Actions)
+                    action.Execute(_user, _chattingWith);
+            }
 
             // Get the next page
             NPCChatDialogItemBase nextPage = ChatDialog.GetDialogItem(response.Page);
             nextPage = GetNextDialogPage(nextPage);
 
             // Set the new page
-            _page = nextPage;
+            _dialogItem = nextPage;
 
             // Check if the dialog has ended, otherwise just notify the user of the new page
-            if (_page == null)
+            if (_dialogItem == null)
                 EndChat();
             else
                 NotifyUserOfNewPage();
@@ -254,20 +276,35 @@ namespace DemoGame.Server
         /// <returns>The page to use, or null if the dialog has ended.</returns>
         NPCChatDialogItemBase GetNextDialogPage(NPCChatDialogItemBase page)
         {
+            // Skip until we find a null page, or we are no longer at a branch
             while (page != null && page.IsBranch)
             {
+                // Evaluate the branch to get the response
                 var branchResponse = page.EvaluateBranch(_user, _chattingWith);
+
+                // Make sure we execute any actions on the response
+                if (branchResponse.Actions != null)
+                {
+                    foreach (var action in branchResponse.Actions)
+                        action.Execute(_user, _chattingWith);
+                }
+
+                // Get the next dialog item page from the response
                 page = ChatDialog.GetDialogItem(branchResponse.Page);
             }
 
             return page;
         }
 
+        /// <summary>
+        /// Gets an IEnumerable of the indexes of the responses to skip for the current dialog item.
+        /// </summary>
+        /// <returns>An IEnumerable of the indexes of the responses to skip for the current dialog item.</returns>
         IEnumerable<byte> GetResponsesToSkip()
         {
             List<byte> retValues = null;
 
-            foreach (var response in _page.Responses)
+            foreach (var response in _dialogItem.Responses)
             {
                 if (!response.CheckConditionals(_user, _chattingWith))
                 {
@@ -286,7 +323,7 @@ namespace DemoGame.Server
         /// </summary>
         void NotifyUserOfNewPage()
         {
-            if (_page == null)
+            if (_dialogItem == null)
             {
                 // Dialog has ended
                 using (PacketWriter pw = ServerPacket.EndChatDialog())
@@ -297,7 +334,7 @@ namespace DemoGame.Server
             else
             {
                 // New page
-                using (PacketWriter pw = ServerPacket.SetChatDialogPage(_page.Index, GetResponsesToSkip()))
+                using (PacketWriter pw = ServerPacket.SetChatDialogPage(_dialogItem.Index, GetResponsesToSkip()))
                 {
                     _user.Send(pw);
                 }
@@ -326,7 +363,7 @@ namespace DemoGame.Server
             // Get the first page to use
             NPCChatDialogItemBase initialPage = ChatDialog.GetInitialDialogItem();
             Debug.Assert(initialPage != null);
-            _page = GetNextDialogPage(initialPage);
+            _dialogItem = GetNextDialogPage(initialPage);
 
             // Tell the user which page to use
             NotifyUserOfNewPage();
