@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.Graphics.GUI
 {
     /// <summary>
-    /// Describes a string of text and the style it uses. This class is immutable.
+    /// Describes a string of text and the style it uses.
     /// </summary>
     public class StyledText
     {
@@ -17,6 +17,29 @@ namespace NetGore.Graphics.GUI
 
         readonly Color _color;
         readonly string _text;
+
+        float _width;
+        SpriteFont _fontUsedToMeasure;
+
+        /// <summary>
+        /// Gets the width of this StyledText for the given <paramref name="font"/>.
+        /// </summary>
+        /// <param name="font">The SpriteFont to use to measure.</param>
+        /// <returns>The width of this StyledText for the given <paramref name="font"/>.</returns>
+        public float GetWidth(SpriteFont font)
+        {
+            if (font == null)
+                throw new ArgumentNullException("font");
+
+            // Re-measure (or measure for the first time
+            if (_fontUsedToMeasure == null || _fontUsedToMeasure != font)
+            {
+                _width = font.MeasureString(Text).X;
+                _fontUsedToMeasure = font;
+            }
+
+            return _width;
+        }
 
         /// <summary>
         /// Gets the color of the text.
@@ -81,7 +104,10 @@ namespace NetGore.Graphics.GUI
             var ret = new StyledText[strings.Length];
             for (int i = 0; i < ret.Length; i++)
             {
-                ret[i] = new StyledText(strings[i], Color);
+                if (strings[i] == Text)
+                    ret[i] = this;
+                else
+                    ret[i] = new StyledText(strings[i], Color);
             }
 
             return ret;
@@ -102,7 +128,10 @@ namespace NetGore.Graphics.GUI
             var ret = new StyledText[strings.Length];
             for (int i = 0; i < ret.Length; i++)
             {
-                ret[i] = new StyledText(strings[i], Color);
+                if (strings[i] == Text)
+                    ret[i] = this;
+                else
+                    ret[i] = new StyledText(strings[i], Color);
             }
 
             return ret;
@@ -126,7 +155,10 @@ namespace NetGore.Graphics.GUI
             var ret = new StyledText[strings.Length];
             for (int i = 0; i < ret.Length; i++)
             {
-                ret[i] = new StyledText(strings[i], Color);
+                if (strings[i] == Text)
+                    ret[i] = this;
+                else
+                    ret[i] = new StyledText(strings[i], Color);
             }
 
             return ret;
@@ -150,7 +182,10 @@ namespace NetGore.Graphics.GUI
             var ret = new StyledText[strings.Length];
             for (int i = 0; i < ret.Length; i++)
             {
-                ret[i] = new StyledText(strings[i], Color);
+                if (strings[i] == Text)
+                    ret[i] = this;
+                else
+                    ret[i] = new StyledText(strings[i], Color);
             }
 
             return ret;
@@ -173,7 +208,10 @@ namespace NetGore.Graphics.GUI
             var ret = new StyledText[strings.Length];
             for (int i = 0; i < ret.Length; i++)
             {
-                ret[i] = new StyledText(strings[i], Color);
+                if (strings[i] == Text)
+                    ret[i] = this;
+                else
+                    ret[i] = new StyledText(strings[i], Color);
             }
 
             return ret;
@@ -196,7 +234,10 @@ namespace NetGore.Graphics.GUI
             var ret = new StyledText[strings.Length];
             for (int i = 0; i < ret.Length; i++)
             {
-                ret[i] = new StyledText(strings[i], Color);
+                if (strings[i] == Text)
+                    ret[i] = this;
+                else
+                    ret[i] = new StyledText(strings[i], Color);
             }
 
             return ret;
@@ -213,6 +254,9 @@ namespace NetGore.Graphics.GUI
         public StyledText Substring(int startIndex)
         {
             string s = Text.Substring(startIndex);
+            if (string.IsNullOrEmpty(s))
+                return this;
+
             return new StyledText(s, Color);
         }
 
@@ -228,6 +272,9 @@ namespace NetGore.Graphics.GUI
         public StyledText Substring(int startIndex, int length)
         {
             string s = Text.Substring(startIndex, length);
+            if (string.IsNullOrEmpty(s))
+                return this;
+
             return new StyledText(s, Color);
         }
 
@@ -239,6 +286,9 @@ namespace NetGore.Graphics.GUI
         /// <returns>A new StyledText with the concatenated strings of the two arguments.</returns>
         public static StyledText operator +(StyledText l, string r)
         {
+            if (string.IsNullOrEmpty(r))
+                return l;
+
             return new StyledText(l.Text + r, l.Color);
         }
     }
