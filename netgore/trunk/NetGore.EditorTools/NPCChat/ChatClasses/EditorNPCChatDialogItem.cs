@@ -161,6 +161,8 @@ namespace NetGore.EditorTools.NPCChat
             _responses.Add(response);
             int index = _responses.IndexOf(response);
             response.SetValue((byte)index);
+
+            EnsureResponseValuesAreValid();
         }
 
         /// <summary>
@@ -240,10 +242,23 @@ namespace NetGore.EditorTools.NPCChat
             SetText(text);
 
             _responses.Clear();
-            _responses.AddRange(responses.Cast<EditorNPCChatResponse>());
+            _responses.AddRange(responses.Cast<EditorNPCChatResponse>().OrderBy(x => x.Value));
+            EnsureResponseValuesAreValid();
 
             EditorNPCChatConditionalCollection c = conditionals as EditorNPCChatConditionalCollection;
             _conditionals = c ?? new EditorNPCChatConditionalCollection();
+        }
+
+        /// <summary>
+        /// Ensures that the <see cref="EditorNPCChatResponse.Value"/> for each <see cref="EditorNPCChatResponse"/> is valid.
+        /// </summary>
+        void EnsureResponseValuesAreValid()
+        {
+            for (int i = 0; i < _responses.Count; i++)
+            {
+                if (_responses[i].Value != i)
+                    _responses[i].SetValue((byte)i);
+            }
         }
 
         /// <summary>
