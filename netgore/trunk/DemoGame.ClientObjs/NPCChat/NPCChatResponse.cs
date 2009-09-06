@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
@@ -15,6 +16,14 @@ namespace DemoGame.Client.NPCChat
         ushort _page;
         string _text;
         byte _value;
+
+        /// <summary>
+        /// Not used by the Client, and will always return an empty collection.
+        /// </summary>
+        public override IEnumerable<NPCChatResponseActionBase> Actions
+        {
+            get { return NPCChatResponseActionBase.EmptyActions; }
+        }
 
         /// <summary>
         /// Not used by the Client, and will always return null.
@@ -75,7 +84,8 @@ namespace DemoGame.Client.NPCChat
         /// <param name="page">The page.</param>
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
-        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals)
+        /// <param name="actions">The actions.</param>
+        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals, NPCChatResponseActionBase[] actions)
         {
             Debug.Assert(_value == default(byte) && _page == default(ushort) && _text == default(string),
                          "Values were already set?");

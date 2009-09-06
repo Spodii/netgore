@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
 using NetGore.IO;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
@@ -15,6 +15,7 @@ namespace NetGore.EditorTools.NPCChat
     /// </summary>
     public class EditorNPCChatResponse : NPCChatResponseBase
     {
+        NPCChatResponseActionBase[] _actions;
         NPCChatConditionalCollectionBase _conditionals;
         ushort _page;
         string _text;
@@ -24,6 +25,20 @@ namespace NetGore.EditorTools.NPCChat
         /// Notifies listeners when the EditorNPCChatResponse has changed.
         /// </summary>
         public event EditorNPCChatResponseEventHandler OnChange;
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="NPCChatResponseActionBase"/>s that are
+        /// executed when selecting this <see cref="NPCChatResponseBase"/>. This value will never be null, but
+        /// it can be an empty IEnumerable.
+        /// </summary>
+        public override IEnumerable<NPCChatResponseActionBase> Actions
+        {
+            get
+            {
+                Debug.Assert(_actions != null);
+                return _actions;
+            }
+        }
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
@@ -150,10 +165,12 @@ namespace NetGore.EditorTools.NPCChat
         /// <param name="page">The page.</param>
         /// <param name="text">The text.</param>
         /// <param name="conditionals">The conditionals.</param>
-        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals)
+        protected override void SetReadValues(byte value, ushort page, string text, NPCChatConditionalCollectionBase conditionals,
+                                              NPCChatResponseActionBase[] actions)
         {
             _value = value;
             _page = page;
+            _actions = actions;
             SetText(text);
 
             EditorNPCChatConditionalCollection c = conditionals as EditorNPCChatConditionalCollection;
