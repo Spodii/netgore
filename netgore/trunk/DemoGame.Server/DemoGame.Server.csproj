@@ -137,6 +137,9 @@
     <Compile Include="NPCChat\NPCChatDialogItem.cs" />
     <Compile Include="NPCChat\NPCChatManager.cs" />
     <Compile Include="NPCChat\NPCChatResponse.cs" />
+    <Compile Include="NPCChat\NPCChatResponseAction.cs" />
+    <Compile Include="NPCChat\ResponseActions\RestoreHP.cs" />
+    <Compile Include="NPCChat\ResponseActions\RestoreMP.cs" />
     <Compile Include="Queries\UpdateCharacterQuery.cs" />
     <Compile Include="Say\SayCommands.cs" />
     <Compile Include="Say\SayHandler.cs" />
