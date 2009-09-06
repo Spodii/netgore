@@ -248,8 +248,6 @@ namespace NetGore.NPCChat
         /// <param name="writer">IValueWriter to write the values to.</param>
         public void Write(IValueWriter writer)
         {
-            // TODO: Make the editor objects ensure that the response values are property updated and such
-
             AssertBranchHasTwoResponses();
             AssertNonBranchHasNoConditionals();
             AssertResponsesHaveValidValues();
