@@ -20,7 +20,6 @@ namespace NetGore.EditorTools.NPCChat
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
-        readonly List<TreeNode> _treeNodes = new List<TreeNode>();
         NPCChatConditionalCollectionBase _conditionals;
         ushort _index;
         bool _isBranch;
@@ -94,15 +93,6 @@ namespace NetGore.EditorTools.NPCChat
         public override string Title
         {
             get { return _title; }
-        }
-
-        /// <summary>
-        /// Gets the List of TreeNodes that use this EditorNPCChatDialogItem. This should only be used by the
-        /// <see cref="EditorNPCChatDialogItem"/>.
-        /// </summary>
-        internal List<TreeNode> TreeNodes
-        {
-            get { return _treeNodes; }
         }
 
         /// <summary>

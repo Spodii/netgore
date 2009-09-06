@@ -15,7 +15,6 @@ namespace NetGore.EditorTools.NPCChat
     /// </summary>
     public class EditorNPCChatResponse : NPCChatResponseBase
     {
-        readonly List<TreeNode> _treeNodes = new List<TreeNode>(1);
         NPCChatConditionalCollectionBase _conditionals;
         ushort _page;
         string _text;
@@ -53,15 +52,6 @@ namespace NetGore.EditorTools.NPCChat
         public override string Text
         {
             get { return _text; }
-        }
-
-        /// <summary>
-        /// Gets the List of TreeNodes that use this EditorNPCChatResponse. This should only be used by the
-        /// <see cref="EditorNPCChatDialogItem"/>.
-        /// </summary>
-        internal List<TreeNode> TreeNodes
-        {
-            get { return _treeNodes; }
         }
 
         /// <summary>
