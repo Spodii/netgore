@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -63,18 +65,31 @@ namespace DemoGame.Server.NPCChat
             return new NPCChatDialogItem(reader);
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatDialogItemBase for the given page number.
         /// </summary>
-        /// <param name="page">The page number of the NPCChatDialogItemBase to get.</param>
-        /// <returns>The NPCChatDialogItemBase for the given <paramref name="page"/>, or null if no valid
-        /// NPCChatDialogItemBase existed for the given <paramref name="page"/>.</returns>
-        public override NPCChatDialogItemBase GetDialogItem(ushort page)
+        /// <param name="chatDialogItemIndex">The page number of the NPCChatDialogItemBase to get.</param>
+        /// <returns>The NPCChatDialogItemBase for the given <paramref name="chatDialogItemIndex"/>, or null if
+        /// no valid NPCChatDialogItemBase existed for the given <paramref name="chatDialogItemIndex"/> or if
+        /// the <paramref name="chatDialogItemIndex"/> is equal to
+        /// <see cref="NPCChatResponseBase.EndConversationPage"/>.</returns>
+        public override NPCChatDialogItemBase GetDialogItem(ushort chatDialogItemIndex)
         {
-            if (page < 0 || page >= _items.Length)
-                throw CreateInvalidResponseIndexException("page", page);
+            if (chatDialogItemIndex == NPCChatResponseBase.EndConversationPage)
+                return null;
 
-            return _items[page];
+            if (chatDialogItemIndex < 0 || chatDialogItemIndex >= _items.Length)
+            {
+                const string errmsg = "Invalid NPCChatDialogItemBase index `{0}`.";
+                Debug.Fail(string.Format(errmsg, chatDialogItemIndex));
+                if (log.IsWarnEnabled)
+                    log.ErrorFormat(errmsg, chatDialogItemIndex);
+                return null;
+            }
+
+            return _items[chatDialogItemIndex];
         }
 
         /// <summary>
