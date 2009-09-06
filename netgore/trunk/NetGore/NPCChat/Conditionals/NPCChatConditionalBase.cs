@@ -15,27 +15,32 @@ namespace NetGore.NPCChat.Conditionals
     public abstract class NPCChatConditionalBase
     {
         /// <summary>
-        /// Array used for an empty set of INPCChatConditionalParameters.
+        /// Array used for an empty set of <see cref="NPCChatConditionalParameter"/>s.
         /// </summary>
         static readonly NPCChatConditionalParameter[] _emptyParameters = new NPCChatConditionalParameter[0];
 
         /// <summary>
-        /// Array used for an empty set of NPCChatConditionalParameterTypes.
+        /// Array used for an empty set of <see cref="NPCChatConditionalParameterType"/>s.
         /// </summary>
         static readonly NPCChatConditionalParameterType[] _emptyParameterTypes = new NPCChatConditionalParameterType[0];
 
         /// <summary>
-        /// Dictionary that contains the NPCChatConditionalBase instance of each derived class, with the Name as the key.
+        /// Dictionary that contains the <see cref="NPCChatConditionalBase"/> instance
+        /// of each derived class, with the <see cref="Name"/> as the key.
         /// </summary>
         static readonly Dictionary<string, NPCChatConditionalBase> _instances =
             new Dictionary<string, NPCChatConditionalBase>(_nameComparer);
 
         /// <summary>
-        /// StringComparer used for the Name.
+        /// StringComparer used for the <see cref="Name"/>.
         /// </summary>
         static readonly StringComparer _nameComparer = StringComparer.Ordinal;
 
+        /// <summary>
+        /// Loads and manages the derived Types for this collection.
+        /// </summary>
         static readonly FactoryTypeCollection _typeCollection;
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly string _name;
@@ -66,7 +71,8 @@ namespace NetGore.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// Gets an IEnumerable of the <see cref="NPCChatConditionalParameterType"/> used in this NPCChatConditionalBase.
+        /// Gets an IEnumerable of the <see cref="NPCChatConditionalParameterType"/> used in this
+        /// <see cref="NPCChatConditionalBase"/>.
         /// </summary>
         public IEnumerable<NPCChatConditionalParameterType> ParameterTypes
         {
@@ -91,6 +97,9 @@ namespace NetGore.NPCChat.Conditionals
         /// <param name="parameterTypes">The parameter types.</param>
         protected NPCChatConditionalBase(string name, params NPCChatConditionalParameterType[] parameterTypes)
         {
+            if (string.IsNullOrEmpty(name))
+                throw new ArgumentNullException("name");
+
             if (parameterTypes == null || parameterTypes.Length == 0)
                 parameterTypes = _emptyParameterTypes;
 
@@ -99,13 +108,29 @@ namespace NetGore.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// Gets if a NPCChatConditionalBase with the given <paramref name="name"/> exists.
+        /// Gets if a <see cref="NPCChatConditionalBase"/> with the given <paramref name="name"/> exists.
         /// </summary>
-        /// <param name="name">The name of the NPCChatConditionalBase.</param>
-        /// <returns>True if a NPCChatConditionalBase with the given <paramref name="name"/> exists; otherwise false.</returns>
+        /// <param name="name">The name of the <see cref="NPCChatConditionalBase"/>.</param>
+        /// <returns>True if a <see cref="NPCChatConditionalBase"/> with the given <paramref name="name"/>
+        /// exists; otherwise false.</returns>
         public static bool ContainsConditional(string name)
         {
+            if (string.IsNullOrEmpty(name))
+                return false;
+
             return _instances.ContainsKey(name);
+        }
+
+        /// <summary>
+        /// Tries to get the <see cref="NPCChatConditionalBase"/> with the given <paramref name="name"/>.
+        /// </summary>
+        /// <param name="name">The name of the <see cref="NPCChatConditionalBase"/> to get.</param>
+        /// <param name="value">If the method returns true, contains the <see cref="NPCChatConditionalBase"/>
+        /// with the given <paramref name="name"/>.</param>
+        /// <returns>True if the <paramref name="value"/> was successfully acquired; otherwise false.</returns>
+        public static bool TryGetResponseAction(string name, out NPCChatConditionalBase value)
+        {
+            return _instances.TryGetValue(name, out value);
         }
 
         /// <summary>
@@ -193,7 +218,7 @@ namespace NetGore.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// Handles when a new type has been loaded into a FactoryTypeCollection.
+        /// Handles when a new type has been loaded into the FactoryTypeCollection.
         /// </summary>
         /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
