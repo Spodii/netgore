@@ -324,7 +324,8 @@ namespace NetGore.Collections
 
             if (constructorParams != null)
             {
-                if (type.GetConstructor(constructorParams) == null)
+                const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+                if (type.GetConstructor(flags, null, constructorParams, null) == null)
                 {
                     if (requireConstructor)
                     {

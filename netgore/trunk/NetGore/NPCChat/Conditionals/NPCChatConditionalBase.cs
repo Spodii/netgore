@@ -50,7 +50,7 @@ namespace NetGore.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// Gets the unique name for this INPCChatConditional. This string is case-sensitive.
+        /// Gets the unique name for this <see cref="NPCChatConditionalBase"/>. This string is case-sensitive.
         /// </summary>
         public string Name
         {
@@ -58,7 +58,7 @@ namespace NetGore.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// Gets the number of parameters required by this NPCChatConditionalBase.
+        /// Gets the number of parameters required by this <see cref="NPCChatConditionalBase"/>.
         /// </summary>
         public int ParameterCount
         {
@@ -66,7 +66,7 @@ namespace NetGore.NPCChat.Conditionals
         }
 
         /// <summary>
-        /// Gets an IEnumerable of the NPCChatConditionalParameterTypes used in this NPCChatConditionalBase.
+        /// Gets an IEnumerable of the <see cref="NPCChatConditionalParameterType"/> used in this NPCChatConditionalBase.
         /// </summary>
         public IEnumerable<NPCChatConditionalParameterType> ParameterTypes
         {
@@ -86,8 +86,8 @@ namespace NetGore.NPCChat.Conditionals
         /// <summary>
         /// Initializes a new instance of the <see cref="NPCChatConditionalBase"/> class.
         /// </summary>
-        /// <param name="name">The unique display name of this NPCChatConditionalBase. This name must be unique
-        /// for each derived class type. This string is case-sensitive.</param>
+        /// <param name="name">The unique display name of this <see cref="NPCChatConditionalBase"/>. This name
+        /// must be unique for each derived class type. This string is case-sensitive.</param>
         /// <param name="parameterTypes">The parameter types.</param>
         protected NPCChatConditionalBase(string name, params NPCChatConditionalParameterType[] parameterTypes)
         {
