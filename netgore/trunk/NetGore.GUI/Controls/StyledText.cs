@@ -9,20 +9,28 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class StyledText
     {
-        /// <summary>
-        /// Color of the text.
-        /// </summary>
-        public readonly Color Color;
+        readonly Color _color;
+        readonly string _text;
 
         /// <summary>
-        /// String of text.
+        /// Gets the color of the text.
         /// </summary>
-        public readonly string Text;
+        public Color Color { get { return _color; } }
 
+        /// <summary>
+        /// Gets the text.
+        /// </summary>
+        public string Text { get { return _text; } }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StyledText"/> class.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="color">The color.</param>
         public StyledText(string text, Color color)
         {
-            Text = text;
-            Color = color;
+            _text = text;
+            _color = color;
         }
 
         /// <summary>
