@@ -10,10 +10,31 @@ Target Server Type    : MYSQL
 Target Server Version : 50136
 File Encoding         : 65001
 
-Date: 2009-08-26 15:04:36
+Date: 2009-09-10 00:19:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+-- ----------------------------
+-- Table structure for `account`
+-- ----------------------------
+DROP TABLE IF EXISTS `account`;
+CREATE TABLE `account` (
+  `id` int(11) NOT NULL COMMENT 'The account ID.',
+  `name` varchar(30) NOT NULL COMMENT 'The account name.',
+  `password` varchar(30) NOT NULL COMMENT 'The account password.',
+  `email` varchar(60) NOT NULL COMMENT 'The email address.',
+  `time_created` datetime NOT NULL COMMENT 'The DateTime of when the account was created.',
+  `time_last_login` datetime NOT NULL COMMENT 'The DateTime that the account was last logged in to.',
+  `current_ip` int(10) unsigned DEFAULT NULL COMMENT 'IP address currently logged in to the account, or null if nobody is logged in.',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of account
+-- ----------------------------
+INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-09-07 15:43:24', '16777343');
+
 -- ----------------------------
 -- Table structure for `alliance`
 -- ----------------------------
@@ -78,9 +99,9 @@ INSERT INTO `alliance_hostile` VALUES ('1', '0', '0');
 DROP TABLE IF EXISTS `character`;
 CREATE TABLE `character` (
   `id` int(11) NOT NULL,
+  `account_id` int(11) DEFAULT NULL,
   `character_template_id` smallint(5) unsigned DEFAULT NULL,
-  `name` varchar(50) NOT NULL,
-  `password` varchar(50) NOT NULL DEFAULT '',
+  `name` varchar(30) NOT NULL,
   `map_id` smallint(5) unsigned NOT NULL DEFAULT '1',
   `chat_dialog` smallint(5) unsigned DEFAULT NULL,
   `x` float NOT NULL DEFAULT '100',
@@ -115,22 +136,24 @@ CREATE TABLE `character` (
   `tact` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `ws` tinyint(3) unsigned NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `idx_name` (`name`),
   KEY `template_id` (`character_template_id`),
   KEY `respawn_map` (`respawn_map`),
   KEY `character_ibfk_2` (`map_id`),
+  KEY `idx_name` (`name`) USING BTREE,
+  KEY `account_id` (`account_id`),
   CONSTRAINT `character_ibfk_2` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_3` FOREIGN KEY (`respawn_map`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
-  CONSTRAINT `character_ibfk_4` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `character_ibfk_4` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `character_ibfk_5` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of character
 -- ----------------------------
-INSERT INTO `character` VALUES ('1', null, 'Spodi', 'asdf', '2', null, '543.2', '402', '1', '500', '200', '1', '41', '19', '549', '74', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2', '1', '1');
-INSERT INTO `character` VALUES ('2', '1', 'Test A', '', '2', null, '930', '530', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', '1', 'Test B', '', '2', null, '546.8', '402', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('4', null, 'Talking Guy', '', '2', '0', '800', '530', '2', '800', '500', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '2', null, '398', '338', '1', '500', '200', '1', '121', '21', '629', '84', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2', '1', '1');
+INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, '736', '503.36', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, '448', '434', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', '0', '800', '530', '2', '800', '500', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for `character_equipped`
@@ -376,6 +399,25 @@ INSERT INTO `item_template` VALUES ('4', '4', '22', '22', 'Crystal Armor', 'Body
 INSERT INTO `item_template` VALUES ('5', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '132', '50', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 
 -- ----------------------------
+-- Table structure for `log_account_activity`
+-- ----------------------------
+DROP TABLE IF EXISTS `log_account_activity`;
+CREATE TABLE `log_account_activity` (
+  `id` int(11) NOT NULL,
+  `account_id` int(11) NOT NULL,
+  `ip` int(11) unsigned NOT NULL COMMENT 'The IP address used, formatted as an unsigned 32-bit integer',
+  `time_login` datetime NOT NULL,
+  `time_logout` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `account_id` (`account_id`),
+  CONSTRAINT `log_account_activity_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of log_account_activity
+-- ----------------------------
+
+-- ----------------------------
 -- Table structure for `map`
 -- ----------------------------
 DROP TABLE IF EXISTS `map`;
@@ -417,3 +459,15 @@ CREATE TABLE `map_spawn` (
 INSERT INTO `map_spawn` VALUES ('12', '1', '1', '1', null, null, null, null);
 INSERT INTO `map_spawn` VALUES ('13', '1', '1', '1', null, null, null, null);
 INSERT INTO `map_spawn` VALUES ('14', '1', '1', '1', null, null, null, null);
+
+-- ----------------------------
+-- Table structure for `server_time`
+-- ----------------------------
+DROP TABLE IF EXISTS `server_time`;
+CREATE TABLE `server_time` (
+  `server_time` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of server_time
+-- ----------------------------

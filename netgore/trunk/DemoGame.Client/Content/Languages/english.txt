@@ -9,5 +9,6 @@ CommandTellReceiver: {0} tells you: "{1}"
 CommandTellInvalidUser: User {0} does not exist.
 CommandTellOfflineUser: User {0} is currently offline.
 
-LoginInvalidNamePassword: Invalid account name and password combination.
-LoginUserAlreadyOnline: This character is already logged in.
+LoginInvalidName: Account with the given name does not exist.
+LoginInvalidPassword: Incorrect password.
+LoginAccountInUse: Account is already in use.
