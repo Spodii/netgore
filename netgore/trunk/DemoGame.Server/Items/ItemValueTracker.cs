@@ -59,12 +59,12 @@ namespace DemoGame.Server
         {
             if (item == null)
             {
-                // If the item is null, then check if ours is also null
+                // If the characterID is null, then check if ours is also null
                 return _isNull;
             }
             else
             {
-                // If the item isn't null, but ours is, then return false
+                // If the characterID isn't null, but ours is, then return false
                 if (_isNull)
                     return false;
 
@@ -76,7 +76,7 @@ namespace DemoGame.Server
 
         public void SetValues(ItemEntityBase item)
         {
-            // Check if we are setting the value to a null item
+            // Check if we are setting the value to a null characterID
             if (item == null)
             {
                 _isNull = true;

@@ -49,13 +49,17 @@ namespace DemoGame
         CommandTellOfflineUser,
 
         /// <summary>
-        /// Tried to log in, but an invalid user name or incorrect password was specified.
-        /// </summary>
-        LoginInvalidNamePassword,
+        /// Tried to log in, but an invalid account name was given.
+        LoginInvalidName,
 
         /// <summary>
-        /// Tried to log in, but the user is already logged in.
+        /// Tried to log in, but an invalid password was given.
         /// </summary>
-        LoginUserAlreadyOnline,
+        LoginInvalidPassword,
+
+        /// <summary>
+        /// Tried to log in, but the account is already in use.
+        /// </summary>
+        LoginAccountInUse
     }
 }

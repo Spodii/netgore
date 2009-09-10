@@ -72,6 +72,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountCharacterInfo.cs" />
+    <Compile Include="AccountCharacterInfoExtensions.cs" />
     <Compile Include="IO\BitStreamExtensions.cs" />
     <Compile Include="BodyIndex.cs" />
     <Compile Include="BodyInfo.cs" />

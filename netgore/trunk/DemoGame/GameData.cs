@@ -23,6 +23,11 @@ namespace DemoGame
         public const int MaxClientSayLength = 255;
 
         /// <summary>
+        /// Maximum number of characters allowed in a single account.
+        /// </summary>
+        public const byte MaxCharactersPerAccount = 10;
+
+        /// <summary>
         /// Maximum length of each parameter string in the server's SendMessage.
         /// </summary>
         public const int MaxServerMessageParameterLength = 250;

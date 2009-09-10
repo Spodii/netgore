@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,7 +21,7 @@ namespace NetGore.Graphics.GUI
         readonly FrameCounter _fps = new FrameCounter();
         readonly ContentManager _mapContent;
 
-        readonly Dictionary<string, GameScreen> _screens = new Dictionary<string, GameScreen>(8);
+        readonly Dictionary<string, GameScreen> _screens = new Dictionary<string, GameScreen>(8, StringComparer.OrdinalIgnoreCase);
 
         GameScreen _activeScreen;
 
@@ -133,6 +135,7 @@ namespace NetGore.Graphics.GUI
             GameScreen ret;
             if (!_screens.TryGetValue(name, out ret))
                 return null;
+
             return ret;
         }
 
@@ -149,11 +152,19 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public void SetScreen(string name)
         {
             GameScreen gs = GetScreen(name);
             if (gs == null)
-                throw new Exception(string.Format("Unknown screen with name '{0}'", name));
+            {
+                const string errmsg = "Unknown screen with name `{0}`.";
+                string err = string.Format(errmsg, name);
+                if (log.IsFatalEnabled)
+                    log.Fatal(err);
+                throw new Exception(err);
+            }
 
             ActiveScreen = gs;
         }

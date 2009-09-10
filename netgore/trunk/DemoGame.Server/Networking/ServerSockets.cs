@@ -44,6 +44,8 @@ namespace DemoGame.Server
         {
             int currTime = Environment.TickCount;
             Remove(conn => (conn.Tag == null) && (currTime - conn.TimeCreated > timeOut));
+
+            // FUTURE: Will also have to add in a check to remove any UserAccounts with no active user and have had no active user for a while
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Linq;
 
 namespace DemoGame
@@ -7,9 +8,13 @@ namespace DemoGame
     /// </summary>
     public enum ServerPacketID : byte
     {
-        // First index (0) is reserved, and must not be used
+        /// <summary>
+        /// This value is reserved and must not be used!
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        RESERVED = 0,
 
-        AddStatusEffect = 1,
+        AddStatusEffect,
         CharAttack,
         CharDamage,
         Chat,
@@ -24,6 +29,7 @@ namespace DemoGame
         Ping,
         RemoveDynamicEntity,
         RemoveStatusEffect,
+        SendAccountCharacters,
         SendItemInfo,
         SendMessage,
         SetCharacterHPPercent,

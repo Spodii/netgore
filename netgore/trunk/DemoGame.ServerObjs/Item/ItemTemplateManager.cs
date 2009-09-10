@@ -65,14 +65,14 @@ namespace DemoGame.Server
             if (dbController == null)
                 throw new ArgumentNullException("dbController");
 
-            // Load the item templates
+            // Load the characterID templates
             var itemTemplates = dbController.GetQuery<SelectItemTemplatesQuery>().Execute();
             foreach (IItemTemplateTable it in itemTemplates)
             {
                 _itemTemplates[(int)it.ID] = it;
 
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Loaded ItemTemplate `{0}`", it);
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Loaded ItemTemplate `{0}`", it);
             }
 
             // Trim the DArray

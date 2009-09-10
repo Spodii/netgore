@@ -11,19 +11,12 @@ namespace DemoGame.Server.Queries
     public class UpdateCharacterQuery : DbQueryNonReader<ICharacterTable>
     {
         static readonly string _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", CharacterTable.TableName,
-                                                            FormatParametersIntoString(
-                                                                CharacterTable.DbNonKeyColumns.Except(FieldsToNotUpdate,
-                                                                                                      StringComparer.
-                                                                                                          OrdinalIgnoreCase)));
+                                                            FormatParametersIntoString(CharacterTable.DbNonKeyColumns));
 
         /// <summary>
-        /// Gets the fields that will not be updated when the Character is updated.
+        /// Initializes a new instance of the <see cref="UpdateCharacterQuery"/> class.
         /// </summary>
-        static IEnumerable<string> FieldsToNotUpdate
-        {
-            get { return new string[] { "password" }; }
-        }
-
+        /// <param name="connectionPool">The connection pool.</param>
         public UpdateCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
@@ -39,7 +32,7 @@ namespace DemoGame.Server.Queries
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified item.
+        /// When overridden in the derived class, sets the database parameters based on the specified characterID.
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="character">Item used to execute the query.</param>

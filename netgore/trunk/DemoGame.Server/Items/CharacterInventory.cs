@@ -46,11 +46,11 @@ namespace DemoGame.Server
 
         public void DecreaseItemAmount(InventorySlot slot)
         {
-            // Get the item
+            // Get the characterID
             ItemEntity item = this[slot];
             if (item == null)
             {
-                const string errmsg = "Tried to decrease amount of inventory slot `{0}`, but it contains no item.";
+                const string errmsg = "Tried to decrease amount of inventory slot `{0}`, but it contains no characterID.";
                 Debug.Fail(string.Format(errmsg, slot));
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, slot);
@@ -60,13 +60,13 @@ namespace DemoGame.Server
             // Check for a valid amount
             if (item.Amount == 0)
             {
-                // If amount is already 0, we will show a warning but still remove the item
+                // If amount is already 0, we will show a warning but still remove the characterID
                 const string errmsg = "Item in slot `{0}` already contains an amount of 0.";
                 Debug.Fail(string.Format(errmsg, slot));
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, slot);
 
-                // Remove the item
+                // Remove the characterID
                 ClearSlot(slot, true);
             }
             else
@@ -74,35 +74,35 @@ namespace DemoGame.Server
                 // Decrease the amount
                 item.Amount--;
 
-                // Remove the item if it ran out
+                // Remove the characterID if it ran out
                 if (item.Amount <= 0)
                     ClearSlot(slot, true);
             }
         }
 
         /// <summary>
-        /// Makes the Character drop the item from their Inventory.
+        /// Makes the Character drop the characterID from their Inventory.
         /// </summary>
-        /// <param name="slot">Slot of the item to drop.</param>
-        /// <returns>True if the item was successfully dropped, else false.</returns>
+        /// <param name="slot">Slot of the characterID to drop.</param>
+        /// <returns>True if the characterID was successfully dropped, else false.</returns>
         public bool Drop(InventorySlot slot)
         {
-            // Get the item to drop
+            // Get the characterID to drop
             ItemEntity dropItem = this[slot];
 
-            // Check for an invalid item
+            // Check for an invalid characterID
             if (dropItem == null)
             {
-                const string errmsg = "Could not drop item since no item exists at slot `{0}`.";
+                const string errmsg = "Could not drop characterID since no characterID exists at slot `{0}`.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, slot);
                 return false;
             }
 
-            // Remove the item from the inventory
+            // Remove the characterID from the inventory
             RemoveAt(slot);
 
-            // Drop the item
+            // Drop the characterID
             Character.DropItem(dropItem);
 
             return true;
@@ -144,7 +144,7 @@ namespace DemoGame.Server
                 if (!_isLoading)
                     DbController.GetQuery<InsertCharacterInventoryItemQuery>().Execute(Character.ID, newItem.ID, slot);
 
-                // Listen to the item for changes
+                // Listen to the characterID for changes
                 newItem.OnChangeGraphicOrAmount += ItemGraphicOrAmountChangeHandler;
             }
 
@@ -153,10 +153,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Handles when an item in the UserInventory has changed the amount or graphic, and notifies the
+        /// Handles when an characterID in the UserInventory has changed the amount or graphic, and notifies the
         /// InventoryUpdater to handle the change.
         /// </summary>
-        /// <param name="item">Item that has changed.</param>
+        /// <param name="characterID">Item that has changed.</param>
         void ItemGraphicOrAmountChangeHandler(ItemEntity item)
         {
             Debug.Assert(_isPersistent, "This should NEVER be called when IsPersistent == false!");
@@ -170,7 +170,7 @@ namespace DemoGame.Server
             }
             catch (ArgumentException ex)
             {
-                log.Warn(string.Format("Failed to get the inventory slot of item `{0}`", item), ex);
+                log.Warn(string.Format("Failed to get the inventory slot of characterID `{0}`", item), ex);
                 return;
             }
 
@@ -190,14 +190,14 @@ namespace DemoGame.Server
             var queryResults = DbController.GetQuery<SelectCharacterInventoryItemsQuery>().Execute(Character.ID);
             foreach (IItemTable values in queryResults)
             {
-                // Make sure no item is already in the slot... just in case
+                // Make sure no characterID is already in the slot... just in case
                 if (this[slot] != null)
                 {
-                    Debug.Fail("An item is already in this slot.");
+                    Debug.Fail("An characterID is already in this slot.");
                     this[slot].Dispose();
                 }
 
-                // Set the item into the slot
+                // Set the characterID into the slot
                 this[slot] = new ItemEntity(values);
                 slot++;
             }
@@ -222,7 +222,7 @@ namespace DemoGame.Server
 
             _disposed = true;
 
-            // If the Character is not persistent, we want to dispose of every item so it doesn't sit in the
+            // If the Character is not persistent, we want to dispose of every characterID so it doesn't sit in the
             // database as garbage
             if (!_isPersistent)
                 RemoveAll(true);

@@ -143,8 +143,8 @@ namespace NetGore.Network
         /// </summary>
         void BeginRecv()
         {
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Beginning receive from {0}", Address);
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Beginning receive from {0}", Address);
 
             try
             {
@@ -239,8 +239,8 @@ namespace NetGore.Network
                 return;
             }
 
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Beginning send of `{0}` bytes to `{1}`", msgLength, Address);
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Beginning send of `{0}` bytes to `{1}`", msgLength, Address);
 
             if (OnSend != null)
                 OnSend(this, msgLength);
@@ -300,8 +300,8 @@ namespace NetGore.Network
 
             _recvBufferPos += readLength;
 
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Received {0} bytes from {1}", readLength, Address);
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Received {0} bytes from {1}", readLength, Address);
 
             // Since data was added to the receive buffer we will need to check for new complete messages
             ProcessRecvBuffer();
@@ -449,9 +449,9 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Sets the socket to be used by the connection
+        /// Sets the socket to be used by the connection.
         /// </summary>
-        /// <param name="newSocket">Socket to be used</param>
+        /// <param name="newSocket">Socket to be used.</param>
         internal void SetSocket(Socket newSocket)
         {
             if (newSocket == null)
@@ -462,7 +462,19 @@ namespace NetGore.Network
 
             _socket = newSocket;
             _address = _socket.RemoteEndPoint.ToString();
+
+            var ipEndPoint = (IPEndPoint)_socket.RemoteEndPoint;
+
+            _port = (ushort)ipEndPoint.Port;
+            Debug.Assert(ipEndPoint.Port >= ushort.MinValue && ipEndPoint.Port <= ushort.MaxValue);
+
+            var ipAddressBytes = ipEndPoint.Address.GetAddressBytes();
+            _ipUInt = IPAddressHelper.IPv4AddressToUInt(ipAddressBytes, 0);
+            Debug.Assert(ipAddressBytes.Length == 4);
         }
+
+        ushort _port;
+        uint _ipUInt;
 
         /// <summary>
         /// Returns a System.String that represents the current TCPSocket.
@@ -479,6 +491,14 @@ namespace NetGore.Network
         #region ITCPSocket Members
 
         /// <summary>
+        /// Gets the port as a 16-bit unsigned integer.
+        /// </summary>
+        public ushort Port
+        {
+            get { return _port; }
+        }
+
+        /// <summary>
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag
         /// is not used in any way by the TCPSocket itself.
         /// </summary>
@@ -491,6 +511,14 @@ namespace NetGore.Network
         public string Address
         {
             get { return _address; }
+        }
+
+        /// <summary>
+        /// Gets the IPv4 address as an unsigned 32-bit integer.
+        /// </summary>
+        public uint IP
+        {
+            get { return _ipUInt; }
         }
 
         /// <summary>

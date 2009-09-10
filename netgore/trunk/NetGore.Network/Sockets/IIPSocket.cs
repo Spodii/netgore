@@ -11,9 +11,20 @@ namespace NetGore.Network
     public interface IIPSocket : IDisposable
     {
         /// <summary>
-        /// Gets the IP address string that this IIPSocket is connected to.
+        /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
+        /// as "xxx.xxx.xxx.xxx:yyyyy". Trailing 0's from each segment are omitted.
         /// </summary>
         string Address { get; }
+
+        /// <summary>
+        /// Gets the IPv4 address as an unsigned 32-bit integer.
+        /// </summary>
+        uint IP { get; }
+
+        /// <summary>
+        /// Gets the port as a 16-bit unsigned integer.
+        /// </summary>
+        ushort Port { get; }
 
         /// <summary>
         /// Gets if this IIPSocket is currently connected.

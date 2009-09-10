@@ -17,6 +17,8 @@ namespace DemoGame.Client
     /// </summary>
     class GameplayScreen : GameScreen, IDisposable, IGetTime
     {
+        public const string ScreenName = "game";
+
         const string _latencyString = "Latency: {0} ms";
 
         /// <summary>
@@ -236,7 +238,7 @@ namespace DemoGame.Client
         /// <summary>
         /// GameplayScreen constructor
         /// </summary>
-        public GameplayScreen(string name) : base(name)
+        public GameplayScreen() : base(ScreenName)
         {
         }
 
@@ -439,8 +441,8 @@ namespace DemoGame.Client
 
         void OnDisconnect(IIPSocket conn)
         {
-            ScreenManager.SetScreen("login");
-            LoginScreen login = (LoginScreen)ScreenManager.GetScreen("login");
+            ScreenManager.SetScreen(LoginScreen.ScreenName);
+            LoginScreen login = (LoginScreen)ScreenManager.GetScreen(LoginScreen.ScreenName);
             login.SetError("Connection to server lost.");
             Dispose();
         }

@@ -10,7 +10,7 @@ using NetGore;
 using NetGore.Network;
 using NetGore.Scripting;
 
-// TODO: When an item stops moving, send the position again to ensure it is valid
+// TODO: When an characterID stops moving, send the position again to ensure it is valid
 
 namespace DemoGame.Server
 {
@@ -43,8 +43,8 @@ namespace DemoGame.Server
         readonly Thread _inputThread;
 
         /// <summary>
-        /// Lock used to ensure that only one user is logging in at a time. The main intention of this is to prevent
-        /// a race condition allowing a User to log in twice with the same character.
+        /// Lock used to ensure that only one account is logging in at a time. The main intention of this is to prevent
+        /// a race condition allowing an account to log in twice from two places at once.
         /// </summary>
         readonly object _loginLock = new object();
 
@@ -119,7 +119,11 @@ namespace DemoGame.Server
             _world = new World(this);
             _sockets = new ServerSockets(this);
 
-            Console.WriteLine("Server is loaded");
+            // Clean-up
+            new ServerRuntimeCleaner(this);
+
+            if (log.IsInfoEnabled)
+                log.Info("Server is loaded");
 
             _inputThread = new Thread(HandleInput) { Name = "Input Handler", IsBackground = true };
         }
@@ -220,13 +224,53 @@ namespace DemoGame.Server
             CreateScriptTypeCollection("AI");
         }
 
+        static void HandleFailedLogin(IIPSocket conn, AccountLoginResult loginResult, string name)
+        {
+            // Get the error message
+            GameMessage loginFailureGameMessage;
+            switch (loginResult)
+            {
+                case AccountLoginResult.AccountInUse:
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Login for account `{0}` failed: Account in use.", name);
+                    loginFailureGameMessage = GameMessage.LoginAccountInUse;
+                    break;
+
+                case AccountLoginResult.InvalidName:
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Login for account `{0}` failed: Invalid name.", name);
+                    loginFailureGameMessage = GameMessage.LoginInvalidName;
+                    break;
+
+                case AccountLoginResult.InvalidPassword:
+                    if (log.IsInfoEnabled)
+                        log.InfoFormat("Login for account `{0}` failed: Incorrect password.", name);
+                    loginFailureGameMessage = GameMessage.LoginInvalidPassword;
+                    break;
+
+                default:
+                    // If the value is undefined, just say its an invalid name
+                    const string errmsg = "Invalid AccountLoginResult value `{0}`.";
+                    Debug.Fail(string.Format(errmsg, loginResult));
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, loginResult);
+                    loginFailureGameMessage = GameMessage.LoginInvalidName;
+                    break;
+            }
+
+            using (PacketWriter pw = ServerPacket.LoginUnsuccessful(loginFailureGameMessage))
+            {
+                conn.Send(pw);
+            }
+        }
+
         /// <summary>
-        /// Handles the login attempt of a user.
+        /// Handles the login attempt of an account.
         /// </summary>
         /// <param name="conn">Connection that the login request was made on.</param>
-        /// <param name="name">Name of the user.</param>
-        /// <param name="password">Entered password for this user.</param>
-        public void LoginUser(IIPSocket conn, string name, string password)
+        /// <param name="name">Name of the account.</param>
+        /// <param name="password">Entered password for this account.</param>
+        public void LoginAccount(IIPSocket conn, string name, string password)
         {
             if (conn == null)
             {
@@ -235,47 +279,41 @@ namespace DemoGame.Server
                 return;
             }
 
-            // Check that the account is valid, and a valid password was specified
-            if (!User.IsValidAccount(DBController.GetQuery<SelectUserPasswordQuery>(), name, password))
-            {
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Login for user `{0}` failed due to invalid name or password.", name);
-
-                using (PacketWriter pw = ServerPacket.LoginUnsuccessful(GameMessage.LoginInvalidNamePassword))
-                {
-                    conn.Send(pw);
-                }
-
-                return;
-            }
+            // Try to log in the account
+            UserAccount userAccount;
+            AccountLoginResult loginResult;
 
             lock (_loginLock)
             {
-                // Check if the user is already logged in
-                if (World.FindUser(name) != null)
-                {
-                    if (log.IsInfoEnabled)
-                        log.InfoFormat("Login for user `{0}` failed since they are already online.", name);
-
-                    using (PacketWriter pw = ServerPacket.LoginUnsuccessful(GameMessage.LoginUserAlreadyOnline))
-                    {
-                        conn.Send(pw);
-                    }
-
-                    return;
-                }
-
-                // Send the "Login Successful" message
-                using (PacketWriter pw = ServerPacket.LoginSuccessful())
-                {
-                    conn.Send(pw);
-                }
-
-                // Create the User
-                new User(conn, World, name);
+                loginResult = UserAccount.Login(DBController, conn, name, password, out userAccount);
             }
+
+            // Check that the login was successful
+            if (loginResult != AccountLoginResult.Successful)
+            {
+                HandleFailedLogin(conn, loginResult, name);
+                return;
+            }
+
+            // Set the connection's tag to the account
+            conn.Tag = userAccount;
+
+            // Send the "Login Successful" message
+            using (PacketWriter pw = ServerPacket.LoginSuccessful())
+            {
+                conn.Send(pw);
+            }
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Login for account `{0}` successful.", name);
+
+            // Send the account characters
+            userAccount.SendAccountCharacterInfos();
         }
 
+        /// <summary>
+        /// Shuts down the Server.
+        /// </summary>
         public void Shutdown()
         {
             _isRunning = false;
@@ -286,7 +324,8 @@ namespace DemoGame.Server
         /// </summary>
         public void Start()
         {
-            Console.WriteLine("Server is starting");
+            if (log.IsInfoEnabled)
+                log.Info("Server is starting");
 
             // Start the input thread
             _inputThread.Start();

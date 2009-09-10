@@ -35,8 +35,8 @@ namespace NetGore
         /// <param name="name">Name of the Type.</param>
         static void OnLoadTypeHandler(FactoryTypeCollection factoryTypeCollection, Type loadedType, string name)
         {
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Loaded DynamicEntity `{0}` from Type `{1}`.", name, loadedType);
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Loaded DynamicEntity `{0}` from Type `{1}`.", name, loadedType);
         }
 
         /// <summary>

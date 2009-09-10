@@ -187,8 +187,8 @@ namespace DemoGame.NPCChatEditor
         /// <summary>
         /// Tries to add a NPCChatConditionalCollectionItemBase to the ConditionalCollection.
         /// </summary>
-        /// <param name="item">The NPCChatConditionalCollectionItemBase to add.</param>
-        /// <returns>True if the <paramref name="item"/> was successfully added; otherwise false.</returns>
+        /// <param name="characterID">The NPCChatConditionalCollectionItemBase to add.</param>
+        /// <returns>True if the <paramref name="characterID"/> was successfully added; otherwise false.</returns>
         public bool TryAddToConditionalCollection(NPCChatConditionalCollectionItemBase item)
         {
             if (ConditionalCollection == null)

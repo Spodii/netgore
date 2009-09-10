@@ -16,9 +16,9 @@ namespace DemoGame.MapEditor
         DBController _dbController;
         MapBase _map;
 
-        [Description("The PropertyGrid to display the property values for the selected item in this NPCSpawnsListBox.")]
+        [Description("The PropertyGrid to display the property values for the selected characterID in this NPCSpawnsListBox.")]
         /// <summary>
-            /// Gets or sets the PropertyGrid to display the property values for the selected item in this NPCSpawnsListBox.
+            /// Gets or sets the PropertyGrid to display the property values for the selected characterID in this NPCSpawnsListBox.
             /// </summary>
             public PropertyGrid PropertyGrid { get; set; }
 
@@ -58,7 +58,7 @@ namespace DemoGame.MapEditor
 
             if (!Items.Contains(listBoxItem))
             {
-                MessageBox.Show("Failed to find item `{0}` in the ListBox.");
+                MessageBox.Show("Failed to find characterID `{0}` in the ListBox.");
                 return;
             }
 

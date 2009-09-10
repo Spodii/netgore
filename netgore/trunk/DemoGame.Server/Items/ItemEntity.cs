@@ -18,7 +18,7 @@ namespace DemoGame.Server
     public delegate void ItemEntityEventHandler(ItemEntity itemEntity);
 
     /// <summary>
-    /// An item on the server.
+    /// An characterID on the server.
     /// </summary>
     public class ItemEntity : ItemEntityBase, IItemTable
     {
@@ -39,7 +39,7 @@ namespace DemoGame.Server
         int _value;
 
         /// <summary>
-        /// Notifies listeners that the item's Amount or GraphicIndex have changed.
+        /// Notifies listeners that the characterID's Amount or GraphicIndex have changed.
         /// </summary>
         public event ItemEntityEventHandler OnChangeGraphicOrAmount;
 
@@ -74,7 +74,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets or sets the index of the graphic that is used for this item.
+        /// Gets or sets the index of the graphic that is used for this characterID.
         /// </summary>
         public override GrhIndex GraphicIndex
         {
@@ -181,15 +181,15 @@ namespace DemoGame.Server
         /// <returns>True if this <see cref="Entity"/> can be picked up, else false.</returns>
         public override bool CanPickup(CharacterEntity charEntity)
         {
-            // Every character can pick up an item
+            // Every character can pick up an characterID
             return true;
         }
 
         /// <summary>
-        /// Checks if this item can be stacked with another item. To stack, both items must contain the same
+        /// Checks if this characterID can be stacked with another characterID. To stack, both items must contain the same
         /// stat modifiers, name, description, value, and graphic index.
         /// </summary>
-        /// <param name="source">Item to check if can stack on this item</param>
+        /// <param name="source">Item to check if can stack on this characterID</param>
         /// <returns>True if the two items can stack on each other, else false</returns>
         public override bool CanStack(ItemEntityBase source)
         {
@@ -199,7 +199,7 @@ namespace DemoGame.Server
                 // Although it makes sense for an ItemEntity to be able to stack onto itself,
                 // there is no reason this should ever happen intentionally
                 const string errmsg =
-                    "Trying to stack an item `{0}` onto itself. Although this is not an error, " +
+                    "Trying to stack an characterID `{0}` onto itself. Although this is not an error, " +
                     "it makes no sense why it would be attempted.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, this);
@@ -246,10 +246,10 @@ namespace DemoGame.Server
         /// </summary>
         protected override void HandleDispose()
         {
-            // Delete the item from the database
+            // Delete the characterID from the database
             DeleteItem.Execute(ID);
 
-            // Free the item's ID
+            // Free the characterID's ID
             IDCreator.FreeID((int)ID);
 
             base.HandleDispose();
@@ -259,7 +259,7 @@ namespace DemoGame.Server
         /// Initializes the objects needed for assisting the ItemEntity creation and destruction. Must be called
         /// before any ItemEntity is created.
         /// </summary>
-        /// <param name="dbController">DBController used to communicate with the database for item data.</param>
+        /// <param name="dbController">DBController used to communicate with the database for characterID data.</param>
         public static void Initialize(DBController dbController)
         {
             if (dbController == null)
@@ -332,7 +332,7 @@ namespace DemoGame.Server
                 return false;
             }
 
-            // Check if the item can be picked up
+            // Check if the characterID can be picked up
             if (!CanPickup(charEntity))
                 return false;
 
@@ -349,10 +349,10 @@ namespace DemoGame.Server
                 return false;
             }
 
-            // Give the item to the character
+            // Give the characterID to the character
             if (character.GiveItem(this) == null)
             {
-                // The item was all added to the inventory, so dispose of it
+                // The characterID was all added to the inventory, so dispose of it
                 // The map automatically removes disposed Entities
                 Dispose();
             }
@@ -420,7 +420,7 @@ namespace DemoGame.Server
         #region IItemTable Members
 
         /// <summary>
-        /// Gets or sets the size of this item cluster (1 for a single item).
+        /// Gets or sets the size of this characterID cluster (1 for a single characterID).
         /// </summary>
         public override byte Amount
         {
@@ -440,7 +440,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets or sets the description of the item.
+        /// Gets or sets the description of the characterID.
         /// </summary>
         public override string Description
         {
@@ -509,7 +509,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets or sets the name of the item.
+        /// Gets or sets the name of the characterID.
         /// </summary>
         public override string Name
         {
@@ -544,7 +544,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets or sets the type of item this is.
+        /// Gets or sets the type of characterID this is.
         /// </summary>
         public override ItemType Type
         {
@@ -561,7 +561,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets or sets the value of the item.
+        /// Gets or sets the value of the characterID.
         /// </summary>
         public override int Value
         {

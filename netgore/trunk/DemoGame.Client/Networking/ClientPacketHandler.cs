@@ -27,6 +27,9 @@ namespace DemoGame.Client
         readonly Stopwatch _pingWatch = new Stopwatch();
         readonly MessageProcessorManager _ppManager;
         readonly ISocketSender _socketSender;
+        readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
+
+        public AccountCharacterInfos AccountCharacterInfos { get { return _accountCharacterInfos; } }
 
         /// <summary>
         /// Notifies listeners when a successful login request has been made.
@@ -39,7 +42,7 @@ namespace DemoGame.Client
         public event SocketEventHandler<string> OnLoginUnsuccessful;
 
         /// <summary>
-        /// Gets the GameplayScreen the ClientSockets are a part of
+        /// Gets the GameplayScreen.
         /// </summary>
         public GameplayScreen GameplayScreen
         {
@@ -47,7 +50,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the ItemInfoTooltip from the GameplayScreen
+        /// Gets the ItemInfoTooltip from the GameplayScreen.
         /// </summary>
         public ItemInfoTooltip ItemInfoTooltip
         {
@@ -113,6 +116,20 @@ namespace DemoGame.Client
             }
 
             _pingWatch.Start();
+        }
+
+        [MessageHandler((byte)ServerPacketID.SendAccountCharacters)]
+        void RecvSendAccountCharacters(IIPSocket conn, BitStream r)
+        {
+            byte count = r.ReadByte();
+            AccountCharacterInfo[] charInfos = new AccountCharacterInfo[count];
+            for (int i = 0; i < count; i++)
+            {
+                AccountCharacterInfo charInfo = r.ReadAccountCharacterInfo();
+                charInfos[charInfo.Index] = charInfo;
+            }
+
+            _accountCharacterInfos.SetInfos(charInfos);
         }
 
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
@@ -425,6 +442,9 @@ namespace DemoGame.Client
 
             // Unload all map content from the previous map and from the new map loading
             GameplayScreen.ScreenManager.MapContent.Unload();
+
+            // Change the screens, if needed
+            GameplayScreen.ScreenManager.SetScreen(GameplayScreen.ScreenName);
         }
 
         [MessageHandler((byte)ServerPacketID.SetMP)]
