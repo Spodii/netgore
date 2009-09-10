@@ -15,7 +15,7 @@ using NetGore.NPCChat.Conditionals;
 // TODO: Do not allow responses to be added to a EditorNPCChatDialogItem where IsBranch is set
 // TODO: Do not allow responses immediately under a branch to be altered in any ways
 // TODO: Ability to change the order of the actions
-// TODO: An indicator for when a dialog item or response has conditionals
+// TODO: An indicator for when a dialog characterID or response has conditionals
 // TODO: An indicator for when a response has actions
 
 namespace DemoGame.NPCChatEditor
@@ -115,16 +115,16 @@ namespace DemoGame.NPCChatEditor
             if (EditingObjAsResponse == null)
                 return;
 
-            // Make sure there isn't already a dialog item
+            // Make sure there isn't already a dialog characterID
             if (EditingObjAsResponse.Page != EditorNPCChatResponse.EndConversationPage)
             {
-                MessageBox.Show("This response already has a dialog item.");
+                MessageBox.Show("This response already has a dialog characterID.");
                 return;
             }
 
-            // Create the new dialog item
+            // Create the new dialog characterID
             ushort index = CurrentDialog.GetFreeDialogItemIndex();
-            EditorNPCChatDialogItem newDialogItem = new EditorNPCChatDialogItem(index, "New dialog item");
+            EditorNPCChatDialogItem newDialogItem = new EditorNPCChatDialogItem(index, "New dialog characterID");
             CurrentDialog.Add(newDialogItem);
 
             // Hook it to the response
@@ -133,7 +133,7 @@ namespace DemoGame.NPCChatEditor
             // Update the tree
             npcChatDialogView.UpdateTree();
 
-            // TODO: Select the new dialog item in the tree
+            // TODO: Select the new dialog characterID in the tree
         }
 
         /// <summary>
@@ -149,10 +149,10 @@ namespace DemoGame.NPCChatEditor
             if (EditingObjAsResponse == null)
                 return;
 
-            // Make sure there isn't already a dialog item
+            // Make sure there isn't already a dialog characterID
             if (EditingObjAsResponse.Page != EditorNPCChatResponse.EndConversationPage)
             {
-                MessageBox.Show("This response already has a dialog item.");
+                MessageBox.Show("This response already has a dialog characterID.");
                 return;
             }
 
@@ -162,7 +162,7 @@ namespace DemoGame.NPCChatEditor
             // TODO: Properly update the tree
             button1_Click(null, null);
 
-            // TODO: Select the new dialog item in the tree
+            // TODO: Select the new dialog characterID in the tree
         }
 
         /// <summary>
@@ -207,7 +207,7 @@ namespace DemoGame.NPCChatEditor
             // Make sure this isn't the dialog
             if (EditingObjAsDialogItem.Index == 0)
             {
-                MessageBox.Show("Cannot delete the root dialog item.");
+                MessageBox.Show("Cannot delete the root dialog characterID.");
                 return;
             }
 
@@ -346,7 +346,7 @@ namespace DemoGame.NPCChatEditor
 
             const string msgSetAsNonBranch =
                 "Are you sure you wish to change this dialog to a normal dialog?" +
-                " Changing to a normal dialog will result in all conditionals for this dialog item to be lost.";
+                " Changing to a normal dialog will result in all conditionals for this dialog characterID to be lost.";
 
             const string msgSetAsBranch =
                 "Are you sure you wish to change this dialog to a conditional branch?" +

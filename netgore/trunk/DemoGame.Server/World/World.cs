@@ -195,33 +195,65 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Gets the <see cref="UserAccount"/> attached to the <paramref name="conn"/>.
+        /// </summary>
+        /// <param name="conn">The <see cref="IIPSocket"/> to get the <see cref="UserAccount"/> for.</param>
+        /// <returns>The <see cref="UserAccount"/> for the <paramref name="conn"/>, or null if there
+        /// was a problem getting the <see cref="UserAccount"/>.</returns>
+        public static UserAccount GetUserAccount(IIPSocket conn)
+        {
+            if (conn.Tag == null)
+            {
+                const string errmsg = "Tried to get the UserAccount from IIPSocket `{0}`, but it has no tag.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, conn);
+                return null;
+            }
+
+            UserAccount userAccount = conn.Tag as UserAccount;
+            if (userAccount == null)
+            {
+                const string errmsg = "Tried to get the UserAccount from IIPSocket `{0}`, but the tag was invalid (`{1}`).";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, conn, conn.Tag);
+                return null;
+            }
+
+            return userAccount;
+        }
+
+        /// <summary>
         /// Finds a user based on their connection information.
         /// </summary>
         /// <param name="conn">Client connection information.</param>
-        /// <param name="failRecover">If true, will try to find the User even if the TCPSocket isn't properly
+        /// <param name="failRecover">If true, will try to find the User even if the <paramref name="conn"/> isn't properly
         /// bound to the User.</param>
         /// <returns>User bound to the connection if any, else null.</returns>
         public User GetUser(IIPSocket conn, bool failRecover)
         {
-            // Check for a user bound to the connection
-            if (conn.Tag != null)
-                return (User)conn.Tag;
+            UserAccount userAccount = GetUserAccount(conn);
+            if (userAccount == null)
+                return null;
+
+            if (userAccount.User != null)
+                return userAccount.User;
 
             if (!failRecover)
                 return null;
 
-            Debug.Fail("User not bound to connection tag.");
+            const string errmsg = "User not bound to UserAccount.User property.";
+            Debug.Fail(errmsg);
             if (log.IsErrorEnabled)
-                log.Warn("User not bound to connection tag.");
+                log.Error(errmsg);
 
             // No user bound to connection, perform manual search
             User ret = _users.Values.FirstOrDefault(x => x.Conn == conn);
             if (ret == null)
             {
-                const string errmsg = "No user found on socket `{0}`.";
-                Debug.Fail(string.Format(errmsg, conn));
-                if (log.IsWarnEnabled)
-                    log.ErrorFormat(errmsg, conn);
+                const string errmsg2 = "No user found on socket `{0}`.";
+                Debug.Fail(string.Format(errmsg2, conn));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg2, conn);
             }
 
             // Return value, which will be null if none found

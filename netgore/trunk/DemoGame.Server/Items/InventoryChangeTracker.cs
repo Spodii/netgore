@@ -38,10 +38,10 @@ namespace DemoGame.Server
                 if (ItemValueTracker.AreValuesEqual(invItem, tracker))
                     continue;
 
-                // Yield return the changed item results
+                // Yield return the changed characterID results
                 yield return new InventoryChangeInfo(invItem, tracker, new InventorySlot(i));
 
-                // Update the item with the new values, creating the tracker if needed
+                // Update the characterID with the new values, creating the tracker if needed
                 if (tracker == null)
                     _buffer[i] = new ItemValueTracker();
                 _buffer[i].SetValues(invItem);

@@ -46,10 +46,11 @@ namespace DemoGame.Client
             LoadGrhInfo();
 
             // Create the screens
-            screenManager.Add(new MainMenuScreen("main menu"));
-            screenManager.Add(new LoginScreen("login"));
-            screenManager.Add(new GameplayScreen("game"));
-            screenManager.SetScreen("main menu");
+            screenManager.Add(new MainMenuScreen());
+            screenManager.Add(new LoginScreen());
+            screenManager.Add(new CharacterSelectionScreen());
+            screenManager.Add(new GameplayScreen());
+            screenManager.SetScreen(MainMenuScreen.ScreenName);
         }
 
         protected override void Initialize()
@@ -126,8 +127,7 @@ namespace DemoGame.Client
 
         static void Main()
         {
-            if (log.IsInfoEnabled)
-                log.Info("Starting client...");
+            log.Info("Starting client...");
 
             using (DemoGame game = new DemoGame())
             {

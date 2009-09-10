@@ -74,8 +74,8 @@ namespace DemoGame.Server
                 // Add the instance to the collection
                 _queryObjects.Add(type, instance);
 
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Created instance of query class Type `{0}`.", type.Name);
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Created instance of query class Type `{0}`.", type.Name);
             }
 
             if (log.IsInfoEnabled)
@@ -238,10 +238,10 @@ namespace DemoGame.Server
             }
 
             /// <summary>
-            /// When overridden in the derived class, sets the database parameters based on the specified item.
+            /// When overridden in the derived class, sets the database parameters based on the specified characterID.
             /// </summary>
             /// <param name="p">Collection of database parameters to set the values for.</param>
-            /// <param name="item">Item used to execute the query.</param>
+            /// <param name="characterID">Item used to execute the query.</param>
             protected override void SetParameters(DbParameterValues p, QueryArgs item)
             {
                 p["@db"] = item.Database;

@@ -230,8 +230,8 @@ namespace NetGore.NPCChat.Conditionals
             // Add the value to the Dictionary
             _instances.Add(instance.Name, instance);
 
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Loaded NPC chat conditional `{0}` from Type `{1}`.", instance.Name, loadedType);
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Loaded NPC chat conditional `{0}` from Type `{1}`.", instance.Name, loadedType);
         }
 
         /// <summary>

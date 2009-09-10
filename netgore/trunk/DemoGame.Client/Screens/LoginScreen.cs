@@ -11,6 +11,8 @@ namespace DemoGame.Client
 {
     class LoginScreen : GameScreen
     {
+        public const string ScreenName = "login";
+
         Label _cError;
         TextBoxSingleLine _cNameText;
         TextBoxSingleLine _cPasswordText;
@@ -19,13 +21,14 @@ namespace DemoGame.Client
         SpriteBatch _sb = null;
         ClientSockets _sockets = null;
 
-        public LoginScreen(string name) : base(name)
+        public LoginScreen()
+            : base(ScreenName)
         {
         }
 
         public override void Activate()
         {
-            _gpScreen = ScreenManager.GetScreen("game") as GameplayScreen;
+            _gpScreen = ScreenManager.GetScreen(GameplayScreen.ScreenName) as GameplayScreen;
             if (_gpScreen == null)
                 throw new Exception("Failed to find 'game' screen.");
 
@@ -41,7 +44,7 @@ namespace DemoGame.Client
 
         void cBack_OnClick(object sender, MouseClickEventArgs e)
         {
-            ScreenManager.SetScreen("main menu");
+            ScreenManager.SetScreen(MainMenuScreen.ScreenName);
         }
 
         void cLogin_OnClick(object sender, MouseClickEventArgs e)
@@ -71,9 +74,11 @@ namespace DemoGame.Client
 
         public override void Draw(GameTime gameTime)
         {
-            Debug.Assert(_sb != null, "_sb is null.");
             if (_sb == null)
+            {
+                Debug.Fail("_sb is null.");
                 return;
+            }
 
             _sb.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
             _gui.Draw(_sb);
@@ -89,7 +94,7 @@ namespace DemoGame.Client
             _cNameText = new TextBoxSingleLine("Spodi", new Vector2(220, 260), new Vector2(200, 40), cScreen);
 
             new Label("Password:", new Vector2(60, 320), cScreen);
-            _cPasswordText = new TextBoxSingleLine("asdf", new Vector2(220, 320), new Vector2(200, 40), cScreen);
+            _cPasswordText = new TextBoxSingleLine("qwerty123", new Vector2(220, 320), new Vector2(200, 40), cScreen);
 
             Button cLogin = new Button("Login", new Vector2(60, 380), new Vector2(250, 45), cScreen);
             Button cBack = new Button("Back", new Vector2(60, 440), new Vector2(250, 45), cScreen);
@@ -106,6 +111,7 @@ namespace DemoGame.Client
         public override void LoadContent()
         {
             _sb = ScreenManager.SpriteBatch;
+            base.LoadContent();
         }
 
         /// <summary>
@@ -136,7 +142,7 @@ namespace DemoGame.Client
 
         void sockets_OnLoginSuccessful(IIPSocket conn)
         {
-            ScreenManager.SetScreen("game");
+            ScreenManager.SetScreen(CharacterSelectionScreen.ScreenName);
         }
 
         void sockets_OnLoginUnsuccessful(IIPSocket conn, string message)

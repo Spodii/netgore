@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Linq;
 
 namespace DemoGame
@@ -7,9 +8,13 @@ namespace DemoGame
     /// </summary>
     public enum ClientPacketID : byte
     {
-        // First index (0) is reserved, and must not be used
+        /// <summary>
+        /// This value is reserved and must not be used!
+        /// </summary>
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        RESERVED = 0,
 
-        Attack = 1,
+        Attack,
         DropInventoryItem,
         EndNPCChatDialog,
         GetEquipmentItemInfo,
@@ -23,6 +28,7 @@ namespace DemoGame
         Ping,
         RaiseStat,
         Say,
+        SelectAccountCharacter,
         SelectNPCChatDialogResponse,
         SetUDPPort,
         StartNPCChatDialog,

@@ -98,6 +98,14 @@ namespace NetGore.Network
         }
 
         /// <summary>
+        /// Gets the port as a 16-bit unsigned integer.
+        /// </summary>
+        public ushort Port
+        {
+            get { return _tcpSocket.Port; }
+        }
+
+        /// <summary>
         /// Gets if this IIPSocket is currently connected.
         /// </summary>
         public bool IsConnected
@@ -106,12 +114,20 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Gets the IP address string that this IIPSocket is connected to. This is formatted as IPAddress:Port. For
-        /// example: 127.0.0.1:5555 would be IP address 127.0.0.1 and port 5555.
+        /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
+        /// as "xxx.xxx.xxx.xxx:yyyyy". Trailing 0's from each segment are omitted.
         /// </summary>
         public string Address
         {
             get { return _tcpSocket.Address; }
+        }
+
+        /// <summary>
+        /// Gets the IPv4 address as an unsigned 32-bit integer.
+        /// </summary>
+        public uint IP
+        {
+            get { return _tcpSocket.IP; }
         }
 
         /// <summary>

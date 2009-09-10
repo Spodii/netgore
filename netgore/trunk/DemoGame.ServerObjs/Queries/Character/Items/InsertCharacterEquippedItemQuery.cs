@@ -27,10 +27,10 @@ namespace DemoGame.Server.Queries
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified item.
+        /// When overridden in the derived class, sets the database parameters based on the specified characterID.
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="item">Item used to execute the query.</param>
+        /// <param name="characterID">Item used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, CharacterEquippedTable item)
         {
             item.CopyValues(p);

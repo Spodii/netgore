@@ -21,9 +21,20 @@ namespace NetGore.Network
         event TCPSocketEvent<int> OnSend;
 
         /// <summary>
-        /// Gets the remote endpoint address.
+        /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
+        /// as "xxx.xxx.xxx.xxx:yyyyy". Trailing 0's from each segment are omitted.
         /// </summary>
         string Address { get; }
+
+        /// <summary>
+        /// Gets the IPv4 address as an unsigned 32-bit integer.
+        /// </summary>
+        uint IP { get; }
+
+        /// <summary>
+        /// Gets the port as a 16-bit unsigned integer.
+        /// </summary>
+        ushort Port { get; }
 
         /// <summary>
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag

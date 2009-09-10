@@ -121,7 +121,7 @@ namespace DemoGame.Server
             string name = r.ReadString();
             string password = r.ReadString();
 
-            Server.LoginUser(conn, name, password);
+            Server.LoginAccount(conn, name, password);
         }
 
         [MessageHandler((byte)ClientPacketID.MoveLeft)]
@@ -158,7 +158,7 @@ namespace DemoGame.Server
             if (!TryGetMap(conn, out user, out map))
                 return;
 
-            // TODO: Distance validation on item pickup
+            // TODO: Distance validation on characterID pickup
 
             ItemEntityBase item;
             if (map.TryGetDynamicEntity(mapEntityIndex, out item))
@@ -217,6 +217,38 @@ namespace DemoGame.Server
                 return;
 
             _sayHandler.Process(user, text);
+        }
+
+        [MessageHandler((byte)ClientPacketID.SelectAccountCharacter)]
+        void RecvSelectAccountCharacter(IIPSocket conn, BitStream r)
+        {
+            byte index = r.ReadByte();
+
+            // Ensure the client is in a valid state to select an account character
+            var userAccount = World.GetUserAccount(conn);
+            if (userAccount == null)
+                return;
+
+            if (userAccount.User != null)
+            {
+                const string errmsg = "Account `{0}` tried to change characters while a character was already selected.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, userAccount);
+                return;
+            }
+
+            // Get the CharacterID
+            CharacterID characterID;
+            if (!userAccount.TryGetCharacterID(index, out characterID))
+            {
+                const string errmsg = "Invalid account character index `{0}` given.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, characterID);
+                return;
+            }
+
+            // Load the user
+            userAccount.SetUser(World, characterID);
         }
 
         [MessageHandler((byte)ClientPacketID.SelectNPCChatDialogResponse)]

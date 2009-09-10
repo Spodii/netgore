@@ -70,10 +70,10 @@ namespace DemoGame.Server
                     if (!_slotChanged[(int)slot])
                         continue;
 
-                    // Get the item in the slot
+                    // Get the characterID in the slot
                     ItemEntity item = UserInventory[slot];
 
-                    // Get the values to send, which depends on if the slot is empty (item == null) or not
+                    // Get the values to send, which depends on if the slot is empty (characterID == null) or not
                     GrhIndex sendItemGraphic;
                     byte sendItemAmount;
 

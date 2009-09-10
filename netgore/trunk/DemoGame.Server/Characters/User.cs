@@ -30,7 +30,6 @@ namespace DemoGame.Server
         readonly UserInventory _userInventory;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
-        string _password;
 
         /// <summary>
         /// Not used by User.
@@ -57,27 +56,15 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the Character's password.
-        /// </summary>
-        public override string Password
-        {
-            get { return _password; }
-        }
-
-        /// <summary>
         /// User constructor.
         /// </summary>
         /// <param name="conn">Connection to the user's client.</param>
         /// <param name="world">World the user belongs to.</param>
-        /// <param name="name">User's name.</param>
-        public User(IIPSocket conn, World world, string name) : base(world, true)
+        /// <param name="characterID">User's CharacterID.</param>
+        public User(IIPSocket conn, World world, CharacterID characterID) : base(world, true)
         {
-            if (log.IsInfoEnabled)
-                log.InfoFormat("User {0} logged in.", name);
-
             // Set the connection information
             _conn = conn;
-            _conn.Tag = this;
 
             // Create some objects
             _chatState = new UserChatDialogState(this);
@@ -86,7 +73,7 @@ namespace DemoGame.Server
             _unreliableBuffer = new SocketSendQueue(conn.MaxUnreliableMessageSize);
 
             // Load the character data
-            Load(name);
+            Load(characterID);
 
             // Ensure the correct Alliance is being used
             Alliance = AllianceManager.GetAlliance("user");
@@ -230,7 +217,6 @@ namespace DemoGame.Server
         {
             base.HandleAdditionalLoading(v);
 
-            _password = v.Password;
             World.AddUser(this);
         }
 
@@ -241,20 +227,6 @@ namespace DemoGame.Server
             // Close the User's connection
             if (_conn != null)
                 _conn.Dispose();
-        }
-
-        /// <summary>
-        /// Checks if a user account exists and the supplied password is valid.
-        /// </summary>
-        /// <param name="query">Query used to select the user's password.</param>
-        /// <param name="name">Name of the user.</param>
-        /// <param name="password">Password for the user's account.</param>
-        /// <returns>True if the account exists.</returns>
-        public static bool IsValidAccount(SelectUserPasswordQuery query, string name, string password)
-        {
-            // Check that the password matches the database password
-            string dbPassword = query.Execute(name);
-            return dbPassword == password;
         }
 
         /// <summary>
@@ -348,9 +320,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Sends the item information for an item in a given equipment slot to the client.
+        /// Sends the characterID information for an characterID in a given equipment slot to the client.
         /// </summary>
-        /// <param name="slot">Equipment slot of the item to send the info for</param>
+        /// <param name="slot">Equipment slot of the characterID to send the info for</param>
         public void SendEquipmentItemStats(EquipmentSlot slot)
         {
             // Check for a valid slot
@@ -363,17 +335,17 @@ namespace DemoGame.Server
                 return;
             }
 
-            // Get the item
+            // Get the characterID
             ItemEntity item = Equipped[slot];
             if (item == null)
             {
-                const string errmsg = "User `{0}` requested info for equipment slot `{1}`, but the slot has no item.";
+                const string errmsg = "User `{0}` requested info for equipment slot `{1}`, but the slot has no characterID.";
                 if (log.IsInfoEnabled)
                     log.InfoFormat(errmsg, this, slot);
                 return;
             }
 
-            // Send the new item info
+            // Send the new characterID info
             using (PacketWriter pw = ServerPacket.SendItemInfo(item))
             {
                 Send(pw);
@@ -381,9 +353,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Sends the item information for an item in a given inventory slot to the client.
+        /// Sends the characterID information for an characterID in a given inventory slot to the client.
         /// </summary>
-        /// <param name="slot">Inventory slot of the item to send the info for</param>
+        /// <param name="slot">Inventory slot of the characterID to send the info for</param>
         public void SendInventoryItemStats(InventorySlot slot)
         {
             // Check for a valid slot
@@ -396,17 +368,17 @@ namespace DemoGame.Server
                 return;
             }
 
-            // Get the item
+            // Get the characterID
             ItemEntity item = Inventory[slot];
             if (item == null)
             {
-                const string errmsg = "User `{0}` requested info for inventory slot `{1}`, but the slot has no item.";
+                const string errmsg = "User `{0}` requested info for inventory slot `{1}`, but the slot has no characterID.";
                 if (log.IsInfoEnabled)
                     log.InfoFormat(errmsg, this, slot);
                 return;
             }
 
-            // Send the new item info
+            // Send the new characterID info
             using (PacketWriter pw = ServerPacket.SendItemInfo(item))
             {
                 Send(pw);
@@ -483,29 +455,29 @@ namespace DemoGame.Server
 
         public void UseInventoryItem(InventorySlot slot)
         {
-            // Get the item to use
+            // Get the characterID to use
             ItemEntity item = Inventory[slot];
             if (item == null)
             {
-                const string errmsg = "Tried to use inventory slot `{0}`, but it contains no item.";
+                const string errmsg = "Tried to use inventory slot `{0}`, but it contains no characterID.";
                 Debug.Fail(string.Format(errmsg, slot));
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, slot);
                 return;
             }
 
-            // Try to use the item
+            // Try to use the characterID
             if (!UseItem(item, slot))
             {
-                // Check if the failure to use the item was due to an invalid amount of the item
+                // Check if the failure to use the characterID was due to an invalid amount of the characterID
                 if (item.Amount <= 0)
                 {
-                    const string errmsg = "Tried to use inventory item `{0}` at slot `{1}`, but it had an invalid amount.";
+                    const string errmsg = "Tried to use inventory characterID `{0}` at slot `{1}`, but it had an invalid amount.";
                     Debug.Fail(string.Format(errmsg, item, slot));
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, item, slot);
 
-                    // Destroy the item
+                    // Destroy the characterID
                     Inventory.RemoveAt(slot);
                     item.Dispose();
                 }

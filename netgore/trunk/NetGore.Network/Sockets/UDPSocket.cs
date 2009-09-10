@@ -148,8 +148,8 @@ namespace NetGore.Network
                 received = new byte[bytesRead];
                 Buffer.BlockCopy(_receiveBuffer, 0, received, 0, bytesRead);
 
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Received {0} bytes from {1}", bytesRead, remoteEndPoint);
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Received {0} bytes from {1}", bytesRead, remoteEndPoint);
             }
             catch (SocketException e)
             {
@@ -190,8 +190,8 @@ namespace NetGore.Network
 
             _socket.SendTo(data, length + _headerSize, SocketFlags.None, endPoint);
 
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Sent `{0}` bytes to `{1}`", length, endPoint);
+            if (log.IsDebugEnabled)
+                log.DebugFormat("Sent `{0}` bytes to `{1}`", length, endPoint);
         }
 
         /// <summary>

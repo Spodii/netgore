@@ -47,24 +47,22 @@ namespace DemoGame.Server
             get { return _chatDialog; }
         }
 
+        /// <summary>
+        /// Gets the amount of cash that the NPC gives upon being killed.
+        /// </summary>
         public ushort GiveCash
         {
             get { return _giveCash; }
             protected set { _giveCash = value; }
         }
 
+        /// <summary>
+        /// Gets the amount of experience that the NPC gives upon being killed.
+        /// </summary>
         public ushort GiveExp
         {
             get { return _giveExp; }
             protected set { _giveExp = value; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the Character's password.
-        /// </summary>
-        public override string Password
-        {
-            get { return null; }
         }
 
         /// <summary>

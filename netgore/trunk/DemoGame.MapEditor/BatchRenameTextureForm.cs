@@ -40,7 +40,7 @@ namespace DemoGame.MapEditor
 
         void btnApply_Click(object sender, EventArgs e)
         {
-            // Do not try changing if an invalid item is selected
+            // Do not try changing if an invalid characterID is selected
             if (lstTextures.SelectedItem == null)
                 return;
 
@@ -143,7 +143,7 @@ namespace DemoGame.MapEditor
 
         void txtCurrent_TextChanged(object sender, EventArgs e)
         {
-            // Do not try changing if an invalid item is selected
+            // Do not try changing if an invalid characterID is selected
             if (lstTextures.SelectedItem == null)
                 return;
 

@@ -206,16 +206,16 @@ namespace DemoGame.Server
         /// <summary>
         /// Creates an ItemEntity on the map.
         /// </summary>
-        /// <param name="template">ItemTemplate to create the item from.</param>
-        /// <param name="pos">Position to create the item at.</param>
-        /// <param name="amount">Amount of the item to create. Must be greater than 0.</param>
+        /// <param name="template">ItemTemplate to create the characterID from.</param>
+        /// <param name="pos">Position to create the characterID at.</param>
+        /// <param name="amount">Amount of the characterID to create. Must be greater than 0.</param>
         /// <returns>Reference to the new ItemEntity created.</returns>
         public ItemEntity CreateItem(IItemTemplateTable template, Vector2 pos, byte amount)
         {
             // Check for a valid amount
             if (amount < 1)
             {
-                const string errmsg = "Invalid item amount `{0}`! Amount must be > 0.";
+                const string errmsg = "Invalid characterID amount `{0}`! Amount must be > 0.";
                 Debug.Fail(string.Format(errmsg, amount));
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, amount);
@@ -232,7 +232,7 @@ namespace DemoGame.Server
                 return null;
             }
 
-            // Create the item, add it to the map, and return the reference
+            // Create the characterID, add it to the map, and return the reference
             ItemEntity item = new ItemEntity(template, pos, amount);
             AddEntity(item);
             return item;

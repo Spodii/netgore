@@ -9,16 +9,19 @@ namespace DemoGame.Client
 {
     class MainMenuScreen : GameScreen
     {
+        public const string ScreenName = "main menu";
+
         GUIManager _gui;
         SpriteBatch _sb = null;
 
-        public MainMenuScreen(string name) : base(name)
+        public MainMenuScreen()
+            : base(ScreenName)
         {
         }
 
         void cLogin_OnClick(object sender, MouseClickEventArgs e)
         {
-            ScreenManager.SetScreen("login");
+            ScreenManager.SetScreen(LoginScreen.ScreenName);
         }
 
         void cNewAccount_OnClick(object sender, MouseClickEventArgs e)

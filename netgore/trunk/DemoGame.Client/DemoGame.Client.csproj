@@ -97,6 +97,7 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountCharacterInfos.cs" />
     <Compile Include="Controls\NPCChatDialogForm.cs" />
     <Compile Include="Controls\SkillsForm.cs" />
     <Compile Include="Controls\StatusEffectsForm.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Networking\ClientPacketHandler.cs" />
     <Compile Include="Controls\ChatForm.cs" />
     <Compile Include="Controls\EquippedForm.cs" />
+    <Compile Include="Screens\CharacterSelectionScreen.cs" />
     <Compile Include="Screens\GameplayScreen.cs" />
     <Compile Include="Controls\InventoryForm.cs" />
     <Compile Include="Screens\LoginScreen.cs" />

@@ -42,10 +42,10 @@ namespace DemoGame.Server
     public delegate void CharacterKillEventHandler(Character killed, Character killer);
 
     /// <summary>
-    /// Handles Character item events.
+    /// Handles Character characterID events.
     /// </summary>
     /// <param name="character">The Character that the event took place on.</param>
-    /// <param name="item">The ItemEntity related to the event.</param>
+    /// <param name="characterID">The ItemEntity related to the event.</param>
     public delegate void CharacterItemEventHandler(Character character, ItemEntity item);
 
     public delegate void CharacterExpEventHandler(Character character, uint oldExp, uint exp);
@@ -171,12 +171,12 @@ namespace DemoGame.Server
         public event CharacterEventHandler OnChangeTemplateID;
 
         /// <summary>
-        /// Notifies listeners when this Character has dropped an item.
+        /// Notifies listeners when this Character has dropped an characterID.
         /// </summary>
         public event CharacterItemEventHandler OnDropItem;
 
         /// <summary>
-        /// Notifies listeners when this Character has received an item.
+        /// Notifies listeners when this Character has received an characterID.
         /// </summary>
         public event CharacterItemEventHandler OnGetItem;
 
@@ -198,7 +198,7 @@ namespace DemoGame.Server
         public event CharacterKillEventHandler OnKilledByCharacter;
 
         /// <summary>
-        /// Notifies listeners when this Character uses an item.
+        /// Notifies listeners when this Character uses an characterID.
         /// </summary>
         public event CharacterItemEventHandler OnUseItem;
 
@@ -363,8 +363,8 @@ namespace DemoGame.Server
         /// <summary>
         /// When overridden in the derived class, lets the Character handle being given items through GiveItem().
         /// </summary>
-        /// <param name="item">The item the Character was given.</param>
-        /// <param name="amount">The amount of the <paramref name="item"/> the Character was given. Will be greater
+        /// <param name="characterID">The characterID the Character was given.</param>
+        /// <param name="amount">The amount of the <paramref name="characterID"/> the Character was given. Will be greater
         /// than 0.</param>
         protected virtual void AfterGiveItem(ItemEntity item, byte amount)
         {
@@ -553,16 +553,16 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Makes the Character drop an existing item. This does NOT remove the ItemEntity from the Character in any
+        /// Makes the Character drop an existing characterID. This does NOT remove the ItemEntity from the Character in any
         /// way. Be sure to remove the ItemEntity from the Character first if needed.
         /// </summary>
-        /// <param name="item">ItemEntity to drop.</param>
+        /// <param name="characterID">ItemEntity to drop.</param>
         public void DropItem(ItemEntity item)
         {
             Vector2 dropPos = GetDropPos();
             item.Position = dropPos;
 
-            // Add the item to the map
+            // Add the characterID to the map
             Map.AddEntity(item);
 
             if (OnDropItem != null)
@@ -570,17 +570,17 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Makes the Character drop an item. Does not modify the item requested to drop at all or anything,
-        /// so if you want to also remove the item, such as with dropping an item from the Inventory,
+        /// Makes the Character drop an characterID. Does not modify the characterID requested to drop at all or anything,
+        /// so if you want to also remove the characterID, such as with dropping an characterID from the Inventory,
         /// this will not take care of that.
         /// </summary>
-        /// <param name="itemTemplate">ItemTemplate for the item to drop.</param>
-        /// <param name="amount">Amount of the item to drop.</param>
+        /// <param name="itemTemplate">ItemTemplate for the characterID to drop.</param>
+        /// <param name="amount">Amount of the characterID to drop.</param>
         protected void DropItem(IItemTemplateTable itemTemplate, byte amount)
         {
             Vector2 dropPos = GetDropPos();
 
-            // Create the item on the map
+            // Create the characterID on the map
             ItemEntity droppedItem = Map.CreateItem(itemTemplate, dropPos, amount);
 
             if (OnDropItem != null)
@@ -588,46 +588,46 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Attempts to equip an item from the User's inventory.
+        /// Attempts to equip an characterID from the User's inventory.
         /// </summary>
-        /// <param name="inventorySlot">Index of the slot containing the item to equip.</param>
-        /// <returns>True if the item was successfully equipped, else false.</returns>
+        /// <param name="inventorySlot">Index of the slot containing the characterID to equip.</param>
+        /// <returns>True if the characterID was successfully equipped, else false.</returns>
         public bool Equip(InventorySlot inventorySlot)
         {
-            // Get the item from the inventory
+            // Get the characterID from the inventory
             ItemEntity item = Inventory[inventorySlot];
 
             // Do not try to equip null items
             if (item == null)
                 return false;
 
-            // If there is more than one of the item, split it first
+            // If there is more than one of the characterID, split it first
             if (item.Amount > 1)
             {
-                // Split the existing item into two parts
+                // Split the existing characterID into two parts
                 item = item.Split(1);
                 if (item == null)
                 {
-                    Debug.Fail("Failed to split item for some reason.");
+                    Debug.Fail("Failed to split characterID for some reason.");
                     return false;
                 }
             }
             else
             {
-                // We are using all (1) of the item, so remove it from the inventory
+                // We are using all (1) of the characterID, so remove it from the inventory
                 Inventory.RemoveAt(inventorySlot);
             }
 
-            // Try to equip the item
+            // Try to equip the characterID
             bool successful = Equipped.Equip(item);
 
-            // If failed to equip, give the item back to the User
+            // If failed to equip, give the characterID back to the User
             if (!successful)
             {
                 ItemEntity remainder = GiveItem(item);
                 if (remainder != null)
                 {
-                    Debug.Fail("What the hell just happened? Failed to equip the item, and failed to add back to inventory?");
+                    Debug.Fail("What the hell just happened? Failed to equip the characterID, and failed to add back to inventory?");
                     DropItem(remainder);
                 }
             }
@@ -690,11 +690,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gives an item to the Character to be placed in their Inventory.
+        /// Gives an characterID to the Character to be placed in their Inventory.
         /// </summary>
-        /// <param name="item">Item to give to the character.</param>
-        /// <returns>The remainder of the item that failed to be added to the inventory, or null if all of the
-        /// item was added.</returns>
+        /// <param name="characterID">Item to give to the character.</param>
+        /// <returns>The remainder of the characterID that failed to be added to the inventory, or null if all of the
+        /// characterID was added.</returns>
         public virtual ItemEntity GiveItem(ItemEntity item)
         {
             if (item == null)
@@ -703,9 +703,9 @@ namespace DemoGame.Server
                 return null;
             }
 
-            Debug.Assert(item.Amount != 0, "Invalid item amount.");
+            Debug.Assert(item.Amount != 0, "Invalid characterID amount.");
 
-            // Add as much of the item to the inventory as we can
+            // Add as much of the characterID to the inventory as we can
             byte startAmount = item.Amount;
             ItemEntity remainder = _inventory.Add(item);
 
@@ -716,7 +716,7 @@ namespace DemoGame.Server
             else
             {
                 Debug.Assert(startAmount >= item.Amount, "Somehow the startAmount is less than the current amount of items.");
-                Debug.Assert(startAmount - item.Amount >= 0, "Negative item amount given...?");
+                Debug.Assert(startAmount - item.Amount >= 0, "Negative characterID amount given...?");
                 amountAdded = (byte)(startAmount - item.Amount);
             }
 
@@ -842,6 +842,7 @@ namespace DemoGame.Server
             Name = v.Name;
             _id = v.ID;
             _templateID = v.CharacterTemplateID;
+            _accountID = v.AccountId;
 
             BodyInfo = GameData.Body(v.BodyID);
             CB = new CollisionBox(new Vector2(v.X, v.Y), BodyInfo.Width, BodyInfo.Height);
@@ -881,6 +882,9 @@ namespace DemoGame.Server
 
             // Mark the Character as loaded
             SetAsLoaded();
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Loaded Character `{0}`.", Name);
         }
 
         /// <summary>
@@ -1097,44 +1101,44 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Makes the Character use an equipment item.
+        /// Makes the Character use an equipment characterID.
         /// </summary>
-        /// <param name="item">Item to be equipped.</param>
-        /// <param name="inventorySlot">If the item is from the inventory, the inventory slot that the item is in.</param>
-        /// <returns>True if the item was successfully equipped; otherwise false.</returns>
+        /// <param name="characterID">Item to be equipped.</param>
+        /// <param name="inventorySlot">If the characterID is from the inventory, the inventory slot that the characterID is in.</param>
+        /// <returns>True if the characterID was successfully equipped; otherwise false.</returns>
         bool UseEquipment(ItemEntity item, InventorySlot? inventorySlot)
         {
             if (!inventorySlot.HasValue)
             {
-                // Equip an item not from the inventory
+                // Equip an characterID not from the inventory
                 return Equipped.Equip(item);
             }
             else
             {
-                // Equip an item from the inventory
+                // Equip an characterID from the inventory
                 return Equip(inventorySlot.Value);
             }
         }
 
         /// <summary>
-        /// Makes the Character use an item.
+        /// Makes the Character use an characterID.
         /// </summary>
-        /// <param name="item">Item to use.</param>
-        /// <param name="inventorySlot">Inventory slot of the item being used, or null if not used from the inventory.</param>
-        /// <returns>True if the item was successfully used, else false.</returns>
+        /// <param name="characterID">Item to use.</param>
+        /// <param name="inventorySlot">Inventory slot of the characterID being used, or null if not used from the inventory.</param>
+        /// <returns>True if the characterID was successfully used, else false.</returns>
         public bool UseItem(ItemEntity item, InventorySlot? inventorySlot)
         {
             // Check for a valid amount
             if (item.Amount <= 0)
             {
-                const string errmsg = "Attempted to use item `{0}`, but the amount was invalid.";
+                const string errmsg = "Attempted to use characterID `{0}`, but the amount was invalid.";
                 Debug.Fail(string.Format(errmsg, item));
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, item);
                 return false;
             }
 
-            // Use the item based on the item's type
+            // Use the characterID based on the characterID's type
             bool wasUsed;
             switch (item.Type)
             {
@@ -1153,8 +1157,8 @@ namespace DemoGame.Server
                     break;
 
                 default:
-                    // Unhandled item type
-                    const string errmsg = "Attempted to use item `{0}`, but it contains invalid or unhandled ItemType `{1}`.";
+                    // Unhandled characterID type
+                    const string errmsg = "Attempted to use characterID `{0}`, but it contains invalid or unhandled ItemType `{1}`.";
                     Debug.Fail(string.Format(errmsg, item, item.Type));
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, item, item.Type);
@@ -1257,6 +1261,20 @@ namespace DemoGame.Server
         IEnumerable<KeyValuePair<StatType, int>> ICharacterTable.Stats
         {
             get { return BaseStats.ToKeyValuePairs(); }
+        }
+
+        /// <summary>
+        /// The account ID of this Character, or null if they don't have an account. Normally, a User should always have
+        /// an account ID, and an NPC should never have one.
+        /// </summary>
+        int? _accountID;
+
+        /// <summary>
+        /// Gets the value of the database column `account_id`.
+        /// </summary>
+        int? ICharacterTable.AccountId
+        {
+            get { return _accountID; }
         }
 
         /// <summary>
@@ -1439,11 +1457,6 @@ namespace DemoGame.Server
                 _name = value;
             }
         }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the Character's password.
-        /// </summary>
-        public abstract string Password { get; }
 
         /// <summary>
         /// Gets the value of the database column `respawn_map`.

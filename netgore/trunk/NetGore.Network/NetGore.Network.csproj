@@ -71,6 +71,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IPAddressHelper.cs" />
     <Compile Include="LatencyTracker\LatencyTrackerBase.cs" />
     <Compile Include="LatencyTracker\LatencyTrackerServer.cs" />
     <Compile Include="LatencyTracker\LatencyTrackerClient.cs" />

@@ -16,6 +16,24 @@ namespace DemoGame.Server
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
+        public static PacketWriter SendAccountCharacters(AccountCharacterInfo[] charInfos)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SendAccountCharacters);
+
+            if (charInfos == null || charInfos.Length == 0)
+            {
+                pw.Write((byte)0);
+            }
+            else
+            {
+                pw.Write((byte)charInfos.Length);
+                for (int i = 0; i < charInfos.Length; i++)
+                    pw.Write(charInfos[i]);
+            }
+
+            return pw;
+        }
+
         public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
         {
             ushort secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
@@ -178,7 +196,7 @@ namespace DemoGame.Server
             if (item == null)
             {
                 const string errmsg =
-                    "item is null, so SendItemInfo will not send anything. Not a breaking error, but likely a design flaw.";
+                    "characterID is null, so SendItemInfo will not send anything. Not a breaking error, but likely a design flaw.";
                 Debug.Fail(errmsg);
                 if (log.IsErrorEnabled)
                     log.Error(errmsg);
