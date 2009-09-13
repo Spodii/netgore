@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -17,26 +18,6 @@ namespace DemoGame.Server.Queries
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
         public SelectAccountQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
-        }
-
-        public bool TryExecute(string name, string password, UserAccount userAccount)
-        {
-            bool ret;
-
-            using (var r = ExecuteReader(new QueryArgs(name, password)))
-            {
-                if (!r.Read())
-                {
-                    ret = false;
-                }
-                else
-                {
-                    userAccount.ReadValues(r);
-                    ret = true;
-                }
-            }
-
-            return ret;
         }
 
         /// <summary>
@@ -58,6 +39,24 @@ namespace DemoGame.Server.Queries
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
             p["@name"] = item.Name;
+        }
+
+        public bool TryExecute(string name, string password, UserAccount userAccount)
+        {
+            bool ret;
+
+            using (IDataReader r = ExecuteReader(new QueryArgs(name, password)))
+            {
+                if (!r.Read())
+                    ret = false;
+                else
+                {
+                    userAccount.ReadValues(r);
+                    ret = true;
+                }
+            }
+
+            return ret;
         }
 
         public struct QueryArgs

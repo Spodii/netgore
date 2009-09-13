@@ -21,15 +21,13 @@ namespace DemoGame.Client
     class ClientPacketHandler : IMessageProcessor, IGetTime
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
 
         readonly GameMessages _gameMessages = new GameMessages();
         readonly GameplayScreen _gameplayScreen;
         readonly Stopwatch _pingWatch = new Stopwatch();
         readonly MessageProcessorManager _ppManager;
         readonly ISocketSender _socketSender;
-        readonly AccountCharacterInfos _accountCharacterInfos = new AccountCharacterInfos();
-
-        public AccountCharacterInfos AccountCharacterInfos { get { return _accountCharacterInfos; } }
 
         /// <summary>
         /// Notifies listeners when a successful login request has been made.
@@ -40,6 +38,11 @@ namespace DemoGame.Client
         /// Notifies listeners when an unsuccessful login request has been made.
         /// </summary>
         public event SocketEventHandler<string> OnLoginUnsuccessful;
+
+        public AccountCharacterInfos AccountCharacterInfos
+        {
+            get { return _accountCharacterInfos; }
+        }
 
         /// <summary>
         /// Gets the GameplayScreen.
@@ -116,20 +119,6 @@ namespace DemoGame.Client
             }
 
             _pingWatch.Start();
-        }
-
-        [MessageHandler((byte)ServerPacketID.SendAccountCharacters)]
-        void RecvSendAccountCharacters(IIPSocket conn, BitStream r)
-        {
-            byte count = r.ReadByte();
-            AccountCharacterInfo[] charInfos = new AccountCharacterInfo[count];
-            for (int i = 0; i < count; i++)
-            {
-                AccountCharacterInfo charInfo = r.ReadAccountCharacterInfo();
-                charInfos[charInfo.Index] = charInfo;
-            }
-
-            _accountCharacterInfos.SetInfos(charInfos);
         }
 
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
@@ -308,6 +297,20 @@ namespace DemoGame.Client
 
             GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);
             GameplayScreen.AppendToChatOutput(string.Format("Removed status effect {0}.", statusEffectType));
+        }
+
+        [MessageHandler((byte)ServerPacketID.SendAccountCharacters)]
+        void RecvSendAccountCharacters(IIPSocket conn, BitStream r)
+        {
+            byte count = r.ReadByte();
+            var charInfos = new AccountCharacterInfo[count];
+            for (int i = 0; i < count; i++)
+            {
+                AccountCharacterInfo charInfo = r.ReadAccountCharacterInfo();
+                charInfos[charInfo.Index] = charInfo;
+            }
+
+            _accountCharacterInfos.SetInfos(charInfos);
         }
 
         [MessageHandler((byte)ServerPacketID.SendItemInfo)]

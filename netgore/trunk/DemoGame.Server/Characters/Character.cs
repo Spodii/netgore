@@ -90,6 +90,12 @@ namespace DemoGame.Server
         readonly World _world;
 
         /// <summary>
+        /// The account ID of this Character, or null if they don't have an account. Normally, a User should always have
+        /// an account ID, and an NPC should never have one.
+        /// </summary>
+        int? _accountID;
+
+        /// <summary>
         /// Character's alliance.
         /// </summary>
         Alliance _alliance;
@@ -627,7 +633,8 @@ namespace DemoGame.Server
                 ItemEntity remainder = GiveItem(item);
                 if (remainder != null)
                 {
-                    Debug.Fail("What the hell just happened? Failed to equip the characterID, and failed to add back to inventory?");
+                    Debug.Fail(
+                        "What the hell just happened? Failed to equip the characterID, and failed to add back to inventory?");
                     DropItem(remainder);
                 }
             }
@@ -1053,7 +1060,7 @@ namespace DemoGame.Server
             // by the Map anymore
             if (IsDisposed)
             {
-                const string errmsg = "Updated called on disposed Character `{0}`.";
+                const string errmsg = "Update called on disposed Character `{0}`.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, Name);
                 Debug.Fail(string.Format(errmsg, Name));
@@ -1158,7 +1165,8 @@ namespace DemoGame.Server
 
                 default:
                     // Unhandled characterID type
-                    const string errmsg = "Attempted to use characterID `{0}`, but it contains invalid or unhandled ItemType `{1}`.";
+                    const string errmsg =
+                        "Attempted to use characterID `{0}`, but it contains invalid or unhandled ItemType `{1}`.";
                     Debug.Fail(string.Format(errmsg, item, item.Type));
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, item, item.Type);
@@ -1262,12 +1270,6 @@ namespace DemoGame.Server
         {
             get { return BaseStats.ToKeyValuePairs(); }
         }
-
-        /// <summary>
-        /// The account ID of this Character, or null if they don't have an account. Normally, a User should always have
-        /// an account ID, and an NPC should never have one.
-        /// </summary>
-        int? _accountID;
 
         /// <summary>
         /// Gets the value of the database column `account_id`.

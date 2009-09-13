@@ -140,6 +140,7 @@
     <Compile Include="MapSpawn\MapSpawnValuesID.cs" />
     <Compile Include="MapSpawn\MapSpawnValuesIDCreator.cs" />
     <Compile Include="Queries\Account\SelectAccountCharacterIDsQuery.cs" />
+    <Compile Include="Queries\Account\SetAccountCurrentIPNullQuery.cs" />
     <Compile Include="Queries\Account\SetAccountCurrentIPsNullQuery.cs" />
     <Compile Include="Queries\Character\SelectAccountCharacterInfoQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ActiveStatusEffectsIDCreator.cs" />

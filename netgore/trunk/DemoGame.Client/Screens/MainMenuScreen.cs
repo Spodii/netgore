@@ -14,8 +14,7 @@ namespace DemoGame.Client
         GUIManager _gui;
         SpriteBatch _sb = null;
 
-        public MainMenuScreen()
-            : base(ScreenName)
+        public MainMenuScreen() : base(ScreenName)
         {
         }
 

@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.Network;
 
 namespace DemoGame.Client
 {
@@ -47,7 +48,7 @@ namespace DemoGame.Client
             if (!_sockets.PacketHandler.AccountCharacterInfos.TryGetInfo(index, out charInfo))
                 return;
 
-            using (var pw = ClientPacket.SelectAccountCharacter(index))
+            using (PacketWriter pw = ClientPacket.SelectAccountCharacter(index))
             {
                 _sockets.Send(pw);
             }

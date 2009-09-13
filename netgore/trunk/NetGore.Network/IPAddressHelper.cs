@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Text;
 
@@ -21,7 +20,7 @@ namespace NetGore.Network
             if (split.Length != 4)
                 throw new ArgumentException("Expected a dotted address with 4 segments.", "dottedAddress");
 
-            byte[] bytes = new byte[4];
+            var bytes = new byte[4];
             for (int i = 0; i < 4; i++)
             {
                 byte parsedByte = byte.Parse(split[i]);
@@ -29,6 +28,17 @@ namespace NetGore.Network
             }
 
             return IPv4AddressToUInt(bytes, 0);
+        }
+
+        /// <summary>
+        /// Converts an IPv4 address to an unsigned int.
+        /// </summary>
+        /// <param name="address">An array of the segments of an IPv4 address.</param>
+        /// <param name="startIndex">The starting index to use in the <paramref name="address"/> array.</param>
+        /// <returns>The <paramref name="address"/> as an unsigned int.</returns>
+        public static uint IPv4AddressToUInt(byte[] address, int startIndex)
+        {
+            return BitConverter.ToUInt32(address, startIndex);
         }
 
         /// <summary>
@@ -60,17 +70,6 @@ namespace NetGore.Network
         {
             var bytes = BitConverter.GetBytes(address);
             return ToIPv4Address(bytes, 0);
-        }
-
-        /// <summary>
-        /// Converts an IPv4 address to an unsigned int.
-        /// </summary>
-        /// <param name="address">An array of the segments of an IPv4 address.</param>
-        /// <param name="startIndex">The starting index to use in the <paramref name="address"/> array.</param>
-        /// <returns>The <paramref name="address"/> as an unsigned int.</returns>
-        public static uint IPv4AddressToUInt(byte[] address, int startIndex)
-        {
-            return BitConverter.ToUInt32(address, startIndex);
         }
     }
 }

@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -12,14 +12,13 @@ namespace DemoGame.Server.Queries
     public class SelectAccountCharacterInfoQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryStr = string.Format("SELECT `name`,`body_id` FROM `{0}` WHERE `id`=@id",
-            CharacterTable.TableName);
+                                                         CharacterTable.TableName);
 
         /// <summary>
         /// DbQueryReader constructor.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectAccountCharacterInfoQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectAccountCharacterInfoQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "name", "body_id");
@@ -29,12 +28,12 @@ namespace DemoGame.Server.Queries
         {
             AccountCharacterInfo ret;
 
-            using (var r = ExecuteReader(id))
+            using (IDataReader r = ExecuteReader(id))
             {
                 if (!r.Read())
                     throw new ArgumentException(string.Format("Failed to find Character with ID `{0}`.", id));
 
-                var ct = new CharacterTable();
+                CharacterTable ct = new CharacterTable();
                 ct.TryReadValues(r);
 
                 ret = new AccountCharacterInfo(accountCharacterIndex, ct.Name, ct.BodyID);

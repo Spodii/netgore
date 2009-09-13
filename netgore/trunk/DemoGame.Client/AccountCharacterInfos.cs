@@ -1,4 +1,3 @@
-﻿using System;
 using System.Diagnostics;
 using System.Linq;
 
@@ -12,18 +11,6 @@ namespace DemoGame.Client
         public byte Count
         {
             get { return (byte)_charInfos.Length; }
-        }
-
-        public bool TryGetInfo(byte index, out AccountCharacterInfo charInfo)
-        {
-            if (index < 0 || index >= _charInfos.Length)
-            {
-                charInfo = null;
-                return false;
-            }
-
-            charInfo = _charInfos[index];
-            return true;
         }
 
         public bool IsLoaded
@@ -47,6 +34,18 @@ namespace DemoGame.Client
 
             _charInfos = charInfos;
             _isLoaded = true;
+        }
+
+        public bool TryGetInfo(byte index, out AccountCharacterInfo charInfo)
+        {
+            if (index < 0 || index >= _charInfos.Length)
+            {
+                charInfo = null;
+                return false;
+            }
+
+            charInfo = _charInfos[index];
+            return true;
         }
     }
 }

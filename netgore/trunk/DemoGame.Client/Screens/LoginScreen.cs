@@ -21,8 +21,7 @@ namespace DemoGame.Client
         SpriteBatch _sb = null;
         ClientSockets _sockets = null;
 
-        public LoginScreen()
-            : base(ScreenName)
+        public LoginScreen() : base(ScreenName)
         {
         }
 

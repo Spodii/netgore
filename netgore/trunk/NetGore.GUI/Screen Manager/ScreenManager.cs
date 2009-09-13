@@ -16,6 +16,7 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class ScreenManager : DrawableGameComponent
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly ContentManager _content;
 
         readonly FrameCounter _fps = new FrameCounter();
@@ -151,8 +152,6 @@ namespace NetGore.Graphics.GUI
                 screen.LoadContent();
             }
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public void SetScreen(string name)
         {

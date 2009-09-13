@@ -225,7 +225,7 @@ namespace DemoGame.Server
             byte index = r.ReadByte();
 
             // Ensure the client is in a valid state to select an account character
-            var userAccount = World.GetUserAccount(conn);
+            UserAccount userAccount = World.GetUserAccount(conn);
             if (userAccount == null)
                 return;
 
@@ -386,13 +386,14 @@ namespace DemoGame.Server
         /// A connection has been lost with a client.
         /// </summary>
         /// <param name="conn">Connection the user was using.</param>
-        void ServerSockets_OnDisconnect(IIPSocket conn)
+        static void ServerSockets_OnDisconnect(IIPSocket conn)
         {
-            // The user attached to the connection may already be disposed, so if we fail to find the user,
-            // just ignore the problem
-            User user;
-            if (TryGetUser(conn, out user, false))
-                user.DelayedDispose();
+            // If there is an account connected to the connection, be sure to close it
+            UserAccount account = World.GetUserAccount(conn);
+            if (account == null)
+                return;
+
+            account.Dispose();
         }
 
         static bool TryGetMap(Character user, out Map map)
