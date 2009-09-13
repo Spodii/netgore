@@ -1,9 +1,8 @@
-﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -13,27 +12,26 @@ namespace DemoGame.Server.Queries
     public class SelectAccountCharacterIDsQuery : DbQueryReader<int>
     {
         static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}` WHERE `account_id`=@accountID",
-            CharacterTable.TableName);
+                                                         CharacterTable.TableName);
 
         /// <summary>
         /// DbQueryReader constructor.
         /// </summary>
-        public SelectAccountCharacterIDsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectAccountCharacterIDsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "id", "account_id");
         }
 
         public IEnumerable<CharacterID> Execute(int accountID)
         {
-            List<CharacterID> ret = new List<CharacterID>(4);
+            var ret = new List<CharacterID>(4);
 
-            using (var r = ExecuteReader(accountID))
+            using (IDataReader r = ExecuteReader(accountID))
             {
                 while (r.Read())
                 {
                     Debug.Assert(r.FieldCount == 1);
-                    var value = r.GetCharacterID(0);
+                    CharacterID value = r.GetCharacterID(0);
                     ret.Add(value);
                 }
             }

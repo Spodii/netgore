@@ -195,34 +195,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the <see cref="UserAccount"/> attached to the <paramref name="conn"/>.
-        /// </summary>
-        /// <param name="conn">The <see cref="IIPSocket"/> to get the <see cref="UserAccount"/> for.</param>
-        /// <returns>The <see cref="UserAccount"/> for the <paramref name="conn"/>, or null if there
-        /// was a problem getting the <see cref="UserAccount"/>.</returns>
-        public static UserAccount GetUserAccount(IIPSocket conn)
-        {
-            if (conn.Tag == null)
-            {
-                const string errmsg = "Tried to get the UserAccount from IIPSocket `{0}`, but it has no tag.";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, conn);
-                return null;
-            }
-
-            UserAccount userAccount = conn.Tag as UserAccount;
-            if (userAccount == null)
-            {
-                const string errmsg = "Tried to get the UserAccount from IIPSocket `{0}`, but the tag was invalid (`{1}`).";
-                if (log.IsWarnEnabled)
-                    log.WarnFormat(errmsg, conn, conn.Tag);
-                return null;
-            }
-
-            return userAccount;
-        }
-
-        /// <summary>
         /// Finds a user based on their connection information.
         /// </summary>
         /// <param name="conn">Client connection information.</param>
@@ -268,6 +240,34 @@ namespace DemoGame.Server
         public User GetUser(IIPSocket conn)
         {
             return GetUser(conn, true);
+        }
+
+        /// <summary>
+        /// Gets the <see cref="UserAccount"/> attached to the <paramref name="conn"/>.
+        /// </summary>
+        /// <param name="conn">The <see cref="IIPSocket"/> to get the <see cref="UserAccount"/> for.</param>
+        /// <returns>The <see cref="UserAccount"/> for the <paramref name="conn"/>, or null if there
+        /// was a problem getting the <see cref="UserAccount"/>.</returns>
+        public static UserAccount GetUserAccount(IIPSocket conn)
+        {
+            if (conn.Tag == null)
+            {
+                const string errmsg = "Tried to get the UserAccount from IIPSocket `{0}`, but it has no tag.";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, conn);
+                return null;
+            }
+
+            UserAccount userAccount = conn.Tag as UserAccount;
+            if (userAccount == null)
+            {
+                const string errmsg = "Tried to get the UserAccount from IIPSocket `{0}`, but the tag was invalid (`{1}`).";
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, conn, conn.Tag);
+                return null;
+            }
+
+            return userAccount;
         }
 
         /// <summary>

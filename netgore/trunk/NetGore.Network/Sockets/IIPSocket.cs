@@ -22,11 +22,6 @@ namespace NetGore.Network
         uint IP { get; }
 
         /// <summary>
-        /// Gets the port as a 16-bit unsigned integer.
-        /// </summary>
-        ushort Port { get; }
-
-        /// <summary>
         /// Gets if this IIPSocket is currently connected.
         /// </summary>
         bool IsConnected { get; }
@@ -40,6 +35,11 @@ namespace NetGore.Network
         /// Gets the maximum size of a message to the unreliable channel.
         /// </summary>
         int MaxUnreliableMessageSize { get; }
+
+        /// <summary>
+        /// Gets the port as a 16-bit unsigned integer.
+        /// </summary>
+        ushort Port { get; }
 
         /// <summary>
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag

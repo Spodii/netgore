@@ -42,7 +42,8 @@ namespace DemoGame.Server
                 _oldValues = oldValues;
 
             Debug.Assert(_item != null || _oldValues != null,
-                         "characterID and oldValues can not both be null. " + "This would imply that the characterID changed from null to null.");
+                         "characterID and oldValues can not both be null. " +
+                         "This would imply that the characterID changed from null to null.");
         }
     }
 }

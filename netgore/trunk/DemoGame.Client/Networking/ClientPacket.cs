@@ -11,13 +11,6 @@ namespace DemoGame.Client
     {
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
 
-        public static PacketWriter SelectAccountCharacter(byte index)
-        {
-            var pw = GetWriter(ClientPacketID.SelectAccountCharacter);
-            pw.Write(index);
-            return pw;
-        }
-
         public static PacketWriter Attack()
         {
             return GetWriter(ClientPacketID.Attack);
@@ -107,6 +100,13 @@ namespace DemoGame.Client
         {
             PacketWriter pw = GetWriter(ClientPacketID.Say);
             pw.Write(text, GameData.MaxClientSayLength);
+            return pw;
+        }
+
+        public static PacketWriter SelectAccountCharacter(byte index)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.SelectAccountCharacter);
+            pw.Write(index);
             return pw;
         }
 

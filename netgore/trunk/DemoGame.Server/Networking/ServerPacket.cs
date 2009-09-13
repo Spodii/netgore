@@ -16,24 +16,6 @@ namespace DemoGame.Server
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static PacketWriter SendAccountCharacters(AccountCharacterInfo[] charInfos)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.SendAccountCharacters);
-
-            if (charInfos == null || charInfos.Length == 0)
-            {
-                pw.Write((byte)0);
-            }
-            else
-            {
-                pw.Write((byte)charInfos.Length);
-                for (int i = 0; i < charInfos.Length; i++)
-                    pw.Write(charInfos[i]);
-            }
-
-            return pw;
-        }
-
         public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
         {
             ushort secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
@@ -188,6 +170,24 @@ namespace DemoGame.Server
         {
             PacketWriter pw = GetWriter(ServerPacketID.RemoveStatusEffect);
             pw.Write(statusEffectType);
+            return pw;
+        }
+
+        public static PacketWriter SendAccountCharacters(AccountCharacterInfo[] charInfos)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SendAccountCharacters);
+
+            if (charInfos == null || charInfos.Length == 0)
+                pw.Write((byte)0);
+            else
+            {
+                pw.Write((byte)charInfos.Length);
+                for (int i = 0; i < charInfos.Length; i++)
+                {
+                    pw.Write(charInfos[i]);
+                }
+            }
+
             return pw;
         }
 

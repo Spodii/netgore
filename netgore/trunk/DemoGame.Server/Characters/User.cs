@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using DemoGame.Server.DbObjs;
-using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
 using MySql.Data.MySqlClient;
@@ -220,13 +219,23 @@ namespace DemoGame.Server
             World.AddUser(this);
         }
 
+        /// <summary>
+        /// Performs the actual disposing of the Entity. This is called by the base Entity class when
+        /// a request has been made to dispose of the Entity. This is guarenteed to only be called once.
+        /// All classes that override this method should be sure to call base.DisposeHandler() after
+        /// handling what it needs to dispose.
+        /// </summary>
         protected override void HandleDispose()
         {
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Disposing User `{0}`.", this);
+
             base.HandleDispose();
 
-            // Close the User's connection
-            if (_conn != null)
-                _conn.Dispose();
+            // Remove the User from being the active User in the account
+            var account = World.GetUserAccount(Conn);
+            if (account != null)
+                account.CloseUser();
         }
 
         /// <summary>

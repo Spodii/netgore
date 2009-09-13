@@ -81,6 +81,8 @@ namespace NetGore.Network
         /// </summary>
         bool _disposed;
 
+        uint _ipUInt;
+
         /// <summary>
         /// If the socket has been initialized
         /// </summary>
@@ -90,6 +92,8 @@ namespace NetGore.Network
         /// If the socket is currently busy sending data
         /// </summary>
         bool _isSending;
+
+        ushort _port;
 
         /// <summary>
         /// Buffer used for receiving data. Data is written into this buffer
@@ -463,7 +467,7 @@ namespace NetGore.Network
             _socket = newSocket;
             _address = _socket.RemoteEndPoint.ToString();
 
-            var ipEndPoint = (IPEndPoint)_socket.RemoteEndPoint;
+            IPEndPoint ipEndPoint = (IPEndPoint)_socket.RemoteEndPoint;
 
             _port = (ushort)ipEndPoint.Port;
             Debug.Assert(ipEndPoint.Port >= ushort.MinValue && ipEndPoint.Port <= ushort.MaxValue);
@@ -472,9 +476,6 @@ namespace NetGore.Network
             _ipUInt = IPAddressHelper.IPv4AddressToUInt(ipAddressBytes, 0);
             Debug.Assert(ipAddressBytes.Length == 4);
         }
-
-        ushort _port;
-        uint _ipUInt;
 
         /// <summary>
         /// Returns a System.String that represents the current TCPSocket.

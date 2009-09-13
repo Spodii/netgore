@@ -19,7 +19,8 @@ namespace DemoGame.MapEditor
         /// <summary>
         /// Gets or sets the PropertyGrid to display the property values for the selected characterID in this PersistentNPCListBox.
         /// </summary>
-        [Description("The PropertyGrid to display the property values for the selected characterID in this PersistentNPCListBox.")]
+        [Description("The PropertyGrid to display the property values for the selected characterID in this PersistentNPCListBox.")
+        ]
         public PropertyGrid PropertyGrid { get; set; }
 
         public PersistentNPCListBox()

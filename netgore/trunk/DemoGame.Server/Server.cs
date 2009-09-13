@@ -200,30 +200,6 @@ namespace DemoGame.Server
             _gameTimer.Stop();
         }
 
-        /// <summary>
-        /// Handles the server console input
-        /// </summary>
-        void HandleInput()
-        {
-            ConsoleCommands consoleCommands = new ConsoleCommands(this);
-
-            while (_isRunning)
-            {
-                string input = Console.ReadLine();
-                string resultStr = consoleCommands.ExecuteCommand(input);
-                if (!string.IsNullOrEmpty(resultStr))
-                    Console.WriteLine(resultStr);
-            }
-        }
-
-        /// <summary>
-        /// Initializes the scripts.
-        /// </summary>
-        static void InitializeScripts()
-        {
-            CreateScriptTypeCollection("AI");
-        }
-
         static void HandleFailedLogin(IIPSocket conn, AccountLoginResult loginResult, string name)
         {
             // Get the error message
@@ -265,6 +241,30 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Handles the server console input
+        /// </summary>
+        void HandleInput()
+        {
+            ConsoleCommands consoleCommands = new ConsoleCommands(this);
+
+            while (_isRunning)
+            {
+                string input = Console.ReadLine();
+                string resultStr = consoleCommands.ExecuteCommand(input);
+                if (!string.IsNullOrEmpty(resultStr))
+                    Console.WriteLine(resultStr);
+            }
+        }
+
+        /// <summary>
+        /// Initializes the scripts.
+        /// </summary>
+        static void InitializeScripts()
+        {
+            CreateScriptTypeCollection("AI");
+        }
+
+        /// <summary>
         /// Handles the login attempt of an account.
         /// </summary>
         /// <param name="conn">Connection that the login request was made on.</param>
@@ -297,7 +297,7 @@ namespace DemoGame.Server
 
             // Set the connection's tag to the account
             conn.Tag = userAccount;
-
+      
             // Send the "Login Successful" message
             using (PacketWriter pw = ServerPacket.LoginSuccessful())
             {

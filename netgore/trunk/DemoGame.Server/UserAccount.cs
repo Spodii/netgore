@@ -13,9 +13,11 @@ namespace DemoGame.Server
     /// <summary>
     /// Contains the information for a <see cref="DemoGame.Server.User"/>'s account.
     /// </summary>
-    public class UserAccount : AccountTable
+    public class UserAccount : AccountTable, IDisposable
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly DBController _dbController;
+        readonly object _setUserLock = new object();
         readonly IIPSocket _socket;
 
         List<CharacterID> _characterIDs;
@@ -68,6 +70,31 @@ namespace DemoGame.Server
 
             _socket = socket;
             _dbController = dbController;
+        }
+
+        /// <summary>
+        /// Logs out the User from this UserAccount. If the <see cref="User"/> is not null and has not been disposed,
+        /// this method will dispose of the User, too.
+        /// </summary>
+        public void CloseUser()
+        {
+            User u;
+
+            lock (_setUserLock)
+            {
+                u = _user;
+                if (u == null)
+                    return;
+
+                _user = null;
+            }
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Closed User `{0}` on account `{1}`.", u, this);
+
+            // Make sure the user was disposed
+            if (!u.IsDisposed)
+                u.Dispose();
         }
 
         /// <summary>
@@ -143,10 +170,11 @@ namespace DemoGame.Server
             }
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        readonly object _setUserLock = new object();
-
+        /// <summary>
+        /// Loads and sets the User being used by this account.
+        /// </summary>
+        /// <param name="world">The World that the User will be part of.</param>
+        /// <param name="characterID">The CharacterID of the user to use.</param>
         public void SetUser(World world, CharacterID characterID)
         {
             lock (_setUserLock)
@@ -174,6 +202,10 @@ namespace DemoGame.Server
                 // Load the User
                 _user = new User(_socket, world, characterID);
             }
+
+            User u = User;
+            if (log.IsInfoEnabled && u != null)
+                log.InfoFormat("Set User `{0}` on account `{1}`.", u, this);
         }
 
         /// <summary>
@@ -186,6 +218,26 @@ namespace DemoGame.Server
         public override string ToString()
         {
             return string.Format("{0} [{1}]", Name, ID);
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            // Make sure the User is closed
+            CloseUser();
+
+            // Dispose of the socket
+            if (Socket != null)
+                Socket.Dispose();
+            
+            // Log the account out in the database
+            _dbController.GetQuery<SetAccountCurrentIPNullQuery>().Execute(ID);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Disposed account `{0}`.", this);
         }
 
         /// <summary>
