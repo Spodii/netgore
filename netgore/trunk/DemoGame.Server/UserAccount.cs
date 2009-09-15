@@ -107,6 +107,26 @@ namespace DemoGame.Server
             return _characterIDs[index];
         }
 
+        /// <summary>
+        /// Checks if the given string is a valid string for an account name.
+        /// </summary>
+        /// <param name="s">The string to test.</param>
+        /// <returns>True if <paramref name="s"/> is a valid string for an account name; otherwise false.</returns>
+        public static bool IsValidName(string s)
+        {
+            return GameData.AccountName.IsValid(s);
+        }
+
+        /// <summary>
+        /// Checks if the given string is a valid string for an account password.
+        /// </summary>
+        /// <param name="s">The string to test.</param>
+        /// <returns>True if <paramref name="s"/> is a valid string for an account password; otherwise false.</returns>
+        public static bool IsValidPassword(string s)
+        {
+            return GameData.AccountPassword.IsValid(s);
+        }
+
         void LoadCharacterIDs(DBController dbController)
         {
             _characterIDs = dbController.GetQuery<SelectAccountCharacterIDsQuery>().Execute(ID).ToList();
@@ -221,26 +241,6 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            // Make sure the User is closed
-            CloseUser();
-
-            // Dispose of the socket
-            if (Socket != null)
-                Socket.Dispose();
-            
-            // Log the account out in the database
-            _dbController.GetQuery<SetAccountCurrentIPNullQuery>().Execute(ID);
-
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Disposed account `{0}`.", this);
-        }
-
-        /// <summary>
         /// Tries to get the CharacterID for a Character in the UserAccount by the given index.
         /// </summary>
         /// <param name="index">The 0-based index of the CharacterID.</param>
@@ -257,5 +257,29 @@ namespace DemoGame.Server
             value = _characterIDs[index];
             return true;
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
+        {
+            // Make sure the User is closed
+            CloseUser();
+
+            // Dispose of the socket
+            if (Socket != null)
+                Socket.Dispose();
+
+            // Log the account out in the database
+            _dbController.GetQuery<SetAccountCurrentIPNullQuery>().Execute(ID);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Disposed account `{0}`.", this);
+        }
+
+        #endregion
     }
 }

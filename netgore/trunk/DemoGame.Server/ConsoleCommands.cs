@@ -28,7 +28,7 @@ namespace DemoGame.Server
         }
 
         [ConsoleCommand("AddUser")]
-        public string AddUser(string name, string password)
+        public string AddUser(string name)
         {
             return "Function not implemented";
 
