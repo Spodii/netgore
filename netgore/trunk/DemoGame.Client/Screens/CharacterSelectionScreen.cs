@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore.Graphics;
@@ -13,6 +15,7 @@ namespace DemoGame.Client
     {
         public const string ScreenName = "character selection";
         const string _unusedCharacterSlotText = "unused";
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         Button[] _characterButtons;
         GameplayScreen _gpScreen = null;
@@ -28,13 +31,19 @@ namespace DemoGame.Client
 
         public override void Activate()
         {
-            _gpScreen = ScreenManager.GetScreen(GameplayScreen.ScreenName) as GameplayScreen;
             if (_gpScreen == null)
-                throw new Exception("Failed to find 'game' screen.");
+            {
+                _gpScreen = ScreenManager.GetScreen(GameplayScreen.ScreenName) as GameplayScreen;
+                if (_gpScreen == null)
+                    throw new Exception("Failed to find 'game' screen.");
+            }
 
-            _sockets = _gpScreen.Socket;
             if (_sockets == null)
-                throw new Exception("Failed to reference the ClientSockets.");
+            {
+                _sockets = _gpScreen.Socket;
+                if (_sockets == null)
+                    throw new Exception("Failed to reference the ClientSockets.");
+            }
 
             base.Activate();
         }
@@ -56,15 +65,24 @@ namespace DemoGame.Client
 
         void cLogOut_OnClick(object sender, MouseClickEventArgs e)
         {
-            // TODO: $$ Actually log out (close the socket)
+            // Change screens
             ScreenManager.SetScreen(LoginScreen.ScreenName);
-        }
 
-        public override void Deactivate()
-        {
-            _gpScreen = null;
-            _sockets = null;
-            base.Deactivate();
+            // Disconnect the socket so we actually "log out"
+            if (_sockets != null)
+            {
+                try
+                {
+                    _sockets.Disconnect();
+                }
+                catch (Exception ex)
+                {
+                    // Ignore errors in disconnecting
+                    Debug.Fail("Disconnect failed: " + ex);
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat("Failed to disconnect client socket ({0}). Exception: {1}", _sockets, ex);
+                }
+            }
         }
 
         public override void Draw(GameTime gameTime)
