@@ -168,6 +168,9 @@ namespace DemoGame.Server
         /// </summary>
         void GameLoop()
         {
+            var updateServerTimeQuery = DBController.GetQuery<UpdateServerTimeQuery>();
+            ServerTimeUpdater serverTimeUpdater = new ServerTimeUpdater(updateServerTimeQuery);
+
             long lastRemoveConnsTime = 0;
 
             _gameTimer.Reset();
@@ -190,6 +193,9 @@ namespace DemoGame.Server
 
                 // Update the world
                 _world.Update();
+
+                // Update the time
+                serverTimeUpdater.Update(GetTime());
 
                 // Check if we can afford sleeping the thread
                 long sleepTime = _serverUpdateRate - (_gameTimer.ElapsedMilliseconds - loopStartTime);
