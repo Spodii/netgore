@@ -27,13 +27,19 @@ namespace DemoGame.Client
 
         public override void Activate()
         {
-            _gpScreen = ScreenManager.GetScreen(GameplayScreen.ScreenName) as GameplayScreen;
             if (_gpScreen == null)
-                throw new Exception("Failed to find 'game' screen.");
+            {
+                _gpScreen = ScreenManager.GetScreen(GameplayScreen.ScreenName) as GameplayScreen;
+                if (_gpScreen == null)
+                    throw new Exception("Failed to find 'game' screen.");
+            }
 
-            _sockets = _gpScreen.Socket;
             if (_sockets == null)
-                throw new Exception("Failed to reference the ClientSockets.");
+            {
+                _sockets = _gpScreen.Socket;
+                if (_sockets == null)
+                    throw new Exception("Failed to reference the ClientSockets.");
+            }
 
             _sockets.OnConnect += sockets_OnConnect;
             _sockets.OnFailedConnect += sockets_OnFailedConnect;
@@ -58,16 +64,11 @@ namespace DemoGame.Client
 
         public override void Deactivate()
         {
-            if (_sockets != null)
-            {
-                _sockets.OnConnect -= sockets_OnConnect;
-                _sockets.OnFailedConnect -= sockets_OnFailedConnect;
-                _sockets.PacketHandler.OnLoginSuccessful -= sockets_OnLoginSuccessful;
-                _sockets.PacketHandler.OnLoginUnsuccessful -= sockets_OnLoginUnsuccessful;
-            }
+            _sockets.OnConnect -= sockets_OnConnect;
+            _sockets.OnFailedConnect -= sockets_OnFailedConnect;
+            _sockets.PacketHandler.OnLoginSuccessful -= sockets_OnLoginSuccessful;
+            _sockets.PacketHandler.OnLoginUnsuccessful -= sockets_OnLoginUnsuccessful;
 
-            _gpScreen = null;
-            _sockets = null;
             _cError.Text = string.Empty;
         }
 

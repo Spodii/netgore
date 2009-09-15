@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -45,6 +48,8 @@ namespace DemoGame.Client
         /// Minimum time the user must wait before using something
         /// </summary>
         const int _minUseRate = 150;
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Pool for the damage text
@@ -297,29 +302,12 @@ namespace DemoGame.Client
             }
         }
 
-        protected virtual void Dispose(bool disposeManaged)
-        {
-            if (_disposed)
-                return;
-
-            _disposed = true;
-            if (!disposeManaged)
-                return;
-
-            if (_guiSettings != null)
-                _guiSettings.Dispose();
-
-            if (Socket != null)
-            {
-                Socket.Disconnect();
-                Socket.Dispose();
-            }
-        }
-
         /// <summary>
-        /// Draws the gameplay screen.
+        /// Handles drawing of the screen. The ScreenManager already provides a GraphicsDevice.Clear() so
+        /// there is often no need to clear the screen. This will only be called while the screen is the 
+        /// active screen.
         /// </summary>
-        /// <param name="gameTime">Current GameTime.</param>
+        /// <param name="gameTime">Current GameTime</param>
         public override void Draw(GameTime gameTime)
         {
             // Don't draw if we don't know who our character is
@@ -368,6 +356,11 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
+        /// completely and successfully added to the ScreenManager. It is highly recommended that you
+        /// use this instead of the constructor. This is invoked only once.
+        /// </summary>
         public override void Initialize()
         {
             _world = new World(this, new Camera2D(GameData.ScreenSize));
@@ -431,7 +424,9 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Read graphics content for the game
+        /// Handles the loading of game content. Any content that is loaded should be placed in here.
+        /// This will be invoked once (right after Initialize()), along with an additional time for
+        /// every time XNA notifies the ScreenManager that the game content needs to be reloaded.
         /// </summary>
         public override void LoadContent()
         {
@@ -441,10 +436,12 @@ namespace DemoGame.Client
 
         void OnDisconnect(IIPSocket conn)
         {
-            ScreenManager.SetScreen(LoginScreen.ScreenName);
             LoginScreen login = (LoginScreen)ScreenManager.GetScreen(LoginScreen.ScreenName);
-            login.SetError("Connection to server lost.");
-            Dispose();
+            if (ScreenManager.ActiveScreen != login)
+            {
+                login.SetError("Connection to server lost.");
+                ScreenManager.SetScreen(LoginScreen.ScreenName);
+            }
         }
 
         void SkillsForm_OnUseSkill(SkillType skillType)
@@ -496,6 +493,10 @@ namespace DemoGame.Client
             }
         }
 
+        /// <summary>
+        /// Handles updating of the screen. This will only be called while the screen is the active screen.
+        /// </summary>
+        /// <param name="gameTime">Current GameTime</param>
         public override void Update(GameTime gameTime)
         {
             // Get the current time
@@ -655,10 +656,32 @@ namespace DemoGame.Client
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            if (_disposed)
+                return;
+
+            if (_guiSettings != null)
+                _guiSettings.Dispose();
+
+            if (Socket != null)
+            {
+                try
+                {
+                    Socket.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    // Ignore errors in disconnecting
+                    Debug.Fail("Disconnect failed: " + ex);
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat("Failed to disconnect client socket ({0}). Exception: {1}", Socket, ex);
+                }
+            }
         }
 
         #endregion
