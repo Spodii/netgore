@@ -45,7 +45,7 @@ namespace DemoGame.Server
     /// Handles Character characterID events.
     /// </summary>
     /// <param name="character">The Character that the event took place on.</param>
-    /// <param name="characterID">The ItemEntity related to the event.</param>
+    /// <param name="item">The ItemEntity related to the event.</param>
     public delegate void CharacterItemEventHandler(Character character, ItemEntity item);
 
     public delegate void CharacterExpEventHandler(Character character, uint oldExp, uint exp);
@@ -369,8 +369,8 @@ namespace DemoGame.Server
         /// <summary>
         /// When overridden in the derived class, lets the Character handle being given items through GiveItem().
         /// </summary>
-        /// <param name="characterID">The characterID the Character was given.</param>
-        /// <param name="amount">The amount of the <paramref name="characterID"/> the Character was given. Will be greater
+        /// <param name="item">The <see cref="ItemEntity"/> the Character was given.</param>
+        /// <param name="amount">The amount of the <paramref name="item"/> the Character was given. Will be greater
         /// than 0.</param>
         protected virtual void AfterGiveItem(ItemEntity item, byte amount)
         {
@@ -562,7 +562,7 @@ namespace DemoGame.Server
         /// Makes the Character drop an existing characterID. This does NOT remove the ItemEntity from the Character in any
         /// way. Be sure to remove the ItemEntity from the Character first if needed.
         /// </summary>
-        /// <param name="characterID">ItemEntity to drop.</param>
+        /// <param name="item">ItemEntity to drop.</param>
         public void DropItem(ItemEntity item)
         {
             Vector2 dropPos = GetDropPos();
@@ -699,7 +699,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gives an characterID to the Character to be placed in their Inventory.
         /// </summary>
-        /// <param name="characterID">Item to give to the character.</param>
+        /// <param name="item">Item to give to the character.</param>
         /// <returns>The remainder of the characterID that failed to be added to the inventory, or null if all of the
         /// characterID was added.</returns>
         public virtual ItemEntity GiveItem(ItemEntity item)
@@ -767,23 +767,13 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Checks if a username is valid
+        /// Checks if the given string is a valid string for a character name.
         /// </summary>
-        /// <param name="name">Name of the character</param>
-        /// <returns>True if the name is valid, else false</returns>
-        public static bool IsValidName(string name)
+        /// <param name="s">The string to test.</param>
+        /// <returns>True if <paramref name="s"/> is a valid string for a character name; otherwise false.</returns>
+        public static bool IsValidName(string s)
         {
-            return GameData.IsValidCharName(name);
-        }
-
-        /// <summary>
-        /// Checks if a password is valid
-        /// </summary>
-        /// <param name="name">Password for the character</param>
-        /// <returns>True if the name is valid, else false</returns>
-        public static bool IsValidPassword(string name)
-        {
-            return GameData.IsValidCharName(name);
+            return GameData.CharacterName.IsValid(s);
         }
 
         /// <summary>
@@ -1110,7 +1100,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Makes the Character use an equipment characterID.
         /// </summary>
-        /// <param name="characterID">Item to be equipped.</param>
+        /// <param name="item">Item to be equipped.</param>
         /// <param name="inventorySlot">If the characterID is from the inventory, the inventory slot that the characterID is in.</param>
         /// <returns>True if the characterID was successfully equipped; otherwise false.</returns>
         bool UseEquipment(ItemEntity item, InventorySlot? inventorySlot)
@@ -1130,7 +1120,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Makes the Character use an characterID.
         /// </summary>
-        /// <param name="characterID">Item to use.</param>
+        /// <param name="item">Item to use.</param>
         /// <param name="inventorySlot">Inventory slot of the characterID being used, or null if not used from the inventory.</param>
         /// <returns>True if the characterID was successfully used, else false.</returns>
         public bool UseItem(ItemEntity item, InventorySlot? inventorySlot)

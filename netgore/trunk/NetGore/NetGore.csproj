@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Alignment.cs" />
     <Compile Include="AlignmentHelper.cs" />
+    <Compile Include="CharType.cs" />
     <Compile Include="CommandLineSwitchHelper.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Extensions\ClampExtensions.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="StringCommandBaseAttribute.cs" />
     <Compile Include="StringCommandParser.cs" />
     <Compile Include="StringParser.cs" />
+    <Compile Include="StringRules.cs" />
     <Compile Include="TypeHelper.cs" />
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="WorldSettings.cs" />

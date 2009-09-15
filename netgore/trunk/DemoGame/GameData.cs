@@ -53,9 +53,19 @@ namespace DemoGame
         public static Vector2 ScreenSize = new Vector2(800, 600);
 
         /// <summary>
-        /// RegEx for name and password validation
+        /// The rules for the account names.
         /// </summary>
-        static readonly Regex _namePassRegex = new Regex("^[a-zA-Z0-9]{3,15}$", RegexOptions.Compiled | RegexOptions.Singleline);
+        public static readonly StringRules AccountName = new StringRules(3, 30, CharType.Alpha | CharType.Numeric);
+
+        /// <summary>
+        /// The rules for the account passwords.
+        /// </summary>
+        public static readonly StringRules AccountPassword = new StringRules(3, 30, CharType.Alpha | CharType.Numeric | CharType.Punctuation);
+
+        /// <summary>
+        /// The rules for the character names.
+        /// </summary>
+        public static readonly StringRules CharacterName = new StringRules(3, 15, CharType.Alpha);
 
         /// <summary>
         /// Array of all the body information
@@ -170,26 +180,6 @@ namespace DemoGame
 
             // Return the number of bits required for the max value
             return BitOps.RequiredBits(max);
-        }
-
-        /// <summary>
-        /// Checks if a character's name is valid
-        /// </summary>
-        /// <param name="name">Name of the character</param>
-        /// <returns>True if valid, else false</returns>
-        public static bool IsValidCharName(string name)
-        {
-            return _namePassRegex.IsMatch(name);
-        }
-
-        /// <summary>
-        /// Checks if a password is valid.
-        /// </summary>
-        /// <param name="name">Name of the character.</param>
-        /// <returns>True if valid, else false.</returns>
-        public static bool IsValidPassword(string name)
-        {
-            return _namePassRegex.IsMatch(name);
         }
 
         /// <summary>
