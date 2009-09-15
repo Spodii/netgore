@@ -19,6 +19,20 @@ namespace NetGore.Tests
         const int _maxLength = 10000;
 
         [Test]
+        public void NullInputTest()
+        {
+            StringRules r = new StringRules(_minLength, _maxLength, CharType.All);
+            Assert.IsFalse(r.IsValid(null));
+        }
+
+        [Test]
+        public void EmptyInputTest()
+        {
+            StringRules r = new StringRules(_minLength, _maxLength, CharType.All);
+            Assert.IsFalse(r.IsValid(string.Empty));
+        }
+
+        [Test]
         public void AllTest()
         {
             StringRules r = new StringRules(_minLength, _maxLength, CharType.All);

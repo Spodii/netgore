@@ -96,6 +96,13 @@ namespace NetGore
             return _regex.IsMatch(s, startAt);
         }
 
+        /// <summary>
+        /// Builds the Regex string to use for checking the rules.
+        /// </summary>
+        /// <param name="minLength">The minimum allowed length.</param>
+        /// <param name="maxLength">The maximum allowed length.</param>
+        /// <param name="allowedChars">The allowed sets of characters.</param>
+        /// <returns>The Regex string to use for checking the rules.</returns>
         static string BuildRegexString(int minLength, int maxLength, CharType allowedChars)
         {
             StringBuilder sb = new StringBuilder();
