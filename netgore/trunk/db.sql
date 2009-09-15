@@ -2,15 +2,15 @@
 Navicat MySQL Data Transfer
 
 Source Server         : local
-Source Server Version : 50136
+Source Server Version : 50138
 Source Host           : localhost:3306
 Source Database       : demogame
 
 Target Server Type    : MYSQL
-Target Server Version : 50136
+Target Server Version : 50138
 File Encoding         : 65001
 
-Date: 2009-09-10 00:19:18
+Date: 2009-09-14 18:55:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,7 +33,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-09-07 15:43:24', '16777343');
+INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-09-07 15:43:24', null);
 
 -- ----------------------------
 -- Table structure for `alliance`
@@ -151,9 +151,9 @@ CREATE TABLE `character` (
 -- Records of character
 -- ----------------------------
 INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '2', null, '398', '338', '1', '500', '200', '1', '121', '21', '629', '84', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2', '1', '1');
-INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, '736', '503.36', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, '448', '434', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', '0', '800', '530', '2', '800', '500', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, '800', '250', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, '500', '250', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', '0', '800', '500', '2', '800', '500', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for `character_equipped`
@@ -349,6 +349,20 @@ CREATE TABLE `item` (
 -- ----------------------------
 -- Records of item
 -- ----------------------------
+INSERT INTO `item` VALUES ('0', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('1', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('2', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '2', '130', '50', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('3', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('4', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('5', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('6', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('7', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('8', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('9', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('10', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('11', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('12', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('13', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `item_template`
@@ -399,25 +413,6 @@ INSERT INTO `item_template` VALUES ('4', '4', '22', '22', 'Crystal Armor', 'Body
 INSERT INTO `item_template` VALUES ('5', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '132', '50', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
 
 -- ----------------------------
--- Table structure for `log_account_activity`
--- ----------------------------
-DROP TABLE IF EXISTS `log_account_activity`;
-CREATE TABLE `log_account_activity` (
-  `id` int(11) NOT NULL,
-  `account_id` int(11) NOT NULL,
-  `ip` int(11) unsigned NOT NULL COMMENT 'The IP address used, formatted as an unsigned 32-bit integer',
-  `time_login` datetime NOT NULL,
-  `time_logout` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `account_id` (`account_id`),
-  CONSTRAINT `log_account_activity_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of log_account_activity
--- ----------------------------
-
--- ----------------------------
 -- Table structure for `map`
 -- ----------------------------
 DROP TABLE IF EXISTS `map`;
@@ -465,9 +460,11 @@ INSERT INTO `map_spawn` VALUES ('14', '1', '1', '1', null, null, null, null);
 -- ----------------------------
 DROP TABLE IF EXISTS `server_time`;
 CREATE TABLE `server_time` (
-  `server_time` datetime NOT NULL
+  `server_time` datetime NOT NULL,
+  PRIMARY KEY (`server_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of server_time
 -- ----------------------------
+INSERT INTO `server_time` VALUES ('2009-09-14 18:55:19');
