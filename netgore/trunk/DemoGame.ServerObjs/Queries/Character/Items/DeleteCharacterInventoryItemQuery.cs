@@ -15,6 +15,10 @@ namespace DemoGame.Server.Queries
             string.Format("DELETE FROM `{0}` WHERE `character_id`=@character_id AND `slot`=@slot",
                           CharacterInventoryTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteCharacterInventoryItemQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public DeleteCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
             QueryAsserts.ArePrimaryKeys(CharacterInventoryTable.DbKeyColumns, "character_id", "slot");

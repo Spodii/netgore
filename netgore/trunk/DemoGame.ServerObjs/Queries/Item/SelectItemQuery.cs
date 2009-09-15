@@ -13,6 +13,10 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", ItemTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectItemQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
             QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");

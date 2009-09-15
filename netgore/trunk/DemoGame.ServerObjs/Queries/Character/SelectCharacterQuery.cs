@@ -13,11 +13,20 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `name`=@name", CharacterTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectCharacterQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectCharacterQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
 
-        public CharacterTable Execute(string characterName)
+        /// <summary>
+        /// Executes the specified character name.
+        /// </summary>
+        /// <param name="characterName">The name of the character.</param>
+        /// <returns>The ICharacterTable for the Character with the name <paramref name="characterName"/>.</returns>
+        public ICharacterTable Execute(string characterName)
         {
             CharacterTable ret;
 

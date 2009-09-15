@@ -28,7 +28,7 @@ namespace DemoGame.Server.Queries
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified characterID.
+        /// When overridden in the derived class, sets the database parameters based on the specified item.
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="map">Item used to execute the query.</param>

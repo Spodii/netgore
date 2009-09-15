@@ -13,6 +13,10 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `map_id`=@mapID", MapSpawnTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectMapSpawnsOnMapQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectMapSpawnsOnMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }

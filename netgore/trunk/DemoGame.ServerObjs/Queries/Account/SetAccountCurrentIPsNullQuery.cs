@@ -10,9 +10,9 @@ namespace DemoGame.Server.Queries
         static readonly string _queryStr = string.Format("UPDATE `{0}` SET `current_ip` = NULL", AccountTable.TableName);
 
         /// <summary>
-        /// DbQueryNonReader constructor.
+        /// Initializes a new instance of the <see cref="SetAccountCurrentIPsNullQuery"/> class.
         /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        /// <param name="connectionPool">The connection pool.</param>
         public SetAccountCurrentIPsNullQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }

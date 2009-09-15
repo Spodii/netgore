@@ -12,6 +12,10 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("UPDATE `{0}` SET {1} WHERE `id`=@id", MapSpawnTable.TableName,
                                                             FormatParametersIntoString(MapSpawnTable.DbNonKeyColumns));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateMapSpawnQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public UpdateMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
             QueryAsserts.ArePrimaryKeys(MapSpawnTable.DbKeyColumns, "id");

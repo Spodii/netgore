@@ -12,6 +12,10 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", MapTable.TableName,
                                                             FormatParametersIntoValuesString(MapTable.DbColumns));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InsertMapQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public InsertMapQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }

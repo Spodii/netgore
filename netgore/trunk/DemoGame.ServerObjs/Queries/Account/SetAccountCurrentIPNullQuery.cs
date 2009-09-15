@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -12,14 +10,13 @@ namespace DemoGame.Server.Queries
     public class SetAccountCurrentIPNullQuery : DbQueryNonReader<int>
     {
         static readonly string _queryStr = string.Format("UPDATE `{0}` SET `current_ip` = NULL WHERE `id`=@id",
-            AccountTable.TableName);
+                                                         AccountTable.TableName);
 
         /// <summary>
-        /// DbQueryNonReader constructor.
+        /// Initializes a new instance of the <see cref="SetAccountCurrentIPNullQuery"/> class.
         /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SetAccountCurrentIPNullQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        /// <param name="connectionPool">The connection pool.</param>
+        public SetAccountCurrentIPNullQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(AccountTable.DbKeyColumns, "id");
         }
@@ -27,8 +24,10 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
         /// </summary>
-        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
-        /// no parameters will be used.</returns>
+        /// <returns>
+        /// IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
+        /// If null, no parameters will be used.
+        /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return CreateParameters("@id");
@@ -37,7 +36,6 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// When overridden in the derived class, sets the database parameters based on the specified item.
         /// </summary>
-        /// <typeparam name="T">Type of the object containing the values to set.</typeparam>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">Item used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, int item)

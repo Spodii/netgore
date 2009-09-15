@@ -7,6 +7,10 @@ namespace DemoGame.Server.Queries
     [DBControllerQuery]
     public class ActiveStatusEffectIDCreator : IDCreatorBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ActiveStatusEffectIDCreator"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public ActiveStatusEffectIDCreator(DbConnectionPool connectionPool)
             : base(connectionPool, CharacterStatusEffectTable.TableName, "id", 2048, 128)
         {

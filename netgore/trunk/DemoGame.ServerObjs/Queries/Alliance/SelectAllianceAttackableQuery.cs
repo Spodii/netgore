@@ -13,6 +13,10 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `alliance_id`=@id",
                                                             AllianceAttackableTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectAllianceAttackableQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectAllianceAttackableQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
@@ -37,18 +41,20 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
         /// </summary>
-        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
-        /// no parameters will be used.</returns>
+        /// <returns>
+        /// IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
+        /// If null, no parameters will be used.
+        /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return CreateParameters("@id");
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified characterID.
+        /// Sets the parameters.
         /// </summary>
-        /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="id">Item used to execute the query.</param>
+        /// <param name="p">The p.</param>
+        /// <param name="id">The id.</param>
         protected override void SetParameters(DbParameterValues p, AllianceID id)
         {
             p["@id"] = (int)id;

@@ -13,6 +13,10 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}`", ItemTemplateTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectItemTemplatesQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectItemTemplatesQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }

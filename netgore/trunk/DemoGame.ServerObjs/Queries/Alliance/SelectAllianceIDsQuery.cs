@@ -11,6 +11,10 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString = string.Format("SELECT `id` FROM `{0}`", AllianceTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectAllianceIDsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectAllianceIDsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
             QueryAsserts.ArePrimaryKeys(AllianceTable.DbKeyColumns, "id");

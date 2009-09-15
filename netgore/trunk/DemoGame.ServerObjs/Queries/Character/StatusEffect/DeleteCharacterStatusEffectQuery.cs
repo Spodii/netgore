@@ -12,6 +12,10 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("DELETE FROM `{0}` WHERE `id`=@id",
                                                             CharacterStatusEffectTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteCharacterStatusEffectQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public DeleteCharacterStatusEffectQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
             QueryAsserts.ArePrimaryKeys(CharacterStatusEffectTable.DbKeyColumns, "id");
