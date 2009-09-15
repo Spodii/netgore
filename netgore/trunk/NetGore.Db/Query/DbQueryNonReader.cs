@@ -76,11 +76,11 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified item.
+        /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
+        /// based on the values specified in the given <paramref name="item"/> parameter.
         /// </summary>
-        /// <typeparam name="T">Type of the object containing the values to set.</typeparam>
         /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="item">Item used to execute the query.</param>
+        /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected abstract void SetParameters(DbParameterValues p, T item);
 
         #region IDbQueryNonReader<T> Members

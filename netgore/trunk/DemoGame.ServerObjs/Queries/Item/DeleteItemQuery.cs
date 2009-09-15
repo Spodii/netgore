@@ -11,6 +11,10 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString = string.Format("DELETE FROM `{0}` WHERE `id`=@id LIMIT 1", ItemTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DeleteItemQuery"/> class.
+        /// </summary>
+        /// <param name="conn">The conn.</param>
         public DeleteItemQuery(DbConnectionPool conn) : base(conn, _queryString)
         {
             QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");

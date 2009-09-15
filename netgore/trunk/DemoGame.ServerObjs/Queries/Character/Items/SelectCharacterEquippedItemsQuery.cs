@@ -15,6 +15,10 @@ namespace DemoGame.Server.Queries
                 "SELECT {0}.*,{1}.slot FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
                 ItemTable.TableName, CharacterEquippedTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectCharacterEquippedItemsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectCharacterEquippedItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }

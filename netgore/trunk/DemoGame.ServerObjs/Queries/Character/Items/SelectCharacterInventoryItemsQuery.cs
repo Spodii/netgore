@@ -14,6 +14,10 @@ namespace DemoGame.Server.Queries
             string.Format("SELECT {0}.* FROM `{0}`,`{1}` WHERE {1}.character_id = @characterID AND {0}.id = {1}.item_id",
                           ItemTable.TableName, CharacterInventoryTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectCharacterInventoryItemsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectCharacterInventoryItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }

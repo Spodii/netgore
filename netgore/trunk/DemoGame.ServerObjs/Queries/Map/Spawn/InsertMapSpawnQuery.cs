@@ -12,6 +12,10 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", MapSpawnTable.TableName,
                                                             FormatParametersIntoValuesString(MapSpawnTable.DbColumns));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InsertMapSpawnQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public InsertMapSpawnQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
@@ -27,10 +31,11 @@ namespace DemoGame.Server.Queries
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified characterID.
+        /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
+        /// based on the values specified in the given <paramref name="item"/> parameter.
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="characterID">Item used to execute the query.</param>
+        /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, IMapSpawnTable item)
         {
             item.CopyValues(p);

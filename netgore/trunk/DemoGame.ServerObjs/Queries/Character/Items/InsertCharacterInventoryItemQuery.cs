@@ -12,6 +12,10 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("INSERT INTO `{0}` SET {1}", CharacterInventoryTable.TableName,
                                                             FormatParametersIntoString(CharacterInventoryTable.DbColumns));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="InsertCharacterInventoryItemQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public InsertCharacterInventoryItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }

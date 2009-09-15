@@ -15,9 +15,9 @@ namespace DemoGame.Server.Queries
                                                          CharacterTable.TableName);
 
         /// <summary>
-        /// DbQueryReader constructor.
+        /// Initializes a new instance of the <see cref="SelectAccountCharacterInfoQuery"/> class.
         /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectAccountCharacterInfoQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");

@@ -13,6 +13,10 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `character_id`=@character_id",
                                                             CharacterStatusEffectTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectCharacterStatusEffectsQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectCharacterStatusEffectsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
             QueryAsserts.ContainsColumns(CharacterStatusEffectTable.DbColumns, "character_id");

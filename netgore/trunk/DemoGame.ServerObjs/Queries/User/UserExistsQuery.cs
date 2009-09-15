@@ -45,18 +45,21 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
         /// </summary>
-        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
-        /// no parameters will be used.</returns>
+        /// <returns>
+        /// IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
+        /// If null, no parameters will be used.
+        /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return CreateParameters("@name");
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified characterID.
+        /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
+        /// based on the values specified in the given <paramref name="userName"/> parameter.
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="userName">Item used to execute the query.</param>
+        /// <param name="userName">The value used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, string userName)
         {
             p["@name"] = userName;

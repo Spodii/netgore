@@ -13,6 +13,10 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", CharacterTemplateTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectCharacterTemplateQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectCharacterTemplateQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
             QueryAsserts.ArePrimaryKeys(CharacterTemplateTable.DbKeyColumns, "id");

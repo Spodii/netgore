@@ -15,8 +15,9 @@ namespace DemoGame.Server.Queries
                                                          CharacterTable.TableName);
 
         /// <summary>
-        /// DbQueryReader constructor.
+        /// Initializes a new instance of the <see cref="SelectAccountCharacterIDsQuery"/> class.
         /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectAccountCharacterIDsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "id", "account_id");
@@ -42,18 +43,20 @@ namespace DemoGame.Server.Queries
         /// <summary>
         /// When overridden in the derived class, creates the parameters this class uses for creating database queries.
         /// </summary>
-        /// <returns>IEnumerable of all the DbParameters needed for this class to perform database queries. If null,
-        /// no parameters will be used.</returns>
+        /// <returns>
+        /// IEnumerable of all the <see cref="DbParameter"/>s needed for this class to perform database queries.
+        /// If null, no parameters will be used.
+        /// </returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return CreateParameters("@accountID");
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified characterID.
+        /// Sets the parameters.
         /// </summary>
-        /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="accountID">Item used to execute the query.</param>
+        /// <param name="p">The p.</param>
+        /// <param name="accountID">The account ID.</param>
         protected override void SetParameters(DbParameterValues p, int accountID)
         {
             p["@accountID"] = accountID;

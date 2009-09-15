@@ -24,7 +24,7 @@ namespace NetGore.Db
         /// <summary>
         /// Executes the query on the database using the specified <paramref name="item"/>.
         /// </summary>
-        /// <param name="item">Item containing the value or values used for executing the query.</param>
+        /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         /// <returns>IDataReader used to read the results of the query.</returns>
         IDataReader ExecuteReader(T item);
     }

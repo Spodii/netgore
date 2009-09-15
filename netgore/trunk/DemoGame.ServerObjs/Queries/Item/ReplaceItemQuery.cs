@@ -12,6 +12,10 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("REPLACE INTO `{0}` {1}", ItemTable.TableName,
                                                             FormatParametersIntoValuesString(ItemTable.DbColumns));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceItemQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public ReplaceItemQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
@@ -27,10 +31,10 @@ namespace DemoGame.Server.Queries
         }
 
         /// <summary>
-        /// When overridden in the derived class, sets the database parameters based on the specified characterID.
+        /// When overridden in the derived class, sets the database parameters based on the specified item.
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
-        /// <param name="characterID">Item used to execute the query.</param>
+        /// <param name="item">Item used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, IItemTable item)
         {
             item.CopyValues(p);

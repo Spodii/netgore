@@ -12,6 +12,10 @@ namespace DemoGame.Server.Queries
         static readonly string _queryString = string.Format("REPLACE INTO `{0}` {1}", CharacterStatusEffectTable.TableName,
                                                             FormatParametersIntoValuesString(CharacterStatusEffectTable.DbColumns));
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ReplaceCharacterStatusEffectQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public ReplaceCharacterStatusEffectQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }

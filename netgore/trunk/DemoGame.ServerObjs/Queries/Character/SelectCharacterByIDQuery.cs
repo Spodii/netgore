@@ -13,12 +13,21 @@ namespace DemoGame.Server.Queries
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", CharacterTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectCharacterByIDQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectCharacterByIDQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
             QueryAsserts.ArePrimaryKeys(CharacterTable.DbKeyColumns, "id");
         }
 
-        public CharacterTable Execute(CharacterID characterID)
+        /// <summary>
+        /// Executes the specified character ID.
+        /// </summary>
+        /// <param name="characterID">The character ID.</param>
+        /// <returns>The ICharacterTable for the Character with the given <paramref name="characterID"/>.</returns>
+        public ICharacterTable Execute(CharacterID characterID)
         {
             CharacterTable ret;
 

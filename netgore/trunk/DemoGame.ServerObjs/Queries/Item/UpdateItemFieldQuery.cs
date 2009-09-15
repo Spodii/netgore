@@ -18,6 +18,10 @@ namespace DemoGame.Server.Queries
 
         bool _disposed;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="UpdateItemFieldQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public UpdateItemFieldQuery(DbConnectionPool connectionPool)
         {
             if (connectionPool == null)
@@ -45,6 +49,9 @@ namespace DemoGame.Server.Queries
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             if (_disposed)
@@ -78,10 +85,10 @@ namespace DemoGame.Server.Queries
             }
 
             /// <summary>
-            /// When overridden in the derived class, sets the database parameters based on the specified characterID.
+            /// When overridden in the derived class, sets the database parameters based on the specified item.
             /// </summary>
             /// <param name="p">Collection of database parameters to set the values for.</param>
-            /// <param name="characterID">Item used to execute the query.</param>
+            /// <param name="item">Item used to execute the query.</param>
             protected override void SetParameters(DbParameterValues p, QueryArgs item)
             {
                 p["@itemID"] = (int)item.ItemID;

@@ -14,6 +14,10 @@ namespace DemoGame.Server.Queries
             string.Format("SELECT * FROM `{0}` WHERE `character_template_id`=@characterTemplateID",
                           CharacterTemplateEquippedTable.TableName);
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SelectCharacterTemplateEquippedQuery"/> class.
+        /// </summary>
+        /// <param name="connectionPool">The connection pool.</param>
         public SelectCharacterTemplateEquippedQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryString)
         {
         }
