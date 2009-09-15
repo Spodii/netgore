@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Globalization;
 
@@ -27,8 +28,27 @@ namespace DemoGame.Server
             _server = server;
         }
 
+        [ConsoleCommand("CountAccountCharacters")]
+        public string CountAccountCharacters(string accountName)
+        {
+            if (!GameData.AccountName.IsValid(accountName))
+                return "Invalid account name";
+
+            var result = Server.DBController.GetQuery<CountAccountCharactersByNameQuery>().Execute(accountName);
+
+            return string.Format("There are {0} characters in account {1}.", result, accountName);
+        }
+
+        [ConsoleCommand("CountAccountCharactersByID")]
+        public string CountAccountCharactersByID(int accountID)
+        {
+            var result = Server.DBController.GetQuery<CountAccountCharactersByIDQuery>().Execute(accountID);
+
+            return string.Format("There are {0} characters in account ID {1}.", result, accountID);
+        }
+
         [ConsoleCommand("AddUser")]
-        public string AddUser(string name)
+        public string AddUser(string userName, string accountName)
         {
             return "Function not implemented";
 

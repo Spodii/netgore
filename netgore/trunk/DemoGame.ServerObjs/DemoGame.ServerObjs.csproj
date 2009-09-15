@@ -136,6 +136,8 @@
     <Compile Include="MapSpawn\MapSpawnValues.cs" />
     <Compile Include="MapSpawn\MapSpawnValuesID.cs" />
     <Compile Include="MapSpawn\MapSpawnValuesIDCreator.cs" />
+    <Compile Include="Queries\Account\CountAccountCharactersByIDQuery.cs" />
+    <Compile Include="Queries\Account\CountAccountCharactersByNameQuery.cs" />
     <Compile Include="Queries\Account\SelectAccountCharacterIDsQuery.cs" />
     <Compile Include="Queries\Account\SetAccountCurrentIPNullQuery.cs" />
     <Compile Include="Queries\Account\SetAccountCurrentIPsNullQuery.cs" />
