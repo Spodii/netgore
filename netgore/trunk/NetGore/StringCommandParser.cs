@@ -124,10 +124,10 @@ namespace NetGore
             else
             {
                 // Check for duplicate parameters for this command
-                object[] p = methodInfo.GetParameters();
+                var p = methodInfo.GetParameters();
                 foreach (MethodInfo m in methods)
                 {
-                    if (AreTypesSame(p, m.GetParameters()))
+                    if (AreParameterTypesSame(p, m.GetParameters()))
                     {
                         const string errmsg = "Methods `{0}` and `{1}` both handle command `{2}` and contain the same parameters.";
                         string err = string.Format(errmsg, methodInfo, m, commandName);
@@ -147,20 +147,20 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Checks if the objects in two lists are of the same Type. Length and order must also be same.
+        /// Checks if the parameter types in two lists are of the same Type. Length and order must also be same.
         /// </summary>
         /// <param name="a">First collection.</param>
         /// <param name="b">Second collection.</param>
         /// <returns>True if <paramref name="a"/> contains the same number of objects as <paramref name="b"/>, and
         /// the Type of each object is the same for each index.</returns>
-        static bool AreTypesSame(IList<object> a, IList<object> b)
+        static bool AreParameterTypesSame(IList<ParameterInfo> a, IList<ParameterInfo> b)
         {
             if (a.Count != b.Count)
                 return false;
 
             for (int i = 0; i < a.Count; i++)
             {
-                if (a[i].GetType() != b[i].GetType())
+                if (a[i].ParameterType != b[i].ParameterType)
                     return false;
             }
 

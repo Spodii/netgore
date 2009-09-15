@@ -39,7 +39,7 @@ namespace DemoGame.Server
             return string.Format("There are {0} characters in account {1}.", result, accountName);
         }
 
-        [ConsoleCommand("CountAccountCharactersByID")]
+        [ConsoleCommand("CountAccountCharacters")]
         public string CountAccountCharactersByID(int accountID)
         {
             var result = Server.DBController.GetQuery<CountAccountCharactersByIDQuery>().Execute(accountID);
