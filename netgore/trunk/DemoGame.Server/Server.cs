@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
@@ -115,6 +116,12 @@ namespace DemoGame.Server
             CharacterTemplateManager.Initialize(DBController);
             InitializeScripts();
 
+            // Update the GameData table
+            var gameDataValues = GetGameDataTableValues();
+            DBController.GetQuery<UpdateGameDataTableQuery>().Execute(gameDataValues);
+            if (log.IsInfoEnabled)
+                log.Info("Updated the GameData table with the current values.");
+
             // Create the world and sockets
             _world = new World(this);
             _sockets = new ServerSockets(this);
@@ -204,6 +211,33 @@ namespace DemoGame.Server
             }
 
             _gameTimer.Stop();
+        }
+
+        /// <summary>
+        /// Creates an IGameDataTable with the current GameData values.
+        /// </summary>
+        /// <returns>An IGameDataTable with the current GameData values.</returns>
+        static IGameDataTable GetGameDataTableValues()
+        {
+            GameDataTable gdt = new GameDataTable
+            {
+                MaxAccountNameLength = (byte)GameData.AccountName.MaxLength,
+                MaxAccountPasswordLength = (byte)GameData.AccountPassword.MaxLength,
+                MaxCharacterNameLength = (byte)GameData.CharacterName.MaxLength,
+                MaxCharactersPerAccount = GameData.MaxCharactersPerAccount,
+                MaxStatusEffectPower = GameData.MaxStatusEffectPower,
+                MinAccountNameLength = (byte)GameData.AccountName.MinLength,
+                MinAccountPasswordLength = (byte)GameData.AccountPassword.MinLength,
+                MinCharacterNameLength = (byte)GameData.CharacterName.MinLength,
+                ScreenHeight = (ushort)GameData.ScreenSize.Y,
+                ScreenWidth = (ushort)GameData.ScreenSize.X,
+                ServerIp = GameData.ServerIP,
+                ServerPingPort = (ushort)GameData.ServerPingPort,
+                ServerTcpPort = (ushort)GameData.ServerTCPPort,
+                WorldPhysicsUpdateRate = (ushort)GameData.WorldPhysicsUpdateRate
+            };
+
+            return gdt;
         }
 
         static void HandleFailedLogin(IIPSocket conn, AccountLoginResult loginResult, string name)

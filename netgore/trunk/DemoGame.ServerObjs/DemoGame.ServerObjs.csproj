@@ -103,11 +103,13 @@
     <Compile Include="DbObjs\DbExtensions\CharacterTemplateEquippedTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\CharacterTemplateInventoryTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\CharacterTemplateTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\GameDataTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ItemTemplateTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\MapSpawnTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\MapTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ServerTimeTableDbExtensions.cs" />
+    <Compile Include="DbObjs\GameDataTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAllianceAttackableTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAllianceHostileTable.cs" />
@@ -119,6 +121,7 @@
     <Compile Include="DbObjs\Interfaces\ICharacterTemplateEquippedTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterTemplateInventoryTable.cs" />
     <Compile Include="DbObjs\Interfaces\ICharacterTemplateTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IGameDataTable.cs" />
     <Compile Include="DbObjs\Interfaces\IItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IItemTemplateTable.cs" />
     <Compile Include="DbObjs\Interfaces\IMapSpawnTable.cs" />
@@ -147,6 +150,7 @@
     <Compile Include="Queries\Character\StatusEffect\DeleteCharacterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ReplaceChracterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\SelectCharacterStatusEffectsQuery.cs" />
+    <Compile Include="Queries\Misc\UpdateGameDataTableQuery.cs" />
     <Compile Include="Queries\Misc\UpdateServerTimeQuery.cs" />
     <Compile Include="Queries\TableColumnPair.cs" />
     <Compile Include="Queries\Map\InsertMapQuery.cs" />
