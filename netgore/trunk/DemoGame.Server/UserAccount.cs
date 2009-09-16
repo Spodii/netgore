@@ -17,7 +17,12 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly DBController _dbController;
+
+        /// <summary>
+        /// Lock used for setting the user. Also doubles as a lock for creating new users on the account.
+        /// </summary>
         readonly object _setUserLock = new object();
+
         readonly IIPSocket _socket;
 
         List<CharacterID> _characterIDs;
@@ -46,6 +51,30 @@ namespace DemoGame.Server
         public IIPSocket Socket
         {
             get { return _socket; }
+        }
+
+        /// <summary>
+        /// Tries to get the AccountID for the account with the given name.
+        /// </summary>
+        /// <param name="dbController">The DbController.</param>
+        /// <param name="accountName">The name of the account.</param>
+        /// <param name="accountID">When the method returns true, contains the ID of the account with the given
+        /// <paramref name="accountName"/>.</param>
+        /// <returns>True if the <paramref name="accountID"/> was found; otherwise false.</returns>
+        public static bool TryGetAccountID(DBController dbController, string accountName, out int accountID)
+        {
+            var value = dbController.GetQuery<SelectAccountIDFromNameQuery>().Execute(accountName);
+
+            if (!value.HasValue)
+            {
+                accountID = 0;
+                return false;
+            }
+            else
+            {
+                accountID = value.Value;
+                return true;
+            }
         }
 
         /// <summary>

@@ -28,13 +28,28 @@ namespace DemoGame.Server
             _server = server;
         }
 
+        public DBController DbController { get { return Server.DBController; } }
+
+        [ConsoleCommand("GetAccountID")]
+        public string GetAccountID(string accountName)
+        {
+            if (!GameData.AccountName.IsValid(accountName))
+                return "Invalid account name";
+
+            int accountID;
+            if (!UserAccount.TryGetAccountID(DbController, accountName, out accountID))
+                return string.Format("Account {0} does not exist.", accountName);
+            else
+                return string.Format("Account {0} has the ID {1}.", accountName, accountID);
+        }
+
         [ConsoleCommand("CountAccountCharacters")]
         public string CountAccountCharacters(string accountName)
         {
             if (!GameData.AccountName.IsValid(accountName))
                 return "Invalid account name";
 
-            var result = Server.DBController.GetQuery<CountAccountCharactersByNameQuery>().Execute(accountName);
+            var result = DbController.GetQuery<CountAccountCharactersByNameQuery>().Execute(accountName);
 
             return string.Format("There are {0} characters in account {1}.", result, accountName);
         }
@@ -42,7 +57,7 @@ namespace DemoGame.Server
         [ConsoleCommand("CountAccountCharacters")]
         public string CountAccountCharactersByID(int accountID)
         {
-            var result = Server.DBController.GetQuery<CountAccountCharactersByIDQuery>().Execute(accountID);
+            var result = DbController.GetQuery<CountAccountCharactersByIDQuery>().Execute(accountID);
 
             return string.Format("There are {0} characters in account ID {1}.", result, accountID);
         }
