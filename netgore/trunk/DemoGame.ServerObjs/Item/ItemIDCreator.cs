@@ -11,9 +11,9 @@ namespace DemoGame.Server.Queries
     public class ItemIDCreator : IDCreatorBase
     {
         /// <summary>
-        /// ItemIDCreator constructor.
+        /// Initializes a new instance of the <see cref="ItemIDCreator"/> class.
         /// </summary>
-        /// <param name="connectionPool">DbConnectionPool to use to communicate with the database.</param>
+        /// <param name="connectionPool">The connection pool.</param>
         public ItemIDCreator(DbConnectionPool connectionPool) : base(connectionPool, ItemTable.TableName, "id", 2048, 128)
         {
             QueryAsserts.ArePrimaryKeys(ItemTable.DbKeyColumns, "id");

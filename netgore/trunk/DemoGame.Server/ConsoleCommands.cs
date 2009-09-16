@@ -55,7 +55,7 @@ namespace DemoGame.Server
         }
 
         [ConsoleCommand("CountAccountCharacters")]
-        public string CountAccountCharactersByID(int accountID)
+        public string CountAccountCharacters(int accountID)
         {
             var result = DbController.GetQuery<CountAccountCharactersByIDQuery>().Execute(accountID);
 
@@ -65,20 +65,13 @@ namespace DemoGame.Server
         [ConsoleCommand("AddUser")]
         public string AddUser(string userName, string accountName)
         {
-            return "Function not implemented";
+            string errorMsg;
+            bool success = UserAccount.TryAddCharacter(DbController, accountName, userName, out errorMsg);
 
-            /*
-            if (!Character.IsValidName(name))
-                return "Invalid name";
-
-            if (!Character.IsValidPassword(password))
-                return "Invalid password";
-
-            if (!User.AddNewUser(_server.DBController.GetQuery<InsertUserQuery>(), name, password))
-                return "Unknown error";
-
-            return "New user successfully created.";
-            */
+            if (!success)
+                return "User creation failed: " + errorMsg;
+            else
+                return "User creation successful.";
         }
 
         static string BuildString(IEnumerable<string> strings, string delimiter)

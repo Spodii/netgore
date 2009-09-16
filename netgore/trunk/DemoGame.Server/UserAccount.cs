@@ -158,6 +158,65 @@ namespace DemoGame.Server
             return GameData.AccountPassword.IsValid(s);
         }
 
+        public static bool TryAddCharacter(DBController dbController, int accountID, string characterName, out string errorMsg)
+        {
+            var idCreator = dbController.GetQuery<CharacterIDCreator>();
+
+            CharacterID characterID = new CharacterID(idCreator.GetNext());
+            bool success = TryAddCharacter(dbController, accountID, characterName, characterID, out errorMsg);
+
+            if (!success)
+                idCreator.FreeID((int)characterID);
+
+            return success;
+        }
+
+        public static bool TryAddCharacter(DBController dbController, string accountName, string characterName, out string errorMsg)
+        {
+            var idCreator = dbController.GetQuery<CharacterIDCreator>();
+
+            CharacterID characterID = new CharacterID(idCreator.GetNext());
+            bool success = TryAddCharacter(dbController, accountName, characterName, characterID, out errorMsg);
+
+            if (!success)
+                idCreator.FreeID((int)characterID);
+
+            return success;
+        }
+
+        public static bool TryAddCharacter(DBController dbController, int accountID, string characterName, CharacterID characterID, out string errorMsg)
+        {
+            if (!Character.IsValidName(characterName))
+            {
+                errorMsg = "Invalid character name.";
+                return false;
+            }
+
+            if (!dbController.GetQuery<CreateUserOnAccountQuery>().TryExecute(accountID, characterID, characterName, out errorMsg))
+                return false;
+
+            errorMsg = string.Empty;
+            return true;
+        }
+
+        public static bool TryAddCharacter(DBController dbController, string accountName, string characterName, CharacterID characterID, out string errorMsg)
+        {
+            if (!IsValidName(accountName))
+            {
+                errorMsg = "Invalid account name.";
+                return false;
+            }
+
+            int accountID;
+            if (!TryGetAccountID(dbController, accountName, out accountID))
+            {
+                errorMsg = "Account with the given name does not exist.";
+                return false;
+            }
+
+            return TryAddCharacter(dbController, accountID, characterName, characterID, out errorMsg);
+        }
+
         void LoadCharacterIDs(DBController dbController)
         {
             _characterIDs = dbController.GetQuery<SelectAccountCharacterIDsQuery>().Execute(ID).ToList();

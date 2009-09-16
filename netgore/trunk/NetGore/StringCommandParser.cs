@@ -382,8 +382,12 @@ namespace NetGore
             {
                 methodOutput = method.Invoke(binder, convertedArgs);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Debug.Fail("Caught exception when trying to execute method: " + ex);
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat("Error executing string command: {0}", ex);
+
                 result = string.Empty;
                 return false;
             }

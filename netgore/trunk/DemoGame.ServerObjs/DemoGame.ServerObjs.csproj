@@ -74,6 +74,7 @@
     <Compile Include="Alliance\AllianceID.cs" />
     <Compile Include="Alliance\AllianceManager.cs" />
     <Compile Include="Character\CharacterID.cs" />
+    <Compile Include="Character\CharacterIDCreator.cs" />
     <Compile Include="Character\CharacterTemplate.cs" />
     <Compile Include="Character\CharacterTemplateEquipmentItem.cs" />
     <Compile Include="Character\CharacterTemplateID.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="MapSpawn\MapSpawnValuesIDCreator.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByIDQuery.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByNameQuery.cs" />
+    <Compile Include="Queries\Account\CreateUserOnAccountQuery.cs" />
     <Compile Include="Queries\Account\SelectAccountCharacterIDsQuery.cs" />
     <Compile Include="Queries\Account\SelectAccountIDFromNameQuery.cs" />
     <Compile Include="Queries\Account\SetAccountCurrentIPNullQuery.cs" />
