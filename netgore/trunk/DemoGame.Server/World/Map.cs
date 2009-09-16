@@ -45,11 +45,11 @@ namespace DemoGame.Server
         int _inactiveCounter;
 
         /// <summary>
-        /// Gets the DBController used by this Map.
+        /// Gets the DbController used by this Map.
         /// </summary>
-        public DBController DBController
+        public DbController DbController
         {
-            get { return World.DBController; }
+            get { return World.DbController; }
         }
 
         /// <summary>

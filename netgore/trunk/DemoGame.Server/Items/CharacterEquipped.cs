@@ -26,9 +26,9 @@ namespace DemoGame.Server
             get { return _character; }
         }
 
-        public DBController DBController
+        public DbController DbController
         {
-            get { return Character.DBController; }
+            get { return Character.DbController; }
         }
 
         protected CharacterEquipped(Character character)
@@ -81,7 +81,7 @@ namespace DemoGame.Server
             if (_isPersistent)
             {
                 CharacterEquippedTable values = new CharacterEquippedTable(Character.ID, item.ID, slot);
-                DBController.GetQuery<InsertCharacterEquippedItemQuery>().Execute(values);
+                DbController.GetQuery<InsertCharacterEquippedItemQuery>().Execute(values);
             }
 
             SendSlotUpdate(slot, item.GraphicIndex);
@@ -92,7 +92,7 @@ namespace DemoGame.Server
             Debug.Assert(item != null);
 
             if (_isPersistent)
-                DBController.GetQuery<DeleteCharacterEquippedItemQuery>().Execute(Character.ID, slot);
+                DbController.GetQuery<DeleteCharacterEquippedItemQuery>().Execute(Character.ID, slot);
 
             // Do not try working with a disposed characterID! Instead, just let it die off.
             if (item.IsDisposed)
@@ -130,7 +130,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            var items = DBController.GetQuery<SelectCharacterEquippedItemsQuery>().Execute(Character.ID);
+            var items = DbController.GetQuery<SelectCharacterEquippedItemsQuery>().Execute(Character.ID);
 
             // Remove the listeners since we don't want to update the database when loading
             RemoveListeners();

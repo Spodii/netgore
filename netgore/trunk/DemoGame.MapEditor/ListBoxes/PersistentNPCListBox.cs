@@ -13,7 +13,7 @@ namespace DemoGame.MapEditor
     /// </summary>
     public class PersistentNPCListBox : ListBox
     {
-        DBController _dbController;
+        DbController _dbController;
         MapBase _map;
 
         /// <summary>
@@ -41,7 +41,7 @@ namespace DemoGame.MapEditor
             //    PropertyGrid.SelectedObject = selected.Value;
         }
 
-        public void SetMap(DBController dbController, MapBase map)
+        public void SetMap(DbController dbController, MapBase map)
         {
             if (map == null)
                 throw new ArgumentNullException("map");

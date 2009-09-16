@@ -4,7 +4,7 @@ using System.Linq;
 namespace DemoGame.Server.Queries
 {
     [AttributeUsage(AttributeTargets.Class)]
-    public class DBControllerQueryAttribute : Attribute
+    public class DbControllerQueryAttribute : Attribute
     {
     }
 }

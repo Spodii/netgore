@@ -8,7 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class SelectMapSpawnsOnMapQuery : DbQueryReader<MapIndex>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `map_id`=@mapID", MapSpawnTable.TableName);

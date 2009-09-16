@@ -7,7 +7,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class SelectCharacterTemplateEquippedQuery : DbQueryReader<CharacterTemplateID>
     {
         static readonly string _queryString =

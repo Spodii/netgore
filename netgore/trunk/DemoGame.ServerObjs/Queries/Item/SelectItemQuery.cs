@@ -8,7 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class SelectItemQuery : DbQueryReader<ItemID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", ItemTable.TableName);

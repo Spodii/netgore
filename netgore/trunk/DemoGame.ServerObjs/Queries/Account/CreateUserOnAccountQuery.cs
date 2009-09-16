@@ -6,7 +6,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class CreateUserOnAccountQuery : DbQueryReader<CreateUserOnAccountQuery.QueryArgs>
     {
         const string _queryStr = "SELECT CreateUserOnAccount(@accountID, @characterName, @characterID)";

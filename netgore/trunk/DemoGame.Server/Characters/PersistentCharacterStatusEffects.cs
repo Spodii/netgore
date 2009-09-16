@@ -28,7 +28,7 @@ namespace DemoGame.Server
 
         static PersistentCharacterStatusEffects()
         {
-            DBController dbController = DBController.GetInstance();
+            DbController dbController = DbController.GetInstance();
             _idCreator = dbController.GetQuery<ActiveStatusEffectIDCreator>();
             _replaceQuery = dbController.GetQuery<ReplaceCharacterStatusEffectQuery>();
             _deleteQuery = dbController.GetQuery<DeleteCharacterStatusEffectQuery>();
@@ -104,7 +104,7 @@ namespace DemoGame.Server
         {
             Debug.Assert(_statusEffects.Count == 0, "Why is Load() being called while there are active effects here already?");
 
-            var values = Character.DBController.GetQuery<SelectCharacterStatusEffectsQuery>().Execute(Character.ID);
+            var values = Character.DbController.GetQuery<SelectCharacterStatusEffectsQuery>().Execute(Character.ID);
 
             int currentTime = GetTime();
 

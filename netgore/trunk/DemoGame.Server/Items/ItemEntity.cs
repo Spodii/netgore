@@ -23,7 +23,7 @@ namespace DemoGame.Server
     public class ItemEntity : ItemEntityBase, IItemTable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static DBController _dbController;
+        static DbController _dbController;
 
         readonly ItemStats _baseStats;
         readonly ItemID _id;
@@ -259,8 +259,8 @@ namespace DemoGame.Server
         /// Initializes the objects needed for assisting the ItemEntity creation and destruction. Must be called
         /// before any ItemEntity is created.
         /// </summary>
-        /// <param name="dbController">DBController used to communicate with the database for characterID data.</param>
-        public static void Initialize(DBController dbController)
+        /// <param name="dbController">DbController used to communicate with the database for characterID data.</param>
+        public static void Initialize(DbController dbController)
         {
             if (dbController == null)
                 throw new ArgumentNullException("dbController");

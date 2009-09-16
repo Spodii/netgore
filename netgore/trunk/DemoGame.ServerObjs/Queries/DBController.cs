@@ -16,9 +16,9 @@ namespace DemoGame.Server
     /// <summary>
     /// Provides an interface between all objects and all the database handling methods.
     /// </summary>
-    public class DBController : IDisposable
+    public class DbController : IDisposable
     {
-        static readonly List<DBController> _instances = new List<DBController>();
+        static readonly List<DbController> _instances = new List<DbController>();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly DbConnectionPool _connectionPool;
@@ -27,10 +27,10 @@ namespace DemoGame.Server
         bool _disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DBController"/> class.
+        /// Initializes a new instance of the <see cref="DbController"/> class.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
-        public DBController(string connectionString)
+        public DbController(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
                 throw new ArgumentNullException("connectionString");
@@ -55,7 +55,7 @@ namespace DemoGame.Server
 
             // Find the classes marked with our attribute
             var requiredConstructorParams = new Type[] { typeof(DbConnectionPool) };
-            var types = TypeHelper.FindTypesWithAttribute(typeof(DBControllerQueryAttribute), requiredConstructorParams, false);
+            var types = TypeHelper.FindTypesWithAttribute(typeof(DbControllerQueryAttribute), requiredConstructorParams, false);
 
             // Create an instance of each of the types
             foreach (Type type in types)
@@ -79,7 +79,7 @@ namespace DemoGame.Server
             }
 
             if (log.IsInfoEnabled)
-                log.Info("DBController successfully initialized all queries.");
+                log.Info("DbController successfully initialized all queries.");
 
             lock (_instances)
             {
@@ -91,7 +91,7 @@ namespace DemoGame.Server
         /// Gets an instance of the DbController. A DbController must have already been constructed for this to work.
         /// </summary>
         /// <returns>An instance of the DbController.</returns>
-        public static DBController GetInstance()
+        public static DbController GetInstance()
         {
             lock (_instances)
             {
@@ -115,7 +115,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets a query that was marked with the attribute DBControllerQueryAttribute.
+        /// Gets a query that was marked with the attribute DbControllerQueryAttribute.
         /// </summary>
         /// <typeparam name="T">The Type of query.</typeparam>
         /// <returns>The query instance of type <typeparamref name="T"/>.</returns>
@@ -126,7 +126,7 @@ namespace DemoGame.Server
             {
                 const string errmsg =
                     "Failed to find a query of Type `{0}`. Make sure the attribute `{1}`" + " is attached to the specified class.";
-                string err = string.Format(errmsg, typeof(T), typeof(DBControllerQueryAttribute));
+                string err = string.Format(errmsg, typeof(T), typeof(DbControllerQueryAttribute));
                 log.Fatal(err);
                 Debug.Fail(err);
                 throw new ArgumentException(err);
@@ -191,7 +191,7 @@ namespace DemoGame.Server
 
         #endregion
 
-        [DBControllerQuery]
+        [DbControllerQuery]
         // ReSharper disable ClassNeverInstantiated.Local
             class FindReferencedTableColumnsQuery : DbQueryReader<FindReferencedTableColumnsQuery.QueryArgs>
             // ReSharper restore ClassNeverInstantiated.Local

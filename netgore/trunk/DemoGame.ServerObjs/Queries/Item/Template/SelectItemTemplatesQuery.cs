@@ -8,7 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class SelectItemTemplatesQuery : DbQueryReader
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}`", ItemTemplateTable.TableName);

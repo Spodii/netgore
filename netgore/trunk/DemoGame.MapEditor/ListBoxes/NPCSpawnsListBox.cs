@@ -13,7 +13,7 @@ namespace DemoGame.MapEditor
     /// </summary>
     public class NPCSpawnsListBox : ListBox
     {
-        DBController _dbController;
+        DbController _dbController;
         MapBase _map;
 
         [Description("The PropertyGrid to display the property values for the selected characterID in this NPCSpawnsListBox.")]
@@ -105,7 +105,7 @@ namespace DemoGame.MapEditor
             Items.AddRange(asArray);
         }
 
-        public void SetMap(DBController dbController, MapBase map)
+        public void SetMap(DbController dbController, MapBase map)
         {
             if (map == null)
                 throw new ArgumentNullException("map");

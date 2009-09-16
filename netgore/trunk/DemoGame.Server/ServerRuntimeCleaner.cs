@@ -11,9 +11,9 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly Server _server;
 
-        DBController DBController
+        DbController DbController
         {
-            get { return _server.DBController; }
+            get { return _server.DbController; }
         }
 
         public ServerRuntimeCleaner(Server server)
@@ -48,7 +48,7 @@ namespace DemoGame.Server
             LogCleanupRoutine("Setting all current_ip values in account table to null");
 
             // Set the current_ip on all accounts null
-            DBController.GetQuery<SetAccountCurrentIPsNullQuery>().Execute();
+            DbController.GetQuery<SetAccountCurrentIPsNullQuery>().Execute();
         }
     }
 }

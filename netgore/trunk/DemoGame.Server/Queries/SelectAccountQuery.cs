@@ -7,7 +7,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class SelectAccountQuery : DbQueryReader<SelectAccountQuery.QueryArgs>
     {
         static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `name`=@name", AccountTable.TableName);

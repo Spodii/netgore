@@ -7,7 +7,7 @@ namespace DemoGame.Server.Queries
     /// <summary>
     /// A thread-safe collection of available IDs for items.
     /// </summary>
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class ItemIDCreator : IDCreatorBase
     {
         /// <summary>

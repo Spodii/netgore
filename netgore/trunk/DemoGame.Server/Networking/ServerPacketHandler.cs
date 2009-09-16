@@ -21,9 +21,9 @@ namespace DemoGame.Server
         readonly Server _server;
         readonly ServerSockets _serverSockets;
 
-        public DBController DBController
+        public DbController DbController
         {
-            get { return Server.DBController; }
+            get { return Server.DbController; }
         }
 
         /// <summary>

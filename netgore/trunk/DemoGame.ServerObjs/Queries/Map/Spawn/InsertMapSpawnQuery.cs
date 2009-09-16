@@ -6,7 +6,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class InsertMapSpawnQuery : DbQueryNonReader<IMapSpawnTable>
     {
         static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", MapSpawnTable.TableName,

@@ -21,16 +21,16 @@ namespace DemoGame.Server
         readonly MapSpawnValuesID _id;
 
         CharacterTemplateID _characterTemplateID;
-        DBController _dbController;
+        DbController _dbController;
         MapIndex _mapIndex;
         byte _spawnAmount;
         MapSpawnRect _spawnArea;
 
         /// <summary>
-        /// Gets the DBController used to synchronize changes to the values.
+        /// Gets the DbController used to synchronize changes to the values.
         /// </summary>
         [Browsable(false)]
-        public DBController DBController
+        public DbController DbController
         {
             get { return _dbController; }
         }
@@ -88,22 +88,22 @@ namespace DemoGame.Server
         /// <summary>
         /// MapSpawnValues constructor.
         /// </summary>
-        /// <param name="dbController">The DBController used to synchronize changes to the values.</param>
+        /// <param name="dbController">The DbController used to synchronize changes to the values.</param>
         /// <param name="mapIndex">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
-        public MapSpawnValues(DBController dbController, MapIndex mapIndex, CharacterTemplateID characterTemplateID)
+        public MapSpawnValues(DbController dbController, MapIndex mapIndex, CharacterTemplateID characterTemplateID)
             : this(
                 dbController, GetFreeID(dbController), mapIndex, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
         {
-            DBController.GetQuery<InsertMapSpawnQuery>().Execute(this);
+            DbController.GetQuery<InsertMapSpawnQuery>().Execute(this);
         }
 
         /// <summary>
         /// MapSpawnValues constructor.
         /// </summary>
-        /// <param name="dbController">The DBController used to synchronize changes to the values.</param>
+        /// <param name="dbController">The DbController used to synchronize changes to the values.</param>
         /// <param name="v">The IMapSpawnTable containing the values to use.</param>
-        MapSpawnValues(DBController dbController, IMapSpawnTable v)
+        MapSpawnValues(DbController dbController, IMapSpawnTable v)
             : this(dbController, v.ID, v.MapID, v.CharacterTemplateID, v.Amount, new MapSpawnRect(v))
         {
         }
@@ -111,13 +111,13 @@ namespace DemoGame.Server
         /// <summary>
         /// MapSpawnValues constructor.
         /// </summary>
-        /// <param name="dbController">The DBController used to synchronize changes to the values.</param>
+        /// <param name="dbController">The DbController used to synchronize changes to the values.</param>
         /// <param name="id">The unique ID of this MapSpawnValues.</param>
         /// <param name="mapIndex">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
         /// <param name="spawnAmount">The maximum number of Characters that will be spawned by this MapSpawnValues.</param>
         /// <param name="spawnRect">The area on the map the spawning will take place at.</param>
-        MapSpawnValues(DBController dbController, MapSpawnValuesID id, MapIndex mapIndex, CharacterTemplateID characterTemplateID,
+        MapSpawnValues(DbController dbController, MapSpawnValuesID id, MapIndex mapIndex, CharacterTemplateID characterTemplateID,
                        byte spawnAmount, MapSpawnRect spawnRect)
         {
             _dbController = dbController;
@@ -134,9 +134,9 @@ namespace DemoGame.Server
         /// </summary>
         public void Delete()
         {
-            if (DBController == null)
+            if (DbController == null)
             {
-                const string errmsg = "Called Delete() on `{0}` when the DBController was already null. Likely already deleted.";
+                const string errmsg = "Called Delete() on `{0}` when the DbController was already null. Likely already deleted.";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
@@ -147,13 +147,13 @@ namespace DemoGame.Server
                 log.InfoFormat("Deleting MapSpawnValues `{0}`.", this);
 
             MapSpawnValuesID id = ID;
-            DBController.GetQuery<DeleteMapSpawnQuery>().Execute(id);
-            DBController.GetQuery<MapSpawnValuesIDCreator>().FreeID(id);
+            DbController.GetQuery<DeleteMapSpawnQuery>().Execute(id);
+            DbController.GetQuery<MapSpawnValuesIDCreator>().FreeID(id);
 
             _dbController = null;
         }
 
-        static MapSpawnValuesID GetFreeID(DBController dbController)
+        static MapSpawnValuesID GetFreeID(DbController dbController)
         {
             return new MapSpawnValuesID(dbController.GetQuery<MapSpawnValuesIDCreator>().GetNext());
         }
@@ -161,10 +161,10 @@ namespace DemoGame.Server
         /// <summary>
         /// Loads a MapSpawnValues from the database.
         /// </summary>
-        /// <param name="dbController">DBController used to communicate with the database.</param>
+        /// <param name="dbController">DbController used to communicate with the database.</param>
         /// <param name="id">ID of the MapSpawnValues to load.</param>
         /// <returns>The MapSpawnValues with ID <paramref name="id"/>.</returns>
-        public static MapSpawnValues Load(DBController dbController, MapSpawnValuesID id)
+        public static MapSpawnValues Load(DbController dbController, MapSpawnValuesID id)
         {
             IMapSpawnTable values = dbController.GetQuery<SelectMapSpawnQuery>().Execute(id);
             Debug.Assert(id == values.ID);
@@ -174,10 +174,10 @@ namespace DemoGame.Server
         /// <summary>
         /// Loads all of the MapSpawnValues for the given <paramref name="mapIndex"/> from the database.
         /// </summary>
-        /// <param name="dbController">DBController used to communicate with the database.</param>
+        /// <param name="dbController">DbController used to communicate with the database.</param>
         /// <param name="mapIndex">Index of the map to load the MapSpawnValues for.</param>
         /// <returns>An IEnumerable of all of the MapSpawnValues for the given <paramref name="mapIndex"/>.</returns>
-        public static IEnumerable<MapSpawnValues> Load(DBController dbController, MapIndex mapIndex)
+        public static IEnumerable<MapSpawnValues> Load(DbController dbController, MapIndex mapIndex)
         {
             var ret = new List<MapSpawnValues>();
             var queryValues = dbController.GetQuery<SelectMapSpawnsOnMapQuery>().Execute(mapIndex);
@@ -246,10 +246,10 @@ namespace DemoGame.Server
         /// </summary>
         void UpdateDB()
         {
-            if (DBController == null)
+            if (DbController == null)
             {
                 const string errmsg =
-                    "Tried to call UpdateDB() on `{0}` when the DBController was null." + " Likely means Delete() was called.";
+                    "Tried to call UpdateDB() on `{0}` when the DbController was null." + " Likely means Delete() was called.";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, this);
                 Debug.Fail(string.Format(errmsg, this));
@@ -259,7 +259,7 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.InfoFormat("Updating MapSpawnValues `{0}`.", this);
 
-            DBController.GetQuery<UpdateMapSpawnQuery>().Execute(this);
+            DbController.GetQuery<UpdateMapSpawnQuery>().Execute(this);
         }
 
         #region IMapSpawnTable Members

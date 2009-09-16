@@ -16,7 +16,7 @@ namespace DemoGame.Server
     public class UserAccount : AccountTable, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly DBController _dbController;
+        readonly DbController _dbController;
 
         /// <summary>
         /// Lock used for setting the user. Also doubles as a lock for creating new users on the account.
@@ -53,7 +53,7 @@ namespace DemoGame.Server
             get { return _socket; }
         }
 
-        // TODO: $$ public static bool TryAddUser(DBController dbController, int accountID
+        // TODO: $$ public static bool TryAddUser(DbController dbController, int accountID
 
         /// <summary>
         /// Tries to get the AccountID for the account with the given name.
@@ -63,7 +63,7 @@ namespace DemoGame.Server
         /// <param name="accountID">When the method returns true, contains the ID of the account with the given
         /// <paramref name="accountName"/>.</param>
         /// <returns>True if the <paramref name="accountID"/> was found; otherwise false.</returns>
-        public static bool TryGetAccountID(DBController dbController, string accountName, out int accountID)
+        public static bool TryGetAccountID(DbController dbController, string accountName, out int accountID)
         {
             var value = dbController.GetQuery<SelectAccountIDFromNameQuery>().Execute(accountName);
 
@@ -92,7 +92,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="socket">The socket.</param>
         /// <param name="dbController">The db controller.</param>
-        UserAccount(IIPSocket socket, DBController dbController)
+        UserAccount(IIPSocket socket, DbController dbController)
         {
             if (socket == null)
                 throw new ArgumentNullException("socket");
@@ -158,7 +158,7 @@ namespace DemoGame.Server
             return GameData.AccountPassword.IsValid(s);
         }
 
-        public static bool TryAddCharacter(DBController dbController, int accountID, string characterName, out string errorMsg)
+        public static bool TryAddCharacter(DbController dbController, int accountID, string characterName, out string errorMsg)
         {
             var idCreator = dbController.GetQuery<CharacterIDCreator>();
 
@@ -171,7 +171,7 @@ namespace DemoGame.Server
             return success;
         }
 
-        public static bool TryAddCharacter(DBController dbController, string accountName, string characterName, out string errorMsg)
+        public static bool TryAddCharacter(DbController dbController, string accountName, string characterName, out string errorMsg)
         {
             var idCreator = dbController.GetQuery<CharacterIDCreator>();
 
@@ -184,7 +184,7 @@ namespace DemoGame.Server
             return success;
         }
 
-        public static bool TryAddCharacter(DBController dbController, int accountID, string characterName, CharacterID characterID, out string errorMsg)
+        public static bool TryAddCharacter(DbController dbController, int accountID, string characterName, CharacterID characterID, out string errorMsg)
         {
             if (!Character.IsValidName(characterName))
             {
@@ -199,7 +199,7 @@ namespace DemoGame.Server
             return true;
         }
 
-        public static bool TryAddCharacter(DBController dbController, string accountName, string characterName, CharacterID characterID, out string errorMsg)
+        public static bool TryAddCharacter(DbController dbController, string accountName, string characterName, CharacterID characterID, out string errorMsg)
         {
             if (!IsValidName(accountName))
             {
@@ -217,12 +217,12 @@ namespace DemoGame.Server
             return TryAddCharacter(dbController, accountID, characterName, characterID, out errorMsg);
         }
 
-        void LoadCharacterIDs(DBController dbController)
+        void LoadCharacterIDs(DbController dbController)
         {
             _characterIDs = dbController.GetQuery<SelectAccountCharacterIDsQuery>().Execute(ID).ToList();
         }
 
-        public static AccountLoginResult Login(DBController dbController, IIPSocket socket, string name, string password,
+        public static AccountLoginResult Login(DbController dbController, IIPSocket socket, string name, string password,
                                                out UserAccount userAccount)
         {
             userAccount = new UserAccount(socket, dbController);
