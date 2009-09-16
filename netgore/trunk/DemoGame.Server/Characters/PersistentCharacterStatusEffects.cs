@@ -149,7 +149,7 @@ namespace DemoGame.Server
             else
             {
                 ActiveStatusEffect ase = new ActiveStatusEffect(statusEffect, power, disableTime);
-                ActiveStatusEffectID id = (ActiveStatusEffectID)_idCreator.GetNext();
+                ActiveStatusEffectID id = _idCreator.GetNext();
 
                 ASEWithID aseWithID = new ASEWithID(id, ase);
                 _statusEffects.Add(aseWithID);

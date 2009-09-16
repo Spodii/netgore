@@ -117,7 +117,7 @@ namespace DemoGame.Server
             InitializeScripts();
 
             // Update the GameData table
-            var gameDataValues = GetGameDataTableValues();
+            IGameDataTable gameDataValues = GetGameDataTableValues();
             DbController.GetQuery<UpdateGameDataTableQuery>().Execute(gameDataValues);
             if (log.IsInfoEnabled)
                 log.Info("Updated the GameData table with the current values.");
@@ -175,7 +175,7 @@ namespace DemoGame.Server
         /// </summary>
         void GameLoop()
         {
-            var updateServerTimeQuery = DbController.GetQuery<UpdateServerTimeQuery>();
+            UpdateServerTimeQuery updateServerTimeQuery = DbController.GetQuery<UpdateServerTimeQuery>();
             ServerTimeUpdater serverTimeUpdater = new ServerTimeUpdater(updateServerTimeQuery);
 
             long lastRemoveConnsTime = 0;
@@ -337,7 +337,7 @@ namespace DemoGame.Server
 
             // Set the connection's tag to the account
             conn.Tag = userAccount;
-      
+
             // Send the "Login Successful" message
             using (PacketWriter pw = ServerPacket.LoginSuccessful())
             {

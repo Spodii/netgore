@@ -10,25 +10,34 @@ namespace NetGore
     /// </summary>
     public class StringRules
     {
-        readonly ushort _minLength;
-        readonly ushort _maxLength;
         readonly CharType _allowedChars;
+        readonly ushort _maxLength;
+        readonly ushort _minLength;
         readonly Regex _regex;
-
-        /// <summary>
-        /// Gets the minimum string length allowed.
-        /// </summary>
-        public int MinLength { get { return _minLength; } }
-
-        /// <summary>
-        /// Gets the maximum string length allowed.
-        /// </summary>
-        public int MaxLength { get { return _maxLength; } }
 
         /// <summary>
         /// Gets the set of allowed characters.
         /// </summary>
-        public CharType AllowedChars { get { return _allowedChars; } }
+        public CharType AllowedChars
+        {
+            get { return _allowedChars; }
+        }
+
+        /// <summary>
+        /// Gets the maximum string length allowed.
+        /// </summary>
+        public int MaxLength
+        {
+            get { return _maxLength; }
+        }
+
+        /// <summary>
+        /// Gets the minimum string length allowed.
+        /// </summary>
+        public int MinLength
+        {
+            get { return _minLength; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StringRules"/> class.
@@ -70,33 +79,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Tests the given input string to see if it is valid according to the specified rules.
-        /// </summary>
-        /// <param name="s">The string to test.</param>
-        /// <returns>True if <paramref name="s"/> is valid; otherwise false.</returns>
-        public bool IsValid(string s)
-        {
-            if (string.IsNullOrEmpty(s))
-                return false;
-
-            if (s.Length < MinLength || s.Length > MaxLength)
-                return false;
-
-            return _regex.IsMatch(s);
-        }
-
-        /// <summary>
-        /// Tests the given input string to see if it is valid according to the specified rules.
-        /// </summary>
-        /// <param name="s">The string to test.</param>
-        /// <param name="startAt">The character position at which to start the checking.</param>
-        /// <returns>True if <paramref name="s"/> is valid; otherwise false.</returns>
-        public bool IsValid(string s, int startAt)
-        {
-            return _regex.IsMatch(s, startAt);
-        }
-
-        /// <summary>
         /// Builds the Regex string to use for checking the rules.
         /// </summary>
         /// <param name="minLength">The minimum allowed length.</param>
@@ -112,7 +94,7 @@ namespace NetGore
 
             // Group of allowed characters
             sb.Append("[");
-            
+
             if ((allowedChars & CharType.AlphaLower) != 0)
                 sb.Append("a-z");
             if ((allowedChars & CharType.AlphaUpper) != 0)
@@ -137,6 +119,33 @@ namespace NetGore
             sb.Append("$");
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Tests the given input string to see if it is valid according to the specified rules.
+        /// </summary>
+        /// <param name="s">The string to test.</param>
+        /// <returns>True if <paramref name="s"/> is valid; otherwise false.</returns>
+        public bool IsValid(string s)
+        {
+            if (string.IsNullOrEmpty(s))
+                return false;
+
+            if (s.Length < MinLength || s.Length > MaxLength)
+                return false;
+
+            return _regex.IsMatch(s);
+        }
+
+        /// <summary>
+        /// Tests the given input string to see if it is valid according to the specified rules.
+        /// </summary>
+        /// <param name="s">The string to test.</param>
+        /// <param name="startAt">The character position at which to start the checking.</param>
+        /// <returns>True if <paramref name="s"/> is valid; otherwise false.</returns>
+        public bool IsValid(string s, int startAt)
+        {
+            return _regex.IsMatch(s, startAt);
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using System.Text;
-using DemoGame.Server.Queries;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -12,14 +9,18 @@ namespace DemoGame.Server
     /// </summary>
     public class ServerTimeUpdater
     {
+        readonly DbQueryNonReader _updateQuery;
         int _lastUpdateTime;
         int _updateRate = 3000;
-        readonly DbQueryNonReader _updateQuery;
 
         /// <summary>
         /// Gets or sets the rate, in milliseconds, that the server time is updated in the database.
         /// </summary>
-        public int UpdateRate { get { return _updateRate; } set { _updateRate = value; } }
+        public int UpdateRate
+        {
+            get { return _updateRate; }
+            set { _updateRate = value; }
+        }
 
         public ServerTimeUpdater(DbQueryNonReader updateQuery)
         {

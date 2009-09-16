@@ -810,13 +810,13 @@ namespace DemoGame.Server
 
         protected void Load(CharacterID characterID)
         {
-            var values = DbController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
+            ICharacterTable values = DbController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
             LoadFromQueryValues(values);
         }
 
         protected void Load(string characterName)
         {
-            var values = DbController.GetQuery<SelectCharacterQuery>().Execute(characterName);
+            ICharacterTable values = DbController.GetQuery<SelectCharacterQuery>().Execute(characterName);
             LoadFromQueryValues(values);
         }
 

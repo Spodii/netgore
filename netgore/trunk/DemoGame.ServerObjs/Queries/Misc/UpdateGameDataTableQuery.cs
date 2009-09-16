@@ -1,8 +1,6 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -11,15 +9,14 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class UpdateGameDataTableQuery : DbQueryNonReader<IGameDataTable>
     {
-        static readonly string _queryStr = string.Format("UPDATE `{0}` SET {1}",
-            GameDataTable.TableName, FormatParametersIntoString(GameDataTable.DbColumns));
+        static readonly string _queryStr = string.Format("UPDATE `{0}` SET {1}", GameDataTable.TableName,
+                                                         FormatParametersIntoString(GameDataTable.DbColumns));
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateGameDataTableQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public UpdateGameDataTableQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public UpdateGameDataTableQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 
