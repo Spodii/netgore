@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50138
 File Encoding         : 65001
 
-Date: 2009-09-16 13:45:09
+Date: 2009-09-16 16:46:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -151,9 +151,9 @@ CREATE TABLE `character` (
 -- Records of character
 -- ----------------------------
 INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '2', null, '398', '338', '1', '500', '200', '1', '121', '21', '629', '84', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2', '1', '1');
-INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, '800', '250', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, '500', '250', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', '0', '800', '500', '2', '800', '500', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, '825.601', '530', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, '450', '434', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', '0', '800', '530', '2', '800', '500', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for `character_equipped`
@@ -480,19 +480,13 @@ CREATE TABLE `server_time` (
 -- ----------------------------
 -- Records of server_time
 -- ----------------------------
-INSERT INTO `server_time` VALUES ('2009-09-16 13:44:29');
+INSERT INTO `server_time` VALUES ('2009-09-16 14:30:21');
 
 -- ----------------------------
 -- View structure for `user_character`
 -- ----------------------------
 DROP VIEW IF EXISTS `user_character`;
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`maxhp` AS `maxhp`,`character`.`maxmp` AS `maxmp`,`character`.`minhit` AS `minhit`,`character`.`maxhit` AS `maxhit`,`character`.`acc` AS `acc`,`character`.`agi` AS `agi`,`character`.`armor` AS `armor`,`character`.`bra` AS `bra`,`character`.`defence` AS `defence`,`character`.`dex` AS `dex`,`character`.`evade` AS `evade`,`character`.`imm` AS `imm`,`character`.`int` AS `int`,`character`.`perc` AS `perc`,`character`.`recov` AS `recov`,`character`.`regen` AS `regen`,`character`.`str` AS `str`,`character`.`tact` AS `tact`,`character`.`ws` AS `ws` from `character` where (`character`.`account_id` is not null);
-
--- ----------------------------
--- View structure for `user_characters`
--- ----------------------------
-DROP VIEW IF EXISTS `user_characters`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_characters` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`maxhp` AS `maxhp`,`character`.`maxmp` AS `maxmp`,`character`.`minhit` AS `minhit`,`character`.`maxhit` AS `maxhit`,`character`.`acc` AS `acc`,`character`.`agi` AS `agi`,`character`.`armor` AS `armor`,`character`.`bra` AS `bra`,`character`.`defence` AS `defence`,`character`.`dex` AS `dex`,`character`.`evade` AS `evade`,`character`.`imm` AS `imm`,`character`.`int` AS `int`,`character`.`perc` AS `perc`,`character`.`recov` AS `recov`,`character`.`regen` AS `regen`,`character`.`str` AS `str`,`character`.`tact` AS `tact`,`character`.`ws` AS `ws` from `character` where (`character`.`account_id` is not null);
 
 -- ----------------------------
 -- Function structure for `CreateUserOnAccount`
