@@ -124,11 +124,11 @@ this._email = (System.String)value;
 /// The underlying database type is `int(11)`. The database column contains the comment: 
 /// "The account ID.".
 /// </summary>
-public System.Int32 ID
+public DemoGame.Server.AccountID ID
 {
 get
 {
-return (System.Int32)_iD;
+return (DemoGame.Server.AccountID)_iD;
 }
 set
 {
@@ -227,11 +227,11 @@ public AccountTable()
 /// <param name="password">The initial value for the corresponding property.</param>
 /// <param name="timeCreated">The initial value for the corresponding property.</param>
 /// <param name="timeLastLogin">The initial value for the corresponding property.</param>
-public AccountTable(System.Nullable<System.UInt32> @currentIp, System.String @email, System.Int32 @iD, System.String @name, System.String @password, System.DateTime @timeCreated, System.DateTime @timeLastLogin)
+public AccountTable(System.Nullable<System.UInt32> @currentIp, System.String @email, DemoGame.Server.AccountID @iD, System.String @name, System.String @password, System.DateTime @timeCreated, System.DateTime @timeLastLogin)
 {
 this.CurrentIp = (System.Nullable<System.UInt32>)@currentIp;
 this.Email = (System.String)@email;
-this.ID = (System.Int32)@iD;
+this.ID = (DemoGame.Server.AccountID)@iD;
 this.Name = (System.String)@name;
 this.Password = (System.String)@password;
 this.TimeCreated = (System.DateTime)@timeCreated;
@@ -266,7 +266,7 @@ public static void CopyValues(IAccountTable source, System.Collections.Generic.I
 {
 dic["@current_ip"] = (System.Nullable<System.UInt32>)source.CurrentIp;
 dic["@email"] = (System.String)source.Email;
-dic["@id"] = (System.Int32)source.ID;
+dic["@id"] = (DemoGame.Server.AccountID)source.ID;
 dic["@name"] = (System.String)source.Name;
 dic["@password"] = (System.String)source.Password;
 dic["@time_created"] = (System.DateTime)source.TimeCreated;
@@ -281,7 +281,7 @@ public void CopyValuesFrom(IAccountTable source)
 {
 this.CurrentIp = (System.Nullable<System.UInt32>)source.CurrentIp;
 this.Email = (System.String)source.Email;
-this.ID = (System.Int32)source.ID;
+this.ID = (DemoGame.Server.AccountID)source.ID;
 this.Name = (System.String)source.Name;
 this.Password = (System.String)source.Password;
 this.TimeCreated = (System.DateTime)source.TimeCreated;
@@ -343,7 +343,7 @@ this.Email = (System.String)value;
 break;
 
 case "id":
-this.ID = (System.Int32)value;
+this.ID = (DemoGame.Server.AccountID)value;
 break;
 
 case "name":

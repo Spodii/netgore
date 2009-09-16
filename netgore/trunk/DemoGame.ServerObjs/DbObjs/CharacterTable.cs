@@ -92,7 +92,7 @@ public const System.Int32 ColumnCount = 37;
 /// <summary>
 /// The field that maps onto the database column `account_id`.
 /// </summary>
-System.Nullable<System.Int32> _accountId;
+System.Nullable<System.Int32> _accountID;
 /// <summary>
 /// The field that maps onto the database column `body_id`.
 /// </summary>
@@ -185,15 +185,15 @@ this._stat[(DemoGame.StatType)key] = (System.Byte)value;
 /// Gets or sets the value for the field that maps onto the database column `account_id`.
 /// The underlying database type is `int(11)`.
 /// </summary>
-public System.Nullable<System.Int32> AccountId
+public System.Nullable<DemoGame.Server.AccountID> AccountID
 {
 get
 {
-return (System.Nullable<System.Int32>)_accountId;
+return (System.Nullable<DemoGame.Server.AccountID>)_accountID;
 }
 set
 {
-this._accountId = (System.Nullable<System.Int32>)value;
+this._accountID = (System.Nullable<System.Int32>)value;
 }
 }
 /// <summary>
@@ -378,7 +378,7 @@ this._respawnMap = (System.Nullable<System.UInt16>)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `respawn_x`.
-/// The underlying database type is `float`.
+/// The underlying database type is `float` with the default value of `50`.
 /// </summary>
 public System.Single RespawnX
 {
@@ -393,7 +393,7 @@ this._respawnX = (System.Single)value;
 }
 /// <summary>
 /// Gets or sets the value for the field that maps onto the database column `respawn_y`.
-/// The underlying database type is `float`.
+/// The underlying database type is `float` with the default value of `50`.
 /// </summary>
 public System.Single RespawnY
 {
@@ -473,7 +473,7 @@ public CharacterTable()
 /// CharacterTable constructor.
 /// </summary>
 /// <param name="acc">The initial value for the corresponding property.</param>
-/// <param name="accountId">The initial value for the corresponding property.</param>
+/// <param name="accountID">The initial value for the corresponding property.</param>
 /// <param name="agi">The initial value for the corresponding property.</param>
 /// <param name="armor">The initial value for the corresponding property.</param>
 /// <param name="bodyID">The initial value for the corresponding property.</param>
@@ -509,10 +509,10 @@ public CharacterTable()
 /// <param name="wS">The initial value for the corresponding property.</param>
 /// <param name="x">The initial value for the corresponding property.</param>
 /// <param name="y">The initial value for the corresponding property.</param>
-public CharacterTable(System.Byte @acc, System.Nullable<System.Int32> @accountId, System.Byte @agi, System.Byte @armor, DemoGame.BodyIndex @bodyID, System.Byte @bra, System.UInt32 @cash, System.Nullable<DemoGame.Server.CharacterTemplateID> @characterTemplateID, System.Nullable<System.UInt16> @chatDialog, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, DemoGame.SPValueType @hP, DemoGame.Server.CharacterID @iD, System.Byte @imm, System.Byte @int, System.Byte @level, NetGore.MapIndex @mapID, System.Byte @maxHit, System.Int16 @maxHP, System.Int16 @maxMP, System.Byte @minHit, DemoGame.SPValueType @mP, System.String @name, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.Nullable<NetGore.MapIndex> @respawnMap, System.Single @respawnX, System.Single @respawnY, System.UInt32 @statPoints, System.Byte @str, System.Byte @tact, System.Byte @wS, System.Single @x, System.Single @y)
+public CharacterTable(System.Byte @acc, System.Nullable<DemoGame.Server.AccountID> @accountID, System.Byte @agi, System.Byte @armor, DemoGame.BodyIndex @bodyID, System.Byte @bra, System.UInt32 @cash, System.Nullable<DemoGame.Server.CharacterTemplateID> @characterTemplateID, System.Nullable<System.UInt16> @chatDialog, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, DemoGame.SPValueType @hP, DemoGame.Server.CharacterID @iD, System.Byte @imm, System.Byte @int, System.Byte @level, NetGore.MapIndex @mapID, System.Byte @maxHit, System.Int16 @maxHP, System.Int16 @maxMP, System.Byte @minHit, DemoGame.SPValueType @mP, System.String @name, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.Nullable<NetGore.MapIndex> @respawnMap, System.Single @respawnX, System.Single @respawnY, System.UInt32 @statPoints, System.Byte @str, System.Byte @tact, System.Byte @wS, System.Single @x, System.Single @y)
 {
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)@acc);
-this.AccountId = (System.Nullable<System.Int32>)@accountId;
+this.AccountID = (System.Nullable<DemoGame.Server.AccountID>)@accountID;
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@agi);
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)@armor);
 this.BodyID = (DemoGame.BodyIndex)@bodyID;
@@ -577,7 +577,7 @@ CopyValues(this, dic);
 public static void CopyValues(ICharacterTable source, System.Collections.Generic.IDictionary<System.String,System.Object> dic)
 {
 dic["@acc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
-dic["@account_id"] = (System.Nullable<System.Int32>)source.AccountId;
+dic["@account_id"] = (System.Nullable<DemoGame.Server.AccountID>)source.AccountID;
 dic["@agi"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
 dic["@armor"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
 dic["@body_id"] = (DemoGame.BodyIndex)source.BodyID;
@@ -622,7 +622,7 @@ dic["@y"] = (System.Single)source.Y;
 public void CopyValuesFrom(ICharacterTable source)
 {
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc));
-this.AccountId = (System.Nullable<System.Int32>)source.AccountId;
+this.AccountID = (System.Nullable<DemoGame.Server.AccountID>)source.AccountID;
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi));
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Armor, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor));
 this.BodyID = (DemoGame.BodyIndex)source.BodyID;
@@ -675,7 +675,7 @@ case "acc":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
 
 case "account_id":
-return AccountId;
+return AccountID;
 
 case "agi":
 return GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
@@ -801,7 +801,7 @@ this.SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)value);
 break;
 
 case "account_id":
-this.AccountId = (System.Nullable<System.Int32>)value;
+this.AccountID = (System.Nullable<DemoGame.Server.AccountID>)value;
 break;
 
 case "agi":
@@ -1048,10 +1048,10 @@ case "respawn_map":
 return new ColumnMetadata("respawn_map", "", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "respawn_x":
-return new ColumnMetadata("respawn_x", "", "float", null, typeof(System.Single), false, false, false);
+return new ColumnMetadata("respawn_x", "", "float", "50", typeof(System.Single), false, false, false);
 
 case "respawn_y":
-return new ColumnMetadata("respawn_y", "", "float", null, typeof(System.Single), false, false, false);
+return new ColumnMetadata("respawn_y", "", "float", "50", typeof(System.Single), false, false, false);
 
 case "statpoints":
 return new ColumnMetadata("statpoints", "", "int(10) unsigned", "0", typeof(System.UInt32), false, false, false);
@@ -1063,7 +1063,7 @@ case "tact":
 return new ColumnMetadata("tact", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
 
 case "ws":
-return new ColumnMetadata("ws", "", "tinyint(3) unsigned", null, typeof(System.Byte), false, false, false);
+return new ColumnMetadata("ws", "", "tinyint(3) unsigned", "1", typeof(System.Byte), false, false, false);
 
 case "x":
 return new ColumnMetadata("x", "", "float", "100", typeof(System.Single), false, false, false);

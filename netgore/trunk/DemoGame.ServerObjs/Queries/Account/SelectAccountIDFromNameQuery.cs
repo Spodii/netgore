@@ -23,16 +23,16 @@ namespace DemoGame.Server.Queries
         {
         }
 
-        public int? Execute(string accountName)
+        public AccountID? Execute(string accountName)
         {
-            int? ret;
+            AccountID? ret;
 
             using (var r = ExecuteReader(accountName))
             {
                 if (!r.Read())
                     ret = null;
                 else
-                    ret = r.GetInt32(0);
+                    ret = r.GetAccountID(0);
             }
 
             return ret;

@@ -9,7 +9,7 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class SelectAccountCharacterIDsQuery : DbQueryReader<int>
+    public class SelectAccountCharacterIDsQuery : DbQueryReader<AccountID>
     {
         static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}` WHERE `account_id`=@accountID",
                                                          CharacterTable.TableName);
@@ -23,7 +23,7 @@ namespace DemoGame.Server.Queries
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "id", "account_id");
         }
 
-        public IEnumerable<CharacterID> Execute(int accountID)
+        public IEnumerable<CharacterID> Execute(AccountID accountID)
         {
             var ret = new List<CharacterID>(4);
 
@@ -57,9 +57,9 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">The p.</param>
         /// <param name="accountID">The account ID.</param>
-        protected override void SetParameters(DbParameterValues p, int accountID)
+        protected override void SetParameters(DbParameterValues p, AccountID accountID)
         {
-            p["@accountID"] = accountID;
+            p["@accountID"] = (int)accountID;
         }
     }
 }

@@ -37,12 +37,12 @@ namespace DemoGame.Server.Queries
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
         protected override void SetParameters(DbParameterValues p, QueryArgs item)
         {
-            p["@accountID"] = item.AccountID;
+            p["@accountID"] = (int)item.AccountID;
             p["@characterName"] = item.CharacterName;
             p["@characterID"] = (int)item.CharacterID;
         }
 
-        public bool TryExecute(int accountID, CharacterID characterID, string characterName, out string errorMsg)
+        public bool TryExecute(AccountID accountID, CharacterID characterID, string characterName, out string errorMsg)
         {
             QueryArgs queryArgs = new QueryArgs(accountID, characterID, characterName);
             using (IDataReader r = ExecuteReader(queryArgs))
@@ -73,14 +73,34 @@ namespace DemoGame.Server.Queries
             // The error string wasn't empty, so must be an actual error message, meaning it wasn't successful
             return false;
         }
-
+        
+        /// <summary>
+        /// The arguments for the <see cref="CreateUserOnAccountQuery"/> query.
+        /// </summary>
         public struct QueryArgs
         {
-            public readonly int AccountID;
+            /// <summary>
+            /// The account ID.
+            /// </summary>
+            public readonly AccountID AccountID;
+
+            /// <summary>
+            /// The character ID.
+            /// </summary>
             public readonly CharacterID CharacterID;
+
+            /// <summary>
+            /// The character name.
+            /// </summary>
             public readonly string CharacterName;
 
-            public QueryArgs(int accountID, CharacterID characterID, string characterName)
+            /// <summary>
+            /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
+            /// </summary>
+            /// <param name="accountID">The account ID.</param>
+            /// <param name="characterID">The character ID.</param>
+            /// <param name="characterName">Name of the character.</param>
+            public QueryArgs(AccountID accountID, CharacterID characterID, string characterName)
             {
                 AccountID = accountID;
                 CharacterID = characterID;

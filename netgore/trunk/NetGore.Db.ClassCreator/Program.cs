@@ -61,6 +61,7 @@ namespace NetGore.Db.ClassCreator
                 generator.AddColumnCollection("ReqStat", typeof(StatType), typeof(int), reqStatTables, reqStatColumns);
 
                 // Custom external types
+                const string accountID = "DemoGame.Server.AccountID";
                 const string allianceID = "DemoGame.Server.AllianceID";
                 const string characterID = "DemoGame.Server.CharacterID";
                 const string characterTemplateID = "DemoGame.Server.CharacterTemplateID";
@@ -77,6 +78,8 @@ namespace NetGore.Db.ClassCreator
                 const string inventorySlot = "DemoGame.InventorySlot";
                 const string statusEffectType = "DemoGame.StatusEffectType";
                 const string activeStatusEffectID = "DemoGame.Server.ActiveStatusEffectID";
+
+                generator.AddCustomType(accountID, "account", "id");
 
                 generator.AddCustomType(allianceID, "alliance", "id");
 
@@ -108,6 +111,7 @@ namespace NetGore.Db.ClassCreator
                 // Mass-added custom types
                 generator.AddCustomType(allianceID, "*", "alliance_id", "attackable_id", "hostile_id");
                 generator.AddCustomType(characterID, "*", "character_id");
+                generator.AddCustomType(accountID, "*", "account_id");
                 generator.AddCustomType(mapID, "*", "map_id", "respawn_map");
                 generator.AddCustomType(itemID, "*", "item_id");
                 generator.AddCustomType(characterTemplateID, "*", "character_template_id");
@@ -118,6 +122,7 @@ namespace NetGore.Db.ClassCreator
                 // Renaming
                 CodeFormatter formatter = generator.Formatter;
                 formatter.AddAlias("alliance_id", "AllianceID");
+                formatter.AddAlias("account_id", "AccountID");
                 formatter.AddAlias("attackable_id", "AttackableID");
                 formatter.AddAlias("hostile_id", "HostileID");
                 formatter.AddAlias("character_id", "CharacterID");

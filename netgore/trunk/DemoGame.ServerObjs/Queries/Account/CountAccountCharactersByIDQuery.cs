@@ -8,7 +8,7 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class CountAccountCharactersByIDQuery : DbQueryReader<int>
+    public class CountAccountCharactersByIDQuery : DbQueryReader<AccountID>
     {
         static readonly string _queryStr =
             string.Format("SELECT COUNT(*) FROM `{0}` WHERE `account_id`=@accountID;",
@@ -34,7 +34,7 @@ namespace DemoGame.Server.Queries
             return CreateParameters("@accountID");
         }
 
-        public int Execute(int accountID)
+        public int Execute(AccountID accountID)
         {
             using (var r = ExecuteReader(accountID))
             {
@@ -51,9 +51,9 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="accountID">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, int accountID)
+        protected override void SetParameters(DbParameterValues p, AccountID accountID)
         {
-            p["@accountID"] = accountID;
+            p["@accountID"] = (int)accountID;
         }
     }
 }
