@@ -24,6 +24,12 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         public readonly IEnumerable<string> Tables;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomTypeMapping"/> class.
+        /// </summary>
+        /// <param name="tables">The tables.</param>
+        /// <param name="columns">The columns.</param>
+        /// <param name="customType">Type of the custom.</param>
         public CustomTypeMapping(IEnumerable<string> tables, IEnumerable<string> columns, string customType)
         {
             Tables = tables;
@@ -31,6 +37,13 @@ namespace NetGore.Db.ClassCreator
             CustomType = customType;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CustomTypeMapping"/> class.
+        /// </summary>
+        /// <param name="tables">The tables.</param>
+        /// <param name="columns">The columns.</param>
+        /// <param name="customType">Type of the custom.</param>
+        /// <param name="formatter">The formatter.</param>
         public CustomTypeMapping(IEnumerable<string> tables, IEnumerable<string> columns, Type customType, CodeFormatter formatter)
             : this(tables, columns, formatter.GetTypeString(customType))
         {

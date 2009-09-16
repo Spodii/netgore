@@ -26,6 +26,15 @@ namespace NetGore.Db.ClassCreator
         readonly IDictionary<DbColumnInfo, string> _privateNames = new Dictionary<DbColumnInfo, string>();
         readonly IDictionary<DbColumnInfo, string> _publicNames = new Dictionary<DbColumnInfo, string>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DbClassData"/> class.
+        /// </summary>
+        /// <param name="tableName">Name of the table.</param>
+        /// <param name="columns">The columns.</param>
+        /// <param name="formatter">The formatter.</param>
+        /// <param name="dataReaderReadMethods">The data reader read methods.</param>
+        /// <param name="columnCollections">The column collections.</param>
+        /// <param name="customTypes">The custom types.</param>
         public DbClassData(string tableName, IEnumerable<DbColumnInfo> columns, CodeFormatter formatter,
                            Dictionary<Type, string> dataReaderReadMethods, IEnumerable<ColumnCollection> columnCollections,
                            IEnumerable<CustomTypeMapping> customTypes)
@@ -83,10 +92,22 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
+        /// <summary>
+        /// Ensures a Type is nullable.
+        /// </summary>
+        /// <param name="type">The full name of the Type.</param>
+        /// <returns>The name of the <paramref name="type"/> with support of being nullable.</returns>
         public string EnsureIsNullable(string type)
         {
+            // Do not try to make strings nullable
+            if (type.Equals(typeof(string).Name, StringComparison.OrdinalIgnoreCase) || type.Equals(typeof(string).FullName, StringComparison.OrdinalIgnoreCase))
+                return type;
+
+            // If not already nullable, make nullable
             if (!type.StartsWith("System.Nullable", StringComparison.OrdinalIgnoreCase) && !type.EndsWith("?"))
                 return "System.Nullable" + Formatter.OpenGeneric + type + Formatter.CloseGeneric;
+
+            // Already nullable
             return type;
         }
 

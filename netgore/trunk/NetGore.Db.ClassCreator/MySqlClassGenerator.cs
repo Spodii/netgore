@@ -11,6 +11,13 @@ namespace NetGore.Db.ClassCreator
         readonly MySqlConnection _conn;
         bool _disposed = false;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MySqlClassGenerator"/> class.
+        /// </summary>
+        /// <param name="server">The server.</param>
+        /// <param name="userID">The user ID.</param>
+        /// <param name="password">The password.</param>
+        /// <param name="database">The database.</param>
         public MySqlClassGenerator(string server, string userID, string password, string database)
         {
             MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder
@@ -79,7 +86,10 @@ namespace NetGore.Db.ClassCreator
             {
                 Type type = GetColumnType(table, column.Name);
                 if (column.Nullable)
-                    type = Type.GetType("System.Nullable`1[" + type.FullName + "]", true);
+                {
+                    if (type != typeof(string))
+                        type = Type.GetType("System.Nullable`1[" + type.FullName + "]", true);
+                }
 
                 if (type == null)
                     throw new Exception(string.Format("Failed to get the type for column `{0}` on table `{1}`.", column.Name,
