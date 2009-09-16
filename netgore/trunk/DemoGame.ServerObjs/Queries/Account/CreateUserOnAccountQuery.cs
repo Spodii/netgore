@@ -44,6 +44,12 @@ namespace DemoGame.Server.Queries
 
         public bool TryExecute(AccountID accountID, CharacterID characterID, string characterName, out string errorMsg)
         {
+            if (!GameData.CharacterName.IsValid(characterName))
+            {
+                errorMsg = "Invalid character name.";
+                return false;
+            }
+
             QueryArgs queryArgs = new QueryArgs(accountID, characterID, characterName);
             using (IDataReader r = ExecuteReader(queryArgs))
             {
@@ -73,7 +79,7 @@ namespace DemoGame.Server.Queries
             // The error string wasn't empty, so must be an actual error message, meaning it wasn't successful
             return false;
         }
-        
+
         /// <summary>
         /// The arguments for the <see cref="CreateUserOnAccountQuery"/> query.
         /// </summary>

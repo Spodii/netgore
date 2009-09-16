@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -11,15 +10,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectAccountIDFromNameQuery : DbQueryReader<string>
     {
-        static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}` WHERE `name`=@name",
-            AccountTable.TableName);
+        static readonly string _queryStr = string.Format("SELECT `id` FROM `{0}` WHERE `name`=@name", AccountTable.TableName);
 
         /// <summary>
         /// DbQueryReader constructor.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectAccountIDFromNameQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectAccountIDFromNameQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 
@@ -27,7 +24,7 @@ namespace DemoGame.Server.Queries
         {
             AccountID? ret;
 
-            using (var r = ExecuteReader(accountName))
+            using (IDataReader r = ExecuteReader(accountName))
             {
                 if (!r.Read())
                     ret = null;

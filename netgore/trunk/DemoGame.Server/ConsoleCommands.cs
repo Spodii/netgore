@@ -18,6 +18,11 @@ namespace DemoGame.Server
         readonly ConsoleCommandParser _parser = new ConsoleCommandParser();
         readonly Server _server;
 
+        public DbController DbController
+        {
+            get { return Server.DbController; }
+        }
+
         public Server Server
         {
             get { return _server; }
@@ -26,42 +31,6 @@ namespace DemoGame.Server
         public ConsoleCommands(Server server)
         {
             _server = server;
-        }
-
-        public DbController DbController { get { return Server.DbController; } }
-
-        [ConsoleCommand("GetAccountID")]
-        public string GetAccountID(string accountName)
-        {
-            if (!GameData.AccountName.IsValid(accountName))
-                return "Invalid account name";
-
-            AccountID accountID;
-            if (!UserAccount.TryGetAccountID(DbController, accountName, out accountID))
-                return string.Format("Account {0} does not exist.", accountName);
-            else
-                return string.Format("Account {0} has the ID {1}.", accountName, accountID);
-        }
-
-        [ConsoleCommand("CountAccountCharacters")]
-        public string CountAccountCharacters(string accountName)
-        {
-            if (!GameData.AccountName.IsValid(accountName))
-                return "Invalid account name";
-
-            var result = DbController.GetQuery<CountAccountCharactersByNameQuery>().Execute(accountName);
-
-            return string.Format("There are {0} characters in account {1}.", result, accountName);
-        }
-
-        [ConsoleCommand("CountAccountCharacters")]
-        public string CountAccountCharacters(int id)
-        {
-            AccountID accountID = new AccountID(id);
-
-            var result = DbController.GetQuery<CountAccountCharactersByIDQuery>().Execute(accountID);
-
-            return string.Format("There are {0} characters in account ID {1}.", result, accountID);
         }
 
         [ConsoleCommand("AddUser")]
@@ -85,6 +54,27 @@ namespace DemoGame.Server
                 sb.Append(delimiter);
             }
             return sb.ToString();
+        }
+
+        [ConsoleCommand("CountAccountCharacters")]
+        public string CountAccountCharacters(string accountName)
+        {
+            if (!GameData.AccountName.IsValid(accountName))
+                return "Invalid account name";
+
+            int result = DbController.GetQuery<CountAccountCharactersByNameQuery>().Execute(accountName);
+
+            return string.Format("There are {0} characters in account {1}.", result, accountName);
+        }
+
+        [ConsoleCommand("CountAccountCharacters")]
+        public string CountAccountCharacters(int id)
+        {
+            AccountID accountID = new AccountID(id);
+
+            int result = DbController.GetQuery<CountAccountCharactersByIDQuery>().Execute(accountID);
+
+            return string.Format("There are {0} characters in account ID {1}.", result, accountID);
         }
 
         public string ExecuteCommand(string commandString)
@@ -156,6 +146,19 @@ namespace DemoGame.Server
 
             source = null;
             return null;
+        }
+
+        [ConsoleCommand("GetAccountID")]
+        public string GetAccountID(string accountName)
+        {
+            if (!GameData.AccountName.IsValid(accountName))
+                return "Invalid account name";
+
+            AccountID accountID;
+            if (!UserAccount.TryGetAccountID(DbController, accountName, out accountID))
+                return string.Format("Account {0} does not exist.", accountName);
+            else
+                return string.Format("Account {0} has the ID {1}.", accountName, accountID);
         }
 
         static string GetCharacterInfoShort(Character c)

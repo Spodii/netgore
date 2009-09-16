@@ -23,7 +23,7 @@ namespace NetGore
         /// Numeric characters (0 to 9).
         /// </summary>
         Numeric = 1 << 2,
-        
+
         /// <summary>
         /// Punctuation characters (ie: !, ", _, -, etc...)
         /// </summary>

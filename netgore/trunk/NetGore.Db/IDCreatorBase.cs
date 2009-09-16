@@ -27,21 +27,6 @@ namespace NetGore.Db
         bool _isRefilling;
 
         /// <summary>
-        /// When overridden in the derived class, converts the given int to type <typeparamref name="T"/>.
-        /// </summary>
-        /// <param name="value">The value to convert to type <typeparamref name="T"/>.</param>
-        /// <returns>The <paramref name="value"/> as type <typeparamref name="T"/>.</returns>
-        protected abstract T FromInt(int value);
-
-        /// <summary>
-        /// When overridden in the derived class, converts the given value of type <typeparamref name="T"/> to
-        /// an int.
-        /// </summary>
-        /// <param name="value">The value to convert to an int.</param>
-        /// <returns>The int value of the <paramref name="value"/>.</returns>
-        protected abstract int ToInt(T value);
-
-        /// <summary>
         /// IDCreatorBase constructor.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use to communicate with the database.</param>
@@ -103,6 +88,13 @@ namespace NetGore.Db
                 _freeIndices.Push(value);
             }
         }
+
+        /// <summary>
+        /// When overridden in the derived class, converts the given int to type <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="value">The value to convert to type <typeparamref name="T"/>.</param>
+        /// <returns>The <paramref name="value"/> as type <typeparamref name="T"/>.</returns>
+        protected abstract T FromInt(int value);
 
         /// <summary>
         /// Finds free indices for a given field from the database.
@@ -246,6 +238,14 @@ namespace NetGore.Db
             // Done refilling
             _isRefilling = false;
         }
+
+        /// <summary>
+        /// When overridden in the derived class, converts the given value of type <typeparamref name="T"/> to
+        /// an int.
+        /// </summary>
+        /// <param name="value">The value to convert to an int.</param>
+        /// <returns>The int value of the <paramref name="value"/>.</returns>
+        protected abstract int ToInt(T value);
 
         #region IDisposable Members
 

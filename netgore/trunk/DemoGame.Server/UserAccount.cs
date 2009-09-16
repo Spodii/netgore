@@ -264,7 +264,8 @@ namespace DemoGame.Server
         /// <param name="characterName">Name of the character.</param>
         /// <param name="errorMsg">If this method returns false, contains the error message.</param>
         /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public static bool TryAddCharacter(DbController dbController, AccountID accountID, string characterName, out string errorMsg)
+        public static bool TryAddCharacter(DbController dbController, AccountID accountID, string characterName,
+                                           out string errorMsg)
         {
             CharacterIDCreator idCreator = dbController.GetQuery<CharacterIDCreator>();
 
@@ -308,15 +309,9 @@ namespace DemoGame.Server
         /// <param name="characterID">The character ID.</param>
         /// <param name="errorMsg">If this method returns false, contains the error message.</param>
         /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public static bool TryAddCharacter(DbController dbController, AccountID accountID, string characterName, CharacterID characterID,
-                                           out string errorMsg)
+        public static bool TryAddCharacter(DbController dbController, AccountID accountID, string characterName,
+                                           CharacterID characterID, out string errorMsg)
         {
-            if (!Character.IsValidName(characterName))
-            {
-                errorMsg = "Invalid character name.";
-                return false;
-            }
-
             if (!dbController.GetQuery<CreateUserOnAccountQuery>().TryExecute(accountID, characterID, characterName, out errorMsg))
                 return false;
 

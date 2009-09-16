@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 
 namespace NetGore.Db.ClassCreator
@@ -24,6 +24,12 @@ namespace NetGore.Db.ClassCreator
         public object DefaultValue { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this <see cref="DbColumnInfo"/> is nullable.
+        /// </summary>
+        /// <value><c>true</c> if nullable; otherwise, <c>false</c>.</value>
+        public bool IsNullable { get; set; }
+
+        /// <summary>
         /// Gets or sets the type of the key.
         /// </summary>
         /// <value>The type of the key.</value>
@@ -34,12 +40,6 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <value>The name.</value>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="DbColumnInfo"/> is nullable.
-        /// </summary>
-        /// <value><c>true</c> if nullable; otherwise, <c>false</c>.</value>
-        public bool IsNullable { get; set; }
 
         /// <summary>
         /// Gets or sets the type.

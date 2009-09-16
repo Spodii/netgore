@@ -100,7 +100,8 @@ namespace NetGore.Db.ClassCreator
         public string EnsureIsNullable(string type)
         {
             // Do not try to make strings nullable
-            if (type.Equals(typeof(string).Name, StringComparison.OrdinalIgnoreCase) || type.Equals(typeof(string).FullName, StringComparison.OrdinalIgnoreCase))
+            if (type.Equals(typeof(string).Name, StringComparison.OrdinalIgnoreCase) ||
+                type.Equals(typeof(string).FullName, StringComparison.OrdinalIgnoreCase))
                 return type;
 
             // If not already nullable, make nullable

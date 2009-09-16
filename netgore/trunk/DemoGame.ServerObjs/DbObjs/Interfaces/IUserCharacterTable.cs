@@ -1,24 +1,43 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using NetGore;
 
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `character`.
+    /// Interface for a class that can be used to serialize values to the database table `user_character`.
     /// </summary>
-    public interface ICharacterTable
+    public interface IUserCharacterTable
     {
+        /// <summary>
+        /// Gets the value of the database column `acc`.
+        /// </summary>
+        Byte Acc { get; }
+
         /// <summary>
         /// Gets the value of the database column `account_id`.
         /// </summary>
         AccountID? AccountID { get; }
 
         /// <summary>
+        /// Gets the value of the database column `agi`.
+        /// </summary>
+        Byte Agi { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `armor`.
+        /// </summary>
+        Byte Armor { get; }
+
+        /// <summary>
         /// Gets the value of the database column `body_id`.
         /// </summary>
         BodyIndex BodyID { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `bra`.
+        /// </summary>
+        Byte Bra { get; }
 
         /// <summary>
         /// Gets the value of the database column `cash`.
@@ -36,6 +55,21 @@ namespace DemoGame.Server.DbObjs
         ushort? ChatDialog { get; }
 
         /// <summary>
+        /// Gets the value of the database column `defence`.
+        /// </summary>
+        Byte Defence { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `dex`.
+        /// </summary>
+        Byte Dex { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `evade`.
+        /// </summary>
+        Byte Evade { get; }
+
+        /// <summary>
         /// Gets the value of the database column `exp`.
         /// </summary>
         UInt32 Exp { get; }
@@ -48,7 +82,17 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
-        CharacterID ID { get; }
+        Int32 ID { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `imm`.
+        /// </summary>
+        Byte Imm { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `int`.
+        /// </summary>
+        Byte Int { get; }
 
         /// <summary>
         /// Gets the value of the database column `level`.
@@ -61,6 +105,26 @@ namespace DemoGame.Server.DbObjs
         MapIndex MapID { get; }
 
         /// <summary>
+        /// Gets the value of the database column `maxhit`.
+        /// </summary>
+        Byte MaxHit { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `maxhp`.
+        /// </summary>
+        Int16 MaxHP { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `maxmp`.
+        /// </summary>
+        Int16 MaxMP { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `minhit`.
+        /// </summary>
+        Byte MinHit { get; }
+
+        /// <summary>
         /// Gets the value of the database column `mp`.
         /// </summary>
         SPValueType MP { get; }
@@ -69,6 +133,21 @@ namespace DemoGame.Server.DbObjs
         /// Gets the value of the database column `name`.
         /// </summary>
         String Name { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `perc`.
+        /// </summary>
+        Byte Perc { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `recov`.
+        /// </summary>
+        Byte Recov { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `regen`.
+        /// </summary>
+        Byte Regen { get; }
 
         /// <summary>
         /// Gets the value of the database column `respawn_map`.
@@ -91,10 +170,19 @@ namespace DemoGame.Server.DbObjs
         UInt32 StatPoints { get; }
 
         /// <summary>
-        /// Gets an IEnumerable of KeyValuePairs containing the values in the `Stat` collection. The
-        /// key is the collection's key and the value is the value for that corresponding key.
+        /// Gets the value of the database column `str`.
         /// </summary>
-        IEnumerable<KeyValuePair<StatType, Int32>> Stats { get; }
+        Byte Str { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `tact`.
+        /// </summary>
+        Byte Tact { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `ws`.
+        /// </summary>
+        Byte WS { get; }
 
         /// <summary>
         /// Gets the value of the database column `x`.
@@ -113,16 +201,6 @@ namespace DemoGame.Server.DbObjs
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        ICharacterTable DeepCopy();
-
-        /// <summary>
-        /// Gets the value of the database column in the column collection `Stat`
-        /// that corresponds to the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key that represents the column in this column collection.</param>
-        /// <returns>
-        /// The value of the database column with the corresponding <paramref name="key"/>.
-        /// </returns>
-        Int32 GetStat(StatType key);
+        IUserCharacterTable DeepCopy();
     }
 }

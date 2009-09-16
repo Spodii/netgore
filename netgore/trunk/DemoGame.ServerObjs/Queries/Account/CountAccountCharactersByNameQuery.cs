@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -18,11 +19,21 @@ namespace DemoGame.Server.Queries
         /// Initializes a new instance of the <see cref="CountAccountCharactersByNameQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public CountAccountCharactersByNameQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public CountAccountCharactersByNameQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "account_id");
             QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "name");
+        }
+
+        public int Execute(string accountName)
+        {
+            using (IDataReader r = ExecuteReader(accountName))
+            {
+                if (!r.Read())
+                    throw new Exception("Failed to read");
+
+                return r.GetInt32(0);
+            }
         }
 
         /// <summary>
@@ -33,17 +44,6 @@ namespace DemoGame.Server.Queries
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return CreateParameters("@name");
-        }
-
-        public int Execute(string accountName)
-        {
-            using (var r = ExecuteReader(accountName))
-            {
-                if (!r.Read())
-                    throw new Exception("Failed to read");
-
-                return r.GetInt32(0);
-            }
         }
 
         /// <summary>

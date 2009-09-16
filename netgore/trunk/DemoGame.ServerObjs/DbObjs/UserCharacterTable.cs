@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using DemoGame.DbObjs;
@@ -8,9 +7,9 @@ using NetGore;
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Provides a strongly-typed structure for the database table `character`.
+    /// Provides a strongly-typed structure for the database table `user_character`.
     /// </summary>
-    public class CharacterTable : ICharacterTable
+    public class UserCharacterTable : IUserCharacterTable
     {
         /// <summary>
         /// The number of columns in the database table that this class represents.
@@ -20,7 +19,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The name of the database table that this class represents.
         /// </summary>
-        public const String TableName = "character";
+        public const String TableName = "user_character";
 
         /// <summary>
         /// Array of the database column names.
@@ -35,7 +34,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Array of the database column names for columns that are primary keys.
         /// </summary>
-        static readonly String[] _dbColumnsKeys = new string[] { "id" };
+        static readonly String[] _dbColumnsKeys = new string[] { };
 
         /// <summary>
         /// Array of the database column names for columns that are not primary keys.
@@ -43,23 +42,14 @@ namespace DemoGame.Server.DbObjs
         static readonly String[] _dbColumnsNonKey = new string[]
         {
             "acc", "account_id", "agi", "armor", "body_id", "bra", "cash", "character_template_id", "chat_dialog", "defence", "dex",
-            "evade", "exp", "hp", "imm", "int", "level", "map_id", "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "perc",
+            "evade", "exp", "hp", "id", "imm", "int", "level", "map_id", "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "perc",
             "recov", "regen", "respawn_map", "respawn_x", "respawn_y", "statpoints", "str", "tact", "ws", "x", "y"
         };
 
         /// <summary>
-        /// The fields that are used in the column collection `Stat`.
+        /// The field that maps onto the database column `acc`.
         /// </summary>
-        static readonly String[] _statColumns = new string[]
-        {
-            "acc", "agi", "armor", "bra", "defence", "dex", "evade", "imm", "int", "maxhit", "maxhp", "maxmp", "minhit", "perc",
-            "recov", "regen", "str", "tact", "ws"
-        };
-
-        /// <summary>
-        /// Dictionary containing the values for the column collection `Stat`.
-        /// </summary>
-        readonly StatConstDictionary _stat = new StatConstDictionary();
+        Byte _acc;
 
         /// <summary>
         /// The field that maps onto the database column `account_id`.
@@ -67,9 +57,24 @@ namespace DemoGame.Server.DbObjs
         int? _accountID;
 
         /// <summary>
+        /// The field that maps onto the database column `agi`.
+        /// </summary>
+        Byte _agi;
+
+        /// <summary>
+        /// The field that maps onto the database column `armor`.
+        /// </summary>
+        Byte _armor;
+
+        /// <summary>
         /// The field that maps onto the database column `body_id`.
         /// </summary>
         UInt16 _bodyID;
+
+        /// <summary>
+        /// The field that maps onto the database column `bra`.
+        /// </summary>
+        Byte _bra;
 
         /// <summary>
         /// The field that maps onto the database column `cash`.
@@ -87,6 +92,21 @@ namespace DemoGame.Server.DbObjs
         ushort? _chatDialog;
 
         /// <summary>
+        /// The field that maps onto the database column `defence`.
+        /// </summary>
+        Byte _defence;
+
+        /// <summary>
+        /// The field that maps onto the database column `dex`.
+        /// </summary>
+        Byte _dex;
+
+        /// <summary>
+        /// The field that maps onto the database column `evade`.
+        /// </summary>
+        Byte _evade;
+
+        /// <summary>
         /// The field that maps onto the database column `exp`.
         /// </summary>
         UInt32 _exp;
@@ -102,6 +122,16 @@ namespace DemoGame.Server.DbObjs
         Int32 _iD;
 
         /// <summary>
+        /// The field that maps onto the database column `imm`.
+        /// </summary>
+        Byte _imm;
+
+        /// <summary>
+        /// The field that maps onto the database column `int`.
+        /// </summary>
+        Byte _int;
+
+        /// <summary>
         /// The field that maps onto the database column `level`.
         /// </summary>
         Byte _level;
@@ -112,6 +142,26 @@ namespace DemoGame.Server.DbObjs
         UInt16 _mapID;
 
         /// <summary>
+        /// The field that maps onto the database column `maxhit`.
+        /// </summary>
+        Byte _maxHit;
+
+        /// <summary>
+        /// The field that maps onto the database column `maxhp`.
+        /// </summary>
+        Int16 _maxHP;
+
+        /// <summary>
+        /// The field that maps onto the database column `maxmp`.
+        /// </summary>
+        Int16 _maxMP;
+
+        /// <summary>
+        /// The field that maps onto the database column `minhit`.
+        /// </summary>
+        Byte _minHit;
+
+        /// <summary>
         /// The field that maps onto the database column `mp`.
         /// </summary>
         Int16 _mP;
@@ -120,6 +170,21 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `name`.
         /// </summary>
         String _name;
+
+        /// <summary>
+        /// The field that maps onto the database column `perc`.
+        /// </summary>
+        Byte _perc;
+
+        /// <summary>
+        /// The field that maps onto the database column `recov`.
+        /// </summary>
+        Byte _recov;
+
+        /// <summary>
+        /// The field that maps onto the database column `regen`.
+        /// </summary>
+        Byte _regen;
 
         /// <summary>
         /// The field that maps onto the database column `respawn_map`.
@@ -140,6 +205,21 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `statpoints`.
         /// </summary>
         UInt32 _statPoints;
+
+        /// <summary>
+        /// The field that maps onto the database column `str`.
+        /// </summary>
+        Byte _str;
+
+        /// <summary>
+        /// The field that maps onto the database column `tact`.
+        /// </summary>
+        Byte _tact;
+
+        /// <summary>
+        /// The field that maps onto the database column `ws`.
+        /// </summary>
+        Byte _wS;
 
         /// <summary>
         /// The field that maps onto the database column `x`.
@@ -176,23 +256,14 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets an IEnumerable of strings containing the name of the database
-        /// columns used in the column collection `Stat`.
+        /// UserCharacterTable constructor.
         /// </summary>
-        public static IEnumerable<String> StatColumns
-        {
-            get { return _statColumns; }
-        }
-
-        /// <summary>
-        /// CharacterTable constructor.
-        /// </summary>
-        public CharacterTable()
+        public UserCharacterTable()
         {
         }
 
         /// <summary>
-        /// CharacterTable constructor.
+        /// UserCharacterTable constructor.
         /// </summary>
         /// <param name="acc">The initial value for the corresponding property.</param>
         /// <param name="accountID">The initial value for the corresponding property.</param>
@@ -231,57 +302,58 @@ namespace DemoGame.Server.DbObjs
         /// <param name="wS">The initial value for the corresponding property.</param>
         /// <param name="x">The initial value for the corresponding property.</param>
         /// <param name="y">The initial value for the corresponding property.</param>
-        public CharacterTable(Byte @acc, AccountID? @accountID, Byte @agi, Byte @armor, BodyIndex @bodyID, Byte @bra, UInt32 @cash,
-                              CharacterTemplateID? @characterTemplateID, ushort? @chatDialog, Byte @defence, Byte @dex,
-                              Byte @evade, UInt32 @exp, SPValueType @hP, CharacterID @iD, Byte @imm, Byte @int, Byte @level,
-                              MapIndex @mapID, Byte @maxHit, Int16 @maxHP, Int16 @maxMP, Byte @minHit, SPValueType @mP,
-                              String @name, Byte @perc, Byte @recov, Byte @regen, MapIndex? @respawnMap, Single @respawnX,
-                              Single @respawnY, UInt32 @statPoints, Byte @str, Byte @tact, Byte @wS, Single @x, Single @y)
+        public UserCharacterTable(Byte @acc, AccountID? @accountID, Byte @agi, Byte @armor, BodyIndex @bodyID, Byte @bra,
+                                  UInt32 @cash, CharacterTemplateID? @characterTemplateID, ushort? @chatDialog, Byte @defence,
+                                  Byte @dex, Byte @evade, UInt32 @exp, SPValueType @hP, Int32 @iD, Byte @imm, Byte @int,
+                                  Byte @level, MapIndex @mapID, Byte @maxHit, Int16 @maxHP, Int16 @maxMP, Byte @minHit,
+                                  SPValueType @mP, String @name, Byte @perc, Byte @recov, Byte @regen, MapIndex? @respawnMap,
+                                  Single @respawnX, Single @respawnY, UInt32 @statPoints, Byte @str, Byte @tact, Byte @wS,
+                                  Single @x, Single @y)
         {
-            SetStat(StatType.Acc, @acc);
+            Acc = @acc;
             AccountID = @accountID;
-            SetStat(StatType.Agi, @agi);
-            SetStat(StatType.Armor, @armor);
+            Agi = @agi;
+            Armor = @armor;
             BodyID = @bodyID;
-            SetStat(StatType.Bra, @bra);
+            Bra = @bra;
             Cash = @cash;
             CharacterTemplateID = @characterTemplateID;
             ChatDialog = @chatDialog;
-            SetStat(StatType.Defence, @defence);
-            SetStat(StatType.Dex, @dex);
-            SetStat(StatType.Evade, @evade);
+            Defence = @defence;
+            Dex = @dex;
+            Evade = @evade;
             Exp = @exp;
             HP = @hP;
             ID = @iD;
-            SetStat(StatType.Imm, @imm);
-            SetStat(StatType.Int, @int);
+            Imm = @imm;
+            Int = @int;
             Level = @level;
             MapID = @mapID;
-            SetStat(StatType.MaxHit, @maxHit);
-            SetStat(StatType.MaxHP, @maxHP);
-            SetStat(StatType.MaxMP, @maxMP);
-            SetStat(StatType.MinHit, @minHit);
+            MaxHit = @maxHit;
+            MaxHP = @maxHP;
+            MaxMP = @maxMP;
+            MinHit = @minHit;
             MP = @mP;
             Name = @name;
-            SetStat(StatType.Perc, @perc);
-            SetStat(StatType.Recov, @recov);
-            SetStat(StatType.Regen, @regen);
+            Perc = @perc;
+            Recov = @recov;
+            Regen = @regen;
             RespawnMap = @respawnMap;
             RespawnX = @respawnX;
             RespawnY = @respawnY;
             StatPoints = @statPoints;
-            SetStat(StatType.Str, @str);
-            SetStat(StatType.Tact, @tact);
-            SetStat(StatType.WS, @wS);
+            Str = @str;
+            Tact = @tact;
+            WS = @wS;
             X = @x;
             Y = @y;
         }
 
         /// <summary>
-        /// CharacterTable constructor.
+        /// UserCharacterTable constructor.
         /// </summary>
-        /// <param name="source">ICharacterTable to copy the initial values from.</param>
-        public CharacterTable(ICharacterTable source)
+        /// <param name="source">IUserCharacterTable to copy the initial values from.</param>
+        public UserCharacterTable(IUserCharacterTable source)
         {
             CopyValuesFrom(source);
         }
@@ -293,43 +365,43 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
-        public static void CopyValues(ICharacterTable source, IDictionary<String, Object> dic)
+        public static void CopyValues(IUserCharacterTable source, IDictionary<String, Object> dic)
         {
-            dic["@acc"] = (Byte)source.GetStat(StatType.Acc);
+            dic["@acc"] = source.Acc;
             dic["@account_id"] = source.AccountID;
-            dic["@agi"] = (Byte)source.GetStat(StatType.Agi);
-            dic["@armor"] = (Byte)source.GetStat(StatType.Armor);
+            dic["@agi"] = source.Agi;
+            dic["@armor"] = source.Armor;
             dic["@body_id"] = source.BodyID;
-            dic["@bra"] = (Byte)source.GetStat(StatType.Bra);
+            dic["@bra"] = source.Bra;
             dic["@cash"] = source.Cash;
             dic["@character_template_id"] = source.CharacterTemplateID;
             dic["@chat_dialog"] = source.ChatDialog;
-            dic["@defence"] = (Byte)source.GetStat(StatType.Defence);
-            dic["@dex"] = (Byte)source.GetStat(StatType.Dex);
-            dic["@evade"] = (Byte)source.GetStat(StatType.Evade);
+            dic["@defence"] = source.Defence;
+            dic["@dex"] = source.Dex;
+            dic["@evade"] = source.Evade;
             dic["@exp"] = source.Exp;
             dic["@hp"] = source.HP;
             dic["@id"] = source.ID;
-            dic["@imm"] = (Byte)source.GetStat(StatType.Imm);
-            dic["@int"] = (Byte)source.GetStat(StatType.Int);
+            dic["@imm"] = source.Imm;
+            dic["@int"] = source.Int;
             dic["@level"] = source.Level;
             dic["@map_id"] = source.MapID;
-            dic["@maxhit"] = (Byte)source.GetStat(StatType.MaxHit);
-            dic["@maxhp"] = (Int16)source.GetStat(StatType.MaxHP);
-            dic["@maxmp"] = (Int16)source.GetStat(StatType.MaxMP);
-            dic["@minhit"] = (Byte)source.GetStat(StatType.MinHit);
+            dic["@maxhit"] = source.MaxHit;
+            dic["@maxhp"] = source.MaxHP;
+            dic["@maxmp"] = source.MaxMP;
+            dic["@minhit"] = source.MinHit;
             dic["@mp"] = source.MP;
             dic["@name"] = source.Name;
-            dic["@perc"] = (Byte)source.GetStat(StatType.Perc);
-            dic["@recov"] = (Byte)source.GetStat(StatType.Recov);
-            dic["@regen"] = (Byte)source.GetStat(StatType.Regen);
+            dic["@perc"] = source.Perc;
+            dic["@recov"] = source.Recov;
+            dic["@regen"] = source.Regen;
             dic["@respawn_map"] = source.RespawnMap;
             dic["@respawn_x"] = source.RespawnX;
             dic["@respawn_y"] = source.RespawnY;
             dic["@statpoints"] = source.StatPoints;
-            dic["@str"] = (Byte)source.GetStat(StatType.Str);
-            dic["@tact"] = (Byte)source.GetStat(StatType.Tact);
-            dic["@ws"] = (Byte)source.GetStat(StatType.WS);
+            dic["@str"] = source.Str;
+            dic["@tact"] = source.Tact;
+            dic["@ws"] = source.WS;
             dic["@x"] = source.X;
             dic["@y"] = source.Y;
         }
@@ -346,46 +418,46 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Copies the values from the given <paramref name="source"/> into this CharacterTable.
+        /// Copies the values from the given <paramref name="source"/> into this UserCharacterTable.
         /// </summary>
-        /// <param name="source">The ICharacterTable to copy the values from.</param>
-        public void CopyValuesFrom(ICharacterTable source)
+        /// <param name="source">The IUserCharacterTable to copy the values from.</param>
+        public void CopyValuesFrom(IUserCharacterTable source)
         {
-            SetStat(StatType.Acc, source.GetStat(StatType.Acc));
+            Acc = source.Acc;
             AccountID = source.AccountID;
-            SetStat(StatType.Agi, source.GetStat(StatType.Agi));
-            SetStat(StatType.Armor, source.GetStat(StatType.Armor));
+            Agi = source.Agi;
+            Armor = source.Armor;
             BodyID = source.BodyID;
-            SetStat(StatType.Bra, source.GetStat(StatType.Bra));
+            Bra = source.Bra;
             Cash = source.Cash;
             CharacterTemplateID = source.CharacterTemplateID;
             ChatDialog = source.ChatDialog;
-            SetStat(StatType.Defence, source.GetStat(StatType.Defence));
-            SetStat(StatType.Dex, source.GetStat(StatType.Dex));
-            SetStat(StatType.Evade, source.GetStat(StatType.Evade));
+            Defence = source.Defence;
+            Dex = source.Dex;
+            Evade = source.Evade;
             Exp = source.Exp;
             HP = source.HP;
             ID = source.ID;
-            SetStat(StatType.Imm, source.GetStat(StatType.Imm));
-            SetStat(StatType.Int, source.GetStat(StatType.Int));
+            Imm = source.Imm;
+            Int = source.Int;
             Level = source.Level;
             MapID = source.MapID;
-            SetStat(StatType.MaxHit, source.GetStat(StatType.MaxHit));
-            SetStat(StatType.MaxHP, source.GetStat(StatType.MaxHP));
-            SetStat(StatType.MaxMP, source.GetStat(StatType.MaxMP));
-            SetStat(StatType.MinHit, source.GetStat(StatType.MinHit));
+            MaxHit = source.MaxHit;
+            MaxHP = source.MaxHP;
+            MaxMP = source.MaxMP;
+            MinHit = source.MinHit;
             MP = source.MP;
             Name = source.Name;
-            SetStat(StatType.Perc, source.GetStat(StatType.Perc));
-            SetStat(StatType.Recov, source.GetStat(StatType.Recov));
-            SetStat(StatType.Regen, source.GetStat(StatType.Regen));
+            Perc = source.Perc;
+            Recov = source.Recov;
+            Regen = source.Regen;
             RespawnMap = source.RespawnMap;
             RespawnX = source.RespawnX;
             RespawnY = source.RespawnY;
             StatPoints = source.StatPoints;
-            SetStat(StatType.Str, source.GetStat(StatType.Str));
-            SetStat(StatType.Tact, source.GetStat(StatType.Tact));
-            SetStat(StatType.WS, source.GetStat(StatType.WS));
+            Str = source.Str;
+            Tact = source.Tact;
+            WS = source.WS;
             X = source.X;
             Y = source.Y;
         }
@@ -405,7 +477,7 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("acc", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "account_id":
-                    return new ColumnMetadata("account_id", "", "int(11)", null, typeof(int?), true, false, true);
+                    return new ColumnMetadata("account_id", "", "int(11)", null, typeof(int?), true, false, false);
 
                 case "agi":
                     return new ColumnMetadata("agi", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
@@ -424,7 +496,7 @@ namespace DemoGame.Server.DbObjs
 
                 case "character_template_id":
                     return new ColumnMetadata("character_template_id", "", "smallint(5) unsigned", null, typeof(ushort?), true,
-                                              false, true);
+                                              false, false);
 
                 case "chat_dialog":
                     return new ColumnMetadata("chat_dialog", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
@@ -445,7 +517,7 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("hp", "", "smallint(6)", "50", typeof(Int16), false, false, false);
 
                 case "id":
-                    return new ColumnMetadata("id", "", "int(11)", null, typeof(Int32), false, true, false);
+                    return new ColumnMetadata("id", "", "int(11)", null, typeof(Int32), false, false, false);
 
                 case "imm":
                     return new ColumnMetadata("imm", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
@@ -457,7 +529,7 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("level", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "map_id":
-                    return new ColumnMetadata("map_id", "", "smallint(5) unsigned", "1", typeof(UInt16), false, false, true);
+                    return new ColumnMetadata("map_id", "", "smallint(5) unsigned", "1", typeof(UInt16), false, false, false);
 
                 case "maxhit":
                     return new ColumnMetadata("maxhit", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
@@ -475,7 +547,7 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("mp", "", "smallint(6)", "50", typeof(Int16), false, false, false);
 
                 case "name":
-                    return new ColumnMetadata("name", "", "varchar(30)", null, typeof(String), false, false, true);
+                    return new ColumnMetadata("name", "", "varchar(30)", null, typeof(String), false, false, false);
 
                 case "perc":
                     return new ColumnMetadata("perc", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
@@ -487,7 +559,7 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("regen", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "respawn_map":
-                    return new ColumnMetadata("respawn_map", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
+                    return new ColumnMetadata("respawn_map", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
 
                 case "respawn_x":
                     return new ColumnMetadata("respawn_x", "", "float", "50", typeof(Single), false, false, false);
@@ -530,22 +602,22 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "acc":
-                    return GetStat(StatType.Acc);
+                    return Acc;
 
                 case "account_id":
                     return AccountID;
 
                 case "agi":
-                    return GetStat(StatType.Agi);
+                    return Agi;
 
                 case "armor":
-                    return GetStat(StatType.Armor);
+                    return Armor;
 
                 case "body_id":
                     return BodyID;
 
                 case "bra":
-                    return GetStat(StatType.Bra);
+                    return Bra;
 
                 case "cash":
                     return Cash;
@@ -557,13 +629,13 @@ namespace DemoGame.Server.DbObjs
                     return ChatDialog;
 
                 case "defence":
-                    return GetStat(StatType.Defence);
+                    return Defence;
 
                 case "dex":
-                    return GetStat(StatType.Dex);
+                    return Dex;
 
                 case "evade":
-                    return GetStat(StatType.Evade);
+                    return Evade;
 
                 case "exp":
                     return Exp;
@@ -575,10 +647,10 @@ namespace DemoGame.Server.DbObjs
                     return ID;
 
                 case "imm":
-                    return GetStat(StatType.Imm);
+                    return Imm;
 
                 case "int":
-                    return GetStat(StatType.Int);
+                    return Int;
 
                 case "level":
                     return Level;
@@ -587,16 +659,16 @@ namespace DemoGame.Server.DbObjs
                     return MapID;
 
                 case "maxhit":
-                    return GetStat(StatType.MaxHit);
+                    return MaxHit;
 
                 case "maxhp":
-                    return GetStat(StatType.MaxHP);
+                    return MaxHP;
 
                 case "maxmp":
-                    return GetStat(StatType.MaxMP);
+                    return MaxMP;
 
                 case "minhit":
-                    return GetStat(StatType.MinHit);
+                    return MinHit;
 
                 case "mp":
                     return MP;
@@ -605,13 +677,13 @@ namespace DemoGame.Server.DbObjs
                     return Name;
 
                 case "perc":
-                    return GetStat(StatType.Perc);
+                    return Perc;
 
                 case "recov":
-                    return GetStat(StatType.Recov);
+                    return Recov;
 
                 case "regen":
-                    return GetStat(StatType.Regen);
+                    return Regen;
 
                 case "respawn_map":
                     return RespawnMap;
@@ -626,13 +698,13 @@ namespace DemoGame.Server.DbObjs
                     return StatPoints;
 
                 case "str":
-                    return GetStat(StatType.Str);
+                    return Str;
 
                 case "tact":
-                    return GetStat(StatType.Tact);
+                    return Tact;
 
                 case "ws":
-                    return GetStat(StatType.WS);
+                    return WS;
 
                 case "x":
                     return X;
@@ -646,16 +718,6 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets the <paramref name="value"/> of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
-        /// </summary>
-        /// <param name="key">The key of the column to get.</param>
-        /// <param name="value">The value to assign to the column for the corresponding <paramref name="key"/>.</param>
-        public void SetStat(StatType key, Int32 value)
-        {
-            _stat[key] = (Byte)value;
-        }
-
-        /// <summary>
         /// Sets the <paramref name="value"/> of a column by the database column's name.
         /// </summary>
         /// <param name="columnName">The database name of the column to get the <paramref name="value"/> for.</param>
@@ -665,7 +727,7 @@ namespace DemoGame.Server.DbObjs
             switch (columnName)
             {
                 case "acc":
-                    SetStat(StatType.Acc, (Int32)value);
+                    Acc = (Byte)value;
                     break;
 
                 case "account_id":
@@ -673,11 +735,11 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "agi":
-                    SetStat(StatType.Agi, (Int32)value);
+                    Agi = (Byte)value;
                     break;
 
                 case "armor":
-                    SetStat(StatType.Armor, (Int32)value);
+                    Armor = (Byte)value;
                     break;
 
                 case "body_id":
@@ -685,7 +747,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "bra":
-                    SetStat(StatType.Bra, (Int32)value);
+                    Bra = (Byte)value;
                     break;
 
                 case "cash":
@@ -701,15 +763,15 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "defence":
-                    SetStat(StatType.Defence, (Int32)value);
+                    Defence = (Byte)value;
                     break;
 
                 case "dex":
-                    SetStat(StatType.Dex, (Int32)value);
+                    Dex = (Byte)value;
                     break;
 
                 case "evade":
-                    SetStat(StatType.Evade, (Int32)value);
+                    Evade = (Byte)value;
                     break;
 
                 case "exp":
@@ -721,15 +783,15 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "id":
-                    ID = (CharacterID)value;
+                    ID = (Int32)value;
                     break;
 
                 case "imm":
-                    SetStat(StatType.Imm, (Int32)value);
+                    Imm = (Byte)value;
                     break;
 
                 case "int":
-                    SetStat(StatType.Int, (Int32)value);
+                    Int = (Byte)value;
                     break;
 
                 case "level":
@@ -741,19 +803,19 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "maxhit":
-                    SetStat(StatType.MaxHit, (Int32)value);
+                    MaxHit = (Byte)value;
                     break;
 
                 case "maxhp":
-                    SetStat(StatType.MaxHP, (Int32)value);
+                    MaxHP = (Int16)value;
                     break;
 
                 case "maxmp":
-                    SetStat(StatType.MaxMP, (Int32)value);
+                    MaxMP = (Int16)value;
                     break;
 
                 case "minhit":
-                    SetStat(StatType.MinHit, (Int32)value);
+                    MinHit = (Byte)value;
                     break;
 
                 case "mp":
@@ -765,15 +827,15 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "perc":
-                    SetStat(StatType.Perc, (Int32)value);
+                    Perc = (Byte)value;
                     break;
 
                 case "recov":
-                    SetStat(StatType.Recov, (Int32)value);
+                    Recov = (Byte)value;
                     break;
 
                 case "regen":
-                    SetStat(StatType.Regen, (Int32)value);
+                    Regen = (Byte)value;
                     break;
 
                 case "respawn_map":
@@ -793,15 +855,15 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "str":
-                    SetStat(StatType.Str, (Int32)value);
+                    Str = (Byte)value;
                     break;
 
                 case "tact":
-                    SetStat(StatType.Tact, (Int32)value);
+                    Tact = (Byte)value;
                     break;
 
                 case "ws":
-                    SetStat(StatType.WS, (Int32)value);
+                    WS = (Byte)value;
                     break;
 
                 case "x":
@@ -817,27 +879,16 @@ namespace DemoGame.Server.DbObjs
             }
         }
 
-        #region ICharacterTable Members
+        #region IUserCharacterTable Members
 
         /// <summary>
-        /// Gets an IEnumerable of KeyValuePairs containing the values in the `Stat` collection. The
-        /// key is the collection's key and the value is the value for that corresponding key.
+        /// Gets or sets the value for the field that maps onto the database column `acc`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
         /// </summary>
-        public IEnumerable<KeyValuePair<StatType, Int32>> Stats
+        public Byte Acc
         {
-            get { return _stat; }
-        }
-
-        /// <summary>
-        /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
-        /// </summary>
-        /// <param name="key">The key of the column to get.</param>
-        /// <returns>
-        /// The value of the database column for the corresponding <paramref name="key"/>.
-        /// </returns>
-        public Int32 GetStat(StatType key)
-        {
-            return (Byte)_stat[key];
+            get { return _acc; }
+            set { _acc = value; }
         }
 
         /// <summary>
@@ -851,6 +902,26 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `agi`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Agi
+        {
+            get { return _agi; }
+            set { _agi = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `armor`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Armor
+        {
+            get { return _armor; }
+            set { _armor = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `body_id`.
         /// The underlying database type is `smallint(5) unsigned` with the default value of `1`.
         /// </summary>
@@ -858,6 +929,16 @@ namespace DemoGame.Server.DbObjs
         {
             get { return (BodyIndex)_bodyID; }
             set { _bodyID = (UInt16)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `bra`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Bra
+        {
+            get { return _bra; }
+            set { _bra = value; }
         }
 
         /// <summary>
@@ -891,6 +972,36 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `defence`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `0`.
+        /// </summary>
+        public Byte Defence
+        {
+            get { return _defence; }
+            set { _defence = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `dex`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Dex
+        {
+            get { return _dex; }
+            set { _dex = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `evade`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Evade
+        {
+            get { return _evade; }
+            set { _evade = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `exp`.
         /// The underlying database type is `int(10) unsigned` with the default value of `0`.
         /// </summary>
@@ -914,10 +1025,30 @@ namespace DemoGame.Server.DbObjs
         /// Gets or sets the value for the field that maps onto the database column `id`.
         /// The underlying database type is `int(11)`.
         /// </summary>
-        public CharacterID ID
+        public Int32 ID
         {
-            get { return (CharacterID)_iD; }
-            set { _iD = (Int32)value; }
+            get { return _iD; }
+            set { _iD = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `imm`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Imm
+        {
+            get { return _imm; }
+            set { _imm = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `int`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Int
+        {
+            get { return _int; }
+            set { _int = value; }
         }
 
         /// <summary>
@@ -941,6 +1072,46 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `maxhit`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte MaxHit
+        {
+            get { return _maxHit; }
+            set { _maxHit = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `maxhp`.
+        /// The underlying database type is `smallint(6)` with the default value of `50`.
+        /// </summary>
+        public Int16 MaxHP
+        {
+            get { return _maxHP; }
+            set { _maxHP = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `maxmp`.
+        /// The underlying database type is `smallint(6)` with the default value of `50`.
+        /// </summary>
+        public Int16 MaxMP
+        {
+            get { return _maxMP; }
+            set { _maxMP = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `minhit`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte MinHit
+        {
+            get { return _minHit; }
+            set { _minHit = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `mp`.
         /// The underlying database type is `smallint(6)` with the default value of `50`.
         /// </summary>
@@ -958,6 +1129,36 @@ namespace DemoGame.Server.DbObjs
         {
             get { return _name; }
             set { _name = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `perc`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Perc
+        {
+            get { return _perc; }
+            set { _perc = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `recov`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Recov
+        {
+            get { return _recov; }
+            set { _recov = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `regen`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Regen
+        {
+            get { return _regen; }
+            set { _regen = value; }
         }
 
         /// <summary>
@@ -1001,6 +1202,36 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `str`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Str
+        {
+            get { return _str; }
+            set { _str = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `tact`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte Tact
+        {
+            get { return _tact; }
+            set { _tact = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `ws`.
+        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
+        /// </summary>
+        public Byte WS
+        {
+            get { return _wS; }
+            set { _wS = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `x`.
         /// The underlying database type is `float` with the default value of `100`.
         /// </summary>
@@ -1027,94 +1258,11 @@ namespace DemoGame.Server.DbObjs
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        public ICharacterTable DeepCopy()
+        public IUserCharacterTable DeepCopy()
         {
-            return new CharacterTable(this);
+            return new UserCharacterTable(this);
         }
 
         #endregion
-
-        /// <summary>
-        /// A Dictionary-like lookup table for the Enum values of the type collection `Stat` for the
-        /// table that this class represents. Majority of the code for this class was automatically generated and
-        /// only other automatically generated code should be using this class.
-        /// </summary>
-        class StatConstDictionary : IEnumerable<KeyValuePair<StatType, Int32>>
-        {
-            /// <summary>
-            /// Array that maps the integer value of key type to the index of the _values array.
-            /// </summary>
-            static readonly Int32[] _lookupTable;
-
-            /// <summary>
-            /// Array containing the actual values. The index of this array is found through the value returned
-            /// from the _lookupTable.
-            /// </summary>
-            readonly Int32[] _values;
-
-            /// <summary>
-            /// Gets or sets an item's value using the <paramref name="key"/>.
-            /// </summary>
-            /// <param name="key">The key for the value to get or set.</param>
-            /// <returns>The item's value for the corresponding <paramref name="key"/>.</returns>
-            public Int32 this[StatType key]
-            {
-                get { return _values[_lookupTable[(Int32)key]]; }
-                set { _values[_lookupTable[(Int32)key]] = value; }
-            }
-
-            /// <summary>
-            /// StatConstDictionary static constructor.
-            /// </summary>
-            static StatConstDictionary()
-            {
-                var asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
-                _lookupTable = new Int32[asArray.Length];
-
-                for (Int32 i = 0; i < _lookupTable.Length; i++)
-                {
-                    _lookupTable[i] = (Int32)asArray[i];
-                }
-            }
-
-            /// <summary>
-            /// StatConstDictionary constructor.
-            /// </summary>
-            public StatConstDictionary()
-            {
-                _values = new Int32[_lookupTable.Length];
-            }
-
-            #region IEnumerable<KeyValuePair<StatType,int>> Members
-
-            /// <summary>
-            /// Returns an enumerator that iterates through the collection.
-            /// </summary>
-            /// <returns>
-            /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-            /// </returns>
-            /// <filterpriority>1</filterpriority>
-            public IEnumerator<KeyValuePair<StatType, Int32>> GetEnumerator()
-            {
-                for (int i = 0; i < _values.Length; i++)
-                {
-                    yield return new KeyValuePair<StatType, Int32>((StatType)i, _values[i]);
-                }
-            }
-
-            /// <summary>
-            /// Returns an enumerator that iterates through a collection.
-            /// </summary>
-            /// <returns>
-            /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-            /// </returns>
-            /// <filterpriority>2</filterpriority>
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
-            }
-
-            #endregion
-        }
     }
 }

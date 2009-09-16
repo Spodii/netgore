@@ -233,7 +233,7 @@ namespace DemoGame.Server
             base.HandleDispose();
 
             // Remove the User from being the active User in the account
-            var account = World.GetUserAccount(Conn);
+            UserAccount account = World.GetUserAccount(Conn);
             if (account != null)
                 account.CloseUser();
         }

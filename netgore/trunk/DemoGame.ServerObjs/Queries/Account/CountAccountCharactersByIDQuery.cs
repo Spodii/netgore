@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
 using DemoGame.Server.DbObjs;
@@ -10,18 +11,27 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class CountAccountCharactersByIDQuery : DbQueryReader<AccountID>
     {
-        static readonly string _queryStr =
-            string.Format("SELECT COUNT(*) FROM `{0}` WHERE `account_id`=@accountID;",
-                          CharacterTable.TableName);
+        static readonly string _queryStr = string.Format("SELECT COUNT(*) FROM `{0}` WHERE `account_id`=@accountID;",
+                                                         CharacterTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CountAccountCharactersByIDQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public CountAccountCharactersByIDQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public CountAccountCharactersByIDQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(CharacterTable.DbColumns, "account_id");
+        }
+
+        public int Execute(AccountID accountID)
+        {
+            using (IDataReader r = ExecuteReader(accountID))
+            {
+                if (!r.Read())
+                    throw new Exception("Failed to read");
+
+                return r.GetInt32(0);
+            }
         }
 
         /// <summary>
@@ -32,17 +42,6 @@ namespace DemoGame.Server.Queries
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
             return CreateParameters("@accountID");
-        }
-
-        public int Execute(AccountID accountID)
-        {
-            using (var r = ExecuteReader(accountID))
-            {
-                if (!r.Read())
-                    throw new Exception("Failed to read");
-
-                return r.GetInt32(0);
-            }
         }
 
         /// <summary>
