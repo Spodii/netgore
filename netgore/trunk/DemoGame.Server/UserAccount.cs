@@ -53,8 +53,6 @@ namespace DemoGame.Server
             get { return _socket; }
         }
 
-        // TODO: $$ public static bool TryAddUser(DbController dbController, int accountID
-
         /// <summary>
         /// Gets the <see cref="DemoGame.Server.User"/> currently logged in on this <see cref="UserAccount"/>.
         /// </summary>
