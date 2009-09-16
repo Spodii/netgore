@@ -280,7 +280,7 @@ namespace NetGore.Db.ClassCreator
             sb.Append(Formatter.GetCast(GetExternalType(column)));
 
             // Accessor
-            if (column.Type.IsNullable())
+            if (column.IsNullable)
             {
                 sb.Append(Formatter.OpenParameterString);
                 sb.Append(DbClassGenerator.DataReaderName);
@@ -299,7 +299,7 @@ namespace NetGore.Db.ClassCreator
             sb.Append(ordinalFieldName);
             sb.Append(Formatter.CloseParameterString);
 
-            if (column.Type.IsNullable())
+            if (column.IsNullable)
                 sb.Append(Formatter.CloseParameterString);
 
             return sb.ToString();
@@ -330,7 +330,7 @@ namespace NetGore.Db.ClassCreator
         public string GetExternalType(DbColumnInfo dbColumn)
         {
             string ret = _externalTypes[dbColumn];
-            if (dbColumn.Nullable)
+            if (dbColumn.IsNullable)
                 ret = EnsureIsNullable(ret);
 
             return ret;
@@ -344,7 +344,7 @@ namespace NetGore.Db.ClassCreator
         public string GetInternalType(DbColumnInfo dbColumn)
         {
             string ret = Formatter.GetTypeString(dbColumn.Type);
-            if (dbColumn.Nullable)
+            if (dbColumn.IsNullable)
                 ret = EnsureIsNullable(ret);
 
             return ret;

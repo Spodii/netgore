@@ -720,7 +720,7 @@ namespace NetGore.Db.ClassCreator
                 sb.Append(column.DefaultValue + Formatter.ParameterSpacer);
 
             sb.Append("typeof(" + Formatter.GetTypeString(column.Type) + ")" + Formatter.ParameterSpacer);
-            sb.Append(column.Nullable.ToString().ToLower() + Formatter.ParameterSpacer);
+            sb.Append(column.IsNullable.ToString().ToLower() + Formatter.ParameterSpacer);
             sb.Append((column.KeyType == DbColumnKeyType.Primary).ToString().ToLower() + Formatter.ParameterSpacer);
             sb.Append((column.KeyType == DbColumnKeyType.Foreign).ToString().ToLower());
             sb.Append(Formatter.CloseParameterString);
