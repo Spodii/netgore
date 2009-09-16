@@ -85,7 +85,7 @@ namespace NetGore.Db.ClassCreator
             foreach (DbColumnInfo column in ret)
             {
                 Type type = GetColumnType(table, column.Name);
-                if (column.Nullable)
+                if (column.IsNullable)
                 {
                     if (type != typeof(string))
                         type = Type.GetType("System.Nullable`1[" + type.FullName + "]", true);

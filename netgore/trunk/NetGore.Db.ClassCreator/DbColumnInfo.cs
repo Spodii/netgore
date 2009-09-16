@@ -39,7 +39,7 @@ namespace NetGore.Db.ClassCreator
         /// Gets or sets a value indicating whether this <see cref="DbColumnInfo"/> is nullable.
         /// </summary>
         /// <value><c>true</c> if nullable; otherwise, <c>false</c>.</value>
-        public bool Nullable { get; set; }
+        public bool IsNullable { get; set; }
 
         /// <summary>
         /// Gets or sets the type.
@@ -63,7 +63,7 @@ namespace NetGore.Db.ClassCreator
             Name = name;
             DatabaseType = databaseType;
             Type = type;
-            Nullable = nullable;
+            IsNullable = nullable;
             DefaultValue = defaultValue;
             Comment = comment;
             KeyType = keyType;
