@@ -46,7 +46,7 @@ i = dataReader.GetOrdinal("email");
 source.Email = (System.String)(System.String)dataReader.GetString(i);
 
 i = dataReader.GetOrdinal("id");
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (DemoGame.Server.AccountID)(DemoGame.Server.AccountID)dataReader.GetInt32(i);
 
 i = dataReader.GetOrdinal("name");
 source.Name = (System.String)(System.String)dataReader.GetString(i);
@@ -88,7 +88,7 @@ break;
 
 
 case "id":
-source.ID = (System.Int32)(System.Int32)dataReader.GetInt32(i);
+source.ID = (DemoGame.Server.AccountID)(DemoGame.Server.AccountID)dataReader.GetInt32(i);
 break;
 
 

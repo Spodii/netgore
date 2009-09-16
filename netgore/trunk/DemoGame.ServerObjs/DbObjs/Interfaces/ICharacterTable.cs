@@ -37,7 +37,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `account_id`.
 /// </summary>
-System.Nullable<System.Int32> AccountId
+System.Nullable<DemoGame.Server.AccountID> AccountID
 {
 get;
 }

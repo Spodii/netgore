@@ -20,7 +20,7 @@ public static  class CharacterTableDbExtensions
 public static void CopyValues(this ICharacterTable source, NetGore.Db.DbParameterValues paramValues)
 {
 paramValues["@acc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Acc);
-paramValues["@account_id"] = (System.Nullable<System.Int32>)source.AccountId;
+paramValues["@account_id"] = (System.Nullable<System.Int32>)source.AccountID;
 paramValues["@agi"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Agi);
 paramValues["@armor"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Armor);
 paramValues["@body_id"] = (System.UInt16)source.BodyID;
@@ -73,7 +73,7 @@ i = dataReader.GetOrdinal("acc");
 source.SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)(System.Byte)dataReader.GetByte(i));
 
 i = dataReader.GetOrdinal("account_id");
-source.AccountId = (System.Nullable<System.Int32>)(System.Nullable<System.Int32>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataReader.GetInt32(i));
+source.AccountID = (System.Nullable<DemoGame.Server.AccountID>)(System.Nullable<DemoGame.Server.AccountID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataReader.GetInt32(i));
 
 i = dataReader.GetOrdinal("agi");
 source.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)(System.Byte)dataReader.GetByte(i));
@@ -203,7 +203,7 @@ break;
 
 
 case "account_id":
-source.AccountId = (System.Nullable<System.Int32>)(System.Nullable<System.Int32>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataReader.GetInt32(i));
+source.AccountID = (System.Nullable<DemoGame.Server.AccountID>)(System.Nullable<DemoGame.Server.AccountID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.Int32>)null : dataReader.GetInt32(i));
 break;
 
 
@@ -409,7 +409,7 @@ break;
 
 
 case "@account_id":
-paramValues[i] = (System.Nullable<System.Int32>)source.AccountId;
+paramValues[i] = (System.Nullable<System.Int32>)source.AccountID;
 break;
 
 

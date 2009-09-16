@@ -264,7 +264,7 @@ namespace DemoGame.Server
         /// <param name="characterName">Name of the character.</param>
         /// <param name="errorMsg">If this method returns false, contains the error message.</param>
         /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public static bool TryAddCharacter(DbController dbController, int accountID, string characterName, out string errorMsg)
+        public static bool TryAddCharacter(DbController dbController, AccountID accountID, string characterName, out string errorMsg)
         {
             CharacterIDCreator idCreator = dbController.GetQuery<CharacterIDCreator>();
 
@@ -308,7 +308,7 @@ namespace DemoGame.Server
         /// <param name="characterID">The character ID.</param>
         /// <param name="errorMsg">If this method returns false, contains the error message.</param>
         /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public static bool TryAddCharacter(DbController dbController, int accountID, string characterName, CharacterID characterID,
+        public static bool TryAddCharacter(DbController dbController, AccountID accountID, string characterName, CharacterID characterID,
                                            out string errorMsg)
         {
             if (!Character.IsValidName(characterName))
@@ -342,7 +342,7 @@ namespace DemoGame.Server
                 return false;
             }
 
-            int accountID;
+            AccountID accountID;
             if (!TryGetAccountID(dbController, accountName, out accountID))
             {
                 errorMsg = "Account with the given name does not exist.";
@@ -383,13 +383,13 @@ namespace DemoGame.Server
         /// <param name="accountID">When the method returns true, contains the ID of the account with the given
         /// <paramref name="accountName"/>.</param>
         /// <returns>True if the <paramref name="accountID"/> was found; otherwise false.</returns>
-        public static bool TryGetAccountID(DbController dbController, string accountName, out int accountID)
+        public static bool TryGetAccountID(DbController dbController, string accountName, out AccountID accountID)
         {
             var value = dbController.GetQuery<SelectAccountIDFromNameQuery>().Execute(accountName);
 
             if (!value.HasValue)
             {
-                accountID = 0;
+                accountID = new AccountID(0);
                 return false;
             }
             else

@@ -93,7 +93,7 @@ namespace DemoGame.Server
         /// The account ID of this Character, or null if they don't have an account. Normally, a User should always have
         /// an account ID, and an NPC should never have one.
         /// </summary>
-        int? _accountID;
+        AccountID? _accountID;
 
         /// <summary>
         /// Character's alliance.
@@ -839,7 +839,7 @@ namespace DemoGame.Server
             Name = v.Name;
             _id = v.ID;
             _templateID = v.CharacterTemplateID;
-            _accountID = v.AccountId;
+            _accountID = v.AccountID;
 
             BodyInfo = GameData.Body(v.BodyID);
             CB = new CollisionBox(new Vector2(v.X, v.Y), BodyInfo.Width, BodyInfo.Height);
@@ -1264,7 +1264,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the value of the database column `account_id`.
         /// </summary>
-        int? ICharacterTable.AccountId
+        AccountID? ICharacterTable.AccountID
         {
             get { return _accountID; }
         }

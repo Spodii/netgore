@@ -7,7 +7,7 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class SetAccountCurrentIPNullQuery : DbQueryNonReader<int>
+    public class SetAccountCurrentIPNullQuery : DbQueryNonReader<AccountID>
     {
         static readonly string _queryStr = string.Format("UPDATE `{0}` SET `current_ip` = NULL WHERE `id`=@id",
                                                          AccountTable.TableName);
@@ -38,9 +38,9 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">Item used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, int item)
+        protected override void SetParameters(DbParameterValues p, AccountID item)
         {
-            p["@id"] = item;
+            p["@id"] = (int)item;
         }
     }
 }

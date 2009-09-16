@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountID.cs" />
     <Compile Include="ActiveStatusEffectID.cs" />
     <Compile Include="Alliance\Alliance.cs" />
     <Compile Include="Alliance\AllianceID.cs" />
