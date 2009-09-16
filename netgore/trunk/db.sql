@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50138
 File Encoding         : 65001
 
-Date: 2009-09-15 21:28:19
+Date: 2009-09-15 21:58:13
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -107,8 +107,8 @@ CREATE TABLE `character` (
   `x` float NOT NULL DEFAULT '100',
   `y` float NOT NULL DEFAULT '100',
   `respawn_map` smallint(5) unsigned DEFAULT NULL,
-  `respawn_x` float NOT NULL,
-  `respawn_y` float NOT NULL,
+  `respawn_x` float NOT NULL DEFAULT '50',
+  `respawn_y` float NOT NULL DEFAULT '50',
   `body_id` smallint(5) unsigned NOT NULL DEFAULT '1',
   `cash` int(10) unsigned NOT NULL DEFAULT '0',
   `level` tinyint(3) unsigned NOT NULL DEFAULT '1',
@@ -134,7 +134,7 @@ CREATE TABLE `character` (
   `regen` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `str` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `tact` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `ws` tinyint(3) unsigned NOT NULL,
+  `ws` tinyint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `template_id` (`character_template_id`),
   KEY `respawn_map` (`respawn_map`),
@@ -481,3 +481,67 @@ CREATE TABLE `server_time` (
 -- Records of server_time
 -- ----------------------------
 INSERT INTO `server_time` VALUES ('2009-09-15 21:27:48');
+
+-- ----------------------------
+-- View structure for `user_character`
+-- ----------------------------
+DROP VIEW IF EXISTS `user_character`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`maxhp` AS `maxhp`,`character`.`maxmp` AS `maxmp`,`character`.`minhit` AS `minhit`,`character`.`maxhit` AS `maxhit`,`character`.`acc` AS `acc`,`character`.`agi` AS `agi`,`character`.`armor` AS `armor`,`character`.`bra` AS `bra`,`character`.`defence` AS `defence`,`character`.`dex` AS `dex`,`character`.`evade` AS `evade`,`character`.`imm` AS `imm`,`character`.`int` AS `int`,`character`.`perc` AS `perc`,`character`.`recov` AS `recov`,`character`.`regen` AS `regen`,`character`.`str` AS `str`,`character`.`tact` AS `tact`,`character`.`ws` AS `ws` from `character` where (`character`.`account_id` is not null);
+
+-- ----------------------------
+-- View structure for `user_characters`
+-- ----------------------------
+DROP VIEW IF EXISTS `user_characters`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_characters` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`maxhp` AS `maxhp`,`character`.`maxmp` AS `maxmp`,`character`.`minhit` AS `minhit`,`character`.`maxhit` AS `maxhit`,`character`.`acc` AS `acc`,`character`.`agi` AS `agi`,`character`.`armor` AS `armor`,`character`.`bra` AS `bra`,`character`.`defence` AS `defence`,`character`.`dex` AS `dex`,`character`.`evade` AS `evade`,`character`.`imm` AS `imm`,`character`.`int` AS `int`,`character`.`perc` AS `perc`,`character`.`recov` AS `recov`,`character`.`regen` AS `regen`,`character`.`str` AS `str`,`character`.`tact` AS `tact`,`character`.`ws` AS `ws` from `character` where (`character`.`account_id` is not null);
+
+-- ----------------------------
+-- Procedure structure for `CreateUserOnAccount`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `CreateUserOnAccount`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `CreateUserOnAccount`(IN accountID INT, IN characterName VARCHAR(30), IN characterID INT, OUT errorMsg VARCHAR(255))
+BEGIN
+		DECLARE character_count INT DEFAULT 0;
+		DECLARE max_character_count INT DEFAULT 3;
+		DECLARE is_id_free INT DEFAULT 0;
+		DECLARE is_name_free INT DEFAULT 0;
+		
+		SET errorMsg = "";
+		
+		SELECT COUNT(*) 
+			INTO character_count
+			FROM `character`
+			WHERE account_id = accountID;
+			
+		SELECT `max_characters_per_account` 
+			INTO max_character_count
+			FROM `game_data`;
+			
+		IF character_count > max_character_count THEN
+			SET errorMsg = "No free character slots available in the account.";
+		ELSE
+			SELECT COUNT(*)
+				INTO is_id_free
+				FROM `character`
+				WHERE `id` = characterID;
+		
+			IF is_id_free > 0 THEN
+				SET errorMsg = "The specified CharacterID is not available for use.";
+			ELSE
+				SELECT COUNT(*)
+					INTO is_name_free
+					FROM `user_character`
+					WHERE `name` = characterName;
+				
+				IF is_name_free > 0 THEN
+					SET errorMsg = "The specified character name is not available for use.";
+				ELSE
+					INSERT INTO `character` SET 
+						`id`			= 	characterID,
+						`name`			= 	characterName,
+						`account_id`	= 	accountID;
+				END IF;
+			END IF;
+		END IF;
+	END;;
+DELIMITER ;
