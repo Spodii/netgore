@@ -162,11 +162,11 @@ namespace DemoGame.Server
         {
             var idCreator = dbController.GetQuery<CharacterIDCreator>();
 
-            CharacterID characterID = new CharacterID(idCreator.GetNext());
+            var characterID = idCreator.GetNext();
             bool success = TryAddCharacter(dbController, accountID, characterName, characterID, out errorMsg);
 
             if (!success)
-                idCreator.FreeID((int)characterID);
+                idCreator.FreeID(characterID);
 
             return success;
         }
@@ -175,11 +175,11 @@ namespace DemoGame.Server
         {
             var idCreator = dbController.GetQuery<CharacterIDCreator>();
 
-            CharacterID characterID = new CharacterID(idCreator.GetNext());
+            var characterID = idCreator.GetNext();
             bool success = TryAddCharacter(dbController, accountName, characterName, characterID, out errorMsg);
 
             if (!success)
-                idCreator.FreeID((int)characterID);
+                idCreator.FreeID(characterID);
 
             return success;
         }

@@ -15,7 +15,8 @@ namespace NetGore.Db
     /// A thread-safe object that is used to get and track free IDs. It makes use of the database
     /// to find the free IDs when needed.
     /// </summary>
-    public abstract class IDCreatorBase : IDisposable
+    /// <typeparam name="T">The Type of the ID.</typeparam>
+    public abstract class IDCreatorBase<T> : IDisposable
     {
         readonly int _criticalSize;
         // FUTURE: Use the CriticalSize, which will automatically get the next free values asynchronously in the background
@@ -24,6 +25,21 @@ namespace NetGore.Db
         readonly SelectIDQuery _selectIDQuery;
         readonly object _stackLock;
         bool _isRefilling;
+
+        /// <summary>
+        /// When overridden in the derived class, converts the given int to type <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="value">The value to convert to type <typeparamref name="T"/>.</param>
+        /// <returns>The <paramref name="value"/> as type <typeparamref name="T"/>.</returns>
+        protected abstract T FromInt(int value);
+
+        /// <summary>
+        /// When overridden in the derived class, converts the given value of type <typeparamref name="T"/> to
+        /// an int.
+        /// </summary>
+        /// <param name="value">The value to convert to an int.</param>
+        /// <returns>The int value of the <paramref name="value"/>.</returns>
+        protected abstract int ToInt(T value);
 
         /// <summary>
         /// IDCreatorBase constructor.
@@ -78,11 +94,13 @@ namespace NetGore.Db
         /// Not every ID has to be freed, and it is assumed at least some will be lost.
         /// </summary>
         /// <param name="id">ID value to freed.</param>
-        public virtual void FreeID(int id)
+        public virtual void FreeID(T id)
         {
+            int value = ToInt(id);
+
             lock (_stackLock)
             {
-                _freeIndices.Push(id);
+                _freeIndices.Push(value);
             }
         }
 
@@ -108,7 +126,7 @@ namespace NetGore.Db
         /// Gets the next free ID.
         /// </summary>
         /// <returns>The next free ID.</returns>
-        public virtual int GetNext()
+        public virtual T GetNext()
         {
             // Just keep looping until we return something
             while (true)
@@ -117,7 +135,10 @@ namespace NetGore.Db
                 {
                     // Return only if we have something available
                     if (_freeIndices.Count > 0)
-                        return _freeIndices.Pop();
+                    {
+                        int value = _freeIndices.Pop();
+                        return FromInt(value);
+                    }
                 }
 
                 // Nothing was available, so we ensure we're in the process of refilling and keep trying
