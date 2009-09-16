@@ -56,30 +56,6 @@ namespace DemoGame.Server
         // TODO: $$ public static bool TryAddUser(DbController dbController, int accountID
 
         /// <summary>
-        /// Tries to get the AccountID for the account with the given name.
-        /// </summary>
-        /// <param name="dbController">The DbController.</param>
-        /// <param name="accountName">The name of the account.</param>
-        /// <param name="accountID">When the method returns true, contains the ID of the account with the given
-        /// <paramref name="accountName"/>.</param>
-        /// <returns>True if the <paramref name="accountID"/> was found; otherwise false.</returns>
-        public static bool TryGetAccountID(DbController dbController, string accountName, out int accountID)
-        {
-            var value = dbController.GetQuery<SelectAccountIDFromNameQuery>().Execute(accountName);
-
-            if (!value.HasValue)
-            {
-                accountID = 0;
-                return false;
-            }
-            else
-            {
-                accountID = value.Value;
-                return true;
-            }
-        }
-
-        /// <summary>
         /// Gets the <see cref="DemoGame.Server.User"/> currently logged in on this <see cref="UserAccount"/>.
         /// </summary>
         public User User
@@ -158,70 +134,22 @@ namespace DemoGame.Server
             return GameData.AccountPassword.IsValid(s);
         }
 
-        public static bool TryAddCharacter(DbController dbController, int accountID, string characterName, out string errorMsg)
-        {
-            var idCreator = dbController.GetQuery<CharacterIDCreator>();
-
-            var characterID = idCreator.GetNext();
-            bool success = TryAddCharacter(dbController, accountID, characterName, characterID, out errorMsg);
-
-            if (!success)
-                idCreator.FreeID(characterID);
-
-            return success;
-        }
-
-        public static bool TryAddCharacter(DbController dbController, string accountName, string characterName, out string errorMsg)
-        {
-            var idCreator = dbController.GetQuery<CharacterIDCreator>();
-
-            var characterID = idCreator.GetNext();
-            bool success = TryAddCharacter(dbController, accountName, characterName, characterID, out errorMsg);
-
-            if (!success)
-                idCreator.FreeID(characterID);
-
-            return success;
-        }
-
-        public static bool TryAddCharacter(DbController dbController, int accountID, string characterName, CharacterID characterID, out string errorMsg)
-        {
-            if (!Character.IsValidName(characterName))
-            {
-                errorMsg = "Invalid character name.";
-                return false;
-            }
-
-            if (!dbController.GetQuery<CreateUserOnAccountQuery>().TryExecute(accountID, characterID, characterName, out errorMsg))
-                return false;
-
-            errorMsg = string.Empty;
-            return true;
-        }
-
-        public static bool TryAddCharacter(DbController dbController, string accountName, string characterName, CharacterID characterID, out string errorMsg)
-        {
-            if (!IsValidName(accountName))
-            {
-                errorMsg = "Invalid account name.";
-                return false;
-            }
-
-            int accountID;
-            if (!TryGetAccountID(dbController, accountName, out accountID))
-            {
-                errorMsg = "Account with the given name does not exist.";
-                return false;
-            }
-
-            return TryAddCharacter(dbController, accountID, characterName, characterID, out errorMsg);
-        }
-
         void LoadCharacterIDs(DbController dbController)
         {
             _characterIDs = dbController.GetQuery<SelectAccountCharacterIDsQuery>().Execute(ID).ToList();
         }
 
+        /// <summary>
+        /// Tries to log in a UserAccount.
+        /// </summary>
+        /// <param name="dbController">The DbController.</param>
+        /// <param name="socket">The socket used to communicate with the client.</param>
+        /// <param name="name">The name of the account.</param>
+        /// <param name="password">The account password.</param>
+        /// <param name="userAccount">When this method returns <see cref="AccountLoginResult.Successful"/>,
+        /// contains the <see cref="UserAccount"/> that was logged in to. Otherwise, this value will be null.</param>
+        /// <returns>If <see cref="AccountLoginResult.Successful"/>, the login was successful. Otherwise, contains
+        /// the reason why the login failed.</returns>
         public static AccountLoginResult Login(DbController dbController, IIPSocket socket, string name, string password,
                                                out UserAccount userAccount)
         {
@@ -328,6 +256,149 @@ namespace DemoGame.Server
         public override string ToString()
         {
             return string.Format("{0} [{1}]", Name, ID);
+        }
+
+        /// <summary>
+        /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
+        /// </summary>
+        /// <param name="dbController">The <see cref="DbController"/>.</param>
+        /// <param name="accountID">The account ID.</param>
+        /// <param name="characterName">Name of the character.</param>
+        /// <param name="errorMsg">If this method returns false, contains the error message.</param>
+        /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
+        public static bool TryAddCharacter(DbController dbController, int accountID, string characterName, out string errorMsg)
+        {
+            CharacterIDCreator idCreator = dbController.GetQuery<CharacterIDCreator>();
+
+            CharacterID characterID = idCreator.GetNext();
+            bool success = TryAddCharacter(dbController, accountID, characterName, characterID, out errorMsg);
+
+            if (!success)
+                idCreator.FreeID(characterID);
+
+            return success;
+        }
+
+        /// <summary>
+        /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
+        /// </summary>
+        /// <param name="dbController">The <see cref="DbController"/>.</param>
+        /// <param name="accountName">Name of the account.</param>
+        /// <param name="characterName">Name of the character.</param>
+        /// <param name="errorMsg">If this method returns false, contains the error message.</param>
+        /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
+        public static bool TryAddCharacter(DbController dbController, string accountName, string characterName,
+                                           out string errorMsg)
+        {
+            CharacterIDCreator idCreator = dbController.GetQuery<CharacterIDCreator>();
+
+            CharacterID characterID = idCreator.GetNext();
+            bool success = TryAddCharacter(dbController, accountName, characterName, characterID, out errorMsg);
+
+            if (!success)
+                idCreator.FreeID(characterID);
+
+            return success;
+        }
+
+        /// <summary>
+        /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
+        /// </summary>
+        /// <param name="dbController">The <see cref="DbController"/>.</param>
+        /// <param name="accountID">The account ID.</param>
+        /// <param name="characterName">Name of the character.</param>
+        /// <param name="characterID">The character ID.</param>
+        /// <param name="errorMsg">If this method returns false, contains the error message.</param>
+        /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
+        public static bool TryAddCharacter(DbController dbController, int accountID, string characterName, CharacterID characterID,
+                                           out string errorMsg)
+        {
+            if (!Character.IsValidName(characterName))
+            {
+                errorMsg = "Invalid character name.";
+                return false;
+            }
+
+            if (!dbController.GetQuery<CreateUserOnAccountQuery>().TryExecute(accountID, characterID, characterName, out errorMsg))
+                return false;
+
+            errorMsg = string.Empty;
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
+        /// </summary>
+        /// <param name="dbController">The <see cref="DbController"/>.</param>
+        /// <param name="accountName">Name of the account.</param>
+        /// <param name="characterName">Name of the character.</param>
+        /// <param name="characterID">The character ID.</param>
+        /// <param name="errorMsg">If this method returns false, contains the error message.</param>
+        /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
+        public static bool TryAddCharacter(DbController dbController, string accountName, string characterName,
+                                           CharacterID characterID, out string errorMsg)
+        {
+            if (!IsValidName(accountName))
+            {
+                errorMsg = "Invalid account name.";
+                return false;
+            }
+
+            int accountID;
+            if (!TryGetAccountID(dbController, accountName, out accountID))
+            {
+                errorMsg = "Account with the given name does not exist.";
+                return false;
+            }
+
+            return TryAddCharacter(dbController, accountID, characterName, characterID, out errorMsg);
+        }
+
+        /// <summary>
+        /// Tries to add a <see cref="Character"/> to this <see cref="UserAccount"/>.
+        /// </summary>
+        /// <param name="characterName">Name of the character.</param>
+        /// <param name="errorMsg">If this method returns false, contains the error message.</param>
+        /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
+        public bool TryAddCharacter(string characterName, out string errorMsg)
+        {
+            return TryAddCharacter(_dbController, ID, characterName, out errorMsg);
+        }
+
+        /// <summary>
+        /// Tries to add a <see cref="Character"/> to this <see cref="UserAccount"/>.
+        /// </summary>
+        /// <param name="characterName">Name of the character.</param>
+        /// <param name="characterID">The character ID.</param>
+        /// <param name="errorMsg">If this method returns false, contains the error message.</param>
+        /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
+        public bool TryAddCharacter(string characterName, CharacterID characterID, out string errorMsg)
+        {
+            return TryAddCharacter(_dbController, ID, characterName, characterID, out errorMsg);
+        }
+
+        /// <summary>
+        /// Tries to get the AccountID for the account with the given name.
+        /// </summary>
+        /// <param name="dbController">The DbController.</param>
+        /// <param name="accountName">The name of the account.</param>
+        /// <param name="accountID">When the method returns true, contains the ID of the account with the given
+        /// <paramref name="accountName"/>.</param>
+        /// <returns>True if the <paramref name="accountID"/> was found; otherwise false.</returns>
+        public static bool TryGetAccountID(DbController dbController, string accountName, out int accountID)
+        {
+            var value = dbController.GetQuery<SelectAccountIDFromNameQuery>().Execute(accountName);
+
+            if (!value.HasValue)
+            {
+                accountID = 0;
+                return false;
+            }
+            else
+            {
+                accountID = value.Value;
+                return true;
+            }
         }
 
         /// <summary>
