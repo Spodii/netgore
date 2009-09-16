@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.IO;
@@ -18,14 +17,14 @@ namespace DemoGame
         public const bool AllowMovementWhileChattingToNPC = false;
 
         /// <summary>
-        /// Maximum length of a Say packet's string from the client to the server.
-        /// </summary>
-        public const int MaxClientSayLength = 255;
-
-        /// <summary>
         /// Maximum number of characters allowed in a single account.
         /// </summary>
         public const byte MaxCharactersPerAccount = 10;
+
+        /// <summary>
+        /// Maximum length of a Say packet's string from the client to the server.
+        /// </summary>
+        public const int MaxClientSayLength = 255;
 
         /// <summary>
         /// Maximum length of each parameter string in the server's SendMessage.
@@ -48,11 +47,6 @@ namespace DemoGame
         public const ushort MaxStatusEffectPower = 500;
 
         /// <summary>
-        /// Size of the screen (ScreenWidth / ScreenHeight) represented in a Vector2
-        /// </summary>
-        public static Vector2 ScreenSize = new Vector2(800, 600);
-
-        /// <summary>
         /// The rules for the account names.
         /// </summary>
         public static readonly StringRules AccountName = new StringRules(3, 30, CharType.Alpha | CharType.Numeric);
@@ -60,12 +54,19 @@ namespace DemoGame
         /// <summary>
         /// The rules for the account passwords.
         /// </summary>
-        public static readonly StringRules AccountPassword = new StringRules(3, 30, CharType.Alpha | CharType.Numeric | CharType.Punctuation);
+        public static readonly StringRules AccountPassword = new StringRules(3, 30,
+                                                                             CharType.Alpha | CharType.Numeric |
+                                                                             CharType.Punctuation);
 
         /// <summary>
         /// The rules for the character names.
         /// </summary>
         public static readonly StringRules CharacterName = new StringRules(3, 15, CharType.Alpha);
+
+        /// <summary>
+        /// Size of the screen (ScreenWidth / ScreenHeight) represented in a Vector2
+        /// </summary>
+        public static Vector2 ScreenSize = new Vector2(800, 600);
 
         /// <summary>
         /// Array of all the body information
