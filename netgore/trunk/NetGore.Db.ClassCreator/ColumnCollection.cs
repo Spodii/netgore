@@ -8,6 +8,10 @@ namespace NetGore.Db.ClassCreator
     {
         static readonly char[] _vowels = new char[] { 'a', 'e', 'i', 'o', 'u' };
 
+        /// <summary>
+        /// Gets the name of the collection property.
+        /// </summary>
+        /// <value>The name of the collection property.</value>
         public string CollectionPropertyName
         {
             get
@@ -26,12 +30,44 @@ namespace NetGore.Db.ClassCreator
             }
         }
 
+        /// <summary>
+        /// Gets or sets the columns.
+        /// </summary>
+        /// <value>The columns.</value>
         public IEnumerable<ColumnCollectionItem> Columns { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the type of the key.
+        /// </summary>
+        /// <value>The type of the key.</value>
         public Type KeyType { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>The name.</value>
         public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the tables.
+        /// </summary>
+        /// <value>The tables.</value>
         public IEnumerable<string> Tables { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the type of the value.
+        /// </summary>
+        /// <value>The type of the value.</value>
         public Type ValueType { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColumnCollection"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="keyType">Type of the key.</param>
+        /// <param name="valueType">Type of the value.</param>
+        /// <param name="tables">The tables.</param>
+        /// <param name="columns">The columns.</param>
         public ColumnCollection(string name, Type keyType, Type valueType, IEnumerable<string> tables,
                                 IEnumerable<ColumnCollectionItem> columns)
         {
@@ -40,23 +76,6 @@ namespace NetGore.Db.ClassCreator
             ValueType = valueType;
             Tables = tables;
             Columns = columns;
-        }
-    }
-
-    public struct ColumnCollectionItem
-    {
-        public readonly string ColumnName;
-        public readonly string Key;
-
-        public ColumnCollectionItem(string columnName, string key)
-        {
-            ColumnName = columnName;
-            Key = key;
-        }
-
-        public static ColumnCollectionItem FromEnum<T>(string columnName, T key)
-        {
-            return new ColumnCollectionItem(columnName, typeof(T).FullName + "." + key);
         }
     }
 }

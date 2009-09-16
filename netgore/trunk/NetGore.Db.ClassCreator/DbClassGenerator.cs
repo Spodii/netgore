@@ -87,12 +87,23 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         public CodeFormatter Formatter { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DbClassGenerator"/> class.
+        /// </summary>
         protected DbClassGenerator()
         {
             Formatter = new CSharpCodeFormatter();
             SetDataReaderReadMethod(typeof(float), "GetFloat");
         }
 
+        /// <summary>
+        /// Adds a column to the column collection.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="keyType">Type of the key.</param>
+        /// <param name="valueType">Type of the value.</param>
+        /// <param name="tables">The tables.</param>
+        /// <param name="columns">The columns.</param>
         public void AddColumnCollection(string name, Type keyType, Type valueType, IEnumerable<string> tables,
                                         IEnumerable<ColumnCollectionItem> columns)
         {
@@ -103,6 +114,14 @@ namespace NetGore.Db.ClassCreator
             _columnCollections.Add(columnCollection);
         }
 
+        /// <summary>
+        /// Adds a column to the column collection.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="keyType">Type of the key.</param>
+        /// <param name="valueType">Type of the value.</param>
+        /// <param name="table">The table.</param>
+        /// <param name="columns">The columns.</param>
         public void AddColumnCollection(string name, Type keyType, Type valueType, string table,
                                         IEnumerable<ColumnCollectionItem> columns)
         {

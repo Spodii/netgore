@@ -53,6 +53,8 @@ namespace DemoGame.Server
             get { return _socket; }
         }
 
+        // TODO: $$ public static bool TryAddUser(DBController dbController, int accountID
+
         /// <summary>
         /// Tries to get the AccountID for the account with the given name.
         /// </summary>
