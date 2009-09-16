@@ -894,7 +894,7 @@ namespace DemoGame.Server
         /// <returns>True if a CharacterTemplate with the given id exists; otherwise false.</returns>
         public static bool TemplateExists(this CharacterTemplateID id)
         {
-            DBController dbController = DBController.GetInstance();
+            DbController dbController = DbController.GetInstance();
             SelectCharacterTemplateQuery query = dbController.GetQuery<SelectCharacterTemplateQuery>();
 
             try

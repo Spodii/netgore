@@ -4,7 +4,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class ActiveStatusEffectIDCreator : IDCreatorBase
     {
         /// <summary>

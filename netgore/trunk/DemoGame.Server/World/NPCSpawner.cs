@@ -99,7 +99,7 @@ namespace DemoGame.Server
         /// <returns>IEnumerable of the NPCSpawners that were loaded.</returns>
         public static IEnumerable<NPCSpawner> LoadSpawners(Map map)
         {
-            var queryValues = MapSpawnValues.Load(map.DBController, map.Index);
+            var queryValues = MapSpawnValues.Load(map.DbController, map.Index);
             var ret = new List<NPCSpawner>();
 
             foreach (MapSpawnValues queryValue in queryValues)

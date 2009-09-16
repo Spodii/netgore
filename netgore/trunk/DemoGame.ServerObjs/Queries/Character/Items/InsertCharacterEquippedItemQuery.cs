@@ -6,7 +6,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class InsertCharacterEquippedItemQuery : DbQueryNonReader<CharacterEquippedTable>
     {
         static readonly string _queryString = string.Format("INSERT INTO `{0}` SET {1}", CharacterEquippedTable.TableName,

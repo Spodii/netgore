@@ -16,7 +16,7 @@ namespace DemoGame.Server
     {
         static readonly DArray<CharacterTemplate> _templates = new DArray<CharacterTemplate>(false);
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static DBController _dbController;
+        static DbController _dbController;
 
         /// <summary>
         /// Gets if this class has been initialized.
@@ -52,8 +52,8 @@ namespace DemoGame.Server
         /// <summary>
         /// CharacterTemplateManager constructor.
         /// </summary>
-        /// <param name="dbController">DBController used to perform queries.</param>
-        public static void Initialize(DBController dbController)
+        /// <param name="dbController">DbController used to perform queries.</param>
+        public static void Initialize(DbController dbController)
         {
             if (IsInitialized)
                 return;
@@ -83,7 +83,7 @@ namespace DemoGame.Server
             }
         }
 
-        public static CharacterTemplate LoadCharacterTemplate(DBController dbController, CharacterTemplateID id)
+        public static CharacterTemplate LoadCharacterTemplate(DbController dbController, CharacterTemplateID id)
         {
             CharacterTemplateTable v = dbController.GetQuery<SelectCharacterTemplateQuery>().Execute(id);
             var itemValues = dbController.GetQuery<SelectCharacterTemplateInventoryQuery>().Execute(id);

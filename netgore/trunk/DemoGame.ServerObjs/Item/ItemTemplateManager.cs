@@ -55,7 +55,7 @@ namespace DemoGame.Server
             return ret;
         }
 
-        public static void Initialize(DBController dbController)
+        public static void Initialize(DbController dbController)
         {
             if (IsInitialized)
                 return;

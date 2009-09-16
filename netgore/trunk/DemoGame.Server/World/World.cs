@@ -30,11 +30,11 @@ namespace DemoGame.Server
         bool _disposed;
 
         /// <summary>
-        /// Gets the DBController used by this World.
+        /// Gets the DbController used by this World.
         /// </summary>
-        public DBController DBController
+        public DbController DbController
         {
-            get { return Server.DBController; }
+            get { return Server.DbController; }
         }
 
         /// <summary>

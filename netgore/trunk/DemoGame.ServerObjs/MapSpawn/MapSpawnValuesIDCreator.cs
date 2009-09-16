@@ -5,7 +5,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class MapSpawnValuesIDCreator : IDCreatorBase
     {
         public MapSpawnValuesIDCreator(DbConnectionPool connectionPool)

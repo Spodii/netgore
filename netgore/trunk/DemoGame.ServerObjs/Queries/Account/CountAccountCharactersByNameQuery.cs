@@ -7,7 +7,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class CountAccountCharactersByNameQuery : DbQueryReader<string>
     {
         static readonly string _queryStr =

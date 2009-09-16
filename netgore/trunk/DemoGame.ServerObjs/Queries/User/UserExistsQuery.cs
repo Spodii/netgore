@@ -7,10 +7,10 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
     /// <summary>
-        /// A query that checks if a User with the specified name exists.
-        /// </summary>
+    /// A query that checks if a User with the specified name exists.
+    /// </summary>
+    [DbControllerQuery]
     public class UserExistsQuery : DbQueryReader<string>
     {
         static readonly string _queryString = string.Format("SELECT COUNT(*) FROM `{0}` WHERE `name`=@name",

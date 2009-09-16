@@ -6,7 +6,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class ReplaceItemQuery : DbQueryNonReader<IItemTable>
     {
         static readonly string _queryString = string.Format("REPLACE INTO `{0}` {1}", ItemTable.TableName,

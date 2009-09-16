@@ -28,12 +28,12 @@ namespace DemoGame.Server
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        static DBController _dbController;
+        static DbController _dbController;
 
         /// <summary>
-        /// Gets the DBController used by this AllianceManager.
+        /// Gets the DbController used by this AllianceManager.
         /// </summary>
-        public static DBController DBController
+        public static DbController DbController
         {
             get { return _dbController; }
         }
@@ -122,8 +122,8 @@ namespace DemoGame.Server
         /// <summary>
         /// Initializes the AllianceManager. Must be called before anything else.
         /// </summary>
-        /// <param name="dbController">DBController for the database holding the alliance information.</param>
-        public static void Initialize(DBController dbController)
+        /// <param name="dbController">DbController for the database holding the alliance information.</param>
+        public static void Initialize(DbController dbController)
         {
             if (IsInitialized)
                 return;
@@ -145,12 +145,12 @@ namespace DemoGame.Server
         static void LoadAll()
         {
             // Grab all IDs
-            var allianceIDs = DBController.GetQuery<SelectAllianceIDsQuery>().Execute();
+            var allianceIDs = DbController.GetQuery<SelectAllianceIDsQuery>().Execute();
 
             // Load each alliance
             foreach (AllianceID allianceID in allianceIDs)
             {
-                Alliance alliance = LoadAlliance(DBController, allianceID);
+                Alliance alliance = LoadAlliance(DbController, allianceID);
                 Add(alliance);
             }
 
@@ -160,10 +160,10 @@ namespace DemoGame.Server
         /// <summary>
         /// Loads a single Alliance.
         /// </summary>
-        /// <param name="dbController">DBController used to communicate with the database.</param>
+        /// <param name="dbController">DbController used to communicate with the database.</param>
         /// <param name="id">ID of the Alliance to load.</param>
         /// <returns>The loaded Alliance.</returns>
-        public static Alliance LoadAlliance(DBController dbController, AllianceID id)
+        public static Alliance LoadAlliance(DbController dbController, AllianceID id)
         {
             AllianceTable values = dbController.GetQuery<SelectAllianceQuery>().Execute(id);
             var attackables = dbController.GetQuery<SelectAllianceAttackableQuery>().Execute(id);

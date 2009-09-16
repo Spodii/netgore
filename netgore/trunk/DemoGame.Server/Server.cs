@@ -31,7 +31,7 @@ namespace DemoGame.Server
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly DBController _dbController;
+        readonly DbController _dbController;
 
         /// <summary>
         /// Stopwatch to track the total elapsed time the game has been running
@@ -66,9 +66,9 @@ namespace DemoGame.Server
         bool _isRunning = true;
 
         /// <summary>
-        /// Gets the DBController used to communicate with the database by this server.
+        /// Gets the DbController used to communicate with the database by this server.
         /// </summary>
-        public DBController DBController
+        public DbController DbController
         {
             get { return _dbController; }
         }
@@ -105,20 +105,20 @@ namespace DemoGame.Server
         public Server()
         {
             DBConnectionSettings settings = new DBConnectionSettings();
-            _dbController = new DBController(settings.SqlConnectionString());
+            _dbController = new DbController(settings.SqlConnectionString());
             DBTableValidator.ValidateTables(_dbController);
 
             // Load the game data and such
             GameData.Load();
-            ItemEntity.Initialize(DBController);
-            AllianceManager.Initialize(DBController);
-            ItemTemplateManager.Initialize(DBController);
-            CharacterTemplateManager.Initialize(DBController);
+            ItemEntity.Initialize(DbController);
+            AllianceManager.Initialize(DbController);
+            ItemTemplateManager.Initialize(DbController);
+            CharacterTemplateManager.Initialize(DbController);
             InitializeScripts();
 
             // Update the GameData table
             var gameDataValues = GetGameDataTableValues();
-            DBController.GetQuery<UpdateGameDataTableQuery>().Execute(gameDataValues);
+            DbController.GetQuery<UpdateGameDataTableQuery>().Execute(gameDataValues);
             if (log.IsInfoEnabled)
                 log.Info("Updated the GameData table with the current values.");
 
@@ -175,7 +175,7 @@ namespace DemoGame.Server
         /// </summary>
         void GameLoop()
         {
-            var updateServerTimeQuery = DBController.GetQuery<UpdateServerTimeQuery>();
+            var updateServerTimeQuery = DbController.GetQuery<UpdateServerTimeQuery>();
             ServerTimeUpdater serverTimeUpdater = new ServerTimeUpdater(updateServerTimeQuery);
 
             long lastRemoveConnsTime = 0;
@@ -325,7 +325,7 @@ namespace DemoGame.Server
 
             lock (_loginLock)
             {
-                loginResult = UserAccount.Login(DBController, conn, name, password, out userAccount);
+                loginResult = UserAccount.Login(DbController, conn, name, password, out userAccount);
             }
 
             // Check that the login was successful

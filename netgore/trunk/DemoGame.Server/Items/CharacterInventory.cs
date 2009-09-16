@@ -28,11 +28,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the DBController used by this CharacterInventory.
+        /// Gets the DbController used by this CharacterInventory.
         /// </summary>
-        public DBController DbController
+        public DbController DbController
         {
-            get { return Character.DBController; }
+            get { return Character.DbController; }
         }
 
         protected CharacterInventory(Character character)

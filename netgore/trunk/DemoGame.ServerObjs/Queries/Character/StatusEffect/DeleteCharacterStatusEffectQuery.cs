@@ -6,7 +6,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class DeleteCharacterStatusEffectQuery : DbQueryNonReader<ActiveStatusEffectID>
     {
         static readonly string _queryString = string.Format("DELETE FROM `{0}` WHERE `id`=@id",

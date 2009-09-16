@@ -132,7 +132,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         Vector2 _cursorPos = Vector2.Zero;
 
-        DBController _dbController;
+        DbController _dbController;
 
         /// <summary>
         /// Grh display of the _editGrhData.
@@ -216,7 +216,7 @@ namespace DemoGame.MapEditor
             set { _cursorPos = value; }
         }
 
-        DBController DBController
+        DbController DbController
         {
             get { return _dbController; }
         }
@@ -358,8 +358,8 @@ namespace DemoGame.MapEditor
 
             // Set up some of the OnChangeMap events for objects that need to reference the Map
             OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);
-            OnChangeMap += ((oldMap, newMap) => lstNPCSpawns.SetMap(DBController, newMap));
-            OnChangeMap += ((oldMap, newMap) => lstPersistentNPCs.SetMap(DBController, newMap));
+            OnChangeMap += ((oldMap, newMap) => lstNPCSpawns.SetMap(DbController, newMap));
+            OnChangeMap += ((oldMap, newMap) => lstPersistentNPCs.SetMap(DbController, newMap));
 
             // Set up the EntityTypes
             cmbEntityTypes.Items.Clear();
@@ -505,7 +505,7 @@ namespace DemoGame.MapEditor
             }
 
             Map = new Map(index, _world, GameScreen.GraphicsDevice);
-            DBController.GetQuery<InsertMapQuery>().Execute(Map);
+            DbController.GetQuery<InsertMapQuery>().Execute(Map);
             Map.OnSave += Map_OnSave;
             Map.SetDimensions(new Vector2(30 * 32, 20 * 32));
             Map.Save(index, ContentPaths.Dev);
@@ -897,10 +897,10 @@ namespace DemoGame.MapEditor
         {
             // Read the database connection
             DBConnectionSettings settings = new DBConnectionSettings();
-            _dbController = new DBController(settings.SqlConnectionString());
-            AllianceManager.Initialize(DBController);
-            ItemTemplateManager.Initialize(DBController);
-            CharacterTemplateManager.Initialize(DBController);
+            _dbController = new DbController(settings.SqlConnectionString());
+            AllianceManager.Initialize(DbController);
+            ItemTemplateManager.Initialize(DbController);
+            CharacterTemplateManager.Initialize(DbController);
 
             // Create the engine objects 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
@@ -998,7 +998,7 @@ namespace DemoGame.MapEditor
 
         void Map_OnSave(MapBase map)
         {
-            DBController.GetQuery<UpdateMapQuery>().Execute(map);
+            DbController.GetQuery<UpdateMapQuery>().Execute(map);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)

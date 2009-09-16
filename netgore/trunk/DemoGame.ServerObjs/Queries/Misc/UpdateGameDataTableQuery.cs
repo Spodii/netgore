@@ -8,7 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class UpdateGameDataTableQuery : DbQueryNonReader<IGameDataTable>
     {
         static readonly string _queryStr = string.Format("UPDATE `{0}` SET {1}",

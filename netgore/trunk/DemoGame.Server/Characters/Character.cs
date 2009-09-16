@@ -235,9 +235,9 @@ namespace DemoGame.Server
         /// </summary>
         public abstract NPCChatDialogBase ChatDialog { get; }
 
-        public DBController DBController
+        public DbController DbController
         {
-            get { return World.Server.DBController; }
+            get { return World.Server.DbController; }
         }
 
         /// <summary>
@@ -810,13 +810,13 @@ namespace DemoGame.Server
 
         protected void Load(CharacterID characterID)
         {
-            var values = DBController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
+            var values = DbController.GetQuery<SelectCharacterByIDQuery>().Execute(characterID);
             LoadFromQueryValues(values);
         }
 
         protected void Load(string characterName)
         {
-            var values = DBController.GetQuery<SelectCharacterQuery>().Execute(characterName);
+            var values = DbController.GetQuery<SelectCharacterQuery>().Execute(characterName);
             LoadFromQueryValues(values);
         }
 
@@ -947,7 +947,7 @@ namespace DemoGame.Server
             _saved = true;
 
             // Execute the user save query
-            DBController.GetQuery<UpdateCharacterQuery>().Execute(this);
+            DbController.GetQuery<UpdateCharacterQuery>().Execute(this);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Saved Character `{0}`.", this);

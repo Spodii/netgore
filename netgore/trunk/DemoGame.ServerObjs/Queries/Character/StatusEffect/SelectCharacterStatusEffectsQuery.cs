@@ -7,7 +7,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class SelectCharacterStatusEffectsQuery : DbQueryReader<CharacterID>
     {
         static readonly string _queryString = string.Format("SELECT * FROM `{0}` WHERE `character_id`=@character_id",

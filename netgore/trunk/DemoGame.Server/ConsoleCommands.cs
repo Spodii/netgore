@@ -28,7 +28,7 @@ namespace DemoGame.Server
             _server = server;
         }
 
-        public DBController DbController { get { return Server.DBController; } }
+        public DbController DbController { get { return Server.DbController; } }
 
         [ConsoleCommand("GetAccountID")]
         public string GetAccountID(string accountName)

@@ -10,7 +10,7 @@ namespace DemoGame.Server.Queries
     /// <summary>
     /// A thread-safe collection of available IDs for Characters.
     /// </summary>
-    [DBControllerQuery]
+    [DbControllerQuery]
     public class CharacterIDCreator : IDCreatorBase
     {
         /// <summary>
