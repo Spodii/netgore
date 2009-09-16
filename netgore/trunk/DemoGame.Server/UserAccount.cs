@@ -46,7 +46,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the IIPSocket that is used to communicate with the client connected to this UserAccount.
+        /// Gets the IIPSocket that is used to communicate with the client connected to this <see cref="UserAccount"/>.
         /// </summary>
         public IIPSocket Socket
         {
