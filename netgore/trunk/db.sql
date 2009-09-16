@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50138
 File Encoding         : 65001
 
-Date: 2009-09-15 20:30:43
+Date: 2009-09-15 21:28:19
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -308,6 +308,32 @@ INSERT INTO `character_template_inventory` VALUES ('3', '1', '2', '0', '1', '100
 INSERT INTO `character_template_inventory` VALUES ('4', '1', '1', '0', '5', '10000');
 
 -- ----------------------------
+-- Table structure for `game_data`
+-- ----------------------------
+DROP TABLE IF EXISTS `game_data`;
+CREATE TABLE `game_data` (
+  `max_characters_per_account` tinyint(3) unsigned NOT NULL,
+  `min_account_name_length` tinyint(3) unsigned NOT NULL,
+  `max_account_name_length` tinyint(3) unsigned NOT NULL,
+  `min_account_password_length` tinyint(3) unsigned NOT NULL,
+  `max_account_password_length` tinyint(3) unsigned NOT NULL,
+  `min_character_name_length` tinyint(3) unsigned NOT NULL,
+  `max_character_name_length` tinyint(3) unsigned NOT NULL,
+  `max_status_effect_power` smallint(5) unsigned NOT NULL,
+  `screen_width` smallint(5) unsigned NOT NULL,
+  `screen_height` smallint(5) unsigned NOT NULL,
+  `server_ping_port` smallint(5) unsigned NOT NULL,
+  `server_tcp_port` smallint(5) unsigned NOT NULL,
+  `server_ip` varchar(15) NOT NULL,
+  `world_physics_update_rate` smallint(5) unsigned NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+
+-- ----------------------------
+-- Records of game_data
+-- ----------------------------
+INSERT INTO `game_data` VALUES ('10', '3', '30', '3', '30', '3', '15', '500', '800', '600', '44446', '44445', '127.0.0.1', '20');
+
+-- ----------------------------
 -- Table structure for `item`
 -- ----------------------------
 DROP TABLE IF EXISTS `item`;
@@ -454,4 +480,4 @@ CREATE TABLE `server_time` (
 -- ----------------------------
 -- Records of server_time
 -- ----------------------------
-INSERT INTO `server_time` VALUES ('2009-09-15 20:10:18');
+INSERT INTO `server_time` VALUES ('2009-09-15 21:27:48');
