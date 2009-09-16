@@ -238,10 +238,11 @@ namespace DemoGame.Server
             }
 
             /// <summary>
-            /// When overridden in the derived class, sets the database parameters based on the specified characterID.
+            /// When overridden in the derived class, sets the database parameters values <paramref name="p"/>
+            /// based on the values specified in the given <paramref name="item"/> parameter.
             /// </summary>
             /// <param name="p">Collection of database parameters to set the values for.</param>
-            /// <param name="characterID">Item used to execute the query.</param>
+            /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
             protected override void SetParameters(DbParameterValues p, QueryArgs item)
             {
                 p["@db"] = item.Database;
@@ -249,12 +250,32 @@ namespace DemoGame.Server
                 p["@column"] = item.Column;
             }
 
+            /// <summary>
+            /// Contains the arguments for executing the <see cref="FindReferencedTableColumnsQuery"/> query.
+            /// </summary>
             public struct QueryArgs
             {
+                /// <summary>
+                /// The column.
+                /// </summary>
                 public readonly string Column;
+
+                /// <summary>
+                /// The database.
+                /// </summary>
                 public readonly string Database;
+
+                /// <summary>
+                /// The table.
+                /// </summary>
                 public readonly string Table;
 
+                /// <summary>
+                /// Initializes a new instance of the <see cref="QueryArgs"/> struct.
+                /// </summary>
+                /// <param name="database">The database.</param>
+                /// <param name="table">The table.</param>
+                /// <param name="column">The column.</param>
                 public QueryArgs(string database, string table, string column)
                 {
                     Database = database;
