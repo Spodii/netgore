@@ -46,7 +46,7 @@ namespace DemoGame.Server
         static void DeleteFromDatabase(ActiveStatusEffectID id)
         {
             _deleteQuery.Execute(id);
-            _idCreator.FreeID((int)id);
+            _idCreator.FreeID(id);
         }
 
         public override void Dispose()

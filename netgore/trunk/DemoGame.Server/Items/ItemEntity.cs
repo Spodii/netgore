@@ -116,7 +116,7 @@ namespace DemoGame.Server
 
         public ItemEntity()
         {
-            _id = new ItemID(IDCreator.GetNext());
+            _id = IDCreator.GetNext();
         }
 
         public ItemEntity(IItemTable iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
@@ -140,7 +140,7 @@ namespace DemoGame.Server
                    SPValueType hp, SPValueType mp, IEnumerable<KeyValuePair<StatType, int>> baseStats,
                    IEnumerable<KeyValuePair<StatType, int>> reqStats) : base(pos, size)
         {
-            _id = new ItemID(IDCreator.GetNext());
+            _id = IDCreator.GetNext();
 
             _name = name;
             _description = desc;
@@ -250,7 +250,7 @@ namespace DemoGame.Server
             DeleteItem.Execute(ID);
 
             // Free the characterID's ID
-            IDCreator.FreeID((int)ID);
+            IDCreator.FreeID(ID);
 
             base.HandleDispose();
         }
