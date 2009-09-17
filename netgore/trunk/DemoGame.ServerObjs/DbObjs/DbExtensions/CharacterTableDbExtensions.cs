@@ -50,6 +50,7 @@ paramValues["@regen"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.
 paramValues["@respawn_map"] = (System.Nullable<System.UInt16>)source.RespawnMap;
 paramValues["@respawn_x"] = (System.Single)source.RespawnX;
 paramValues["@respawn_y"] = (System.Single)source.RespawnY;
+paramValues["@shop_id"] = (System.Nullable<System.UInt16>)source.ShopID;
 paramValues["@statpoints"] = (System.UInt32)source.StatPoints;
 paramValues["@str"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Str);
 paramValues["@tact"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Tact);
@@ -161,6 +162,9 @@ source.RespawnX = (System.Single)(System.Single)dataReader.GetFloat(i);
 
 i = dataReader.GetOrdinal("respawn_y");
 source.RespawnY = (System.Single)(System.Single)dataReader.GetFloat(i);
+
+i = dataReader.GetOrdinal("shop_id");
+source.ShopID = (System.Nullable<DemoGame.Server.ShopID>)(System.Nullable<DemoGame.Server.ShopID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 
 i = dataReader.GetOrdinal("statpoints");
 source.StatPoints = (System.UInt32)(System.UInt32)dataReader.GetUInt32(i);
@@ -349,6 +353,11 @@ break;
 
 case "respawn_y":
 source.RespawnY = (System.Single)(System.Single)dataReader.GetFloat(i);
+break;
+
+
+case "shop_id":
+source.ShopID = (System.Nullable<DemoGame.Server.ShopID>)(System.Nullable<DemoGame.Server.ShopID>)(dataReader.IsDBNull(i) ? (System.Nullable<System.UInt16>)null : dataReader.GetUInt16(i));
 break;
 
 
@@ -555,6 +564,11 @@ break;
 
 case "@respawn_y":
 paramValues[i] = (System.Single)source.RespawnY;
+break;
+
+
+case "@shop_id":
+paramValues[i] = (System.Nullable<System.UInt16>)source.ShopID;
 break;
 
 

@@ -140,6 +140,13 @@ System.Single RespawnY
 get;
 }
 /// <summary>
+/// Gets the value of the database column `shop_id`.
+/// </summary>
+System.Nullable<DemoGame.Server.ShopID> ShopID
+{
+get;
+}
+/// <summary>
 /// Gets the value of the database column `statpoints`.
 /// </summary>
 System.UInt32 StatPoints

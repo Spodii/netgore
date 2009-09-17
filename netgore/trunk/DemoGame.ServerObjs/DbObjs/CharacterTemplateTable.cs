@@ -12,7 +12,7 @@ public class CharacterTemplateTable : ICharacterTemplateTable
 /// <summary>
 /// Array of the database column names.
 /// </summary>
- static  readonly System.String[] _dbColumns = new string[] {"acc", "agi", "ai", "alliance_id", "armor", "body_id", "bra", "defence", "dex", "evade", "exp", "give_cash", "give_exp", "id", "imm", "int", "level", "maxhit", "maxhp", "maxmp", "minhit", "name", "perc", "recov", "regen", "respawn", "statpoints", "str", "tact", "ws" };
+ static  readonly System.String[] _dbColumns = new string[] {"acc", "agi", "ai", "alliance_id", "armor", "body_id", "bra", "defence", "dex", "evade", "exp", "give_cash", "give_exp", "id", "imm", "int", "level", "maxhit", "maxhp", "maxmp", "minhit", "name", "perc", "recov", "regen", "respawn", "shop_id", "statpoints", "str", "tact", "ws" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
 /// </summary>
@@ -40,7 +40,7 @@ return (System.Collections.Generic.IEnumerable<System.String>)_dbColumnsKeys;
 /// <summary>
 /// Array of the database column names for columns that are not primary keys.
 /// </summary>
- static  readonly System.String[] _dbColumnsNonKey = new string[] {"acc", "agi", "ai", "alliance_id", "armor", "body_id", "bra", "defence", "dex", "evade", "exp", "give_cash", "give_exp", "imm", "int", "level", "maxhit", "maxhp", "maxmp", "minhit", "name", "perc", "recov", "regen", "respawn", "statpoints", "str", "tact", "ws" };
+ static  readonly System.String[] _dbColumnsNonKey = new string[] {"acc", "agi", "ai", "alliance_id", "armor", "body_id", "bra", "defence", "dex", "evade", "exp", "give_cash", "give_exp", "imm", "int", "level", "maxhit", "maxhp", "maxmp", "minhit", "name", "perc", "recov", "regen", "respawn", "shop_id", "statpoints", "str", "tact", "ws" };
 /// <summary>
 /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
 /// </summary>
@@ -84,7 +84,7 @@ public const System.String TableName = "character_template";
 /// <summary>
 /// The number of columns in the database table that this class represents.
 /// </summary>
-public const System.Int32 ColumnCount = 30;
+public const System.Int32 ColumnCount = 31;
 /// <summary>
 /// Dictionary containing the values for the column collection `Stat`.
 /// </summary>
@@ -129,6 +129,10 @@ System.String _name;
 /// The field that maps onto the database column `respawn`.
 /// </summary>
 System.UInt16 _respawn;
+/// <summary>
+/// The field that maps onto the database column `shop_id`.
+/// </summary>
+System.Nullable<System.UInt16> _shopID;
 /// <summary>
 /// The field that maps onto the database column `statpoints`.
 /// </summary>
@@ -304,6 +308,21 @@ this._respawn = (System.UInt16)value;
 }
 }
 /// <summary>
+/// Gets or sets the value for the field that maps onto the database column `shop_id`.
+/// The underlying database type is `smallint(5) unsigned`.
+/// </summary>
+public System.Nullable<DemoGame.Server.ShopID> ShopID
+{
+get
+{
+return (System.Nullable<DemoGame.Server.ShopID>)_shopID;
+}
+set
+{
+this._shopID = (System.Nullable<System.UInt16>)value;
+}
+}
+/// <summary>
 /// Gets or sets the value for the field that maps onto the database column `statpoints`.
 /// The underlying database type is `int(10) unsigned`.
 /// </summary>
@@ -365,11 +384,12 @@ public CharacterTemplateTable()
 /// <param name="recov">The initial value for the corresponding property.</param>
 /// <param name="regen">The initial value for the corresponding property.</param>
 /// <param name="respawn">The initial value for the corresponding property.</param>
+/// <param name="shopID">The initial value for the corresponding property.</param>
 /// <param name="statPoints">The initial value for the corresponding property.</param>
 /// <param name="str">The initial value for the corresponding property.</param>
 /// <param name="tact">The initial value for the corresponding property.</param>
 /// <param name="wS">The initial value for the corresponding property.</param>
-public CharacterTemplateTable(System.Byte @acc, System.Byte @agi, System.String @aI, DemoGame.Server.AllianceID @allianceID, System.Byte @armor, DemoGame.BodyIndex @bodyID, System.Byte @bra, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, System.UInt16 @giveCash, System.UInt16 @giveExp, DemoGame.Server.CharacterTemplateID @iD, System.Byte @imm, System.Byte @int, System.Byte @level, System.Byte @maxHit, System.UInt16 @maxHP, System.UInt16 @maxMP, System.Byte @minHit, System.String @name, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.UInt16 @respawn, System.UInt32 @statPoints, System.Byte @str, System.Byte @tact, System.Byte @wS)
+public CharacterTemplateTable(System.Byte @acc, System.Byte @agi, System.String @aI, DemoGame.Server.AllianceID @allianceID, System.Byte @armor, DemoGame.BodyIndex @bodyID, System.Byte @bra, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, System.UInt16 @giveCash, System.UInt16 @giveExp, DemoGame.Server.CharacterTemplateID @iD, System.Byte @imm, System.Byte @int, System.Byte @level, System.Byte @maxHit, System.UInt16 @maxHP, System.UInt16 @maxMP, System.Byte @minHit, System.String @name, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.UInt16 @respawn, System.Nullable<DemoGame.Server.ShopID> @shopID, System.UInt32 @statPoints, System.Byte @str, System.Byte @tact, System.Byte @wS)
 {
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)@acc);
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@agi);
@@ -397,6 +417,7 @@ this.SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)@perc);
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)@recov);
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)@regen);
 this.Respawn = (System.UInt16)@respawn;
+this.ShopID = (System.Nullable<DemoGame.Server.ShopID>)@shopID;
 this.StatPoints = (System.UInt32)@statPoints;
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)@str);
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)@tact);
@@ -455,6 +476,7 @@ dic["@perc"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.
 dic["@recov"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov);
 dic["@regen"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen);
 dic["@respawn"] = (System.UInt16)source.Respawn;
+dic["@shop_id"] = (System.Nullable<DemoGame.Server.ShopID>)source.ShopID;
 dic["@statpoints"] = (System.UInt32)source.StatPoints;
 dic["@str"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Str);
 dic["@tact"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Tact);
@@ -493,6 +515,7 @@ this.SetStat((DemoGame.StatType)DemoGame.StatType.Perc, (System.Int32)source.Get
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Recov, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Recov));
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Regen, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Regen));
 this.Respawn = (System.UInt16)source.Respawn;
+this.ShopID = (System.Nullable<DemoGame.Server.ShopID>)source.ShopID;
 this.StatPoints = (System.UInt32)source.StatPoints;
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Str, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Str));
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Tact, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Tact));
@@ -587,6 +610,9 @@ return GetStat((DemoGame.StatType)DemoGame.StatType.Regen);
 
 case "respawn":
 return Respawn;
+
+case "shop_id":
+return ShopID;
 
 case "statpoints":
 return StatPoints;
@@ -718,6 +744,10 @@ case "respawn":
 this.Respawn = (System.UInt16)value;
 break;
 
+case "shop_id":
+this.ShopID = (System.Nullable<DemoGame.Server.ShopID>)value;
+break;
+
 case "statpoints":
 this.StatPoints = (System.UInt32)value;
 break;
@@ -827,6 +857,9 @@ return new ColumnMetadata("regen", "", "tinyint(3) unsigned", "1", typeof(System
 
 case "respawn":
 return new ColumnMetadata("respawn", "", "smallint(5) unsigned", "5", typeof(System.UInt16), false, false, false);
+
+case "shop_id":
+return new ColumnMetadata("shop_id", "", "smallint(5) unsigned", null, typeof(System.Nullable<System.UInt16>), true, false, true);
 
 case "statpoints":
 return new ColumnMetadata("statpoints", "", "int(10) unsigned", null, typeof(System.UInt32), false, false, false);
