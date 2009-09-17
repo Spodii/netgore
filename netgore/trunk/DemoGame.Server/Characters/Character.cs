@@ -364,6 +364,29 @@ namespace DemoGame.Server
             _inventory = CreateInventory();
             _equipped = CreateEquipped();
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
+            ModStats.GetStat(StatType.MaxHP).OnChange += ModStats_MaxHP_OnChange;
+            ModStats.GetStat(StatType.MaxMP).OnChange += ModStats_MaxMP_OnChange;
+        }
+
+        /// <summary>
+        /// Handles when the MaxHP mod stat changes.
+        /// </summary>
+        /// <param name="stat">The stat.</param>
+        void ModStats_MaxHP_OnChange(IStat stat)
+        {
+            if (HP > stat.Value)
+                HP = stat.Value;
+        }
+
+        /// <summary>
+        /// Handles when the MaxMP mod stat changes.
+        /// </summary>
+        /// <param name="stat">The stat.</param>
+        void ModStats_MaxMP_OnChange(IStat stat)
+        {
+            if (MP > stat.Value)
+                MP = stat.Value;
         }
 
         /// <summary>
