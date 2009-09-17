@@ -83,6 +83,11 @@ namespace DemoGame.Server
             get { return RespawnMapIndex.HasValue; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NPC"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="characterID">The character ID.</param>
         public NPC(World parent, CharacterID characterID) : base(parent, true)
         {
             // HACK: This whole constructor is uber hax
@@ -104,6 +109,8 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="parent">World that the NPC belongs to.</param>
         /// <param name="template">NPCTemplate used to create the NPC.</param>
+        /// <param name="map">The map.</param>
+        /// <param name="position">The position.</param>
         public NPC(World parent, CharacterTemplate template, Map map, Vector2 position) : base(parent, false)
         {
             if (parent == null)
@@ -246,7 +253,7 @@ namespace DemoGame.Server
             if (!CharacterTemplateID.HasValue)
                 return;
 
-            CharacterTemplate template = CharacterTemplateManager.GetTemplate(CharacterTemplateID.Value);
+            CharacterTemplate template = CharacterTemplateManager[CharacterTemplateID.Value];
             if (template == null)
                 return;
 
@@ -269,7 +276,7 @@ namespace DemoGame.Server
             if (!templateID.HasValue)
                 return;
 
-            CharacterTemplate template = CharacterTemplateManager.GetTemplate(templateID.Value);
+            CharacterTemplate template = CharacterTemplateManager[templateID.Value];
             if (template == null)
                 return;
 

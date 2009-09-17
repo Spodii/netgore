@@ -1,99 +1,108 @@
-using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
-using log4net;
-using NetGore.Collections;
 using NetGore.Db;
 
 namespace DemoGame.Server
 {
     /// <summary>
-    /// Loads, caches, and manages a collection of CharacterTemplates.
+    /// Manages the <see cref="CharacterTemplate"/> instances.
     /// </summary>
-    public static class CharacterTemplateManager
+    public class CharacterTemplateManager : DbTableDataManager<CharacterTemplateID, CharacterTemplate>
     {
-        static readonly AllianceManager _allianceManager = AllianceManager.Instance;
-        static readonly DArray<CharacterTemplate> _templates = new DArray<CharacterTemplate>(false);
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static IDbController _dbController;
+        static readonly CharacterTemplateManager _instance;
+
+        SelectCharacterTemplateEquippedQuery _selectCharacterTemplateEquippedQuery;
+        SelectCharacterTemplateInventoryQuery _selectCharacterTemplateInventoryQuery;
+        SelectCharacterTemplateQuery _selectCharacterTemplateQuery;
 
         /// <summary>
-        /// Gets if this class has been initialized.
+        /// Gets an instance of the <see cref="CharacterTemplateManager"/>.
         /// </summary>
-        public static bool IsInitialized { get; private set; }
-
-        /// <summary>
-        /// Gets a CharacterTemplate by the given CharacterTemplateID.
-        /// </summary>
-        /// <param name="id">ID of the template to get.</param>
-        /// <returns>NPCTemplate by the given <paramref name="id"/>.</returns>
-        public static CharacterTemplate GetTemplate(CharacterTemplateID id)
+        public static CharacterTemplateManager Instance
         {
-            CharacterTemplate ret = null;
-
-            // Grab from cache if possible
-            if (_templates.CanGet((int)id))
-                ret = _templates[(int)id];
-
-            // If not cached, load it and place a copy in the cache
-            if (ret == null)
-            {
-                ret = LoadCharacterTemplate(_dbController, id);
-                _templates[(int)id] = ret;
-
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Loaded CharacterTemplate `{0}`.", ret);
-            }
-
-            return ret;
+            get { return _instance; }
         }
 
         /// <summary>
-        /// CharacterTemplateManager constructor.
+        /// Initializes the <see cref="CharacterTemplateManager"/> class.
         /// </summary>
-        /// <param name="dbController">IDbController used to perform queries.</param>
-        public static void Initialize(IDbController dbController)
+        static CharacterTemplateManager()
         {
-            if (IsInitialized)
-                return;
-
-            IsInitialized = true;
-
-            if (dbController == null)
-                throw new ArgumentNullException("dbController");
-
-            if (!ItemTemplateManager.IsInitialized)
-                ItemTemplateManager.Initialize(dbController);
-
-            _dbController = dbController;
-
-            LoadAll();
+            _instance = new CharacterTemplateManager(DbControllerBase.GetInstance());
         }
 
-        static void LoadAll()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterTemplateManager"/> class.
+        /// </summary>
+        /// <param name="dbController">The IDbController.</param>
+        CharacterTemplateManager(IDbController dbController) : base(dbController)
         {
-            var ids = _dbController.GetQuery<SelectCharacterTemplateIDsQuery>().Execute();
-
-            foreach (CharacterTemplateID id in ids)
-            {
-                GetTemplate(id);
-            }
         }
 
-        public static CharacterTemplate LoadCharacterTemplate(IDbController dbController, CharacterTemplateID id)
+        /// <summary>
+        /// When overridden in the derived class, provides a chance to cache frequently used queries instead of
+        /// having to grab the query from the <see cref="IDbController"/> every time. Caching is completely
+        /// optional, but if you do cache any queries, it should be done here. Do not use this method for
+        /// anything other than caching queries from the <paramref name="dbController"/>.
+        /// </summary>
+        /// <param name="dbController">The <see cref="IDbController"/> to grab the queries from.</param>
+        protected override void CacheDbQueries(IDbController dbController)
         {
-            CharacterTemplateTable v = dbController.GetQuery<SelectCharacterTemplateQuery>().Execute(id);
-            var itemValues = dbController.GetQuery<SelectCharacterTemplateInventoryQuery>().Execute(id);
-            var equippedValues = dbController.GetQuery<SelectCharacterTemplateEquippedQuery>().Execute(id);
+            _selectCharacterTemplateQuery = dbController.GetQuery<SelectCharacterTemplateQuery>();
+            _selectCharacterTemplateInventoryQuery = dbController.GetQuery<SelectCharacterTemplateInventoryQuery>();
+            _selectCharacterTemplateEquippedQuery = dbController.GetQuery<SelectCharacterTemplateEquippedQuery>();
+
+            base.CacheDbQueries(dbController);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets all of the IDs in the table being managed.
+        /// </summary>
+        /// <returns>An IEnumerable of all of the IDs in the table being managed.</returns>
+        protected override IEnumerable<CharacterTemplateID> GetIDs()
+        {
+            return DbController.GetQuery<SelectCharacterTemplateIDsQuery>().Execute();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, converts the <paramref name="value"/> to an int.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The <paramref name="value"/> as an int.</returns>
+        protected override int IDToInt(CharacterTemplateID value)
+        {
+            return (int)value;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, converts the int to a <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The int value.</param>
+        /// <returns>The int as a <paramref name="value"/>.</returns>
+        public override CharacterTemplateID IntToID(int value)
+        {
+            return new CharacterTemplateID(value);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, loads an item from the database.
+        /// </summary>
+        /// <param name="id">The ID of the item to load.</param>
+        /// <returns>The item loaded from the database.</returns>
+        protected override CharacterTemplate LoadItem(CharacterTemplateID id)
+        {
+            CharacterTemplateTable v = _selectCharacterTemplateQuery.Execute(id);
+            var itemValues = _selectCharacterTemplateInventoryQuery.Execute(id);
+            var equippedValues = _selectCharacterTemplateEquippedQuery.Execute(id);
 
             Debug.Assert(id == v.ID);
             Debug.Assert(itemValues.All(x => id == x.CharacterTemplateID));
             Debug.Assert(equippedValues.All(x => id == x.CharacterTemplateID));
 
-            Alliance alliance = _allianceManager[v.AllianceID];
+            Alliance alliance = AllianceManager.Instance[v.AllianceID];
             var items =
                 itemValues.Select(
                     x =>
