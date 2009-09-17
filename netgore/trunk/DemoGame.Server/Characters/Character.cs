@@ -859,16 +859,18 @@ namespace DemoGame.Server
 
         protected void Load(CharacterTemplate template)
         {
-            Name = template.Name;
-            Alliance = template.Alliance;
-            BodyInfo = GameData.Body(template.BodyIndex);
-            CharacterTemplateID = template.ID;
-            CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
-            _level = template.Level;
-            _exp = template.Exp;
-            _statPoints = template.StatPoints;
+            var v = template.TemplateTable;
 
-            BaseStats.CopyValuesFrom(template.StatValues, false);
+            Name = v.Name;
+            Alliance = _allianceManager[v.AllianceID];
+            BodyInfo = GameData.Body(v.BodyID);
+            CharacterTemplateID = new CharacterTemplateID(v.ID);
+            CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
+            _level = v.Level;
+            _exp = v.Exp;
+            _statPoints = v.StatPoints;
+
+            BaseStats.CopyValuesFrom(v.Stats, false);
         }
 
         void LoadFromQueryValues(ICharacterTable v)

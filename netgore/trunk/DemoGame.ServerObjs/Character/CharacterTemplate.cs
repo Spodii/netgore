@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using log4net;
 
 namespace DemoGame.Server
@@ -13,66 +15,71 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public string AIName { get; private set; }
-
-        public Alliance Alliance { get; private set; }
-
-        public BodyIndex BodyIndex { get; private set; }
-        public IEnumerable<CharacterTemplateEquipmentItem> Equipment { get; private set; }
-        public uint Exp { get; private set; }
-
-        public ushort GiveCash { get; private set; }
-
-        public ushort GiveExp { get; private set; }
-
-        public CharacterTemplateID ID { get; private set; }
-        public IEnumerable<CharacterTemplateInventoryItem> Inventory { get; private set; }
-        public byte Level { get; private set; }
-
-        public string Name { get; private set; }
-
-        public ushort RespawnSecs { get; private set; }
-
-        public uint StatPoints { get; private set; }
+        readonly CharacterTemplateEquipmentItem[] _equipment;
+        readonly CharacterTemplateInventoryItem[] _inventory;
+        readonly ICharacterTemplateTable _templateTable;
 
         /// <summary>
-        /// Gets the default stat values for the CharacterTemplate. This IEnumerable will only contain
-        /// IStats that have a non-zero value and exist in the CharacterTemplate database.
+        /// Gets the <see cref="CharacterTemplate"/>'s equipment items.
         /// </summary>
-        public IEnumerable<KeyValuePair<StatType, int>> StatValues { get; private set; }
+        public IEnumerable<CharacterTemplateEquipmentItem> Equipment
+        {
+            get { return _equipment; }
+        }
 
-        public CharacterTemplate(CharacterTemplateID id, string name, string aiName, Alliance alliance, BodyIndex body,
-                                 ushort respawnSecs, ushort giveExp, ushort giveCash, uint exp, uint statPoints, byte level,
-                                 IEnumerable<KeyValuePair<StatType, int>> statValues,
-                                 IEnumerable<CharacterTemplateInventoryItem> inventory,
+        /// <summary>
+        /// Gets the <see cref="CharacterTemplate"/>'s inventory items.
+        /// </summary>
+        public IEnumerable<CharacterTemplateInventoryItem> Inventory
+        {
+            get { return _inventory; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CharacterTemplate"/>'s values.
+        /// </summary>
+        public ICharacterTemplateTable TemplateTable
+        {
+            get { return _templateTable; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CharacterTemplate"/> class.
+        /// </summary>
+        /// <param name="templateTable">The template table.</param>
+        /// <param name="inventory">The inventory.</param>
+        /// <param name="equipment">The equipment.</param>
+        public CharacterTemplate(ICharacterTemplateTable templateTable, IEnumerable<CharacterTemplateInventoryItem> inventory,
                                  IEnumerable<CharacterTemplateEquipmentItem> equipment)
         {
+            if (templateTable == null)
+                throw new ArgumentNullException("templateTable");
+            if (inventory == null)
+                throw new ArgumentNullException("inventory");
+            if (equipment == null)
+                throw new ArgumentNullException("equipment");
+
             Debug.Assert(!inventory.Any(x => x == null));
             Debug.Assert(!equipment.Any(x => x == null));
 
-            ID = id;
-            Name = name;
-            AIName = aiName;
-            Alliance = alliance;
-            BodyIndex = body;
-            RespawnSecs = respawnSecs;
-            GiveExp = giveExp;
-            GiveCash = giveCash;
-            Exp = exp;
-            StatPoints = statPoints;
-            Level = level;
+            _inventory = inventory.ToArray();
+            _equipment = equipment.ToArray();
 
-            StatValues = statValues.Where(x => x.Value != 0).ToArray();
-            Inventory = inventory.ToArray();
-            Equipment = equipment.ToArray();
+            _templateTable = templateTable;
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded CharacterTemplate `{0}`.", this);
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
-            return string.Format("{0} [{1}]", Name, ID);
+            return TemplateTable.Name + " {" + TemplateTable.ID + "}";
         }
     }
 }
