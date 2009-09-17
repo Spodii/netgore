@@ -9,6 +9,8 @@ namespace DemoGame.Server
     /// </summary>
     public class ShopItem : IShopItemTable
     {
+        static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
+
         readonly ShopID _shopID;
         readonly IItemTemplateTable _itemTemplate;
 
@@ -19,7 +21,7 @@ namespace DemoGame.Server
         public ShopItem(IShopItemTable shopItemTable)
         {
             _shopID = shopItemTable.ShopID;
-            _itemTemplate = ItemTemplateManager.GetTemplate(shopItemTable.ItemTemplateID);
+            _itemTemplate = _itemTemplateManager[shopItemTable.ItemTemplateID];
         }
 
         /// <summary>

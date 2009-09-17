@@ -167,6 +167,8 @@
     <Compile Include="Queries\Character\StatusEffect\ReplaceChracterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\SelectCharacterStatusEffectsQuery.cs" />
     <Compile Include="Queries\DbController.cs" />
+    <Compile Include="Queries\Item\Template\SelectItemTemplateIDsQuery.cs" />
+    <Compile Include="Queries\Item\Template\SelectItemTemplateQuery.cs" />
     <Compile Include="Queries\Misc\UpdateGameDataTableQuery.cs" />
     <Compile Include="Queries\Misc\UpdateServerTimeQuery.cs" />
     <Compile Include="Queries\Shop\SelectShopIDsQuery.cs" />

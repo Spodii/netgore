@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -12,11 +13,16 @@ namespace NetGore.Db
     /// </summary>
     /// <typeparam name="TID">The Type of ID.</typeparam>
     /// <typeparam name="TItem">The Type of item.</typeparam>
-    public abstract class DbTableDataManager<TID, TItem>
+    public abstract class DbTableDataManager<TID, TItem> : IEnumerable<TItem>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly IDbController _dbController;
         readonly DArray<TItem> _items = new DArray<TItem>(32, false);
+
+        /// <summary>
+        /// Gets the length of the internal buffer where the greatest item index is equal to the <see cref="Length"/> - 1.
+        /// </summary>
+        public int Length { get { return _items.Length; } }
 
         /// <summary>
         /// Gets the <see cref="IDbController"/> used by this DbTableDataManager.
@@ -131,6 +137,31 @@ namespace NetGore.Db
 
             item = _items[i];
             return true;
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through the collection.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>1</filterpriority>
+        public IEnumerator<TItem> GetEnumerator()
+        {
+            foreach (var item in _items)
+                yield return item;
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

@@ -102,15 +102,12 @@ namespace DemoGame.Server
             Debug.Assert(itemValues.All(x => id == x.CharacterTemplateID));
             Debug.Assert(equippedValues.All(x => id == x.CharacterTemplateID));
 
-            Alliance alliance = AllianceManager.Instance[v.AllianceID];
-            var items =
-                itemValues.Select(
-                    x =>
-                    new CharacterTemplateInventoryItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Min, x.Max, x.Chance));
+            ItemTemplateManager itm = ItemTemplateManager.Instance;
 
-            var euipped =
-                equippedValues.Select(
-                    x => new CharacterTemplateEquipmentItem(ItemTemplateManager.GetTemplate(x.ItemTemplateID), x.Chance));
+            Alliance alliance = AllianceManager.Instance[v.AllianceID];
+            var items = itemValues.Select(x => new CharacterTemplateInventoryItem(itm[x.ItemTemplateID], x.Min, x.Max, x.Chance));
+
+            var euipped = equippedValues.Select(x => new CharacterTemplateEquipmentItem(itm[x.ItemTemplateID], x.Chance));
 
             CharacterTemplate template = new CharacterTemplate(id, v.Name, v.AI, alliance, v.BodyID, v.Respawn, v.GiveExp,
                                                                v.GiveCash, v.Exp, v.StatPoints, v.Level, v.Stats, items, euipped);
