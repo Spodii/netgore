@@ -102,7 +102,7 @@ i = dataReader.GetOrdinal("give_exp");
 source.GiveExp = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
 
 i = dataReader.GetOrdinal("id");
-source.ID = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.ID = (DemoGame.Server.CharacterTemplateID)(DemoGame.Server.CharacterTemplateID)dataReader.GetUInt16(i);
 
 i = dataReader.GetOrdinal("imm");
 source.SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)(System.Byte)dataReader.GetByte(i));
@@ -235,7 +235,7 @@ break;
 
 
 case "id":
-source.ID = (System.UInt16)(System.UInt16)dataReader.GetUInt16(i);
+source.ID = (DemoGame.Server.CharacterTemplateID)(DemoGame.Server.CharacterTemplateID)dataReader.GetUInt16(i);
 break;
 
 

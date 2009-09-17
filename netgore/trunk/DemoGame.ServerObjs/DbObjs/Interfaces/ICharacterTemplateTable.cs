@@ -79,7 +79,7 @@ get;
 /// <summary>
 /// Gets the value of the database column `id`.
 /// </summary>
-System.UInt16 ID
+DemoGame.Server.CharacterTemplateID ID
 {
 get;
 }
