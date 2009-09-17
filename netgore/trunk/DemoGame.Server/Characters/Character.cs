@@ -864,7 +864,7 @@ namespace DemoGame.Server
             Name = v.Name;
             Alliance = _allianceManager[v.AllianceID];
             BodyInfo = GameData.Body(v.BodyID);
-            CharacterTemplateID = new CharacterTemplateID(v.ID);
+            CharacterTemplateID = v.ID;
             CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
             _level = v.Level;
             _exp = v.Exp;

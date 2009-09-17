@@ -94,6 +94,8 @@ namespace NetGore.Db.ClassCreator
                 generator.AddCustomType(activeStatusEffectID, "character_status_effect", "id");
                 generator.AddCustomType(statusEffectType, "character_status_effect", "status_effect_id");
 
+                generator.AddCustomType(characterTemplateID, "character_template", "id");
+
                 generator.AddCustomType(itemChance, "character_template_equipped", "chance");
 
                 generator.AddCustomType(itemChance, "character_template_inventory", "chance");
