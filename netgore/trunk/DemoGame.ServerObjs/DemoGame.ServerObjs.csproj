@@ -199,7 +199,6 @@
     <Compile Include="Queries\Item\ReplaceItemQuery.cs" />
     <Compile Include="Queries\Item\SelectItemQuery.cs" />
     <Compile Include="Queries\Item\SelectItemsQuery.cs" />
-    <Compile Include="Queries\Item\Template\SelectItemTemplatesQuery.cs" />
     <Compile Include="Queries\Item\UpdateItemFieldQuery.cs" />
     <Compile Include="Queries\Map\Spawn\InsertMapSpawnQuery.cs" />
     <Compile Include="Queries\Map\Spawn\SelectMapSpawnQuery.cs" />
