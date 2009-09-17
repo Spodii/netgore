@@ -166,12 +166,12 @@
     <Compile Include="Queries\Character\StatusEffect\DeleteCharacterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ReplaceChracterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\SelectCharacterStatusEffectsQuery.cs" />
+    <Compile Include="Queries\DbController.cs" />
     <Compile Include="Queries\Misc\UpdateGameDataTableQuery.cs" />
     <Compile Include="Queries\Misc\UpdateServerTimeQuery.cs" />
     <Compile Include="Queries\Shop\SelectShopIDsQuery.cs" />
     <Compile Include="Queries\Shop\SelectShopQuery.cs" />
     <Compile Include="Queries\Shop\ShopItem\SelectShopItemsQuery.cs" />
-    <Compile Include="Queries\TableColumnPair.cs" />
     <Compile Include="Queries\Map\InsertMapQuery.cs" />
     <Compile Include="Queries\Map\Spawn\DeleteMapSpawnQuery.cs" />
     <Compile Include="Queries\Map\UpdateMapQuery.cs" />
@@ -191,8 +191,6 @@
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateIDsQuery.cs" />
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateInventoryQuery.cs" />
     <Compile Include="Queries\Character\Template\SelectCharacterTemplateQuery.cs" />
-    <Compile Include="Queries\DbController.cs" />
-    <Compile Include="Queries\DbControllerQueryAttribute.cs" />
     <Compile Include="Queries\DbTableValidator.cs" />
     <Compile Include="Queries\IDataReaderExtensions.cs" />
     <Compile Include="Queries\Item\DeleteItemQuery.cs" />

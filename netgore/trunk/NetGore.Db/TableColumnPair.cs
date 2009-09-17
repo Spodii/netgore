@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DemoGame.Server.Queries
+namespace NetGore.Db
 {
     public struct TableColumnPair
     {

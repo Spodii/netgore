@@ -6,6 +6,7 @@ using System.Reflection;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
+using NetGore.Db;
 using NetGore.Network;
 
 namespace DemoGame.Server
@@ -16,7 +17,7 @@ namespace DemoGame.Server
     public class UserAccount : AccountTable, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly DbController _dbController;
+        readonly IDbController _dbController;
 
         /// <summary>
         /// Lock used for setting the user.
@@ -65,8 +66,8 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="UserAccount"/> class.
         /// </summary>
         /// <param name="socket">The socket.</param>
-        /// <param name="dbController">The db controller.</param>
-        UserAccount(IIPSocket socket, DbController dbController)
+        /// <param name="dbController">The <see cref="IDbController"/>.</param>
+        UserAccount(IIPSocket socket, IDbController dbController)
         {
             if (socket == null)
                 throw new ArgumentNullException("socket");
@@ -153,7 +154,7 @@ namespace DemoGame.Server
         /// contains the <see cref="UserAccount"/> that was logged in to. Otherwise, this value will be null.</param>
         /// <returns>If <see cref="AccountLoginResult.Successful"/>, the login was successful. Otherwise, contains
         /// the reason why the login failed.</returns>
-        public static AccountLoginResult Login(DbController dbController, IIPSocket socket, string name, string password,
+        public static AccountLoginResult Login(IDbController dbController, IIPSocket socket, string name, string password,
                                                out UserAccount userAccount)
         {
             userAccount = new UserAccount(socket, dbController);
@@ -264,12 +265,12 @@ namespace DemoGame.Server
         /// <summary>
         /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
         /// </summary>
-        /// <param name="dbController">The <see cref="DbController"/>.</param>
+        /// <param name="dbController">The <see cref="IDbController"/>.</param>
         /// <param name="accountID">The account ID.</param>
         /// <param name="characterName">Name of the character.</param>
         /// <param name="errorMsg">If this method returns false, contains the error message.</param>
         /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public static bool TryAddCharacter(DbController dbController, AccountID accountID, string characterName,
+        public static bool TryAddCharacter(IDbController dbController, AccountID accountID, string characterName,
                                            out string errorMsg)
         {
             CharacterIDCreator idCreator = dbController.GetQuery<CharacterIDCreator>();
@@ -286,12 +287,12 @@ namespace DemoGame.Server
         /// <summary>
         /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
         /// </summary>
-        /// <param name="dbController">The <see cref="DbController"/>.</param>
+        /// <param name="dbController">The <see cref="IDbController"/>.</param>
         /// <param name="accountName">Name of the account.</param>
         /// <param name="characterName">Name of the character.</param>
         /// <param name="errorMsg">If this method returns false, contains the error message.</param>
         /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public static bool TryAddCharacter(DbController dbController, string accountName, string characterName,
+        public static bool TryAddCharacter(IDbController dbController, string accountName, string characterName,
                                            out string errorMsg)
         {
             CharacterIDCreator idCreator = dbController.GetQuery<CharacterIDCreator>();
@@ -308,13 +309,13 @@ namespace DemoGame.Server
         /// <summary>
         /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
         /// </summary>
-        /// <param name="dbController">The <see cref="DbController"/>.</param>
+        /// <param name="dbController">The <see cref="IDbController"/>.</param>
         /// <param name="accountID">The account ID.</param>
         /// <param name="characterName">Name of the character.</param>
         /// <param name="characterID">The character ID.</param>
         /// <param name="errorMsg">If this method returns false, contains the error message.</param>
         /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public static bool TryAddCharacter(DbController dbController, AccountID accountID, string characterName,
+        public static bool TryAddCharacter(IDbController dbController, AccountID accountID, string characterName,
                                            CharacterID characterID, out string errorMsg)
         {
             if (!dbController.GetQuery<CreateUserOnAccountQuery>().TryExecute(accountID, characterID, characterName, out errorMsg))
@@ -327,13 +328,13 @@ namespace DemoGame.Server
         /// <summary>
         /// Tries to add a <see cref="Character"/> to a <see cref="UserAccount"/>.
         /// </summary>
-        /// <param name="dbController">The <see cref="DbController"/>.</param>
+        /// <param name="dbController">The <see cref="IDbController"/>.</param>
         /// <param name="accountName">Name of the account.</param>
         /// <param name="characterName">Name of the character.</param>
         /// <param name="characterID">The character ID.</param>
         /// <param name="errorMsg">If this method returns false, contains the error message.</param>
         /// <returns>True if the character was successfully added to the account; otherwise false.</returns>
-        public static bool TryAddCharacter(DbController dbController, string accountName, string characterName,
+        public static bool TryAddCharacter(IDbController dbController, string accountName, string characterName,
                                            CharacterID characterID, out string errorMsg)
         {
             if (!IsValidName(accountName))
@@ -383,7 +384,7 @@ namespace DemoGame.Server
         /// <param name="password">The account password.</param>
         /// <param name="email">The account email address.</param>
         /// <returns>True if the account was successfully created; otherwise false.</returns>
-        public static bool TryCreateAccount(DbController dbController, string name, string password, string email)
+        public static bool TryCreateAccount(IDbController dbController, string name, string password, string email)
         {
             AccountID accountID;
             return TryCreateAccount(dbController, name, password, email, out accountID);
@@ -399,7 +400,7 @@ namespace DemoGame.Server
         /// <param name="accountID">When this method returns true, contains the AccountID for the created
         /// <see cref="UserAccount"/>.</param>
         /// <returns>True if the account was successfully created; otherwise false.</returns>
-        public static bool TryCreateAccount(DbController dbController, string name, string password, string email,
+        public static bool TryCreateAccount(IDbController dbController, string name, string password, string email,
                                             out AccountID accountID)
         {
             AccountIDCreator idCreator = dbController.GetQuery<AccountIDCreator>();
@@ -425,7 +426,7 @@ namespace DemoGame.Server
         /// <param name="password">The account password.</param>
         /// <param name="email">The account email address.</param>
         /// <returns>True if the account was successfully created; otherwise false.</returns>
-        public static bool TryCreateAccount(DbController dbController, AccountID accountID, string name, string password,
+        public static bool TryCreateAccount(IDbController dbController, AccountID accountID, string name, string password,
                                             string email)
         {
             return dbController.GetQuery<CreateAccountQuery>().TryExecute(accountID, name, password, email);
@@ -439,7 +440,7 @@ namespace DemoGame.Server
         /// <param name="accountID">When the method returns true, contains the ID of the account with the given
         /// <paramref name="accountName"/>.</param>
         /// <returns>True if the <paramref name="accountID"/> was found; otherwise false.</returns>
-        public static bool TryGetAccountID(DbController dbController, string accountName, out AccountID accountID)
+        public static bool TryGetAccountID(IDbController dbController, string accountName, out AccountID accountID)
         {
             var value = dbController.GetQuery<SelectAccountIDFromNameQuery>().Execute(accountName);
 

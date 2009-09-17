@@ -6,6 +6,7 @@ using System.Reflection;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
@@ -28,7 +29,7 @@ namespace DemoGame.Server
 
         static PersistentCharacterStatusEffects()
         {
-            DbController dbController = DbController.GetInstance();
+            IDbController dbController = DbControllerBase.GetInstance();
             _idCreator = dbController.GetQuery<ActiveStatusEffectIDCreator>();
             _replaceQuery = dbController.GetQuery<ReplaceCharacterStatusEffectQuery>();
             _deleteQuery = dbController.GetQuery<DeleteCharacterStatusEffectQuery>();

@@ -7,6 +7,7 @@ using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore.Collections;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
@@ -28,12 +29,12 @@ namespace DemoGame.Server
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        static DbController _dbController;
+        static IDbController _dbController;
 
         /// <summary>
-        /// Gets the DbController used by this AllianceManager.
+        /// Gets the <see cref="IDbController"/> used by this AllianceManager.
         /// </summary>
-        public static DbController DbController
+        public static IDbController DbController
         {
             get { return _dbController; }
         }
@@ -122,8 +123,8 @@ namespace DemoGame.Server
         /// <summary>
         /// Initializes the AllianceManager. Must be called before anything else.
         /// </summary>
-        /// <param name="dbController">DbController for the database holding the alliance information.</param>
-        public static void Initialize(DbController dbController)
+        /// <param name="dbController">IDbController for the database holding the alliance information.</param>
+        public static void Initialize(IDbController dbController)
         {
             if (IsInitialized)
                 return;
@@ -163,7 +164,7 @@ namespace DemoGame.Server
         /// <param name="dbController">DbController used to communicate with the database.</param>
         /// <param name="id">ID of the Alliance to load.</param>
         /// <returns>The loaded Alliance.</returns>
-        public static Alliance LoadAlliance(DbController dbController, AllianceID id)
+        public static Alliance LoadAlliance(IDbController dbController, AllianceID id)
         {
             AllianceTable values = dbController.GetQuery<SelectAllianceQuery>().Execute(id);
             var attackables = dbController.GetQuery<SelectAllianceAttackableQuery>().Execute(id);

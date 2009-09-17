@@ -6,6 +6,7 @@ using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore.Collections;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
@@ -16,7 +17,7 @@ namespace DemoGame.Server
     {
         static readonly DArray<CharacterTemplate> _templates = new DArray<CharacterTemplate>(false);
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static DbController _dbController;
+        static IDbController _dbController;
 
         /// <summary>
         /// Gets if this class has been initialized.
@@ -52,8 +53,8 @@ namespace DemoGame.Server
         /// <summary>
         /// CharacterTemplateManager constructor.
         /// </summary>
-        /// <param name="dbController">DbController used to perform queries.</param>
-        public static void Initialize(DbController dbController)
+        /// <param name="dbController">IDbController used to perform queries.</param>
+        public static void Initialize(IDbController dbController)
         {
             if (IsInitialized)
                 return;
@@ -83,7 +84,7 @@ namespace DemoGame.Server
             }
         }
 
-        public static CharacterTemplate LoadCharacterTemplate(DbController dbController, CharacterTemplateID id)
+        public static CharacterTemplate LoadCharacterTemplate(IDbController dbController, CharacterTemplateID id)
         {
             CharacterTemplateTable v = dbController.GetQuery<SelectCharacterTemplateQuery>().Execute(id);
             var itemValues = dbController.GetQuery<SelectCharacterTemplateInventoryQuery>().Execute(id);

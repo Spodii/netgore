@@ -6,6 +6,7 @@ using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore.Collections;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
@@ -55,7 +56,7 @@ namespace DemoGame.Server
             return ret;
         }
 
-        public static void Initialize(DbController dbController)
+        public static void Initialize(IDbController dbController)
         {
             if (IsInitialized)
                 return;

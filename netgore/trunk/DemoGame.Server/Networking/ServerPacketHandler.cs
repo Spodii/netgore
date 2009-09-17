@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 using NetGore;
+using NetGore.Db;
 using NetGore.IO;
 using NetGore.Network;
 
@@ -21,7 +22,7 @@ namespace DemoGame.Server
         readonly Server _server;
         readonly ServerSockets _serverSockets;
 
-        public DbController DbController
+        public IDbController DbController
         {
             get { return Server.DbController; }
         }

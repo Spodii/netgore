@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Db;
 using NetGore.EditorTools;
 using NetGore.Globalization;
 using NetGore.Graphics;
@@ -132,7 +133,7 @@ namespace DemoGame.MapEditor
         /// </summary>
         Vector2 _cursorPos = Vector2.Zero;
 
-        DbController _dbController;
+        IDbController _dbController;
 
         /// <summary>
         /// Grh display of the _editGrhData.
@@ -216,7 +217,7 @@ namespace DemoGame.MapEditor
             set { _cursorPos = value; }
         }
 
-        DbController DbController
+        IDbController DbController
         {
             get { return _dbController; }
         }

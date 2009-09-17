@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DemoGame.Server.Queries;
 using NetGore;
+using NetGore.Db;
 using NetGore.Globalization;
 
 namespace DemoGame.Server
@@ -18,7 +19,7 @@ namespace DemoGame.Server
         readonly ConsoleCommandParser _parser = new ConsoleCommandParser();
         readonly Server _server;
 
-        public DbController DbController
+        public IDbController DbController
         {
             get { return Server.DbController; }
         }

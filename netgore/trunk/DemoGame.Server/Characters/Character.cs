@@ -8,6 +8,7 @@ using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Db;
 using NetGore.Network;
 using NetGore.NPCChat;
 
@@ -235,7 +236,7 @@ namespace DemoGame.Server
         /// </summary>
         public abstract NPCChatDialogBase ChatDialog { get; }
 
-        public DbController DbController
+        public IDbController DbController
         {
             get { return World.Server.DbController; }
         }

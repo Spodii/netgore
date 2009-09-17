@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
+using NetGore.Db;
 using NetGore.Globalization;
 using NetGore.IO;
 
@@ -894,7 +895,7 @@ namespace DemoGame.Server
         /// <returns>True if a CharacterTemplate with the given id exists; otherwise false.</returns>
         public static bool TemplateExists(this CharacterTemplateID id)
         {
-            DbController dbController = DbController.GetInstance();
+            IDbController dbController = DbControllerBase.GetInstance();
             SelectCharacterTemplateQuery query = dbController.GetQuery<SelectCharacterTemplateQuery>();
 
             try

@@ -8,6 +8,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Collections;
+using NetGore.Db;
 using NetGore.IO;
 using NetGore.Network;
 
@@ -30,9 +31,9 @@ namespace DemoGame.Server
         bool _disposed;
 
         /// <summary>
-        /// Gets the DbController used by this World.
+        /// Gets the <see cref="IDbController"/> used by this World.
         /// </summary>
-        public DbController DbController
+        public IDbController DbController
         {
             get { return Server.DbController; }
         }

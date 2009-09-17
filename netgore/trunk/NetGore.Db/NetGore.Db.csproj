@@ -47,6 +47,11 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\_dependencies\log4net.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -57,10 +62,14 @@
   <ItemGroup>
     <Compile Include="DataReaderContainer.cs" />
     <Compile Include="Connections\DbConnectionPool.cs" />
+    <Compile Include="DbController\DbController.cs" />
+    <Compile Include="DbController\DbControllerQueryAttribute.cs" />
+    <Compile Include="DbController\IDbController.cs" />
     <Compile Include="DbManager.cs" />
     <Compile Include="Connections\IPoolableDbConnection.cs" />
     <Compile Include="Connections\PooledDbConnection.cs" />
     <Compile Include="DbParameterValues.cs" />
+    <Compile Include="DbTableDataManager\DbTableDataManager.cs" />
     <Compile Include="IDataReaderExtensions.cs" />
     <Compile Include="IDCreatorBase.cs" />
     <Compile Include="Query\DbQueryBase.cs" />
@@ -71,6 +80,7 @@
     <Compile Include="Query\IDbQueryNonReader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query\IDbQueryReader.cs" />
+    <Compile Include="TableColumnPair.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
@@ -81,6 +91,11 @@
     <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">
       <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
       <Name>NetGore.Globalization</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore\NetGore.csproj">
+      <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
+      <Name>NetGore</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>
