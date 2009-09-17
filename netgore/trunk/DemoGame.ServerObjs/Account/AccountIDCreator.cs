@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using NetGore.Db;
@@ -18,8 +15,7 @@ namespace DemoGame.Server
         /// Initializes a new instance of the <see cref="AccountIDCreator"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public AccountIDCreator(DbConnectionPool connectionPool)
-            : base(connectionPool, AccountTable.TableName, "id", 2048, 128)
+        public AccountIDCreator(DbConnectionPool connectionPool) : base(connectionPool, AccountTable.TableName, "id", 2048, 128)
         {
             QueryAsserts.ArePrimaryKeys(AccountTable.DbKeyColumns, "id");
         }

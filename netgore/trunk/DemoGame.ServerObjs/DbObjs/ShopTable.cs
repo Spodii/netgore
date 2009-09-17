@@ -1,0 +1,264 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using DemoGame.DbObjs;
+
+namespace DemoGame.Server.DbObjs
+{
+    /// <summary>
+    /// Provides a strongly-typed structure for the database table `shop`.
+    /// </summary>
+    public class ShopTable : IShopTable
+    {
+        /// <summary>
+        /// The number of columns in the database table that this class represents.
+        /// </summary>
+        public const Int32 ColumnCount = 3;
+
+        /// <summary>
+        /// The name of the database table that this class represents.
+        /// </summary>
+        public const String TableName = "shop";
+
+        /// <summary>
+        /// Array of the database column names.
+        /// </summary>
+        static readonly String[] _dbColumns = new string[] { "can_buy", "id", "name" };
+
+        /// <summary>
+        /// Array of the database column names for columns that are primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsKeys = new string[] { "id" };
+
+        /// <summary>
+        /// Array of the database column names for columns that are not primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsNonKey = new string[] { "can_buy", "name" };
+
+        /// <summary>
+        /// The field that maps onto the database column `can_buy`.
+        /// </summary>
+        Byte _canBuy;
+
+        /// <summary>
+        /// The field that maps onto the database column `id`.
+        /// </summary>
+        UInt16 _iD;
+
+        /// <summary>
+        /// The field that maps onto the database column `name`.
+        /// </summary>
+        String _name;
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
+        }
+
+        /// <summary>
+        /// ShopTable constructor.
+        /// </summary>
+        public ShopTable()
+        {
+        }
+
+        /// <summary>
+        /// ShopTable constructor.
+        /// </summary>
+        /// <param name="canBuy">The initial value for the corresponding property.</param>
+        /// <param name="iD">The initial value for the corresponding property.</param>
+        /// <param name="name">The initial value for the corresponding property.</param>
+        public ShopTable(Byte @canBuy, ShopID @iD, String @name)
+        {
+            CanBuy = @canBuy;
+            ID = @iD;
+            Name = @name;
+        }
+
+        /// <summary>
+        /// ShopTable constructor.
+        /// </summary>
+        /// <param name="source">IShopTable to copy the initial values from.</param>
+        public ShopTable(IShopTable source)
+        {
+            CopyValuesFrom(source);
+        }
+
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        /// this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="source">The object to copy the values from.</param>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public static void CopyValues(IShopTable source, IDictionary<String, Object> dic)
+        {
+            dic["@can_buy"] = source.CanBuy;
+            dic["@id"] = source.ID;
+            dic["@name"] = source.Name;
+        }
+
+        /// <summary>
+        /// Copies the column values into the given Dictionary using the database column name
+        /// with a prefixed @ as the key. The keys must already exist in the Dictionary;
+        /// this method will not create them if they are missing.
+        /// </summary>
+        /// <param name="dic">The Dictionary to copy the values into.</param>
+        public void CopyValues(IDictionary<String, Object> dic)
+        {
+            CopyValues(this, dic);
+        }
+
+        /// <summary>
+        /// Copies the values from the given <paramref name="source"/> into this ShopTable.
+        /// </summary>
+        /// <param name="source">The IShopTable to copy the values from.</param>
+        public void CopyValuesFrom(IShopTable source)
+        {
+            CanBuy = source.CanBuy;
+            ID = source.ID;
+            Name = source.Name;
+        }
+
+        /// <summary>
+        /// Gets the data for the database column that this table represents.
+        /// </summary>
+        /// <param name="columnName">The database name of the column to get the data for.</param>
+        /// <returns>
+        /// The data for the database column with the name <paramref name="columnName"/>.
+        /// </returns>
+        public static ColumnMetadata GetColumnData(String columnName)
+        {
+            switch (columnName)
+            {
+                case "can_buy":
+                    return new ColumnMetadata("can_buy", "", "tinyint(3) unsigned", null, typeof(Byte), false, false, false);
+
+                case "id":
+                    return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(UInt16), false, true, false);
+
+                case "name":
+                    return new ColumnMetadata("name", "", "varchar(60)", null, typeof(String), false, false, false);
+
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
+
+        /// <summary>
+        /// Gets the value of a column by the database column's name.
+        /// </summary>
+        /// <param name="columnName">The database name of the column to get the value for.</param>
+        /// <returns>
+        /// The value of the column with the name <paramref name="columnName"/>.
+        /// </returns>
+        public Object GetValue(String columnName)
+        {
+            switch (columnName)
+            {
+                case "can_buy":
+                    return CanBuy;
+
+                case "id":
+                    return ID;
+
+                case "name":
+                    return Name;
+
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
+
+        /// <summary>
+        /// Sets the <paramref name="value"/> of a column by the database column's name.
+        /// </summary>
+        /// <param name="columnName">The database name of the column to get the <paramref name="value"/> for.</param>
+        /// <param name="value">Value to assign to the column.</param>
+        public void SetValue(String columnName, Object value)
+        {
+            switch (columnName)
+            {
+                case "can_buy":
+                    CanBuy = (Byte)value;
+                    break;
+
+                case "id":
+                    ID = (ShopID)value;
+                    break;
+
+                case "name":
+                    Name = (String)value;
+                    break;
+
+                default:
+                    throw new ArgumentException("Field not found.", "columnName");
+            }
+        }
+
+        #region IShopTable Members
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `can_buy`.
+        /// The underlying database type is `tinyint(3) unsigned`.
+        /// </summary>
+        public Byte CanBuy
+        {
+            get { return _canBuy; }
+            set { _canBuy = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `id`.
+        /// The underlying database type is `smallint(5) unsigned`.
+        /// </summary>
+        public ShopID ID
+        {
+            get { return (ShopID)_iD; }
+            set { _iD = (UInt16)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `name`.
+        /// The underlying database type is `varchar(60)`.
+        /// </summary>
+        public String Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
+
+        /// <summary>
+        /// Creates a deep copy of this table. All the values will be the same
+        /// but they will be contained in a different object instance.
+        /// </summary>
+        /// <returns>
+        /// A deep copy of this table.
+        /// </returns>
+        public IShopTable DeepCopy()
+        {
+            return new ShopTable(this);
+        }
+
+        #endregion
+    }
+}

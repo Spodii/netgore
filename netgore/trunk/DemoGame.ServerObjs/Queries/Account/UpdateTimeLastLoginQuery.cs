@@ -1,8 +1,6 @@
-﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -12,14 +10,13 @@ namespace DemoGame.Server.Queries.Account
     public class UpdateTimeLastLoginQuery : DbQueryNonReader<AccountID>
     {
         static readonly string _queryStr = string.Format("UPDATE `{0}` SET `time_last_login` = NOW() WHERE `id`=@id",
-            AccountTable.TableName);
+                                                         AccountTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateTimeLastLoginQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public UpdateTimeLastLoginQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public UpdateTimeLastLoginQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "time_last_login");
         }
