@@ -118,15 +118,17 @@ namespace DemoGame.Server
             if (template == null)
                 throw new ArgumentNullException("template");
 
+            var v = template.TemplateTable;
+
             // Create the AI
-            if (!string.IsNullOrEmpty(template.AIName))
-                SetAI(template.AIName);
+            if (!string.IsNullOrEmpty(v.AI))
+                SetAI(v.AI);
 
             // Set the rest of the template stuff
             Load(template);
-            _respawnSecs = template.RespawnSecs;
-            _giveExp = template.GiveExp;
-            _giveCash = template.GiveCash;
+            _respawnSecs = v.Respawn;
+            _giveExp = v.GiveExp;
+            _giveCash = v.GiveCash;
 
             RespawnMapIndex = map.Index;
             RespawnPosition = position;
@@ -257,8 +259,8 @@ namespace DemoGame.Server
             if (template == null)
                 return;
 
-            _giveCash = template.GiveCash;
-            _giveExp = template.GiveExp;
+            _giveCash = template.TemplateTable.GiveCash;
+            _giveExp = template.TemplateTable.GiveExp;
         }
 
         /// <summary>
