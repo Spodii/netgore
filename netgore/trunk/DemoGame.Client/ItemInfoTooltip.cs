@@ -15,7 +15,7 @@ namespace DemoGame.Client
         /// </summary>
         const int _showItemInfoDelay = 300;
 
-        readonly ItemInfo _itemInfo;
+        readonly ItemInfoRequester _itemInfo;
         object _hoverObject = null;
         int _hoverStartTime = int.MinValue;
         bool _sentItemInfoRequest;
@@ -25,14 +25,14 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the ItemInfo containing the information drawn by this ItemInfoTooltip.
         /// </summary>
-        public ItemInfo ItemInfo
+        public ItemInfoRequester ItemInfoRequester
         {
             get { return _itemInfo; }
         }
 
         public ItemInfoTooltip(ISocketSender socket)
         {
-            _itemInfo = new ItemInfo(socket);
+            _itemInfo = new ItemInfoRequester(socket);
         }
 
         /// <summary>
@@ -43,22 +43,24 @@ namespace DemoGame.Client
         /// <param name="font">Font to use.</param>
         public void Draw(Vector2 pos, SpriteBatch sb, SpriteFont font)
         {
-            if (!_sentItemInfoRequest || ItemInfo == null || !ItemInfo.IsUpdated)
+            if (!_sentItemInfoRequest || ItemInfoRequester == null || !ItemInfoRequester.IsUpdated)
                 return;
 
             // TODO: Display requirements
 
+            var itemInfo = ItemInfoRequester.ItemInfo;
+
             // Get all the non-zero stats and count them
-            var nonZeroStats = ItemInfo.BaseStats.Where(stat => stat.Value != 0);
+            var nonZeroStats = ItemInfoRequester.ItemInfo.BaseStats.Where(stat => stat.Value != 0);
             int numNonZeroStats = nonZeroStats.Count();
 
             // Basic item information
-            var lines = new List<string>(numNonZeroStats + 10) { ItemInfo.Name, ItemInfo.Description, "Value: " + ItemInfo.Value };
+            var lines = new List<string>(numNonZeroStats + 10) { itemInfo.Name, itemInfo.Description, "Value: " + itemInfo.Value };
 
-            if (ItemInfo.HP != 0)
-                lines.Add(string.Format(" +{0} HP", ItemInfo.HP));
-            if (ItemInfo.MP != 0)
-                lines.Add(string.Format(" +{0} MP", ItemInfo.MP));
+            if (itemInfo.HP != 0)
+                lines.Add(string.Format(" +{0} HP", itemInfo.HP));
+            if (itemInfo.MP != 0)
+                lines.Add(string.Format(" +{0} MP", itemInfo.MP));
 
             // Item stats
             if (numNonZeroStats > 0)
@@ -177,11 +179,11 @@ namespace DemoGame.Client
             switch (_source)
             {
                 case ItemInfoSource.Equipped:
-                    ItemInfo.GetEquipmentItemInfo((EquipmentSlot)_slot);
+                    ItemInfoRequester.GetEquipmentItemInfo((EquipmentSlot)_slot);
                     break;
 
                 case ItemInfoSource.Inventory:
-                    ItemInfo.GetInventoryItemInfo(new InventorySlot(_slot));
+                    ItemInfoRequester.GetInventoryItemInfo(new InventorySlot(_slot));
                     break;
             }
         }

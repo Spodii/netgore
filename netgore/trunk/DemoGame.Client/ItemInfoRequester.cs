@@ -9,43 +9,18 @@ namespace DemoGame.Client
     /// <summary>
     /// Contains the extended information for an item. Intended for requesting and displaying the
     /// information of the user's inventory, another character's inventory, etc. Can only serve a single
-    /// item at a time (obviously).
+    /// item at a time.
     /// </summary>
-    public class ItemInfo
+    public class ItemInfoRequester
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly ItemStats _baseStats = new ItemStats(StatCollectionType.Base);
-        readonly ItemStats _reqStats = new ItemStats(StatCollectionType.Requirement);
-        string _description;
-        SPValueType _hp;
         bool _isUpdated;
-        SPValueType _mp;
-        string _name;
         int _slot;
         ItemInfoSource _source;
-        int _value;
+        readonly ItemInfo _itemInfo = new ItemInfo();
 
-        /// <summary>
-        /// Gets the stats of the item.
-        /// </summary>
-        public ItemStats BaseStats
-        {
-            get { return _baseStats; }
-        }
-
-        /// <summary>
-        /// Gets the item's description.
-        /// </summary>
-        public string Description
-        {
-            get { return _description; }
-        }
-
-        public SPValueType HP
-        {
-            get { return _hp; }
-        }
+        public ItemInfo ItemInfo { get { return _itemInfo; } }
 
         /// <summary>
         /// Gets if the last item information request has been handled. If false, the values
@@ -54,24 +29,6 @@ namespace DemoGame.Client
         public bool IsUpdated
         {
             get { return _isUpdated; }
-        }
-
-        public SPValueType MP
-        {
-            get { return _mp; }
-        }
-
-        /// <summary>
-        /// Gets the name of the item.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        public ItemStats ReqStats
-        {
-            get { return _reqStats; }
         }
 
         /// <summary>
@@ -96,18 +53,10 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the value of the item.
-        /// </summary>
-        public int Value
-        {
-            get { return _value; }
-        }
-
-        /// <summary>
         /// ItemInfo constructor.
         /// </summary>
         /// <param name="socket">Socket used to request the ItemInfo.</param>
-        public ItemInfo(ISocketSender socket)
+        public ItemInfoRequester(ISocketSender socket)
         {
             Socket = socket;
         }
@@ -176,23 +125,6 @@ namespace DemoGame.Client
         public void SetAsUpdated()
         {
             _isUpdated = true;
-        }
-
-        /// <summary>
-        /// Sets the information of the item.
-        /// </summary>
-        /// <param name="name">Name of the item.</param>
-        /// <param name="desc">Item's description.</param>
-        /// <param name="value">Value of the item.</param>
-        /// <param name="hp">How much HP the item recovers.</param>
-        /// <param name="mp">How much MP the item recovers.</param>
-        public void SetItemInfo(string name, string desc, int value, SPValueType hp, SPValueType mp)
-        {
-            _name = name;
-            _description = desc;
-            _value = value;
-            _hp = hp;
-            _mp = mp;
         }
 
         void StartRequest()

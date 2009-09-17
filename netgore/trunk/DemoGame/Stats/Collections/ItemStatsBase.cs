@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace DemoGame
 {
-    public abstract class ItemStatsBase : DynamicStatCollection
+    public class ItemStatsBase : DynamicStatCollection
     {
         /// <summary>
         /// Notifies the listener that any of the stats have raised their OnChange event
         /// </summary>
         public event IStatEventHandler OnStatChange;
 
-        protected ItemStatsBase(IEnumerable<KeyValuePair<StatType, int>> src, StatCollectionType statCollectionType)
+        public ItemStatsBase(IEnumerable<KeyValuePair<StatType, int>> src, StatCollectionType statCollectionType)
             : this(statCollectionType)
         {
             foreach (var statInfo in src)
@@ -22,7 +22,7 @@ namespace DemoGame
             }
         }
 
-        protected ItemStatsBase(StatCollectionType statCollectionType) : base(statCollectionType)
+        public ItemStatsBase(StatCollectionType statCollectionType) : base(statCollectionType)
         {
         }
 

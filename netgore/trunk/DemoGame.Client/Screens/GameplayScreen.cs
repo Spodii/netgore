@@ -39,6 +39,9 @@ namespace DemoGame.Client
         /// </summary>
         const int _minNPCChatRate = 150;
 
+
+        const int _minShopRate = 150;
+
         /// <summary>
         /// Minimum time the user must wait before picking up something
         /// </summary>
@@ -125,6 +128,8 @@ namespace DemoGame.Client
         int _lastMoveStopTime;
 
         int _lastNPCChatTime;
+
+        int _lastShopTime;
 
         /// <summary>
         /// Time when the user last picked up something
@@ -600,6 +605,20 @@ namespace DemoGame.Client
                 if (useEntity != null)
                 {
                     using (PacketWriter pw = ClientPacket.UseWorld(useEntity.MapEntityIndex))
+                    {
+                        Socket.Send(pw);
+                    }
+                }
+            }
+
+            // Shopping
+            if (_currentTime - _lastShopTime > _minShopRate && ks.IsKeyDown(Keys.LeftAlt))
+            {
+                _lastShopTime = _currentTime;
+                CharacterEntity npc = Map.GetEntity<CharacterEntity>(UserChar.CB.ToRectangle(), x => x.HasShop);
+                if (npc != null)
+                {
+                    using (PacketWriter pw = ClientPacket.StartShopping(npc.MapEntityIndex))
                     {
                         Socket.Send(pw);
                     }
