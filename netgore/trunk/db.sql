@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50138
 File Encoding         : 65001
 
-Date: 2009-09-16 20:45:15
+Date: 2009-09-17 11:29:22
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -480,7 +480,7 @@ CREATE TABLE `server_time` (
 -- ----------------------------
 -- Records of server_time
 -- ----------------------------
-INSERT INTO `server_time` VALUES ('2009-09-16 18:30:47');
+INSERT INTO `server_time` VALUES ('2009-09-17 11:28:37');
 
 -- ----------------------------
 -- Table structure for `shop`
