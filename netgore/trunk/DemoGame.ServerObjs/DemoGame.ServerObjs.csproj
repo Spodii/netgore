@@ -69,7 +69,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountID.cs" />
+    <Compile Include="Account\AccountID.cs" />
+    <Compile Include="Account\AccountIDCreator.cs" />
     <Compile Include="ActiveStatusEffectID.cs" />
     <Compile Include="Alliance\Alliance.cs" />
     <Compile Include="Alliance\AllianceID.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="MapSpawn\MapSpawnValuesIDCreator.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByIDQuery.cs" />
     <Compile Include="Queries\Account\CountAccountCharactersByNameQuery.cs" />
+    <Compile Include="Queries\Account\CreateAccountQuery.cs" />
     <Compile Include="Queries\Account\CreateUserOnAccountQuery.cs" />
     <Compile Include="Queries\Account\SelectAccountCharacterIDsQuery.cs" />
     <Compile Include="Queries\Account\SelectAccountIDFromNameQuery.cs" />
