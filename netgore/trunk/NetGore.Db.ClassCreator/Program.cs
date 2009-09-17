@@ -65,9 +65,9 @@ namespace NetGore.Db.ClassCreator
                 const string allianceID = "DemoGame.Server.AllianceID";
                 const string characterID = "DemoGame.Server.CharacterID";
                 const string characterTemplateID = "DemoGame.Server.CharacterTemplateID";
-                const string mapID = "NetGore.MapIndex";
                 const string itemID = "DemoGame.Server.ItemID";
                 const string itemTemplateID = "DemoGame.Server.ItemTemplateID";
+                const string mapID = "NetGore.MapIndex";
                 const string mapSpawnID = "DemoGame.Server.MapSpawnValuesID";
                 const string bodyID = "DemoGame.BodyIndex";
                 const string equipmentSlot = "DemoGame.EquipmentSlot";
