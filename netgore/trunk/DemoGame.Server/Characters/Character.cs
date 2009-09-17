@@ -74,23 +74,15 @@ namespace DemoGame.Server
         /// </summary>
         const int _spRecoveryRate = 3000;
 
+        static readonly AllianceManager _allianceManager = AllianceManager.Instance;
+        static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
+
         /// <summary>
         /// Random number generator for Characters
         /// </summary>
         static readonly Random _rand = new Random();
 
-        static readonly AllianceManager _allianceManager = AllianceManager.Instance;
-        static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
-
-        /// <summary>
-        /// Gets the <see cref="AllianceManager"/> instance to be used by the <see cref="Character"/>s.
-        /// </summary>
-        protected static AllianceManager AllianceManager { get { return _allianceManager; } }
-
-        /// <summary>
-        /// Gets the <see cref="CharacterTemplateManager"/> instance to be used by the <see cref="Character"/>s.
-        /// </summary>
-        protected static CharacterTemplateManager CharacterTemplateManager { get { return _characterTemplateManager; } }
+        static readonly ShopManager _shopManager = ShopManager.Instance;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly CharacterStatsBase _baseStats;
@@ -223,11 +215,35 @@ namespace DemoGame.Server
         public event CharacterItemEventHandler OnUseItem;
 
         /// <summary>
+        /// Gets the <see cref="AllianceManager"/> instance to be used by the <see cref="Character"/>s.
+        /// </summary>
+        protected static AllianceManager AllianceManager
+        {
+            get { return _allianceManager; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="CharacterTemplateManager"/> instance to be used by the <see cref="Character"/>s.
+        /// </summary>
+        protected static CharacterTemplateManager CharacterTemplateManager
+        {
+            get { return _characterTemplateManager; }
+        }
+
+        /// <summary>
         /// Gets a random number generator to be used for Characters.
         /// </summary>
         protected static Random Rand
         {
             get { return _rand; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ShopManager"/> instance to be used by the <see cref="Character"/>s.
+        /// </summary>
+        protected static ShopManager ShopManager
+        {
+            get { return _shopManager; }
         }
 
         /// <summary>
@@ -339,6 +355,11 @@ namespace DemoGame.Server
         /// </summary>
         public Vector2 RespawnPosition { get; set; }
 
+        /// <summary>
+        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Shop"/>.
+        /// </summary>
+        public abstract Shop Shop { get; }
+
         public CharacterStatusEffects StatusEffects
         {
             get { return _statusEffects; }
@@ -381,26 +402,6 @@ namespace DemoGame.Server
 
             ModStats.GetStat(StatType.MaxHP).OnChange += ModStats_MaxHP_OnChange;
             ModStats.GetStat(StatType.MaxMP).OnChange += ModStats_MaxMP_OnChange;
-        }
-
-        /// <summary>
-        /// Handles when the MaxHP mod stat changes.
-        /// </summary>
-        /// <param name="stat">The stat.</param>
-        void ModStats_MaxHP_OnChange(IStat stat)
-        {
-            if (HP > stat.Value)
-                HP = stat.Value;
-        }
-
-        /// <summary>
-        /// Handles when the MaxMP mod stat changes.
-        /// </summary>
-        /// <param name="stat">The stat.</param>
-        void ModStats_MaxMP_OnChange(IStat stat)
-        {
-            if (MP > stat.Value)
-                MP = stat.Value;
         }
 
         /// <summary>
@@ -859,7 +860,7 @@ namespace DemoGame.Server
 
         protected void Load(CharacterTemplate template)
         {
-            var v = template.TemplateTable;
+            ICharacterTemplateTable v = template.TemplateTable;
 
             Name = v.Name;
             Alliance = _allianceManager[v.AllianceID];
@@ -921,6 +922,26 @@ namespace DemoGame.Server
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded Character `{0}`.", Name);
+        }
+
+        /// <summary>
+        /// Handles when the MaxHP mod stat changes.
+        /// </summary>
+        /// <param name="stat">The stat.</param>
+        void ModStats_MaxHP_OnChange(IStat stat)
+        {
+            if (HP > stat.Value)
+                HP = stat.Value;
+        }
+
+        /// <summary>
+        /// Handles when the MaxMP mod stat changes.
+        /// </summary>
+        /// <param name="stat">The stat.</param>
+        void ModStats_MaxMP_OnChange(IStat stat)
+        {
+            if (MP > stat.Value)
+                MP = stat.Value;
         }
 
         /// <summary>
@@ -1511,6 +1532,20 @@ namespace DemoGame.Server
         float ICharacterTable.RespawnY
         {
             get { return RespawnPosition.Y; }
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `shop_id`.
+        /// </summary>
+        ShopID? ICharacterTable.ShopID
+        {
+            get
+            {
+                Shop v = Shop;
+                if (v == null)
+                    return null;
+                return v.ID;
+            }
         }
 
         /// <summary>
