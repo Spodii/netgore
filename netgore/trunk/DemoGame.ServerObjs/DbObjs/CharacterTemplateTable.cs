@@ -247,11 +247,11 @@ this._giveExp = (System.UInt16)value;
 /// Gets or sets the value for the field that maps onto the database column `id`.
 /// The underlying database type is `smallint(5) unsigned`.
 /// </summary>
-public System.UInt16 ID
+public DemoGame.Server.CharacterTemplateID ID
 {
 get
 {
-return (System.UInt16)_iD;
+return (DemoGame.Server.CharacterTemplateID)_iD;
 }
 set
 {
@@ -369,7 +369,7 @@ public CharacterTemplateTable()
 /// <param name="str">The initial value for the corresponding property.</param>
 /// <param name="tact">The initial value for the corresponding property.</param>
 /// <param name="wS">The initial value for the corresponding property.</param>
-public CharacterTemplateTable(System.Byte @acc, System.Byte @agi, System.String @aI, DemoGame.Server.AllianceID @allianceID, System.Byte @armor, DemoGame.BodyIndex @bodyID, System.Byte @bra, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, System.UInt16 @giveCash, System.UInt16 @giveExp, System.UInt16 @iD, System.Byte @imm, System.Byte @int, System.Byte @level, System.Byte @maxHit, System.UInt16 @maxHP, System.UInt16 @maxMP, System.Byte @minHit, System.String @name, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.UInt16 @respawn, System.UInt32 @statPoints, System.Byte @str, System.Byte @tact, System.Byte @wS)
+public CharacterTemplateTable(System.Byte @acc, System.Byte @agi, System.String @aI, DemoGame.Server.AllianceID @allianceID, System.Byte @armor, DemoGame.BodyIndex @bodyID, System.Byte @bra, System.Byte @defence, System.Byte @dex, System.Byte @evade, System.UInt32 @exp, System.UInt16 @giveCash, System.UInt16 @giveExp, DemoGame.Server.CharacterTemplateID @iD, System.Byte @imm, System.Byte @int, System.Byte @level, System.Byte @maxHit, System.UInt16 @maxHP, System.UInt16 @maxMP, System.Byte @minHit, System.String @name, System.Byte @perc, System.Byte @recov, System.Byte @regen, System.UInt16 @respawn, System.UInt32 @statPoints, System.Byte @str, System.Byte @tact, System.Byte @wS)
 {
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Acc, (System.Int32)@acc);
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Agi, (System.Int32)@agi);
@@ -384,7 +384,7 @@ this.SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)@evade);
 this.Exp = (System.UInt32)@exp;
 this.GiveCash = (System.UInt16)@giveCash;
 this.GiveExp = (System.UInt16)@giveExp;
-this.ID = (System.UInt16)@iD;
+this.ID = (DemoGame.Server.CharacterTemplateID)@iD;
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)@imm);
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)@int);
 this.Level = (System.Byte)@level;
@@ -442,7 +442,7 @@ dic["@evade"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType
 dic["@exp"] = (System.UInt32)source.Exp;
 dic["@give_cash"] = (System.UInt16)source.GiveCash;
 dic["@give_exp"] = (System.UInt16)source.GiveExp;
-dic["@id"] = (System.UInt16)source.ID;
+dic["@id"] = (DemoGame.Server.CharacterTemplateID)source.ID;
 dic["@imm"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm);
 dic["@int"] = (System.Byte)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int);
 dic["@level"] = (System.Byte)source.Level;
@@ -480,7 +480,7 @@ this.SetStat((DemoGame.StatType)DemoGame.StatType.Evade, (System.Int32)source.Ge
 this.Exp = (System.UInt32)source.Exp;
 this.GiveCash = (System.UInt16)source.GiveCash;
 this.GiveExp = (System.UInt16)source.GiveExp;
-this.ID = (System.UInt16)source.ID;
+this.ID = (DemoGame.Server.CharacterTemplateID)source.ID;
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Imm, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Imm));
 this.SetStat((DemoGame.StatType)DemoGame.StatType.Int, (System.Int32)source.GetStat((DemoGame.StatType)DemoGame.StatType.Int));
 this.Level = (System.Byte)source.Level;
@@ -667,7 +667,7 @@ this.GiveExp = (System.UInt16)value;
 break;
 
 case "id":
-this.ID = (System.UInt16)value;
+this.ID = (DemoGame.Server.CharacterTemplateID)value;
 break;
 
 case "imm":
