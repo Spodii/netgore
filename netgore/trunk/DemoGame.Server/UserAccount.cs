@@ -19,13 +19,13 @@ namespace DemoGame.Server
         readonly DbController _dbController;
 
         /// <summary>
-        /// Lock used for setting the user. Also doubles as a lock for creating new users on the account.
+        /// Lock used for setting the user.
         /// </summary>
         readonly object _setUserLock = new object();
 
         readonly IIPSocket _socket;
 
-        List<CharacterID> _characterIDs;
+        readonly List<CharacterID> _characterIDs = new List<CharacterID>();
         User _user;
 
         /// <summary>
@@ -132,9 +132,14 @@ namespace DemoGame.Server
             return GameData.AccountPassword.IsValid(s);
         }
 
-        void LoadCharacterIDs(DbController dbController)
+        /// <summary>
+        /// Loads the <see cref="CharacterID"/>s for the Characters in this account.
+        /// </summary>
+        void LoadCharacterIDs()
         {
-            _characterIDs = dbController.GetQuery<SelectAccountCharacterIDsQuery>().Execute(ID).ToList();
+            var ids = _dbController.GetQuery<SelectAccountCharacterIDsQuery>().Execute(ID);
+            _characterIDs.Clear();
+            _characterIDs.AddRange(ids);
         }
 
         /// <summary>
@@ -182,7 +187,7 @@ namespace DemoGame.Server
             }
 
             // Get the characters in this account
-            userAccount.LoadCharacterIDs(dbController);
+            userAccount.LoadCharacterIDs();
 
             return AccountLoginResult.Successful;
         }

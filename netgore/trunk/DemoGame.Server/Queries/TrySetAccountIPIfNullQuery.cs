@@ -12,7 +12,9 @@ namespace DemoGame.Server.Queries
     public class TrySetAccountIPIfNullQuery : DbQueryReader<TrySetAccountIPIfNullQuery.QueryArgs>
     {
         static readonly string _queryStr =
-            string.Format("UPDATE `{0}` SET `current_ip`=@ip WHERE `id`=@id AND `current_ip` IS NULL", AccountTable.TableName);
+            string.Format(
+                "UPDATE `{0}` SET `current_ip`=@ip,`time_last_login`=NOW()" + " WHERE `id`=@id AND `current_ip` IS NULL",
+                AccountTable.TableName);
 
         /// <summary>
         /// DbQueryReader constructor.
@@ -20,6 +22,7 @@ namespace DemoGame.Server.Queries
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
         public TrySetAccountIPIfNullQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
+            QueryAsserts.ContainsColumns(AccountTable.DbColumns, "id", "time_last_login", "current_ip");
         }
 
         /// <summary>

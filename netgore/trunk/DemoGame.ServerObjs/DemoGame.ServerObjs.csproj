@@ -153,6 +153,7 @@
     <Compile Include="Queries\Account\SelectAccountIDFromNameQuery.cs" />
     <Compile Include="Queries\Account\SetAccountCurrentIPNullQuery.cs" />
     <Compile Include="Queries\Account\SetAccountCurrentIPsNullQuery.cs" />
+    <Compile Include="Queries\Account\UpdateTimeLastLoginQuery.cs" />
     <Compile Include="Queries\Character\SelectAccountCharacterInfoQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ActiveStatusEffectsIDCreator.cs" />
     <Compile Include="Queries\Character\StatusEffect\DeleteCharacterStatusEffectQuery.cs" />
