@@ -111,7 +111,6 @@ namespace DemoGame.Server
 
             // Load the game data and such
             GameData.Load();
-            ItemEntity.Initialize(DbController);
             InitializeScripts();
 
             // Update the GameData table
