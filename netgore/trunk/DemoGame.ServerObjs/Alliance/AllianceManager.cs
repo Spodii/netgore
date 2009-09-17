@@ -26,8 +26,16 @@ namespace DemoGame.Server
         SelectAllianceAttackableQuery _selectAllianceAttackableQuery;
         SelectAllianceHostileQuery _selectAllianceHostileQuery;
 
-        static readonly AllianceManager _instance = new AllianceManager(DbControllerBase.GetInstance());
-        
+        static readonly AllianceManager _instance;
+
+        /// <summary>
+        /// Initializes the <see cref="AllianceManager"/> class.
+        /// </summary>
+        static AllianceManager()
+        {
+            _instance = new AllianceManager(DbControllerBase.GetInstance());
+        }
+
         /// <summary>
         /// Gets the Alliance by the given name.
         /// </summary>
@@ -53,7 +61,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbTableDataManager&lt;TID, TItem&gt;"/> class.
+        /// Initializes a new instance of the <see cref="AllianceManager"/> class.
         /// </summary>
         /// <param name="dbController">The IDbController.</param>
         AllianceManager(IDbController dbController) : base(dbController)

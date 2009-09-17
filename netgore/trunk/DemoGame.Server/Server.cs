@@ -113,7 +113,6 @@ namespace DemoGame.Server
             GameData.Load();
             ItemEntity.Initialize(DbController);
             ItemTemplateManager.Initialize(DbController);
-            CharacterTemplateManager.Initialize(DbController);
             InitializeScripts();
 
             // Update the GameData table

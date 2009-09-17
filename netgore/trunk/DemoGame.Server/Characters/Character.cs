@@ -80,11 +80,17 @@ namespace DemoGame.Server
         static readonly Random _rand = new Random();
 
         static readonly AllianceManager _allianceManager = AllianceManager.Instance;
+        static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
 
         /// <summary>
         /// Gets the <see cref="AllianceManager"/> instance to be used by the <see cref="Character"/>s.
         /// </summary>
         protected static AllianceManager AllianceManager { get { return _allianceManager; } }
+
+        /// <summary>
+        /// Gets the <see cref="CharacterTemplateManager"/> instance to be used by the <see cref="Character"/>s.
+        /// </summary>
+        protected static CharacterTemplateManager CharacterTemplateManager { get { return _characterTemplateManager; } }
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly CharacterStatsBase _baseStats;

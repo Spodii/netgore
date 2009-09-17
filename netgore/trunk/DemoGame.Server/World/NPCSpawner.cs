@@ -56,6 +56,8 @@ namespace DemoGame.Server
             get { return _map; }
         }
 
+        static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
+
         /// <summary>
         /// NPCSpawner constructor.
         /// </summary>
@@ -75,7 +77,7 @@ namespace DemoGame.Server
                 throw new ArgumentException("The map's MapIndex and mapSpawnValues's MapIndex do not match.", "map");
 
             _map = map;
-            _characterTemplate = CharacterTemplateManager.GetTemplate(mapSpawnValues.CharacterTemplateID);
+            _characterTemplate = _characterTemplateManager[mapSpawnValues.CharacterTemplateID];
             _amount = mapSpawnValues.Amount;
             _area = new MapSpawnRect(mapSpawnValues).ToRectangle(map);
 

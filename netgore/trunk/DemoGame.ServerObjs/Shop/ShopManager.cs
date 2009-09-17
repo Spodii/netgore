@@ -13,10 +13,18 @@ namespace DemoGame.Server
     /// </summary>
     public class ShopManager : DbTableDataManager<ShopID, Shop>
     {
-        static readonly ShopManager _instance = new ShopManager(DbControllerBase.GetInstance());
+        static readonly ShopManager _instance;
 
         SelectShopItemsQuery _selectShopItemsQuery;
         SelectShopQuery _selectShopQuery;
+
+        /// <summary>
+        /// Initializes the <see cref="ShopManager"/> class.
+        /// </summary>
+        static ShopManager()
+        {
+            _instance = new ShopManager(DbControllerBase.GetInstance());
+        }
 
         /// <summary>
         /// Gets an instance of the <see cref="ShopManager"/>.
