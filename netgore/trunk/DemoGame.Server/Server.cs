@@ -115,7 +115,6 @@ namespace DemoGame.Server
             AllianceManager.Initialize(DbController);
             ItemTemplateManager.Initialize(DbController);
             CharacterTemplateManager.Initialize(DbController);
-            ShopManager.Initialize(DbController);
             InitializeScripts();
 
             // Update the GameData table
