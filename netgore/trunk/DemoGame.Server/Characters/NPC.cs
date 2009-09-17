@@ -216,7 +216,7 @@ namespace DemoGame.Server
 
             if (v.ShopID.HasValue)
             {
-                if (!ShopManager.TryGetValue(v.ShopID.Value, out _shop)) ;
+                if (!ShopManager.TryGetValue(v.ShopID.Value, out _shop))
                 {
                     const string errmsg = "Failed to load shop with ID `{0}` for NPC `{1}`. Setting shop as null.";
                     if (log.IsErrorEnabled)
