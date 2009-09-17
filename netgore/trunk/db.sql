@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50138
 File Encoding         : 65001
 
-Date: 2009-09-16 16:46:06
+Date: 2009-09-16 20:45:15
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,7 +33,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-09-07 15:43:24', null);
+INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-09-16 18:30:36', null);
 
 -- ----------------------------
 -- Table structure for `alliance`
@@ -151,9 +151,9 @@ CREATE TABLE `character` (
 -- Records of character
 -- ----------------------------
 INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '2', null, '398', '338', '1', '500', '200', '1', '121', '21', '629', '84', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2', '1', '1');
-INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, '825.601', '530', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, '450', '434', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', '0', '800', '530', '2', '800', '500', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, '800', '250', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, '500', '250', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', '0', '800', '500', '2', '800', '500', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for `character_equipped`
@@ -480,7 +480,48 @@ CREATE TABLE `server_time` (
 -- ----------------------------
 -- Records of server_time
 -- ----------------------------
-INSERT INTO `server_time` VALUES ('2009-09-16 14:30:21');
+INSERT INTO `server_time` VALUES ('2009-09-16 18:30:47');
+
+-- ----------------------------
+-- Table structure for `shop`
+-- ----------------------------
+DROP TABLE IF EXISTS `shop`;
+CREATE TABLE `shop` (
+  `id` smallint(5) unsigned NOT NULL,
+  `name` varchar(60) NOT NULL,
+  `can_buy` tinyint(1) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of shop
+-- ----------------------------
+INSERT INTO `shop` VALUES ('0', 'Test Shop', '1');
+INSERT INTO `shop` VALUES ('1', 'Soda Vending Machine', '0');
+
+-- ----------------------------
+-- Table structure for `shop_item`
+-- ----------------------------
+DROP TABLE IF EXISTS `shop_item`;
+CREATE TABLE `shop_item` (
+  `shop_id` smallint(5) unsigned NOT NULL,
+  `item_template_id` smallint(5) unsigned NOT NULL,
+  PRIMARY KEY (`shop_id`,`item_template_id`),
+  KEY `item_template_id` (`item_template_id`),
+  CONSTRAINT `shop_item_ibfk_1` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `shop_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of shop_item
+-- ----------------------------
+INSERT INTO `shop_item` VALUES ('0', '1');
+INSERT INTO `shop_item` VALUES ('1', '1');
+INSERT INTO `shop_item` VALUES ('0', '2');
+INSERT INTO `shop_item` VALUES ('1', '2');
+INSERT INTO `shop_item` VALUES ('0', '3');
+INSERT INTO `shop_item` VALUES ('0', '4');
+INSERT INTO `shop_item` VALUES ('0', '5');
 
 -- ----------------------------
 -- View structure for `user_character`
