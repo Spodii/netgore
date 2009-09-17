@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50138
 File Encoding         : 65001
 
-Date: 2009-09-17 11:29:22
+Date: 2009-09-17 14:40:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,7 +33,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-09-16 18:30:36', null);
+INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-09-17 14:39:52', null);
 
 -- ----------------------------
 -- Table structure for `alliance`
@@ -103,6 +103,7 @@ CREATE TABLE `character` (
   `character_template_id` smallint(5) unsigned DEFAULT NULL,
   `name` varchar(30) NOT NULL,
   `map_id` smallint(5) unsigned NOT NULL DEFAULT '1',
+  `shop_id` smallint(5) unsigned DEFAULT NULL,
   `chat_dialog` smallint(5) unsigned DEFAULT NULL,
   `x` float NOT NULL DEFAULT '100',
   `y` float NOT NULL DEFAULT '100',
@@ -124,7 +125,7 @@ CREATE TABLE `character` (
   `agi` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `armor` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `bra` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `defence` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `defence` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `dex` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `evade` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `imm` tinyint(3) unsigned NOT NULL DEFAULT '1',
@@ -141,19 +142,23 @@ CREATE TABLE `character` (
   KEY `character_ibfk_2` (`map_id`),
   KEY `idx_name` (`name`) USING BTREE,
   KEY `account_id` (`account_id`),
+  KEY `shop_id` (`shop_id`),
   CONSTRAINT `character_ibfk_2` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_3` FOREIGN KEY (`respawn_map`) REFERENCES `map` (`id`) ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_4` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `character_ibfk_5` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `character_ibfk_5` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `character_ibfk_6` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of character
 -- ----------------------------
-INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '2', null, '398', '338', '1', '500', '200', '1', '121', '21', '629', '84', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2', '1', '1');
-INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, '800', '250', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, '500', '250', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', '0', '800', '500', '2', '800', '500', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '2', null, null, '568.4', '402', '1', '500', '200', '1', '126', '22', '634', '89', '50', '50', '50', '50', '5', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2', '1', '1');
+INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, null, '930', '530', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, null, '421.2', '338', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
+INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', null, '0', '800', '530', '2', '800', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('5', null, null, 'Shopkeeper', '2', '0', null, '600', '530', '2', '600', '530', '1', '0', '1', '0', '0', '42', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('6', null, null, 'Vending Machine', '2', '1', null, '500', '530', '2', '500', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for `character_equipped`
@@ -220,6 +225,7 @@ CREATE TABLE `character_template` (
   `alliance_id` tinyint(3) unsigned NOT NULL,
   `name` varchar(50) NOT NULL DEFAULT 'New NPC',
   `ai` varchar(255) DEFAULT NULL,
+  `shop_id` smallint(5) unsigned DEFAULT NULL,
   `body_id` smallint(5) unsigned NOT NULL DEFAULT '1',
   `respawn` smallint(5) unsigned NOT NULL DEFAULT '5',
   `level` tinyint(3) unsigned NOT NULL DEFAULT '1',
@@ -248,14 +254,16 @@ CREATE TABLE `character_template` (
   `ws` tinyint(3) unsigned NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `alliance_id` (`alliance_id`),
+  KEY `shop_id` (`shop_id`),
+  CONSTRAINT `character_template_ibfk_3` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_template_ibfk_2` FOREIGN KEY (`alliance_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of character_template
 -- ----------------------------
-INSERT INTO `character_template` VALUES ('0', '0', 'User Template', null, '1', '5', '1', '0', '0', '0', '0', '50', '50', '0', '1', '2', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
-INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', '1', '2', '0', '0', '0', '5', '5', '5', '5', '0', '0', '0', '0', '1', '0', '1', '1', '0', '0', '1', '0', '0', '0', '1', '0', '0');
+INSERT INTO `character_template` VALUES ('0', '0', 'User Template', null, null, '1', '5', '1', '0', '0', '0', '0', '50', '50', '0', '1', '2', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', null, '1', '2', '0', '0', '0', '5', '5', '5', '5', '0', '0', '0', '0', '1', '0', '1', '1', '0', '0', '1', '0', '0', '0', '1', '0', '0');
 
 -- ----------------------------
 -- Table structure for `character_template_equipped`
@@ -480,7 +488,7 @@ CREATE TABLE `server_time` (
 -- ----------------------------
 -- Records of server_time
 -- ----------------------------
-INSERT INTO `server_time` VALUES ('2009-09-17 11:28:37');
+INSERT INTO `server_time` VALUES ('2009-09-17 14:40:00');
 
 -- ----------------------------
 -- Table structure for `shop`

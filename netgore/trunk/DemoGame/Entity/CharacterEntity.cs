@@ -33,18 +33,25 @@ namespace DemoGame
         /// <summary>
         /// Gets if the character meets the requirements allowing them to jump.
         /// </summary>
+        [Browsable(false)]
         public bool CanJump
         {
             get { return OnGround; }
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
-        /// has a chat dialog.
+        /// When overridden in the derived class, gets or protected sets if the CharacterEntity has a chat dialog.
         /// </summary>
         [SyncValue("HasChatDialog")]
         [Browsable(false)]
         public abstract bool HasChatDialog { get; protected set; }
+
+        /// <summary>
+        /// When overridden in the derived class, gets or protected sets if the CharacterEntity has a shop.
+        /// </summary>
+        [SyncValue("HasShop")]
+        [Browsable(false)]
+        public abstract bool HasShop { get; protected set; }
 
         /// <summary>
         /// Gets the direction the character is currently facing.
@@ -57,6 +64,7 @@ namespace DemoGame
         /// <summary>
         /// Gets if the character is moving left or right.
         /// </summary>
+        [Browsable(false)]
         public bool IsMoving
         {
             get { return Velocity.X != 0; }
@@ -65,6 +73,7 @@ namespace DemoGame
         /// <summary>
         /// Gets if the character is moving to the left.
         /// </summary>
+        [Browsable(false)]
         public bool IsMovingLeft
         {
             get { return Velocity.X < 0; }
@@ -73,6 +82,7 @@ namespace DemoGame
         /// <summary>
         /// Gets if the character is moving to the right.
         /// </summary>
+        [Browsable(false)]
         public bool IsMovingRight
         {
             get { return Velocity.X > 0; }

@@ -279,12 +279,25 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
-        /// has a chat dialog.
+        /// When overridden in the derived class, gets if the CharacterEntity has a chat dialog. Do not use the setter
+        /// on this property.
         /// </summary>
         public override bool HasChatDialog
         {
             get { return ChatDialog != null; }
+            protected set { throw new NotSupportedException("This value should never be set directly in the Server."); }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets if the CharacterEntity has a shop. Do not use the setter
+        /// on this property.
+        /// </summary>
+        public override bool HasShop
+        {
+            get
+            {
+                return Shop != null;
+            }
             protected set { throw new NotSupportedException("This value should never be set directly in the Server."); }
         }
 

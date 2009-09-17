@@ -109,13 +109,17 @@ namespace DemoGame.Server
             }
 
             // HACK: This is just for testing the persistent NPCs
+#pragma warning disable 168
             NPC a = new NPC(this, new CharacterID(2));
-            NPC b = new NPC(this, new CharacterID(3));
-
             a.SetAI("testAI");
+
+            NPC b = new NPC(this, new CharacterID(3));
             b.SetAI("testAI");
 
             NPC talkingGuy = new NPC(this, new CharacterID(4));
+            NPC shopkeeper = new NPC(this, new CharacterID(5));
+            NPC vendingMachine = new NPC(this, new CharacterID(6));
+#pragma warning restore 168
 #endif
         }
 
