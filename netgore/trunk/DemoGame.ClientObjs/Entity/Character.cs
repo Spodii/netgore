@@ -8,13 +8,14 @@ using NetGore.Graphics;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Represents a Character on the Client.
+    /// Represents a single Character on the Client.
     /// </summary>
     public class Character : CharacterEntity, IGetTime, IDrawableEntity
     {
         readonly EntityInterpolator _interpolator = new EntityInterpolator();
         string _currSkelSet;
         bool _hasChatDialog;
+        bool _hasShop;
 
         /// <summary>
         /// The time that Draw() was last called.
@@ -41,13 +42,23 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets or sets (protected) if the CharacterEntity
+        /// When overridden in the derived class, gets or protected sets if the CharacterEntity
         /// has a chat dialog. The setter for this method should never be called directly.
         /// </summary>
         public override bool HasChatDialog
         {
             get { return _hasChatDialog; }
             protected set { _hasChatDialog = value; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets or protected sets if the CharacterEntity
+        /// has a shop. The setter for this method should never be called directly.
+        /// </summary>
+        public override bool HasShop
+        {
+            get { return _hasShop; }
+            protected set { _hasShop = value; }
         }
 
         /// <summary>
