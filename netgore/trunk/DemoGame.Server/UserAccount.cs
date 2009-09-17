@@ -371,6 +371,62 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Tries to create a new user account.
+        /// </summary>
+        /// <param name="dbController">The DbController</param>
+        /// <param name="name">The account name.</param>
+        /// <param name="password">The account password.</param>
+        /// <param name="email">The account email address.</param>
+        /// <returns>True if the account was successfully created; otherwise false.</returns>
+        public static bool TryCreateAccount(DbController dbController, string name, string password, string email)
+        {
+            AccountID accountID;
+            return TryCreateAccount(dbController, name, password, email, out accountID);
+        }
+
+        /// <summary>
+        /// Tries to create a new user account.
+        /// </summary>
+        /// <param name="dbController">The DbController</param>
+        /// <param name="name">The account name.</param>
+        /// <param name="password">The account password.</param>
+        /// <param name="email">The account email address.</param>
+        /// <param name="accountID">When this method returns true, contains the AccountID for the created
+        /// <see cref="UserAccount"/>.</param>
+        /// <returns>True if the account was successfully created; otherwise false.</returns>
+        public static bool TryCreateAccount(DbController dbController, string name, string password, string email,
+                                            out AccountID accountID)
+        {
+            AccountIDCreator idCreator = dbController.GetQuery<AccountIDCreator>();
+            accountID = idCreator.GetNext();
+
+            bool success = dbController.GetQuery<CreateAccountQuery>().TryExecute(accountID, name, password, email);
+
+            if (!success)
+            {
+                idCreator.FreeID(accountID);
+                accountID = new AccountID(0);
+            }
+
+            return success;
+        }
+
+        /// <summary>
+        /// Tries to create a new user account.
+        /// </summary>
+        /// <param name="dbController">The DbController</param>
+        /// <param name="accountID">The account ID.</param>
+        /// <param name="name">The account name.</param>
+        /// <param name="password">The account password.</param>
+        /// <param name="email">The account email address.</param>
+        /// <returns>True if the account was successfully created; otherwise false.</returns>
+        public static bool TryCreateAccount(DbController dbController, AccountID accountID, string name, string password,
+                                            string email)
+        {
+            return dbController.GetQuery<CreateAccountQuery>().TryExecute(accountID, name, password, email);
+        }
+
+        /// <summary>
         /// Tries to get the AccountID for the account with the given name.
         /// </summary>
         /// <param name="dbController">The DbController.</param>

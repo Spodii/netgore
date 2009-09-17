@@ -148,11 +148,32 @@ namespace DemoGame.Server
             return null;
         }
 
+        [ConsoleCommand("CreateAccount")]
+        public string CreateAccount(string accountName, string accountPassword, string email)
+        {
+            if (!GameData.AccountName.IsValid(accountName))
+                return "Invalid account name.";
+
+            if (!GameData.AccountPassword.IsValid(accountPassword))
+                return "Invalid account password.";
+
+            if (string.IsNullOrEmpty(email))
+                return "Invalid email address.";
+
+            AccountID accountID;
+            bool success = UserAccount.TryCreateAccount(DbController, accountName, accountPassword, email, out accountID);
+
+            if (success)
+                return string.Format("Created account `{0}` with ID `{1}`.", accountName, accountID);
+            else
+                return "Failed to create new account. Make sure the name is available.";
+        }
+
         [ConsoleCommand("GetAccountID")]
         public string GetAccountID(string accountName)
         {
             if (!GameData.AccountName.IsValid(accountName))
-                return "Invalid account name";
+                return "Invalid account name.";
 
             AccountID accountID;
             if (!UserAccount.TryGetAccountID(DbController, accountName, out accountID))
