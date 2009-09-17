@@ -102,7 +102,7 @@ namespace DemoGame.Server
                 {
                     float x = rand.Next(128, (int)m.Width - 256);
                     float y = rand.Next(128, (int)m.Height - 256);
-                    IItemTemplateTable template = ItemTemplateManager.GetRandomTemplate();
+                    IItemTemplateTable template = _itemTemplateManager.GetRandomTemplate();
 
                     new ItemEntity(template, new Vector2(x, y), 1, m);
                 }
@@ -118,6 +118,8 @@ namespace DemoGame.Server
             NPC talkingGuy = new NPC(this, new CharacterID(4));
 #endif
         }
+
+        static ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
 
         /// <summary>
         /// Adds an IRespawnable to the list of objects that need to respawn.

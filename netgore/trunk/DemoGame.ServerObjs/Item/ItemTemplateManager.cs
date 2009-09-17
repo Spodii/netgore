@@ -1,39 +1,83 @@
 using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
-using log4net;
-using NetGore.Collections;
 using NetGore.Db;
 
 namespace DemoGame.Server
 {
-    public static class ItemTemplateManager
+    /// <summary>
+    /// Manages the <see cref="ItemTemplateManager"/> instances.
+    /// </summary>
+    public class ItemTemplateManager : DbTableDataManager<ItemTemplateID, IItemTemplateTable>
     {
-        static readonly DArray<IItemTemplateTable> _itemTemplates = new DArray<IItemTemplateTable>(32, false);
-
+        static readonly ItemTemplateManager _instance;
         static readonly Random _rnd = new Random();
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        SelectItemTemplateQuery _selectItemTemplateQuery;
 
         /// <summary>
-        /// Gets if this class has been initialized.
+        /// Gets an instance of the <see cref="ItemTemplateManager"/>.
         /// </summary>
-        public static bool IsInitialized { get; private set; }
+        public static ItemTemplateManager Instance
+        {
+            get { return _instance; }
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="ItemTemplateManager"/> class.
+        /// </summary>
+        static ItemTemplateManager()
+        {
+            _instance = new ItemTemplateManager(DbControllerBase.GetInstance());
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemTemplateManager"/> class.
+        /// </summary>
+        /// <param name="dbController">The IDbController.</param>
+        ItemTemplateManager(IDbController dbController) : base(dbController)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, provides a chance to cache frequently used queries instead of
+        /// having to grab the query from the <see cref="IDbController"/> every time. Caching is completely
+        /// optional, but if you do cache any queries, it should be done here. Do not use this method for
+        /// anything other than caching queries from the <paramref name="dbController"/>.
+        /// </summary>
+        /// <param name="dbController">The <see cref="IDbController"/> to grab the queries from.</param>
+        protected override void CacheDbQueries(IDbController dbController)
+        {
+            _selectItemTemplateQuery = dbController.GetQuery<SelectItemTemplateQuery>();
+
+            base.CacheDbQueries(dbController);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets all of the IDs in the table being managed.
+        /// </summary>
+        /// <returns>An IEnumerable of all of the IDs in the table being managed.</returns>
+        protected override IEnumerable<ItemTemplateID> GetIDs()
+        {
+            return DbController.GetQuery<SelectItemTemplateIDsQuery>().Execute();
+        }
 
         /// <summary>
         /// Get a random ItemTemplate.
         /// </summary>
         /// <returns>A random ItemTemplate. Will not be null.</returns>
-        public static IItemTemplateTable GetRandomTemplate()
+        public IItemTemplateTable GetRandomTemplate()
         {
+            int max = Length;
+
             IItemTemplateTable template;
             do
             {
-                int i = _rnd.Next(0, _itemTemplates.Count);
-                Debug.Assert(_itemTemplates.CanGet(i));
-                template = _itemTemplates[i];
+                int i = _rnd.Next(0, max);
+                if (!TryGetValue(new ItemTemplateID(i), out template))
+                    template = null;
             }
             while (template == null);
 
@@ -41,43 +85,34 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the IItemTemplateTable with the specified <paramref name="index"/>.
+        /// When overridden in the derived class, converts the <paramref name="value"/> to an int.
         /// </summary>
-        /// <param name="index">The index of the ItemTemplate.</param>
-        /// <returns>The ItemTemplate with the specified <paramref name="index"/>, or null if none found for the index
-        /// or the index is invalid.</returns>
-        public static IItemTemplateTable GetTemplate(ItemTemplateID index)
+        /// <param name="value">The value.</param>
+        /// <returns>The <paramref name="value"/> as an int.</returns>
+        protected override int IDToInt(ItemTemplateID value)
         {
-            if (!_itemTemplates.CanGet((int)index))
-                return null;
-
-            IItemTemplateTable ret = _itemTemplates[(int)index];
-            Debug.Assert(ret.ID == index);
-            return ret;
+            return (int)value;
         }
 
-        public static void Initialize(IDbController dbController)
+        /// <summary>
+        /// When overridden in the derived class, converts the int to a <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The int value.</param>
+        /// <returns>The int as a <paramref name="value"/>.</returns>
+        public override ItemTemplateID IntToID(int value)
         {
-            if (IsInitialized)
-                return;
+            return new ItemTemplateID(value);
+        }
 
-            IsInitialized = true;
-
-            if (dbController == null)
-                throw new ArgumentNullException("dbController");
-
-            // Load the characterID templates
-            var itemTemplates = dbController.GetQuery<SelectItemTemplatesQuery>().Execute();
-            foreach (IItemTemplateTable it in itemTemplates)
-            {
-                _itemTemplates[(int)it.ID] = it;
-
-                if (log.IsDebugEnabled)
-                    log.DebugFormat("Loaded ItemTemplate `{0}`", it);
-            }
-
-            // Trim the DArray
-            _itemTemplates.Trim();
+        /// <summary>
+        /// When overridden in the derived class, loads an item from the database.
+        /// </summary>
+        /// <param name="id">The ID of the item to load.</param>
+        /// <returns>The item loaded from the database.</returns>
+        protected override IItemTemplateTable LoadItem(ItemTemplateID id)
+        {
+            IItemTemplateTable v = _selectItemTemplateQuery.Execute(id);
+            return v;
         }
     }
 }

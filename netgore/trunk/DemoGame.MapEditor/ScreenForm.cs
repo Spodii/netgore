@@ -899,7 +899,6 @@ namespace DemoGame.MapEditor
             // Read the database connection
             DBConnectionSettings settings = new DBConnectionSettings();
             _dbController = new DbController(settings.SqlConnectionString());
-            ItemTemplateManager.Initialize(DbController);
 
             // Create the engine objects 
             _content = new ContentManager(GameScreen.Services, ContentPaths.Build.Root);
