@@ -75,7 +75,7 @@ namespace DemoGame.Server
             Load(characterID);
 
             // Ensure the correct Alliance is being used
-            Alliance = AllianceManager.GetAlliance("user");
+            Alliance = AllianceManager["user"];
 
             // Attach to some events
             OnKillCharacter += User_OnKillCharacter;

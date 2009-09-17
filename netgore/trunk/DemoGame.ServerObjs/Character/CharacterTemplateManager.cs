@@ -15,6 +15,7 @@ namespace DemoGame.Server
     /// </summary>
     public static class CharacterTemplateManager
     {
+        static readonly AllianceManager _allianceManager = AllianceManager.Instance;
         static readonly DArray<CharacterTemplate> _templates = new DArray<CharacterTemplate>(false);
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static IDbController _dbController;
@@ -64,8 +65,6 @@ namespace DemoGame.Server
             if (dbController == null)
                 throw new ArgumentNullException("dbController");
 
-            if (!AllianceManager.IsInitialized)
-                AllianceManager.Initialize(dbController);
             if (!ItemTemplateManager.IsInitialized)
                 ItemTemplateManager.Initialize(dbController);
 
@@ -94,7 +93,7 @@ namespace DemoGame.Server
             Debug.Assert(itemValues.All(x => id == x.CharacterTemplateID));
             Debug.Assert(equippedValues.All(x => id == x.CharacterTemplateID));
 
-            Alliance alliance = AllianceManager.GetAlliance(v.AllianceID);
+            Alliance alliance = _allianceManager[v.AllianceID];
             var items =
                 itemValues.Select(
                     x =>

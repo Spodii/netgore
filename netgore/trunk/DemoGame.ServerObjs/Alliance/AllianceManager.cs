@@ -11,6 +11,121 @@ using NetGore.Db;
 
 namespace DemoGame.Server
 {
+    public class AllianceManager : DbTableDataManager<AllianceID, Alliance>
+    {
+        /// <summary>
+        /// Dictionary of alliances stored by their name.
+        /// </summary>
+        static readonly Dictionary<string, Alliance> _allianceFromName =
+            new Dictionary<string, Alliance>(StringComparer.OrdinalIgnoreCase);
+
+        SelectAllianceQuery _selectAllianceQuery;
+        SelectAllianceAttackableQuery _selectAllianceAttackableQuery;
+        SelectAllianceHostileQuery _selectAllianceHostileQuery;
+
+        static readonly AllianceManager _instance = new AllianceManager(DbControllerBase.GetInstance());
+        
+        /// <summary>
+        /// Gets the Alliance by the given name.
+        /// </summary>
+        /// <param name="name">Name of the Alliance to get.</param>
+        /// <returns>The Alliance by the given name, or null if none found.</returns>
+        public Alliance this[string name]
+        {
+            get
+            {
+                Alliance ret;
+                if (_allianceFromName.TryGetValue(name, out ret))
+                    return ret;
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets an instance of the <see cref="AllianceManager"/>.
+        /// </summary>
+        public static AllianceManager Instance
+        {
+            get { return _instance; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DbTableDataManager&lt;TID, TItem&gt;"/> class.
+        /// </summary>
+        /// <param name="dbController">The IDbController.</param>
+        AllianceManager(IDbController dbController) : base(dbController)
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, provides a chance to cache frequently used queries instead of
+        /// having to grab the query from the <see cref="IDbController"/> every time. Caching is completely
+        /// optional, but if you do cache any queries, it should be done here. Do not use this method for
+        /// anything other than caching queries from the <paramref name="dbController"/>.
+        /// </summary>
+        /// <param name="dbController">The <see cref="IDbController"/> to grab the queries from.</param>
+        protected override void CacheDbQueries(IDbController dbController)
+        {
+            _selectAllianceQuery = dbController.GetQuery<SelectAllianceQuery>();
+            _selectAllianceAttackableQuery = dbController.GetQuery<SelectAllianceAttackableQuery>();
+            _selectAllianceHostileQuery = dbController.GetQuery<SelectAllianceHostileQuery>();
+
+            base.CacheDbQueries(dbController);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets all of the IDs in the table being managed.
+        /// </summary>
+        /// <returns>An IEnumerable of all of the IDs in the table being managed.</returns>
+        protected override IEnumerable<AllianceID> GetIDs()
+        {
+            return DbController.GetQuery<SelectAllianceIDsQuery>().Execute();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, converts the <paramref name="value"/> to an int.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The <paramref name="value"/> as an int.</returns>
+        protected override int IDToInt(AllianceID value)
+        {
+            return (int)value;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, converts the int to a <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The int value.</param>
+        /// <returns>The int as a <paramref name="value"/>.</returns>
+        public override AllianceID IntToID(int value)
+        {
+            return new AllianceID(value);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, loads an item from the database.
+        /// </summary>
+        /// <param name="id">The ID of the item to load.</param>
+        /// <returns>The item loaded from the database.</returns>
+        protected override Alliance LoadItem(AllianceID id)
+        {
+            AllianceTable values = _selectAllianceQuery.Execute(id);
+            var attackables = _selectAllianceAttackableQuery.Execute(id);
+            var hostiles = _selectAllianceHostileQuery.Execute(id);
+
+            Debug.Assert(id == values.ID);
+            Debug.Assert(attackables.All(x => x.AllianceID == id));
+            Debug.Assert(hostiles.All(x => x.AllianceID == id));
+
+            var ret = new Alliance(id, values.Name, attackables, hostiles);
+
+            _allianceFromName.Add(ret.Name, ret);
+
+            return ret;
+        }
+    }
+
+    /*
     /// <summary>
     /// Loads and manages a collection of Alliances.
     /// </summary>
@@ -21,11 +136,6 @@ namespace DemoGame.Server
         /// </summary>
         static readonly DArray<Alliance> _alliance = new DArray<Alliance>(false);
 
-        /// <summary>
-        /// Dictionary of alliances stored by their name.
-        /// </summary>
-        static readonly Dictionary<string, Alliance> _allianceFromName =
-            new Dictionary<string, Alliance>(StringComparer.OrdinalIgnoreCase);
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -182,4 +292,5 @@ namespace DemoGame.Server
             return alliance;
         }
     }
+    */
 }

@@ -89,7 +89,7 @@ namespace DemoGame.Server
             if (parent == null)
                 throw new ArgumentNullException("parent");
 
-            Alliance = AllianceManager.GetAlliance("monster");
+            Alliance = AllianceManager["monster"];
 
             Load(characterID);
 
