@@ -1,3 +1,4 @@
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -96,6 +97,20 @@ namespace DemoGame.Server
             User_OnChangeStatPoints(this, StatPoints, StatPoints);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Character.Shop"/>.
+        /// </summary>
+        public override Shop Shop
+        {
+            get { return null; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, lets the Character handle being given items through GiveItem().
+        /// </summary>
+        /// <param name="item">The <see cref="ItemEntity"/> the Character was given.</param>
+        /// <param name="amount">The amount of the <paramref name="item"/> the Character was given. Will be greater
+        /// than 0.</param>
         protected override void AfterGiveItem(ItemEntity item, byte amount)
         {
             // If any was added, send the notification
@@ -117,21 +132,46 @@ namespace DemoGame.Server
             return true;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates the CharacterEquipped for this Character.
+        /// </summary>
+        /// <returns>
+        /// The CharacterEquipped for this Character.
+        /// </returns>
         protected override CharacterEquipped CreateEquipped()
         {
             return new UserEquipped(this);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates the CharacterInventory for this Character.
+        /// </summary>
+        /// <returns>
+        /// The CharacterInventory for this Character.
+        /// </returns>
         protected override CharacterInventory CreateInventory()
         {
             return new UserInventory(this);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates the CharacterSPSynchronizer for this Character.
+        /// </summary>
+        /// <returns>
+        /// The CharacterSPSynchronizer for this Character.
+        /// </returns>
         protected override CharacterSPSynchronizer CreateSPSynchronizer()
         {
             return new UserSPSynchronizer(this);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates the CharacterStatsBase for this Character.
+        /// </summary>
+        /// <param name="statCollectionType">The type of StatCollectionType to create.</param>
+        /// <returns>
+        /// The CharacterStatsBase for this Character.
+        /// </returns>
         protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
         {
             return new UserStats(this, statCollectionType);
@@ -165,39 +205,10 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the next free unique User index
+        /// Gives the kill reward.
         /// </summary>
-        /// <param name="conn">Database connection to use to find the unique index</param>
-        /// <returns>Next free unique index</returns>
-        static ushort GetNextUniqueIndex(MySqlConnection conn)
-        {
-            // TODO: This is worthless. Implement a proper ID stack using IDCreatorBase.
-
-            using (MySqlCommand cmd = conn.CreateCommand())
-            {
-                cmd.CommandText = string.Format("SELECT `unique_id` FROM `{0}` ORDER BY `unique_id` ASC", CharacterTable.TableName);
-                using (MySqlDataReader r = cmd.ExecuteReader())
-                {
-                    // No Users, so return the first index
-                    if (!r.HasRows)
-                        return 1;
-
-                    // Loop until we find a gap
-                    ushort lastValue = 1;
-                    while (r.Read())
-                    {
-                        ushort currValue = r.GetUInt16(0);
-                        if (currValue - 1 > lastValue)
-                            return (ushort)(lastValue + 1);
-                        lastValue = currValue;
-                    }
-
-                    // No gap found, return one above the last highest index
-                    return (ushort)(lastValue + 1);
-                }
-            }
-        }
-
+        /// <param name="exp">The exp.</param>
+        /// <param name="cash">The cash.</param>
         protected override void GiveKillReward(uint exp, uint cash)
         {
             base.GiveKillReward(exp, cash);
@@ -254,6 +265,10 @@ namespace DemoGame.Server
             MP = ModStats[StatType.MaxMP];
         }
 
+        /// <summary>
+        /// Makes the Character's level increase. Does not alter the experience in any way since it is assume that,
+        /// when this is called, the Character already has enough experience for the next level.
+        /// </summary>
         protected override void LevelUp()
         {
             base.LevelUp();

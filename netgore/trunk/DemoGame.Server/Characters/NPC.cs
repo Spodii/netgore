@@ -148,6 +148,16 @@ namespace DemoGame.Server
             ChangeMap(map);
         }
 
+        Shop _shop;
+
+        /// <summary>
+        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Character.Shop"/>.
+        /// </summary>
+        public override Shop Shop
+        {
+            get { return _shop; }
+        }
+
         /// <summary>
         /// When overridden in the derived class, checks if enough time has elapesd since the Character died
         /// for them to be able to respawn.
@@ -159,16 +169,35 @@ namespace DemoGame.Server
             return currentTime > _respawnTime;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates the CharacterEquipped for this Character.
+        /// </summary>
+        /// <returns>
+        /// The CharacterEquipped for this Character.
+        /// </returns>
         protected override CharacterEquipped CreateEquipped()
         {
             return new NPCEquipped(this);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates the CharacterInventory for this Character.
+        /// </summary>
+        /// <returns>
+        /// The CharacterInventory for this Character.
+        /// </returns>
         protected override CharacterInventory CreateInventory()
         {
             return new NPCInventory(this);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, creates the CharacterStatsBase for this Character.
+        /// </summary>
+        /// <param name="statCollectionType">The type of StatCollectionType to create.</param>
+        /// <returns>
+        /// The CharacterStatsBase for this Character.
+        /// </returns>
         protected override CharacterStatsBase CreateStats(StatCollectionType statCollectionType)
         {
             return new NPCStats(this, statCollectionType);
@@ -184,6 +213,18 @@ namespace DemoGame.Server
 
             if (v.ChatDialog.HasValue)
                 _chatDialog = NPCChatManager.GetDialog(v.ChatDialog.Value);
+
+            if (v.ShopID.HasValue)
+            {
+                if (!ShopManager.TryGetValue(v.ShopID.Value, out _shop)) ;
+                {
+                    const string errmsg = "Failed to load shop with ID `{0}` for NPC `{1}`. Setting shop as null.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, v.ShopID.Value, this);
+                    Debug.Fail(string.Format(errmsg, v.ShopID.Value, this));
+                    _shop = null;
+                }
+            }
         }
 
         /// <summary>
