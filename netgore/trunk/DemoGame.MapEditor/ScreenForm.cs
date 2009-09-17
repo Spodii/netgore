@@ -899,7 +899,6 @@ namespace DemoGame.MapEditor
             // Read the database connection
             DBConnectionSettings settings = new DBConnectionSettings();
             _dbController = new DbController(settings.SqlConnectionString());
-            AllianceManager.Initialize(DbController);
             ItemTemplateManager.Initialize(DbController);
             CharacterTemplateManager.Initialize(DbController);
 

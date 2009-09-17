@@ -15,7 +15,6 @@ namespace DemoGame.Server
     {
         static readonly ShopManager _instance = new ShopManager(DbControllerBase.GetInstance());
 
-        SelectShopIDsQuery _selectShopIDsQuery;
         SelectShopItemsQuery _selectShopItemsQuery;
         SelectShopQuery _selectShopQuery;
 
@@ -44,7 +43,6 @@ namespace DemoGame.Server
         /// <param name="dbController">The <see cref="IDbController"/> to grab the queries from.</param>
         protected override void CacheDbQueries(IDbController dbController)
         {
-            _selectShopIDsQuery = dbController.GetQuery<SelectShopIDsQuery>();
             _selectShopItemsQuery = dbController.GetQuery<SelectShopItemsQuery>();
             _selectShopQuery = dbController.GetQuery<SelectShopQuery>();
 
@@ -57,7 +55,7 @@ namespace DemoGame.Server
         /// <returns>An IEnumerable of all of the IDs in the table being managed.</returns>
         protected override IEnumerable<ShopID> GetIDs()
         {
-            return _selectShopIDsQuery.Execute();
+            return DbController.GetQuery<SelectShopIDsQuery>().Execute();
         }
 
         /// <summary>

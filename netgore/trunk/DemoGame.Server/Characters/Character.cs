@@ -79,6 +79,13 @@ namespace DemoGame.Server
         /// </summary>
         static readonly Random _rand = new Random();
 
+        static readonly AllianceManager _allianceManager = AllianceManager.Instance;
+
+        /// <summary>
+        /// Gets the <see cref="AllianceManager"/> instance to be used by the <see cref="Character"/>s.
+        /// </summary>
+        protected static AllianceManager AllianceManager { get { return _allianceManager; } }
+
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly CharacterStatsBase _baseStats;
         readonly CharacterEquipped _equipped;
