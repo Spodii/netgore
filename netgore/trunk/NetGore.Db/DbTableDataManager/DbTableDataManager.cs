@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using log4net;
 using NetGore.Collections;
 
 namespace NetGore.Db
@@ -12,6 +14,7 @@ namespace NetGore.Db
     /// <typeparam name="TItem">The Type of item.</typeparam>
     public abstract class DbTableDataManager<TID, TItem>
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly IDbController _dbController;
         readonly DArray<TItem> _items = new DArray<TItem>(32, false);
 
@@ -44,22 +47,22 @@ namespace NetGore.Db
 
             _dbController = dbController;
 
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            CacheDbQueries(_dbController);
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+
             LoadAll();
         }
 
         /// <summary>
-        /// Loads all of the items.
+        /// When overridden in the derived class, provides a chance to cache frequently used queries instead of
+        /// having to grab the query from the <see cref="IDbController"/> every time. Caching is completely
+        /// optional, but if you do cache any queries, it should be done here. Do not use this method for
+        /// anything other than caching queries from the <paramref name="dbController"/>.
         /// </summary>
-        void LoadAll()
+        /// <param name="dbController">The <see cref="IDbController"/> to grab the queries from.</param>
+        protected virtual void CacheDbQueries(IDbController dbController)
         {
-            var ids = GetIDs();
-
-            foreach (var id in ids)
-            {
-                var item = LoadItem(id);
-                int i = IDToInt(id);
-                _items.Insert(i, item);
-            }
         }
 
         /// <summary>
@@ -69,18 +72,38 @@ namespace NetGore.Db
         protected abstract IEnumerable<TID> GetIDs();
 
         /// <summary>
-        /// When overridden in the derived class, converts the <typeparamref name="TID"/> to an int.
+        /// When overridden in the derived class, converts the <paramref name="value"/> to an int.
         /// </summary>
-        /// <param name="value">The <typeparamref name="TID"/> value.</param>
+        /// <param name="value">The value.</param>
         /// <returns>The <paramref name="value"/> as an int.</returns>
         protected abstract int IDToInt(TID value);
 
         /// <summary>
-        /// When overridden in the derived class, converts the int to a <typeparamref name="TID"/>.
+        /// When overridden in the derived class, converts the int to a <paramref name="value"/>.
         /// </summary>
         /// <param name="value">The int value.</param>
         /// <returns>The int as a <paramref name="value"/>.</returns>
         public abstract TID IntToID(int value);
+
+        /// <summary>
+        /// Loads all of the items.
+        /// </summary>
+        void LoadAll()
+        {
+            var ids = GetIDs();
+
+            foreach (TID id in ids)
+            {
+                TItem item = LoadItem(id);
+                int i = IDToInt(id);
+                _items.Insert(i, item);
+
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Loaded item `{0}` at index `{1}`.", item, i);
+            }
+
+            _items.Trim();
+        }
 
         /// <summary>
         /// When overridden in the derived class, loads an item from the database.
