@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Server.DbObjs;
 using log4net;
 using NetGore;
 using NetGore.Network;
@@ -15,6 +16,20 @@ namespace DemoGame.Server
     {
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public static PacketWriter StartShopping(Shop shop)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.StartShopping);
+            pw.Write(shop.CanBuy);
+            pw.Write(shop.Name);
+            shop.WriteShopItems(pw);
+            return pw;
+        }
+
+        public static PacketWriter StopShopping()
+        {
+            return GetWriter(ServerPacketID.StopShopping);
+        }
 
         public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
         {
@@ -203,13 +218,9 @@ namespace DemoGame.Server
             }
 
             PacketWriter pw = GetWriter(ServerPacketID.SendItemInfo);
-            pw.Write(item.Name);
-            pw.Write(item.Description);
-            pw.Write(item.Value);
-            pw.Write(item.HP);
-            pw.Write(item.MP);
-            pw.Write(item.BaseStats);
-            pw.Write(item.ReqStats);
+// ReSharper disable RedundantCast
+            pw.Write((IItemTable)item);
+// ReSharper restore RedundantCast
             return pw;
         }
 

@@ -45,6 +45,8 @@ namespace DemoGame
         SetMap,
         SetUserChar,
         StartChatDialog,
+        StartShopping,
+        StopShopping,
         UpdateEquipmentSlot,
         UpdateStat,
         UpdateVelocityAndPosition,

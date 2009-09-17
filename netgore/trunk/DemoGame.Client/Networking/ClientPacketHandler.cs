@@ -121,6 +121,26 @@ namespace DemoGame.Client
             _pingWatch.Start();
         }
 
+        [MessageHandler((byte)ServerPacketID.StopShopping)]
+        void RecvStopShopping(IIPSocket conn, BitStream r)
+        {
+            // TODO: $$ Stop shopping
+        }
+
+        [MessageHandler((byte)ServerPacketID.StartShopping)]
+        void RecvStartShopping(IIPSocket conn, BitStream r)
+        {
+            bool canBuy = r.ReadBool();
+            string name = r.ReadString();
+            byte itemCount = r.ReadByte();
+
+            ItemInfo[] items = new ItemInfo[itemCount];
+            for (int i = 0; i < itemCount; i++)
+                items[i] = new ItemInfo(r);
+
+            // TODO: $$ Show shopping dialog
+        }
+
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
         void RecvAddStatusEffect(IIPSocket conn, BitStream r)
         {
@@ -316,19 +336,9 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SendItemInfo)]
         void RecvSendItemInfo(IIPSocket conn, BitStream r)
         {
-            string name = r.ReadString();
-            string desc = r.ReadString();
-            int value = r.ReadInt();
-            SPValueType hp = r.ReadSPValueType();
-            SPValueType mp = r.ReadSPValueType();
-
-            ItemInfo itemInfo = ItemInfoTooltip.ItemInfo;
-
-            itemInfo.SetItemInfo(name, desc, value, hp, mp);
-            r.ReadStatCollection(itemInfo.BaseStats);
-            r.ReadStatCollection(itemInfo.ReqStats);
-
-            itemInfo.SetAsUpdated();
+            ItemInfoRequester itemInfoRequester = ItemInfoTooltip.ItemInfoRequester;
+            itemInfoRequester.ItemInfo.Read(r);
+            itemInfoRequester.SetAsUpdated();
         }
 
         [MessageHandler((byte)ServerPacketID.SendMessage)]

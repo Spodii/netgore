@@ -67,6 +67,7 @@ namespace DemoGame.Server
             _conn = conn;
 
             // Create some objects
+            _shoppingState = new UserShoppingState(this);
             _chatState = new UserChatDialogState(this);
             _userStatsBase = (UserStats)BaseStats;
             _userStatsMod = (UserStats)ModStats;
@@ -554,6 +555,83 @@ namespace DemoGame.Server
             // Handle killing a NPC
             if (killedNPC != null)
                 GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
+        }
+
+        readonly UserShoppingState _shoppingState;
+
+        public UserShoppingState ShoppingState { get { return _shoppingState; } }
+
+        public class UserShoppingState
+        {
+            readonly User _user;
+
+            Shop _shoppingAt;
+            Entity _shopOwner;
+            Map _shopMap;
+
+            public User User { get { return _user; } }
+
+            public Shop ShoppingAt { get { return _shoppingAt; } }
+
+            public Entity ShopOwner { get { return _shopOwner; } }
+
+            public UserShoppingState(User user)
+            {
+                if (user == null)
+                    throw new ArgumentNullException("user");
+
+                _user = user;
+            }
+
+            bool IsValidDistance(Entity shopKeeper)
+            {
+                return User.Intersect(shopKeeper);
+            }
+
+            public bool TryStartShopping(Character shopkeeper)
+            {
+                if (shopkeeper == null)
+                    return false;
+
+                return TryStartShopping(shopkeeper.Shop, shopkeeper, shopkeeper.Map);
+            }
+
+            void SendStopShopping()
+            {
+                using (var pw = ServerPacket.StopShopping())
+                    User.Send(pw);
+            }
+
+            void SendStartShopping(Shop shop)
+            {
+                using (var pw = ServerPacket.StartShopping(shop))
+                    User.Send(pw);
+            }
+
+            public bool TryStartShopping(Shop shop, Entity shopkeeper, Map entityMap)
+            {
+                if (shop == null || shopkeeper == null || entityMap == null)
+                    return false;
+
+                if (User.Map != entityMap)
+                    return false;
+
+                if (!IsValidDistance(shopkeeper))
+                    return false;
+
+                // If the User was already shopping somewhere else, stop that shopping
+                if (_shoppingAt != null)
+                    SendStopShopping();
+
+                // Start the shopping
+                _shoppingAt = shop;
+                _shopOwner = shopkeeper;
+                _shopMap = entityMap;
+
+                SendStartShopping(shop);
+
+                return true;
+            }
         }
     }
 }

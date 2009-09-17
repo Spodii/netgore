@@ -142,7 +142,9 @@
     <Compile Include="DbObjs\ShopItemTable.cs" />
     <Compile Include="DbObjs\ShopTable.cs" />
     <Compile Include="DbObjs\UserCharacterTable.cs" />
+    <Compile Include="Item\BitStreamItemInfoExtensions.cs" />
     <Compile Include="Item\ItemChance.cs" />
+    <Compile Include="Item\ItemStats.cs" />
     <Compile Include="Item\ItemTemplateComparer.cs" />
     <Compile Include="Item\ItemID.cs" />
     <Compile Include="Item\ItemIDCreator.cs" />
@@ -211,7 +213,6 @@
     <Compile Include="Shop\ShopID.cs" />
     <Compile Include="Shop\ShopItem.cs" />
     <Compile Include="Shop\ShopItemComparer.cs" />
-    <Compile Include="Shop\ShopItemIndex.cs" />
     <Compile Include="Shop\ShopManager.cs" />
   </ItemGroup>
   <ItemGroup>

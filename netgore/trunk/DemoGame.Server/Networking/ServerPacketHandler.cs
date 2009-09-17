@@ -271,6 +271,23 @@ namespace DemoGame.Server
             conn.SetRemoteUnreliablePort(remotePort);
         }
 
+        [MessageHandler((byte)ClientPacketID.StartShopping)]
+        void RecvStartShopping(IIPSocket conn, BitStream r)
+        {
+            MapEntityIndex entityIndex = r.ReadMapEntityIndex();
+
+            User user;
+            Map map;
+            if (!TryGetMap(conn, out user, out map))
+                return;
+
+            Character shopkeeper = map.GetDynamicEntity<Character>(entityIndex);
+            if (shopkeeper == null)
+                return;
+
+            user.ShoppingState.TryStartShopping(shopkeeper);
+        }
+
         [MessageHandler((byte)ClientPacketID.StartNPCChatDialog)]
         void RecvStartNPCChatDialog(IIPSocket conn, BitStream r)
         {

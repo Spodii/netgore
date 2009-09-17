@@ -5,6 +5,9 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Server.DbObjs;
 using log4net;
+using NetGore.IO;
+using NetGore;
+using DemoGame;
 
 namespace DemoGame.Server
 {
@@ -20,14 +23,6 @@ namespace DemoGame.Server
         readonly ShopItem[] _shopItems;
 
         /// <summary>
-        /// Gets if this shop can buy items instead of just sell them.
-        /// </summary>
-        public bool CanBuy
-        {
-            get { return _canBuy; }
-        }
-
-        /// <summary>
         /// Gets an IEnumerable of the <see cref="ShopItem"/>s in this <see cref="Shop"/>.
         /// </summary>
         public IEnumerable<ShopItem> ShopItems
@@ -35,17 +30,11 @@ namespace DemoGame.Server
             get { return _shopItems; }
         }
 
-        /// <summary>
-        /// Gets an IEnumerable of the <see cref="ShopItem"/>s in this <see cref="Shop"/> along with the index
-        /// of the item in the shop.
-        /// </summary>
-        public IEnumerable<KeyValuePair<ShopItemIndex, ShopItem>> ShopItemsIndexed
+        public void WriteShopItems(BitStream w)
         {
-            get
-            {
-                for (int i = 0; i < _shopItems.Length; i++)
-                    yield return new KeyValuePair<ShopItemIndex, ShopItem>((ShopItemIndex)i, _shopItems[i]);
-            }
+            w.Write((byte)_shopItems.Length);
+            for (int i = 0; i < _shopItems.Length; i++)
+                w.Write(_shopItems[i].ItemTemplate);
         }
 
         /// <summary>
@@ -53,8 +42,8 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="shopTable">The shop table.</param>
         /// <param name="shopItemTables">The shop item tables.</param>
-        public Shop(IShopTable shopTable, IEnumerable<IShopItemTable> shopItemTables) : this(shopTable,
-            shopItemTables.Select(x => new ShopItem(x)))
+        public Shop(IShopTable shopTable, IEnumerable<IShopItemTable> shopItemTables)
+            : this(shopTable, shopItemTables.Select(x => new ShopItem(x)))
         {
         }
 
@@ -80,7 +69,27 @@ namespace DemoGame.Server
             }
         }
 
+        /// <summary>
+        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public override string ToString()
+        {
+            return Name + " [" + ID + "]";
+        }
+
         #region IShopTable Members
+
+        /// <summary>
+        /// Gets if this shop can buy items instead of just sell them.
+        /// </summary>
+        public bool CanBuy
+        {
+            get { return _canBuy; }
+        }
 
         /// <summary>
         /// Gets the ID of the shop.
@@ -109,17 +118,5 @@ namespace DemoGame.Server
         }
 
         #endregion
-
-        /// <summary>
-        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override string ToString()
-        {
-            return Name + " [" + ID + "]";
-        }
     }
 }
