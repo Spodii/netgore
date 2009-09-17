@@ -36,7 +36,7 @@ namespace DemoGame.Server
         /// <returns>The int value of the <paramref name="value"/>.</returns>
         protected override int ToInt(MapSpawnValuesID value)
         {
-            return value;
+            return (int)value;
         }
     }
 }

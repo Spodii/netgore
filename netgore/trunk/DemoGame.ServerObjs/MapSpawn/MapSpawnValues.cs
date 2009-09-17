@@ -155,7 +155,7 @@ namespace DemoGame.Server
 
         static MapSpawnValuesID GetFreeID(DbController dbController)
         {
-            return new MapSpawnValuesID(dbController.GetQuery<MapSpawnValuesIDCreator>().GetNext());
+            return dbController.GetQuery<MapSpawnValuesIDCreator>().GetNext();
         }
 
         /// <summary>

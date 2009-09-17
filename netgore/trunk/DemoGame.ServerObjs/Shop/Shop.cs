@@ -83,14 +83,6 @@ namespace DemoGame.Server
         #region IShopTable Members
 
         /// <summary>
-        /// Gets the value of the database column `can_buy`.
-        /// </summary>
-        byte IShopTable.CanBuy
-        {
-            get { return Convert.ToByte(CanBuy); }
-        }
-
-        /// <summary>
         /// Gets the ID of the shop.
         /// </summary>
         public ShopID ID
