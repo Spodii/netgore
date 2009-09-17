@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
@@ -18,6 +18,8 @@ namespace DemoGame.Server.Queries
             string.Format(
                 "INSERT INTO `{0}` (`id`,`name`,`password`,`email`,`time_created`,`time_last_login`)" +
                 " VALUES (@id,@name,@password,@email,NOW(),NOW())", AccountTable.TableName);
+
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CreateAccountQuery"/> class.
@@ -115,8 +117,6 @@ namespace DemoGame.Server.Queries
 
             return success;
         }
-
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// The arguments for the <see cref="CreateAccountQuery"/> query.

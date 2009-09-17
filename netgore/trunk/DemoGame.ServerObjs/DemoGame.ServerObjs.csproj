@@ -112,6 +112,8 @@
     <Compile Include="DbObjs\DbExtensions\MapSpawnTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\MapTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ServerTimeTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\ShopItemTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\ShopTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\UserCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\GameDataTable.cs" />
     <Compile Include="DbObjs\Interfaces\IAccountTable.cs" />
@@ -130,11 +132,15 @@
     <Compile Include="DbObjs\Interfaces\IItemTemplateTable.cs" />
     <Compile Include="DbObjs\Interfaces\IMapSpawnTable.cs" />
     <Compile Include="DbObjs\Interfaces\IServerTimeTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IShopItemTable.cs" />
+    <Compile Include="DbObjs\Interfaces\IShopTable.cs" />
     <Compile Include="DbObjs\Interfaces\IUserCharacterTable.cs" />
     <Compile Include="DbObjs\ItemTable.cs" />
     <Compile Include="DbObjs\ItemTemplateTable.cs" />
     <Compile Include="DbObjs\MapSpawnTable.cs" />
     <Compile Include="DbObjs\ServerTimeTable.cs" />
+    <Compile Include="DbObjs\ShopItemTable.cs" />
+    <Compile Include="DbObjs\ShopTable.cs" />
     <Compile Include="DbObjs\UserCharacterTable.cs" />
     <Compile Include="Item\ItemChance.cs" />
     <Compile Include="Item\ItemID.cs" />
@@ -198,6 +204,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Queries\QueryAsserts.cs" />
     <Compile Include="Queries\User\UserExistsQuery.cs" />
+    <Compile Include="Shop\ShopID.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DemoGame\DemoGame.csproj">
