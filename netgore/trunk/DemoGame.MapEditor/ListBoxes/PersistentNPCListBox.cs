@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
+using NetGore.Db;
 
 // NOTE: Don't worry, I'll get around to this at some point. -Spodi
 
@@ -13,7 +14,7 @@ namespace DemoGame.MapEditor
     /// </summary>
     public class PersistentNPCListBox : ListBox
     {
-        DbController _dbController;
+        IDbController _dbController;
         MapBase _map;
 
         /// <summary>
@@ -41,7 +42,7 @@ namespace DemoGame.MapEditor
             //    PropertyGrid.SelectedObject = selected.Value;
         }
 
-        public void SetMap(DbController dbController, MapBase map)
+        public void SetMap(IDbController dbController, MapBase map)
         {
             if (map == null)
                 throw new ArgumentNullException("map");

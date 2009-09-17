@@ -8,6 +8,7 @@ using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
+using NetGore.Db;
 using NetGore.Network;
 using NetGore.Scripting;
 
@@ -31,7 +32,7 @@ namespace DemoGame.Server
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly DbController _dbController;
+        readonly IDbController _dbController;
 
         /// <summary>
         /// Stopwatch to track the total elapsed time the game has been running
@@ -68,7 +69,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the DbController used to communicate with the database by this server.
         /// </summary>
-        public DbController DbController
+        public IDbController DbController
         {
             get { return _dbController; }
         }

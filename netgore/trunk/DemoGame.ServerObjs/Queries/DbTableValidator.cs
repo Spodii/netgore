@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Server.DbObjs;
 using log4net;
+using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
@@ -12,7 +13,7 @@ namespace DemoGame.Server.Queries
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        static void EnsureColumnsExist(DbController db, string dbTable, IEnumerable<string> columns)
+        static void EnsureColumnsExist(IDbController db, string dbTable, IEnumerable<string> columns)
         {
             var dbColumns = db.GetTableColumns(dbTable);
             foreach (string column in columns)
@@ -22,7 +23,7 @@ namespace DemoGame.Server.Queries
             }
         }
 
-        static void EnsureStatColumnsExist(DbController db, string dbTable, IEnumerable<StatType> columns,
+        static void EnsureStatColumnsExist(IDbController db, string dbTable, IEnumerable<StatType> columns,
                                            StatCollectionType statCollectionType)
         {
             EnsureColumnsExist(db, dbTable, columns.Select(x => x.GetDatabaseField(statCollectionType)));
@@ -42,7 +43,7 @@ namespace DemoGame.Server.Queries
         /// Performs validation checks on the Character table.
         /// </summary>
         /// <param name="db">The DbController to use for performing the validation checks.</param>
-        static void ValidateCharacterTable(DbController db)
+        static void ValidateCharacterTable(IDbController db)
         {
             EnsureStatColumnsExist(db, CharacterTable.TableName, StatTypeHelper.AllValues, StatCollectionType.Base);
         }
@@ -51,7 +52,7 @@ namespace DemoGame.Server.Queries
         /// Performs validation checks on the CharacterTemplate table.
         /// </summary>
         /// <param name="db">The DbController to use for performing the validation checks.</param>
-        static void ValidateCharacterTemplateTable(DbController db)
+        static void ValidateCharacterTemplateTable(IDbController db)
         {
             EnsureStatColumnsExist(db, CharacterTemplateTable.TableName, StatTypeHelper.AllValues, StatCollectionType.Base);
         }
@@ -60,7 +61,7 @@ namespace DemoGame.Server.Queries
         /// Performs validation checks on the database tables to ensure the schemas are correct.
         /// </summary>
         /// <param name="db">The DbController to use for performing the validation checks.</param>
-        public static void ValidateTables(DbController db)
+        public static void ValidateTables(IDbController db)
         {
             ValidateCharacterTable(db);
             ValidateCharacterTemplateTable(db);

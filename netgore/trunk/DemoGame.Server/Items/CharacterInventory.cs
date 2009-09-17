@@ -5,6 +5,7 @@ using System.Reflection;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
@@ -28,9 +29,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the DbController used by this CharacterInventory.
+        /// Gets the <see cref="IDbController"/> used by this CharacterInventory.
         /// </summary>
-        public DbController DbController
+        public IDbController DbController
         {
             get { return Character.DbController; }
         }

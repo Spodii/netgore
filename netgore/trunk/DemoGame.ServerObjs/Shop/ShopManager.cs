@@ -7,9 +7,26 @@ using System.Text;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore.Collections;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
+    /*
+    public class ShopManager : DbTableDataManager<ShopID, Shop>
+    {
+        static readonly ShopManager _instance = new ShopManager(DbControllerBase.GetInstance());
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShopManager"/> class.
+        /// </summary>
+        /// <param name="dbController">The IDbController.</param>
+        ShopManager(IDbController dbController)
+            : base(dbController)
+        {
+        }
+    }
+    */
+
     public static class ShopManager
     {
         static readonly DArray<Shop> _shops = new DArray<Shop>(32, false);
@@ -30,7 +47,7 @@ namespace DemoGame.Server
             return ret;
         }
 
-        public static void Initialize(DbController dbController)
+        public static void Initialize(IDbController dbController)
         {
             if (IsInitialized)
                 return;

@@ -6,6 +6,7 @@ using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
@@ -26,7 +27,7 @@ namespace DemoGame.Server
             get { return _character; }
         }
 
-        public DbController DbController
+        public IDbController DbController
         {
             get { return Character.DbController; }
         }

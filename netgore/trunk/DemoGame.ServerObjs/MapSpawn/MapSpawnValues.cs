@@ -8,6 +8,7 @@ using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
@@ -21,16 +22,16 @@ namespace DemoGame.Server
         readonly MapSpawnValuesID _id;
 
         CharacterTemplateID _characterTemplateID;
-        DbController _dbController;
+        IDbController _dbController;
         MapIndex _mapIndex;
         byte _spawnAmount;
         MapSpawnRect _spawnArea;
 
         /// <summary>
-        /// Gets the DbController used to synchronize changes to the values.
+        /// Gets the IDbController used to synchronize changes to the values.
         /// </summary>
         [Browsable(false)]
-        public DbController DbController
+        public IDbController DbController
         {
             get { return _dbController; }
         }
@@ -88,10 +89,10 @@ namespace DemoGame.Server
         /// <summary>
         /// MapSpawnValues constructor.
         /// </summary>
-        /// <param name="dbController">The DbController used to synchronize changes to the values.</param>
+        /// <param name="dbController">The IDbController used to synchronize changes to the values.</param>
         /// <param name="mapIndex">The index of the Map that these values are for.</param>
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
-        public MapSpawnValues(DbController dbController, MapIndex mapIndex, CharacterTemplateID characterTemplateID)
+        public MapSpawnValues(IDbController dbController, MapIndex mapIndex, CharacterTemplateID characterTemplateID)
             : this(
                 dbController, GetFreeID(dbController), mapIndex, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
         {
@@ -101,9 +102,9 @@ namespace DemoGame.Server
         /// <summary>
         /// MapSpawnValues constructor.
         /// </summary>
-        /// <param name="dbController">The DbController used to synchronize changes to the values.</param>
+        /// <param name="dbController">The IDbController used to synchronize changes to the values.</param>
         /// <param name="v">The IMapSpawnTable containing the values to use.</param>
-        MapSpawnValues(DbController dbController, IMapSpawnTable v)
+        MapSpawnValues(IDbController dbController, IMapSpawnTable v)
             : this(dbController, v.ID, v.MapID, v.CharacterTemplateID, v.Amount, new MapSpawnRect(v))
         {
         }
@@ -117,7 +118,7 @@ namespace DemoGame.Server
         /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
         /// <param name="spawnAmount">The maximum number of Characters that will be spawned by this MapSpawnValues.</param>
         /// <param name="spawnRect">The area on the map the spawning will take place at.</param>
-        MapSpawnValues(DbController dbController, MapSpawnValuesID id, MapIndex mapIndex, CharacterTemplateID characterTemplateID,
+        MapSpawnValues(IDbController dbController, MapSpawnValuesID id, MapIndex mapIndex, CharacterTemplateID characterTemplateID,
                        byte spawnAmount, MapSpawnRect spawnRect)
         {
             _dbController = dbController;
@@ -153,7 +154,7 @@ namespace DemoGame.Server
             _dbController = null;
         }
 
-        static MapSpawnValuesID GetFreeID(DbController dbController)
+        static MapSpawnValuesID GetFreeID(IDbController dbController)
         {
             return dbController.GetQuery<MapSpawnValuesIDCreator>().GetNext();
         }
@@ -164,7 +165,7 @@ namespace DemoGame.Server
         /// <param name="dbController">DbController used to communicate with the database.</param>
         /// <param name="id">ID of the MapSpawnValues to load.</param>
         /// <returns>The MapSpawnValues with ID <paramref name="id"/>.</returns>
-        public static MapSpawnValues Load(DbController dbController, MapSpawnValuesID id)
+        public static MapSpawnValues Load(IDbController dbController, MapSpawnValuesID id)
         {
             IMapSpawnTable values = dbController.GetQuery<SelectMapSpawnQuery>().Execute(id);
             Debug.Assert(id == values.ID);
@@ -177,7 +178,7 @@ namespace DemoGame.Server
         /// <param name="dbController">DbController used to communicate with the database.</param>
         /// <param name="mapIndex">Index of the map to load the MapSpawnValues for.</param>
         /// <returns>An IEnumerable of all of the MapSpawnValues for the given <paramref name="mapIndex"/>.</returns>
-        public static IEnumerable<MapSpawnValues> Load(DbController dbController, MapIndex mapIndex)
+        public static IEnumerable<MapSpawnValues> Load(IDbController dbController, MapIndex mapIndex)
         {
             var ret = new List<MapSpawnValues>();
             var queryValues = dbController.GetQuery<SelectMapSpawnsOnMapQuery>().Execute(mapIndex);

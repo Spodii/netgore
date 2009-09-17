@@ -8,6 +8,7 @@ using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
@@ -23,7 +24,7 @@ namespace DemoGame.Server
     public class ItemEntity : ItemEntityBase, IItemTable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        static DbController _dbController;
+        static IDbController _dbController;
 
         readonly ItemStats _baseStats;
         readonly ItemID _id;
@@ -260,7 +261,7 @@ namespace DemoGame.Server
         /// before any ItemEntity is created.
         /// </summary>
         /// <param name="dbController">DbController used to communicate with the database for characterID data.</param>
-        public static void Initialize(DbController dbController)
+        public static void Initialize(IDbController dbController)
         {
             if (dbController == null)
                 throw new ArgumentNullException("dbController");

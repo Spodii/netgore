@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Server.Queries;
 using log4net;
+using NetGore.Db;
 
 namespace DemoGame.Server
 {
@@ -11,7 +12,7 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly Server _server;
 
-        DbController DbController
+        IDbController DbController
         {
             get { return _server.DbController; }
         }

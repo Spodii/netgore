@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
 using DemoGame.Server;
+using NetGore.Db;
 using NetGore.EditorTools;
 
 namespace DemoGame.MapEditor
@@ -13,7 +14,7 @@ namespace DemoGame.MapEditor
     /// </summary>
     public class NPCSpawnsListBox : ListBox
     {
-        DbController _dbController;
+        IDbController _dbController;
         MapBase _map;
 
         [Description("The PropertyGrid to display the property values for the selected characterID in this NPCSpawnsListBox.")]
@@ -105,7 +106,7 @@ namespace DemoGame.MapEditor
             Items.AddRange(asArray);
         }
 
-        public void SetMap(DbController dbController, MapBase map)
+        public void SetMap(IDbController dbController, MapBase map)
         {
             if (map == null)
                 throw new ArgumentNullException("map");

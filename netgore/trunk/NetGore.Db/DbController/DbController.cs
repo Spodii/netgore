@@ -5,20 +5,18 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Db;
-using NetGore.Db.MySql;
 
-namespace DemoGame.Server
+namespace NetGore.Db
 {
     /// <summary>
     /// Provides an interface between all objects and all the database handling methods.
     /// </summary>
-    public class DbController : IDisposable
+    public abstract class DbControllerBase : IDbController
     {
-        static readonly List<DbController> _instances = new List<DbController>();
+        static readonly List<DbControllerBase> _instances = new List<DbControllerBase>();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly DbConnectionPool _connectionPool;
@@ -27,10 +25,19 @@ namespace DemoGame.Server
         bool _disposed;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DbController"/> class.
+        /// When overridden in the derived class, creates a DbConnectionPool for this DbController.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
-        public DbController(string connectionString)
+        /// <returns>
+        /// A DbConnectionPool for this DbController.
+        /// </returns>
+        protected abstract DbConnectionPool CreateConnectionPool(string connectionString);
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DbControllerBase"/> class.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        protected DbControllerBase(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
                 throw new ArgumentNullException("connectionString");
@@ -38,7 +45,9 @@ namespace DemoGame.Server
             // Create the connection pool
             try
             {
-                _connectionPool = new MySqlDbConnectionPool(connectionString);
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
+                _connectionPool = CreateConnectionPool(connectionString);
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
             catch (Exception ex)
             {
@@ -91,7 +100,7 @@ namespace DemoGame.Server
         /// Gets an instance of the DbController. A DbController must have already been constructed for this to work.
         /// </summary>
         /// <returns>An instance of the DbController.</returns>
-        public static DbController GetInstance()
+        public static DbControllerBase GetInstance()
         {
             lock (_instances)
             {
