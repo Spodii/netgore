@@ -11,6 +11,10 @@ using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 
+// TODO: $$ Fix the tooltip shit to not suck so hard so I can actually use it for the shops
+// TODO: $$ Buy items from shop when clicking
+// TODO: $$ If shop window is open, and CanBuy == true, sell items instead of dropping
+
 namespace DemoGame.Client.Controls
 {
     class ShopForm : Form, IRestorableSettings
