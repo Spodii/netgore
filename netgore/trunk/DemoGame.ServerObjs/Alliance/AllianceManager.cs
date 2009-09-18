@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
-using log4net;
-using NetGore.Collections;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -22,18 +19,18 @@ namespace DemoGame.Server
         static readonly Dictionary<string, Alliance> _allianceFromName =
             new Dictionary<string, Alliance>(StringComparer.OrdinalIgnoreCase);
 
-        SelectAllianceQuery _selectAllianceQuery;
-        SelectAllianceAttackableQuery _selectAllianceAttackableQuery;
-        SelectAllianceHostileQuery _selectAllianceHostileQuery;
-
         static readonly AllianceManager _instance;
 
+        SelectAllianceAttackableQuery _selectAllianceAttackableQuery;
+        SelectAllianceHostileQuery _selectAllianceHostileQuery;
+        SelectAllianceQuery _selectAllianceQuery;
+
         /// <summary>
-        /// Initializes the <see cref="AllianceManager"/> class.
+        /// Gets an instance of the <see cref="AllianceManager"/>.
         /// </summary>
-        static AllianceManager()
+        public static AllianceManager Instance
         {
-            _instance = new AllianceManager(DbControllerBase.GetInstance());
+            get { return _instance; }
         }
 
         /// <summary>
@@ -53,11 +50,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets an instance of the <see cref="AllianceManager"/>.
+        /// Initializes the <see cref="AllianceManager"/> class.
         /// </summary>
-        public static AllianceManager Instance
+        static AllianceManager()
         {
-            get { return _instance; }
+            _instance = new AllianceManager(DbControllerBase.GetInstance());
         }
 
         /// <summary>
@@ -128,7 +125,7 @@ namespace DemoGame.Server
             Debug.Assert(attackables.All(x => x.AllianceID == id));
             Debug.Assert(hostiles.All(x => x.AllianceID == id));
 
-            var ret = new Alliance(id, values.Name, attackables, hostiles);
+            Alliance ret = new Alliance(id, values.Name, attackables, hostiles);
 
             _allianceFromName.Add(ret.Name, ret);
 

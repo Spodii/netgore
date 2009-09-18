@@ -14,6 +14,7 @@ namespace DemoGame.Server
     /// </summary>
     public class NPCSpawner
     {
+        static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
         static readonly Random _rnd = new Random();
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -55,8 +56,6 @@ namespace DemoGame.Server
         {
             get { return _map; }
         }
-
-        static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
 
         /// <summary>
         /// NPCSpawner constructor.

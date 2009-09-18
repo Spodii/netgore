@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,8 +6,6 @@ using System.Reflection;
 using DemoGame.Server.DbObjs;
 using log4net;
 using NetGore.IO;
-using NetGore;
-using DemoGame;
 
 namespace DemoGame.Server
 {
@@ -28,13 +26,6 @@ namespace DemoGame.Server
         public IEnumerable<ShopItem> ShopItems
         {
             get { return _shopItems; }
-        }
-
-        public void WriteShopItems(BitStream w)
-        {
-            w.Write((byte)_shopItems.Length);
-            for (int i = 0; i < _shopItems.Length; i++)
-                w.Write(_shopItems[i].ItemTemplate);
         }
 
         /// <summary>
@@ -79,6 +70,15 @@ namespace DemoGame.Server
         public override string ToString()
         {
             return Name + " [" + ID + "]";
+        }
+
+        public void WriteShopItems(BitStream w)
+        {
+            w.Write((byte)_shopItems.Length);
+            for (int i = 0; i < _shopItems.Length; i++)
+            {
+                w.Write(_shopItems[i].ItemTemplate);
+            }
         }
 
         #region IShopTable Members

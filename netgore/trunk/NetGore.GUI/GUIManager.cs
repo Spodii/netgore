@@ -466,7 +466,7 @@ namespace NetGore.Graphics.GUI
             // Crawl backwards through each child control until we find one that also contains the point
             foreach (Control child in root.Controls.Reverse())
             {
-                var c = GetControlAtPoint(point, child);
+                Control c = GetControlAtPoint(point, child);
                 if (c != null)
                     return c;
             }

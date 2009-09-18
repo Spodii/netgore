@@ -48,7 +48,7 @@ namespace DemoGame.Client
 
             // TODO: Display requirements
 
-            var itemInfo = ItemInfoRequester.ItemInfo;
+            ItemInfo itemInfo = ItemInfoRequester.ItemInfo;
 
             // Get all the non-zero stats and count them
             var nonZeroStats = ItemInfoRequester.ItemInfo.BaseStats.Where(stat => stat.Value != 0);

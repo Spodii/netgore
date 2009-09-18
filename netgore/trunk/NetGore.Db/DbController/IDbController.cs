@@ -1,7 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NetGore.Db
 {
@@ -12,13 +11,6 @@ namespace NetGore.Db
     public interface IDbController : IDisposable
     {
         /// <summary>
-        /// Gets a query that was marked with the attribute DbControllerQueryAttribute.
-        /// </summary>
-        /// <typeparam name="T">The Type of query.</typeparam>
-        /// <returns>The query instance of type <typeparamref name="T"/>.</returns>
-        T GetQuery<T>();
-
-        /// <summary>
         /// Gets the name of the table and column that reference a the given primary key.
         /// </summary>
         /// <param name="database">Database of the <paramref name="table"/>.</param>
@@ -26,6 +18,13 @@ namespace NetGore.Db
         /// <param name="column">The column of the primary key.</param>
         /// <returns>An IEnumerable of the name of the tables and columns that reference a the given primary key.</returns>
         IEnumerable<TableColumnPair> GetPrimaryKeyReferences(string database, string table, string column);
+
+        /// <summary>
+        /// Gets a query that was marked with the attribute DbControllerQueryAttribute.
+        /// </summary>
+        /// <typeparam name="T">The Type of query.</typeparam>
+        /// <returns>The query instance of type <typeparamref name="T"/>.</returns>
+        T GetQuery<T>();
 
         /// <summary>
         /// Finds all of the column names in the given <paramref name="table"/>.

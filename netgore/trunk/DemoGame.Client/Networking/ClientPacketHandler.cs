@@ -121,28 +121,6 @@ namespace DemoGame.Client
             _pingWatch.Start();
         }
 
-        [MessageHandler((byte)ServerPacketID.StopShopping)]
-        void RecvStopShopping(IIPSocket conn, BitStream r)
-        {
-            // TODO: $$ Stop shopping
-        }
-
-        [MessageHandler((byte)ServerPacketID.StartShopping)]
-        void RecvStartShopping(IIPSocket conn, BitStream r)
-        {
-            bool canBuy = r.ReadBool();
-            string name = r.ReadString();
-            byte itemCount = r.ReadByte();
-
-            ItemInfo[] items = new ItemInfo[itemCount];
-            for (int i = 0; i < itemCount; i++)
-                items[i] = new ItemInfo(r);
-
-            ShopInfo shopInfo = new ShopInfo(name, canBuy, items);
-
-            GameplayScreen.ShopForm.DisplayShop(shopInfo);
-        }
-
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
         void RecvAddStatusEffect(IIPSocket conn, BitStream r)
         {
@@ -496,6 +474,30 @@ namespace DemoGame.Client
 
             NPCChatDialogBase dialog = NPCChatManager.GetDialog(dialogIndex);
             GameplayScreen.ChatDialogForm.StartDialog(dialog);
+        }
+
+        [MessageHandler((byte)ServerPacketID.StartShopping)]
+        void RecvStartShopping(IIPSocket conn, BitStream r)
+        {
+            bool canBuy = r.ReadBool();
+            string name = r.ReadString();
+            byte itemCount = r.ReadByte();
+
+            var items = new ItemInfo[itemCount];
+            for (int i = 0; i < itemCount; i++)
+            {
+                items[i] = new ItemInfo(r);
+            }
+
+            ShopInfo shopInfo = new ShopInfo(name, canBuy, items);
+
+            GameplayScreen.ShopForm.DisplayShop(shopInfo);
+        }
+
+        [MessageHandler((byte)ServerPacketID.StopShopping)]
+        void RecvStopShopping(IIPSocket conn, BitStream r)
+        {
+            // TODO: $$ Stop shopping
         }
 
         [MessageHandler((byte)ServerPacketID.UpdateEquipmentSlot)]

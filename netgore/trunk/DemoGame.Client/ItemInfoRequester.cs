@@ -14,13 +14,11 @@ namespace DemoGame.Client
     public class ItemInfoRequester
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly ItemInfo _itemInfo = new ItemInfo();
 
         bool _isUpdated;
         int _slot;
         ItemInfoSource _source;
-        readonly ItemInfo _itemInfo = new ItemInfo();
-
-        public ItemInfo ItemInfo { get { return _itemInfo; } }
 
         /// <summary>
         /// Gets if the last item information request has been handled. If false, the values
@@ -29,6 +27,11 @@ namespace DemoGame.Client
         public bool IsUpdated
         {
             get { return _isUpdated; }
+        }
+
+        public ItemInfo ItemInfo
+        {
+            get { return _itemInfo; }
         }
 
         /// <summary>

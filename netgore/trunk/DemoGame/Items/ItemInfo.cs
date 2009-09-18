@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore;
 using NetGore.IO;
 
@@ -11,24 +8,24 @@ namespace DemoGame
     {
         IStatCollection BaseStats { get; }
         string Description { get; }
+        GrhIndex GrhIndex { get; }
         SPValueType HP { get; }
         SPValueType MP { get; }
         string Name { get; }
         IStatCollection ReqStats { get; }
         int Value { get; }
-        GrhIndex GrhIndex { get; }
     }
 
     public class ItemInfo : IItemInfo
     {
-        string _name;
+        IStatCollection _baseStats;
         string _description;
-        int _value;
         GrhIndex _grhIndex;
         SPValueType _hp;
         SPValueType _mp;
-        IStatCollection _baseStats;
+        string _name;
         IStatCollection _reqStats;
+        int _value;
 
         public ItemInfo()
         {
@@ -37,23 +34,6 @@ namespace DemoGame
         public ItemInfo(BitStream r)
         {
             Read(r);
-        }
-
-        public static void Write(BitStream w, string name, string desc, int value, GrhIndex grhIndex, SPValueType hp, SPValueType mp, IStatCollection baseStats, IStatCollection reqStats)
-        {
-            w.Write(name);
-            w.Write(desc);
-            w.Write(value);
-            w.Write(grhIndex);
-            w.Write(hp);
-            w.Write(mp);
-            w.Write(baseStats);
-            w.Write(reqStats);
-        }
-
-        public void Write(BitStream w)
-        {
-            Write(w, Name, Description, Value, GrhIndex, HP, MP, BaseStats, ReqStats);
         }
 
         public void Read(BitStream r)
@@ -72,7 +52,30 @@ namespace DemoGame
             r.ReadStatCollection(_reqStats);
         }
 
-        public GrhIndex GrhIndex { get { return _grhIndex; } }
+        public static void Write(BitStream w, string name, string desc, int value, GrhIndex grhIndex, SPValueType hp,
+                                 SPValueType mp, IStatCollection baseStats, IStatCollection reqStats)
+        {
+            w.Write(name);
+            w.Write(desc);
+            w.Write(value);
+            w.Write(grhIndex);
+            w.Write(hp);
+            w.Write(mp);
+            w.Write(baseStats);
+            w.Write(reqStats);
+        }
+
+        public void Write(BitStream w)
+        {
+            Write(w, Name, Description, Value, GrhIndex, HP, MP, BaseStats, ReqStats);
+        }
+
+        #region IItemInfo Members
+
+        public GrhIndex GrhIndex
+        {
+            get { return _grhIndex; }
+        }
 
         public IStatCollection BaseStats
         {
@@ -108,5 +111,7 @@ namespace DemoGame
         {
             get { return _value; }
         }
+
+        #endregion
     }
 }

@@ -1,30 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace DemoGame.Client
 {
     public class ShopInfo
     {
+        readonly bool _canBuy;
         readonly ItemInfo[] _items;
         readonly string _name;
-        readonly bool _canBuy;
+
+        /// <summary>
+        /// Gets if the shop can buy stuff. If false, the shop can only sell items.
+        /// </summary>
+        public bool CanBuy
+        {
+            get { return _canBuy; }
+        }
 
         /// <summary>
         /// Gets the items in the shop.
         /// </summary>
-        public ItemInfo[] Items { get { return _items; } }
-        
-        /// <summary>
-        /// Gets if the shop can buy stuff. If false, the shop can only sell items.
-        /// </summary>
-        public bool CanBuy { get { return _canBuy; } }
+        public ItemInfo[] Items
+        {
+            get { return _items; }
+        }
 
         /// <summary>
         /// Gets the name of the shop.
         /// </summary>
-        public string Name { get { return _name; } }
+        public string Name
+        {
+            get { return _name; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShopInfo"/> class.

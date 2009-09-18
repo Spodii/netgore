@@ -19,6 +19,7 @@ namespace DemoGame.Server
     /// </summary>
     public class World : WorldBase, IDisposable
     {
+        static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly Stack<IDisposable> _disposeStack = new Stack<IDisposable>(4);
@@ -122,8 +123,6 @@ namespace DemoGame.Server
 #pragma warning restore 168
 #endif
         }
-
-        static ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
 
         /// <summary>
         /// Adds an IRespawnable to the list of objects that need to respawn.

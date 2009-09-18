@@ -78,6 +78,27 @@ namespace DemoGame.Server
             return string.Format("There are {0} characters in account ID {1}.", result, accountID);
         }
 
+        [ConsoleCommand("CreateAccount")]
+        public string CreateAccount(string accountName, string accountPassword, string email)
+        {
+            if (!GameData.AccountName.IsValid(accountName))
+                return "Invalid account name.";
+
+            if (!GameData.AccountPassword.IsValid(accountPassword))
+                return "Invalid account password.";
+
+            if (string.IsNullOrEmpty(email))
+                return "Invalid email address.";
+
+            AccountID accountID;
+            bool success = UserAccount.TryCreateAccount(DbController, accountName, accountPassword, email, out accountID);
+
+            if (success)
+                return string.Format("Created account `{0}` with ID `{1}`.", accountName, accountID);
+            else
+                return "Failed to create new account. Make sure the name is available.";
+        }
+
         public string ExecuteCommand(string commandString)
         {
             string result;
@@ -147,27 +168,6 @@ namespace DemoGame.Server
 
             source = null;
             return null;
-        }
-
-        [ConsoleCommand("CreateAccount")]
-        public string CreateAccount(string accountName, string accountPassword, string email)
-        {
-            if (!GameData.AccountName.IsValid(accountName))
-                return "Invalid account name.";
-
-            if (!GameData.AccountPassword.IsValid(accountPassword))
-                return "Invalid account password.";
-
-            if (string.IsNullOrEmpty(email))
-                return "Invalid email address.";
-
-            AccountID accountID;
-            bool success = UserAccount.TryCreateAccount(DbController, accountName, accountPassword, email, out accountID);
-
-            if (success)
-                return string.Format("Created account `{0}` with ID `{1}`.", accountName, accountID);
-            else
-                return "Failed to create new account. Make sure the name is available.";
         }
 
         [ConsoleCommand("GetAccountID")]
