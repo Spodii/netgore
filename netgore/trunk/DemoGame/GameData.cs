@@ -12,6 +12,11 @@ namespace DemoGame
     public static class GameData
     {
         /// <summary>
+        /// The maximum number of items allowed in a shop
+        /// </summary>
+        public const byte MaxShopItems = 6 * 6; // TODO: Use value on shop loading in server. Update value in database.
+
+        /// <summary>
         /// If a User is allowed to move while they have a chat dialog open with a NPC.
         /// </summary>
         public const bool AllowMovementWhileChattingToNPC = false;

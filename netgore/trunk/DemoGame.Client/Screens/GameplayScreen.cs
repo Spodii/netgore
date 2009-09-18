@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame.Client.Controls;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -101,6 +102,7 @@ namespace DemoGame.Client
 
         InventoryForm _inventoryForm;
         ItemInfoTooltip _itemInfoTooltip;
+        ShopForm _shopForm;
 
         /// <summary>
         /// Time when the user last attacked
@@ -396,6 +398,7 @@ namespace DemoGame.Client
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 
             _inventoryForm = new InventoryForm(ItemInfoTooltip, new Vector2(250, 0), cScreen);
+            _shopForm = new ShopForm(new Vector2(250, 0), cScreen);
 
             _skillsForm = new SkillsForm(new Vector2(100, 0), cScreen);
             _skillsForm.OnUseSkill += SkillsForm_OnUseSkill;
@@ -683,6 +686,8 @@ namespace DemoGame.Client
         {
             if (_disposed)
                 return;
+
+            _disposed = true;
 
             if (_guiSettings != null)
                 _guiSettings.Dispose();

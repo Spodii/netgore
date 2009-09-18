@@ -15,7 +15,7 @@ namespace DemoGame
         /// The maximum size (number of different item sets) of the Inventory. Any slot greater than or equal to
         /// the MaxInventorySize is considered invalid.
         /// </summary>
-        public const int MaxInventorySize = 6 * 6;
+        public const int MaxInventorySize = 6 * 6; // TODO: Move this to GameData, and store the value in the database
     }
 
     /// <summary>

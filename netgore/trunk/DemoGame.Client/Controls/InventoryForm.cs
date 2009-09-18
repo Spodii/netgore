@@ -201,6 +201,7 @@ namespace DemoGame.Client
 
             void DrawShadedText(SpriteBatch sb, string txt, Vector2 pos, Color foreground, Color background)
             {
+                // NOTE: Isn't there an overload or something for shaded text somewhere else?
                 sb.DrawString(GUIManager.Font, txt, pos + new Vector2(1, 0), background);
                 sb.DrawString(GUIManager.Font, txt, pos + new Vector2(0, 1), background);
                 sb.DrawString(GUIManager.Font, txt, pos + new Vector2(-1, 0), background);
