@@ -139,7 +139,8 @@ namespace DemoGame.Client
                 items[i] = new ItemInfo(r);
 
             ShopInfo shopInfo = new ShopInfo(name, canBuy, items);
-            // TODO: $$ Show shopping dialog
+
+            GameplayScreen.ShopForm.DisplayShop(shopInfo);
         }
 
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
