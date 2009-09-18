@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +20,6 @@ namespace NetGore.Db
         readonly DArray<TItem> _items = new DArray<TItem>(32, false);
 
         /// <summary>
-        /// Gets the length of the internal buffer where the greatest item index is equal to the <see cref="Length"/> - 1.
-        /// </summary>
-        public int Length { get { return _items.Length; } }
-
-        /// <summary>
         /// Gets the <see cref="IDbController"/> used by this DbTableDataManager.
         /// </summary>
         public IDbController DbController
@@ -40,6 +35,14 @@ namespace NetGore.Db
         public TItem this[TID id]
         {
             get { return _items[IDToInt(id)]; }
+        }
+
+        /// <summary>
+        /// Gets the length of the internal buffer where the greatest item index is equal to the <see cref="Length"/> - 1.
+        /// </summary>
+        public int Length
+        {
+            get { return _items.Length; }
         }
 
         /// <summary>
@@ -139,6 +142,8 @@ namespace NetGore.Db
             return true;
         }
 
+        #region IEnumerable<TItem> Members
+
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
         /// </summary>
@@ -148,8 +153,10 @@ namespace NetGore.Db
         /// <filterpriority>1</filterpriority>
         public IEnumerator<TItem> GetEnumerator()
         {
-            foreach (var item in _items)
+            foreach (TItem item in _items)
+            {
                 yield return item;
+            }
         }
 
         /// <summary>
@@ -163,5 +170,7 @@ namespace NetGore.Db
         {
             return GetEnumerator();
         }
+
+        #endregion
     }
 }

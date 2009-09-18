@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace DemoGame
 {
@@ -10,8 +7,6 @@ namespace DemoGame
     /// </summary>
     public struct ShopItemIndex
     {
-        readonly byte _value;
-
         /// <summary>
         /// Represents the largest possible value of ShopItemIndex. This field is constant.
         /// </summary>
@@ -21,6 +16,8 @@ namespace DemoGame
         /// Represents the smallest possible value of ShopItemIndex. This field is constant.
         /// </summary>
         public const byte MinValue = byte.MinValue;
+
+        readonly byte _value;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShopItemIndex"/> struct.

@@ -1,8 +1,7 @@
-﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -11,28 +10,26 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectShopItemsQuery : DbQueryReader<ShopID>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `shop_id`=@shopID",
-            ShopItemTable.TableName);
+        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `shop_id`=@shopID", ShopItemTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectShopItemsQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectShopItemsQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectShopItemsQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ContainsColumns(ShopItemTable.DbColumns, "shop_id");
         }
 
         public IEnumerable<IShopItemTable> Execute(ShopID shopID)
         {
-            List<IShopItemTable> ret = new List<IShopItemTable>();
+            var ret = new List<IShopItemTable>();
 
-            using (var r = ExecuteReader(shopID))
+            using (IDataReader r = ExecuteReader(shopID))
             {
                 while (r.Read())
                 {
-                    var tableValues = new ShopItemTable();
+                    ShopItemTable tableValues = new ShopItemTable();
                     tableValues.ReadValues(r);
                     ret.Add(tableValues);
                 }

@@ -1,4 +1,3 @@
-﻿using System;
 using System.Linq;
 using DemoGame.Server.DbObjs;
 
@@ -11,8 +10,16 @@ namespace DemoGame.Server
     {
         static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
 
-        readonly ShopID _shopID;
         readonly IItemTemplateTable _itemTemplate;
+        readonly ShopID _shopID;
+
+        /// <summary>
+        /// Gets the template for this shop item.
+        /// </summary>
+        public IItemTemplateTable ItemTemplate
+        {
+            get { return _itemTemplate; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShopItem"/> class.
@@ -23,11 +30,6 @@ namespace DemoGame.Server
             _shopID = shopItemTable.ShopID;
             _itemTemplate = _itemTemplateManager[shopItemTable.ItemTemplateID];
         }
-
-        /// <summary>
-        /// Gets the template for this shop item.
-        /// </summary>
-        public IItemTemplateTable ItemTemplate { get { return _itemTemplate; } }
 
         #region IShopItemTable Members
 

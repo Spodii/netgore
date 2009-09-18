@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -27,7 +26,10 @@ namespace DemoGame.Client.Controls
 
         ShopInfo _shopInfo;
 
-        public ShopInfo ShopInfo { get { return _shopInfo; } }
+        public ShopInfo ShopInfo
+        {
+            get { return _shopInfo; }
+        }
 
         public ShopForm(Vector2 position, Control parent)
             : base(parent.GUIManager, "Shop", position, new Vector2(200, 200), parent)
@@ -68,27 +70,6 @@ namespace DemoGame.Client.Controls
             _shopInfo = null;
         }
 
-        #region IRestorableSettings Members
-
-        /// <summary>
-        /// Loads the values supplied by the <paramref name="items"/> to reconstruct the settings.
-        /// </summary>
-        /// <param name="items">NodeItems containing the values to restore.</param>
-        public void Load(IDictionary<string, string> items)
-        {
-            Position = new Vector2(items.AsFloat("X", Position.X), items.AsFloat("Y", Position.Y));
-        }
-
-        /// <summary>
-        /// Returns the key and value pairs needed to restore the settings.
-        /// </summary>
-        /// <returns>The key and value pairs needed to restore the settings.</returns>
-        public IEnumerable<NodeItem> Save()
-        {
-            return new NodeItem[] { new NodeItem("X", Position.X), new NodeItem("Y", Position.Y)};
-        }
-
-
         void ShopItemPB_OnMouseEnter(object sender, MouseEventArgs e)
         {
             // TODO: $$ ...
@@ -109,25 +90,45 @@ namespace DemoGame.Client.Controls
             // TODO: $$ ...
         }
 
+        #region IRestorableSettings Members
+
+        /// <summary>
+        /// Loads the values supplied by the <paramref name="items"/> to reconstruct the settings.
+        /// </summary>
+        /// <param name="items">NodeItems containing the values to restore.</param>
+        public void Load(IDictionary<string, string> items)
+        {
+            Position = new Vector2(items.AsFloat("X", Position.X), items.AsFloat("Y", Position.Y));
+        }
+
+        /// <summary>
+        /// Returns the key and value pairs needed to restore the settings.
+        /// </summary>
+        /// <returns>The key and value pairs needed to restore the settings.</returns>
+        public IEnumerable<NodeItem> Save()
+        {
+            return new NodeItem[] { new NodeItem("X", Position.X), new NodeItem("Y", Position.Y) };
+        }
+
         #endregion
 
         class ShopItemPB : PictureBox
         {
-            readonly ShopForm _shopForm;
+            static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
             readonly ShopItemIndex _index;
+            readonly ShopForm _shopForm;
+            Grh _grh;
 
             public ShopItemIndex Index
             {
                 get { return _index; }
             }
 
-            public ShopInfo ShopInfo { get { return _shopForm.ShopInfo; } }
-
             public ItemInfo ItemInfo
             {
                 get
                 {
-                    var shopInfo = ShopInfo;
+                    ShopInfo shopInfo = ShopInfo;
                     if (shopInfo == null)
                         return null;
 
@@ -148,6 +149,11 @@ namespace DemoGame.Client.Controls
                 }
             }
 
+            public ShopInfo ShopInfo
+            {
+                get { return _shopForm.ShopInfo; }
+            }
+
             public ShopItemPB(ShopForm parent, Vector2 pos, ShopItemIndex index)
                 : base(pos, null, new Vector2(_itemWidth, _itemHeight), parent)
             {
@@ -166,14 +172,10 @@ namespace DemoGame.Client.Controls
                 LoadSprite();
             }
 
-            Grh _grh;
-
-            static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
             protected override void DrawControl(SpriteBatch spriteBatch)
             {
                 base.DrawControl(spriteBatch);
-                var itemInfo = ItemInfo;
+                ItemInfo itemInfo = ItemInfo;
 
                 if (itemInfo == null)
                 {

@@ -124,17 +124,17 @@ namespace DemoGame.Client
             return pw;
         }
 
-        public static PacketWriter StartShopping(MapEntityIndex entityIndex)
-        {
-            PacketWriter pw = GetWriter(ClientPacketID.StartShopping);
-            pw.Write(entityIndex);
-            return pw;
-        }
-
         public static PacketWriter StartNPCChatDialog(MapEntityIndex npcIndex)
         {
             PacketWriter pw = GetWriter(ClientPacketID.StartNPCChatDialog);
             pw.Write(npcIndex);
+            return pw;
+        }
+
+        public static PacketWriter StartShopping(MapEntityIndex entityIndex)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.StartShopping);
+            pw.Write(entityIndex);
             return pw;
         }
 

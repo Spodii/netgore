@@ -25,8 +25,6 @@ namespace DemoGame.Client
 
         const string _latencyString = "Latency: {0} ms";
 
-        public ShopForm ShopForm { get { return _shopForm; } }
-
         /// <summary>
         /// Minimum time the user must wait before performing a new attack
         /// </summary>
@@ -42,13 +40,12 @@ namespace DemoGame.Client
         /// </summary>
         const int _minNPCChatRate = 150;
 
-
-        const int _minShopRate = 150;
-
         /// <summary>
         /// Minimum time the user must wait before picking up something
         /// </summary>
         const int _minPickupRate = 150;
+
+        const int _minShopRate = 150;
 
         /// <summary>
         /// Minimum time the user must wait before using something
@@ -104,7 +101,6 @@ namespace DemoGame.Client
 
         InventoryForm _inventoryForm;
         ItemInfoTooltip _itemInfoTooltip;
-        ShopForm _shopForm;
 
         /// <summary>
         /// Time when the user last attacked
@@ -133,12 +129,12 @@ namespace DemoGame.Client
 
         int _lastNPCChatTime;
 
-        int _lastShopTime;
-
         /// <summary>
         /// Time when the user last picked up something
         /// </summary>
         int _lastPickupTime;
+
+        int _lastShopTime;
 
         /// <summary>
         /// Time when the user last used something
@@ -149,6 +145,8 @@ namespace DemoGame.Client
         /// Label used for displaying the latency.
         /// </summary>
         Label _latencyLabel;
+
+        ShopForm _shopForm;
 
         SkillsForm _skillsForm;
 
@@ -205,6 +203,11 @@ namespace DemoGame.Client
         public Map Map
         {
             get { return World.Map; }
+        }
+
+        public ShopForm ShopForm
+        {
+            get { return _shopForm; }
         }
 
         /// <summary>

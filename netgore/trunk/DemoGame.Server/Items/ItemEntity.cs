@@ -23,9 +23,8 @@ namespace DemoGame.Server
     /// </summary>
     public class ItemEntity : ItemEntityBase, IItemTable
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         static readonly IDbController _dbController = DbControllerBase.GetInstance();
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly ItemStats _baseStats;
         readonly ItemID _id;

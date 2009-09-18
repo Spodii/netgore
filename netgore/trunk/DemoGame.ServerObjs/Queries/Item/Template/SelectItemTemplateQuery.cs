@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -11,15 +11,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectItemTemplateQuery : DbQueryReader<ItemTemplateID>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id",
-            ItemTemplateTable.TableName);
+        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", ItemTemplateTable.TableName);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SelectItemTemplateQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public SelectItemTemplateQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectItemTemplateQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
             QueryAsserts.ArePrimaryKeys(ItemTemplateTable.DbKeyColumns, "id");
         }
@@ -28,7 +26,7 @@ namespace DemoGame.Server.Queries
         {
             ItemTemplateTable v = new ItemTemplateTable();
 
-            using (var r = ExecuteReader(id))
+            using (IDataReader r = ExecuteReader(id))
             {
                 if (!r.Read())
                     throw new Exception(string.Format("No ItemTemplate found at ID `{0}`.", id));

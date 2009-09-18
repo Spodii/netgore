@@ -31,6 +31,8 @@ namespace DemoGame.Server
         /// </summary>
         int _respawnTime = 0;
 
+        Shop _shop;
+
         /// <summary>
         /// Gets the NPC's AI. Can be null.
         /// </summary>
@@ -72,6 +74,14 @@ namespace DemoGame.Server
         {
             get { return _respawnSecs; }
             protected set { _respawnSecs = value; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Character.Shop"/>.
+        /// </summary>
+        public override Shop Shop
+        {
+            get { return _shop; }
         }
 
         /// <summary>
@@ -118,7 +128,7 @@ namespace DemoGame.Server
             if (template == null)
                 throw new ArgumentNullException("template");
 
-            var v = template.TemplateTable;
+            ICharacterTemplateTable v = template.TemplateTable;
 
             // Create the AI
             if (!string.IsNullOrEmpty(v.AI))
@@ -146,16 +156,6 @@ namespace DemoGame.Server
             Teleport(position);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
             ChangeMap(map);
-        }
-
-        Shop _shop;
-
-        /// <summary>
-        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Character.Shop"/>.
-        /// </summary>
-        public override Shop Shop
-        {
-            get { return _shop; }
         }
 
         /// <summary>

@@ -5,7 +5,6 @@ using System.Reflection;
 using DemoGame.Server.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
-using MySql.Data.MySqlClient;
 using NetGore;
 using NetGore.IO;
 using NetGore.Network;
@@ -25,6 +24,8 @@ namespace DemoGame.Server
         /// The socket used to communicate with the User.
         /// </summary>
         readonly IIPSocket _conn;
+
+        readonly UserShoppingState _shoppingState;
 
         readonly SocketSendQueue _unreliableBuffer;
         readonly UserInventory _userInventory;
@@ -53,6 +54,19 @@ namespace DemoGame.Server
         public IIPSocket Conn
         {
             get { return _conn; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Character.Shop"/>.
+        /// </summary>
+        public override Shop Shop
+        {
+            get { return null; }
+        }
+
+        public UserShoppingState ShoppingState
+        {
+            get { return _shoppingState; }
         }
 
         /// <summary>
@@ -96,14 +110,6 @@ namespace DemoGame.Server
             User_OnChangeCash(this, Cash, Cash);
             User_OnChangeExp(this, Exp, Exp);
             User_OnChangeStatPoints(this, StatPoints, StatPoints);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets this <see cref="Character"/>'s <see cref="Character.Shop"/>.
-        /// </summary>
-        public override Shop Shop
-        {
-            get { return null; }
         }
 
         /// <summary>
@@ -557,23 +563,28 @@ namespace DemoGame.Server
                 GiveKillReward(killedNPC.GiveExp, killedNPC.GiveCash);
         }
 
-        readonly UserShoppingState _shoppingState;
-
-        public UserShoppingState ShoppingState { get { return _shoppingState; } }
-
         public class UserShoppingState
         {
             readonly User _user;
 
-            Shop _shoppingAt;
-            Entity _shopOwner;
             Map _shopMap;
+            Entity _shopOwner;
+            Shop _shoppingAt;
 
-            public User User { get { return _user; } }
+            public Entity ShopOwner
+            {
+                get { return _shopOwner; }
+            }
 
-            public Shop ShoppingAt { get { return _shoppingAt; } }
+            public Shop ShoppingAt
+            {
+                get { return _shoppingAt; }
+            }
 
-            public Entity ShopOwner { get { return _shopOwner; } }
+            public User User
+            {
+                get { return _user; }
+            }
 
             public UserShoppingState(User user)
             {
@@ -588,24 +599,28 @@ namespace DemoGame.Server
                 return User.Intersect(shopKeeper);
             }
 
+            void SendStartShopping(Shop shop)
+            {
+                using (PacketWriter pw = ServerPacket.StartShopping(shop))
+                {
+                    User.Send(pw);
+                }
+            }
+
+            void SendStopShopping()
+            {
+                using (PacketWriter pw = ServerPacket.StopShopping())
+                {
+                    User.Send(pw);
+                }
+            }
+
             public bool TryStartShopping(Character shopkeeper)
             {
                 if (shopkeeper == null)
                     return false;
 
                 return TryStartShopping(shopkeeper.Shop, shopkeeper, shopkeeper.Map);
-            }
-
-            void SendStopShopping()
-            {
-                using (var pw = ServerPacket.StopShopping())
-                    User.Send(pw);
-            }
-
-            void SendStartShopping(Shop shop)
-            {
-                using (var pw = ServerPacket.StartShopping(shop))
-                    User.Send(pw);
             }
 
             public bool TryStartShopping(Shop shop, Entity shopkeeper, Map entityMap)

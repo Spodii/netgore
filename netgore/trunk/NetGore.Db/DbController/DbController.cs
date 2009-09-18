@@ -6,8 +6,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore;
-using NetGore.Db;
 
 namespace NetGore.Db
 {
@@ -25,15 +23,6 @@ namespace NetGore.Db
         bool _disposed;
 
         /// <summary>
-        /// When overridden in the derived class, creates a DbConnectionPool for this DbController.
-        /// </summary>
-        /// <param name="connectionString">The connection string.</param>
-        /// <returns>
-        /// A DbConnectionPool for this DbController.
-        /// </returns>
-        protected abstract DbConnectionPool CreateConnectionPool(string connectionString);
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="DbControllerBase"/> class.
         /// </summary>
         /// <param name="connectionString">The connection string.</param>
@@ -45,9 +34,9 @@ namespace NetGore.Db
             // Create the connection pool
             try
             {
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+                // ReSharper disable DoNotCallOverridableMethodsInConstructor
                 _connectionPool = CreateConnectionPool(connectionString);
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+                // ReSharper restore DoNotCallOverridableMethodsInConstructor
             }
             catch (Exception ex)
             {
@@ -97,6 +86,15 @@ namespace NetGore.Db
         }
 
         /// <summary>
+        /// When overridden in the derived class, creates a DbConnectionPool for this DbController.
+        /// </summary>
+        /// <param name="connectionString">The connection string.</param>
+        /// <returns>
+        /// A DbConnectionPool for this DbController.
+        /// </returns>
+        protected abstract DbConnectionPool CreateConnectionPool(string connectionString);
+
+        /// <summary>
         /// Gets an instance of the DbController. A DbController must have already been constructed for this to work.
         /// </summary>
         /// <returns>An instance of the DbController.</returns>
@@ -110,6 +108,8 @@ namespace NetGore.Db
                 return _instances[_instances.Count - 1];
             }
         }
+
+        #region IDbController Members
 
         /// <summary>
         /// Gets the name of the table and column that reference a the given primary key.
@@ -172,8 +172,6 @@ namespace NetGore.Db
 
             return ret;
         }
-
-        #region IDisposable Members
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.

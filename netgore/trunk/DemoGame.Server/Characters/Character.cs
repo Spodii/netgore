@@ -294,10 +294,7 @@ namespace DemoGame.Server
         /// </summary>
         public override bool HasShop
         {
-            get
-            {
-                return Shop != null;
-            }
+            get { return Shop != null; }
             protected set { throw new NotSupportedException("This value should never be set directly in the Server."); }
         }
 

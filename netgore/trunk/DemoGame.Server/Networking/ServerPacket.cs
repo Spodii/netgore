@@ -17,20 +17,6 @@ namespace DemoGame.Server
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        public static PacketWriter StartShopping(Shop shop)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.StartShopping);
-            pw.Write(shop.CanBuy);
-            pw.Write(shop.Name);
-            shop.WriteShopItems(pw);
-            return pw;
-        }
-
-        public static PacketWriter StopShopping()
-        {
-            return GetWriter(ServerPacketID.StopShopping);
-        }
-
         public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
         {
             ushort secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
@@ -218,9 +204,9 @@ namespace DemoGame.Server
             }
 
             PacketWriter pw = GetWriter(ServerPacketID.SendItemInfo);
-// ReSharper disable RedundantCast
+            // ReSharper disable RedundantCast
             pw.Write((IItemTable)item);
-// ReSharper restore RedundantCast
+            // ReSharper restore RedundantCast
             return pw;
         }
 
@@ -398,6 +384,20 @@ namespace DemoGame.Server
             pw.Write(npcIndex);
             pw.Write(dialogIndex);
             return pw;
+        }
+
+        public static PacketWriter StartShopping(Shop shop)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.StartShopping);
+            pw.Write(shop.CanBuy);
+            pw.Write(shop.Name);
+            shop.WriteShopItems(pw);
+            return pw;
+        }
+
+        public static PacketWriter StopShopping()
+        {
+            return GetWriter(ServerPacketID.StopShopping);
         }
 
         public static void SynchronizeDynamicEntity(PacketWriter pw, DynamicEntity dynamicEntity)

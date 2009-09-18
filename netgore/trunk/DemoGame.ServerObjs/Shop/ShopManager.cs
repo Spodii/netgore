@@ -1,9 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
-using log4net;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -19,19 +17,19 @@ namespace DemoGame.Server
         SelectShopQuery _selectShopQuery;
 
         /// <summary>
-        /// Initializes the <see cref="ShopManager"/> class.
-        /// </summary>
-        static ShopManager()
-        {
-            _instance = new ShopManager(DbControllerBase.GetInstance());
-        }
-
-        /// <summary>
         /// Gets an instance of the <see cref="ShopManager"/>.
         /// </summary>
         public static ShopManager Instance
         {
             get { return _instance; }
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="ShopManager"/> class.
+        /// </summary>
+        static ShopManager()
+        {
+            _instance = new ShopManager(DbControllerBase.GetInstance());
         }
 
         /// <summary>

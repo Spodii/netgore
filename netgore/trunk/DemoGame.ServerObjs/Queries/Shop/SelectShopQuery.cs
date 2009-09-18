@@ -1,8 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
-using System.Text;
 using DemoGame.Server.DbObjs;
 using NetGore.Db;
 
@@ -11,15 +11,13 @@ namespace DemoGame.Server.Queries
     [DbControllerQuery]
     public class SelectShopQuery : DbQueryReader<ShopID>
     {
-        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id",
-           ShopTable.TableName);
+        static readonly string _queryStr = string.Format("SELECT * FROM `{0}` WHERE `id`=@id", ShopTable.TableName);
 
         /// <summary>
         /// DbQueryReader constructor.
         /// </summary>
         /// <param name="connectionPool">DbConnectionPool to use for creating connections to execute the query on.</param>
-        public SelectShopQuery(DbConnectionPool connectionPool)
-            : base(connectionPool, _queryStr)
+        public SelectShopQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 
@@ -27,7 +25,7 @@ namespace DemoGame.Server.Queries
         {
             ShopTable table;
 
-            using (var r = ExecuteReader(id))
+            using (IDataReader r = ExecuteReader(id))
             {
                 if (!r.Read())
                     throw new Exception(string.Format("No shop with id `{0}` found.", id));

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,6 +17,7 @@ namespace DemoGame.Server
     public class UserAccount : AccountTable, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly List<CharacterID> _characterIDs = new List<CharacterID>();
         readonly IDbController _dbController;
 
         /// <summary>
@@ -26,7 +27,6 @@ namespace DemoGame.Server
 
         readonly IIPSocket _socket;
 
-        readonly List<CharacterID> _characterIDs = new List<CharacterID>();
         User _user;
 
         /// <summary>
