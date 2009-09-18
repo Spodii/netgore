@@ -97,6 +97,7 @@
     <Compile Include="NPCChat\NPCChatResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Map\MapRenderLayer.cs" />
+    <Compile Include="ShopInfo.cs" />
     <Compile Include="Skills\InfoManager.cs" />
     <Compile Include="Skills\SkillInfo.cs" />
     <Compile Include="Skills\StatusEffectInfo.cs" />

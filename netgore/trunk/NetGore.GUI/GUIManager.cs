@@ -456,6 +456,9 @@ namespace NetGore.Graphics.GUI
         /// not even at the given <paramref name="point"/>.</returns>
         static Control GetControlAtPoint(Vector2 point, Control root)
         {
+            if (!root.IsVisible)
+                return null;
+
             // Check that the root contains the point
             if (!root.ContainsPoint(point))
                 return null;
@@ -463,8 +466,9 @@ namespace NetGore.Graphics.GUI
             // Crawl backwards through each child control until we find one that also contains the point
             foreach (Control child in root.Controls.Reverse())
             {
-                if (child.ContainsPoint(point))
-                    return GetControlAtPoint(point, child);
+                var c = GetControlAtPoint(point, child);
+                if (c != null)
+                    return c;
             }
 
             // No child controls contained the point, so we found the deepest control containing the point

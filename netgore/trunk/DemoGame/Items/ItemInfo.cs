@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NetGore;
 using NetGore.IO;
 
 namespace DemoGame
@@ -15,6 +16,7 @@ namespace DemoGame
         string Name { get; }
         IStatCollection ReqStats { get; }
         int Value { get; }
+        GrhIndex GrhIndex { get; }
     }
 
     public class ItemInfo : IItemInfo
@@ -22,6 +24,7 @@ namespace DemoGame
         string _name;
         string _description;
         int _value;
+        GrhIndex _grhIndex;
         SPValueType _hp;
         SPValueType _mp;
         IStatCollection _baseStats;
@@ -36,11 +39,12 @@ namespace DemoGame
             Read(r);
         }
 
-        public static void Write(BitStream w, string name, string desc, int value, SPValueType hp, SPValueType mp, IStatCollection baseStats, IStatCollection reqStats)
+        public static void Write(BitStream w, string name, string desc, int value, GrhIndex grhIndex, SPValueType hp, SPValueType mp, IStatCollection baseStats, IStatCollection reqStats)
         {
             w.Write(name);
             w.Write(desc);
             w.Write(value);
+            w.Write(grhIndex);
             w.Write(hp);
             w.Write(mp);
             w.Write(baseStats);
@@ -49,7 +53,7 @@ namespace DemoGame
 
         public void Write(BitStream w)
         {
-            Write(w, Name, Description, Value, HP, MP, BaseStats, ReqStats);
+            Write(w, Name, Description, Value, GrhIndex, HP, MP, BaseStats, ReqStats);
         }
 
         public void Read(BitStream r)
@@ -57,6 +61,7 @@ namespace DemoGame
             _name = r.ReadString();
             _description = r.ReadString();
             _value = r.ReadInt();
+            _grhIndex = r.ReadGrhIndex();
             _hp = r.ReadSPValueType();
             _mp = r.ReadSPValueType();
 
@@ -66,6 +71,8 @@ namespace DemoGame
             r.ReadStatCollection(_baseStats);
             r.ReadStatCollection(_reqStats);
         }
+
+        public GrhIndex GrhIndex { get { return _grhIndex; } }
 
         public IStatCollection BaseStats
         {

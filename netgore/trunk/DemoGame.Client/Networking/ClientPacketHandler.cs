@@ -138,6 +138,7 @@ namespace DemoGame.Client
             for (int i = 0; i < itemCount; i++)
                 items[i] = new ItemInfo(r);
 
+            ShopInfo shopInfo = new ShopInfo(name, canBuy, items);
             // TODO: $$ Show shopping dialog
         }
 
