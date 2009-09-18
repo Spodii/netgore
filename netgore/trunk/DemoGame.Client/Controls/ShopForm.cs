@@ -130,6 +130,9 @@ namespace DemoGame.Client.Controls
                     if (shopInfo.Items == null)
                         return null;
 
+                    if (Index >= shopInfo.Items.Length)
+                        return null;
+
                     try
                     {
                         return shopInfo.Items[Index];

@@ -25,6 +25,8 @@ namespace DemoGame.Client
 
         const string _latencyString = "Latency: {0} ms";
 
+        public ShopForm ShopForm { get { return _shopForm; } }
+
         /// <summary>
         /// Minimum time the user must wait before performing a new attack
         /// </summary>
