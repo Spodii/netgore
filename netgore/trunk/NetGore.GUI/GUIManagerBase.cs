@@ -81,6 +81,20 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets all of the <see cref="Control"/>s in this <see cref="GUIManagerBase"/>.
+        /// </summary>
+        /// <returns>All of the <see cref="Control"/>s in this <see cref="GUIManagerBase"/>.</returns>
+        public IEnumerable<Control> GetAllControls()
+        {
+            foreach (var c in Controls)
+            {
+                yield return c;
+                foreach (var c2 in c.GetAllChildren())
+                    yield return c2;
+            }
+        }
+
+        /// <summary>
         /// Gets the position of the cursor
         /// </summary>
         public Vector2 CursorPosition
@@ -337,6 +351,8 @@ namespace NetGore.Graphics.GUI
             Font = font;
             SpriteBlank = blank;
 
+            new Tooltip(this);
+
             // Store the input state from now so we have something to worth with on the first Update() call
             _mouseState = Mouse.GetState();
             _keyboardState = Keyboard.GetState();
@@ -415,6 +431,9 @@ namespace NetGore.Graphics.GUI
             {
                 control.Draw(sb);
             }
+
+            // Draw the tooltip
+            Tooltip.Draw(sb);
         }
 
         /// <summary>
@@ -620,7 +639,17 @@ namespace NetGore.Graphics.GUI
             {
                 control.Update(currentTime);
             }
+
+            // Update the tooltip
+            Tooltip.Update(currentTime);
         }
+
+        Tooltip _tooltip;
+
+        /// <summary>
+        /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManagerBase"/>.
+        /// </summary>
+        public Tooltip Tooltip { get { return _tooltip; } internal set { _tooltip = value; } }
 
         /// <summary>
         /// Finds the new focused root control (if any)

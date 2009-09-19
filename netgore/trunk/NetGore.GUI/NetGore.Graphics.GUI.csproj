@@ -70,8 +70,11 @@
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Control Bases\ControlEventHandler.cs" />
     <Compile Include="Control Bases\ControlSettings.cs" />
     <Compile Include="Control Bases\PictureControlSettings.cs" />
     <Compile Include="Control Bases\TextControlSettings.cs" />
@@ -107,6 +110,7 @@
     <Compile Include="Screen Manager\ScreenManager.cs" />
     <Compile Include="Controls\TextBoxSingleLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TooltipHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">

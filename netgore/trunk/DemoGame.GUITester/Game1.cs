@@ -104,6 +104,25 @@ namespace DemoGame.GUITester
             f3.OnEndDrag += OnDrag;
             f4.OnBeginDrag += OnDrag;
             f4.OnEndDrag += OnDrag;
+
+            // Set up the tooltips
+            foreach (var c in _gui.GetAllControls())
+            {
+                if (c.GetType() == typeof(Button))
+                    c.Tooltip = Tooltip_Button;
+                else if (c.GetType() == typeof(Label))
+                    c.Tooltip += Tooltip_Label;
+            }
+        }
+
+        static StyledText[] Tooltip_Label(Control sender)
+        {
+            return new StyledText[] { new StyledText("Text for a ", Color.Black), new StyledText("label", Color.Green) };
+        }
+
+        static StyledText[] Tooltip_Button(Control sender)
+        {
+            return new StyledText[] { new StyledText("Text for a ", Color.Black), new StyledText("button", Color.Blue)};
         }
 
         void OnDrag(Control sender)

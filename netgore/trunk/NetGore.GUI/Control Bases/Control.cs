@@ -10,8 +10,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace NetGore.Graphics.GUI
 {
-    public delegate void ControlEventHandler(Control sender);
-
     /// <summary>
     /// Base class of all controls
     /// </summary>
@@ -35,6 +33,12 @@ namespace NetGore.Graphics.GUI
         Vector2 _position;
         Queue<Control> _setTopMostQueue = null;
         Vector2 _size;
+
+        /// <summary>
+        /// Gets or sets the <see cref="TooltipHandler"/> for this <see cref="Control"/>. If null, this
+        /// <see cref="Control"/> will not display a <see cref="Tooltip"/>.
+        /// </summary>
+        public TooltipHandler Tooltip { get; set; }
 
         /// <summary>
         /// States if a OnClick event will be raised with the OnMouseUp event
@@ -186,11 +190,26 @@ namespace NetGore.Graphics.GUI
 
         /// <summary>
         /// Gets the list of Controls that this Control contains. This includes only immediate child Controls
-        /// from this Control. To get absolutely every Control under this Control, use AllControls.
+        /// from this Control.
         /// </summary>
         public IEnumerable<Control> Controls
         {
             get { return _controls; }
+        }
+
+        /// <summary>
+        /// Gets all of the child <see cref="Control"/>s from this <see cref="Control"/>.
+        /// </summary>
+        /// <returns>All of the child <see cref="Control"/>s from this <see cref="Control"/>. Does not include
+        /// this <see cref="Control"/>.</returns>
+        public IEnumerable<Control> GetAllChildren()
+        {
+            foreach (var c in Controls)
+            {
+                yield return c;
+                foreach (var c2 in c.GetAllChildren())
+                    yield return c2;
+            }
         }
 
         /// <summary>
