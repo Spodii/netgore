@@ -31,7 +31,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         int _startHoverTime;
 
-        int _timeout = 0;
+        int _timeout = 3000;
 
         /// <summary>
         /// The text to display for the tooltip. Can be null.
@@ -124,7 +124,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public bool IsDisplayed
         {
-            get { return IsVisible && _tooltipText != null; }
+            get { return IsVisible && _tooltipText != null && !_tooltipTimedOut; }
         }
 
         /// <summary>
@@ -210,6 +210,8 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        bool _tooltipTimedOut = false;
+
         /// <summary>
         /// Updates the <see cref="Tooltip"/>.
         /// </summary>
@@ -228,23 +230,37 @@ namespace NetGore.Graphics.GUI
                 _lastUnderCursor = currentUnderCursor;
                 _startHoverTime = currentTime;
                 _tooltipText = null;
+                _tooltipTimedOut = false;
             }
 
-            // Check for no control under the cursor, the control has no tooltip, or we already have the tooltip text 
-            if (currentUnderCursor == null || currentUnderCursor.Tooltip == null || _tooltipText != null)
+            // Check for no control under the cursor or the control has no tooltip
+            if (currentUnderCursor == null || currentUnderCursor.Tooltip == null || _tooltipTimedOut)
                 return;
 
-            // Check if enough time has elapsed for the tooltip to be displayed
-            if (currentTime - _startHoverTime > Delay)
+            if (_tooltipText != null)
             {
-                // Request the tooltip text
-                _tooltipText = currentUnderCursor.Tooltip.Invoke(currentUnderCursor);
+                // If we already have the text, check if it is time to hide it
+                if (Timeout <= 0)
+                    return;
 
-                // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
-                if (_tooltipText == null)
-                    _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
-                else
-                    UpdateBackground();
+                int timeoutTime = _startHoverTime + Delay + Timeout;
+                if (currentTime > timeoutTime)
+                    _tooltipTimedOut = true;
+            }
+            else
+            {
+                // Check if enough time has elapsed for the tooltip to be displayed
+                if (currentTime - _startHoverTime > Delay)
+                {
+                    // Request the tooltip text
+                    _tooltipText = currentUnderCursor.Tooltip.Invoke(currentUnderCursor);
+
+                    // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
+                    if (_tooltipText == null)
+                        _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
+                    else
+                        UpdateBackground();
+                }
             }
         }
 
