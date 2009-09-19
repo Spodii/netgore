@@ -16,6 +16,7 @@ namespace NetGore.Graphics.GUI
     public abstract class Control : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly List<Control> _controls = new List<Control>(1);
         readonly GUIManagerBase _gui;
         readonly Control _parent;
@@ -338,6 +339,13 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public object Tag { get; set; }
 
+        readonly ControlSettings _settings;
+
+        /// <summary>
+        /// Gets the <see cref="ControlSettings"/> used by this <see cref="Control"/>.
+        /// </summary>
+        public ControlSettings Settings { get { return _settings; } }
+
         /// <summary>
         /// Control constructor
         /// </summary>
@@ -348,6 +356,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="parent">Parent Control of this Control (null for a root Control)</param>
         protected Control(GUIManagerBase gui, ControlSettings settings, Vector2 position, Vector2 size, Control parent)
         {
+            _settings = settings;
             _gui = gui;
             _parent = parent;
 

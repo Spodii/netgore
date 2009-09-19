@@ -1,4 +1,6 @@
 using System.Linq;
+using System.Reflection;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -264,67 +266,92 @@ namespace NetGore.Graphics.GUI
             _bg = background;
         }
 
-        /// <summary>
-        /// Draws the ControlBorder to a given control
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+         /// <summary>
+        /// Draws the <see cref="ControlBorder"/> to the specified region.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw with</param>
-        /// <param name="c">Control to draw to</param>
-        public void Draw(SpriteBatch sb, Control c)
+        /// <param name="sb"><see cref="SpriteBatch"/> to draw with.</param>
+        /// <param name="region">Region to draw the <see cref="ControlBorder"/> to. These values represent
+        /// the absolute screen position.</param>
+        public void Draw(SpriteBatch sb, Rectangle region)
         {
             // Don't draw if any of the sprites are null
             if (_t == null || _tl == null || _tr == null || _l == null || _r == null || _b == null || _bl == null || _br == null)
+            {
+                const string errmsg = "Failed to draw ControlBorder `{0}` - one or more border sprites missing.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, this);
                 return;
+            }
+
+            Rectangle tSrc = _t.Source;
+            Rectangle tlSrc = _tl.Source;
+            Rectangle trSrc = _tr.Source;
+            Rectangle lSrc = _l.Source;
+            Rectangle rSrc = _r.Source;
+            Rectangle bSrc = _b.Source;
+            Rectangle blSrc = _bl.Source;
+            Rectangle brSrc = _br.Source;
 
             // Set some values we will be using extensively
-            Vector2 sp = c.ScreenPosition;
-            int cX = (int)sp.X;
-            int cY = (int)sp.Y;
-            int cW = (int)c.Size.X;
-            int cH = (int)c.Size.Y;
+            int cX = region.X;
+            int cY = region.Y;
+            int cW = region.Width;
+            int cH = region.Height;
 
             Rectangle r;
 
             // Background (draw first to ensure it stays behind the border in case something goes wrong)
             if (_bg != null)
             {
-                r = new Rectangle(cX + _l.Source.Width, cY + _t.Source.Height, cW - _l.Source.Width - _r.Source.Width,
-                                  cH - _t.Source.Height - _b.Source.Height);
+                r = new Rectangle(cX + lSrc.Width, cY + tSrc.Height, cW - lSrc.Width - rSrc.Width, cH - tSrc.Height - bSrc.Height);
                 _bg.Draw(sb, r, _color);
             }
 
             // Top side
-            r = new Rectangle(cX + _tl.Source.Width, cY, cW - _tl.Source.Width - _tr.Source.Width, _t.Source.Height);
+            r = new Rectangle(cX + tlSrc.Width, cY, cW - tlSrc.Width - trSrc.Width, tSrc.Height);
             _t.Draw(sb, r, _color);
 
             // Left side
-            r = new Rectangle(cX, cY + _tl.Source.Height, _l.Source.Width, cH - _tl.Source.Height - _bl.Source.Height);
+            r = new Rectangle(cX, cY + tlSrc.Height, lSrc.Width, cH - tlSrc.Height - blSrc.Height);
             _l.Draw(sb, r, _color);
 
             // Right side
-            r = new Rectangle(cX + cW - _r.Source.Width, cY + _tr.Source.Height, _r.Source.Width,
-                              cH - _tr.Source.Height - _br.Source.Height);
+            r = new Rectangle(cX + cW - rSrc.Width, cY + trSrc.Height, rSrc.Width, cH - trSrc.Height - brSrc.Height);
             _r.Draw(sb, r, _color);
 
             // Bottom side
-            r = new Rectangle(cX + _bl.Source.Width, cY + cH - _b.Source.Height, cW - _bl.Source.Width - _br.Source.Width,
-                              _b.Source.Height);
+            r = new Rectangle(cX + _bl.Source.Width, cY + cH - bSrc.Height, cW - blSrc.Width - brSrc.Width, bSrc.Height);
             _b.Draw(sb, r, _color);
 
             // Top-left corner
-            r = new Rectangle(cX, cY, _tl.Source.Width, _tl.Source.Height);
+            r = new Rectangle(cX, cY, tlSrc.Width, tlSrc.Height);
             _tl.Draw(sb, r, _color);
 
             // Top-right corner
-            r = new Rectangle(cX + cW - _tr.Source.Width, cY, _tr.Source.Width, _tr.Source.Height);
+            r = new Rectangle(cX + cW - trSrc.Width, cY, trSrc.Width, trSrc.Height);
             _tr.Draw(sb, r, _color);
 
             // Bottom-left corner
-            r = new Rectangle(cX, cY + cH - _bl.Source.Height, _bl.Source.Width, _bl.Source.Height);
+            r = new Rectangle(cX, cY + cH - blSrc.Height, blSrc.Width, blSrc.Height);
             _bl.Draw(sb, r, _color);
 
             // Bottom-right corner
-            r = new Rectangle(cX + cW - _br.Source.Width, cY + cH - _br.Source.Height, _br.Source.Width, _br.Source.Height);
+            r = new Rectangle(cX + cW - brSrc.Width, cY + cH - brSrc.Height, brSrc.Width, brSrc.Height);
             _br.Draw(sb, r, _color);
+        }
+
+        /// <summary>
+        /// Draws the <see cref="ControlBorder"/> to a given <see cref="Control"/>.
+        /// </summary>
+        /// <param name="sb"><see cref="SpriteBatch"/> to draw with.</param>
+        /// <param name="c">Control to draw to.</param>
+        public void Draw(SpriteBatch sb, Control c)
+        {
+            Vector2 sp = c.ScreenPosition;
+            Rectangle region = new Rectangle((int)sp.X, (int)sp.Y, (int)c.Size.X, (int)c.Size.Y);
+            Draw(sb, region);
         }
     }
 }

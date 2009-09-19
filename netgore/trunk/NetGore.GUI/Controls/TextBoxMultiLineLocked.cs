@@ -146,6 +146,16 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextBoxMultiLineLocked"/> class.
+        /// </summary>
+        /// <param name="gui">GUIManager used by this Control.</param>
+        /// <param name="settings">Settings for this TextControl.</param>
+        /// <param name="text">Text to display.</param>
+        /// <param name="font">SpriteFont used to write the text.</param>
+        /// <param name="position">Position of the Control relative to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        /// <param name="parent">Control that this Control belongs to.</param>
         public TextBoxMultiLineLocked(GUIManagerBase gui, TextControlSettings settings, string text, SpriteFont font,
                                       Vector2 position, Vector2 size, Control parent)
             : base(gui, settings, text, font, position, size, parent)
@@ -161,6 +171,13 @@ namespace NetGore.Graphics.GUI
                 Append(text);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TextBoxMultiLineLocked"/> class.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="parent">The parent.</param>
         public TextBoxMultiLineLocked(string text, Vector2 position, Vector2 size, Control parent)
             : this(parent.GUIManager, parent.GUIManager.TextBoxSettings, text, parent.GUIManager.Font, position, size, parent)
         {
@@ -317,10 +334,12 @@ namespace NetGore.Graphics.GUI
             if (last == null)
                 return;
 
+            var defaultColor = ((TextControlSettings)Settings).ForeColor;
+
             foreach (StyledText t in text.Text)
             {
                 // Draw the text
-                t.Draw(spriteBatch, Font, pos);
+                t.Draw(spriteBatch, Font, pos, defaultColor);
 
                 // If this isn't the last element, increase the offset
                 if (t != last)

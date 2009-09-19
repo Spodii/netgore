@@ -6,12 +6,22 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore.Graphics.GUI
 {
+    /// <summary>
+    /// Handles displaying pop-up text for <see cref="Control"/>s after they have been hovered over by the cursor
+    /// for the appropriate amount of time.
+    /// </summary>
     public class Tooltip
     {
         readonly GUIManagerBase _guiManager;
+        Color _bgColor = new Color(0, 0, 0, 200);
+        ControlBorder _border;
+        Vector2 _borderPadding = new Vector2(4, 4);
+        Vector2 _borderSize;
 
         int _delay = 1000;
+        Vector2 _drawOffset = new Vector2(8, 8);
         SpriteFont _font;
+        Color _fontColor = Color.White;
         bool _isVisible = true;
         Control _lastUnderCursor;
         int _retryDelay = 500;
@@ -29,6 +39,35 @@ namespace NetGore.Graphics.GUI
         StyledText[] _tooltipText;
 
         /// <summary>
+        /// Gets or sets the <see cref="Color"/> to draw the background of this <see cref="Tooltip"/>. This value
+        /// is only valid for when the <see cref="Border"/> is null.
+        /// </summary>
+        public Color BackgroundColor
+        {
+            get { return _bgColor; }
+            set { _bgColor = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="ControlBorder"/> for this <see cref="Tooltip"/>. Can be null.
+        /// </summary>
+        public ControlBorder Border
+        {
+            get { return _border; }
+            set { _border = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets number of pixels the border is padded on each side, where the X value corresponds to the
+        /// number of pixels padded on the left and right side, and the Y value corresponds to the top and bottom.
+        /// </summary>
+        public Vector2 BorderPadding
+        {
+            get { return _borderPadding; }
+            set { _borderPadding = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the delay in milliseconds for the tooltip to be shown once a <see cref="Control"/> is
         /// hovered over. If this value is zero, the tooltip will be displayed immediately. If this value is set
         /// to less than zero, zero will be used instead.
@@ -40,8 +79,17 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets the offset from the cursor position to draw the <see cref="Tooltip"/>.
+        /// </summary>
+        public Vector2 DrawOffset
+        {
+            get { return _drawOffset; }
+            set { _drawOffset = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the <see cref="SpriteFont"/> used by this <see cref="Tooltip"/>. By default, this value will
-        /// be equal to the <see cref="GUIManager"/>'s Font.
+        /// be equal to the <see cref="GUIManager"/>'s Font. Cannot be null.
         /// </summary>
         public SpriteFont Font
         {
@@ -52,6 +100,15 @@ namespace NetGore.Graphics.GUI
                     throw new ArgumentNullException("value");
                 _font = value;
             }
+        }
+
+        /// <summary>
+        /// Gets or sets the <see cref="Color"/> to draw the text when no color is specified.
+        /// </summary>
+        public Color FontColor
+        {
+            get { return _fontColor; }
+            set { _fontColor = value; }
         }
 
         /// <summary>
@@ -133,11 +190,22 @@ namespace NetGore.Graphics.GUI
             if (!IsDisplayed)
                 return;
 
+            Vector2 pos = GUIManager.CursorPosition + DrawOffset + BorderPadding;
+
+            // Draw the border
+            Rectangle borderRect = new Rectangle((int)(pos.X - BorderPadding.X), (int)(pos.Y - BorderPadding.Y),
+                                                 (int)(_borderSize.X + (BorderPadding.X * 2)), (int)(_borderSize.Y + (BorderPadding.Y * 2)));
+
+            ControlBorder b = Border;
+            if (b != null)
+                b.Draw(sb, borderRect);
+            else
+                XNARectangle.Draw(sb, borderRect, BackgroundColor);
+
             // Draw
-            Vector2 pos = GUIManager.CursorPosition;
             for (int i = 0; i < _tooltipText.Length; i++)
             {
-                _tooltipText[i].Draw(sb, Font, pos);
+                _tooltipText[i].Draw(sb, Font, pos, FontColor);
                 pos.X += _tooltipText[i].GetWidth(Font);
             }
         }
@@ -175,7 +243,17 @@ namespace NetGore.Graphics.GUI
                 // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
                 if (_tooltipText == null)
                     _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
+                else
+                    UpdateBackground();
             }
+        }
+
+        /// <summary>
+        /// Handles updating the information needed for background of the <see cref="Tooltip"/>.
+        /// </summary>
+        protected virtual void UpdateBackground()
+        {
+            _borderSize = new Vector2(_tooltipText.Sum(x => x.GetWidth(_font)), _font.LineSpacing);
         }
     }
 }
