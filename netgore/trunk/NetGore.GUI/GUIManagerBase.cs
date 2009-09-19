@@ -8,8 +8,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace NetGore.Graphics.GUI
 {
-    public delegate void GUIEventHandler(GUIManagerBase sender);
-
     /// <summary>
     /// Base control for managing all of the GUI controls for a screen
     /// </summary>
@@ -585,6 +583,14 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        Control _underCursor;
+
+        /// <summary>
+        /// Gets the <see cref="Control"/> currently under the cursor, or null if no <see cref="Control"/> managed 
+        /// by this GUIManager is currently under the cursor.
+        /// </summary>
+        public Control UnderCursor { get { return _underCursor; } }
+
         /// <summary>
         /// Updates all of the controls in the GUIManager.
         /// </summary>
@@ -609,10 +615,10 @@ namespace NetGore.Graphics.GUI
             UpdateFocusedRoot();
 
             // Update the controls
-            Control pointedAtControl = GetControlAtPoint(CursorPosition);
+            _underCursor = GetControlAtPoint(CursorPosition);
             foreach (Control control in Controls.Reverse())
             {
-                control.Update(currentTime, pointedAtControl);
+                control.Update(currentTime);
             }
         }
 
