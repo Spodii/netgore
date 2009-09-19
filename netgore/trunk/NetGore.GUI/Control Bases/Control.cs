@@ -791,8 +791,7 @@ namespace NetGore.Graphics.GUI
         /// Updates the Control.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
-        /// <param name="pointedAtControl">The top-most Control that the cursor is currently over, or null if none.</param>
-        public void Update(int currentTime, Control pointedAtControl)
+        public void Update(int currentTime)
         {
             if (Parent != null)
                 throw new MethodAccessException("Update() may only be called from the root control.");
@@ -809,7 +808,7 @@ namespace NetGore.Graphics.GUI
             // Do not update the mouse or keyboard for the Control unless it is the focused root
             if (GUIManager.FocusedRoot == this)
             {
-                UpdateMouse(pointedAtControl);
+                UpdateMouse();
                 UpdateKeyboard();
             }
 
@@ -899,9 +898,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Updates the Control with mouse related events.
         /// </summary>
-        /// <param name="pointedAtControl">The top-most Control that the cursor is currently over, or
-        /// null if none.</param>
-        protected virtual void UpdateMouse(Control pointedAtControl)
+        protected virtual void UpdateMouse()
         {
             if (_isDisposed)
             {
@@ -926,7 +923,7 @@ namespace NetGore.Graphics.GUI
             // Update the child controls
             foreach (Control c in Controls)
             {
-                c.UpdateMouse(pointedAtControl);
+                c.UpdateMouse();
             }
 
             // Update the control's position if it is being dragged
@@ -952,7 +949,7 @@ namespace NetGore.Graphics.GUI
             Vector2 sp = ScreenPosition;
 
             // Check if this is the Control being pointed at
-            if (pointedAtControl == this)
+            if (GUIManager.UnderCursor == this)
             {
                 // Raise the OnMouseMove event
                 if (OnMouseMove != null)
