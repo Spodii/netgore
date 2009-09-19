@@ -41,6 +41,14 @@ namespace NetGore.Graphics.GUI
         /// Initializes a new instance of the <see cref="StyledText"/> class.
         /// </summary>
         /// <param name="text">The text.</param>
+        public StyledText(string text) : this(text, ColorForDefault)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StyledText"/> class.
+        /// </summary>
+        /// <param name="text">The text.</param>
         /// <param name="color">The color.</param>
         public StyledText(string text, Color color)
         {
@@ -59,15 +67,28 @@ namespace NetGore.Graphics.GUI
             _color = sourceStyle.Color;
         }
 
+        static readonly Color _colorForDefault = new Color(0,0,0,0);
+
+        /// <summary>
+        /// Gets the <see cref="Color"/> to use to denote that the <see cref="StyledText"/> should use the
+        /// specified default color when drawing.
+        /// </summary>
+        public static Color ColorForDefault { get { return _colorForDefault; } }
+
         /// <summary>
         /// Draws the StyledText to the <paramref name="spriteBatch"/>.
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw the StyledText to.</param>
         /// <param name="spriteFont">SpriteFont to use for drawing the characters.</param>
         /// <param name="position">Top-left corner of where to begin drawing the StyledText.</param>
-        public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont, Vector2 position)
+        /// <param name="defaultColor">The default color to use for drawing the text. Only used if the
+        /// <see cref="Color"/> is equal to <see cref="ColorForDefault"/>.</param>
+        public void Draw(SpriteBatch spriteBatch, SpriteFont spriteFont, Vector2 position, Color defaultColor)
         {
-            spriteBatch.DrawString(spriteFont, Text, position, Color);
+            if (Color == ColorForDefault)
+                spriteBatch.DrawString(spriteFont, Text, position, defaultColor);
+            else
+                spriteBatch.DrawString(spriteFont, Text, position, Color);
         }
 
         /// <summary>

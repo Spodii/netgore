@@ -95,7 +95,7 @@
     <Compile Include="Controls\PanelSettings.cs" />
     <Compile Include="Controls\PictureBoxSettings.cs" />
     <Compile Include="Controls\TextBoxSettings.cs" />
-    <Compile Include="Controls\Tooltip.cs" />
+    <Compile Include="Tooltip\Tooltip.cs" />
     <Compile Include="EventArgs\KeyboardEventArgs.cs" />
     <Compile Include="EventArgs\MouseButtons.cs" />
     <Compile Include="EventArgs\MouseClickEventArgs.cs" />
@@ -110,7 +110,7 @@
     <Compile Include="Screen Manager\ScreenManager.cs" />
     <Compile Include="Controls\TextBoxSingleLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TooltipHandler.cs" />
+    <Compile Include="Tooltip\TooltipHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">

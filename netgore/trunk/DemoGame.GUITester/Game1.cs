@@ -117,12 +117,12 @@ namespace DemoGame.GUITester
 
         static StyledText[] Tooltip_Label(Control sender)
         {
-            return new StyledText[] { new StyledText("Text for a ", Color.Black), new StyledText("label", Color.Green) };
+            return new StyledText[] { new StyledText("Text for a "), new StyledText("label", Color.LightGreen) };
         }
 
         static StyledText[] Tooltip_Button(Control sender)
         {
-            return new StyledText[] { new StyledText("Text for a ", Color.Black), new StyledText("button", Color.Blue)};
+            return new StyledText[] { new StyledText("Text for a "), new StyledText("button", Color.LightBlue)};
         }
 
         void OnDrag(Control sender)
