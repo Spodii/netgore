@@ -248,23 +248,35 @@ namespace NetGore.Graphics.GUI
                 int timeoutTime = _startHoverTime + Delay + _args.Timeout;
                 if (currentTime > timeoutTime)
                     _tooltipTimedOut = true;
+
+                // Check to refresh the text
+                if (_args.RefreshRate > 0 && currentTime - _lastRefreshTime > _args.RefreshRate)
+                    RefreshText(currentTime);
             }
             else
             {
                 // Check if enough time has elapsed for the tooltip to be displayed
                 if (currentTime - _startHoverTime > Delay)
                 {
-                    // Request the tooltip text
                     _args.RestoreDefaults(this);
-                    _tooltipText = currentUnderCursor.Tooltip.Invoke(currentUnderCursor, _args);
-
-                    // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
-                    if (_tooltipText == null)
-                        _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
-                    else
-                        UpdateBackground();
+                    RefreshText(currentTime);
                 }
             }
+        }
+
+        int _lastRefreshTime;
+
+        void RefreshText(int currentTime)
+        {
+            // Request the tooltip text
+            _tooltipText = _lastUnderCursor.Tooltip.Invoke(_lastUnderCursor, _args);
+            _lastRefreshTime = currentTime;
+
+            // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
+            if (_tooltipText == null)
+                _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
+            else
+                UpdateBackground();
         }
 
         /// <summary>
