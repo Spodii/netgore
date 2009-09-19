@@ -13,12 +13,13 @@ namespace NetGore.Graphics.GUI
     public class Tooltip
     {
         readonly GUIManagerBase _guiManager;
+        readonly TooltipArgs _args = new TooltipArgs();
+
         Color _bgColor = new Color(0, 0, 0, 200);
         ControlBorder _border;
         Vector2 _borderPadding = new Vector2(4, 4);
         Vector2 _borderSize;
-
-        int _delay = 1000;
+        int _delay = 800;
         Vector2 _drawOffset = new Vector2(8, 8);
         SpriteFont _font;
         Color _fontColor = Color.White;
@@ -37,6 +38,8 @@ namespace NetGore.Graphics.GUI
         /// The text to display for the tooltip. Can be null.
         /// </summary>
         StyledText[] _tooltipText;
+
+        bool _tooltipTimedOut = false;
 
         /// <summary>
         /// Gets or sets the <see cref="Color"/> to draw the background of this <see cref="Tooltip"/>. This value
@@ -194,23 +197,22 @@ namespace NetGore.Graphics.GUI
 
             // Draw the border
             Rectangle borderRect = new Rectangle((int)(pos.X - BorderPadding.X), (int)(pos.Y - BorderPadding.Y),
-                                                 (int)(_borderSize.X + (BorderPadding.X * 2)), (int)(_borderSize.Y + (BorderPadding.Y * 2)));
+                                                 (int)(_borderSize.X + (BorderPadding.X * 2)),
+                                                 (int)(_borderSize.Y + (BorderPadding.Y * 2)));
 
-            ControlBorder b = Border;
+            ControlBorder b = _args.Border;
             if (b != null)
                 b.Draw(sb, borderRect);
             else
-                XNARectangle.Draw(sb, borderRect, BackgroundColor);
+                XNARectangle.Draw(sb, borderRect, _args.BackgroundColor);
 
             // Draw
             for (int i = 0; i < _tooltipText.Length; i++)
             {
-                _tooltipText[i].Draw(sb, Font, pos, FontColor);
+                _tooltipText[i].Draw(sb, Font, pos, _args.FontColor);
                 pos.X += _tooltipText[i].GetWidth(Font);
             }
         }
-
-        bool _tooltipTimedOut = false;
 
         /// <summary>
         /// Updates the <see cref="Tooltip"/>.
@@ -240,10 +242,10 @@ namespace NetGore.Graphics.GUI
             if (_tooltipText != null)
             {
                 // If we already have the text, check if it is time to hide it
-                if (Timeout <= 0)
+                if (_args.Timeout <= 0)
                     return;
 
-                int timeoutTime = _startHoverTime + Delay + Timeout;
+                int timeoutTime = _startHoverTime + Delay + _args.Timeout;
                 if (currentTime > timeoutTime)
                     _tooltipTimedOut = true;
             }
@@ -253,7 +255,8 @@ namespace NetGore.Graphics.GUI
                 if (currentTime - _startHoverTime > Delay)
                 {
                     // Request the tooltip text
-                    _tooltipText = currentUnderCursor.Tooltip.Invoke(currentUnderCursor);
+                    _args.RestoreDefaults(this);
+                    _tooltipText = currentUnderCursor.Tooltip.Invoke(currentUnderCursor, _args);
 
                     // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
                     if (_tooltipText == null)

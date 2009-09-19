@@ -115,12 +115,12 @@ namespace DemoGame.GUITester
             }
         }
 
-        static StyledText[] Tooltip_Label(Control sender)
+        static StyledText[] Tooltip_Label(Control sender, TooltipArgs args)
         {
             return new StyledText[] { new StyledText("Text for a "), new StyledText("label", Color.LightGreen) };
         }
 
-        static StyledText[] Tooltip_Button(Control sender)
+        static StyledText[] Tooltip_Button(Control sender, TooltipArgs args)
         {
             return new StyledText[] { new StyledText("Text for a "), new StyledText("button", Color.LightBlue)};
         }
