@@ -11,8 +11,9 @@ namespace DemoGame.GUITester
 {
     public class Game1 : Game
     {
+        static readonly Random rnd = new Random();
+
         readonly GraphicsDeviceManager _graphics;
-        readonly Random r = new Random();
         SpriteFont _font;
         GUIManagerBase _gui;
         SpriteBatch _sb;
@@ -29,7 +30,7 @@ namespace DemoGame.GUITester
 
         void b_OnMouseDown(object sender, MouseClickEventArgs e)
         {
-            Window.Title = r.NextDouble().ToString();
+            Window.Title = rnd.NextDouble().ToString();
 
             if (topForm.Border == null)
                 topForm.Border = _topBorder;
@@ -117,7 +118,15 @@ namespace DemoGame.GUITester
 
         static StyledText[] Tooltip_Label(Control sender, TooltipArgs args)
         {
-            return new StyledText[] { new StyledText("Text for a "), new StyledText("label", Color.LightGreen) };
+            args.FontColor = Color.LightGreen;
+            args.RefreshRate = 100;
+
+            byte r = (byte)rnd.Next(100, 255);
+            byte g = (byte)rnd.Next(100, 255);
+            byte b = (byte)rnd.Next(100, 255);
+
+            Color c = new Color(r,g,b, 255);
+            return new StyledText[] { new StyledText("Text for a "), new StyledText("label", c) };
         }
 
         static StyledText[] Tooltip_Button(Control sender, TooltipArgs args)
