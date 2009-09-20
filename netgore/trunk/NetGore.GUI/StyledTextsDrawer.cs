@@ -6,6 +6,10 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace NetGore.Graphics.GUI
 {
+    /// <summary>
+    /// Improves and simplifies the drawing of multiple <see cref="StyledText"/>s at the cost of a little
+    /// initialization overhead.
+    /// </summary>
     public class StyledTextsDrawer
     {
         readonly List<StyledTextWithPosition> _textsWithPos = new List<StyledTextWithPosition>();
@@ -32,6 +36,9 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        /// <summary>
+        /// Gets the <see cref="StyledText"/>s being drawn. Can be null.
+        /// </summary>
         public IEnumerable<IEnumerable<StyledText>> Texts
         {
             get { return _texts; }
@@ -49,12 +56,21 @@ namespace NetGore.Graphics.GUI
             _font = font;
         }
 
+        /// <summary>
+        /// Clears the <see cref="StyledText"/>s from this <see cref="StyledTextsDrawer"/>.
+        /// </summary>
         public void ClearTexts()
         {
             _texts = null;
             UpdatePositions();
         }
 
+        /// <summary>
+        /// Draws the <see cref="StyledText"/>s in this <see cref="StyledTextsDrawer"/>.
+        /// </summary>
+        /// <param name="sb">The SpriteBatch.</param>
+        /// <param name="defaultColor">The default color.</param>
+        /// <param name="offset">The offset to start drawing the text at.</param>
         public void Draw(SpriteBatch sb, Color defaultColor, Vector2 offset)
         {
             foreach (StyledTextWithPosition item in _textsWithPos)
@@ -63,6 +79,11 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        /// <summary>
+        /// Sets the <see cref="StyledText"/>s drawn by this <see cref="StyledTextsDrawer"/>.
+        /// </summary>
+        /// <param name="styledTexts">The <see cref="StyledText"/>s to draw, where the outter collection
+        /// is the lines and the inner collection is the <see cref="StyledText"/>s on each line.</param>
         public void SetStyledTexts(IEnumerable<IEnumerable<StyledText>> styledTexts)
         {
             if (styledTexts == null || styledTexts.Count() == 0)
@@ -83,6 +104,11 @@ namespace NetGore.Graphics.GUI
             UpdatePositions();
         }
 
+        /// <summary>
+        /// Sets the <see cref="StyledText"/>s drawn by this <see cref="StyledTextsDrawer"/>.
+        /// </summary>
+        /// <param name="styledTexts">The <see cref="StyledText"/>s to draw, where the outter collection
+        /// is the lines and the inner collection is the <see cref="StyledText"/>s on each line.</param>
         public void SetStyledTexts(IEnumerable<List<StyledText>> styledTexts)
         {
             if (styledTexts == null || styledTexts.Count() == 0)
@@ -104,6 +130,9 @@ namespace NetGore.Graphics.GUI
             UpdatePositions();
         }
 
+        /// <summary>
+        /// Updates all the positions. Needs to be done whenever the text or font changes.
+        /// </summary>
         void UpdatePositions()
         {
             _textsWithPos.Clear();
@@ -128,21 +157,35 @@ namespace NetGore.Graphics.GUI
             }
         }
 
+        /// <summary>
+        /// A container for a <see cref="StyledText"/> that contains the position to draw it at.
+        /// </summary>
         class StyledTextWithPosition
         {
             readonly Vector2 _position;
             readonly StyledText _styledText;
 
+            /// <summary>
+            /// Gets the position.
+            /// </summary>
             public Vector2 Position
             {
                 get { return _position; }
             }
 
+            /// <summary>
+            /// Gets the styled text.
+            /// </summary>
             public StyledText StyledText
             {
                 get { return _styledText; }
             }
 
+            /// <summary>
+            /// Initializes a new instance of the <see cref="StyledTextWithPosition"/> class.
+            /// </summary>
+            /// <param name="styledText">The styled text.</param>
+            /// <param name="position">The position.</param>
             public StyledTextWithPosition(StyledText styledText, Vector2 position)
             {
                 _styledText = styledText;
