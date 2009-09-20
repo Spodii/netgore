@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -13,8 +12,9 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class Tooltip
     {
-        readonly GUIManagerBase _guiManager;
         readonly TooltipArgs _args = new TooltipArgs();
+        readonly StyledTextsDrawer _drawer;
+        readonly GUIManagerBase _guiManager;
 
         Color _bgColor = new Color(0, 0, 0, 200);
         ControlBorder _border;
@@ -25,7 +25,9 @@ namespace NetGore.Graphics.GUI
         SpriteFont _font;
         Color _fontColor = Color.White;
         bool _isVisible = true;
+        int _lastRefreshTime;
         Control _lastUnderCursor;
+        int _maxWidth = 150;
         int _retryDelay = 500;
 
         /// <summary>
@@ -142,6 +144,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets the maximum width of the Tooltip.
+        /// </summary>
+        public int MaxWidth
+        {
+            get { return _maxWidth; }
+            set { _maxWidth = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the delay in milliseconds between retry attempts in getting the tooltip text. This
         /// only applies to when the <see cref="Control"/> returns a null collection for the tooltip text.
         /// </summary>
@@ -182,8 +193,6 @@ namespace NetGore.Graphics.GUI
             Debug.Assert(Font != null);
         }
 
-        readonly StyledTextsDrawer _drawer;
-
         /// <summary>
         /// Draws the <see cref="Tooltip"/>.
         /// </summary>
@@ -212,6 +221,23 @@ namespace NetGore.Graphics.GUI
 
             // Draw the text
             _drawer.Draw(sb, _args.FontColor, pos);
+        }
+
+        void RefreshText(int currentTime)
+        {
+            // Request the tooltip text
+            var tooltipTexts = _lastUnderCursor.Tooltip.Invoke(_lastUnderCursor, _args);
+            _lastRefreshTime = currentTime;
+
+            // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
+            if (tooltipTexts == null)
+                _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
+            else
+            {
+                var texts = StyledText.ToMultiline(tooltipTexts, false, Font, MaxWidth);
+                _drawer.SetStyledTexts(texts);
+                UpdateBackground();
+            }
         }
 
         /// <summary>
@@ -261,28 +287,6 @@ namespace NetGore.Graphics.GUI
                     _args.RestoreDefaults(this);
                     RefreshText(currentTime);
                 }
-            }
-        }
-
-        int _lastRefreshTime;
-        int _maxWidth = 150;
-
-        public int MaxWidth { get { return _maxWidth; } }
-
-        void RefreshText(int currentTime)
-        {
-            // Request the tooltip text
-            var tooltipTexts = _lastUnderCursor.Tooltip.Invoke(_lastUnderCursor, _args);
-            _lastRefreshTime = currentTime;
-
-            // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
-            if (tooltipTexts == null)
-                _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
-            else
-            {
-                var texts = StyledText.ToMultiline(tooltipTexts, false, Font, MaxWidth);
-                _drawer.SetStyledTexts(texts);
-                UpdateBackground();
             }
         }
 

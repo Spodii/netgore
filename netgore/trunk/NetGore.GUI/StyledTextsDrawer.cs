@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -9,19 +8,10 @@ namespace NetGore.Graphics.GUI
 {
     public class StyledTextsDrawer
     {
+        readonly List<StyledTextWithPosition> _textsWithPos = new List<StyledTextWithPosition>();
         SpriteFont _font;
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StyledTextsDrawer"/> class.
-        /// </summary>
-        /// <param name="font">The font.</param>
-        public StyledTextsDrawer(SpriteFont font)
-        {
-            if (font == null)
-                throw new ArgumentNullException("font");
-
-            _font = font;
-        }
+        IEnumerable<IEnumerable<StyledText>> _texts;
 
         /// <summary>
         /// Gets or sets the font used to draw. Cannot be null.
@@ -42,52 +32,44 @@ namespace NetGore.Graphics.GUI
             }
         }
 
-        public void Draw(SpriteBatch sb, Color defaultColor, Vector2 offset)
+        public IEnumerable<IEnumerable<StyledText>> Texts
         {
-            foreach (var item in _textsWithPos)
-            {
-                item.StyledText.Draw(sb, Font, offset + item.Position, defaultColor);
-            }
+            get { return _texts; }
         }
 
-        IEnumerable<IEnumerable<StyledText>> _texts;
-        readonly List<StyledTextWithPosition> _textsWithPos = new List<StyledTextWithPosition>();
-
-        public IEnumerable<IEnumerable<StyledText>> Texts { get { return _texts; } }
-
-        void UpdatePositions()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StyledTextsDrawer"/> class.
+        /// </summary>
+        /// <param name="font">The font.</param>
+        public StyledTextsDrawer(SpriteFont font)
         {
-            _textsWithPos.Clear();
-            if (_texts == null)
-                return;
+            if (font == null)
+                throw new ArgumentNullException("font");
 
-            Vector2 pos = Vector2.Zero;
+            _font = font;
+        }
 
-            foreach (var line in _texts)
+        public void ClearTexts()
+        {
+            _texts = null;
+            UpdatePositions();
+        }
+
+        public void Draw(SpriteBatch sb, Color defaultColor, Vector2 offset)
+        {
+            foreach (StyledTextWithPosition item in _textsWithPos)
             {
-                pos.X = 0;
-
-                var last = line.Last();
-                foreach (var item in line)
-                {
-                    _textsWithPos.Add(new StyledTextWithPosition(item, pos));
-                    if (item != last)
-                        pos.X += item.GetWidth(Font);
-                }
-
-                pos.Y += Font.LineSpacing;
+                item.StyledText.Draw(sb, Font, offset + item.Position, defaultColor);
             }
         }
 
         public void SetStyledTexts(IEnumerable<IEnumerable<StyledText>> styledTexts)
         {
             if (styledTexts == null || styledTexts.Count() == 0)
-            {
                 _texts = null;
-            }
             else
             {
-                List<IEnumerable<StyledText>> lines = new List<IEnumerable<StyledText>>(styledTexts.Count());
+                var lines = new List<IEnumerable<StyledText>>(styledTexts.Count());
                 foreach (var line in styledTexts)
                 {
                     if (line.Count() == 1)
@@ -101,21 +83,13 @@ namespace NetGore.Graphics.GUI
             UpdatePositions();
         }
 
-        public void ClearTexts()
-        {
-            _texts = null;
-            UpdatePositions();
-        }
-
         public void SetStyledTexts(IEnumerable<List<StyledText>> styledTexts)
         {
             if (styledTexts == null || styledTexts.Count() == 0)
-            {
                 _texts = null;
-            }
             else
             {
-                List<IEnumerable<StyledText>> lines = new List<IEnumerable<StyledText>>(styledTexts.Count());
+                var lines = new List<IEnumerable<StyledText>>(styledTexts.Count());
                 foreach (var line in styledTexts)
                 {
                     if (line.Count() == 1)
@@ -130,13 +104,44 @@ namespace NetGore.Graphics.GUI
             UpdatePositions();
         }
 
+        void UpdatePositions()
+        {
+            _textsWithPos.Clear();
+            if (_texts == null)
+                return;
+
+            Vector2 pos = Vector2.Zero;
+
+            foreach (var line in _texts)
+            {
+                pos.X = 0;
+
+                StyledText last = line.Last();
+                foreach (StyledText item in line)
+                {
+                    _textsWithPos.Add(new StyledTextWithPosition(item, pos));
+                    if (item != last)
+                        pos.X += item.GetWidth(Font);
+                }
+
+                pos.Y += Font.LineSpacing;
+            }
+        }
+
         class StyledTextWithPosition
         {
-            readonly StyledText _styledText;
             readonly Vector2 _position;
+            readonly StyledText _styledText;
 
-            public StyledText StyledText { get { return _styledText; } }
-            public Vector2 Position { get { return _position; } }
+            public Vector2 Position
+            {
+                get { return _position; }
+            }
+
+            public StyledText StyledText
+            {
+                get { return _styledText; }
+            }
 
             public StyledTextWithPosition(StyledText styledText, Vector2 position)
             {
