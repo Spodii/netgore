@@ -50,22 +50,22 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// When overridden in the derived class, checks if the given <paramref name="characterID"/> can be 
+        /// When overridden in the derived class, checks if the given <paramref name="item"/> can be 
         /// equipped at all by the owner of this EquippedBase.
         /// </summary>
-        /// <param name="characterID">Item to check if able be equip.</param>
-        /// <returns>True if the <paramref name="characterID"/> can be equipped, else false.</returns>
+        /// <param name="item">Item to check if able be equip.</param>
+        /// <returns>True if the <paramref name="item"/> can be equipped, else false.</returns>
         public override bool CanEquip(ItemEntity item)
         {
             return true;
         }
 
         /// <summary>
-        /// When overridden in the derived class, checks if the characterID in the given <paramref name="slot"/> 
+        /// When overridden in the derived class, checks if the item in the given <paramref name="slot"/> 
         /// can be removed properly.
         /// </summary>
-        /// <param name="slot">Slot of the characterID to be removed.</param>
-        /// <returns>True if the characterID can be properly removed, else false.</returns>
+        /// <param name="slot">Slot of the item to be removed.</param>
+        /// <returns>True if the item can be properly removed, else false.</returns>
         protected override bool CanRemove(EquipmentSlot slot)
         {
             ItemEntityBase item = this[slot];
@@ -95,7 +95,7 @@ namespace DemoGame.Server
             if (_isPersistent)
                 DbController.GetQuery<DeleteCharacterEquippedItemQuery>().Execute(Character.ID, slot);
 
-            // Do not try working with a disposed characterID! Instead, just let it die off.
+            // Do not try working with a disposed ItemEntity! Instead, just let it die off.
             if (item.IsDisposed)
                 return;
 
@@ -106,7 +106,7 @@ namespace DemoGame.Server
             if (remainder != null)
             {
                 const string errmsg =
-                    "Character `{0}` removed equipped characterID `{1}` from slot `{2}`, " +
+                    "Character `{0}` removed equipped item `{1}` from slot `{2}`, " +
                     "but not all could be added back to their Inventory.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, Character, item, slot);
@@ -160,6 +160,9 @@ namespace DemoGame.Server
 
         #region IDisposable Members
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public void Dispose()
         {
             if (_disposed)
@@ -167,7 +170,7 @@ namespace DemoGame.Server
 
             _disposed = true;
 
-            // If the Character is not persistent, we want to dispose of every characterID so it doesn't sit in the
+            // If the Character is not persistent, we want to dispose of every ItemEntity so it doesn't sit in the
             // database as garbage
             if (!_isPersistent)
             {
@@ -182,6 +185,15 @@ namespace DemoGame.Server
 
         #region IModStatContainer Members
 
+        /// <summary>
+        /// Gets the modifier value for the given <paramref name="statType"/>, where a positive value adds to the
+        /// mod stat value, a negative value subtracts from the mod stat value, and a value of 0 does not modify
+        /// the mod stat value.
+        /// </summary>
+        /// <param name="statType">The StatType to get the modifier value for.</param>
+        /// <returns>
+        /// The modifier value for the given <paramref name="statType"/>.
+        /// </returns>
         public int GetStatModBonus(StatType statType)
         {
             // TODO: [STATS] This totally sucks. Add some kind of cache.

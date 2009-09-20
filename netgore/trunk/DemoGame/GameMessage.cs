@@ -60,6 +60,28 @@ namespace DemoGame
         /// <summary>
         /// Tried to log in, but the account is already in use.
         /// </summary>
-        LoginAccountInUse
+        LoginAccountInUse,
+
+        /// <summary>
+        /// Tried to purchase an item from a shop, but they did not have enough money. Singular (tried to
+        /// purchase just one item).
+        /// </summary>
+        ShopInsufficientFundsToPurchaseSingular,
+
+        /// <summary>
+        /// Tried to purchase an item from a shop, but they did not have enough money. Plural (tried to
+        /// purchase more than one item).
+        /// </summary>
+        ShopInsufficientFundsToPurchasePlural,
+
+        /// <summary>
+        /// Purchased a single item from a shop.
+        /// </summary>
+        ShopPurchaseSingular,
+
+        /// <summary>
+        /// Purchased multiple items from a shop.
+        /// </summary>
+        ShopPurchasePlural,
     }
 }

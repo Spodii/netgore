@@ -409,7 +409,7 @@ namespace DemoGame.MapEditor
 
         void btnDeleteBGItem_Click(object sender, EventArgs e)
         {
-            // TODO: Add background characterID deletion support
+            // TODO: Add background item deletion support
             Debug.Fail("Not implemented...");
         }
 

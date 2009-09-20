@@ -66,6 +66,19 @@ namespace DemoGame.Server
                 user.Attack();
         }
 
+        [MessageHandler((byte)ClientPacketID.BuyFromShop)]
+        void RecvBuyFromShop(IIPSocket conn, BitStream r)
+        {
+            ShopItemIndex slot = r.ReadShopItemIndex();
+            byte amount = r.ReadByte();
+
+            User user;
+            if (!TryGetUser(conn, out user))
+                return;
+
+            user.ShoppingState.TryPurchase(slot, amount);
+        }
+
         [MessageHandler((byte)ClientPacketID.DropInventoryItem)]
         void RecvDropInventoryItem(IIPSocket conn, BitStream r)
         {
@@ -159,7 +172,7 @@ namespace DemoGame.Server
             if (!TryGetMap(conn, out user, out map))
                 return;
 
-            // TODO: Distance validation on characterID pickup
+            // TODO: Distance validation on ItemEntity pickup
 
             ItemEntityBase item;
             if (map.TryGetDynamicEntity(mapEntityIndex, out item))

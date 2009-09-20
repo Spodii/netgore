@@ -15,6 +15,7 @@ namespace DemoGame
         RESERVED = 0,
 
         Attack,
+        BuyFromShop,
         DropInventoryItem,
         EndNPCChatDialog,
         GetEquipmentItemInfo,

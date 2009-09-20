@@ -15,6 +15,8 @@ using NetGore.IO;
 
 namespace DemoGame.Client.Controls
 {
+    delegate void ShopFormPurchaseHandler(ShopForm shopForm, ShopItemIndex slot);
+
     class ShopForm : Form, IRestorableSettings
     {
         const int _columns = 6; // Number of items on each row
@@ -69,9 +71,16 @@ namespace DemoGame.Client.Controls
             _shopInfo = null;
         }
 
+        public event ShopFormPurchaseHandler OnPurchase;
+
         void ShopItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
         {
-            // TODO: $$ ...
+            ShopItemPB src = (ShopItemPB)sender;
+            if (src.ItemInfo != null)
+            {
+                if (OnPurchase != null)
+                    OnPurchase(this, src.Index);
+            }
         }
 
         #region IRestorableSettings Members
@@ -103,12 +112,12 @@ namespace DemoGame.Client.Controls
             readonly ShopForm _shopForm;
             Grh _grh;
 
-            ShopItemIndex Index
+            public ShopItemIndex Index
             {
                 get { return _index; }
             }
 
-            ItemInfo ItemInfo
+            public ItemInfo ItemInfo
             {
                 get
                 {

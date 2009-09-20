@@ -162,6 +162,11 @@ namespace DemoGame
         /// <paramref name="item"/> is null, else false.</returns>
         public bool CanAdd(T item)
         {
+            // FUTURE: Can prevent creating an ItemEntity just to figure out it won't fit by passing the item template and amount
+            // and using that to check if there is a free slot. Then, when stacking is supported (below), the method can create the
+            // ItemEntity to test if it will stack. Will want to also have an out parameter to be able to reuse/dispose of the
+            // created temporary ItemEntity.
+
             if (item == null)
                 return true;
 
@@ -170,7 +175,8 @@ namespace DemoGame
             if (TryFindEmptySlot(out emptySlot))
                 return true;
 
-            // FUTURE: Add support for returning true if the item can be stacked
+            // FUTURE: Add support for returning true if the item can be stacked.
+            // Right now, if there is no room, but the item can fit by being stacked, this will still return false.
 
             return false;
         }

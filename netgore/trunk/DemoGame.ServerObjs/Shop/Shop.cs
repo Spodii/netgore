@@ -21,6 +21,20 @@ namespace DemoGame.Server
         readonly ShopItem[] _shopItems;
 
         /// <summary>
+        /// Gets the <see cref="ShopItem"/> at the specified <paramref name="slot"/>.
+        /// </summary>
+        /// <param name="slot">The slot of the shop item.</param>
+        /// <returns>The <see cref="ShopItem"/> at the specified <paramref name="slot"/>, or null if
+        /// the slot was invalid or contains no item.</returns>
+        public ShopItem GetShopItem(ShopItemIndex slot)
+        {
+            if (slot < 0 || slot >= _shopItems.Length)
+                return null;
+
+            return _shopItems[slot];
+        }
+
+        /// <summary>
         /// Gets an IEnumerable of the <see cref="ShopItem"/>s in this <see cref="Shop"/>.
         /// </summary>
         public IEnumerable<ShopItem> ShopItems
