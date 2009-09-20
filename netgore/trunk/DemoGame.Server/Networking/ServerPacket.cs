@@ -192,18 +192,20 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SendItemInfo(ItemEntity item)
+        public static PacketWriter SendEquipmentItemInfo(EquipmentSlot slot, ItemEntity item)
         {
-            if (item == null)
-            {
-                const string errmsg =
-                    "characterID is null, so SendItemInfo will not send anything. Not a breaking error, but likely a design flaw.";
-                Debug.Fail(errmsg);
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-            }
+            PacketWriter pw = GetWriter(ServerPacketID.SendEquipmentItemInfo);
+            pw.Write(slot);
+            // ReSharper disable RedundantCast
+            pw.Write((IItemTable)item);
+            // ReSharper restore RedundantCast
+            return pw;
+        }
 
-            PacketWriter pw = GetWriter(ServerPacketID.SendItemInfo);
+        public static PacketWriter SendInventoryItemInfo(InventorySlot slot, ItemEntity item)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.SendInventoryItemInfo);
+            pw.Write(slot);
             // ReSharper disable RedundantCast
             pw.Write((IItemTable)item);
             // ReSharper restore RedundantCast

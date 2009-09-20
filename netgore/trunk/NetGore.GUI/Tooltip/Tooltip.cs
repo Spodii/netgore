@@ -234,9 +234,12 @@ namespace NetGore.Graphics.GUI
                 _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
             else
             {
-                var texts = StyledText.ToMultiline(tooltipTexts, false, Font, MaxWidth);
-                _drawer.SetStyledTexts(texts);
-                UpdateBackground();
+                if (tooltipTexts.Count() > 0)
+                {
+                    var texts = StyledText.ToMultiline(tooltipTexts, false, Font, MaxWidth);
+                    _drawer.SetStyledTexts(texts);
+                    UpdateBackground();
+                }
             }
         }
 

@@ -53,14 +53,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the ItemInfoTooltip from the GameplayScreen.
-        /// </summary>
-        public ItemInfoTooltip ItemInfoTooltip
-        {
-            get { return GameplayScreen.ItemInfoTooltip; }
-        }
-
-        /// <summary>
         /// Gets the map used by the world (Parent.World.Map)
         /// </summary>
         public Map Map
@@ -313,12 +305,18 @@ namespace DemoGame.Client
             _accountCharacterInfos.SetInfos(charInfos);
         }
 
-        [MessageHandler((byte)ServerPacketID.SendItemInfo)]
-        void RecvSendItemInfo(IIPSocket conn, BitStream r)
+        [MessageHandler((byte)ServerPacketID.SendInventoryItemInfo)]
+        void RecvSendInventoryItemInfo(IIPSocket conn, BitStream r)
         {
-            ItemInfoRequester itemInfoRequester = ItemInfoTooltip.ItemInfoRequester;
-            itemInfoRequester.ItemInfo.Read(r);
-            itemInfoRequester.SetAsUpdated();
+            var slot = r.ReadInventorySlot();
+            GameplayScreen.InventoryInfoRequester.ReceiveInfo(slot, r);
+        }
+
+        [MessageHandler((byte)ServerPacketID.SendEquipmentItemInfo)]
+        void RecvSendEquipmentItemInfo(IIPSocket conn, BitStream r)
+        {
+            var slot = r.ReadEquipmentSlot();
+            GameplayScreen.EquipmentInfoRequester.ReceiveInfo(slot, r);
         }
 
         [MessageHandler((byte)ServerPacketID.SendMessage)]

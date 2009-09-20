@@ -145,12 +145,15 @@ namespace NetGore.Graphics.GUI
             {
                 pos.X = 0;
 
-                StyledText last = line.Last();
-                foreach (StyledText item in line)
+                if (line.Count() > 0)
                 {
-                    _textsWithPos.Add(new StyledTextWithPosition(item, pos));
-                    if (item != last)
-                        pos.X += item.GetWidth(Font);
+                    StyledText last = line.Last();
+                    foreach (StyledText item in line)
+                    {
+                        _textsWithPos.Add(new StyledTextWithPosition(item, pos));
+                        if (item != last)
+                            pos.X += item.GetWidth(Font);
+                    }
                 }
 
                 pos.Y += Font.LineSpacing;

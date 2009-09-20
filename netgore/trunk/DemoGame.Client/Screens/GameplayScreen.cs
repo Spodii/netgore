@@ -100,7 +100,8 @@ namespace DemoGame.Client
         InfoBox _infoBox;
 
         InventoryForm _inventoryForm;
-        ItemInfoTooltip _itemInfoTooltip;
+        InventoryInfoRequester _inventoryInfoRequester;
+        EquipmentInfoRequester _equipmentInfoRequester;
 
         /// <summary>
         /// Time when the user last attacked
@@ -195,9 +196,14 @@ namespace DemoGame.Client
             get { return _infoBox; }
         }
 
-        public ItemInfoTooltip ItemInfoTooltip
+        public EquipmentInfoRequester EquipmentInfoRequester
         {
-            get { return _itemInfoTooltip; }
+            get { return _equipmentInfoRequester; }
+        }
+
+        public InventoryInfoRequester InventoryInfoRequester
+        {
+            get { return _inventoryInfoRequester; }
         }
 
         public Map Map
@@ -338,7 +344,6 @@ namespace DemoGame.Client
             _spriteBatch.BeginUnfiltered(SpriteBlendMode.AlphaBlend, SpriteSortMode.Immediate, SaveStateMode.None);
             _infoBox.Draw(_spriteBatch);
             _gui.Draw(_spriteBatch);
-            _itemInfoTooltip.Draw(_gui.CursorPosition, _spriteBatch, _guiFont);
             _spriteBatch.DrawString(_damageFont, "FPS: " + ScreenManager.FPS, Vector2.Zero, Color.White);
             _spriteBatch.End();
         }
@@ -383,7 +388,8 @@ namespace DemoGame.Client
 
             // Create some misc goodies that require a reference to the Socket
             _userInfo = new UserInfo(Socket);
-            _itemInfoTooltip = new ItemInfoTooltip(Socket);
+            _equipmentInfoRequester = new EquipmentInfoRequester(_userInfo.Equipped, Socket);
+            _inventoryInfoRequester = new InventoryInfoRequester(_userInfo.Inventory, Socket);
 
             // Create the GUI
             InitializeGUI();
@@ -402,7 +408,7 @@ namespace DemoGame.Client
             _statsForm = new StatsForm(UserInfo, cScreen);
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 
-            _inventoryForm = new InventoryForm(ItemInfoTooltip, new Vector2(250, 0), cScreen);
+            _inventoryForm = new InventoryForm(InventoryInfoRequester, new Vector2(250, 0), cScreen);
             _shopForm = new ShopForm(new Vector2(250, 0), cScreen);
 
             _skillsForm = new SkillsForm(new Vector2(100, 0), cScreen);
@@ -410,7 +416,7 @@ namespace DemoGame.Client
 
             _infoBox = new InfoBox(GameData.ScreenSize - new Vector2(5, 5), _guiFont);
 
-            _equippedForm = new EquippedForm(ItemInfoTooltip, new Vector2(500, 0), cScreen);
+            _equippedForm = new EquippedForm(EquipmentInfoRequester, new Vector2(500, 0), cScreen);
             _equippedForm.OnRequestUnequip += EquippedForm_OnRequestUnequip;
 
             _chatForm = new ChatForm(cScreen, new Vector2(0, cScreen.Size.Y));
@@ -526,7 +532,6 @@ namespace DemoGame.Client
 
             // Update some other goodies
             World.Update();
-            ItemInfoTooltip.Update();
             _gui.Update(_currentTime);
             _damageTextPool.Update(_currentTime);
             UpdateInput();

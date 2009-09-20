@@ -16,15 +16,10 @@ namespace DemoGame.Client
         const float _itemHeight = 32; // Height of each item slot
         const float _itemWidth = 32; // Width of each item slot
 
-        readonly ItemInfoTooltip _itemInfoTooltip;
+        readonly ItemInfoRequesterBase<EquipmentSlot> _infoRequester;
         UserEquipped _userEquipped;
 
         public event RequestUnequipHandler OnRequestUnequip;
-
-        public ItemInfoTooltip ItemInfoTooltip
-        {
-            get { return _itemInfoTooltip; }
-        }
 
         public UserEquipped UserEquipped
         {
@@ -32,13 +27,13 @@ namespace DemoGame.Client
             set { _userEquipped = value; }
         }
 
-        public EquippedForm(ItemInfoTooltip itemInfoTooltip, Vector2 position, Control parent)
+        public EquippedForm(ItemInfoRequesterBase<EquipmentSlot> infoRequester, Vector2 position, Control parent)
             : base(parent.GUIManager, "Equipment", position, new Vector2(200, 200), parent)
         {
-            if (itemInfoTooltip == null)
-                throw new ArgumentNullException("itemInfoTooltip");
+            if (infoRequester == null)
+                throw new ArgumentNullException("infoRequester");
 
-            _itemInfoTooltip = itemInfoTooltip;
+            _infoRequester = infoRequester;
 
             CreateItemSlots();
         }
@@ -59,39 +54,6 @@ namespace DemoGame.Client
             Vector2 pos = size * loc;
 
             new EquippedItemPB(this, pos, slot);
-        }
-
-        void EquippedItemPB_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            if (UserEquipped == null)
-                return;
-
-            EquipmentSlot slot = ((EquippedItemPB)sender).Slot;
-            if (UserEquipped[slot] == null)
-                return;
-
-            ItemInfoTooltip.HandleMouseEnter(sender, ItemInfoSource.Equipped, slot.GetValue());
-        }
-
-        void EquippedItemPB_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            if (UserEquipped == null)
-                return;
-
-            EquipmentSlot slot = ((EquippedItemPB)sender).Slot;
-            ItemInfoTooltip.HandleMouseLeave(sender, ItemInfoSource.Equipped, slot.GetValue());
-        }
-
-        void EquippedItemPB_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            if (UserEquipped == null)
-                return;
-
-            EquipmentSlot slot = ((EquippedItemPB)sender).Slot;
-            if (UserEquipped[slot] == null)
-                return;
-
-            ItemInfoTooltip.HandleMouseMove(sender, ItemInfoSource.Equipped, slot.GetValue());
         }
 
         void EquippedItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
@@ -147,6 +109,24 @@ namespace DemoGame.Client
                 get { return _slot; }
             }
 
+            static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
+            {
+                var src = (EquippedItemPB)sender;
+                EquipmentSlot slot = src.Slot;
+                ItemInfo itemInfo;
+
+                if (!src._equippedForm._infoRequester.TryGetInfo(slot, out itemInfo))
+                {
+                    // The data has not been received yet - returning null will make the tooltip retry later
+                    return null;
+                }
+
+                // Data was received, so format it and return it
+                return ItemInfoHelper.GetStyledText(itemInfo);
+            }
+
+            static readonly TooltipHandler _tooltipHandler = TooltipCallback;
+
             public EquippedItemPB(EquippedForm parent, Vector2 pos, EquipmentSlot slot)
                 : base(pos, null, new Vector2(_itemWidth, _itemHeight), parent)
             {
@@ -155,10 +135,8 @@ namespace DemoGame.Client
 
                 _equippedForm = parent;
                 _slot = slot;
+                Tooltip = _tooltipHandler;
 
-                OnMouseLeave += _equippedForm.EquippedItemPB_OnMouseLeave;
-                OnMouseEnter += _equippedForm.EquippedItemPB_OnMouseEnter;
-                OnMouseMove += _equippedForm.EquippedItemPB_OnMouseMove;
                 OnMouseUp += _equippedForm.EquippedItemPB_OnMouseUp;
             }
 
