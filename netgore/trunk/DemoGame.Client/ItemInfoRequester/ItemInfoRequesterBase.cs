@@ -119,7 +119,6 @@ namespace DemoGame.Client
         /// the given <paramref name="slot"/> contained no item.</returns>
         public bool TryGetInfo(T slot, out ItemInfo itemInfo)
         {
-
             // Check if the slot has changed
             if (!_slot.Equals(slot))
             {
@@ -139,6 +138,7 @@ namespace DemoGame.Client
                 {
                     using (var pw = GetRequest(_slot))
                         Socket.Send(pw);
+
                     _needToRequest = false;
                     itemInfo = null;
                     return false;

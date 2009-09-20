@@ -10,7 +10,6 @@ using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 
-// TODO: $$ Fix the tooltip shit to not suck so hard so I can actually use it for the shops
 // TODO: $$ Buy items from shop when clicking
 // TODO: $$ If shop window is open, and CanBuy == true, sell items instead of dropping
 
@@ -70,21 +69,6 @@ namespace DemoGame.Client.Controls
             _shopInfo = null;
         }
 
-        void ShopItemPB_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            // TODO: $$ ...
-        }
-
-        void ShopItemPB_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            // TODO: $$ ...
-        }
-
-        void ShopItemPB_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            // TODO: $$ ...
-        }
-
         void ShopItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
         {
             // TODO: $$ ...
@@ -119,12 +103,12 @@ namespace DemoGame.Client.Controls
             readonly ShopForm _shopForm;
             Grh _grh;
 
-            public ShopItemIndex Index
+            ShopItemIndex Index
             {
                 get { return _index; }
             }
 
-            public ItemInfo ItemInfo
+            ItemInfo ItemInfo
             {
                 get
                 {
@@ -149,9 +133,19 @@ namespace DemoGame.Client.Controls
                 }
             }
 
-            public ShopInfo ShopInfo
+            ShopInfo ShopInfo
             {
                 get { return _shopForm.ShopInfo; }
+            }
+
+            static readonly TooltipHandler _tooltipHandler = TooltipCallback;
+
+            static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
+            {
+                var src = (ShopItemPB)sender;
+                var slot = src.Index;
+                ItemInfo itemInfo = src.ShopInfo.Items[slot];
+                return ItemInfoHelper.GetStyledText(itemInfo);
             }
 
             public ShopItemPB(ShopForm parent, Vector2 pos, ShopItemIndex index)
@@ -162,10 +156,7 @@ namespace DemoGame.Client.Controls
 
                 _shopForm = parent;
                 _index = index;
-
-                OnMouseLeave += _shopForm.ShopItemPB_OnMouseLeave;
-                OnMouseEnter += _shopForm.ShopItemPB_OnMouseEnter;
-                OnMouseMove += _shopForm.ShopItemPB_OnMouseMove;
+                Tooltip = _tooltipHandler;
                 OnMouseUp += _shopForm.ShopItemPB_OnMouseUp;
 
                 Skin.OnChange += Skin_OnChange;
