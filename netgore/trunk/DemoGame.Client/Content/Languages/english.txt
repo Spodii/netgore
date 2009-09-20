@@ -12,3 +12,8 @@ CommandTellOfflineUser: User {0} is currently offline.
 LoginInvalidName: Account with the given name does not exist.
 LoginInvalidPassword: Incorrect password.
 LoginAccountInUse: Account is already in use.
+
+ShopInsufficientFundsToPurchaseSingular: You do not have enough money to purchase a {0}.
+ShopInsufficientFundsToPurchasePlural: You do not have enough money to purchase {0} {1}s.
+ShopPurchaseSingular: You purchased a {0} for {1} cash.
+ShopPurchasePlural: You purchased {0} {1}s for {2} cash.
