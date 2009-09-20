@@ -187,8 +187,16 @@ namespace DemoGame
                 throw new ArgumentNullException("entity");
 
             Debug.Assert(!_dynamicEntities.Contains(entity), "DynamicEntity is already in the DynamicEntity list!");
-            Debug.Assert(!_dynamicEntities.CanGet((int)mapEntityIndex) || _dynamicEntities[(int)mapEntityIndex] == null,
-                         "A DynamicEntity already exists at this MapEntityIndex!");
+
+            if (_dynamicEntities.CanGet((int)mapEntityIndex))
+            {
+                var existingDE = _dynamicEntities[(int)mapEntityIndex];
+                if (existingDE != null)
+                {
+                    Debug.Fail("A DynamicEntity already exists at this MapEntityIndex!");
+                    RemoveEntity(existingDE);
+                }
+            }
 
             entity.MapEntityIndex = mapEntityIndex;
             _dynamicEntities[(int)mapEntityIndex] = entity;
