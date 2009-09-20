@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
 using NUnit.Framework;
 
@@ -7,6 +8,111 @@ namespace NetGore.Graphics.GUI.Tests
     [TestFixture]
     public class StyledTextTests
     {
+        [Test]
+        public void ConcastTestA()
+        {
+            StyledText s1 = new StyledText("abcd", Color.Black);
+            StyledText s2 = new StyledText("123", Color.Black);
+            StyledText s3 = new StyledText("xyz", Color.Black);
+            var concat = StyledText.Concat(new StyledText[] { s1, s2, s3 });
+
+            Assert.AreEqual(1, concat.Count());
+            Assert.AreEqual(s1.Text + s2.Text + s3.Text, concat.First().Text);
+            Assert.IsTrue(s1.HasSameStyle(concat.First()));
+        }
+
+        [Test]
+        public void ConcastTestB()
+        {
+            StyledText s1 = new StyledText("abcd", Color.Black);
+            StyledText s2 = new StyledText("123", Color.Black);
+            StyledText s3 = new StyledText("xyz", Color.White);
+            var concat = StyledText.Concat(new StyledText[] { s1, s2, s3 }).ToArray();
+
+            Assert.AreEqual(2, concat.Count());
+            Assert.AreEqual(s1.Text + s2.Text, concat[0].Text);
+            Assert.AreEqual(s3.Text, concat[1].Text);
+            Assert.IsTrue(s1.HasSameStyle(concat[0]));
+            Assert.IsTrue(s3.HasSameStyle(concat[1]));
+        }
+
+        [Test]
+        public void ConcastTestC()
+        {
+            StyledText s1 = new StyledText("abcd", Color.Black);
+            StyledText s2 = new StyledText("123", Color.White);
+            StyledText s3 = new StyledText("xyz", Color.Black);
+            var concat = StyledText.Concat(new StyledText[] { s1, s2, s3 }).ToArray();
+
+            Assert.AreEqual(3, concat.Count());
+            Assert.AreEqual(s1.Text, concat[0].Text);
+            Assert.AreEqual(s2.Text, concat[1].Text);
+            Assert.AreEqual(s3.Text, concat[2].Text);
+            Assert.IsTrue(s1.HasSameStyle(concat[0]));
+            Assert.IsTrue(s2.HasSameStyle(concat[1]));
+            Assert.IsTrue(s3.HasSameStyle(concat[2]));
+        }
+
+        [Test]
+        public void ToMultilineMultiInputDifferentLineTest()
+        {
+            const string originalString1 = "one \ntwo";
+            const string originalString2 = "three fou\nr";
+            StyledText s1 = new StyledText(originalString1, Color.Black);
+            StyledText s2 = new StyledText(originalString2, Color.Black);
+            var lines = StyledText.ToMultiline(new StyledText[] { s1, s2 }, true);
+
+            Assert.AreEqual(4, lines.Count);
+            Assert.AreEqual("one ", lines[0][0].Text);
+            Assert.AreEqual("two", lines[1][0].Text);
+            Assert.AreEqual("three fou", lines[2][0].Text);
+            Assert.AreEqual("r", lines[3][0].Text);
+
+            foreach (var l in lines)
+            {
+                Assert.AreEqual(s1.Color, l[0].Color);
+                Assert.AreEqual(s2.Color, l[0].Color);
+            }
+        }
+
+        [Test]
+        public void ToMultilineMultiInputSameLineTest()
+        {
+            const string originalString1 = "one \ntwo";
+            const string originalString2 = " three fou\nr";
+            StyledText s1 = new StyledText(originalString1, Color.Black);
+            StyledText s2 = new StyledText(originalString2, Color.Black);
+            var lines = StyledText.ToMultiline(new StyledText[] { s1,s2}, false);
+
+            Assert.AreEqual(3, lines.Count);
+            Assert.AreEqual("one ", lines[0][0].Text);
+            Assert.AreEqual("two", lines[1][0].Text);
+            Assert.AreEqual(" three fou", lines[1][1].Text);
+            Assert.AreEqual("r", lines[2][0].Text);
+
+            foreach (var l in lines)
+            {
+                Assert.AreEqual(s1.Color, l[0].Color);
+                Assert.AreEqual(s2.Color, l[0].Color);
+            }
+        }
+
+        [Test]
+        public void ToMultilineOneInputTest()
+        {
+            const string originalString = "one two\n three fou\nr";
+            StyledText s = new StyledText(originalString, Color.Black);
+            var lines = StyledText.ToMultiline(s);
+
+            Assert.AreEqual(3, lines.Count);
+            Assert.AreEqual("one two", lines[0].Text);
+            Assert.AreEqual(" three fou", lines[1].Text);
+            Assert.AreEqual("r", lines[2].Text);
+
+            foreach (var l in lines)
+                Assert.AreEqual(s.Color, l.Color);
+        }
+
         [Test]
         public void ConstructorCopyStyleTest()
         {

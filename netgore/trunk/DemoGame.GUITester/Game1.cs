@@ -131,7 +131,7 @@ namespace DemoGame.GUITester
 
         static StyledText[] Tooltip_Button(Control sender, TooltipArgs args)
         {
-            return new StyledText[] { new StyledText("Text for a "), new StyledText("button", Color.LightBlue)};
+            return new StyledText[] { new StyledText("hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello"), new StyledText("button", Color.LightBlue) };
         }
 
         void OnDrag(Control sender)
