@@ -495,7 +495,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.StopShopping)]
         void RecvStopShopping(IIPSocket conn, BitStream r)
         {
-            // TODO: $$ Stop shopping
+            GameplayScreen.ShopForm.HideShop();
         }
 
         [MessageHandler((byte)ServerPacketID.UpdateEquipmentSlot)]
