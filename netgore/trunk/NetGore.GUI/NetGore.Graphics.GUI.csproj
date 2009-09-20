@@ -95,6 +95,7 @@
     <Compile Include="Controls\PanelSettings.cs" />
     <Compile Include="Controls\PictureBoxSettings.cs" />
     <Compile Include="Controls\TextBoxSettings.cs" />
+    <Compile Include="StyledTextsDrawer.cs" />
     <Compile Include="Tooltip\Tooltip.cs" />
     <Compile Include="EventArgs\KeyboardEventArgs.cs" />
     <Compile Include="EventArgs\MouseButtons.cs" />

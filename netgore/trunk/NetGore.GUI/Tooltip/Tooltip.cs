@@ -35,11 +35,6 @@ namespace NetGore.Graphics.GUI
 
         int _timeout = 3000;
 
-        /// <summary>
-        /// The text to display for the tooltip. Can be null.
-        /// </summary>
-        List<List<StyledText>> _tooltipTextLines;
-
         bool _tooltipTimedOut = false;
 
         /// <summary>
@@ -102,7 +97,12 @@ namespace NetGore.Graphics.GUI
             {
                 if (value == null)
                     throw new ArgumentNullException("value");
+
+                if (_font == value)
+                    return;
+
                 _font = value;
+                _drawer.Font = _font;
             }
         }
 
@@ -128,7 +128,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public bool IsDisplayed
         {
-            get { return IsVisible && _tooltipTextLines != null && !_tooltipTimedOut; }
+            get { return IsVisible && _drawer.Texts != null && !_tooltipTimedOut; }
         }
 
         /// <summary>
@@ -173,6 +173,7 @@ namespace NetGore.Graphics.GUI
 
             _guiManager = guiManager;
             _font = guiManager.Font;
+            _drawer = new StyledTextsDrawer(Font);
 
             // Set the Tooltip in the GUIManager
             GUIManager.Tooltip = this;
@@ -180,6 +181,8 @@ namespace NetGore.Graphics.GUI
             Debug.Assert(GUIManager.Tooltip == this);
             Debug.Assert(Font != null);
         }
+
+        readonly StyledTextsDrawer _drawer;
 
         /// <summary>
         /// Draws the <see cref="Tooltip"/>.
@@ -195,7 +198,6 @@ namespace NetGore.Graphics.GUI
                 return;
 
             Vector2 pos = GUIManager.CursorPosition + DrawOffset + BorderPadding;
-            float startX = pos.X;
 
             // Draw the border
             Rectangle borderRect = new Rectangle((int)(pos.X - BorderPadding.X), (int)(pos.Y - BorderPadding.Y),
@@ -208,18 +210,8 @@ namespace NetGore.Graphics.GUI
             else
                 XNARectangle.Draw(sb, borderRect, _args.BackgroundColor);
 
-            // Draw
-            foreach (var line in _tooltipTextLines)
-            {
-                foreach (var item in line)
-                {
-                    item.Draw(sb, Font, pos, _args.FontColor);
-                    pos.X += item.GetWidth(Font);
-                }
-
-                pos.X = startX;
-                pos.Y += Font.LineSpacing;
-            }
+            // Draw the text
+            _drawer.Draw(sb, _args.FontColor, pos);
         }
 
         /// <summary>
@@ -239,7 +231,7 @@ namespace NetGore.Graphics.GUI
             {
                 _lastUnderCursor = currentUnderCursor;
                 _startHoverTime = currentTime;
-                _tooltipTextLines = null;
+                _drawer.ClearTexts();
                 _tooltipTimedOut = false;
             }
 
@@ -247,7 +239,7 @@ namespace NetGore.Graphics.GUI
             if (currentUnderCursor == null || currentUnderCursor.Tooltip == null || _tooltipTimedOut)
                 return;
 
-            if (_tooltipTextLines != null)
+            if (_drawer.Texts != null)
             {
                 // If we already have the text, check if it is time to hide it
                 if (_args.Timeout <= 0)
@@ -288,7 +280,8 @@ namespace NetGore.Graphics.GUI
                 _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
             else
             {
-                _tooltipTextLines = StyledText.ToMultiline(tooltipTexts, false, Font, MaxWidth);
+                var texts = StyledText.ToMultiline(tooltipTexts, false, Font, MaxWidth);
+                _drawer.SetStyledTexts(texts);
                 UpdateBackground();
             }
         }
@@ -298,8 +291,8 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         protected virtual void UpdateBackground()
         {
-            float maxWidth = _tooltipTextLines.Max(x => x.Sum(y => y.GetWidth(Font)));
-            float height = _tooltipTextLines.Count * Font.LineSpacing;
+            float maxWidth = _drawer.Texts.Max(x => x.Sum(y => y.GetWidth(Font)));
+            float height = _drawer.Texts.Count() * Font.LineSpacing;
             _borderSize = new Vector2(maxWidth, height);
         }
     }

@@ -114,6 +114,29 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Concatenates the <see cref="StyledText"/>s that have the same style together while retaining order.
+        /// </summary>
+        /// <param name="input">The <see cref="StyledText"/>s to concatenate.</param>
+        /// <returns>The concatenated <see cref="StyledText"/>s that have the same style.</returns>
+        public static IEnumerable<StyledText> Concat(List<StyledText> input)
+        {
+            var ret = new List<StyledText>(input.Count);
+
+            for (int i = 0; i < input.Count; i++)
+            {
+                StyledText current = input[i];
+                while (i + 1 < input.Count && current.HasSameStyle(input[i + 1]))
+                {
+                    current += input[i + 1].Text;
+                    i++;
+                }
+                ret.Add(current);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
         /// Draws the StyledText to the <paramref name="spriteBatch"/>.
         /// </summary>
         /// <param name="spriteBatch">SpriteBatch to draw the StyledText to.</param>
@@ -152,6 +175,8 @@ namespace NetGore.Graphics.GUI
         /// Finds the 0-based index of the last character that will fit into a single line.
         /// </summary>
         /// <param name="text">The text to check.</param>
+        /// <param name="font">The SpriteFont used to measure the length.</param>
+        /// <param name="maxLineLength">The maximum allowed line length in pixels.</param>
         /// <returns>The 0-based index of the last character that will fit into a single line.</returns>
         public static int FindLastFittingChar(string text, SpriteFont font, int maxLineLength)
         {
@@ -421,7 +446,7 @@ namespace NetGore.Graphics.GUI
                         int lastFittingChar = FindLastFittingChar(currentLineText.ToString(), font, maxLineLength);
                         int splitAt = FindIndexToSplitAt(s, lastFittingChar);
 
-                        StyledText left = current.Substring(0, splitAt);
+                        StyledText left = current.Substring(0, splitAt + 1);
                         StyledText right = current.Substring(splitAt + 1);
 
                         retLine.Add(left);
