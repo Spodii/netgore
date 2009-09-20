@@ -17,6 +17,23 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets the <see cref="ItemInfo"/> at the given <paramref name="slot"/>.
+        /// </summary>
+        /// <param name="slot">The slot of the item.</param>
+        /// <returns>The <see cref="ItemInfo"/> at the given <paramref name="slot"/>, or null if the
+        /// <see cref="slot"/> was invalid or not item was in the specified slot.</returns>
+        public ItemInfo GetItemInfo(ShopItemIndex slot)
+        {
+            if (_items == null)
+                return null;
+
+            if (slot < 0 || slot >= _items.Length)
+                return null;
+
+            return _items[slot];
+        }
+
+        /// <summary>
         /// Gets the items in the shop.
         /// </summary>
         public ItemInfo[] Items

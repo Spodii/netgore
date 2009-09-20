@@ -116,20 +116,7 @@ namespace DemoGame.Client.Controls
                     if (shopInfo == null)
                         return null;
 
-                    if (shopInfo.Items == null)
-                        return null;
-
-                    if (Index >= shopInfo.Items.Length)
-                        return null;
-
-                    try
-                    {
-                        return shopInfo.Items[Index];
-                    }
-                    catch
-                    {
-                        return null;
-                    }
+                    return ShopInfo.GetItemInfo(Index);
                 }
             }
 
@@ -143,8 +130,7 @@ namespace DemoGame.Client.Controls
             static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
             {
                 var src = (ShopItemPB)sender;
-                var slot = src.Index;
-                ItemInfo itemInfo = src.ShopInfo.Items[slot];
+                ItemInfo itemInfo = src.ItemInfo;
                 return ItemInfoHelper.GetStyledText(itemInfo);
             }
 
