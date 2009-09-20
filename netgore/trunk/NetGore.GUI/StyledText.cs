@@ -1,5 +1,8 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -15,11 +18,31 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public static readonly StyledText Empty = new StyledText(string.Empty, Color.White);
 
+        static readonly Color _colorForDefault = new Color(0, 0, 0, 0);
+        static readonly char[] _splitChars = new char[] { '-', '_', ' ', '\n', ',', ';', '.', '!', '?' };
+
         readonly Color _color;
         readonly string _text;
 
         SpriteFont _fontUsedToMeasure;
         float _width;
+
+        /// <summary>
+        /// Gets the <see cref="Color"/> to use to denote that the <see cref="StyledText"/> should use the
+        /// specified default color when drawing.
+        /// </summary>
+        public static Color ColorForDefault
+        {
+            get { return _colorForDefault; }
+        }
+
+        /// <summary>
+        /// Gets the preferred chars that are used to split lines of text apart at.
+        /// </summary>
+        public static IEnumerable<char> SplitChars
+        {
+            get { return _splitChars; }
+        }
 
         /// <summary>
         /// Gets the color of the text.
@@ -67,13 +90,28 @@ namespace NetGore.Graphics.GUI
             _color = sourceStyle.Color;
         }
 
-        static readonly Color _colorForDefault = new Color(0,0,0,0);
-
         /// <summary>
-        /// Gets the <see cref="Color"/> to use to denote that the <see cref="StyledText"/> should use the
-        /// specified default color when drawing.
+        /// Concatenates the <see cref="StyledText"/>s that have the same style together while retaining order.
         /// </summary>
-        public static Color ColorForDefault { get { return _colorForDefault; } }
+        /// <param name="input">The <see cref="StyledText"/>s to concatenate.</param>
+        /// <returns>The concatenated <see cref="StyledText"/>s that have the same style.</returns>
+        public static IEnumerable<StyledText> Concat(StyledText[] input)
+        {
+            var ret = new List<StyledText>(input.Length);
+
+            for (int i = 0; i < input.Length; i++)
+            {
+                StyledText current = input[i];
+                while (i + 1 < input.Length && current.HasSameStyle(input[i + 1]))
+                {
+                    current += input[i + 1].Text;
+                    i++;
+                }
+                ret.Add(current);
+            }
+
+            return ret;
+        }
 
         /// <summary>
         /// Draws the StyledText to the <paramref name="spriteBatch"/>.
@@ -89,6 +127,46 @@ namespace NetGore.Graphics.GUI
                 spriteBatch.DrawString(spriteFont, Text, position, defaultColor);
             else
                 spriteBatch.DrawString(spriteFont, Text, position, Color);
+        }
+
+        /// <summary>
+        /// Finds the index of a string to split it at.
+        /// </summary>
+        /// <param name="text">Text to split.</param>
+        /// <param name="maxChars">Maximum number of chars allowed in the primary string.</param>
+        /// <returns>The index of a string to split it at.</returns>
+        public static int FindIndexToSplitAt(string text, int maxChars)
+        {
+            // Split at either the first acceptable split character
+            for (int i = maxChars; i > Math.Max(0, maxChars - 8); i--)
+            {
+                if (SplitChars.Contains(text[i]))
+                    return i;
+            }
+
+            // No valid split characters were found, so just split at the max length
+            return maxChars;
+        }
+
+        /// <summary>
+        /// Finds the 0-based index of the last character that will fit into a single line.
+        /// </summary>
+        /// <param name="text">The text to check.</param>
+        /// <returns>The 0-based index of the last character that will fit into a single line.</returns>
+        public static int FindLastFittingChar(string text, SpriteFont font, int maxLineLength)
+        {
+            StringBuilder sb = new StringBuilder(text);
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                float length = font.MeasureString(sb).X;
+                if (length <= maxLineLength)
+                    return sb.Length;
+                sb.Length--;
+            }
+
+            Debug.Fail("No text fits into the given maxLineLength.");
+            return 0;
         }
 
         /// <summary>
@@ -109,6 +187,16 @@ namespace NetGore.Graphics.GUI
             }
 
             return _width;
+        }
+
+        /// <summary>
+        /// Gets if this StyledText has the same style as another StyledText.
+        /// </summary>
+        /// <param name="other">The other StyledText.</param>
+        /// <returns>True if this StyledText has same style as the other StyledText; otherwise false.</returns>
+        public bool HasSameStyle(StyledText other)
+        {
+            return Color == other.Color;
         }
 
         /// <summary>
@@ -297,6 +385,112 @@ namespace NetGore.Graphics.GUI
                 return this;
 
             return new StyledText(s, Color);
+        }
+
+        public static List<List<StyledText>> ToMultiline(IEnumerable<StyledText> texts, bool putInputOnNewLines, SpriteFont font,
+                                                         int maxLineLength)
+        {
+            var lines = ToMultiline(texts, putInputOnNewLines);
+            var ret = new List<List<StyledText>>();
+
+            StringBuilder currentLineText = new StringBuilder();
+            var linePartsStack = new Stack<StyledText>();
+
+            foreach (var line in lines)
+            {
+                currentLineText.Length = 0;
+                var retLine = new List<StyledText>();
+
+                for (int i = line.Count - 1; i >= 0; i--)
+                {
+                    linePartsStack.Push(line[i]);
+                }
+
+                while (linePartsStack.Count > 0)
+                {
+                    StyledText current = linePartsStack.Pop();
+                    currentLineText.Append(current.Text);
+
+                    // Check if the line has become too long
+                    if (font.MeasureString(currentLineText).X <= maxLineLength)
+                        retLine.Add(current);
+                    else
+                    {
+                        string s = currentLineText.ToString();
+
+                        int lastFittingChar = FindLastFittingChar(currentLineText.ToString(), font, maxLineLength);
+                        int splitAt = FindIndexToSplitAt(s, lastFittingChar);
+
+                        StyledText left = current.Substring(0, splitAt);
+                        StyledText right = current.Substring(splitAt + 1);
+
+                        retLine.Add(left);
+                        ret.Add(retLine);
+                        retLine = new List<StyledText>();
+
+                        currentLineText.Length = 0;
+                        linePartsStack.Push(right);
+                    }
+                }
+
+                ret.Add(retLine);
+            }
+
+            return ret;
+        }
+
+        public static List<StyledText> ToMultiline(StyledText text)
+        {
+            var ret = new List<StyledText>();
+
+            var split = text.Split('\n');
+            foreach (StyledText s in split)
+            {
+                StyledText newS = new StyledText(s.Text.Replace('\r'.ToString(), string.Empty), s);
+                ret.Add(newS);
+            }
+
+            return ret;
+        }
+
+        public static List<List<StyledText>> ToMultiline(IEnumerable<StyledText> texts, bool putInputOnNewLines)
+        {
+            var ret = new List<List<StyledText>>();
+
+            if (putInputOnNewLines)
+            {
+                foreach (StyledText t in texts)
+                {
+                    var split = t.Split('\n');
+                    foreach (StyledText s in split)
+                    {
+                        StyledText newS = new StyledText(s.Text.Replace('\r'.ToString(), string.Empty), s);
+                        ret.Add(new List<StyledText> { newS });
+                    }
+                }
+            }
+            else
+            {
+                var line = new List<StyledText>();
+                foreach (StyledText t in texts)
+                {
+                    var split = t.Split('\n');
+                    line.Add(split[0]);
+
+                    if (split.Length > 1)
+                    {
+                        for (int i = 1; i < split.Length; i++)
+                        {
+                            ret.Add(line);
+                            line = new List<StyledText> { split[i] };
+                        }
+                    }
+                }
+
+                ret.Add(line);
+            }
+
+            return ret;
         }
 
         /// <summary>

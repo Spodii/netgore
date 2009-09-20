@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -37,7 +38,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// The text to display for the tooltip. Can be null.
         /// </summary>
-        StyledText[] _tooltipText;
+        List<List<StyledText>> _tooltipTextLines;
 
         bool _tooltipTimedOut = false;
 
@@ -127,7 +128,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public bool IsDisplayed
         {
-            get { return IsVisible && _tooltipText != null && !_tooltipTimedOut; }
+            get { return IsVisible && _tooltipTextLines != null && !_tooltipTimedOut; }
         }
 
         /// <summary>
@@ -194,6 +195,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             Vector2 pos = GUIManager.CursorPosition + DrawOffset + BorderPadding;
+            float startX = pos.X;
 
             // Draw the border
             Rectangle borderRect = new Rectangle((int)(pos.X - BorderPadding.X), (int)(pos.Y - BorderPadding.Y),
@@ -207,10 +209,16 @@ namespace NetGore.Graphics.GUI
                 XNARectangle.Draw(sb, borderRect, _args.BackgroundColor);
 
             // Draw
-            for (int i = 0; i < _tooltipText.Length; i++)
+            foreach (var line in _tooltipTextLines)
             {
-                _tooltipText[i].Draw(sb, Font, pos, _args.FontColor);
-                pos.X += _tooltipText[i].GetWidth(Font);
+                foreach (var item in line)
+                {
+                    item.Draw(sb, Font, pos, _args.FontColor);
+                    pos.X += item.GetWidth(Font);
+                }
+
+                pos.X = startX;
+                pos.Y += Font.LineSpacing;
             }
         }
 
@@ -231,7 +239,7 @@ namespace NetGore.Graphics.GUI
             {
                 _lastUnderCursor = currentUnderCursor;
                 _startHoverTime = currentTime;
-                _tooltipText = null;
+                _tooltipTextLines = null;
                 _tooltipTimedOut = false;
             }
 
@@ -239,7 +247,7 @@ namespace NetGore.Graphics.GUI
             if (currentUnderCursor == null || currentUnderCursor.Tooltip == null || _tooltipTimedOut)
                 return;
 
-            if (_tooltipText != null)
+            if (_tooltipTextLines != null)
             {
                 // If we already have the text, check if it is time to hide it
                 if (_args.Timeout <= 0)
@@ -265,18 +273,24 @@ namespace NetGore.Graphics.GUI
         }
 
         int _lastRefreshTime;
+        int _maxWidth = 150;
+
+        public int MaxWidth { get { return _maxWidth; } }
 
         void RefreshText(int currentTime)
         {
             // Request the tooltip text
-            _tooltipText = _lastUnderCursor.Tooltip.Invoke(_lastUnderCursor, _args);
+            var tooltipTexts = _lastUnderCursor.Tooltip.Invoke(_lastUnderCursor, _args);
             _lastRefreshTime = currentTime;
 
             // If the tooltip text is null, increase the _startHoverTime to result in the needed retry delay
-            if (_tooltipText == null)
+            if (tooltipTexts == null)
                 _startHoverTime = currentTime - Delay + RetryGetTooltipDelay;
             else
+            {
+                _tooltipTextLines = StyledText.ToMultiline(tooltipTexts, false, Font, MaxWidth);
                 UpdateBackground();
+            }
         }
 
         /// <summary>
@@ -284,7 +298,9 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         protected virtual void UpdateBackground()
         {
-            _borderSize = new Vector2(_tooltipText.Sum(x => x.GetWidth(_font)), _font.LineSpacing);
+            float maxWidth = _tooltipTextLines.Max(x => x.Sum(y => y.GetWidth(Font)));
+            float height = _tooltipTextLines.Count * Font.LineSpacing;
+            _borderSize = new Vector2(maxWidth, height);
         }
     }
 }
