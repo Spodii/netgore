@@ -409,7 +409,9 @@ namespace DemoGame.Client
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 
             _inventoryForm = new InventoryForm(InventoryInfoRequester, new Vector2(250, 0), cScreen);
+
             _shopForm = new ShopForm(new Vector2(250, 0), cScreen);
+            _shopForm.OnPurchase += ShopForm_OnPurchase;
 
             _skillsForm = new SkillsForm(new Vector2(100, 0), cScreen);
             _skillsForm.OnUseSkill += SkillsForm_OnUseSkill;
@@ -440,6 +442,12 @@ namespace DemoGame.Client
             _guiSettings.Add("StatsForm", _statsForm);
             _guiSettings.Add("ChatForm", _chatForm);
             _guiSettings.Add("ToolbarForm", toolbar);
+        }
+
+        void ShopForm_OnPurchase(ShopForm shopForm, ShopItemIndex slot)
+        {
+            using (var pw = ClientPacket.BuyFromShop(slot, 1))
+                Socket.Send(pw);
         }
 
         /// <summary>

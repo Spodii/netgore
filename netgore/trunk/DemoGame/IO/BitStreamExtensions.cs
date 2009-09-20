@@ -90,6 +90,15 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Reads a ShopItemIndex from the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read from.</param>
+        public static ShopItemIndex ReadShopItemIndex(this BitStream bitStream)
+        {
+            return bitStream.ReadByte();
+        }
+
+        /// <summary>
         /// Reads a SkillType from the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
@@ -299,6 +308,16 @@ namespace DemoGame
         public static void Write(this BitStream bitStream, SkillType skillType)
         {
             bitStream.Write((byte)skillType);
+        }
+
+        /// <summary>
+        /// Writes a ShopItemIndex to the BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to write to.</param>
+        /// <param name="shopItemIndex">ShopItemIndex to write.</param>
+        public static void Write(this BitStream bitStream, ShopItemIndex shopItemIndex)
+        {
+            bitStream.Write(shopItemIndex);
         }
 
         /// <summary>

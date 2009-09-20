@@ -16,6 +16,14 @@ namespace DemoGame.Client
             return GetWriter(ClientPacketID.Attack);
         }
 
+        public static PacketWriter BuyFromShop(ShopItemIndex index, byte amount)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.BuyFromShop);
+            pw.Write(index);
+            pw.Write(amount);
+            return pw;
+        }
+
         public static PacketWriter DropInventoryItem(InventorySlot slot)
         {
             PacketWriter pw = GetWriter(ClientPacketID.DropInventoryItem);

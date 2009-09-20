@@ -9,9 +9,9 @@ namespace DemoGame.Server
         static readonly Random _random = new Random();
 
         /// <summary>
-        /// Creates an instance of the characterID from the template.
+        /// Creates an instance of the <see cref="ItemEntity"/> from the template.
         /// </summary>
-        /// <returns>The instance of the characterID, or null if the creation chance failed.</returns>
+        /// <returns>The instance of the <see cref="ItemEntity"/>, or null if the creation chance failed.</returns>
         public static ItemEntity CreateInstance(this CharacterTemplateInventoryItem v)
         {
             if (!v.Chance.Test())

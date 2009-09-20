@@ -10,7 +10,7 @@ namespace DemoGame.Server
         readonly InventorySlot _slot;
 
         /// <summary>
-        /// Gets the current characterID that has changed. If null, this means that the characterID has changed
+        /// Gets the current item that has changed. If null, this means that the item has changed
         /// to null (ie been removed from the inventory).
         /// </summary>
         public ItemEntity Item
@@ -19,7 +19,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets the previous values of the characterID. If null, this means the characterID the characterID used to be null.
+        /// Gets the previous values of the item. If null, this means the item used to be null.
         /// </summary>
         public ItemValueTracker OldValues
         {
@@ -42,8 +42,8 @@ namespace DemoGame.Server
                 _oldValues = oldValues;
 
             Debug.Assert(_item != null || _oldValues != null,
-                         "characterID and oldValues can not both be null. " +
-                         "This would imply that the characterID changed from null to null.");
+                         "item and oldValues can not both be null. " +
+                         "This would imply that the item changed from null to null.");
         }
     }
 }

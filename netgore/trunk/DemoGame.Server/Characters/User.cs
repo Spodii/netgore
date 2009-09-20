@@ -353,7 +353,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Sends the item information for an item in a given equipment slot to the client.
         /// </summary>
-        /// <param name="slot">Equipment slot of the characterID to send the info for</param>
+        /// <param name="slot">Equipment slot of the ItemEntity to send the info for.</param>
         public void SendEquipmentItemStats(EquipmentSlot slot)
         {
             // Check for a valid slot
@@ -370,7 +370,7 @@ namespace DemoGame.Server
             ItemEntity item = Equipped[slot];
             if (item == null)
             {
-                const string errmsg = "User `{0}` requested info for equipment slot `{1}`, but the slot has no characterID.";
+                const string errmsg = "User `{0}` requested info for equipment slot `{1}`, but the slot has no ItemEntity.";
                 if (log.IsInfoEnabled)
                     log.InfoFormat(errmsg, this, slot);
                 return;
@@ -386,7 +386,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Sends the item information for an item in a given inventory slot to the client.
         /// </summary>
-        /// <param name="slot">Inventory slot of the characterID to send the info for</param>
+        /// <param name="slot">Inventory slot of the ItemEntity to send the info for.</param>
         public void SendInventoryItemStats(InventorySlot slot)
         {
             // Check for a valid slot
@@ -403,7 +403,7 @@ namespace DemoGame.Server
             ItemEntity item = Inventory[slot];
             if (item == null)
             {
-                const string errmsg = "User `{0}` requested info for inventory slot `{1}`, but the slot has no characterID.";
+                const string errmsg = "User `{0}` requested info for inventory slot `{1}`, but the slot has no ItemEntity.";
                 if (log.IsInfoEnabled)
                     log.InfoFormat(errmsg, this, slot);
                 return;
@@ -486,29 +486,29 @@ namespace DemoGame.Server
 
         public void UseInventoryItem(InventorySlot slot)
         {
-            // Get the characterID to use
+            // Get the ItemEntity to use
             ItemEntity item = Inventory[slot];
             if (item == null)
             {
-                const string errmsg = "Tried to use inventory slot `{0}`, but it contains no characterID.";
+                const string errmsg = "Tried to use inventory slot `{0}`, but it contains no ItemEntity.";
                 Debug.Fail(string.Format(errmsg, slot));
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, slot);
                 return;
             }
 
-            // Try to use the characterID
+            // Try to use the ItemEntity
             if (!UseItem(item, slot))
             {
-                // Check if the failure to use the characterID was due to an invalid amount of the characterID
+                // Check if the failure to use the ItemEntity was due to an invalid amount of the ItemEntity
                 if (item.Amount <= 0)
                 {
-                    const string errmsg = "Tried to use inventory characterID `{0}` at slot `{1}`, but it had an invalid amount.";
+                    const string errmsg = "Tried to use inventory ItemEntity `{0}` at slot `{1}`, but it had an invalid amount.";
                     Debug.Fail(string.Format(errmsg, item, slot));
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, item, slot);
 
-                    // Destroy the characterID
+                    // Destroy the ItemEntity
                     Inventory.RemoveAt(slot);
                     item.Dispose();
                 }
@@ -525,6 +525,80 @@ namespace DemoGame.Server
             {
                 Send(pw);
             }
+        }
+
+        public bool TryBuyItem(IItemTemplateTable itemTemplate, byte amount)
+        {
+            if (itemTemplate == null || amount <= 0)
+                return false;
+
+            int totalCost = itemTemplate.Value * amount;
+            
+            // Check for enough money to buy
+            if (Cash < totalCost)
+            {
+                if (amount == 1)
+                {
+                    using (var pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchaseSingular, itemTemplate.Name))
+                        Send(pw);
+                }
+                else
+                {
+                    using (var pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchasePlural, amount, itemTemplate.Name))
+                        Send(pw);
+                }
+                return false;
+            }
+
+            // Create the item
+            ItemEntity itemEntity = new ItemEntity(itemTemplate, amount);
+
+            // Check for room in the inventory
+            if (!Inventory.CanAdd(itemEntity))
+            {
+                itemEntity.Dispose();
+                return false;
+            }
+
+            // Add to the inventory
+            var remainderItem = Inventory.Add(itemEntity);
+
+            // Find the number of remaining items (in case something went wrong and not all was added)
+            int remainderAmount = remainderItem == null ? 0 : (int)remainderItem.Amount;
+
+            // Find the difference in the requested amount and remaining amount to get the amount added, and
+            // only charge the character for that (so they pay for what they got)
+            int amountPurchased = amount - remainderAmount;
+
+            if (amountPurchased < 0)
+            {
+                const string errmsg = "Somehow, amountPurchased was negative ({0})!"
+                    + " User: `{1}`. Item template: `{2}`. Requested amount: `{3}`. ItemEntity: `{4}`";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, amountPurchased, this, itemTemplate, amountPurchased, itemEntity);
+                Debug.Fail(string.Format(errmsg, amountPurchased, this, itemTemplate, amountPurchased, itemEntity));
+
+                // Raise the amount purchased to 0. They will get it for free, but that is better than PAYING them.
+                amountPurchased = 0;
+            }
+
+            // Charge them
+            uint chargeAmount = (uint)Math.Max(0, amountPurchased * itemEntity.Value);
+            Cash -= chargeAmount;
+
+            // Send purchase message
+            if (amountPurchased <= 1)
+            {
+                using (var pw = ServerPacket.SendMessage(GameMessage.ShopPurchaseSingular, itemTemplate.Name,chargeAmount))
+                    Send(pw);
+            }
+            else
+            {
+                using (var pw = ServerPacket.SendMessage(GameMessage.ShopPurchasePlural, amountPurchased, itemTemplate.Name, chargeAmount))
+                    Send(pw);
+            }
+
+            return true;
         }
 
         void User_OnChangeExp(Character character, uint oldExp, uint exp)
@@ -566,6 +640,7 @@ namespace DemoGame.Server
         public class UserShoppingState
         {
             readonly User _user;
+            readonly object _changeShopLock = new object();
 
             Map _shopMap;
             Entity _shopOwner;
@@ -601,8 +676,6 @@ namespace DemoGame.Server
 
             void SendStartShopping(Shop shop)
             {
-                _user.OnMove += User_OnMove;
-
                 using (PacketWriter pw = ServerPacket.StartShopping(shop))
                 {
                     User.Send(pw);
@@ -611,8 +684,6 @@ namespace DemoGame.Server
 
             void SendStopShopping()
             {
-                _user.OnMove -= User_OnMove;
-
                 using (PacketWriter pw = ServerPacket.StopShopping())
                 {
                     User.Send(pw);
@@ -627,6 +698,44 @@ namespace DemoGame.Server
                 return TryStartShopping(shopkeeper.Shop, shopkeeper, shopkeeper.Map);
             }
 
+            public bool TryPurchase(ShopItemIndex slot, byte amount)
+            {
+                if (slot < 0 || slot >= GameData.MaxShopItems)
+                    return false;
+
+                Shop shop;
+
+                lock (_changeShopLock)
+                {
+                    // Check for a valid shop
+                    if (_shoppingAt == null || _shopOwner == null || _shopMap == null)
+                        return false;
+
+                    // Check for a valid distance
+                    if (!IsValidDistance(_shopOwner))
+                    {
+                        // Stop shopping
+                        SendStopShopping();
+                        _shoppingAt = null;
+                        _shopOwner = null;
+                        _shopMap = null;
+                        return false;
+                    }
+
+                    // Store values locally so we can finish shopping without a lock
+                    // If you want to use other locals outside of the lock, like _shopOwner, apply the same pattern
+                    shop = _shoppingAt;
+                }
+
+                // Get and validate the item
+                var shopItem = shop.GetShopItem(slot);
+                if (shopItem == null)
+                    return false;
+
+                // Try to buy the item
+                return User.TryBuyItem(shopItem.ItemTemplate, amount);
+            }
+
             public bool TryStartShopping(Shop shop, Entity shopkeeper, Map entityMap)
             {
                 if (shop == null || shopkeeper == null || entityMap == null)
@@ -638,36 +747,21 @@ namespace DemoGame.Server
                 if (!IsValidDistance(shopkeeper))
                     return false;
 
-                // If the User was already shopping somewhere else, stop that shopping
-                if (_shoppingAt != null)
-                    SendStopShopping();
+                lock (_changeShopLock)
+                {
+                    // If the User was already shopping somewhere else, stop that shopping
+                    if (_shoppingAt != null)
+                        SendStopShopping();
 
-                // Start the shopping
-                _shoppingAt = shop;
-                _shopOwner = shopkeeper;
-                _shopMap = entityMap;
+                    // Start the shopping
+                    _shoppingAt = shop;
+                    _shopOwner = shopkeeper;
+                    _shopMap = entityMap;
+                }
 
                 SendStartShopping(shop);
 
                 return true;
-            }
-
-            /// <summary>
-            /// Handles when the User has moved while shopping.
-            /// </summary>
-            /// <param name="entity">The entity.</param>
-            /// <param name="value">The value.</param>
-            void User_OnMove(Entity entity, Vector2 value)
-            {
-                if (_shopOwner == null)
-                {
-                    _user.OnMove -= User_OnMove;
-                }
-                else
-                {
-                    if (!IsValidDistance(_shopOwner))
-                        SendStopShopping();
-                }
             }
         }
     }

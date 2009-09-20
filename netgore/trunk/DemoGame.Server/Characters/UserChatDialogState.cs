@@ -34,7 +34,7 @@ namespace DemoGame.Server
         NPC _chattingWith;
 
         /// <summary>
-        /// The current dialog characterID.
+        /// The current dialog item.
         /// </summary>
         NPCChatDialogItemBase _dialogItem;
 
@@ -275,7 +275,7 @@ namespace DemoGame.Server
                     }
                 }
 
-                // Get the next dialog characterID page from the response
+                // Get the next dialog item page from the response
                 page = ChatDialog.GetDialogItem(branchResponse.Page);
             }
 
@@ -283,9 +283,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Gets an IEnumerable of the indexes of the responses to skip for the current dialog characterID.
+        /// Gets an IEnumerable of the indexes of the responses to skip for the current dialog item.
         /// </summary>
-        /// <returns>An IEnumerable of the indexes of the responses to skip for the current dialog characterID.</returns>
+        /// <returns>An IEnumerable of the indexes of the responses to skip for the current dialog item.</returns>
         IEnumerable<byte> GetResponsesToSkip()
         {
             List<byte> retValues = null;
@@ -369,7 +369,7 @@ namespace DemoGame.Server
             EndDialog,
 
             /// <summary>
-            /// The dialog characterID is resent to the user under the assumption that the response was valid when
+            /// The dialog item is resent to the user under the assumption that the response was valid when
             /// the page was opened, but was no longer valid by the time a response was chosen (User's state
             /// has changed).
             /// </summary>

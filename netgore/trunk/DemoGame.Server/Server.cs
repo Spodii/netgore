@@ -12,7 +12,7 @@ using NetGore.Db;
 using NetGore.Network;
 using NetGore.Scripting;
 
-// TODO: When an characterID stops moving, send the position again to ensure it is valid
+// TODO: When an item stops moving, send the position again to ensure it is valid
 
 namespace DemoGame.Server
 {
