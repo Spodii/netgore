@@ -56,6 +56,7 @@ namespace NetGore.Graphics.GUI.Tests
         [Test]
         public void ToMultilineMultiInputDifferentLineTest()
         {
+            // TODO: $$ Test using \r\n and make sure both chars are removed
             const string originalString1 = "one \ntwo";
             const string originalString2 = "three fou\nr";
             StyledText s1 = new StyledText(originalString1, Color.Black);

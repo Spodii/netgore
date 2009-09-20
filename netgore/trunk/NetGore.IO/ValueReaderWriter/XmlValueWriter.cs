@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
 using NetGore.Globalization;
@@ -26,6 +27,10 @@ namespace NetGore.IO
         public XmlValueWriter(string filePath, string nodeName)
         {
             _disposeWriter = true;
+
+            string dir = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
             _writer = XmlWriter.Create(filePath, new XmlWriterSettings { Indent = true });
 
             if (_writer == null)

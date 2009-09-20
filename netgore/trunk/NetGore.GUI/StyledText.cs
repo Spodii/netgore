@@ -14,9 +14,19 @@ namespace NetGore.Graphics.GUI
     public class StyledText
     {
         /// <summary>
-        /// A StyledText with an empty string.
+        /// A <see cref="StyledText"/> with an empty string.
         /// </summary>
-        public static readonly StyledText Empty = new StyledText(string.Empty, Color.White);
+        public static readonly StyledText Empty = new StyledText(string.Empty);
+
+        /// <summary>
+        /// An empty array of <see cref="StyledText"/>s.
+        /// </summary>
+        public static readonly StyledText[] EmptyArray = new StyledText[0];
+
+        /// <summary>
+        /// A <see cref="StyledText"/> that contains just a line break.
+        /// </summary>
+        public static readonly StyledText LineBreak = new StyledText(Environment.NewLine);
 
         static readonly Color _colorForDefault = new Color(0, 0, 0, 0);
         static readonly char[] _splitChars = new char[] { '-', '_', ' ', '\n', ',', ';', '.', '!', '?' };

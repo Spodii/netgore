@@ -37,6 +37,11 @@ namespace NetGore.IO
         public BinaryValueWriter(string filePath) : this(new BitStream(BitStreamMode.Write, 8192))
         {
             _destinationFile = filePath;
+
+            string dir = Path.GetDirectoryName(filePath);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+
             File.WriteAllBytes(filePath, new byte[] { 0 });
         }
 

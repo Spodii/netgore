@@ -351,7 +351,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Sends the characterID information for an characterID in a given equipment slot to the client.
+        /// Sends the item information for an item in a given equipment slot to the client.
         /// </summary>
         /// <param name="slot">Equipment slot of the characterID to send the info for</param>
         public void SendEquipmentItemStats(EquipmentSlot slot)
@@ -366,7 +366,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            // Get the characterID
+            // Get the item
             ItemEntity item = Equipped[slot];
             if (item == null)
             {
@@ -376,15 +376,15 @@ namespace DemoGame.Server
                 return;
             }
 
-            // Send the new characterID info
-            using (PacketWriter pw = ServerPacket.SendItemInfo(item))
+            // Send the item info
+            using (PacketWriter pw = ServerPacket.SendEquipmentItemInfo(slot, item))
             {
                 Send(pw);
             }
         }
 
         /// <summary>
-        /// Sends the characterID information for an characterID in a given inventory slot to the client.
+        /// Sends the item information for an item in a given inventory slot to the client.
         /// </summary>
         /// <param name="slot">Inventory slot of the characterID to send the info for</param>
         public void SendInventoryItemStats(InventorySlot slot)
@@ -399,7 +399,7 @@ namespace DemoGame.Server
                 return;
             }
 
-            // Get the characterID
+            // Get the item
             ItemEntity item = Inventory[slot];
             if (item == null)
             {
@@ -409,8 +409,8 @@ namespace DemoGame.Server
                 return;
             }
 
-            // Send the new characterID info
-            using (PacketWriter pw = ServerPacket.SendItemInfo(item))
+            // Send the item info
+            using (PacketWriter pw = ServerPacket.SendInventoryItemInfo(slot, item))
             {
                 Send(pw);
             }

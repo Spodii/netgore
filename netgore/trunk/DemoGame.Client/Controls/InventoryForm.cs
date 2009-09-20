@@ -19,7 +19,7 @@ namespace DemoGame.Client
         const float _sepX = 2; // Amount of space on the X axis between each item
         const float _sepY = 2; // Amount of space on the Y axis between each item
 
-        readonly ItemInfoTooltip _itemInfoTooltip;
+        readonly ItemInfoRequesterBase<InventorySlot> _infoRequester;
 
         Inventory _inventory;
 
@@ -29,24 +29,19 @@ namespace DemoGame.Client
             set { _inventory = value; }
         }
 
-        public ItemInfoTooltip ItemInfoTooltip
-        {
-            get { return _itemInfoTooltip; }
-        }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryForm"/> class.
         /// </summary>
-        /// <param name="itemInfoTooltip">The item info tooltip.</param>
+        /// <param name="infoRequester">The item info tooltip.</param>
         /// <param name="position">The position.</param>
         /// <param name="parent">The parent.</param>
-        public InventoryForm(ItemInfoTooltip itemInfoTooltip, Vector2 position, Control parent)
+        public InventoryForm(ItemInfoRequesterBase<InventorySlot> infoRequester, Vector2 position, Control parent)
             : base(parent.GUIManager, "Inventory", position, new Vector2(200, 200), parent)
         {
-            if (itemInfoTooltip == null)
-                throw new ArgumentNullException("itemInfoTooltip");
+            if (infoRequester == null)
+                throw new ArgumentNullException("infoRequester");
 
-            _itemInfoTooltip = itemInfoTooltip;
+            _infoRequester = infoRequester;
 
             Vector2 itemsSize = _columns * new Vector2(_itemWidth, _itemHeight);
             Vector2 paddingSize = (_columns + 1) * new Vector2(_sepX, _sepY);
@@ -68,36 +63,6 @@ namespace DemoGame.Client
 
                 new InventoryItemPB(this, pos, new InventorySlot(i));
             }
-        }
-
-        void InventoryItemPB_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            InventorySlot slot = ((InventoryItemPB)sender).Slot;
-
-            if (Inventory[slot] == null)
-                return;
-
-            ItemInfoTooltip.HandleMouseEnter(sender, ItemInfoSource.Inventory, (int)slot);
-        }
-
-        void InventoryItemPB_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            InventorySlot slot = ((InventoryItemPB)sender).Slot;
-
-            if (Inventory[slot] == null)
-                return;
-
-            ItemInfoTooltip.HandleMouseLeave(sender, ItemInfoSource.Inventory, (int)slot);
-        }
-
-        void InventoryItemPB_OnMouseMove(object sender, MouseEventArgs e)
-        {
-            InventorySlot slot = ((InventoryItemPB)sender).Slot;
-
-            if (Inventory[slot] == null)
-                return;
-
-            ItemInfoTooltip.HandleMouseMove(sender, ItemInfoSource.Inventory, (int)slot);
         }
 
         void InventoryItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
@@ -153,7 +118,25 @@ namespace DemoGame.Client
             {
                 get { return _slot; }
             }
+            
+            static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
+            {
+                var src = (InventoryItemPB)sender;
+                InventorySlot slot = src.Slot;
+                ItemInfo itemInfo;
 
+                if (!src._invForm._infoRequester.TryGetInfo(slot, out itemInfo))
+                {
+                    // The data has not been received yet - returning null will make the tooltip retry later
+                    return null;
+                }
+
+                // Data was received, so format it and return it
+                return ItemInfoHelper.GetStyledText(itemInfo);
+            }
+
+            static readonly TooltipHandler _tooltipHandler = TooltipCallback;
+            
             public InventoryItemPB(InventoryForm parent, Vector2 pos, InventorySlot slot)
                 : base(pos, null, new Vector2(_itemWidth, _itemHeight), parent)
             {
@@ -162,10 +145,7 @@ namespace DemoGame.Client
 
                 _invForm = parent;
                 _slot = slot;
-
-                OnMouseLeave += _invForm.InventoryItemPB_OnMouseLeave;
-                OnMouseEnter += _invForm.InventoryItemPB_OnMouseEnter;
-                OnMouseMove += _invForm.InventoryItemPB_OnMouseMove;
+                Tooltip = _tooltipHandler;
                 OnMouseUp += _invForm.InventoryItemPB_OnMouseUp;
 
                 Skin.OnChange += Skin_OnChange;
