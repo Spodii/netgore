@@ -601,6 +601,8 @@ namespace DemoGame.Server
 
             void SendStartShopping(Shop shop)
             {
+                _user.OnMove += User_OnMove;
+
                 using (PacketWriter pw = ServerPacket.StartShopping(shop))
                 {
                     User.Send(pw);
@@ -609,6 +611,8 @@ namespace DemoGame.Server
 
             void SendStopShopping()
             {
+                _user.OnMove -= User_OnMove;
+
                 using (PacketWriter pw = ServerPacket.StopShopping())
                 {
                     User.Send(pw);
@@ -646,6 +650,24 @@ namespace DemoGame.Server
                 SendStartShopping(shop);
 
                 return true;
+            }
+
+            /// <summary>
+            /// Handles when the User has moved while shopping.
+            /// </summary>
+            /// <param name="entity">The entity.</param>
+            /// <param name="value">The value.</param>
+            void User_OnMove(Entity entity, Vector2 value)
+            {
+                if (_shopOwner == null)
+                {
+                    _user.OnMove -= User_OnMove;
+                }
+                else
+                {
+                    if (!IsValidDistance(_shopOwner))
+                        SendStopShopping();
+                }
             }
         }
     }
