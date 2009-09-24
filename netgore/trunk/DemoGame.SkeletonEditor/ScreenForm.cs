@@ -18,9 +18,9 @@ namespace DemoGame.SkeletonEditor
 {
     partial class ScreenForm : Form
     {
-        const string _filterBody = "Skeleton body (*." + SkeletonBodyInfo.FileSuffix + ")|*." + SkeletonBodyInfo.FileSuffix;
-        const string _filterFrame = "Skeleton frame (*." + Skeleton.FileSuffix + ")|*." + Skeleton.FileSuffix;
-        const string _filterSet = "Skeleton set (*." + SkeletonSet.FileSuffix + ")|*." + SkeletonSet.FileSuffix;
+        const string _filterBody = "Skeleton body (*" + SkeletonBodyInfo.FileSuffix + ")|*" + SkeletonBodyInfo.FileSuffix;
+        const string _filterFrame = "Skeleton frame (*" + Skeleton.FileSuffix + ")|*" + Skeleton.FileSuffix;
+        const string _filterSet = "Skeleton set (*" + SkeletonSet.FileSuffix + ")|*" + SkeletonSet.FileSuffix;
         const string _skeletonSetFromStringDelimiter = "\reader\n";
 
         static readonly Color ColorError = Color.Red;
