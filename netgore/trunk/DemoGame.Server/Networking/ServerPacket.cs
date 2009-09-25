@@ -1,9 +1,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using DemoGame.Server.DbObjs;
-using log4net;
 using NetGore;
 using NetGore.Network;
 

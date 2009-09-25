@@ -11,6 +11,8 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class ControlBorder
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Bottom border
         /// </summary>
@@ -266,9 +268,7 @@ namespace NetGore.Graphics.GUI
             _bg = background;
         }
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-         /// <summary>
+        /// <summary>
         /// Draws the <see cref="ControlBorder"/> to the specified region.
         /// </summary>
         /// <param name="sb"><see cref="SpriteBatch"/> to draw with.</param>

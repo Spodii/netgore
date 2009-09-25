@@ -107,31 +107,13 @@ namespace DemoGame.GUITester
             f4.OnEndDrag += OnDrag;
 
             // Set up the tooltips
-            foreach (var c in _gui.GetAllControls())
+            foreach (Control c in _gui.GetAllControls())
             {
                 if (c.GetType() == typeof(Button))
                     c.Tooltip = Tooltip_Button;
                 else if (c.GetType() == typeof(Label))
                     c.Tooltip += Tooltip_Label;
             }
-        }
-
-        static StyledText[] Tooltip_Label(Control sender, TooltipArgs args)
-        {
-            args.FontColor = Color.LightGreen;
-            args.RefreshRate = 100;
-
-            byte r = (byte)rnd.Next(100, 255);
-            byte g = (byte)rnd.Next(100, 255);
-            byte b = (byte)rnd.Next(100, 255);
-
-            Color c = new Color(r,g,b, 255);
-            return new StyledText[] { new StyledText("Text for a "), new StyledText("label", c) };
-        }
-
-        static StyledText[] Tooltip_Button(Control sender, TooltipArgs args)
-        {
-            return new StyledText[] { new StyledText("hello-hello-hello-hello-hello-hello-hello-hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello"), new StyledText("button", Color.LightBlue) };
         }
 
         void OnDrag(Control sender)
@@ -158,6 +140,29 @@ namespace DemoGame.GUITester
         static void testLabelF4_OnMouseLeave(object sender, MouseEventArgs e)
         {
             ((Label)sender).Text = "Mouse left";
+        }
+
+        static StyledText[] Tooltip_Button(Control sender, TooltipArgs args)
+        {
+            return new StyledText[]
+            {
+                new StyledText(
+                    "hello-hello-hello-hello-hello-hello-hello-hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello hello")
+                , new StyledText("button", Color.LightBlue)
+            };
+        }
+
+        static StyledText[] Tooltip_Label(Control sender, TooltipArgs args)
+        {
+            args.FontColor = Color.LightGreen;
+            args.RefreshRate = 100;
+
+            byte r = (byte)rnd.Next(100, 255);
+            byte g = (byte)rnd.Next(100, 255);
+            byte b = (byte)rnd.Next(100, 255);
+
+            Color c = new Color(r, g, b, 255);
+            return new StyledText[] { new StyledText("Text for a "), new StyledText("label", c) };
         }
 
         void topForm_OnMouseMove(object sender, MouseEventArgs e)

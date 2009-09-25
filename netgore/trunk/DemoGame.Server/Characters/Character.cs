@@ -681,8 +681,7 @@ namespace DemoGame.Server
                 ItemEntity remainder = GiveItem(item);
                 if (remainder != null)
                 {
-                    Debug.Fail(
-                        "What the hell just happened? Failed to equip the item, and failed to add back to inventory?");
+                    Debug.Fail("What the hell just happened? Failed to equip the item, and failed to add back to inventory?");
                     DropItem(remainder);
                 }
             }
@@ -1225,8 +1224,7 @@ namespace DemoGame.Server
 
                 default:
                     // Unhandled item type
-                    const string errmsg =
-                        "Attempted to use item `{0}`, but it contains invalid or unhandled ItemType `{1}`.";
+                    const string errmsg = "Attempted to use item `{0}`, but it contains invalid or unhandled ItemType `{1}`.";
                     Debug.Fail(string.Format(errmsg, item, item.Type));
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, item, item.Type);

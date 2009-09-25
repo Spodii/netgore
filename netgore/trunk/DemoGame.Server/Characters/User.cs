@@ -459,6 +459,96 @@ namespace DemoGame.Server
             }
         }
 
+        public bool TryBuyItem(IItemTemplateTable itemTemplate, byte amount)
+        {
+            if (itemTemplate == null || amount <= 0)
+                return false;
+
+            int totalCost = itemTemplate.Value * amount;
+
+            // Check for enough money to buy
+            if (Cash < totalCost)
+            {
+                if (amount == 1)
+                {
+                    using (
+                        PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchaseSingular,
+                                                                   itemTemplate.Name))
+                    {
+                        Send(pw);
+                    }
+                }
+                else
+                {
+                    using (
+                        PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchasePlural, amount,
+                                                                   itemTemplate.Name))
+                    {
+                        Send(pw);
+                    }
+                }
+                return false;
+            }
+
+            // Create the item
+            ItemEntity itemEntity = new ItemEntity(itemTemplate, amount);
+
+            // Check for room in the inventory
+            if (!Inventory.CanAdd(itemEntity))
+            {
+                itemEntity.Dispose();
+                return false;
+            }
+
+            // Add to the inventory
+            ItemEntity remainderItem = Inventory.Add(itemEntity);
+
+            // Find the number of remaining items (in case something went wrong and not all was added)
+            int remainderAmount = remainderItem == null ? 0 : (int)remainderItem.Amount;
+
+            // Find the difference in the requested amount and remaining amount to get the amount added, and
+            // only charge the character for that (so they pay for what they got)
+            int amountPurchased = amount - remainderAmount;
+
+            if (amountPurchased < 0)
+            {
+                const string errmsg =
+                    "Somehow, amountPurchased was negative ({0})!" +
+                    " User: `{1}`. Item template: `{2}`. Requested amount: `{3}`. ItemEntity: `{4}`";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, amountPurchased, this, itemTemplate, amountPurchased, itemEntity);
+                Debug.Fail(string.Format(errmsg, amountPurchased, this, itemTemplate, amountPurchased, itemEntity));
+
+                // Raise the amount purchased to 0. They will get it for free, but that is better than PAYING them.
+                amountPurchased = 0;
+            }
+
+            // Charge them
+            uint chargeAmount = (uint)Math.Max(0, amountPurchased * itemEntity.Value);
+            Cash -= chargeAmount;
+
+            // Send purchase message
+            if (amountPurchased <= 1)
+            {
+                using (
+                    PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopPurchaseSingular, itemTemplate.Name, chargeAmount))
+                {
+                    Send(pw);
+                }
+            }
+            else
+            {
+                using (
+                    PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopPurchasePlural, amountPurchased, itemTemplate.Name,
+                                                               chargeAmount))
+                {
+                    Send(pw);
+                }
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Updates the Entity.
         /// </summary>
@@ -527,80 +617,6 @@ namespace DemoGame.Server
             }
         }
 
-        public bool TryBuyItem(IItemTemplateTable itemTemplate, byte amount)
-        {
-            if (itemTemplate == null || amount <= 0)
-                return false;
-
-            int totalCost = itemTemplate.Value * amount;
-            
-            // Check for enough money to buy
-            if (Cash < totalCost)
-            {
-                if (amount == 1)
-                {
-                    using (var pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchaseSingular, itemTemplate.Name))
-                        Send(pw);
-                }
-                else
-                {
-                    using (var pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchasePlural, amount, itemTemplate.Name))
-                        Send(pw);
-                }
-                return false;
-            }
-
-            // Create the item
-            ItemEntity itemEntity = new ItemEntity(itemTemplate, amount);
-
-            // Check for room in the inventory
-            if (!Inventory.CanAdd(itemEntity))
-            {
-                itemEntity.Dispose();
-                return false;
-            }
-
-            // Add to the inventory
-            var remainderItem = Inventory.Add(itemEntity);
-
-            // Find the number of remaining items (in case something went wrong and not all was added)
-            int remainderAmount = remainderItem == null ? 0 : (int)remainderItem.Amount;
-
-            // Find the difference in the requested amount and remaining amount to get the amount added, and
-            // only charge the character for that (so they pay for what they got)
-            int amountPurchased = amount - remainderAmount;
-
-            if (amountPurchased < 0)
-            {
-                const string errmsg = "Somehow, amountPurchased was negative ({0})!"
-                    + " User: `{1}`. Item template: `{2}`. Requested amount: `{3}`. ItemEntity: `{4}`";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, amountPurchased, this, itemTemplate, amountPurchased, itemEntity);
-                Debug.Fail(string.Format(errmsg, amountPurchased, this, itemTemplate, amountPurchased, itemEntity));
-
-                // Raise the amount purchased to 0. They will get it for free, but that is better than PAYING them.
-                amountPurchased = 0;
-            }
-
-            // Charge them
-            uint chargeAmount = (uint)Math.Max(0, amountPurchased * itemEntity.Value);
-            Cash -= chargeAmount;
-
-            // Send purchase message
-            if (amountPurchased <= 1)
-            {
-                using (var pw = ServerPacket.SendMessage(GameMessage.ShopPurchaseSingular, itemTemplate.Name,chargeAmount))
-                    Send(pw);
-            }
-            else
-            {
-                using (var pw = ServerPacket.SendMessage(GameMessage.ShopPurchasePlural, amountPurchased, itemTemplate.Name, chargeAmount))
-                    Send(pw);
-            }
-
-            return true;
-        }
-
         void User_OnChangeExp(Character character, uint oldExp, uint exp)
         {
             using (PacketWriter pw = ServerPacket.SetExp(exp))
@@ -639,8 +655,8 @@ namespace DemoGame.Server
 
         public class UserShoppingState
         {
-            readonly User _user;
             readonly object _changeShopLock = new object();
+            readonly User _user;
 
             Map _shopMap;
             DynamicEntity _shopOwner;
@@ -690,14 +706,6 @@ namespace DemoGame.Server
                 }
             }
 
-            public bool TryStartShopping(Character shopkeeper)
-            {
-                if (shopkeeper == null)
-                    return false;
-
-                return TryStartShopping(shopkeeper.Shop, shopkeeper, shopkeeper.Map);
-            }
-
             public bool TryPurchase(ShopItemIndex slot, byte amount)
             {
                 if (slot < 0 || slot >= GameData.MaxShopItems)
@@ -728,12 +736,20 @@ namespace DemoGame.Server
                 }
 
                 // Get and validate the item
-                var shopItem = shop.GetShopItem(slot);
+                ShopItem shopItem = shop.GetShopItem(slot);
                 if (shopItem == null)
                     return false;
 
                 // Try to buy the item
                 return User.TryBuyItem(shopItem.ItemTemplate, amount);
+            }
+
+            public bool TryStartShopping(Character shopkeeper)
+            {
+                if (shopkeeper == null)
+                    return false;
+
+                return TryStartShopping(shopkeeper.Shop, shopkeeper, shopkeeper.Map);
             }
 
             public bool TryStartShopping(Shop shop, DynamicEntity shopkeeper, Map entityMap)

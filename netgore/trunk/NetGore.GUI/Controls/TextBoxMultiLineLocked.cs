@@ -334,7 +334,7 @@ namespace NetGore.Graphics.GUI
             if (last == null)
                 return;
 
-            var defaultColor = ((TextControlSettings)Settings).ForeColor;
+            Color defaultColor = ((TextControlSettings)Settings).ForeColor;
 
             foreach (StyledText t in text.Text)
             {

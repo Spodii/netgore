@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore.IO;
 using NetGore.Network;
 
@@ -16,7 +14,11 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets or sets the <see cref="UserEquipped"/> the requests are being made for.
         /// </summary>
-        public UserEquipped Equipment { get { return _equipment; } set { _equipment = value; } }
+        public UserEquipped Equipment
+        {
+            get { return _equipment; }
+            set { _equipment = value; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EquipmentInfoRequester"/> class.
@@ -26,6 +28,18 @@ namespace DemoGame.Client
         public EquipmentInfoRequester(UserEquipped equipment, ISocketSender socket) : base(socket)
         {
             _equipment = equipment;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the <see cref="BitStream"/> containing the data
+        /// needed to make a request for the given slot's <see cref="ItemInfo"/>.
+        /// </summary>
+        /// <param name="slotToRequest">The slot to request the <see cref="ItemInfo"/> for.</param>
+        /// <returns>The <see cref="BitStream"/> containing the data needed to make a request for
+        /// the given slot's <see cref="ItemInfo"/>.</returns>
+        protected override BitStream GetRequest(EquipmentSlot slotToRequest)
+        {
+            return ClientPacket.GetEquipmentItemInfo(slotToRequest);
         }
 
         /// <summary>
@@ -43,18 +57,6 @@ namespace DemoGame.Client
                 return Equipment[slot] == null;
 
             return false;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the <see cref="BitStream"/> containing the data
-        /// needed to make a request for the given slot's <see cref="ItemInfo"/>.
-        /// </summary>
-        /// <param name="slotToRequest">The slot to request the <see cref="ItemInfo"/> for.</param>
-        /// <returns>The <see cref="BitStream"/> containing the data needed to make a request for
-        /// the given slot's <see cref="ItemInfo"/>.</returns>
-        protected override BitStream GetRequest(EquipmentSlot slotToRequest)
-        {
-            return ClientPacket.GetEquipmentItemInfo(slotToRequest);
         }
     }
 }

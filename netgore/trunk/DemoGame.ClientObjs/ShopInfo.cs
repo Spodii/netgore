@@ -5,10 +5,10 @@ namespace DemoGame.Client
 {
     public class ShopInfo
     {
-        readonly DynamicEntity _shopOwner;
         readonly bool _canBuy;
         readonly ItemInfo[] _items;
         readonly string _name;
+        readonly DynamicEntity _shopOwner;
 
         /// <summary>
         /// Gets if the shop can buy stuff. If false, the shop can only sell items.
@@ -16,23 +16,6 @@ namespace DemoGame.Client
         public bool CanBuy
         {
             get { return _canBuy; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ItemInfo"/> at the given <paramref name="slot"/>.
-        /// </summary>
-        /// <param name="slot">The slot of the item.</param>
-        /// <returns>The <see cref="ItemInfo"/> at the given <paramref name="slot"/>, or null if the
-        /// <see cref="slot"/> was invalid or not item was in the specified slot.</returns>
-        public ItemInfo GetItemInfo(ShopItemIndex slot)
-        {
-            if (_items == null)
-                return null;
-
-            if (slot < 0 || slot >= _items.Length)
-                return null;
-
-            return _items[slot];
         }
 
         /// <summary>
@@ -54,7 +37,10 @@ namespace DemoGame.Client
         /// <summary>
         /// Gets the shop owner. Can be null.
         /// </summary>
-        public DynamicEntity ShopOwner { get { return _shopOwner; } }
+        public DynamicEntity ShopOwner
+        {
+            get { return _shopOwner; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShopInfo"/> class.
@@ -69,6 +55,23 @@ namespace DemoGame.Client
             _items = items;
             _name = name;
             _canBuy = canBuy;
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ItemInfo"/> at the given <paramref name="slot"/>.
+        /// </summary>
+        /// <param name="slot">The slot of the item.</param>
+        /// <returns>The <see cref="ItemInfo"/> at the given <paramref name="slot"/>, or null if the
+        /// <see cref="slot"/> was invalid or not item was in the specified slot.</returns>
+        public ItemInfo GetItemInfo(ShopItemIndex slot)
+        {
+            if (_items == null)
+                return null;
+
+            if (slot < 0 || slot >= _items.Length)
+                return null;
+
+            return _items[slot];
         }
     }
 }

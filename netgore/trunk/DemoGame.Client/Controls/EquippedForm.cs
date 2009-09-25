@@ -100,6 +100,7 @@ namespace DemoGame.Client
 
         class EquippedItemPB : PictureBox
         {
+            static readonly TooltipHandler _tooltipHandler = TooltipCallback;
             readonly EquippedForm _equippedForm;
 
             readonly EquipmentSlot _slot;
@@ -108,24 +109,6 @@ namespace DemoGame.Client
             {
                 get { return _slot; }
             }
-
-            static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
-            {
-                var src = (EquippedItemPB)sender;
-                EquipmentSlot slot = src.Slot;
-                ItemInfo itemInfo;
-
-                if (!src._equippedForm._infoRequester.TryGetInfo(slot, out itemInfo))
-                {
-                    // The data has not been received yet - returning null will make the tooltip retry later
-                    return null;
-                }
-
-                // Data was received, so format it and return it
-                return ItemInfoHelper.GetStyledText(itemInfo);
-            }
-
-            static readonly TooltipHandler _tooltipHandler = TooltipCallback;
 
             public EquippedItemPB(EquippedForm parent, Vector2 pos, EquipmentSlot slot)
                 : base(pos, null, new Vector2(_itemWidth, _itemHeight), parent)
@@ -161,6 +144,22 @@ namespace DemoGame.Client
                 offset /= 2;
 
                 item.Draw(spriteBatch, ScreenPosition + offset);
+            }
+
+            static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
+            {
+                EquippedItemPB src = (EquippedItemPB)sender;
+                EquipmentSlot slot = src.Slot;
+                ItemInfo itemInfo;
+
+                if (!src._equippedForm._infoRequester.TryGetInfo(slot, out itemInfo))
+                {
+                    // The data has not been received yet - returning null will make the tooltip retry later
+                    return null;
+                }
+
+                // Data was received, so format it and return it
+                return ItemInfoHelper.GetStyledText(itemInfo);
             }
         }
     }

@@ -110,6 +110,7 @@ namespace DemoGame.Client
 
         class InventoryItemPB : PictureBox
         {
+            static readonly TooltipHandler _tooltipHandler = TooltipCallback;
             readonly InventoryForm _invForm;
 
             readonly InventorySlot _slot;
@@ -118,25 +119,7 @@ namespace DemoGame.Client
             {
                 get { return _slot; }
             }
-            
-            static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
-            {
-                var src = (InventoryItemPB)sender;
-                InventorySlot slot = src.Slot;
-                ItemInfo itemInfo;
 
-                if (!src._invForm._infoRequester.TryGetInfo(slot, out itemInfo))
-                {
-                    // The data has not been received yet - returning null will make the tooltip retry later
-                    return null;
-                }
-
-                // Data was received, so format it and return it
-                return ItemInfoHelper.GetStyledText(itemInfo);
-            }
-
-            static readonly TooltipHandler _tooltipHandler = TooltipCallback;
-            
             public InventoryItemPB(InventoryForm parent, Vector2 pos, InventorySlot slot)
                 : base(pos, null, new Vector2(_itemWidth, _itemHeight), parent)
             {
@@ -201,6 +184,22 @@ namespace DemoGame.Client
             void Skin_OnChange(string newSkin, string oldSkin)
             {
                 LoadSprite();
+            }
+
+            static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
+            {
+                InventoryItemPB src = (InventoryItemPB)sender;
+                InventorySlot slot = src.Slot;
+                ItemInfo itemInfo;
+
+                if (!src._invForm._infoRequester.TryGetInfo(slot, out itemInfo))
+                {
+                    // The data has not been received yet - returning null will make the tooltip retry later
+                    return null;
+                }
+
+                // Data was received, so format it and return it
+                return ItemInfoHelper.GetStyledText(itemInfo);
             }
         }
     }

@@ -18,10 +18,10 @@ namespace DemoGame.MapEditor
         MapBase _map;
 
         /// <summary>
-            /// Gets or sets the PropertyGrid to display the property values for the selected NPC in this NPCSpawnsListBox.
+        /// Gets or sets the PropertyGrid to display the property values for the selected NPC in this NPCSpawnsListBox.
         /// </summary>
         [Description("The PropertyGrid to display the property values for the selected NPC in this NPCSpawnsListBox.")]
-            public PropertyGrid PropertyGrid { get; set; }
+        public PropertyGrid PropertyGrid { get; set; }
 
         public NPCSpawnsListBox()
         {
