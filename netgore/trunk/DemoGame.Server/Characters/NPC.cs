@@ -257,7 +257,7 @@ namespace DemoGame.Server
             {
                 foreach (var item in Inventory)
                 {
-                    Inventory.RemoveAt(item.Key);
+                    Inventory.RemoveAt(item.Key, false);
                     DropItem(item.Value);
                 }
             }

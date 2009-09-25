@@ -37,7 +37,7 @@ namespace DemoGame
             get
             {
                 // Check for a valid index
-                if (slot >= MaxInventorySize || slot < 0)
+                if (!slot.IsLegalValue())
                 {
                     const string errmsg = "Tried to get invalid inventory slot `{0}`";
                     if (log.IsErrorEnabled)
@@ -52,7 +52,7 @@ namespace DemoGame
             protected set
             {
                 // Check for a valid index
-                if (slot >= MaxInventorySize || slot < 0)
+                if (!slot.IsLegalValue())
                 {
                     const string errmsg = "Tried to set invalid inventory slot `{0}`";
                     if (log.IsErrorEnabled)
@@ -268,8 +268,8 @@ namespace DemoGame
                 return;
             }
 
-            // Remove the item from the Inventory
-            RemoveAt(slot);
+            // Remove the item from the Inventory (don't dispose since it was already disposed)
+            RemoveAt(slot, false);
         }
 
         /// <summary>
@@ -292,9 +292,11 @@ namespace DemoGame
         /// sure to dispose of it!
         /// </summary>
         /// <param name="slot">Slot of the item to remove.</param>
-        public void RemoveAt(InventorySlot slot)
+        /// <param name="dispose">If true, the item at the given <paramref name="slot"/> will be disposed. If false,
+        /// the item will not be disposed and will still be referenceable.</param>
+        public void RemoveAt(InventorySlot slot, bool dispose)
         {
-            ClearSlot(slot, false);
+            ClearSlot(slot, dispose);
         }
 
         /// <summary>

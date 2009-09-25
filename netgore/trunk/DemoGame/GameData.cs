@@ -12,6 +12,30 @@ namespace DemoGame
     public static class GameData
     {
         /// <summary>
+        /// Gets the default amount of money a Character will get for selling the given <paramref name="item"/> to
+        /// a shop.
+        /// </summary>
+        /// <param name="item">The item to sell.</param>
+        /// <returns>the default amount of money a Character will get for selling the given <paramref name="item"/>
+        /// to a shop.</returns>
+        public static int GetItemSellValue(ItemEntityBase item)
+        {
+            return Math.Max(item.Value / 2, 1);
+        }
+
+        /// <summary>
+        /// Gets the default amount of money a Character will pay for buying the given <paramref name="item"/> from
+        /// a shop.
+        /// </summary>
+        /// <param name="item">The item to purchase.</param>
+        /// <returns>the default amount of money a Character will pay for buying the given <paramref name="item"/>
+        /// from a shop.</returns>
+        public static int GetItemBuyValue(ItemEntityBase item)
+        {
+            return item.Value;
+        }
+
+        /// <summary>
         /// If a User is allowed to move while they have a chat dialog open with a NPC.
         /// </summary>
         public const bool AllowMovementWhileChattingToNPC = false;

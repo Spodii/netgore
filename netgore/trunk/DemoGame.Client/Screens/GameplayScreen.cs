@@ -427,6 +427,8 @@ namespace DemoGame.Client
             _statsForm.OnRaiseStat += StatsForm_OnRaiseStat;
 
             _inventoryForm = new InventoryForm(InventoryInfoRequester, new Vector2(250, 0), cScreen);
+            _inventoryForm.OnRequestDropItem += _inventoryForm_OnRequestDropItem;
+            _inventoryForm.OnRequestUseItem += _inventoryForm_OnRequestUseItem;
 
             _shopForm = new ShopForm(new Vector2(250, 0), cScreen);
             _shopForm.OnPurchase += ShopForm_OnPurchase;
@@ -460,6 +462,18 @@ namespace DemoGame.Client
             _guiSettings.Add("StatsForm", _statsForm);
             _guiSettings.Add("ChatForm", _chatForm);
             _guiSettings.Add("ToolbarForm", toolbar);
+        }
+
+        void _inventoryForm_OnRequestUseItem(InventoryForm inventoryForm, InventorySlot slot)
+        {
+            if (inventoryForm.Inventory == UserInfo.Inventory)
+                UserInfo.Inventory.Use(slot);
+        }
+
+        void _inventoryForm_OnRequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
+        {
+            if (inventoryForm.Inventory == UserInfo.Inventory)
+                UserInfo.Inventory.Drop(slot);
         }
 
         /// <summary>

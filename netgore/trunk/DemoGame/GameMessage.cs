@@ -83,5 +83,15 @@ namespace DemoGame
         /// Purchased multiple items from a shop.
         /// </summary>
         ShopPurchasePlural,
+
+        /// <summary>
+        /// Sell a single item to a shop.
+        /// </summary>
+        ShopSellItemSingular,
+
+        /// <summary>
+        /// Sell more than one item to a shop.
+        /// </summary>
+        ShopSellItemPlural,
     }
 }
