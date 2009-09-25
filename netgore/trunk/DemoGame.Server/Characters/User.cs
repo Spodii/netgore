@@ -459,68 +459,6 @@ namespace DemoGame.Server
             }
         }
 
-        public bool TrySellInventoryItem(InventorySlot slot, byte amount, Shop shop)
-        {
-            if (amount <= 0 || !slot.IsLegalValue() || shop == null || !shop.CanBuy)
-                return false;
-
-            // Get the user's item
-            var invItem = Inventory[slot];
-            if (invItem == null)
-                return false;
-
-            byte amountToSell = Math.Min(amount, invItem.Amount);
-            if (amountToSell <= 0)
-                return false;
-
-            // Get the new item amount
-            int newItemAmount = invItem.Amount - amountToSell;
-
-            if (newItemAmount > byte.MaxValue)
-            {
-                const string errmsg = "Somehow, selling `{0}` of item `{1}` resulted in a new item amount of `{2}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, amountToSell, invItem, newItemAmount);
-                newItemAmount = byte.MaxValue;
-            }
-            else if (newItemAmount < 0)
-            {
-                const string errmsg = "Somehow, selling `{0}` of item `{1}` resulted in a new item amount of `{2}`.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, amountToSell, invItem, newItemAmount);
-                newItemAmount = 0;
-            }
-
-            // Give the user the money for selling
-            int sellValue = GameData.GetItemSellValue(invItem);
-            int totalCash = sellValue * amountToSell;
-            Cash += totalCash;
-
-            // Send message
-            if (amountToSell <= 1)
-            {
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopSellItemSingular, invItem.Name, totalCash))
-                {
-                    Send(pw);
-                }
-            }
-            else
-            {
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopSellItemPlural, amount, invItem.Name, totalCash))
-                {
-                    Send(pw);
-                }
-            }
-
-            // Set the new item amount (or remove the item if the amount is 0)
-            if (newItemAmount == 0)
-                Inventory.RemoveAt(slot, true);
-            else
-                invItem.Amount = (byte)newItemAmount;
-
-            return true;
-        }
-
         public bool TryBuyItem(IItemTemplateTable itemTemplate, byte amount)
         {
             if (itemTemplate == null || amount <= 0)
@@ -607,6 +545,69 @@ namespace DemoGame.Server
                     Send(pw);
                 }
             }
+
+            return true;
+        }
+
+        public bool TrySellInventoryItem(InventorySlot slot, byte amount, Shop shop)
+        {
+            if (amount <= 0 || !slot.IsLegalValue() || shop == null || !shop.CanBuy)
+                return false;
+
+            // Get the user's item
+            ItemEntity invItem = Inventory[slot];
+            if (invItem == null)
+                return false;
+
+            byte amountToSell = Math.Min(amount, invItem.Amount);
+            if (amountToSell <= 0)
+                return false;
+
+            // Get the new item amount
+            int newItemAmount = invItem.Amount - amountToSell;
+
+            if (newItemAmount > byte.MaxValue)
+            {
+                const string errmsg = "Somehow, selling `{0}` of item `{1}` resulted in a new item amount of `{2}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, amountToSell, invItem, newItemAmount);
+                newItemAmount = byte.MaxValue;
+            }
+            else if (newItemAmount < 0)
+            {
+                const string errmsg = "Somehow, selling `{0}` of item `{1}` resulted in a new item amount of `{2}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, amountToSell, invItem, newItemAmount);
+                newItemAmount = 0;
+            }
+
+            // Give the user the money for selling
+            int sellValue = GameData.GetItemSellValue(invItem);
+            int totalCash = sellValue * amountToSell;
+            Cash += totalCash;
+
+            // Send message
+            if (amountToSell <= 1)
+            {
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopSellItemSingular, invItem.Name, totalCash))
+                {
+                    Send(pw);
+                }
+            }
+            else
+            {
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopSellItemPlural, amount, invItem.Name, totalCash)
+                    )
+                {
+                    Send(pw);
+                }
+            }
+
+            // Set the new item amount (or remove the item if the amount is 0)
+            if (newItemAmount == 0)
+                Inventory.RemoveAt(slot, true);
+            else
+                invItem.Amount = (byte)newItemAmount;
 
             return true;
         }
@@ -767,19 +768,6 @@ namespace DemoGame.Server
                 }
             }
 
-            public bool TrySellInventory(InventorySlot slot, byte amount)
-            {
-                Shop shop = TryGetShopReferenceThreadSafe();
-                if (shop == null)
-                    return false;
-
-                // Make sure the shop buys stuff
-                if (!shop.CanBuy)
-                    return false;
-
-                return User.TrySellInventoryItem(slot, amount, shop);
-            }
-
             /// <summary>
             /// A thread-safe way to get the shop reference. This will also perform validation checks to ensure
             /// that the shop can be used to buy from/sell to.
@@ -831,6 +819,19 @@ namespace DemoGame.Server
 
                 // Try to buy the item
                 return User.TryBuyItem(shopItem.ItemTemplate, amount);
+            }
+
+            public bool TrySellInventory(InventorySlot slot, byte amount)
+            {
+                Shop shop = TryGetShopReferenceThreadSafe();
+                if (shop == null)
+                    return false;
+
+                // Make sure the shop buys stuff
+                if (!shop.CanBuy)
+                    return false;
+
+                return User.TrySellInventoryItem(slot, amount, shop);
             }
 
             public bool TryStartShopping(Character shopkeeper)

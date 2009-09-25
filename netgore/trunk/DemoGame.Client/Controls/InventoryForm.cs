@@ -12,6 +12,7 @@ using NetGore.IO;
 namespace DemoGame.Client
 {
     delegate void InventoryDropItemHandler(InventoryForm inventoryForm, InventorySlot slot);
+
     delegate void InventoryUseItemHandler(InventoryForm inventoryForm, InventorySlot slot);
 
     class InventoryForm : Form, IRestorableSettings
@@ -26,12 +27,6 @@ namespace DemoGame.Client
 
         Inventory _inventory;
 
-        public Inventory Inventory
-        {
-            get { return _inventory; }
-            set { _inventory = value; }
-        }
-
         /// <summary>
         /// Notifies listeners when an item was requested to be dropped.
         /// </summary>
@@ -41,6 +36,12 @@ namespace DemoGame.Client
         /// Notifies listeners when an item was requested to be used.
         /// </summary>
         public event InventoryUseItemHandler OnRequestUseItem;
+
+        public Inventory Inventory
+        {
+            get { return _inventory; }
+            set { _inventory = value; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="InventoryForm"/> class.
