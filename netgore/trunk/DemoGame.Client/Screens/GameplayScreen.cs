@@ -477,7 +477,18 @@ namespace DemoGame.Client
             if (inventoryForm.Inventory != UserInfo.Inventory)
                 return;
 
-            UserInfo.Inventory.Drop(slot);
+            if (ShopForm.IsVisible && ShopForm.ShopInfo != null)
+            {
+                if (ShopForm.ShopInfo.CanBuy)
+                {
+                    using (var pw = ClientPacket.SellInventoryToShop(slot, 1))
+                        Socket.Send(pw);
+                }
+            }
+            else
+            {
+                UserInfo.Inventory.Drop(slot);
+            }
         }
 
         /// <summary>

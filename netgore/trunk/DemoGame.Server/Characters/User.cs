@@ -461,7 +461,7 @@ namespace DemoGame.Server
 
         public bool TrySellInventoryItem(InventorySlot slot, byte amount, Shop shop)
         {
-            if (amount <= 0 || slot.IsLegalValue() || shop == null || !shop.CanBuy)
+            if (amount <= 0 || !slot.IsLegalValue() || shop == null || !shop.CanBuy)
                 return false;
 
             // Get the user's item
@@ -491,17 +491,22 @@ namespace DemoGame.Server
                 newItemAmount = 0;
             }
 
+            // Give the user the money for selling
+            int sellValue = GameData.GetItemSellValue(invItem);
+            int totalCash = sellValue * amountToSell;
+            Cash += (uint)totalCash; // TODO: Remove (uint)
+
             // Send message
             if (amountToSell <= 1)
             {
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopSellItemSingular, invItem.Name))
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopSellItemSingular, invItem.Name, totalCash))
                 {
                     Send(pw);
                 }
             }
             else
             {
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopSellItemPlural, amount, invItem.Name))
+                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopSellItemPlural, amount, invItem.Name, totalCash))
                 {
                     Send(pw);
                 }
@@ -512,12 +517,6 @@ namespace DemoGame.Server
                 Inventory.RemoveAt(slot, true);
             else
                 invItem.Amount = (byte)newItemAmount;
-
-            // Give the user the money for selling
-            int sellValue = GameData.GetItemSellValue(invItem);
-            int totalCash = sellValue * amountToSell;
-
-            Cash += (uint)totalCash; // TODO: Remove (uint)
 
             return true;
         }
