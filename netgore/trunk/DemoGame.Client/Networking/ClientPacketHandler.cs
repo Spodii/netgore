@@ -477,6 +477,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.StartShopping)]
         void RecvStartShopping(IIPSocket conn, BitStream r)
         {
+            MapEntityIndex shopOwnerIndex = r.ReadMapEntityIndex();
             bool canBuy = r.ReadBool();
             string name = r.ReadString();
             byte itemCount = r.ReadByte();
@@ -487,7 +488,8 @@ namespace DemoGame.Client
                 items[i] = new ItemInfo(r);
             }
 
-            ShopInfo shopInfo = new ShopInfo(name, canBuy, items);
+            var shopOwner = Map.GetDynamicEntity(shopOwnerIndex);
+            ShopInfo shopInfo = new ShopInfo(shopOwner, name, canBuy, items);
 
             GameplayScreen.ShopForm.DisplayShop(shopInfo);
         }

@@ -1,9 +1,11 @@
 ﻿using System.Linq;
+using NetGore;
 
 namespace DemoGame.Client
 {
     public class ShopInfo
     {
+        readonly DynamicEntity _shopOwner;
         readonly bool _canBuy;
         readonly ItemInfo[] _items;
         readonly string _name;
@@ -50,13 +52,20 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets the shop owner. Can be null.
+        /// </summary>
+        public DynamicEntity ShopOwner { get { return _shopOwner; } }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="ShopInfo"/> class.
         /// </summary>
+        /// <param name="shopOwner">The shop owner. Can be null.</param>
         /// <param name="name">The name.</param>
         /// <param name="canBuy">if set to <c>true</c> [can buy].</param>
         /// <param name="items">The items.</param>
-        public ShopInfo(string name, bool canBuy, ItemInfo[] items)
+        public ShopInfo(DynamicEntity shopOwner, string name, bool canBuy, ItemInfo[] items)
         {
+            _shopOwner = shopOwner;
             _items = items;
             _name = name;
             _canBuy = canBuy;

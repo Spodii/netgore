@@ -535,8 +535,14 @@ namespace DemoGame.Client
             if (UserChar == null)
                 return;
 
+            // HACK: What a stupid way to make sure the correct inventory and equipped is used...
             _inventoryForm.Inventory = UserInfo.Inventory;
             _equippedForm.UserEquipped = UserInfo.Equipped;
+
+            // Check to hide the shopping form from the user going out of range of the shop owner
+            var shopInfo = ShopForm.ShopInfo;
+            if (shopInfo != null && shopInfo.ShopOwner != null && !GameData.IsValidDistanceToShop(UserChar, shopInfo.ShopOwner))
+                ShopForm.HideShop();
 
             // Update some other goodies
             World.Update();

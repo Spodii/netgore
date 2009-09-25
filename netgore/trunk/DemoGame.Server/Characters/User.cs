@@ -643,10 +643,10 @@ namespace DemoGame.Server
             readonly object _changeShopLock = new object();
 
             Map _shopMap;
-            Entity _shopOwner;
+            DynamicEntity _shopOwner;
             Shop _shoppingAt;
 
-            public Entity ShopOwner
+            public DynamicEntity ShopOwner
             {
                 get { return _shopOwner; }
             }
@@ -676,7 +676,7 @@ namespace DemoGame.Server
 
             void SendStartShopping(Shop shop)
             {
-                using (PacketWriter pw = ServerPacket.StartShopping(shop))
+                using (PacketWriter pw = ServerPacket.StartShopping(ShopOwner.MapEntityIndex, shop))
                 {
                     User.Send(pw);
                 }
@@ -736,7 +736,7 @@ namespace DemoGame.Server
                 return User.TryBuyItem(shopItem.ItemTemplate, amount);
             }
 
-            public bool TryStartShopping(Shop shop, Entity shopkeeper, Map entityMap)
+            public bool TryStartShopping(Shop shop, DynamicEntity shopkeeper, Map entityMap)
             {
                 if (shop == null || shopkeeper == null || entityMap == null)
                     return false;

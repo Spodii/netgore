@@ -818,7 +818,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Updates the Control.
         /// </summary>
-        /// <param name="currentTime">Current game time.</param>
+        /// <param name="currentTime">The current time in milliseconds.</param>
         public void Update(int currentTime)
         {
             if (Parent != null)
@@ -847,6 +847,7 @@ namespace NetGore.Graphics.GUI
         /// <summary>
         /// Updates the Control for anything other than the Mouse or Keyboard
         /// </summary>
+        /// <param name="currentTime">The current time in milliseconds.</param>
         protected virtual void UpdateControl(int currentTime)
         {
             if (_isDisposed)
