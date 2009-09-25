@@ -694,9 +694,12 @@ namespace DemoGame.Client
             var shopOwners = Map.DynamicEntities.OfType<CharacterEntity>().Where(x => x.HasShop);
             var validShopOwners = shopOwners.Where(x => GameData.IsValidDistanceToShop(source, x));
 
-            // TODO: Return closest rectangle, not just the first one
+            // Return first if there is zero or one elements
+            if (validShopOwners.Count() <= 1)
+                return validShopOwners.FirstOrDefault();
 
-            return validShopOwners.FirstOrDefault();
+            // Return closest
+            return validShopOwners.MinElement(x => x.CB.GetDistance(source.CB));
         }
 
         /// <summary>
