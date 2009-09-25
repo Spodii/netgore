@@ -7,13 +7,20 @@ using NetGore.EditorTools;
 using NetGore.EditorTools.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
-// TODO: Clean this up enough so that it can be added to the NetGore.EditorTools
-
 namespace DemoGame.NPCChatEditor
 {
+    /// <summary>
+    /// Handles when the selected <see cref="EditorNPCChatConditionalCollectionItem"/> in the
+    /// <see cref="NPCChatConditionalsListBox"/> changes.
+    /// </summary>
+    /// <param name="sender">The <see cref="NPCChatConditionalsListBox"/> that the event came from.</param>
+    /// <param name="item">The new selected <see cref="EditorNPCChatConditionalCollectionItem"/>.</param>
     public delegate void SelectedConditionalItemChangeHandler(
         NPCChatConditionalsListBox sender, EditorNPCChatConditionalCollectionItem item);
 
+    /// <summary>
+    /// A <see cref="ListBox"/> specially for managing the NPC chat conditional for editors.
+    /// </summary>
     public class NPCChatConditionalsListBox : ListBox
     {
         EditorNPCChatConditionalCollection _conditionalCollection;
@@ -185,13 +192,16 @@ namespace DemoGame.NPCChatEditor
         }
 
         /// <summary>
-        /// Tries to remove a <see cref="EditorNPCChatConditionalCollectionItem"/> from the
-        /// <see cref="ConditionalCollection"/>.
+        /// Tries to add a <see cref="NPCChatConditionalCollectionItemBase"/> to the <see cref="ConditionalCollection"/>.
         /// </summary>
-        /// <returns>True if the item was successfully removed; otherwise false.</returns>
-        public bool TryDeleteSelectedConditionalItem()
+        /// <param name="item">The item to add.</param>
+        /// <returns>True if the <paramref name="item"/> was successfully added; otherwise false.</returns>
+        public bool TryAddToConditionalCollection(NPCChatConditionalCollectionItemBase item)
         {
-            return TryDeleteConditionalItem(SelectedConditionalItem);
+            if (ConditionalCollection == null)
+                return false;
+
+            return ConditionalCollection.TryAddItem(item);
         }
 
         /// <summary>
@@ -205,7 +215,7 @@ namespace DemoGame.NPCChatEditor
             if (item == null)
                 return false;
 
-            var cc = ConditionalCollection;
+            EditorNPCChatConditionalCollection cc = ConditionalCollection;
             if (cc == null)
                 return false;
 
@@ -213,16 +223,13 @@ namespace DemoGame.NPCChatEditor
         }
 
         /// <summary>
-        /// Tries to add a <see cref="NPCChatConditionalCollectionItemBase"/> to the <see cref="ConditionalCollection"/>.
+        /// Tries to remove a <see cref="EditorNPCChatConditionalCollectionItem"/> from the
+        /// <see cref="ConditionalCollection"/>.
         /// </summary>
-        /// <param name="item">The item to add.</param>
-        /// <returns>True if the <paramref name="item"/> was successfully added; otherwise false.</returns>
-        public bool TryAddToConditionalCollection(NPCChatConditionalCollectionItemBase item)
+        /// <returns>True if the item was successfully removed; otherwise false.</returns>
+        public bool TryDeleteSelectedConditionalItem()
         {
-            if (ConditionalCollection == null)
-                return false;
-
-            return ConditionalCollection.TryAddItem(item);
+            return TryDeleteConditionalItem(SelectedConditionalItem);
         }
     }
 }
