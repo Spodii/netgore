@@ -144,6 +144,21 @@ namespace NetGore.EditorTools.NPCChat
                 OnChange(this);
         }
 
+        public bool TryRemoveItem(NPCChatConditionalCollectionItemBase item)
+        {
+            var casted = item as EditorNPCChatConditionalCollectionItem;
+
+            if (casted == null)
+                return false;
+
+            bool success = _items.Remove(casted);
+
+            if (success && OnChange != null)
+                OnChange(this);
+
+            return success;
+        }
+
         /// <summary>
         /// Tries to add a NPCChatConditionalCollectionItemBase to the collection.
         /// </summary>

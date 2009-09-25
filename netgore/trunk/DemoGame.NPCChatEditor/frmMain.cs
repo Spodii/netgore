@@ -804,5 +804,10 @@ namespace DemoGame.NPCChatEditor
 
             lstActions.SynchronizeItemList(EditingObjAsResponse.Actions);
         }
+
+        private void btnDeleteConditional_Click(object sender, EventArgs e)
+        {
+            lstConditionals.TryDeleteSelectedConditionalItem();
+        }
     }
 }

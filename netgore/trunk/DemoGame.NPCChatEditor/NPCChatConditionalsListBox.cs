@@ -184,11 +184,28 @@ namespace DemoGame.NPCChatEditor
             ConditionalCollection = newCollection;
         }
 
+        public bool TryDeleteSelectedConditionalItem()
+        {
+            return TryDeleteConditionalItem(SelectedConditionalItem);
+        }
+
+        public bool TryDeleteConditionalItem(NPCChatConditionalCollectionItemBase item)
+        {
+            if (item == null)
+                return false;
+
+            var cc = ConditionalCollection;
+            if (cc == null)
+                return false;
+
+            return cc.TryRemoveItem(item);
+        }
+
         /// <summary>
         /// Tries to add a NPCChatConditionalCollectionItemBase to the ConditionalCollection.
         /// </summary>
-        /// <param name="characterID">The NPCChatConditionalCollectionItemBase to add.</param>
-        /// <returns>True if the <paramref name="characterID"/> was successfully added; otherwise false.</returns>
+        /// <param name="item">The NPCChatConditionalCollectionItemBase to add.</param>
+        /// <returns>True if the <paramref name="item"/> was successfully added; otherwise false.</returns>
         public bool TryAddToConditionalCollection(NPCChatConditionalCollectionItemBase item)
         {
             if (ConditionalCollection == null)

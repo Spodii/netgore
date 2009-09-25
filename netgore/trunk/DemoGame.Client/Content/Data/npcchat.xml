@@ -17,7 +17,7 @@
             <Item0>
               <Value>0</Value>
               <Page>1</Page>
-              <Text>False</Text>
+              <Text>No thanks</Text>
               <Actions>
                 <Count>0</Count>
               </Actions>
@@ -28,7 +28,7 @@
             <Item1>
               <Value>1</Value>
               <Page>2</Page>
-              <Text>True</Text>
+              <Text>Yes please</Text>
               <Actions>
                 <Count>0</Count>
               </Actions>
