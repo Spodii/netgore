@@ -636,10 +636,10 @@ namespace DemoGame.Client
             if (_currentTime - _lastShopTime > _minShopRate && ks.IsKeyDown(Keys.LeftAlt))
             {
                 _lastShopTime = _currentTime;
-                CharacterEntity npc = Map.GetEntity<CharacterEntity>(UserChar.CB.ToRectangle(), x => x.HasShop);
-                if (npc != null)
+                var shopOwner = GetClosestValidShopOwner(UserChar);
+                if (shopOwner != null)
                 {
-                    using (PacketWriter pw = ClientPacket.StartShopping(npc.MapEntityIndex))
+                    using (PacketWriter pw = ClientPacket.StartShopping(shopOwner.MapEntityIndex))
                     {
                         Socket.Send(pw);
                     }
@@ -676,6 +676,21 @@ namespace DemoGame.Client
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the closest valid shop owner to the given source Entity, or null if none found.
+        /// </summary>
+        /// <param name="source">The source Entity doing the shopping.</param>
+        /// <returns>The closest valid shop owner to the given source Entity, or null if none found.</returns>
+        DynamicEntity GetClosestValidShopOwner(Entity source)
+        {
+            var shopOwners = Map.DynamicEntities.OfType<CharacterEntity>().Where(x => x.HasShop);
+            var validShopOwners = shopOwners.Where(x => GameData.IsValidDistanceToShop(source, x));
+
+            // TODO: Return closest rectangle, not just the first one
+
+            return validShopOwners.FirstOrDefault();
         }
 
         /// <summary>
