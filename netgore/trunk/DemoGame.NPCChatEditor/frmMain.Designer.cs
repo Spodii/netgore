@@ -37,7 +37,7 @@ namespace DemoGame.NPCChatEditor
             this.cmbEvaluateType = new System.Windows.Forms.ComboBox();
             this.btnAddConditional = new System.Windows.Forms.Button();
             this.btnDeleteConditional = new System.Windows.Forms.Button();
-            this.lstConditionals = new DemoGame.NPCChatEditor.NPCChatConditionalsListBox();
+            this.lstConditionals = new NetGore.EditorTools.NPCChat.NPCChatConditionalsListBox();
             this.txtTitle = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tcChatDialogItem = new System.Windows.Forms.TabControl();
