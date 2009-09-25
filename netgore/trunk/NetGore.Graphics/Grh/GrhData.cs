@@ -482,14 +482,14 @@ namespace NetGore.Graphics
         /// <summary>
         /// Writes the GrhData to an IValueWriter.
         /// </summary>
-        /// <param name="writer">IValueWriter to write to.</param>
+        /// <param name="w">IValueWriter to write to.</param>
         public void Write(IValueWriter w)
         {
             // Check for valid data
             if (GrhIndex <= 0)
                 throw new Exception("GrhIndex invalid.");
             if (w == null)
-                throw new ArgumentNullException("writer");
+                throw new ArgumentNullException("w");
 
             if (string.IsNullOrEmpty(Category))
                 throw new NullReferenceException("Category is null or invalid.");
