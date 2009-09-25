@@ -144,14 +144,17 @@ namespace NetGore.EditorTools.NPCChat
                 OnChange(this);
         }
 
-        public bool TryRemoveItem(NPCChatConditionalCollectionItemBase item)
+        /// <summary>
+        /// Tries to remove a <see cref="EditorNPCChatConditionalCollectionItem"/> from the collection.
+        /// </summary>
+        /// <param name="item">The item to remove.</param>
+        /// <returns>True if the <paramref name="item"/> was successfully removed; otherwise false.</returns>
+        public bool TryRemoveItem(EditorNPCChatConditionalCollectionItem item)
         {
-            var casted = item as EditorNPCChatConditionalCollectionItem;
-
-            if (casted == null)
+            if (item == null)
                 return false;
 
-            bool success = _items.Remove(casted);
+            bool success = _items.Remove(item);
 
             if (success && OnChange != null)
                 OnChange(this);
