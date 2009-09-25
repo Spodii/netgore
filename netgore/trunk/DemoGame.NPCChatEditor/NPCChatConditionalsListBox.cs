@@ -184,11 +184,22 @@ namespace DemoGame.NPCChatEditor
             ConditionalCollection = newCollection;
         }
 
+        /// <summary>
+        /// Tries to remove a <see cref="NPCChatConditionalCollectionItemBase"/> from the
+        /// <see cref="ConditionalCollection"/>.
+        /// </summary>
+        /// <returns>True if the item was successfully removed; otherwise false.</returns>
         public bool TryDeleteSelectedConditionalItem()
         {
             return TryDeleteConditionalItem(SelectedConditionalItem);
         }
 
+        /// <summary>
+        /// Tries to remove a <see cref="NPCChatConditionalCollectionItemBase"/> from the
+        /// <see cref="ConditionalCollection"/>.
+        /// </summary>
+        /// <param name="item">The conditional item to remove.</param>
+        /// <returns>True if the <paramref name="item"/> was successfully removed; otherwise false.</returns>
         public bool TryDeleteConditionalItem(NPCChatConditionalCollectionItemBase item)
         {
             if (item == null)
