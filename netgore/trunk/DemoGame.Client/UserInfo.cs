@@ -20,14 +20,14 @@ namespace DemoGame.Client
             get { return _baseStats; }
         }
 
-        public uint Cash { get; set; }
+        public int Cash { get; set; }
 
         public UserEquipped Equipped
         {
             get { return _equipped; }
         }
 
-        public uint Exp { get; set; }
+        public int Exp { get; set; }
 
         public SPValueType HP { get; set; }
 
@@ -69,7 +69,7 @@ namespace DemoGame.Client
             }
         }
 
-        public uint StatPoints { get; set; }
+        public int StatPoints { get; set; }
 
         public UserInfo(ISocketSender socket)
         {

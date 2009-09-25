@@ -95,7 +95,7 @@ namespace DemoGame.Server.DbObjs
             source.SetStat(StatType.Evade, dataReader.GetByte(i));
 
             i = dataReader.GetOrdinal("exp");
-            source.Exp = dataReader.GetUInt32(i);
+            source.Exp = dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("give_cash");
             source.GiveCash = dataReader.GetUInt16(i);
@@ -146,7 +146,7 @@ namespace DemoGame.Server.DbObjs
             source.ShopID = (ShopID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("statpoints");
-            source.StatPoints = dataReader.GetUInt32(i);
+            source.StatPoints = dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("str");
             source.SetStat(StatType.Str, dataReader.GetByte(i));
@@ -358,7 +358,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "exp":
-                        source.Exp = dataReader.GetUInt32(i);
+                        source.Exp = dataReader.GetInt32(i);
                         break;
 
                     case "give_cash":
@@ -426,7 +426,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "statpoints":
-                        source.StatPoints = dataReader.GetUInt32(i);
+                        source.StatPoints = dataReader.GetInt32(i);
                         break;
 
                     case "str":

@@ -49,15 +49,15 @@ namespace DemoGame.Server
     /// <param name="item">The ItemEntity related to the event.</param>
     public delegate void CharacterItemEventHandler(Character character, ItemEntity item);
 
-    public delegate void CharacterExpEventHandler(Character character, uint oldExp, uint exp);
+    public delegate void CharacterExpEventHandler(Character character, int oldExp, int exp);
 
     public delegate void CharacterLevelEventHandler(Character character, byte oldLevel, byte level);
 
-    public delegate void CharacterCashEventHandler(Character character, uint oldCash, uint cash);
+    public delegate void CharacterCashEventHandler(Character character, int oldCash, int cash);
 
     public delegate void CharacterChangeSPEventHandler(Character character, SPValueType oldValue, SPValueType newValue);
 
-    public delegate void CharacterStatPointsEventHandler(Character character, uint oldValue, uint newValue);
+    public delegate void CharacterStatPointsEventHandler(Character character, int oldValue, int newValue);
 
     /// <summary>
     /// The server representation of a single Character that can be either player-controller or computer-controller.
@@ -106,8 +106,8 @@ namespace DemoGame.Server
         /// </summary>
         Alliance _alliance;
 
-        uint _cash;
-        uint _exp;
+        int _cash;
+        int _exp;
         SPValueType _hp;
         CharacterID _id;
 
@@ -137,7 +137,7 @@ namespace DemoGame.Server
         /// </summary>
         string _name;
 
-        uint _nextLevelExp;
+        int _nextLevelExp;
 
         /// <summary>
         /// Lets us know if we have saved the Character since they have been updated. Used to ensure saves aren't
@@ -150,7 +150,7 @@ namespace DemoGame.Server
         /// </summary>
         int _spRecoverTime;
 
-        uint _statPoints;
+        int _statPoints;
 
         CharacterTemplateID? _templateID;
 
@@ -781,7 +781,7 @@ namespace DemoGame.Server
             return remainder;
         }
 
-        protected virtual void GiveKillReward(uint exp, uint cash)
+        protected virtual void GiveKillReward(int exp, int cash)
         {
             Exp += exp;
             Cash += cash;
@@ -984,7 +984,7 @@ namespace DemoGame.Server
         /// <param name="st">StatType of the stat to raise.</param>
         public void RaiseStat(StatType st)
         {
-            uint cost = GameData.StatCost(BaseStats[st]);
+            int cost = GameData.StatCost(BaseStats[st]);
 
             if (StatPoints < cost)
             {
@@ -1348,16 +1348,15 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the amount of Cash the Character has on hand.
         /// </summary>
-        public uint Cash
+        public int Cash
         {
             get { return _cash; }
             protected set
             {
-                // TODO: Set the Cash as an int, not uint. I'd hate to have someone get infinite cash from an underflow.
                 if (_cash == value)
                     return;
 
-                uint oldValue = _cash;
+                int oldValue = _cash;
                 _cash = value;
 
                 if (OnChangeCash != null)
@@ -1382,16 +1381,15 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the amount of experience the Character has.
         /// </summary>
-        public uint Exp
+        public int Exp
         {
             get { return _exp; }
             private set
             {
-                // TODO: Set the Exp as an int, not uint. Same reason why cash should be signed, too.
                 if (_exp == value)
                     return;
 
-                uint oldValue = _exp;
+                int oldValue = _exp;
                 _exp = value;
 
                 if (OnChangeExp != null)
@@ -1561,16 +1559,15 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the number of points the Character can spend on stats.
         /// </summary>
-        public uint StatPoints
+        public int StatPoints
         {
             get { return _statPoints; }
             private set
             {
-                // TODO: Set the StatPoints as an int, not uint. Same reason why cash should be signed, too.
                 if (_statPoints == value)
                     return;
 
-                uint oldValue = _statPoints;
+                int oldValue = _statPoints;
                 _statPoints = value;
 
                 if (OnChangeStatPoints != null)

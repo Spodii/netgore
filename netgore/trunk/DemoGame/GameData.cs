@@ -229,7 +229,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="x">Level to check (current level).</param>
         /// <returns>Experience required for the given level.</returns>
-        public static uint LevelCost(uint x)
+        public static int LevelCost(int x)
         {
             return x * 30;
         }
@@ -248,9 +248,9 @@ namespace DemoGame
         /// </summary>
         /// <param name="x">Stat level to check (current stat level).</param>
         /// <returns>Experience required for the given stat level.</returns>
-        public static uint StatCost(int x)
+        public static int StatCost(int x)
         {
-            return (uint)((x / 10) + 1);
+            return (x / 10) + 1;
         }
 
         /// <summary>

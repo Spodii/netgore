@@ -78,7 +78,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `exp`.
         /// </summary>
-        UInt32 _exp;
+        Int32 _exp;
 
         /// <summary>
         /// The field that maps onto the database column `give_cash`.
@@ -118,7 +118,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The field that maps onto the database column `statpoints`.
         /// </summary>
-        UInt32 _statPoints;
+        Int32 _statPoints;
 
         /// <summary>
         /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
@@ -195,10 +195,10 @@ namespace DemoGame.Server.DbObjs
         /// <param name="tact">The initial value for the corresponding property.</param>
         /// <param name="wS">The initial value for the corresponding property.</param>
         public CharacterTemplateTable(Byte @acc, Byte @agi, String @aI, AllianceID @allianceID, Byte @armor, BodyIndex @bodyID,
-                                      Byte @bra, Byte @defence, Byte @dex, Byte @evade, UInt32 @exp, UInt16 @giveCash,
+                                      Byte @bra, Byte @defence, Byte @dex, Byte @evade, Int32 @exp, UInt16 @giveCash,
                                       UInt16 @giveExp, CharacterTemplateID @iD, Byte @imm, Byte @int, Byte @level, Byte @maxHit,
                                       UInt16 @maxHP, UInt16 @maxMP, Byte @minHit, String @name, Byte @perc, Byte @recov,
-                                      Byte @regen, UInt16 @respawn, ShopID? @shopID, UInt32 @statPoints, Byte @str, Byte @tact,
+                                      Byte @regen, UInt16 @respawn, ShopID? @shopID, Int32 @statPoints, Byte @str, Byte @tact,
                                       Byte @wS)
         {
             SetStat(StatType.Acc, @acc);
@@ -377,7 +377,7 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("evade", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "exp":
-                    return new ColumnMetadata("exp", "", "int(10) unsigned", null, typeof(UInt32), false, false, false);
+                    return new ColumnMetadata("exp", "", "int(11)", null, typeof(Int32), false, false, false);
 
                 case "give_cash":
                     return new ColumnMetadata("give_cash", "", "smallint(5) unsigned", "0", typeof(UInt16), false, false, false);
@@ -428,7 +428,7 @@ namespace DemoGame.Server.DbObjs
                     return new ColumnMetadata("shop_id", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
 
                 case "statpoints":
-                    return new ColumnMetadata("statpoints", "", "int(10) unsigned", null, typeof(UInt32), false, false, false);
+                    return new ColumnMetadata("statpoints", "", "int(11)", null, typeof(Int32), false, false, false);
 
                 case "str":
                     return new ColumnMetadata("str", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
@@ -613,7 +613,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "exp":
-                    Exp = (UInt32)value;
+                    Exp = (Int32)value;
                     break;
 
                 case "give_cash":
@@ -681,7 +681,7 @@ namespace DemoGame.Server.DbObjs
                     break;
 
                 case "statpoints":
-                    StatPoints = (UInt32)value;
+                    StatPoints = (Int32)value;
                     break;
 
                 case "str":
@@ -756,9 +756,9 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `exp`.
-        /// The underlying database type is `int(10) unsigned`.
+        /// The underlying database type is `int(11)`.
         /// </summary>
-        public UInt32 Exp
+        public Int32 Exp
         {
             get { return _exp; }
             set { _exp = value; }
@@ -836,9 +836,9 @@ namespace DemoGame.Server.DbObjs
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `statpoints`.
-        /// The underlying database type is `int(10) unsigned`.
+        /// The underlying database type is `int(11)`.
         /// </summary>
-        public UInt32 StatPoints
+        public Int32 StatPoints
         {
             get { return _statPoints; }
             set { _statPoints = value; }

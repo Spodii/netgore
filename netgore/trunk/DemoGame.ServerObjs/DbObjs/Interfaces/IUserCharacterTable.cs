@@ -42,7 +42,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `cash`.
         /// </summary>
-        UInt32 Cash { get; }
+        Int32 Cash { get; }
 
         /// <summary>
         /// Gets the value of the database column `character_template_id`.
@@ -72,7 +72,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `exp`.
         /// </summary>
-        UInt32 Exp { get; }
+        Int32 Exp { get; }
 
         /// <summary>
         /// Gets the value of the database column `hp`.
@@ -167,7 +167,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `statpoints`.
         /// </summary>
-        UInt32 StatPoints { get; }
+        Int32 StatPoints { get; }
 
         /// <summary>
         /// Gets the value of the database column `str`.
