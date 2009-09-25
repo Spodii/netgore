@@ -21,6 +21,7 @@ namespace NetGore.Graphics.GUI
         readonly GUIManagerBase _gui;
         readonly Control _parent;
         readonly Control _root;
+        readonly ControlSettings _settings;
         ControlBorder _border;
         bool _canDrag = true;
         bool _canFocus = true;
@@ -34,12 +35,6 @@ namespace NetGore.Graphics.GUI
         Vector2 _position;
         Queue<Control> _setTopMostQueue = null;
         Vector2 _size;
-
-        /// <summary>
-        /// Gets or sets the <see cref="TooltipHandler"/> for this <see cref="Control"/>. If null, this
-        /// <see cref="Control"/> will not display a <see cref="Tooltip"/>.
-        /// </summary>
-        public TooltipHandler Tooltip { get; set; }
 
         /// <summary>
         /// States if a OnClick event will be raised with the OnMouseUp event
@@ -199,21 +194,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets all of the child <see cref="Control"/>s from this <see cref="Control"/>.
-        /// </summary>
-        /// <returns>All of the child <see cref="Control"/>s from this <see cref="Control"/>. Does not include
-        /// this <see cref="Control"/>.</returns>
-        public IEnumerable<Control> GetAllChildren()
-        {
-            foreach (var c in Controls)
-            {
-                yield return c;
-                foreach (var c2 in c.GetAllChildren())
-                    yield return c2;
-            }
-        }
-
-        /// <summary>
         /// Gets the GUIManager used by this Control
         /// </summary>
         public GUIManagerBase GUIManager
@@ -325,6 +305,14 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the <see cref="ControlSettings"/> used by this <see cref="Control"/>.
+        /// </summary>
+        public ControlSettings Settings
+        {
+            get { return _settings; }
+        }
+
+        /// <summary>
         /// Gets or sets the absolute size of the Control. The Size includes the Border, while the ClientSize
         /// includes only the area inside of the Control's borders.
         /// </summary>
@@ -339,12 +327,11 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         public object Tag { get; set; }
 
-        readonly ControlSettings _settings;
-
         /// <summary>
-        /// Gets the <see cref="ControlSettings"/> used by this <see cref="Control"/>.
+        /// Gets or sets the <see cref="TooltipHandler"/> for this <see cref="Control"/>. If null, this
+        /// <see cref="Control"/> will not display a <see cref="Tooltip"/>.
         /// </summary>
-        public ControlSettings Settings { get { return _settings; } }
+        public TooltipHandler Tooltip { get; set; }
 
         /// <summary>
         /// Control constructor
@@ -526,6 +513,23 @@ namespace NetGore.Graphics.GUI
             foreach (Control c in Controls)
             {
                 c.DrawControlStart(spriteBatch);
+            }
+        }
+
+        /// <summary>
+        /// Gets all of the child <see cref="Control"/>s from this <see cref="Control"/>.
+        /// </summary>
+        /// <returns>All of the child <see cref="Control"/>s from this <see cref="Control"/>. Does not include
+        /// this <see cref="Control"/>.</returns>
+        public IEnumerable<Control> GetAllChildren()
+        {
+            foreach (Control c in Controls)
+            {
+                yield return c;
+                foreach (Control c2 in c.GetAllChildren())
+                {
+                    yield return c2;
+                }
             }
         }
 

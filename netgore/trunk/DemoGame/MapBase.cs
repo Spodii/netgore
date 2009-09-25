@@ -190,7 +190,7 @@ namespace DemoGame
 
             if (_dynamicEntities.CanGet((int)mapEntityIndex))
             {
-                var existingDE = _dynamicEntities[(int)mapEntityIndex];
+                DynamicEntity existingDE = _dynamicEntities[(int)mapEntityIndex];
                 if (existingDE != null)
                 {
                     Debug.Fail("A DynamicEntity already exists at this MapEntityIndex!");

@@ -54,67 +54,6 @@ namespace NetGore.Graphics.GUI.Tests
         }
 
         [Test]
-        public void ToMultilineMultiInputDifferentLineTest()
-        {
-            // TODO: $$ Test using \r\n and make sure both chars are removed
-            const string originalString1 = "one \ntwo";
-            const string originalString2 = "three fou\nr";
-            StyledText s1 = new StyledText(originalString1, Color.Black);
-            StyledText s2 = new StyledText(originalString2, Color.Black);
-            var lines = StyledText.ToMultiline(new StyledText[] { s1, s2 }, true);
-
-            Assert.AreEqual(4, lines.Count);
-            Assert.AreEqual("one ", lines[0][0].Text);
-            Assert.AreEqual("two", lines[1][0].Text);
-            Assert.AreEqual("three fou", lines[2][0].Text);
-            Assert.AreEqual("r", lines[3][0].Text);
-
-            foreach (var l in lines)
-            {
-                Assert.AreEqual(s1.Color, l[0].Color);
-                Assert.AreEqual(s2.Color, l[0].Color);
-            }
-        }
-
-        [Test]
-        public void ToMultilineMultiInputSameLineTest()
-        {
-            const string originalString1 = "one \ntwo";
-            const string originalString2 = " three fou\nr";
-            StyledText s1 = new StyledText(originalString1, Color.Black);
-            StyledText s2 = new StyledText(originalString2, Color.Black);
-            var lines = StyledText.ToMultiline(new StyledText[] { s1,s2}, false);
-
-            Assert.AreEqual(3, lines.Count);
-            Assert.AreEqual("one ", lines[0][0].Text);
-            Assert.AreEqual("two", lines[1][0].Text);
-            Assert.AreEqual(" three fou", lines[1][1].Text);
-            Assert.AreEqual("r", lines[2][0].Text);
-
-            foreach (var l in lines)
-            {
-                Assert.AreEqual(s1.Color, l[0].Color);
-                Assert.AreEqual(s2.Color, l[0].Color);
-            }
-        }
-
-        [Test]
-        public void ToMultilineOneInputTest()
-        {
-            const string originalString = "one two\n three fou\nr";
-            StyledText s = new StyledText(originalString, Color.Black);
-            var lines = StyledText.ToMultiline(s);
-
-            Assert.AreEqual(3, lines.Count);
-            Assert.AreEqual("one two", lines[0].Text);
-            Assert.AreEqual(" three fou", lines[1].Text);
-            Assert.AreEqual("r", lines[2].Text);
-
-            foreach (var l in lines)
-                Assert.AreEqual(s.Color, l.Color);
-        }
-
-        [Test]
         public void ConstructorCopyStyleTest()
         {
             const string originalString = "asdf werljk xov  .qw 120 xcv;z";
@@ -276,6 +215,69 @@ namespace NetGore.Graphics.GUI.Tests
 
             Assert.AreEqual(originalString.Substring(5, 4), s2.Text);
             Assert.AreEqual(Color.Black, s2.Color);
+        }
+
+        [Test]
+        public void ToMultilineMultiInputDifferentLineTest()
+        {
+            // TODO: $$ Test using \r\n and make sure both chars are removed
+            const string originalString1 = "one \ntwo";
+            const string originalString2 = "three fou\nr";
+            StyledText s1 = new StyledText(originalString1, Color.Black);
+            StyledText s2 = new StyledText(originalString2, Color.Black);
+            var lines = StyledText.ToMultiline(new StyledText[] { s1, s2 }, true);
+
+            Assert.AreEqual(4, lines.Count);
+            Assert.AreEqual("one ", lines[0][0].Text);
+            Assert.AreEqual("two", lines[1][0].Text);
+            Assert.AreEqual("three fou", lines[2][0].Text);
+            Assert.AreEqual("r", lines[3][0].Text);
+
+            foreach (var l in lines)
+            {
+                Assert.AreEqual(s1.Color, l[0].Color);
+                Assert.AreEqual(s2.Color, l[0].Color);
+            }
+        }
+
+        [Test]
+        public void ToMultilineMultiInputSameLineTest()
+        {
+            const string originalString1 = "one \ntwo";
+            const string originalString2 = " three fou\nr";
+            StyledText s1 = new StyledText(originalString1, Color.Black);
+            StyledText s2 = new StyledText(originalString2, Color.Black);
+            var lines = StyledText.ToMultiline(new StyledText[] { s1, s2 }, false);
+
+            Assert.AreEqual(3, lines.Count);
+            Assert.AreEqual("one ", lines[0][0].Text);
+            Assert.AreEqual("two", lines[1][0].Text);
+            Assert.AreEqual(" three fou", lines[1][1].Text);
+            Assert.AreEqual("r", lines[2][0].Text);
+
+            foreach (var l in lines)
+            {
+                Assert.AreEqual(s1.Color, l[0].Color);
+                Assert.AreEqual(s2.Color, l[0].Color);
+            }
+        }
+
+        [Test]
+        public void ToMultilineOneInputTest()
+        {
+            const string originalString = "one two\n three fou\nr";
+            StyledText s = new StyledText(originalString, Color.Black);
+            var lines = StyledText.ToMultiline(s);
+
+            Assert.AreEqual(3, lines.Count);
+            Assert.AreEqual("one two", lines[0].Text);
+            Assert.AreEqual(" three fou", lines[1].Text);
+            Assert.AreEqual("r", lines[2].Text);
+
+            foreach (StyledText l in lines)
+            {
+                Assert.AreEqual(s.Color, l.Color);
+            }
         }
     }
 }

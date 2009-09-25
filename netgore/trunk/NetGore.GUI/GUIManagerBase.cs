@@ -33,6 +33,8 @@ namespace NetGore.Graphics.GUI
         PictureBoxSettings _pictureBoxSettings = PictureBoxSettings.Default;
         ISprite _spriteBlank = null;
         TextBoxSettings _textBoxSettings = TextBoxSettings.Default;
+        Tooltip _tooltip;
+        Control _underCursor;
 
         /// <summary>
         /// Raised when the focused control has changed
@@ -78,20 +80,6 @@ namespace NetGore.Graphics.GUI
         public IEnumerable<Control> Controls
         {
             get { return _controls; }
-        }
-
-        /// <summary>
-        /// Gets all of the <see cref="Control"/>s in this <see cref="GUIManagerBase"/>.
-        /// </summary>
-        /// <returns>All of the <see cref="Control"/>s in this <see cref="GUIManagerBase"/>.</returns>
-        public IEnumerable<Control> GetAllControls()
-        {
-            foreach (var c in Controls)
-            {
-                yield return c;
-                foreach (var c2 in c.GetAllChildren())
-                    yield return c2;
-            }
         }
 
         /// <summary>
@@ -341,6 +329,24 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManagerBase"/>.
+        /// </summary>
+        public Tooltip Tooltip
+        {
+            get { return _tooltip; }
+            internal set { _tooltip = value; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="Control"/> currently under the cursor, or null if no <see cref="Control"/> managed 
+        /// by this GUIManager is currently under the cursor.
+        /// </summary>
+        public Control UnderCursor
+        {
+            get { return _underCursor; }
+        }
+
+        /// <summary>
         /// GUIManager constructor
         /// </summary>
         /// <param name="font">Default SpriteFont to use for controls added to this GUIManager</param>
@@ -434,6 +440,22 @@ namespace NetGore.Graphics.GUI
 
             // Draw the tooltip
             Tooltip.Draw(sb);
+        }
+
+        /// <summary>
+        /// Gets all of the <see cref="Control"/>s in this <see cref="GUIManagerBase"/>.
+        /// </summary>
+        /// <returns>All of the <see cref="Control"/>s in this <see cref="GUIManagerBase"/>.</returns>
+        public IEnumerable<Control> GetAllControls()
+        {
+            foreach (Control c in Controls)
+            {
+                yield return c;
+                foreach (Control c2 in c.GetAllChildren())
+                {
+                    yield return c2;
+                }
+            }
         }
 
         /// <summary>
@@ -602,14 +624,6 @@ namespace NetGore.Graphics.GUI
             }
         }
 
-        Control _underCursor;
-
-        /// <summary>
-        /// Gets the <see cref="Control"/> currently under the cursor, or null if no <see cref="Control"/> managed 
-        /// by this GUIManager is currently under the cursor.
-        /// </summary>
-        public Control UnderCursor { get { return _underCursor; } }
-
         /// <summary>
         /// Updates all of the controls in the GUIManager.
         /// </summary>
@@ -643,13 +657,6 @@ namespace NetGore.Graphics.GUI
             // Update the tooltip
             Tooltip.Update(currentTime);
         }
-
-        Tooltip _tooltip;
-
-        /// <summary>
-        /// Gets the <see cref="Tooltip"/> used by this <see cref="GUIManagerBase"/>.
-        /// </summary>
-        public Tooltip Tooltip { get { return _tooltip; } internal set { _tooltip = value; } }
 
         /// <summary>
         /// Finds the new focused root control (if any)

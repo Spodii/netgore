@@ -10,18 +10,37 @@ namespace DemoGame.Client
     /// </summary>
     abstract class ItemInfoRequesterBase<T>
     {
-        readonly ISocketSender _socket;
         readonly ItemInfo _reusableItemInfo = new ItemInfo();
+        readonly ISocketSender _socket;
+        bool _isItemInfoSet;
 
-        T _slot;
         ItemInfo _item;
         bool _needToRequest;
-        bool _isItemInfoSet;
+        T _slot;
+
+        /// <summary>
+        /// Gets the current <see cref="ItemInfo"/>. Can be null.
+        /// </summary>
+        public ItemInfo CurrentItemInfo
+        {
+            get { return _item; }
+        }
+
+        /// <summary>
+        /// Gets the current slot being handled.
+        /// </summary>
+        public T CurrentSlot
+        {
+            get { return _slot; }
+        }
 
         /// <summary>
         /// The socket used to send the requests.
         /// </summary>
-        public ISocketSender Socket { get { return _socket; } }
+        public ISocketSender Socket
+        {
+            get { return _socket; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ItemInfoRequesterBase&lt;T&gt;"/> class.
@@ -36,14 +55,25 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the current slot being handled.
+        /// When overridden in the derived class, gets the <see cref="BitStream"/> containing the data
+        /// needed to make a request for the given slot's <see cref="ItemInfo"/>.
         /// </summary>
-        public T CurrentSlot { get { return _slot; } }
+        /// <param name="slotToRequest">The slot to request the <see cref="ItemInfo"/> for.</param>
+        /// <returns>The <see cref="BitStream"/> containing the data needed to make a request for
+        /// the given slot's <see cref="ItemInfo"/>.</returns>
+        protected abstract BitStream GetRequest(T slotToRequest);
 
         /// <summary>
-        /// Gets the current <see cref="ItemInfo"/>. Can be null.
+        /// When overridden in the derived class, gets if the given <paramref name="slot"/> contains a null
+        /// <see cref="ItemInfo"/>. This allows for bypassing having to request the item info for a slot that
+        /// is known to be empty.
         /// </summary>
-        public ItemInfo CurrentItemInfo { get { return _item; } }
+        /// <param name="slot">The slot.</param>
+        /// <returns>True if the <see cref="slot"/> is known to be null; otherwise false.</returns>
+        protected virtual bool IsSlotNull(T slot)
+        {
+            return false;
+        }
 
         /// <summary>
         /// Handles when the ItemInfo for the given slot has been received.
@@ -78,38 +108,6 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the <see cref="BitStream"/> containing the data
-        /// needed to make a request for the given slot's <see cref="ItemInfo"/>.
-        /// </summary>
-        /// <param name="slotToRequest">The slot to request the <see cref="ItemInfo"/> for.</param>
-        /// <returns>The <see cref="BitStream"/> containing the data needed to make a request for
-        /// the given slot's <see cref="ItemInfo"/>.</returns>
-        protected abstract BitStream GetRequest(T slotToRequest);
-
-        /// <summary>
-        /// Unsets the current <see cref="ItemInfo"/>, forcing the data to be reacquired.
-        /// </summary>
-        public void Unset()
-        {
-            _slot = default(T);
-            _item = null;
-            _needToRequest = true;
-            _isItemInfoSet = false;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets if the given <paramref name="slot"/> contains a null
-        /// <see cref="ItemInfo"/>. This allows for bypassing having to request the item info for a slot that
-        /// is known to be empty.
-        /// </summary>
-        /// <param name="slot">The slot.</param>
-        /// <returns>True if the <see cref="slot"/> is known to be null; otherwise false.</returns>
-        protected virtual bool IsSlotNull(T slot)
-        {
-            return false;
-        }
-
-        /// <summary>
         /// Gets the <see cref="ItemInfo"/> for the item in the given <paramref name="slot"/>.
         /// </summary>
         /// <param name="slot">The slot of the item to get the info for.</param>
@@ -126,18 +124,18 @@ namespace DemoGame.Client
                 _needToRequest = true;
                 _isItemInfoSet = false;
             }
-            
+
             // Send the request for the slot if it hasn't been made yet
             if (_needToRequest)
             {
                 if (IsSlotNull(_slot))
-                {
                     ReceiveInfo(_slot, (ItemInfo)null);
-                }
                 else
                 {
-                    using (var pw = GetRequest(_slot))
+                    using (BitStream pw = GetRequest(_slot))
+                    {
                         Socket.Send(pw);
+                    }
 
                     _needToRequest = false;
                     itemInfo = null;
@@ -147,6 +145,17 @@ namespace DemoGame.Client
 
             itemInfo = _item;
             return _isItemInfoSet;
+        }
+
+        /// <summary>
+        /// Unsets the current <see cref="ItemInfo"/>, forcing the data to be reacquired.
+        /// </summary>
+        public void Unset()
+        {
+            _slot = default(T);
+            _item = null;
+            _needToRequest = true;
+            _isItemInfoSet = false;
         }
     }
 }

@@ -80,6 +80,7 @@ namespace DemoGame.Client
         SpriteFont _damageFont;
 
         bool _disposed;
+        EquipmentInfoRequester _equipmentInfoRequester;
         EquippedForm _equippedForm;
 
         /// <summary>
@@ -101,7 +102,6 @@ namespace DemoGame.Client
 
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
-        EquipmentInfoRequester _equipmentInfoRequester;
 
         /// <summary>
         /// Time when the user last attacked
@@ -188,17 +188,17 @@ namespace DemoGame.Client
             get { return _damageTextPool; }
         }
 
+        public EquipmentInfoRequester EquipmentInfoRequester
+        {
+            get { return _equipmentInfoRequester; }
+        }
+
         /// <summary>
         /// Gets the InfoBox used by the screen
         /// </summary>
         public InfoBox InfoBox
         {
             get { return _infoBox; }
-        }
-
-        public EquipmentInfoRequester EquipmentInfoRequester
-        {
-            get { return _equipmentInfoRequester; }
         }
 
         public InventoryInfoRequester InventoryInfoRequester
@@ -374,6 +374,24 @@ namespace DemoGame.Client
         }
 
         /// <summary>
+        /// Gets the closest valid shop owner to the given source Entity, or null if none found.
+        /// </summary>
+        /// <param name="source">The source Entity doing the shopping.</param>
+        /// <returns>The closest valid shop owner to the given source Entity, or null if none found.</returns>
+        DynamicEntity GetClosestValidShopOwner(Entity source)
+        {
+            var shopOwners = Map.DynamicEntities.OfType<CharacterEntity>().Where(x => x.HasShop);
+            var validShopOwners = shopOwners.Where(x => GameData.IsValidDistanceToShop(source, x));
+
+            // Return first if there is zero or one elements
+            if (validShopOwners.Count() <= 1)
+                return validShopOwners.FirstOrDefault();
+
+            // Return closest
+            return validShopOwners.MinElement(x => x.CB.GetDistance(source.CB));
+        }
+
+        /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
         /// completely and successfully added to the ScreenManager. It is highly recommended that you
         /// use this instead of the constructor. This is invoked only once.
@@ -444,12 +462,6 @@ namespace DemoGame.Client
             _guiSettings.Add("ToolbarForm", toolbar);
         }
 
-        void ShopForm_OnPurchase(ShopForm shopForm, ShopItemIndex slot)
-        {
-            using (var pw = ClientPacket.BuyFromShop(slot, 1))
-                Socket.Send(pw);
-        }
-
         /// <summary>
         /// Handles the loading of game content. Any content that is loaded should be placed in here.
         /// This will be invoked once (right after Initialize()), along with an additional time for
@@ -468,6 +480,14 @@ namespace DemoGame.Client
             {
                 login.SetError("Connection to server lost.");
                 ScreenManager.SetScreen(LoginScreen.ScreenName);
+            }
+        }
+
+        void ShopForm_OnPurchase(ShopForm shopForm, ShopItemIndex slot)
+        {
+            using (PacketWriter pw = ClientPacket.BuyFromShop(slot, 1))
+            {
+                Socket.Send(pw);
             }
         }
 
@@ -540,7 +560,7 @@ namespace DemoGame.Client
             _equippedForm.UserEquipped = UserInfo.Equipped;
 
             // Check to hide the shopping form from the user going out of range of the shop owner
-            var shopInfo = ShopForm.ShopInfo;
+            ShopInfo shopInfo = ShopForm.ShopInfo;
             if (shopInfo != null && shopInfo.ShopOwner != null && !GameData.IsValidDistanceToShop(UserChar, shopInfo.ShopOwner))
                 ShopForm.HideShop();
 
@@ -642,7 +662,7 @@ namespace DemoGame.Client
             if (_currentTime - _lastShopTime > _minShopRate && ks.IsKeyDown(Keys.LeftAlt))
             {
                 _lastShopTime = _currentTime;
-                var shopOwner = GetClosestValidShopOwner(UserChar);
+                DynamicEntity shopOwner = GetClosestValidShopOwner(UserChar);
                 if (shopOwner != null)
                 {
                     using (PacketWriter pw = ClientPacket.StartShopping(shopOwner.MapEntityIndex))
@@ -682,24 +702,6 @@ namespace DemoGame.Client
                     }
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the closest valid shop owner to the given source Entity, or null if none found.
-        /// </summary>
-        /// <param name="source">The source Entity doing the shopping.</param>
-        /// <returns>The closest valid shop owner to the given source Entity, or null if none found.</returns>
-        DynamicEntity GetClosestValidShopOwner(Entity source)
-        {
-            var shopOwners = Map.DynamicEntities.OfType<CharacterEntity>().Where(x => x.HasShop);
-            var validShopOwners = shopOwners.Where(x => GameData.IsValidDistanceToShop(source, x));
-
-            // Return first if there is zero or one elements
-            if (validShopOwners.Count() <= 1)
-                return validShopOwners.FirstOrDefault();
-
-            // Return closest
-            return validShopOwners.MinElement(x => x.CB.GetDistance(source.CB));
         }
 
         /// <summary>

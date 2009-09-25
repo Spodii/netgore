@@ -26,6 +26,7 @@ namespace DemoGame.Client.Controls
         const float _sepY = 2; // Amount of space on the Y axis between each item
 
         ShopInfo _shopInfo;
+        public event ShopFormPurchaseHandler OnPurchase;
 
         public ShopInfo ShopInfo
         {
@@ -71,8 +72,6 @@ namespace DemoGame.Client.Controls
             _shopInfo = null;
         }
 
-        public event ShopFormPurchaseHandler OnPurchase;
-
         void ShopItemPB_OnMouseUp(object sender, MouseClickEventArgs e)
         {
             ShopItemPB src = (ShopItemPB)sender;
@@ -107,6 +106,7 @@ namespace DemoGame.Client.Controls
 
         class ShopItemPB : PictureBox
         {
+            static readonly TooltipHandler _tooltipHandler = TooltipCallback;
             static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
             readonly ShopItemIndex _index;
             readonly ShopForm _shopForm;
@@ -132,15 +132,6 @@ namespace DemoGame.Client.Controls
             ShopInfo ShopInfo
             {
                 get { return _shopForm.ShopInfo; }
-            }
-
-            static readonly TooltipHandler _tooltipHandler = TooltipCallback;
-
-            static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
-            {
-                var src = (ShopItemPB)sender;
-                ItemInfo itemInfo = src.ItemInfo;
-                return ItemInfoHelper.GetStyledText(itemInfo);
             }
 
             public ShopItemPB(ShopForm parent, Vector2 pos, ShopItemIndex index)
@@ -207,6 +198,13 @@ namespace DemoGame.Client.Controls
             void Skin_OnChange(string newSkin, string oldSkin)
             {
                 LoadSprite();
+            }
+
+            static StyledText[] TooltipCallback(Control sender, TooltipArgs args)
+            {
+                ShopItemPB src = (ShopItemPB)sender;
+                ItemInfo itemInfo = src.ItemInfo;
+                return ItemInfoHelper.GetStyledText(itemInfo);
             }
         }
     }

@@ -305,18 +305,18 @@ namespace DemoGame.Client
             _accountCharacterInfos.SetInfos(charInfos);
         }
 
-        [MessageHandler((byte)ServerPacketID.SendInventoryItemInfo)]
-        void RecvSendInventoryItemInfo(IIPSocket conn, BitStream r)
-        {
-            var slot = r.ReadInventorySlot();
-            GameplayScreen.InventoryInfoRequester.ReceiveInfo(slot, r);
-        }
-
         [MessageHandler((byte)ServerPacketID.SendEquipmentItemInfo)]
         void RecvSendEquipmentItemInfo(IIPSocket conn, BitStream r)
         {
-            var slot = r.ReadEquipmentSlot();
+            EquipmentSlot slot = r.ReadEquipmentSlot();
             GameplayScreen.EquipmentInfoRequester.ReceiveInfo(slot, r);
+        }
+
+        [MessageHandler((byte)ServerPacketID.SendInventoryItemInfo)]
+        void RecvSendInventoryItemInfo(IIPSocket conn, BitStream r)
+        {
+            InventorySlot slot = r.ReadInventorySlot();
+            GameplayScreen.InventoryInfoRequester.ReceiveInfo(slot, r);
         }
 
         [MessageHandler((byte)ServerPacketID.SendMessage)]
@@ -488,7 +488,7 @@ namespace DemoGame.Client
                 items[i] = new ItemInfo(r);
             }
 
-            var shopOwner = Map.GetDynamicEntity(shopOwnerIndex);
+            DynamicEntity shopOwner = Map.GetDynamicEntity(shopOwnerIndex);
             ShopInfo shopInfo = new ShopInfo(shopOwner, name, canBuy, items);
 
             GameplayScreen.ShopForm.DisplayShop(shopInfo);
