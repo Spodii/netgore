@@ -7,17 +7,8 @@ using NetGore.EditorTools;
 using NetGore.EditorTools.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
-namespace DemoGame.NPCChatEditor
+namespace NetGore.EditorTools.NPCChat
 {
-    /// <summary>
-    /// Handles when the selected <see cref="EditorNPCChatConditionalCollectionItem"/> in the
-    /// <see cref="NPCChatConditionalsListBox"/> changes.
-    /// </summary>
-    /// <param name="sender">The <see cref="NPCChatConditionalsListBox"/> that the event came from.</param>
-    /// <param name="item">The new selected <see cref="EditorNPCChatConditionalCollectionItem"/>.</param>
-    public delegate void SelectedConditionalItemChangeHandler(
-        NPCChatConditionalsListBox sender, EditorNPCChatConditionalCollectionItem item);
-
     /// <summary>
     /// A <see cref="ListBox"/> specially for managing the NPC chat conditional for editors.
     /// </summary>
