@@ -185,7 +185,7 @@ namespace DemoGame.NPCChatEditor
         }
 
         /// <summary>
-        /// Tries to remove a <see cref="NPCChatConditionalCollectionItemBase"/> from the
+        /// Tries to remove a <see cref="EditorNPCChatConditionalCollectionItem"/> from the
         /// <see cref="ConditionalCollection"/>.
         /// </summary>
         /// <returns>True if the item was successfully removed; otherwise false.</returns>
@@ -195,12 +195,12 @@ namespace DemoGame.NPCChatEditor
         }
 
         /// <summary>
-        /// Tries to remove a <see cref="NPCChatConditionalCollectionItemBase"/> from the
+        /// Tries to remove a <see cref="EditorNPCChatConditionalCollectionItem"/> from the
         /// <see cref="ConditionalCollection"/>.
         /// </summary>
         /// <param name="item">The conditional item to remove.</param>
         /// <returns>True if the <paramref name="item"/> was successfully removed; otherwise false.</returns>
-        public bool TryDeleteConditionalItem(NPCChatConditionalCollectionItemBase item)
+        public bool TryDeleteConditionalItem(EditorNPCChatConditionalCollectionItem item)
         {
             if (item == null)
                 return false;
@@ -213,9 +213,9 @@ namespace DemoGame.NPCChatEditor
         }
 
         /// <summary>
-        /// Tries to add a NPCChatConditionalCollectionItemBase to the ConditionalCollection.
+        /// Tries to add a <see cref="NPCChatConditionalCollectionItemBase"/> to the <see cref="ConditionalCollection"/>.
         /// </summary>
-        /// <param name="item">The NPCChatConditionalCollectionItemBase to add.</param>
+        /// <param name="item">The item to add.</param>
         /// <returns>True if the <paramref name="item"/> was successfully added; otherwise false.</returns>
         public bool TryAddToConditionalCollection(NPCChatConditionalCollectionItemBase item)
         {
