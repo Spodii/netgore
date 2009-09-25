@@ -90,7 +90,7 @@ namespace DemoGame.Server.DbObjs
             source.Bra = dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("cash");
-            source.Cash = dataReader.GetUInt32(i);
+            source.Cash = dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("character_template_id");
             source.CharacterTemplateID = (CharacterTemplateID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
@@ -108,7 +108,7 @@ namespace DemoGame.Server.DbObjs
             source.Evade = dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("exp");
-            source.Exp = dataReader.GetUInt32(i);
+            source.Exp = dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("hp");
             source.HP = dataReader.GetInt16(i);
@@ -165,7 +165,7 @@ namespace DemoGame.Server.DbObjs
             source.RespawnY = dataReader.GetFloat(i);
 
             i = dataReader.GetOrdinal("statpoints");
-            source.StatPoints = dataReader.GetUInt32(i);
+            source.StatPoints = dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("str");
             source.Str = dataReader.GetByte(i);
@@ -391,7 +391,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "cash":
-                        source.Cash = dataReader.GetUInt32(i);
+                        source.Cash = dataReader.GetInt32(i);
                         break;
 
                     case "character_template_id":
@@ -416,7 +416,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "exp":
-                        source.Exp = dataReader.GetUInt32(i);
+                        source.Exp = dataReader.GetInt32(i);
                         break;
 
                     case "hp":
@@ -492,7 +492,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "statpoints":
-                        source.StatPoints = dataReader.GetUInt32(i);
+                        source.StatPoints = dataReader.GetInt32(i);
                         break;
 
                     case "str":

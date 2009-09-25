@@ -216,7 +216,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="exp">The exp.</param>
         /// <param name="cash">The cash.</param>
-        protected override void GiveKillReward(uint exp, uint cash)
+        protected override void GiveKillReward(int exp, int cash)
         {
             base.GiveKillReward(exp, cash);
 
@@ -494,7 +494,7 @@ namespace DemoGame.Server
             // Give the user the money for selling
             int sellValue = GameData.GetItemSellValue(invItem);
             int totalCash = sellValue * amountToSell;
-            Cash += (uint)totalCash; // TODO: Remove (uint)
+            Cash += totalCash;
 
             // Send message
             if (amountToSell <= 1)
@@ -586,7 +586,7 @@ namespace DemoGame.Server
             }
 
             // Charge them
-            uint chargeAmount = (uint)Math.Max(0, amountPurchased * itemEntity.Value);
+            int chargeAmount = Math.Max(0, amountPurchased * itemEntity.Value);
             Cash -= chargeAmount;
 
             // Send purchase message
@@ -670,7 +670,7 @@ namespace DemoGame.Server
                 Inventory.DecreaseItemAmount(slot);
         }
 
-        void User_OnChangeCash(Character character, uint oldCash, uint cash)
+        void User_OnChangeCash(Character character, int oldCash, int cash)
         {
             using (PacketWriter pw = ServerPacket.SetCash(cash))
             {
@@ -678,7 +678,7 @@ namespace DemoGame.Server
             }
         }
 
-        void User_OnChangeExp(Character character, uint oldExp, uint exp)
+        void User_OnChangeExp(Character character, int oldExp, int exp)
         {
             using (PacketWriter pw = ServerPacket.SetExp(exp))
             {
@@ -694,7 +694,7 @@ namespace DemoGame.Server
             }
         }
 
-        void User_OnChangeStatPoints(Character character, uint oldValue, uint newValue)
+        void User_OnChangeStatPoints(Character character, int oldValue, int newValue)
         {
             using (PacketWriter pw = ServerPacket.SetStatPoints(newValue))
             {

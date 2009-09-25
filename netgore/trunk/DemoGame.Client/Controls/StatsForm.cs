@@ -171,12 +171,12 @@ namespace DemoGame.Client
                 get { return Points >= StatCost; }
             }
 
-            uint Points
+            int Points
             {
                 get { return _statsForm.UserInfo.StatPoints; }
             }
 
-            uint StatCost
+            int StatCost
             {
                 get { return GameData.StatCost(StatLevel); }
             }

@@ -213,8 +213,8 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.NotifyExpCash)]
         void RecvNotifyExpCash(IIPSocket conn, BitStream r)
         {
-            uint exp = r.ReadUInt();
-            uint cash = r.ReadUInt();
+            int exp = r.ReadInt();
+            int cash = r.ReadInt();
 
             Character userChar = World.UserChar;
             if (userChar == null)
@@ -338,7 +338,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetCash)]
         void RecvSetCash(IIPSocket conn, BitStream r)
         {
-            uint cash = r.ReadUInt();
+            int cash = r.ReadInt();
             UserInfo.Cash = cash;
         }
 
@@ -386,7 +386,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetExp)]
         void RecvSetExp(IIPSocket conn, BitStream r)
         {
-            uint exp = r.ReadUInt();
+            int exp = r.ReadInt();
             UserInfo.Exp = exp;
         }
 
@@ -453,7 +453,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SetStatPoints)]
         void RecvSetStatPoints(IIPSocket conn, BitStream r)
         {
-            uint statPoints = r.ReadUInt();
+            int statPoints = r.ReadInt();
             UserInfo.StatPoints = statPoints;
         }
 

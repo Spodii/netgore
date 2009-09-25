@@ -41,7 +41,7 @@ namespace DemoGame.Server.DbObjs
             Int32 i;
 
             i = dataReader.GetOrdinal("current_ip");
-            source.CurrentIp = (dataReader.IsDBNull(i) ? (uint?)null : dataReader.GetUInt32(i));
+            source.CurrentIp = (dataReader.IsDBNull(i) ? (Nullable<UInt32>)null : dataReader.GetUInt32(i));
 
             i = dataReader.GetOrdinal("email");
             source.Email = dataReader.GetString(i);
@@ -126,7 +126,7 @@ namespace DemoGame.Server.DbObjs
                 switch (dataReader.GetName(i))
                 {
                     case "current_ip":
-                        source.CurrentIp = (dataReader.IsDBNull(i) ? (uint?)null : dataReader.GetUInt32(i));
+                        source.CurrentIp = (dataReader.IsDBNull(i) ? (Nullable<UInt32>)null : dataReader.GetUInt32(i));
                         break;
 
                     case "email":

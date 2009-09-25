@@ -129,7 +129,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter NotifyExpCash(uint exp, uint cash)
+        public static PacketWriter NotifyExpCash(int exp, int cash)
         {
             PacketWriter pw = GetWriter(ServerPacketID.NotifyExpCash);
             pw.Write(exp);
@@ -223,7 +223,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SetCash(uint cash)
+        public static PacketWriter SetCash(int cash)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetCash);
             pw.Write(cash);
@@ -285,7 +285,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SetExp(uint exp)
+        public static PacketWriter SetExp(int exp)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetExp);
             pw.Write(exp);
@@ -353,7 +353,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter SetStatPoints(uint statPoints)
+        public static PacketWriter SetStatPoints(int statPoints)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SetStatPoints);
             pw.Write(statPoints);
