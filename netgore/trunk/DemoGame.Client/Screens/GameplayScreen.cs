@@ -466,14 +466,18 @@ namespace DemoGame.Client
 
         void _inventoryForm_OnRequestUseItem(InventoryForm inventoryForm, InventorySlot slot)
         {
-            if (inventoryForm.Inventory == UserInfo.Inventory)
-                UserInfo.Inventory.Use(slot);
+            if (inventoryForm.Inventory != UserInfo.Inventory)
+                return;
+
+            UserInfo.Inventory.Use(slot);
         }
 
         void _inventoryForm_OnRequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
         {
-            if (inventoryForm.Inventory == UserInfo.Inventory)
-                UserInfo.Inventory.Drop(slot);
+            if (inventoryForm.Inventory != UserInfo.Inventory)
+                return;
+
+            UserInfo.Inventory.Drop(slot);
         }
 
         /// <summary>
