@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore.Extensions;
 
 namespace NetGore
 {
@@ -20,6 +21,32 @@ namespace NetGore
         public float Height
         {
             get { return _size.Y; }
+        }
+
+        /// <summary>
+        /// Gets the distance between this <see cref="CollisionBox"/> and another.
+        /// </summary>
+        /// <param name="other">The other <see cref="CollisionBox"/>.</param>
+        /// <returns>The distance between this <see cref="CollisionBox"/> and another <see cref="CollisionBox"/> as an
+        /// absolute value greater than or equal to zero. If this intersects <paramref name="other"/>, the
+        /// value will be 0. Otherwise, the value will be the length of the shortest path between the two
+        /// <see cref="CollisionBox"/>es.</returns>
+        public int GetDistance(CollisionBox other)
+        {
+            return ToRectangle().GetDistance(other.ToRectangle());
+        }
+
+        /// <summary>
+        /// Gets the distance between this <see cref="CollisionBox"/> and another.
+        /// </summary>
+        /// <param name="other">The other <see cref="CollisionBox"/>.</param>
+        /// <returns>The distance between this <see cref="CollisionBox"/> and another <see cref="CollisionBox"/> as an
+        /// absolute value greater than or equal to zero. If this intersects <paramref name="other"/>, the
+        /// value will be 0. Otherwise, the value will be the length of the shortest path between the two
+        /// <see cref="CollisionBox"/>es.</returns>
+        public int GetDistance(Rectangle other)
+        {
+            return ToRectangle().GetDistance(other);
         }
 
         /// <summary>
