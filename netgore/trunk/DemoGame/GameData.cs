@@ -12,6 +12,18 @@ namespace DemoGame
     public static class GameData
     {
         /// <summary>
+        /// Gets if the <paramref name="shopper"/> is close enough to the <paramref name="shopOwner"/> to shop.
+        /// </summary>
+        /// <param name="shopper">The Entity doing the shopping.</param>
+        /// <param name="shopOwner">The Entity that owns the shop.</param>
+        /// <returns>True if the <paramref name="shopper"/> is close enough to the <paramref name="shopOwner"/> to
+        /// shop; otherwise false.</returns>
+        public static bool IsValidDistanceToShop(Entity shopper, Entity shopOwner)
+        {
+            return shopper.Intersect(shopOwner);
+        }
+
+        /// <summary>
         /// If a User is allowed to move while they have a chat dialog open with a NPC.
         /// </summary>
         public const bool AllowMovementWhileChattingToNPC = false;

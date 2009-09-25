@@ -671,7 +671,7 @@ namespace DemoGame.Server
 
             bool IsValidDistance(Entity shopKeeper)
             {
-                return User.Intersect(shopKeeper);
+                return GameData.IsValidDistanceToShop(User, shopKeeper);
             }
 
             void SendStartShopping(Shop shop)
