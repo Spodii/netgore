@@ -145,24 +145,6 @@ namespace NetGore.EditorTools.NPCChat
         }
 
         /// <summary>
-        /// Tries to remove a <see cref="EditorNPCChatConditionalCollectionItem"/> from the collection.
-        /// </summary>
-        /// <param name="item">The item to remove.</param>
-        /// <returns>True if the <paramref name="item"/> was successfully removed; otherwise false.</returns>
-        public bool TryRemoveItem(EditorNPCChatConditionalCollectionItem item)
-        {
-            if (item == null)
-                return false;
-
-            bool success = _items.Remove(item);
-
-            if (success && OnChange != null)
-                OnChange(this);
-
-            return success;
-        }
-
-        /// <summary>
         /// Tries to add a NPCChatConditionalCollectionItemBase to the collection.
         /// </summary>
         /// <param name="item">The NPCChatConditionalCollectionItemBase to add.</param>
@@ -198,6 +180,24 @@ namespace NetGore.EditorTools.NPCChat
                 OnChange(this);
 
             return true;
+        }
+
+        /// <summary>
+        /// Tries to remove a <see cref="EditorNPCChatConditionalCollectionItem"/> from the collection.
+        /// </summary>
+        /// <param name="item">The item to remove.</param>
+        /// <returns>True if the <paramref name="item"/> was successfully removed; otherwise false.</returns>
+        public bool TryRemoveItem(EditorNPCChatConditionalCollectionItem item)
+        {
+            if (item == null)
+                return false;
+
+            bool success = _items.Remove(item);
+
+            if (success && OnChange != null)
+                OnChange(this);
+
+            return success;
         }
     }
 }

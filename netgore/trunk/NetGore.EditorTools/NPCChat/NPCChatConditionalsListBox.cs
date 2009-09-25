@@ -2,9 +2,6 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore;
-using NetGore.EditorTools;
-using NetGore.EditorTools.NPCChat;
 using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat

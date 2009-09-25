@@ -66,19 +66,6 @@ namespace DemoGame.Server
                 user.Attack();
         }
 
-        [MessageHandler((byte)ClientPacketID.SellInventoryToShop)]
-        void RecvSellInventoryToShop(IIPSocket conn, BitStream r)
-        {
-            InventorySlot slot = r.ReadInventorySlot();
-            byte amount = r.ReadByte();
-
-            User user;
-            if (!TryGetUser(conn, out user))
-                return;
-
-            user.ShoppingState.TrySellInventory(slot, amount);
-        }
-
         [MessageHandler((byte)ClientPacketID.BuyFromShop)]
         void RecvBuyFromShop(IIPSocket conn, BitStream r)
         {
@@ -288,6 +275,19 @@ namespace DemoGame.Server
                 return;
 
             user.ChatState.EnterResponse(responseIndex);
+        }
+
+        [MessageHandler((byte)ClientPacketID.SellInventoryToShop)]
+        void RecvSellInventoryToShop(IIPSocket conn, BitStream r)
+        {
+            InventorySlot slot = r.ReadInventorySlot();
+            byte amount = r.ReadByte();
+
+            User user;
+            if (!TryGetUser(conn, out user))
+                return;
+
+            user.ShoppingState.TrySellInventory(slot, amount);
         }
 
         [MessageHandler((byte)ClientPacketID.SetUDPPort)]

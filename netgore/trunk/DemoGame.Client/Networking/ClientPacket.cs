@@ -16,14 +16,6 @@ namespace DemoGame.Client
             return GetWriter(ClientPacketID.Attack);
         }
 
-        public static PacketWriter SellInventoryToShop(InventorySlot slot, byte amount)
-        {
-            PacketWriter pw = GetWriter(ClientPacketID.SellInventoryToShop);
-            pw.Write(slot);
-            pw.Write(amount);
-            return pw;
-        }
-
         public static PacketWriter BuyFromShop(ShopItemIndex index, byte amount)
         {
             PacketWriter pw = GetWriter(ClientPacketID.BuyFromShop);
@@ -130,6 +122,14 @@ namespace DemoGame.Client
         {
             PacketWriter pw = GetWriter(ClientPacketID.SelectNPCChatDialogResponse);
             pw.Write(responseIndex);
+            return pw;
+        }
+
+        public static PacketWriter SellInventoryToShop(InventorySlot slot, byte amount)
+        {
+            PacketWriter pw = GetWriter(ClientPacketID.SellInventoryToShop);
+            pw.Write(slot);
+            pw.Write(amount);
             return pw;
         }
 

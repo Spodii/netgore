@@ -265,6 +265,33 @@ namespace DemoGame.Client
         {
         }
 
+        void _inventoryForm_OnRequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
+        {
+            if (inventoryForm.Inventory != UserInfo.Inventory)
+                return;
+
+            if (ShopForm.IsVisible && ShopForm.ShopInfo != null)
+            {
+                if (ShopForm.ShopInfo.CanBuy)
+                {
+                    using (PacketWriter pw = ClientPacket.SellInventoryToShop(slot, 1))
+                    {
+                        Socket.Send(pw);
+                    }
+                }
+            }
+            else
+                UserInfo.Inventory.Drop(slot);
+        }
+
+        void _inventoryForm_OnRequestUseItem(InventoryForm inventoryForm, InventorySlot slot)
+        {
+            if (inventoryForm.Inventory != UserInfo.Inventory)
+                return;
+
+            UserInfo.Inventory.Use(slot);
+        }
+
         /// <summary>
         /// Appends a set of styled text to the chat's output TextBox.
         /// </summary>
@@ -462,33 +489,6 @@ namespace DemoGame.Client
             _guiSettings.Add("StatsForm", _statsForm);
             _guiSettings.Add("ChatForm", _chatForm);
             _guiSettings.Add("ToolbarForm", toolbar);
-        }
-
-        void _inventoryForm_OnRequestUseItem(InventoryForm inventoryForm, InventorySlot slot)
-        {
-            if (inventoryForm.Inventory != UserInfo.Inventory)
-                return;
-
-            UserInfo.Inventory.Use(slot);
-        }
-
-        void _inventoryForm_OnRequestDropItem(InventoryForm inventoryForm, InventorySlot slot)
-        {
-            if (inventoryForm.Inventory != UserInfo.Inventory)
-                return;
-
-            if (ShopForm.IsVisible && ShopForm.ShopInfo != null)
-            {
-                if (ShopForm.ShopInfo.CanBuy)
-                {
-                    using (var pw = ClientPacket.SellInventoryToShop(slot, 1))
-                        Socket.Send(pw);
-                }
-            }
-            else
-            {
-                UserInfo.Inventory.Drop(slot);
-            }
         }
 
         /// <summary>
