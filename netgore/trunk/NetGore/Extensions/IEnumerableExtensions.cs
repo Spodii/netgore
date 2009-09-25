@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -144,6 +145,68 @@ namespace NetGore
         public static bool IsEmpty<T>(this IEnumerable<T> source)
         {
             return !source.Any();
+        }
+
+        /// <summary>
+        /// Returns the element in the given IEnumerable with the greatest value.
+        /// </summary>
+        /// <typeparam name="T">The Type of collection element.</typeparam>
+        /// <typeparam name="TCompare">The Type of comparison value.</typeparam>
+        /// <param name="src">The IEnumerable containing the elements to compare.</param>
+        /// <param name="func">The Func used to find the value to compare on.</param>
+        /// <returns>The element in the <paramref name="src"/> with the greatest value as defined
+        /// by <paramref name="func"/>.</returns>
+        public static T MaxElement<T, TCompare>(this IEnumerable<T> src, Func<T, TCompare> func)
+            where TCompare : IComparable<TCompare>
+        {
+            var elements = src.ToArray();
+
+            T maxItem = elements[0];
+            TCompare maxValue = func(maxItem);
+
+            for (int i = 1; i < elements.Length; i++)
+            {
+                TCompare temp = func(elements[i]);
+
+                if (temp.CompareTo(maxValue) > 0)
+                {
+                    maxValue = temp;
+                    maxItem = elements[i];
+                }
+            }
+
+            return maxItem;
+        }
+
+        /// <summary>
+        /// Returns the element in the given IEnumerable with the least value.
+        /// </summary>
+        /// <typeparam name="T">The Type of collection element.</typeparam>
+        /// <typeparam name="TCompare">The Type of comparison value.</typeparam>
+        /// <param name="src">The IEnumerable containing the elements to compare.</param>
+        /// <param name="func">The Func used to find the value to compare on.</param>
+        /// <returns>The element in the <paramref name="src"/> with the least value as defined
+        /// by <paramref name="func"/>.</returns>
+        public static T MinElement<T, TCompare>(this IEnumerable<T> src, Func<T, TCompare> func)
+            where TCompare : IComparable<TCompare>
+        {
+            var elements = src.ToArray();
+
+            T maxItem = elements[0];
+            TCompare maxValue = func(maxItem);
+
+            for (int i = 1; i < elements.Length; i++)
+            {
+                TCompare temp = func(elements[i]);
+
+                if (temp.CompareTo(maxValue) < 0)
+                {
+                    maxValue = temp;
+                    maxItem = elements[i];
+                }
+            }
+
+            return maxItem;
         }
     }
 }
