@@ -101,7 +101,7 @@ namespace DemoGame.Server
             }
 
             // Remove the item from the inventory
-            RemoveAt(slot);
+            RemoveAt(slot, false);
 
             // Drop the item
             Character.DropItem(dropItem);

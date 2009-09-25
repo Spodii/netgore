@@ -31,6 +31,7 @@ namespace DemoGame
         Say,
         SelectAccountCharacter,
         SelectNPCChatDialogResponse,
+        SellInventoryToShop,
         SetUDPPort,
         StartNPCChatDialog,
         StartShopping,

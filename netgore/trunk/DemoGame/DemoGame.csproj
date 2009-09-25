@@ -99,8 +99,10 @@
     <Compile Include="GameData.cs" />
     <Compile Include="GameMessage.cs" />
     <Compile Include="GameMessages.cs" />
+    <Compile Include="Items\InventorySlotExtensions.cs" />
     <Compile Include="Items\ItemInfo.cs" />
     <Compile Include="Shop\ShopItemIndex.cs" />
+    <Compile Include="Shop\ShopItemIndexExtensions.cs" />
     <Compile Include="Skills\SkillType.cs" />
     <Compile Include="Skills\SkillTypeExtensions.cs" />
     <Compile Include="Skills\SkillTypeHelper.cs" />

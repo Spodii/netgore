@@ -28,7 +28,7 @@ namespace DemoGame.Client
             get
             {
                 // Check for a valid index
-                if (slot >= MaxInventorySize || slot < 0)
+                if (!slot.IsLegalValue())
                 {
                     const string errmsg = "Tried to get invalid inventory slot `{0}`.";
                     if (log.IsErrorEnabled)
@@ -49,7 +49,7 @@ namespace DemoGame.Client
             private set
             {
                 // Check for a valid index
-                if (slot >= MaxInventorySize || slot < 0)
+                if (!slot.IsLegalValue())
                 {
                     const string errmsg = "Tried to set invalid inventory slot `{0}`.";
                     if (log.IsErrorEnabled)

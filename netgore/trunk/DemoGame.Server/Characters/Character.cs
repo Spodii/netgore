@@ -669,7 +669,7 @@ namespace DemoGame.Server
             else
             {
                 // We are using all (1) of the item, so remove it from the inventory
-                Inventory.RemoveAt(inventorySlot);
+                Inventory.RemoveAt(inventorySlot, false);
             }
 
             // Try to equip the item
