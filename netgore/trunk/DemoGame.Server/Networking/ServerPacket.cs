@@ -15,7 +15,6 @@ namespace DemoGame.Server
     static class ServerPacket
     {
         static readonly PacketWriterPool _writerPool = new PacketWriterPool();
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         public static PacketWriter AddStatusEffect(StatusEffectType statusEffectType, ushort power, int timeLeft)
         {
@@ -388,9 +387,10 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static PacketWriter StartShopping(Shop shop)
+        public static PacketWriter StartShopping(MapEntityIndex shopOwnerIndex, Shop shop)
         {
             PacketWriter pw = GetWriter(ServerPacketID.StartShopping);
+            pw.Write(shopOwnerIndex);
             pw.Write(shop.CanBuy);
             pw.Write(shop.Name);
             shop.WriteShopItems(pw);
