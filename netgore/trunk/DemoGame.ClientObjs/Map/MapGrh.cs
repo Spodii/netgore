@@ -111,7 +111,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Writes the MapGrh to an IValueWriter.
         /// </summary>
-        /// <param name="writer">IValueWriter to write the MapGrh to.</param>
+        /// <param name="w">IValueWriter to write the MapGrh to.</param>
         public void Write(IValueWriter writer)
         {
             writer.Write("Position", Destination);
