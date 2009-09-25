@@ -17,3 +17,5 @@ ShopInsufficientFundsToPurchaseSingular: You do not have enough money to purchas
 ShopInsufficientFundsToPurchasePlural: You do not have enough money to purchase {0} {1}s.
 ShopPurchaseSingular: You purchased a {0} for {1} cash.
 ShopPurchasePlural: You purchased {0} {1}s for {2} cash.
+ShopSellItemSingular: You sell a {0} for {1} cash.
+ShopSellItemPlural: You sell {0} {1}s for {2} cash.
