@@ -10,7 +10,7 @@ using NetGore.IO;
 namespace DemoGame
 {
     /// <summary>
-    /// Extensions for handling I/O of specialized types in the BitStream.
+    /// Extensions for handling I/O of specialized types in the <see cref="BitStream"/>.
     /// </summary>
     public static class BitStreamExtensions
     {
