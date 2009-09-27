@@ -180,11 +180,6 @@
       <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
       <Name>NetGore.Globalization</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.Graphics.WinForms\NetGore.Graphics.WinForms.csproj">
-      <Project>{B2AC0C73-29FE-4184-97E7-929A98769248}</Project>
-      <Name>NetGore.Graphics.WinForms</Name>
-      <Private>True</Private>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
       <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
       <Name>NetGore.Graphics</Name>

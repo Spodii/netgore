@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 // we don't care so we just disable this warning.
 #pragma warning disable 67
 
-namespace NetGore.Graphics.WinForms
+namespace NetGore.EditorTools.WinForms
 {
     /// <summary>
     /// Helper class responsible for creating and managing the GraphicsDevice.

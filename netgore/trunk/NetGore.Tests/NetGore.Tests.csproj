@@ -56,6 +56,7 @@
       <HintPath>..\_dependencies\log4net.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86" />
+    <Reference Include="MySql.Data, Version=6.1.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL" />
     <Reference Include="nunit.framework, Version=2.5.1.9189, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
@@ -67,36 +68,102 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClampTests.cs" />
-    <Compile Include="CollisionBoxTests.cs" />
-    <Compile Include="DynamicEntityTests.cs" />
-    <Compile Include="EntityTests.cs" />
-    <Compile Include="EnumHelperTests.cs" />
-    <Compile Include="IEnumerableTests.cs" />
-    <Compile Include="IsBetweenTests.cs" />
-    <Compile Include="MathStringTests.cs" />
+    <Compile Include="Collections\BoolArrayTests.cs" />
+    <Compile Include="Collections\DArrayTests.cs" />
+    <Compile Include="Collections\MeanStackTests.cs" />
+    <Compile Include="Collections\ObjectPoolTests.cs" />
+    <Compile Include="Collections\SafeEnumeratorTests.cs" />
+    <Compile Include="Collections\TSListTests.cs" />
+    <Compile Include="Db\MySql\DbQueryNonReaderTests.cs" />
+    <Compile Include="Db\MySql\DbQueryReaderTests.cs" />
+    <Compile Include="Db\MySql\MySqlDbConnectionPoolTests.cs" />
+    <Compile Include="Db\MySql\MySqlDbManagerTests.cs" />
+    <Compile Include="Db\MySql\TestSettings.cs" />
+    <Compile Include="Graphics\GUI\StyledTextTests.cs" />
+    <Compile Include="IO\BitOpsTests.cs" />
+    <Compile Include="IO\BitStreamTests.cs" />
+    <Compile Include="IO\IValueReaderWriterTests.cs" />
+    <Compile Include="IO\SettingsManagerTests.cs" />
+    <Compile Include="IO\XmlInfoReaderTests.cs" />
+    <Compile Include="IO\XmlReaderCreationTests.cs" />
+    <Compile Include="NetGore\ClampTests.cs" />
+    <Compile Include="NetGore\CollisionBoxTests.cs" />
+    <Compile Include="NetGore\DynamicEntityTests.cs" />
+    <Compile Include="NetGore\EntityTests.cs" />
+    <Compile Include="NetGore\EnumHelperTests.cs" />
+    <Compile Include="NetGore\IEnumerableTests.cs" />
+    <Compile Include="NetGore\IsBetweenTests.cs" />
+    <Compile Include="NetGore\MathStringTests.cs" />
+    <Compile Include="Network\IPAddressHelperTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StackTests.cs" />
-    <Compile Include="StringCommandParserTests.cs" />
-    <Compile Include="StringParserTests.cs" />
-    <Compile Include="StringRulesTests.cs" />
-    <Compile Include="Vector2Tests.cs" />
+    <Compile Include="NetGore\StackTests.cs" />
+    <Compile Include="NetGore\StringCommandParserTests.cs" />
+    <Compile Include="NetGore\StringParserTests.cs" />
+    <Compile Include="NetGore\StringRulesTests.cs" />
+    <Compile Include="NetGore\Vector2Tests.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
+      <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
+      <Name>NetGore.Collections</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Db.ClassCreator\NetGore.Db.ClassCreator.csproj">
+      <Project>{927E889E-AC38-4549-A717-A4FFCA22ADB6}</Project>
+      <Name>NetGore.Db.ClassCreator</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Db.MySql\NetGore.Db.MySql.csproj">
+      <Project>{43D09443-29F5-4688-81D7-5B5835EAC550}</Project>
+      <Name>NetGore.Db.MySql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Db\NetGore.Db.csproj">
+      <Project>{EF4B471E-C101-4AAC-882E-BBDE9A54D212}</Project>
+      <Name>NetGore.Db</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.EditorTools\NetGore.EditorTools.csproj">
+      <Project>{3FE6ED98-7D1B-4954-B560-BF2FA922C1CB}</Project>
+      <Name>NetGore.EditorTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">
       <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
       <Name>NetGore.Globalization</Name>
       <Private>True</Private>
     </ProjectReference>
+    <ProjectReference Include="..\NetGore.Graphics\NetGore.Graphics.csproj">
+      <Project>{76C45E48-16F2-478F-B06C-5AD993F6B1F1}</Project>
+      <Name>NetGore.Graphics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.GUI\NetGore.Graphics.GUI.csproj">
+      <Project>{D33249A8-9956-46A0-BC1A-42D5206C9F01}</Project>
+      <Name>NetGore.Graphics.GUI</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
       <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
       <Name>NetGore.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Network\NetGore.Network.csproj">
+      <Project>{B51BE2B8-B1A9-460A-BC38-794FAC66636C}</Project>
+      <Name>NetGore.Network</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Scripting\NetGore.Scripting.csproj">
+      <Project>{4E491135-6089-4875-AEE8-9B35F64C6F59}</Project>
+      <Name>NetGore.Scripting</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
       <Name>NetGore</Name>
       <Private>True</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
