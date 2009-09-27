@@ -16,7 +16,7 @@ namespace NetGore.Graphics
         /// <returns>Value read from the reader.</returns>
         public static BackgroundLayerLayout ReadBackgroundLayerLayout(this IValueReader reader, string name)
         {
-            return NetGore.IValueReaderExtensions.ReadEnum<BackgroundLayerLayout>(reader, name);
+            return reader.ReadEnum<BackgroundLayerLayout>(name);
         }
     }
 }

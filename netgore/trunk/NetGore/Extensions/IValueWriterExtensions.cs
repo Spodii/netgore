@@ -94,6 +94,13 @@ namespace NetGore
             }
         }
 
+        /// <summary>
+        /// Writes a Rectangle.
+        /// </summary>
+        /// <param name="writer">IValueWriter to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
         public static void Write(this IValueWriter writer, string name, Rectangle value)
         {
             if (writer.SupportsNameLookup)
@@ -182,7 +189,7 @@ namespace NetGore
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        public static void WriteEnum<T>(IValueWriter writer, string name, T value)
+        public static void WriteEnum<T>(this IValueWriter writer, string name, T value)
         {
             if (!typeof(T).IsEnum)
                 throw new MethodAccessException("Generic type parameter T must be an enum.");

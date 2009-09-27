@@ -17,7 +17,7 @@ namespace NetGore.Graphics
         /// <param name="value">Value to write.</param>
         public static void Write(this IValueWriter writer, string name, BackgroundLayerLayout value)
         {
-            NetGore.IValueWriterExtensions.WriteEnum(writer, name, value);
+            writer.WriteEnum(name, value);
         }
     }
 }

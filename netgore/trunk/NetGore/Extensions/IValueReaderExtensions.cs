@@ -71,7 +71,7 @@ namespace NetGore
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
-        public static T ReadEnum<T>(IValueReader reader, string name) where T : struct
+        public static T ReadEnum<T>(this IValueReader reader, string name) where T : struct
         {
             if (!typeof(T).IsEnum)
                 throw new MethodAccessException("Generic type parameter T must be an enum.");
@@ -81,6 +81,12 @@ namespace NetGore
             return value;
         }
 
+        /// <summary>
+        /// Reads a <see cref="Rectangle"/> from an IValueReader.
+        /// </summary>
+        /// <param name="reader">The IValueReader to read from.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the <paramref name="reader"/>.</returns>
         public static Rectangle ReadRectangle(this IValueReader reader, string name)
         {
             int x, y, w, h;

@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore;
 using NetGore.IO;
 
 namespace DemoGame
@@ -17,7 +18,12 @@ namespace DemoGame
         /// <param name="value">Value to write.</param>
         public static void Write(this IValueWriter writer, string name, ItemType value)
         {
-            NetGore.IValueWriterExtensions.WriteEnum(writer, name, value);
+            writer.WriteEnum(name, value);
+        }
+
+        public static void Write(this IValueWriter writer, string name, EquipmentSlot value)
+        {
+            writer.WriteEnum(name, value);
         }
 
         /// <summary>
@@ -29,7 +35,7 @@ namespace DemoGame
         /// <param name="value">Value to write.</param>
         public static void Write(this IValueWriter writer, string name, StatType value)
         {
-            NetGore.IValueWriterExtensions.WriteEnum(writer, name, value);
+            writer.WriteEnum(name, value);
         }
 
         /// <summary>
@@ -41,7 +47,7 @@ namespace DemoGame
         /// <param name="value">Value to write.</param>
         public static void Write(this IValueWriter writer, string name, StatusEffectType value)
         {
-            NetGore.IValueWriterExtensions.WriteEnum(writer, name, value);
+            writer.WriteEnum(name, value);
         }
 
         /// <summary>
@@ -53,7 +59,7 @@ namespace DemoGame
         /// <param name="value">Value to write.</param>
         public static void Write(this IValueWriter writer, string name, SkillType value)
         {
-            NetGore.IValueWriterExtensions.WriteEnum(writer, name, value);
+            writer.WriteEnum(name, value);
         }
     }
 }
