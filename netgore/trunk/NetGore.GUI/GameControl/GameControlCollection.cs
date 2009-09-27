@@ -40,8 +40,30 @@ namespace NetGore.Graphics.GUI
         public GameControl CreateAndAdd(string name, int delay, Func<bool> additionalRequirements, GameControlEventHandler invokeHandler, IEnumerable<Keys> keysDown, IEnumerable<Keys> keysUp, IEnumerable<Keys> newKeysDown,
                            IEnumerable<Keys> newKeysUp)
         {
-            GameControl c = new GameControl(name, keysDown, keysUp, newKeysDown, newKeysUp)
-            { Delay = delay, AdditionalRequirements = additionalRequirements };
+            GameControl c = new GameControl(name, keysDown, keysUp, newKeysDown, newKeysUp) { Delay = delay, AdditionalRequirements = additionalRequirements };
+            c.OnInvoke += invokeHandler;
+
+            Add(c);
+            return c;
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="GameControl"/> and adds it to this <see cref="GameControlCollection"/>.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="delay">The delay.</param>
+        /// <param name="additionalRequirements">The additional requirements.</param>
+        /// <param name="invokeHandler">The invoke handler.</param>
+        /// <param name="keyDown">The keys down.</param>
+        /// <param name="keyUp">The keys up.</param>
+        /// <param name="newKeyDown">The new keys down.</param>
+        /// <param name="newKeyUp">The new keys up.</param>
+        /// <returns>The instance of the created <see cref="GameControl"/> that was added to this
+        /// <see cref="GameControlCollection"/>.</returns>
+        public GameControl CreateAndAdd(string name, int delay, Func<bool> additionalRequirements, GameControlEventHandler invokeHandler, Keys? keyDown, Keys? keyUp, Keys? newKeyDown,
+                           Keys? newKeyUp)
+        {
+            GameControl c = new GameControl(name, keyDown, keyUp, newKeyDown, newKeyUp) { Delay = delay, AdditionalRequirements = additionalRequirements };
             c.OnInvoke += invokeHandler;
 
             Add(c);

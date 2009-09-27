@@ -73,7 +73,7 @@ namespace NetGore.Graphics.GUI
         public IEnumerable<Keys> KeysDown
         {
             get { return _keysDown; }
-            set { _keysDown = value ?? Enumerable.Empty<Keys>(); }
+            set { _keysDown = value ?? _emptyKeys; }
         }
 
         /// <summary>
@@ -83,7 +83,7 @@ namespace NetGore.Graphics.GUI
         public IEnumerable<Keys> KeysUp
         {
             get { return _keysUp; }
-            set { _keysUp = value ?? Enumerable.Empty<Keys>(); }
+            set { _keysUp = value ?? _emptyKeys; }
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace NetGore.Graphics.GUI
         public IEnumerable<Keys> NewKeysDown
         {
             get { return _newKeysDown; }
-            set { _newKeysDown = value ?? Enumerable.Empty<Keys>(); }
+            set { _newKeysDown = value ?? _emptyKeys; }
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace NetGore.Graphics.GUI
         public IEnumerable<Keys> NewKeysUp
         {
             get { return _newKeysUp; }
-            set { _newKeysUp = value ?? Enumerable.Empty<Keys>(); }
+            set { _newKeysUp = value ?? _emptyKeys; }
         }
 
         /// <summary>
@@ -172,6 +172,61 @@ namespace NetGore.Graphics.GUI
             KeysUp = keysUp;
             KeysDown = keysDown;
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameControl"/> class.
+        /// </summary>
+        /// <param name="name">The optional name of the control. Cannot be null.</param>
+        /// <param name="keyDown">The key required to be down.</param>
+        public GameControl(string name, Keys? keyDown)
+            : this(name, keyDown, null, null, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameControl"/> class.
+        /// </summary>
+        /// <param name="name">The optional name of the control. Cannot be null.</param>
+        /// <param name="keyDown">The key required to be down.</param>
+        /// <param name="keyUp">The key required to be up.</param>
+        public GameControl(string name, Keys? keyDown, Keys? keyUp)
+            : this(name, keyDown, keyUp, null, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameControl"/> class.
+        /// </summary>
+        /// <param name="name">The optional name of the control. Cannot be null.</param>
+        /// <param name="keyDown">The key required to be down.</param>
+        /// <param name="keyUp">The key required to be up.</param>
+        /// <param name="newKeyDown">The key required to be down this frame, and up last frame.</param>
+        public GameControl(string name, Keys? keyDown, Keys? keyUp, Keys? newKeyDown) : this(name, keyDown, keyUp, newKeyDown, null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameControl"/> class.
+        /// </summary>
+        /// <param name="name">The optional name of the control. Cannot be null.</param>
+        /// <param name="keyDown">The key required to be down.</param>
+        /// <param name="keyUp">The key required to be up.</param>
+        /// <param name="newKeyDown">The key required to be down this frame, and up last frame.</param>
+        /// <param name="newKeyUp">The key required to be up this frame, and down last frame.</param>
+        public GameControl(string name, Keys? keyDown, Keys? keyUp, Keys? newKeyDown,
+                           Keys? newKeyUp)
+        {
+            Name = name;
+            KeysDown = keyDown.HasValue ? new Keys[] { keyDown.Value } : _emptyKeys;
+            KeysUp = keyUp.HasValue ? new Keys[] { keyUp.Value } : _emptyKeys;
+            NewKeysDown = newKeyDown.HasValue ? new Keys[] { newKeyDown.Value } : _emptyKeys;
+            NewKeysUp = newKeyUp.HasValue ? new Keys[] { newKeyUp.Value } : _emptyKeys;
+        }
+
+        /// <summary>
+        /// An empty IEnumerable of <see cref="Keys"/>.
+        /// </summary>
+        static readonly IEnumerable<Keys> _emptyKeys = Enumerable.Empty<Keys>();
 
         /// <summary>
         /// Updates the <see cref="GameControl"/>.

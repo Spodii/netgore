@@ -607,27 +607,50 @@ namespace DemoGame.Client
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
         }
 
-        void HandleGameControl_Jump(GameControl sender)
-        {
-            using (PacketWriter pw = ClientPacket.Jump())
-            {
-                Socket.Send(pw);
-            }
-        }
-
         /// <summary>
-        /// Gets if the User character is allowed to move. This only checks general conditions like if the User is
-        /// chatting to a NPC or in some other state that does not allow movement of any kind.
+        /// Gets if the User character is allowed to move or perform actions. This only checks general
+        /// conditions like if the User is chatting to a NPC or in some other state that does not
+        /// allow movement of any kind.
         /// </summary>
-        /// <returns>True if the User can move; otherwise false.</returns>
+        /// <returns>True if the User can move or perform actions; otherwise false.</returns>
         bool CanUserMove()
         {
-            // Don't allow moving while chatting to NPCs
+            // Don't allow actions while chatting to NPCs
             if (!GameData.AllowMovementWhileChattingToNPC && ChatDialogForm.IsChatting)
                 return false;
 
             // Movement is allowed
             return true;
+        }
+
+        void HandleGameControl_Jump(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.Jump())
+                Socket.Send(pw);
+        }
+
+        void HandleGameControl_MoveLeft(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.MoveLeft())
+                Socket.Send(pw);
+        }
+
+        void HandleGameControl_MoveRight(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.MoveRight())
+                Socket.Send(pw);
+        }
+
+        void HandleGameControl_Attack(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.Attack())
+                Socket.Send(pw);
+        }
+
+        void HandleGameControl_MoveStop(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.MoveStop())
+                Socket.Send(pw);
         }
         
         /// <summary>
@@ -636,7 +659,19 @@ namespace DemoGame.Client
         void InitializeGameControls()
         {
             _gameControls.CreateAndAdd("Jump", _minMoveRate, () => UserChar.CanJump && CanUserMove(),
-                HandleGameControl_Jump, new Keys[] { Keys.Up}, null, null, null);
+                HandleGameControl_Jump, Keys.Up, null, null, null);
+
+            _gameControls.CreateAndAdd("Move Left", _minMoveRate, () => !UserChar.IsMovingLeft && CanUserMove(),
+                HandleGameControl_MoveLeft, Keys.Left, Keys.Right, null, null);
+
+            _gameControls.CreateAndAdd("Move Right", _minMoveRate, () => !UserChar.IsMovingRight && CanUserMove(),
+                HandleGameControl_MoveRight, Keys.Right, Keys.Left, null, null);
+
+            _gameControls.CreateAndAdd("Attack", _minAttackRate, CanUserMove,
+                HandleGameControl_Attack, Keys.LeftControl, null, null, null);
+
+            _gameControls.CreateAndAdd("Stop Moving", _minMoveRate, () => UserChar.IsMoving,
+                HandleGameControl_MoveStop, null, new Keys[] { Keys.Left, Keys.Right }, null, null);
         }
 
         void UpdateInput()
@@ -647,55 +682,6 @@ namespace DemoGame.Client
             KeyboardState ks = _gui.KeyboardState;
 
             _gameControls.Update(_gui, _currentTime);
-
-            // Move left
-            if (_currentTime - _lastMoveRightTime > _minMoveRate && ks.IsKeyDown(Keys.Left) && ks.IsKeyUp(Keys.Right) &&
-                !UserChar.IsMovingLeft)
-            {
-                if (GameData.AllowMovementWhileChattingToNPC || !ChatDialogForm.IsChatting)
-                {
-                    _lastMoveRightTime = _currentTime;
-                    using (PacketWriter pw = ClientPacket.MoveLeft())
-                    {
-                        Socket.Send(pw);
-                    }
-                }
-            }
-
-            // Move right
-            if (_currentTime - _lastJumpTime > _minMoveRate && ks.IsKeyDown(Keys.Right) && ks.IsKeyUp(Keys.Left) &&
-                !UserChar.IsMovingRight)
-            {
-                if (GameData.AllowMovementWhileChattingToNPC || !ChatDialogForm.IsChatting)
-                {
-                    _lastJumpTime = _currentTime;
-                    using (PacketWriter pw = ClientPacket.MoveRight())
-                    {
-                        Socket.Send(pw);
-                    }
-                }
-            }
-
-            // Attack
-            if (_currentTime - _lastAttackTime > _minAttackRate && ks.IsKeyDown(Keys.LeftControl))
-            {
-                _lastAttackTime = _currentTime;
-                using (PacketWriter pw = ClientPacket.Attack())
-                {
-                    Socket.Send(pw);
-                }
-            }
-
-            // Stop moving
-            if (_currentTime - _lastMoveStopTime > _minMoveRate && ks.IsKeyUp(Keys.Left) && ks.IsKeyUp(Keys.Right) &&
-                UserChar.IsMoving)
-            {
-                _lastMoveStopTime = _currentTime;
-                using (PacketWriter pw = ClientPacket.MoveStop())
-                {
-                    Socket.Send(pw);
-                }
-            }
 
             // Use world entity
             if (_currentTime - _lastUseTime > _minUseRate && ks.IsKeyDown(Keys.LeftAlt))
