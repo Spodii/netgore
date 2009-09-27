@@ -15,10 +15,11 @@ namespace NetGore.Graphics.GUI
         /// Updates all of the <see cref="GameControl"/>s in this <see cref="GameControlCollection"/>.
         /// </summary>
         /// <param name="guiManager">The <see cref="GUIManagerBase"/> used to update the <see cref="GameControl"/>s.</param>
-        public void Update(GUIManagerBase guiManager)
+        /// <param name="currentTime">The current time in milliseconds.</param>
+        public void Update(GUIManagerBase guiManager, int currentTime)
         {
             foreach (var gc in this)
-                gc.Update(guiManager);
+                gc.Update(guiManager, currentTime);
         }
 
         #region ICollection<GameControl> Members

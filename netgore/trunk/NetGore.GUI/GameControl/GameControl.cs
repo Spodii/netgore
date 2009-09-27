@@ -16,6 +16,7 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class GameControl
     {
+        int _lastInvokeTime;
         int _delay;
         bool _isEnabled = true;
         IEnumerable<Keys> _keysDown;
@@ -168,10 +169,15 @@ namespace NetGore.Graphics.GUI
         /// Updates the <see cref="GameControl"/>.
         /// </summary>
         /// <param name="gui">The <see cref="GUIManagerBase"/> to get the key states from.</param>
-        public void Update(GUIManagerBase gui)
+        /// <param name="currentTime">The current time in milliseconds.</param>
+        public void Update(GUIManagerBase gui, int currentTime)
         {
             // Ensure the object is enabled and there is an invoke handler before checking the key states
             if (!IsEnabled || OnInvoke == null)
+                return;
+            
+            // Check that enough time has elapsed since the last invoke
+            if (currentTime - _lastInvokeTime < Delay)
                 return;
 
             // Check the key states
@@ -203,6 +209,7 @@ namespace NetGore.Graphics.GUI
 
             // All keys are in the needed state, so invoke the handler
             OnInvoke(this);
+            _lastInvokeTime = currentTime;
         }
     }
 }
