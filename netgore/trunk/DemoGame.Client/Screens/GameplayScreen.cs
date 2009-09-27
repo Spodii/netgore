@@ -25,33 +25,6 @@ namespace DemoGame.Client
 
         const string _latencyString = "Latency: {0} ms";
 
-        /// <summary>
-        /// Minimum time the user must wait before performing a new attack
-        /// </summary>
-        const int _minAttackRate = 150;
-
-        /// <summary>
-        /// Minimum time the user must wait before performing a new movement after the last
-        /// </summary>
-        const int _minMoveRate = 150;
-
-        /// <summary>
-        /// Minimum time the user must wait before chatting to a NPC
-        /// </summary>
-        const int _minNPCChatRate = 150;
-
-        /// <summary>
-        /// Minimum time the user must wait before picking up something
-        /// </summary>
-        const int _minPickupRate = 150;
-
-        const int _minShopRate = 150;
-
-        /// <summary>
-        /// Minimum time the user must wait before using something
-        /// </summary>
-        const int _minUseRate = 150;
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -104,45 +77,6 @@ namespace DemoGame.Client
 
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
-
-        /// <summary>
-        /// Time when the user last attacked
-        /// </summary>
-        int _lastAttackTime;
-
-        /// <summary>
-        /// Time when the user last jumped
-        /// </summary>
-        int _lastJumpTime;
-
-        /// <summary>
-        /// Time when the user last moved to the left
-        /// </summary>
-        int _lastMoveLeftTime;
-
-        /// <summary>
-        /// Time when the user last moved to the right
-        /// </summary>
-        int _lastMoveRightTime;
-
-        /// <summary>
-        /// Time when the user last stopped moving
-        /// </summary>
-        int _lastMoveStopTime;
-
-        int _lastNPCChatTime;
-
-        /// <summary>
-        /// Time when the user last picked up something
-        /// </summary>
-        int _lastPickupTime;
-
-        int _lastShopTime;
-
-        /// <summary>
-        /// Time when the user last used something
-        /// </summary>
-        int _lastUseTime;
 
         /// <summary>
         /// Label used for displaying the latency.
@@ -322,6 +256,22 @@ namespace DemoGame.Client
             _chatForm.AppendToOutput(text);
         }
 
+        /// <summary>
+        /// Gets if the User character is allowed to move or perform actions. This only checks general
+        /// conditions like if the User is chatting to a NPC or in some other state that does not
+        /// allow movement of any kind.
+        /// </summary>
+        /// <returns>True if the User can move or perform actions; otherwise false.</returns>
+        bool CanUserMove()
+        {
+            // Don't allow actions while chatting to NPCs
+            if (!GameData.AllowMovementWhileChattingToNPC && ChatDialogForm.IsChatting)
+                return false;
+
+            // Movement is allowed
+            return true;
+        }
+
         void ChatDialogForm_OnRequestEndDialog(NPCChatDialogForm sender)
         {
             using (PacketWriter pw = ClientPacket.EndNPCChatDialog())
@@ -420,6 +370,95 @@ namespace DemoGame.Client
             return validShopOwners.MinElement(x => x.CB.GetDistance(source.CB));
         }
 
+        void HandleGameControl_Attack(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.Attack())
+            {
+                Socket.Send(pw);
+            }
+        }
+
+        void HandleGameControl_Jump(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.Jump())
+            {
+                Socket.Send(pw);
+            }
+        }
+
+        void HandleGameControl_MoveLeft(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.MoveLeft())
+            {
+                Socket.Send(pw);
+            }
+        }
+
+        void HandleGameControl_MoveRight(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.MoveRight())
+            {
+                Socket.Send(pw);
+            }
+        }
+
+        void HandleGameControl_MoveStop(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.MoveStop())
+            {
+                Socket.Send(pw);
+            }
+        }
+
+        void HandleGameControl_PickUp(GameControl sender)
+        {
+            Rectangle userRect = UserChar.CB.ToRectangle();
+            ItemEntity pickupItem = Map.GetEntity<ItemEntity>(userRect);
+            if (pickupItem == null)
+                return;
+
+            using (PacketWriter pw = ClientPacket.PickupItem(pickupItem.MapEntityIndex))
+            {
+                Socket.Send(pw);
+            }
+        }
+
+        void HandleGameControl_Shop(GameControl sender)
+        {
+            DynamicEntity shopOwner = GetClosestValidShopOwner(UserChar);
+            if (shopOwner == null)
+                return;
+
+            using (PacketWriter pw = ClientPacket.StartShopping(shopOwner.MapEntityIndex))
+            {
+                Socket.Send(pw);
+            }
+        }
+
+        void HandleGameControl_TalkToNPC(GameControl sender)
+        {
+            CharacterEntity npc = Map.GetEntity<CharacterEntity>(UserChar.CB.ToRectangle(), x => x.HasChatDialog);
+            if (npc == null)
+                return;
+
+            using (PacketWriter pw = ClientPacket.StartNPCChatDialog(npc.MapEntityIndex))
+            {
+                Socket.Send(pw);
+            }
+        }
+
+        void HandleGameControl_Use(GameControl sender)
+        {
+            DynamicEntity useEntity = Map.GetEntity<DynamicEntity>(UserChar.CB.ToRectangle(), UsableEntityFilter);
+            if (useEntity == null)
+                return;
+
+            using (PacketWriter pw = ClientPacket.UseWorld(useEntity.MapEntityIndex))
+            {
+                Socket.Send(pw);
+            }
+        }
+
         /// <summary>
         /// Handles initialization of the GameScreen. This will be invoked after the GameScreen has been
         /// completely and successfully added to the ScreenManager. It is highly recommended that you
@@ -441,6 +480,45 @@ namespace DemoGame.Client
             // Other inits
             InitializeGUI();
             InitializeGameControls();
+        }
+
+        /// <summary>
+        /// Initializes the GameControls.
+        /// </summary>
+        void InitializeGameControls()
+        {
+            const int minAttackRate = 150;
+            const int minMoveRate = 150;
+            const int minNPCChatRate = 150;
+            const int minPickupRate = 150;
+            const int minShopRate = 150;
+            const int minUseRate = 150;
+
+            _gameControls.CreateAndAdd("Jump", minMoveRate, () => UserChar.CanJump && CanUserMove(), HandleGameControl_Jump,
+                                       Keys.Up, null, null, null);
+
+            _gameControls.CreateAndAdd("Move Left", minMoveRate, () => !UserChar.IsMovingLeft && CanUserMove(),
+                                       HandleGameControl_MoveLeft, Keys.Left, Keys.Right, null, null);
+
+            _gameControls.CreateAndAdd("Move Right", minMoveRate, () => !UserChar.IsMovingRight && CanUserMove(),
+                                       HandleGameControl_MoveRight, Keys.Right, Keys.Left, null, null);
+
+            _gameControls.CreateAndAdd("Attack", minAttackRate, CanUserMove, HandleGameControl_Attack, Keys.LeftControl, null,
+                                       null, null);
+
+            _gameControls.CreateAndAdd("Stop Moving", minMoveRate, () => UserChar.IsMoving, HandleGameControl_MoveStop, null,
+                                       new Keys[] { Keys.Left, Keys.Right }, null, null);
+
+            _gameControls.CreateAndAdd("Use World", minUseRate, CanUserMove, HandleGameControl_Use, Keys.LeftAlt, null, null, null);
+
+            _gameControls.CreateAndAdd("Use Shop", minShopRate, CanUserMove, HandleGameControl_Shop, Keys.LeftAlt, null, null,
+                                       null);
+
+            _gameControls.CreateAndAdd("Talk To NPC", minNPCChatRate, CanUserMove, HandleGameControl_TalkToNPC, Keys.LeftAlt, null,
+                                       null, null);
+
+            _gameControls.CreateAndAdd("Pick Up", minPickupRate, CanUserMove, HandleGameControl_PickUp, Keys.Space, null, null,
+                                       null);
         }
 
         /// <summary>
@@ -600,147 +678,13 @@ namespace DemoGame.Client
             World.Update();
             _gui.Update(_currentTime);
             _damageTextPool.Update(_currentTime);
-            UpdateInput();
             _guiSettings.Update(_currentTime);
+
+            if (UserChar != null)
+                _gameControls.Update(_gui, _currentTime);
 
             if (_latencyLabel != null)
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
-        }
-
-        /// <summary>
-        /// Gets if the User character is allowed to move or perform actions. This only checks general
-        /// conditions like if the User is chatting to a NPC or in some other state that does not
-        /// allow movement of any kind.
-        /// </summary>
-        /// <returns>True if the User can move or perform actions; otherwise false.</returns>
-        bool CanUserMove()
-        {
-            // Don't allow actions while chatting to NPCs
-            if (!GameData.AllowMovementWhileChattingToNPC && ChatDialogForm.IsChatting)
-                return false;
-
-            // Movement is allowed
-            return true;
-        }
-
-        void HandleGameControl_Jump(GameControl sender)
-        {
-            using (PacketWriter pw = ClientPacket.Jump())
-                Socket.Send(pw);
-        }
-
-        void HandleGameControl_MoveLeft(GameControl sender)
-        {
-            using (PacketWriter pw = ClientPacket.MoveLeft())
-                Socket.Send(pw);
-        }
-
-        void HandleGameControl_MoveRight(GameControl sender)
-        {
-            using (PacketWriter pw = ClientPacket.MoveRight())
-                Socket.Send(pw);
-        }
-
-        void HandleGameControl_Attack(GameControl sender)
-        {
-            using (PacketWriter pw = ClientPacket.Attack())
-                Socket.Send(pw);
-        }
-
-        void HandleGameControl_MoveStop(GameControl sender)
-        {
-            using (PacketWriter pw = ClientPacket.MoveStop())
-                Socket.Send(pw);
-        }
-        
-        /// <summary>
-        /// Initializes the GameControls.
-        /// </summary>
-        void InitializeGameControls()
-        {
-            _gameControls.CreateAndAdd("Jump", _minMoveRate, () => UserChar.CanJump && CanUserMove(),
-                HandleGameControl_Jump, Keys.Up, null, null, null);
-
-            _gameControls.CreateAndAdd("Move Left", _minMoveRate, () => !UserChar.IsMovingLeft && CanUserMove(),
-                HandleGameControl_MoveLeft, Keys.Left, Keys.Right, null, null);
-
-            _gameControls.CreateAndAdd("Move Right", _minMoveRate, () => !UserChar.IsMovingRight && CanUserMove(),
-                HandleGameControl_MoveRight, Keys.Right, Keys.Left, null, null);
-
-            _gameControls.CreateAndAdd("Attack", _minAttackRate, CanUserMove,
-                HandleGameControl_Attack, Keys.LeftControl, null, null, null);
-
-            _gameControls.CreateAndAdd("Stop Moving", _minMoveRate, () => UserChar.IsMoving,
-                HandleGameControl_MoveStop, null, new Keys[] { Keys.Left, Keys.Right }, null, null);
-        }
-
-        void UpdateInput()
-        {
-            if (UserChar == null)
-                return;
-
-            KeyboardState ks = _gui.KeyboardState;
-
-            _gameControls.Update(_gui, _currentTime);
-
-            // Use world entity
-            if (_currentTime - _lastUseTime > _minUseRate && ks.IsKeyDown(Keys.LeftAlt))
-            {
-                _lastUseTime = _currentTime;
-                DynamicEntity useEntity = Map.GetEntity<DynamicEntity>(UserChar.CB.ToRectangle(), UsableEntityFilter);
-                if (useEntity != null)
-                {
-                    using (PacketWriter pw = ClientPacket.UseWorld(useEntity.MapEntityIndex))
-                    {
-                        Socket.Send(pw);
-                    }
-                }
-            }
-
-            // Shopping
-            if (_currentTime - _lastShopTime > _minShopRate && ks.IsKeyDown(Keys.LeftAlt))
-            {
-                _lastShopTime = _currentTime;
-                DynamicEntity shopOwner = GetClosestValidShopOwner(UserChar);
-                if (shopOwner != null)
-                {
-                    using (PacketWriter pw = ClientPacket.StartShopping(shopOwner.MapEntityIndex))
-                    {
-                        Socket.Send(pw);
-                    }
-                }
-            }
-
-            // NPC chat
-            if (_currentTime - _lastNPCChatTime > _minNPCChatRate && ks.IsKeyDown(Keys.LeftAlt))
-            {
-                _lastNPCChatTime = _currentTime;
-                CharacterEntity npc = Map.GetEntity<CharacterEntity>(UserChar.CB.ToRectangle(), x => x.HasChatDialog);
-                if (npc != null)
-                {
-                    using (PacketWriter pw = ClientPacket.StartNPCChatDialog(npc.MapEntityIndex))
-                    {
-                        Socket.Send(pw);
-                    }
-                }
-            }
-
-            // Pick up item
-            if (_currentTime - _lastPickupTime > _minPickupRate && ks.IsKeyDown(Keys.Space))
-            {
-                _lastPickupTime = _currentTime;
-
-                // Check if a pickupable item could be found
-                Rectangle userRect = UserChar.CB.ToRectangle();
-                ItemEntity pickupItem = Map.GetEntity<ItemEntity>(userRect);
-                if (pickupItem != null)
-                {
-                    using (PacketWriter pw = ClientPacket.PickupItem(pickupItem.MapEntityIndex))
-                    {
-                        Socket.Send(pw);
-                    }
-                }
-            }
         }
 
         /// <summary>
