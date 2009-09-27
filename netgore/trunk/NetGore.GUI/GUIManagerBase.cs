@@ -169,9 +169,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all the keys that were up the last frame and down this frame
+        /// Gets an IEnumerable of all the keys that were up the last frame and down this frame.
         /// </summary>
-        public IEnumerable<Keys> KeysDown
+        public IEnumerable<Keys> NewKeysDown
         {
             get
             {
@@ -188,7 +188,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets an IEnumerable of Keys that are currently down
+        /// Gets an IEnumerable of Keys that are currently down.
         /// </summary>
         public IEnumerable<Keys> KeysPressed
         {
@@ -196,9 +196,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all keys that were down the last frame and up this frame
+        /// Gets an IEnumerable of all keys that were down the last frame and up this frame.
         /// </summary>
-        public IEnumerable<Keys> KeysUp
+        public IEnumerable<Keys> NewKeysUp
         {
             get
             {

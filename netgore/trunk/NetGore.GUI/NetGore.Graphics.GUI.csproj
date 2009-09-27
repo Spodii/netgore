@@ -70,6 +70,8 @@
     <Compile Include="ControlBorder.cs" />
     <Compile Include="Controls\FormSettings.cs" />
     <Compile Include="Controls\LabelSettings.cs" />
+    <Compile Include="GameControl\GameControl.cs" />
+    <Compile Include="GameControl\GameControlCollection.cs" />
     <Compile Include="GUIEventHandler.cs" />
     <Compile Include="StyledText.cs" />
     <Compile Include="Controls\TextBoxAutoScrollMode.cs" />

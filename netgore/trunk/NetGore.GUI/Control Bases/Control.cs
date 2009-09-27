@@ -914,7 +914,7 @@ namespace NetGore.Graphics.GUI
             // KeyDown event
             if (OnKeyDown != null)
             {
-                var keysDown = GUIManager.KeysDown;
+                var keysDown = GUIManager.NewKeysDown;
                 if (keysDown != null && keysDown.Count() > 0)
                     OnKeyDown(this, new KeyboardEventArgs(keysDown, keyboardState));
             }
@@ -922,7 +922,7 @@ namespace NetGore.Graphics.GUI
             // KeyUp event
             if (OnKeyUp != null)
             {
-                var keysUp = GUIManager.KeysUp;
+                var keysUp = GUIManager.NewKeysUp;
                 if (keysUp != null && keysUp.Count() > 0)
                     OnKeyUp(this, new KeyboardEventArgs(keysUp, keyboardState));
             }
