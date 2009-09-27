@@ -436,8 +436,16 @@ namespace DemoGame.Client
             _equipmentInfoRequester = new EquipmentInfoRequester(_userInfo.Equipped, Socket);
             _inventoryInfoRequester = new InventoryInfoRequester(_userInfo.Inventory, Socket);
 
-            // Create the GUI
+            // Other inits
             InitializeGUI();
+            InitializeGameControls();
+        }
+
+        readonly GameControlCollection _gameControls = new GameControlCollection();
+
+        void InitializeGameControls()
+        {
+            // TODO: ...
         }
 
         /// <summary>
