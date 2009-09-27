@@ -248,7 +248,7 @@ namespace NetGore.Graphics.GUI
                 return;
             }
 
-            var keysDown = GUIManager.KeysDown;
+            var keysDown = GUIManager.NewKeysDown;
             if (keysDown == null || keysDown.Count() <= 0)
             {
                 // If no keys were recently pressed, check if the LastKey was held
