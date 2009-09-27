@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 using System.Linq;
-using NetGore.IO.Tests.Properties;
+using NetGore.Tests.Properties;
 using NUnit.Framework;
 
 namespace NetGore.IO.Tests

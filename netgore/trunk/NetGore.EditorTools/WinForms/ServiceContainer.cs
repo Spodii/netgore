@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NetGore.Graphics.WinForms
+namespace NetGore.EditorTools.WinForms
 {
     /// <summary>
     /// Container class implements the IServiceProvider interface. This is used

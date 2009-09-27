@@ -133,6 +133,11 @@
     <Compile Include="ImageHelper.cs" />
     <Compile Include="TreeNodeCollectionExtensions.cs" />
     <Compile Include="TreeNodeExtensions.cs" />
+    <Compile Include="WinForms\GraphicsDeviceControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="WinForms\GraphicsDeviceService.cs" />
+    <Compile Include="WinForms\ServiceContainer.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
