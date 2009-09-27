@@ -3,6 +3,9 @@ using NetGore.IO;
 
 namespace DemoGame
 {
+    /// <summary>
+    /// Extension methods for the <see cref="IValueWriter"/>.
+    /// </summary>
     public static class IValueWriterExtensions
     {
         /// <summary>
