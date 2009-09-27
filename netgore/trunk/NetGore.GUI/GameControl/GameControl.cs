@@ -19,11 +19,31 @@ namespace NetGore.Graphics.GUI
         int _lastInvokeTime;
         int _delay;
         bool _isEnabled = true;
-        IEnumerable<Keys> _keysDown;
-        IEnumerable<Keys> _keysUp;
-        string _name;
-        IEnumerable<Keys> _newKeysDown;
-        IEnumerable<Keys> _newKeysUp;
+        GameControlKeys _gckeys;
+
+        /// <summary>
+        /// Gets or sets the <see cref="GameControlKeys"/> used for this <see cref="GameControl"/>. Cannot be null.
+        /// </summary>
+        public GameControlKeys GameControlKeys
+        {
+            get { return _gckeys; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _gckeys = value;
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameControl"/> class.
+        /// </summary>
+        /// <param name="keys">The GameControlKeys.</param>
+        public GameControl(GameControlKeys keys)
+        {
+            GameControlKeys = keys;
+        }
 
         /// <summary>
         /// Notifies listeners that this <see cref="GameControl"/>'s key state requirements match the current key
@@ -67,168 +87,6 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be down for this <see cref="GameControl"/>
-        /// to be invoked.
-        /// </summary>
-        public IEnumerable<Keys> KeysDown
-        {
-            get { return _keysDown; }
-            set { _keysDown = value ?? _emptyKeys; }
-        }
-
-        /// <summary>
-        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be up for this <see cref="GameControl"/>
-        /// to be invoked.
-        /// </summary>
-        public IEnumerable<Keys> KeysUp
-        {
-            get { return _keysUp; }
-            set { _keysUp = value ?? _emptyKeys; }
-        }
-
-        /// <summary>
-        /// Gets or sets the optional name of this <see cref="GameControl"/>. This name is intended primarily for
-        /// debugging purposes. Cannot be null.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _name = value;
-            }
-        }
-
-        /// <summary>
-        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be pressed for this <see cref="GameControl"/>
-        /// to be invoked. These keys must have been up the last frame, but pressed this frame. If they were already
-        /// pressed, they do not count.
-        /// </summary>
-        public IEnumerable<Keys> NewKeysDown
-        {
-            get { return _newKeysDown; }
-            set { _newKeysDown = value ?? _emptyKeys; }
-        }
-
-        /// <summary>
-        /// Gets or sets an IEnumerable of the <see cref="Keys"/> required to be raised for this <see cref="GameControl"/>
-        /// to be invoked. These keys must have been pressed the last frame, but up this frame. If they were already
-        /// up, they do not count.
-        /// </summary>
-        public IEnumerable<Keys> NewKeysUp
-        {
-            get { return _newKeysUp; }
-            set { _newKeysUp = value ?? _emptyKeys; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControl"/> class.
-        /// </summary>
-        /// <param name="name">The optional name of the control. Cannot be null.</param>
-        /// <param name="keysDown">The keys required to be down.</param>
-        public GameControl(string name, IEnumerable<Keys> keysDown) : this(name, keysDown, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControl"/> class.
-        /// </summary>
-        /// <param name="name">The optional name of the control. Cannot be null.</param>
-        /// <param name="keysDown">The keys required to be down.</param>
-        /// <param name="keysUp">The keys required to be up.</param>
-        public GameControl(string name, IEnumerable<Keys> keysDown, IEnumerable<Keys> keysUp) : this(name, keysDown, keysUp, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControl"/> class.
-        /// </summary>
-        /// <param name="name">The optional name of the control. Cannot be null.</param>
-        /// <param name="keysDown">The keys required to be down.</param>
-        /// <param name="keysUp">The keys required to be up.</param>
-        /// <param name="newKeysDown">The keys required to be down this frame, and up last frame.</param>
-        public GameControl(string name, IEnumerable<Keys> keysDown, IEnumerable<Keys> keysUp, IEnumerable<Keys> newKeysDown)
-            : this(name, keysDown, keysUp, newKeysDown, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControl"/> class.
-        /// </summary>
-        /// <param name="name">The optional name of the control. Cannot be null.</param>
-        /// <param name="keysDown">The keys required to be down.</param>
-        /// <param name="keysUp">The keys required to be up.</param>
-        /// <param name="newKeysDown">The keys required to be down this frame, and up last frame.</param>
-        /// <param name="newKeysUp">The keys required to be up this frame, and down last frame.</param>
-        public GameControl(string name, IEnumerable<Keys> keysDown, IEnumerable<Keys> keysUp, IEnumerable<Keys> newKeysDown,
-                           IEnumerable<Keys> newKeysUp)
-        {
-            Name = name;
-            NewKeysDown = newKeysDown;
-            NewKeysUp = newKeysUp;
-            KeysUp = keysUp;
-            KeysDown = keysDown;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControl"/> class.
-        /// </summary>
-        /// <param name="name">The optional name of the control. Cannot be null.</param>
-        /// <param name="keyDown">The key required to be down.</param>
-        public GameControl(string name, Keys? keyDown)
-            : this(name, keyDown, null, null, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControl"/> class.
-        /// </summary>
-        /// <param name="name">The optional name of the control. Cannot be null.</param>
-        /// <param name="keyDown">The key required to be down.</param>
-        /// <param name="keyUp">The key required to be up.</param>
-        public GameControl(string name, Keys? keyDown, Keys? keyUp)
-            : this(name, keyDown, keyUp, null, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControl"/> class.
-        /// </summary>
-        /// <param name="name">The optional name of the control. Cannot be null.</param>
-        /// <param name="keyDown">The key required to be down.</param>
-        /// <param name="keyUp">The key required to be up.</param>
-        /// <param name="newKeyDown">The key required to be down this frame, and up last frame.</param>
-        public GameControl(string name, Keys? keyDown, Keys? keyUp, Keys? newKeyDown) : this(name, keyDown, keyUp, newKeyDown, null)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControl"/> class.
-        /// </summary>
-        /// <param name="name">The optional name of the control. Cannot be null.</param>
-        /// <param name="keyDown">The key required to be down.</param>
-        /// <param name="keyUp">The key required to be up.</param>
-        /// <param name="newKeyDown">The key required to be down this frame, and up last frame.</param>
-        /// <param name="newKeyUp">The key required to be up this frame, and down last frame.</param>
-        public GameControl(string name, Keys? keyDown, Keys? keyUp, Keys? newKeyDown,
-                           Keys? newKeyUp)
-        {
-            Name = name;
-            KeysDown = keyDown.HasValue ? new Keys[] { keyDown.Value } : _emptyKeys;
-            KeysUp = keyUp.HasValue ? new Keys[] { keyUp.Value } : _emptyKeys;
-            NewKeysDown = newKeyDown.HasValue ? new Keys[] { newKeyDown.Value } : _emptyKeys;
-            NewKeysUp = newKeyUp.HasValue ? new Keys[] { newKeyUp.Value } : _emptyKeys;
-        }
-
-        /// <summary>
-        /// An empty IEnumerable of <see cref="Keys"/>.
-        /// </summary>
-        static readonly IEnumerable<Keys> _emptyKeys = Enumerable.Empty<Keys>();
-
-        /// <summary>
         /// Updates the <see cref="GameControl"/>.
         /// </summary>
         /// <param name="gui">The <see cref="GUIManagerBase"/> to get the key states from.</param>
@@ -246,25 +104,25 @@ namespace NetGore.Graphics.GUI
             // Check the key states
             KeyboardState ks = gui.KeyboardState;
 
-            foreach (Keys key in KeysUp)
+            foreach (Keys key in GameControlKeys.KeysUp)
             {
                 if (!ks.IsKeyUp(key))
                     return;
             }
 
-            foreach (Keys key in KeysDown)
+            foreach (Keys key in GameControlKeys.KeysDown)
             {
                 if (!ks.IsKeyDown(key))
                     return;
             }
 
-            foreach (Keys key in NewKeysDown)
+            foreach (Keys key in GameControlKeys.NewKeysDown)
             {
                 if (!gui.NewKeysDown.Contains(key))
                     return;
             }
 
-            foreach (Keys key in NewKeysUp)
+            foreach (Keys key in GameControlKeys.NewKeysUp)
             {
                 if (!gui.NewKeysUp.Contains(key))
                     return;

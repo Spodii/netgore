@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Input;
 using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
@@ -48,28 +45,25 @@ namespace DemoGame.Client
             const int minShopRate = 250;
             const int minUseRate = 250;
 
-            CreateAndAdd("Jump", minMoveRate, () => UserChar.CanJump && CanUserMove(), HandleGameControl_Jump, Keys.Up, null,
-                         null, null);
+            CreateAndAdd(GameControlsKeys.Jump, minMoveRate, () => UserChar.CanJump && CanUserMove(), HandleGameControl_Jump);
 
-            CreateAndAdd("Move Left", minMoveRate, () => !UserChar.IsMovingLeft && CanUserMove(), HandleGameControl_MoveLeft,
-                         Keys.Left, Keys.Right, null, null);
+            CreateAndAdd(GameControlsKeys.MoveLeft, minMoveRate, () => !UserChar.IsMovingLeft && CanUserMove(),
+                         HandleGameControl_MoveLeft);
 
-            CreateAndAdd("Move Right", minMoveRate, () => !UserChar.IsMovingRight && CanUserMove(),
-                         HandleGameControl_MoveRight, Keys.Right, Keys.Left, null, null);
+            CreateAndAdd(GameControlsKeys.MoveRight, minMoveRate, () => !UserChar.IsMovingRight && CanUserMove(),
+                         HandleGameControl_MoveRight);
 
-            CreateAndAdd("Attack", minAttackRate, CanUserMove, HandleGameControl_Attack, Keys.LeftControl, null, null, null);
+            CreateAndAdd(GameControlsKeys.Attack, minAttackRate, CanUserMove, HandleGameControl_Attack);
 
-            CreateAndAdd("Stop Moving", minMoveRate, () => UserChar.IsMoving, HandleGameControl_MoveStop, null,
-                         new Keys[] { Keys.Left, Keys.Right }, null, null);
+            CreateAndAdd(GameControlsKeys.MoveStop, minMoveRate, () => UserChar.IsMoving, HandleGameControl_MoveStop);
 
-            CreateAndAdd("Use World", minUseRate, CanUserMove, HandleGameControl_Use, Keys.LeftAlt, null, null, null);
+            CreateAndAdd(GameControlsKeys.UseWorld, minUseRate, CanUserMove, HandleGameControl_Use);
 
-            CreateAndAdd("Use Shop", minShopRate, CanUserMove, HandleGameControl_Shop, Keys.LeftAlt, null, null, null);
+            CreateAndAdd(GameControlsKeys.UseShop, minShopRate, CanUserMove, HandleGameControl_Shop);
 
-            CreateAndAdd("Talk To NPC", minNPCChatRate, CanUserMove, HandleGameControl_TalkToNPC, Keys.LeftAlt, null, null,
-                         null);
+            CreateAndAdd(GameControlsKeys.TalkToNPC, minNPCChatRate, CanUserMove, HandleGameControl_TalkToNPC);
 
-            CreateAndAdd("Pick Up", minPickupRate, CanUserMove, HandleGameControl_PickUp, Keys.Space, null, null, null);
+            CreateAndAdd(GameControlsKeys.PickUp, minPickupRate, CanUserMove, HandleGameControl_PickUp);
         }
 
         /// <summary>
@@ -183,6 +177,18 @@ namespace DemoGame.Client
             }
         }
 
+        void HandleGameControl_Use(GameControl sender)
+        {
+            DynamicEntity useEntity = Map.GetEntity<DynamicEntity>(UserChar.CB.ToRectangle(), UsableEntityFilter);
+            if (useEntity == null)
+                return;
+
+            using (PacketWriter pw = ClientPacket.UseWorld(useEntity.MapEntityIndex))
+            {
+                Socket.Send(pw);
+            }
+        }
+
         /// <summary>
         /// Filter used to find a DynamicEntity for the User to use.
         /// </summary>
@@ -197,18 +203,6 @@ namespace DemoGame.Client
 
             // Check that this DynamicEntity can use it
             return asUsable.CanUse(dynamicEntity);
-        }
-
-        void HandleGameControl_Use(GameControl sender)
-        {
-            DynamicEntity useEntity = Map.GetEntity<DynamicEntity>(UserChar.CB.ToRectangle(), UsableEntityFilter);
-            if (useEntity == null)
-                return;
-
-            using (PacketWriter pw = ClientPacket.UseWorld(useEntity.MapEntityIndex))
-            {
-                Socket.Send(pw);
-            }
         }
     }
 }
