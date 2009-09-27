@@ -6,6 +6,9 @@ using NetGore.Graphics.GUI;
 
 namespace DemoGame.Client
 {
+    /// <summary>
+    /// Helper methods for the <see cref="ItemInfo"/>.
+    /// </summary>
     public static class ItemInfoHelper
     {
         static readonly string _lineBreak = Environment.NewLine;
