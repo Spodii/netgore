@@ -103,6 +103,7 @@
     <Compile Include="Controls\SkillsForm.cs" />
     <Compile Include="Controls\StatusEffectsForm.cs" />
     <Compile Include="Controls\ToolbarItemType.cs" />
+    <Compile Include="GameplayScreenControls.cs" />
     <Compile Include="ItemInfoRequester\EquipmentInfoRequester.cs" />
     <Compile Include="ItemInfoHelper.cs" />
     <Compile Include="ItemInfoRequester\InventoryInfoRequester.cs" />
