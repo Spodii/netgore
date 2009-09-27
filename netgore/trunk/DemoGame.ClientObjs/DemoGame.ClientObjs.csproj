@@ -66,6 +66,7 @@
     <Compile Include="Entity\NPC.cs" />
     <Compile Include="Entity\TeleportEntity.cs" />
     <Compile Include="Entity\User.cs" />
+    <Compile Include="GameControlsKeys.cs" />
     <Compile Include="GUIManager.cs" />
     <Compile Include="Entity\IDrawableEntity.cs" />
     <Compile Include="ItemStats.cs" />
