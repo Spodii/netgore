@@ -25,18 +25,7 @@ namespace DemoGame
         /// EquipmentSlot value.</exception>
         public static EquipmentSlot ReadEquipmentSlot(this BitStream bitStream)
         {
-            byte value = bitStream.ReadByte();
-            EquipmentSlot slot = (EquipmentSlot)value;
-
-            // Ensure the value is a valid EquipmentSlot
-            if (!slot.IsDefined())
-            {
-                const string errmsg = "Value `{0}` is not a valid EquipmentSlot.";
-                Debug.Fail(string.Format(errmsg, value));
-                throw new InvalidCastException(string.Format(errmsg, value));
-            }
-
-            return slot;
+            return bitStream.ReadEquipmentSlot(null);
         }
 
         /// <summary>
@@ -77,7 +66,7 @@ namespace DemoGame
         /// <param name="bitStream">BitStream to read from.</param>
         public static MapEntityIndex ReadMapEntityIndex(this BitStream bitStream)
         {
-            return MapEntityIndex.Read(bitStream);
+            return bitStream.ReadMapEntityIndex(null);
         }
 
         /// <summary>
@@ -86,7 +75,7 @@ namespace DemoGame
         /// <param name="bitStream">BitStream to read from.</param>
         public static MapIndex ReadMapIndex(this BitStream bitStream)
         {
-            return MapIndex.Read(bitStream);
+            return bitStream.ReadMapIndex(null);
         }
 
         /// <summary>
@@ -95,7 +84,7 @@ namespace DemoGame
         /// <param name="bitStream">BitStream to read from.</param>
         public static ShopItemIndex ReadShopItemIndex(this BitStream bitStream)
         {
-            return bitStream.ReadByte();
+            return bitStream.ReadShopItemIndex();
         }
 
         /// <summary>
@@ -107,18 +96,7 @@ namespace DemoGame
         /// SkillType value.</exception>
         public static SkillType ReadSkillType(this BitStream bitStream)
         {
-            byte value = bitStream.ReadByte();
-            SkillType skillType = (SkillType)value;
-
-            // Ensure the value is a valid SkillType
-            if (!skillType.IsDefined())
-            {
-                const string errmsg = "Value `{0}` is not a valid SkillType.";
-                Debug.Fail(string.Format(errmsg, value));
-                throw new InvalidCastException(string.Format(errmsg, value));
-            }
-
-            return skillType;
+            return bitStream.ReadSkillType(null);
         }
 
         /// <summary>
@@ -169,18 +147,7 @@ namespace DemoGame
         /// StatType value.</exception>
         public static StatType ReadStatType(this BitStream bitStream)
         {
-            byte value = bitStream.ReadByte();
-            StatType statType = (StatType)value;
-
-            // Ensure the value is a valid StatType
-            if (!statType.IsDefined())
-            {
-                const string errmsg = "Value `{0}` is not a valid StatType.";
-                Debug.Fail(string.Format(errmsg, value));
-                throw new InvalidCastException(string.Format(errmsg, value));
-            }
-
-            return statType;
+            return bitStream.ReadStatType(null);
         }
 
         /// <summary>
@@ -192,18 +159,7 @@ namespace DemoGame
         /// StatusEffectType value.</exception>
         public static StatusEffectType ReadStatusEffectType(this BitStream bitStream)
         {
-            byte value = bitStream.ReadByte();
-            StatusEffectType statusEffectType = (StatusEffectType)value;
-
-            // Ensure the value is a valid StatusEffectType
-            if (!statusEffectType.IsDefined())
-            {
-                const string errmsg = "Value `{0}` is not a valid StatusEffectType.";
-                Debug.Fail(string.Format(errmsg, value));
-                throw new InvalidCastException(string.Format(errmsg, value));
-            }
-
-            return statusEffectType;
+            return bitStream.ReadStatusEffectType(null);
         }
 
         /// <summary>
@@ -213,9 +169,7 @@ namespace DemoGame
         /// <returns>Vector2 read from the BitStream.</returns>
         public static Vector2 ReadVector2(this BitStream bitStream)
         {
-            float x = bitStream.ReadFloat();
-            float y = bitStream.ReadFloat();
-            return new Vector2(x, y);
+            return bitStream.ReadVector2(null);
         }
 
         /// <summary>
@@ -225,8 +179,7 @@ namespace DemoGame
         /// <param name="vector2">Vector2 to write.</param>
         public static void Write(this BitStream bitStream, Vector2 vector2)
         {
-            bitStream.Write(vector2.X);
-            bitStream.Write(vector2.Y);
+            bitStream.Write(null, vector2);
         }
 
         /// <summary>
@@ -297,7 +250,7 @@ namespace DemoGame
         /// <param name="statType">StatType to write.</param>
         public static void Write(this BitStream bitStream, StatType statType)
         {
-            bitStream.Write((byte)statType);
+            bitStream.Write(null, statType);
         }
 
         /// <summary>
@@ -307,7 +260,7 @@ namespace DemoGame
         /// <param name="skillType">SkillType to write.</param>
         public static void Write(this BitStream bitStream, SkillType skillType)
         {
-            bitStream.Write((byte)skillType);
+            bitStream.Write(null, skillType);
         }
 
         /// <summary>
@@ -317,7 +270,7 @@ namespace DemoGame
         /// <param name="shopItemIndex">ShopItemIndex to write.</param>
         public static void Write(this BitStream bitStream, ShopItemIndex shopItemIndex)
         {
-            bitStream.Write(shopItemIndex);
+            ((IValueWriter)bitStream).Write(null, shopItemIndex);
         }
 
         /// <summary>
@@ -327,7 +280,7 @@ namespace DemoGame
         /// <param name="statusEffectType">StatusEffectType to write.</param>
         public static void Write(this BitStream bitStream, StatusEffectType statusEffectType)
         {
-            bitStream.Write((byte)statusEffectType);
+            bitStream.Write(null, statusEffectType);
         }
 
         /// <summary>
@@ -337,7 +290,7 @@ namespace DemoGame
         /// <param name="mapEntityIndex">MapEntityIndex to write.</param>
         public static void Write(this BitStream bitStream, MapEntityIndex mapEntityIndex)
         {
-            mapEntityIndex.Write(bitStream);
+            bitStream.Write(null, mapEntityIndex);
         }
 
         /// <summary>
@@ -369,7 +322,7 @@ namespace DemoGame
         /// <param name="mapIndex">MapIndex to write.</param>
         public static void Write(this BitStream bitStream, MapIndex mapIndex)
         {
-            mapIndex.Write(bitStream);
+            bitStream.Write(null, mapIndex);
         }
 
         /// <summary>
@@ -390,8 +343,7 @@ namespace DemoGame
         /// <param name="slot">EquipmentSlot to write.</param>
         public static void Write(this BitStream bitStream, EquipmentSlot slot)
         {
-            byte index = slot.GetValue();
-            bitStream.Write(index);
+            bitStream.Write(null, slot);
         }
 
         /// <summary>

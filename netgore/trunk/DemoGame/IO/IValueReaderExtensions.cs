@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore;
 using NetGore.IO;
 
 namespace DemoGame
@@ -16,7 +17,12 @@ namespace DemoGame
         /// <returns>Value read from the reader.</returns>
         public static ItemType ReadItemType(this IValueReader reader, string name)
         {
-            return NetGore.IValueReaderExtensions.ReadEnum<ItemType>(reader, name);
+            return reader.ReadEnum<ItemType>(name);
+        }
+
+        public static EquipmentSlot ReadEquipmentSlot(this IValueReader reader, string name)
+        {
+            return reader.ReadEnum<EquipmentSlot>(name);
         }
 
         /// <summary>
@@ -27,7 +33,7 @@ namespace DemoGame
         /// <returns>Value read from the reader.</returns>
         public static SkillType ReadSkillType(this IValueReader reader, string name)
         {
-            return NetGore.IValueReaderExtensions.ReadEnum<SkillType>(reader, name);
+            return reader.ReadEnum<SkillType>(name);
         }
 
         /// <summary>
@@ -38,7 +44,7 @@ namespace DemoGame
         /// <returns>Value read from the reader.</returns>
         public static StatType ReadStatType(this IValueReader reader, string name)
         {
-            return NetGore.IValueReaderExtensions.ReadEnum<StatType>(reader, name);
+            return reader.ReadEnum<StatType>(name);
         }
 
         /// <summary>
@@ -49,7 +55,7 @@ namespace DemoGame
         /// <returns>Value read from the reader.</returns>
         public static StatusEffectType ReadStatusEffectType(this IValueReader reader, string name)
         {
-            return NetGore.IValueReaderExtensions.ReadEnum<StatusEffectType>(reader, name);
+            return reader.ReadEnum<StatusEffectType>(name);
         }
     }
 }
