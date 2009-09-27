@@ -59,6 +59,8 @@ namespace DemoGame.Client
         /// </summary>
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
 
+        readonly GameControlCollection _gameControls = new GameControlCollection();
+
         /// <summary>
         /// Skeleton templates that will remain in memory at all times
         /// </summary>
@@ -441,13 +443,6 @@ namespace DemoGame.Client
             InitializeGameControls();
         }
 
-        readonly GameControlCollection _gameControls = new GameControlCollection();
-
-        void InitializeGameControls()
-        {
-            // TODO: ...
-        }
-
         /// <summary>
         /// Initializes the GUI components.
         /// </summary>
@@ -612,6 +607,38 @@ namespace DemoGame.Client
                 _latencyLabel.Text = string.Format(_latencyString, _socket.Latency);
         }
 
+        void HandleGameControl_Jump(GameControl sender)
+        {
+            using (PacketWriter pw = ClientPacket.Jump())
+            {
+                Socket.Send(pw);
+            }
+        }
+
+        /// <summary>
+        /// Gets if the User character is allowed to move. This only checks general conditions like if the User is
+        /// chatting to a NPC or in some other state that does not allow movement of any kind.
+        /// </summary>
+        /// <returns>True if the User can move; otherwise false.</returns>
+        bool CanUserMove()
+        {
+            // Don't allow moving while chatting to NPCs
+            if (!GameData.AllowMovementWhileChattingToNPC && ChatDialogForm.IsChatting)
+                return false;
+
+            // Movement is allowed
+            return true;
+        }
+        
+        /// <summary>
+        /// Initializes the GameControls.
+        /// </summary>
+        void InitializeGameControls()
+        {
+            _gameControls.CreateAndAdd("Jump", _minMoveRate, () => UserChar.CanJump && CanUserMove(),
+                HandleGameControl_Jump, new Keys[] { Keys.Up}, null, null, null);
+        }
+
         void UpdateInput()
         {
             if (UserChar == null)
@@ -619,18 +646,7 @@ namespace DemoGame.Client
 
             KeyboardState ks = _gui.KeyboardState;
 
-            // Jump
-            if (_currentTime - _lastMoveLeftTime > _minMoveRate && UserChar.CanJump && ks.IsKeyDown(Keys.Up))
-            {
-                if (GameData.AllowMovementWhileChattingToNPC || !ChatDialogForm.IsChatting)
-                {
-                    _lastMoveLeftTime = _currentTime;
-                    using (PacketWriter pw = ClientPacket.Jump())
-                    {
-                        Socket.Send(pw);
-                    }
-                }
-            }
+            _gameControls.Update(_gui, _currentTime);
 
             // Move left
             if (_currentTime - _lastMoveRightTime > _minMoveRate && ks.IsKeyDown(Keys.Left) && ks.IsKeyUp(Keys.Right) &&

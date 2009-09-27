@@ -32,6 +32,14 @@ namespace NetGore.Graphics.GUI
         public event GameControlEventHandler OnInvoke;
 
         /// <summary>
+        /// Gets or sets a Func containing any additional requirements for this <see cref="GameControl"/> to be invoked.
+        /// If value must return true for <see cref="OnInvoke"/> to be raised. If this value is false,
+        /// <see cref="OnInvoke"/> will not be raised and the internal delay counter wil not be altered. If this value
+        /// is null, it will be treated the same as if it always returned true.
+        /// </summary>
+        public Func<bool> AdditionalRequirements { get; set; }
+
+        /// <summary>
         /// Gets or sets the minimum delay in milliseconds between invokes of this <see cref="GameControl"/>. If the
         /// delay is greater than 0, then <see cref="OnInvoke"/> will never be raised until the specified amount of
         /// time has elapsed, no matter the key state. This value must be greater than or equal to zero.
@@ -206,6 +214,10 @@ namespace NetGore.Graphics.GUI
                 if (!gui.NewKeysUp.Contains(key))
                     return;
             }
+            
+            // Check additional requirements
+            if (AdditionalRequirements == null || !AdditionalRequirements())
+                return;
 
             // All keys are in the needed state, so invoke the handler
             OnInvoke(this);

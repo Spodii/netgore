@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Xna.Framework.Input;
 
 namespace NetGore.Graphics.GUI
 {
@@ -20,6 +22,30 @@ namespace NetGore.Graphics.GUI
         {
             foreach (var gc in this)
                 gc.Update(guiManager, currentTime);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="GameControl"/> and adds it to this <see cref="GameControlCollection"/>.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="delay">The delay.</param>
+        /// <param name="additionalRequirements">The additional requirements.</param>
+        /// <param name="invokeHandler">The invoke handler.</param>
+        /// <param name="keysDown">The keys down.</param>
+        /// <param name="keysUp">The keys up.</param>
+        /// <param name="newKeysDown">The new keys down.</param>
+        /// <param name="newKeysUp">The new keys up.</param>
+        /// <returns>The instance of the created <see cref="GameControl"/> that was added to this
+        /// <see cref="GameControlCollection"/>.</returns>
+        public GameControl CreateAndAdd(string name, int delay, Func<bool> additionalRequirements, GameControlEventHandler invokeHandler, IEnumerable<Keys> keysDown, IEnumerable<Keys> keysUp, IEnumerable<Keys> newKeysDown,
+                           IEnumerable<Keys> newKeysUp)
+        {
+            GameControl c = new GameControl(name, keysDown, keysUp, newKeysDown, newKeysUp)
+            { Delay = delay, AdditionalRequirements = additionalRequirements };
+            c.OnInvoke += invokeHandler;
+
+            Add(c);
+            return c;
         }
 
         #region ICollection<GameControl> Members
