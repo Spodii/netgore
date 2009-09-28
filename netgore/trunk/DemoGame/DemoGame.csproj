@@ -85,6 +85,8 @@
     <Compile Include="Items\IItemInfo.cs" />
     <Compile Include="Items\InventorySlotExtensions.cs" />
     <Compile Include="Items\ItemInfo.cs" />
+    <Compile Include="Packets\ClientPacketIDHelper.cs" />
+    <Compile Include="Packets\ServerPacketIDHelper.cs" />
     <Compile Include="Shop\ShopItemIndex.cs" />
     <Compile Include="Shop\ShopItemIndexExtensions.cs" />
     <Compile Include="Skills\SkillType.cs" />

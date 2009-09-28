@@ -208,26 +208,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Writes a StatType to the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="statType">StatType to write.</param>
-        public static void Write(this BitStream bitStream, StatType statType)
-        {
-            bitStream.WriteEnumName(null, statType);
-        }
-
-        /// <summary>
-        /// Writes a SkillType to the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="skillType">SkillType to write.</param>
-        public static void Write(this BitStream bitStream, SkillType skillType)
-        {
-            bitStream.WriteEnumName(null, skillType);
-        }
-
-        /// <summary>
         /// Writes a ShopItemIndex to the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
@@ -235,16 +215,6 @@ namespace DemoGame
         public static void Write(this BitStream bitStream, ShopItemIndex shopItemIndex)
         {
             ((IValueWriter)bitStream).Write(null, shopItemIndex);
-        }
-
-        /// <summary>
-        /// Writes a StatusEffectType to the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="statusEffectType">StatusEffectType to write.</param>
-        public static void Write(this BitStream bitStream, StatusEffectType statusEffectType)
-        {
-            bitStream.WriteEnumName(null, statusEffectType);
         }
 
         /// <summary>
@@ -258,25 +228,44 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Writes a ServerPacketID to the BitStream.
+        /// Writes a <see cref="ServerPacketID"/> to the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="serverPacketID">ServerPacketID to write.</param>
         public static void Write(this BitStream bitStream, ServerPacketID serverPacketID)
         {
+            // Write as a byte instead of using the enum I/O due to the way the packet ID manager works
             byte value = (byte)serverPacketID;
-            bitStream.Write(value, GameData.ServerMessageIDBitLength);
+            bitStream.Write(value, _serverPacketIDBits);
+        }
+
+        static readonly int _clientPacketIDBits;
+        static readonly int _serverPacketIDBits;
+
+        /// <summary>
+        /// Initializes the <see cref="BitStreamExtensions"/> class.
+        /// </summary>
+        static BitStreamExtensions()
+        {
+            _clientPacketIDBits = ClientPacketIDHelper.Instance.BitsRequired;
+            _serverPacketIDBits = ServerPacketIDHelper.Instance.BitsRequired;
+
+            if (_clientPacketIDBits <= 0)
+                throw new Exception("Invalid required bit amount on ClientPacketIDBits: " + _clientPacketIDBits);
+            if (_serverPacketIDBits <= 0)
+                throw new Exception("Invalid required bit amount on ServerPacketIDBits: " + _serverPacketIDBits);
         }
 
         /// <summary>
-        /// Writes a ClientPacketID to the BitStream.
+        /// Writes a <see cref="ClientPacketID"/> to the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="clientPacketID">ClientPacketID to write.</param>
         public static void Write(this BitStream bitStream, ClientPacketID clientPacketID)
         {
+            // Write as a byte instead of using the enum I/O due to the way the packet ID manager works
             byte value = (byte)clientPacketID;
-            bitStream.Write(value, GameData.ClientMessageIDBitLength);
+            bitStream.Write(value, _clientPacketIDBits);
         }
 
         /// <summary>
@@ -296,18 +285,8 @@ namespace DemoGame
         /// <param name="stat">IStat to write.</param>
         public static void Write(this BitStream bitStream, IStat stat)
         {
-            bitStream.Write(stat.StatType);
+            bitStream.WriteEnumName(stat.StatType);
             stat.Write(bitStream);
-        }
-
-        /// <summary>
-        /// Writes an EquipmentSlot to the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to write to.</param>
-        /// <param name="slot">EquipmentSlot to write.</param>
-        public static void Write(this BitStream bitStream, EquipmentSlot slot)
-        {
-            bitStream.WriteEnumName(null, slot);
         }
 
         /// <summary>

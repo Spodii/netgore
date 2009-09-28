@@ -19,7 +19,7 @@ namespace DemoGame.Server
             ushort secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
 
             PacketWriter pw = GetWriter(ServerPacketID.AddStatusEffect);
-            pw.Write(statusEffectType);
+            pw.WriteEnumName(statusEffectType);
             pw.Write(power);
             pw.Write(secsLeft);
             return pw;
@@ -167,7 +167,7 @@ namespace DemoGame.Server
         public static PacketWriter RemoveStatusEffect(StatusEffectType statusEffectType)
         {
             PacketWriter pw = GetWriter(ServerPacketID.RemoveStatusEffect);
-            pw.Write(statusEffectType);
+            pw.WriteEnumName(statusEffectType);
             return pw;
         }
 
@@ -192,7 +192,7 @@ namespace DemoGame.Server
         public static PacketWriter SendEquipmentItemInfo(EquipmentSlot slot, ItemEntity item)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SendEquipmentItemInfo);
-            pw.Write(slot);
+            pw.WriteEnumName(slot);
             // ReSharper disable RedundantCast
             pw.Write((IItemTable)item);
             // ReSharper restore RedundantCast
@@ -417,7 +417,7 @@ namespace DemoGame.Server
         public static PacketWriter UpdateEquipmentSlot(EquipmentSlot slot, GrhIndex? graphic)
         {
             PacketWriter pw = GetWriter(ServerPacketID.UpdateEquipmentSlot);
-            pw.Write(slot);
+            pw.WriteEnumName(slot);
             pw.Write(graphic.HasValue);
 
             if (graphic.HasValue)
@@ -432,7 +432,7 @@ namespace DemoGame.Server
 
             pw.Write(ServerPacketID.UpdateStat);
             pw.Write(isBaseStat);
-            pw.Write(stat.StatType);
+            pw.WriteEnumName(stat.StatType);
             stat.Write(pw);
         }
 
@@ -478,7 +478,7 @@ namespace DemoGame.Server
             else
                 pw.Write(false);
 
-            pw.Write(skillType);
+            pw.WriteEnumName(skillType);
 
             return pw;
         }

@@ -78,23 +78,6 @@ namespace DemoGame
         /// </summary>
         static BodyInfo[] _bodyInfo;
 
-        static int _clientMessageIDBitLength = -1;
-        static int _serverMessageIDBitLength = -1;
-
-        /// <summary>
-        /// Gets the length of the ID for messages that are sent from the Client to the Server.
-        /// </summary>
-        public static int ClientMessageIDBitLength
-        {
-            get
-            {
-                if (_clientMessageIDBitLength == -1)
-                    _clientMessageIDBitLength = GetRequiredMessageIDBitLength(typeof(ClientPacketID));
-
-                return _clientMessageIDBitLength;
-            }
-        }
-
         /// <summary>
         /// Gets the maximum delta time between draws for any kind of drawable component. If the delta time between
         /// draw calls on the component exceeds this value, the delta time should then be reduced to be equal to this value.
@@ -110,20 +93,6 @@ namespace DemoGame
         public static string ServerIP
         {
             get { return "127.0.0.1"; }
-        }
-
-        /// <summary>
-        /// Gets the length of the ID for messages that are sent from the Server to the Client.
-        /// </summary>
-        public static int ServerMessageIDBitLength
-        {
-            get
-            {
-                if (_serverMessageIDBitLength == -1)
-                    _serverMessageIDBitLength = GetRequiredMessageIDBitLength(typeof(ServerPacketID));
-
-                return _serverMessageIDBitLength;
-            }
         }
 
         /// <summary>
@@ -187,29 +156,6 @@ namespace DemoGame
         public static int GetItemSellValue(ItemEntityBase item)
         {
             return Math.Max(item.Value / 2, 1);
-        }
-
-        /// <summary>
-        /// Gets the minimum number of bits required for the message ID.
-        /// </summary>
-        /// <param name="enumType">Type of an Enum containing all messages that will need to be read.</param>
-        /// <returns>The minimum number of bits required for the message ID.</returns>
-        static int GetRequiredMessageIDBitLength(Type enumType)
-        {
-            if (!enumType.IsEnum)
-                throw new ArgumentException("The specified type must be for an Enum.", "enumType");
-
-            // Get all the values
-            Array values = Enum.GetValues(enumType);
-
-            // Get the values as bytes
-            var bytes = values.Cast<byte>();
-
-            // Find the greatest value
-            byte max = bytes.Max();
-
-            // Return the number of bits required for the max value
-            return BitOps.RequiredBits(max);
         }
 
         /// <summary>
