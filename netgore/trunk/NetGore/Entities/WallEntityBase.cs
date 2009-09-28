@@ -14,6 +14,11 @@ namespace NetGore
     /// </summary>
     public abstract class WallEntityBase : Entity
     {
+        const string _valueKeyCollisionType = "CollisionType";
+        const string _valueKeyPosition = "Position";
+        const string _valueKeySize = "Size";
+        static readonly CollisionTypeHelper _collisionTypeHelper = CollisionTypeHelper.Instance;
+
         /// <summary>
         /// Gets or sets the weight of the Entity (used in gravity calculations).
         /// </summary>
@@ -54,10 +59,6 @@ namespace NetGore
             CollisionType = collisionType;
         }
 
-        const string _valueKeyPosition = "Position";
-        const string _valueKeySize = "Size";
-        const string _valueKeyCollisionType = "CollisionType";
-
         void Read(IValueReader r)
         {
             Vector2 position = r.ReadVector2(_valueKeyPosition);
@@ -68,8 +69,6 @@ namespace NetGore
             SetSizeRaw(size);
             SetCollisionTypeRaw(ct);
         }
-
-        static readonly CollisionTypeHelper _collisionTypeHelper = CollisionTypeHelper.Instance;
 
         public void Write(IValueWriter w)
         {

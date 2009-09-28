@@ -12,8 +12,8 @@ namespace NetGore.IO
     public class BinaryValueWriter : IValueWriter
     {
         readonly string _destinationFile = null;
-        readonly BitStream _writer;
         readonly bool _useEnumNames = true;
+        readonly BitStream _writer;
         Stack<int> _nodeOffsetStack = null;
 
         /// <summary>
@@ -57,8 +57,7 @@ namespace NetGore.IO
         /// <param name="filePath">Path to the file to write to.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public BinaryValueWriter(string filePath, bool useEnumNames)
-            : this(new BitStream(BitStreamMode.Write, 8192))
+        public BinaryValueWriter(string filePath, bool useEnumNames) : this(new BitStream(BitStreamMode.Write, 8192))
         {
             _useEnumNames = useEnumNames;
             _destinationFile = filePath;
@@ -91,7 +90,8 @@ namespace NetGore.IO
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnumValue<T>(IEnumValueWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        public void WriteEnumValue<T>(IEnumValueWriter<T> writer, string name, T value)
+            where T : struct, IComparable, IConvertible, IFormattable
         {
             writer.WriteEnum(this, name, value);
         }
@@ -105,7 +105,8 @@ namespace NetGore.IO
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        public void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value)
+            where T : struct, IComparable, IConvertible, IFormattable
         {
             EnumIOHelper.WriteEnum(this, writer, name, value);
         }

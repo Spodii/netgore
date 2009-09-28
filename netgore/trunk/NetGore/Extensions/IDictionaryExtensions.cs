@@ -264,7 +264,8 @@ namespace NetGore
         /// <param name="dict">The IDictionary.</param>
         /// <param name="key">The key for the value to get.</param>
         /// <returns>The value at the given <paramref name="key"/> parsed as a GrhIndex.</returns>
-        public static TEnum AsEnum<T, TEnum>(this IDictionary<T, string> dict, T key) where TEnum : struct, IComparable, IConvertible, IFormattable
+        public static TEnum AsEnum<T, TEnum>(this IDictionary<T, string> dict, T key)
+            where TEnum : struct, IComparable, IConvertible, IFormattable
         {
             return EnumHelper<TEnum>.Parse(dict[key]);
         }
@@ -281,7 +282,8 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as an int, or the
         /// <paramref name="defaultValue"/> if the <paramref name="key"/> did not exist in the <paramref name="dict"/>
         /// or the value at the given <paramref name="key"/> could not be parsed.</returns>
-        public static TEnum AsEnum<T, TEnum>(this IDictionary<T, string> dict, T key, TEnum defaultValue) where TEnum : struct, IComparable, IConvertible, IFormattable
+        public static TEnum AsEnum<T, TEnum>(this IDictionary<T, string> dict, T key, TEnum defaultValue)
+            where TEnum : struct, IComparable, IConvertible, IFormattable
         {
             string value;
             if (!dict.TryGetValue(key, out value))

@@ -169,49 +169,11 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all the keys that were up the last frame and down this frame.
-        /// </summary>
-        public IEnumerable<Keys> NewKeysDown
-        {
-            get
-            {
-                // If we have not found the pressed keys yet, then find them
-                if (!_isKeysDownSet)
-                {
-                    _keysDown = GetNewKeysDown(_keysPressed, _lastPressedKeys);
-                    _isKeysDownSet = true;
-                }
-
-                // Return the cached pressed keys list
-                return _keysDown;
-            }
-        }
-
-        /// <summary>
         /// Gets an IEnumerable of Keys that are currently down.
         /// </summary>
         public IEnumerable<Keys> KeysPressed
         {
             get { return _keysPressed; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of all keys that were down the last frame and up this frame.
-        /// </summary>
-        public IEnumerable<Keys> NewKeysUp
-        {
-            get
-            {
-                // If we have not found the released keys yet, then find them
-                if (!_isKeysUpSet)
-                {
-                    _keysUp = GetNewKeysUp(_keysPressed, _lastPressedKeys);
-                    _isKeysUpSet = true;
-                }
-
-                // Return the cached released keys list
-                return _keysUp;
-            }
         }
 
         /// <summary>
@@ -258,6 +220,44 @@ namespace NetGore.Graphics.GUI
         public MouseState MouseState
         {
             get { return _mouseState; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all the keys that were up the last frame and down this frame.
+        /// </summary>
+        public IEnumerable<Keys> NewKeysDown
+        {
+            get
+            {
+                // If we have not found the pressed keys yet, then find them
+                if (!_isKeysDownSet)
+                {
+                    _keysDown = GetNewKeysDown(_keysPressed, _lastPressedKeys);
+                    _isKeysDownSet = true;
+                }
+
+                // Return the cached pressed keys list
+                return _keysDown;
+            }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all keys that were down the last frame and up this frame.
+        /// </summary>
+        public IEnumerable<Keys> NewKeysUp
+        {
+            get
+            {
+                // If we have not found the released keys yet, then find them
+                if (!_isKeysUpSet)
+                {
+                    _keysUp = GetNewKeysUp(_keysPressed, _lastPressedKeys);
+                    _isKeysUpSet = true;
+                }
+
+                // Return the cached released keys list
+                return _keysUp;
+            }
         }
 
         /// <summary>

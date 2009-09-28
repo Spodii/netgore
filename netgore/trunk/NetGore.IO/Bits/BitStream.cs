@@ -64,12 +64,12 @@ namespace NetGore.IO
         /// </summary>
         static BitStreamBufferMode _defaultBufferWriteMode = BitStreamBufferMode.Dynamic;
 
+        readonly bool _useEnumNames = false;
+
         /// <summary>
         /// Data buffer
         /// </summary>
         byte[] _buffer;
-
-        readonly bool _useEnumNames = false;
 
         /// <summary>
         /// Current position in the buffer. When reading, this is where the work
@@ -803,18 +803,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <returns>Value read from the reader.</returns>
-        public T ReadEnumName<T>() where T : struct, IComparable, IConvertible, IFormattable
-        {
-            string str = ReadString();
-            T value = EnumIOHelper.FromName<T>(str);
-            return value;
-        }
-
-        /// <summary>
         /// Reads an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or the
         /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
         /// </summary>
@@ -827,6 +815,18 @@ namespace NetGore.IO
                 return ReadEnumName<T>();
             else
                 return ReadEnumValue(reader);
+        }
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnumName<T>() where T : struct, IComparable, IConvertible, IFormattable
+        {
+            string str = ReadString();
+            T value = EnumIOHelper.FromName<T>(str);
+            return value;
         }
 
         /// <summary>
@@ -2443,15 +2443,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets if this <see cref="IValueWriter"/> supports reading nodes. If false, any attempt to use nodes
-        /// in this IValueWriter will result in a NotSupportedException being thrown.
-        /// </summary>
-        bool IValueWriter.SupportsNodes
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// Writes a string with a maximum length of <paramref name="maxLength"/> characters to the BitStream
         /// </summary>
         /// <param name="value">Value of the string to write</param>
@@ -2751,17 +2742,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Writes an Enum of type <typeparamref name="T"/> using the name of the Enum instead of the value.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="value">Value to write.</param>
-        public void WriteEnumName<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            string str = EnumIOHelper.ToName(value);
-            Write(str);
-        }
-
-        /// <summary>
         /// Writes an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or
         /// the name of the Enum value is determined from the <see cref="IValueWriter.UseEnumNames"/> property.
         /// </summary>
@@ -2774,6 +2754,17 @@ namespace NetGore.IO
                 WriteEnumName(value);
             else
                 WriteEnumValue(writer, value);
+        }
+
+        /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/> using the name of the Enum instead of the value.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="value">Value to write.</param>
+        public void WriteEnumName<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            string str = EnumIOHelper.ToName(value);
+            Write(str);
         }
 
         /// <summary>
@@ -3099,15 +3090,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets if this <see cref="IValueWriter"/> supports using the name field to look up values. If false,
-        /// values will have to be read back in the same order they were written and the name field will be ignored.
-        /// </summary>
-        bool IValueWriter.SupportsNameLookup
-        {
-            get { return false; }
-        }
-
-        /// <summary>
         /// Gets if this <see cref="IValueReader"/> supports reading nodes. If false, any attempt to use nodes
         /// in this IValueWriter will result in a NotSupportedException being thrown.
         /// </summary>
@@ -3186,9 +3168,46 @@ namespace NetGore.IO
             return ReadUShort();
         }
 
+        /// <summary>
+        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
+        /// underlying integer value will be used. If false, the underlying integer value will be used. This
+        /// only to Enum I/O that does not explicitly state which method to use.
+        /// </summary>
+        public bool UseEnumNames
+        {
+            get { return _useEnumNames; }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IValueReader"/> supports using the name field to look up values. If false,
+        /// values will have to be read back in the same order they were written and the name field will be ignored.
+        /// </summary>
+        bool IValueReader.SupportsNameLookup
+        {
+            get { return false; }
+        }
+
         #endregion
 
         #region IValueWriter Members
+
+        /// <summary>
+        /// Gets if this <see cref="IValueWriter"/> supports reading nodes. If false, any attempt to use nodes
+        /// in this IValueWriter will result in a NotSupportedException being thrown.
+        /// </summary>
+        bool IValueWriter.SupportsNodes
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IValueWriter"/> supports using the name field to look up values. If false,
+        /// values will have to be read back in the same order they were written and the name field will be ignored.
+        /// </summary>
+        bool IValueWriter.SupportsNameLookup
+        {
+            get { return false; }
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -3231,7 +3250,8 @@ namespace NetGore.IO
         /// <param name="writer">The writer used to write the enum value.</param>
         /// <param name="name">Unused by the BitStream.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        public void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value)
+            where T : struct, IComparable, IConvertible, IFormattable
         {
             EnumIOHelper.WriteEnum(this, writer, name, value);
         }
@@ -3336,25 +3356,6 @@ namespace NetGore.IO
         void IValueWriter.Write(string name, string value)
         {
             Write(value);
-        }
-
-        /// <summary>
-        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
-        /// underlying integer value will be used. If false, the underlying integer value will be used. This
-        /// only to Enum I/O that does not explicitly state which method to use.
-        /// </summary>
-        public bool UseEnumNames
-        {
-            get { return _useEnumNames; }
-        }
-
-        /// <summary>
-        /// Gets if this <see cref="IValueReader"/> supports using the name field to look up values. If false,
-        /// values will have to be read back in the same order they were written and the name field will be ignored.
-        /// </summary>
-        bool IValueReader.SupportsNameLookup
-        {
-            get { return false; }
         }
 
         /// <summary>

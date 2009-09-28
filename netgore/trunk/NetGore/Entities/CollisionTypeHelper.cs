@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace NetGore
 {
@@ -12,7 +9,10 @@ namespace NetGore
         /// <summary>
         /// Gets the <see cref="CollisionTypeHelper"/> instance.
         /// </summary>
-        public static CollisionTypeHelper Instance { get { return _instance; } }
+        public static CollisionTypeHelper Instance
+        {
+            get { return _instance; }
+        }
 
         /// <summary>
         /// Initializes the <see cref="CollisionTypeHelper"/> class.

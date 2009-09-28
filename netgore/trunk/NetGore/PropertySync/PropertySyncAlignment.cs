@@ -10,6 +10,8 @@ namespace NetGore
     [PropertySyncHandler(typeof(Alignment))]
     public sealed class PropertySyncAlignment : PropertySyncBase<Alignment>
     {
+        static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertySyncAlignment"/> class.
         /// </summary>
@@ -18,8 +20,6 @@ namespace NetGore
         public PropertySyncAlignment(object bindObject, PropertyInfo p) : base(bindObject, p)
         {
         }
-
-        static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
 
         /// <summary>
         /// When overridden in the derived class, reads a value with the specified name from an IValueReader.

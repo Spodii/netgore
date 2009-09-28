@@ -54,7 +54,6 @@ namespace DemoGame
             r.ReadStatCollection(_reqStats);
         }
 
-
         /// <summary>
         /// Writes the ItemInfo to the specified BitStream.
         /// </summary>

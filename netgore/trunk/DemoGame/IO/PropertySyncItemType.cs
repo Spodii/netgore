@@ -11,6 +11,8 @@ namespace DemoGame
     [PropertySyncHandler(typeof(ItemType))]
     public sealed class PropertySyncItemType : PropertySyncBase<ItemType>
     {
+        static readonly ItemTypeHelper _itemTypeHelper = ItemTypeHelper.Instance;
+
         /// <summary>
         /// PropertySyncCollisionType constructor.
         /// </summary>
@@ -19,8 +21,6 @@ namespace DemoGame
         public PropertySyncItemType(object bindObject, PropertyInfo p) : base(bindObject, p)
         {
         }
-
-        static readonly ItemTypeHelper _itemTypeHelper = ItemTypeHelper.Instance;
 
         /// <summary>
         /// When overridden in the derived class, reads a value with the specified name from an IValueReader.

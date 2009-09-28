@@ -27,7 +27,7 @@ namespace DemoGame
         /// Gets the amount of HP the item restores upon use.
         /// </summary>
         SPValueType HP { get; }
-        
+
         /// <summary>
         /// Gets the amount of MP the item restores upon use.
         /// </summary>

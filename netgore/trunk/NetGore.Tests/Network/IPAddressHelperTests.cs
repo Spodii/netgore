@@ -1,3 +1,4 @@
+using System.Linq;
 using NUnit.Framework;
 
 namespace NetGore.Network.Tests

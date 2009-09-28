@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace NetGore.Graphics
 {
@@ -12,7 +9,10 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the <see cref="BackgroundLayerLayoutHelper"/> instance.
         /// </summary>
-        public static BackgroundLayerLayoutHelper Instance { get { return _instance; } }
+        public static BackgroundLayerLayoutHelper Instance
+        {
+            get { return _instance; }
+        }
 
         /// <summary>
         /// Initializes the <see cref="BackgroundLayerLayoutHelper"/> class.

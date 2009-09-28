@@ -11,7 +11,10 @@ namespace NetGore
         /// <summary>
         /// Gets the <see cref="AlignmentHelper"/> instance.
         /// </summary>
-        public static AlignmentHelper Instance { get { return _instance; } }
+        public static AlignmentHelper Instance
+        {
+            get { return _instance; }
+        }
 
         /// <summary>
         /// Initializes the <see cref="AlignmentHelper"/> class.
@@ -26,26 +29,6 @@ namespace NetGore
         /// </summary>
         AlignmentHelper()
         {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, casts an int to type <see cref="Alignment"/>.
-        /// </summary>
-        /// <param name="value">The int value.</param>
-        /// <returns>The <paramref name="value"/> casted to type <see cref="Alignment"/>.</returns>
-        protected override Alignment FromInt(int value)
-        {
-            return (Alignment)value;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, casts type <see cref="Alignment"/> to an int.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The <paramref name="value"/> casted to an int.</returns>
-        protected override int ToInt(Alignment value)
-        {
-            return (int)value;
         }
 
         public static Vector2 FindOffset(Alignment alignment, Vector2 itemSize, Vector2 targetSize)
@@ -91,6 +74,26 @@ namespace NetGore
             Vector2 offset = FindOffset(alignment, itemSize, regionSize);
 
             return offset + min;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, casts an int to type <see cref="Alignment"/>.
+        /// </summary>
+        /// <param name="value">The int value.</param>
+        /// <returns>The <paramref name="value"/> casted to type <see cref="Alignment"/>.</returns>
+        protected override Alignment FromInt(int value)
+        {
+            return (Alignment)value;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, casts type <see cref="Alignment"/> to an int.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The <paramref name="value"/> casted to an int.</returns>
+        protected override int ToInt(Alignment value)
+        {
+            return (int)value;
         }
     }
 }

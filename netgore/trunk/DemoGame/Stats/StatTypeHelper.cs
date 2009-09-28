@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore;
@@ -12,7 +11,18 @@ namespace DemoGame
         /// <summary>
         /// Gets the <see cref="StatTypeHelper"/> instance.
         /// </summary>
-        public static StatTypeHelper Instance { get { return _instance; } }
+        public static StatTypeHelper Instance
+        {
+            get { return _instance; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all of the <see cref="StatType"/>s who's base value can be raised by a Character.
+        /// </summary>
+        public static IEnumerable<StatType> RaisableStats
+        {
+            get { return Values; }
+        }
 
         /// <summary>
         /// Initializes the <see cref="StatTypeHelper"/> class.
@@ -47,14 +57,6 @@ namespace DemoGame
         protected override int ToInt(StatType value)
         {
             return (int)value;
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of all of the <see cref="StatType"/>s who's base value can be raised by a Character.
-        /// </summary>
-        public static IEnumerable<StatType> RaisableStats
-        {
-            get { return Values; }
         }
     }
 }

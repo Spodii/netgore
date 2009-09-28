@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using NetGore;
 
@@ -12,7 +10,10 @@ namespace DemoGame
         /// <summary>
         /// Gets the <see cref="EquipmentSlotHelper"/> instance.
         /// </summary>
-        public static EquipmentSlotHelper Instance { get { return _instance; } }
+        public static EquipmentSlotHelper Instance
+        {
+            get { return _instance; }
+        }
 
         /// <summary>
         /// Initializes the <see cref="EquipmentSlotHelper"/> class.

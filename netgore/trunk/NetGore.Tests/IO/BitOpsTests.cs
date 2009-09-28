@@ -8,6 +8,16 @@ namespace NetGore.IO.Tests
     public class BitOpsTests
     {
         [Test]
+        public void BitsRequiredTest()
+        {
+            for (uint i = 0; i < 1200; i++)
+            {
+                int req = BitOps.RequiredBits(i);
+                Assert.Greater(1 << req, i, "i: " + i);
+            }
+        }
+
+        [Test]
         public void CountBitsTest()
         {
             const string errDetails = "Value: {0}    Type: {1}";
@@ -205,16 +215,6 @@ namespace NetGore.IO.Tests
                     if (i != bitsSet)
                         Assert.AreNotEqual(BitOps.CountBits(value), i, details);
                 }
-            }
-        }
-
-        [Test]
-        public void BitsRequiredTest()
-        {
-            for (uint i = 0; i < 1200; i++)
-            {
-                int req = BitOps.RequiredBits(i);
-                Assert.Greater(1 << req, i, "i: " + i);
             }
         }
 

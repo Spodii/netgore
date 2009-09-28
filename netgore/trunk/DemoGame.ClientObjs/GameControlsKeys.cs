@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using NetGore.Graphics.GUI;
 
@@ -12,33 +9,60 @@ namespace DemoGame.Client
     /// </summary>
     public static class GameControlsKeys
     {
+        static readonly GameControlKeys _attack;
         static readonly GameControlKeys _jump;
         static readonly GameControlKeys _moveLeft;
         static readonly GameControlKeys _moveRight;
-        static readonly GameControlKeys _attack;
         static readonly GameControlKeys _moveStop;
-        static readonly GameControlKeys _useWorld;
-        static readonly GameControlKeys _useShop;
-        static readonly GameControlKeys _talkToNPC;
         static readonly GameControlKeys _pickUp;
+        static readonly GameControlKeys _talkToNPC;
+        static readonly GameControlKeys _useShop;
+        static readonly GameControlKeys _useWorld;
 
-        public static GameControlKeys Jump { get { return _jump; } }
+        public static GameControlKeys Attack
+        {
+            get { return _attack; }
+        }
 
-        public static GameControlKeys MoveLeft { get { return _moveLeft; } }
+        public static GameControlKeys Jump
+        {
+            get { return _jump; }
+        }
 
-        public static GameControlKeys MoveRight { get { return _moveRight; } }
+        public static GameControlKeys MoveLeft
+        {
+            get { return _moveLeft; }
+        }
 
-        public static GameControlKeys Attack { get { return _attack; } }
+        public static GameControlKeys MoveRight
+        {
+            get { return _moveRight; }
+        }
 
-        public static GameControlKeys MoveStop { get { return _moveStop; } }
+        public static GameControlKeys MoveStop
+        {
+            get { return _moveStop; }
+        }
 
-        public static GameControlKeys UseWorld { get { return _useWorld; } }
+        public static GameControlKeys PickUp
+        {
+            get { return _pickUp; }
+        }
 
-        public static GameControlKeys UseShop { get { return _useShop; } }
+        public static GameControlKeys TalkToNPC
+        {
+            get { return _talkToNPC; }
+        }
 
-        public static GameControlKeys TalkToNPC { get { return _talkToNPC; } }
+        public static GameControlKeys UseShop
+        {
+            get { return _useShop; }
+        }
 
-        public static GameControlKeys PickUp { get { return _pickUp; } }
+        public static GameControlKeys UseWorld
+        {
+            get { return _useWorld; }
+        }
 
         /// <summary>
         /// Initializes the <see cref="GameControlsKeys"/> class.

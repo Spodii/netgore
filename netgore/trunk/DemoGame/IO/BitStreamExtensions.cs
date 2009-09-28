@@ -14,7 +14,23 @@ namespace DemoGame
     /// </summary>
     public static class BitStreamExtensions
     {
+        static readonly int _clientPacketIDBits;
+        static readonly int _serverPacketIDBits;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Initializes the <see cref="BitStreamExtensions"/> class.
+        /// </summary>
+        static BitStreamExtensions()
+        {
+            _clientPacketIDBits = ClientPacketIDHelper.Instance.BitsRequired;
+            _serverPacketIDBits = ServerPacketIDHelper.Instance.BitsRequired;
+
+            if (_clientPacketIDBits <= 0)
+                throw new Exception("Invalid required bit amount on ClientPacketIDBits: " + _clientPacketIDBits);
+            if (_serverPacketIDBits <= 0)
+                throw new Exception("Invalid required bit amount on ServerPacketIDBits: " + _serverPacketIDBits);
+        }
 
         /// <summary>
         /// Reads a GameMessage from the BitStream.
@@ -225,23 +241,6 @@ namespace DemoGame
             // Write as a byte instead of using the enum I/O due to the way the packet ID manager works
             byte value = (byte)serverPacketID;
             bitStream.Write(value, _serverPacketIDBits);
-        }
-
-        static readonly int _clientPacketIDBits;
-        static readonly int _serverPacketIDBits;
-
-        /// <summary>
-        /// Initializes the <see cref="BitStreamExtensions"/> class.
-        /// </summary>
-        static BitStreamExtensions()
-        {
-            _clientPacketIDBits = ClientPacketIDHelper.Instance.BitsRequired;
-            _serverPacketIDBits = ServerPacketIDHelper.Instance.BitsRequired;
-
-            if (_clientPacketIDBits <= 0)
-                throw new Exception("Invalid required bit amount on ClientPacketIDBits: " + _clientPacketIDBits);
-            if (_serverPacketIDBits <= 0)
-                throw new Exception("Invalid required bit amount on ServerPacketIDBits: " + _serverPacketIDBits);
         }
 
         /// <summary>

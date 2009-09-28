@@ -12,6 +12,8 @@ namespace NetGore.Graphics
     /// </summary>
     public class BackgroundLayer : BackgroundImage
     {
+        static readonly BackgroundLayerLayoutHelper _backgroundLayerLayoutHelper = BackgroundLayerLayoutHelper.Instance;
+
         /// <summary>
         /// Gets or sets how the image is drawn on the horizontal axis. Default is Stretched.
         /// </summary>
@@ -94,8 +96,6 @@ namespace NetGore.Graphics
         {
             return cameraSize + ((targetSize - cameraSize) / depth);
         }
-
-        static readonly BackgroundLayerLayoutHelper _backgroundLayerLayoutHelper = BackgroundLayerLayoutHelper.Instance;
 
         public override void Write(IValueWriter writer)
         {

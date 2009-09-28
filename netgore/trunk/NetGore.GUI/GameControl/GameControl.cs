@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Input;
 
@@ -16,34 +15,10 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class GameControl
     {
-        int _lastInvokeTime;
         int _delay;
-        bool _isEnabled = true;
         GameControlKeys _gckeys;
-
-        /// <summary>
-        /// Gets or sets the <see cref="GameControlKeys"/> used for this <see cref="GameControl"/>. Cannot be null.
-        /// </summary>
-        public GameControlKeys GameControlKeys
-        {
-            get { return _gckeys; }
-            set
-            {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                _gckeys = value;
-            }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="GameControl"/> class.
-        /// </summary>
-        /// <param name="keys">The GameControlKeys.</param>
-        public GameControl(GameControlKeys keys)
-        {
-            GameControlKeys = keys;
-        }
+        bool _isEnabled = true;
+        int _lastInvokeTime;
 
         /// <summary>
         /// Notifies listeners that this <see cref="GameControl"/>'s key state requirements match the current key
@@ -77,6 +52,21 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets or sets the <see cref="GameControlKeys"/> used for this <see cref="GameControl"/>. Cannot be null.
+        /// </summary>
+        public GameControlKeys GameControlKeys
+        {
+            get { return _gckeys; }
+            set
+            {
+                if (value == null)
+                    throw new ArgumentNullException("value");
+
+                _gckeys = value;
+            }
+        }
+
+        /// <summary>
         /// Gets or sets if the <see cref="GameControl"/> is enabled. If false, <see cref="OnInvoke"/> will never
         /// be raised.
         /// </summary>
@@ -84,6 +74,15 @@ namespace NetGore.Graphics.GUI
         {
             get { return _isEnabled; }
             set { _isEnabled = value; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GameControl"/> class.
+        /// </summary>
+        /// <param name="keys">The GameControlKeys.</param>
+        public GameControl(GameControlKeys keys)
+        {
+            GameControlKeys = keys;
         }
 
         /// <summary>
@@ -96,7 +95,7 @@ namespace NetGore.Graphics.GUI
             // Ensure the object is enabled and there is an invoke handler before checking the key states
             if (!IsEnabled || OnInvoke == null)
                 return;
-            
+
             // Check that enough time has elapsed since the last invoke
             if (currentTime - _lastInvokeTime < Delay)
                 return;
@@ -127,7 +126,7 @@ namespace NetGore.Graphics.GUI
                 if (!gui.NewKeysUp.Contains(key))
                     return;
             }
-            
+
             // Check additional requirements
             if (AdditionalRequirements == null || !AdditionalRequirements())
                 return;
