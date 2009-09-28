@@ -58,6 +58,8 @@
     <Compile Include="FilePathString.cs" />
     <Compile Include="ValueReaderWriter\BinaryValueReader.cs" />
     <Compile Include="ValueReaderWriter\BinaryValueWriter.cs" />
+    <Compile Include="ValueReaderWriter\IEnumReader.cs" />
+    <Compile Include="ValueReaderWriter\IEnumWriter.cs" />
     <Compile Include="ValueReaderWriter\IValueReader.cs" />
     <Compile Include="ValueReaderWriter\IValueWriter.cs" />
     <Compile Include="MessageCollectionBase.cs" />
