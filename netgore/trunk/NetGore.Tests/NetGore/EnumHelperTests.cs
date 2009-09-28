@@ -286,14 +286,14 @@ namespace NetGore.Tests
 
             for (int j = 0; j < testValues.Length; j++)
             {
-                i.Write(bs, testValues[j]);
+                i.WriteValue(bs, testValues[j]);
             }
 
             bs.Mode = BitStreamMode.Read;
 
             for (int j = 0; j < testValues.Length; j++)
             {
-                Assert.AreEqual(testValues[j], i.Read(bs));
+                Assert.AreEqual(testValues[j], i.ReadValue(bs));
             }
         }
 
@@ -306,14 +306,14 @@ namespace NetGore.Tests
 
             for (int j = 0; j < testValues.Length; j++)
             {
-                i.Write(bs, testValues[j]);
+                i.WriteValue(bs, testValues[j]);
             }
 
             bs.Mode = BitStreamMode.Read;
 
             for (int j = 0; j < testValues.Length; j++)
             {
-                Assert.AreEqual(testValues[j], i.Read(bs));
+                Assert.AreEqual(testValues[j], i.ReadValue(bs));
             }
         }
 
@@ -326,14 +326,14 @@ namespace NetGore.Tests
 
             for (int j = 0; j < testValues.Length; j++)
             {
-                i.Write(bs, testValues[j]);
+                i.WriteValue(bs, testValues[j]);
             }
 
             bs.Mode = BitStreamMode.Read;
 
             for (int j = 0; j < testValues.Length; j++)
             {
-                Assert.AreEqual(testValues[j], i.Read(bs));
+                Assert.AreEqual(testValues[j], i.ReadValue(bs));
             }
         }
 
@@ -346,14 +346,14 @@ namespace NetGore.Tests
 
             for (int j = 0; j < testValues.Length; j++)
             {
-                i.Write(bs, testValues[j]);
+                i.WriteValue(bs, testValues[j]);
             }
 
             bs.Mode = BitStreamMode.Read;
 
             for (int j = 0; j < testValues.Length; j++)
             {
-                Assert.AreEqual(testValues[j], i.Read(bs));
+                Assert.AreEqual(testValues[j], i.ReadValue(bs));
             }
         }
 
@@ -447,14 +447,14 @@ namespace NetGore.Tests
 
             for (int j = 0; j < testValues.Length; j++)
             {
-                i.Write(bs, testValues[j]);
+                i.WriteValue(bs, testValues[j]);
             }
 
             bs.Mode = BitStreamMode.Read;
 
             for (int j = 0; j < testValues.Length; j++)
             {
-                Assert.AreEqual(testValues[j], i.Read(bs));
+                Assert.AreEqual(testValues[j], i.ReadValue(bs));
             }
         }
     }

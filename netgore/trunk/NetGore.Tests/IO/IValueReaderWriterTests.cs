@@ -502,6 +502,150 @@ namespace NetGore.IO.Tests
             return sb.ToString();
         }
 
+        enum TestEnum
+        {
+            A = -100, B, Cee = 0, Dee, Eeie, Effffuh, G, Ayche = 100
+        }
+
+        [Test]
+        public void TestEnumNameWithoutNameLookup()
+        {
+            TestEnum[] values = new TestEnum[] { TestEnum.A, TestEnum.Dee, TestEnum.Eeie, TestEnum.Cee, TestEnum.Eeie, TestEnum.Ayche, TestEnum.B, TestEnum.B, TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee };
+
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                            w.WriteEnumName(GetValueKey(i), values[i]);
+                    }
+
+                    IValueReader r = creator.GetReader();
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                            Assert.AreEqual(values[i], r.ReadEnumName<TestEnum>(GetValueKey(i)));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void TestEnumNameWithNameLookup()
+        {
+            TestEnum[] values = new TestEnum[] { TestEnum.A, TestEnum.Dee, TestEnum.Eeie, TestEnum.Cee, TestEnum.Eeie, TestEnum.Ayche, TestEnum.B, TestEnum.B, TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee };
+
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    if (!creator.SupportsNameLookup)
+                        continue;
+
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                            w.WriteEnumName(GetValueKey(i), values[i]);
+                    }
+
+                    IValueReader r = creator.GetReader();
+                    {
+                        Assert.AreEqual(values[3], r.ReadEnumName<TestEnum>(GetValueKey(3)));
+                        Assert.AreEqual(values[5], r.ReadEnumName<TestEnum>(GetValueKey(5)));
+                        Assert.AreEqual(values[0], r.ReadEnumName<TestEnum>(GetValueKey(0)));
+                        Assert.AreEqual(values[1], r.ReadEnumName<TestEnum>(GetValueKey(1)));
+                        Assert.AreEqual(values[3], r.ReadEnumName<TestEnum>(GetValueKey(3)));
+                        Assert.AreEqual(values[5], r.ReadEnumName<TestEnum>(GetValueKey(5)));
+                        Assert.AreEqual(values[4], r.ReadEnumName<TestEnum>(GetValueKey(4)));
+                        Assert.AreEqual(values[4], r.ReadEnumName<TestEnum>(GetValueKey(4)));
+                    }
+                }
+            }
+        }
+
+        [Test]
+        public void TestEnumValuesWithNameLookup()
+        {
+            TestEnum[] values = new TestEnum[] { TestEnum.A, TestEnum.Dee, TestEnum.Eeie, TestEnum.Cee, TestEnum.Eeie, TestEnum.Ayche, TestEnum.B, TestEnum.B, TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee };
+            var enumHelper = new TestEnumHelper();
+
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    if (!creator.SupportsNameLookup)
+                        continue;
+
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                            w.WriteEnumValue(enumHelper, GetValueKey(i), values[i]);
+                    }
+
+                    IValueReader r = creator.GetReader();
+                    {
+                        Assert.AreEqual(values[3], r.ReadEnumValue(enumHelper, GetValueKey(3)));
+                        Assert.AreEqual(values[5], r.ReadEnumValue(enumHelper, GetValueKey(5)));
+                        Assert.AreEqual(values[0], r.ReadEnumValue(enumHelper, GetValueKey(0)));
+                        Assert.AreEqual(values[1], r.ReadEnumValue(enumHelper, GetValueKey(1)));
+                        Assert.AreEqual(values[3], r.ReadEnumValue(enumHelper, GetValueKey(3)));
+                        Assert.AreEqual(values[5], r.ReadEnumValue(enumHelper, GetValueKey(5)));
+                        Assert.AreEqual(values[4], r.ReadEnumValue(enumHelper, GetValueKey(4)));
+                        Assert.AreEqual(values[4], r.ReadEnumValue(enumHelper, GetValueKey(4)));
+                    }
+                }
+            }
+        }
+
+        class TestEnumHelper : EnumHelper<TestEnum>
+        {
+            /// <summary>
+            /// When overridden in the derived class, casts an int to type TestEnum.
+            /// </summary>
+            /// <param name="value">The int value.</param>
+            /// <returns>The <paramref name="value"/> casted to type TestEnum.</returns>
+            protected override TestEnum FromInt(int value)
+            {
+                return (TestEnum)value;
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, casts type TestEnum to an int.
+            /// </summary>
+            /// <param name="value">The value.</param>
+            /// <returns>The <paramref name="value"/> casted to an int.</returns>
+            protected override int ToInt(TestEnum value)
+            {
+                return (int)value;
+            }
+        }
+
+        [Test]
+        public void TestEnumValueWithoutNameLookup()
+        {
+            TestEnum[] values = new TestEnum[] { TestEnum.A, TestEnum.Dee, TestEnum.Eeie, TestEnum.Cee, TestEnum.Eeie, TestEnum.Ayche, TestEnum.B, TestEnum.B, TestEnum.Cee, TestEnum.G, TestEnum.Effffuh, TestEnum.A, TestEnum.B, TestEnum.Cee };
+            var enumHelper = new TestEnumHelper();
+
+            foreach (CreateCreatorHandler createCreator in _createCreators)
+            {
+                using (ReaderWriterCreatorBase creator = createCreator())
+                {
+                    using (IValueWriter w = creator.GetWriter())
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                            w.WriteEnumValue(enumHelper, GetValueKey(i), values[i]);
+                    }
+
+                    IValueReader r = creator.GetReader();
+                    {
+                        for (int i = 0; i < values.Length; i++)
+                            Assert.AreEqual(values[i], r.ReadEnumValue(enumHelper, GetValueKey(i)));
+                    }
+                }
+            }
+        }
+
         [Test]
         public void TestBools()
         {

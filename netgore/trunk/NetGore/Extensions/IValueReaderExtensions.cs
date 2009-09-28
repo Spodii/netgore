@@ -71,6 +71,7 @@ namespace NetGore
         /// <param name="reader">IValueReader to read from.</param>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
+        [Obsolete]
         public static T ReadEnum<T>(this IValueReader reader, string name) where T : struct, IComparable, IConvertible, IFormattable
         {
             if (!typeof(T).IsEnum)

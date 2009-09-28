@@ -7,7 +7,7 @@ namespace NetGore.IO
     /// Interface for a class that can read enum values from an <see cref="IValueReader"/>.
     /// </summary>
     /// <typeparam name="T">The Type of Enum.</typeparam>
-    public interface IEnumReader<T> where T : struct, IComparable, IConvertible, IFormattable
+    public interface IEnumValueReader<T> where T : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
         /// Reads a value of type <typeparamref name="T"/> from the given <paramref name="reader"/>.

@@ -189,6 +189,7 @@ namespace NetGore
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
+        [Obsolete]
         public static void WriteEnum<T>(this IValueWriter writer, string name, T value)
         {
             if (!typeof(T).IsEnum)

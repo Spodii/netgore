@@ -7,7 +7,7 @@ namespace NetGore.IO
     /// Interface for a class that can write enum values to an <see cref="IValueWriter"/>.
     /// </summary>
     /// <typeparam name="T">The Type of Enum.</typeparam>
-    public interface IEnumWriter<T> where T : struct, IComparable, IConvertible, IFormattable
+    public interface IEnumValueWriter<T> where T : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
         /// Writes an Enum of type <typeparamref name="T"/> to the given <paramref name="writer"/>.
