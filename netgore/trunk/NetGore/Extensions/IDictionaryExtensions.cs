@@ -266,7 +266,7 @@ namespace NetGore
         /// <returns>The value at the given <paramref name="key"/> parsed as a GrhIndex.</returns>
         public static TEnum AsEnum<T, TEnum>(this IDictionary<T, string> dict, T key) where TEnum : struct, IComparable, IConvertible, IFormattable
         {
-            return EnumHelper.Parse<TEnum>(dict[key]);
+            return EnumHelper<TEnum>.Parse(dict[key]);
         }
 
         /// <summary>
@@ -290,8 +290,8 @@ namespace NetGore
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
 
-            TEnum enumValue = EnumHelper.Parse<TEnum>(value);
-            if (!EnumHelper.IsDefined(enumValue))
+            TEnum enumValue = EnumHelper<TEnum>.Parse(value);
+            if (!EnumHelper<TEnum>.IsDefined(enumValue))
                 return defaultValue;
 
             return enumValue;

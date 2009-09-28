@@ -132,7 +132,6 @@
     <Compile Include="StatusEffect\StatusEffectBase.cs" />
     <Compile Include="StatusEffect\StatusEffectMergeType.cs" />
     <Compile Include="StatusEffect\StatusEffectType.cs" />
-    <Compile Include="StatusEffect\StatusEffectTypeExtensions.cs" />
     <Compile Include="StatusEffect\StatusEffectTypeHelper.cs" />
     <Compile Include="WorldBase.cs" />
   </ItemGroup>

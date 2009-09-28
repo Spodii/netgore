@@ -1,12 +1,14 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore;
 
 namespace DemoGame
 {
+    [Obsolete]
     public static class EquipmentSlotHelper
     {
-        static readonly EquipmentSlot[] _allValues = EnumHelper.GetValues<EquipmentSlot>();
+        static readonly EquipmentSlot[] _allValues = EnumHelper<EquipmentSlot>.Values.ToArray();
         static readonly int _greatestValue = AllValues.Select(x => x.GetValue()).Max();
 
         /// <summary>

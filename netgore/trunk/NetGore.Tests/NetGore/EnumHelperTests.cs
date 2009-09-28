@@ -1,13 +1,222 @@
 using System;
 using System.Linq;
+using NetGore.IO;
 using NUnit.Framework;
+
+// ReSharper disable UnusedMember.Local
 
 namespace NetGore.Tests
 {
     [TestFixture]
     public class EnumHelperTests
     {
-        // ReSharper disable UnusedMember.Local
+        enum EVByte : byte
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G,
+            H
+        }
+
+        class EVHByte : EnumHelper<EVByte>
+        {
+            static readonly EVHByte _instance;
+
+            public static EVHByte Instance
+            {
+                get { return _instance; }
+            }
+
+            static EVHByte()
+            {
+                _instance = new EVHByte();
+            }
+
+            EVHByte()
+            {
+            }
+
+            protected override EVByte FromInt(int value)
+            {
+                return (EVByte)value;
+            }
+
+            protected override int ToInt(EVByte value)
+            {
+                return (int)value;
+            }
+        }
+
+        enum EVSByte : byte
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G,
+            H
+        }
+
+        class EVHSByte : EnumHelper<EVSByte>
+        {
+            static readonly EVHSByte _instance;
+
+            public static EVHSByte Instance
+            {
+                get { return _instance; }
+            }
+
+            static EVHSByte()
+            {
+                _instance = new EVHSByte();
+            }
+
+            EVHSByte()
+            {
+            }
+
+            protected override EVSByte FromInt(int value)
+            {
+                return (EVSByte)value;
+            }
+
+            protected override int ToInt(EVSByte value)
+            {
+                return (int)value;
+            }
+        }
+
+        enum EVShort : byte
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G,
+            H
+        }
+
+        class EVHShort : EnumHelper<EVShort>
+        {
+            static readonly EVHShort _instance;
+
+            public static EVHShort Instance
+            {
+                get { return _instance; }
+            }
+
+            static EVHShort()
+            {
+                _instance = new EVHShort();
+            }
+
+            EVHShort()
+            {
+            }
+
+            protected override EVShort FromInt(int value)
+            {
+                return (EVShort)value;
+            }
+
+            protected override int ToInt(EVShort value)
+            {
+                return (int)value;
+            }
+        }
+
+        enum EVUShort : byte
+        {
+            A,
+            B,
+            C,
+            D,
+            E,
+            F,
+            G,
+            H
+        }
+
+        class EVHUShort : EnumHelper<EVUShort>
+        {
+            static readonly EVHUShort _instance;
+
+            public static EVHUShort Instance
+            {
+                get { return _instance; }
+            }
+
+            static EVHUShort()
+            {
+                _instance = new EVHUShort();
+            }
+
+            EVHUShort()
+            {
+            }
+
+            protected override EVUShort FromInt(int value)
+            {
+                return (EVUShort)value;
+            }
+
+            protected override int ToInt(EVUShort value)
+            {
+                return (int)value;
+            }
+        }
+
+        class EVHInt : EnumHelper<EVInt>
+        {
+            static readonly EVHInt _instance;
+
+            public static EVHInt Instance
+            {
+                get { return _instance; }
+            }
+
+            static EVHInt()
+            {
+                _instance = new EVHInt();
+            }
+
+            EVHInt()
+            {
+            }
+
+            protected override EVInt FromInt(int value)
+            {
+                return (EVInt)value;
+            }
+
+            protected override int ToInt(EVInt value)
+            {
+                return (int)value;
+            }
+        }
+
+        enum EVInt
+        {
+            A = -100,
+            B = 0,
+            C,
+            D,
+            E,
+            F = 100,
+            G,
+            H
+        }
+
+        const int _initialBufferSize = 512;
+
         enum TestEnum
         {
             A,
@@ -23,8 +232,6 @@ namespace NetGore.Tests
             lmno,
             p
         }
-
-        // ReSharper restore UnusedMember.Local
 
         static readonly Random r = new Random();
 
@@ -71,6 +278,86 @@ namespace NetGore.Tests
         }
 
         [Test]
+        public void ByteIOTest()
+        {
+            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
+            EVHByte i = EVHByte.Instance;
+            var testValues = new EVByte[] { EVByte.A, EVByte.D, EVByte.H, EVByte.C, EVByte.A, EVByte.B, EVByte.B };
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                i.Write(bs, testValues[j]);
+            }
+
+            bs.Mode = BitStreamMode.Read;
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                Assert.AreEqual(testValues[j], i.Read(bs));
+            }
+        }
+
+        [Test]
+        public void IntIOTest()
+        {
+            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
+            EVHInt i = EVHInt.Instance;
+            var testValues = new EVInt[] { EVInt.A, EVInt.D, EVInt.H, EVInt.C, EVInt.A, EVInt.B, EVInt.B };
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                i.Write(bs, testValues[j]);
+            }
+
+            bs.Mode = BitStreamMode.Read;
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                Assert.AreEqual(testValues[j], i.Read(bs));
+            }
+        }
+
+        [Test]
+        public void SByteIOTest()
+        {
+            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
+            EVHSByte i = EVHSByte.Instance;
+            var testValues = new EVSByte[] { EVSByte.A, EVSByte.D, EVSByte.H, EVSByte.C, EVSByte.A, EVSByte.B, EVSByte.B };
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                i.Write(bs, testValues[j]);
+            }
+
+            bs.Mode = BitStreamMode.Read;
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                Assert.AreEqual(testValues[j], i.Read(bs));
+            }
+        }
+
+        [Test]
+        public void ShortIOTest()
+        {
+            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
+            EVHShort i = EVHShort.Instance;
+            var testValues = new EVShort[] { EVShort.A, EVShort.D, EVShort.H, EVShort.C, EVShort.A, EVShort.B, EVShort.B };
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                i.Write(bs, testValues[j]);
+            }
+
+            bs.Mode = BitStreamMode.Read;
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                Assert.AreEqual(testValues[j], i.Read(bs));
+            }
+        }
+
+        [Test]
         public void TryParseCaseInsensitiveTests()
         {
             var names = Enum.GetNames(typeof(TestEnum));
@@ -78,24 +365,24 @@ namespace NetGore.Tests
             foreach (string name in names)
             {
                 TestEnum outValue;
-                Assert.IsTrue(EnumHelper.TryParse(name, true, out outValue));
-                Assert.AreEqual(EnumHelper.Parse<TestEnum>(name), outValue);
+                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
+                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name), outValue);
                 Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, true), outValue);
             }
 
             foreach (string name in names.Select(x => x.ToUpper()))
             {
                 TestEnum outValue;
-                Assert.IsTrue(EnumHelper.TryParse(name, true, out outValue));
-                Assert.AreEqual(EnumHelper.Parse<TestEnum>(name, true), outValue);
+                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
+                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name, true), outValue);
                 Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, true), outValue);
             }
 
             foreach (string name in names.Select(x => x.ToLower()))
             {
                 TestEnum outValue;
-                Assert.IsTrue(EnumHelper.TryParse(name, true, out outValue));
-                Assert.AreEqual(EnumHelper.Parse<TestEnum>(name, true), outValue);
+                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, true, out outValue));
+                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name, true), outValue);
                 Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, true), outValue);
             }
         }
@@ -108,8 +395,8 @@ namespace NetGore.Tests
             foreach (string name in names)
             {
                 TestEnum outValue;
-                Assert.IsTrue(EnumHelper.TryParse(name, false, out outValue));
-                Assert.AreEqual(EnumHelper.Parse<TestEnum>(name, false), outValue);
+                Assert.IsTrue(EnumHelper<TestEnum>.TryParse(name, false, out outValue));
+                Assert.AreEqual(EnumHelper<TestEnum>.Parse(name, false), outValue);
                 Assert.AreEqual((TestEnum)Enum.Parse(typeof(TestEnum), name, false), outValue);
             }
 
@@ -120,7 +407,7 @@ namespace NetGore.Tests
                     continue;
 
                 TestEnum outValue;
-                Assert.IsFalse(EnumHelper.TryParse(nameUpper, false, out outValue));
+                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(nameUpper, false, out outValue));
             }
 
             foreach (string name in names)
@@ -130,7 +417,7 @@ namespace NetGore.Tests
                     continue;
 
                 TestEnum outValue;
-                Assert.IsFalse(EnumHelper.TryParse(nameLower, false, out outValue));
+                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(nameLower, false, out outValue));
             }
         }
 
@@ -139,15 +426,35 @@ namespace NetGore.Tests
         {
             var names = Enum.GetNames(typeof(TestEnum));
 
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 5000; i++)
             {
                 string s = CreateRandomString();
-                if (names.Contains(s))
+                if (names.Contains(s, StringComparer.OrdinalIgnoreCase))
                     continue;
 
                 TestEnum outValue;
-                Assert.IsFalse(EnumHelper.TryParse(s, true, out outValue));
-                Assert.IsFalse(EnumHelper.TryParse(s, false, out outValue));
+                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(s, true, out outValue), "String: " + s);
+                Assert.IsFalse(EnumHelper<TestEnum>.TryParse(s, false, out outValue), "String: " + s);
+            }
+        }
+
+        [Test]
+        public void UShortIOTest()
+        {
+            BitStream bs = new BitStream(BitStreamMode.Write, _initialBufferSize);
+            EVHUShort i = EVHUShort.Instance;
+            var testValues = new EVUShort[] { EVUShort.A, EVUShort.D, EVUShort.H, EVUShort.C, EVUShort.A, EVUShort.B, EVUShort.B };
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                i.Write(bs, testValues[j]);
+            }
+
+            bs.Mode = BitStreamMode.Read;
+
+            for (int j = 0; j < testValues.Length; j++)
+            {
+                Assert.AreEqual(testValues[j], i.Read(bs));
             }
         }
     }

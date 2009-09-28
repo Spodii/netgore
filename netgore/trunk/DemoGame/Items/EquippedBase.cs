@@ -241,7 +241,7 @@ namespace DemoGame
         bool TrySetSlot(EquipmentSlot slot, T item, bool checkIfCanEquip)
         {
             // Check for a valid EquipmentSlot
-            if (!slot.IsDefined())
+            if (!EnumHelper<EquipmentSlot>.IsDefined(slot))
             {
                 const string errmsg = "Invalid EquipmentSlot `{0}` specified.";
                 if (log.IsErrorEnabled)

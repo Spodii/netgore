@@ -173,7 +173,7 @@ namespace NetGore.NPCChat.Conditionals
             byte valueTypeValue = reader.ReadByte("ValueType");
             NPCChatConditionalParameterType valueType = (NPCChatConditionalParameterType)valueTypeValue;
 
-            if (!EnumHelper.IsDefined(valueType))
+            if (!EnumHelper < NPCChatConditionalParameterType>.IsDefined(valueType))
                 throw new Exception(string.Format("Invalid NPCChatConditionalParameterType `{0}`.", valueType));
 
             // Create the parameter and read the value

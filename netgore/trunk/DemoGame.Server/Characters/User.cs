@@ -357,7 +357,7 @@ namespace DemoGame.Server
         public void SendEquipmentItemStats(EquipmentSlot slot)
         {
             // Check for a valid slot
-            if (!slot.IsDefined())
+            if (!EnumHelper<EquipmentSlot>.IsDefined(slot))
             {
                 const string errmsg = "User `{0}` attempted to access invalid equipment slot `{1}`.";
                 Debug.Fail(string.Format(errmsg, this, slot));

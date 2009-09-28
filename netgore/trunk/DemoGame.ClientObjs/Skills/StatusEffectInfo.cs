@@ -41,7 +41,7 @@ namespace DemoGame.Client
 
         static StatusEffectInfo()
         {
-            _infoManager.AddMissingTypes(StatusEffectTypeHelper.AllValues,
+            _infoManager.AddMissingTypes(EnumHelper<StatusEffectType>.Values,
                                          x =>
                                          new StatusEffectInfo
                                          { StatusEffectType = x, Name = x.ToString(), Description = string.Empty });

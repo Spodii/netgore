@@ -12,7 +12,7 @@ namespace DemoGame.Server.Queries
     {
         static void CheckIfDefined<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            if (!EnumHelper.IsDefined(value))
+            if (!EnumHelper<T>.IsDefined(value))
                 throw new InvalidCastException(string.Format("Value `{0}` is not defined for enum `{1}`.", value, typeof(T)));
         }
 

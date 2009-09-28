@@ -77,7 +77,7 @@ namespace NetGore
                 throw new MethodAccessException("Generic type parameter T must be an enum.");
 
             string str = reader.ReadString(name);
-            T value = EnumHelper.Parse<T>(str);
+            T value = EnumHelper<T>.Parse(str);
             return value;
         }
 
