@@ -74,13 +74,21 @@ namespace NetGore.IO
         int ReadInt(string name);
 
         /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/>.
+        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's value instead of the name.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
         /// <param name="reader">The reader used to read the enum.</param>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
-        T ReadEnum<T>(IEnumReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable;
+        T ReadEnumValue<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable;
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable;
 
         /// <summary>
         /// Reads a signed integer of up to 32 bits.

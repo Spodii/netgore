@@ -66,9 +66,22 @@ namespace NetGore.IO
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnum<T>(IEnumWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        public void WriteEnumValue<T>(IEnumValueWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
             writer.WriteEnum(this, name, value);
+        }
+
+        /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/> using the name of the Enum instead of the value.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void WriteEnumName<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            string str = EnumIOHelper.ToName(value);
+            Write(name, str);
         }
 
         /// <summary>
