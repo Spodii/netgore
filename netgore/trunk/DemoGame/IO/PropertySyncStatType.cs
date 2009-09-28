@@ -28,8 +28,10 @@ namespace DemoGame
         /// <returns>Value read from the IValueReader.</returns>
         protected override StatType Read(string name, IValueReader reader)
         {
-            return reader.ReadEnumName<StatType>(name);
+            return reader.ReadEnum(_statTypeHelper, name);
         }
+
+        static readonly StatTypeHelper _statTypeHelper = StatTypeHelper.Instance;
 
         /// <summary>
         /// When overridden in the derived class, writes a value to an IValueWriter with the specified name.
@@ -39,7 +41,7 @@ namespace DemoGame
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, StatType value)
         {
-            writer.WriteEnumName(name, value);
+            writer.WriteEnum(_statTypeHelper, name, value);
         }
     }
 }

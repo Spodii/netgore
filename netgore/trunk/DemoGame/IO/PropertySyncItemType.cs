@@ -20,6 +20,8 @@ namespace DemoGame
         {
         }
 
+        static readonly ItemTypeHelper _itemTypeHelper = ItemTypeHelper.Instance;
+
         /// <summary>
         /// When overridden in the derived class, reads a value with the specified name from an IValueReader.
         /// </summary>
@@ -28,7 +30,7 @@ namespace DemoGame
         /// <returns>Value read from the IValueReader.</returns>
         protected override ItemType Read(string name, IValueReader reader)
         {
-            return reader.ReadEnumName<ItemType>(name);
+            return reader.ReadEnum(_itemTypeHelper, name);
         }
 
         /// <summary>
@@ -39,7 +41,7 @@ namespace DemoGame
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, ItemType value)
         {
-            writer.WriteEnumName(name, value);
+            writer.WriteEnum(_itemTypeHelper, name, value);
         }
     }
 }

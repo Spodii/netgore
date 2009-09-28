@@ -19,6 +19,8 @@ namespace NetGore
         {
         }
 
+        static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
+
         /// <summary>
         /// When overridden in the derived class, reads a value with the specified name from an IValueReader.
         /// </summary>
@@ -27,7 +29,7 @@ namespace NetGore
         /// <returns>Value read from the IValueReader.</returns>
         protected override Alignment Read(string name, IValueReader reader)
         {
-            return reader.ReadEnumName<Alignment>(name);
+            return reader.ReadEnum(_alignmentHelper, name);
         }
 
         /// <summary>
@@ -38,7 +40,7 @@ namespace NetGore
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, Alignment value)
         {
-            writer.WriteEnumName(name, value);
+            writer.WriteEnum(_alignmentHelper, name, value);
         }
     }
 }

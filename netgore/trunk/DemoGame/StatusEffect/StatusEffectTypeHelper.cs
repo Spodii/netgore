@@ -5,7 +5,7 @@ using NetGore;
 
 namespace DemoGame
 {
-    public class StatusEffectTypeHelper : EnumHelper<StatusEffectType>
+    public sealed class StatusEffectTypeHelper : EnumHelper<StatusEffectType>
     {
         static readonly StatusEffectTypeHelper _instance;
 

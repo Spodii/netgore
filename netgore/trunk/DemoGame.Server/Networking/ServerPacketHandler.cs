@@ -104,7 +104,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.GetEquipmentItemInfo)]
         void RecvGetEquipmentItemInfo(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEquipmentSlot();
+            EquipmentSlot slot = r.ReadEnum(EquipmentSlotHelper.Instance);
 
             User user;
             if (TryGetUser(conn, out user))
@@ -201,7 +201,7 @@ namespace DemoGame.Server
             // Get the StatType
             try
             {
-                statType = r.ReadEnumName<StatType>();
+                statType = r.ReadEnum(StatTypeHelper.Instance);
             }
             catch (InvalidCastException)
             {
@@ -334,7 +334,7 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.UnequipItem)]
         void RecvUnequipItem(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEquipmentSlot();
+            EquipmentSlot slot = r.ReadEnum(EquipmentSlotHelper.Instance);
 
             User user;
             if (TryGetUser(conn, out user))
@@ -360,7 +360,7 @@ namespace DemoGame.Server
 
             try
             {
-                skillType = r.ReadEnumName<SkillType>();
+                skillType = r.ReadEnum(SkillTypeHelper.Instance);
             }
             catch (InvalidCastException)
             {

@@ -39,7 +39,7 @@ namespace DemoGame.Client
         public static PacketWriter GetEquipmentItemInfo(EquipmentSlot slot)
         {
             PacketWriter pw = GetWriter(ClientPacketID.GetEquipmentItemInfo);
-            pw.WriteEnumName(slot);
+            pw.WriteEnum(EquipmentSlotHelper.Instance, slot);
             return pw;
         }
 
@@ -100,7 +100,7 @@ namespace DemoGame.Client
         public static PacketWriter RaiseStat(StatType statType)
         {
             PacketWriter pw = GetWriter(ClientPacketID.RaiseStat);
-            pw.WriteEnumName(statType);
+            pw.WriteEnum(StatTypeHelper.Instance, statType);
             return pw;
         }
 
@@ -157,7 +157,7 @@ namespace DemoGame.Client
         public static PacketWriter UnequipItem(EquipmentSlot slot)
         {
             PacketWriter pw = GetWriter(ClientPacketID.UnequipItem);
-            pw.WriteEnumName(slot);
+            pw.WriteEnum(EquipmentSlotHelper.Instance, slot);
             return pw;
         }
 
@@ -171,7 +171,7 @@ namespace DemoGame.Client
         public static PacketWriter UseSkill(SkillType skillType)
         {
             PacketWriter pw = GetWriter(ClientPacketID.UseSkill);
-            pw.WriteEnumName(skillType);
+            pw.WriteEnum(SkillTypeHelper.Instance, skillType);
             return pw;
         }
 

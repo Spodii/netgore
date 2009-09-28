@@ -44,8 +44,8 @@ namespace NetGore.Graphics
 
         public BackgroundLayer(IValueReader reader, int currentTime) : base(reader, currentTime)
         {
-            HorizontalLayout = reader.ReadEnumName<BackgroundLayerLayout>("HorizontalLayout");
-            VerticalLayout = reader.ReadEnumName<BackgroundLayerLayout>("VerticalLayout");
+            HorizontalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "HorizontalLayout");
+            VerticalLayout = reader.ReadEnum(_backgroundLayerLayoutHelper, "VerticalLayout");
         }
 
         /// <summary>
@@ -95,12 +95,14 @@ namespace NetGore.Graphics
             return cameraSize + ((targetSize - cameraSize) / depth);
         }
 
+        static readonly BackgroundLayerLayoutHelper _backgroundLayerLayoutHelper = BackgroundLayerLayoutHelper.Instance;
+
         public override void Write(IValueWriter writer)
         {
             base.Write(writer);
 
-            writer.WriteEnumName("HorizontalLayout", HorizontalLayout);
-            writer.WriteEnumName("VerticalLayout", VerticalLayout);
+            writer.WriteEnum(_backgroundLayerLayoutHelper, "HorizontalLayout", HorizontalLayout);
+            writer.WriteEnum(_backgroundLayerLayoutHelper, "VerticalLayout", VerticalLayout);
         }
     }
 }

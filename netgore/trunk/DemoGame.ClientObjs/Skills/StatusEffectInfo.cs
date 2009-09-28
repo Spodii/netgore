@@ -67,23 +67,30 @@ namespace DemoGame.Client
 
         void Read(IValueReader r)
         {
-            StatusEffectType = r.ReadEnumName<StatusEffectType>("Type");
-            Name = r.ReadString("Name");
-            Description = r.ReadString("Description");
-            Icon = r.ReadGrhIndex("Icon");
+            StatusEffectType = r.ReadEnum(_statusEffectTypeHelper, _valueKeyType);
+            Name = r.ReadString(_valueKeyName);
+            Description = r.ReadString(_valueKeyDescription);
+            Icon = r.ReadGrhIndex(_valueKeyIcon);
         }
+
+        const string _valueKeyType = "Type";
+        const string _valueKeyName = "Name";
+        const string _valueKeyDescription = "Description";
+        const string _valueKeyIcon = "Icon";
 
         public static void Save()
         {
             _infoManager.Save();
         }
 
+        static readonly StatusEffectTypeHelper _statusEffectTypeHelper = StatusEffectTypeHelper.Instance;
+
         public void Save(IValueWriter w)
         {
-            w.WriteEnumName("Type", StatusEffectType);
-            w.Write("Name", Name);
-            w.Write("Description", Description);
-            w.Write("Icon", Icon);
+            w.WriteEnum(_statusEffectTypeHelper, _valueKeyType, StatusEffectType);
+            w.Write(_valueKeyName, Name);
+            w.Write(_valueKeyDescription, Description);
+            w.Write(_valueKeyIcon, Icon);
         }
     }
 }

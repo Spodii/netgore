@@ -54,22 +54,28 @@ namespace NetGore
             CollisionType = collisionType;
         }
 
+        const string _valueKeyPosition = "Position";
+        const string _valueKeySize = "Size";
+        const string _valueKeyCollisionType = "CollisionType";
+
         void Read(IValueReader r)
         {
-            Vector2 position = r.ReadVector2("Position");
-            Vector2 size = r.ReadVector2("Size");
-            CollisionType ct = r.ReadEnumName<CollisionType>("CollisionType");
+            Vector2 position = r.ReadVector2(_valueKeyPosition);
+            Vector2 size = r.ReadVector2(_valueKeySize);
+            CollisionType ct = r.ReadEnum(_collisionTypeHelper, _valueKeyCollisionType);
 
             SetPositionRaw(position);
             SetSizeRaw(size);
             SetCollisionTypeRaw(ct);
         }
 
+        static readonly CollisionTypeHelper _collisionTypeHelper = CollisionTypeHelper.Instance;
+
         public void Write(IValueWriter w)
         {
-            w.Write("Position", Position);
-            w.Write("Size", Size);
-            w.WriteEnumName("CollisionType", CollisionType);
+            w.Write(_valueKeyPosition, Position);
+            w.Write(_valueKeySize, Size);
+            w.WriteEnum(_collisionTypeHelper, _valueKeyCollisionType, CollisionType);
         }
     }
 }

@@ -120,15 +120,22 @@ namespace NetGore.Graphics
             Alignment = Alignment.TopLeft;
         }
 
+        const string _valueKeyName = "Name";
+        const string _valueKeyAlignment = "Alignment";
+        const string _valueKeyColor = "Color";
+        const string _valueKeyDepth = "Depth";
+        const string _valueKeyOffset = "Offset";
+        const string _valueKeyGrhIndex = "GrhIndex";
+
         protected BackgroundImage(IValueReader reader, int currentTime)
         {
-            Name = reader.ReadString("Name");
-            Alignment = reader.ReadEnumName<Alignment>("Alignment");
-            Color = reader.ReadColor("Color");
-            Depth = reader.ReadFloat("Depth");
-            Offset = reader.ReadVector2("Offset");
+            Name = reader.ReadString(_valueKeyName);
+            Alignment = reader.ReadEnum(_alignmentHelper, _valueKeyAlignment);
+            Color = reader.ReadColor(_valueKeyColor);
+            Depth = reader.ReadFloat(_valueKeyDepth);
+            Offset = reader.ReadVector2(_valueKeyOffset);
 
-            GrhIndex grhIndex = reader.ReadGrhIndex("GrhIndex");
+            GrhIndex grhIndex = reader.ReadGrhIndex(_valueKeyGrhIndex);
             GrhData grhData = GrhInfo.GetData(grhIndex);
             Grh grh = new Grh(grhData, AnimType.Loop, currentTime);
 
@@ -266,13 +273,15 @@ namespace NetGore.Graphics
             // TODO: Sprite.Update(currentTime);
         }
 
+        static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
+
         public virtual void Write(IValueWriter writer)
         {
-            writer.Write("Name", Name);
-            writer.WriteEnumName("Alignment", Alignment);
-            writer.Write("Color", Color);
-            writer.Write("Depth", Depth);
-            writer.Write("Offset", Offset);
+            writer.Write(_valueKeyName, Name);
+            writer.WriteEnum(_alignmentHelper, _valueKeyAlignment, Alignment);
+            writer.Write(_valueKeyColor, Color);
+            writer.Write(_valueKeyDepth, Depth);
+            writer.Write(_valueKeyOffset, Offset);
 
             GrhIndex grhIndex;
             if (Sprite != null && Sprite.GrhData != null)
@@ -283,7 +292,7 @@ namespace NetGore.Graphics
                 Debug.Fail("Why is the Sprite not set? That doesn't seem right...");
             }
 
-            writer.Write("GrhIndex", grhIndex);
+            writer.Write(_valueKeyGrhIndex, grhIndex);
         }
     }
 }

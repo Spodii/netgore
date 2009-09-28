@@ -19,7 +19,7 @@ namespace DemoGame.Server
             ushort secsLeft = (ushort)((timeLeft / 1000).Clamp(ushort.MinValue, ushort.MaxValue));
 
             PacketWriter pw = GetWriter(ServerPacketID.AddStatusEffect);
-            pw.WriteEnumName(statusEffectType);
+            pw.WriteEnum(StatusEffectTypeHelper.Instance, statusEffectType);
             pw.Write(power);
             pw.Write(secsLeft);
             return pw;
@@ -167,7 +167,7 @@ namespace DemoGame.Server
         public static PacketWriter RemoveStatusEffect(StatusEffectType statusEffectType)
         {
             PacketWriter pw = GetWriter(ServerPacketID.RemoveStatusEffect);
-            pw.WriteEnumName(statusEffectType);
+            pw.WriteEnum(StatusEffectTypeHelper.Instance, statusEffectType);
             return pw;
         }
 
@@ -192,7 +192,7 @@ namespace DemoGame.Server
         public static PacketWriter SendEquipmentItemInfo(EquipmentSlot slot, ItemEntity item)
         {
             PacketWriter pw = GetWriter(ServerPacketID.SendEquipmentItemInfo);
-            pw.WriteEnumName(slot);
+            pw.WriteEnum(EquipmentSlotHelper.Instance, slot);
             // ReSharper disable RedundantCast
             pw.Write((IItemTable)item);
             // ReSharper restore RedundantCast
@@ -417,7 +417,7 @@ namespace DemoGame.Server
         public static PacketWriter UpdateEquipmentSlot(EquipmentSlot slot, GrhIndex? graphic)
         {
             PacketWriter pw = GetWriter(ServerPacketID.UpdateEquipmentSlot);
-            pw.WriteEnumName(slot);
+            pw.WriteEnum(EquipmentSlotHelper.Instance, slot);
             pw.Write(graphic.HasValue);
 
             if (graphic.HasValue)
@@ -432,7 +432,7 @@ namespace DemoGame.Server
 
             pw.Write(ServerPacketID.UpdateStat);
             pw.Write(isBaseStat);
-            pw.WriteEnumName(stat.StatType);
+            pw.WriteEnum(StatTypeHelper.Instance, stat.StatType);
             stat.Write(pw);
         }
 
@@ -478,7 +478,7 @@ namespace DemoGame.Server
             else
                 pw.Write(false);
 
-            pw.WriteEnumName(skillType);
+            pw.WriteEnum(SkillTypeHelper.Instance, skillType);
 
             return pw;
         }

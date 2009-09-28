@@ -59,6 +59,7 @@
     <Compile Include="AlignmentHelper.cs" />
     <Compile Include="CharType.cs" />
     <Compile Include="CommandLineSwitchHelper.cs" />
+    <Compile Include="Entities\CollisionTypeHelper.cs" />
     <Compile Include="EnumHelper.cs" />
     <Compile Include="Extensions\ClampExtensions.cs" />
     <Compile Include="Entities\BoxSide.cs" />

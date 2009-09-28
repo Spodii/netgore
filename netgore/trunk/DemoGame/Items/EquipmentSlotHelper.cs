@@ -5,7 +5,7 @@ using NetGore;
 
 namespace DemoGame
 {
-    public class EquipmentSlotHelper : EnumHelper<EquipmentSlot>
+    public sealed class EquipmentSlotHelper : EnumHelper<EquipmentSlot>
     {
         static readonly EquipmentSlotHelper _instance;
 

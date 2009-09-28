@@ -116,7 +116,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
         void RecvAddStatusEffect(IIPSocket conn, BitStream r)
         {
-            StatusEffectType statusEffectType = r.ReadEnumName<StatusEffectType>();
+            StatusEffectType statusEffectType = r.ReadEnum(StatusEffectTypeHelper.Instance);
             ushort power = r.ReadUShort();
             ushort secsLeft = r.ReadUShort();
 
@@ -285,7 +285,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.RemoveStatusEffect)]
         void RecvRemoveStatusEffect(IIPSocket conn, BitStream r)
         {
-            StatusEffectType statusEffectType = r.ReadEnumName<StatusEffectType>();
+            StatusEffectType statusEffectType = r.ReadEnum(StatusEffectTypeHelper.Instance);
 
             GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);
             GameplayScreen.AppendToChatOutput(string.Format("Removed status effect {0}.", statusEffectType));
@@ -308,7 +308,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.SendEquipmentItemInfo)]
         void RecvSendEquipmentItemInfo(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEquipmentSlot();
+            EquipmentSlot slot = r.ReadEnum(EquipmentSlotHelper.Instance);
             GameplayScreen.EquipmentInfoRequester.ReceiveInfo(slot, r);
         }
 
@@ -503,7 +503,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.UpdateEquipmentSlot)]
         void RecvUpdateEquipmentSlot(IIPSocket conn, BitStream r)
         {
-            EquipmentSlot slot = r.ReadEquipmentSlot();
+            EquipmentSlot slot = r.ReadEnum(EquipmentSlotHelper.Instance);
             bool hasValue = r.ReadBool();
 
             if (hasValue)
@@ -605,7 +605,7 @@ namespace DemoGame.Client
             MapEntityIndex? targetID = null;
             if (hasTarget)
                 targetID = r.ReadMapEntityIndex();
-            SkillType skillType = r.ReadEnumName<SkillType>();
+            SkillType skillType = r.ReadEnum(SkillTypeHelper.Instance);
 
             CharacterEntity user = Map.GetDynamicEntity<CharacterEntity>(userID);
             CharacterEntity target = null;
