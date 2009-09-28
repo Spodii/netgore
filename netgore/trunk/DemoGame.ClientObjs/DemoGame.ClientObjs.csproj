@@ -58,6 +58,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DamageText.cs" />
+    <Compile Include="DamageTextPool.cs" />
     <Compile Include="Entity\Character.cs" />
     <Compile Include="Entity\DamageTrapEntity.cs" />
     <Compile Include="Entity\EntityDrawer.cs" />

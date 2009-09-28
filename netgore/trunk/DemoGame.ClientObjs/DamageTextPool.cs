@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Collections;
 
-namespace DemoGame
+namespace DemoGame.Client
 {
     /// <summary>
     /// ObjectPool and pool handler for all of the DamageTexts
