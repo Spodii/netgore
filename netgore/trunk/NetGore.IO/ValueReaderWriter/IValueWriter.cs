@@ -81,6 +81,16 @@ namespace NetGore.IO
         void Write(string name, uint value, int bits);
 
         /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="writer">The writer used to write the enum value.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        void WriteEnum<T>(IEnumWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable;
+
+        /// <summary>
         /// Writes a boolean.
         /// </summary>
         /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it

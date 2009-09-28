@@ -2907,6 +2907,18 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="reader">The reader used to read the enum.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnum<T>(IEnumReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            return reader.ReadEnum(this, name);
+        }
+
+        /// <summary>
         /// Reads a signed integer of up to 32 bits.
         /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
@@ -3055,6 +3067,19 @@ namespace NetGore.IO
         void IValueWriter.Write(string name, uint value, int bits)
         {
             Write(value, bits);
+        }
+
+        /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="writer">The writer used to write the enum value.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void WriteEnum<T>(IEnumWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            writer.WriteEnum(this, name, value);
         }
 
         /// <summary>

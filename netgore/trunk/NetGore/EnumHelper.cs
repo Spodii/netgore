@@ -4,15 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
 
-// TODO: $$ Have the IValueReader/Writer have a property for how to handle enum I/O, and use this class where possible
-
 namespace NetGore
 {
     /// <summary>
     /// Base class for a class that helps with writing and reading enum values.
     /// </summary>
     /// <typeparam name="T">The Type of Enum.</typeparam>
-    public abstract class EnumHelper<T> where T : struct, IComparable, IConvertible, IFormattable
+    public abstract class EnumHelper<T> : IEnumReader<T>, IEnumWriter<T> where T : struct, IComparable, IConvertible, IFormattable
     {
         static readonly Type[] _supportedTypes = new Type[]
         { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int) };
@@ -243,6 +241,31 @@ namespace NetGore
         public void Write(IValueWriter writer, string name, T value)
         {
             uint v = (uint)(ToInt(value) - _minValue);
+            writer.Write(name, v, _bitsRequired);
+        }
+
+        /// <summary>
+        /// Reads a value of type <typeparamref name="T"/> from the given <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> to read from.</param>
+        /// <param name="name">The name of the value to read.</param>
+        /// <returns>The value read from the <paramref name="reader"/> with the given <paramref name="name"/>.</returns>
+        T IEnumReader<T>.ReadEnum(IValueReader reader, string name)
+        {
+            var value = reader.ReadInt(name, _bitsRequired);
+            return FromInt(value);
+        }
+
+        /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/> to the given <paramref name="writer"/>.
+        /// </summary>
+        /// <param name="writer"><see cref="IValueWriter"/> to write to.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">The value to write.</param>
+        void IEnumWriter<T>.WriteEnum(IValueWriter writer, string name, T value)
+        {
+            var v = ToInt(value);
             writer.Write(name, v, _bitsRequired);
         }
     }

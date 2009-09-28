@@ -154,6 +154,18 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/>.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="reader">The reader used to read the enum.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnum<T>(IEnumReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            return reader.ReadEnum(this, name);
+        }
+
+        /// <summary>
         /// Reads a 64-bit signed integer.
         /// </summary>
         /// <param name="name">Unused by the BinaryValueReader.</param>
