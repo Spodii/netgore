@@ -209,6 +209,16 @@ namespace NetGore.IO.Tests
         }
 
         [Test]
+        public void BitsRequiredTest()
+        {
+            for (uint i = 0; i < 1200; i++)
+            {
+                int req = BitOps.RequiredBits(i);
+                Assert.Greater(1 << req, i, "i: " + i);
+            }
+        }
+
+        [Test]
         public void PowerOf2Test()
         {
             const string errDetails = "Iterator: {0}    Value: {1}    Type: {2}";

@@ -55,7 +55,7 @@ namespace DemoGame.Server
             _serverSockets.OnDisconnect += ServerSockets_OnDisconnect;
             _sayHandler = new SayHandler(server);
 
-            _ppManager = new MessageProcessorManager(this, GameData.ClientMessageIDBitLength);
+            _ppManager = new MessageProcessorManager(this, ClientPacketIDHelper.Instance.BitsRequired);
         }
 
         [MessageHandler((byte)ClientPacketID.Attack)]
@@ -201,7 +201,7 @@ namespace DemoGame.Server
             // Get the StatType
             try
             {
-                statType = r.ReadEnumValue<StatType>(StatTypeHelper.Instance);
+                statType = r.ReadEnumValue(StatTypeHelper.Instance);
             }
             catch (InvalidCastException)
             {

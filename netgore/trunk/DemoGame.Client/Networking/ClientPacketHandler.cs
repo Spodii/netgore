@@ -86,7 +86,7 @@ namespace DemoGame.Client
         {
             _socketSender = socketSender;
             _gameplayScreen = gameplayScreen;
-            _ppManager = new MessageProcessorManager(this, GameData.ServerMessageIDBitLength);
+            _ppManager = new MessageProcessorManager(this, ServerPacketIDHelper.Instance.BitsRequired);
         }
 
         static List<StyledText> CreateChatText(string name, string method, string message)
