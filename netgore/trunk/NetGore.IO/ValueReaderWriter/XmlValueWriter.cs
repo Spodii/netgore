@@ -17,6 +17,7 @@ namespace NetGore.IO
         readonly bool _disposeWriter;
         readonly Stack<string> _nodeStack = new Stack<string>(4);
         readonly XmlWriter _writer;
+        readonly bool _useEnumNames = true;
         bool _disposed;
 
         /// <summary>
@@ -97,6 +98,16 @@ namespace NetGore.IO
         public void Write(string name, string value)
         {
             _writer.WriteElementString(name, value);
+        }
+
+        /// <summary>
+        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
+        /// underlying integer value will be used. If false, the underlying integer value will be used. This
+        /// only to Enum I/O that does not explicitly state which method to use.
+        /// </summary>
+        public bool UseEnumNames
+        {
+            get { return _useEnumNames; }
         }
 
         /// <summary>
@@ -351,6 +362,20 @@ namespace NetGore.IO
         public void WriteEnumValue<T>(IEnumValueWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
             writer.WriteEnum(this, name, value);
+        }
+
+        /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or
+        /// the name of the Enum value is determined from the <see cref="IValueWriter.UseEnumNames"/> property.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="writer">The writer used to write the enum value.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            EnumIOHelper.WriteEnum(this, writer, name, value);
         }
 
         /// <summary>

@@ -69,6 +69,8 @@ namespace NetGore.IO
         /// </summary>
         byte[] _buffer;
 
+        readonly bool _useEnumNames = false;
+
         /// <summary>
         /// Current position in the buffer. When reading, this is where the work
         /// buffer came from. When writing, this is where the work buffer will go.
@@ -2386,6 +2388,15 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets if this <see cref="IValueWriter"/> supports reading nodes. If false, any attempt to use nodes
+        /// in this IValueWriter will result in a NotSupportedException being thrown.
+        /// </summary>
+        bool IValueWriter.SupportsNodes
+        {
+            get { return false; }
+        }
+
+        /// <summary>
         /// Writes a string with a maximum length of <paramref name="maxLength"/> characters to the BitStream
         /// </summary>
         /// <param name="value">Value of the string to write</param>
@@ -2859,6 +2870,19 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or the
+        /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="reader">The reader used to read the enum.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnum<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            return EnumIOHelper.ReadEnum(this, reader, name);
+        }
+
+        /// <summary>
         /// Reads a 8-bit unsigned integer.
         /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
@@ -2910,24 +2934,6 @@ namespace NetGore.IO
         T[] IValueReader.ReadManyNodes<T>(string nodeName, ReadManyNodesHandler<T> readHandler)
         {
             throw CreateNodesNotSupportedException();
-        }
-
-        /// <summary>
-        /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
-        /// be read back in the same order they were written and the name field will be ignored.
-        /// </summary>
-        bool IValueReader.SupportsNameLookup
-        {
-            get { return false; }
-        }
-
-        /// <summary>
-        /// Gets if this IValueReader supports reading nodes. If false, any attempt to use nodes in this IValueReader
-        /// will result in a NotSupportedException being thrown.
-        /// </summary>
-        bool IValueReader.SupportsNodes
-        {
-            get { return false; }
         }
 
         /// <summary>
@@ -3008,6 +3014,24 @@ namespace NetGore.IO
         IValueReader IValueReader.ReadNode(string key)
         {
             throw CreateNodesNotSupportedException();
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IValueWriter"/> supports using the name field to look up values. If false,
+        /// values will have to be read back in the same order they were written and the name field will be ignored.
+        /// </summary>
+        bool IValueWriter.SupportsNameLookup
+        {
+            get { return false; }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="IValueReader"/> supports reading nodes. If false, any attempt to use nodes
+        /// in this IValueWriter will result in a NotSupportedException being thrown.
+        /// </summary>
+        bool IValueReader.SupportsNodes
+        {
+            get { return false; }
         }
 
         /// <summary>
@@ -3118,6 +3142,20 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or
+        /// the name of the Enum value is determined from the <see cref="IValueWriter.UseEnumNames"/> property.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="writer">The writer used to write the enum value.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        public void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            EnumIOHelper.WriteEnum(this, writer, name, value);
+        }
+
+        /// <summary>
         /// Writes an Enum of type <typeparamref name="T"/> using the name of the Enum instead of the value.
         /// </summary>
         /// <typeparam name="T">The Type of Enum.</typeparam>
@@ -3220,19 +3258,20 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Gets if this IValueWriter supports using the name field to look up values. If false, values will have to
-        /// be read back in the same order they were written and the name field will be ignored.
+        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
+        /// underlying integer value will be used. If false, the underlying integer value will be used. This
+        /// only to Enum I/O that does not explicitly state which method to use.
         /// </summary>
-        bool IValueWriter.SupportsNameLookup
+        public bool UseEnumNames
         {
-            get { return false; }
+            get { return _useEnumNames; }
         }
 
         /// <summary>
-        /// Gets if this IValueWriter supports reading nodes. If false, any attempt to use nodes in this IValueWriter
-        /// will result in a NotSupportedException being thrown.
+        /// Gets if this <see cref="IValueReader"/> supports using the name field to look up values. If false,
+        /// values will have to be read back in the same order they were written and the name field will be ignored.
         /// </summary>
-        bool IValueWriter.SupportsNodes
+        bool IValueReader.SupportsNameLookup
         {
             get { return false; }
         }

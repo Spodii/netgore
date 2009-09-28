@@ -27,14 +27,21 @@ namespace NetGore.IO
     public interface IValueWriter : IDisposable
     {
         /// <summary>
-        /// Gets if this IValueWriter supports using the name field to look up values. If false, values will have to
-        /// be read back in the same order they were written and the name field will be ignored.
+        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
+        /// underlying integer value will be used. If false, the underlying integer value will be used. This
+        /// only to Enum I/O that does not explicitly state which method to use.
+        /// </summary>
+        bool UseEnumNames { get; }
+
+        /// <summary>
+        /// Gets if this <see cref="IValueWriter"/> supports using the name field to look up values. If false,
+        /// values will have to be read back in the same order they were written and the name field will be ignored.
         /// </summary>
         bool SupportsNameLookup { get; }
 
         /// <summary>
-        /// Gets if this IValueWriter supports reading nodes. If false, any attempt to use nodes in this IValueWriter
-        /// will result in a NotSupportedException being thrown.
+        /// Gets if this <see cref="IValueWriter"/> supports reading nodes. If false, any attempt to use nodes
+        /// in this IValueWriter will result in a NotSupportedException being thrown.
         /// </summary>
         bool SupportsNodes { get; }
 
@@ -89,6 +96,17 @@ namespace NetGore.IO
         /// from other values when reading.</param>
         /// <param name="value">Value to write.</param>
         void WriteEnumValue<T>(IEnumValueWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable;
+
+        /// <summary>
+        /// Writes an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or
+        /// the name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="writer">The writer used to write the enum value.</param>
+        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
+        /// from other values when reading.</param>
+        /// <param name="value">Value to write.</param>
+        void WriteEnum<T>(IEnumValueWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable;
 
         /// <summary>
         /// Writes an Enum of type <typeparamref name="T"/> using the name of the Enum instead of the value.

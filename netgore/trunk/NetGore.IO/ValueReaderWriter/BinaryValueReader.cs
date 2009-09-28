@@ -26,6 +26,8 @@ namespace NetGore.IO
             _reader = reader;
         }
 
+        readonly bool _useEnumNames = true;
+
         /// <summary>
         /// BinaryValueReader constructor.
         /// </summary>
@@ -126,6 +128,16 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
+        /// underlying integer value will be used. If false, the underlying integer value will be used. This
+        /// only to Enum I/O that does not explicitly state which method to use.
+        /// </summary>
+        public bool UseEnumNames
+        {
+            get { return _useEnumNames; }
+        }
+
+        /// <summary>
         /// Gets if this IValueReader supports using the name field to look up values. If false, values will have to
         /// be read back in the same order they were written and the name field will be ignored.
         /// </summary>
@@ -176,6 +188,19 @@ namespace NetGore.IO
             string str = ReadString(name);
             var value = EnumIOHelper.FromName<T>(str);
             return value;
+        }
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or the
+        /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="reader">The reader used to read the enum.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnum<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            return EnumIOHelper.ReadEnum(this, reader, name);
         }
 
         /// <summary>
