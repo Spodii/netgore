@@ -10,9 +10,6 @@ using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 
-// TODO: $$ Buy items from shop when clicking
-// TODO: $$ If shop window is open, and CanBuy == true, sell items instead of dropping
-
 namespace DemoGame.Client.Controls
 {
     delegate void ShopFormPurchaseHandler(ShopForm shopForm, ShopItemIndex slot);
