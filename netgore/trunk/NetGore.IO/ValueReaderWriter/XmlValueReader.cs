@@ -23,21 +23,46 @@ namespace NetGore.IO
         readonly Dictionary<string, List<string>> _values;
 
         /// <summary>
-        /// XmlValueReader constructor.
+        /// Initializes a new instance of the <see cref="XmlValueReader"/> class.
         /// </summary>
         /// <param name="reader">XmlReader that the values will be read from.</param>
         /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
-        public XmlValueReader(XmlReader reader, string rootNodeName) : this(reader, rootNodeName, false)
+        public XmlValueReader(XmlReader reader, string rootNodeName) : this(reader, rootNodeName, true)
         {
         }
 
         /// <summary>
-        /// XmlValueReader constructor.
+        /// Initializes a new instance of the <see cref="XmlValueReader"/> class.
+        /// </summary>
+        /// <param name="reader">XmlReader that the values will be read from.</param>
+        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        public XmlValueReader(XmlReader reader, string rootNodeName, bool useEnumNames)
+            : this(reader, rootNodeName, false, useEnumNames)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XmlValueReader"/> class.
         /// </summary>
         /// <param name="filePath">Path of the file to read.</param>
         /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
-        public XmlValueReader(string filePath, string rootNodeName)
+        public XmlValueReader(string filePath, string rootNodeName) : this(filePath, rootNodeName, true)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XmlValueReader"/> class.
+        /// </summary>
+        /// <param name="filePath">Path of the file to read.</param>
+        /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        public XmlValueReader(string filePath, string rootNodeName, bool useEnumNames)
+        {
+            _useEnumNames = useEnumNames;
+
             using (FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.Read))
             {
                 using (XmlReader r = XmlReader.Create(stream))
@@ -58,16 +83,19 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// XmlValueReader constructor.
+        /// Initializes a new instance of the <see cref="XmlValueReader"/> class.
         /// </summary>
         /// <param name="reader">XmlReader that the values will be read from.</param>
         /// <param name="rootNodeName">Name of the root node that is to be read from.</param>
         /// <param name="readAllContent">If true, the XmlReader is expected to be read to the end.</param>
-        XmlValueReader(XmlReader reader, string rootNodeName, bool readAllContent)
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        XmlValueReader(XmlReader reader, string rootNodeName, bool readAllContent, bool useEnumNames)
         {
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
+            _useEnumNames = useEnumNames;
             _values = ReadNodesIntoDictionary(reader, rootNodeName, readAllContent);
         }
 
@@ -95,7 +123,7 @@ namespace NetGore.IO
         /// <param name="name">The name of the root node.</param>
         /// <param name="s">The node contents.</param>
         /// <returns>A new XmlValueReader from a string of a child Xml node.</returns>
-        static XmlValueReader GetXmlValueReaderFromNodeString(string name, string s)
+        XmlValueReader GetXmlValueReaderFromNodeString(string name, string s)
         {
             string trimmed = s.Trim();
             var bytes = UTF8Encoding.UTF8.GetBytes(trimmed);
@@ -105,7 +133,7 @@ namespace NetGore.IO
             {
                 using (XmlReader r = XmlReader.Create(ms, _readNodesReaderSettings))
                 {
-                    ret = new XmlValueReader(r, name, true);
+                    ret = new XmlValueReader(r, name, true, UseEnumNames);
                 }
             }
 

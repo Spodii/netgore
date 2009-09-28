@@ -17,11 +17,15 @@ namespace NetGore.IO
         Stack<int> _nodeOffsetStack = null;
 
         /// <summary>
-        /// BinaryValueReader constructor.
+        /// Initializes a new instance of the <see cref="BinaryValueWriter"/> class.
         /// </summary>
         /// <param name="writer">BitStream that will be written to.</param>
-        public BinaryValueWriter(BitStream writer)
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        public BinaryValueWriter(BitStream writer, bool useEnumNames)
         {
+            _useEnumNames = useEnumNames;
+
             if (writer == null)
                 throw new ArgumentNullException("writer");
 
@@ -32,11 +36,31 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// FileBitStreamValueWriter constructor.
+        /// Initializes a new instance of the <see cref="BinaryValueWriter"/> class.
+        /// </summary>
+        /// <param name="writer">BitStream that will be written to.</param>
+        public BinaryValueWriter(BitStream writer) : this(writer, true)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BinaryValueWriter"/> class.
         /// </summary>
         /// <param name="filePath">Path to the file to write to.</param>
-        public BinaryValueWriter(string filePath) : this(new BitStream(BitStreamMode.Write, 8192))
+        public BinaryValueWriter(string filePath) : this(filePath, true)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BinaryValueWriter"/> class.
+        /// </summary>
+        /// <param name="filePath">Path to the file to write to.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        public BinaryValueWriter(string filePath, bool useEnumNames)
+            : this(new BitStream(BitStreamMode.Write, 8192))
+        {
+            _useEnumNames = useEnumNames;
             _destinationFile = filePath;
 
             string dir = Path.GetDirectoryName(filePath);
