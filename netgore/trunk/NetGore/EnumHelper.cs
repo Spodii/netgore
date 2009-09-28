@@ -10,7 +10,8 @@ namespace NetGore
     /// Base class for a class that helps with performing operations with and on Enums.
     /// </summary>
     /// <typeparam name="T">The Type of Enum.</typeparam>
-    public abstract class EnumHelper<T> : IEnumValueReader<T>, IEnumValueWriter<T> where T : struct, IComparable, IConvertible, IFormattable
+    public abstract class EnumHelper<T> : IEnumValueReader<T>, IEnumValueWriter<T>
+        where T : struct, IComparable, IConvertible, IFormattable
     {
         static readonly Type[] _supportedTypes = new Type[]
         { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int) };
@@ -148,6 +149,31 @@ namespace NetGore
         }
 
         /// <summary>
+        /// Reads the Enum value using the name of the Enum instead of the underlying integer value.
+        /// </summary>
+        /// <param name="bitStream">The BitStream to read the value from.</param>
+        /// <returns>The value read from the <paramref name="bitStream"/>.</returns>
+        public static T ReadName(BitStream bitStream)
+        {
+            string str = bitStream.ReadString();
+            T value = EnumIOHelper.FromName<T>(str);
+            return value;
+        }
+
+        /// <summary>
+        /// Reads the Enum value using the underlying integer value of the Enum instead of the name.
+        /// </summary>
+        /// <param name="reader">The IValueReader to read the value from.</param>
+        /// <param name="name">The name of the value to read.</param>
+        /// <returns>The value read from the <paramref name="reader"/>.</returns>
+        public static T ReadName(IValueReader reader, string name)
+        {
+            string str = reader.ReadString(name);
+            T value = EnumIOHelper.FromName<T>(str);
+            return value;
+        }
+
+        /// <summary>
         /// Reads a value of type <typeparamref name="T"/> from a <see cref="BitStream"/>.
         /// </summary>
         /// <param name="bitStream">The <see cref="BitStream"/> to read from.</param>
@@ -231,31 +257,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Reads the Enum value using the name of the Enum instead of the underlying integer value.
-        /// </summary>
-        /// <param name="bitStream">The BitStream to read the value from.</param>
-        /// <returns>The value read from the <paramref name="bitStream"/>.</returns>
-        public static T ReadName(BitStream bitStream)
-        {
-            string str = bitStream.ReadString();
-            T value = EnumIOHelper.FromName<T>(str);
-            return value;
-        }
-
-        /// <summary>
-        /// Reads the Enum value using the underlying integer value of the Enum instead of the name.
-        /// </summary>
-        /// <param name="reader">The IValueReader to read the value from.</param>
-        /// <param name="name">The name of the value to read.</param>
-        /// <returns>The value read from the <paramref name="reader"/>.</returns>
-        public static T ReadName(IValueReader reader, string name)
-        {
-            string str = reader.ReadString(name);
-            T value = EnumIOHelper.FromName<T>(str);
-            return value;
-        }
-
-        /// <summary>
         /// Writes the Enum value using the name of the Enum instead of the underlying integer value.
         /// </summary>
         /// <param name="bitStream">The BitStream to write the value to.</param>
@@ -306,7 +307,7 @@ namespace NetGore
             writer.Write(name, v, _bitsRequired);
         }
 
-        #region IEnumReader<T> Members
+        #region IEnumValueReader<T> Members
 
         /// <summary>
         /// Reads a value of type <typeparamref name="T"/> from the given <paramref name="reader"/>.
@@ -321,7 +322,7 @@ namespace NetGore
 
         #endregion
 
-        #region IEnumWriter<T> Members
+        #region IEnumValueWriter<T> Members
 
         /// <summary>
         /// Writes an Enum of type <typeparamref name="T"/> to the given <paramref name="writer"/>.

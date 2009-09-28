@@ -27,13 +27,6 @@ namespace NetGore.IO
     public interface IValueReader
     {
         /// <summary>
-        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
-        /// underlying integer value will be used. If false, the underlying integer value will be used. This
-        /// only to Enum I/O that does not explicitly state which method to use.
-        /// </summary>
-        bool UseEnumNames { get; }
-
-        /// <summary>
         /// Gets if this <see cref="IValueReader"/> supports using the name field to look up values. If false,
         /// values will have to be read back in the same order they were written and the name field will be ignored.
         /// </summary>
@@ -44,6 +37,13 @@ namespace NetGore.IO
         /// in this IValueWriter will result in a NotSupportedException being thrown.
         /// </summary>
         bool SupportsNodes { get; }
+
+        /// <summary>
+        /// Gets if Enum I/O will be done with the Enum's name. If true, the name of the Enum value instead of the
+        /// underlying integer value will be used. If false, the underlying integer value will be used. This
+        /// only to Enum I/O that does not explicitly state which method to use.
+        /// </summary>
+        bool UseEnumNames { get; }
 
         /// <summary>
         /// Reads a boolean.
@@ -67,6 +67,33 @@ namespace NetGore.IO
         double ReadDouble(string name);
 
         /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or the
+        /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="reader">The reader used to read the enum.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        T ReadEnum<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable;
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable;
+
+        /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's value instead of the name.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="reader">The reader used to read the enum.</param>
+        /// <param name="name">Unique name of the value to read.</param>
+        /// <returns>Value read from the reader.</returns>
+        T ReadEnumValue<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable;
+
+        /// <summary>
         /// Reads a 32-bit floating-point number.
         /// </summary>
         /// <param name="name">Unique name of the value to read.</param>
@@ -79,33 +106,6 @@ namespace NetGore.IO
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
         int ReadInt(string name);
-
-        /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's value instead of the name.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="reader">The reader used to read the enum.</param>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        T ReadEnumValue<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable;
-
-        /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable;
-
-        /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/>. Whether to use the Enum's underlying integer value or the
-        /// name of the Enum value is determined from the <see cref="UseEnumNames"/> property.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="reader">The reader used to read the enum.</param>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        T ReadEnum<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable;
 
         /// <summary>
         /// Reads a signed integer of up to 32 bits.

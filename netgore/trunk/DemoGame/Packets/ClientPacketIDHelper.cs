@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using NetGore;
 
 namespace DemoGame
@@ -13,7 +10,10 @@ namespace DemoGame
         /// <summary>
         /// Gets the <see cref="ClientPacketIDHelper"/> instance.
         /// </summary>
-        public static ClientPacketIDHelper Instance { get { return _instance; } }
+        public static ClientPacketIDHelper Instance
+        {
+            get { return _instance; }
+        }
 
         /// <summary>
         /// Initializes the <see cref="ClientPacketIDHelper"/> class.

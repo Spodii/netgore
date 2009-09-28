@@ -13,6 +13,13 @@ namespace NetGore.Graphics
     /// </summary>
     public abstract class BackgroundImage
     {
+        const string _valueKeyAlignment = "Alignment";
+        const string _valueKeyColor = "Color";
+        const string _valueKeyDepth = "Depth";
+        const string _valueKeyGrhIndex = "GrhIndex";
+        const string _valueKeyName = "Name";
+        const string _valueKeyOffset = "Offset";
+        static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
         float _depth;
         string _name;
 
@@ -119,13 +126,6 @@ namespace NetGore.Graphics
             Color = Color.White;
             Alignment = Alignment.TopLeft;
         }
-
-        const string _valueKeyName = "Name";
-        const string _valueKeyAlignment = "Alignment";
-        const string _valueKeyColor = "Color";
-        const string _valueKeyDepth = "Depth";
-        const string _valueKeyOffset = "Offset";
-        const string _valueKeyGrhIndex = "GrhIndex";
 
         protected BackgroundImage(IValueReader reader, int currentTime)
         {
@@ -272,8 +272,6 @@ namespace NetGore.Graphics
         {
             // TODO: Sprite.Update(currentTime);
         }
-
-        static readonly AlignmentHelper _alignmentHelper = AlignmentHelper.Instance;
 
         public virtual void Write(IValueWriter writer)
         {

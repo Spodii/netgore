@@ -507,7 +507,7 @@ namespace DemoGame.NPCChatEditor
                     cmbSelectedDialog.SelectedIndex = 0;
 
                 // Populate the evaluation types
-                var evaluationTypes = EnumHelper < NPCChatConditionalEvaluationType>.Values;
+                var evaluationTypes = EnumHelper<NPCChatConditionalEvaluationType>.Values;
                 cmbEvaluateType.Items.Clear();
                 cmbEvaluateType.Items.AddRange(evaluationTypes.Select(x => (object)x).ToArray());
 

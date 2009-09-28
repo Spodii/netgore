@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.Xna.Framework.Input;
 
 namespace NetGore.Graphics.GUI
 {
@@ -14,17 +13,6 @@ namespace NetGore.Graphics.GUI
         readonly List<GameControl> _gameControls = new List<GameControl>();
 
         /// <summary>
-        /// Updates all of the <see cref="GameControl"/>s in this <see cref="GameControlCollection"/>.
-        /// </summary>
-        /// <param name="guiManager">The <see cref="GUIManagerBase"/> used to update the <see cref="GameControl"/>s.</param>
-        /// <param name="currentTime">The current time in milliseconds.</param>
-        public void Update(GUIManagerBase guiManager, int currentTime)
-        {
-            foreach (var gc in this)
-                gc.Update(guiManager, currentTime);
-        }
-
-        /// <summary>
         /// Creates a new <see cref="GameControl"/> and adds it to this <see cref="GameControlCollection"/>.
         /// </summary>
         /// <param name="delay">The delay.</param>
@@ -33,13 +21,27 @@ namespace NetGore.Graphics.GUI
         /// <param name="keys">The GameControlKeys.</param>
         /// <returns>The instance of the created <see cref="GameControl"/> that was added to this
         /// <see cref="GameControlCollection"/>.</returns>
-        public GameControl CreateAndAdd(GameControlKeys keys, int delay, Func<bool> additionalRequirements, GameControlEventHandler invokeHandler)
+        public GameControl CreateAndAdd(GameControlKeys keys, int delay, Func<bool> additionalRequirements,
+                                        GameControlEventHandler invokeHandler)
         {
             GameControl c = new GameControl(keys) { Delay = delay, AdditionalRequirements = additionalRequirements };
             c.OnInvoke += invokeHandler;
 
             Add(c);
             return c;
+        }
+
+        /// <summary>
+        /// Updates all of the <see cref="GameControl"/>s in this <see cref="GameControlCollection"/>.
+        /// </summary>
+        /// <param name="guiManager">The <see cref="GUIManagerBase"/> used to update the <see cref="GameControl"/>s.</param>
+        /// <param name="currentTime">The current time in milliseconds.</param>
+        public void Update(GUIManagerBase guiManager, int currentTime)
+        {
+            foreach (GameControl gc in this)
+            {
+                gc.Update(guiManager, currentTime);
+            }
         }
 
         #region ICollection<GameControl> Members

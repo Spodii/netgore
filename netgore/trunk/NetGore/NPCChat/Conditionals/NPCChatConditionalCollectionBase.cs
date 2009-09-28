@@ -67,7 +67,7 @@ namespace NetGore.NPCChat.Conditionals
             var items = reader.ReadManyNodes("Items", x => CreateItem(x));
 
             NPCChatConditionalEvaluationType evaluationType = (NPCChatConditionalEvaluationType)evaluationTypeValue;
-            if (!EnumHelper < NPCChatConditionalEvaluationType>.IsDefined(evaluationType))
+            if (!EnumHelper<NPCChatConditionalEvaluationType>.IsDefined(evaluationType))
                 throw new Exception(string.Format("Invalid NPCChatConditionalEvaluationType `{0}`.", evaluationTypeValue));
 
             SetReadValues(evaluationType, items);

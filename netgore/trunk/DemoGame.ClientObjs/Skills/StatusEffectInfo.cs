@@ -13,11 +13,17 @@ namespace DemoGame.Client
     public class StatusEffectInfo
     {
         const string _fileName = "statuseffectinfo.xml";
+        const string _valueKeyDescription = "Description";
+        const string _valueKeyIcon = "Icon";
+        const string _valueKeyName = "Name";
+        const string _valueKeyType = "Type";
 
         static readonly InfoManager<StatusEffectType, StatusEffectInfo> _infoManager =
             new InfoManager<StatusEffectType, StatusEffectInfo>(_fileName, EnumComparer<StatusEffectType>.Instance,
                                                                 x => new StatusEffectInfo(x), (x, y) => y.Save(x),
                                                                 x => x.StatusEffectType);
+
+        static readonly StatusEffectTypeHelper _statusEffectTypeHelper = StatusEffectTypeHelper.Instance;
 
         /// <summary>
         /// Gets or sets the description of this status effect.
@@ -73,17 +79,10 @@ namespace DemoGame.Client
             Icon = r.ReadGrhIndex(_valueKeyIcon);
         }
 
-        const string _valueKeyType = "Type";
-        const string _valueKeyName = "Name";
-        const string _valueKeyDescription = "Description";
-        const string _valueKeyIcon = "Icon";
-
         public static void Save()
         {
             _infoManager.Save();
         }
-
-        static readonly StatusEffectTypeHelper _statusEffectTypeHelper = StatusEffectTypeHelper.Instance;
 
         public void Save(IValueWriter w)
         {

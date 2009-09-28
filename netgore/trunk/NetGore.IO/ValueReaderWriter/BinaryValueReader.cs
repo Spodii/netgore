@@ -43,7 +43,8 @@ namespace NetGore.IO
         /// </summary>
         /// <param name="filePath">The path of the file to read from.</param>
         public BinaryValueReader(string filePath) : this(filePath, true)
-        { }
+        {
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BinaryValueReader"/> class.
@@ -192,7 +193,8 @@ namespace NetGore.IO
         /// <param name="reader">The reader used to read the enum.</param>
         /// <param name="name">Unique name of the value to read.</param>
         /// <returns>Value read from the reader.</returns>
-        public T ReadEnumValue<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable
+        public T ReadEnumValue<T>(IEnumValueReader<T> reader, string name)
+            where T : struct, IComparable, IConvertible, IFormattable
         {
             return reader.ReadEnum(this, name);
         }
@@ -206,7 +208,7 @@ namespace NetGore.IO
         public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
             string str = ReadString(name);
-            var value = EnumIOHelper.FromName<T>(str);
+            T value = EnumIOHelper.FromName<T>(str);
             return value;
         }
 

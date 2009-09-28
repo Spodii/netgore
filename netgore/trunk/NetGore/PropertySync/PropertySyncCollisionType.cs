@@ -10,6 +10,8 @@ namespace NetGore
     [PropertySyncHandler(typeof(CollisionType))]
     public sealed class PropertySyncCollisionType : PropertySyncBase<CollisionType>
     {
+        static readonly CollisionTypeHelper _collisionTypeHelper = CollisionTypeHelper.Instance;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PropertySyncCollisionType"/> class.
         /// </summary>
@@ -29,8 +31,6 @@ namespace NetGore
         {
             return reader.ReadEnum(_collisionTypeHelper, name);
         }
-
-        static readonly CollisionTypeHelper _collisionTypeHelper = CollisionTypeHelper.Instance;
 
         /// <summary>
         /// When overridden in the derived class, writes a value to an IValueWriter with the specified name.
