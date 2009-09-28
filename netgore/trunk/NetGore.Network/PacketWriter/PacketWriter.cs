@@ -48,7 +48,7 @@ namespace NetGore.Network
         /// <summary>
         /// Initializes a new instance of the <see cref="PacketWriter"/> class.
         /// </summary>
-        public PacketWriter() : base(BitStreamMode.Write, 128)
+        public PacketWriter() : base(BitStreamMode.Write, 128, false)
         {
             ReadMode = BitStreamBufferMode.Static;
             WriteMode = BitStreamBufferMode.Dynamic;
