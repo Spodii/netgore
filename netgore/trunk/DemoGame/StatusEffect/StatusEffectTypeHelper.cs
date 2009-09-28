@@ -1,19 +1,30 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NetGore;
 
 namespace DemoGame
 {
-    public static class StatusEffectTypeHelper
+    public class StatusEffectTypeHelper : EnumHelper<StatusEffectType>
     {
-        static readonly StatusEffectType[] _allValues = EnumHelper.GetValues<StatusEffectType>();
+        /// <summary>
+        /// When overridden in the derived class, casts an int to type <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="value">The int value.</param>
+        /// <returns>The <paramref name="value"/> casted to type <typeparamref name="T"/>.</returns>
+        protected override StatusEffectType FromInt(int value)
+        {
+            return (StatusEffectType)value;
+        }
 
         /// <summary>
-        /// Gets an IEnumerable of all of the StatusEffectTypes.
+        /// When overridden in the derived class, casts type <typeparamref name="T"/> to an int.
         /// </summary>
-        public static IEnumerable<StatusEffectType> AllValues
+        /// <param name="value">The value.</param>
+        /// <returns>The <paramref name="value"/> casted to an int.</returns>
+        protected override int ToInt(StatusEffectType value)
         {
-            get { return _allValues; }
+            return (int)value;
         }
     }
 }

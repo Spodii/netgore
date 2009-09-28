@@ -66,7 +66,7 @@ namespace DemoGame.Server
         /// </summary>
         static UserChatDialogState()
         {
-            if (!EnumHelper.IsDefined(_responseConditionalFailureType))
+            if (!EnumHelper<ResponseConditionalFailureHandleType>.IsDefined(_responseConditionalFailureType))
             {
                 const string errmsg = "Invalid _responseConditionalFailureType value `{0}`.";
                 string err = string.Format(errmsg, _responseConditionalFailureType);

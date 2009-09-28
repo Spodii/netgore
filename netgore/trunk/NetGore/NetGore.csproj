@@ -60,7 +60,6 @@
     <Compile Include="CharType.cs" />
     <Compile Include="CommandLineSwitchHelper.cs" />
     <Compile Include="EnumHelper.cs" />
-    <Compile Include="EnumValuesHelperBase.cs" />
     <Compile Include="Extensions\ClampExtensions.cs" />
     <Compile Include="Entities\BoxSide.cs" />
     <Compile Include="Entities\CollisionBox.cs" />

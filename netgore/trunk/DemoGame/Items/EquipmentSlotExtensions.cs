@@ -17,15 +17,5 @@ namespace DemoGame
             Debug.Assert(((EquipmentSlot)((byte)equipmentSlot)) == equipmentSlot, "Conversion to byte results in data loss...");
             return (byte)equipmentSlot;
         }
-
-        /// <summary>
-        /// Checks if a specified EquipmentSlot value is defined by the EquipmentSlot enum.
-        /// </summary>
-        /// <param name="slot">EquipmentSlot value to check.</param>
-        /// <returns>True if the <paramref name="slot"/> is defined in the EquipmentSlot enum, else false.</returns>
-        public static bool IsDefined(this EquipmentSlot slot)
-        {
-            return EnumHelper.IsDefined(slot);
-        }
     }
 }

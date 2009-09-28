@@ -50,7 +50,7 @@ namespace NetGore
             foreach (var item in items)
             {
                 T parsed;
-                if (EnumHelper.TryParse(item.Key, true, out parsed))
+                if (EnumHelper<T>.TryParse(item.Key, true, out parsed))
                     yield return new KeyValuePair<T, string[]>(parsed, item.Value);
             }
         }

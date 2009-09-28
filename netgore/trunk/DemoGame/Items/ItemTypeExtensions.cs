@@ -39,15 +39,5 @@ namespace DemoGame
                     return null;
             }
         }
-
-        /// <summary>
-        /// Checks if a specified ItemType value is defined by the ItemType enum.
-        /// </summary>
-        /// <param name="itemType">ItemType value to check.</param>
-        /// <returns>True if the <paramref name="itemType"/> is defined in the ItemType enum, else false.</returns>
-        public static bool IsDefined(this ItemType itemType)
-        {
-            return EnumHelper.IsDefined(itemType);
-        }
     }
 }

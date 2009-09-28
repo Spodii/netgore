@@ -74,7 +74,6 @@
     <Compile Include="NetGore\DynamicEntityTests.cs" />
     <Compile Include="NetGore\EntityTests.cs" />
     <Compile Include="NetGore\EnumHelperTests.cs" />
-    <Compile Include="NetGore\EnumValuesHelperBaseTests.cs" />
     <Compile Include="NetGore\IEnumerableTests.cs" />
     <Compile Include="NetGore\IsBetweenTests.cs" />
     <Compile Include="NetGore\MathStringTests.cs" />

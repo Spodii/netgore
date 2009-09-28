@@ -44,15 +44,5 @@ namespace DemoGame
         {
             return (byte)statType;
         }
-
-        /// <summary>
-        /// Checks if a specified StatType value is defined by the StatType enum.
-        /// </summary>
-        /// <param name="statType">StatType value to check.</param>
-        /// <returns>True if the <paramref name="statType"/> is defined in the StatType enum, else false.</returns>
-        public static bool IsDefined(this StatType statType)
-        {
-            return EnumHelper.IsDefined(statType);
-        }
     }
 }

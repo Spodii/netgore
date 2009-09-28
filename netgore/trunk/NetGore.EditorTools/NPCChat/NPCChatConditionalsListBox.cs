@@ -127,7 +127,7 @@ namespace NetGore.EditorTools.NPCChat
                 return;
 
             NPCChatConditionalEvaluationType t = (NPCChatConditionalEvaluationType)item;
-            if (!EnumHelper.IsDefined(t))
+            if (!EnumHelper < NPCChatConditionalEvaluationType>.IsDefined(t))
             {
                 EvaluationTypeComboBox.SelectedItem = ConditionalCollection.EvaluationType;
                 return;

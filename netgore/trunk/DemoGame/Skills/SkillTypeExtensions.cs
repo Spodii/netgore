@@ -9,15 +9,5 @@ namespace DemoGame
         {
             return (byte)skillType;
         }
-
-        /// <summary>
-        /// Checks if a specified SkillType value is defined by the SkillType enum.
-        /// </summary>
-        /// <param name="skillType">SkillType value to check.</param>
-        /// <returns>True if the <paramref name="skillType"/> is defined in the SkillType enum, else false.</returns>
-        public static bool IsDefined(this SkillType skillType)
-        {
-            return EnumHelper.IsDefined(skillType);
-        }
     }
 }
