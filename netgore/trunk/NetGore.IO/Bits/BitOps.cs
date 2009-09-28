@@ -3,12 +3,12 @@ using System.Linq;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Supplies a series of static bit operations
+    /// Helper methods for performing operations on bits.
     /// </summary>
     public static class BitOps
     {
         /// <summary>
-        /// Table used for reversing bits
+        /// Table used for reversing bits.
         /// </summary>
         static readonly byte[] BitReverseTable256 = new byte[]
         {
@@ -28,7 +28,7 @@ namespace NetGore.IO
         };
 
         /// <summary>
-        /// Table used for finding the required number of bits for a value
+        /// Table used for finding the required number of bits for a value.
         /// </summary>
         static readonly byte[] LogTable256 = new byte[]
         {
@@ -42,10 +42,10 @@ namespace NetGore.IO
         };
 
         /// <summary>
-        /// Counts the number of set (bit = 1) bits in a given value
+        /// Counts the number of set (bit = 1) bits in a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Number of set (1) bits</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>Number of set (1) bits.</returns>
         public static int CountBits(long value)
         {
             int i;
@@ -58,10 +58,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Counts the number of set (bit = 1) bits in a given value
+        /// Counts the number of set (bit = 1) bits in a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Number of set (1) bits</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>Number of set (1) bits.</returns>
         public static int CountBits(ulong value)
         {
             int i;
@@ -74,10 +74,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Counts the number of set (bit = 1) bits in a given value
+        /// Counts the number of set (bit = 1) bits in a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Number of set (1) bits</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>Number of set (1) bits.</returns>
         public static int CountBits(int value)
         {
             int i;
@@ -90,10 +90,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Counts the number of set (bit = 1) bits in a given value
+        /// Counts the number of set (bit = 1) bits in a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Number of set (1) bits</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>Number of set (1) bits.</returns>
         public static int CountBits(uint value)
         {
             int i;
@@ -106,10 +106,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Counts the number of set (bit = 1) bits in a given value
+        /// Counts the number of set (bit = 1) bits in a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Number of set (1) bits</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>Number of set (1) bits.</returns>
         public static int CountBits(short value)
         {
             int i;
@@ -122,10 +122,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Counts the number of set (bit = 1) bits in a given value
+        /// Counts the number of set (bit = 1) bits in a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Number of set (1) bits</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>Number of set (1) bits.</returns>
         public static int CountBits(ushort value)
         {
             int i;
@@ -138,10 +138,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Counts the number of set (bit = 1) bits in a given value
+        /// Counts the number of set (bit = 1) bits in a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Number of set (1) bits</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>Number of set (1) bits.</returns>
         public static int CountBits(byte value)
         {
             int i;
@@ -154,10 +154,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Counts the number of set (bit = 1) bits in a given value
+        /// Counts the number of set (bit = 1) bits in a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Number of set (1) bits</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>Number of set (1) bits.</returns>
         public static int CountBits(sbyte value)
         {
             int i;
@@ -170,99 +170,99 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Checks if a value is a power of two
+        /// Checks if a value is a power of two.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True if a power of 2, else false</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True if a power of 2, else false.</returns>
         public static bool IsPowerOf2(long value)
         {
             return (value > 0) && ((value & (value - 1)) == 0);
         }
 
         /// <summary>
-        /// Checks if a value is a power of two
+        /// Checks if a value is a power of two.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True if a power of 2, else false</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True if a power of 2, else false.</returns>
         public static bool IsPowerOf2(ulong value)
         {
             return (value > 0) && ((value & (value - 1)) == 0);
         }
 
         /// <summary>
-        /// Checks if a value is a power of two
+        /// Checks if a value is a power of two.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True if a power of 2, else false</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True if a power of 2, else false.</returns>
         public static bool IsPowerOf2(int value)
         {
             return (value > 0) && ((value & (value - 1)) == 0);
         }
 
         /// <summary>
-        /// Checks if a value is a power of two
+        /// Checks if a value is a power of two.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True if a power of 2, else false</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True if a power of 2, else false.</returns>
         public static bool IsPowerOf2(uint value)
         {
             return (value > 0) && ((value & (value - 1)) == 0);
         }
 
         /// <summary>
-        /// Checks if a value is a power of two
+        /// Checks if a value is a power of two.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True if a power of 2, else false</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True if a power of 2, else false.</returns>
         public static bool IsPowerOf2(short value)
         {
             return (value > 0) && ((value & (value - 1)) == 0);
         }
 
         /// <summary>
-        /// Checks if a value is a power of two
+        /// Checks if a value is a power of two.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True if a power of 2, else false</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True if a power of 2, else false.</returns>
         public static bool IsPowerOf2(ushort value)
         {
             return (value > 0) && ((value & (value - 1)) == 0);
         }
 
         /// <summary>
-        /// Checks if a value is a power of two
+        /// Checks if a value is a power of two.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True if a power of 2, else false</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True if a power of 2, else false.</returns>
         public static bool IsPowerOf2(byte value)
         {
             return (value > 0) && ((value & (value - 1)) == 0);
         }
 
         /// <summary>
-        /// Checks if a value is a power of two
+        /// Checks if a value is a power of two.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True if a power of 2, else false</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True if a power of 2, else false.</returns>
         public static bool IsPowerOf2(sbyte value)
         {
             return (value > 0) && ((value & (value - 1)) == 0);
         }
 
         /// <summary>
-        /// Convert a long to a double, preserving the bit sequence
+        /// Convert a long to a double, preserving the bit sequence.
         /// </summary>
-        /// <param name="value">Long value of the double</param>
+        /// <param name="value">Long value of the double.</param>
         public static unsafe double LongToDouble(long value)
         {
             return *(double*)&value;
         }
 
         /// <summary>
-        /// Finds the next highest power of 2 for a given value unless the value is already a power of 2
+        /// Finds the next highest power of 2 for a given value unless the value is already a power of 2.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Next highest power of 2 of the value</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>Next highest power of 2 of the value.</returns>
         public static int NextPowerOf2(int value)
         {
             value--;
@@ -275,10 +275,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Finds the next highest power of 2 for a given value unless the value is already a power of 2
+        /// Finds the next highest power of 2 for a given value unless the value is already a power of 2.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Next highest power of 2 of the value</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>Next highest power of 2 of the value.</returns>
         public static uint NextPowerOf2(uint value)
         {
             value--;
@@ -291,10 +291,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Finds the parity of a given value
+        /// Finds the parity of a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True for even, False for odd</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True for even, False for odd.</returns>
         public static bool Parity(long value)
         {
             long i;
@@ -306,10 +306,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Finds the parity of a given value
+        /// Finds the parity of a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True for even, False for odd</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True for even, False for odd.</returns>
         public static bool Parity(ulong value)
         {
             ulong i;
@@ -321,10 +321,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Finds the parity of a given value
+        /// Finds the parity of a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True for even, False for odd</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True for even, False for odd.</returns>
         public static bool Parity(int value)
         {
             int i;
@@ -336,10 +336,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Finds the parity of a given value
+        /// Finds the parity of a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True for even, False for odd</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True for even, False for odd.</returns>
         public static bool Parity(uint value)
         {
             uint i;
@@ -351,10 +351,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Finds the parity of a given value
+        /// Finds the parity of a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True for even, False for odd</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True for even, False for odd.</returns>
         public static bool Parity(short value)
         {
             int i;
@@ -366,10 +366,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Finds the parity of a given value
+        /// Finds the parity of a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True for even, False for odd</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True for even, False for odd.</returns>
         public static bool Parity(ushort value)
         {
             int i;
@@ -381,10 +381,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Finds the parity of a given value
+        /// Finds the parity of a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True for even, False for odd</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True for even, False for odd.</returns>
         public static bool Parity(sbyte value)
         {
             int i;
@@ -396,10 +396,10 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Finds the parity of a given value
+        /// Finds the parity of a given value.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True for even, False for odd</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True for even, False for odd.</returns>
         public static bool Parity(byte value)
         {
             return ((((ulong)(value * 0x0101010101010101) & 0x8040201008040201) % 0x1FF) & 1) != 0;
