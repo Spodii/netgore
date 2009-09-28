@@ -32,7 +32,7 @@ namespace NetGore.Db.ClassCreator
         static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(StatCollectionType statCollectionType)
         {
             var columnItems = new List<ColumnCollectionItem>();
-            foreach (StatType statType in StatTypeHelper.AllValues)
+            foreach (StatType statType in StatTypeHelper.Values)
             {
                 string dbField = statType.GetDatabaseField(statCollectionType);
                 ColumnCollectionItem item = ColumnCollectionItem.FromEnum(dbField, statType);

@@ -7,6 +7,28 @@ namespace DemoGame
 {
     public class StatusEffectTypeHelper : EnumHelper<StatusEffectType>
     {
+        static readonly StatusEffectTypeHelper _instance;
+
+        /// <summary>
+        /// Gets the <see cref="StatusEffectTypeHelper"/> instance.
+        /// </summary>
+        public static StatusEffectTypeHelper Instance { get { return _instance; } }
+
+        /// <summary>
+        /// Initializes the <see cref="StatusEffectTypeHelper"/> class.
+        /// </summary>
+        static StatusEffectTypeHelper()
+        {
+            _instance = new StatusEffectTypeHelper();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatusEffectTypeHelper"/> class.
+        /// </summary>
+        StatusEffectTypeHelper()
+        {
+        }
+
         /// <summary>
         /// When overridden in the derived class, casts an int to type <typeparamref name="T"/>.
         /// </summary>

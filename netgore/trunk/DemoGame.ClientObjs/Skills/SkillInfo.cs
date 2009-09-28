@@ -45,7 +45,7 @@ namespace DemoGame.Client
 
         static SkillInfo()
         {
-            _infoManager.AddMissingTypes(SkillTypeHelper.AllValues,
+            _infoManager.AddMissingTypes(SkillTypeHelper.Values,
                                          x => new SkillInfo { SkillType = x, Name = x.ToString(), Description = string.Empty });
             _infoManager.Save();
         }

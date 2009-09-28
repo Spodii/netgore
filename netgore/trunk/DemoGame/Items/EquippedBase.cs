@@ -19,7 +19,7 @@ namespace DemoGame
         /// <summary>
         /// Greatest index of all the EquipmentSlots.
         /// </summary>
-        static readonly int _highestSlotIndex = EquipmentSlotHelper.GreatestValue;
+        static readonly int _highestSlotIndex = EquipmentSlotHelper.Instance.MaxValue;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

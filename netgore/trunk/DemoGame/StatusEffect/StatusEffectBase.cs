@@ -169,7 +169,7 @@ namespace DemoGame
         {
             var usedStatTypes = new List<StatType>();
 
-            foreach (StatType statType in StatTypeHelper.AllValues)
+            foreach (StatType statType in StatTypeHelper.Values)
             {
                 int value;
                 if (TryGetStatModifier(statType, 1, out value))
