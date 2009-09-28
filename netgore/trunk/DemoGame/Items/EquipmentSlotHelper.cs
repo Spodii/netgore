@@ -5,26 +5,48 @@ using NetGore;
 
 namespace DemoGame
 {
-    [Obsolete]
-    public static class EquipmentSlotHelper
+    public class EquipmentSlotHelper : EnumHelper<EquipmentSlot>
     {
-        static readonly EquipmentSlot[] _allValues = EnumHelper<EquipmentSlot>.Values.ToArray();
-        static readonly int _greatestValue = AllValues.Select(x => x.GetValue()).Max();
+        static readonly EquipmentSlotHelper _instance;
 
         /// <summary>
-        /// Gets an IEnumerable of all of the EquipmentSlots.
+        /// Gets the <see cref="EquipmentSlotHelper"/> instance.
         /// </summary>
-        public static IEnumerable<EquipmentSlot> AllValues
+        public static EquipmentSlotHelper Instance { get { return _instance; } }
+
+        /// <summary>
+        /// Initializes the <see cref="EquipmentSlotHelper"/> class.
+        /// </summary>
+        static EquipmentSlotHelper()
         {
-            get { return _allValues; }
+            _instance = new EquipmentSlotHelper();
         }
 
         /// <summary>
-        /// Gets the greatest value from GetValue() from each EquipmentSlot.
+        /// Initializes a new instance of the <see cref="EquipmentSlotHelper"/> class.
         /// </summary>
-        public static int GreatestValue
+        EquipmentSlotHelper()
         {
-            get { return _greatestValue; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, casts an int to type <see cref="EquipmentSlot"/>.
+        /// </summary>
+        /// <param name="value">The int value.</param>
+        /// <returns>The <paramref name="value"/> casted to type <see cref="EquipmentSlot"/>.</returns>
+        protected override EquipmentSlot FromInt(int value)
+        {
+            return (EquipmentSlot)value;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, casts type <see cref="EquipmentSlot"/> to an int.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The <paramref name="value"/> casted to an int.</returns>
+        protected override int ToInt(EquipmentSlot value)
+        {
+            return (int)value;
         }
     }
 }

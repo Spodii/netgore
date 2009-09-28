@@ -21,9 +21,9 @@ namespace DemoGame
         {
             _collectionType = collectionType;
 
-            _stats = new IStat[StatTypeHelper.GreatestValue + 1];
+            _stats = new IStat[StatTypeHelper.Instance.MaxValue + 1];
 
-            foreach (StatType statType in StatTypeHelper.AllValues)
+            foreach (StatType statType in StatTypeHelper.Values)
             {
                 IStat istat = StatFactory.CreateStat(statType, collectionType);
                 _stats[statType.GetValue()] = istat;
