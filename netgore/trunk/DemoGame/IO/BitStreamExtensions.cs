@@ -17,18 +17,6 @@ namespace DemoGame
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Reads a StatType from the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>EquipmentSlot read from the BitStream.</returns>
-        /// <exception cref="InvalidCastException">The EquipmentSlot was read from the BitStream, but the value is an invalid
-        /// EquipmentSlot value.</exception>
-        public static EquipmentSlot ReadEquipmentSlot(this BitStream bitStream)
-        {
-            return bitStream.ReadEnumName<EquipmentSlot>(null);
-        }
-
-        /// <summary>
         /// Reads a GameMessage from the BitStream.
         /// </summary>
         /// <param name="bitStream">BitStream to read from.</param>
@@ -95,7 +83,7 @@ namespace DemoGame
         /// must contain the StatType being read.</param>
         public static void ReadStat(this BitStream bitStream, IStatCollection statCollection)
         {
-            StatType statType = bitStream.ReadEnumName<StatType>();
+            StatType statType = bitStream.ReadEnum(StatTypeHelper.Instance);
             IStat stat = statCollection.GetStat(statType);
             stat.Read(bitStream);
         }
@@ -285,7 +273,7 @@ namespace DemoGame
         /// <param name="stat">IStat to write.</param>
         public static void Write(this BitStream bitStream, IStat stat)
         {
-            bitStream.WriteEnumName(stat.StatType);
+            bitStream.WriteEnum(StatTypeHelper.Instance, stat.StatType);
             stat.Write(bitStream);
         }
 

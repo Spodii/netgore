@@ -13,15 +13,13 @@ namespace DemoGame.Client
     public class SkillInfo
     {
         const string _fileName = "skillinfo.xml";
+        const string _valueKeyDescription = "Description";
+        const string _valueKeyIcon = "Icon";
+        const string _valueKeyName = "Name";
+        const string _valueKeyType = "Type";
 
-        static readonly InfoManager<SkillType, SkillInfo> _infoManager = new InfoManager<SkillType, SkillInfo>(_fileName,
-                                                                                                               EnumComparer
-                                                                                                                   <SkillType>.
-                                                                                                                   Instance,
-                                                                                                               x =>
-                                                                                                               new SkillInfo(x),
-                                                                                                               (x, y) => y.Save(x),
-                                                                                                               x => x.SkillType);
+        static readonly InfoManager<SkillType, SkillInfo> _infoManager;
+        static readonly SkillTypeHelper _skillTypeHelper = SkillTypeHelper.Instance;
 
         /// <summary>
         /// Gets or sets the description of this Skill.
@@ -45,6 +43,8 @@ namespace DemoGame.Client
 
         static SkillInfo()
         {
+            _infoManager = new InfoManager<SkillType, SkillInfo>(_fileName, EnumComparer<SkillType>.Instance,
+                                                                 x => new SkillInfo(x), (x, y) => y.Save(x), x => x.SkillType);
             _infoManager.AddMissingTypes(SkillTypeHelper.Values,
                                          x => new SkillInfo { SkillType = x, Name = x.ToString(), Description = string.Empty });
             _infoManager.Save();
@@ -84,10 +84,10 @@ namespace DemoGame.Client
 
         void Read(IValueReader r)
         {
-            SkillType = r.ReadEnumName<SkillType>("Type");
-            Name = r.ReadString("Name");
-            Description = r.ReadString("Description");
-            Icon = r.ReadGrhIndex("Icon");
+            SkillType = r.ReadEnum(_skillTypeHelper, _valueKeyType);
+            Name = r.ReadString(_valueKeyName);
+            Description = r.ReadString(_valueKeyDescription);
+            Icon = r.ReadGrhIndex(_valueKeyIcon);
         }
 
         public static void Save()
@@ -97,10 +97,10 @@ namespace DemoGame.Client
 
         public void Save(IValueWriter w)
         {
-            w.WriteEnumName("Type", SkillType);
-            w.Write("Name", Name);
-            w.Write("Description", Description);
-            w.Write("Icon", Icon);
+            w.WriteEnum(_skillTypeHelper, _valueKeyType, SkillType);
+            w.Write(_valueKeyName, Name);
+            w.Write(_valueKeyDescription, Description);
+            w.Write(_valueKeyIcon, Icon);
         }
     }
 }

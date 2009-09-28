@@ -7,7 +7,7 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Base class for a class that helps with writing and reading enum values.
+    /// Base class for a class that helps with performing operations with and on Enums.
     /// </summary>
     /// <typeparam name="T">The Type of Enum.</typeparam>
     public abstract class EnumHelper<T> : IEnumValueReader<T>, IEnumValueWriter<T> where T : struct, IComparable, IConvertible, IFormattable
@@ -53,6 +53,9 @@ namespace NetGore
             get { return _minValue; }
         }
 
+        /// <summary>
+        /// Initializes the <see cref="EnumHelper&lt;T&gt;"/> class.
+        /// </summary>
         static EnumHelper()
         {
             if (!typeof(T).IsEnum)
@@ -99,6 +102,13 @@ namespace NetGore
         /// <returns>The <paramref name="value"/> casted to type <typeparamref name="T"/>.</returns>
         protected abstract T FromInt(int value);
 
+        /// <summary>
+        /// Returns an indication whether a constant with a specified value exists in the Enum of type
+        /// <typeparamref name="T"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>True if the <paramref name="value"/> exists in the Enum of type
+        /// <typeparamref name="T"/>; otherwise false.</returns>
         public static bool IsDefined(T value)
         {
             if (!typeof(T).IsEnum)
@@ -220,6 +230,11 @@ namespace NetGore
             return true;
         }
 
+        /// <summary>
+        /// Reads the Enum value using the name of the Enum instead of the underlying integer value.
+        /// </summary>
+        /// <param name="bitStream">The BitStream to read the value from.</param>
+        /// <returns>The value read from the <paramref name="bitStream"/>.</returns>
         public static T ReadName(BitStream bitStream)
         {
             string str = bitStream.ReadString();
@@ -227,6 +242,12 @@ namespace NetGore
             return value;
         }
 
+        /// <summary>
+        /// Reads the Enum value using the underlying integer value of the Enum instead of the name.
+        /// </summary>
+        /// <param name="reader">The IValueReader to read the value from.</param>
+        /// <param name="name">The name of the value to read.</param>
+        /// <returns>The value read from the <paramref name="reader"/>.</returns>
         public static T ReadName(IValueReader reader, string name)
         {
             string str = reader.ReadString(name);
@@ -234,12 +255,23 @@ namespace NetGore
             return value;
         }
 
+        /// <summary>
+        /// Writes the Enum value using the name of the Enum instead of the underlying integer value.
+        /// </summary>
+        /// <param name="bitStream">The BitStream to write the value to.</param>
+        /// <param name="value">The value to write.</param>
         public static void WriteName(BitStream bitStream, T value)
         {
             string str = EnumIOHelper.ToName(value);
             bitStream.Write(str);
         }
 
+        /// <summary>
+        /// Writes the Enum value using the underlying integer value of the Enum instead of the name.
+        /// </summary>
+        /// <param name="writer">The IValueWriter to write the value to.</param>
+        /// <param name="name">The name of the value to write.</param>
+        /// <param name="value">The value to write.</param>
         public static void WriteName(IValueWriter writer, string name, T value)
         {
             string str = EnumIOHelper.ToName(value);
@@ -253,7 +285,9 @@ namespace NetGore
         /// <param name="value">The value to write.</param>
         public void WriteValue(BitStream bitStream, T value)
         {
-            uint v = (uint)(ToInt(value) - _minValue);
+            int signedV = ToInt(value) - _minValue;
+            Debug.Assert(signedV >= uint.MinValue);
+            uint v = (uint)signedV;
             bitStream.Write(v, _bitsRequired);
         }
 
@@ -266,7 +300,9 @@ namespace NetGore
         /// <param name="value">The value to write.</param>
         public void WriteValue(IValueWriter writer, string name, T value)
         {
-            uint v = (uint)(ToInt(value) - _minValue);
+            int signedV = ToInt(value) - _minValue;
+            Debug.Assert(signedV >= uint.MinValue);
+            uint v = (uint)signedV;
             writer.Write(name, v, _bitsRequired);
         }
 
@@ -280,8 +316,7 @@ namespace NetGore
         /// <returns>The value read from the <paramref name="reader"/> with the given <paramref name="name"/>.</returns>
         T IEnumValueReader<T>.ReadEnum(IValueReader reader, string name)
         {
-            int value = reader.ReadInt(name, _bitsRequired);
-            return FromInt(value);
+            return ReadValue(reader, name);
         }
 
         #endregion
@@ -297,8 +332,7 @@ namespace NetGore
         /// <param name="value">The value to write.</param>
         void IEnumValueWriter<T>.WriteEnum(IValueWriter writer, string name, T value)
         {
-            int v = ToInt(value);
-            writer.Write(name, v, _bitsRequired);
+            WriteValue(writer, name, value);
         }
 
         #endregion

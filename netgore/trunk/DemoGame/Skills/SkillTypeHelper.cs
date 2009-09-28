@@ -5,7 +5,7 @@ using NetGore;
 
 namespace DemoGame
 {
-    public class SkillTypeHelper : EnumHelper<SkillType>
+    public sealed class SkillTypeHelper : EnumHelper<SkillType>
     {
         static readonly SkillTypeHelper _instance;
 

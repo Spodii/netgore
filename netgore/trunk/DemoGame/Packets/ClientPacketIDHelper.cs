@@ -6,7 +6,7 @@ using NetGore;
 
 namespace DemoGame
 {
-    public class ClientPacketIDHelper : EnumHelper<ClientPacketID>
+    public sealed class ClientPacketIDHelper : EnumHelper<ClientPacketID>
     {
         static readonly ClientPacketIDHelper _instance;
 

@@ -27,8 +27,10 @@ namespace NetGore
         /// <returns>Value read from the IValueReader.</returns>
         protected override CollisionType Read(string name, IValueReader reader)
         {
-            return reader.ReadEnumName<CollisionType>(name);
+            return reader.ReadEnum(_collisionTypeHelper, name);
         }
+
+        static readonly CollisionTypeHelper _collisionTypeHelper = CollisionTypeHelper.Instance;
 
         /// <summary>
         /// When overridden in the derived class, writes a value to an IValueWriter with the specified name.
@@ -38,7 +40,7 @@ namespace NetGore
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, CollisionType value)
         {
-            writer.WriteEnumName(name, value);
+            writer.WriteEnum(_collisionTypeHelper, name, value);
         }
     }
 }

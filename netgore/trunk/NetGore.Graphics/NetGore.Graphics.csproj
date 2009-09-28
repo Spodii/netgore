@@ -62,6 +62,7 @@
     <Compile Include="Background\BackgroundImage.cs" />
     <Compile Include="Background\BackgroundLayerLayout.cs" />
     <Compile Include="Background\BackgroundLayer.cs" />
+    <Compile Include="Background\BackgroundLayerLayoutHelper.cs" />
     <Compile Include="Camera2D.cs" />
     <Compile Include="Converter\GrhConverter.cs" />
     <Compile Include="EntityInterpolator.cs" />

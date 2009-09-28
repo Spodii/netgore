@@ -598,7 +598,7 @@ namespace NetGore.IO.Tests
             }
         }
 
-        class TestEnumHelper : EnumHelper<TestEnum>
+        sealed class TestEnumHelper : EnumHelper<TestEnum>
         {
             /// <summary>
             /// When overridden in the derived class, casts an int to type TestEnum.

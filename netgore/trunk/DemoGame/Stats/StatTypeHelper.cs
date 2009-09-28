@@ -5,7 +5,7 @@ using NetGore;
 
 namespace DemoGame
 {
-    public class StatTypeHelper : EnumHelper<StatType>
+    public sealed class StatTypeHelper : EnumHelper<StatType>
     {
         static readonly StatTypeHelper _instance;
 
