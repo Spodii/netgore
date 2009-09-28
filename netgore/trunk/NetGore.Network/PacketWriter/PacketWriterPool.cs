@@ -4,7 +4,7 @@ using NetGore.Collections;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Pool of PacketWriters.
+    /// Pool of <see cref="PacketWriter"/>s.
     /// </summary>
     public class PacketWriterPool : ObjectPool<PacketWriter>
     {
