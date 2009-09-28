@@ -27,7 +27,7 @@ namespace NetGore
         /// <returns>Value read from the IValueReader.</returns>
         protected override CollisionType Read(string name, IValueReader reader)
         {
-            return reader.ReadCollisionType(name);
+            return reader.ReadEnumName<CollisionType>(name);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace NetGore
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, CollisionType value)
         {
-            writer.Write(name, value);
+            writer.WriteEnumName(name, value);
         }
     }
 }

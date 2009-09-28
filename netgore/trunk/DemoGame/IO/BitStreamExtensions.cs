@@ -25,7 +25,7 @@ namespace DemoGame
         /// EquipmentSlot value.</exception>
         public static EquipmentSlot ReadEquipmentSlot(this BitStream bitStream)
         {
-            return bitStream.ReadEquipmentSlot(null);
+            return bitStream.ReadEnumName<EquipmentSlot>(null);
         }
 
         /// <summary>
@@ -84,19 +84,7 @@ namespace DemoGame
         /// <param name="bitStream">BitStream to read from.</param>
         public static ShopItemIndex ReadShopItemIndex(this BitStream bitStream)
         {
-            return bitStream.ReadShopItemIndex();
-        }
-
-        /// <summary>
-        /// Reads a SkillType from the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>SkillType read from the BitStream.</returns>
-        /// <exception cref="InvalidCastException">The SkillType was read from the BitStream, but the value is an invalid
-        /// SkillType value.</exception>
-        public static SkillType ReadSkillType(this BitStream bitStream)
-        {
-            return bitStream.ReadSkillType(null);
+            return new ShopItemIndex(bitStream.ReadByte());
         }
 
         /// <summary>
@@ -107,7 +95,7 @@ namespace DemoGame
         /// must contain the StatType being read.</param>
         public static void ReadStat(this BitStream bitStream, IStatCollection statCollection)
         {
-            StatType statType = bitStream.ReadStatType();
+            StatType statType = bitStream.ReadEnumName<StatType>();
             IStat stat = statCollection.GetStat(statType);
             stat.Read(bitStream);
         }
@@ -136,30 +124,6 @@ namespace DemoGame
             {
                 ReadStat(bitStream, statCollection);
             }
-        }
-
-        /// <summary>
-        /// Reads a StatType from the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>StatType read from the BitStream.</returns>
-        /// <exception cref="InvalidCastException">The StatType was read from the BitStream, but the value is an invalid
-        /// StatType value.</exception>
-        public static StatType ReadStatType(this BitStream bitStream)
-        {
-            return bitStream.ReadStatType(null);
-        }
-
-        /// <summary>
-        /// Reads a StatusEffectType from the BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read from.</param>
-        /// <returns>StatusEffectType read from the BitStream.</returns>
-        /// <exception cref="InvalidCastException">The StatusEffectType was read from the BitStream, but the value is an invalid
-        /// StatusEffectType value.</exception>
-        public static StatusEffectType ReadStatusEffectType(this BitStream bitStream)
-        {
-            return bitStream.ReadStatusEffectType(null);
         }
 
         /// <summary>
@@ -250,7 +214,7 @@ namespace DemoGame
         /// <param name="statType">StatType to write.</param>
         public static void Write(this BitStream bitStream, StatType statType)
         {
-            bitStream.Write(null, statType);
+            bitStream.WriteEnumName(null, statType);
         }
 
         /// <summary>
@@ -260,7 +224,7 @@ namespace DemoGame
         /// <param name="skillType">SkillType to write.</param>
         public static void Write(this BitStream bitStream, SkillType skillType)
         {
-            bitStream.Write(null, skillType);
+            bitStream.WriteEnumName(null, skillType);
         }
 
         /// <summary>
@@ -280,7 +244,7 @@ namespace DemoGame
         /// <param name="statusEffectType">StatusEffectType to write.</param>
         public static void Write(this BitStream bitStream, StatusEffectType statusEffectType)
         {
-            bitStream.Write(null, statusEffectType);
+            bitStream.WriteEnumName(null, statusEffectType);
         }
 
         /// <summary>
@@ -343,7 +307,7 @@ namespace DemoGame
         /// <param name="slot">EquipmentSlot to write.</param>
         public static void Write(this BitStream bitStream, EquipmentSlot slot)
         {
-            bitStream.Write(null, slot);
+            bitStream.WriteEnumName(null, slot);
         }
 
         /// <summary>

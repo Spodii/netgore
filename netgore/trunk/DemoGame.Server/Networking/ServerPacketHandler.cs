@@ -201,7 +201,7 @@ namespace DemoGame.Server
             // Get the StatType
             try
             {
-                statType = r.ReadStatType();
+                statType = r.ReadEnumValue<StatType>(StatTypeHelper.Instance);
             }
             catch (InvalidCastException)
             {
@@ -360,7 +360,7 @@ namespace DemoGame.Server
 
             try
             {
-                skillType = r.ReadSkillType();
+                skillType = r.ReadEnumName<SkillType>();
             }
             catch (InvalidCastException)
             {

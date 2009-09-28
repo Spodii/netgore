@@ -27,7 +27,7 @@ namespace NetGore
         /// <returns>Value read from the IValueReader.</returns>
         protected override Alignment Read(string name, IValueReader reader)
         {
-            return reader.ReadAlignment(name);
+            return reader.ReadEnumName<Alignment>(name);
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace NetGore
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, Alignment value)
         {
-            writer.Write(name, value);
+            writer.WriteEnumName(name, value);
         }
     }
 }

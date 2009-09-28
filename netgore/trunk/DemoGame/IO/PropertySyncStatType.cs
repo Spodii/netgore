@@ -28,7 +28,7 @@ namespace DemoGame
         /// <returns>Value read from the IValueReader.</returns>
         protected override StatType Read(string name, IValueReader reader)
         {
-            return reader.ReadStatType(name);
+            return reader.ReadEnumName<StatType>(name);
         }
 
         /// <summary>
@@ -39,7 +39,7 @@ namespace DemoGame
         /// <param name="value">Value to write.</param>
         protected override void Write(string name, IValueWriter writer, StatType value)
         {
-            writer.Write(name, value);
+            writer.WriteEnumName(name, value);
         }
     }
 }

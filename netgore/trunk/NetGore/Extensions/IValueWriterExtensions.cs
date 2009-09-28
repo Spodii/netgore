@@ -123,30 +123,6 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Writes a CollisionType.
-        /// </summary>
-        /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
-        /// <param name="value">Value to write.</param>
-        public static void Write(this IValueWriter writer, string name, CollisionType value)
-        {
-            WriteEnum(writer, name, value);
-        }
-
-        /// <summary>
-        /// Writes an Alignment.
-        /// </summary>
-        /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
-        /// <param name="value">Value to write.</param>
-        public static void Write(this IValueWriter writer, string name, Alignment value)
-        {
-            WriteEnum(writer, name, value);
-        }
-
-        /// <summary>
         /// Writes a Color.
         /// </summary>
         /// <param name="writer">IValueWriter to write to.</param>
@@ -179,24 +155,6 @@ namespace NetGore
                 writer.Write(null, (byte)value.A);
                 // ReSharper restore RedundantCast
             }
-        }
-
-        /// <summary>
-        /// Write an enum to the IValueWriter.
-        /// </summary>
-        /// <typeparam name="T">Type of the enum to write.</typeparam>
-        /// <param name="writer">IValueWriter to write to.</param>
-        /// <param name="name">Unique name of the <paramref name="value"/> that will be used to distinguish it
-        /// from other values when reading.</param>
-        /// <param name="value">Value to write.</param>
-        [Obsolete]
-        public static void WriteEnum<T>(this IValueWriter writer, string name, T value)
-        {
-            if (!typeof(T).IsEnum)
-                throw new MethodAccessException("Generic type parameter T must be an enum.");
-
-            // Write using the enum's name
-            writer.Write(name, value.ToString());
         }
     }
 }

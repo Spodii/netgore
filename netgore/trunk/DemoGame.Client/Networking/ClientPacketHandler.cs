@@ -116,7 +116,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.AddStatusEffect)]
         void RecvAddStatusEffect(IIPSocket conn, BitStream r)
         {
-            StatusEffectType statusEffectType = r.ReadStatusEffectType();
+            StatusEffectType statusEffectType = r.ReadEnumName<StatusEffectType>();
             ushort power = r.ReadUShort();
             ushort secsLeft = r.ReadUShort();
 
@@ -285,7 +285,7 @@ namespace DemoGame.Client
         [MessageHandler((byte)ServerPacketID.RemoveStatusEffect)]
         void RecvRemoveStatusEffect(IIPSocket conn, BitStream r)
         {
-            StatusEffectType statusEffectType = r.ReadStatusEffectType();
+            StatusEffectType statusEffectType = r.ReadEnumName<StatusEffectType>();
 
             GameplayScreen.StatusEffectsForm.RemoveStatusEffect(statusEffectType);
             GameplayScreen.AppendToChatOutput(string.Format("Removed status effect {0}.", statusEffectType));
@@ -605,7 +605,7 @@ namespace DemoGame.Client
             MapEntityIndex? targetID = null;
             if (hasTarget)
                 targetID = r.ReadMapEntityIndex();
-            SkillType skillType = r.ReadSkillType();
+            SkillType skillType = r.ReadEnumName<SkillType>();
 
             CharacterEntity user = Map.GetDynamicEntity<CharacterEntity>(userID);
             CharacterEntity target = null;
