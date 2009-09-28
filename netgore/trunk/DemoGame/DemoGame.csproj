@@ -65,8 +65,6 @@
     <Compile Include="DbObjs\MapTable.cs" />
     <Compile Include="Entity\CharacterEntity.cs" />
     <Compile Include="Entity\CharacterState.cs" />
-    <Compile Include="DamageText.cs" />
-    <Compile Include="DamageTextPool.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Entity\DamageTrapEntityBase.cs" />
     <Compile Include="Entity\IPickupableEntity.cs" />

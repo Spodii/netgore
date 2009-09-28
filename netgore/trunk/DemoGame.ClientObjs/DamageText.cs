@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Collections;
 
-namespace DemoGame
+namespace DemoGame.Client
 {
     /// <summary>
     /// Represents the text used to display the damage to an entity
