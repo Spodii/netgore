@@ -21,12 +21,24 @@ namespace NetGore.IO
         bool _disposed;
 
         /// <summary>
-        /// XmlValueWriter constructor.
+        /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
         /// </summary>
         /// <param name="filePath">The path to the file to write to.</param>
         /// <param name="nodeName">Name to give the root node containing the values.</param>
-        public XmlValueWriter(string filePath, string nodeName)
+        public XmlValueWriter(string filePath, string nodeName) : this(filePath, nodeName, true)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
+        /// </summary>
+        /// <param name="filePath">The path to the file to write to.</param>
+        /// <param name="nodeName">Name to give the root node containing the values.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        public XmlValueWriter(string filePath, string nodeName, bool useEnumNames)
+        {
+            _useEnumNames = useEnumNames;
             _disposeWriter = true;
 
             string dir = Path.GetDirectoryName(filePath);
@@ -42,12 +54,25 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// XmlValueWriter constructor.
+        /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
         /// </summary>
         /// <param name="writer">XmlWriter to write the values to.</param>
         /// <param name="nodeName">Name to give the root node containing the values.</param>
-        public XmlValueWriter(XmlWriter writer, string nodeName)
+        public XmlValueWriter(XmlWriter writer, string nodeName) : this(writer, nodeName, true)
         {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="XmlValueWriter"/> class.
+        /// </summary>
+        /// <param name="writer">XmlWriter to write the values to.</param>
+        /// <param name="nodeName">Name to give the root node containing the values.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        public XmlValueWriter(XmlWriter writer, string nodeName, bool useEnumNames)
+        {
+            _useEnumNames = useEnumNames;
+
             if (writer == null)
                 throw new ArgumentNullException("writer");
 

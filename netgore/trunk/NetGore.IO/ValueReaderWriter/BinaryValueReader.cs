@@ -11,32 +11,52 @@ namespace NetGore.IO
     public class BinaryValueReader : IValueReader
     {
         readonly BitStream _reader;
+        readonly bool _useEnumNames = true;
 
         /// <summary>
-        /// BinaryValueReader constructor.
+        /// Initializes a new instance of the <see cref="BinaryValueReader"/> class.
         /// </summary>
         /// <param name="reader">BitStream that will be used to read from.</param>
-        public BinaryValueReader(BitStream reader)
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        public BinaryValueReader(BitStream reader, bool useEnumNames)
         {
             if (reader == null)
                 throw new ArgumentNullException("reader");
             if (reader.Mode != BitStreamMode.Read)
                 throw new ArgumentException("The BitStream must be set to Read.", "reader");
 
+            _useEnumNames = useEnumNames;
             _reader = reader;
         }
 
-        readonly bool _useEnumNames = true;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BinaryValueReader"/> class.
+        /// </summary>
+        /// <param name="reader">BitStream that will be used to read from.</param>
+        public BinaryValueReader(BitStream reader) : this(reader, true)
+        {
+        }
 
         /// <summary>
-        /// BinaryValueReader constructor.
+        /// Initializes a new instance of the <see cref="BinaryValueReader"/> class.
         /// </summary>
         /// <param name="filePath">The path of the file to read from.</param>
-        public BinaryValueReader(string filePath)
+        public BinaryValueReader(string filePath) : this(filePath, true)
+        { }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BinaryValueReader"/> class.
+        /// </summary>
+        /// <param name="filePath">The path of the file to read from.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        public BinaryValueReader(string filePath, bool useEnumNames)
         {
             if (!File.Exists(filePath))
                 throw new ArgumentException("The specified file could not be found.", "filePath");
 
+            _useEnumNames = useEnumNames;
             var bytes = File.ReadAllBytes(filePath);
             _reader = new BitStream(bytes);
         }
