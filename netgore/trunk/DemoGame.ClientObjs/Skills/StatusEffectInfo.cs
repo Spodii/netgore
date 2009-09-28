@@ -67,7 +67,7 @@ namespace DemoGame.Client
 
         void Read(IValueReader r)
         {
-            StatusEffectType = r.ReadStatusEffectType("Type");
+            StatusEffectType = r.ReadEnumName<StatusEffectType>("Type");
             Name = r.ReadString("Name");
             Description = r.ReadString("Description");
             Icon = r.ReadGrhIndex("Icon");
@@ -80,7 +80,7 @@ namespace DemoGame.Client
 
         public void Save(IValueWriter w)
         {
-            w.Write("Type", StatusEffectType);
+            w.WriteEnumName("Type", StatusEffectType);
             w.Write("Name", Name);
             w.Write("Description", Description);
             w.Write("Icon", Icon);

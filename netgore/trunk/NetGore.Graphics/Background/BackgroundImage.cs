@@ -123,7 +123,7 @@ namespace NetGore.Graphics
         protected BackgroundImage(IValueReader reader, int currentTime)
         {
             Name = reader.ReadString("Name");
-            Alignment = reader.ReadAlignment("Alignment");
+            Alignment = reader.ReadEnumName<Alignment>("Alignment");
             Color = reader.ReadColor("Color");
             Depth = reader.ReadFloat("Depth");
             Offset = reader.ReadVector2("Offset");
@@ -269,7 +269,7 @@ namespace NetGore.Graphics
         public virtual void Write(IValueWriter writer)
         {
             writer.Write("Name", Name);
-            writer.Write("Alignment", Alignment);
+            writer.WriteEnumName("Alignment", Alignment);
             writer.Write("Color", Color);
             writer.Write("Depth", Depth);
             writer.Write("Offset", Offset);

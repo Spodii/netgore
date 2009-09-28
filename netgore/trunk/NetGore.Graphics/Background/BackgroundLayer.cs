@@ -44,8 +44,8 @@ namespace NetGore.Graphics
 
         public BackgroundLayer(IValueReader reader, int currentTime) : base(reader, currentTime)
         {
-            HorizontalLayout = reader.ReadBackgroundLayerLayout("HorizontalLayout");
-            VerticalLayout = reader.ReadBackgroundLayerLayout("VerticalLayout");
+            HorizontalLayout = reader.ReadEnumName<BackgroundLayerLayout>("HorizontalLayout");
+            VerticalLayout = reader.ReadEnumName<BackgroundLayerLayout>("VerticalLayout");
         }
 
         /// <summary>
@@ -99,8 +99,8 @@ namespace NetGore.Graphics
         {
             base.Write(writer);
 
-            writer.Write("HorizontalLayout", HorizontalLayout);
-            writer.Write("VerticalLayout", VerticalLayout);
+            writer.WriteEnumName("HorizontalLayout", HorizontalLayout);
+            writer.WriteEnumName("VerticalLayout", VerticalLayout);
         }
     }
 }

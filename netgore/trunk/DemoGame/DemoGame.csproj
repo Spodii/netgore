@@ -95,8 +95,6 @@
     <Compile Include="Items\InventorySlot.cs" />
     <Compile Include="Items\ItemType.cs" />
     <Compile Include="Items\ItemTypeExtensions.cs" />
-    <Compile Include="IO\IValueReaderExtensions.cs" />
-    <Compile Include="IO\IValueWriterExtensions.cs" />
     <Compile Include="MapBase.cs" />
     <Compile Include="Packets\ClientPacketID.cs" />
     <Compile Include="Packets\ServerPacketID.cs" />

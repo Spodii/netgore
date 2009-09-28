@@ -13,28 +13,6 @@ namespace NetGore
     public static class IValueReaderExtensions
     {
         /// <summary>
-        /// Reads an Alignment.
-        /// </summary>
-        /// <param name="reader">IValueReader to read from.</param>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public static Alignment ReadAlignment(this IValueReader reader, string name)
-        {
-            return ReadEnum<Alignment>(reader, name);
-        }
-
-        /// <summary>
-        /// Reads a CollisionType.
-        /// </summary>
-        /// <param name="reader">IValueReader to read from.</param>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        public static CollisionType ReadCollisionType(this IValueReader reader, string name)
-        {
-            return ReadEnum<CollisionType>(reader, name);
-        }
-
-        /// <summary>
         /// Reads a Color.
         /// </summary>
         /// <param name="reader">IValueReader to read from.</param>
@@ -62,24 +40,6 @@ namespace NetGore
             }
 
             return new Color(r, g, b, a);
-        }
-
-        /// <summary>
-        /// Reads an enum from an IValueReader.
-        /// </summary>
-        /// <typeparam name="T">Type of the enum to read.</typeparam>
-        /// <param name="reader">IValueReader to read from.</param>
-        /// <param name="name">Unique name of the value to read.</param>
-        /// <returns>Value read from the reader.</returns>
-        [Obsolete]
-        public static T ReadEnum<T>(this IValueReader reader, string name) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            if (!typeof(T).IsEnum)
-                throw new MethodAccessException("Generic type parameter T must be an enum.");
-
-            string str = reader.ReadString(name);
-            T value = EnumHelper<T>.Parse(str);
-            return value;
         }
 
         /// <summary>

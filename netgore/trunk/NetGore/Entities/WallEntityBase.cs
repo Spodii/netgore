@@ -58,7 +58,7 @@ namespace NetGore
         {
             Vector2 position = r.ReadVector2("Position");
             Vector2 size = r.ReadVector2("Size");
-            CollisionType ct = r.ReadCollisionType("CollisionType");
+            CollisionType ct = r.ReadEnumName<CollisionType>("CollisionType");
 
             SetPositionRaw(position);
             SetSizeRaw(size);
@@ -69,7 +69,7 @@ namespace NetGore
         {
             w.Write("Position", Position);
             w.Write("Size", Size);
-            w.Write("CollisionType", CollisionType);
+            w.WriteEnumName("CollisionType", CollisionType);
         }
     }
 }

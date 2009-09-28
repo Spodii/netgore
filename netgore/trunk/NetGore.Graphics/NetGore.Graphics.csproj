@@ -67,8 +67,6 @@
     <Compile Include="EntityInterpolator.cs" />
     <Compile Include="Grh\AnimType.cs" />
     <Compile Include="Grh\ChangeCategorizationHandler.cs" />
-    <Compile Include="IValueReaderExtensions.cs" />
-    <Compile Include="IValueWriterExtensions.cs" />
     <Compile Include="MapBorderDrawer.cs" />
     <Compile Include="Skeleton\SkeletonBodyInfo.cs" />
     <Compile Include="Skeleton\SkeletonBodyItemInfo.cs" />

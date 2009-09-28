@@ -84,7 +84,7 @@ namespace DemoGame.Client
 
         void Read(IValueReader r)
         {
-            SkillType = r.ReadSkillType("Type");
+            SkillType = r.ReadEnumName<SkillType>("Type");
             Name = r.ReadString("Name");
             Description = r.ReadString("Description");
             Icon = r.ReadGrhIndex("Icon");
@@ -97,7 +97,7 @@ namespace DemoGame.Client
 
         public void Save(IValueWriter w)
         {
-            w.Write("Type", SkillType);
+            w.WriteEnumName("Type", SkillType);
             w.Write("Name", Name);
             w.Write("Description", Description);
             w.Write("Icon", Icon);

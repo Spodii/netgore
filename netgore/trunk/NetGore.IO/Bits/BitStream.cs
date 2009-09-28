@@ -773,6 +773,16 @@ namespace NetGore.IO
             }
         }
 
+        public T ReadEnumName<T>() where T : struct, IComparable, IConvertible, IFormattable
+        {
+            return ReadEnumName<T>(null);
+        }
+
+        public T ReadEnumValue<T>(IEnumValueReader<T> reader) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            return ReadEnumValue(reader, null);
+        }
+
         /// <summary>
         /// Reads 32 bits from the BitStream and returns the result as a float 
         /// </summary>
@@ -2674,6 +2684,17 @@ namespace NetGore.IO
                 FlushWorkBuffer();
         }
 
+        public void WriteEnumName<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            WriteEnumName(null, value);
+        }
+
+        public void WriteEnumValue<T>(IEnumValueWriter<T> writer, T value)
+            where T : struct, IComparable, IConvertible, IFormattable
+        {
+            WriteEnumValue(writer, null, value);
+        }
+
         void WriteSigned(int value, int numBits)
         {
             if (numBits > _bitsInt || numBits < 1)
@@ -2825,6 +2846,19 @@ namespace NetGore.IO
         #region IValueReader Members
 
         /// <summary>
+        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
+        /// </summary>
+        /// <typeparam name="T">The Type of Enum.</typeparam>
+        /// <param name="name">Unused by the BitStream.</param>
+        /// <returns>Value read from the reader.</returns>
+        public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
+        {
+            string str = ReadString();
+            T value = EnumIOHelper.FromName<T>(str);
+            return value;
+        }
+
+        /// <summary>
         /// Reads a 8-bit unsigned integer.
         /// </summary>
         /// <param name="name">Unused by the BitStream.</param>
@@ -2913,22 +2947,10 @@ namespace NetGore.IO
         /// <param name="reader">The reader used to read the enum.</param>
         /// <param name="name">Unused by the BitStream.</param>
         /// <returns>Value read from the reader.</returns>
-        public T ReadEnumValue<T>(IEnumValueReader<T> reader, string name) where T : struct, IComparable, IConvertible, IFormattable
+        public T ReadEnumValue<T>(IEnumValueReader<T> reader, string name)
+            where T : struct, IComparable, IConvertible, IFormattable
         {
             return reader.ReadEnum(this, name);
-        }
-
-        /// <summary>
-        /// Reads an Enum of type <typeparamref name="T"/> using the Enum's name instead of the value.
-        /// </summary>
-        /// <typeparam name="T">The Type of Enum.</typeparam>
-        /// <param name="name">Unused by the BitStream.</param>
-        /// <returns>Value read from the reader.</returns>
-        public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
-        {
-            string str = ReadString();
-            var value = EnumIOHelper.FromName<T>(str);
-            return value;
         }
 
         /// <summary>
@@ -3089,7 +3111,8 @@ namespace NetGore.IO
         /// <param name="writer">The writer used to write the enum value.</param>
         /// <param name="name">Unused by the BitStream.</param>
         /// <param name="value">Value to write.</param>
-        public void WriteEnumValue<T>(IEnumValueWriter<T> writer, string name, T value) where T : struct, IComparable, IConvertible, IFormattable
+        public void WriteEnumValue<T>(IEnumValueWriter<T> writer, string name, T value)
+            where T : struct, IComparable, IConvertible, IFormattable
         {
             writer.WriteEnum(this, name, value);
         }
