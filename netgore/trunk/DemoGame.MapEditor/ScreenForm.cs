@@ -994,9 +994,10 @@ namespace DemoGame.MapEditor
             }
         }
 
-        void Map_OnSave(MapBase map)
+        void Map_OnSave(IMap map)
         {
-            DbController.GetQuery<UpdateMapQuery>().Execute(map);
+            var mapCasted = (MapBase)map;
+            DbController.GetQuery<UpdateMapQuery>().Execute(mapCasted);
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
