@@ -7,8 +7,6 @@ namespace DemoGame
 {
     public abstract class WorldBase : IGetTime
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         bool _isFirstUpdate = true;
         int _lastUpdateTime;
 
