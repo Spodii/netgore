@@ -51,18 +51,17 @@ namespace DemoGame
         public abstract int Value { get; set; }
 
         /// <summary>
-        /// ItemEntityBase constructor
+        /// Initializes a new instance of the <see cref="ItemEntityBase"/> class.
         /// </summary>
-        /// <param name="pos">Position to place the item</param>
-        /// <param name="size">Size of the item's CollisionBox</param>
+        /// <param name="pos">Position to place the item.</param>
+        /// <param name="size">Size of the item's CollisionBox.</param>
         protected ItemEntityBase(Vector2 pos, Vector2 size)
         {
-            // NOTE: Can I get rid of this constructor?
             CB = new CollisionBox(pos, size.X, size.Y);
         }
 
         /// <summary>
-        /// ItemEntityBase constructor
+        /// Initializes a new instance of the <see cref="ItemEntityBase"/> class.
         /// </summary>
         protected ItemEntityBase()
         {
