@@ -5,19 +5,19 @@ using System.Linq;
 using System.Reflection;
 using log4net;
 
-namespace DemoGame
+namespace NetGore.RPGComponents
 {
     /// <summary>
     /// The base class for describing a single status effect that can be placed on a Character. This provides a
     /// description of the StatusEffect as a whole, and not each instance of this StatusEffect being used. Therefore,
     /// only one instance needs to be made for each derived type.
     /// </summary>
-    public abstract class StatusEffectBase
+    public abstract class StatusEffectBase<TStat, TStatusEffect>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly StatusEffectMergeType _mergeType;
-        readonly StatType[] _modifiedStats;
-        readonly StatusEffectType _statusEffectType;
+        readonly TStat[] _modifiedStats;
+        readonly TStatusEffect _statusEffectType;
 
         /// <summary>
         /// Gets the StatusEffectMergeType that describes how to handle merging multiple applications
@@ -32,7 +32,7 @@ namespace DemoGame
         /// Gets the StatTypes that this StatusEffectBase modifies. Any StatType that is not in this IEnumerable is
         /// never affected by this StatusEffect.
         /// </summary>
-        public IEnumerable<StatType> ModifiedStats
+        public IEnumerable<TStat> ModifiedStats
         {
             get { return _modifiedStats; }
         }
@@ -40,7 +40,7 @@ namespace DemoGame
         /// <summary>
         /// Gets the type of StatusEffect that this StatusEffectBase handles.
         /// </summary>
-        public StatusEffectType StatusEffectType
+        public TStatusEffect StatusEffectType
         {
             get { return _statusEffectType; }
         }
@@ -51,38 +51,41 @@ namespace DemoGame
         /// <param name="statusEffectType">The StatusEffectType that this StatusEffectBase handles.</param>
         /// <param name="mergeType">The StatusEffectMergeType that describes how to handle merging multiple
         /// applications of this StatusEffect onto the same object.</param>
-        protected StatusEffectBase(StatusEffectType statusEffectType, StatusEffectMergeType mergeType)
+        /// <param name="maxStatusEffectPower">The maximum power of the status effect.</param>
+        protected StatusEffectBase(TStatusEffect statusEffectType, StatusEffectMergeType mergeType, int maxStatusEffectPower)
         {
             _statusEffectType = statusEffectType;
             _mergeType = mergeType;
 
             _modifiedStats = GetUsedStatTypes();
 
-            AssertReturnValuesAreConsistent();
+            AssertReturnValuesAreConsistent(maxStatusEffectPower);
         }
 
         /// <summary>
         /// Performs a quick check that this StatusEffect is returning the same value for each StatType and power pair.
         /// </summary>
         [Conditional("DEBUG")]
-        void AssertReturnValuesAreConsistent()
+        void AssertReturnValuesAreConsistent(int maxStatusEffectPower)
         {
             Random r = new Random();
 
             // Perform 10 test iterations
             for (int i = 0; i < 10; i++)
             {
-                // Grab a different, random power for each iteration
-                int power = r.Next(0, 100);
+                int power;
 
                 // Make the first iteration the lowest power, and the second iteration the highest power
+                // Grab a different, random power for each other iteration
                 if (i == 0)
                     power = 0;
                 else if (i == 1)
-                    power = GameData.MaxStatusEffectPower;
+                    power = maxStatusEffectPower;
+                else
+                    power = r.Next(1, maxStatusEffectPower);
 
                 // Test each StatType that this StatusEffect actually modifies (in opposed to testing every single one)
-                foreach (StatType statType in _modifiedStats)
+                foreach (var statType in _modifiedStats)
                 {
                     int a = GetStatModifier(statType, (ushort)power);
                     int b = GetStatModifier(statType, (ushort)power);
@@ -152,7 +155,7 @@ namespace DemoGame
         /// <param name="power">The power of the StatusEffect.</param>
         /// <returns>The modifier bonus from this StatusEffect on the given <paramref name="statType"/> with
         /// the given <paramref name="power"/>.</returns>
-        public int GetStatModifier(StatType statType, ushort power)
+        public int GetStatModifier(TStat statType, ushort power)
         {
             int value;
             if (!TryGetStatModifier(statType, power, out value))
@@ -162,14 +165,21 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// When overridden in the derived class, gets an IEnumerable of all the values in the
+        /// <typeparamref name="TStat"/> Enum.
+        /// </summary>
+        /// <returns>An IEnumerable of all the values in the <typeparamref name="TStat"/> Enum.</returns>
+        protected abstract IEnumerable<TStat> GetStatTypes();
+
+        /// <summary>
         /// Gets the StatTypes that this StatusEffect modifies.
         /// </summary>
         /// <returns>The StatTypes that this StatusEffect modifies.</returns>
-        StatType[] GetUsedStatTypes()
+        TStat[] GetUsedStatTypes()
         {
-            var usedStatTypes = new List<StatType>();
+            var usedStatTypes = new List<TStat>();
 
-            foreach (StatType statType in StatTypeHelper.Values)
+            foreach (TStat statType in GetStatTypes())
             {
                 int value;
                 if (TryGetStatModifier(statType, 1, out value))
@@ -190,7 +200,7 @@ namespace DemoGame
         /// <returns>The modifier bonus from this StatusEffect on the given <paramref name="statType"/> with
         /// the given <paramref name="power"/>, or null if the <paramref name="statType"/> is not altered
         /// by this StatusEffect.</returns>
-        protected abstract int? InternalTryGetStatModifier(StatType statType, ushort power);
+        protected abstract int? InternalTryGetStatModifier(TStat statType, ushort power);
 
         /// <summary>
         /// Tries to get the stat bonus for the given <paramref name="statType"/> for a StatusEffect with
@@ -202,7 +212,7 @@ namespace DemoGame
         /// with the given <paramref name="power"/>.</param>
         /// <returns>True if this StatModifier modifies the given <paramref name="statType"/>. False if the given
         /// <paramref name="statType"/> is not modified by this StatusEffect.</returns>
-        public bool TryGetStatModifier(StatType statType, ushort power, out int value)
+        public bool TryGetStatModifier(TStat statType, ushort power, out int value)
         {
             var v = InternalTryGetStatModifier(statType, power);
 

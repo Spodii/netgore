@@ -129,7 +129,6 @@
     <Compile Include="Stats\StatValueTypes\StatValueUShort.cs" />
     <Compile Include="StatusEffect\DefaultStatusEffectMergeType.cs" />
     <Compile Include="StatusEffect\StatusEffectBase.cs" />
-    <Compile Include="StatusEffect\StatusEffectMergeType.cs" />
     <Compile Include="StatusEffect\StatusEffectType.cs" />
     <Compile Include="StatusEffect\StatusEffectTypeHelper.cs" />
     <Compile Include="WorldBase.cs" />
@@ -149,6 +148,10 @@
       <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
       <Name>NetGore.IO</Name>
       <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.RPGComponents\NetGore.RPGComponents.csproj">
+      <Project>{C71ED618-F22C-4F33-95C7-38E4E678AE90}</Project>
+      <Name>NetGore.RPGComponents</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
