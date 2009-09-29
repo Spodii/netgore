@@ -2,9 +2,8 @@ using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
-using NetGore.RPGComponents;
 
-namespace DemoGame
+namespace NetGore.RPGComponents
 {
     /// <summary>
     /// An Entity that can teleport another Entity to a new position and map upon use.

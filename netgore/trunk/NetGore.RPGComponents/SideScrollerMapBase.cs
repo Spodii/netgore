@@ -15,7 +15,7 @@ using NetGore.RPGComponents;
 // FUTURE: Improve how characters handle when they hit the map's borders
 // TODO: Still need to add name support for the maps
 
-namespace DemoGame
+namespace NetGore.RPGComponents
 {
     /// <summary>
     /// Event handler for basic events from the MapBase.
