@@ -28,7 +28,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// FixedStatCollection constructor.
+        /// Initializes a new instance of the <see cref="FixedStatCollection"/> class.
         /// </summary>
         /// <param name="statTypes">IEnumerable of StatTypes to handle.</param>
         /// <param name="statCollectionType">The StatCollectionType that this collection is for.</param>
@@ -38,7 +38,7 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// FixedStatCollection constructor.
+        /// Initializes a new instance of the <see cref="FixedStatCollection"/> class.
         /// </summary>
         /// <param name="lookupTable">StatCollectionLookupTable to use for this collection.</param>
         /// <param name="statCollectionType">The StatCollectionType that this collection is for.</param>
