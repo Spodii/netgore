@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using NetGore.IO;
 
-namespace DemoGame
+namespace NetGore.RPGComponents
 {
     /// <summary>
     /// Contains the point value of a Character's status.

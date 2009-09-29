@@ -73,7 +73,7 @@ namespace NetGore.Db.ClassCreator
                 const string equipmentSlot = "DemoGame.EquipmentSlot";
                 const string itemChance = "DemoGame.Server.ItemChance";
                 const string grhIndex = "NetGore.GrhIndex";
-                const string spValueType = "DemoGame.SPValueType";
+                const string spValueType = "NetGore.RPGComponents.SPValueType";
                 const string itemType = "DemoGame.ItemType";
                 const string inventorySlot = "DemoGame.InventorySlot";
                 const string statusEffectType = "DemoGame.StatusEffectType";

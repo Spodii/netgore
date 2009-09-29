@@ -86,7 +86,6 @@
     <Compile Include="Skills\SkillType.cs" />
     <Compile Include="Skills\SkillTypeExtensions.cs" />
     <Compile Include="Skills\SkillTypeHelper.cs" />
-    <Compile Include="SPValueType.cs" />
     <Compile Include="Items\InventoryBase.cs" />
     <Compile Include="Items\InventorySlot.cs" />
     <Compile Include="Items\ItemType.cs" />
