@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace NetGore.RPGComponents
 {
@@ -10,24 +7,10 @@ namespace NetGore.RPGComponents
         static readonly BodyInfoManager _instance;
         static BodyInfo[] _bodyInfo;
 
-        /// <summary>
-        /// Initializes the <see cref="BodyInfoManager"/> class.
-        /// </summary>
-        static BodyInfoManager()
+        public static BodyInfoManager Instance
         {
-            _instance = new BodyInfoManager();
+            get { return _instance; }
         }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BodyInfoManager"/> class.
-        /// </summary>
-        BodyInfoManager()
-        {
-            PathString path = ContentPaths.Build.Data.Join("bodies.xml");
-            _bodyInfo = BodyInfo.Load(path);
-        }
-
-        public static BodyInfoManager Instance { get { return _instance; } }
 
         /// <summary>
         /// Gets the <see cref="BodyInfo"/> at the given <paramref name="index"/>.
@@ -45,6 +28,23 @@ namespace NetGore.RPGComponents
 
                 return _bodyInfo[i];
             }
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="BodyInfoManager"/> class.
+        /// </summary>
+        static BodyInfoManager()
+        {
+            _instance = new BodyInfoManager();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BodyInfoManager"/> class.
+        /// </summary>
+        BodyInfoManager()
+        {
+            PathString path = ContentPaths.Build.Data.Join("bodies.xml");
+            _bodyInfo = BodyInfo.Load(path);
         }
     }
 }
