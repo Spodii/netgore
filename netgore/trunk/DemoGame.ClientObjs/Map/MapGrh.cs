@@ -14,7 +14,7 @@ namespace DemoGame.Client
     /// it is not actually an Entity. It is simply a container for a map-bound Grh with no behavior
     /// besides rendering and updating.
     /// </summary>
-    public class MapGrh : IDrawableEntity
+    public class MapGrh : IDrawable
     {
         readonly Grh _grh;
         Vector2 _destination;
@@ -116,7 +116,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Writes the MapGrh to an IValueWriter.
         /// </summary>
-        /// <param name="w">IValueWriter to write the MapGrh to.</param>
+        /// <param name="writer">IValueWriter to write the MapGrh to.</param>
         public void Write(IValueWriter writer)
         {
             writer.Write("Position", Destination);
@@ -127,18 +127,21 @@ namespace DemoGame.Client
         #region IDrawableEntity Members
 
         /// <summary>
-        /// Checks if in view of the specified camera
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
         /// </summary>
-        /// <param name="camera">Camera to check if in view of</param>
-        /// <returns>True if in view of the camera, else false</returns>
+        /// <param name="camera"><see cref="Camera2D"/> to check if the object is in view of.</param>
+        /// <returns>
+        /// True if the object is in view of the camera, else False.
+        /// </returns>
         public bool InView(Camera2D camera)
         {
             return camera.InView(_grh, _destination);
         }
 
         /// <summary>
-        /// Gets the MapRenderLayer for the MapGrh
+        /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
+        /// <value></value>
         public MapRenderLayer MapRenderLayer
         {
             get
@@ -152,10 +155,14 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Notifies when the MapGrh's render layer changes
+        /// Notifies listeners that the object's <see cref="MapRenderLayer"/> has changed.
         /// </summary>
         public event MapRenderLayerChange OnChangeRenderLayer;
 
+        /// <summary>
+        /// Makes the object draw itself.
+        /// </summary>
+        /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
         public void Draw(SpriteBatch sb)
         {
             _grh.Draw(sb, _destination, Color.White);

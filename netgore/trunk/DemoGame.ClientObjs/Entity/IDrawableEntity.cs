@@ -5,31 +5,31 @@ using NetGore.Graphics;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Interface for an Entity that support drawing itself.
+    /// Interface for an object that support drawing itself.
     /// </summary>
-    public interface IDrawableEntity
+    public interface IDrawable
     {
         /// <summary>
-        /// Notifies listeners that the Entity's MapRenderLayer has changed.
+        /// Notifies listeners that the object's <see cref="MapRenderLayer"/> has changed.
         /// </summary>
         event MapRenderLayerChange OnChangeRenderLayer;
 
         /// <summary>
-        /// Gets the MapRenderLayer that this Entity is rendered on.
+        /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
         MapRenderLayer MapRenderLayer { get; }
 
         /// <summary>
-        /// Makes the Entity draw itself.
+        /// Makes the object draw itself.
         /// </summary>
-        /// <param name="sb">SpriteBatch the entity can use to draw itself with.</param>
+        /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
         void Draw(SpriteBatch sb);
 
         /// <summary>
-        /// Checks if in the Entity is in view of the specified camera.
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
         /// </summary>
-        /// <param name="camera">Camera to check if the Entity is in view of.</param>
-        /// <returns>True if the Entity is in view of the camera, else False.</returns>
+        /// <param name="camera"><see cref="Camera2D"/> to check if the object is in view of.</param>
+        /// <returns>True if the object is in view of the camera, else False.</returns>
         bool InView(Camera2D camera);
     }
 }

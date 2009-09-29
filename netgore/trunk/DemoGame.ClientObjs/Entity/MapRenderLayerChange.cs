@@ -7,5 +7,5 @@ namespace DemoGame.Client
     /// </summary>
     /// <param name="drawableEntity">IDrawableEntity that changed their MapRenderLayer.</param>
     /// <param name="oldLayer">The previous value of MapRenderLayer.</param>
-    public delegate void MapRenderLayerChange(IDrawableEntity drawableEntity, MapRenderLayer oldLayer);
+    public delegate void MapRenderLayerChange(IDrawable drawableEntity, MapRenderLayer oldLayer);
 }

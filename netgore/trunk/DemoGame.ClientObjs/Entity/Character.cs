@@ -10,7 +10,7 @@ namespace DemoGame.Client
     /// <summary>
     /// Represents a single Character on the Client.
     /// </summary>
-    public class Character : CharacterEntity, IGetTime, IDrawableEntity
+    public class Character : CharacterEntity, IGetTime, IDrawable
     {
         readonly EntityInterpolator _interpolator = new EntityInterpolator();
         string _currSkelSet;
@@ -259,9 +259,9 @@ namespace DemoGame.Client
         #region IDrawableEntity Members
 
         /// <summary>
-        /// Draws the character.
+        /// Makes the object draw itself.
         /// </summary>
-        /// <param name="sb">SpriteBatch to draw the character with.</param>
+        /// <param name="sb"><see cref="SpriteBatch"/> the object can use to draw itself with.</param>
         public void Draw(SpriteBatch sb)
         {
             if (_skelAnim == null)
@@ -294,17 +294,19 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Checks if in view of the specified camera.
+        /// Checks if in the object is in view of the specified <paramref name="camera"/>.
         /// </summary>
-        /// <param name="camera">Camera to check if in view of.</param>
-        /// <returns>True if in view of the camera, else false.</returns>
+        /// <param name="camera"><see cref="Camera2D"/> to check if the object is in view of.</param>
+        /// <returns>
+        /// True if the object is in view of the camera, else False.
+        /// </returns>
         public bool InView(Camera2D camera)
         {
             return camera.InView(this);
         }
 
         /// <summary>
-        /// Notifies listeners that the Entity's MapRenderLayer has changed.
+        /// Unused by the Character.
         /// </summary>
         public event MapRenderLayerChange OnChangeRenderLayer
         {
@@ -313,7 +315,7 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// Gets the MapRenderLayer that this Entity is rendered on.
+        /// Gets the <see cref="MapRenderLayer"/> that this object is rendered on.
         /// </summary>
         public MapRenderLayer MapRenderLayer
         {

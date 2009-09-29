@@ -46,22 +46,22 @@ namespace DemoGame.Client
         /// <summary>
         /// List of IDrawableEntity objects in the background layer
         /// </summary>
-        readonly List<IDrawableEntity> _drawLayerBackground = new List<IDrawableEntity>();
+        readonly List<IDrawable> _drawLayerBackground = new List<IDrawable>();
 
         /// <summary>
         /// List of IDrawableEntity objects in the character layer
         /// </summary>
-        readonly List<IDrawableEntity> _drawLayerCharacter = new List<IDrawableEntity>();
+        readonly List<IDrawable> _drawLayerCharacter = new List<IDrawable>();
 
         /// <summary>
         /// List of IDrawableEntity objects in the foreground layer
         /// </summary>
-        readonly List<IDrawableEntity> _drawLayerForeground = new List<IDrawableEntity>();
+        readonly List<IDrawable> _drawLayerForeground = new List<IDrawable>();
 
         /// <summary>
         /// List of IDrawableEntity objects in the item layer
         /// </summary>
-        readonly List<IDrawableEntity> _drawLayerItem = new List<IDrawableEntity>();
+        readonly List<IDrawable> _drawLayerItem = new List<IDrawable>();
 
         /// <summary>
         /// Graphics device used when building the atlas
@@ -196,7 +196,7 @@ namespace DemoGame.Client
         /// Adds the <paramref name="drawableEntity"/> to the appropriate render layer list
         /// </summary>
         /// <param name="drawableEntity">IDrawableEntity to update</param>
-        void AddToRenderList(IDrawableEntity drawableEntity)
+        void AddToRenderList(IDrawable drawableEntity)
         {
             var layerList = GetLayerList(drawableEntity.MapRenderLayer);
 
@@ -292,7 +292,7 @@ namespace DemoGame.Client
         /// <param name="drawableEntities">List of IDrawableEntity objects to draw.</param>
         /// <param name="layer">The MapRenderLayer that is being drawn.</param>
         /// <param name="draw">If true, the layer will be drawn. If false, no drawing will be done.</param>
-        void DrawLayer(SpriteBatch sb, Camera2D camera, IEnumerable<IDrawableEntity> drawableEntities, MapRenderLayer layer,
+        void DrawLayer(SpriteBatch sb, Camera2D camera, IEnumerable<IDrawable> drawableEntities, MapRenderLayer layer,
                        bool draw)
         {
             if (OnStartDrawLayer != null)
@@ -300,7 +300,7 @@ namespace DemoGame.Client
 
             if (draw)
             {
-                foreach (IDrawableEntity drawableEntity in drawableEntities)
+                foreach (IDrawable drawableEntity in drawableEntities)
                 {
                     if (drawableEntity.InView(camera))
                         drawableEntity.Draw(sb);
@@ -316,7 +316,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="drawableEntity">IDrawableEntity that changed their MapRenderLayer</param>
         /// <param name="oldLayer">The previous value of MapRenderLayer</param>
-        void Entity_OnChangeRenderLayer(IDrawableEntity drawableEntity, MapRenderLayer oldLayer)
+        void Entity_OnChangeRenderLayer(IDrawable drawableEntity, MapRenderLayer oldLayer)
         {
             // Remove the IDrawableEntity from the old layer
             if (!GetLayerList(oldLayer).Remove(drawableEntity))
@@ -335,7 +335,7 @@ namespace DemoGame.Client
         {
             // If the entity implements IDrawableEntity, listen to the 
             // render layer change event and add it to the appropriate layer
-            IDrawableEntity drawableEntity = entity as IDrawableEntity;
+            IDrawable drawableEntity = entity as IDrawable;
             if (drawableEntity != null)
             {
                 drawableEntity.OnChangeRenderLayer += Entity_OnChangeRenderLayer;
@@ -347,7 +347,7 @@ namespace DemoGame.Client
         {
             // If the entity implements IDrawableEntity, remove it from the render layer and
             // unhook the render layer change event listener
-            IDrawableEntity drawableEntity = entity as IDrawableEntity;
+            IDrawable drawableEntity = entity as IDrawable;
             if (drawableEntity != null)
             {
                 drawableEntity.OnChangeRenderLayer -= Entity_OnChangeRenderLayer;
@@ -435,7 +435,7 @@ namespace DemoGame.Client
         /// </summary>
         /// <param name="layer">Layer for the List we want</param>
         /// <returns>List for the specified MapRenderLayer</returns>
-        List<IDrawableEntity> GetLayerList(MapRenderLayer layer)
+        List<IDrawable> GetLayerList(MapRenderLayer layer)
         {
             switch (layer)
             {

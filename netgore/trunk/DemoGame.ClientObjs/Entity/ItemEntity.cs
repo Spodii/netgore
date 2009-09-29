@@ -18,7 +18,7 @@ namespace DemoGame.Client
     /// An item on the client. Used for representing any item, whether it is actually an Entity
     /// on the map, or just an item in an inventory.
     /// </summary>
-    public class ItemEntity : ItemEntityBase, IDrawableEntity
+    public class ItemEntity : ItemEntityBase, IDrawable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly Grh _grh;
