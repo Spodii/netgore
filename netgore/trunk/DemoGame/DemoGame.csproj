@@ -67,7 +67,6 @@
     <Compile Include="Entity\WallEntity.cs" />
     <Compile Include="Items\EquipmentSlotExtensions.cs" />
     <Compile Include="Items\EquipmentSlotHelper.cs" />
-    <Compile Include="Items\EquippedEventHandler.cs" />
     <Compile Include="Items\EquipmentSlot.cs" />
     <Compile Include="Items\EquippedBase.cs" />
     <Compile Include="GameData.cs" />
