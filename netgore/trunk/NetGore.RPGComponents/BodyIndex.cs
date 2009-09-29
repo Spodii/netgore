@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using NetGore.Globalization;
 using NetGore.IO;
 
-namespace DemoGame
+namespace NetGore.RPGComponents
 {
     /// <summary>
     /// Represents the index of a BodyInfo.

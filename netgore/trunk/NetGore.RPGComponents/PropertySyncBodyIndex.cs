@@ -2,8 +2,9 @@ using System.Linq;
 using System.Reflection;
 using NetGore;
 using NetGore.IO;
+using NetGore.RPGComponents;
 
-namespace DemoGame
+namespace NetGore.RPGComponents
 {
     /// <summary>
     /// Implementation of a PropertySyncBase that handles synchronizing a BodyIndex.

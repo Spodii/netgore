@@ -11,6 +11,7 @@ using NetGore;
 using NetGore.Db;
 using NetGore.Network;
 using NetGore.NPCChat;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -867,13 +868,15 @@ namespace DemoGame.Server
             LoadFromQueryValues(values);
         }
 
+        static readonly BodyInfoManager _bodyInfoManager = BodyInfoManager.Instance;
+
         protected void Load(CharacterTemplate template)
         {
             ICharacterTemplateTable v = template.TemplateTable;
 
             Name = v.Name;
             Alliance = _allianceManager[v.AllianceID];
-            BodyInfo = GameData.Body(v.BodyID);
+            BodyInfo = _bodyInfoManager[v.BodyID];
             CharacterTemplateID = v.ID;
             CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
             _level = v.Level;
@@ -890,7 +893,7 @@ namespace DemoGame.Server
             _templateID = v.CharacterTemplateID;
             _accountID = v.AccountID;
 
-            BodyInfo = GameData.Body(v.BodyID);
+            BodyInfo = BodyInfoManager.Instance[v.BodyID];
             CB = new CollisionBox(new Vector2(v.X, v.Y), BodyInfo.Width, BodyInfo.Height);
             ((PersistentCharacterStatusEffects)StatusEffects).Load();
 
