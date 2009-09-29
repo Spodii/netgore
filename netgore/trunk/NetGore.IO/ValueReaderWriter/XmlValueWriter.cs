@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using NetGore;
 using NetGore.Globalization;
 
 // NOTE: This class won't work if you forget to call Dispose. Would be nice to use a destructor to fix that.
@@ -41,7 +42,7 @@ namespace NetGore.IO
             _useEnumNames = useEnumNames;
             _disposeWriter = true;
 
-            string dir = Path.GetDirectoryName(filePath);
+            var dir = Path.GetDirectoryName(filePath);
             if (!Directory.Exists(dir))
                 Directory.CreateDirectory(dir);
             _writer = XmlWriter.Create(filePath, new XmlWriterSettings { Indent = true });
@@ -175,7 +176,7 @@ namespace NetGore.IO
                 throw new ArgumentException(errmsg);
             }
 
-            string expectedName = _nodeStack.Pop();
+            var expectedName = _nodeStack.Pop();
             if (name != expectedName)
             {
                 const string errmsg = "Node name `{0}` does not match the expected name `{1}`.";
@@ -207,8 +208,8 @@ namespace NetGore.IO
                 Write(XmlValueHelper.CountValueKey, count);
                 if (values != null && count > 0)
                 {
-                    int i = 0;
-                    foreach (T value in values)
+                    var i = 0;
+                    foreach (var value in values)
                     {
                         writeHandler(XmlValueHelper.GetItemKey(i), value);
                         i++;
@@ -240,10 +241,10 @@ namespace NetGore.IO
                 Write("Count", count);
                 if (values != null && count > 0)
                 {
-                    int i = 0;
-                    foreach (T value in values)
+                    var i = 0;
+                    foreach (var value in values)
                     {
-                        string childNodeName = XmlValueHelper.GetItemKey(i);
+                        var childNodeName = XmlValueHelper.GetItemKey(i);
                         WriteStartNode(childNodeName);
                         writeHandler(this, value);
                         WriteEndNode(childNodeName);
@@ -276,9 +277,9 @@ namespace NetGore.IO
                 Write(XmlValueHelper.CountValueKey, count);
                 if (values != null && count > 0)
                 {
-                    for (int i = 0; i < values.Length; i++)
+                    for (var i = 0; i < values.Length; i++)
                     {
-                        string childNodeName = XmlValueHelper.GetItemKey(i);
+                        var childNodeName = XmlValueHelper.GetItemKey(i);
                         WriteStartNode(childNodeName);
                         writeHandler(this, values[i]);
                         WriteEndNode(childNodeName);
@@ -310,7 +311,7 @@ namespace NetGore.IO
                 Write(XmlValueHelper.CountValueKey, count);
                 if (values != null && count > 0)
                 {
-                    for (int i = 0; i < values.Length; i++)
+                    for (var i = 0; i < values.Length; i++)
                     {
                         writeHandler(XmlValueHelper.GetItemKey(i), values[i]);
                     }
@@ -414,7 +415,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnumName<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            string str = EnumIOHelper.ToName(value);
+            var str = EnumIOHelper.ToName(value);
             Write(name, str);
         }
 

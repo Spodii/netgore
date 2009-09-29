@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame;
+using NetGore;
 using NetGore.RPGComponents;
 
 namespace DemoGame
@@ -24,7 +26,7 @@ namespace DemoGame
 
             _stats = new IStat<StatType>[StatTypeHelper.Instance.MaxValue + 1];
 
-            foreach (StatType statType in StatTypeHelper.Values)
+            foreach (var statType in StatTypeHelper.Values)
             {
                 var istat = StatFactory.CreateStat(statType, collectionType);
                 _stats[statType.GetValue()] = istat;
@@ -40,7 +42,7 @@ namespace DemoGame
             _collectionType = source._collectionType;
 
             _stats = new IStat<StatType>[source._stats.Length];
-            for (int i = 0; i < _stats.Length; i++)
+            for (var i = 0; i < _stats.Length; i++)
             {
                 _stats[i] = source._stats[i].DeepCopy();
             }
@@ -54,9 +56,9 @@ namespace DemoGame
         /// of <paramref name="other"/>.</returns>
         public bool AreValuesEqual(FullStatCollection other)
         {
-            for (int i = 0; i < _stats.Length; i++)
+            for (var i = 0; i < _stats.Length; i++)
             {
-                StatType statType = (StatType)i;
+                var statType = (StatType)i;
                 if (this[statType] != other[statType])
                     return false;
             }
@@ -85,7 +87,7 @@ namespace DemoGame
             }
         }
 
-        #region IStatCollection Members
+        #region IStatCollection<StatType> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -96,7 +98,7 @@ namespace DemoGame
         /// <filterpriority>1</filterpriority>
         public IEnumerator<IStat<StatType>> GetEnumerator()
         {
-            for (int i = 0; i < _stats.Length; i++)
+            for (var i = 0; i < _stats.Length; i++)
             {
                 yield return _stats[i];
             }

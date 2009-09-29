@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,6 +11,7 @@ using NetGore;
 using NetGore.Collections;
 using NetGore.Graphics;
 using NetGore.IO;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Client
 {
@@ -219,17 +221,17 @@ namespace DemoGame.Client
                 return;
             }
 
-            TextureAtlas ta = new TextureAtlas();
+            var ta = new TextureAtlas();
 
             // Loop through each index (they're still a string at this point)
-            foreach (GrhIndex index in grhIndexes)
+            foreach (var index in grhIndexes)
             {
-                GrhData gd = GrhInfo.GetData(index);
+                var gd = GrhInfo.GetData(index);
 
                 // Every frame of the GrhData gets added
                 // For animations, this is one per each frame
                 // For stationary, this will just grab a copy of itself from Frames[0]
-                foreach (GrhData frame in gd.Frames)
+                foreach (var frame in gd.Frames)
                 {
                     if (!ta.AtlasItems.Contains(frame))
                         ta.AtlasItems.Push(frame);
@@ -262,7 +264,7 @@ namespace DemoGame.Client
 
             if (DrawBackground)
             {
-                foreach (BackgroundImage bgImage in _backgroundImages)
+                foreach (var bgImage in _backgroundImages)
                 {
                     bgImage.Draw(sb, camera, Size);
                 }
@@ -300,7 +302,7 @@ namespace DemoGame.Client
 
             if (draw)
             {
-                foreach (IDrawableEntity drawableEntity in drawableEntities)
+                foreach (var drawableEntity in drawableEntities)
                 {
                     if (drawableEntity.InView(camera))
                         drawableEntity.Draw(sb);
@@ -335,7 +337,7 @@ namespace DemoGame.Client
         {
             // If the entity implements IDrawableEntity, listen to the 
             // render layer change event and add it to the appropriate layer
-            IDrawableEntity drawableEntity = entity as IDrawableEntity;
+            var drawableEntity = entity as IDrawableEntity;
             if (drawableEntity != null)
             {
                 drawableEntity.OnChangeRenderLayer += Entity_OnChangeRenderLayer;
@@ -347,7 +349,7 @@ namespace DemoGame.Client
         {
             // If the entity implements IDrawableEntity, remove it from the render layer and
             // unhook the render layer change event listener
-            IDrawableEntity drawableEntity = entity as IDrawableEntity;
+            var drawableEntity = entity as IDrawableEntity;
             if (drawableEntity != null)
             {
                 drawableEntity.OnChangeRenderLayer -= Entity_OnChangeRenderLayer;
@@ -370,15 +372,15 @@ namespace DemoGame.Client
             var ret = new List<WallEntityBase>(32);
 
             // Loop through each entity in the map
-            foreach (Entity entity in Entities)
+            foreach (var entity in Entities)
             {
                 // Check if the map is a WallEntity
-                WallEntityBase a = entity as WallEntityBase;
+                var a = entity as WallEntityBase;
                 if (a == null)
                     continue;
 
                 // Loop through each WallEntity in the comparison enum
-                foreach (WallEntityBase b in compareTo)
+                foreach (var b in compareTo)
                 {
                     if (b == null)
                         continue;
@@ -405,16 +407,16 @@ namespace DemoGame.Client
             var ret = new List<WallEntityBase>();
 
             // Initial loop (all walls but the last)
-            for (int i = 0; i < Entities.Count() - 1; i++)
+            for (var i = 0; i < Entities.Count() - 1; i++)
             {
-                WallEntityBase a = GetEntity(i) as WallEntityBase; // Skip if not a WallEntity
+                var a = GetEntity(i) as WallEntityBase; // Skip if not a WallEntity
                 if (a == null)
                     continue;
 
                 // Comparison loop (all walls after the initial)
-                for (int j = i + 1; j < Entities.Count(); j++)
+                for (var j = i + 1; j < Entities.Count(); j++)
                 {
-                    WallEntityBase b = GetEntity(j) as WallEntityBase; // Skip if not a WallEntity
+                    var b = GetEntity(j) as WallEntityBase; // Skip if not a WallEntity
                     if (b == null)
                         continue;
 
@@ -463,7 +465,7 @@ namespace DemoGame.Client
         /// <returns>First MapGrh meeting the condition, null if none found</returns>
         public MapGrh GetMapGrh(Vector2 p)
         {
-            foreach (MapGrh grh in MapGrhs)
+            foreach (var grh in MapGrhs)
             {
                 if (grh.HitTest(p))
                     return grh;
@@ -482,11 +484,11 @@ namespace DemoGame.Client
 
         void LoadBackgroundImages(IValueReader r)
         {
-            int currentTime = World.GetTime();
+            var currentTime = World.GetTime();
             var loadedBGImages = r.ReadManyNodes<BackgroundImage>(_bgImagesNodeName, x => new BackgroundLayer(x, currentTime));
 
             // Add the loaded background images
-            foreach (BackgroundImage bgImage in loadedBGImages)
+            foreach (var bgImage in loadedBGImages)
             {
                 AddBackgroundImage(bgImage);
             }
@@ -494,16 +496,16 @@ namespace DemoGame.Client
 
         void LoadGrhs(IValueReader r)
         {
-            IValueReader nodeReader = r.ReadNode(_mapGrhsNodeName);
+            var nodeReader = r.ReadNode(_mapGrhsNodeName);
 
             // Used GrhIndexes
             var usedGrhIndexes = nodeReader.ReadMany(_usedIndiciesNodeName, ((reader, key) => reader.ReadGrhIndex(key)));
             BuildAtlas(usedGrhIndexes);
 
             // MapGrhs
-            int currentTime = World.GetTime();
+            var currentTime = World.GetTime();
             var loadedMapGrhs = nodeReader.ReadManyNodes(_mapGrhsNodeName, x => new MapGrh(x, currentTime));
-            foreach (MapGrh mapGrh in loadedMapGrhs)
+            foreach (var mapGrh in loadedMapGrhs)
             {
                 AddMapGrh(mapGrh);
             }
@@ -593,17 +595,17 @@ namespace DemoGame.Client
         {
             base.Update(deltaTime);
 
-            int currentTime = World.GetTime();
+            var currentTime = World.GetTime();
 
             // Update the map Grhs
-            foreach (MapGrh g in _mapGrhs)
+            foreach (var g in _mapGrhs)
             {
                 if (World.Camera.InView(g.Grh, g.Destination))
                     g.Update(currentTime);
             }
 
             // Update the background images
-            foreach (BackgroundImage bgImage in _backgroundImages)
+            foreach (var bgImage in _backgroundImages)
             {
                 bgImage.Update(currentTime);
             }
@@ -616,7 +618,7 @@ namespace DemoGame.Client
         /// </summary>
         public void Dispose()
         {
-            foreach (Texture2D atlas in _mapAtlases)
+            foreach (var atlas in _mapAtlases)
             {
                 atlas.Dispose();
             }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using System.Threading;
+using NetGore;
 using NUnit.Framework;
 
 namespace NetGore.Collections.Tests
@@ -13,9 +14,9 @@ namespace NetGore.Collections.Tests
         /// </summary>
         static void DummyEnumerator(object obj)
         {
-            IEnumerable e = (IEnumerable)obj;
+            var e = (IEnumerable)obj;
 
-            foreach (object item in e)
+            foreach (var item in e)
             {
                 Thread.Sleep(1);
             }
@@ -26,13 +27,13 @@ namespace NetGore.Collections.Tests
         {
             var l = new TSList<int>(Enumerable.Range(1, 1000));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.Add(i);
             }
@@ -43,13 +44,13 @@ namespace NetGore.Collections.Tests
         {
             var l = new TSList<int>(Enumerable.Range(1, 1000));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.Find(y => y == 10);
             }
@@ -60,15 +61,15 @@ namespace NetGore.Collections.Tests
         {
             var l = new TSList<int>(Enumerable.Range(1, 1000));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                int x = l[i];
+                var x = l[i];
                 l[i] = x + 1;
                 Assert.AreEqual(x + 1, l[i]);
             }
@@ -79,15 +80,15 @@ namespace NetGore.Collections.Tests
         {
             var l = new TSList<int>(Enumerable.Range(1, 1000));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 1; i < 10; i++)
+            for (var i = 1; i < 10; i++)
             {
-                int x = l.IndexOf(i);
+                var x = l.IndexOf(i);
                 Assert.AreEqual(i, l[x]);
             }
         }
@@ -97,13 +98,13 @@ namespace NetGore.Collections.Tests
         {
             var l = new TSList<int>(Enumerable.Range(1, 1000));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.Insert(0, i);
             }
@@ -114,13 +115,13 @@ namespace NetGore.Collections.Tests
         {
             var l = new TSList<int>(Enumerable.Range(1, 1000));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.RemoveAt(0);
             }
@@ -131,13 +132,13 @@ namespace NetGore.Collections.Tests
         {
             var l = new TSList<int>(Enumerable.Range(1, 1000));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.Remove(i);
             }
@@ -148,13 +149,13 @@ namespace NetGore.Collections.Tests
         {
             var l = new TSList<int>(Enumerable.Range(1, 1000));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 var x = l.ToArray();
             }
@@ -165,13 +166,13 @@ namespace NetGore.Collections.Tests
         {
             var l = new TSList<int>(Enumerable.Range(1, 1000));
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
-                Thread t = new Thread(DummyEnumerator);
+                var t = new Thread(DummyEnumerator);
                 t.Start(l);
             }
 
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 l.TrimExcess();
                 l.AddRange(Enumerable.Range(1, 100));

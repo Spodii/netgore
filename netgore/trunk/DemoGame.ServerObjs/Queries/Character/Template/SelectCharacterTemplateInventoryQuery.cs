@@ -1,9 +1,11 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame;
 using DemoGame.Server.DbObjs;
+using NetGore;
 using NetGore.Db;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server.Queries
 {
@@ -26,11 +28,11 @@ namespace DemoGame.Server.Queries
         {
             var ret = new List<CharacterTemplateInventoryTable>();
 
-            using (IDataReader r = ExecuteReader(templateID))
+            using (var r = ExecuteReader(templateID))
             {
                 while (r.Read())
                 {
-                    CharacterTemplateInventoryTable item = new CharacterTemplateInventoryTable();
+                    var item = new CharacterTemplateInventoryTable();
                     item.ReadValues(r);
                     ret.Add(item);
                 }

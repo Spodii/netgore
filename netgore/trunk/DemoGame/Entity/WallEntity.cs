@@ -1,7 +1,9 @@
 using System.Linq;
+using DemoGame;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.IO;
+using NetGore.RPGComponents;
 
 namespace DemoGame
 {

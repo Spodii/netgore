@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.IO;
 
 namespace NetGore
@@ -129,7 +130,7 @@ namespace NetGore
         /// <param name="writer">IValueWriter to write the Property's value to.</param>
         public override void WriteValue(IValueWriter writer)
         {
-            T value = Value;
+            var value = Value;
             Write(Name, writer, value);
             _lastSentValue = value;
         }
@@ -189,7 +190,7 @@ namespace NetGore
             var constructorParams = new Type[] { typeof(object), typeof(PropertyInfo) };
             var types = TypeHelper.FindTypesThatInherit(typeof(PropertySyncBase), constructorParams, false);
 
-            foreach (Type type in types)
+            foreach (var type in types)
             {
                 // Look for classes that inherit the PropertySyncHandlerAttribute
                 var attribs = type.GetCustomAttributes(typeof(PropertySyncHandlerAttribute), true);
@@ -203,7 +204,7 @@ namespace NetGore
                 }
 
                 // Grab the attribute so we can find out what type this class handles
-                PropertySyncHandlerAttribute attrib = (PropertySyncHandlerAttribute)attribs[0];
+                var attrib = (PropertySyncHandlerAttribute)attribs[0];
 
                 // Store the handled type
                 _propertySyncTypes.Add(attrib.HandledType, type);
@@ -224,12 +225,12 @@ namespace NetGore
             if (!p.CanRead)
                 throw new ArgumentException("Properties with the SyncValue attribute must contain a getter.");
 
-            MethodInfo getMethod = p.GetGetMethod(true);
-            MethodInfo setMethod = p.GetSetMethod(true);
+            var getMethod = p.GetGetMethod(true);
+            var setMethod = p.GetSetMethod(true);
 
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
-            Delegate getter = Delegate.CreateDelegate(GetGetDelegateType(), bindObject, getMethod, true);
-            Delegate setter = Delegate.CreateDelegate(GetSetDelegateType(), bindObject, setMethod, true);
+            var getter = Delegate.CreateDelegate(GetGetDelegateType(), bindObject, getMethod, true);
+            var setter = Delegate.CreateDelegate(GetSetDelegateType(), bindObject, setMethod, true);
 
             StoreDelegates(getter, setter);
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
@@ -249,7 +250,7 @@ namespace NetGore
             var tempPropInfos = new List<PropertyInfoData>();
 
             // Find all of the properties for this type
-            foreach (PropertyInfo property in type.GetProperties(flags))
+            foreach (var property in type.GetProperties(flags))
             {
                 // Get the SyncValueAttribute for the property, skipping if none found
                 var attribs = GetAllCustomAttributes(property, typeof(SyncValueAttribute), flags).ToArray();
@@ -258,14 +259,14 @@ namespace NetGore
                 if (attribs.Length > 1)
                 {
                     const string errmsg = "Property `{0}` contains more than one SyncValueAttribute!";
-                    string err = string.Format(errmsg, property);
+                    var err = string.Format(errmsg, property);
                     log.FatalFormat(err);
                     Debug.Fail(err);
                     throw new Exception(err);
                 }
 
                 // Get the attribute attached to this Property
-                SyncValueAttribute attribute = (SyncValueAttribute)attribs[0];
+                var attribute = (SyncValueAttribute)attribs[0];
 
                 // Find the name to use (CustomName if one supplied, otherwise use the Property's name)
                 string name;
@@ -275,20 +276,20 @@ namespace NetGore
                     name = attribute.CustomName;
 
                 // Find the SkipNetworkSync value
-                bool skipNetworkSync = attribute.SkipNetworkSync;
+                var skipNetworkSync = attribute.SkipNetworkSync;
 
                 // Ensure we don't already have a property with this name
                 if (tempPropInfos.Count(x => x.Name == name) > 0)
                 {
                     const string errmsg = "Class `{0}` contains more than one SyncValueAttribute with the name `{1}`!";
-                    string err = string.Format(errmsg, type, name);
+                    var err = string.Format(errmsg, type, name);
                     log.FatalFormat(err);
                     Debug.Fail(err);
                     throw new Exception(err);
                 }
 
                 // Add the property the list
-                PropertyInfoData newData = new PropertyInfoData(property, name, skipNetworkSync);
+                var newData = new PropertyInfoData(property, name, skipNetworkSync);
                 tempPropInfos.Add(newData);
             }
 
@@ -335,7 +336,7 @@ namespace NetGore
                 throw new ArgumentException("Only properties with both a getter and setter can be synchronized.", "propertyInfo");
 
             // Get the property's value Type
-            Type handledType = propertyInfo.PropertyType;
+            var handledType = propertyInfo.PropertyType;
 
             // Get the type of the PropertySyncBase that will be used to synchronize the Property's value
             Type syncType;
@@ -365,7 +366,7 @@ namespace NetGore
                 throw new ArgumentNullException("obj");
 
             // Get the object's type
-            Type type = obj.GetType();
+            var type = obj.GetType();
 
             // Get the PropertyInfos for this type
             PropertyInfoData[] propInfos;
@@ -378,9 +379,9 @@ namespace NetGore
             }
 
             // Loop through each of the PropertyInfoDatas and create the PropertySyncBase for it
-            foreach (PropertyInfoData p in propInfos)
+            foreach (var p in propInfos)
             {
-                PropertySyncBase propertySync = GetPropertySync(p.PropertyInfo, obj);
+                var propertySync = GetPropertySync(p.PropertyInfo, obj);
                 propertySync.Name = p.Name;
                 propertySync.SkipNetworkSync = p.SkipNetworkSync;
                 yield return propertySync;
@@ -419,22 +420,22 @@ namespace NetGore
         {
             // Get the attributes for this type
             var customAttributes = propInfo.GetCustomAttributes(attribType, false);
-            foreach (object attrib in customAttributes)
+            foreach (var attrib in customAttributes)
             {
                 yield return attrib;
             }
 
             // Get the base type
-            Type baseType = type.BaseType;
+            var baseType = type.BaseType;
 
             // Get the property for the base type
-            PropertyInfo baseProp = baseType.GetProperty(propInfo.Name, flags);
+            var baseProp = baseType.GetProperty(propInfo.Name, flags);
 
             // If the property for the base type exists, find the attributes for it
             if (baseProp != null)
             {
                 var baseAttributes = InternalGetAllCustomAttributes(baseProp, attribType, baseType, flags);
-                foreach (object attrib in baseAttributes)
+                foreach (var attrib in baseAttributes)
                 {
                     yield return attrib;
                 }

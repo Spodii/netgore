@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore;
 using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat
@@ -110,8 +111,7 @@ namespace NetGore.EditorTools.NPCChat
             if (SelectedConditionalItem == null)
                 return;
 
-            NPCChatConditionalEditorForm conditionalEditorForm = new NPCChatConditionalEditorForm(SelectedConditionalItem,
-                                                                                                  npcChatConditionals)
+            var conditionalEditorForm = new NPCChatConditionalEditorForm(SelectedConditionalItem, npcChatConditionals)
             { StartPosition = FormStartPosition.CenterScreen };
             conditionalEditorForm.Show();
             conditionalEditorForm.FormClosed += conditionalEditorForm_FormClosed;
@@ -122,11 +122,11 @@ namespace NetGore.EditorTools.NPCChat
             if (ConditionalCollection == null || EvaluationTypeComboBox == null)
                 return;
 
-            object item = EvaluationTypeComboBox.SelectedItem;
+            var item = EvaluationTypeComboBox.SelectedItem;
             if (item == null)
                 return;
 
-            NPCChatConditionalEvaluationType t = (NPCChatConditionalEvaluationType)item;
+            var t = (NPCChatConditionalEvaluationType)item;
             if (!EnumHelper<NPCChatConditionalEvaluationType>.IsDefined(t))
             {
                 EvaluationTypeComboBox.SelectedItem = ConditionalCollection.EvaluationType;
@@ -140,7 +140,7 @@ namespace NetGore.EditorTools.NPCChat
         {
             base.OnSelectedIndexChanged(e);
 
-            EditorNPCChatConditionalCollectionItem item = SelectedItem as EditorNPCChatConditionalCollectionItem;
+            var item = SelectedItem as EditorNPCChatConditionalCollectionItem;
             if (item != SelectedConditionalItem)
             {
                 _selectedConditionalItem = item;
@@ -168,14 +168,14 @@ namespace NetGore.EditorTools.NPCChat
         /// If null, an empty NPCChatConditionalCollectionBase will be used.</param>
         public void SetConditionalCollection(NPCChatConditionalCollectionBase value)
         {
-            EditorNPCChatConditionalCollection asEditorCollection = value as EditorNPCChatConditionalCollection;
+            var asEditorCollection = value as EditorNPCChatConditionalCollection;
             if (asEditorCollection != null)
             {
                 ConditionalCollection = asEditorCollection;
                 return;
             }
 
-            EditorNPCChatConditionalCollection newCollection = new EditorNPCChatConditionalCollection(value);
+            var newCollection = new EditorNPCChatConditionalCollection(value);
             ConditionalCollection = newCollection;
         }
 
@@ -203,7 +203,7 @@ namespace NetGore.EditorTools.NPCChat
             if (item == null)
                 return false;
 
-            EditorNPCChatConditionalCollection cc = ConditionalCollection;
+            var cc = ConditionalCollection;
             if (cc == null)
                 return false;
 

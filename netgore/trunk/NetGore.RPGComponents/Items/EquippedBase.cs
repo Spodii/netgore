@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
+using NetGore.RPGComponents;
 
 namespace NetGore.RPGComponents
 {
@@ -19,15 +21,6 @@ namespace NetGore.RPGComponents
         /// corresponding to that slot.
         /// </summary>
         readonly TItem[] _equipped;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EquippedBase&lt;TItem, TItemType, TEquipmentSlot&gt;"/> class.
-        /// </summary>
-        /// <param name="highestSlotIndex">Index of the highest slot.</param>
-        protected EquippedBase(int highestSlotIndex)
-        {
-            _equipped = new TItem[highestSlotIndex + 1];
-        }
 
         /// <summary>
         /// Notifies listeners that an item has been equipped.
@@ -58,6 +51,15 @@ namespace NetGore.RPGComponents
         TItem this[int slot]
         {
             get { return _equipped[slot]; }
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EquippedBase&lt;TItem, TItemType, TEquipmentSlot&gt;"/> class.
+        /// </summary>
+        /// <param name="highestSlotIndex">Index of the highest slot.</param>
+        protected EquippedBase(int highestSlotIndex)
+        {
+            _equipped = new TItem[highestSlotIndex + 1];
         }
 
         /// <summary>
@@ -112,14 +114,14 @@ namespace NetGore.RPGComponents
                 default:
                     // There are multiple slots, so first try on empty slots
                     var emptySlots = slots.Where(index => this[index] == null);
-                    foreach (TEquipmentSlot slot in emptySlots)
+                    foreach (var slot in emptySlots)
                     {
                         if (TrySetSlot(slot, item, false))
                             return true;
                     }
 
                     // Couldn't set on an empty slot, or there was no empty slots, so try all the non-empty slots
-                    foreach (TEquipmentSlot slot in slots.Except(emptySlots))
+                    foreach (var slot in slots.Except(emptySlots))
                     {
                         if (TrySetSlot(slot, item, false))
                             return true;
@@ -153,7 +155,7 @@ namespace NetGore.RPGComponents
         /// <exception cref="ArgumentException">Specified item could not be found in this EquippedBase.</exception>
         public TEquipmentSlot GetSlot(TItem item)
         {
-            for (int i = 0; i < _equipped.Length; i++)
+            for (var i = 0; i < _equipped.Length; i++)
             {
                 if (item == this[i])
                     return EquipmentSlotFromInt(i);
@@ -168,7 +170,7 @@ namespace NetGore.RPGComponents
         /// <param name="entity">Item that was disposed.</param>
         protected virtual void ItemDisposeHandler(Entity entity)
         {
-            TItem item = (TItem)entity;
+            var item = (TItem)entity;
 
             // Try to get the slot of the item
             TEquipmentSlot slot;
@@ -196,9 +198,9 @@ namespace NetGore.RPGComponents
         /// they will only be removed from the EquippedBase, but could still referenced by other objects.</param>
         public void RemoveAll(bool dispose)
         {
-            for (int i = 0; i < _equipped.Length; i++)
+            for (var i = 0; i < _equipped.Length; i++)
             {
-                TItem item = this[i];
+                var item = this[i];
                 if (item != null)
                 {
                     RemoveAt(EquipmentSlotFromInt(i));
@@ -263,11 +265,11 @@ namespace NetGore.RPGComponents
             }
 
             // Get the array index for the slot
-            int index = ToInt(slot);
+            var index = ToInt(slot);
 
             // If the slot is equal to the value we are trying to set it, we never want
             // to do anything extra, so just abort
-            TItem currentItem = this[index];
+            var currentItem = this[index];
             if (currentItem == item)
                 return false;
 
@@ -307,7 +309,7 @@ namespace NetGore.RPGComponents
                 if (!CanRemove(slot))
                     return false;
 
-                TItem oldItem = _equipped[index];
+                var oldItem = _equipped[index];
 
                 // Remove the listener for the OnDispose event
                 oldItem.OnDispose -= ItemDisposeHandler;
@@ -336,9 +338,9 @@ namespace NetGore.RPGComponents
         ///<filterpriority>1</filterpriority>
         public IEnumerator<KeyValuePair<TEquipmentSlot, TItem>> GetEnumerator()
         {
-            for (int i = 0; i < _equipped.Length; i++)
+            for (var i = 0; i < _equipped.Length; i++)
             {
-                TItem item = this[i];
+                var item = this[i];
                 if (item != null)
                     yield return new KeyValuePair<TEquipmentSlot, TItem>(EquipmentSlotFromInt(i), item);
             }

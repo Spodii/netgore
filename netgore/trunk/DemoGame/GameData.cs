@@ -1,7 +1,9 @@
 using System;
 using System.Linq;
+using DemoGame;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -181,7 +183,7 @@ namespace DemoGame
         {
             // TODO: Make use of this!
             const float maxDistance = 200.0f;
-            float dist = source.Position.QuickDistance(target.Position);
+            var dist = source.Position.QuickDistance(target.Position);
             return dist < maxDistance;
         }
     }

@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using log4net;
+using NetGore;
 using NetGore.RPGComponents;
 
 namespace DemoGame
@@ -51,7 +53,7 @@ namespace DemoGame
             _stats = LookupTable.CreateBuffer(StatCollectionType);
         }
 
-        #region IStatCollection Members
+        #region IStatCollection<StatType> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.

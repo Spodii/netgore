@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DemoGame;
+using NetGore;
+using NetGore.RPGComponents;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -44,14 +47,14 @@ namespace NetGore.Db.ClassCreator
 
         public override string GetAttribute(string attributeType, params string[] args)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(OpenIndexer);
             sb.Append(attributeType);
             sb.Append(OpenParameterString);
 
             if (args != null)
             {
-                for (int i = 0; i < args.Length - 1; i++)
+                for (var i = 0; i < args.Length - 1; i++)
                 {
                     sb.Append(args[i]);
                     sb.Append(ParameterSpacer);
@@ -68,7 +71,7 @@ namespace NetGore.Db.ClassCreator
         public override string GetClass(string className, MemberVisibilityLevel visibility, bool isStatic,
                                         IEnumerable<string> interfaces)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(GetVisibilityLevel(visibility));
             if (isStatic)
                 sb.Append(" static ");
@@ -78,7 +81,7 @@ namespace NetGore.Db.ClassCreator
             if (interfaces != null && interfaces.Count() > 0)
             {
                 sb.Append(" : ");
-                foreach (string i in interfaces)
+                foreach (var i in interfaces)
                 {
                     sb.Append(i);
                     sb.Append(ParameterSpacer);
@@ -91,7 +94,7 @@ namespace NetGore.Db.ClassCreator
 
         public override string GetConstField(string fieldName, Type type, MemberVisibilityLevel visibility, string value)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(GetVisibilityLevel(visibility));
             sb.Append(" const ");
             sb.Append(GetTypeString(type));
@@ -106,7 +109,7 @@ namespace NetGore.Db.ClassCreator
         public override string GetField(string memberName, string type, MemberVisibilityLevel visibility, string code,
                                         bool isReadonly, bool isStatic)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             if (visibility != MemberVisibilityLevel.Private)
             {
@@ -142,7 +145,7 @@ namespace NetGore.Db.ClassCreator
 
         public override string GetLocalField(string memberName, string type, string value)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(type);
             sb.Append(" ");
             sb.Append(memberName);
@@ -169,11 +172,11 @@ namespace NetGore.Db.ClassCreator
         /// <returns>The code for an array of string literals.</returns>
         public override string GetStringArrayCode(IEnumerable<string> strings)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("new string[] ");
 
             sb.Append(OpenBrace);
-            foreach (string s in strings)
+            foreach (var s in strings)
             {
                 sb.Append("\"");
                 sb.Append(s);
@@ -192,7 +195,7 @@ namespace NetGore.Db.ClassCreator
 
         public override string GetSwitch(string switchOn, IEnumerable<KeyValuePair<string, string>> switches, string defaultCode)
         {
-            StringBuilder sb = new StringBuilder(512);
+            var sb = new StringBuilder(512);
             sb.Append("switch ");
             sb.Append(OpenParameterString);
             sb.Append(switchOn);

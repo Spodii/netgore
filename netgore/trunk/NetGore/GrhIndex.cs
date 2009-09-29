@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
+using NetGore;
 using NetGore.Globalization;
 using NetGore.IO;
 
@@ -101,7 +102,7 @@ namespace NetGore
         /// <returns>The GrhIndex read from the IValueReader.</returns>
         public static GrhIndex Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new GrhIndex(value);
         }
 
@@ -113,11 +114,11 @@ namespace NetGore
         /// <returns>The GrhIndex read from the IDataReader.</returns>
         public static GrhIndex Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new GrhIndex((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new GrhIndex(convertedValue);
         }
 
@@ -139,7 +140,7 @@ namespace NetGore
         /// <returns>The GrhIndex read from the BitStream.</returns>
         public static GrhIndex Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new GrhIndex(value);
         }
 
@@ -855,7 +856,7 @@ namespace NetGore
         public static bool TryParse(this Parser parser, string value, out GrhIndex outValue)
         {
             ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new GrhIndex(tmp);
             return ret;
         }

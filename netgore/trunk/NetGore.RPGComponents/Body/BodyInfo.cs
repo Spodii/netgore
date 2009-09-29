@@ -1,5 +1,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore;
+using NetGore.RPGComponents;
 
 // TODO: I am quite sure the BodyInfo needs to be cleaned up...
 
@@ -61,14 +63,14 @@ namespace NetGore.RPGComponents
         {
             if (c.Heading == Direction.East)
             {
-                int x = (int)(c.Position.X + rect.X);
-                int y = (int)(c.Position.Y + rect.Y);
+                var x = (int)(c.Position.X + rect.X);
+                var y = (int)(c.Position.Y + rect.Y);
                 return new Rectangle(x, y, rect.Width, rect.Height);
             }
             else
             {
-                int x = (int)(c.CB.Max.X - rect.X - rect.Width);
-                int y = (int)(c.CB.Max.Y - rect.Y - rect.Height);
+                var x = (int)(c.CB.Max.X - rect.X - rect.Width);
+                var y = (int)(c.CB.Max.Y - rect.Y - rect.Height);
                 return new Rectangle(x, y, rect.Width, rect.Height);
             }
         }
@@ -80,14 +82,14 @@ namespace NetGore.RPGComponents
         /// <returns>An array containing the body information</returns>
         public static BodyInfo[] Load(string filePath)
         {
-            MathString ms = new MathString();
+            var ms = new MathString();
             var results = XmlInfoReader.ReadFile(filePath, true);
 
             // Find the highest index
-            BodyIndex highestIndex = new BodyIndex(0);
+            var highestIndex = new BodyIndex(0);
             foreach (var d in results)
             {
-                BodyIndex currentBodyIndex = d.AsBodyIndex("Body.Index");
+                var currentBodyIndex = d.AsBodyIndex("Body.Index");
                 if (highestIndex < currentBodyIndex)
                     highestIndex = currentBodyIndex;
             }
@@ -98,27 +100,27 @@ namespace NetGore.RPGComponents
             // Create the return values
             foreach (var d in results)
             {
-                BodyIndex index = d.AsBodyIndex("Body.Index");
-                float width = d.AsFloat("Body.Size.Width");
-                float height = d.AsFloat("Body.Size.Height");
+                var index = d.AsBodyIndex("Body.Index");
+                var width = d.AsFloat("Body.Size.Width");
+                var height = d.AsFloat("Body.Size.Height");
 
                 // Set the MathString variables
                 ms.Variables.Clear();
                 ms.Variables.Add("$width", width);
                 ms.Variables.Add("$height", height);
 
-                string body = d["Body.Body.SkelBody"];
-                string stand = d["Body.Stand.SkelSet"];
-                string walk = d["Body.Walk.SkelSet"];
-                string jump = d["Body.Jump.SkelSet"];
-                string fall = d["Body.Fall.SkelSet"];
+                var body = d["Body.Body.SkelBody"];
+                var stand = d["Body.Stand.SkelSet"];
+                var walk = d["Body.Walk.SkelSet"];
+                var jump = d["Body.Jump.SkelSet"];
+                var fall = d["Body.Fall.SkelSet"];
 
-                string punch = d["Body.Punch.SkelSet"];
-                int punchX = (int)ms.Parse((d["Body.Punch.X"]));
-                int punchY = (int)ms.Parse((d["Body.Punch.Y"]));
-                int punchWidth = (int)ms.Parse((d["Body.Punch.Width"]));
-                int punchHeight = (int)ms.Parse((d["Body.Punch.Height"]));
-                Rectangle punchRect = new Rectangle(punchX, punchY, punchWidth, punchHeight);
+                var punch = d["Body.Punch.SkelSet"];
+                var punchX = (int)ms.Parse((d["Body.Punch.X"]));
+                var punchY = (int)ms.Parse((d["Body.Punch.Y"]));
+                var punchWidth = (int)ms.Parse((d["Body.Punch.Width"]));
+                var punchHeight = (int)ms.Parse((d["Body.Punch.Height"]));
+                var punchRect = new Rectangle(punchX, punchY, punchWidth, punchHeight);
 
                 ret[(int)index] = new BodyInfo(index, width, height, body, stand, walk, jump, fall, punch, punchRect);
             }

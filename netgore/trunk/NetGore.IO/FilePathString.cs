@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using NetGore;
 
 namespace NetGore
 {
@@ -27,7 +28,7 @@ namespace NetGore
         /// <returns>A new PathString containing the path joining this PathString with the <paramref name="subPath"/>.</returns>
         public PathString Join(string subPath)
         {
-            string newPath = Path.Combine(this, subPath);
+            var newPath = Path.Combine(this, subPath);
 
             if (newPath == this)
                 return this;

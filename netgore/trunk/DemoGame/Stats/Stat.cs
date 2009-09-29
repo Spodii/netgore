@@ -1,5 +1,7 @@
 using System.Data;
 using System.Linq;
+using DemoGame;
+using NetGore;
 using NetGore.IO;
 using NetGore.RPGComponents;
 
@@ -36,8 +38,7 @@ namespace DemoGame
         /// <param name="istatToCopy">The IStat to copy the values from.</param>
         /// <param name="initialValue">The initial value to assign to this Stat. If not specified, the initial value
         /// will end up being equal to the Value of <paramref name="istatToCopy"/>.</param>
-        public Stat(IStat<StatType> istatToCopy, int initialValue)
-            : this(istatToCopy)
+        public Stat(IStat<StatType> istatToCopy, int initialValue) : this(istatToCopy)
         {
             Value = initialValue;
         }
@@ -77,7 +78,7 @@ namespace DemoGame
             return _statType + ": " + Value;
         }
 
-        #region IStat Members
+        #region IStat<StatType> Members
 
         /// <summary>
         /// Gets the StatType of this IStat.

@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore;
 
 namespace NetGore
 {
@@ -257,7 +258,7 @@ namespace NetGore
             if (adjustment == Vector2.Zero)
                 return;
 
-            Vector2 oldPos = _collisionBox.Min;
+            var oldPos = _collisionBox.Min;
 
             _collisionBox.Move(adjustment);
 
@@ -275,7 +276,7 @@ namespace NetGore
             if (size == _collisionBox.Size)
                 return;
 
-            Vector2 oldSize = _collisionBox.Size;
+            var oldSize = _collisionBox.Size;
 
             _collisionBox.Resize(size);
 
@@ -327,7 +328,7 @@ namespace NetGore
             if (newPosition == Position)
                 return;
 
-            Vector2 oldPos = Position;
+            var oldPos = Position;
 
             // Treat as if not on ground, and move the CollisionBox
             _onGround = false;

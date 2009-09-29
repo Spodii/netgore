@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore;
 using NetGore.NPCChat;
 
 namespace NetGore.EditorTools.NPCChat
@@ -98,7 +99,7 @@ namespace NetGore.EditorTools.NPCChat
             if (!_objToTreeNode.TryGetValue(response, out l))
                 return;
 
-            foreach (NPCChatDialogViewNode node in l)
+            foreach (var node in l)
             {
                 node.Update(false);
             }
@@ -114,7 +115,7 @@ namespace NetGore.EditorTools.NPCChat
             if (!_objToTreeNode.TryGetValue(response, out l))
                 return;
 
-            foreach (NPCChatDialogViewNode node in l)
+            foreach (var node in l)
             {
                 node.Update(false);
             }
@@ -127,10 +128,10 @@ namespace NetGore.EditorTools.NPCChat
         /// <returns>An IEnumerable of all the TreeNodes from the given <paramref name="root"/>.</returns>
         public static IEnumerable<TreeNode> GetAllNodes(IEnumerable root)
         {
-            foreach (TreeNode node in root.Cast<TreeNode>())
+            foreach (var node in root.Cast<TreeNode>())
             {
                 yield return node;
-                foreach (TreeNode r in GetAllNodes(node.Nodes))
+                foreach (var r in GetAllNodes(node.Nodes))
                 {
                     yield return r;
                 }
@@ -163,7 +164,7 @@ namespace NetGore.EditorTools.NPCChat
                 return null;
 
             // Remove dead nodes
-            foreach (NPCChatDialogViewNode deadNode in ret.Where(x => x.IsDead))
+            foreach (var deadNode in ret.Where(x => x.IsDead))
             {
                 NotifyNodeDestroyed(deadNode);
             }
@@ -171,7 +172,7 @@ namespace NetGore.EditorTools.NPCChat
             Debug.Assert(ret.Count(x => x.ChatItemType == NPCChatDialogViewNodeItemType.DialogItem) <= 1,
                          "Was only expected 0 or 1 TreeNodes to be directly for this dialogItem.");
 
-            NPCChatDialogViewNode r = ret.FirstOrDefault(x => x.ChatItemType == NPCChatDialogViewNodeItemType.DialogItem);
+            var r = ret.FirstOrDefault(x => x.ChatItemType == NPCChatDialogViewNodeItemType.DialogItem);
 
             Debug.Assert(r.ChatItemAsDialogItem == dialogItem);
 
@@ -191,7 +192,7 @@ namespace NetGore.EditorTools.NPCChat
             if (NPCChatDialog == null)
                 return null;
 
-            NPCChatDialogItemBase dialogItem = NPCChatDialog.GetDialogItem(dialogItemIndex);
+            var dialogItem = NPCChatDialog.GetDialogItem(dialogItemIndex);
             if (dialogItem == null)
                 return null;
 
@@ -215,7 +216,7 @@ namespace NetGore.EditorTools.NPCChat
                 return Enumerable.Empty<NPCChatDialogViewNode>();
 
             // Remove dead nodes
-            foreach (NPCChatDialogViewNode deadNode in ret.Where(x => x.IsDead))
+            foreach (var deadNode in ret.Where(x => x.IsDead))
             {
                 NotifyNodeDestroyed(deadNode);
             }
@@ -267,7 +268,7 @@ namespace NetGore.EditorTools.NPCChat
         {
             if (e.Node != null)
             {
-                TreeNode tagAsTreeNode = e.Node.Tag as TreeNode;
+                var tagAsTreeNode = e.Node.Tag as TreeNode;
                 if (tagAsTreeNode != null)
                     SelectedNode = tagAsTreeNode;
             }
@@ -283,7 +284,7 @@ namespace NetGore.EditorTools.NPCChat
             if (NPCChatDialog == null)
                 return;
 
-            foreach (NPCChatDialogViewNode childNode in Nodes.OfType<NPCChatDialogViewNode>())
+            foreach (var childNode in Nodes.OfType<NPCChatDialogViewNode>())
             {
                 childNode.Update(true);
             }

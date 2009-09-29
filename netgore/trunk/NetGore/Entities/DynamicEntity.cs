@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore;
 using NetGore.IO;
 
 /* NOTE ON THE POSITION AND VELOCITY SYNCING:
@@ -105,7 +106,7 @@ namespace NetGore
                     return false;
 
                 // Check each property, stopping at the first non-synchronized one
-                for (int i = 0; i <= _lastNetworkSyncIndex; i++)
+                for (var i = 0; i <= _lastNetworkSyncIndex; i++)
                 {
                     if (_propertySyncs[i].HasValueChanged())
                     {
@@ -214,11 +215,11 @@ namespace NetGore
 #if DEBUG
             // Ensure the _lastNetworkSyncIndex valid, and that every index [0, _lastNetworkSyncIndex] is
             // set to false, and [_lastNetworkSyncIndex+1, end] is true for SkipNetworkSync.
-            for (int i = 0; i < _lastNetworkSyncIndex; i++)
+            for (var i = 0; i < _lastNetworkSyncIndex; i++)
             {
                 Debug.Assert(!_propertySyncs[i].SkipNetworkSync);
             }
-            for (int i = _lastNetworkSyncIndex + 1; i < _propertySyncs.Length; i++)
+            for (var i = _lastNetworkSyncIndex + 1; i < _propertySyncs.Length; i++)
             {
                 Debug.Assert(_propertySyncs[i].SkipNetworkSync);
             }
@@ -256,16 +257,16 @@ namespace NetGore
             uint highestPropertyIndex = _lastNetworkSyncIndex;
 
             // Grab the count for the number of properties to read
-            uint count = reader.ReadUInt("Count", 0, highestPropertyIndex);
+            var count = reader.ReadUInt("Count", 0, highestPropertyIndex);
 
             // Read the properties, which will be in ascending order
             // See the Serialize() function to see why this is, and why we do it this way
             uint lastIndex = 0;
-            for (int i = 0; i < count; i++)
+            for (var i = 0; i < count; i++)
             {
                 // Get the PropertySync to be deserialized
-                uint propIndex = reader.ReadUInt("PropertyIndex", lastIndex, highestPropertyIndex);
-                PropertySyncBase propertySync = _propertySyncs[propIndex];
+                var propIndex = reader.ReadUInt("PropertyIndex", lastIndex, highestPropertyIndex);
+                var propertySync = _propertySyncs[propIndex];
 
                 // Read the value into the property
                 propertySync.ReadValue(reader);
@@ -365,7 +366,7 @@ namespace NetGore
         /// <param name="reader">IValueReader to read the property values from.</param>
         internal void ReadAll(IValueReader reader)
         {
-            for (int i = 0; i < _propertySyncs.Length; i++)
+            for (var i = 0; i < _propertySyncs.Length; i++)
             {
                 _propertySyncs[i].ReadValue(reader);
             }
@@ -387,9 +388,9 @@ namespace NetGore
             // Its important to note that we are iterating in ascending order and putting them in a queue, so they
             // will come out in ascending order, too
             var writeIndices = new Queue<int>(_lastNetworkSyncIndex + 1);
-            for (int i = 0; i <= _lastNetworkSyncIndex; i++)
+            for (var i = 0; i <= _lastNetworkSyncIndex; i++)
             {
-                PropertySyncBase propertySync = _propertySyncs[i];
+                var propertySync = _propertySyncs[i];
                 if (!propertySync.SkipNetworkSync && propertySync.HasValueChanged())
                     writeIndices.Enqueue(i);
             }
@@ -403,11 +404,11 @@ namespace NetGore
             while (writeIndices.Count > 0)
             {
                 // Write the index of the property
-                uint propIndex = (uint)writeIndices.Dequeue();
+                var propIndex = (uint)writeIndices.Dequeue();
                 writer.Write("PropertyIndex", propIndex, lastIndex, highestPropertyIndex);
 
                 // Write the actual property value
-                PropertySyncBase propertySync = _propertySyncs[propIndex];
+                var propertySync = _propertySyncs[propIndex];
                 propertySync.WriteValue(writer);
 
                 // Allow for additonal handling
@@ -503,7 +504,7 @@ namespace NetGore
         /// <param name="writer">IValueWriter to write th property values to.</param>
         internal void WriteAll(IValueWriter writer)
         {
-            for (int i = 0; i < _propertySyncs.Length; i++)
+            for (var i = 0; i < _propertySyncs.Length; i++)
             {
                 _propertySyncs[i].WriteValue(writer);
             }

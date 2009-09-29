@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame;
+using NetGore;
 using NetGore.Collections;
 using NetGore.RPGComponents;
 
@@ -13,7 +15,9 @@ namespace DemoGame
     public class DynamicStatCollection : IStatCollection<StatType>
     {
         readonly StatCollectionType _statCollectionType;
-        readonly Dictionary<StatType, IStat<StatType>> _stats = new Dictionary<StatType, IStat<StatType>>(EnumComparer<StatType>.Instance);
+
+        readonly Dictionary<StatType, IStat<StatType>> _stats =
+            new Dictionary<StatType, IStat<StatType>>(EnumComparer<StatType>.Instance);
 
         /// <summary>
         /// StatCollectionBase constructor.
@@ -84,7 +88,7 @@ namespace DemoGame
         {
         }
 
-        #region IStatCollection Members
+        #region IStatCollection<StatType> Members
 
         /// <summary>
         /// Gets an IEnumerable of the KeyValuePairs in this IStatCollection, where the key is the StatType and the
@@ -138,7 +142,7 @@ namespace DemoGame
             }
             set
             {
-                IStat<StatType> stat = GetStat(statType);
+                var stat = GetStat(statType);
                 stat.Value = value;
             }
         }

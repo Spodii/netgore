@@ -1,8 +1,9 @@
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using log4net;
 using NetGore;
-using NetGore.Network;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -32,7 +33,7 @@ namespace DemoGame.Server
 
         protected override void SendSlotUpdate(EquipmentSlot slot, GrhIndex? graphicIndex)
         {
-            using (PacketWriter msg = ServerPacket.UpdateEquipmentSlot(slot, graphicIndex))
+            using (var msg = ServerPacket.UpdateEquipmentSlot(slot, graphicIndex))
             {
                 User.Send(msg);
             }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -54,7 +55,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <returns>The EditorNPCChatDialog at the specified <paramref name="index"/>.</returns>
         public static EditorNPCChatDialog GetDialog(int index)
         {
-            NPCChatDialogBase ret = _instance[index];
+            var ret = _instance[index];
 
             // If we grabbed the wrong one, or nothing, try reorganizing
             if (ret == null || ret.Index != index)

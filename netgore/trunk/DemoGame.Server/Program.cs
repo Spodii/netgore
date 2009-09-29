@@ -1,7 +1,10 @@
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using DemoGame;
 using log4net;
+using NetGore;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {

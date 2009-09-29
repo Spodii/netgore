@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.RPGComponents;
 
 namespace NetGore.RPGComponents
 {
@@ -9,7 +10,8 @@ namespace NetGore.RPGComponents
     /// Defines the basics of a single item.
     /// </summary>
     /// <typeparam name="TItemType">The type of item.</typeparam>
-    public abstract class ItemEntityBase<TItemType> : DynamicEntity, IPickupableEntity where TItemType : struct, IComparable, IConvertible, IFormattable
+    public abstract class ItemEntityBase<TItemType> : DynamicEntity, IPickupableEntity
+        where TItemType : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
         /// Maximum number of items allowed in a single item stack.

@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using log4net;
 using NetGore;
+using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -62,7 +64,7 @@ namespace DemoGame
                 }
 
                 // Check for a change
-                T oldItem = this[slot];
+                var oldItem = this[slot];
                 if (oldItem == value)
                     return;
 
@@ -107,7 +109,7 @@ namespace DemoGame
             InventorySlot stackSlot;
             while (TryFindStackableSlot(item, out stackSlot))
             {
-                T invItem = this[stackSlot];
+                var invItem = this[stackSlot];
                 if (invItem == null)
                 {
                     const string errmsg = "This should never be a null item. If it is, TryFindStackableSlot() may be broken.";
@@ -118,7 +120,7 @@ namespace DemoGame
                 else
                 {
                     // Stack as much of the item into the existing inventory item
-                    byte stackAmount = (byte)Math.Min(ItemEntityBase.MaxStackSize - invItem.Amount, item.Amount);
+                    var stackAmount = (byte)Math.Min(ItemEntityBase.MaxStackSize - invItem.Amount, item.Amount);
                     invItem.Amount += stackAmount;
                     item.Amount -= stackAmount;
 
@@ -133,11 +135,11 @@ namespace DemoGame
             while (TryFindEmptySlot(out emptySlot))
             {
                 // Deep-copy the item and set it in the inventory
-                T copy = (T)item.DeepCopy();
+                var copy = (T)item.DeepCopy();
                 this[emptySlot] = copy;
 
                 // Reduce the amount of the item by the amount we took
-                byte amountTaken = Math.Min(ItemEntityBase.MaxStackSize, item.Amount);
+                var amountTaken = Math.Min(ItemEntityBase.MaxStackSize, item.Amount);
                 copy.Amount = amountTaken;
                 item.Amount -= amountTaken;
 
@@ -190,7 +192,7 @@ namespace DemoGame
         protected void ClearSlot(InventorySlot slot, bool dispose)
         {
             // Get the item at the slot
-            T item = this[slot];
+            var item = this[slot];
 
             // Check for a valid item
             if (item == null)
@@ -222,7 +224,7 @@ namespace DemoGame
             if (item == null)
                 throw new ArgumentNullException("item");
 
-            for (int i = 0; i < MaxInventorySize; i++)
+            for (var i = 0; i < MaxInventorySize; i++)
             {
                 if (this[new InventorySlot(i)] == item)
                     return new InventorySlot(i);
@@ -251,7 +253,7 @@ namespace DemoGame
         /// <param name="entity">Entity that was disposed.</param>
         void ItemDisposeHandler(Entity entity)
         {
-            T item = (T)entity;
+            var item = (T)entity;
 
             // Try to get the slot
             InventorySlot slot;
@@ -279,7 +281,7 @@ namespace DemoGame
         /// they will only be removed from the InventoryBase, but could still referenced by other objects.</param>
         public void RemoveAll(bool dispose)
         {
-            for (InventorySlot i = new InventorySlot(0); i < _buffer.Length; i++)
+            for (var i = new InventorySlot(0); i < _buffer.Length; i++)
             {
                 if (this[i] != null)
                     ClearSlot(i, dispose);
@@ -307,7 +309,7 @@ namespace DemoGame
         protected bool TryFindEmptySlot(out InventorySlot emptySlot)
         {
             // Iterate through each slot
-            for (int i = 0; i < MaxInventorySize; i++)
+            for (var i = 0; i < MaxInventorySize; i++)
             {
                 // Return on the first null item
                 if (this[new InventorySlot(i)] == null)
@@ -333,9 +335,9 @@ namespace DemoGame
         protected bool TryFindStackableSlot(ItemEntityBase item, out InventorySlot stackableSlot)
         {
             // Iterate through each slot
-            for (int i = 0; i < MaxInventorySize; i++)
+            for (var i = 0; i < MaxInventorySize; i++)
             {
-                T invItem = this[new InventorySlot(i)];
+                var invItem = this[new InventorySlot(i)];
 
                 // Skip empty slots
                 if (invItem == null)
@@ -363,9 +365,9 @@ namespace DemoGame
 
         public IEnumerator<KeyValuePair<InventorySlot, T>> GetEnumerator()
         {
-            for (InventorySlot i = new InventorySlot(0); i < _buffer.Length; i++)
+            for (var i = new InventorySlot(0); i < _buffer.Length; i++)
             {
-                T item = this[i];
+                var item = this[i];
                 if (item != null)
                     yield return new KeyValuePair<InventorySlot, T>(i, item);
             }

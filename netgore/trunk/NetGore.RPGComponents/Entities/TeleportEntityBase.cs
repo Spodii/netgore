@@ -2,6 +2,7 @@ using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.RPGComponents;
 
 namespace NetGore.RPGComponents
 {
@@ -46,9 +47,9 @@ namespace NetGore.RPGComponents
         /// </summary>
         protected TeleportEntityBase()
         {
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             Weight = 0f;
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         #region IUsableEntity Members

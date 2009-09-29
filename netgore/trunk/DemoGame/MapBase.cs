@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using DemoGame;
 using DemoGame.DbObjs;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -40,7 +40,7 @@ namespace DemoGame
         /// <returns>A list containing all ItemEntityBases that intersect the specified area</returns>
         public List<ItemEntityBase> GetItems(Vector2 min, Vector2 max)
         {
-            Vector2 size = max - min;
+            var size = max - min;
             return GetItems(new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y));
         }
 
@@ -56,13 +56,13 @@ namespace DemoGame
             // Predicate that will check if an Entity inherits interface IUsableEntity,
             // and if it can be used by the specified CharacterEntity
             Predicate<Entity> pred = delegate(Entity entity)
-            {
-                IUsableEntity usable = entity as IUsableEntity;
-                if (usable == null)
-                    return false;
+                                     {
+                                         var usable = entity as IUsableEntity;
+                                         if (usable == null)
+                                             return false;
 
-                return usable.CanUse(charEntity);
-            };
+                                         return usable.CanUse(charEntity);
+                                     };
 
             return GetEntity(rect, pred) as IUsableEntity;
         }

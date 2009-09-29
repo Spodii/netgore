@@ -1,4 +1,6 @@
-﻿using System.Linq;
+using System.Linq;
+using NetGore;
+using NetGore.RPGComponents;
 
 namespace NetGore.RPGComponents
 {
@@ -22,7 +24,7 @@ namespace NetGore.RPGComponents
         {
             get
             {
-                int i = (int)index;
+                var i = (int)index;
                 if (i < 0 || i >= _bodyInfo.Length)
                     return null;
 
@@ -43,7 +45,7 @@ namespace NetGore.RPGComponents
         /// </summary>
         BodyInfoManager()
         {
-            PathString path = ContentPaths.Build.Data.Join("bodies.xml");
+            var path = ContentPaths.Build.Data.Join("bodies.xml");
             _bodyInfo = BodyInfo.Load(path);
         }
     }
