@@ -11,6 +11,7 @@ using NetGore;
 using NetGore.Collections;
 using NetGore.Globalization;
 using NetGore.IO;
+using NetGore.RPGComponents;
 
 // FUTURE: Improve how characters handle when they hit the map's borders
 

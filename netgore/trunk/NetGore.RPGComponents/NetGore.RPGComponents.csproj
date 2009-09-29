@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entities\CharacterState.cs" />
+    <Compile Include="Entities\IUsableEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StatusEffect\StatusEffectBase.cs" />
     <Compile Include="StatusEffect\StatusEffectMergeType.cs" />
