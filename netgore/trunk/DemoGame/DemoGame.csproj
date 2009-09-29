@@ -78,6 +78,7 @@
     <Compile Include="Items\InventorySlotExtensions.cs" />
     <Compile Include="Items\ItemInfo.cs" />
     <Compile Include="Items\ItemTypeHelper.cs" />
+    <Compile Include="MapBase.cs" />
     <Compile Include="Packets\ClientPacketIDHelper.cs" />
     <Compile Include="Packets\ServerPacketIDHelper.cs" />
     <Compile Include="ShopItemIndexExtensions.cs" />
@@ -88,7 +89,6 @@
     <Compile Include="Items\InventorySlot.cs" />
     <Compile Include="Items\ItemType.cs" />
     <Compile Include="Items\ItemTypeExtensions.cs" />
-    <Compile Include="MapBase.cs" />
     <Compile Include="Packets\ClientPacketID.cs" />
     <Compile Include="Packets\ServerPacketID.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

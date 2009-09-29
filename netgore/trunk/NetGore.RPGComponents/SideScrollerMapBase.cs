@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DemoGame.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -14,6 +13,7 @@ using NetGore.IO;
 using NetGore.RPGComponents;
 
 // FUTURE: Improve how characters handle when they hit the map's borders
+// TODO: Still need to add name support for the maps
 
 namespace DemoGame
 {
@@ -21,12 +21,12 @@ namespace DemoGame
     /// Event handler for basic events from the MapBase.
     /// </summary>
     /// <param name="map">MapBase that the event came from.</param>
-    public delegate void MapBaseEventHandler(MapBase map);
+    public delegate void MapBaseEventHandler(IMap map);
 
     /// <summary>
     /// Base map class
     /// </summary>
-    public abstract class MapBase : IMap, IMapTable
+    public abstract class SideScrollerMapBase : IMap
     {
         /// <summary>
         /// The suffix used for map files. Does not include the period prefix.
@@ -157,11 +157,11 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// MapBase constructor
+        /// Initializes a new instance of the <see cref="SideScrollerMapBase"/> class.
         /// </summary>
-        /// <param name="mapIndex">Index of the map</param>
-        /// <param name="getTime">Interface used to get the time</param>
-        protected MapBase(MapIndex mapIndex, IGetTime getTime)
+        /// <param name="mapIndex">Index of the map.</param>
+        /// <param name="getTime">Interface used to get the time.</param>
+        protected SideScrollerMapBase(MapIndex mapIndex, IGetTime getTime)
         {
             if (getTime == null)
                 throw new ArgumentNullException("getTime");
@@ -951,28 +951,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets all the items that intersect a specified area
-        /// </summary>
-        /// <param name="rect">Rectangle of the area to check</param>
-        /// <returns>A list containing all ItemEntityBases that intersect the specified area</returns>
-        public List<ItemEntityBase> GetItems(Rectangle rect)
-        {
-            return GetEntities<ItemEntityBase>(rect);
-        }
-
-        /// <summary>
-        /// Gets all the ItemEntityBases that intersect a specified area
-        /// </summary>
-        /// <param name="min">Min point of the collision area</param>
-        /// <param name="max">Max point of the collision area</param>
-        /// <returns>A list containing all ItemEntityBases that intersect the specified area</returns>
-        public List<ItemEntityBase> GetItems(Vector2 min, Vector2 max)
-        {
-            Vector2 size = max - min;
-            return GetItems(new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y));
-        }
-
-        /// <summary>
         /// Gets an IEnumerable of the path of all the map files in the given ContentPaths.
         /// </summary>
         /// <param name="path">ContentPaths to load the map files from.</param>
@@ -987,6 +965,11 @@ namespace DemoGame
 
             return mapFiles;
         }
+
+        /// <summary>
+        /// Gets the name of the map.
+        /// </summary>
+        public string Name { get { return _name; } protected set { _name = value; } }
 
         /// <summary>
         /// Gets the next free map index.
@@ -1019,41 +1002,6 @@ namespace DemoGame
             }
 
             return new MapIndex(expected);
-        }
-
-        /// <summary>
-        /// Gets the first IUsableEntity that intersects a specified area
-        /// </summary>
-        /// <param name="rect">Rectangle of the area to check</param>
-        /// <param name="charEntity">CharacterEntity that must be able to use the IUsableEntity</param>
-        /// <returns>First IUsableEntity that intersects the specified area that the charEntity
-        /// is able to use, or null if none</returns>
-        public IUsableEntity GetUsable(Rectangle rect, CharacterEntity charEntity)
-        {
-            // Predicate that will check if an Entity inherits interface IUsableEntity,
-            // and if it can be used by the specified CharacterEntity
-            Predicate<Entity> pred = delegate(Entity entity)
-                                     {
-                                         IUsableEntity usable = entity as IUsableEntity;
-                                         if (usable == null)
-                                             return false;
-
-                                         return usable.CanUse(charEntity);
-                                     };
-
-            return GetEntity(rect, pred) as IUsableEntity;
-        }
-
-        /// <summary>
-        /// Gets the first IUsableEntity that intersects a specified area
-        /// </summary>
-        /// <param name="cb">CollisionBox of the area to check</param>
-        /// <param name="charEntity">CharacterEntity that must be able to use the IUsableEntity</param>
-        /// <returns>First IUsableEntity that intersects the specified area that the charEntity
-        /// is able to use, or null if none</returns>
-        public IUsableEntity GetUsable(CollisionBox cb, CharacterEntity charEntity)
-        {
-            return GetUsable(cb.ToRectangle(), charEntity);
         }
 
         /// <summary>
@@ -1789,36 +1737,6 @@ namespace DemoGame
         public int GetTime()
         {
             return _getTime.GetTime();
-        }
-
-        #endregion
-
-        #region IMapTable Members
-
-        /// <summary>
-        /// Creates a deep copy of this table. All the values will be the same
-        /// but they will be contained in a different object instance.
-        /// </summary>
-        /// <returns>
-        /// A deep copy of this table.
-        /// </returns>
-        IMapTable IMapTable.DeepCopy()
-        {
-            return new MapTable(this);
-        }
-
-        MapIndex IMapTable.ID
-        {
-            get { return Index; }
-        }
-
-        /// <summary>
-        /// Gets or sets the name of the map.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
         }
 
         #endregion
