@@ -1,24 +1,26 @@
+using System;
 using System.Data;
 using System.Linq;
 using NetGore.IO;
 
-namespace DemoGame
+namespace NetGore.RPGComponents
 {
     /// <summary>
     /// Interface for the primary holder object of stat information, containing the type of stat, events, and the
     /// actual value of the stat.
     /// </summary>
-    public interface IStat
+    /// <typeparam name="T">The type of stat.</typeparam>
+    public interface IStat<T> where T : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
         /// Notifies listeners that the value of the stat has changed.
         /// </summary>
-        event IStatEventHandler OnChange;
+        event IStatEventHandler<T> OnChange;
 
         /// <summary>
         /// Gets the StatType of this IStat.
         /// </summary>
-        StatType StatType { get; }
+        T StatType { get; }
 
         /// <summary>
         /// Gets or sets the value of this IStat as an integer.
@@ -30,7 +32,7 @@ namespace DemoGame
         /// containing the same IStatValueType with the same value, and same StatType.
         /// </summary>
         /// <returns>The deep copy of the IStat.</returns>
-        IStat DeepCopy();
+        IStat<T> DeepCopy();
 
         /// <summary>
         /// Creates a deep copy of the IStat's IStatValueType, resulting in a new IStatValueType object of the same

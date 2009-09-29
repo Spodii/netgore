@@ -98,10 +98,10 @@ namespace DemoGame
         /// <param name="bitStream">BitStream to read from.</param>
         /// <param name="statCollection">IStatCollection that the stat value will be loaded into. This IStatCollection
         /// must contain the StatType being read.</param>
-        public static void ReadStat(this BitStream bitStream, IStatCollection statCollection)
+        public static void ReadStat(this BitStream bitStream, IStatCollection<StatType> statCollection)
         {
             StatType statType = bitStream.ReadEnum(StatTypeHelper.Instance);
-            IStat stat = statCollection.GetStat(statType);
+            var stat = statCollection.GetStat(statType);
             stat.Read(bitStream);
         }
 
@@ -112,11 +112,11 @@ namespace DemoGame
         /// <param name="bitStream">BitStream to read from</param>
         /// <param name="statCollection">IStatCollection to read the stat values into. This IStatCollection
         /// must contain all of the StatTypes being read.</param>
-        public static void ReadStatCollection(this BitStream bitStream, IStatCollection statCollection)
+        public static void ReadStatCollection(this BitStream bitStream, IStatCollection<StatType> statCollection)
         {
             // Set all current stats to zero
-            IStatCollection stats = statCollection;
-            foreach (IStat stat in stats)
+            var stats = statCollection;
+            foreach (var stat in stats)
             {
                 stat.Value = 0;
             }
@@ -271,7 +271,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="stat">IStat to write.</param>
-        public static void Write(this BitStream bitStream, IStat stat)
+        public static void Write(this BitStream bitStream, IStat<StatType> stat)
         {
             bitStream.WriteEnum(StatTypeHelper.Instance, stat.StatType);
             stat.Write(bitStream);
@@ -283,7 +283,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="statCollection">IStatCollection containing the stat values to write.</param>
-        public static void Write(this BitStream bitStream, IStatCollection statCollection)
+        public static void Write(this BitStream bitStream, IStatCollection<StatType> statCollection)
         {
             // Get the IEnumerable of all the non-zero stats
             var nonZeroStats = statCollection.Where(stat => stat.Value != 0);
@@ -297,7 +297,7 @@ namespace DemoGame
             bitStream.Write(numStats);
 
             // Write each individual non-zero stat
-            foreach (IStat stat in nonZeroStats)
+            foreach (var stat in nonZeroStats)
             {
                 bitStream.Write(stat);
             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NetGore;
 using NetGore.Network;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -11,25 +12,25 @@ namespace DemoGame.Server
         // TODO: [STATS] This totally sucks, fix it up
 
         readonly int[] _lastValues;
-        readonly IStatCollection _statCollection;
+        readonly IStatCollection<StatType> _statCollection;
 
-        public ChangedStatsTracker(IStatCollection statCollection)
+        public ChangedStatsTracker(IStatCollection<StatType> statCollection)
         {
             _statCollection = statCollection;
             int size = _statCollection.Select(x => x.StatType.GetValue()).Max() + 1;
             _lastValues = new int[size];
 
-            foreach (IStat istat in statCollection)
+            foreach (var istat in statCollection)
             {
                 _lastValues[istat.StatType.GetValue()] = istat.Value;
             }
         }
 
-        public IEnumerable<IStat> GetChangedStats()
+        public IEnumerable<IStat<StatType>> GetChangedStats()
         {
-            var changed = new List<IStat>();
+            var changed = new List<IStat<StatType>>();
 
-            foreach (IStat istat in _statCollection)
+            foreach (var istat in _statCollection)
             {
                 byte i = istat.StatType.GetValue();
                 int v = istat.Value;
@@ -74,7 +75,7 @@ namespace DemoGame.Server
 
             using (PacketWriter pw = ServerPacket.GetWriter())
             {
-                foreach (IStat stat in statsToUpdate)
+                foreach (var stat in statsToUpdate)
                 {
                     pw.Reset();
                     ServerPacket.UpdateStat(pw, stat, StatCollectionType);

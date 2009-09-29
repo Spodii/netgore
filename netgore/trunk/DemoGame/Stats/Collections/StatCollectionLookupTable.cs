@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -99,13 +100,13 @@ namespace DemoGame
         /// </summary>
         /// <param name="statCollectionType">The StatCollectionType to use for the generated IStats.</param>
         /// <returns>An array of IStats to be used as the buffer for this StatCollectionLookupTable.</returns>
-        public IStat[] CreateBuffer(StatCollectionType statCollectionType)
+        public IStat<StatType>[] CreateBuffer(StatCollectionType statCollectionType)
         {
-            var ret = new IStat[Count];
+            var ret = new IStat<StatType>[Count];
             foreach (StatType statType in StatTypes)
             {
                 int index = GetIndex(statType);
-                IStat istat = StatFactory.CreateStat(statType, statCollectionType);
+                var istat = StatFactory.CreateStat(statType, statCollectionType);
                 ret[index] = istat;
             }
 

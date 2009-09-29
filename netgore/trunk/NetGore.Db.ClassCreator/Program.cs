@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DemoGame;
+using NetGore.RPGComponents;
 
 namespace NetGore.Db.ClassCreator
 {

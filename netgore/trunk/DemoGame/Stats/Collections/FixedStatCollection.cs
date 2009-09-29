@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -11,13 +12,13 @@ namespace DemoGame
     /// at construction, and no new StatTypes may ever be added. This is the ideal IStatCollection to use when you want
     /// the collection to not contain every StatType, and you don't want to add any new StatTypes.
     /// </summary>
-    public class FixedStatCollection : IStatCollection
+    public class FixedStatCollection : IStatCollection<StatType>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly StatCollectionLookupTable _lookupTable;
         readonly StatCollectionType _statCollectionType;
-        readonly IStat[] _stats;
+        readonly IStat<StatType>[] _stats;
 
         /// <summary>
         /// Gets the StatCollectionLookupTable used by this FixedStatCollection.
@@ -59,9 +60,9 @@ namespace DemoGame
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public IEnumerator<IStat> GetEnumerator()
+        public IEnumerator<IStat<StatType>> GetEnumerator()
         {
-            return ((IEnumerable<IStat>)_stats).GetEnumerator();
+            return ((IEnumerable<IStat<StatType>>)_stats).GetEnumerator();
         }
 
         /// <summary>
@@ -111,7 +112,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="statType">The StatType of the stat to get.</param>
         /// <returns>The IStat for the stat of the given <paramref name="statType"/>.</returns>
-        public IStat GetStat(StatType statType)
+        public IStat<StatType> GetStat(StatType statType)
         {
             return _stats[LookupTable[statType]];
         }
@@ -124,7 +125,7 @@ namespace DemoGame
         /// returns false, this value will be null.</param>
         /// <returns>True if the stat with the given <paramref name="statType"/> was found and
         /// successfully returned; otherwise false.</returns>
-        public bool TryGetStat(StatType statType, out IStat stat)
+        public bool TryGetStat(StatType statType, out IStat<StatType> stat)
         {
             if (!LookupTable.Contains(statType))
             {
@@ -200,7 +201,7 @@ namespace DemoGame
         /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
         /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
         /// in any other way.</param>
-        public void CopyValuesFrom(IEnumerable<IStat> values, bool checkContains)
+        public void CopyValuesFrom(IEnumerable<IStat<StatType>> values, bool checkContains)
         {
             CopyValuesFrom(values.xxxToKeyValuePairs(), checkContains);
         }
