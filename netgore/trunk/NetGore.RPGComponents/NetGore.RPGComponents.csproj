@@ -57,6 +57,7 @@
     <Compile Include="Entities\CharacterEntityBase.cs" />
     <Compile Include="Entities\CharacterState.cs" />
     <Compile Include="Entities\IPickupableEntity.cs" />
+    <Compile Include="Entities\ItemEntityBase.cs" />
     <Compile Include="Entities\IUsableEntity.cs" />
     <Compile Include="SideScrollerMapBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -88,6 +89,9 @@
       <Name>NetGore</Name>
       <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Items\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
