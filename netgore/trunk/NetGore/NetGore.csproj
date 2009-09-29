@@ -125,6 +125,12 @@
     <Compile Include="PropertySync\PropertySyncString.cs" />
     <Compile Include="PropertySync\SyncValueAttribute.cs" />
     <Compile Include="Extensions\StackExtensions.cs" />
+    <Compile Include="Stats\StatValueTypes\IStatValueType.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueByte.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueInt.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueSByte.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueShort.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueUShort.cs" />
     <Compile Include="StringCommandBaseAttribute.cs" />
     <Compile Include="StringCommandParser.cs" />
     <Compile Include="StringParser.cs" />

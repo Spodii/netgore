@@ -111,7 +111,6 @@
     <Compile Include="Stats\IStat.cs" />
     <Compile Include="Stats\Collections\IStatCollection.cs" />
     <Compile Include="Stats\StatTypeHelper.cs" />
-    <Compile Include="Stats\StatValueTypes\IStatValueType.cs" />
     <Compile Include="Stats\Collections\ItemStatsBase.cs" />
     <Compile Include="Stats\Stat.cs" />
     <Compile Include="Stats\ModStatHelper.cs" />
@@ -122,11 +121,6 @@
     <Compile Include="Stats\Collections\StatCollectionType.cs" />
     <Compile Include="Stats\StatType.cs" />
     <Compile Include="Stats\StatTypeExtensions.cs" />
-    <Compile Include="Stats\StatValueTypes\StatValueByte.cs" />
-    <Compile Include="Stats\StatValueTypes\StatValueInt.cs" />
-    <Compile Include="Stats\StatValueTypes\StatValueSByte.cs" />
-    <Compile Include="Stats\StatValueTypes\StatValueShort.cs" />
-    <Compile Include="Stats\StatValueTypes\StatValueUShort.cs" />
     <Compile Include="StatusEffect\DefaultStatusEffectMergeType.cs" />
     <Compile Include="StatusEffect\StatusEffectBase.cs" />
     <Compile Include="StatusEffect\StatusEffectMergeType.cs" />
