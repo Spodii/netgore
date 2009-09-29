@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
-using DemoGame.Server.DbObjs;
+using DemoGame;
 using DemoGame.Server.Queries;
+using NetGore;
 using NetGore.Db;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -92,7 +94,7 @@ namespace DemoGame.Server
         protected override Shop LoadItem(ShopID id)
         {
             var shopItemTables = _selectShopItemsQuery.Execute(id);
-            IShopTable shopTable = _selectShopQuery.Execute(id);
+            var shopTable = _selectShopQuery.Execute(id);
             return new Shop(shopTable, shopItemTables);
         }
     }

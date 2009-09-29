@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DemoGame;
+using NetGore;
 using NetGore.RPGComponents;
 
 namespace NetGore.Db.ClassCreator
@@ -33,10 +34,10 @@ namespace NetGore.Db.ClassCreator
         static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(StatCollectionType statCollectionType)
         {
             var columnItems = new List<ColumnCollectionItem>();
-            foreach (StatType statType in StatTypeHelper.Values)
+            foreach (var statType in StatTypeHelper.Values)
             {
-                string dbField = statType.GetDatabaseField(statCollectionType);
-                ColumnCollectionItem item = ColumnCollectionItem.FromEnum(dbField, statType);
+                var dbField = statType.GetDatabaseField(statCollectionType);
+                var item = ColumnCollectionItem.FromEnum(dbField, statType);
                 columnItems.Add(item);
             }
 
@@ -48,7 +49,7 @@ namespace NetGore.Db.ClassCreator
             var baseStatColumns = GetStatColumnCollectionItems(StatCollectionType.Base);
             var reqStatColumns = GetStatColumnCollectionItems(StatCollectionType.Requirement);
 
-            using (MySqlClassGenerator generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
+            using (var generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
             {
                 // Custom usings
                 generator.AddUsing("NetGore.Db");
@@ -127,7 +128,7 @@ namespace NetGore.Db.ClassCreator
                 generator.AddCustomType(shopID, "*", "shop_id");
 
                 // Renaming
-                CodeFormatter formatter = generator.Formatter;
+                var formatter = generator.Formatter;
                 formatter.AddAlias("alliance_id", "AllianceID");
                 formatter.AddAlias("shop_id", "ShopID");
                 formatter.AddAlias("account_id", "AccountID");
@@ -161,7 +162,7 @@ namespace NetGore.Db.ClassCreator
 
                 // Generate
                 var codeItems = generator.Generate(_tempNamespaceName, _tempNamespaceName);
-                foreach (GeneratedTableCode item in codeItems)
+                foreach (var item in codeItems)
                 {
                     SaveCodeFile(item);
                 }
@@ -173,8 +174,8 @@ namespace NetGore.Db.ClassCreator
             string saveDir;
             string code;
 
-            bool isInterfaceOrClass = (gtc.CodeType == GeneratedCodeType.Interface || gtc.CodeType == GeneratedCodeType.Class);
-            bool isGlobalTable = _globalTables.Contains(gtc.Table, StringComparer.OrdinalIgnoreCase);
+            var isInterfaceOrClass = (gtc.CodeType == GeneratedCodeType.Interface || gtc.CodeType == GeneratedCodeType.Class);
+            var isGlobalTable = _globalTables.Contains(gtc.Table, StringComparer.OrdinalIgnoreCase);
 
             if ((isInterfaceOrClass && isGlobalTable) || gtc.CodeType == GeneratedCodeType.ColumnMetadata)
             {
@@ -198,7 +199,7 @@ namespace NetGore.Db.ClassCreator
             if (!Directory.Exists(saveDir))
                 Directory.CreateDirectory(saveDir);
 
-            string savePath = saveDir + gtc.ClassName + ".cs";
+            var savePath = saveDir + gtc.ClassName + ".cs";
 
             File.WriteAllText(savePath, code);
         }

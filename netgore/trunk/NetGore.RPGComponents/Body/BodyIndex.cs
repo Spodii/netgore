@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
+using NetGore;
 using NetGore.Globalization;
 using NetGore.IO;
+using NetGore.RPGComponents;
 
 namespace NetGore.RPGComponents
 {
@@ -101,7 +103,7 @@ namespace NetGore.RPGComponents
         /// <returns>The BodyIndex read from the IValueReader.</returns>
         public static BodyIndex Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new BodyIndex(value);
         }
 
@@ -113,11 +115,11 @@ namespace NetGore.RPGComponents
         /// <returns>The BodyIndex read from the IDataReader.</returns>
         public static BodyIndex Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new BodyIndex((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new BodyIndex(convertedValue);
         }
 
@@ -139,7 +141,7 @@ namespace NetGore.RPGComponents
         /// <returns>The BodyIndex read from the BitStream.</returns>
         public static BodyIndex Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new BodyIndex(value);
         }
 
@@ -855,7 +857,7 @@ namespace NetGore.RPGComponents
         public static bool TryParse(this Parser parser, string value, out BodyIndex outValue)
         {
             ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new BodyIndex(tmp);
             return ret;
         }

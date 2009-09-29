@@ -1,7 +1,9 @@
 using System;
 using System.Data;
 using System.Linq;
+using DemoGame;
 using NetGore;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server.Queries
 {
@@ -24,7 +26,7 @@ namespace DemoGame.Server.Queries
         /// <returns>The EquipmentSlot value from the specified column.</returns>
         public static EquipmentSlot GetEquipmentSlot(this IDataReader dataReader, int ordinal)
         {
-            EquipmentSlot ret = (EquipmentSlot)dataReader.GetByte(ordinal);
+            var ret = (EquipmentSlot)dataReader.GetByte(ordinal);
             CheckIfDefined(ret);
             return ret;
         }
@@ -48,7 +50,7 @@ namespace DemoGame.Server.Queries
         /// <returns>The ItemType value from the specified column.</returns>
         public static ItemType GetItemType(this IDataReader dataReader, int ordinal)
         {
-            ItemType ret = (ItemType)dataReader.GetByte(ordinal);
+            var ret = (ItemType)dataReader.GetByte(ordinal);
             CheckIfDefined(ret);
             return ret;
         }

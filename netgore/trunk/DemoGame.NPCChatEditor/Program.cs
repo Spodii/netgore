@@ -2,7 +2,10 @@ using System;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
+using DemoGame;
 using DemoGame.Server.NPCChat.Conditionals;
+using NetGore;
+using NetGore.RPGComponents;
 
 namespace DemoGame.NPCChatEditor
 {
@@ -14,9 +17,9 @@ namespace DemoGame.NPCChatEditor
         /// </summary>
         static void ForceLoadServerAssembly()
         {
-            Type typeToLoad = typeof(NPCChatConditional);
+            var typeToLoad = typeof(NPCChatConditional);
 
-            Assembly a = Assembly.GetAssembly(typeToLoad);
+            var a = Assembly.GetAssembly(typeToLoad);
             if (a == null)
                 throw new Exception("Why did the assembly fail to load...?");
         }

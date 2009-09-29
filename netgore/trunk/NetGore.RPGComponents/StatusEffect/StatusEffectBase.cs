@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
+using NetGore.RPGComponents;
 
 namespace NetGore.RPGComponents
 {
@@ -68,10 +70,10 @@ namespace NetGore.RPGComponents
         [Conditional("DEBUG")]
         void AssertReturnValuesAreConsistent(int maxStatusEffectPower)
         {
-            Random r = new Random();
+            var r = new Random();
 
             // Perform 10 test iterations
-            for (int i = 0; i < 10; i++)
+            for (var i = 0; i < 10; i++)
             {
                 int power;
 
@@ -85,10 +87,10 @@ namespace NetGore.RPGComponents
                     power = r.Next(1, maxStatusEffectPower);
 
                 // Test each StatType that this StatusEffect actually modifies (in opposed to testing every single one)
-                foreach (TStat statType in _modifiedStats)
+                foreach (var statType in _modifiedStats)
                 {
-                    int a = GetStatModifier(statType, (ushort)power);
-                    int b = GetStatModifier(statType, (ushort)power);
+                    var a = GetStatModifier(statType, (ushort)power);
+                    var b = GetStatModifier(statType, (ushort)power);
 
                     if (a != b)
                     {
@@ -97,7 +99,7 @@ namespace NetGore.RPGComponents
                             " the same value for StatType `{2}` when using power `{3}`. The values were `{4}` and `{5}`." +
                             " It is vital that a StatusEffect always returns the same value for a given StatType and Power.";
 
-                        string err = string.Format(errmsg, GetType(), StatusEffectType, statType, power, a, b);
+                        var err = string.Format(errmsg, GetType(), StatusEffectType, statType, power, a, b);
                         if (log.IsFatalEnabled)
                             log.Fatal(err);
                         Debug.Fail(err);
@@ -179,7 +181,7 @@ namespace NetGore.RPGComponents
         {
             var usedStatTypes = new List<TStat>();
 
-            foreach (TStat statType in GetStatTypes())
+            foreach (var statType in GetStatTypes())
             {
                 int value;
                 if (TryGetStatModifier(statType, 1, out value))

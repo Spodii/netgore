@@ -1,4 +1,6 @@
 using System.Linq;
+using NetGore;
+using NetGore.RPGComponents;
 
 namespace NetGore.RPGComponents
 {

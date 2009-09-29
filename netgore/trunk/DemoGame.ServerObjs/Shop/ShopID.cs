@@ -1,10 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
+using DemoGame;
+using NetGore;
 using NetGore.Globalization;
 using NetGore.IO;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -101,7 +104,7 @@ namespace DemoGame.Server
         /// <returns>The ShopID read from the IValueReader.</returns>
         public static ShopID Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new ShopID(value);
         }
 
@@ -113,11 +116,11 @@ namespace DemoGame.Server
         /// <returns>The ShopID read from the IDataReader.</returns>
         public static ShopID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new ShopID((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new ShopID(convertedValue);
         }
 
@@ -139,7 +142,7 @@ namespace DemoGame.Server
         /// <returns>The ShopID read from the BitStream.</returns>
         public static ShopID Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new ShopID(value);
         }
 
@@ -855,7 +858,7 @@ namespace DemoGame.Server
         public static bool TryParse(this Parser parser, string value, out ShopID outValue)
         {
             ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new ShopID(tmp);
             return ret;
         }

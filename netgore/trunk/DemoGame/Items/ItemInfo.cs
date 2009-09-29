@@ -1,4 +1,5 @@
 using System.Linq;
+using DemoGame;
 using NetGore;
 using NetGore.IO;
 using NetGore.RPGComponents;
@@ -89,7 +90,7 @@ namespace DemoGame
             Write(w, Name, Description, Value, GrhIndex, HP, MP, BaseStats, ReqStats);
         }
 
-        #region IItemInfo Members
+        #region IItemInfo<StatType> Members
 
         /// <summary>
         /// Gets the <see cref="IItemInfo.GrhIndex"/>.

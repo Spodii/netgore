@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using log4net;
+using NetGore;
 using NetGore.RPGComponents;
 
 namespace DemoGame
@@ -82,12 +84,12 @@ namespace DemoGame
         /// otherwise false.</returns>
         public bool Contains(StatType statType)
         {
-            byte statTypeValue = statType.GetValue();
+            var statTypeValue = statType.GetValue();
 
             if (statTypeValue >= _lookupTable.Length)
                 return false;
 
-            byte index = _lookupTable[statTypeValue];
+            var index = _lookupTable[statTypeValue];
 
             if (index == _unusedIndexValue)
                 return false;
@@ -103,9 +105,9 @@ namespace DemoGame
         public IStat<StatType>[] CreateBuffer(StatCollectionType statCollectionType)
         {
             var ret = new IStat<StatType>[Count];
-            foreach (StatType statType in StatTypes)
+            foreach (var statType in StatTypes)
             {
-                int index = GetIndex(statType);
+                var index = GetIndex(statType);
                 var istat = StatFactory.CreateStat(statType, statCollectionType);
                 ret[index] = istat;
             }
@@ -133,15 +135,15 @@ namespace DemoGame
             // Create the lookup table, and set the initial values to _unusedIndexValue, which we will use to denote
             // an index in the lookup table as unused
             var ret = new byte[max];
-            for (int i = 0; i < max; i++)
+            for (var i = 0; i < max; i++)
             {
                 ret[i] = _unusedIndexValue;
             }
 
             // Populate the lookup table
-            for (int i = 0; i < max; i++)
+            for (var i = 0; i < max; i++)
             {
-                byte statTypeIndex = statTypes[i].GetValue();
+                var statTypeIndex = statTypes[i].GetValue();
                 ret[statTypeIndex] = (byte)i;
             }
 
@@ -157,13 +159,13 @@ namespace DemoGame
         /// this StatCollectionLookupTable.</exception>
         public int GetIndex(StatType statType)
         {
-            byte statTypeValue = statType.GetValue();
+            var statTypeValue = statType.GetValue();
 
             // Check that the value is in range of our lookup table
             if (statTypeValue >= _lookupTable.Length)
                 throw GetStatTypeNotHandledArgumentException(statType, "statType");
 
-            byte index = _lookupTable[statTypeValue];
+            var index = _lookupTable[statTypeValue];
 
             // Check that the index is a used one
             if (index == _unusedIndexValue)
@@ -182,7 +184,7 @@ namespace DemoGame
         static ArgumentException GetStatTypeNotHandledArgumentException(StatType statType, string argumentName)
         {
             const string errmsg = "StatType `{0}` is not handled by this lookup table.";
-            string err = string.Format(errmsg, statType);
+            var err = string.Format(errmsg, statType);
 
             if (log.IsErrorEnabled)
                 log.Error(err);

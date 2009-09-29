@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat.Conditionals;
 
@@ -98,9 +99,9 @@ namespace NetGore.NPCChat
             if (Responses == null)
                 return;
 
-            foreach (NPCChatResponseBase response in Responses)
+            foreach (var response in Responses)
             {
-                NPCChatResponseBase r = response;
+                var r = response;
                 Debug.Assert(Responses.Count(x => x.Value == r.Value) == 1, "Response values should be unique.");
                 Debug.Assert(GetResponse(r.Value) == response, "...ok, now that is just messed up.");
             }
@@ -116,7 +117,7 @@ namespace NetGore.NPCChat
         /// and <paramref name="npc"/>; otherwise false.</returns>
         public bool CheckConditionals(object user, object npc)
         {
-            NPCChatConditionalCollectionBase c = Conditionals;
+            var c = Conditionals;
             if (c == null)
                 return true;
 
@@ -139,7 +140,7 @@ namespace NetGore.NPCChat
         protected ArgumentOutOfRangeException CreateInvalidResponseIndexException(string parameterName, ushort value)
         {
             const string errmsg = "Response index `{0}` was out of range for dialog item `{1}`.";
-            string err = string.Format(errmsg, value, Index);
+            var err = string.Format(errmsg, value, Index);
             if (log.IsErrorEnabled)
                 log.Error(err);
 
@@ -168,7 +169,7 @@ namespace NetGore.NPCChat
 
             AssertBranchHasTwoResponses();
 
-            bool result = CheckConditionals(user, npc);
+            var result = CheckConditionals(user, npc);
 
             if (!result)
                 return GetResponse(0);
@@ -191,18 +192,18 @@ namespace NetGore.NPCChat
         /// <param name="reader">IValueReader to read the values from.</param>
         protected void Read(IValueReader reader)
         {
-            ushort index = reader.ReadUShort("Index");
-            string title = reader.ReadString("Title");
-            string text = reader.ReadString("Text");
-            bool isBranch = reader.ReadBool("IsBranch");
+            var index = reader.ReadUShort("Index");
+            var title = reader.ReadString("Title");
+            var text = reader.ReadString("Text");
+            var isBranch = reader.ReadBool("IsBranch");
 
             var responses = reader.ReadManyNodes("Responses", x => CreateResponse(x));
 
             NPCChatConditionalCollectionBase conditionals = null;
             if (isBranch)
             {
-                IValueReader cReader = reader.ReadNode("Conditionals");
-                bool hasConditionals = cReader.ReadBool("HasConditionals");
+                var cReader = reader.ReadNode("Conditionals");
+                var hasConditionals = cReader.ReadBool("HasConditionals");
                 if (hasConditionals)
                 {
                     conditionals = CreateConditionalCollection();
@@ -262,8 +263,8 @@ namespace NetGore.NPCChat
             {
                 writer.WriteStartNode("Conditionals");
                 {
-                    NPCChatConditionalCollectionBase c = Conditionals;
-                    bool hasConditionals = (c != null) && (c.Count() > 0);
+                    var c = Conditionals;
+                    var hasConditionals = (c != null) && (c.Count() > 0);
                     writer.Write("HasConditionals", hasConditionals);
                     if (hasConditionals)
                         c.Write(writer);

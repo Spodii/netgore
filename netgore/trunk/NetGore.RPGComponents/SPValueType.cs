@@ -2,7 +2,9 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using NetGore;
 using NetGore.IO;
+using NetGore.RPGComponents;
 
 namespace NetGore.RPGComponents
 {
@@ -29,7 +31,7 @@ namespace NetGore.RPGComponents
         /// <returns>The SPValueType read from the IValueReader.</returns>
         public static SPValueType Read(IValueReader reader, string name)
         {
-            short value = reader.ReadShort(name);
+            var value = reader.ReadShort(name);
             return new SPValueType(value);
         }
 
@@ -41,11 +43,11 @@ namespace NetGore.RPGComponents
         /// <returns>The SPValueType read from the IDataReader.</returns>
         public static SPValueType Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is short)
                 return new SPValueType((short)value);
 
-            short convertedValue = Convert.ToInt16(value);
+            var convertedValue = Convert.ToInt16(value);
             return new SPValueType(convertedValue);
         }
 
@@ -67,7 +69,7 @@ namespace NetGore.RPGComponents
         /// <returns>The SPValueType read from the BitStream.</returns>
         public static SPValueType Read(BitStream bitStream)
         {
-            short value = bitStream.ReadShort();
+            var value = bitStream.ReadShort();
             return new SPValueType(value);
         }
 

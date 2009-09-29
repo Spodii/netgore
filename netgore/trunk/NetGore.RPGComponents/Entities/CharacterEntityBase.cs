@@ -1,7 +1,9 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using Microsoft.Xna.Framework;
+using NetGore;
+using NetGore.RPGComponents;
 
 namespace NetGore.RPGComponents
 {
@@ -224,7 +226,7 @@ namespace NetGore.RPGComponents
         void UpdateState()
         {
             // Start with the idle state
-            CharacterState newState = CharacterState.Idle;
+            var newState = CharacterState.Idle;
 
             // Check the vertical state (moving up or down)
             if (Velocity.Y != 0 || !OnGround)
