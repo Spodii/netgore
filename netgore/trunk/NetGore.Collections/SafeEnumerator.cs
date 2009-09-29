@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NetGore;
 
 namespace NetGore.Collections
 {
@@ -142,8 +141,8 @@ namespace NetGore.Collections
                     Array.Resize(ref _buffer, _sourceLength + 32);
 
                 // Copy the elements from the source into the buffer
-                var i = -1;
-                foreach (var item in _source)
+                int i = -1;
+                foreach (T item in _source)
                 {
                     _buffer[++i] = item;
                 }

@@ -1,7 +1,6 @@
 using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore.IO;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {

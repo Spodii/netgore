@@ -1,10 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DemoGame;
-using NetGore;
 using NetGore.Collections;
-using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -12,12 +9,10 @@ namespace DemoGame
     /// An IStatCollection implementation that can contain as few or as many StatTypes as needed. New StatTypes
     /// can be added to the collection whenever needed.
     /// </summary>
-    public class DynamicStatCollection : IStatCollection<StatType>
+    public class DynamicStatCollection : IStatCollection
     {
         readonly StatCollectionType _statCollectionType;
-
-        readonly Dictionary<StatType, IStat<StatType>> _stats =
-            new Dictionary<StatType, IStat<StatType>>(EnumComparer<StatType>.Instance);
+        readonly Dictionary<StatType, IStat> _stats = new Dictionary<StatType, IStat>(EnumComparer<StatType>.Instance);
 
         /// <summary>
         /// StatCollectionBase constructor.
@@ -32,7 +27,7 @@ namespace DemoGame
         /// Adds an IStat to the collection.
         /// </summary>
         /// <param name="stat">IStat to add to the collection.</param>
-        protected void Add(IStat<StatType> stat)
+        protected void Add(IStat stat)
         {
             _stats.Add(stat.StatType, stat);
         }
@@ -41,9 +36,9 @@ namespace DemoGame
         /// Adds IStats to the collection.
         /// </summary>
         /// <param name="stats">IStats to add to the collection.</param>
-        protected void Add(IEnumerable<IStat<StatType>> stats)
+        protected void Add(IEnumerable<IStat> stats)
         {
-            foreach (var stat in stats)
+            foreach (IStat stat in stats)
             {
                 Add(stat);
             }
@@ -53,9 +48,9 @@ namespace DemoGame
         /// Adds IStats to the collection.
         /// </summary>
         /// <param name="stats">IStats to add to the collection.</param>
-        protected void Add(params IStat<StatType>[] stats)
+        protected void Add(params IStat[] stats)
         {
-            foreach (var stat in stats)
+            foreach (IStat stat in stats)
             {
                 Add(stat);
             }
@@ -67,9 +62,9 @@ namespace DemoGame
         /// </summary>
         /// <param name="statType">Type of stat to get.</param>
         /// <returns>The IStat in this StatCollectionBase for Stat type <param name="statType"</returns>
-        protected IStat<StatType> GetStatOrCreate(StatType statType)
+        protected IStat GetStatOrCreate(StatType statType)
         {
-            IStat<StatType> stat;
+            IStat stat;
             if (!_stats.TryGetValue(statType, out stat))
             {
                 stat = StatFactory.CreateStat(statType, StatCollectionType);
@@ -84,11 +79,11 @@ namespace DemoGame
         /// be invoked once and only once for every IStat added to this StatCollectionBase.
         /// </summary>
         /// <param name="stat">The IStat that was added to this StatCollectionBase.</param>
-        protected virtual void HandleStatAdded(IStat<StatType> stat)
+        protected virtual void HandleStatAdded(IStat stat)
         {
         }
 
-        #region IStatCollection<StatType> Members
+        #region IStatCollection Members
 
         /// <summary>
         /// Gets an IEnumerable of the KeyValuePairs in this IStatCollection, where the key is the StatType and the
@@ -108,7 +103,7 @@ namespace DemoGame
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public IEnumerator<IStat<StatType>> GetEnumerator()
+        public IEnumerator<IStat> GetEnumerator()
         {
             return _stats.Values.GetEnumerator();
         }
@@ -134,7 +129,7 @@ namespace DemoGame
         {
             get
             {
-                IStat<StatType> stat;
+                IStat stat;
                 if (!_stats.TryGetValue(statType, out stat))
                     return 0;
 
@@ -142,7 +137,7 @@ namespace DemoGame
             }
             set
             {
-                var stat = GetStat(statType);
+                IStat stat = GetStat(statType);
                 stat.Value = value;
             }
         }
@@ -163,7 +158,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="statType">The StatType of the stat to get.</param>
         /// <returns>The IStat for the stat of the given <paramref name="statType"/>.</returns>
-        public virtual IStat<StatType> GetStat(StatType statType)
+        public virtual IStat GetStat(StatType statType)
         {
             return _stats[statType];
         }
@@ -176,7 +171,7 @@ namespace DemoGame
         /// returns false, this value will be null.</param>
         /// <returns>True if the stat with the given <paramref name="statType"/> was found and
         /// successfully returned; otherwise false.</returns>
-        public bool TryGetStat(StatType statType, out IStat<StatType> stat)
+        public bool TryGetStat(StatType statType, out IStat stat)
         {
             return _stats.TryGetValue(statType, out stat);
         }
@@ -191,7 +186,7 @@ namespace DemoGame
         /// successfully returned; otherwise false.</returns>
         public bool TryGetStatValue(StatType statType, out int value)
         {
-            IStat<StatType> stat;
+            IStat stat;
             if (!TryGetStat(statType, out stat))
             {
                 value = 0;
@@ -235,7 +230,7 @@ namespace DemoGame
         /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
         /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
         /// in any other way.</param>
-        public void CopyValuesFrom(IEnumerable<IStat<StatType>> values, bool checkContains)
+        public void CopyValuesFrom(IEnumerable<IStat> values, bool checkContains)
         {
             CopyValuesFrom(values.xxxToKeyValuePairs(), checkContains);
         }

@@ -1,11 +1,9 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
-using DemoGame;
 using DemoGame.Server.DbObjs;
-using NetGore;
 using NetGore.Db;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server.Queries
 {
@@ -33,12 +31,12 @@ namespace DemoGame.Server.Queries
         /// <returns>True if a user with the specified name exists, else false.</returns>
         public bool Execute(string userName)
         {
-            using (var r = ExecuteReader(userName))
+            using (IDataReader r = ExecuteReader(userName))
             {
                 if (!r.Read())
                     return false;
 
-                var count = r.GetInt32(0);
+                int count = r.GetInt32(0);
 
                 return count > 0;
             }

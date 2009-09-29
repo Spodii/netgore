@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
-using NetGore;
 
 namespace NetGore
 {
@@ -27,7 +26,7 @@ namespace NetGore
             if (dest == null || source == null || source.Count <= 0)
                 return;
 
-            foreach (var key in source.Keys)
+            foreach (TKey key in source.Keys)
             {
                 dest.Add(key, source[key]);
             }
@@ -58,7 +57,7 @@ namespace NetGore
             var ret = new List<Dictionary<string, string>>(1);
 
             // Load up the xml document
-            var xmlDoc = new XmlDocument();
+            XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(filePath);
 
             if (xmlDoc.DocumentElement == null)
@@ -105,7 +104,7 @@ namespace NetGore
             foreach (XmlNode node in nodeList)
             {
                 // Create the parent list (only needed if theres any attributes or no children)
-                var parentList = string.Empty;
+                string parentList = string.Empty;
                 if (node.Attributes != null || node.ChildNodes.Count == 0)
                     parentList = ResolveParentList(node);
 
@@ -118,7 +117,7 @@ namespace NetGore
                     var childRet = RecursiveReadNodes(node.ChildNodes);
                     if (childRet.Count > 0)
                     {
-                        foreach (var key in childRet.Keys)
+                        foreach (string key in childRet.Keys)
                         {
                             ret.Add(key, childRet[key]);
                         }
@@ -180,7 +179,7 @@ namespace NetGore
             if (node.ParentNode == null)
                 throw new ArgumentException("XmlNode's parent may not be null", "node");
 
-            var ret = string.Empty;
+            string ret = string.Empty;
 
             // Create the parent list string
             while (node.ParentNode.ParentNode != null && node.ParentNode.ParentNode.NodeType != XmlNodeType.Document)

@@ -1,9 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame;
 using NetGore;
-using NetGore.RPGComponents;
 
 namespace DemoGame.SkeletonEditor
 {

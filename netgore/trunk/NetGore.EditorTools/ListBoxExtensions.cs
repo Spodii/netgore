@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
-using NetGore;
 
 namespace NetGore.EditorTools
 {
@@ -26,9 +25,9 @@ namespace NetGore.EditorTools
             if (index < 0 || index >= listBox.Items.Count)
                 return;
 
-            var selectedIndex = listBox.SelectedIndex;
+            int selectedIndex = listBox.SelectedIndex;
 
-            var item = listBox.Items[index];
+            object item = listBox.Items[index];
             listBox.Items.RemoveAt(index);
             listBox.Items.Insert(index, item);
 
@@ -58,9 +57,9 @@ namespace NetGore.EditorTools
             if (itemIndex < 0)
                 return;
 
-            var selectedIndex = listBox.SelectedIndex;
+            int selectedIndex = listBox.SelectedIndex;
 
-            var removedSelectedItem = (selectedIndex == itemIndex);
+            bool removedSelectedItem = (selectedIndex == itemIndex);
 
             listBox.Items.RemoveAt(itemIndex);
 
@@ -87,7 +86,7 @@ namespace NetGore.EditorTools
         {
             var notOfThisType = new List<object>(2);
             var thisItemsCasted = new List<T>();
-            foreach (var v in listBox.Items)
+            foreach (object v in listBox.Items)
             {
                 if (v is T)
                     thisItemsCasted.Add((T)v);
@@ -95,7 +94,7 @@ namespace NetGore.EditorTools
                     notOfThisType.Add(v);
             }
 
-            foreach (var v in notOfThisType)
+            foreach (object v in notOfThisType)
             {
                 listBox.Items.Remove(v);
             }
@@ -107,20 +106,20 @@ namespace NetGore.EditorTools
             var buffer = new List<T>();
 
             // Remove
-            foreach (var item in thisItemsCasted)
+            foreach (T item in thisItemsCasted)
             {
                 if (!values.Contains(item))
                     buffer.Add(item);
             }
 
-            foreach (var item in buffer)
+            foreach (T item in buffer)
             {
                 listBox.Items.Remove(item);
             }
 
             // Add
             buffer.Clear();
-            foreach (var item in values)
+            foreach (T item in values)
             {
                 if (!thisItemsCasted.Contains(item))
                     buffer.Add(item);

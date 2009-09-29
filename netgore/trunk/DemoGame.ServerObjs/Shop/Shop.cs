@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame;
 using DemoGame.Server.DbObjs;
 using log4net;
-using NetGore;
 using NetGore.IO;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -56,7 +53,7 @@ namespace DemoGame.Server
             if (_shopItems.Length > ShopItemIndex.MaxValue)
             {
                 const string errmsg = "There are too many items in the shop `{0}` ({1} > {2})!";
-                var err = string.Format(errmsg, this, _shopItems.Length, ShopItemIndex.MaxValue);
+                string err = string.Format(errmsg, this, _shopItems.Length, ShopItemIndex.MaxValue);
                 log.Fatal(err);
                 Debug.Fail(err);
                 throw new Exception(err);
@@ -92,7 +89,7 @@ namespace DemoGame.Server
         public void WriteShopItems(BitStream w)
         {
             w.Write((byte)_shopItems.Length);
-            for (var i = 0; i < _shopItems.Length; i++)
+            for (int i = 0; i < _shopItems.Length; i++)
             {
                 w.Write(_shopItems[i].ItemTemplate);
             }

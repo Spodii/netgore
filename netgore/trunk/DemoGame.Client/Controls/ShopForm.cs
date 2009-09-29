@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -9,7 +9,6 @@ using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Client.Controls
 {

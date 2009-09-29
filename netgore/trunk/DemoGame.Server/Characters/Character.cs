@@ -11,7 +11,6 @@ using NetGore;
 using NetGore.Db;
 using NetGore.Network;
 using NetGore.NPCChat;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -76,7 +75,6 @@ namespace DemoGame.Server
         const int _spRecoveryRate = 3000;
 
         static readonly AllianceManager _allianceManager = AllianceManager.Instance;
-        static readonly BodyInfoManager _bodyInfoManager = BodyInfoManager.Instance;
         static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
 
         /// <summary>
@@ -875,7 +873,7 @@ namespace DemoGame.Server
 
             Name = v.Name;
             Alliance = _allianceManager[v.AllianceID];
-            BodyInfo = _bodyInfoManager[v.BodyID];
+            BodyInfo = GameData.Body(v.BodyID);
             CharacterTemplateID = v.ID;
             CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
             _level = v.Level;
@@ -892,7 +890,7 @@ namespace DemoGame.Server
             _templateID = v.CharacterTemplateID;
             _accountID = v.AccountID;
 
-            BodyInfo = BodyInfoManager.Instance[v.BodyID];
+            BodyInfo = GameData.Body(v.BodyID);
             CB = new CollisionBox(new Vector2(v.X, v.Y), BodyInfo.Width, BodyInfo.Height);
             ((PersistentCharacterStatusEffects)StatusEffects).Load();
 
@@ -939,7 +937,7 @@ namespace DemoGame.Server
         /// Handles when the MaxHP mod stat changes.
         /// </summary>
         /// <param name="stat">The stat.</param>
-        void ModStats_MaxHP_OnChange(IStat<StatType> stat)
+        void ModStats_MaxHP_OnChange(IStat stat)
         {
             if (HP > stat.Value)
                 HP = stat.Value;
@@ -949,7 +947,7 @@ namespace DemoGame.Server
         /// Handles when the MaxMP mod stat changes.
         /// </summary>
         /// <param name="stat">The stat.</param>
-        void ModStats_MaxMP_OnChange(IStat<StatType> stat)
+        void ModStats_MaxMP_OnChange(IStat stat)
         {
             if (MP > stat.Value)
                 MP = stat.Value;
@@ -1143,7 +1141,7 @@ namespace DemoGame.Server
         protected void UpdateModStats()
         {
             // FUTURE: This is called every goddamn Update(). That is WAY too much...
-            foreach (var modStat in ModStats)
+            foreach (IStat modStat in ModStats)
             {
                 modStat.Value = ModStatHelper.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
             }
@@ -1244,7 +1242,7 @@ namespace DemoGame.Server
         bool UseItemUseOnce(ItemEntity item)
         {
             var useBonuses = item.BaseStats.Where(stat => stat.Value != 0);
-            foreach (var stat in useBonuses)
+            foreach (IStat stat in useBonuses)
             {
                 BaseStats[stat.StatType] += stat.Value;
             }

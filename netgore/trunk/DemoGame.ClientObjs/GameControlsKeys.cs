@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.Xna.Framework.Input;
 using NetGore.Graphics.GUI;
 

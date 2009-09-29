@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using DemoGame;
-using NetGore;
-using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -17,13 +14,10 @@ namespace DemoGame
         /// <param name="stats">The IEnumerable of IStats.</param>
         /// <returns>An IEnumerable if KeyValuePairs created from the <paramref name="stats"/>.</returns>
         /// <typeparam name="T">The type of IStat.</typeparam>
-        public static IEnumerable<KeyValuePair<StatType, int>> xxxToKeyValuePairs<T>(this IEnumerable<T> stats)
-            where T : IStat<StatType>
+        public static IEnumerable<KeyValuePair<StatType, int>> xxxToKeyValuePairs<T>(this IEnumerable<T> stats) where T : IStat
         {
-            // TODO: $$ Rename
-
             // Find the number of elements
-            var count = stats.Count();
+            int count = stats.Count();
 
             // No elements? Return an empty IEnumerable
             if (count == 0)
@@ -33,8 +27,8 @@ namespace DemoGame
             var ret = new KeyValuePair<StatType, int>[count];
 
             // Enumerate through each element in the IEnumerable, adding each one to the next index in the return array
-            var i = 0;
-            foreach (var stat in stats)
+            int i = 0;
+            foreach (T stat in stats)
             {
                 ret[i] = new KeyValuePair<StatType, int>(stat.StatType, stat.Value);
                 i++;

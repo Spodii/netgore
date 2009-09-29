@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore.NPCChat.Conditionals
@@ -37,7 +36,7 @@ namespace NetGore.NPCChat.Conditionals
         /// <returns>The result of the conditional's evaluation.</returns>
         public bool Evaluate(object user, object npc)
         {
-            var ret = Conditional.Evaluate(user, npc, Parameters);
+            bool ret = Conditional.Evaluate(user, npc, Parameters);
 
             if (Not)
                 ret = !ret;
@@ -51,11 +50,11 @@ namespace NetGore.NPCChat.Conditionals
         /// <param name="reader">IValueReader to read the values from.</param>
         protected void Read(IValueReader reader)
         {
-            var not = reader.ReadBool("Not");
-            var conditionalName = reader.ReadString("ConditionalName");
+            bool not = reader.ReadBool("Not");
+            string conditionalName = reader.ReadString("ConditionalName");
             var parameters = reader.ReadManyNodes<NPCChatConditionalParameter>("Parameters", NPCChatConditionalParameter.Read);
 
-            var conditional = NPCChatConditionalBase.GetConditional(conditionalName);
+            NPCChatConditionalBase conditional = NPCChatConditionalBase.GetConditional(conditionalName);
             if (conditional == null)
                 throw new Exception(string.Format("Failed to get conditional `{0}`.", conditionalName));
 

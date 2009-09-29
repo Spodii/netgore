@@ -33,7 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <OutputPath>..\bin\Release\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -124,9 +124,6 @@
     <Compile Include="PropertySync\PropertySyncString.cs" />
     <Compile Include="PropertySync\SyncValueAttribute.cs" />
     <Compile Include="Extensions\StackExtensions.cs" />
-    <Compile Include="Scripting\ScriptLanguage.cs" />
-    <Compile Include="Scripting\ScriptTypeCollection.cs" />
-    <Compile Include="Scripting\ScriptTypeHelper.cs" />
     <Compile Include="StringCommandBaseAttribute.cs" />
     <Compile Include="StringCommandParser.cs" />
     <Compile Include="StringParser.cs" />

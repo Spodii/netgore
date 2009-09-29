@@ -1,7 +1,6 @@
 using System.ComponentModel;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore
@@ -62,9 +61,9 @@ namespace NetGore
 
         void Read(IValueReader r)
         {
-            var position = r.ReadVector2(_valueKeyPosition);
-            var size = r.ReadVector2(_valueKeySize);
-            var ct = r.ReadEnum(_collisionTypeHelper, _valueKeyCollisionType);
+            Vector2 position = r.ReadVector2(_valueKeyPosition);
+            Vector2 size = r.ReadVector2(_valueKeySize);
+            CollisionType ct = r.ReadEnum(_collisionTypeHelper, _valueKeyCollisionType);
 
             SetPositionRaw(position);
             SetSizeRaw(size);

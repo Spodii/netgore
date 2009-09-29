@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
-using NetGore;
 using NetGore.Extensions;
 
 namespace NetGore
@@ -250,11 +249,11 @@ namespace NetGore
         static Vector2 MTDFull(CollisionBox source, CollisionBox target)
         {
             // Down
-            var diff = source.Max.Y - target.Min.Y;
+            float diff = source.Max.Y - target.Min.Y;
             if (diff < 0.0f)
                 return Vector2.Zero;
-            var mtd = diff;
-            var side = BoxSide.Bottom;
+            float mtd = diff;
+            BoxSide side = BoxSide.Bottom;
 
             // Left
             diff = source.Max.X - target.Min.X;
@@ -299,11 +298,11 @@ namespace NetGore
         static Vector2 MTDTriangleTopLeft(CollisionBox source, CollisionBox target)
         {
             // Right
-            var diff = target.Max.X - source.Min.X;
+            float diff = target.Max.X - source.Min.X;
             if (diff < 0.0f)
                 return Vector2.Zero;
-            var mtd = diff;
-            var side = BoxSide.Right;
+            float mtd = diff;
+            BoxSide side = BoxSide.Right;
 
             // Up
             diff = target.Max.Y - source.Min.Y;
@@ -329,7 +328,7 @@ namespace NetGore
             }
 
             // Down
-            var h = source.Max.X - target.Min.X;
+            float h = source.Max.X - target.Min.X;
             if (h < 0)
                 return Vector2.Zero;
 
@@ -359,11 +358,11 @@ namespace NetGore
         static Vector2 MTDTriangleTopRight(CollisionBox source, CollisionBox target)
         {
             // Left
-            var diff = source.Max.X - target.Min.X;
+            float diff = source.Max.X - target.Min.X;
             if (diff < 0.0f)
                 return Vector2.Zero;
-            var mtd = diff;
-            var side = BoxSide.Left;
+            float mtd = diff;
+            BoxSide side = BoxSide.Left;
 
             // Up
             diff = target.Max.Y - source.Min.Y;
@@ -393,7 +392,7 @@ namespace NetGore
                 diff = source.Max.Y - target.Min.Y;
             else
             {
-                var h = source.Min.X - target.Min.X;
+                float h = source.Min.X - target.Min.X;
                 diff = source.Max.Y - (target.Min.Y + (target.Height * (h / target.Width)));
             }
 
@@ -425,7 +424,7 @@ namespace NetGore
         /// <param name="b">Second float</param>
         static void Swap(ref float a, ref float b)
         {
-            var c = a;
+            float c = a;
             a = b;
             b = c;
         }

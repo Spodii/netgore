@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore;
 
 namespace NetGore
 {
@@ -143,7 +142,7 @@ namespace NetGore
 
         static ContentPaths()
         {
-            var baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             _appRoot = Path.GetFullPath(baseDir);
 
             _buildPaths = new ContentPaths(GetBuildContentPath(_appRoot));
@@ -171,14 +170,14 @@ namespace NetGore
         /// <returns>The full file path to the development content directory.</returns>
         static string GetBuildContentPath(string rootPath)
         {
-            var childPath = "Content" + Path.DirectorySeparatorChar;
+            string childPath = "Content" + Path.DirectorySeparatorChar;
             return Path.Combine(rootPath, childPath);
         }
 
         static PathString GetChildPath(string root, string child)
         {
             // Create the desired path
-            var path = Path.Combine(root, child);
+            string path = Path.Combine(root, child);
 
             // Ensure the directory exists
             if (!Directory.Exists(path))
@@ -196,7 +195,7 @@ namespace NetGore
         {
             // Check if this directory contains the content directory
             var subDirectories = Directory.GetDirectories(rootPath, "*", SearchOption.AllDirectories);
-            foreach (var subDirectory in subDirectories)
+            foreach (string subDirectory in subDirectories)
             {
                 if (IsDevContentDirectory(subDirectory))
                     return subDirectory;

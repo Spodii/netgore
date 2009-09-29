@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore
@@ -74,7 +73,7 @@ namespace NetGore
             if (!typeof(T).IsEnum)
                 throw new ArgumentException("Type parameter must be an enum.");
 
-            var underlyingType = Enum.GetUnderlyingType(typeof(T));
+            Type underlyingType = Enum.GetUnderlyingType(typeof(T));
             if (!_supportedTypes.Contains(underlyingType))
                 throw new ArgumentException("The given enum type parameter's underlying type is not supported.");
 
@@ -84,9 +83,9 @@ namespace NetGore
             _maxValue = valuesAsInt.Max();
             Debug.Assert(_minValue <= _maxValue);
 
-            var diff = _maxValue - _minValue;
+            int diff = _maxValue - _minValue;
             Debug.Assert(diff >= 0);
-            Debug.Assert(diff >= uint.MinValue && diff <= uint.MaxValue);
+            Debug.Assert(diff >= uint.MinValue);
 
             _bitsRequired = BitOps.RequiredBits((uint)diff);
         }
@@ -156,8 +155,8 @@ namespace NetGore
         /// <returns>The value read from the <paramref name="bitStream"/>.</returns>
         public static T ReadName(BitStream bitStream)
         {
-            var str = bitStream.ReadString();
-            var value = EnumIOHelper.FromName<T>(str);
+            string str = bitStream.ReadString();
+            T value = EnumIOHelper.FromName<T>(str);
             return value;
         }
 
@@ -169,8 +168,8 @@ namespace NetGore
         /// <returns>The value read from the <paramref name="reader"/>.</returns>
         public static T ReadName(IValueReader reader, string name)
         {
-            var str = reader.ReadString(name);
-            var value = EnumIOHelper.FromName<T>(str);
+            string str = reader.ReadString(name);
+            T value = EnumIOHelper.FromName<T>(str);
             return value;
         }
 
@@ -181,7 +180,7 @@ namespace NetGore
         /// <returns>The value read from the <see cref="bitStream"/>.</returns>
         public T ReadValue(BitStream bitStream)
         {
-            var v = (int)(bitStream.ReadUInt(_bitsRequired) + _minValue);
+            int v = (int)(bitStream.ReadUInt(_bitsRequired) + _minValue);
             return FromInt(v);
         }
 
@@ -193,7 +192,7 @@ namespace NetGore
         /// <returns>The value read from the <paramref name="reader"/>.</returns>
         public T ReadValue(IValueReader reader, string name)
         {
-            var v = (int)(reader.ReadUInt(name, _bitsRequired) + _minValue);
+            int v = (int)(reader.ReadUInt(name, _bitsRequired) + _minValue);
             return FromInt(v);
         }
 
@@ -264,7 +263,7 @@ namespace NetGore
         /// <param name="value">The value to write.</param>
         public static void WriteName(BitStream bitStream, T value)
         {
-            var str = EnumIOHelper.ToName(value);
+            string str = EnumIOHelper.ToName(value);
             bitStream.Write(str);
         }
 
@@ -276,7 +275,7 @@ namespace NetGore
         /// <param name="value">The value to write.</param>
         public static void WriteName(IValueWriter writer, string name, T value)
         {
-            var str = EnumIOHelper.ToName(value);
+            string str = EnumIOHelper.ToName(value);
             writer.Write(name, str);
         }
 
@@ -287,9 +286,9 @@ namespace NetGore
         /// <param name="value">The value to write.</param>
         public void WriteValue(BitStream bitStream, T value)
         {
-            var signedV = ToInt(value) - _minValue;
+            int signedV = ToInt(value) - _minValue;
             Debug.Assert(signedV >= uint.MinValue);
-            var v = (uint)signedV;
+            uint v = (uint)signedV;
             bitStream.Write(v, _bitsRequired);
         }
 
@@ -302,9 +301,9 @@ namespace NetGore
         /// <param name="value">The value to write.</param>
         public void WriteValue(IValueWriter writer, string name, T value)
         {
-            var signedV = ToInt(value) - _minValue;
+            int signedV = ToInt(value) - _minValue;
             Debug.Assert(signedV >= uint.MinValue);
-            var v = (uint)signedV;
+            uint v = (uint)signedV;
             writer.Write(name, v, _bitsRequired);
         }
 

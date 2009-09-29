@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore.NPCChat
@@ -66,13 +65,13 @@ namespace NetGore.NPCChat
 
         void GetChildDialogItems(NPCChatDialogItemBase current, IDictionary<ushort, NPCChatDialogItemBase> found)
         {
-            foreach (var response in current.Responses)
+            foreach (NPCChatResponseBase response in current.Responses)
             {
-                var page = response.Page;
+                ushort page = response.Page;
                 if (found.ContainsKey(page))
                     continue;
 
-                var dialog = GetDialogItem(page);
+                NPCChatDialogItemBase dialog = GetDialogItem(page);
                 found.Add(page, dialog);
 
                 GetChildDialogItems(dialog, found);
@@ -131,8 +130,8 @@ namespace NetGore.NPCChat
         /// <param name="reader">IValueReader to read the values from.</param>
         protected void Read(IValueReader reader)
         {
-            var index = reader.ReadUShort("Index");
-            var title = reader.ReadString("Title");
+            ushort index = reader.ReadUShort("Index");
+            string title = reader.ReadString("Title");
             var items = reader.ReadManyNodes("Items", x => CreateDialogItem(x));
 
             SetReadValues(index, title, items);

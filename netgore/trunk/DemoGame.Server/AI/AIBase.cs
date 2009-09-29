@@ -5,7 +5,6 @@ using System.Reflection;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {

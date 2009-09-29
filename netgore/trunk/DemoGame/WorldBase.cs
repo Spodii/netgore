@@ -1,9 +1,7 @@
 using System.Linq;
 using System.Reflection;
-using DemoGame;
 using log4net;
 using NetGore;
-using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -20,7 +18,7 @@ namespace DemoGame
         public virtual void Update()
         {
             // Get the current time
-            var currentTime = GetTime();
+            int currentTime = GetTime();
 
             // Check if this is the very first update - if so, bring the timer up to date
             if (_isFirstUpdate)
@@ -30,7 +28,7 @@ namespace DemoGame
             }
 
             // Grab the update rate
-            var updateRate = GameData.WorldPhysicsUpdateRate;
+            int updateRate = GameData.WorldPhysicsUpdateRate;
 
             // Keep updating until there is not enough delta time to fit into the updateRate
             while (currentTime > _lastUpdateTime + updateRate)

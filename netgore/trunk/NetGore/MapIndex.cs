@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
-using NetGore;
 using NetGore.Globalization;
 using NetGore.IO;
 
@@ -102,7 +101,7 @@ namespace NetGore
         /// <returns>The MapIndex read from the IValueReader.</returns>
         public static MapIndex Read(IValueReader reader, string name)
         {
-            var value = reader.ReadUShort(name);
+            ushort value = reader.ReadUShort(name);
             return new MapIndex(value);
         }
 
@@ -114,11 +113,11 @@ namespace NetGore
         /// <returns>The MapIndex read from the IDataReader.</returns>
         public static MapIndex Read(IDataReader reader, int i)
         {
-            var value = reader.GetValue(i);
+            object value = reader.GetValue(i);
             if (value is ushort)
                 return new MapIndex((ushort)value);
 
-            var convertedValue = Convert.ToUInt16(value);
+            ushort convertedValue = Convert.ToUInt16(value);
             return new MapIndex(convertedValue);
         }
 
@@ -140,7 +139,7 @@ namespace NetGore
         /// <returns>The MapIndex read from the BitStream.</returns>
         public static MapIndex Read(BitStream bitStream)
         {
-            var value = bitStream.ReadUShort();
+            ushort value = bitStream.ReadUShort();
             return new MapIndex(value);
         }
 
@@ -856,7 +855,7 @@ namespace NetGore
         public static bool TryParse(this Parser parser, string value, out MapIndex outValue)
         {
             ushort tmp;
-            var ret = parser.TryParse(value, out tmp);
+            bool ret = parser.TryParse(value, out tmp);
             outValue = new MapIndex(tmp);
             return ret;
         }

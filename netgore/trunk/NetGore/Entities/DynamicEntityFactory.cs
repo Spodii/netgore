@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -50,9 +49,9 @@ namespace NetGore
             if (reader == null)
                 throw new ArgumentNullException("reader");
 
-            var typeName = reader.ReadString(TypeNameStringKey);
+            string typeName = reader.ReadString(TypeNameStringKey);
 
-            var dEntity = (DynamicEntity)_typeCollection.GetTypeInstance(typeName);
+            DynamicEntity dEntity = (DynamicEntity)_typeCollection.GetTypeInstance(typeName);
 
             dEntity.ReadAll(reader);
 
@@ -71,8 +70,8 @@ namespace NetGore
             if (dEntity == null)
                 throw new ArgumentNullException("dEntity");
 
-            var type = dEntity.GetType();
-            var typeName = _typeCollection[type];
+            Type type = dEntity.GetType();
+            string typeName = _typeCollection[type];
 
             writer.Write(TypeNameStringKey, typeName);
             dEntity.WriteAll(writer);

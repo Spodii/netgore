@@ -3,11 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
-using DemoGame;
-using NetGore;
 using NetGore.Globalization;
 using NetGore.IO;
-using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -104,7 +101,7 @@ namespace DemoGame
         /// <returns>The InventorySlot read from the IValueReader.</returns>
         public static InventorySlot Read(IValueReader reader, string name)
         {
-            var value = reader.ReadByte(name);
+            byte value = reader.ReadByte(name);
             return new InventorySlot(value);
         }
 
@@ -116,11 +113,11 @@ namespace DemoGame
         /// <returns>The InventorySlot read from the IDataReader.</returns>
         public static InventorySlot Read(IDataReader reader, int i)
         {
-            var value = reader.GetValue(i);
+            object value = reader.GetValue(i);
             if (value is byte)
                 return new InventorySlot((byte)value);
 
-            var convertedValue = Convert.ToByte(value);
+            byte convertedValue = Convert.ToByte(value);
             return new InventorySlot(convertedValue);
         }
 
@@ -142,7 +139,7 @@ namespace DemoGame
         /// <returns>The InventorySlot read from the BitStream.</returns>
         public static InventorySlot Read(BitStream bitStream)
         {
-            var value = bitStream.ReadByte();
+            byte value = bitStream.ReadByte();
             return new InventorySlot(value);
         }
 
@@ -858,7 +855,7 @@ namespace DemoGame
         public static bool TryParse(this Parser parser, string value, out InventorySlot outValue)
         {
             byte tmp;
-            var ret = parser.TryParse(value, out tmp);
+            bool ret = parser.TryParse(value, out tmp);
             outValue = new InventorySlot(tmp);
             return ret;
         }

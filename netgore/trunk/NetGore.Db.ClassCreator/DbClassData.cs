@@ -2,10 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using DemoGame;
-using NetGore;
 using NetGore.Db.ClassCreator.Properties;
-using NetGore.RPGComponents;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -70,11 +67,12 @@ namespace NetGore.Db.ClassCreator
                     ToArray();
 
             // Populate the external types dictionary
-            foreach (var column in columns)
+            foreach (DbColumnInfo column in columns)
             {
-                var columnName = column.Name;
+                string columnName = column.Name;
                 string externalType;
-                var customType = _customTypes.FirstOrDefault(x => x.Columns.Contains(columnName, StringComparer.OrdinalIgnoreCase));
+                CustomTypeMapping customType =
+                    _customTypes.FirstOrDefault(x => x.Columns.Contains(columnName, StringComparer.OrdinalIgnoreCase));
                 if (customType != null)
                     externalType = customType.CustomType;
                 else
@@ -84,7 +82,7 @@ namespace NetGore.Db.ClassCreator
             }
 
             // Populate the naming dictionaries
-            foreach (var column in columns)
+            foreach (DbColumnInfo column in columns)
             {
                 _privateNames.Add(column,
                                   formatter.GetFieldName(column.Name, MemberVisibilityLevel.Private, GetInternalType(column)));
@@ -137,11 +135,11 @@ namespace NetGore.Db.ClassCreator
         /// is not part of a ColumnCollection.</returns>
         public ColumnCollection GetCollectionForColumn(DbColumnInfo dbColumn, out ColumnCollectionItem item)
         {
-            foreach (var columnCollection in ColumnCollections)
+            foreach (ColumnCollection columnCollection in ColumnCollections)
             {
                 var matches =
                     columnCollection.Columns.Where(x => x.ColumnName.Equals(dbColumn.Name, StringComparison.OrdinalIgnoreCase));
-                var count = matches.Count();
+                int count = matches.Count();
                 if (count == 1)
                 {
                     item = matches.First();
@@ -172,7 +170,7 @@ namespace NetGore.Db.ClassCreator
         public string GetColumnValueAccessor(DbColumnInfo dbColumn)
         {
             ColumnCollectionItem item;
-            var coll = GetCollectionForColumn(dbColumn, out item);
+            ColumnCollection coll = GetCollectionForColumn(dbColumn, out item);
 
             if (coll == null)
             {
@@ -182,7 +180,7 @@ namespace NetGore.Db.ClassCreator
             else
             {
                 // Part of a collection
-                var sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
                 sb.Append("Get" + GetPublicName(coll));
                 sb.Append(Formatter.OpenParameterString);
                 sb.Append(Formatter.GetCast(coll.KeyType));
@@ -213,9 +211,9 @@ namespace NetGore.Db.ClassCreator
         public string GetColumnValueMutator(DbColumnInfo dbColumn, string valueName, string columnSource)
         {
             ColumnCollectionItem item;
-            var coll = GetCollectionForColumn(dbColumn, out item);
+            ColumnCollection coll = GetCollectionForColumn(dbColumn, out item);
 
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             if (string.IsNullOrEmpty(columnSource) || columnSource.Trim().Length == 0)
                 columnSource = "this";
@@ -251,7 +249,7 @@ namespace NetGore.Db.ClassCreator
 
         public string GetConstEnumDictonaryCode(ColumnCollection columnCollection)
         {
-            var sb = new StringBuilder(Resources.ConstEnumDictionaryCode);
+            StringBuilder sb = new StringBuilder(Resources.ConstEnumDictionaryCode);
             sb.Replace("[CLASSNAME]", GetConstEnumDictonaryName(columnCollection));
             sb.Replace("[VALUETYPE]", Formatter.GetTypeString(columnCollection.ValueType));
             sb.Replace("[KEYTYPE]", Formatter.GetTypeString(columnCollection.KeyType));
@@ -274,10 +272,10 @@ namespace NetGore.Db.ClassCreator
         /// <returns>The code string used for accessing a database DbColumnInfo's value.</returns>
         public string GetDataReaderAccessor(DbColumnInfo column, string ordinalFieldName)
         {
-            var callMethod = GetDataReaderReadMethodName(column.Type);
+            string callMethod = GetDataReaderReadMethodName(column.Type);
 
             // Find the method to use for reading the value
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
 
             // Cast
             sb.Append(Formatter.GetCast(GetExternalType(column)));
@@ -332,7 +330,7 @@ namespace NetGore.Db.ClassCreator
         /// <returns>A string for the Type used externally for a given column.</returns>
         public string GetExternalType(DbColumnInfo dbColumn)
         {
-            var ret = _externalTypes[dbColumn];
+            string ret = _externalTypes[dbColumn];
             if (dbColumn.IsNullable)
                 ret = EnsureIsNullable(ret);
 
@@ -346,7 +344,7 @@ namespace NetGore.Db.ClassCreator
         /// <returns>A string for the Type used internally for a given column.</returns>
         public string GetInternalType(DbColumnInfo dbColumn)
         {
-            var ret = Formatter.GetTypeString(dbColumn.Type);
+            string ret = Formatter.GetTypeString(dbColumn.Type);
             if (dbColumn.IsNullable)
                 ret = EnsureIsNullable(ret);
 
