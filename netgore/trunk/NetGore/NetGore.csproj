@@ -77,9 +77,9 @@
     <Compile Include="Extensions\IsBetweenExtensions.cs" />
     <Compile Include="Extensions\IValueReaderExtensions.cs" />
     <Compile Include="Extensions\IValueWriterExtensions.cs" />
-    <Compile Include="MapEntityAttribute.cs" />
-    <Compile Include="MapEntityIndex.cs" />
-    <Compile Include="MapIndex.cs" />
+    <Compile Include="Map\MapEntityAttribute.cs" />
+    <Compile Include="Map\MapEntityIndex.cs" />
+    <Compile Include="Map\MapIndex.cs" />
     <Compile Include="MethodInfoHelper.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
@@ -112,7 +112,7 @@
     <Compile Include="PropertySync\PropertySyncVector2.cs" />
     <Compile Include="Entities\WallEntityBase.cs" />
     <Compile Include="IGetTime.cs" />
-    <Compile Include="IMap.cs" />
+    <Compile Include="Map\IMap.cs" />
     <Compile Include="MathString.cs" />
     <Compile Include="MeanStackExtras.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
