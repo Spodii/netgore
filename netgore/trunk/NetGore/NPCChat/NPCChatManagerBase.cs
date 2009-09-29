@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -104,7 +103,7 @@ namespace NetGore.NPCChat
         {
             _npcChatDialogs.Clear();
 
-            var filePath = GetFilePath(ContentPaths.Dev);
+            string filePath = GetFilePath(ContentPaths.Dev);
 
             if (!File.Exists(filePath))
             {
@@ -112,10 +111,10 @@ namespace NetGore.NPCChat
                 return;
             }
 
-            var reader = new XmlValueReader(filePath, "ChatDialogs");
+            XmlValueReader reader = new XmlValueReader(filePath, "ChatDialogs");
             var items = reader.ReadManyNodes("ChatDialogs", x => CreateDialog(x));
 
-            for (var i = 0; i < items.Length; i++)
+            for (int i = 0; i < items.Length; i++)
             {
                 if (items[i] != null)
                     _npcChatDialogs[i] = items[i];
@@ -133,7 +132,7 @@ namespace NetGore.NPCChat
             var dialogs = _npcChatDialogs.ToArray();
             _npcChatDialogs.Clear();
 
-            foreach (var dialog in dialogs)
+            foreach (NPCChatDialogBase dialog in dialogs)
             {
                 _npcChatDialogs[dialog.Index] = dialog;
             }
@@ -144,15 +143,15 @@ namespace NetGore.NPCChat
         /// </summary>
         public void Save()
         {
-            var filePath = GetFilePath(ContentPaths.Dev);
-            var buildFilePath = GetFilePath(ContentPaths.Build);
-            var tempFilePath = filePath + ".temp";
+            string filePath = GetFilePath(ContentPaths.Dev);
+            string buildFilePath = GetFilePath(ContentPaths.Build);
+            string tempFilePath = filePath + ".temp";
 
             if (File.Exists(tempFilePath))
                 File.Delete(tempFilePath);
 
             var dialogs = _npcChatDialogs.Where(x => x != null);
-            using (var writer = new XmlValueWriter(tempFilePath, "ChatDialogs"))
+            using (XmlValueWriter writer = new XmlValueWriter(tempFilePath, "ChatDialogs"))
             {
                 writer.WriteManyNodes("ChatDialogs", dialogs, ((w, item) => item.Write(w)));
             }

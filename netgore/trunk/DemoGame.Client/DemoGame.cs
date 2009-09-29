@@ -1,14 +1,12 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using DemoGame;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Client
 {
@@ -27,6 +25,9 @@ namespace DemoGame.Client
         {
             // Create the graphics manager and device
             graphics = new GraphicsDeviceManager(this);
+
+            // Read the game data
+            GameData.Load();
 
             // No need to use a time step since we use delta time in our updating
             TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 1000 / 100);
@@ -62,7 +63,7 @@ namespace DemoGame.Client
             graphics.PreferMultiSampling = false;
 
             // Disable filtering, which makes our 2d art look like crap
-            var samplerStates = graphics.GraphicsDevice.SamplerStates;
+            SamplerStateCollection samplerStates = graphics.GraphicsDevice.SamplerStates;
             samplerStates[0].MinFilter = TextureFilter.None;
             samplerStates[0].MipFilter = TextureFilter.None;
             samplerStates[0].MagFilter = TextureFilter.None;
@@ -89,11 +90,11 @@ namespace DemoGame.Client
             GrhInfo.Load(ContentPaths.Build, screenManager.MapContent);
 
             // Build the texture atlases
-            var atlasChars = new TextureAtlas();
-            var atlasGUI = new TextureAtlas();
-            var atlasMisc = new TextureAtlas();
+            TextureAtlas atlasChars = new TextureAtlas();
+            TextureAtlas atlasGUI = new TextureAtlas();
+            TextureAtlas atlasMisc = new TextureAtlas();
 
-            foreach (var gd in GrhInfo.GrhDatas)
+            foreach (GrhData gd in GrhInfo.GrhDatas)
             {
                 if (gd.Frames.Length == 1)
                 {
@@ -128,7 +129,7 @@ namespace DemoGame.Client
         {
             log.Info("Starting client...");
 
-            using (var game = new DemoGame())
+            using (DemoGame game = new DemoGame())
             {
                 game.Run();
             }

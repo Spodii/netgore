@@ -1,6 +1,5 @@
-using System.Linq;
+﻿using System.Linq;
 using NetGore;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Client
 {

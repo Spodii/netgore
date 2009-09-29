@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat.Conditionals;
 
@@ -82,7 +81,7 @@ namespace NetGore.NPCChat
         /// and <paramref name="npc"/>; otherwise false.</returns>
         public bool CheckConditionals(object user, object npc)
         {
-            var c = Conditionals;
+            NPCChatConditionalCollectionBase c = Conditionals;
             if (c == null)
                 return true;
 
@@ -110,7 +109,7 @@ namespace NetGore.NPCChat
                 return NPCChatResponseActionBase.EmptyActions;
 
             var ret = new NPCChatResponseActionBase[names.Length];
-            for (var i = 0; i < names.Length; i++)
+            for (int i = 0; i < names.Length; i++)
             {
                 ret[i] = NPCChatResponseActionBase.GetResponseAction(names[i]);
             }
@@ -124,14 +123,14 @@ namespace NetGore.NPCChat
         /// <param name="reader">IValueReader to read the values from.</param>
         protected void Read(IValueReader reader)
         {
-            var value = reader.ReadByte("Value");
-            var page = reader.ReadUShort("Page");
-            var text = reader.ReadString("Text");
+            byte value = reader.ReadByte("Value");
+            ushort page = reader.ReadUShort("Page");
+            string text = reader.ReadString("Text");
             var actionNames = reader.ReadMany("Actions", ((r, name) => r.ReadString(name)));
             var actions = GetActionsFromNames(actionNames);
 
-            var cReader = reader.ReadNode("Conditionals");
-            var hasConditionals = cReader.ReadBool("HasConditionals");
+            IValueReader cReader = reader.ReadNode("Conditionals");
+            bool hasConditionals = cReader.ReadBool("HasConditionals");
             NPCChatConditionalCollectionBase conditionals = null;
             if (hasConditionals)
             {
@@ -178,8 +177,8 @@ namespace NetGore.NPCChat
 
             writer.WriteStartNode("Conditionals");
             {
-                var c = Conditionals;
-                var hasConditionals = (c != null) && (c.Count() > 0);
+                NPCChatConditionalCollectionBase c = Conditionals;
+                bool hasConditionals = (c != null) && (c.Count() > 0);
                 writer.Write("HasConditionals", hasConditionals);
                 if (hasConditionals)
                     c.Write(writer);

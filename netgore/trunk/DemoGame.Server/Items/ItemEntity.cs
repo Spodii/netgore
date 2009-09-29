@@ -9,7 +9,6 @@ using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Db;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -46,9 +45,9 @@ namespace DemoGame.Server
         public event ItemEntityEventHandler OnChangeGraphicOrAmount;
 
         /// <summary>
-        /// Notifies listeners that this <see cref="Entity"/> was picked up, and who it was picked up by.
+        /// Notifies listeners that this <see cref="Entity"/> was picked up.
         /// </summary>
-        public override event EntityEventHandler<CharacterEntityBase> OnPickup;
+        public override event EntityEventHandler<CharacterEntity> OnPickup;
 
         static DeleteItemQuery DeleteItem
         {
@@ -100,33 +99,15 @@ namespace DemoGame.Server
             get { return _reqStats; }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
-        /// </summary>
-        /// <param name="t">The t.</param>
-        /// <param name="amount">The amount.</param>
         public ItemEntity(IItemTemplateTable t, byte amount) : this(t, Vector2.Zero, amount)
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
-        /// </summary>
-        /// <param name="t">The t.</param>
-        /// <param name="pos">The pos.</param>
-        /// <param name="amount">The amount.</param>
-        /// <param name="map">The map.</param>
-        public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, SideScrollerMapBase map) : this(t, pos, amount)
+        public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, MapBase map) : this(t, pos, amount)
         {
             map.AddEntity(this);
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
-        /// </summary>
-        /// <param name="t">The t.</param>
-        /// <param name="pos">The pos.</param>
-        /// <param name="amount">The amount.</param>
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
             : this(
                 pos, new Vector2(t.Width, t.Height), t.Name, t.Description, (ItemType)t.Type, t.Graphic, t.Value, amount, t.HP,
@@ -134,10 +115,11 @@ namespace DemoGame.Server
         {
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
-        /// </summary>
-        /// <param name="iv">The iv.</param>
+        public ItemEntity()
+        {
+            _id = IDCreator.GetNext();
+        }
+
         public ItemEntity(IItemTable iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
         {
             _id = iv.ID;
@@ -155,21 +137,6 @@ namespace DemoGame.Server
             OnResize += ItemEntity_OnResize;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
-        /// </summary>
-        /// <param name="pos">The pos.</param>
-        /// <param name="size">The size.</param>
-        /// <param name="name">The name.</param>
-        /// <param name="desc">The desc.</param>
-        /// <param name="type">The type.</param>
-        /// <param name="graphic">The graphic.</param>
-        /// <param name="value">The value.</param>
-        /// <param name="amount">The amount.</param>
-        /// <param name="hp">The hp.</param>
-        /// <param name="mp">The mp.</param>
-        /// <param name="baseStats">The base stats.</param>
-        /// <param name="reqStats">The req stats.</param>
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
                    SPValueType hp, SPValueType mp, IEnumerable<KeyValuePair<StatType, int>> baseStats,
                    IEnumerable<KeyValuePair<StatType, int>> reqStats) : base(pos, size)
@@ -194,10 +161,6 @@ namespace DemoGame.Server
             OnResize += ItemEntity_OnResize;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
-        /// </summary>
-        /// <param name="s">The s.</param>
         ItemEntity(ItemEntity s)
             : this(
                 s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP,
@@ -205,7 +168,7 @@ namespace DemoGame.Server
         {
         }
 
-        void BaseStatChangeReceiver(IStat<StatType> stat)
+        void BaseStatChangeReceiver(IStat stat)
         {
             string field = stat.StatType.GetDatabaseField(StatCollectionType.Base);
             SynchronizeField(field, stat.Value);
@@ -213,13 +176,11 @@ namespace DemoGame.Server
 
         /// <summary>
         /// Checks if this <see cref="Entity"/> can be picked up by the specified <paramref name="charEntity"/>, but does
-        /// not actually pick up this <see cref="Entity"/>
+        /// not actually pick up this <see cref="Entity"/>.
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntityBase"/> that is trying to use this <see cref="Entity"/></param>
-        /// <returns>
-        /// True if this <see cref="Entity"/> can be picked up, else false
-        /// </returns>
-        public override bool CanPickup(CharacterEntityBase charEntity)
+        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to use this <see cref="Entity"/>.</param>
+        /// <returns>True if this <see cref="Entity"/> can be picked up, else false.</returns>
+        public override bool CanPickup(CharacterEntity charEntity)
         {
             // Every character can pick up an ItemEntity
             return true;
@@ -231,7 +192,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="source">Item to check if can stack on this ItemEntity.</param>
         /// <returns>True if the two items can stack on each other, else false.</returns>
-        public override bool CanStack(ItemEntityBase<ItemType> source)
+        public override bool CanStack(ItemEntityBase source)
         {
             // Check for equal reference
             if (ReferenceEquals(this, source))
@@ -265,8 +226,8 @@ namespace DemoGame.Server
         /// Creates a deep copy of the inheritor, which is a new class with the same values, and returns
         /// the copy as an ItemEntityBase.
         /// </summary>
-        /// <returns>A deep copy of the object.</returns>
-        public override ItemEntityBase<ItemType> DeepCopy()
+        /// <returns>A deep copy of the object</returns>
+        public override ItemEntityBase DeepCopy()
         {
             return new ItemEntity(this);
         }
@@ -343,13 +304,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Picks up this <see cref="Entity"/>
+        /// Picks up this <see cref="Entity"/>.
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntityBase"/> that is trying to pick up this <see cref="Entity"/></param>
-        /// <returns>
-        /// True if this <see cref="Entity"/> was successfully picked up, else false
-        /// </returns>
-        public override bool Pickup(CharacterEntityBase charEntity)
+        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to pick up this <see cref="Entity"/>.</param>
+        /// <returns>True if this <see cref="Entity"/> was successfully picked up, else false.</returns>
+        public override bool Pickup(CharacterEntity charEntity)
         {
             // Check for invalid character
             if (charEntity == null)
@@ -393,7 +352,7 @@ namespace DemoGame.Server
             return true;
         }
 
-        void ReqStatChangeReceiver(IStat<StatType> stat)
+        void ReqStatChangeReceiver(IStat stat)
         {
             string field = stat.StatType.GetDatabaseField(StatCollectionType.Requirement);
             SynchronizeField(field, stat.Value);

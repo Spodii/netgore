@@ -1,10 +1,8 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
-using DemoGame;
 using DemoGame.Server.DbObjs;
-using NetGore;
 using NetGore.Db;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server.Queries
 {
@@ -26,11 +24,11 @@ namespace DemoGame.Server.Queries
         {
             var ret = new List<CharacterTemplateID>();
 
-            using (var r = ExecuteReader())
+            using (IDataReader r = ExecuteReader())
             {
                 while (r.Read())
                 {
-                    var id = r.GetCharacterTemplateID("id");
+                    CharacterTemplateID id = r.GetCharacterTemplateID("id");
                     ret.Add(id);
                 }
             }

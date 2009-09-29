@@ -1,10 +1,9 @@
-using System;
+﻿using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Client
 {

@@ -1,11 +1,10 @@
 using System.Collections.Generic;
+using System.Data;
 using System.Data.Common;
 using System.Linq;
-using DemoGame;
 using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Db;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server.Queries
 {
@@ -26,11 +25,11 @@ namespace DemoGame.Server.Queries
         {
             var ret = new List<IMapSpawnTable>();
 
-            using (var r = ExecuteReader(id))
+            using (IDataReader r = ExecuteReader(id))
             {
                 while (r.Read())
                 {
-                    var values = new MapSpawnTable();
+                    MapSpawnTable values = new MapSpawnTable();
                     values.ReadValues(r);
                     ret.Add(values);
                 }

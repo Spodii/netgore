@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -52,7 +51,7 @@ namespace DemoGame.Server
             _disableTime = disableTime;
         }
 
-        public void AddBonusesTo(IStatCollection<StatType> statCollection)
+        public void AddBonusesTo(IStatCollection statCollection)
         {
             foreach (StatType statType in StatusEffect.ModifiedStats)
             {
@@ -189,7 +188,7 @@ namespace DemoGame.Server
                 return false;
         }
 
-        public void SubtractBonusesFrom(IStatCollection<StatType> statCollection)
+        public void SubtractBonusesFrom(IStatCollection statCollection)
         {
             foreach (StatType statType in StatusEffect.ModifiedStats)
             {

@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using NetGore.IO;
 using NetGore.Network;
 

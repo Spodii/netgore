@@ -1,6 +1,5 @@
-using System;
+﻿using System;
 using System.Globalization;
-using NetGore;
 
 // ReSharper disable MemberCanBeMadeStatic.Global
 

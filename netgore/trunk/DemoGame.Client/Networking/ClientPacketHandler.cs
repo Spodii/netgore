@@ -11,7 +11,6 @@ using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
-using NetGore.RPGComponents;
 
 #pragma warning disable 168
 // ReSharper disable UnusedMember.Local

@@ -1,7 +1,4 @@
-using System.Linq;
-using DemoGame;
-using NetGore;
-using NetGore.RPGComponents;
+﻿using System.Linq;
 
 namespace NetGore.Db.ClassCreator
 {

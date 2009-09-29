@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using DemoGame;
-using NetGore;
-using NetGore.RPGComponents;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -34,10 +32,10 @@ namespace NetGore.Db.ClassCreator
         static IEnumerable<ColumnCollectionItem> GetStatColumnCollectionItems(StatCollectionType statCollectionType)
         {
             var columnItems = new List<ColumnCollectionItem>();
-            foreach (var statType in StatTypeHelper.Values)
+            foreach (StatType statType in StatTypeHelper.Values)
             {
-                var dbField = statType.GetDatabaseField(statCollectionType);
-                var item = ColumnCollectionItem.FromEnum(dbField, statType);
+                string dbField = statType.GetDatabaseField(statCollectionType);
+                ColumnCollectionItem item = ColumnCollectionItem.FromEnum(dbField, statType);
                 columnItems.Add(item);
             }
 
@@ -49,7 +47,7 @@ namespace NetGore.Db.ClassCreator
             var baseStatColumns = GetStatColumnCollectionItems(StatCollectionType.Base);
             var reqStatColumns = GetStatColumnCollectionItems(StatCollectionType.Requirement);
 
-            using (var generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
+            using (MySqlClassGenerator generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
             {
                 // Custom usings
                 generator.AddUsing("NetGore.Db");
@@ -71,11 +69,11 @@ namespace NetGore.Db.ClassCreator
                 const string itemTemplateID = "DemoGame.Server.ItemTemplateID";
                 const string mapID = "NetGore.MapIndex";
                 const string mapSpawnID = "DemoGame.Server.MapSpawnValuesID";
-                const string bodyID = "NetGore.RPGComponents.BodyIndex";
+                const string bodyID = "DemoGame.BodyIndex";
                 const string equipmentSlot = "DemoGame.EquipmentSlot";
                 const string itemChance = "DemoGame.Server.ItemChance";
                 const string grhIndex = "NetGore.GrhIndex";
-                const string spValueType = "NetGore.RPGComponents.SPValueType";
+                const string spValueType = "DemoGame.SPValueType";
                 const string itemType = "DemoGame.ItemType";
                 const string inventorySlot = "DemoGame.InventorySlot";
                 const string statusEffectType = "DemoGame.StatusEffectType";
@@ -128,7 +126,7 @@ namespace NetGore.Db.ClassCreator
                 generator.AddCustomType(shopID, "*", "shop_id");
 
                 // Renaming
-                var formatter = generator.Formatter;
+                CodeFormatter formatter = generator.Formatter;
                 formatter.AddAlias("alliance_id", "AllianceID");
                 formatter.AddAlias("shop_id", "ShopID");
                 formatter.AddAlias("account_id", "AccountID");
@@ -162,7 +160,7 @@ namespace NetGore.Db.ClassCreator
 
                 // Generate
                 var codeItems = generator.Generate(_tempNamespaceName, _tempNamespaceName);
-                foreach (var item in codeItems)
+                foreach (GeneratedTableCode item in codeItems)
                 {
                     SaveCodeFile(item);
                 }
@@ -174,8 +172,8 @@ namespace NetGore.Db.ClassCreator
             string saveDir;
             string code;
 
-            var isInterfaceOrClass = (gtc.CodeType == GeneratedCodeType.Interface || gtc.CodeType == GeneratedCodeType.Class);
-            var isGlobalTable = _globalTables.Contains(gtc.Table, StringComparer.OrdinalIgnoreCase);
+            bool isInterfaceOrClass = (gtc.CodeType == GeneratedCodeType.Interface || gtc.CodeType == GeneratedCodeType.Class);
+            bool isGlobalTable = _globalTables.Contains(gtc.Table, StringComparer.OrdinalIgnoreCase);
 
             if ((isInterfaceOrClass && isGlobalTable) || gtc.CodeType == GeneratedCodeType.ColumnMetadata)
             {
@@ -199,7 +197,7 @@ namespace NetGore.Db.ClassCreator
             if (!Directory.Exists(saveDir))
                 Directory.CreateDirectory(saveDir);
 
-            var savePath = saveDir + gtc.ClassName + ".cs";
+            string savePath = saveDir + gtc.ClassName + ".cs";
 
             File.WriteAllText(savePath, code);
         }

@@ -5,10 +5,7 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DemoGame;
-using NetGore;
 using NetGore.Db.ClassCreator.Properties;
-using NetGore.RPGComponents;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -113,7 +110,7 @@ namespace NetGore.Db.ClassCreator
             if (!(keyType.IsEnum))
                 throw new ArgumentException("Only Enums are supported for the keyType at the present.", "keyType");
 
-            var columnCollection = new ColumnCollection(name, keyType, valueType, tables, columns);
+            ColumnCollection columnCollection = new ColumnCollection(name, keyType, valueType, tables, columns);
             _columnCollections.Add(columnCollection);
         }
 
@@ -131,7 +128,7 @@ namespace NetGore.Db.ClassCreator
             if (!(keyType.IsEnum))
                 throw new ArgumentException("Only Enums are supported for the keyType at the present.", "keyType");
 
-            var columnCollection = new ColumnCollection(name, keyType, valueType, new string[] { table }, columns);
+            ColumnCollection columnCollection = new ColumnCollection(name, keyType, valueType, new string[] { table }, columns);
             _columnCollections.Add(columnCollection);
         }
 
@@ -171,7 +168,7 @@ namespace NetGore.Db.ClassCreator
         /// <param name="namespaceNames">Namespaces to use.</param>
         public void AddUsing(IEnumerable<string> namespaceNames)
         {
-            foreach (var n in namespaceNames)
+            foreach (string n in namespaceNames)
             {
                 AddUsing(n);
             }
@@ -182,7 +179,8 @@ namespace NetGore.Db.ClassCreator
         {
             columns = columns.OrderBy(x => x.Name);
 
-            var cd = new DbClassData(tableName, columns, Formatter, _dataReaderReadMethods, _columnCollections, _customTypes);
+            DbClassData cd = new DbClassData(tableName, columns, Formatter, _dataReaderReadMethods, _columnCollections,
+                                             _customTypes);
 
             yield return
                 new GeneratedTableCode(tableName, cd.ClassName, WrapCodeFile(CreateCodeForClass(cd), classNamespace, false),
@@ -205,7 +203,7 @@ namespace NetGore.Db.ClassCreator
         /// <returns>The code for the class.</returns>
         protected virtual string CreateCodeForClass(DbClassData cd)
         {
-            var sb = new StringBuilder(8192);
+            StringBuilder sb = new StringBuilder(8192);
 
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ClassSummary, cd.TableName)));
             sb.AppendLine(Formatter.GetClass(cd.ClassName, MemberVisibilityLevel.Public, false, new string[] { cd.InterfaceName }));
@@ -214,7 +212,7 @@ namespace NetGore.Db.ClassCreator
                 // Other Fields/Properties
                 {
                     // All fields
-                    var fieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Select(x => x.Name));
+                    string fieldNamesCode = Formatter.GetStringArrayCode(cd.Columns.Select(x => x.Name));
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.ColumnArrayField));
                     sb.AppendLine(Formatter.GetField(DbColumnsField, typeof(string[]), MemberVisibilityLevel.Private,
                                                      fieldNamesCode, true, true));
@@ -226,7 +224,7 @@ namespace NetGore.Db.ClassCreator
 
                 {
                     // Key fields
-                    var keyFieldNamesCode =
+                    string keyFieldNamesCode =
                         Formatter.GetStringArrayCode(
                             cd.Columns.Where(x => x.KeyType == DbColumnKeyType.Primary).Select(x => x.Name));
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.KeyColumnArrayField));
@@ -240,7 +238,7 @@ namespace NetGore.Db.ClassCreator
 
                 {
                     // Non-key fields
-                    var nonKeyFieldNamesCode =
+                    string nonKeyFieldNamesCode =
                         Formatter.GetStringArrayCode(
                             cd.Columns.Where(x => x.KeyType != DbColumnKeyType.Primary).Select(x => x.Name));
                     sb.AppendLine(Formatter.GetXmlComment(Comments.CreateCode.NonKeyColumnArrayField));
@@ -255,18 +253,18 @@ namespace NetGore.Db.ClassCreator
 
                 {
                     // Collection fields
-                    foreach (var coll in cd.ColumnCollections)
+                    foreach (ColumnCollection coll in cd.ColumnCollections)
                     {
-                        var privateFieldName = cd.GetPrivateName(coll) + "Columns";
-                        var publicPropertyName = cd.GetPublicName(coll) + "Columns";
+                        string privateFieldName = cd.GetPrivateName(coll) + "Columns";
+                        string publicPropertyName = cd.GetPublicName(coll) + "Columns";
 
-                        var currColl = coll;
+                        ColumnCollection currColl = coll;
                         var columnsInCollection = cd.Columns.Where(x => cd.GetCollectionForColumn(x) == currColl);
                         if (columnsInCollection.Count() == 0)
                             continue;
 
                         // Getter
-                        var columnNamesCode = Formatter.GetStringArrayCode(columnsInCollection.Select(x => x.Name));
+                        string columnNamesCode = Formatter.GetStringArrayCode(columnsInCollection.Select(x => x.Name));
                         sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionField, coll.Name)));
                         sb.AppendLine(Formatter.GetField(privateFieldName, typeof(string[]), MemberVisibilityLevel.Private,
                                                          columnNamesCode, true, true));
@@ -281,7 +279,7 @@ namespace NetGore.Db.ClassCreator
                         // Collection
                         sb.AppendLine(
                             Formatter.GetXmlComment(string.Format(Comments.CreateCode.ColumnCollectionValueProperty, coll.Name)));
-                        var ikvpType = Formatter.GetIEnumerableKeyValuePair(coll.KeyType, coll.ValueType);
+                        string ikvpType = Formatter.GetIEnumerableKeyValuePair(coll.KeyType, coll.ValueType);
                         sb.AppendLine(Formatter.GetProperty(coll.CollectionPropertyName, ikvpType, ikvpType,
                                                             MemberVisibilityLevel.Public, null, cd.GetPrivateName(coll), false,
                                                             false));
@@ -311,7 +309,7 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateConstructor(cd, string.Empty, false));
 
                 // Constructor (full)
-                var fullConstructorBody = FullConstructorMemberBody(cd);
+                string fullConstructorBody = FullConstructorMemberBody(cd);
                 sb.AppendLine(CreateConstructor(cd, fullConstructorBody, true));
 
                 // Constructor (self-referencing interface)
@@ -333,7 +331,7 @@ namespace NetGore.Db.ClassCreator
                 sb.AppendLine(CreateMethodGetColumnData(cd));
 
                 // ConstEnumDictionary class
-                foreach (var coll in cd.ColumnCollections)
+                foreach (ColumnCollection coll in cd.ColumnCollections)
                 {
                     sb.AppendLine(cd.GetConstEnumDictonaryCode(coll));
                 }
@@ -345,8 +343,8 @@ namespace NetGore.Db.ClassCreator
 
         protected virtual GeneratedTableCode CreateCodeForColumnMetadata(string codeNamespace)
         {
-            var code = Resources.ColumnMetadataCode;
-            var sb = new StringBuilder(code.Length + 200);
+            string code = Resources.ColumnMetadataCode;
+            StringBuilder sb = new StringBuilder(code.Length + 200);
 
             sb.AppendLine(Formatter.GetUsing("System"));
 
@@ -363,7 +361,7 @@ namespace NetGore.Db.ClassCreator
 
         protected virtual string CreateCodeForExtensions(DbClassData cd)
         {
-            var sb = new StringBuilder(8192);
+            StringBuilder sb = new StringBuilder(8192);
 
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ExtensionClassSummary, cd.ClassName)));
             sb.AppendLine(Formatter.GetClass(cd.ExtensionClassName, MemberVisibilityLevel.Public, true, null));
@@ -387,7 +385,7 @@ namespace NetGore.Db.ClassCreator
         /// <returns>The class code for the interface.</returns>
         protected virtual string CreateCodeForInterface(DbClassData cd)
         {
-            var sb = new StringBuilder(2048);
+            StringBuilder sb = new StringBuilder(2048);
 
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.InterfaceSummary, cd.TableName)));
             sb.AppendLine(Formatter.GetInterface(cd.InterfaceName, MemberVisibilityLevel.Public));
@@ -399,10 +397,10 @@ namespace NetGore.Db.ClassCreator
 
                 // Columns
                 var addedCollections = new List<ColumnCollection>();
-                foreach (var column in cd.Columns)
+                foreach (DbColumnInfo column in cd.Columns)
                 {
                     ColumnCollectionItem collItem;
-                    var coll = cd.GetCollectionForColumn(column, out collItem);
+                    ColumnCollection coll = cd.GetCollectionForColumn(column, out collItem);
 
                     if (coll == null)
                     {
@@ -414,8 +412,8 @@ namespace NetGore.Db.ClassCreator
                     {
                         // Has a collection - only add the code if the collection hasn't been added yet
                         addedCollections.Add(coll);
-                        var name = cd.GetPublicName(coll);
-                        var keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
+                        string name = cd.GetPublicName(coll);
+                        MethodParameter keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
 
                         // Getter
                         sb.AppendLine(
@@ -449,13 +447,13 @@ namespace NetGore.Db.ClassCreator
                 parameters = MethodParameter.Empty;
 
             var cParams = new List<KeyValuePair<string, string>>(Math.Max(1, parameters.Length));
-            foreach (var p in parameters)
+            foreach (MethodParameter p in parameters)
             {
                 var kvp = new KeyValuePair<string, string>(p.Name, Comments.CreateConstructor.Parameter);
                 cParams.Add(kvp);
             }
 
-            var sb = new StringBuilder(2048);
+            StringBuilder sb = new StringBuilder(2048);
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateCode.ConstructorSummary, cd.ClassName), null,
                                                   cParams.ToArray()));
             sb.AppendLine(Formatter.GetConstructorHeader(cd.ClassName, MemberVisibilityLevel.Public, parameters));
@@ -465,19 +463,19 @@ namespace NetGore.Db.ClassCreator
 
         protected virtual string CreateFields(DbClassData cd)
         {
-            var sb = new StringBuilder(2048);
+            StringBuilder sb = new StringBuilder(2048);
 
             // Column fields
             var addedCollections = new List<ColumnCollection>();
-            foreach (var column in cd.Columns)
+            foreach (DbColumnInfo column in cd.Columns)
             {
                 ColumnCollectionItem collItem;
-                var coll = cd.GetCollectionForColumn(column, out collItem);
+                ColumnCollection coll = cd.GetCollectionForColumn(column, out collItem);
 
                 if (coll == null)
                 {
                     // Not part of a collection
-                    var comment = string.Format(Comments.CreateFields.Field, column.Name);
+                    string comment = string.Format(Comments.CreateFields.Field, column.Name);
                     sb.AppendLine(Formatter.GetXmlComment(comment));
                     sb.AppendLine(Formatter.GetField(cd.GetPrivateName(column), cd.GetInternalType(column),
                                                      MemberVisibilityLevel.Private));
@@ -487,7 +485,7 @@ namespace NetGore.Db.ClassCreator
                     // Has a collection - only add the code if the collection hasn't been added yet
                     addedCollections.Add(coll);
                     sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateFields.CollectionField, coll.Name)));
-                    var collType = DbClassData.GetCollectionTypeString(coll);
+                    string collType = DbClassData.GetCollectionTypeString(coll);
                     sb.AppendLine(Formatter.GetField(cd.GetPrivateName(coll), collType, MemberVisibilityLevel.Private,
                                                      "new " + collType + Formatter.OpenParameterString +
                                                      Formatter.CloseParameterString, true, false));
@@ -496,15 +494,15 @@ namespace NetGore.Db.ClassCreator
 
             // Properties for the fields
             addedCollections.Clear();
-            foreach (var column in cd.Columns)
+            foreach (DbColumnInfo column in cd.Columns)
             {
                 ColumnCollectionItem collItem;
-                var coll = cd.GetCollectionForColumn(column, out collItem);
+                ColumnCollection coll = cd.GetCollectionForColumn(column, out collItem);
 
                 if (coll == null)
                 {
                     // Not part of a collection
-                    var comment = string.Format(Comments.CreateFields.Property, column.Name, column.DatabaseType);
+                    string comment = string.Format(Comments.CreateFields.Property, column.Name, column.DatabaseType);
 
                     if (column.DefaultValue != null && !string.IsNullOrEmpty(column.DefaultValue.ToString()))
                         comment += string.Format(Comments.CreateFields.PropertyHasDefaultValue, column.DefaultValue);
@@ -525,10 +523,10 @@ namespace NetGore.Db.ClassCreator
                     // Has a collection - only add the code if the collection hasn't been added yet
                     addedCollections.Add(coll);
 
-                    var name = cd.GetPublicName(coll);
-                    var keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
-                    var field = cd.GetPrivateName(coll) + Formatter.OpenIndexer + Formatter.GetCast(coll.KeyType) + "key" +
-                                Formatter.CloseIndexer;
+                    string name = cd.GetPublicName(coll);
+                    MethodParameter keyParameter = new MethodParameter("key", coll.KeyType, Formatter);
+                    string field = cd.GetPrivateName(coll) + Formatter.OpenIndexer + Formatter.GetCast(coll.KeyType) + "key" +
+                                   Formatter.CloseIndexer;
 
                     // Getter
                     sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CreateFields.PublicMethodGet, coll.Name),
@@ -572,7 +570,7 @@ namespace NetGore.Db.ClassCreator
 
             var parameters = new MethodParameter[] { new MethodParameter(sourceName, cd.InterfaceName) };
 
-            var sb = new StringBuilder(2048);
+            StringBuilder sb = new StringBuilder(2048);
 
             // Header
             sb.AppendLine(Formatter.GetXmlComment(string.Format(Comments.CopyValuesFrom.Summary, cd.ClassName), null,
@@ -584,8 +582,8 @@ namespace NetGore.Db.ClassCreator
                                                     typeof(void), false, false));
 
             // Body
-            var bodySB = new StringBuilder(2048);
-            foreach (var column in cd.Columns)
+            StringBuilder bodySB = new StringBuilder(2048);
+            foreach (DbColumnInfo column in cd.Columns)
             {
                 bodySB.AppendLine(cd.GetColumnValueMutator(column, sourceName + "." + cd.GetColumnValueAccessor(column)));
             }
@@ -598,7 +596,7 @@ namespace NetGore.Db.ClassCreator
         {
             const string parameterName = "paramValues";
 
-            var sb = new StringBuilder(2048);
+            StringBuilder sb = new StringBuilder(2048);
 
             // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.CopyToDPV.Summary, null,
@@ -615,12 +613,12 @@ namespace NetGore.Db.ClassCreator
                                                              }, typeof(void)));
 
             // Body
-            var bodySB = new StringBuilder(2048);
-            foreach (var column in cd.Columns)
+            StringBuilder bodySB = new StringBuilder(2048);
+            foreach (DbColumnInfo column in cd.Columns)
             {
-                var left = parameterName + "[\"@" + column.Name + "\"]";
-                var right = _extensionParamName + "." + cd.GetColumnValueAccessor(column);
-                var line = Formatter.GetSetValue(left, right, false, false, cd.GetInternalType(column));
+                string left = parameterName + "[\"@" + column.Name + "\"]";
+                string right = _extensionParamName + "." + cd.GetColumnValueAccessor(column);
+                string line = Formatter.GetSetValue(left, right, false, false, cd.GetInternalType(column));
                 bodySB.AppendLine(line);
             }
             sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
@@ -638,7 +636,7 @@ namespace NetGore.Db.ClassCreator
             var sParameters =
                 new MethodParameter[] { new MethodParameter(sourceName, cd.InterfaceName) }.Concat(iParameters).ToArray();
 
-            var sb = new StringBuilder(2048);
+            StringBuilder sb = new StringBuilder(2048);
 
             // Instanced header
             sb.AppendLine(Formatter.GetXmlComment(Comments.CopyToDict.Summary, null,
@@ -661,12 +659,12 @@ namespace NetGore.Db.ClassCreator
                                                     false, true));
 
             // Static body
-            var bodySB = new StringBuilder(2048);
-            foreach (var column in cd.Columns)
+            StringBuilder bodySB = new StringBuilder(2048);
+            foreach (DbColumnInfo column in cd.Columns)
             {
-                var left = parameterName + "[\"@" + column.Name + "\"]";
-                var right = sourceName + "." + cd.GetColumnValueAccessor(column);
-                var line = Formatter.GetSetValue(left, right, false, false, cd.GetExternalType(column));
+                string left = parameterName + "[\"@" + column.Name + "\"]";
+                string right = sourceName + "." + cd.GetColumnValueAccessor(column);
+                string line = Formatter.GetSetValue(left, right, false, false, cd.GetExternalType(column));
                 bodySB.AppendLine(line);
             }
             sb.AppendLine(Formatter.GetMethodBody(bodySB.ToString()));
@@ -681,7 +679,7 @@ namespace NetGore.Db.ClassCreator
 
             var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
 
-            var sb = new StringBuilder(4096);
+            StringBuilder sb = new StringBuilder(4096);
 
             // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.GetColumnData.Summary, Comments.GetColumnData.Returns,
@@ -694,7 +692,8 @@ namespace NetGore.Db.ClassCreator
             var switches =
                 cd.Columns.Select(
                     x => new KeyValuePair<string, string>("\"" + x.Name + "\"", CreateMethodGetColumnDataReturnString(x)));
-            var defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" + Formatter.EndOfLine;
+            string defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" +
+                                 Formatter.EndOfLine;
             sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
 
             return sb.ToString();
@@ -702,7 +701,7 @@ namespace NetGore.Db.ClassCreator
 
         protected string CreateMethodGetColumnDataReturnString(DbColumnInfo column)
         {
-            var sb = new StringBuilder(256);
+            StringBuilder sb = new StringBuilder(256);
 
             sb.Append(Formatter.ReturnString);
             sb.Append(" ");
@@ -737,7 +736,7 @@ namespace NetGore.Db.ClassCreator
 
             var parameters = new MethodParameter[] { new MethodParameter(parameterName, typeof(string), Formatter) };
 
-            var sb = new StringBuilder(2048);
+            StringBuilder sb = new StringBuilder(2048);
 
             // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.GetValue.Summary, Comments.GetValue.Returns,
@@ -753,7 +752,8 @@ namespace NetGore.Db.ClassCreator
                     new KeyValuePair<string, string>("\"" + x.Name + "\"",
                                                      Formatter.ReturnString + " " + cd.GetColumnValueAccessor(x) +
                                                      Formatter.EndOfLine));
-            var defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" + Formatter.EndOfLine;
+            string defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" +
+                                 Formatter.EndOfLine;
             sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
 
             return sb.ToString();
@@ -761,7 +761,7 @@ namespace NetGore.Db.ClassCreator
 
         protected virtual string CreateMethodReadValues(DbClassData cd)
         {
-            var sb = new StringBuilder(2048);
+            StringBuilder sb = new StringBuilder(2048);
 
             // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.ReadValues.Summary, null,
@@ -777,14 +777,14 @@ namespace NetGore.Db.ClassCreator
                                                              }, typeof(void)));
 
             // Body
-            var bodySB = new StringBuilder(2048);
+            StringBuilder bodySB = new StringBuilder(2048);
             bodySB.AppendLine(Formatter.GetLocalField("i", typeof(int), null));
             bodySB.AppendLine();
-            foreach (var column in cd.Columns)
+            foreach (DbColumnInfo column in cd.Columns)
             {
                 bodySB.AppendLine(Formatter.GetSetValue("i", DataReaderName + ".GetOrdinal(\"" + column.Name + "\")", false, false));
 
-                var right = cd.GetDataReaderAccessor(column, "i");
+                string right = cd.GetDataReaderAccessor(column, "i");
                 bodySB.AppendLine(cd.GetColumnValueMutator(column, right, _extensionParamName));
                 bodySB.AppendLine();
             }
@@ -806,7 +806,7 @@ namespace NetGore.Db.ClassCreator
                 new MethodParameter(valueName, typeof(object), Formatter)
             };
 
-            var sb = new StringBuilder(2048);
+            StringBuilder sb = new StringBuilder(2048);
 
             // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.SetValue.Summary, null,
@@ -823,7 +823,8 @@ namespace NetGore.Db.ClassCreator
                     new KeyValuePair<string, string>("\"" + x.Name + "\"",
                                                      cd.GetColumnValueMutator(x, valueName) + Environment.NewLine + "break" +
                                                      Formatter.EndOfLine));
-            var defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" + Formatter.EndOfLine;
+            string defaultCode = "throw new ArgumentException(\"Field not found.\",\"" + parameterName + "\")" +
+                                 Formatter.EndOfLine;
             sb.AppendLine(Formatter.GetMethodBody(Formatter.GetSwitch(parameterName, switches, defaultCode)));
 
             return sb.ToString();
@@ -833,7 +834,7 @@ namespace NetGore.Db.ClassCreator
         {
             const string parameterName = "paramValues";
 
-            var sb = new StringBuilder(2048);
+            StringBuilder sb = new StringBuilder(2048);
 
             // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.TryCopyValues.Summary, null,
@@ -852,7 +853,7 @@ namespace NetGore.Db.ClassCreator
                                                              }, typeof(void)));
 
             // Body
-            var bodySB = new StringBuilder(2048);
+            StringBuilder bodySB = new StringBuilder(2048);
             bodySB.AppendLine("for (int i = 0; i < " + parameterName + ".Count; i++)"); // NOTE: Language specific code
             bodySB.AppendLine(Formatter.OpenBrace);
             {
@@ -873,7 +874,7 @@ namespace NetGore.Db.ClassCreator
         protected string CreateMethodTryCopyValuesToDbParameterValuesSwitchString(DbClassData cd, DbColumnInfo column,
                                                                                   string parameterName)
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.AppendLine(Formatter.GetSetValue(parameterName + Formatter.OpenIndexer + "i" + Formatter.CloseIndexer,
                                                 _extensionParamName + "." + cd.GetColumnValueAccessor(column), false, false,
                                                 cd.GetInternalType(column)));
@@ -883,7 +884,7 @@ namespace NetGore.Db.ClassCreator
 
         protected virtual string CreateMethodTryReadValues(DbClassData cd)
         {
-            var sb = new StringBuilder(2048);
+            StringBuilder sb = new StringBuilder(2048);
 
             // Header
             sb.AppendLine(Formatter.GetXmlComment(Comments.TryReadValues.Summary, null,
@@ -900,7 +901,7 @@ namespace NetGore.Db.ClassCreator
                                                              }, typeof(void)));
 
             // Body
-            var bodySB = new StringBuilder(2048);
+            StringBuilder bodySB = new StringBuilder(2048);
             bodySB.AppendLine("for (int i = 0; i < " + DataReaderName + ".FieldCount; i++)"); // NOTE: Hardcoded language code
             bodySB.AppendLine(Formatter.OpenBrace);
             {
@@ -920,7 +921,7 @@ namespace NetGore.Db.ClassCreator
 
         protected string CreateMethodTryReadValuesSwitchString(DbClassData cd, DbColumnInfo column)
         {
-            var sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             sb.AppendLine(cd.GetColumnValueMutator(column, cd.GetDataReaderAccessor(column, "i"), _extensionParamName));
             sb.AppendLine("break" + Formatter.EndOfLine);
             return sb.ToString();
@@ -928,10 +929,10 @@ namespace NetGore.Db.ClassCreator
 
         protected virtual string FullConstructorMemberBody(DbClassData cd)
         {
-            var sb = new StringBuilder(1024);
-            foreach (var column in cd.Columns)
+            StringBuilder sb = new StringBuilder(1024);
+            foreach (DbColumnInfo column in cd.Columns)
             {
-                var right = cd.GetParameterName(column);
+                string right = cd.GetParameterName(column);
                 sb.AppendLine(cd.GetColumnValueMutator(column, right));
             }
             return sb.ToString();
@@ -954,7 +955,7 @@ namespace NetGore.Db.ClassCreator
 
             var items = Generate(classNamespace, interfaceNamespace);
 
-            foreach (var item in items)
+            foreach (GeneratedTableCode item in items)
             {
                 string filePath;
                 if (item.CodeType == GeneratedCodeType.Interface)
@@ -975,7 +976,7 @@ namespace NetGore.Db.ClassCreator
             foreach (var table in _dbTables)
             {
                 var generatedCodes = CreateCode(table.Key, table.Value, classNamespace, interfaceNamespace);
-                foreach (var item in generatedCodes)
+                foreach (GeneratedTableCode item in generatedCodes)
                 {
                     yield return item;
                 }
@@ -990,10 +991,10 @@ namespace NetGore.Db.ClassCreator
         {
             var columnsArray = cd.Columns.ToArray();
             var parameters = new MethodParameter[columnsArray.Length];
-            for (var i = 0; i < columnsArray.Length; i++)
+            for (int i = 0; i < columnsArray.Length; i++)
             {
-                var column = columnsArray[i];
-                var p = new MethodParameter(cd.GetParameterName(column), cd.GetExternalType(column));
+                DbColumnInfo column = columnsArray[i];
+                MethodParameter p = new MethodParameter(cd.GetParameterName(column), cd.GetExternalType(column));
                 parameters[i] = p;
             }
 
@@ -1017,7 +1018,7 @@ namespace NetGore.Db.ClassCreator
 
             var tables = GetTables();
 
-            foreach (var table in tables)
+            foreach (string table in tables)
             {
                 var columns = GetColumns(table);
                 _dbTables.Add(table, columns.ToArray());
@@ -1049,14 +1050,14 @@ namespace NetGore.Db.ClassCreator
 
         string WrapCodeFile(string code, string namespaceName, bool isInterface)
         {
-            var sb = new StringBuilder(code.Length + 512);
+            StringBuilder sb = new StringBuilder(code.Length + 512);
 
             // Header
             IEnumerable<string> usings = new string[] { "System", "System.Linq" };
             if (!isInterface)
                 usings = usings.Concat(_usings);
 
-            foreach (var usingNamespace in usings)
+            foreach (string usingNamespace in usings)
             {
                 sb.AppendLine(Formatter.GetUsing(usingNamespace));
             }

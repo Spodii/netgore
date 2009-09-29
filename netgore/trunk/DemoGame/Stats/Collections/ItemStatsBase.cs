@@ -1,8 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using DemoGame;
-using NetGore;
-using NetGore.RPGComponents;
 
 // FUTURE: Could optimize the OnStatChange by only hooking to the Stat.OnChange when OnStatChange has listeners
 
@@ -13,14 +10,14 @@ namespace DemoGame
         /// <summary>
         /// Notifies the listener that any of the stats have raised their OnChange event
         /// </summary>
-        public event IStatEventHandler<StatType> OnStatChange;
+        public event IStatEventHandler OnStatChange;
 
         public ItemStatsBase(IEnumerable<KeyValuePair<StatType, int>> src, StatCollectionType statCollectionType)
             : this(statCollectionType)
         {
             foreach (var statInfo in src)
             {
-                var stat = StatFactory.CreateStat(statInfo.Key, statCollectionType, statInfo.Value);
+                IStat stat = StatFactory.CreateStat(statInfo.Key, statCollectionType, statInfo.Value);
                 Add(stat);
             }
         }
@@ -29,12 +26,12 @@ namespace DemoGame
         {
         }
 
-        public override IStat<StatType> GetStat(StatType statType)
+        public override IStat GetStat(StatType statType)
         {
             return GetStatOrCreate(statType);
         }
 
-        protected override void HandleStatAdded(IStat<StatType> stat)
+        protected override void HandleStatAdded(IStat stat)
         {
             // Attach a listener to every stat to listen for changes
             stat.OnChange += HandleStatChanged;
@@ -44,7 +41,7 @@ namespace DemoGame
         /// Handler for listening to all of the stats and forwarding to the OnStatChange
         /// </summary>
         /// <param name="stat">Stat that changed</param>
-        void HandleStatChanged(IStat<StatType> stat)
+        void HandleStatChanged(IStat stat)
         {
             if (OnStatChange != null)
                 OnStatChange(stat);
@@ -59,7 +56,7 @@ namespace DemoGame
         public bool HasEqualValues(ItemStatsBase other)
         {
             // Iterate through each stat
-            foreach (var stat in this)
+            foreach (IStat stat in this)
             {
                 // Check if the values are equal, and return false on the first non-equal value found
                 if (other[stat.StatType] != stat.Value)

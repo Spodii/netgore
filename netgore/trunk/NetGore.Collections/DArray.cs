@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore;
 
 namespace NetGore.Collections
 {
@@ -110,7 +109,7 @@ namespace NetGore.Collections
         /// <param name="trackFree">If free indices will be tracked and Add can be used</param>
         public DArray(IEnumerable<T> content, bool trackFree) : this(content.Count(), trackFree)
         {
-            foreach (var item in content)
+            foreach (T item in content)
             {
                 Add(item);
             }
@@ -135,7 +134,7 @@ namespace NetGore.Collections
         public int Insert(T item)
         {
             // Find the next free index
-            var index = NextFreeIndex(true);
+            int index = NextFreeIndex(true);
 
             if (CanGet(index))
                 Debug.Assert(!_isIndexUsed[index], "Oh shit, we got an index is in use!");
@@ -199,10 +198,10 @@ namespace NetGore.Collections
             }
             else
             {
-                var startVersion = _version;
+                int startVersion = _version;
 
                 // Can not use the free indicies tracker, so manually look for a free index
-                for (var i = 0; i < _buffer.Length; i++)
+                for (int i = 0; i < _buffer.Length; i++)
                 {
                     if (!_isIndexUsed[i])
                         return i;
@@ -225,7 +224,7 @@ namespace NetGore.Collections
             _freeIndices.Clear();
 
             // Add all the free indicies in reverse order so the lowest indicies pop first
-            for (var i = _buffer.Length - 1; i >= 0; i--)
+            for (int i = _buffer.Length - 1; i >= 0; i--)
             {
                 if (!_isIndexUsed[i])
                     _freeIndices.Push(i);
@@ -241,7 +240,7 @@ namespace NetGore.Collections
             if (OnRemove != null)
             {
                 // Remove with event handling
-                var item = _buffer[index];
+                T item = _buffer[index];
                 _buffer[index] = default(T);
                 _isIndexUsed[index] = false;
                 _freeIndices.Push(index);
@@ -266,7 +265,7 @@ namespace NetGore.Collections
             if (OnRemove != null)
             {
                 // Remove with event handling
-                var item = _buffer[index];
+                T item = _buffer[index];
                 _buffer[index] = default(T);
                 _isIndexUsed[index] = false;
                 OnRemove(this, new DArrayModifyEventArgs<T>(item, index));
@@ -306,7 +305,7 @@ namespace NetGore.Collections
                 return;
 
             // Size that the new buffer will be
-            var newSize = _highestIndex + 1;
+            int newSize = _highestIndex + 1;
 
             // Resize the buffer
             ResizeBuffer(newSize);
@@ -352,7 +351,7 @@ namespace NetGore.Collections
                     {
                         // Since we created a new value of the last highest value, we will
                         // need to push all indices skipped into the stack of free indices
-                        for (var i = _highestIndex + 1; i < index; i++)
+                        for (int i = _highestIndex + 1; i < index; i++)
                         {
                             _freeIndices.Push(i);
                         }
@@ -381,7 +380,7 @@ namespace NetGore.Collections
             var comparer = EqualityComparer<T>.Default;
 
             // Iterate through the whole list
-            for (var i = 0; i <= _highestIndex; i++)
+            for (int i = 0; i <= _highestIndex; i++)
             {
                 // Check for the requested item, returning the index if it matches
                 if (comparer.Equals(_buffer[i], item))
@@ -454,7 +453,7 @@ namespace NetGore.Collections
         public bool Contains(T item)
         {
             var comparer = EqualityComparer<T>.Default;
-            foreach (var element in _buffer)
+            foreach (T element in _buffer)
             {
                 if (comparer.Equals(element, item))
                     return true;
@@ -480,8 +479,8 @@ namespace NetGore.Collections
                 throw new ArgumentException("Not enough room to fit all the DArray into the Array from the specified arrayIndex",
                                             "array");
 
-            var j = 0;
-            for (var i = 0; i <= _highestIndex; i++)
+            int j = 0;
+            for (int i = 0; i <= _highestIndex; i++)
             {
                 if (_isIndexUsed[i])
                 {
@@ -499,7 +498,7 @@ namespace NetGore.Collections
         /// returns false if item is not found in the original DArray.</returns>
         public bool Remove(T item)
         {
-            var index = IndexOf(item);
+            int index = IndexOf(item);
 
             if (!CanGet(index) || !_isIndexUsed[index])
                 return false;
@@ -519,8 +518,8 @@ namespace NetGore.Collections
             get
             {
                 // FUTURE: Can greatly improve the performance of this by doing the count when adding/removing
-                var count = 0;
-                for (var i = 0; i <= _highestIndex; i++)
+                int count = 0;
+                for (int i = 0; i <= _highestIndex; i++)
                 {
                     if (_isIndexUsed[i])
                         count++;

@@ -1,8 +1,5 @@
 using System;
 using System.Linq;
-using DemoGame;
-using NetGore;
-using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -18,7 +15,7 @@ namespace DemoGame
         /// <param name="statCollectionType">The StatCollectionType to create the IStat for.</param>
         /// <returns>The IStat created using the given <paramref name="statType"/> and
         /// <paramref name="statCollectionType"/>.</returns>
-        public static IStat<StatType> CreateStat(StatType statType, StatCollectionType statCollectionType)
+        public static IStat CreateStat(StatType statType, StatCollectionType statCollectionType)
         {
             return CreateStat(statType, statCollectionType, 0);
         }
@@ -31,7 +28,7 @@ namespace DemoGame
         /// <param name="initialValue">The initial value to give the IStat.</param>
         /// <returns>The IStat created using the given <paramref name="statType"/> and
         /// <paramref name="statCollectionType"/> with an initial value of <paramref name="initialValue"/>.</returns>
-        public static IStat<StatType> CreateStat(StatType statType, StatCollectionType statCollectionType, int initialValue)
+        public static IStat CreateStat(StatType statType, StatCollectionType statCollectionType, int initialValue)
         {
             switch (statCollectionType)
             {

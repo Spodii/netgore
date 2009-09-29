@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore;
 using NetGore.Collections;
 
 namespace NetGore.NPCChat
@@ -120,13 +119,13 @@ namespace NetGore.NPCChat
         /// <param name="name">Name of the Type.</param>
         static void OnLoadTypeHandler(FactoryTypeCollection factoryTypeCollection, Type loadedType, string name)
         {
-            var instance = (NPCChatResponseActionBase)_typeCollection.GetTypeInstance(name);
+            NPCChatResponseActionBase instance = (NPCChatResponseActionBase)_typeCollection.GetTypeInstance(name);
 
             // Make sure the name is not already in use
             if (ContainsResponseAction(instance.Name))
             {
                 const string errmsg = "Could not add Type `{0}` - a resposne action named `{1}` already exists as Type `{2}`.";
-                var err = string.Format(errmsg, loadedType, instance.Name, _instances[instance.Name].GetType());
+                string err = string.Format(errmsg, loadedType, instance.Name, _instances[instance.Name].GetType());
                 if (log.IsFatalEnabled)
                     log.Fatal(err);
                 Debug.Fail(err);

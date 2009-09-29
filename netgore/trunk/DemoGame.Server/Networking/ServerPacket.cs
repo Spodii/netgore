@@ -4,7 +4,6 @@ using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Network;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -427,7 +426,7 @@ namespace DemoGame.Server
             return pw;
         }
 
-        public static void UpdateStat(PacketWriter pw, IStat<StatType> stat, StatCollectionType statCollectionType)
+        public static void UpdateStat(PacketWriter pw, IStat stat, StatCollectionType statCollectionType)
         {
             bool isBaseStat = (statCollectionType == StatCollectionType.Base);
 
@@ -437,7 +436,7 @@ namespace DemoGame.Server
             stat.Write(pw);
         }
 
-        public static PacketWriter UpdateStat(IStat<StatType> stat, StatCollectionType statCollectionType)
+        public static PacketWriter UpdateStat(IStat stat, StatCollectionType statCollectionType)
         {
             PacketWriter pw = GetWriter();
             UpdateStat(pw, stat, statCollectionType);

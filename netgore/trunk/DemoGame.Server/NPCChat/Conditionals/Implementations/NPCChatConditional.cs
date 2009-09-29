@@ -1,9 +1,6 @@
 using System.Diagnostics;
 using System.Linq;
-using DemoGame;
-using NetGore;
 using NetGore.NPCChat.Conditionals;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server.NPCChat.Conditionals
 {
@@ -87,7 +84,7 @@ namespace DemoGame.Server.NPCChat.Conditionals
             if (n == d)
                 return 100;
 
-            var p = (n / d) * 100.0f;
+            float p = (n / d) * 100.0f;
 
             Debug.Assert(p >= 0f);
             Debug.Assert(p <= 100f);

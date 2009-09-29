@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NetGore;
 using NetGore.IO;
 
 namespace NetGore.NPCChat.Conditionals
@@ -38,7 +37,7 @@ namespace NetGore.NPCChat.Conditionals
             switch (EvaluationType)
             {
                 case NPCChatConditionalEvaluationType.OR:
-                    foreach (var conditional in this)
+                    foreach (NPCChatConditionalCollectionItemBase conditional in this)
                     {
                         if (conditional.Evaluate(user, npc))
                             return true;
@@ -46,7 +45,7 @@ namespace NetGore.NPCChat.Conditionals
                     return false;
 
                 case NPCChatConditionalEvaluationType.AND:
-                    foreach (var conditional in this)
+                    foreach (NPCChatConditionalCollectionItemBase conditional in this)
                     {
                         if (!conditional.Evaluate(user, npc))
                             return false;
@@ -64,10 +63,10 @@ namespace NetGore.NPCChat.Conditionals
         /// <param name="reader">IValueReader to read the values from.</param>
         public void Read(IValueReader reader)
         {
-            var evaluationTypeValue = reader.ReadByte("EvaluationType");
+            byte evaluationTypeValue = reader.ReadByte("EvaluationType");
             var items = reader.ReadManyNodes("Items", x => CreateItem(x));
 
-            var evaluationType = (NPCChatConditionalEvaluationType)evaluationTypeValue;
+            NPCChatConditionalEvaluationType evaluationType = (NPCChatConditionalEvaluationType)evaluationTypeValue;
             if (!EnumHelper<NPCChatConditionalEvaluationType>.IsDefined(evaluationType))
                 throw new Exception(string.Format("Invalid NPCChatConditionalEvaluationType `{0}`.", evaluationTypeValue));
 

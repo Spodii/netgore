@@ -5,14 +5,12 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using DemoGame;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.EditorTools.NPCChat;
 using NetGore.Globalization;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
-using NetGore.RPGComponents;
 
 // TODO: Do not allow responses to be added to a EditorNPCChatDialogItem where IsBranch is set
 // TODO: Do not allow responses immediately under a branch to be altered in any ways
@@ -85,7 +83,7 @@ namespace DemoGame.NPCChatEditor
             if (EditingObjAsResponse == null)
                 return;
 
-            var item = cmbAddAction.SelectedItem as NPCChatResponseActionBase;
+            NPCChatResponseActionBase item = cmbAddAction.SelectedItem as NPCChatResponseActionBase;
             if (item == null)
                 return;
 
@@ -100,7 +98,7 @@ namespace DemoGame.NPCChatEditor
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void btnAddConditional_Click(object sender, EventArgs e)
         {
-            var newItem = new EditorNPCChatConditionalCollectionItem(_npcChatConditionals[0]);
+            EditorNPCChatConditionalCollectionItem newItem = new EditorNPCChatConditionalCollectionItem(_npcChatConditionals[0]);
             lstConditionals.TryAddToConditionalCollection(newItem);
         }
 
@@ -125,8 +123,8 @@ namespace DemoGame.NPCChatEditor
             }
 
             // Create the new dialog characterID
-            var index = CurrentDialog.GetFreeDialogItemIndex();
-            var newDialogItem = new EditorNPCChatDialogItem(index, "New dialog characterID");
+            ushort index = CurrentDialog.GetFreeDialogItemIndex();
+            EditorNPCChatDialogItem newDialogItem = new EditorNPCChatDialogItem(index, "New dialog characterID");
             CurrentDialog.Add(newDialogItem);
 
             // Hook it to the response
@@ -180,7 +178,7 @@ namespace DemoGame.NPCChatEditor
             if (EditingObjAsDialogItem == null)
                 return;
 
-            var response = new EditorNPCChatResponse("<New Response>");
+            EditorNPCChatResponse response = new EditorNPCChatResponse("<New Response>");
             EditingObjAsDialogItem.ResponseList.Add(response);
             npcChatDialogView.UpdateTree();
 
@@ -226,7 +224,7 @@ namespace DemoGame.NPCChatEditor
             // Make sure nothing is redirecting to this node
             var responsesToThisDialog = CurrentDialog.GetSourceResponses(EditingObjAsDialogItem);
 
-            var redirectCount = responsesToThisDialog.Count() - 1;
+            int redirectCount = responsesToThisDialog.Count() - 1;
             if (redirectCount > 0)
             {
                 MessageBox.Show(string.Format("Cannot delete this dialog because there are {0} redirects to it.", redirectCount));
@@ -245,9 +243,9 @@ namespace DemoGame.NPCChatEditor
 
             if (redirectedToItems.Count() > 0)
             {
-                var sb = new StringBuilder();
+                StringBuilder sb = new StringBuilder();
                 sb.AppendLine("Cannot delete this node because the following child node(s) are being redirect to:");
-                foreach (var item in redirectedToItems)
+                foreach (EditorNPCChatDialogItem item in redirectedToItems)
                 {
                     sb.AppendLine(" " + item.Index + ": " + item.Title);
                 }
@@ -259,15 +257,15 @@ namespace DemoGame.NPCChatEditor
             const string dialogInfoMsgBase =
                 "This dialog contains the following:" + "{0}Redirects: {1}{0}Dialogs: {2}{0}Responses: {3}" +
                 "{0}{0}Are you sure you wish to delete it?";
-            var dialogInfoMsg = string.Format(dialogInfoMsgBase, Environment.NewLine, redirectNodes.Count(), dialogNodes.Count(),
-                                              responseNodes.Count());
+            string dialogInfoMsg = string.Format(dialogInfoMsgBase, Environment.NewLine, redirectNodes.Count(),
+                                                 dialogNodes.Count(), responseNodes.Count());
 
             if (MessageBox.Show(dialogInfoMsg, "Delete dialog?", MessageBoxButtons.YesNo) == DialogResult.No)
                 return;
 
             // Delete
             CurrentDialog.RemoveDialogItem(EditingObjAsDialogItem);
-            foreach (var item in dialogNodes.Select(x => (EditorNPCChatDialogItem)x.Tag))
+            foreach (EditorNPCChatDialogItem item in dialogNodes.Select(x => (EditorNPCChatDialogItem)x.Tag))
             {
                 CurrentDialog.RemoveDialogItem(item);
             }
@@ -289,11 +287,11 @@ namespace DemoGame.NPCChatEditor
             if (EditingObjAsTreeNode == null)
                 return;
 
-            var parentNode = npcChatDialogView.SelectedNode.Parent;
+            TreeNode parentNode = npcChatDialogView.SelectedNode.Parent;
             if (parentNode == null)
                 return;
 
-            var parent = parentNode.Tag as EditorNPCChatResponse;
+            EditorNPCChatResponse parent = parentNode.Tag as EditorNPCChatResponse;
             if (parent == null)
                 return;
 
@@ -315,7 +313,8 @@ namespace DemoGame.NPCChatEditor
 
             if (EditingObjAsResponse != null)
             {
-                var responseSource = CurrentDialog.Items.FirstOrDefault(x => x.ResponseList.Contains(EditingObjAsResponse));
+                EditorNPCChatDialogItem responseSource =
+                    CurrentDialog.Items.FirstOrDefault(x => x.ResponseList.Contains(EditingObjAsResponse));
                 if (responseSource != null)
                 {
                     responseSource.ResponseList.Remove(EditingObjAsResponse);
@@ -334,7 +333,7 @@ namespace DemoGame.NPCChatEditor
         void button1_Click(object sender, EventArgs e)
         {
             // This button is just here for debugging purposes. Ideally, we won't even actually "need" it.
-            var dialog = CurrentDialog;
+            EditorNPCChatDialog dialog = CurrentDialog;
             npcChatDialogView.NPCChatDialog = null;
             npcChatDialogView.NPCChatDialog = dialog;
             npcChatDialogView.ExpandAll();
@@ -406,7 +405,7 @@ namespace DemoGame.NPCChatEditor
         /// <param name="dialog">The dialog.</param>
         void cmbSelectedDialog_OnChangeDialog(NPCChatDialogComboBox sender, NPCChatDialogBase dialog)
         {
-            var initialDoNotUpdateValue = _doNotUpdateObj;
+            bool initialDoNotUpdateValue = _doNotUpdateObj;
             _doNotUpdateObj = false;
 
             EditorNPCChatManager.SaveDialogs();
@@ -426,19 +425,19 @@ namespace DemoGame.NPCChatEditor
         // ReSharper disable UnusedMember.Local
         static EditorNPCChatDialog CreateTestDialog() // ReSharper restore UnusedMember.Local
         {
-            var dialog = new EditorNPCChatDialog();
+            EditorNPCChatDialog dialog = new EditorNPCChatDialog();
 
-            var haveYouDoneThisQuest = new EditorNPCChatDialogItem(0, "Have you done this quest?");
+            EditorNPCChatDialogItem haveYouDoneThisQuest = new EditorNPCChatDialogItem(0, "Have you done this quest?");
             haveYouDoneThisQuest.AddResponse(new EditorNPCChatResponse(1, "False"), new EditorNPCChatResponse(2, "True"));
 
-            var hasNotDoneThisQuest = new EditorNPCChatDialogItem(1, "Think you can help me out?");
+            EditorNPCChatDialogItem hasNotDoneThisQuest = new EditorNPCChatDialogItem(1, "Think you can help me out?");
             hasNotDoneThisQuest.AddResponse(new EditorNPCChatResponse(3, "Yes"), new EditorNPCChatResponse(4, "No"));
 
-            var acceptHelp = new EditorNPCChatDialogItem(3, "Sweet, thanks!");
+            EditorNPCChatDialogItem acceptHelp = new EditorNPCChatDialogItem(3, "Sweet, thanks!");
 
-            var declineHelp = new EditorNPCChatDialogItem(4, "Fine. Screw you too, you selfish jerk!");
+            EditorNPCChatDialogItem declineHelp = new EditorNPCChatDialogItem(4, "Fine. Screw you too, you selfish jerk!");
 
-            var hasDoneThisQuest = new EditorNPCChatDialogItem(2, "Sorry dude, you already did this quest!");
+            EditorNPCChatDialogItem hasDoneThisQuest = new EditorNPCChatDialogItem(2, "Sorry dude, you already did this quest!");
             hasDoneThisQuest.AddResponse(new EditorNPCChatResponse(1, "So? Just let me fucking do it!"),
                                          new EditorNPCChatResponse("Ok, fine, whatever. Asshole."));
 
@@ -457,7 +456,7 @@ namespace DemoGame.NPCChatEditor
         {
             txtDialogText.Text = string.Empty;
 
-            foreach (var tab in tabControl.TabPages.Cast<TabPage>())
+            foreach (TabPage tab in tabControl.TabPages.Cast<TabPage>())
             {
                 if (tab == enabledTab)
                 {
@@ -490,7 +489,7 @@ namespace DemoGame.NPCChatEditor
             {
                 // Set controls that are initially disabled in the tab control to always be disabled
                 var controls = GetAllControls(tcChatDialogItem);
-                foreach (var control in controls)
+                foreach (Control control in controls)
                 {
                     if (control.Enabled == false)
                         control.EnabledChanged += ((obj, eArgs) => ((Control)obj).Enabled = false);
@@ -550,10 +549,10 @@ namespace DemoGame.NPCChatEditor
         /// <returns>All the Controls from the given <paramref name="root"/>.</returns>
         static IEnumerable<Control> GetAllControls(Control root)
         {
-            foreach (var child in root.Controls.Cast<Control>())
+            foreach (Control child in root.Controls.Cast<Control>())
             {
                 yield return child;
-                foreach (var c2 in GetAllControls(child))
+                foreach (Control c2 in GetAllControls(child))
                 {
                     yield return c2;
                 }
@@ -567,10 +566,10 @@ namespace DemoGame.NPCChatEditor
         /// <returns>All of the child TreeNodes from the given <paramref name="root"/>.</returns>
         static IEnumerable<TreeNode> GetChildNodes(TreeNode root)
         {
-            foreach (var node in root.Nodes.Cast<TreeNode>())
+            foreach (TreeNode node in root.Nodes.Cast<TreeNode>())
             {
                 yield return node;
-                foreach (var n2 in GetChildNodes(node))
+                foreach (TreeNode n2 in GetChildNodes(node))
                 {
                     yield return n2;
                 }
@@ -586,7 +585,7 @@ namespace DemoGame.NPCChatEditor
 
             if (e.KeyCode == Keys.Delete)
             {
-                var item = cmbAddAction.SelectedItem as NPCChatResponseActionBase;
+                NPCChatResponseActionBase item = cmbAddAction.SelectedItem as NPCChatResponseActionBase;
                 if (item == null)
                     return;
 
@@ -622,7 +621,7 @@ namespace DemoGame.NPCChatEditor
         /// <param name="enabled">True to set the controls as enabled; false for disabled.</param>
         static void SetAllChildrenEnabled(IEnumerable controls, bool enabled)
         {
-            foreach (var child in controls.OfType<Control>())
+            foreach (Control child in controls.OfType<Control>())
             {
                 SetAllChildrenEnabled(child.Controls, enabled);
                 child.Enabled = enabled;
@@ -694,7 +693,7 @@ namespace DemoGame.NPCChatEditor
                 DisableAllTabsExcept(tcChatDialogItem, tpRedirect);
                 txtTitle.Enabled = false;
 
-                var redirectTo = (EditorNPCChatDialogItem)EditingObjAsTreeNode.Tag;
+                EditorNPCChatDialogItem redirectTo = (EditorNPCChatDialogItem)EditingObjAsTreeNode.Tag;
                 txtTitle.Text = redirectTo.Text;
                 txtRedirectIndex.Text = redirectTo.Index.ToString();
             }
@@ -757,7 +756,7 @@ namespace DemoGame.NPCChatEditor
             if (npcChatDialogView.SelectedNode.Parent == null)
                 return;
 
-            var response = npcChatDialogView.SelectedNode.Parent.Tag as EditorNPCChatResponse;
+            EditorNPCChatResponse response = npcChatDialogView.SelectedNode.Parent.Tag as EditorNPCChatResponse;
             if (response == null)
                 return;
 
@@ -775,7 +774,7 @@ namespace DemoGame.NPCChatEditor
                 return;
             }
 
-            var newNode = CurrentDialog.GetDialogItem(newIndex);
+            NPCChatDialogItemBase newNode = CurrentDialog.GetDialogItem(newIndex);
             if (newNode == null)
             {
                 MessageBox.Show("Invalid node page index entered.");

@@ -2,12 +2,10 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.IO;
-using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -45,23 +43,23 @@ namespace DemoGame
             if (gameMessages == null)
                 throw new ArgumentNullException("gameMessages");
 
-            var messageID = bitStream.ReadByte();
-            var paramCount = bitStream.ReadByte();
+            byte messageID = bitStream.ReadByte();
+            byte paramCount = bitStream.ReadByte();
 
             // Parse the parameters
             string[] parameters = null;
             if (paramCount > 0)
             {
                 parameters = new string[paramCount];
-                for (var i = 0; i < paramCount; i++)
+                for (int i = 0; i < paramCount; i++)
                 {
                     parameters[i] = bitStream.ReadString(GameData.MaxServerMessageParameterLength);
                 }
             }
 
             // Parse the message and return it
-            var gameMessage = (GameMessage)messageID;
-            var message = gameMessages.GetMessage(gameMessage, parameters);
+            GameMessage gameMessage = (GameMessage)messageID;
+            string message = gameMessages.GetMessage(gameMessage, parameters);
 
             return message;
         }
@@ -99,10 +97,10 @@ namespace DemoGame
         /// <param name="bitStream">BitStream to read from.</param>
         /// <param name="statCollection">IStatCollection that the stat value will be loaded into. This IStatCollection
         /// must contain the StatType being read.</param>
-        public static void ReadStat(this BitStream bitStream, IStatCollection<StatType> statCollection)
+        public static void ReadStat(this BitStream bitStream, IStatCollection statCollection)
         {
-            var statType = bitStream.ReadEnum(StatTypeHelper.Instance);
-            var stat = statCollection.GetStat(statType);
+            StatType statType = bitStream.ReadEnum(StatTypeHelper.Instance);
+            IStat stat = statCollection.GetStat(statType);
             stat.Read(bitStream);
         }
 
@@ -113,20 +111,20 @@ namespace DemoGame
         /// <param name="bitStream">BitStream to read from</param>
         /// <param name="statCollection">IStatCollection to read the stat values into. This IStatCollection
         /// must contain all of the StatTypes being read.</param>
-        public static void ReadStatCollection(this BitStream bitStream, IStatCollection<StatType> statCollection)
+        public static void ReadStatCollection(this BitStream bitStream, IStatCollection statCollection)
         {
             // Set all current stats to zero
-            var stats = statCollection;
-            foreach (var stat in stats)
+            IStatCollection stats = statCollection;
+            foreach (IStat stat in stats)
             {
                 stat.Value = 0;
             }
 
             // Get the number of stats
-            var numStats = bitStream.ReadByte();
+            byte numStats = bitStream.ReadByte();
 
             // Read all of the stats
-            for (var i = 0; i < numStats; i++)
+            for (int i = 0; i < numStats; i++)
             {
                 ReadStat(bitStream, statCollection);
             }
@@ -186,10 +184,10 @@ namespace DemoGame
                 bitStream.Write((byte)args.Length);
 
                 // Write each parameter
-                for (var i = 0; i < args.Length; i++)
+                for (int i = 0; i < args.Length; i++)
                 {
                     // Make sure the object isn't null
-                    var obj = args[i];
+                    object obj = args[i];
                     if (obj == null)
                     {
                         const string errmsg = "Null object argument found when writing GameMessage.";
@@ -203,7 +201,7 @@ namespace DemoGame
                     }
 
                     // Convert to a string, and ensure the string is short enough (trimming if it is too long)
-                    var str = obj.ToString();
+                    string str = obj.ToString();
                     if (str.Length > GameData.MaxServerMessageParameterLength)
                         str = str.Substring(0, GameData.MaxServerMessageParameterLength);
 
@@ -241,7 +239,7 @@ namespace DemoGame
         public static void Write(this BitStream bitStream, ServerPacketID serverPacketID)
         {
             // Write as a byte instead of using the enum I/O due to the way the packet ID manager works
-            var value = (byte)serverPacketID;
+            byte value = (byte)serverPacketID;
             bitStream.Write(value, _serverPacketIDBits);
         }
 
@@ -253,7 +251,7 @@ namespace DemoGame
         public static void Write(this BitStream bitStream, ClientPacketID clientPacketID)
         {
             // Write as a byte instead of using the enum I/O due to the way the packet ID manager works
-            var value = (byte)clientPacketID;
+            byte value = (byte)clientPacketID;
             bitStream.Write(value, _clientPacketIDBits);
         }
 
@@ -272,7 +270,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="stat">IStat to write.</param>
-        public static void Write(this BitStream bitStream, IStat<StatType> stat)
+        public static void Write(this BitStream bitStream, IStat stat)
         {
             bitStream.WriteEnum(StatTypeHelper.Instance, stat.StatType);
             stat.Write(bitStream);
@@ -284,13 +282,13 @@ namespace DemoGame
         /// </summary>
         /// <param name="bitStream">BitStream to write to.</param>
         /// <param name="statCollection">IStatCollection containing the stat values to write.</param>
-        public static void Write(this BitStream bitStream, IStatCollection<StatType> statCollection)
+        public static void Write(this BitStream bitStream, IStatCollection statCollection)
         {
             // Get the IEnumerable of all the non-zero stats
             var nonZeroStats = statCollection.Where(stat => stat.Value != 0);
 
             // Get the number of stats
-            var numStats = (byte)nonZeroStats.Count();
+            byte numStats = (byte)nonZeroStats.Count();
             Debug.Assert(numStats == nonZeroStats.Count(),
                          "Too many stats in the collection - byte overflow! numStats may need to be raised to a ushort.");
 
@@ -298,7 +296,7 @@ namespace DemoGame
             bitStream.Write(numStats);
 
             // Write each individual non-zero stat
-            foreach (var stat in nonZeroStats)
+            foreach (IStat stat in nonZeroStats)
             {
                 bitStream.Write(stat);
             }

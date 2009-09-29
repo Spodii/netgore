@@ -2,13 +2,11 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Db;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -77,22 +75,20 @@ namespace DemoGame.Server
             return Character.Inventory.CanAdd((ItemEntity)item);
         }
 
-        void CharacterEquipped_OnEquip(EquippedBase<ItemEntity, ItemType, EquipmentSlot> equippedBase, ItemEntity item,
-                                       EquipmentSlot slot)
+        void CharacterEquipped_OnEquip(EquippedBase<ItemEntity> equippedBase, ItemEntity item, EquipmentSlot slot)
         {
             Debug.Assert(item != null);
 
             if (_isPersistent)
             {
-                var values = new CharacterEquippedTable(Character.ID, item.ID, slot);
+                CharacterEquippedTable values = new CharacterEquippedTable(Character.ID, item.ID, slot);
                 DbController.GetQuery<InsertCharacterEquippedItemQuery>().Execute(values);
             }
 
             SendSlotUpdate(slot, item.GraphicIndex);
         }
 
-        void CharacterEquipped_OnRemove(EquippedBase<ItemEntity, ItemType, EquipmentSlot> equippedBase, ItemEntity item,
-                                        EquipmentSlot slot)
+        void CharacterEquipped_OnRemove(EquippedBase<ItemEntity> equippedBase, ItemEntity item, EquipmentSlot slot)
         {
             Debug.Assert(item != null);
 
@@ -103,7 +99,7 @@ namespace DemoGame.Server
             if (item.IsDisposed)
                 return;
 
-            var remainder = Character.Inventory.Add(item);
+            ItemEntity remainder = Character.Inventory.Add(item);
 
             SendSlotUpdate(slot, null);
 
@@ -143,7 +139,7 @@ namespace DemoGame.Server
             // Load all the items
             foreach (var item in items)
             {
-                var itemEntity = new ItemEntity(item.Value);
+                ItemEntity itemEntity = new ItemEntity(item.Value);
                 TrySetSlot(item.Key, itemEntity);
                 SendSlotUpdate(item.Key, itemEntity.GraphicIndex);
             }
@@ -178,7 +174,7 @@ namespace DemoGame.Server
             // database as garbage
             if (!_isPersistent)
             {
-                foreach (var item in this.Select(x => x.Value))
+                foreach (ItemEntity item in this.Select(x => x.Value))
                 {
                     item.Dispose();
                 }

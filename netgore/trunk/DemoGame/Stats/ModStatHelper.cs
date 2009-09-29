@@ -1,7 +1,4 @@
 using System.Linq;
-using DemoGame;
-using NetGore;
-using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -17,14 +14,14 @@ namespace DemoGame
         /// <param name="statType">The StatType to calculate the value for.</param>
         /// <param name="modders">The IModStatContainers to use for calculating the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate(IStatCollection<StatType> baseStats, StatType statType, params IModStatContainer[] modders)
+        public static int Calculate(IStatCollection baseStats, StatType statType, params IModStatContainer[] modders)
         {
-            var value = baseStats[statType];
+            int value = baseStats[statType];
 
             if (modders == null || modders.Length == 0)
                 return value;
 
-            foreach (var modder in modders)
+            foreach (IModStatContainer modder in modders)
             {
                 value += modder.GetStatModBonus(statType);
             }
@@ -39,9 +36,9 @@ namespace DemoGame
         /// <param name="statType">The StatType to calculate the value for.</param>
         /// <param name="modder1">The first IModStatContainers to use for calculating the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate(IStatCollection<StatType> baseStats, StatType statType, IModStatContainer modder1)
+        public static int Calculate(IStatCollection baseStats, StatType statType, IModStatContainer modder1)
         {
-            var value = baseStats[statType];
+            int value = baseStats[statType];
 
             value += modder1.GetStatModBonus(statType);
 
@@ -56,10 +53,10 @@ namespace DemoGame
         /// <param name="modder1">The first IModStatContainers to use for calculating the modified Stat value.</param>
         /// <param name="modder2">The second IModStatContainers to use for calculating the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate(IStatCollection<StatType> baseStats, StatType statType, IModStatContainer modder1,
+        public static int Calculate(IStatCollection baseStats, StatType statType, IModStatContainer modder1,
                                     IModStatContainer modder2)
         {
-            var value = baseStats[statType];
+            int value = baseStats[statType];
 
             value += modder1.GetStatModBonus(statType);
             value += modder2.GetStatModBonus(statType);
@@ -76,10 +73,10 @@ namespace DemoGame
         /// <param name="modder2">The second IModStatContainers to use for calculating the modified Stat value.</param>
         /// <param name="modder3">The third IModStatContainers to use for calculating the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate(IStatCollection<StatType> baseStats, StatType statType, IModStatContainer modder1,
+        public static int Calculate(IStatCollection baseStats, StatType statType, IModStatContainer modder1,
                                     IModStatContainer modder2, IModStatContainer modder3)
         {
-            var value = baseStats[statType];
+            int value = baseStats[statType];
 
             value += modder1.GetStatModBonus(statType);
             value += modder2.GetStatModBonus(statType);
@@ -98,10 +95,10 @@ namespace DemoGame
         /// <param name="modder3">The third IModStatContainers to use for calculating the modified Stat value.</param>
         /// <param name="modder4">The fourth IModStatContainers to use for calculating the modified Stat value.</param>
         /// <returns>The modified Stat value.</returns>
-        public static int Calculate(IStatCollection<StatType> baseStats, StatType statType, IModStatContainer modder1,
+        public static int Calculate(IStatCollection baseStats, StatType statType, IModStatContainer modder1,
                                     IModStatContainer modder2, IModStatContainer modder3, IModStatContainer modder4)
         {
-            var value = baseStats[statType];
+            int value = baseStats[statType];
 
             value += modder1.GetStatModBonus(statType);
             value += modder2.GetStatModBonus(statType);

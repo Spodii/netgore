@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework.Graphics;
@@ -66,14 +66,14 @@ namespace DemoGame.Client
                 CreateValueLine(ret, "MP", itemInfo.MP, bonusColor);
 
             // Stat bonuses
-            foreach (var stat in itemInfo.BaseStats)
+            foreach (IStat stat in itemInfo.BaseStats)
             {
                 if (stat.Value != 0)
                     CreateValueLine(ret, stat.StatType, stat.Value, bonusColor);
             }
 
             // Stat requirements
-            foreach (var stat in itemInfo.ReqStats)
+            foreach (IStat stat in itemInfo.ReqStats)
             {
                 if (stat.Value != 0)
                     CreateValueLine(ret, stat.StatType, stat.Value, reqColor);

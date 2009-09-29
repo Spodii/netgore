@@ -1,7 +1,4 @@
 using System.Linq;
-using DemoGame;
-using NetGore;
-using NetGore.RPGComponents;
 
 // TODO: Should make an error message appear if the StatType enum skips any numeric values, since quite a few things rely on it going from 0 to <length - 1>
 

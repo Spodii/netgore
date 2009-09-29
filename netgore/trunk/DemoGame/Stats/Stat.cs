@@ -1,16 +1,13 @@
 using System.Data;
 using System.Linq;
-using DemoGame;
-using NetGore;
 using NetGore.IO;
-using NetGore.RPGComponents;
 
 namespace DemoGame
 {
     /// <summary>
     /// Describes a single IStat, containing the StatType and value of the IStat.
     /// </summary>
-    public class Stat : IStat<StatType>
+    public class Stat : IStat
     {
         /// <summary>
         /// The type of Stat.
@@ -26,7 +23,7 @@ namespace DemoGame
         /// Stat constructor.
         /// </summary>
         /// <param name="istatToCopy">The IStat to copy the values from.</param>
-        public Stat(IStat<StatType> istatToCopy)
+        public Stat(IStat istatToCopy)
         {
             _statType = istatToCopy.StatType;
             _value = istatToCopy.DeepCopyValueType();
@@ -38,7 +35,7 @@ namespace DemoGame
         /// <param name="istatToCopy">The IStat to copy the values from.</param>
         /// <param name="initialValue">The initial value to assign to this Stat. If not specified, the initial value
         /// will end up being equal to the Value of <paramref name="istatToCopy"/>.</param>
-        public Stat(IStat<StatType> istatToCopy, int initialValue) : this(istatToCopy)
+        public Stat(IStat istatToCopy, int initialValue) : this(istatToCopy)
         {
             Value = initialValue;
         }
@@ -78,7 +75,7 @@ namespace DemoGame
             return _statType + ": " + Value;
         }
 
-        #region IStat<StatType> Members
+        #region IStat Members
 
         /// <summary>
         /// Gets the StatType of this IStat.
@@ -143,7 +140,7 @@ namespace DemoGame
         /// <summary>
         /// Notifies listeners that the value of the stat has changed.
         /// </summary>
-        public event IStatEventHandler<StatType> OnChange;
+        public event IStatEventHandler OnChange;
 
         /// <summary>
         /// Writes the Value property of the IStat directly into the specified BitStream. The BitStream must not be null,
@@ -170,7 +167,7 @@ namespace DemoGame
         /// containing the same IStatValueType with the same value, and same StatType.
         /// </summary>
         /// <returns>The deep copy of the IStat.</returns>
-        public virtual IStat<StatType> DeepCopy()
+        public virtual IStat DeepCopy()
         {
             return new Stat(StatType, _value, Value);
         }

@@ -110,6 +110,7 @@ namespace DemoGame.Server
             DBTableValidator.ValidateTables(_dbController);
 
             // Load the game data and such
+            GameData.Load();
             InitializeScripts();
 
             // Update the GameData table

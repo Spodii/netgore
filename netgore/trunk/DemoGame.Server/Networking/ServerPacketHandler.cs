@@ -8,7 +8,6 @@ using NetGore;
 using NetGore.Db;
 using NetGore.IO;
 using NetGore.Network;
-using NetGore.RPGComponents;
 
 // ReSharper disable UnusedMember.Local
 // ReSharper disable UnusedParameter.Local

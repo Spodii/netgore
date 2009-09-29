@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using NetGore;
 using NetGore.Globalization;
 
 namespace NetGore
@@ -293,7 +292,7 @@ namespace NetGore
             if (string.IsNullOrEmpty(value))
                 return defaultValue;
 
-            var enumValue = EnumHelper<TEnum>.Parse(value);
+            TEnum enumValue = EnumHelper<TEnum>.Parse(value);
             if (!EnumHelper<TEnum>.IsDefined(enumValue))
                 return defaultValue;
 

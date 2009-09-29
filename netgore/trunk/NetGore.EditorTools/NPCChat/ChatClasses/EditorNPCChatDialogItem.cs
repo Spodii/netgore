@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
@@ -143,7 +142,7 @@ namespace NetGore.EditorTools.NPCChat
             if (responses == null)
                 return;
 
-            foreach (var response in responses)
+            foreach (EditorNPCChatResponse response in responses)
             {
                 AddResponse(response);
             }
@@ -159,7 +158,7 @@ namespace NetGore.EditorTools.NPCChat
                 throw new ArgumentNullException("response");
 
             _responses.Add(response);
-            var index = _responses.IndexOf(response);
+            int index = _responses.IndexOf(response);
             response.SetValue((byte)index);
 
             EnsureResponseValuesAreValid();
@@ -190,7 +189,7 @@ namespace NetGore.EditorTools.NPCChat
         /// </summary>
         void EnsureResponseValuesAreValid()
         {
-            for (var i = 0; i < _responses.Count; i++)
+            for (int i = 0; i < _responses.Count; i++)
             {
                 if (_responses[i].Value != i)
                     _responses[i].SetValue((byte)i);
@@ -257,7 +256,7 @@ namespace NetGore.EditorTools.NPCChat
             _responses.AddRange(responses.Cast<EditorNPCChatResponse>().OrderBy(x => x.Value));
             EnsureResponseValuesAreValid();
 
-            var c = conditionals as EditorNPCChatConditionalCollection;
+            EditorNPCChatConditionalCollection c = conditionals as EditorNPCChatConditionalCollection;
             _conditionals = c ?? new EditorNPCChatConditionalCollection();
         }
 
@@ -312,8 +311,8 @@ namespace NetGore.EditorTools.NPCChat
             }
 
             // Add responses until we have exactly 2
-            var responsesNeeded = 2 - ResponseList.Count;
-            for (var i = 0; i < responsesNeeded; i++)
+            int responsesNeeded = 2 - ResponseList.Count;
+            for (int i = 0; i < responsesNeeded; i++)
             {
                 AddResponse(new EditorNPCChatResponse("New response"));
             }

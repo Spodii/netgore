@@ -1,9 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DemoGame;
-using NetGore;
-using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -11,10 +8,10 @@ namespace DemoGame
     /// A specialized collection that contains every StatType. This is the ideal IStatCollection to use when you want
     /// the collection to always contain every StatType.
     /// </summary>
-    public class FullStatCollection : IStatCollection<StatType>
+    public class FullStatCollection : IStatCollection
     {
         readonly StatCollectionType _collectionType;
-        readonly IStat<StatType>[] _stats;
+        readonly IStat[] _stats;
 
         /// <summary>
         /// FullStatCollection constructor.
@@ -24,11 +21,11 @@ namespace DemoGame
         {
             _collectionType = collectionType;
 
-            _stats = new IStat<StatType>[StatTypeHelper.Instance.MaxValue + 1];
+            _stats = new IStat[StatTypeHelper.Instance.MaxValue + 1];
 
-            foreach (var statType in StatTypeHelper.Values)
+            foreach (StatType statType in StatTypeHelper.Values)
             {
-                var istat = StatFactory.CreateStat(statType, collectionType);
+                IStat istat = StatFactory.CreateStat(statType, collectionType);
                 _stats[statType.GetValue()] = istat;
             }
         }
@@ -41,8 +38,8 @@ namespace DemoGame
         {
             _collectionType = source._collectionType;
 
-            _stats = new IStat<StatType>[source._stats.Length];
-            for (var i = 0; i < _stats.Length; i++)
+            _stats = new IStat[source._stats.Length];
+            for (int i = 0; i < _stats.Length; i++)
             {
                 _stats[i] = source._stats[i].DeepCopy();
             }
@@ -56,9 +53,9 @@ namespace DemoGame
         /// of <paramref name="other"/>.</returns>
         public bool AreValuesEqual(FullStatCollection other)
         {
-            for (var i = 0; i < _stats.Length; i++)
+            for (int i = 0; i < _stats.Length; i++)
             {
-                var statType = (StatType)i;
+                StatType statType = (StatType)i;
                 if (this[statType] != other[statType])
                     return false;
             }
@@ -81,13 +78,13 @@ namespace DemoGame
         /// <param name="value">Value to set the stats to.</param>
         public void SetAll(int value)
         {
-            foreach (var stat in _stats)
+            foreach (IStat stat in _stats)
             {
                 stat.Value = value;
             }
         }
 
-        #region IStatCollection<StatType> Members
+        #region IStatCollection Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -96,9 +93,9 @@ namespace DemoGame
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public IEnumerator<IStat<StatType>> GetEnumerator()
+        public IEnumerator<IStat> GetEnumerator()
         {
-            for (var i = 0; i < _stats.Length; i++)
+            for (int i = 0; i < _stats.Length; i++)
             {
                 yield return _stats[i];
             }
@@ -151,7 +148,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="statType">The StatType of the stat to get.</param>
         /// <returns>The IStat for the stat of the given <paramref name="statType"/>.</returns>
-        public IStat<StatType> GetStat(StatType statType)
+        public IStat GetStat(StatType statType)
         {
             return _stats[statType.GetValue()];
         }
@@ -164,7 +161,7 @@ namespace DemoGame
         /// returns false, this value will be null.</param>
         /// <returns>True if the stat with the given <paramref name="statType"/> was found and
         /// successfully returned; otherwise false.</returns>
-        public bool TryGetStat(StatType statType, out IStat<StatType> stat)
+        public bool TryGetStat(StatType statType, out IStat stat)
         {
             stat = GetStat(statType);
             return true;
@@ -228,7 +225,7 @@ namespace DemoGame
         /// be done. Any StatType in <paramref name="values"/> but not in this IStatCollection will behave
         /// the same as if the value of a StatType not in this IStatCollection was attempted to be assigned
         /// in any other way.</param>
-        public void CopyValuesFrom(IEnumerable<IStat<StatType>> values, bool checkContains)
+        public void CopyValuesFrom(IEnumerable<IStat> values, bool checkContains)
         {
             CopyValuesFrom(values.xxxToKeyValuePairs(), checkContains);
         }

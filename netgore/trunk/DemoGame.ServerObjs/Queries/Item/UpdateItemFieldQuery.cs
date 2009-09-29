@@ -2,11 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using DemoGame;
 using DemoGame.Server.DbObjs;
-using NetGore;
 using NetGore.Db;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server.Queries
 {
@@ -41,12 +38,12 @@ namespace DemoGame.Server.Queries
             InternalUpdateItemFieldQuery fieldQuery;
             if (!_fieldQueries.TryGetValue(field, out fieldQuery))
             {
-                var query = string.Format(_queryString, field.ToLower());
+                string query = string.Format(_queryString, field.ToLower());
                 fieldQuery = new InternalUpdateItemFieldQuery(_connectionPool, query);
                 _fieldQueries.Add(field, fieldQuery);
             }
 
-            var values = new QueryArgs(itemID, value);
+            QueryArgs values = new QueryArgs(itemID, value);
             fieldQuery.Execute(values);
         }
 
@@ -62,7 +59,7 @@ namespace DemoGame.Server.Queries
 
             _disposed = true;
 
-            foreach (var query in _fieldQueries.Values)
+            foreach (InternalUpdateItemFieldQuery query in _fieldQueries.Values)
             {
                 query.Dispose();
             }

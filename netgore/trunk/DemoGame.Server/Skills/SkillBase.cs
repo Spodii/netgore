@@ -2,7 +2,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
-using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -18,7 +17,7 @@ namespace DemoGame.Server
         /// <summary>
         /// Gets the collection of stats required by this Skill.
         /// </summary>
-        public IStatCollection<StatType> RequiredStats
+        public IStatCollection RequiredStats
         {
             get { return _requiredStats; }
         }
@@ -198,7 +197,7 @@ namespace DemoGame.Server
         /// <returns>True if the <paramref name="character"/> has the required stats to use this skill; otherwise false.</returns>
         bool HasRequiredStats(Character character)
         {
-            foreach (var reqStat in _requiredStats)
+            foreach (IStat reqStat in _requiredStats)
             {
                 int characterStatValue;
                 if (!character.ModStats.TryGetStatValue(reqStat.StatType, out characterStatValue))
@@ -259,7 +258,7 @@ namespace DemoGame.Server
             /// <summary>
             /// SkillStatCollection constructor.
             /// </summary>
-            public SkillStatCollection() : base(Enumerable.Empty<StatType>(), NetGore.RPGComponents.StatCollectionType.Requirement)
+            public SkillStatCollection() : base(Enumerable.Empty<StatType>(), StatCollectionType.Requirement)
             {
                 // TODO: !! The RequiredStats is never populated
             }

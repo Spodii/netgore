@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame;
 using DemoGame.Server.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -11,7 +10,7 @@ using NetGore;
 using NetGore.Collections;
 using NetGore.Db;
 using NetGore.IO;
-using NetGore.RPGComponents;
+using NetGore.Network;
 
 namespace DemoGame.Server
 {
@@ -125,7 +124,7 @@ namespace DemoGame.Server
         {
             // Add IRespawnable entities that are not ready to spawn to the respawn queue
             // Everything else goes right into the map like normal
-            var respawnable = entity as IRespawnable;
+            IRespawnable respawnable = entity as IRespawnable;
             if (respawnable != null && !respawnable.ReadyToRespawn(GetTime()))
             {
                 AddToRespawn(respawnable);
@@ -165,7 +164,7 @@ namespace DemoGame.Server
             character.Map = this;
 
             // Added character is a User
-            var user = character as User;
+            User user = character as User;
             if (user != null)
             {
                 Debug.Assert(!Users.Contains(user), string.Format("Users list already contains `{0}`!", user));
@@ -175,7 +174,7 @@ namespace DemoGame.Server
             }
 
             // Added character is a NPC
-            var npc = character as NPC;
+            NPC npc = character as NPC;
             if (npc != null)
             {
                 Debug.Assert(!NPCs.Contains(npc), string.Format("NPCs list already contains `{0}`!", npc));
@@ -235,7 +234,7 @@ namespace DemoGame.Server
             }
 
             // Create the characterID, add it to the map, and return the reference
-            var item = new ItemEntity(template, pos, amount);
+            ItemEntity item = new ItemEntity(template, pos, amount);
             AddEntity(item);
             return item;
         }
@@ -265,10 +264,10 @@ namespace DemoGame.Server
             // Create the DynamicEntity for everyone on the map
             if (_users.Count > 0)
             {
-                var de = entity as DynamicEntity;
+                DynamicEntity de = entity as DynamicEntity;
                 if (de != null)
                 {
-                    using (var pw = ServerPacket.CreateDynamicEntity(de))
+                    using (PacketWriter pw = ServerPacket.CreateDynamicEntity(de))
                     {
                         Send(pw);
                     }
@@ -276,7 +275,7 @@ namespace DemoGame.Server
             }
 
             // Handle the different types of entities
-            var character = entity as Character;
+            Character character = entity as Character;
             if (character != null)
                 CharacterAdded(character);
         }
@@ -294,14 +293,14 @@ namespace DemoGame.Server
             DynamicEntity dynamicEntity;
             if ((dynamicEntity = entity as DynamicEntity) != null)
             {
-                var character = entity as Character;
+                Character character = entity as Character;
                 if (character != null)
                     CharacterRemoved(character);
 
                 // Destroy the DynamicEntity for everyone on the map
                 if (_users.Count > 0)
                 {
-                    using (var pw = ServerPacket.RemoveDynamicEntity(dynamicEntity))
+                    using (PacketWriter pw = ServerPacket.RemoveDynamicEntity(dynamicEntity))
                     {
                         Send(pw);
                     }
@@ -320,15 +319,15 @@ namespace DemoGame.Server
         IEnumerable<User> GetUsersToSyncPandVTo(DynamicEntity entityToSynchronize)
             // ReSharper restore SuggestBaseTypeForParameter
         {
-            var xPad = (int)GameData.ScreenSize.X;
-            var yPad = (int)GameData.ScreenSize.Y;
+            int xPad = (int)GameData.ScreenSize.X;
+            int yPad = (int)GameData.ScreenSize.Y;
 
-            var r = entityToSynchronize.CB.ToRectangle();
-            var syncRegion = new Rectangle(r.X - xPad, r.Y - yPad, r.Width + xPad * 2, r.Height + xPad * 2);
+            Rectangle r = entityToSynchronize.CB.ToRectangle();
+            Rectangle syncRegion = new Rectangle(r.X - xPad, r.Y - yPad, r.Width + xPad * 2, r.Height + xPad * 2);
 
-            foreach (var user in Users)
+            foreach (User user in Users)
             {
-                var userRegion = user.CB.ToRectangle();
+                Rectangle userRegion = user.CB.ToRectangle();
                 if (syncRegion.Intersects(userRegion))
                     yield return user;
             }
@@ -382,7 +381,7 @@ namespace DemoGame.Server
             }
 
             // Send the data to all users in the map
-            foreach (var user in Users)
+            foreach (User user in Users)
             {
                 if (user != null)
                 {
@@ -405,20 +404,20 @@ namespace DemoGame.Server
         /// <param name="user">User to send the map data to</param>
         void SendMapData(User user)
         {
-            using (var pw = ServerPacket.GetWriter())
+            using (PacketWriter pw = ServerPacket.GetWriter())
             {
                 // Tell the user to change the map
                 ServerPacket.SetMap(pw, Index);
                 user.Send(pw);
 
                 // Send dynamic entities
-                foreach (var dynamicEntity in DynamicEntities)
+                foreach (DynamicEntity dynamicEntity in DynamicEntities)
                 {
                     pw.Reset();
                     ServerPacket.CreateDynamicEntity(pw, dynamicEntity);
                     user.Send(pw);
 
-                    var character = dynamicEntity as Character;
+                    Character character = dynamicEntity as Character;
                     if (character != null)
                         character.SynchronizeSPTo(user);
                 }
@@ -443,15 +442,15 @@ namespace DemoGame.Server
             if (data == null)
                 return;
 
-            var screenSize = GameData.ScreenSize * 1.25f;
-            var min = origin - screenSize;
-            var max = origin + screenSize;
+            Vector2 screenSize = GameData.ScreenSize * 1.25f;
+            Vector2 min = origin - screenSize;
+            Vector2 max = origin + screenSize;
 
-            foreach (var user in Users)
+            foreach (User user in Users)
             {
                 if (user != null)
                 {
-                    var p = user.Position;
+                    Vector2 p = user.Position;
                     if (p.X > min.X && p.Y > min.Y && p.X < max.X && p.Y < max.Y)
                         user.Send(data);
                 }
@@ -469,12 +468,12 @@ namespace DemoGame.Server
             if (_users.Count == 0)
                 return;
 
-            var currentTime = GetTime();
+            int currentTime = GetTime();
 
-            using (var pw = ServerPacket.GetWriter())
+            using (PacketWriter pw = ServerPacket.GetWriter())
             {
                 // Loop through each DynamicEntity
-                foreach (var dynamicEntity in DynamicEntities)
+                foreach (DynamicEntity dynamicEntity in DynamicEntities)
                 {
                     // Check to synchronize everything but the Position and Velocity
                     if (!dynamicEntity.IsSynchronized)
@@ -496,7 +495,7 @@ namespace DemoGame.Server
                         {
                             pw.Reset();
                             ServerPacket.UpdateVelocityAndPosition(pw, dynamicEntity, currentTime);
-                            foreach (var user in usersToSyncTo)
+                            foreach (User user in usersToSyncTo)
                             {
                                 user.SendUnreliableBuffered(pw);
                             }
@@ -506,7 +505,7 @@ namespace DemoGame.Server
             }
 
             // Flush the unreliable buffers for all of the users
-            foreach (var user in Users)
+            foreach (User user in Users)
             {
                 user.FlushUnreliableBuffer();
             }
@@ -545,7 +544,7 @@ namespace DemoGame.Server
 
             // Dispose of all the disposable entities
             var disposableEntities = Entities.OfType<IDisposable>();
-            foreach (var entity in disposableEntities)
+            foreach (IDisposable entity in disposableEntities)
             {
                 _world.DisposeStack.Push(entity);
             }
