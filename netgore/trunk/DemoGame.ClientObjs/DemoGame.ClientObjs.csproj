@@ -70,7 +70,7 @@
     <Compile Include="Entity\User.cs" />
     <Compile Include="GameControlsKeys.cs" />
     <Compile Include="GUIManager.cs" />
-    <Compile Include="Entity\IDrawableEntity.cs" />
+    <Compile Include="Entity\IDrawable.cs" />
     <Compile Include="ItemStats.cs" />
     <Compile Include="Map\Map.cs" />
     <Compile Include="Map\MapDrawExtensionBase.cs" />
