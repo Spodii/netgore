@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore.RPGComponents;
 
 namespace DemoGame
 {

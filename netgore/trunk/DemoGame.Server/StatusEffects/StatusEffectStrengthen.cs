@@ -4,7 +4,8 @@ namespace DemoGame.Server
 {
     public class StatusEffectStrengthen : StatusEffectBase
     {
-        StatusEffectStrengthen() : base(StatusEffectType.Strengthen, DefaultStatusEffectMergeType.Buff)
+        StatusEffectStrengthen()
+            : base(DemoGame.StatusEffectType.Strengthen, DefaultStatusEffectMergeType.Buff)
         {
         }
 
