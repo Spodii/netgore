@@ -873,7 +873,7 @@ namespace DemoGame.Server
 
             Name = v.Name;
             Alliance = _allianceManager[v.AllianceID];
-            BodyInfo = GameData.Body(v.BodyID);
+            BodyInfo = BodyInfoManager.Instance.GetBody(v.BodyID);
             CharacterTemplateID = v.ID;
             CB = new CollisionBox(BodyInfo.Width, BodyInfo.Height);
             _level = v.Level;
@@ -890,7 +890,7 @@ namespace DemoGame.Server
             _templateID = v.CharacterTemplateID;
             _accountID = v.AccountID;
 
-            BodyInfo = GameData.Body(v.BodyID);
+            BodyInfo = BodyInfoManager.Instance.GetBody(v.BodyID);
             CB = new CollisionBox(new Vector2(v.X, v.Y), BodyInfo.Width, BodyInfo.Height);
             ((PersistentCharacterStatusEffects)StatusEffects).Load();
 
