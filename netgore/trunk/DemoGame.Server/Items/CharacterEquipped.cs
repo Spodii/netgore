@@ -7,6 +7,7 @@ using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Db;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
@@ -75,7 +76,7 @@ namespace DemoGame.Server
             return Character.Inventory.CanAdd((ItemEntity)item);
         }
 
-        void CharacterEquipped_OnEquip(EquippedBase<ItemEntity> equippedBase, ItemEntity item, EquipmentSlot slot)
+        void CharacterEquipped_OnEquip(EquippedBase<ItemEntity, ItemType, EquipmentSlot> equippedBase, ItemEntity item, EquipmentSlot slot)
         {
             Debug.Assert(item != null);
 
@@ -88,7 +89,7 @@ namespace DemoGame.Server
             SendSlotUpdate(slot, item.GraphicIndex);
         }
 
-        void CharacterEquipped_OnRemove(EquippedBase<ItemEntity> equippedBase, ItemEntity item, EquipmentSlot slot)
+        void CharacterEquipped_OnRemove(EquippedBase<ItemEntity, ItemType, EquipmentSlot> equippedBase, ItemEntity item, EquipmentSlot slot)
         {
             Debug.Assert(item != null);
 
