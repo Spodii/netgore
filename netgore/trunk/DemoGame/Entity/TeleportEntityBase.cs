@@ -41,6 +41,9 @@ namespace DemoGame
             set { _destinationMap = value; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TeleportEntityBase"/> class.
+        /// </summary>
         protected TeleportEntityBase()
         {
             Weight = 0f;
