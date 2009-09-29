@@ -466,7 +466,7 @@ namespace DemoGame
             if (gridSegment == null)
                 return new List<Entity>(0);
 
-            var ret = new List<Entity>(gridSegment.Count);
+            var ret = new List<Entity>(gridSegment.Count());
 
             // Iterate through all entities and return those who contain the segment
             foreach (Entity entity in gridSegment)
@@ -498,7 +498,7 @@ namespace DemoGame
             if (gridSegment == null)
                 return new List<T>(0);
 
-            var ret = new List<T>(gridSegment.Count);
+            var ret = new List<T>(gridSegment.Count());
 
             // Iterate through all entities and return those who contain the segment
             foreach (Entity entity in gridSegment)
@@ -869,7 +869,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="p">Coordinate to find the grid for</param>
         /// <returns>Entity grid containing the given coordinate, or null if an invalid location</returns>
-        protected List<Entity> GetEntityGrid(Vector2 p)
+        protected IEnumerable<Entity> GetEntityGrid(Vector2 p)
         {
             int x = (int)p.X / WallGridSize;
             int y = (int)p.Y / WallGridSize;
