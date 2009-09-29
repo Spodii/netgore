@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace DemoGame
+namespace NetGore.RPGComponents
 {
     /// <summary>
     /// A direction

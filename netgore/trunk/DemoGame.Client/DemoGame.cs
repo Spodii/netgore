@@ -26,9 +26,6 @@ namespace DemoGame.Client
             // Create the graphics manager and device
             graphics = new GraphicsDeviceManager(this);
 
-            // Read the game data
-            GameData.Load();
-
             // No need to use a time step since we use delta time in our updating
             TargetElapsedTime = new TimeSpan(0, 0, 0, 0, 1000 / 100);
             IsFixedTimeStep = true;

@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -73,11 +74,6 @@ namespace DemoGame
         public static Vector2 ScreenSize = new Vector2(800, 600);
 
         /// <summary>
-        /// Array of all the body information
-        /// </summary>
-        static BodyInfo[] _bodyInfo;
-
-        /// <summary>
         /// Gets the maximum delta time between draws for any kind of drawable component. If the delta time between
         /// draw calls on the component exceeds this value, the delta time should then be reduced to be equal to this value.
         /// </summary>
@@ -117,20 +113,6 @@ namespace DemoGame
         public static int WorldPhysicsUpdateRate
         {
             get { return 20; }
-        }
-
-        /// <summary>
-        /// Retreives the information of a body by a given index.
-        /// </summary>
-        /// <param name="index">Index of the body.</param>
-        /// <returns>Body information for the index.</returns>
-        public static BodyInfo Body(BodyIndex index)
-        {
-            // TODO: Move this crap out of GameData. Body data should be with the BodyInfo class.
-            if (index < _bodyInfo.Length)
-                return _bodyInfo[(int)index];
-            else
-                return null;
         }
 
         /// <summary>
@@ -177,15 +159,6 @@ namespace DemoGame
         public static int LevelCost(int x)
         {
             return x * 30;
-        }
-
-        /// <summary>
-        /// Loads the game data
-        /// </summary>
-        public static void Load()
-        {
-            PathString path = ContentPaths.Build.Data.Join("bodies.xml");
-            _bodyInfo = BodyInfo.Load(path);
         }
 
         /// <summary>

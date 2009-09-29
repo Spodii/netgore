@@ -4,7 +4,7 @@ using NetGore;
 
 // TODO: I am quite sure the BodyInfo needs to be cleaned up...
 
-namespace DemoGame
+namespace NetGore.RPGComponents
 {
     /// <summary>
     /// Information for a character's body
@@ -58,7 +58,7 @@ namespace DemoGame
             PunchRect = punchRect;
         }
 
-        public static Rectangle GetHitRect(CharacterEntity c, Rectangle rect)
+        public static Rectangle GetHitRect(CharacterEntityBase c, Rectangle rect)
         {
             if (c.Heading == Direction.East)
             {
