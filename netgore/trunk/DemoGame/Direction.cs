@@ -3,16 +3,17 @@ using System.Linq;
 namespace DemoGame
 {
     /// <summary>
-    /// A direction
+    /// A direction.
     /// </summary>
     public enum Direction
     {
         /// <summary>
-        /// East (Right)
+        /// East (right).
         /// </summary>
         East,
+
         /// <summary>
-        /// West (Left)
+        /// West (left).
         /// </summary>
         West
     }
