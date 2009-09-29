@@ -45,8 +45,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Db", "NetGore.Db\Ne
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Db.MySql", "NetGore.Db.MySql\NetGore.Db.MySql.csproj", "{43D09443-29F5-4688-81D7-5B5835EAC550}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Scripting", "NetGore.Scripting\NetGore.Scripting.csproj", "{4E491135-6089-4875-AEE8-9B35F64C6F59}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoGame.ServerObjs", "DemoGame.ServerObjs\DemoGame.ServerObjs.csproj", "{20E83735-4A5F-426C-9759-F9A1AD51B00E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetGore.Db.ClassCreator", "NetGore.Db.ClassCreator\NetGore.Db.ClassCreator.csproj", "{927E889E-AC38-4549-A717-A4FFCA22ADB6}"
@@ -216,14 +214,6 @@ Global
 		{43D09443-29F5-4688-81D7-5B5835EAC550}.DebugGUITester|x86.ActiveCfg = Debug|x86
 		{43D09443-29F5-4688-81D7-5B5835EAC550}.Release|x86.ActiveCfg = Release|x86
 		{43D09443-29F5-4688-81D7-5B5835EAC550}.Release|x86.Build.0 = Release|x86
-		{4E491135-6089-4875-AEE8-9B35F64C6F59}.Debug|x86.ActiveCfg = Debug|x86
-		{4E491135-6089-4875-AEE8-9B35F64C6F59}.Debug|x86.Build.0 = Debug|x86
-		{4E491135-6089-4875-AEE8-9B35F64C6F59}.DebugCS|x86.ActiveCfg = Debug|x86
-		{4E491135-6089-4875-AEE8-9B35F64C6F59}.DebugCS|x86.Build.0 = Debug|x86
-		{4E491135-6089-4875-AEE8-9B35F64C6F59}.DebugDbClassGen|x86.ActiveCfg = Debug|x86
-		{4E491135-6089-4875-AEE8-9B35F64C6F59}.DebugGUITester|x86.ActiveCfg = Debug|x86
-		{4E491135-6089-4875-AEE8-9B35F64C6F59}.Release|x86.ActiveCfg = Release|x86
-		{4E491135-6089-4875-AEE8-9B35F64C6F59}.Release|x86.Build.0 = Release|x86
 		{20E83735-4A5F-426C-9759-F9A1AD51B00E}.Debug|x86.ActiveCfg = Debug|x86
 		{20E83735-4A5F-426C-9759-F9A1AD51B00E}.Debug|x86.Build.0 = Debug|x86
 		{20E83735-4A5F-426C-9759-F9A1AD51B00E}.DebugCS|x86.ActiveCfg = Debug|x86
