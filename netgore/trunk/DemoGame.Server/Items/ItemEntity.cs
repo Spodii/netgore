@@ -100,15 +100,33 @@ namespace DemoGame.Server
             get { return _reqStats; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="t">The t.</param>
+        /// <param name="amount">The amount.</param>
         public ItemEntity(IItemTemplateTable t, byte amount) : this(t, Vector2.Zero, amount)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="t">The t.</param>
+        /// <param name="pos">The pos.</param>
+        /// <param name="amount">The amount.</param>
+        /// <param name="map">The map.</param>
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, SideScrollerMapBase map) : this(t, pos, amount)
         {
             map.AddEntity(this);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="t">The t.</param>
+        /// <param name="pos">The pos.</param>
+        /// <param name="amount">The amount.</param>
         public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount)
             : this(
                 pos, new Vector2(t.Width, t.Height), t.Name, t.Description, (ItemType)t.Type, t.Graphic, t.Value, amount, t.HP,
@@ -116,11 +134,10 @@ namespace DemoGame.Server
         {
         }
 
-        public ItemEntity()
-        {
-            _id = IDCreator.GetNext();
-        }
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="iv">The iv.</param>
         public ItemEntity(IItemTable iv) : base(Vector2.Zero, new Vector2(iv.Width, iv.Height))
         {
             _id = iv.ID;
@@ -138,6 +155,21 @@ namespace DemoGame.Server
             OnResize += ItemEntity_OnResize;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="pos">The pos.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="desc">The desc.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="graphic">The graphic.</param>
+        /// <param name="value">The value.</param>
+        /// <param name="amount">The amount.</param>
+        /// <param name="hp">The hp.</param>
+        /// <param name="mp">The mp.</param>
+        /// <param name="baseStats">The base stats.</param>
+        /// <param name="reqStats">The req stats.</param>
         ItemEntity(Vector2 pos, Vector2 size, string name, string desc, ItemType type, GrhIndex graphic, int value, byte amount,
                    SPValueType hp, SPValueType mp, IEnumerable<KeyValuePair<StatType, int>> baseStats,
                    IEnumerable<KeyValuePair<StatType, int>> reqStats) : base(pos, size)
@@ -162,6 +194,10 @@ namespace DemoGame.Server
             OnResize += ItemEntity_OnResize;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="s">The s.</param>
         ItemEntity(ItemEntity s)
             : this(
                 s.Position, s.CB.Size, s.Name, s.Description, s.Type, s.GraphicIndex, s.Value, s.Amount, s.HP, s.MP,
