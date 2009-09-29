@@ -42,9 +42,14 @@ namespace DemoGame
             set { _destinationMap = value; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TeleportEntityBase"/> class.
+        /// </summary>
         protected TeleportEntityBase()
         {
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
             Weight = 0f;
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
         }
 
         #region IUsableEntity Members
