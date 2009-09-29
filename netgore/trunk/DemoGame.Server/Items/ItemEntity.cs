@@ -46,9 +46,9 @@ namespace DemoGame.Server
         public event ItemEntityEventHandler OnChangeGraphicOrAmount;
 
         /// <summary>
-        /// Notifies listeners that this <see cref="Entity"/> was picked up.
+        /// Notifies listeners that this <see cref="Entity"/> was picked up, and who it was picked up by.
         /// </summary>
-        public override event EntityEventHandler<CharacterEntity> OnPickup;
+        public override event EntityEventHandler<CharacterEntityBase> OnPickup;
 
         static DeleteItemQuery DeleteItem
         {
@@ -177,11 +177,13 @@ namespace DemoGame.Server
 
         /// <summary>
         /// Checks if this <see cref="Entity"/> can be picked up by the specified <paramref name="charEntity"/>, but does
-        /// not actually pick up this <see cref="Entity"/>.
+        /// not actually pick up this <see cref="Entity"/>
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to use this <see cref="Entity"/>.</param>
-        /// <returns>True if this <see cref="Entity"/> can be picked up, else false.</returns>
-        public override bool CanPickup(CharacterEntity charEntity)
+        /// <param name="charEntity"><see cref="CharacterEntityBase"/> that is trying to use this <see cref="Entity"/></param>
+        /// <returns>
+        /// True if this <see cref="Entity"/> can be picked up, else false
+        /// </returns>
+        public override bool CanPickup(CharacterEntityBase charEntity)
         {
             // Every character can pick up an ItemEntity
             return true;
@@ -305,11 +307,13 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Picks up this <see cref="Entity"/>.
+        /// Picks up this <see cref="Entity"/>
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to pick up this <see cref="Entity"/>.</param>
-        /// <returns>True if this <see cref="Entity"/> was successfully picked up, else false.</returns>
-        public override bool Pickup(CharacterEntity charEntity)
+        /// <param name="charEntity"><see cref="CharacterEntityBase"/> that is trying to pick up this <see cref="Entity"/></param>
+        /// <returns>
+        /// True if this <see cref="Entity"/> was successfully picked up, else false
+        /// </returns>
+        public override bool Pickup(CharacterEntityBase charEntity)
         {
             // Check for invalid character
             if (charEntity == null)
