@@ -9,6 +9,7 @@ using NetGore;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {

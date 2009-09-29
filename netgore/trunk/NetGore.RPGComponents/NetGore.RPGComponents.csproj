@@ -60,6 +60,8 @@
     <Compile Include="Entities\IUsableEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Body\PropertySyncBodyIndex.cs" />
+    <Compile Include="Shop\ShopItemIndex.cs" />
+    <Compile Include="Shop\ShopItemIndexExtensions.cs" />
     <Compile Include="SPValueType.cs" />
     <Compile Include="StatusEffect\StatusEffectBase.cs" />
     <Compile Include="StatusEffect\StatusEffectMergeType.cs" />
