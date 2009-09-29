@@ -9,6 +9,7 @@ using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Client.Controls
 {

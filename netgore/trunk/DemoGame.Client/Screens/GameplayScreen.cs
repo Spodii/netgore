@@ -12,6 +12,7 @@ using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
 using NetGore.NPCChat;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Client
 {

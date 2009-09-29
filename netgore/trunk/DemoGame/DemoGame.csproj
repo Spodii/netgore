@@ -80,8 +80,7 @@
     <Compile Include="Items\ItemTypeHelper.cs" />
     <Compile Include="Packets\ClientPacketIDHelper.cs" />
     <Compile Include="Packets\ServerPacketIDHelper.cs" />
-    <Compile Include="Shop\ShopItemIndex.cs" />
-    <Compile Include="Shop\ShopItemIndexExtensions.cs" />
+    <Compile Include="ShopItemIndexExtensions.cs" />
     <Compile Include="Skills\SkillType.cs" />
     <Compile Include="Skills\SkillTypeExtensions.cs" />
     <Compile Include="Skills\SkillTypeHelper.cs" />
