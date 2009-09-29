@@ -57,10 +57,10 @@ namespace DemoGame.Client
         }
 
         /// <summary>
-        /// MapGrh constructor
+        /// Initializes a new instance of the <see cref="MapGrh"/> class.
         /// </summary>
-        /// <param name="grh">Grh to draw</param>
-        /// <param name="dest">Position to draw on the map</param>
+        /// <param name="grh">Grh to draw.</param>
+        /// <param name="dest">Position to draw on the map.</param>
         /// <param name="isForeground">If true, this will be drawn in the foreground layer. If false,
         /// it will be drawn in the background layer.</param>
         public MapGrh(Grh grh, Vector2 dest, bool isForeground)
@@ -76,6 +76,11 @@ namespace DemoGame.Client
             IsForeground = isForeground;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MapGrh"/> class.
+        /// </summary>
+        /// <param name="reader">The reader to read the values from.</param>
+        /// <param name="currentTime">The current time.</param>
         public MapGrh(IValueReader reader, int currentTime)
         {
             if (reader == null)
