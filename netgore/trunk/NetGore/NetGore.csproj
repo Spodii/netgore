@@ -124,6 +124,9 @@
     <Compile Include="PropertySync\PropertySyncString.cs" />
     <Compile Include="PropertySync\SyncValueAttribute.cs" />
     <Compile Include="Extensions\StackExtensions.cs" />
+    <Compile Include="Scripting\ScriptLanguage.cs" />
+    <Compile Include="Scripting\ScriptTypeCollection.cs" />
+    <Compile Include="Scripting\ScriptTypeHelper.cs" />
     <Compile Include="StringCommandBaseAttribute.cs" />
     <Compile Include="StringCommandParser.cs" />
     <Compile Include="StringParser.cs" />
