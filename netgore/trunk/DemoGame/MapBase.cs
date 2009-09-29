@@ -887,12 +887,12 @@ namespace DemoGame
         /// </summary>
         /// <param name="cb">Map area to get the grid segments for</param>
         /// <returns>List of all grid segments intersected by <paramref name="cb"/></returns>
-        protected List<List<Entity>> GetEntityGrids(CollisionBox cb)
+        protected IEnumerable<IEnumerable<Entity>> GetEntityGrids(CollisionBox cb)
         {
             if (cb == null)
             {
                 Debug.Fail("Parameter cb is null.");
-                return new List<List<Entity>>(0);
+                return new List<IEnumerable<Entity>>(0);
             }
 
             return GetEntityGrids(cb.ToRectangle());
@@ -903,7 +903,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="rect">Map area to get the grid segments for</param>
         /// <returns>List of all grid segments intersected by <paramref name="rect"/></returns>
-        protected List<List<Entity>> GetEntityGrids(Rectangle rect)
+        protected IEnumerable<IEnumerable<Entity>> GetEntityGrids(Rectangle rect)
         {
             int minX = rect.X / WallGridSize;
             int minY = rect.Y / WallGridSize;
@@ -946,7 +946,9 @@ namespace DemoGame
                 }
             }
 
-            return ret;
+            // A little hack to get List<List<T>> to return as IEnumerable<IEnumerable<T>>
+            foreach (var item in ret)
+                yield return item;
         }
 
         /// <summary>
@@ -1728,7 +1730,8 @@ namespace DemoGame
                 var segment = gridSegment;
 
                 // Check that the segment even has any entities besides us
-                if (segment.Count == 0 || (segment.Count == 1 && segment.Contains(entity)))
+                int segCount = segment.Count();
+                if (segCount == 0 || (segCount == 1 && segment.Contains(entity)))
                     continue;
 
                 // Clear our stack, since we use the same object for every segment

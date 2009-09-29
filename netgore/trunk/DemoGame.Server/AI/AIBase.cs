@@ -30,7 +30,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// AIBase constructor.
+        /// Initializes a new instance of the <see cref="AIBase"/> class.
         /// </summary>
         /// <param name="actor">Character for this AI module to control.</param>
         protected AIBase(Character actor)
