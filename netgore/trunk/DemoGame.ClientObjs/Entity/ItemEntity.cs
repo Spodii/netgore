@@ -101,14 +101,22 @@ namespace DemoGame.Client
             set { _value = value; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
         public ItemEntity()
         {
             _grh = new Grh(null);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="graphicIndex">Index of the graphic.</param>
+        /// <param name="amount">The amount.</param>
+        /// <param name="currentTime">The current time.</param>
         public ItemEntity(GrhIndex graphicIndex, byte amount, int currentTime) : base(Vector2.Zero, Vector2.Zero)
         {
-            // NOTE: Can I get rid of this constructor?
             _amount = amount;
 
             _name = string.Empty;
@@ -118,6 +126,14 @@ namespace DemoGame.Client
             _grh = new Grh(GrhInfo.GetData(graphicIndex), AnimType.Loop, currentTime);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ItemEntity"/> class.
+        /// </summary>
+        /// <param name="mapEntityIndex">Index of the map entity.</param>
+        /// <param name="pos">The pos.</param>
+        /// <param name="size">The size.</param>
+        /// <param name="graphicIndex">Index of the graphic.</param>
+        /// <param name="currentTime">The current time.</param>
         public ItemEntity(MapEntityIndex mapEntityIndex, Vector2 pos, Vector2 size, GrhIndex graphicIndex, int currentTime)
             : base(pos, size)
         {
@@ -146,7 +162,15 @@ namespace DemoGame.Client
             return true;
         }
 
-        public override bool CanStack(ItemEntityBase source)
+        /// <summary>
+        /// Checks if this item can be stacked with another item. To stack, both items must contain the same
+        /// stat modifiers, name, description, value, and graphic index.
+        /// </summary>
+        /// <param name="source">Item to check if can stack on this item</param>
+        /// <returns>
+        /// True if the two items can stack on each other, else false
+        /// </returns>
+        public override bool CanStack(ItemEntityBase<ItemType> source)
         {
             throw new MethodAccessException("Client has no way to know if two ItemEntities can stack since it doesn't" +
                                             " always know everything about two items.");
@@ -156,8 +180,8 @@ namespace DemoGame.Client
         /// Creates a deep copy of the inheritor, which is a new class with the same values, and returns
         /// the copy as an ItemEntityBase.
         /// </summary>
-        /// <returns>A deep copy of the object</returns>
-        public override ItemEntityBase DeepCopy()
+        /// <returns>A deep copy of the object.</returns>
+        public override ItemEntityBase<ItemType> DeepCopy()
         {
             return new ItemEntity(MapEntityIndex, Position, CB.Size, GraphicIndex, _grh.LastUpdated);
         }

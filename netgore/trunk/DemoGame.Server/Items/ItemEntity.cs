@@ -104,7 +104,7 @@ namespace DemoGame.Server
         {
         }
 
-        public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, MapBase map) : this(t, pos, amount)
+        public ItemEntity(IItemTemplateTable t, Vector2 pos, byte amount, SideScrollerMapBase map) : this(t, pos, amount)
         {
             map.AddEntity(this);
         }
@@ -195,7 +195,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="source">Item to check if can stack on this ItemEntity.</param>
         /// <returns>True if the two items can stack on each other, else false.</returns>
-        public override bool CanStack(ItemEntityBase source)
+        public override bool CanStack(ItemEntityBase<ItemType> source)
         {
             // Check for equal reference
             if (ReferenceEquals(this, source))
@@ -229,8 +229,8 @@ namespace DemoGame.Server
         /// Creates a deep copy of the inheritor, which is a new class with the same values, and returns
         /// the copy as an ItemEntityBase.
         /// </summary>
-        /// <returns>A deep copy of the object</returns>
-        public override ItemEntityBase DeepCopy()
+        /// <returns>A deep copy of the object.</returns>
+        public override ItemEntityBase<ItemType> DeepCopy()
         {
             return new ItemEntity(this);
         }
