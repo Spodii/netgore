@@ -187,10 +187,6 @@
       <Project>{C71ED618-F22C-4F33-95C7-38E4E678AE90}</Project>
       <Name>NetGore.RPGComponents</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetGore.Scripting\NetGore.Scripting.csproj">
-      <Project>{4E491135-6089-4875-AEE8-9B35F64C6F59}</Project>
-      <Name>NetGore.Scripting</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetGore\NetGore.csproj">
       <Project>{5C385F68-DAEB-4BF2-9472-D5D69B6B2373}</Project>
       <Name>NetGore</Name>
