@@ -76,6 +76,7 @@ namespace DemoGame.Server
         const int _spRecoveryRate = 3000;
 
         static readonly AllianceManager _allianceManager = AllianceManager.Instance;
+        static readonly BodyInfoManager _bodyInfoManager = BodyInfoManager.Instance;
         static readonly CharacterTemplateManager _characterTemplateManager = CharacterTemplateManager.Instance;
 
         /// <summary>
@@ -867,8 +868,6 @@ namespace DemoGame.Server
             ICharacterTable values = DbController.GetQuery<SelectCharacterQuery>().Execute(characterName);
             LoadFromQueryValues(values);
         }
-
-        static readonly BodyInfoManager _bodyInfoManager = BodyInfoManager.Instance;
 
         protected void Load(CharacterTemplate template)
         {

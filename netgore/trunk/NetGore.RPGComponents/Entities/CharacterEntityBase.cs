@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework;
 
 namespace NetGore.RPGComponents
@@ -26,7 +23,7 @@ namespace NetGore.RPGComponents
         /// </summary>
         [SyncValue("BodyIndex")]
         // ReSharper disable UnusedMember.Local
-        protected internal BodyIndex BodyInfoIndex // ReSharper restore UnusedMember.Local
+            protected internal BodyIndex BodyInfoIndex // ReSharper restore UnusedMember.Local
         {
             get { return BodyInfo.Index; }
             set { BodyInfo = BodyInfoManager.Instance[value]; }

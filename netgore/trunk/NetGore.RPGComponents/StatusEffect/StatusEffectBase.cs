@@ -85,7 +85,7 @@ namespace NetGore.RPGComponents
                     power = r.Next(1, maxStatusEffectPower);
 
                 // Test each StatType that this StatusEffect actually modifies (in opposed to testing every single one)
-                foreach (var statType in _modifiedStats)
+                foreach (TStat statType in _modifiedStats)
                 {
                     int a = GetStatModifier(statType, (ushort)power);
                     int b = GetStatModifier(statType, (ushort)power);
