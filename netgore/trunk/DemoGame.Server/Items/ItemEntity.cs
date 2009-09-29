@@ -9,6 +9,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Db;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {

@@ -4,6 +4,7 @@ using System.Linq;
 using DemoGame.Server.DbObjs;
 using NetGore;
 using NetGore.Network;
+using NetGore.RPGComponents;
 
 namespace DemoGame.Server
 {
