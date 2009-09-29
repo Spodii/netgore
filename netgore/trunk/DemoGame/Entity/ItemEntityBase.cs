@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -136,24 +137,28 @@ namespace DemoGame
         #region IPickupableEntity Members
 
         /// <summary>
-        /// Notifies listeners that this <see cref="Entity"/> was picked up
+        /// Notifies listeners that this <see cref="Entity"/> was picked up, and who it was picked up by.
         /// </summary>
-        public abstract event EntityEventHandler<CharacterEntity> OnPickup;
+        public abstract event EntityEventHandler<CharacterEntityBase> OnPickup;
 
         /// <summary>
         /// Checks if this <see cref="Entity"/> can be picked up by the specified <paramref name="charEntity"/>, but does
-        /// not actually pick up this <see cref="Entity"/>.
+        /// not actually pick up this <see cref="Entity"/>
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to use this <see cref="Entity"/>.</param>
-        /// <returns>True if this <see cref="Entity"/> can be picked up, else false.</returns>
-        public abstract bool CanPickup(CharacterEntity charEntity);
+        /// <param name="charEntity"><see cref="CharacterEntityBase"/> that is trying to use this <see cref="Entity"/></param>
+        /// <returns>
+        /// True if this <see cref="Entity"/> can be picked up, else false
+        /// </returns>
+        public abstract bool CanPickup(CharacterEntityBase charEntity);
 
         /// <summary>
-        /// Picks up this <see cref="Entity"/>.
+        /// Picks up this <see cref="Entity"/>
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to pick up this <see cref="Entity"/>.</param>
-        /// <returns>True if this <see cref="Entity"/> was successfully picked up, else false.</returns>
-        public abstract bool Pickup(CharacterEntity charEntity);
+        /// <param name="charEntity"><see cref="CharacterEntityBase"/> that is trying to pick up this <see cref="Entity"/></param>
+        /// <returns>
+        /// True if this <see cref="Entity"/> was successfully picked up, else false
+        /// </returns>
+        public abstract bool Pickup(CharacterEntityBase charEntity);
 
         #endregion
     }

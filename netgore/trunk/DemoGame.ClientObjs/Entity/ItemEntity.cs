@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.Graphics;
+using NetGore.RPGComponents;
 
 // LATER: When editing Grhs and changing texture, change the preview
 // LATER: When updating a Grh, update the preview image
@@ -32,7 +33,7 @@ namespace DemoGame.Client
         /// <summary>
         /// Notifies listeners that this <see cref="Entity"/> was picked up
         /// </summary>
-        public override event EntityEventHandler<CharacterEntity> OnPickup
+        public override event EntityEventHandler<CharacterEntityBase> OnPickup
         {
             add { }
             remove { }
@@ -135,9 +136,11 @@ namespace DemoGame.Client
         /// Checks if this <see cref="Entity"/> can be picked up by the specified <paramref name="charEntity"/>, but does
         /// not actually pick up this <see cref="Entity"/>
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to use this <see cref="Entity"/></param>
-        /// <returns>True if this <see cref="Entity"/> can be picked up, else false</returns>
-        public override bool CanPickup(CharacterEntity charEntity)
+        /// <param name="charEntity"><see cref="CharacterEntityBase"/> that is trying to use this <see cref="Entity"/></param>
+        /// <returns>
+        /// True if this <see cref="Entity"/> can be picked up, else false
+        /// </returns>
+        public override bool CanPickup(CharacterEntityBase charEntity)
         {
             // Every character can try to pick up an item
             return true;
@@ -176,9 +179,11 @@ namespace DemoGame.Client
         /// <summary>
         /// Picks up this <see cref="Entity"/>
         /// </summary>
-        /// <param name="charEntity"><see cref="CharacterEntity"/> that is trying to pick up this <see cref="Entity"/></param>
-        /// <returns>True if this <see cref="Entity"/> was successfully picked up, else false</returns>
-        public override bool Pickup(CharacterEntity charEntity)
+        /// <param name="charEntity"><see cref="CharacterEntityBase"/> that is trying to pick up this <see cref="Entity"/></param>
+        /// <returns>
+        /// True if this <see cref="Entity"/> was successfully picked up, else false
+        /// </returns>
+        public override bool Pickup(CharacterEntityBase charEntity)
         {
             const string errmsg = "Client is not allowed to pick up items.";
 
