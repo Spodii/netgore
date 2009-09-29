@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NetGore.RPGComponents;
 
 namespace DemoGame
 {
@@ -14,8 +15,10 @@ namespace DemoGame
         /// <param name="stats">The IEnumerable of IStats.</param>
         /// <returns>An IEnumerable if KeyValuePairs created from the <paramref name="stats"/>.</returns>
         /// <typeparam name="T">The type of IStat.</typeparam>
-        public static IEnumerable<KeyValuePair<StatType, int>> xxxToKeyValuePairs<T>(this IEnumerable<T> stats) where T : IStat
+        public static IEnumerable<KeyValuePair<StatType, int>> xxxToKeyValuePairs<T>(this IEnumerable<T> stats) where T : IStat<StatType>
         {
+            // TODO: $$ Rename
+
             // Find the number of elements
             int count = stats.Count();
 

@@ -1,18 +1,18 @@
+using System;
 using System.Linq;
 using NetGore;
-using NetGore.RPGComponents;
 
-namespace DemoGame
+namespace NetGore.RPGComponents
 {
     /// <summary>
     /// Interface for a class that contains the information on an item instance.
     /// </summary>
-    public interface IItemInfo
+    public interface IItemInfo<T> where T : struct, IComparable, IConvertible, IFormattable
     {
         /// <summary>
-        /// Gets the <see cref="IStatCollection"/> containing the base stats.
+        /// Gets the <see cref="IStatCollection&lt;T&gt;"/> containing the base stats.
         /// </summary>
-        IStatCollection BaseStats { get; }
+        IStatCollection<T> BaseStats { get; }
 
         /// <summary>
         /// Gets the description.
@@ -40,9 +40,9 @@ namespace DemoGame
         string Name { get; }
 
         /// <summary>
-        /// Gets the <see cref="IStatCollection"/> containing the required stats.
+        /// Gets the <see cref="IStatCollection&lt;T&gt;"/> containing the required stats.
         /// </summary>
-        IStatCollection ReqStats { get; }
+        IStatCollection<T> ReqStats { get; }
 
         /// <summary>
         /// Gets the base value of the item.

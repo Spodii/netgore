@@ -939,7 +939,7 @@ namespace DemoGame.Server
         /// Handles when the MaxHP mod stat changes.
         /// </summary>
         /// <param name="stat">The stat.</param>
-        void ModStats_MaxHP_OnChange(IStat stat)
+        void ModStats_MaxHP_OnChange(IStat<StatType> stat)
         {
             if (HP > stat.Value)
                 HP = stat.Value;
@@ -949,7 +949,7 @@ namespace DemoGame.Server
         /// Handles when the MaxMP mod stat changes.
         /// </summary>
         /// <param name="stat">The stat.</param>
-        void ModStats_MaxMP_OnChange(IStat stat)
+        void ModStats_MaxMP_OnChange(IStat<StatType> stat)
         {
             if (MP > stat.Value)
                 MP = stat.Value;
@@ -1143,7 +1143,7 @@ namespace DemoGame.Server
         protected void UpdateModStats()
         {
             // FUTURE: This is called every goddamn Update(). That is WAY too much...
-            foreach (IStat modStat in ModStats)
+            foreach (var modStat in ModStats)
             {
                 modStat.Value = ModStatHelper.Calculate(BaseStats, modStat.StatType, Equipped, StatusEffects);
             }
@@ -1244,7 +1244,7 @@ namespace DemoGame.Server
         bool UseItemUseOnce(ItemEntity item)
         {
             var useBonuses = item.BaseStats.Where(stat => stat.Value != 0);
-            foreach (IStat stat in useBonuses)
+            foreach (var stat in useBonuses)
             {
                 BaseStats[stat.StatType] += stat.Value;
             }

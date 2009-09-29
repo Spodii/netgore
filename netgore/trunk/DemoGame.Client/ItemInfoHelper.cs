@@ -66,14 +66,14 @@ namespace DemoGame.Client
                 CreateValueLine(ret, "MP", itemInfo.MP, bonusColor);
 
             // Stat bonuses
-            foreach (IStat stat in itemInfo.BaseStats)
+            foreach (var stat in itemInfo.BaseStats)
             {
                 if (stat.Value != 0)
                     CreateValueLine(ret, stat.StatType, stat.Value, bonusColor);
             }
 
             // Stat requirements
-            foreach (IStat stat in itemInfo.ReqStats)
+            foreach (var stat in itemInfo.ReqStats)
             {
                 if (stat.Value != 0)
                     CreateValueLine(ret, stat.StatType, stat.Value, reqColor);

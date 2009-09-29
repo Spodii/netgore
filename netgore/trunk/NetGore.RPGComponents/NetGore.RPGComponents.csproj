@@ -62,12 +62,23 @@
     <Compile Include="Entities\TeleportEntityBase.cs" />
     <Compile Include="Items\EquippedBase.cs" />
     <Compile Include="Items\EquippedEventHandler.cs" />
+    <Compile Include="Items\IItemInfo.cs" />
     <Compile Include="SideScrollerMapBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Body\PropertySyncBodyIndex.cs" />
     <Compile Include="Shop\ShopItemIndex.cs" />
     <Compile Include="Shop\ShopItemIndexExtensions.cs" />
     <Compile Include="SPValueType.cs" />
+    <Compile Include="Stats\Collections\IStatCollection.cs" />
+    <Compile Include="Stats\Collections\StatCollectionType.cs" />
+    <Compile Include="Stats\IStat.cs" />
+    <Compile Include="Stats\IStatEventHandler.cs" />
+    <Compile Include="Stats\StatValueTypes\IStatValueType.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueByte.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueInt.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueSByte.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueShort.cs" />
+    <Compile Include="Stats\StatValueTypes\StatValueUShort.cs" />
     <Compile Include="StatusEffect\StatusEffectBase.cs" />
     <Compile Include="StatusEffect\StatusEffectMergeType.cs" />
   </ItemGroup>
