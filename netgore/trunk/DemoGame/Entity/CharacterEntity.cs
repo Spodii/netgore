@@ -27,7 +27,7 @@ namespace DemoGame
             protected internal BodyIndex BodyInfoIndex // ReSharper restore UnusedMember.Local
         {
             get { return BodyInfo.Index; }
-            set { BodyInfo = GameData.Body(value); }
+            set { BodyInfo = BodyInfoManager.Instance.GetBody(value); }
         }
 
         /// <summary>

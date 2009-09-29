@@ -57,9 +57,10 @@
   <ItemGroup>
     <Compile Include="AccountCharacterInfo.cs" />
     <Compile Include="AccountCharacterInfoExtensions.cs" />
+    <Compile Include="Body\BodyInfoManager.cs" />
     <Compile Include="IO\BitStreamExtensions.cs" />
-    <Compile Include="BodyIndex.cs" />
-    <Compile Include="BodyInfo.cs" />
+    <Compile Include="Body\BodyIndex.cs" />
+    <Compile Include="Body\BodyInfo.cs" />
     <Compile Include="DbObjs\ColumnMetadata.cs" />
     <Compile Include="DbObjs\IMapTable.cs" />
     <Compile Include="DbObjs\MapTable.cs" />
