@@ -2,7 +2,7 @@ using System.ComponentModel;
 using System.Linq;
 using NetGore;
 
-namespace DemoGame
+namespace NetGore.RPGComponents
 {
     /// <summary>
     /// Interface for a DynamicEntity that can be used by a DynamicEntity.

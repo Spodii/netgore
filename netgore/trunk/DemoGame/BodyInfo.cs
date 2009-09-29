@@ -2,6 +2,8 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using NetGore;
 
+// TODO: I am quite sure the BodyInfo needs to be cleaned up...
+
 namespace DemoGame
 {
     /// <summary>
