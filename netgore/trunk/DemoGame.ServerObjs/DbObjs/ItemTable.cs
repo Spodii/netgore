@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame;
 using DemoGame.DbObjs;
 using NetGore;
 
@@ -942,7 +943,7 @@ namespace DemoGame.Server.DbObjs
                 var asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
                 _lookupTable = new Int32[asArray.Length];
 
-                for (Int32 i = 0; i < _lookupTable.Length; i++)
+                for (var i = 0; i < _lookupTable.Length; i++)
                 {
                     _lookupTable[i] = (Int32)asArray[i];
                 }
@@ -967,7 +968,7 @@ namespace DemoGame.Server.DbObjs
             /// <filterpriority>1</filterpriority>
             public IEnumerator<KeyValuePair<StatType, Int32>> GetEnumerator()
             {
-                for (int i = 0; i < _values.Length; i++)
+                for (var i = 0; i < _values.Length; i++)
                 {
                     yield return new KeyValuePair<StatType, Int32>((StatType)i, _values[i]);
                 }
@@ -1025,7 +1026,7 @@ namespace DemoGame.Server.DbObjs
                 var asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
                 _lookupTable = new Int32[asArray.Length];
 
-                for (Int32 i = 0; i < _lookupTable.Length; i++)
+                for (var i = 0; i < _lookupTable.Length; i++)
                 {
                     _lookupTable[i] = (Int32)asArray[i];
                 }
@@ -1050,7 +1051,7 @@ namespace DemoGame.Server.DbObjs
             /// <filterpriority>1</filterpriority>
             public IEnumerator<KeyValuePair<StatType, Int32>> GetEnumerator()
             {
-                for (int i = 0; i < _values.Length; i++)
+                for (var i = 0; i < _values.Length; i++)
                 {
                     yield return new KeyValuePair<StatType, Int32>((StatType)i, _values[i]);
                 }

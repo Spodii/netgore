@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 
@@ -73,7 +74,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <param name="items">The <see cref="EditorNPCChatDialogItem"/>s to add.</param>
         public void Add(IEnumerable<EditorNPCChatDialogItem> items)
         {
-            foreach (EditorNPCChatDialogItem item in items)
+            foreach (var item in items)
             {
                 Add(item);
             }
@@ -159,7 +160,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <returns>The next free index for a <see cref="EditorNPCChatDialogItem"/>.</returns>
         public ushort GetFreeDialogItemIndex()
         {
-            for (int i = 0; i < _items.Length; i++)
+            for (var i = 0; i < _items.Length; i++)
             {
                 if (_items[i] == null)
                     return (ushort)i;
@@ -205,7 +206,7 @@ namespace NetGore.EditorTools.NPCChat
             _items[dialogItem.Index] = null;
 
             // Remove references to the dialog
-            foreach (EditorNPCChatResponse r in sourceResponses)
+            foreach (var r in sourceResponses)
             {
                 r.SetPage(EditorNPCChatResponse.EndConversationPage);
             }
@@ -224,7 +225,7 @@ namespace NetGore.EditorTools.NPCChat
             if (array.Length > index)
                 return;
 
-            int newSize = array.Length;
+            var newSize = array.Length;
             while (newSize <= index)
             {
                 newSize <<= 1;
@@ -251,13 +252,13 @@ namespace NetGore.EditorTools.NPCChat
             _title = title;
 
             // Clear the array
-            for (int i = 0; i < _items.Length; i++)
+            for (var i = 0; i < _items.Length; i++)
             {
                 _items[i] = null;
             }
 
             // Set the new items
-            foreach (NPCChatDialogItemBase item in items)
+            foreach (var item in items)
             {
                 Add((EditorNPCChatDialogItem)item);
             }

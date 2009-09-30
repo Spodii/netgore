@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using NetGore;
 
 namespace NetGore.Db
 {
@@ -39,12 +40,12 @@ namespace NetGore.Db
             int returnValue;
 
             // Get the connection to use
-            using (IPoolableDbConnection pooledConn = GetPoolableConnection())
+            using (var pooledConn = GetPoolableConnection())
             {
-                DbConnection conn = pooledConn.Connection;
+                var conn = pooledConn.Connection;
 
                 // Get and set up the command
-                DbCommand cmd = GetCommand(conn);
+                var cmd = GetCommand(conn);
 
                 // Execute the command
                 returnValue = cmd.ExecuteNonQuery();
@@ -95,12 +96,12 @@ namespace NetGore.Db
             int returnValue;
 
             // Get the connection to use
-            using (IPoolableDbConnection pooledConn = GetPoolableConnection())
+            using (var pooledConn = GetPoolableConnection())
             {
-                DbConnection conn = pooledConn.Connection;
+                var conn = pooledConn.Connection;
 
                 // Get and set up the command
-                DbCommand cmd = GetCommand(conn);
+                var cmd = GetCommand(conn);
                 if (HasParameters)
                     SetParameters(new DbParameterValues(cmd.Parameters), item);
 

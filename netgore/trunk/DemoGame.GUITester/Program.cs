@@ -1,3 +1,6 @@
+using DemoGame;
+using NetGore;
+
 namespace DemoGame.GUITester
 {
     static class Program
@@ -7,7 +10,7 @@ namespace DemoGame.GUITester
         /// </summary>
         static void Main()
         {
-            using (Game1 game = new Game1())
+            using (var game = new Game1())
             {
                 game.Run();
             }

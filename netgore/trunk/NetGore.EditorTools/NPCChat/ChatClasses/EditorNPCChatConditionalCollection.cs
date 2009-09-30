@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat.Conditionals;
 
@@ -36,9 +37,9 @@ namespace NetGore.EditorTools.NPCChat
             if (source == null)
                 return;
 
-            BitStream stream = new BitStream(BitStreamMode.Write, 256);
+            var stream = new BitStream(BitStreamMode.Write, 256);
 
-            using (BinaryValueWriter writer = new BinaryValueWriter(stream))
+            using (var writer = new BinaryValueWriter(stream))
             {
                 source.Write(writer);
             }
@@ -72,9 +73,9 @@ namespace NetGore.EditorTools.NPCChat
         /// <param name="dest">The NPCChatConditionalCollectionBase to copy the values into.</param>
         public void CopyValuesTo(NPCChatConditionalCollectionBase dest)
         {
-            BitStream stream = new BitStream(BitStreamMode.Write, 256);
+            var stream = new BitStream(BitStreamMode.Write, 256);
 
-            using (BinaryValueWriter writer = new BinaryValueWriter(stream))
+            using (var writer = new BinaryValueWriter(stream))
             {
                 Write(writer);
             }
@@ -107,7 +108,7 @@ namespace NetGore.EditorTools.NPCChat
         /// <filterpriority>1</filterpriority>
         public override IEnumerator<NPCChatConditionalCollectionItemBase> GetEnumerator()
         {
-            foreach (EditorNPCChatConditionalCollectionItem item in _items)
+            foreach (var item in _items)
             {
                 if (item == null)
                     continue;
@@ -157,7 +158,7 @@ namespace NetGore.EditorTools.NPCChat
             if (item is EditorNPCChatConditionalCollectionItem)
                 return TryAddItem((EditorNPCChatConditionalCollectionItem)item);
 
-            EditorNPCChatConditionalCollectionItem newItem = new EditorNPCChatConditionalCollectionItem(item);
+            var newItem = new EditorNPCChatConditionalCollectionItem(item);
             return TryAddItem(newItem);
         }
 
@@ -192,7 +193,7 @@ namespace NetGore.EditorTools.NPCChat
             if (item == null)
                 return false;
 
-            bool success = _items.Remove(item);
+            var success = _items.Remove(item);
 
             if (success && OnChange != null)
                 OnChange(this);

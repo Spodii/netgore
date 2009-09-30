@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame;
 using DemoGame.Server.DbObjs;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -25,11 +26,11 @@ namespace DemoGame.Server.Queries
         {
             var ret = new List<IShopItemTable>();
 
-            using (IDataReader r = ExecuteReader(shopID))
+            using (var r = ExecuteReader(shopID))
             {
                 while (r.Read())
                 {
-                    ShopItemTable tableValues = new ShopItemTable();
+                    var tableValues = new ShopItemTable();
                     tableValues.ReadValues(r);
                     ret.Add(tableValues);
                 }

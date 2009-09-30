@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using DemoGame.Server.DbObjs;
 using log4net;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -16,7 +18,7 @@ namespace DemoGame.Server.Queries
         static void EnsureColumnsExist(IDbController db, string dbTable, IEnumerable<string> columns)
         {
             var dbColumns = db.GetTableColumns(dbTable);
-            foreach (string column in columns)
+            foreach (var column in columns)
             {
                 if (!dbColumns.Contains(column))
                     Error("Table `{0}` does not contain required column `{1}`.", dbTable, column);

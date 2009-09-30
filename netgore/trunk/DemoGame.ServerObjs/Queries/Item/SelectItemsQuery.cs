@@ -4,7 +4,9 @@ using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame;
 using DemoGame.Server.DbObjs;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -28,14 +30,14 @@ namespace DemoGame.Server.Queries
         {
             var retValues = new List<IItemTable>();
 
-            using (IDataReader r = ExecuteReader(new QueryValues(low, high)))
+            using (var r = ExecuteReader(new QueryValues(low, high)))
             {
                 while (r.Read())
                 {
                     if (!r.Read())
                         throw new DataException("Query contained no results for the specified Item ID range.");
 
-                    ItemTable itemValues = new ItemTable();
+                    var itemValues = new ItemTable();
                     itemValues.ReadValues(r);
                     retValues.Add(itemValues);
                 }
@@ -98,7 +100,7 @@ namespace DemoGame.Server.Queries
                     Debug.Fail("low is greater than high. Can be fixed, but this is often the indication of a bigger problem.");
 
                     // Swap values
-                    ItemID tmp = low;
+                    var tmp = low;
                     low = high;
                     high = tmp;
                 }

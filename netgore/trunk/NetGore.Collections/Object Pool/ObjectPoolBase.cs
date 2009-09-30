@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 
 namespace NetGore.Collections
 {
@@ -56,7 +57,7 @@ namespace NetGore.Collections
             // Call Destroy() on the alive nodes if needed
             if (destroy)
             {
-                foreach (T obj in this)
+                foreach (var obj in this)
                 {
                     obj.Deactivate();
                 }

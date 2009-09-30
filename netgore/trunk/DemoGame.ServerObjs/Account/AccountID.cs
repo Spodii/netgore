@@ -1,8 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
+using DemoGame;
+using NetGore;
 using NetGore.Globalization;
 using NetGore.IO;
 
@@ -101,7 +103,7 @@ namespace DemoGame.Server
         /// <returns>The AccountID read from the IValueReader.</returns>
         public static AccountID Read(IValueReader reader, string name)
         {
-            int value = reader.ReadInt(name);
+            var value = reader.ReadInt(name);
             return new AccountID(value);
         }
 
@@ -113,7 +115,7 @@ namespace DemoGame.Server
         /// <returns>The AccountID read from the IDataReader.</returns>
         public static AccountID Read(IDataReader reader, int i)
         {
-            int value = reader.GetInt32(i);
+            var value = reader.GetInt32(i);
             return new AccountID(value);
         }
 
@@ -135,7 +137,7 @@ namespace DemoGame.Server
         /// <returns>The AccountID read from the BitStream.</returns>
         public static AccountID Read(BitStream bitStream)
         {
-            int value = bitStream.ReadInt();
+            var value = bitStream.ReadInt();
             return new AccountID(value);
         }
 
@@ -851,7 +853,7 @@ namespace DemoGame.Server
         public static bool TryParse(this Parser parser, string value, out AccountID outValue)
         {
             int tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new AccountID(tmp);
             return ret;
         }

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame;
 using DemoGame.Server.DbObjs;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -28,12 +29,12 @@ namespace DemoGame.Server.Queries
         {
             AccountCharacterInfo ret;
 
-            using (IDataReader r = ExecuteReader(id))
+            using (var r = ExecuteReader(id))
             {
                 if (!r.Read())
                     throw new ArgumentException(string.Format("Failed to find Character with ID `{0}`.", id));
 
-                CharacterTable ct = new CharacterTable();
+                var ct = new CharacterTable();
                 ct.TryReadValues(r);
 
                 ret = new AccountCharacterInfo(accountCharacterIndex, ct.Name, ct.BodyID);

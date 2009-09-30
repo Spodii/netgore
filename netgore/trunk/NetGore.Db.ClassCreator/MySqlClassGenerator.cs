@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame;
 using MySql.Data.MySqlClient;
+using NetGore;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -20,7 +22,7 @@ namespace NetGore.Db.ClassCreator
         /// <param name="database">The database.</param>
         public MySqlClassGenerator(string server, string userID, string password, string database)
         {
-            MySqlConnectionStringBuilder sb = new MySqlConnectionStringBuilder
+            var sb = new MySqlConnectionStringBuilder
             { Server = server, UserID = userID, Password = password, Database = database };
 
             _conn = new MySqlConnection(sb.ToString());
@@ -62,29 +64,29 @@ namespace NetGore.Db.ClassCreator
         {
             var ret = new List<DbColumnInfo>();
 
-            using (MySqlCommand cmd = _conn.CreateCommand())
+            using (var cmd = _conn.CreateCommand())
             {
                 cmd.CommandText = "SHOW FULL COLUMNS IN `" + table + "`";
-                using (MySqlDataReader r = cmd.ExecuteReader())
+                using (var r = cmd.ExecuteReader())
                 {
                     while (r.Read())
                     {
-                        string name = r.GetString("Field");
-                        string dbType = r.GetString("Type");
-                        bool nullable = GetColumnInfoNull(r.GetString("Null"));
-                        object defaultValue = r.GetValue(r.GetOrdinal("Default"));
-                        DbColumnKeyType keyType = GetColumnKeyType(r.GetString("Key"));
-                        string comment = r.GetString("Comment");
+                        var name = r.GetString("Field");
+                        var dbType = r.GetString("Type");
+                        var nullable = GetColumnInfoNull(r.GetString("Null"));
+                        var defaultValue = r.GetValue(r.GetOrdinal("Default"));
+                        var keyType = GetColumnKeyType(r.GetString("Key"));
+                        var comment = r.GetString("Comment");
 
-                        DbColumnInfo column = new DbColumnInfo(name, dbType, null, nullable, defaultValue, comment, keyType);
+                        var column = new DbColumnInfo(name, dbType, null, nullable, defaultValue, comment, keyType);
                         ret.Add(column);
                     }
                 }
             }
 
-            foreach (DbColumnInfo column in ret)
+            foreach (var column in ret)
             {
-                Type type = GetColumnType(table, column.Name);
+                var type = GetColumnType(table, column.Name);
                 if (column.IsNullable)
                 {
                     if (type != typeof(string))
@@ -105,10 +107,10 @@ namespace NetGore.Db.ClassCreator
         {
             Type ret;
 
-            using (MySqlCommand cmd = _conn.CreateCommand())
+            using (var cmd = _conn.CreateCommand())
             {
                 cmd.CommandText = "SELECT `" + column + "` FROM `" + table + "` WHERE 0=1";
-                using (MySqlDataReader r = cmd.ExecuteReader())
+                using (var r = cmd.ExecuteReader())
                 {
                     Debug.Assert(r.FieldCount == 1);
                     ret = r.GetFieldType(0);
@@ -122,10 +124,10 @@ namespace NetGore.Db.ClassCreator
         {
             var ret = new List<string>();
 
-            using (MySqlCommand cmd = _conn.CreateCommand())
+            using (var cmd = _conn.CreateCommand())
             {
                 cmd.CommandText = "SHOW TABLES";
-                using (MySqlDataReader r = cmd.ExecuteReader())
+                using (var r = cmd.ExecuteReader())
                 {
                     while (r.Read())
                     {

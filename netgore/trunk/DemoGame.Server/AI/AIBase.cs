@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -49,9 +50,9 @@ namespace DemoGame.Server
         protected Character GetClosestHostile()
         {
             Character closestChar = null;
-            float closestDist = 0f;
+            var closestDist = 0f;
 
-            foreach (NPC character in Actor.Map.NPCs)
+            foreach (var character in Actor.Map.NPCs)
             {
                 if (character == null)
                 {
@@ -67,7 +68,7 @@ namespace DemoGame.Server
                 if (!Actor.Alliance.IsHostile(character.Alliance) || !IsInView(character))
                     continue;
 
-                float dist = Vector2.Distance(Actor.Position, character.Position);
+                var dist = Vector2.Distance(Actor.Position, character.Position);
                 if (closestChar == null || closestDist > dist)
                 {
                     closestChar = character;
@@ -94,7 +95,7 @@ namespace DemoGame.Server
         /// <returns>True if the entity is in melee range of the Actor, else false.</returns>
         protected bool IsInMeleeRange(Entity entity)
         {
-            Rectangle hitRect = GetMeleeRect();
+            var hitRect = GetMeleeRect();
             return entity.CB.Intersect(hitRect);
         }
 
@@ -105,9 +106,9 @@ namespace DemoGame.Server
         /// <returns>True if the entity is in view of the Actor, else false.</returns>
         protected bool IsInView(Entity entity)
         {
-            Vector2 halfScreenSize = GameData.ScreenSize / 2;
+            var halfScreenSize = GameData.ScreenSize / 2;
 
-            Vector2 dist = Actor.Position - entity.Position;
+            var dist = Actor.Position - entity.Position;
             dist = dist.Abs();
 
             return dist.IsLessThan(halfScreenSize);

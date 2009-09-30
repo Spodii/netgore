@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using NetGore;
 
 // FUTURE: Add a Debug check to see if Write operations result in data loss
 
@@ -345,7 +346,7 @@ namespace NetGore.IO
         /// <returns>A deep copy of the requested buffer</returns>
         public byte[] DequeueBuffer(int segmentLength)
         {
-            int bufLen = Length;
+            var bufLen = Length;
 
             if (segmentLength > bufLen)
             {
@@ -389,7 +390,7 @@ namespace NetGore.IO
                     break;
             }
 
-            int newSize = Math.Max(_buffer.Length + 8, _buffer.Length * 2);
+            var newSize = Math.Max(_buffer.Length + 8, _buffer.Length * 2);
             Array.Resize(ref _buffer, newSize);
         }
 
@@ -461,7 +462,7 @@ namespace NetGore.IO
             var buffer = GetBuffer();
 
             // Create the byte array to hold the copy and transfer over the data
-            int length = Length;
+            var length = Length;
             var ret = new byte[length];
             Buffer.BlockCopy(buffer, 0, ret, 0, length);
 
@@ -520,7 +521,7 @@ namespace NetGore.IO
                 ExpandBuffer();
 
             // Get the bit value as 0 or 1
-            int ret = ((_workBuffer & (1 << _workBufferPos)) != 0) ? 1 : 0;
+            var ret = ((_workBuffer & (1 << _workBufferPos)) != 0) ? 1 : 0;
 
             // Decrease the work buffer position
             _workBufferPos--;
@@ -656,12 +657,12 @@ namespace NetGore.IO
                 throw new ArgumentOutOfRangeException("bitLength");
 
 #if DEBUG
-            int initialBitPosition = PositionBits;
+            var initialBitPosition = PositionBits;
 #endif
 
-            int fullBytes = bitLength / _bitsByte;
-            int remainingBits = bitLength % _bitsByte;
-            int requiredBytes = fullBytes;
+            var fullBytes = bitLength / _bitsByte;
+            var remainingBits = bitLength % _bitsByte;
+            var requiredBytes = fullBytes;
             if (remainingBits > 0)
                 requiredBytes++;
 
@@ -670,7 +671,7 @@ namespace NetGore.IO
             Debug.Assert(fullBytes >= 0);
             Debug.Assert(requiredBytes > 0);
 
-            BitStream ret = new BitStream(BitStreamMode.Write, requiredBytes) { WriteMode = BitStreamBufferMode.Static };
+            var ret = new BitStream(BitStreamMode.Write, requiredBytes) { WriteMode = BitStreamBufferMode.Static };
 
             if (fullBytes > 0)
             {
@@ -680,7 +681,7 @@ namespace NetGore.IO
 
             if (remainingBits > 0)
             {
-                byte value = ReadByte(remainingBits);
+                var value = ReadByte(remainingBits);
                 ret.Write(value, remainingBits);
             }
 
@@ -709,7 +710,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadBool(bool[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadBool();
             }
@@ -723,7 +724,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadBool(bool?[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadNullableBool();
             }
@@ -760,7 +761,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadByte(byte[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadByte();
             }
@@ -796,7 +797,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadDouble(double[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadDouble();
             }
@@ -824,8 +825,8 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnumName<T>() where T : struct, IComparable, IConvertible, IFormattable
         {
-            string str = ReadString();
-            T value = EnumIOHelper.FromName<T>(str);
+            var str = ReadString();
+            var value = EnumIOHelper.FromName<T>(str);
             return value;
         }
 
@@ -858,7 +859,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadFloat(float[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadFloat();
             }
@@ -891,7 +892,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadInt(int[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadInt();
             }
@@ -915,7 +916,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadLong(long[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadLong();
             }
@@ -929,7 +930,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadLong(long?[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadNullableLong();
             }
@@ -941,7 +942,7 @@ namespace NetGore.IO
         /// <returns>True if the bit is set, else false</returns>
         public bool? ReadNullableBool()
         {
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -954,7 +955,7 @@ namespace NetGore.IO
         /// <returns>Value of the next 8 bits in the BitStream as a byte</returns>
         public byte? ReadNullableByte()
         {
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -973,7 +974,7 @@ namespace NetGore.IO
             if (numBits > _bitsByte)
                 throw new ArgumentOutOfRangeException("numBits", string.Format("Invalid number of bits specified ({0})", numBits));
 
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -988,7 +989,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadNullableByte(byte?[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadNullableByte();
             }
@@ -1012,7 +1013,7 @@ namespace NetGore.IO
         /// <returns>Value of the next 64 bits in the BitStream as a double</returns>
         public double? ReadNullableDouble()
         {
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -1027,9 +1028,9 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadNullableDouble(double?[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
-                bool hasValue = ReadBool();
+                var hasValue = ReadBool();
                 if (!hasValue)
                     dest[i] = null;
                 else
@@ -1043,7 +1044,7 @@ namespace NetGore.IO
         /// <returns>Value of the next 32 bits in the BitStream as a float</returns>
         public float? ReadNullableFloat()
         {
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -1058,7 +1059,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadNullableFloat(float?[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadNullableFloat();
             }
@@ -1080,7 +1081,7 @@ namespace NetGore.IO
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as an int</returns>
         public int? ReadNullableInt(int numBits)
         {
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -1095,7 +1096,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadNullableInt(int?[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadNullableInt();
             }
@@ -1107,7 +1108,7 @@ namespace NetGore.IO
         /// <returns>Value of the next 64 bits in the BitStream as a long</returns>
         public long? ReadNullableLong()
         {
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -1130,7 +1131,7 @@ namespace NetGore.IO
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a SByte</returns>
         public sbyte? ReadNullableSByte(int numBits)
         {
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -1153,7 +1154,7 @@ namespace NetGore.IO
         /// <returns>Value of the next <paramref name="numBits"/> bits in the BitStream as a short</returns>
         public short? ReadNullableShort(int numBits)
         {
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -1168,7 +1169,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadNullableShort(short?[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadNullableShort();
             }
@@ -1195,7 +1196,7 @@ namespace NetGore.IO
             if (numBits < 0 || numBits > _bitsInt)
                 throw new ArgumentOutOfRangeException("numBits", string.Format("Invalid number of bits specified ({0})", numBits));
 
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -1210,7 +1211,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadNullableUInt(uint?[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadNullableUInt();
             }
@@ -1222,7 +1223,7 @@ namespace NetGore.IO
         /// <returns>Value of the next 64 bits in the BitStream as a ulong</returns>
         public ulong? ReadNullableULong()
         {
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -1237,7 +1238,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadNullableULong(ulong?[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadNullableULong();
             }
@@ -1249,7 +1250,7 @@ namespace NetGore.IO
         /// <returns>Value of the next 16 bits in the BitStream as a ushort</returns>
         public ushort? ReadNullableUShort()
         {
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -1268,7 +1269,7 @@ namespace NetGore.IO
             if (numBits < 0 || numBits > _bitsUShort)
                 throw new ArgumentOutOfRangeException("numBits", string.Format("Invalid number of bits specified ({0})", numBits));
 
-            bool hasValue = ReadBool();
+            var hasValue = ReadBool();
             if (!hasValue)
                 return null;
 
@@ -1283,7 +1284,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadNullableUShort(ushort?[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadNullableUShort();
             }
@@ -1316,7 +1317,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadSByte(sbyte[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadSByte();
             }
@@ -1330,7 +1331,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadSByte(sbyte?[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadNullableSByte();
             }
@@ -1363,7 +1364,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadShort(short[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadShort();
             }
@@ -1384,9 +1385,9 @@ namespace NetGore.IO
             if (numBits == 1)
                 return ReadBitAsInt();
 
-            int signWithValue = ReadUnsigned(numBits);
-            int sign = signWithValue & (1 << (numBits - 1));
-            int value = signWithValue & (~sign);
+            var signWithValue = ReadUnsigned(numBits);
+            var sign = signWithValue & (1 << (numBits - 1));
+            var value = signWithValue & (~sign);
 
             // Check for a negative value
             if (sign != 0)
@@ -1434,7 +1435,7 @@ namespace NetGore.IO
         /// <returns>String read from the BitStream</returns>
         public string ReadString(uint maxLength)
         {
-            uint length = ReadUInt(GetStringLengthBits(maxLength));
+            var length = ReadUInt(GetStringLengthBits(maxLength));
             if (length == 0)
                 return string.Empty;
 
@@ -1452,7 +1453,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadString(string[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadString();
             }
@@ -1489,7 +1490,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadUInt(uint[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadUInt();
             }
@@ -1513,7 +1514,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadULong(ulong[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadULong();
             }
@@ -1587,7 +1588,7 @@ namespace NetGore.IO
 
                 // Loop until all the bits have been read
                 ret = 0;
-                int retPos = numBits - 1;
+                var retPos = numBits - 1;
                 do
                 {
                     // Check which will run out of bits first - the buffer or the value
@@ -1600,8 +1601,8 @@ namespace NetGore.IO
                         // ret |= GetBits(_workBuffer, _workBufferPos, retPos);
 
                         // Optimized and inlined (about 2.5x faster):
-                        int value = _workBuffer >> (_workBufferPos - retPos);
-                        int mask = (1 << (retPos + 1)) - 1;
+                        var value = _workBuffer >> (_workBufferPos - retPos);
+                        var mask = (1 << (retPos + 1)) - 1;
                         ret |= value & mask;
 
                         // Decrease the work buffer and refill it if needed
@@ -1619,8 +1620,8 @@ namespace NetGore.IO
                         // ret |= GetBits(_workBuffer, _workBufferPos, _workBufferPos) << (retPos - _workBufferPos);
 
                         // Optimized and inlined (about 10x faster):
-                        int offset = retPos - _workBufferPos;
-                        int mask = (1 << (_workBufferPos + 1)) - 1;
+                        var offset = retPos - _workBufferPos;
+                        var mask = (1 << (_workBufferPos + 1)) - 1;
                         ret |= (_workBuffer & mask) << offset;
 
                         // Get the new work buffer and prepare for another read
@@ -1665,7 +1666,7 @@ namespace NetGore.IO
         /// <param name="length">Number of values to read and write to the <paramref name="dest"/> array</param>
         public void ReadUShort(ushort[] dest, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 dest[i] = ReadUShort();
             }
@@ -1700,7 +1701,7 @@ namespace NetGore.IO
             if (Mode != requiredMode)
             {
                 const string errmsg = "Operation requires the BitStream to be in mode `{0}`.";
-                string s = string.Format(errmsg, requiredMode);
+                var s = string.Format(errmsg, requiredMode);
                 throw new InvalidOperationException(s);
             }
         }
@@ -1790,7 +1791,7 @@ namespace NetGore.IO
             }
             else
             {
-                int moveBits = bits;
+                var moveBits = bits;
 
                 // SeekFromCurrentPosition forward
                 while (moveBits > 0)
@@ -1900,7 +1901,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(double[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -1914,7 +1915,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(double?[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -1949,7 +1950,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(long[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -1963,7 +1964,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(long?[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -1998,7 +1999,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(ulong[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2012,7 +2013,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(ulong?[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2046,7 +2047,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(int[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2060,7 +2061,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(int?[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2116,7 +2117,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(uint[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2130,7 +2131,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(uint?[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2186,7 +2187,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(short[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2200,7 +2201,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(short?[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2256,7 +2257,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(ushort[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2270,7 +2271,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(ushort?[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2326,7 +2327,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(sbyte[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2340,7 +2341,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(sbyte?[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2397,7 +2398,7 @@ namespace NetGore.IO
         public void Write(byte[] value, int offset, int length)
         {
             // FUTURE: Would be more efficient if I grab 4 bytes at a time when possible
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2412,7 +2413,7 @@ namespace NetGore.IO
         public void Write(byte?[] value, int offset, int length)
         {
             // FUTURE: Would be more efficient if I grab 4 bytes at a time when possible
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2460,7 +2461,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(string[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2502,7 +2503,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(bool[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2516,7 +2517,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(bool?[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2551,7 +2552,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(float[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2565,7 +2566,7 @@ namespace NetGore.IO
         /// <param name="length">Number of indices to write</param>
         public void Write(float?[] value, int offset, int length)
         {
-            for (int i = offset; i < offset + length; i++)
+            for (var i = offset; i < offset + length; i++)
             {
                 Write(value[i]);
             }
@@ -2584,7 +2585,7 @@ namespace NetGore.IO
             // Write over any partial bits, if needed
             if (source.Mode == BitStreamMode.Write && source._workBufferPos != _highBit)
             {
-                for (int i = _highBit; i > source._workBufferPos; i--)
+                for (var i = _highBit; i > source._workBufferPos; i--)
                 {
                     WriteBit((source._workBuffer & (1 << i)) != 0);
                 }
@@ -2763,7 +2764,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnumName<T>(T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            string str = EnumIOHelper.ToName(value);
+            var str = EnumIOHelper.ToName(value);
             Write(str);
         }
 
@@ -2806,7 +2807,7 @@ namespace NetGore.IO
             }
 
             // Get a 1-bit mask for the bit at the sign
-            int signBit = 1 << (numBits - 1);
+            var signBit = 1 << (numBits - 1);
 
             // If negative, negate the value. While we're at it, we might as well also just 
             // pack the sign into the value so we can write the whole value in one call. This
@@ -2897,13 +2898,13 @@ namespace NetGore.IO
                 */
 
                 // Non-optimal scenario - we have to use some sexy bit hacking
-                int valueBitPos = numBits - 1;
+                var valueBitPos = numBits - 1;
                 do
                 {
                     if (valueBitPos <= _workBufferPos)
                     {
                         // All bits can fit into the buffer
-                        int valueMask = ((1 << (valueBitPos + 1)) - 1);
+                        var valueMask = ((1 << (valueBitPos + 1)) - 1);
                         _workBuffer |= (value & valueMask) << (_workBufferPos - valueBitPos);
                         _workBufferPos -= valueBitPos + 1;
 
@@ -2915,7 +2916,7 @@ namespace NetGore.IO
                     else
                     {
                         // Only some of the bits can fit into the buffer
-                        int valueMask = ((1 << (_workBufferPos + 1)) - 1);
+                        var valueMask = ((1 << (_workBufferPos + 1)) - 1);
                         _workBuffer |= (value >> (valueBitPos - _workBufferPos)) & valueMask;
                         valueBitPos -= _workBufferPos + 1;
 
@@ -2937,8 +2938,8 @@ namespace NetGore.IO
         /// <returns>Value read from the reader.</returns>
         public T ReadEnumName<T>(string name) where T : struct, IComparable, IConvertible, IFormattable
         {
-            string str = ReadString();
-            T value = EnumIOHelper.FromName<T>(str);
+            var str = ReadString();
+            var value = EnumIOHelper.FromName<T>(str);
             return value;
         }
 
@@ -3264,7 +3265,7 @@ namespace NetGore.IO
         /// <param name="value">Value to write.</param>
         public void WriteEnumName<T>(string name, T value) where T : struct, IComparable, IConvertible, IFormattable
         {
-            string str = EnumIOHelper.ToName(value);
+            var str = EnumIOHelper.ToName(value);
             Write(str);
         }
 

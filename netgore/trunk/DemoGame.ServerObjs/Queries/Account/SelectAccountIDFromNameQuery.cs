@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
-using System.Data;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using DemoGame;
 using DemoGame.Server.DbObjs;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -24,7 +25,7 @@ namespace DemoGame.Server.Queries
         {
             AccountID? ret;
 
-            using (IDataReader r = ExecuteReader(accountName))
+            using (var r = ExecuteReader(accountName))
             {
                 if (!r.Read())
                     ret = null;

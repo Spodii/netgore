@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using DemoGame;
+using NetGore;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -129,12 +131,12 @@ namespace NetGore.Db.ClassCreator
             if (paramNames == null || paramNames.Count() == 0)
                 return value;
 
-            foreach (string parameter in paramNames)
+            foreach (var parameter in paramNames)
             {
                 if (currentParameter != null && parameter == currentParameter)
                     continue;
 
-                string withoutPrefix = parameter;
+                var withoutPrefix = parameter;
                 if (withoutPrefix.StartsWith(VerbatinIdentifier))
                     withoutPrefix = withoutPrefix.Substring(VerbatinIdentifier.Length);
                 value = value.Replace(parameter, "<paramref name=\"" + withoutPrefix + "\"/>");
@@ -169,10 +171,10 @@ namespace NetGore.Db.ClassCreator
 
         public virtual string GetCallMethod(string methodName, params string[] arguments)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(methodName);
             sb.Append(OpenParameterString);
-            foreach (string arg in arguments)
+            foreach (var arg in arguments)
             {
                 sb.Append(arg);
                 sb.Append(ParameterSpacer);
@@ -204,14 +206,14 @@ namespace NetGore.Db.ClassCreator
 
         public virtual string GetComplexTypeString(Type baseType, params Type[] genericTypes)
         {
-            string baseTypeWithoutGenerics = GetTypeString(baseType);
-            int start = baseTypeWithoutGenerics.LastIndexOf(OpenGeneric);
+            var baseTypeWithoutGenerics = GetTypeString(baseType);
+            var start = baseTypeWithoutGenerics.LastIndexOf(OpenGeneric);
             baseTypeWithoutGenerics = baseTypeWithoutGenerics.Substring(0, start);
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(baseTypeWithoutGenerics);
             sb.Append(OpenGeneric);
-            for (int i = 0; i < genericTypes.Length; i++)
+            for (var i = 0; i < genericTypes.Length; i++)
             {
                 sb.Append(GetTypeString(genericTypes[i]));
                 sb.Append(ParameterSpacer);
@@ -233,7 +235,7 @@ namespace NetGore.Db.ClassCreator
         public virtual string GetExtensionMethodHeader(string methodName, MethodParameter extender, MethodParameter[] parameters,
                                                        Type returnType)
         {
-            StringBuilder sb = new StringBuilder(256);
+            var sb = new StringBuilder(256);
             sb.Append(GetMethodNameAndVisibility(methodName, MemberVisibilityLevel.Public, returnType, false, true));
 
             sb.Append(OpenParameterString);
@@ -316,7 +318,7 @@ namespace NetGore.Db.ClassCreator
 
         public virtual string GetIEnumerableKeyValuePair(string keyType, string valueType)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("System.Collections.Generic.IEnumerable");
             sb.Append(OpenGeneric);
             sb.Append("System.Collections.Generic.KeyValuePair");
@@ -333,7 +335,7 @@ namespace NetGore.Db.ClassCreator
 
         public virtual string GetInterfaceMethod(string name, string returnType, params MethodParameter[] parameters)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(returnType + " " + name);
             sb.Append(OpenParameterString);
             sb.Append(GetParameters(parameters));
@@ -360,7 +362,7 @@ namespace NetGore.Db.ClassCreator
 
         public virtual string GetInterfaceProperty(string name, string returnType, bool hasSetter)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine(returnType + " " + name);
             sb.AppendLine(OpenBrace);
             sb.AppendLine(PropertyGetString + EndOfLine);
@@ -384,7 +386,7 @@ namespace NetGore.Db.ClassCreator
         {
             code = code.Trim();
 
-            StringBuilder sb = new StringBuilder(code.Length + 20);
+            var sb = new StringBuilder(code.Length + 20);
             sb.AppendLine(OpenBrace);
             if (!string.IsNullOrEmpty(code))
                 sb.AppendLine(code);
@@ -401,7 +403,7 @@ namespace NetGore.Db.ClassCreator
         public virtual string GetMethodHeader(string methodName, MemberVisibilityLevel visibility, MethodParameter[] parameters,
                                               string returnType, bool isVirtual, bool isStatic)
         {
-            StringBuilder sb = new StringBuilder(256);
+            var sb = new StringBuilder(256);
             sb.Append(GetMethodNameAndVisibility(methodName, visibility, returnType, isVirtual, isStatic));
 
             // Parameters
@@ -424,7 +426,7 @@ namespace NetGore.Db.ClassCreator
             if (isVirtual && isStatic)
                 throw new ArgumentException("A method cannot be both virtual and static.");
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(GetVisibilityLevel(visibility));
             sb.Append(" ");
             if (isVirtual)
@@ -467,8 +469,8 @@ namespace NetGore.Db.ClassCreator
             if (parameters == null)
                 return string.Empty;
 
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < parameters.Length; i++)
+            var sb = new StringBuilder();
+            for (var i = 0; i < parameters.Length; i++)
             {
                 sb.Append(GetParameter(parameters[i]));
                 if (i < parameters.Length - 1)
@@ -489,7 +491,7 @@ namespace NetGore.Db.ClassCreator
                                           MemberVisibilityLevel getterVisibility, MemberVisibilityLevel? setterVisibility,
                                           string member, bool isVirtual, bool isStatic)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine(GetMethodNameAndVisibility(propertyName, getterVisibility, externalType, isVirtual, isStatic));
             sb.AppendLine(OpenBrace);
             {
@@ -527,7 +529,7 @@ namespace NetGore.Db.ClassCreator
         public virtual string GetSetValue(string leftSide, string rightSide, bool leftIsClassMember, bool rightIsClassMember,
                                           string rightCastType)
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
 
             if (leftIsClassMember)
                 sb.Append(ClassMemberQualifier);
@@ -577,9 +579,9 @@ namespace NetGore.Db.ClassCreator
         {
             if (type.IsGenericType)
             {
-                string s = type.ToString();
-                int firstBracket = s.IndexOf("[") - 1;
-                int start = s.IndexOf("`");
+                var s = type.ToString();
+                var firstBracket = s.IndexOf("[") - 1;
+                var start = s.IndexOf("`");
                 s = s.Remove(start, firstBracket - start + 1);
                 s = s.Replace("[", OpenGeneric);
                 s = s.Replace("]", CloseGeneric);
@@ -606,7 +608,7 @@ namespace NetGore.Db.ClassCreator
             else
                 paramNames = parameters.Select(x => x.Key);
 
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.AppendLine("/// <summary>");
             sb.AppendLine("/// " + EscapeXmlCommentEntry(AddXmlCommentParamRefs(paramNames, summary)));
             sb.AppendLine("/// </summary>");
@@ -615,7 +617,7 @@ namespace NetGore.Db.ClassCreator
             {
                 foreach (var p in parameters)
                 {
-                    string key = p.Key;
+                    var key = p.Key;
                     if (key.StartsWith(VerbatinIdentifier))
                         key = key.Substring(VerbatinIdentifier.Length);
 
@@ -644,8 +646,8 @@ namespace NetGore.Db.ClassCreator
         protected virtual string RemoveSeparatorCharacters(string str)
         {
             var parts = str.Split(separatorCharacters);
-            StringBuilder sb = new StringBuilder(parts.Sum(x => x.Length) + 1);
-            foreach (string part in parts)
+            var sb = new StringBuilder(parts.Sum(x => x.Length) + 1);
+            foreach (var part in parts)
             {
                 sb.Append(part.Substring(0, 1).ToUpper());
                 sb.Append(part.Substring(1));

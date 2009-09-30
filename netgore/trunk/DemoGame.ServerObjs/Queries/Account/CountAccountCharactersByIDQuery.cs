@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame;
 using DemoGame.Server.DbObjs;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -25,7 +26,7 @@ namespace DemoGame.Server.Queries
 
         public int Execute(AccountID accountID)
         {
-            using (IDataReader r = ExecuteReader(accountID))
+            using (var r = ExecuteReader(accountID))
             {
                 if (!r.Read())
                     throw new Exception("Failed to read");

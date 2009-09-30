@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat;
 using NetGore.NPCChat.Conditionals;
@@ -195,7 +196,7 @@ namespace NetGore.EditorTools.NPCChat
             _actions.Clear();
             _actions.AddRange(actions);
 
-            EditorNPCChatConditionalCollection c = conditionals as EditorNPCChatConditionalCollection;
+            var c = conditionals as EditorNPCChatConditionalCollection;
             _conditionals = c ?? new EditorNPCChatConditionalCollection();
         }
 

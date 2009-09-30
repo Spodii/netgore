@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame;
 using DemoGame.Server.DbObjs;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -26,11 +27,11 @@ namespace DemoGame.Server.Queries
         {
             var ret = new List<ICharacterStatusEffectTable>(4);
 
-            using (IDataReader r = ExecuteReader(id))
+            using (var r = ExecuteReader(id))
             {
                 while (r.Read())
                 {
-                    CharacterStatusEffectTable item = new CharacterStatusEffectTable();
+                    var item = new CharacterStatusEffectTable();
                     item.ReadValues(r);
                     ret.Add(item);
                 }

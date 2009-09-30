@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using NetGore;
 using NetGore.NPCChat;
 
 namespace NetGore.EditorTools.NPCChat
@@ -15,13 +16,13 @@ namespace NetGore.EditorTools.NPCChat
 
         public void AddDialog(NPCChatDialogBase dialog)
         {
-            NPCChatDialogComboBoxItem v = new NPCChatDialogComboBoxItem(dialog);
+            var v = new NPCChatDialogComboBoxItem(dialog);
             Items.Add(v);
         }
 
         public void AddDialog(IEnumerable<NPCChatDialogBase> dialogs)
         {
-            foreach (NPCChatDialogBase dialog in dialogs)
+            foreach (var dialog in dialogs)
             {
                 AddDialog(dialog);
             }

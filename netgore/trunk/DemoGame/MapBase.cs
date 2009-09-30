@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using DemoGame.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -190,7 +191,7 @@ namespace DemoGame
 
             if (_dynamicEntities.CanGet((int)mapEntityIndex))
             {
-                DynamicEntity existingDE = _dynamicEntities[(int)mapEntityIndex];
+                var existingDE = _dynamicEntities[(int)mapEntityIndex];
                 if (existingDE != null)
                 {
                     Debug.Fail("A DynamicEntity already exists at this MapEntityIndex!");
@@ -270,10 +271,10 @@ namespace DemoGame
         /// <param name="entity">Entity to add to the grid</param>
         void AddEntityToGrid(Entity entity)
         {
-            int minX = (int)entity.CB.Min.X / WallGridSize;
-            int minY = (int)entity.CB.Min.Y / WallGridSize;
-            int maxX = (int)entity.CB.Max.X / WallGridSize;
-            int maxY = (int)entity.CB.Max.Y / WallGridSize;
+            var minX = (int)entity.CB.Min.X / WallGridSize;
+            var minY = (int)entity.CB.Min.Y / WallGridSize;
+            var maxX = (int)entity.CB.Max.X / WallGridSize;
+            var maxY = (int)entity.CB.Max.Y / WallGridSize;
 
             // Keep in range of the grid
             if (minX < 0)
@@ -286,9 +287,9 @@ namespace DemoGame
                 maxY = _entityGrid.GetLength(1) - 1;
 
             // Add to all the segments of the grid
-            for (int x = minX; x <= maxX; x++)
+            for (var x = minX; x <= maxX; x++)
             {
-                for (int y = minY; y <= maxY; y++)
+                for (var y = minY; y <= maxY; y++)
                 {
                     if (!_entityGrid[x, y].Contains(entity))
                         _entityGrid[x, y].Add(entity);
@@ -306,16 +307,16 @@ namespace DemoGame
         /// <returns>A two-dimensional array of Lists to use as the grid of entities.</returns>
         static List<Entity>[,] BuildEntityGrid(float width, float height)
         {
-            int gridWidth = (int)Math.Ceiling(width / WallGridSize);
-            int gridHeight = (int)Math.Ceiling(height / WallGridSize);
+            var gridWidth = (int)Math.Ceiling(width / WallGridSize);
+            var gridHeight = (int)Math.Ceiling(height / WallGridSize);
 
             // Create the array
             var retGrid = new List<Entity>[gridWidth,gridHeight];
 
             // Create the lists
-            for (int x = 0; x < gridWidth; x++)
+            for (var x = 0; x < gridWidth; x++)
             {
-                for (int y = 0; y < gridHeight; y++)
+                for (var y = 0; y < gridHeight; y++)
                 {
                     retGrid[x, y] = new List<Entity>(32);
                 }
@@ -406,8 +407,8 @@ namespace DemoGame
         /// <param name="entity">Entity to check.</param>
         void ForceEntityInMapBoundaries(Entity entity)
         {
-            Vector2 min = entity.CB.Min;
-            Vector2 max = entity.CB.Max;
+            var min = entity.CB.Min;
+            var max = entity.CB.Max;
 
             if (min.X < 0)
                 min.X = 0;
@@ -440,8 +441,8 @@ namespace DemoGame
         /// <returns>The DynamicEntity with the specified <paramref name="mapEntityIndex"/>.</returns>
         public T GetDynamicEntity<T>(MapEntityIndex mapEntityIndex) where T : DynamicEntity
         {
-            DynamicEntity dynamicEntity = GetDynamicEntity(mapEntityIndex);
-            T casted = dynamicEntity as T;
+            var dynamicEntity = GetDynamicEntity(mapEntityIndex);
+            var casted = dynamicEntity as T;
 
             if (casted == null && dynamicEntity != null)
             {
@@ -469,7 +470,7 @@ namespace DemoGame
             var ret = new List<Entity>(gridSegment.Count());
 
             // Iterate through all entities and return those who contain the segment
-            foreach (Entity entity in gridSegment)
+            foreach (var entity in gridSegment)
             {
                 // Hit test
                 if (!entity.CB.HitTest(p))
@@ -501,10 +502,10 @@ namespace DemoGame
             var ret = new List<T>(gridSegment.Count());
 
             // Iterate through all entities and return those who contain the segment
-            foreach (Entity entity in gridSegment)
+            foreach (var entity in gridSegment)
             {
                 // Type cast check
-                T entityT = entity as T;
+                var entityT = entity as T;
                 if (entityT == null)
                     continue;
 
@@ -536,10 +537,10 @@ namespace DemoGame
             foreach (var gridSegment in GetEntityGrids(rect))
             {
                 // Iterate through each entity in the grid segment
-                foreach (Entity entity in gridSegment)
+                foreach (var entity in gridSegment)
                 {
                     // Type cast check
-                    T entityT = entity as T;
+                    var entityT = entity as T;
                     if (entityT == null)
                         continue;
 
@@ -601,10 +602,10 @@ namespace DemoGame
             foreach (var gridSegment in GetEntityGrids(rect))
             {
                 // Iterate through each entity in the grid segment
-                foreach (Entity entity in gridSegment)
+                foreach (var entity in gridSegment)
                 {
                     // Type cast check
-                    T entityT = entity as T;
+                    var entityT = entity as T;
                     if (entityT == null)
                         continue;
 
@@ -642,7 +643,7 @@ namespace DemoGame
             foreach (var gridSegment in GetEntityGrids(rect))
             {
                 // Iterate through each entity in the grid segment
-                foreach (Entity entity in gridSegment)
+                foreach (var entity in gridSegment)
                 {
                     // Intersection check
                     if (!entity.CB.Intersect(rect))
@@ -686,7 +687,7 @@ namespace DemoGame
             foreach (var gridSegment in GetEntityGrids(rect))
             {
                 // Iterate through each entity in the grid segment
-                foreach (Entity entity in gridSegment)
+                foreach (var entity in gridSegment)
                 {
                     // Intersection check
                     if (!entity.CB.Intersect(rect))
@@ -751,7 +752,7 @@ namespace DemoGame
                 typedEntities = typedEntities.Where(condition);
 
             // Return first match, if any
-            T match = typedEntities.FirstOrDefault();
+            var match = typedEntities.FirstOrDefault();
 
             return match;
         }
@@ -771,10 +772,10 @@ namespace DemoGame
                 return null;
 
             // Iterate through all entities and return the first one to contain the segment
-            foreach (Entity entity in gridSegment)
+            foreach (var entity in gridSegment)
             {
                 // Type cast check
-                T entityT = entity as T;
+                var entityT = entity as T;
                 if (entityT == null)
                     continue;
 
@@ -807,7 +808,7 @@ namespace DemoGame
                 return null;
 
             // Iterate through all entities and return the first one to contain the segment
-            foreach (Entity entity in gridSegment)
+            foreach (var entity in gridSegment)
             {
                 // Hit test check
                 if (!entity.CB.HitTest(p))
@@ -871,8 +872,8 @@ namespace DemoGame
         /// <returns>Entity grid containing the given coordinate, or null if an invalid location</returns>
         protected IEnumerable<Entity> GetEntityGrid(Vector2 p)
         {
-            int x = (int)p.X / WallGridSize;
-            int y = (int)p.Y / WallGridSize;
+            var x = (int)p.X / WallGridSize;
+            var y = (int)p.Y / WallGridSize;
 
             // Validate location
             if (x < 0 || x > _entityGrid.GetLength(0) - 1 || y < 0 || y > _entityGrid.GetLength(1) - 1)
@@ -905,10 +906,10 @@ namespace DemoGame
         /// <returns>List of all grid segments intersected by <paramref name="rect"/></returns>
         protected IEnumerable<IEnumerable<Entity>> GetEntityGrids(Rectangle rect)
         {
-            int minX = rect.X / WallGridSize;
-            int minY = rect.Y / WallGridSize;
-            int maxX = rect.Right / WallGridSize;
-            int maxY = rect.Bottom / WallGridSize;
+            var minX = rect.X / WallGridSize;
+            var minY = rect.Y / WallGridSize;
+            var maxX = rect.Right / WallGridSize;
+            var maxY = rect.Bottom / WallGridSize;
 
             // Keep in range of the grid
             if (minX < 0)
@@ -934,13 +935,13 @@ namespace DemoGame
             }
 
             // Count the number of grid segments
-            int segmentCount = (maxX - minX + 1) * (maxY - minY + 1);
+            var segmentCount = (maxX - minX + 1) * (maxY - minY + 1);
 
             // Combine the grid segments
             var ret = new List<List<Entity>>(segmentCount);
-            for (int x = minX; x <= maxX; x++)
+            for (var x = minX; x <= maxX; x++)
             {
-                for (int y = minY; y <= maxY; y++)
+                for (var y = minY; y <= maxY; y++)
                 {
                     ret.Add(_entityGrid[x, y]);
                 }
@@ -948,7 +949,9 @@ namespace DemoGame
 
             // A little hack to get List<List<T>> to return as IEnumerable<IEnumerable<T>>
             foreach (var item in ret)
+            {
                 yield return item;
+            }
         }
 
         /// <summary>
@@ -969,7 +972,7 @@ namespace DemoGame
         /// <returns>A list containing all ItemEntityBases that intersect the specified area</returns>
         public List<ItemEntityBase> GetItems(Vector2 min, Vector2 max)
         {
-            Vector2 size = max - min;
+            var size = max - min;
             return GetItems(new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y));
         }
 
@@ -1000,7 +1003,7 @@ namespace DemoGame
 
             // Get the used map indices
             var usedIndices = new List<MapIndex>(mapFiles.Count());
-            foreach (string file in mapFiles)
+            foreach (var file in mapFiles)
             {
                 MapIndex o;
                 if (TryGetIndexFromPath(file, out o))
@@ -1010,8 +1013,8 @@ namespace DemoGame
             usedIndices.Sort();
 
             // Check every map index starting at 1, returning the first free value found
-            int expected = 1;
-            for (int i = 0; i < usedIndices.Count; i++)
+            var expected = 1;
+            for (var i = 0; i < usedIndices.Count; i++)
             {
                 if ((int)usedIndices[i] != expected)
                     return new MapIndex(expected);
@@ -1035,7 +1038,7 @@ namespace DemoGame
             // and if it can be used by the specified CharacterEntity
             Predicate<Entity> pred = delegate(Entity entity)
                                      {
-                                         IUsableEntity usable = entity as IUsableEntity;
+                                         var usable = entity as IUsableEntity;
                                          if (usable == null)
                                              return false;
 
@@ -1178,7 +1181,7 @@ namespace DemoGame
                 throw new ArgumentException("filePath");
             }
 
-            XmlValueReader r = new XmlValueReader(filePath, _rootNodeName);
+            var r = new XmlValueReader(filePath, _rootNodeName);
             LoadHeader(r);
             LoadWalls(r);
             LoadDynamicEntities(r, loadDynamicEntities);
@@ -1192,7 +1195,7 @@ namespace DemoGame
             // Add the loaded DynamicEntities to the map
             if (loadDynamicEntities)
             {
-                foreach (DynamicEntity dynamicEntity in loadedDynamicEntities)
+                foreach (var dynamicEntity in loadedDynamicEntities)
                 {
                     AddEntity(dynamicEntity);
                 }
@@ -1208,10 +1211,10 @@ namespace DemoGame
             if (r == null)
                 throw new ArgumentNullException("r");
 
-            IValueReader nodeReader = r.ReadNode(_headerNodeName);
+            var nodeReader = r.ReadNode(_headerNodeName);
 
             // Read the values
-            string name = nodeReader.ReadString(_headerNodeNameKey);
+            var name = nodeReader.ReadString(_headerNodeNameKey);
             _width = nodeReader.ReadFloat(_headerNodeWidthKey);
             _height = nodeReader.ReadFloat(_headerNodeHeightKey);
 
@@ -1239,7 +1242,7 @@ namespace DemoGame
             var loadedWalls = r.ReadManyNodes<WallEntityBase>(_wallsNodeName, CreateWall);
 
             // Add the loaded walls to the map
-            foreach (WallEntityBase wall in loadedWalls)
+            foreach (var wall in loadedWalls)
             {
                 AddEntity(wall);
             }
@@ -1303,7 +1306,7 @@ namespace DemoGame
                 _entityGrid = BuildEntityGrid(Width, Height);
 
                 // Re-add all the entities
-                foreach (Entity entity in Entities)
+                foreach (var entity in Entities)
                 {
                     AddEntityToGrid(entity);
                 }
@@ -1324,7 +1327,7 @@ namespace DemoGame
             }
 
             // Ensure the entity will be in the map
-            Vector2 newMax = entity.Position + size;
+            var newMax = entity.Position + size;
             if (newMax.X > Width)
                 size.X = Width - entity.Position.X;
             if (newMax.Y > Height)
@@ -1354,7 +1357,7 @@ namespace DemoGame
             if (pos.Y < 0)
                 pos.Y = 0;
 
-            Vector2 max = pos + entity.CB.Size;
+            var max = pos + entity.CB.Size;
             if (max.X > Width)
                 pos.X = Width - entity.CB.Size.X;
             if (max.Y > Height)
@@ -1371,7 +1374,7 @@ namespace DemoGame
         /// <param name="contentPath">Content path to save the map file to.</param>
         public void Save(MapIndex mapIndex, ContentPaths contentPath)
         {
-            PathString path = contentPath.Maps.Join(mapIndex + "." + MapFileSuffix);
+            var path = contentPath.Maps.Join(mapIndex + "." + MapFileSuffix);
             Save(path);
 
             if (OnSave != null)
@@ -1457,9 +1460,9 @@ namespace DemoGame
             // Remove any objects outside of the new dimensions
             if (Size.X > newSize.X || Size.Y > newSize.Y)
             {
-                for (int i = 0; i < _entities.Count; i++)
+                for (var i = 0; i < _entities.Count; i++)
                 {
-                    Entity entity = _entities[i];
+                    var entity = _entities[i];
                     if (entity == null)
                         continue;
 
@@ -1474,7 +1477,7 @@ namespace DemoGame
                         else
                         {
                             // Trim down a wall if the max passes the new dimensions, but the min does not
-                            Vector2 newEntitySize = entity.Size;
+                            var newEntitySize = entity.Size;
 
                             if (entity.CB.Max.X > newSize.X)
                                 newSize.X = entity.CB.Max.X - newSize.X;
@@ -1516,13 +1519,13 @@ namespace DemoGame
         /// <returns>New position for the entity</returns>
         public Vector2 SnapToWalls(Entity entity, float maxDiff)
         {
-            Vector2 ret = new Vector2(entity.Position.X, entity.Position.Y);
-            Vector2 pos = entity.Position - new Vector2(maxDiff / 2, maxDiff / 2);
-            CollisionBox newCB = new CollisionBox(pos, entity.CB.Width + maxDiff, entity.CB.Height + maxDiff);
+            var ret = new Vector2(entity.Position.X, entity.Position.Y);
+            var pos = entity.Position - new Vector2(maxDiff / 2, maxDiff / 2);
+            var newCB = new CollisionBox(pos, entity.CB.Width + maxDiff, entity.CB.Height + maxDiff);
 
-            foreach (Entity e in Entities)
+            foreach (var e in Entities)
             {
-                WallEntityBase w = e as WallEntityBase;
+                var w = e as WallEntityBase;
                 if (w == null || w == entity || !CollisionBox.Intersect(w.CB, newCB))
                     continue;
 
@@ -1591,7 +1594,7 @@ namespace DemoGame
             if (string.IsNullOrEmpty(path))
                 throw new ArgumentNullException("path");
 
-            string fileName = Path.GetFileNameWithoutExtension(path);
+            var fileName = Path.GetFileNameWithoutExtension(path);
             return Parser.Invariant.TryParse(fileName, out mapIndex);
         }
 
@@ -1605,7 +1608,7 @@ namespace DemoGame
                 return;
 
             // Update the Entities
-            foreach (Entity entity in Entities)
+            foreach (var entity in Entities)
             {
                 if (entity == null)
                 {
@@ -1621,16 +1624,16 @@ namespace DemoGame
         {
             // Check that the entity changed grid segments by comparing the lowest grid segments
             // of the old position and current position
-            int minX = (int)oldPos.X / WallGridSize;
-            int minY = (int)oldPos.Y / WallGridSize;
-            int newMinX = (int)entity.CB.Min.X / WallGridSize;
-            int newMinY = (int)entity.CB.Min.Y / WallGridSize;
+            var minX = (int)oldPos.X / WallGridSize;
+            var minY = (int)oldPos.Y / WallGridSize;
+            var newMinX = (int)entity.CB.Min.X / WallGridSize;
+            var newMinY = (int)entity.CB.Min.Y / WallGridSize;
 
             if (minX == newMinX && minY == newMinY)
                 return; // No change in grid segment
 
-            int maxX = (int)(oldPos.X + entity.CB.Width) / WallGridSize;
-            int maxY = (int)(oldPos.Y + entity.CB.Height) / WallGridSize;
+            var maxX = (int)(oldPos.X + entity.CB.Width) / WallGridSize;
+            var maxY = (int)(oldPos.Y + entity.CB.Height) / WallGridSize;
 
             // Keep in range of the grid
             if (minX < 0)
@@ -1648,9 +1651,9 @@ namespace DemoGame
                 // FUTURE: Can optimize by only adding/removing from changed grid segments
 
                 // Remove the entity from the old grid position
-                for (int x = minX; x <= maxX; x++)
+                for (var x = minX; x <= maxX; x++)
                 {
-                    for (int y = minY; y <= maxY; y++)
+                    for (var y = minY; y <= maxY; y++)
                     {
                         _entityGrid[x, y].Remove(entity);
                     }
@@ -1720,7 +1723,7 @@ namespace DemoGame
             if (entity.CollisionType == CollisionType.None)
                 return 0;
 
-            int collisions = 0;
+            var collisions = 0;
 
             var cdStack = new Stack<Entity>();
 
@@ -1730,7 +1733,7 @@ namespace DemoGame
                 var segment = gridSegment;
 
                 // Check that the segment even has any entities besides us
-                int segCount = segment.Count();
+                var segCount = segment.Count();
                 if (segCount == 0 || (segCount == 1 && segment.Contains(entity)))
                     continue;
 
@@ -1742,7 +1745,7 @@ namespace DemoGame
                 lock (_entityGridLock)
                 {
                     // Iterate through each wall in the grid segment
-                    foreach (Entity collideEntity in segment)
+                    foreach (var collideEntity in segment)
                     {
                         // Make sure we are not trying to collide with ourself
                         if (collideEntity == entity)
@@ -1766,10 +1769,10 @@ namespace DemoGame
                 while (cdStack.Count > 0)
                 {
                     // Pop the entity to test against
-                    Entity collideEntity = cdStack.Pop();
+                    var collideEntity = cdStack.Pop();
 
                     // Get the displacement vector if the two entities collided
-                    Vector2 displacement = CollisionBox.MTD(entity.CB, collideEntity.CB, collideEntity.CollisionType);
+                    var displacement = CollisionBox.MTD(entity.CB, collideEntity.CB, collideEntity.CollisionType);
 
                     // If there is a displacement value, forward it to the collision notifiers
                     if (displacement != Vector2.Zero)
