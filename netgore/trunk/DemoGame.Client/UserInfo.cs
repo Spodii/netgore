@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DemoGame;
 using NetGore;
 using NetGore.Network;
 
@@ -35,7 +36,7 @@ namespace DemoGame.Client
         {
             get
             {
-                int max = _modStats[StatType.MaxHP];
+                var max = _modStats[StatType.MaxHP];
                 if (max == 0)
                     return 100;
 
@@ -61,7 +62,7 @@ namespace DemoGame.Client
         {
             get
             {
-                int max = _modStats[StatType.MaxMP];
+                var max = _modStats[StatType.MaxMP];
                 if (max == 0)
                     return 100;
 

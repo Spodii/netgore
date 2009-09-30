@@ -1,6 +1,8 @@
 using System;
 using System.ComponentModel;
 using System.Linq;
+using DemoGame;
+using NetGore;
 
 namespace NetGore.Db.ClassCreator
 {
@@ -26,7 +28,7 @@ namespace NetGore.Db.ClassCreator
         /// <returns>The underlying Type from the Nullable Type.</returns>
         public static Type GetNullableUnderlyingType(this Type type)
         {
-            NullableConverter c = new NullableConverter(type);
+            var c = new NullableConverter(type);
             return c.UnderlyingType;
         }
 

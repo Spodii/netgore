@@ -1,12 +1,13 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using DemoGame.Server.DbObjs;
 using log4net;
 using MySql.Data.MySqlClient;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -74,10 +75,10 @@ namespace DemoGame.Server.Queries
 
             bool success;
 
-            QueryArgs queryArgs = new QueryArgs(accountID, name, password, email);
+            var queryArgs = new QueryArgs(accountID, name, password, email);
             try
             {
-                using (IDataReader r = ExecuteReader(queryArgs))
+                using (var r = ExecuteReader(queryArgs))
                 {
                     switch (r.RecordsAffected)
                     {

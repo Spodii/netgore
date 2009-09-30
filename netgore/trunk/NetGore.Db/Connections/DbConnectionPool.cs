@@ -1,6 +1,7 @@
 using System;
 using System.Data.Common;
 using System.Linq;
+using NetGore;
 using NetGore.Collections;
 
 namespace NetGore.Db
@@ -65,7 +66,7 @@ namespace NetGore.Db
 
             _disposed = true;
 
-            foreach (PooledDbConnection item in this)
+            foreach (var item in this)
             {
                 item.Dispose();
             }

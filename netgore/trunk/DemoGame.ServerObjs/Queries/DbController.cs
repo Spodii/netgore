@@ -1,4 +1,6 @@
 using System.Linq;
+using DemoGame;
+using NetGore;
 using NetGore.Db;
 using NetGore.Db.MySql;
 

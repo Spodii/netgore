@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
-using DemoGame.Server.DbObjs;
+using DemoGame;
 using DemoGame.Server.Queries;
+using NetGore;
 using NetGore.Db;
 using NetGore.Globalization;
 using NetGore.IO;
@@ -104,7 +105,7 @@ namespace DemoGame.Server
         /// <returns>The CharacterTemplateID read from the IValueReader.</returns>
         public static CharacterTemplateID Read(IValueReader reader, string name)
         {
-            int value = reader.ReadInt(name);
+            var value = reader.ReadInt(name);
             return new CharacterTemplateID(value);
         }
 
@@ -116,11 +117,11 @@ namespace DemoGame.Server
         /// <returns>The CharacterTemplateID read from the IDataReader.</returns>
         public static CharacterTemplateID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is int)
                 return new CharacterTemplateID((int)value);
 
-            int convertedValue = Convert.ToInt32(value);
+            var convertedValue = Convert.ToInt32(value);
             return new CharacterTemplateID(convertedValue);
         }
 
@@ -142,7 +143,7 @@ namespace DemoGame.Server
         /// <returns>The CharacterTemplateID read from the BitStream.</returns>
         public static CharacterTemplateID Read(BitStream bitStream)
         {
-            int value = bitStream.ReadInt();
+            var value = bitStream.ReadInt();
             return new CharacterTemplateID(value);
         }
 
@@ -859,7 +860,7 @@ namespace DemoGame.Server
         public static bool TryParse(this Parser parser, string value, out CharacterTemplateID outValue)
         {
             int tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new CharacterTemplateID(tmp);
             return ret;
         }
@@ -896,11 +897,11 @@ namespace DemoGame.Server
         public static bool TemplateExists(this CharacterTemplateID id)
         {
             IDbController dbController = DbControllerBase.GetInstance();
-            SelectCharacterTemplateQuery query = dbController.GetQuery<SelectCharacterTemplateQuery>();
+            var query = dbController.GetQuery<SelectCharacterTemplateQuery>();
 
             try
             {
-                CharacterTemplateTable result = query.Execute(id);
+                var result = query.Execute(id);
                 if (result == null)
                     return false;
             }

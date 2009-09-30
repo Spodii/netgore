@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server
@@ -70,12 +72,12 @@ namespace DemoGame.Server
         /// <returns>A random ItemTemplate. Will not be null.</returns>
         public IItemTemplateTable GetRandomTemplate()
         {
-            int max = Length;
+            var max = Length;
 
             IItemTemplateTable template;
             do
             {
-                int i = _rnd.Next(0, max);
+                var i = _rnd.Next(0, max);
                 if (!TryGetValue(new ItemTemplateID(i), out template))
                     template = null;
             }
@@ -111,7 +113,7 @@ namespace DemoGame.Server
         /// <returns>The item loaded from the database.</returns>
         protected override IItemTemplateTable LoadItem(ItemTemplateID id)
         {
-            IItemTemplateTable v = _selectItemTemplateQuery.Execute(id);
+            var v = _selectItemTemplateQuery.Execute(id);
             return v;
         }
     }

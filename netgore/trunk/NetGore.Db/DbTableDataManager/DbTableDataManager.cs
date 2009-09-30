@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.Collections;
 
 namespace NetGore.Db
@@ -101,10 +102,10 @@ namespace NetGore.Db
         {
             var ids = GetIDs();
 
-            foreach (TID id in ids)
+            foreach (var id in ids)
             {
-                TItem item = LoadItem(id);
-                int i = IDToInt(id);
+                var item = LoadItem(id);
+                var i = IDToInt(id);
                 _items.Insert(i, item);
 
                 if (log.IsDebugEnabled)
@@ -130,7 +131,7 @@ namespace NetGore.Db
         /// otherwise false.</returns>
         public bool TryGetValue(TID id, out TItem item)
         {
-            int i = IDToInt(id);
+            var i = IDToInt(id);
 
             if (!_items.CanGet(i))
             {
@@ -153,7 +154,7 @@ namespace NetGore.Db
         /// <filterpriority>1</filterpriority>
         public IEnumerator<TItem> GetEnumerator()
         {
-            foreach (TItem item in _items)
+            foreach (var item in _items)
             {
                 yield return item;
             }

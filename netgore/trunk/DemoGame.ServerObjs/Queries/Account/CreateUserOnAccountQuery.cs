@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Data;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using DemoGame;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -50,8 +51,8 @@ namespace DemoGame.Server.Queries
                 return false;
             }
 
-            QueryArgs queryArgs = new QueryArgs(accountID, characterID, characterName);
-            using (IDataReader r = ExecuteReader(queryArgs))
+            var queryArgs = new QueryArgs(accountID, characterID, characterName);
+            using (var r = ExecuteReader(queryArgs))
             {
                 if (!r.Read())
                 {

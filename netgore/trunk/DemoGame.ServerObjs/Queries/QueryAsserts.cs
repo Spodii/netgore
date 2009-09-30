@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame;
+using NetGore;
 
 namespace DemoGame.Server.Queries
 {
@@ -28,7 +30,7 @@ namespace DemoGame.Server.Queries
             if (primaryKeys.Count() != expectedKeys.Length)
                 Debug.Fail(errmsg);
 
-            foreach (string expectedKey in expectedKeys)
+            foreach (var expectedKey in expectedKeys)
             {
                 if (!primaryKeys.Contains(expectedKey, _columnNameComparer))
                     Debug.Fail(errmsg);
@@ -47,7 +49,7 @@ namespace DemoGame.Server.Queries
         {
             const string errmsg = "Expected column `{0}` not found.";
 
-            foreach (string expectedColumn in expectedColumns)
+            foreach (var expectedColumn in expectedColumns)
             {
                 if (!columns.Contains(expectedColumn, _columnNameComparer))
                     Debug.Fail(string.Format(errmsg, expectedColumn));
@@ -65,7 +67,7 @@ namespace DemoGame.Server.Queries
         {
             const string errmsg = "Expected primary key `{0}` not found.";
 
-            foreach (string expectedKey in expectedKeys)
+            foreach (var expectedKey in expectedKeys)
             {
                 if (!primaryKeys.Contains(expectedKey, _columnNameComparer))
                     Debug.Fail(string.Format(errmsg, expectedKey));

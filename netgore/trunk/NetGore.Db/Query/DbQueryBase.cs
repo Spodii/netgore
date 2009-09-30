@@ -5,6 +5,7 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using NetGore;
 
 namespace NetGore.Db
 {
@@ -71,7 +72,7 @@ namespace NetGore.Db
         /// <returns>Clone of the <paramref name="source"/> DbParameter.</returns>
         static DbParameter CloneDbParameter(DbParameter source)
         {
-            ICloneable cloneable = source as ICloneable;
+            var cloneable = source as ICloneable;
             if (cloneable != null)
                 return (DbParameter)cloneable.Clone();
 
@@ -164,9 +165,9 @@ namespace NetGore.Db
                 throw new ArgumentNullException("parameterNames");
 
             var ret = new DbParameter[parameterNames.Count()];
-            int i = 0;
+            var i = 0;
 
-            foreach (string parameterName in parameterNames)
+            foreach (var parameterName in parameterNames)
             {
                 ret[i] = CreateParameter(parameterName);
                 i++;
@@ -184,7 +185,7 @@ namespace NetGore.Db
         {
             // Get the name for each ordinal
             var ordinalToName = new string[dataReader.FieldCount];
-            for (int i = 0; i < dataReader.FieldCount; i++)
+            for (var i = 0; i < dataReader.FieldCount; i++)
             {
                 ordinalToName[i] = dataReader.GetName(i);
             }
@@ -195,7 +196,7 @@ namespace NetGore.Db
             {
                 // Add all the field values to the dictionary
                 var field = new Dictionary<string, object>();
-                for (int i = 0; i < dataReader.FieldCount; i++)
+                for (var i = 0; i < dataReader.FieldCount; i++)
                 {
                     field.Add(ordinalToName[i], dataReader.GetValue(i));
                 }
@@ -212,9 +213,9 @@ namespace NetGore.Db
         /// <returns>A comma-delimited string of all fields in the format of: `field`=@field.</returns>
         public static string FormatParametersIntoString(IEnumerable<string> fields)
         {
-            StringBuilder sb = new StringBuilder(512);
+            var sb = new StringBuilder(512);
 
-            foreach (string field in fields)
+            foreach (var field in fields)
             {
                 sb.Append("`");
                 sb.Append(field);
@@ -235,7 +236,7 @@ namespace NetGore.Db
         /// <returns>A comma-delimited string of all fields in the format of: (`a`,`b`,...) VALUES (@a,@b,...).</returns>
         public static string FormatParametersIntoValuesString(IEnumerable<string> fields)
         {
-            StringBuilder sb = new StringBuilder(512);
+            var sb = new StringBuilder(512);
 
             // Turn the IEnumerable into an array so we can ensure that both iterations are the EXACT same since
             // IEnumerable iterators do not guarentee two iterations to return the same set in the same order
@@ -244,7 +245,7 @@ namespace NetGore.Db
             // Field names
             sb.Append("(");
 
-            for (int i = 0; i < farray.Length; i++)
+            for (var i = 0; i < farray.Length; i++)
             {
                 sb.Append("`");
                 sb.Append(farray[i]);
@@ -257,7 +258,7 @@ namespace NetGore.Db
 
             sb.Append(") VALUES (");
 
-            for (int i = 0; i < farray.Length; i++)
+            for (var i = 0; i < farray.Length; i++)
             {
                 sb.Append("@");
                 sb.Append(farray[i]);
@@ -299,9 +300,9 @@ namespace NetGore.Db
 
                 if (HasParameters)
                 {
-                    foreach (DbParameter parameter in _parameters)
+                    foreach (var parameter in _parameters)
                     {
-                        DbParameter clone = CloneDbParameter(parameter);
+                        var clone = CloneDbParameter(parameter);
                         cmd.Parameters.Add(clone);
                     }
                 }
@@ -440,7 +441,7 @@ namespace NetGore.Db
 
             lock (_commandsLock)
             {
-                foreach (DbCommand cmd in _commands)
+                foreach (var cmd in _commands)
                 {
                     cmd.Dispose();
                 }

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
+using DemoGame;
+using NetGore;
 
 namespace DemoGame
 {
@@ -17,7 +19,7 @@ namespace DemoGame
         public static IEnumerable<KeyValuePair<StatType, int>> xxxToKeyValuePairs<T>(this IEnumerable<T> stats) where T : IStat
         {
             // Find the number of elements
-            int count = stats.Count();
+            var count = stats.Count();
 
             // No elements? Return an empty IEnumerable
             if (count == 0)
@@ -27,8 +29,8 @@ namespace DemoGame
             var ret = new KeyValuePair<StatType, int>[count];
 
             // Enumerate through each element in the IEnumerable, adding each one to the next index in the return array
-            int i = 0;
-            foreach (T stat in stats)
+            var i = 0;
+            foreach (var stat in stats)
             {
                 ret[i] = new KeyValuePair<StatType, int>(stat.StatType, stat.Value);
                 i++;

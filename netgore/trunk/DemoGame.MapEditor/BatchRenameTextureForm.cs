@@ -3,11 +3,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
-using NetGore.Graphics;
 
 namespace DemoGame.MapEditor
 {
@@ -44,12 +44,12 @@ namespace DemoGame.MapEditor
             if (lstTextures.SelectedItem == null)
                 return;
 
-            string oldTexture = (string)lstTextures.SelectedItem;
+            var oldTexture = (string)lstTextures.SelectedItem;
             if (string.IsNullOrEmpty(oldTexture))
                 return;
 
             // Validate the new texture
-            string newTexture = txtCurrent.Text;
+            var newTexture = txtCurrent.Text;
             if (!IsValidTexture("Grh" + DirSep + newTexture))
             {
                 MessageBox.Show("The new entered texture is invalid.");
@@ -60,8 +60,8 @@ namespace DemoGame.MapEditor
             ChangeTexture(_root, oldTexture, newTexture);
 
             // Change successful
-            string txt = string.Format("Texture successfully changed from {2}{0}{2} -- to -- {2}{1}", oldTexture, newTexture,
-                                       Environment.NewLine);
+            var txt = string.Format("Texture successfully changed from {2}{0}{2} -- to -- {2}{1}", oldTexture, newTexture,
+                                    Environment.NewLine);
             MessageBox.Show(txt, "Change successful!", MessageBoxButtons.OK);
         }
 
@@ -78,7 +78,7 @@ namespace DemoGame.MapEditor
             else
             {
                 // Get the GrhData for the TreeNode
-                GrhData gd = GrhTreeView.GetGrhData(root);
+                var gd = GrhTreeView.GetGrhData(root);
                 if (gd == null)
                 {
                     Debug.Fail("Invalid GrhData found for node.");
@@ -155,7 +155,7 @@ namespace DemoGame.MapEditor
             }
             else
             {
-                string texturePath = "Grh" + DirSep + txtCurrent.Text;
+                var texturePath = "Grh" + DirSep + txtCurrent.Text;
 
                 // Try to change to the specified texture
                 if (IsValidTexture(texturePath))
@@ -184,7 +184,7 @@ namespace DemoGame.MapEditor
             else
             {
                 // Get the GrhData and, if using the texture, add it to the list
-                GrhData gd = GrhTreeView.GetGrhData(root);
+                var gd = GrhTreeView.GetGrhData(root);
                 if (gd == null)
                 {
                     Debug.Fail("Invalid GrhData found for node.");
@@ -213,7 +213,7 @@ namespace DemoGame.MapEditor
             else
             {
                 // Get the GrhData for the node
-                GrhData gd = GrhTreeView.GetGrhData(root);
+                var gd = GrhTreeView.GetGrhData(root);
                 if (gd == null)
                 {
                     Debug.Fail("Invalid GrhData found for node.");

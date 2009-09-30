@@ -1,6 +1,8 @@
 using System;
 using System.Linq;
+using DemoGame;
 using Microsoft.Xna.Framework;
+using NetGore;
 
 namespace DemoGame.Server
 {
@@ -17,11 +19,11 @@ namespace DemoGame.Server
             if (!v.Chance.Test())
                 return null;
 
-            byte amount = (byte)_random.Next(v.Min, v.Max + 1);
+            var amount = (byte)_random.Next(v.Min, v.Max + 1);
             if (amount == 0)
                 return null;
 
-            ItemEntity instance = new ItemEntity(v.ItemTemplate, Vector2.Zero, amount);
+            var instance = new ItemEntity(v.ItemTemplate, Vector2.Zero, amount);
             return instance;
         }
     }

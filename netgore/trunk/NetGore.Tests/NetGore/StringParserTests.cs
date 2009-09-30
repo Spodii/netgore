@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using NetGore.Globalization;
 using NUnit.Framework;

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using NetGore;
 using NetGore.IO;
 using NetGore.NPCChat.Conditionals;
 
@@ -54,9 +55,9 @@ namespace NetGore.EditorTools.NPCChat
             if (source == null)
                 return;
 
-            BitStream stream = new BitStream(BitStreamMode.Write, 256);
+            var stream = new BitStream(BitStreamMode.Write, 256);
 
-            using (BinaryValueWriter writer = new BinaryValueWriter(stream))
+            using (var writer = new BinaryValueWriter(stream))
             {
                 source.Write(writer);
             }
@@ -105,9 +106,9 @@ namespace NetGore.EditorTools.NPCChat
         /// <param name="dest">The EditorNPCChatConditionalCollectionItem to copy the values into.</param>
         public void CopyValuesTo(EditorNPCChatConditionalCollectionItem dest)
         {
-            BitStream stream = new BitStream(BitStreamMode.Write, 256);
+            var stream = new BitStream(BitStreamMode.Write, 256);
 
-            using (BinaryValueWriter writer = new BinaryValueWriter(stream))
+            using (var writer = new BinaryValueWriter(stream))
             {
                 Write(writer);
             }
@@ -137,9 +138,9 @@ namespace NetGore.EditorTools.NPCChat
             // Re-create all the parameters to the appropriate type for the new conditional
             var newParameters = new NPCChatConditionalParameter[Conditional.ParameterCount];
 
-            for (int i = 0; i < Conditional.ParameterCount; i++)
+            for (var i = 0; i < Conditional.ParameterCount; i++)
             {
-                NPCChatConditionalParameterType neededType = Conditional.GetParameter(i);
+                var neededType = Conditional.GetParameter(i);
                 if (i < _parameters.Count && _parameters[i].ValueType == neededType)
                 {
                     // The type matches the old type, so just reuse it
@@ -199,16 +200,16 @@ namespace NetGore.EditorTools.NPCChat
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             if (Not)
                 sb.Append("NOT ");
             sb.Append(Conditional.Name);
             sb.Append("(");
             if (_parameters.Count > 0)
             {
-                foreach (NPCChatConditionalParameter item in _parameters)
+                foreach (var item in _parameters)
                 {
-                    string itemStr = item.Value.ToString();
+                    var itemStr = item.Value.ToString();
                     if (itemStr.Length > 30)
                         itemStr = itemStr.Substring(0, 25) + "...";
                     sb.Append(itemStr);

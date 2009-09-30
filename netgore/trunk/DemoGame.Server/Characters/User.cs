@@ -2,6 +2,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using DemoGame.Server.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -121,7 +122,7 @@ namespace DemoGame.Server
         protected override void AfterGiveItem(ItemEntity item, byte amount)
         {
             // If any was added, send the notification
-            using (PacketWriter pw = ServerPacket.NotifyGetItem(item.Name, amount))
+            using (var pw = ServerPacket.NotifyGetItem(item.Name, amount))
             {
                 Send(pw);
             }
@@ -220,7 +221,7 @@ namespace DemoGame.Server
         {
             base.GiveKillReward(exp, cash);
 
-            using (PacketWriter pw = ServerPacket.NotifyExpCash(exp, cash))
+            using (var pw = ServerPacket.NotifyExpCash(exp, cash))
             {
                 Send(pw);
             }
@@ -251,7 +252,7 @@ namespace DemoGame.Server
             base.HandleDispose();
 
             // Remove the User from being the active User in the account
-            UserAccount account = World.GetUserAccount(Conn);
+            var account = World.GetUserAccount(Conn);
             if (account != null)
                 account.CloseUser();
         }
@@ -281,7 +282,7 @@ namespace DemoGame.Server
             base.LevelUp();
 
             // Notify users on the map of the level-up
-            using (PacketWriter pw = ServerPacket.NotifyLevel(MapEntityIndex))
+            using (var pw = ServerPacket.NotifyLevel(MapEntityIndex))
             {
                 Send(pw);
             }
@@ -331,7 +332,7 @@ namespace DemoGame.Server
         /// <param name="message">GameMessage to send to the User.</param>
         public void Send(GameMessage message)
         {
-            using (PacketWriter pw = ServerPacket.SendMessage(message))
+            using (var pw = ServerPacket.SendMessage(message))
             {
                 Send(pw);
             }
@@ -344,7 +345,7 @@ namespace DemoGame.Server
         /// <param name="parameters">Message parameters.</param>
         public void Send(GameMessage message, params object[] parameters)
         {
-            using (PacketWriter pw = ServerPacket.SendMessage(message, parameters))
+            using (var pw = ServerPacket.SendMessage(message, parameters))
             {
                 Send(pw);
             }
@@ -367,7 +368,7 @@ namespace DemoGame.Server
             }
 
             // Get the item
-            ItemEntity item = Equipped[slot];
+            var item = Equipped[slot];
             if (item == null)
             {
                 const string errmsg = "User `{0}` requested info for equipment slot `{1}`, but the slot has no ItemEntity.";
@@ -377,7 +378,7 @@ namespace DemoGame.Server
             }
 
             // Send the item info
-            using (PacketWriter pw = ServerPacket.SendEquipmentItemInfo(slot, item))
+            using (var pw = ServerPacket.SendEquipmentItemInfo(slot, item))
             {
                 Send(pw);
             }
@@ -400,7 +401,7 @@ namespace DemoGame.Server
             }
 
             // Get the item
-            ItemEntity item = Inventory[slot];
+            var item = Inventory[slot];
             if (item == null)
             {
                 const string errmsg = "User `{0}` requested info for inventory slot `{1}`, but the slot has no ItemEntity.";
@@ -410,7 +411,7 @@ namespace DemoGame.Server
             }
 
             // Send the item info
-            using (PacketWriter pw = ServerPacket.SendInventoryItemInfo(slot, item))
+            using (var pw = ServerPacket.SendInventoryItemInfo(slot, item))
             {
                 Send(pw);
             }
@@ -435,10 +436,10 @@ namespace DemoGame.Server
         {
             base.StatusEffects_HandleOnAdd(effects, ase);
 
-            int currentTime = GetTime();
-            int timeLeft = ase.GetTimeRemaining(currentTime);
+            var currentTime = GetTime();
+            var timeLeft = ase.GetTimeRemaining(currentTime);
 
-            using (PacketWriter pw = ServerPacket.AddStatusEffect(ase.StatusEffect.StatusEffectType, ase.Power, timeLeft))
+            using (var pw = ServerPacket.AddStatusEffect(ase.StatusEffect.StatusEffectType, ase.Power, timeLeft))
             {
                 Send(pw);
             }
@@ -453,7 +454,7 @@ namespace DemoGame.Server
         {
             base.StatusEffects_HandleOnRemove(effects, ase);
 
-            using (PacketWriter pw = ServerPacket.RemoveStatusEffect(ase.StatusEffect.StatusEffectType))
+            using (var pw = ServerPacket.RemoveStatusEffect(ase.StatusEffect.StatusEffectType))
             {
                 Send(pw);
             }
@@ -464,7 +465,7 @@ namespace DemoGame.Server
             if (itemTemplate == null || amount <= 0)
                 return false;
 
-            int totalCost = itemTemplate.Value * amount;
+            var totalCost = itemTemplate.Value * amount;
 
             // Check for enough money to buy
             if (Cash < totalCost)
@@ -472,8 +473,7 @@ namespace DemoGame.Server
                 if (amount == 1)
                 {
                     using (
-                        PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchaseSingular,
-                                                                   itemTemplate.Name))
+                        var pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchaseSingular, itemTemplate.Name))
                     {
                         Send(pw);
                     }
@@ -481,8 +481,8 @@ namespace DemoGame.Server
                 else
                 {
                     using (
-                        PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchasePlural, amount,
-                                                                   itemTemplate.Name))
+                        var pw = ServerPacket.SendMessage(GameMessage.ShopInsufficientFundsToPurchasePlural, amount,
+                                                          itemTemplate.Name))
                     {
                         Send(pw);
                     }
@@ -491,7 +491,7 @@ namespace DemoGame.Server
             }
 
             // Create the item
-            ItemEntity itemEntity = new ItemEntity(itemTemplate, amount);
+            var itemEntity = new ItemEntity(itemTemplate, amount);
 
             // Check for room in the inventory
             if (!Inventory.CanAdd(itemEntity))
@@ -501,14 +501,14 @@ namespace DemoGame.Server
             }
 
             // Add to the inventory
-            ItemEntity remainderItem = Inventory.Add(itemEntity);
+            var remainderItem = Inventory.Add(itemEntity);
 
             // Find the number of remaining items (in case something went wrong and not all was added)
-            int remainderAmount = remainderItem == null ? 0 : (int)remainderItem.Amount;
+            var remainderAmount = remainderItem == null ? 0 : (int)remainderItem.Amount;
 
             // Find the difference in the requested amount and remaining amount to get the amount added, and
             // only charge the character for that (so they pay for what they got)
-            int amountPurchased = amount - remainderAmount;
+            var amountPurchased = amount - remainderAmount;
 
             if (amountPurchased < 0)
             {
@@ -524,14 +524,13 @@ namespace DemoGame.Server
             }
 
             // Charge them
-            int chargeAmount = Math.Max(0, amountPurchased * itemEntity.Value);
+            var chargeAmount = Math.Max(0, amountPurchased * itemEntity.Value);
             Cash -= chargeAmount;
 
             // Send purchase message
             if (amountPurchased <= 1)
             {
-                using (
-                    PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopPurchaseSingular, itemTemplate.Name, chargeAmount))
+                using (var pw = ServerPacket.SendMessage(GameMessage.ShopPurchaseSingular, itemTemplate.Name, chargeAmount))
                 {
                     Send(pw);
                 }
@@ -539,8 +538,8 @@ namespace DemoGame.Server
             else
             {
                 using (
-                    PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopPurchasePlural, amountPurchased, itemTemplate.Name,
-                                                               chargeAmount))
+                    var pw = ServerPacket.SendMessage(GameMessage.ShopPurchasePlural, amountPurchased, itemTemplate.Name,
+                                                      chargeAmount))
                 {
                     Send(pw);
                 }
@@ -555,16 +554,16 @@ namespace DemoGame.Server
                 return false;
 
             // Get the user's item
-            ItemEntity invItem = Inventory[slot];
+            var invItem = Inventory[slot];
             if (invItem == null)
                 return false;
 
-            byte amountToSell = Math.Min(amount, invItem.Amount);
+            var amountToSell = Math.Min(amount, invItem.Amount);
             if (amountToSell <= 0)
                 return false;
 
             // Get the new item amount
-            int newItemAmount = invItem.Amount - amountToSell;
+            var newItemAmount = invItem.Amount - amountToSell;
 
             if (newItemAmount > byte.MaxValue)
             {
@@ -582,22 +581,21 @@ namespace DemoGame.Server
             }
 
             // Give the user the money for selling
-            int sellValue = GameData.GetItemSellValue(invItem);
-            int totalCash = sellValue * amountToSell;
+            var sellValue = GameData.GetItemSellValue(invItem);
+            var totalCash = sellValue * amountToSell;
             Cash += totalCash;
 
             // Send message
             if (amountToSell <= 1)
             {
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopSellItemSingular, invItem.Name, totalCash))
+                using (var pw = ServerPacket.SendMessage(GameMessage.ShopSellItemSingular, invItem.Name, totalCash))
                 {
                     Send(pw);
                 }
             }
             else
             {
-                using (PacketWriter pw = ServerPacket.SendMessage(GameMessage.ShopSellItemPlural, amount, invItem.Name, totalCash)
-                    )
+                using (var pw = ServerPacket.SendMessage(GameMessage.ShopSellItemPlural, amount, invItem.Name, totalCash))
                 {
                     Send(pw);
                 }
@@ -640,7 +638,7 @@ namespace DemoGame.Server
         public void UseInventoryItem(InventorySlot slot)
         {
             // Get the ItemEntity to use
-            ItemEntity item = Inventory[slot];
+            var item = Inventory[slot];
             if (item == null)
             {
                 const string errmsg = "Tried to use inventory slot `{0}`, but it contains no ItemEntity.";
@@ -673,7 +671,7 @@ namespace DemoGame.Server
 
         void User_OnChangeCash(Character character, int oldCash, int cash)
         {
-            using (PacketWriter pw = ServerPacket.SetCash(cash))
+            using (var pw = ServerPacket.SetCash(cash))
             {
                 Send(pw);
             }
@@ -681,7 +679,7 @@ namespace DemoGame.Server
 
         void User_OnChangeExp(Character character, int oldExp, int exp)
         {
-            using (PacketWriter pw = ServerPacket.SetExp(exp))
+            using (var pw = ServerPacket.SetExp(exp))
             {
                 Send(pw);
             }
@@ -689,7 +687,7 @@ namespace DemoGame.Server
 
         void User_OnChangeLevel(Character character, byte oldLevel, byte level)
         {
-            using (PacketWriter pw = ServerPacket.SetLevel(level))
+            using (var pw = ServerPacket.SetLevel(level))
             {
                 Send(pw);
             }
@@ -697,7 +695,7 @@ namespace DemoGame.Server
 
         void User_OnChangeStatPoints(Character character, int oldValue, int newValue)
         {
-            using (PacketWriter pw = ServerPacket.SetStatPoints(newValue))
+            using (var pw = ServerPacket.SetStatPoints(newValue))
             {
                 Send(pw);
             }
@@ -708,7 +706,7 @@ namespace DemoGame.Server
             Debug.Assert(killer == this);
             Debug.Assert(killed != null);
 
-            NPC killedNPC = killed as NPC;
+            var killedNPC = killed as NPC;
 
             // Handle killing a NPC
             if (killedNPC != null)
@@ -754,7 +752,7 @@ namespace DemoGame.Server
 
             void SendStartShopping(Shop shop)
             {
-                using (PacketWriter pw = ServerPacket.StartShopping(ShopOwner.MapEntityIndex, shop))
+                using (var pw = ServerPacket.StartShopping(ShopOwner.MapEntityIndex, shop))
                 {
                     User.Send(pw);
                 }
@@ -762,7 +760,7 @@ namespace DemoGame.Server
 
             void SendStopShopping()
             {
-                using (PacketWriter pw = ServerPacket.StopShopping())
+                using (var pw = ServerPacket.StopShopping())
                 {
                     User.Send(pw);
                 }
@@ -808,12 +806,12 @@ namespace DemoGame.Server
                     return false;
 
                 // Get the shop
-                Shop shop = TryGetShopReferenceThreadSafe();
+                var shop = TryGetShopReferenceThreadSafe();
                 if (shop == null)
                     return false;
 
                 // Get and validate the item
-                ShopItem shopItem = shop.GetShopItem(slot);
+                var shopItem = shop.GetShopItem(slot);
                 if (shopItem == null)
                     return false;
 
@@ -823,7 +821,7 @@ namespace DemoGame.Server
 
             public bool TrySellInventory(InventorySlot slot, byte amount)
             {
-                Shop shop = TryGetShopReferenceThreadSafe();
+                var shop = TryGetShopReferenceThreadSafe();
                 if (shop == null)
                     return false;
 

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame;
 using DemoGame.Server.DbObjs;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -26,11 +27,11 @@ namespace DemoGame.Server.Queries
         {
             var ret = new List<CharacterTemplateEquippedTable>();
 
-            using (IDataReader r = ExecuteReader(templateID))
+            using (var r = ExecuteReader(templateID))
             {
                 while (r.Read())
                 {
-                    CharacterTemplateEquippedTable item = new CharacterTemplateEquippedTable();
+                    var item = new CharacterTemplateEquippedTable();
                     item.ReadValues(r);
                     ret.Add(item);
                 }

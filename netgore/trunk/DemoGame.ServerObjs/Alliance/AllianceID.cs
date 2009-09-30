@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
+using DemoGame;
+using NetGore;
 using NetGore.Globalization;
 using NetGore.IO;
 
@@ -101,7 +103,7 @@ namespace DemoGame.Server
         /// <returns>The AllianceID read from the IValueReader.</returns>
         public static AllianceID Read(IValueReader reader, string name)
         {
-            byte value = reader.ReadByte(name);
+            var value = reader.ReadByte(name);
             return new AllianceID(value);
         }
 
@@ -113,11 +115,11 @@ namespace DemoGame.Server
         /// <returns>The AllianceID read from the IDataReader.</returns>
         public static AllianceID Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is byte)
                 return new AllianceID((byte)value);
 
-            byte convertedValue = Convert.ToByte(value);
+            var convertedValue = Convert.ToByte(value);
             return new AllianceID(convertedValue);
         }
 
@@ -139,7 +141,7 @@ namespace DemoGame.Server
         /// <returns>The AllianceID read from the BitStream.</returns>
         public static AllianceID Read(BitStream bitStream)
         {
-            byte value = bitStream.ReadByte();
+            var value = bitStream.ReadByte();
             return new AllianceID(value);
         }
 
@@ -855,7 +857,7 @@ namespace DemoGame.Server
         public static bool TryParse(this Parser parser, string value, out AllianceID outValue)
         {
             byte tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new AllianceID(tmp);
             return ret;
         }

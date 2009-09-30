@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 using NetGore.Collections;
 
 namespace NetGore.NPCChat.Conditionals
@@ -162,16 +163,16 @@ namespace NetGore.NPCChat.Conditionals
             // Check for a valid number of parameters
             if (parameters.Length != _parameterTypes.Length)
             {
-                string err = string.Format(errmsgNumberOfParameters, _parameterTypes.Length, parameters.Length);
+                var err = string.Format(errmsgNumberOfParameters, _parameterTypes.Length, parameters.Length);
                 throw new ArgumentException(err, "parameters");
             }
 
             // Check that the parameters are of the correct type
-            for (int i = 0; i < parameters.Length; i++)
+            for (var i = 0; i < parameters.Length; i++)
             {
                 if (parameters[i].ValueType != _parameterTypes[i])
                 {
-                    string err = string.Format(errmsgValueType, i, _parameterTypes[i], parameters[i].ValueType);
+                    var err = string.Format(errmsgValueType, i, _parameterTypes[i], parameters[i].ValueType);
                     throw new ArgumentException(err, "parameters");
                 }
             }
@@ -213,14 +214,14 @@ namespace NetGore.NPCChat.Conditionals
         /// <param name="name">Name of the Type.</param>
         static void OnLoadTypeHandler(FactoryTypeCollection factoryTypeCollection, Type loadedType, string name)
         {
-            NPCChatConditionalBase instance = (NPCChatConditionalBase)_typeCollection.GetTypeInstance(name);
+            var instance = (NPCChatConditionalBase)_typeCollection.GetTypeInstance(name);
 
             // Make sure the name is not already in use
             if (ContainsConditional(instance.Name))
             {
                 const string errmsg =
                     "Could not add Type `{0}` - a NPC chat conditional named `{1}` already exists as Type `{2}`.";
-                string err = string.Format(errmsg, loadedType, instance.Name, _instances[instance.Name].GetType());
+                var err = string.Format(errmsg, loadedType, instance.Name, _instances[instance.Name].GetType());
                 if (log.IsFatalEnabled)
                     log.Fatal(err);
                 Debug.Fail(err);

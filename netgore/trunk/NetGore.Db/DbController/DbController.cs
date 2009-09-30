@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
+using NetGore;
 
 namespace NetGore.Db
 {
@@ -56,13 +56,13 @@ namespace NetGore.Db
             var types = TypeHelper.FindTypesWithAttribute(typeof(DbControllerQueryAttribute), requiredConstructorParams, false);
 
             // Create an instance of each of the types
-            foreach (Type type in types)
+            foreach (var type in types)
             {
-                object instance = Activator.CreateInstance(type, _connectionPool);
+                var instance = Activator.CreateInstance(type, _connectionPool);
                 if (instance == null)
                 {
                     const string errmsg = "Failed to create instance of Type `{0}`.";
-                    string err = string.Format(errmsg, type);
+                    var err = string.Format(errmsg, type);
                     if (log.IsFatalEnabled)
                         log.Fatal(err);
                     Debug.Fail(err);
@@ -135,7 +135,7 @@ namespace NetGore.Db
             {
                 const string errmsg =
                     "Failed to find a query of Type `{0}`. Make sure the attribute `{1}`" + " is attached to the specified class.";
-                string err = string.Format(errmsg, typeof(T), typeof(DbControllerQueryAttribute));
+                var err = string.Format(errmsg, typeof(T), typeof(DbControllerQueryAttribute));
                 log.Fatal(err);
                 Debug.Fail(err);
                 throw new ArgumentException(err);
@@ -153,17 +153,17 @@ namespace NetGore.Db
         {
             var ret = new List<string>();
 
-            using (PooledDbConnection conn = _connectionPool.Create())
+            using (var conn = _connectionPool.Create())
             {
-                using (DbCommand cmd = conn.Connection.CreateCommand())
+                using (var cmd = conn.Connection.CreateCommand())
                 {
                     cmd.CommandText = string.Format("SELECT * FROM `{0}` WHERE 0=1", table);
-                    using (DbDataReader r = cmd.ExecuteReader())
+                    using (var r = cmd.ExecuteReader())
                     {
-                        int fields = r.FieldCount;
-                        for (int i = 0; i < fields; i++)
+                        var fields = r.FieldCount;
+                        for (var i = 0; i < fields; i++)
                         {
-                            string fieldName = r.GetName(i);
+                            var fieldName = r.GetName(i);
                             ret.Add(fieldName);
                         }
                     }
@@ -187,7 +187,7 @@ namespace NetGore.Db
                 _instances.Remove(this);
 
             // Dispose of all the queries, where possible
-            foreach (IDisposable disposableQuery in _queryObjects.OfType<IDisposable>())
+            foreach (var disposableQuery in _queryObjects.OfType<IDisposable>())
             {
                 disposableQuery.Dispose();
             }
@@ -220,13 +220,13 @@ namespace NetGore.Db
             {
                 var ret = new List<TableColumnPair>();
 
-                QueryArgs args = new QueryArgs(database, table, column);
-                using (IDataReader r = ExecuteReader(args))
+                var args = new QueryArgs(database, table, column);
+                using (var r = ExecuteReader(args))
                 {
                     while (r.Read())
                     {
-                        string retTable = r.GetString("TABLE_NAME");
-                        string retColumn = r.GetString("COLUMN_NAME");
+                        var retTable = r.GetString("TABLE_NAME");
+                        var retColumn = r.GetString("COLUMN_NAME");
                         ret.Add(new TableColumnPair(retTable, retColumn));
                     }
                 }

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame;
 using DemoGame.Server.DbObjs;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -31,7 +32,7 @@ namespace DemoGame.Server.Queries
         {
             CharacterTable ret;
 
-            using (IDataReader r = ExecuteReader(characterID))
+            using (var r = ExecuteReader(characterID))
             {
                 if (!r.Read())
                     throw new ArgumentException(string.Format("Could not find character with ID `{0}`.", characterID),

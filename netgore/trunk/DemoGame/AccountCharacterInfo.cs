@@ -1,4 +1,6 @@
-﻿using System.Linq;
+using System.Linq;
+using DemoGame;
+using NetGore;
 using NetGore.IO;
 
 namespace DemoGame

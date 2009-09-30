@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Runtime.InteropServices;
+using DemoGame;
+using NetGore;
 using NetGore.Globalization;
 using NetGore.IO;
 
@@ -42,7 +44,7 @@ namespace DemoGame.Server
         /// <returns>True if the test passed; otherwise false.</returns>
         public bool Test()
         {
-            int randValue = _random.Next(MinValue + 1, MaxValue + 1);
+            var randValue = _random.Next(MinValue + 1, MaxValue + 1);
             return randValue <= _value;
         }
 
@@ -134,7 +136,7 @@ namespace DemoGame.Server
         /// <returns>The ItemChance read from the IValueReader.</returns>
         public static ItemChance Read(IValueReader reader, string name)
         {
-            ushort value = reader.ReadUShort(name);
+            var value = reader.ReadUShort(name);
             return new ItemChance(value);
         }
 
@@ -146,11 +148,11 @@ namespace DemoGame.Server
         /// <returns>The ItemChance read from the IDataReader.</returns>
         public static ItemChance Read(IDataReader reader, int i)
         {
-            object value = reader.GetValue(i);
+            var value = reader.GetValue(i);
             if (value is ushort)
                 return new ItemChance((ushort)value);
 
-            ushort convertedValue = Convert.ToUInt16(value);
+            var convertedValue = Convert.ToUInt16(value);
             return new ItemChance(convertedValue);
         }
 
@@ -172,7 +174,7 @@ namespace DemoGame.Server
         /// <returns>The ItemChance read from the BitStream.</returns>
         public static ItemChance Read(BitStream bitStream)
         {
-            ushort value = bitStream.ReadUShort();
+            var value = bitStream.ReadUShort();
             return new ItemChance(value);
         }
 
@@ -888,7 +890,7 @@ namespace DemoGame.Server
         public static bool TryParse(this Parser parser, string value, out ItemChance outValue)
         {
             ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
+            var ret = parser.TryParse(value, out tmp);
             outValue = new ItemChance(tmp);
             return ret;
         }

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Data.Common;
 using System.Linq;
+using DemoGame;
 using DemoGame.Server.DbObjs;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.Queries
@@ -25,11 +26,11 @@ namespace DemoGame.Server.Queries
         {
             var ret = new List<AllianceHostileTable>();
 
-            using (IDataReader r = ExecuteReader(id))
+            using (var r = ExecuteReader(id))
             {
                 while (r.Read())
                 {
-                    AllianceHostileTable item = new AllianceHostileTable();
+                    var item = new AllianceHostileTable();
                     item.ReadValues(r);
                     ret.Add(item);
                 }

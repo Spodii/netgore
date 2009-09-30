@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using NetGore;
 
 namespace NetGore.Db
 {
@@ -48,14 +49,14 @@ namespace NetGore.Db
         IDataReader IDbQueryReader.ExecuteReader()
         {
             // Get the connection to use
-            IPoolableDbConnection pooledConn = GetPoolableConnection();
-            DbConnection conn = pooledConn.Connection;
+            var pooledConn = GetPoolableConnection();
+            var conn = pooledConn.Connection;
 
             // Get and set up the command
-            DbCommand cmd = GetCommand(conn);
+            var cmd = GetCommand(conn);
 
             // Execute the query
-            DbDataReader retReader = cmd.ExecuteReader();
+            var retReader = cmd.ExecuteReader();
 
             // Return the DbDataReader wrapped in a custom container that will allow us to
             // properly free the command and close the connection when the DbDataReader is disposed
@@ -109,16 +110,16 @@ namespace NetGore.Db
         IDataReader IDbQueryReader<T>.ExecuteReader(T item)
         {
             // Get the connection to use
-            IPoolableDbConnection pooledConn = GetPoolableConnection();
-            DbConnection conn = pooledConn.Connection;
+            var pooledConn = GetPoolableConnection();
+            var conn = pooledConn.Connection;
 
             // Get and set up the command
-            DbCommand cmd = GetCommand(conn);
+            var cmd = GetCommand(conn);
             if (HasParameters)
                 SetParameters(new DbParameterValues(cmd.Parameters), item);
 
             // Execute the query
-            DbDataReader retReader = cmd.ExecuteReader();
+            var retReader = cmd.ExecuteReader();
 
             // Return the DbDataReader wrapped in a custom container that will allow us to
             // properly free the command and close the connection when the DbDataReader is disposed
