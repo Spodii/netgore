@@ -37,7 +37,7 @@ namespace DemoGame.Client
         }
 
         public StatsForm(UserInfo userInfo, Control parent)
-            : base(parent.GUIManager, "Stats", Vector2.Zero, new Vector2(225, 500), parent)
+            : base(parent.GUIManager, "Stats", Vector2.Zero, new Vector2(225, 275), parent)
         {
             if (userInfo == null)
                 throw new ArgumentNullException("userInfo");

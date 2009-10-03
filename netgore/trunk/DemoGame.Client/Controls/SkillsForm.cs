@@ -19,7 +19,7 @@ namespace DemoGame.Client
         public event UseSkillHandler OnUseSkill;
 
         public SkillsForm(Vector2 position, Control parent)
-            : base(parent.GUIManager, "Skills", position, new Vector2(200, 200), parent)
+            : base(parent.GUIManager, "Skills", position, new Vector2(150, 100), parent)
         {
             // ReSharper disable DoNotCallOverridableMethodsInConstructor
             // Find the spacing to use between lines
