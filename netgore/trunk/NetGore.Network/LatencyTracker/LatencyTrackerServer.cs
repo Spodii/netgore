@@ -68,8 +68,8 @@ namespace NetGore.Network
                 // Repeat the packet back to the sender
                 _socket.Send(recvPacket.Data, recvPacket.RemoteEndPoint);
 
-                if (log.IsInfoEnabled)
-                    log.InfoFormat("Ping received and resent to `{0}`.", recvPacket.RemoteEndPoint);
+                if (log.IsDebugEnabled)
+                    log.DebugFormat("Ping received and resent to `{0}`.", recvPacket.RemoteEndPoint);
             }
         }
     }
