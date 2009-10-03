@@ -83,7 +83,7 @@ namespace DemoGame.Server
         /// Gets a Rectangle defining the melee hit area for the Actor.
         /// </summary>
         /// <returns>A Rectangle defining the melee hit area for the Actor.</returns>
-        Rectangle GetMeleeRect()
+        protected Rectangle GetMeleeRect()
         {
             return BodyInfo.GetHitRect(Actor, Actor.BodyInfo.PunchRect);
         }
@@ -126,7 +126,8 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Called once per frame to update the AI.
+        /// When overridden in the derived class, updates the AI. This is called at most once per frame, and only
+        /// called whe the <see cref="Actor"/> is alive and active.
         /// </summary>
         public abstract void Update();
     }

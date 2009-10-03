@@ -8,6 +8,27 @@ using NetGore.Collections;
 
 namespace DemoGame.Server
 {
+    /*
+    public class AIFactoryBase : FactoryTypeCollection
+    {
+        static Func<Type, bool> GetFilter()
+        {
+            var filter = CreateFilter(typeof(AIBase), true, typeof(Character));
+
+        }
+
+        /// <summary>
+        /// </summary>
+        /// <param name="typeFilter">Filter that determines the Types to go into this FactoryTypeCollection.</param>
+        /// <param name="loadTypeHandler">Initial handler for the OnLoadType event.</param>
+        /// <param name="useGAC">If true, Assemblies from the Global Assembly Cache will be included. If false,
+        /// the Assemblies in the Global Assembly Cache will be ignored and no Types from these Assemblies will
+        /// be found by this FactoryTypeCollection.</param>
+        public AIFactoryBase(Func<Type, bool> typeFilter, FactoryTypeLoadedHandler loadTypeHandler, bool useGAC) : base(, loadTypeHandler, useGAC)
+        {
+        }
+    }
+    */
     /// <summary>
     /// Factory for the AIBase.
     /// </summary>
@@ -17,7 +38,7 @@ namespace DemoGame.Server
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Static AIFactory constructor.
+        /// Initializes the <see cref="AIFactory"/> class.
         /// </summary>
         static AIFactory()
         {
