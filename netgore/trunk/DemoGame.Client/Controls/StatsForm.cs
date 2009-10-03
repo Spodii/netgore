@@ -36,6 +36,11 @@ namespace DemoGame.Client
             get { return _userInfo; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatsForm"/> class.
+        /// </summary>
+        /// <param name="userInfo">The user info.</param>
+        /// <param name="parent">The parent.</param>
         public StatsForm(UserInfo userInfo, Control parent)
             : base(parent.GUIManager, "Stats", Vector2.Zero, new Vector2(225, 275), parent)
         {

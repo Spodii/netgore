@@ -22,6 +22,11 @@ namespace DemoGame.Client
         /// </summary>
         public event ChatFormSayHandler OnSay;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChatForm"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="pos">The pos.</param>
         public ChatForm(Control parent, Vector2 pos) : base(parent.GUIManager, "Chat", pos, new Vector2(300, 150), parent)
         {
             // Add the input and output boxes

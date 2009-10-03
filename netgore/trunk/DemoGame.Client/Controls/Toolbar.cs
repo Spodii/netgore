@@ -42,6 +42,11 @@ namespace DemoGame.Client
         /// </summary>
         public event ToolbarEventHandler OnClickItem;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Toolbar"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="pos">The pos.</param>
         public Toolbar(Control parent, Vector2 pos) : base(parent.GUIManager, "Menu", pos, new Vector2(800, 800), parent)
         {
             // Create the ToolbarItems
