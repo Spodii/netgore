@@ -30,6 +30,10 @@ namespace DemoGame.Server
             get { return _server; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ConsoleCommands"/> class.
+        /// </summary>
+        /// <param name="server">The server.</param>
         public ConsoleCommands(Server server)
         {
             _server = server;
