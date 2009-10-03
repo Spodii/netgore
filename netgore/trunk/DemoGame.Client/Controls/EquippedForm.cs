@@ -28,6 +28,12 @@ namespace DemoGame.Client
             set { _userEquipped = value; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EquippedForm"/> class.
+        /// </summary>
+        /// <param name="infoRequester">The info requester.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="parent">The parent.</param>
         public EquippedForm(ItemInfoRequesterBase<EquipmentSlot> infoRequester, Vector2 position, Control parent)
             : base(parent.GUIManager, "Equipment", position, new Vector2(200, 200), parent)
         {

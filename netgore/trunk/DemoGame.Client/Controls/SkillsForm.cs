@@ -18,6 +18,11 @@ namespace DemoGame.Client
         readonly int _lineSpacing;
         public event UseSkillHandler OnUseSkill;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkillsForm"/> class.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="parent">The parent.</param>
         public SkillsForm(Vector2 position, Control parent)
             : base(parent.GUIManager, "Skills", position, new Vector2(150, 100), parent)
         {

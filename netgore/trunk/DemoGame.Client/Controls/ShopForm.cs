@@ -31,6 +31,11 @@ namespace DemoGame.Client.Controls
             get { return _shopInfo; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ShopForm"/> class.
+        /// </summary>
+        /// <param name="position">The position.</param>
+        /// <param name="parent">The parent.</param>
         public ShopForm(Vector2 position, Control parent)
             : base(parent.GUIManager, "Shop", position, new Vector2(200, 200), parent)
         {

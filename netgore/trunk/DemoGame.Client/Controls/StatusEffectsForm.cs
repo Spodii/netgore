@@ -19,6 +19,12 @@ namespace DemoGame.Client
         readonly IGetTime _getTime;
         readonly StatusEffectCollection _statusEffects = new StatusEffectCollection();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatusEffectsForm"/> class.
+        /// </summary>
+        /// <param name="parent">The parent.</param>
+        /// <param name="position">The position.</param>
+        /// <param name="getTime">The get time.</param>
         public StatusEffectsForm(Control parent, Vector2 position, IGetTime getTime)
             : base(parent.GUIManager, "Status Effects", position, _iconSize)
         {
