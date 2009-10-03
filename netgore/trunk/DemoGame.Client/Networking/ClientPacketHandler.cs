@@ -83,6 +83,11 @@ namespace DemoGame.Client
             get { return GameplayScreen.World; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
+        /// </summary>
+        /// <param name="socketSender">The socket sender.</param>
+        /// <param name="gameplayScreen">The gameplay screen.</param>
         public ClientPacketHandler(ISocketSender socketSender, GameplayScreen gameplayScreen)
         {
             _socketSender = socketSender;
