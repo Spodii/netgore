@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using DemoGame.Client.NPCChat;
 using log4net;
 using Microsoft.Xna.Framework.Graphics;

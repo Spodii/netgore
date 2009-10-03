@@ -157,7 +157,6 @@ namespace NetGore.Db.ClassCreator
                 formatter.AddAlias("MaxMP");
                 formatter.AddAlias("MinHit");
                 formatter.AddAlias("MaxHit");
-                formatter.AddAlias("WS");
 
                 // Generate
                 var codeItems = generator.Generate(_tempNamespaceName, _tempNamespaceName);

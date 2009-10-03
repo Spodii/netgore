@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 

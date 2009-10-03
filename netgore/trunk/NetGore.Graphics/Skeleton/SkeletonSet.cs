@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Text;
+using NetGore;
 using NetGore.IO;
 
 namespace NetGore.Graphics

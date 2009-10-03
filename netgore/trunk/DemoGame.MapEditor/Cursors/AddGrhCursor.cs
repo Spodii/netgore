@@ -1,7 +1,9 @@
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame;
 using DemoGame.Client;
 using Microsoft.Xna.Framework;
+using NetGore;
 using NetGore.Graphics;
 
 namespace DemoGame.MapEditor

@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame;
 using DemoGame.Client;
 using DemoGame.Server;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore;
 using NetGore.Graphics;
 
 namespace DemoGame.MapEditor

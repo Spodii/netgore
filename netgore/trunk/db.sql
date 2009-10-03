@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50138
 File Encoding         : 65001
 
-Date: 2009-09-25 15:38:06
+Date: 2009-10-03 02:11:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,7 +33,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-09-25 15:37:04', null);
+INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-10-03 00:02:27', null);
 
 -- ----------------------------
 -- Table structure for `alliance`
@@ -117,25 +117,14 @@ CREATE TABLE `character` (
   `statpoints` int(11) NOT NULL DEFAULT '0',
   `hp` smallint(6) NOT NULL DEFAULT '50',
   `mp` smallint(6) NOT NULL DEFAULT '50',
-  `maxhp` smallint(6) NOT NULL DEFAULT '50',
-  `maxmp` smallint(6) NOT NULL DEFAULT '50',
-  `minhit` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `maxhit` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `acc` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `agi` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `armor` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `bra` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `defence` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `dex` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `evade` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `imm` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `int` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `perc` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `recov` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `regen` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `str` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `tact` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `ws` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `stat_maxhp` smallint(6) NOT NULL DEFAULT '50',
+  `stat_maxmp` smallint(6) NOT NULL DEFAULT '50',
+  `stat_minhit` smallint(6) NOT NULL DEFAULT '1',
+  `stat_maxhit` smallint(6) NOT NULL DEFAULT '1',
+  `stat_defence` smallint(6) NOT NULL,
+  `stat_agi` smallint(6) NOT NULL DEFAULT '1',
+  `stat_int` smallint(6) NOT NULL DEFAULT '1',
+  `stat_str` smallint(6) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `template_id` (`character_template_id`),
   KEY `respawn_map` (`respawn_map`),
@@ -153,12 +142,12 @@ CREATE TABLE `character` (
 -- ----------------------------
 -- Records of character
 -- ----------------------------
-INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '2', null, null, '656.801', '466', '1', '500', '200', '1', '131', '22', '659', '85', '50', '50', '50', '50', '7', '11', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '2', '1', '3');
-INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, null, '876.399', '530', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, null, '819.998', '530', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5', '5');
-INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', null, '0', '800', '530', '2', '800', '530', '1', '0', '1', '0', '0', '48', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
-INSERT INTO `character` VALUES ('5', null, null, 'Shopkeeper', '2', '0', null, '600', '530', '2', '600', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '0', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
-INSERT INTO `character` VALUES ('6', null, null, 'Vending Machine', '2', '1', null, '500', '530', '2', '500', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
+INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '2', null, null, '492.001', '402', '1', '500', '200', '1', '146', '23', '674', '90', '50', '50', '50', '50', '7', '11', '0', '1', '1', '2');
+INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, null, '736', '530', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, null, '854.799', '530', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
+INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', null, '0', '800', '530', '2', '800', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
+INSERT INTO `character` VALUES ('5', null, null, 'Shopkeeper', '2', '0', null, '600', '530', '2', '600', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
+INSERT INTO `character` VALUES ('6', null, null, 'Vending Machine', '2', '1', null, '500', '530', '2', '500', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for `character_equipped`
@@ -196,6 +185,9 @@ CREATE TABLE `character_inventory` (
 -- ----------------------------
 -- Records of character_inventory
 -- ----------------------------
+INSERT INTO `character_inventory` VALUES ('1', '5', '1');
+INSERT INTO `character_inventory` VALUES ('1', '9', '2');
+INSERT INTO `character_inventory` VALUES ('1', '10', '0');
 
 -- ----------------------------
 -- Table structure for `character_status_effect`
@@ -233,25 +225,14 @@ CREATE TABLE `character_template` (
   `statpoints` int(11) NOT NULL,
   `give_exp` smallint(5) unsigned NOT NULL DEFAULT '0',
   `give_cash` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `maxhp` smallint(5) unsigned NOT NULL DEFAULT '50',
-  `maxmp` smallint(5) unsigned NOT NULL DEFAULT '50',
-  `defence` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `minhit` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `maxhit` tinyint(3) unsigned NOT NULL DEFAULT '2',
-  `acc` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `agi` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `armor` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `bra` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `dex` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `evade` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `imm` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `int` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `perc` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `recov` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `regen` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `str` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `tact` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `ws` tinyint(3) unsigned NOT NULL DEFAULT '1',
+  `stat_maxhp` smallint(6) NOT NULL DEFAULT '50',
+  `stat_maxmp` smallint(6) NOT NULL DEFAULT '50',
+  `stat_minhit` smallint(6) NOT NULL DEFAULT '1',
+  `stat_maxhit` smallint(6) NOT NULL DEFAULT '2',
+  `stat_defence` smallint(6) NOT NULL,
+  `stat_agi` smallint(6) NOT NULL DEFAULT '1',
+  `stat_int` smallint(6) NOT NULL DEFAULT '1',
+  `stat_str` smallint(6) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `alliance_id` (`alliance_id`),
   KEY `shop_id` (`shop_id`),
@@ -262,8 +243,8 @@ CREATE TABLE `character_template` (
 -- ----------------------------
 -- Records of character_template
 -- ----------------------------
-INSERT INTO `character_template` VALUES ('0', '0', 'User Template', null, null, '1', '5', '1', '0', '0', '0', '0', '50', '50', '0', '1', '2', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1', '1');
-INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', null, '1', '2', '0', '0', '0', '5', '5', '5', '5', '0', '0', '0', '0', '1', '0', '1', '1', '0', '0', '1', '0', '0', '0', '1', '0', '0');
+INSERT INTO `character_template` VALUES ('0', '0', 'User Template', null, null, '1', '5', '1', '0', '0', '0', '0', '50', '50', '1', '2', '0', '1', '1', '1');
+INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', 'TestAI', null, '1', '2', '0', '0', '0', '5', '5', '5', '5', '0', '0', '0', '1', '1', '1');
 
 -- ----------------------------
 -- Table structure for `character_template_equipped`
@@ -355,35 +336,28 @@ CREATE TABLE `item` (
   `amount` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `graphic` smallint(5) unsigned NOT NULL DEFAULT '0',
   `value` int(11) NOT NULL DEFAULT '0',
-  `agi` smallint(6) NOT NULL DEFAULT '0',
-  `armor` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `bra` smallint(6) NOT NULL DEFAULT '0',
-  `defence` smallint(6) NOT NULL DEFAULT '0',
-  `dex` smallint(6) NOT NULL DEFAULT '0',
-  `evade` smallint(6) NOT NULL DEFAULT '0',
   `hp` smallint(6) NOT NULL DEFAULT '0',
-  `imm` smallint(6) NOT NULL DEFAULT '0',
-  `int` smallint(6) NOT NULL DEFAULT '0',
-  `maxhit` smallint(6) NOT NULL DEFAULT '0',
-  `maxhp` smallint(6) NOT NULL DEFAULT '0',
-  `maxmp` smallint(6) NOT NULL DEFAULT '0',
-  `minhit` smallint(6) NOT NULL DEFAULT '0',
   `mp` smallint(6) NOT NULL DEFAULT '0',
-  `perc` smallint(6) NOT NULL DEFAULT '0',
-  `reqacc` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqagi` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqarmor` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqbra` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqdex` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqevade` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqimm` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqint` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `stat_agi` smallint(6) NOT NULL DEFAULT '0',
+  `stat_int` smallint(6) NOT NULL DEFAULT '0',
+  `stat_str` smallint(6) NOT NULL,
+  `stat_minhit` smallint(6) NOT NULL DEFAULT '0',
+  `stat_maxhit` smallint(6) NOT NULL DEFAULT '0',
+  `stat_maxhp` smallint(6) NOT NULL DEFAULT '0',
+  `stat_maxmp` smallint(6) NOT NULL DEFAULT '0',
+  `stat_defence` smallint(6) NOT NULL DEFAULT '0',
+  `stat_req_agi` smallint(6) NOT NULL DEFAULT '0',
+  `stat_req_int` smallint(6) NOT NULL DEFAULT '0',
+  `stat_req_str` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of item
 -- ----------------------------
+INSERT INTO `item` VALUES ('5', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('9', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('10', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `item_template`
@@ -398,40 +372,30 @@ CREATE TABLE `item_template` (
   `description` varchar(255) NOT NULL,
   `graphic` smallint(5) unsigned NOT NULL,
   `value` int(11) NOT NULL DEFAULT '0',
-  `agi` smallint(6) NOT NULL DEFAULT '0',
-  `armor` smallint(6) NOT NULL DEFAULT '0',
-  `bra` smallint(6) NOT NULL DEFAULT '0',
-  `defence` smallint(6) NOT NULL DEFAULT '0',
-  `dex` smallint(6) NOT NULL DEFAULT '0',
-  `evade` smallint(6) NOT NULL DEFAULT '0',
-  `imm` smallint(6) NOT NULL DEFAULT '0',
-  `int` smallint(6) NOT NULL DEFAULT '0',
   `hp` smallint(6) NOT NULL DEFAULT '0',
   `mp` smallint(6) NOT NULL DEFAULT '0',
-  `minhit` smallint(6) NOT NULL DEFAULT '0',
-  `maxhit` smallint(6) NOT NULL DEFAULT '0',
-  `maxhp` smallint(6) NOT NULL DEFAULT '0',
-  `maxmp` smallint(6) NOT NULL DEFAULT '0',
-  `perc` smallint(6) NOT NULL DEFAULT '0',
-  `reqacc` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqagi` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqarmor` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqbra` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqdex` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqevade` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqimm` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `reqint` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `stat_agi` smallint(6) NOT NULL DEFAULT '0',
+  `stat_int` smallint(6) NOT NULL DEFAULT '0',
+  `stat_str` smallint(6) NOT NULL,
+  `stat_minhit` smallint(6) NOT NULL DEFAULT '0',
+  `stat_maxhit` smallint(6) NOT NULL DEFAULT '0',
+  `stat_maxhp` smallint(6) NOT NULL DEFAULT '0',
+  `stat_maxmp` smallint(6) NOT NULL DEFAULT '0',
+  `stat_defence` smallint(6) NOT NULL DEFAULT '0',
+  `stat_req_agi` smallint(6) NOT NULL DEFAULT '0',
+  `stat_req_int` smallint(6) NOT NULL DEFAULT '0',
+  `stat_req_str` smallint(6) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of item_template
 -- ----------------------------
-INSERT INTO `item_template` VALUES ('1', '1', '9', '16', 'Healing Potion', 'A healing potion', '127', '10', '0', '0', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('2', '1', '9', '16', 'Mana Potion', 'A mana potion', '128', '10', '0', '0', '0', '0', '0', '0', '0', '0', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('3', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '126', '100', '1', '0', '1', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('4', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '130', '50', '0', '0', '0', '2', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('5', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '132', '50', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item_template` VALUES ('1', '1', '9', '16', 'Healing Potion', 'A healing potion', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item_template` VALUES ('2', '1', '9', '16', 'Mana Potion', 'A mana potion', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item_template` VALUES ('3', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item_template` VALUES ('4', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item_template` VALUES ('5', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `map`
@@ -488,7 +452,7 @@ CREATE TABLE `server_time` (
 -- ----------------------------
 -- Records of server_time
 -- ----------------------------
-INSERT INTO `server_time` VALUES ('2009-09-25 15:37:18');
+INSERT INTO `server_time` VALUES ('2009-10-03 00:02:45');
 
 -- ----------------------------
 -- Table structure for `shop`
@@ -535,7 +499,19 @@ INSERT INTO `shop_item` VALUES ('0', '5');
 -- View structure for `user_character`
 -- ----------------------------
 DROP VIEW IF EXISTS `user_character`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`maxhp` AS `maxhp`,`character`.`maxmp` AS `maxmp`,`character`.`minhit` AS `minhit`,`character`.`maxhit` AS `maxhit`,`character`.`acc` AS `acc`,`character`.`agi` AS `agi`,`character`.`armor` AS `armor`,`character`.`bra` AS `bra`,`character`.`defence` AS `defence`,`character`.`dex` AS `dex`,`character`.`evade` AS `evade`,`character`.`imm` AS `imm`,`character`.`int` AS `int`,`character`.`perc` AS `perc`,`character`.`recov` AS `recov`,`character`.`regen` AS `regen`,`character`.`str` AS `str`,`character`.`tact` AS `tact`,`character`.`ws` AS `ws` from `character` where (`character`.`account_id` is not null);
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`shop_id` AS `shop_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`stat_maxhp` AS `stat_maxhp`,`character`.`stat_maxmp` AS `stat_maxmp`,`character`.`stat_minhit` AS `stat_minhit`,`character`.`stat_maxhit` AS `stat_maxhit`,`character`.`stat_defence` AS `stat_defence`,`character`.`stat_agi` AS `stat_agi`,`character`.`stat_int` AS `stat_int`,`character`.`stat_str` AS `stat_str` from `character` where (`character`.`account_id` is not null);
+
+-- ----------------------------
+-- Procedure structure for `Rebuild_View_User_Character`
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `Rebuild_View_User_Character`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Rebuild_View_User_Character`()
+BEGIN
+	DROP VIEW user_character;
+	CREATE VIEW user_character AS SELECT * FROM `character` WHERE `account_id` IS NOT NULL;
+END;;
+DELIMITER ;
 
 -- ----------------------------
 -- Function structure for `CreateUserOnAccount`

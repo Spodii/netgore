@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame;
 using DemoGame.DbObjs;
 using NetGore;
 
@@ -14,7 +15,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The number of columns in the database table that this class represents.
         /// </summary>
-        public const Int32 ColumnCount = 37;
+        public const Int32 ColumnCount = 27;
 
         /// <summary>
         /// The name of the database table that this class represents.
@@ -26,9 +27,9 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumns = new string[]
         {
-            "acc", "account_id", "agi", "armor", "body_id", "bra", "cash", "character_template_id", "chat_dialog", "defence", "dex",
-            "evade", "exp", "hp", "id", "imm", "int", "level", "map_id", "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "perc",
-            "recov", "regen", "respawn_map", "respawn_x", "respawn_y", "statpoints", "str", "tact", "ws", "x", "y"
+            "account_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "id", "level", "map_id", "mp",
+            "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
+            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
         };
 
         /// <summary>
@@ -41,15 +42,10 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         {
-            "acc", "account_id", "agi", "armor", "body_id", "bra", "cash", "character_template_id", "chat_dialog", "defence", "dex",
-            "evade", "exp", "hp", "id", "imm", "int", "level", "map_id", "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "perc",
-            "recov", "regen", "respawn_map", "respawn_x", "respawn_y", "statpoints", "str", "tact", "ws", "x", "y"
+            "account_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "id", "level", "map_id", "mp",
+            "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
+            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
         };
-
-        /// <summary>
-        /// The field that maps onto the database column `acc`.
-        /// </summary>
-        Byte _acc;
 
         /// <summary>
         /// The field that maps onto the database column `account_id`.
@@ -57,24 +53,9 @@ namespace DemoGame.Server.DbObjs
         int? _accountID;
 
         /// <summary>
-        /// The field that maps onto the database column `agi`.
-        /// </summary>
-        Byte _agi;
-
-        /// <summary>
-        /// The field that maps onto the database column `armor`.
-        /// </summary>
-        Byte _armor;
-
-        /// <summary>
         /// The field that maps onto the database column `body_id`.
         /// </summary>
         UInt16 _bodyID;
-
-        /// <summary>
-        /// The field that maps onto the database column `bra`.
-        /// </summary>
-        Byte _bra;
 
         /// <summary>
         /// The field that maps onto the database column `cash`.
@@ -92,21 +73,6 @@ namespace DemoGame.Server.DbObjs
         ushort? _chatDialog;
 
         /// <summary>
-        /// The field that maps onto the database column `defence`.
-        /// </summary>
-        Byte _defence;
-
-        /// <summary>
-        /// The field that maps onto the database column `dex`.
-        /// </summary>
-        Byte _dex;
-
-        /// <summary>
-        /// The field that maps onto the database column `evade`.
-        /// </summary>
-        Byte _evade;
-
-        /// <summary>
         /// The field that maps onto the database column `exp`.
         /// </summary>
         Int32 _exp;
@@ -122,16 +88,6 @@ namespace DemoGame.Server.DbObjs
         Int32 _iD;
 
         /// <summary>
-        /// The field that maps onto the database column `imm`.
-        /// </summary>
-        Byte _imm;
-
-        /// <summary>
-        /// The field that maps onto the database column `int`.
-        /// </summary>
-        Byte _int;
-
-        /// <summary>
         /// The field that maps onto the database column `level`.
         /// </summary>
         Byte _level;
@@ -142,26 +98,6 @@ namespace DemoGame.Server.DbObjs
         UInt16 _mapID;
 
         /// <summary>
-        /// The field that maps onto the database column `maxhit`.
-        /// </summary>
-        Byte _maxHit;
-
-        /// <summary>
-        /// The field that maps onto the database column `maxhp`.
-        /// </summary>
-        Int16 _maxHP;
-
-        /// <summary>
-        /// The field that maps onto the database column `maxmp`.
-        /// </summary>
-        Int16 _maxMP;
-
-        /// <summary>
-        /// The field that maps onto the database column `minhit`.
-        /// </summary>
-        Byte _minHit;
-
-        /// <summary>
         /// The field that maps onto the database column `mp`.
         /// </summary>
         Int16 _mP;
@@ -170,21 +106,6 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `name`.
         /// </summary>
         String _name;
-
-        /// <summary>
-        /// The field that maps onto the database column `perc`.
-        /// </summary>
-        Byte _perc;
-
-        /// <summary>
-        /// The field that maps onto the database column `recov`.
-        /// </summary>
-        Byte _recov;
-
-        /// <summary>
-        /// The field that maps onto the database column `regen`.
-        /// </summary>
-        Byte _regen;
 
         /// <summary>
         /// The field that maps onto the database column `respawn_map`.
@@ -202,24 +123,54 @@ namespace DemoGame.Server.DbObjs
         Single _respawnY;
 
         /// <summary>
+        /// The field that maps onto the database column `shop_id`.
+        /// </summary>
+        ushort? _shopID;
+
+        /// <summary>
+        /// The field that maps onto the database column `stat_agi`.
+        /// </summary>
+        Int16 _statAgi;
+
+        /// <summary>
+        /// The field that maps onto the database column `stat_defence`.
+        /// </summary>
+        Int16 _statDefence;
+
+        /// <summary>
+        /// The field that maps onto the database column `stat_int`.
+        /// </summary>
+        Int16 _statInt;
+
+        /// <summary>
+        /// The field that maps onto the database column `stat_maxhit`.
+        /// </summary>
+        Int16 _statMaxhit;
+
+        /// <summary>
+        /// The field that maps onto the database column `stat_maxhp`.
+        /// </summary>
+        Int16 _statMaxhp;
+
+        /// <summary>
+        /// The field that maps onto the database column `stat_maxmp`.
+        /// </summary>
+        Int16 _statMaxmp;
+
+        /// <summary>
+        /// The field that maps onto the database column `stat_minhit`.
+        /// </summary>
+        Int16 _statMinhit;
+
+        /// <summary>
         /// The field that maps onto the database column `statpoints`.
         /// </summary>
         Int32 _statPoints;
 
         /// <summary>
-        /// The field that maps onto the database column `str`.
+        /// The field that maps onto the database column `stat_str`.
         /// </summary>
-        Byte _str;
-
-        /// <summary>
-        /// The field that maps onto the database column `tact`.
-        /// </summary>
-        Byte _tact;
-
-        /// <summary>
-        /// The field that maps onto the database column `ws`.
-        /// </summary>
-        Byte _wS;
+        Int16 _statStr;
 
         /// <summary>
         /// The field that maps onto the database column `x`.
@@ -265,86 +216,65 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// UserCharacterTable constructor.
         /// </summary>
-        /// <param name="acc">The initial value for the corresponding property.</param>
         /// <param name="accountID">The initial value for the corresponding property.</param>
-        /// <param name="agi">The initial value for the corresponding property.</param>
-        /// <param name="armor">The initial value for the corresponding property.</param>
         /// <param name="bodyID">The initial value for the corresponding property.</param>
-        /// <param name="bra">The initial value for the corresponding property.</param>
         /// <param name="cash">The initial value for the corresponding property.</param>
         /// <param name="characterTemplateID">The initial value for the corresponding property.</param>
         /// <param name="chatDialog">The initial value for the corresponding property.</param>
-        /// <param name="defence">The initial value for the corresponding property.</param>
-        /// <param name="dex">The initial value for the corresponding property.</param>
-        /// <param name="evade">The initial value for the corresponding property.</param>
         /// <param name="exp">The initial value for the corresponding property.</param>
         /// <param name="hP">The initial value for the corresponding property.</param>
         /// <param name="iD">The initial value for the corresponding property.</param>
-        /// <param name="imm">The initial value for the corresponding property.</param>
-        /// <param name="int">The initial value for the corresponding property.</param>
         /// <param name="level">The initial value for the corresponding property.</param>
         /// <param name="mapID">The initial value for the corresponding property.</param>
-        /// <param name="maxHit">The initial value for the corresponding property.</param>
-        /// <param name="maxHP">The initial value for the corresponding property.</param>
-        /// <param name="maxMP">The initial value for the corresponding property.</param>
-        /// <param name="minHit">The initial value for the corresponding property.</param>
         /// <param name="mP">The initial value for the corresponding property.</param>
         /// <param name="name">The initial value for the corresponding property.</param>
-        /// <param name="perc">The initial value for the corresponding property.</param>
-        /// <param name="recov">The initial value for the corresponding property.</param>
-        /// <param name="regen">The initial value for the corresponding property.</param>
         /// <param name="respawnMap">The initial value for the corresponding property.</param>
         /// <param name="respawnX">The initial value for the corresponding property.</param>
         /// <param name="respawnY">The initial value for the corresponding property.</param>
+        /// <param name="shopID">The initial value for the corresponding property.</param>
+        /// <param name="statAgi">The initial value for the corresponding property.</param>
+        /// <param name="statDefence">The initial value for the corresponding property.</param>
+        /// <param name="statInt">The initial value for the corresponding property.</param>
+        /// <param name="statMaxhit">The initial value for the corresponding property.</param>
+        /// <param name="statMaxhp">The initial value for the corresponding property.</param>
+        /// <param name="statMaxmp">The initial value for the corresponding property.</param>
+        /// <param name="statMinhit">The initial value for the corresponding property.</param>
+        /// <param name="statStr">The initial value for the corresponding property.</param>
         /// <param name="statPoints">The initial value for the corresponding property.</param>
-        /// <param name="str">The initial value for the corresponding property.</param>
-        /// <param name="tact">The initial value for the corresponding property.</param>
-        /// <param name="wS">The initial value for the corresponding property.</param>
         /// <param name="x">The initial value for the corresponding property.</param>
         /// <param name="y">The initial value for the corresponding property.</param>
-        public UserCharacterTable(Byte @acc, AccountID? @accountID, Byte @agi, Byte @armor, BodyIndex @bodyID, Byte @bra,
-                                  Int32 @cash, CharacterTemplateID? @characterTemplateID, ushort? @chatDialog, Byte @defence,
-                                  Byte @dex, Byte @evade, Int32 @exp, SPValueType @hP, Int32 @iD, Byte @imm, Byte @int,
-                                  Byte @level, MapIndex @mapID, Byte @maxHit, Int16 @maxHP, Int16 @maxMP, Byte @minHit,
-                                  SPValueType @mP, String @name, Byte @perc, Byte @recov, Byte @regen, MapIndex? @respawnMap,
-                                  Single @respawnX, Single @respawnY, Int32 @statPoints, Byte @str, Byte @tact, Byte @wS,
+        public UserCharacterTable(AccountID? @accountID, BodyIndex @bodyID, Int32 @cash, CharacterTemplateID? @characterTemplateID,
+                                  ushort? @chatDialog, Int32 @exp, SPValueType @hP, Int32 @iD, Byte @level, MapIndex @mapID,
+                                  SPValueType @mP, String @name, MapIndex? @respawnMap, Single @respawnX, Single @respawnY,
+                                  ShopID? @shopID, Int16 @statAgi, Int16 @statDefence, Int16 @statInt, Int16 @statMaxhit,
+                                  Int16 @statMaxhp, Int16 @statMaxmp, Int16 @statMinhit, Int16 @statStr, Int32 @statPoints,
                                   Single @x, Single @y)
         {
-            Acc = @acc;
             AccountID = @accountID;
-            Agi = @agi;
-            Armor = @armor;
             BodyID = @bodyID;
-            Bra = @bra;
             Cash = @cash;
             CharacterTemplateID = @characterTemplateID;
             ChatDialog = @chatDialog;
-            Defence = @defence;
-            Dex = @dex;
-            Evade = @evade;
             Exp = @exp;
             HP = @hP;
             ID = @iD;
-            Imm = @imm;
-            Int = @int;
             Level = @level;
             MapID = @mapID;
-            MaxHit = @maxHit;
-            MaxHP = @maxHP;
-            MaxMP = @maxMP;
-            MinHit = @minHit;
             MP = @mP;
             Name = @name;
-            Perc = @perc;
-            Recov = @recov;
-            Regen = @regen;
             RespawnMap = @respawnMap;
             RespawnX = @respawnX;
             RespawnY = @respawnY;
+            ShopID = @shopID;
+            StatAgi = @statAgi;
+            StatDefence = @statDefence;
+            StatInt = @statInt;
+            StatMaxhit = @statMaxhit;
+            StatMaxhp = @statMaxhp;
+            StatMaxmp = @statMaxmp;
+            StatMinhit = @statMinhit;
+            StatStr = @statStr;
             StatPoints = @statPoints;
-            Str = @str;
-            Tact = @tact;
-            WS = @wS;
             X = @x;
             Y = @y;
         }
@@ -367,41 +297,31 @@ namespace DemoGame.Server.DbObjs
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(IUserCharacterTable source, IDictionary<String, Object> dic)
         {
-            dic["@acc"] = source.Acc;
             dic["@account_id"] = source.AccountID;
-            dic["@agi"] = source.Agi;
-            dic["@armor"] = source.Armor;
             dic["@body_id"] = source.BodyID;
-            dic["@bra"] = source.Bra;
             dic["@cash"] = source.Cash;
             dic["@character_template_id"] = source.CharacterTemplateID;
             dic["@chat_dialog"] = source.ChatDialog;
-            dic["@defence"] = source.Defence;
-            dic["@dex"] = source.Dex;
-            dic["@evade"] = source.Evade;
             dic["@exp"] = source.Exp;
             dic["@hp"] = source.HP;
             dic["@id"] = source.ID;
-            dic["@imm"] = source.Imm;
-            dic["@int"] = source.Int;
             dic["@level"] = source.Level;
             dic["@map_id"] = source.MapID;
-            dic["@maxhit"] = source.MaxHit;
-            dic["@maxhp"] = source.MaxHP;
-            dic["@maxmp"] = source.MaxMP;
-            dic["@minhit"] = source.MinHit;
             dic["@mp"] = source.MP;
             dic["@name"] = source.Name;
-            dic["@perc"] = source.Perc;
-            dic["@recov"] = source.Recov;
-            dic["@regen"] = source.Regen;
             dic["@respawn_map"] = source.RespawnMap;
             dic["@respawn_x"] = source.RespawnX;
             dic["@respawn_y"] = source.RespawnY;
+            dic["@shop_id"] = source.ShopID;
+            dic["@stat_agi"] = source.StatAgi;
+            dic["@stat_defence"] = source.StatDefence;
+            dic["@stat_int"] = source.StatInt;
+            dic["@stat_maxhit"] = source.StatMaxhit;
+            dic["@stat_maxhp"] = source.StatMaxhp;
+            dic["@stat_maxmp"] = source.StatMaxmp;
+            dic["@stat_minhit"] = source.StatMinhit;
+            dic["@stat_str"] = source.StatStr;
             dic["@statpoints"] = source.StatPoints;
-            dic["@str"] = source.Str;
-            dic["@tact"] = source.Tact;
-            dic["@ws"] = source.WS;
             dic["@x"] = source.X;
             dic["@y"] = source.Y;
         }
@@ -423,41 +343,31 @@ namespace DemoGame.Server.DbObjs
         /// <param name="source">The IUserCharacterTable to copy the values from.</param>
         public void CopyValuesFrom(IUserCharacterTable source)
         {
-            Acc = source.Acc;
             AccountID = source.AccountID;
-            Agi = source.Agi;
-            Armor = source.Armor;
             BodyID = source.BodyID;
-            Bra = source.Bra;
             Cash = source.Cash;
             CharacterTemplateID = source.CharacterTemplateID;
             ChatDialog = source.ChatDialog;
-            Defence = source.Defence;
-            Dex = source.Dex;
-            Evade = source.Evade;
             Exp = source.Exp;
             HP = source.HP;
             ID = source.ID;
-            Imm = source.Imm;
-            Int = source.Int;
             Level = source.Level;
             MapID = source.MapID;
-            MaxHit = source.MaxHit;
-            MaxHP = source.MaxHP;
-            MaxMP = source.MaxMP;
-            MinHit = source.MinHit;
             MP = source.MP;
             Name = source.Name;
-            Perc = source.Perc;
-            Recov = source.Recov;
-            Regen = source.Regen;
             RespawnMap = source.RespawnMap;
             RespawnX = source.RespawnX;
             RespawnY = source.RespawnY;
+            ShopID = source.ShopID;
+            StatAgi = source.StatAgi;
+            StatDefence = source.StatDefence;
+            StatInt = source.StatInt;
+            StatMaxhit = source.StatMaxhit;
+            StatMaxhp = source.StatMaxhp;
+            StatMaxmp = source.StatMaxmp;
+            StatMinhit = source.StatMinhit;
+            StatStr = source.StatStr;
             StatPoints = source.StatPoints;
-            Str = source.Str;
-            Tact = source.Tact;
-            WS = source.WS;
             X = source.X;
             Y = source.Y;
         }
@@ -473,23 +383,11 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "acc":
-                    return new ColumnMetadata("acc", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
                 case "account_id":
                     return new ColumnMetadata("account_id", "", "int(11)", null, typeof(int?), true, false, false);
 
-                case "agi":
-                    return new ColumnMetadata("agi", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "armor":
-                    return new ColumnMetadata("armor", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
                 case "body_id":
                     return new ColumnMetadata("body_id", "", "smallint(5) unsigned", "1", typeof(UInt16), false, false, false);
-
-                case "bra":
-                    return new ColumnMetadata("bra", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "cash":
                     return new ColumnMetadata("cash", "", "int(11)", "0", typeof(Int32), false, false, false);
@@ -501,15 +399,6 @@ namespace DemoGame.Server.DbObjs
                 case "chat_dialog":
                     return new ColumnMetadata("chat_dialog", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
 
-                case "defence":
-                    return new ColumnMetadata("defence", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "dex":
-                    return new ColumnMetadata("dex", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "evade":
-                    return new ColumnMetadata("evade", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
                 case "exp":
                     return new ColumnMetadata("exp", "", "int(11)", "0", typeof(Int32), false, false, false);
 
@@ -519,44 +408,17 @@ namespace DemoGame.Server.DbObjs
                 case "id":
                     return new ColumnMetadata("id", "", "int(11)", null, typeof(Int32), false, false, false);
 
-                case "imm":
-                    return new ColumnMetadata("imm", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "int":
-                    return new ColumnMetadata("int", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
                 case "level":
                     return new ColumnMetadata("level", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "map_id":
                     return new ColumnMetadata("map_id", "", "smallint(5) unsigned", "1", typeof(UInt16), false, false, false);
 
-                case "maxhit":
-                    return new ColumnMetadata("maxhit", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "maxhp":
-                    return new ColumnMetadata("maxhp", "", "smallint(6)", "50", typeof(Int16), false, false, false);
-
-                case "maxmp":
-                    return new ColumnMetadata("maxmp", "", "smallint(6)", "50", typeof(Int16), false, false, false);
-
-                case "minhit":
-                    return new ColumnMetadata("minhit", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
                 case "mp":
                     return new ColumnMetadata("mp", "", "smallint(6)", "50", typeof(Int16), false, false, false);
 
                 case "name":
                     return new ColumnMetadata("name", "", "varchar(30)", null, typeof(String), false, false, false);
-
-                case "perc":
-                    return new ColumnMetadata("perc", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "recov":
-                    return new ColumnMetadata("recov", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "regen":
-                    return new ColumnMetadata("regen", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "respawn_map":
                     return new ColumnMetadata("respawn_map", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
@@ -567,17 +429,35 @@ namespace DemoGame.Server.DbObjs
                 case "respawn_y":
                     return new ColumnMetadata("respawn_y", "", "float", "50", typeof(Single), false, false, false);
 
+                case "shop_id":
+                    return new ColumnMetadata("shop_id", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
+
+                case "stat_agi":
+                    return new ColumnMetadata("stat_agi", "", "smallint(6)", "1", typeof(Int16), false, false, false);
+
+                case "stat_defence":
+                    return new ColumnMetadata("stat_defence", "", "smallint(6)", null, typeof(Int16), false, false, false);
+
+                case "stat_int":
+                    return new ColumnMetadata("stat_int", "", "smallint(6)", "1", typeof(Int16), false, false, false);
+
+                case "stat_maxhit":
+                    return new ColumnMetadata("stat_maxhit", "", "smallint(6)", "1", typeof(Int16), false, false, false);
+
+                case "stat_maxhp":
+                    return new ColumnMetadata("stat_maxhp", "", "smallint(6)", "50", typeof(Int16), false, false, false);
+
+                case "stat_maxmp":
+                    return new ColumnMetadata("stat_maxmp", "", "smallint(6)", "50", typeof(Int16), false, false, false);
+
+                case "stat_minhit":
+                    return new ColumnMetadata("stat_minhit", "", "smallint(6)", "1", typeof(Int16), false, false, false);
+
+                case "stat_str":
+                    return new ColumnMetadata("stat_str", "", "smallint(6)", "1", typeof(Int16), false, false, false);
+
                 case "statpoints":
                     return new ColumnMetadata("statpoints", "", "int(11)", "0", typeof(Int32), false, false, false);
-
-                case "str":
-                    return new ColumnMetadata("str", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "tact":
-                    return new ColumnMetadata("tact", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "ws":
-                    return new ColumnMetadata("ws", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "x":
                     return new ColumnMetadata("x", "", "float", "100", typeof(Single), false, false, false);
@@ -601,23 +481,11 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "acc":
-                    return Acc;
-
                 case "account_id":
                     return AccountID;
 
-                case "agi":
-                    return Agi;
-
-                case "armor":
-                    return Armor;
-
                 case "body_id":
                     return BodyID;
-
-                case "bra":
-                    return Bra;
 
                 case "cash":
                     return Cash;
@@ -628,15 +496,6 @@ namespace DemoGame.Server.DbObjs
                 case "chat_dialog":
                     return ChatDialog;
 
-                case "defence":
-                    return Defence;
-
-                case "dex":
-                    return Dex;
-
-                case "evade":
-                    return Evade;
-
                 case "exp":
                     return Exp;
 
@@ -646,44 +505,17 @@ namespace DemoGame.Server.DbObjs
                 case "id":
                     return ID;
 
-                case "imm":
-                    return Imm;
-
-                case "int":
-                    return Int;
-
                 case "level":
                     return Level;
 
                 case "map_id":
                     return MapID;
 
-                case "maxhit":
-                    return MaxHit;
-
-                case "maxhp":
-                    return MaxHP;
-
-                case "maxmp":
-                    return MaxMP;
-
-                case "minhit":
-                    return MinHit;
-
                 case "mp":
                     return MP;
 
                 case "name":
                     return Name;
-
-                case "perc":
-                    return Perc;
-
-                case "recov":
-                    return Recov;
-
-                case "regen":
-                    return Regen;
 
                 case "respawn_map":
                     return RespawnMap;
@@ -694,17 +526,35 @@ namespace DemoGame.Server.DbObjs
                 case "respawn_y":
                     return RespawnY;
 
+                case "shop_id":
+                    return ShopID;
+
+                case "stat_agi":
+                    return StatAgi;
+
+                case "stat_defence":
+                    return StatDefence;
+
+                case "stat_int":
+                    return StatInt;
+
+                case "stat_maxhit":
+                    return StatMaxhit;
+
+                case "stat_maxhp":
+                    return StatMaxhp;
+
+                case "stat_maxmp":
+                    return StatMaxmp;
+
+                case "stat_minhit":
+                    return StatMinhit;
+
+                case "stat_str":
+                    return StatStr;
+
                 case "statpoints":
                     return StatPoints;
-
-                case "str":
-                    return Str;
-
-                case "tact":
-                    return Tact;
-
-                case "ws":
-                    return WS;
 
                 case "x":
                     return X;
@@ -726,28 +576,12 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "acc":
-                    Acc = (Byte)value;
-                    break;
-
                 case "account_id":
                     AccountID = (AccountID?)value;
                     break;
 
-                case "agi":
-                    Agi = (Byte)value;
-                    break;
-
-                case "armor":
-                    Armor = (Byte)value;
-                    break;
-
                 case "body_id":
                     BodyID = (BodyIndex)value;
-                    break;
-
-                case "bra":
-                    Bra = (Byte)value;
                     break;
 
                 case "cash":
@@ -762,18 +596,6 @@ namespace DemoGame.Server.DbObjs
                     ChatDialog = (ushort?)value;
                     break;
 
-                case "defence":
-                    Defence = (Byte)value;
-                    break;
-
-                case "dex":
-                    Dex = (Byte)value;
-                    break;
-
-                case "evade":
-                    Evade = (Byte)value;
-                    break;
-
                 case "exp":
                     Exp = (Int32)value;
                     break;
@@ -786,14 +608,6 @@ namespace DemoGame.Server.DbObjs
                     ID = (Int32)value;
                     break;
 
-                case "imm":
-                    Imm = (Byte)value;
-                    break;
-
-                case "int":
-                    Int = (Byte)value;
-                    break;
-
                 case "level":
                     Level = (Byte)value;
                     break;
@@ -802,40 +616,12 @@ namespace DemoGame.Server.DbObjs
                     MapID = (MapIndex)value;
                     break;
 
-                case "maxhit":
-                    MaxHit = (Byte)value;
-                    break;
-
-                case "maxhp":
-                    MaxHP = (Int16)value;
-                    break;
-
-                case "maxmp":
-                    MaxMP = (Int16)value;
-                    break;
-
-                case "minhit":
-                    MinHit = (Byte)value;
-                    break;
-
                 case "mp":
                     MP = (SPValueType)value;
                     break;
 
                 case "name":
                     Name = (String)value;
-                    break;
-
-                case "perc":
-                    Perc = (Byte)value;
-                    break;
-
-                case "recov":
-                    Recov = (Byte)value;
-                    break;
-
-                case "regen":
-                    Regen = (Byte)value;
                     break;
 
                 case "respawn_map":
@@ -850,20 +636,44 @@ namespace DemoGame.Server.DbObjs
                     RespawnY = (Single)value;
                     break;
 
+                case "shop_id":
+                    ShopID = (ShopID?)value;
+                    break;
+
+                case "stat_agi":
+                    StatAgi = (Int16)value;
+                    break;
+
+                case "stat_defence":
+                    StatDefence = (Int16)value;
+                    break;
+
+                case "stat_int":
+                    StatInt = (Int16)value;
+                    break;
+
+                case "stat_maxhit":
+                    StatMaxhit = (Int16)value;
+                    break;
+
+                case "stat_maxhp":
+                    StatMaxhp = (Int16)value;
+                    break;
+
+                case "stat_maxmp":
+                    StatMaxmp = (Int16)value;
+                    break;
+
+                case "stat_minhit":
+                    StatMinhit = (Int16)value;
+                    break;
+
+                case "stat_str":
+                    StatStr = (Int16)value;
+                    break;
+
                 case "statpoints":
                     StatPoints = (Int32)value;
-                    break;
-
-                case "str":
-                    Str = (Byte)value;
-                    break;
-
-                case "tact":
-                    Tact = (Byte)value;
-                    break;
-
-                case "ws":
-                    WS = (Byte)value;
                     break;
 
                 case "x":
@@ -882,16 +692,6 @@ namespace DemoGame.Server.DbObjs
         #region IUserCharacterTable Members
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `acc`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Acc
-        {
-            get { return _acc; }
-            set { _acc = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `account_id`.
         /// The underlying database type is `int(11)`.
         /// </summary>
@@ -902,26 +702,6 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `agi`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Agi
-        {
-            get { return _agi; }
-            set { _agi = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `armor`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Armor
-        {
-            get { return _armor; }
-            set { _armor = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `body_id`.
         /// The underlying database type is `smallint(5) unsigned` with the default value of `1`.
         /// </summary>
@@ -929,16 +709,6 @@ namespace DemoGame.Server.DbObjs
         {
             get { return (BodyIndex)_bodyID; }
             set { _bodyID = (UInt16)value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `bra`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Bra
-        {
-            get { return _bra; }
-            set { _bra = value; }
         }
 
         /// <summary>
@@ -972,36 +742,6 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `defence`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Defence
-        {
-            get { return _defence; }
-            set { _defence = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `dex`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Dex
-        {
-            get { return _dex; }
-            set { _dex = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `evade`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Evade
-        {
-            get { return _evade; }
-            set { _evade = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `exp`.
         /// The underlying database type is `int(11)` with the default value of `0`.
         /// </summary>
@@ -1032,26 +772,6 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `imm`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Imm
-        {
-            get { return _imm; }
-            set { _imm = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `int`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Int
-        {
-            get { return _int; }
-            set { _int = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `level`.
         /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
         /// </summary>
@@ -1072,46 +792,6 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `maxhit`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte MaxHit
-        {
-            get { return _maxHit; }
-            set { _maxHit = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `maxhp`.
-        /// The underlying database type is `smallint(6)` with the default value of `50`.
-        /// </summary>
-        public Int16 MaxHP
-        {
-            get { return _maxHP; }
-            set { _maxHP = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `maxmp`.
-        /// The underlying database type is `smallint(6)` with the default value of `50`.
-        /// </summary>
-        public Int16 MaxMP
-        {
-            get { return _maxMP; }
-            set { _maxMP = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `minhit`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte MinHit
-        {
-            get { return _minHit; }
-            set { _minHit = value; }
-        }
-
-        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `mp`.
         /// The underlying database type is `smallint(6)` with the default value of `50`.
         /// </summary>
@@ -1129,36 +809,6 @@ namespace DemoGame.Server.DbObjs
         {
             get { return _name; }
             set { _name = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `perc`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Perc
-        {
-            get { return _perc; }
-            set { _perc = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `recov`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Recov
-        {
-            get { return _recov; }
-            set { _recov = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `regen`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Regen
-        {
-            get { return _regen; }
-            set { _regen = value; }
         }
 
         /// <summary>
@@ -1192,6 +842,96 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `shop_id`.
+        /// The underlying database type is `smallint(5) unsigned`.
+        /// </summary>
+        public ShopID? ShopID
+        {
+            get { return (ShopID?)_shopID; }
+            set { _shopID = (ushort?)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `stat_agi`.
+        /// The underlying database type is `smallint(6)` with the default value of `1`.
+        /// </summary>
+        public Int16 StatAgi
+        {
+            get { return _statAgi; }
+            set { _statAgi = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `stat_defence`.
+        /// The underlying database type is `smallint(6)`.
+        /// </summary>
+        public Int16 StatDefence
+        {
+            get { return _statDefence; }
+            set { _statDefence = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `stat_int`.
+        /// The underlying database type is `smallint(6)` with the default value of `1`.
+        /// </summary>
+        public Int16 StatInt
+        {
+            get { return _statInt; }
+            set { _statInt = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `stat_maxhit`.
+        /// The underlying database type is `smallint(6)` with the default value of `1`.
+        /// </summary>
+        public Int16 StatMaxhit
+        {
+            get { return _statMaxhit; }
+            set { _statMaxhit = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `stat_maxhp`.
+        /// The underlying database type is `smallint(6)` with the default value of `50`.
+        /// </summary>
+        public Int16 StatMaxhp
+        {
+            get { return _statMaxhp; }
+            set { _statMaxhp = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `stat_maxmp`.
+        /// The underlying database type is `smallint(6)` with the default value of `50`.
+        /// </summary>
+        public Int16 StatMaxmp
+        {
+            get { return _statMaxmp; }
+            set { _statMaxmp = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `stat_minhit`.
+        /// The underlying database type is `smallint(6)` with the default value of `1`.
+        /// </summary>
+        public Int16 StatMinhit
+        {
+            get { return _statMinhit; }
+            set { _statMinhit = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `stat_str`.
+        /// The underlying database type is `smallint(6)` with the default value of `1`.
+        /// </summary>
+        public Int16 StatStr
+        {
+            get { return _statStr; }
+            set { _statStr = value; }
+        }
+
+        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `statpoints`.
         /// The underlying database type is `int(11)` with the default value of `0`.
         /// </summary>
@@ -1199,36 +939,6 @@ namespace DemoGame.Server.DbObjs
         {
             get { return _statPoints; }
             set { _statPoints = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `str`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Str
-        {
-            get { return _str; }
-            set { _str = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `tact`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte Tact
-        {
-            get { return _tact; }
-            set { _tact = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `ws`.
-        /// The underlying database type is `tinyint(3) unsigned` with the default value of `1`.
-        /// </summary>
-        public Byte WS
-        {
-            get { return _wS; }
-            set { _wS = value; }
         }
 
         /// <summary>

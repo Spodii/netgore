@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using NetGore;
 using NetGore.Graphics;
 
 namespace NetGore.EditorTools

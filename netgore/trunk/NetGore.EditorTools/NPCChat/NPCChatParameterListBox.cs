@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using NetGore;
 using NetGore.Globalization;
 using NetGore.NPCChat.Conditionals;
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Timers;
 using log4net;
+using NetGore;
 using NetGore.Collections;
 using NetGore.IO;
 

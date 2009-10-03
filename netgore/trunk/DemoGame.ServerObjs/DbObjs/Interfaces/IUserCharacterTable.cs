@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DemoGame;
 using NetGore;
 
 namespace DemoGame.Server.DbObjs
@@ -10,34 +11,14 @@ namespace DemoGame.Server.DbObjs
     public interface IUserCharacterTable
     {
         /// <summary>
-        /// Gets the value of the database column `acc`.
-        /// </summary>
-        Byte Acc { get; }
-
-        /// <summary>
         /// Gets the value of the database column `account_id`.
         /// </summary>
         AccountID? AccountID { get; }
 
         /// <summary>
-        /// Gets the value of the database column `agi`.
-        /// </summary>
-        Byte Agi { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `armor`.
-        /// </summary>
-        Byte Armor { get; }
-
-        /// <summary>
         /// Gets the value of the database column `body_id`.
         /// </summary>
         BodyIndex BodyID { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `bra`.
-        /// </summary>
-        Byte Bra { get; }
 
         /// <summary>
         /// Gets the value of the database column `cash`.
@@ -55,21 +36,6 @@ namespace DemoGame.Server.DbObjs
         ushort? ChatDialog { get; }
 
         /// <summary>
-        /// Gets the value of the database column `defence`.
-        /// </summary>
-        Byte Defence { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `dex`.
-        /// </summary>
-        Byte Dex { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `evade`.
-        /// </summary>
-        Byte Evade { get; }
-
-        /// <summary>
         /// Gets the value of the database column `exp`.
         /// </summary>
         Int32 Exp { get; }
@@ -85,16 +51,6 @@ namespace DemoGame.Server.DbObjs
         Int32 ID { get; }
 
         /// <summary>
-        /// Gets the value of the database column `imm`.
-        /// </summary>
-        Byte Imm { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `int`.
-        /// </summary>
-        Byte Int { get; }
-
-        /// <summary>
         /// Gets the value of the database column `level`.
         /// </summary>
         Byte Level { get; }
@@ -105,26 +61,6 @@ namespace DemoGame.Server.DbObjs
         MapIndex MapID { get; }
 
         /// <summary>
-        /// Gets the value of the database column `maxhit`.
-        /// </summary>
-        Byte MaxHit { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `maxhp`.
-        /// </summary>
-        Int16 MaxHP { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `maxmp`.
-        /// </summary>
-        Int16 MaxMP { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `minhit`.
-        /// </summary>
-        Byte MinHit { get; }
-
-        /// <summary>
         /// Gets the value of the database column `mp`.
         /// </summary>
         SPValueType MP { get; }
@@ -133,21 +69,6 @@ namespace DemoGame.Server.DbObjs
         /// Gets the value of the database column `name`.
         /// </summary>
         String Name { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `perc`.
-        /// </summary>
-        Byte Perc { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `recov`.
-        /// </summary>
-        Byte Recov { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `regen`.
-        /// </summary>
-        Byte Regen { get; }
 
         /// <summary>
         /// Gets the value of the database column `respawn_map`.
@@ -165,24 +86,54 @@ namespace DemoGame.Server.DbObjs
         Single RespawnY { get; }
 
         /// <summary>
+        /// Gets the value of the database column `shop_id`.
+        /// </summary>
+        ShopID? ShopID { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_agi`.
+        /// </summary>
+        Int16 StatAgi { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_defence`.
+        /// </summary>
+        Int16 StatDefence { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_int`.
+        /// </summary>
+        Int16 StatInt { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_maxhit`.
+        /// </summary>
+        Int16 StatMaxhit { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_maxhp`.
+        /// </summary>
+        Int16 StatMaxhp { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_maxmp`.
+        /// </summary>
+        Int16 StatMaxmp { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_minhit`.
+        /// </summary>
+        Int16 StatMinhit { get; }
+
+        /// <summary>
         /// Gets the value of the database column `statpoints`.
         /// </summary>
         Int32 StatPoints { get; }
 
         /// <summary>
-        /// Gets the value of the database column `str`.
+        /// Gets the value of the database column `stat_str`.
         /// </summary>
-        Byte Str { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `tact`.
-        /// </summary>
-        Byte Tact { get; }
-
-        /// <summary>
-        /// Gets the value of the database column `ws`.
-        /// </summary>
-        Byte WS { get; }
+        Int16 StatStr { get; }
 
         /// <summary>
         /// Gets the value of the database column `x`.

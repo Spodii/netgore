@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore;
 using NetGore.NPCChat;
 
 namespace NetGore.EditorTools.NPCChat

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Content;
+using NetGore;
 using NetGore.Globalization;
 using NetGore.Graphics;
 using Rectangle=Microsoft.Xna.Framework.Rectangle;

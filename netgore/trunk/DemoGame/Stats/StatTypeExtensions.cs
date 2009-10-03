@@ -21,10 +21,10 @@ namespace DemoGame
             switch (statCollectionType)
             {
                 case StatCollectionType.Base:
-                    return statType.ToString().ToLower();
+                    return "stat_" + statType.ToString().ToLower();
 
                 case StatCollectionType.Requirement:
-                    return "req" + statType.GetDatabaseField(StatCollectionType.Base);
+                    return "stat_req_" + statType.ToString().ToLower();
 
                 case StatCollectionType.Modified:
                     throw new ArgumentException("StatCollectionType.Modified is not allowed in the database.",

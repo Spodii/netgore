@@ -1,6 +1,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame;
 using Microsoft.Xna.Framework;
 using NetGore;
 

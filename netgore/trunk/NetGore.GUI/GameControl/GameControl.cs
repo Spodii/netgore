@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using Microsoft.Xna.Framework.Input;
+using NetGore;
 
 namespace NetGore.Graphics.GUI
 {

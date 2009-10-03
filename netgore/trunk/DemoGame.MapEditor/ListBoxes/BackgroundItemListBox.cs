@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame;
 using DemoGame.Client;
+using NetGore;
 using NetGore.EditorTools;
 using NetGore.Graphics;
 

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DemoGame;
 using NetGore;
 using NetGore.Collections;
 using NetGore.IO;

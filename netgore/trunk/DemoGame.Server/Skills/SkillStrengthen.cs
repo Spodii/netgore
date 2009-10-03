@@ -1,4 +1,6 @@
 using System.Linq;
+using DemoGame;
+using NetGore;
 
 namespace DemoGame.Server
 {
@@ -29,7 +31,7 @@ namespace DemoGame.Server
             if (target == null)
                 target = user;
 
-            int power = user.ModStats[StatType.Int] + user.ModStats[StatType.Bra] / 4;
+            int power = user.ModStats[StatType.Int];
             bool successful = target.StatusEffects.TryAdd(StatusEffectType.Strengthen, (ushort)power);
 
             return successful;

@@ -6,6 +6,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore;
 using NetGore.IO;
 
 namespace NetGore.Graphics

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DemoGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -256,7 +257,7 @@ namespace DemoGame.Client
             }
         }
 
-        #region IDrawableEntity Members
+        #region IDrawable Members
 
         /// <summary>
         /// Makes the object draw itself.

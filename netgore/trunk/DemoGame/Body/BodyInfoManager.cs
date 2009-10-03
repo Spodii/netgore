@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using DemoGame;
 using NetGore;
 
 namespace DemoGame
@@ -10,12 +8,15 @@ namespace DemoGame
     {
         static readonly BodyInfoManager _instance;
 
-        public static BodyInfoManager Instance { get { return _instance; } }
-
         /// <summary>
         /// Array of all the body information
         /// </summary>
         readonly BodyInfo[] _bodyInfo;
+
+        public static BodyInfoManager Instance
+        {
+            get { return _instance; }
+        }
 
         /// <summary>
         /// Initializes the <see cref="BodyInfoManager"/> class.

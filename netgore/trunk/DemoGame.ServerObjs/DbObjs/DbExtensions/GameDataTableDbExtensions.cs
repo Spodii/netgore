@@ -104,7 +104,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
         public static void TryCopyValues(this IGameDataTable source, DbParameterValues paramValues)
         {
-            for (var i = 0; i < paramValues.Count; i++)
+            for (int i = 0; i < paramValues.Count; i++)
             {
                 switch (paramValues.GetParameterName(i))
                 {
@@ -179,7 +179,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
         public static void TryReadValues(this GameDataTable source, IDataReader dataReader)
         {
-            for (var i = 0; i < dataReader.FieldCount; i++)
+            for (int i = 0; i < dataReader.FieldCount; i++)
             {
                 switch (dataReader.GetName(i))
                 {

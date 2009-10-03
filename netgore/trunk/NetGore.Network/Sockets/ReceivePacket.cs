@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Net;
+using NetGore;
 
 namespace NetGore.Network
 {
