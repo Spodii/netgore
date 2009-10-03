@@ -84,7 +84,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// FactoryTypeCollection constructor.
+        /// Initializes a new instance of the <see cref="FactoryTypeCollection"/> class.
         /// </summary>
         /// <param name="typeFilter">Filter that determines the Types to go into this FactoryTypeCollection.</param>
         public FactoryTypeCollection(Func<Type, bool> typeFilter) : this(typeFilter, null)
@@ -92,7 +92,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// FactoryTypeCollection constructor.
+        /// Initializes a new instance of the <see cref="FactoryTypeCollection"/> class.
         /// </summary>
         /// <param name="typeFilter">Filter that determines the Types to go into this FactoryTypeCollection.</param>
         /// <param name="loadTypeHandler">Initial handler for the OnLoadType event.</param>
@@ -102,7 +102,7 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// FactoryTypeCollection constructor.
+        /// Initializes a new instance of the <see cref="FactoryTypeCollection"/> class.
         /// </summary>
         /// <param name="typeFilter">Filter that determines the Types to go into this FactoryTypeCollection.</param>
         /// <param name="loadTypeHandler">Initial handler for the OnLoadType event.</param>

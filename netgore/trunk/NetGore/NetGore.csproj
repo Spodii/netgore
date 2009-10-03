@@ -135,6 +135,8 @@
     <Compile Include="StringCommandParser.cs" />
     <Compile Include="StringParser.cs" />
     <Compile Include="StringRules.cs" />
+    <Compile Include="TypeFilterCreator.cs" />
+    <Compile Include="TypeFilterException.cs" />
     <Compile Include="TypeHelper.cs" />
     <Compile Include="Extensions\Vector2Extensions.cs" />
     <Compile Include="WorldSettings.cs" />

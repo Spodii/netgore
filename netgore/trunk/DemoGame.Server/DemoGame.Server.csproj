@@ -73,8 +73,10 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\AIAttribute.cs" />
     <Compile Include="AI\AIBase.cs" />
     <Compile Include="AI\AIFactory.cs" />
+    <Compile Include="AI\AIID.cs" />
     <Compile Include="AI\TestAI.cs" />
     <Compile Include="Characters\Character.cs">
       <SubType>Code</SubType>
