@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Linq;
+using DemoGame;
 using NetGore;
 using NetGore.Db;
 
@@ -21,41 +22,31 @@ namespace DemoGame.Server.DbObjs
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
         public static void CopyValues(this IUserCharacterTable source, DbParameterValues paramValues)
         {
-            paramValues["@acc"] = source.Acc;
             paramValues["@account_id"] = (int?)source.AccountID;
-            paramValues["@agi"] = source.Agi;
-            paramValues["@armor"] = source.Armor;
             paramValues["@body_id"] = (UInt16)source.BodyID;
-            paramValues["@bra"] = source.Bra;
             paramValues["@cash"] = source.Cash;
             paramValues["@character_template_id"] = (ushort?)source.CharacterTemplateID;
             paramValues["@chat_dialog"] = source.ChatDialog;
-            paramValues["@defence"] = source.Defence;
-            paramValues["@dex"] = source.Dex;
-            paramValues["@evade"] = source.Evade;
             paramValues["@exp"] = source.Exp;
             paramValues["@hp"] = (Int16)source.HP;
             paramValues["@id"] = source.ID;
-            paramValues["@imm"] = source.Imm;
-            paramValues["@int"] = source.Int;
             paramValues["@level"] = source.Level;
             paramValues["@map_id"] = (UInt16)source.MapID;
-            paramValues["@maxhit"] = source.MaxHit;
-            paramValues["@maxhp"] = source.MaxHP;
-            paramValues["@maxmp"] = source.MaxMP;
-            paramValues["@minhit"] = source.MinHit;
             paramValues["@mp"] = (Int16)source.MP;
             paramValues["@name"] = source.Name;
-            paramValues["@perc"] = source.Perc;
-            paramValues["@recov"] = source.Recov;
-            paramValues["@regen"] = source.Regen;
             paramValues["@respawn_map"] = (ushort?)source.RespawnMap;
             paramValues["@respawn_x"] = source.RespawnX;
             paramValues["@respawn_y"] = source.RespawnY;
+            paramValues["@shop_id"] = (ushort?)source.ShopID;
+            paramValues["@stat_agi"] = source.StatAgi;
+            paramValues["@stat_defence"] = source.StatDefence;
+            paramValues["@stat_int"] = source.StatInt;
+            paramValues["@stat_maxhit"] = source.StatMaxhit;
+            paramValues["@stat_maxhp"] = source.StatMaxhp;
+            paramValues["@stat_maxmp"] = source.StatMaxmp;
+            paramValues["@stat_minhit"] = source.StatMinhit;
+            paramValues["@stat_str"] = source.StatStr;
             paramValues["@statpoints"] = source.StatPoints;
-            paramValues["@str"] = source.Str;
-            paramValues["@tact"] = source.Tact;
-            paramValues["@ws"] = source.WS;
             paramValues["@x"] = source.X;
             paramValues["@y"] = source.Y;
         }
@@ -71,116 +62,87 @@ namespace DemoGame.Server.DbObjs
         {
             Int32 i;
 
-            i = dataReader.GetOrdinal("acc");
-            source.Acc = dataReader.GetByte(i);
-
             i = dataReader.GetOrdinal("account_id");
-            source.AccountID = (AccountID?)(dataReader.IsDBNull(i) ? (int?)null : dataReader.GetInt32(i));
-
-            i = dataReader.GetOrdinal("agi");
-            source.Agi = dataReader.GetByte(i);
-
-            i = dataReader.GetOrdinal("armor");
-            source.Armor = dataReader.GetByte(i);
+            source.AccountID = (Nullable<AccountID>)(dataReader.IsDBNull(i) ? (Nullable<Int32>)null : dataReader.GetInt32(i));
 
             i = dataReader.GetOrdinal("body_id");
             source.BodyID = (BodyIndex)dataReader.GetUInt16(i);
 
-            i = dataReader.GetOrdinal("bra");
-            source.Bra = dataReader.GetByte(i);
-
             i = dataReader.GetOrdinal("cash");
-            source.Cash = dataReader.GetInt32(i);
+            source.Cash = (Int32)dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("character_template_id");
-            source.CharacterTemplateID = (CharacterTemplateID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+            source.CharacterTemplateID =
+                (Nullable<CharacterTemplateID>)(dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("chat_dialog");
-            source.ChatDialog = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
-
-            i = dataReader.GetOrdinal("defence");
-            source.Defence = dataReader.GetByte(i);
-
-            i = dataReader.GetOrdinal("dex");
-            source.Dex = dataReader.GetByte(i);
-
-            i = dataReader.GetOrdinal("evade");
-            source.Evade = dataReader.GetByte(i);
+            source.ChatDialog = (Nullable<UInt16>)(dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("exp");
-            source.Exp = dataReader.GetInt32(i);
+            source.Exp = (Int32)dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("hp");
-            source.HP = dataReader.GetInt16(i);
+            source.HP = (SPValueType)dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("id");
-            source.ID = dataReader.GetInt32(i);
-
-            i = dataReader.GetOrdinal("imm");
-            source.Imm = dataReader.GetByte(i);
-
-            i = dataReader.GetOrdinal("int");
-            source.Int = dataReader.GetByte(i);
+            source.ID = (Int32)dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("level");
-            source.Level = dataReader.GetByte(i);
+            source.Level = (Byte)dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("map_id");
             source.MapID = (MapIndex)dataReader.GetUInt16(i);
 
-            i = dataReader.GetOrdinal("maxhit");
-            source.MaxHit = dataReader.GetByte(i);
-
-            i = dataReader.GetOrdinal("maxhp");
-            source.MaxHP = dataReader.GetInt16(i);
-
-            i = dataReader.GetOrdinal("maxmp");
-            source.MaxMP = dataReader.GetInt16(i);
-
-            i = dataReader.GetOrdinal("minhit");
-            source.MinHit = dataReader.GetByte(i);
-
             i = dataReader.GetOrdinal("mp");
-            source.MP = dataReader.GetInt16(i);
+            source.MP = (SPValueType)dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("name");
-            source.Name = dataReader.GetString(i);
-
-            i = dataReader.GetOrdinal("perc");
-            source.Perc = dataReader.GetByte(i);
-
-            i = dataReader.GetOrdinal("recov");
-            source.Recov = dataReader.GetByte(i);
-
-            i = dataReader.GetOrdinal("regen");
-            source.Regen = dataReader.GetByte(i);
+            source.Name = (String)dataReader.GetString(i);
 
             i = dataReader.GetOrdinal("respawn_map");
-            source.RespawnMap = (MapIndex?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+            source.RespawnMap = (Nullable<MapIndex>)(dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("respawn_x");
-            source.RespawnX = dataReader.GetFloat(i);
+            source.RespawnX = (Single)dataReader.GetFloat(i);
 
             i = dataReader.GetOrdinal("respawn_y");
-            source.RespawnY = dataReader.GetFloat(i);
+            source.RespawnY = (Single)dataReader.GetFloat(i);
+
+            i = dataReader.GetOrdinal("shop_id");
+            source.ShopID = (Nullable<ShopID>)(dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+
+            i = dataReader.GetOrdinal("stat_agi");
+            source.StatAgi = (Int16)dataReader.GetInt16(i);
+
+            i = dataReader.GetOrdinal("stat_defence");
+            source.StatDefence = (Int16)dataReader.GetInt16(i);
+
+            i = dataReader.GetOrdinal("stat_int");
+            source.StatInt = (Int16)dataReader.GetInt16(i);
+
+            i = dataReader.GetOrdinal("stat_maxhit");
+            source.StatMaxhit = (Int16)dataReader.GetInt16(i);
+
+            i = dataReader.GetOrdinal("stat_maxhp");
+            source.StatMaxhp = (Int16)dataReader.GetInt16(i);
+
+            i = dataReader.GetOrdinal("stat_maxmp");
+            source.StatMaxmp = (Int16)dataReader.GetInt16(i);
+
+            i = dataReader.GetOrdinal("stat_minhit");
+            source.StatMinhit = (Int16)dataReader.GetInt16(i);
+
+            i = dataReader.GetOrdinal("stat_str");
+            source.StatStr = (Int16)dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("statpoints");
-            source.StatPoints = dataReader.GetInt32(i);
-
-            i = dataReader.GetOrdinal("str");
-            source.Str = dataReader.GetByte(i);
-
-            i = dataReader.GetOrdinal("tact");
-            source.Tact = dataReader.GetByte(i);
-
-            i = dataReader.GetOrdinal("ws");
-            source.WS = dataReader.GetByte(i);
+            source.StatPoints = (Int32)dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("x");
-            source.X = dataReader.GetFloat(i);
+            source.X = (Single)dataReader.GetFloat(i);
 
             i = dataReader.GetOrdinal("y");
-            source.Y = dataReader.GetFloat(i);
+            source.Y = (Single)dataReader.GetFloat(i);
         }
 
         /// <summary>
@@ -199,28 +161,12 @@ namespace DemoGame.Server.DbObjs
             {
                 switch (paramValues.GetParameterName(i))
                 {
-                    case "@acc":
-                        paramValues[i] = source.Acc;
-                        break;
-
                     case "@account_id":
                         paramValues[i] = (int?)source.AccountID;
                         break;
 
-                    case "@agi":
-                        paramValues[i] = source.Agi;
-                        break;
-
-                    case "@armor":
-                        paramValues[i] = source.Armor;
-                        break;
-
                     case "@body_id":
                         paramValues[i] = (UInt16)source.BodyID;
-                        break;
-
-                    case "@bra":
-                        paramValues[i] = source.Bra;
                         break;
 
                     case "@cash":
@@ -235,18 +181,6 @@ namespace DemoGame.Server.DbObjs
                         paramValues[i] = source.ChatDialog;
                         break;
 
-                    case "@defence":
-                        paramValues[i] = source.Defence;
-                        break;
-
-                    case "@dex":
-                        paramValues[i] = source.Dex;
-                        break;
-
-                    case "@evade":
-                        paramValues[i] = source.Evade;
-                        break;
-
                     case "@exp":
                         paramValues[i] = source.Exp;
                         break;
@@ -259,14 +193,6 @@ namespace DemoGame.Server.DbObjs
                         paramValues[i] = source.ID;
                         break;
 
-                    case "@imm":
-                        paramValues[i] = source.Imm;
-                        break;
-
-                    case "@int":
-                        paramValues[i] = source.Int;
-                        break;
-
                     case "@level":
                         paramValues[i] = source.Level;
                         break;
@@ -275,40 +201,12 @@ namespace DemoGame.Server.DbObjs
                         paramValues[i] = (UInt16)source.MapID;
                         break;
 
-                    case "@maxhit":
-                        paramValues[i] = source.MaxHit;
-                        break;
-
-                    case "@maxhp":
-                        paramValues[i] = source.MaxHP;
-                        break;
-
-                    case "@maxmp":
-                        paramValues[i] = source.MaxMP;
-                        break;
-
-                    case "@minhit":
-                        paramValues[i] = source.MinHit;
-                        break;
-
                     case "@mp":
                         paramValues[i] = (Int16)source.MP;
                         break;
 
                     case "@name":
                         paramValues[i] = source.Name;
-                        break;
-
-                    case "@perc":
-                        paramValues[i] = source.Perc;
-                        break;
-
-                    case "@recov":
-                        paramValues[i] = source.Recov;
-                        break;
-
-                    case "@regen":
-                        paramValues[i] = source.Regen;
                         break;
 
                     case "@respawn_map":
@@ -323,20 +221,44 @@ namespace DemoGame.Server.DbObjs
                         paramValues[i] = source.RespawnY;
                         break;
 
+                    case "@shop_id":
+                        paramValues[i] = (ushort?)source.ShopID;
+                        break;
+
+                    case "@stat_agi":
+                        paramValues[i] = source.StatAgi;
+                        break;
+
+                    case "@stat_defence":
+                        paramValues[i] = source.StatDefence;
+                        break;
+
+                    case "@stat_int":
+                        paramValues[i] = source.StatInt;
+                        break;
+
+                    case "@stat_maxhit":
+                        paramValues[i] = source.StatMaxhit;
+                        break;
+
+                    case "@stat_maxhp":
+                        paramValues[i] = source.StatMaxhp;
+                        break;
+
+                    case "@stat_maxmp":
+                        paramValues[i] = source.StatMaxmp;
+                        break;
+
+                    case "@stat_minhit":
+                        paramValues[i] = source.StatMinhit;
+                        break;
+
+                    case "@stat_str":
+                        paramValues[i] = source.StatStr;
+                        break;
+
                     case "@statpoints":
                         paramValues[i] = source.StatPoints;
-                        break;
-
-                    case "@str":
-                        paramValues[i] = source.Str;
-                        break;
-
-                    case "@tact":
-                        paramValues[i] = source.Tact;
-                        break;
-
-                    case "@ws":
-                        paramValues[i] = source.WS;
                         break;
 
                     case "@x":
@@ -366,153 +288,118 @@ namespace DemoGame.Server.DbObjs
             {
                 switch (dataReader.GetName(i))
                 {
-                    case "acc":
-                        source.Acc = dataReader.GetByte(i);
-                        break;
-
                     case "account_id":
-                        source.AccountID = (AccountID?)(dataReader.IsDBNull(i) ? (int?)null : dataReader.GetInt32(i));
-                        break;
-
-                    case "agi":
-                        source.Agi = dataReader.GetByte(i);
-                        break;
-
-                    case "armor":
-                        source.Armor = dataReader.GetByte(i);
+                        source.AccountID =
+                            (Nullable<AccountID>)(dataReader.IsDBNull(i) ? (Nullable<Int32>)null : dataReader.GetInt32(i));
                         break;
 
                     case "body_id":
                         source.BodyID = (BodyIndex)dataReader.GetUInt16(i);
                         break;
 
-                    case "bra":
-                        source.Bra = dataReader.GetByte(i);
-                        break;
-
                     case "cash":
-                        source.Cash = dataReader.GetInt32(i);
+                        source.Cash = (Int32)dataReader.GetInt32(i);
                         break;
 
                     case "character_template_id":
                         source.CharacterTemplateID =
-                            (CharacterTemplateID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                            (Nullable<CharacterTemplateID>)
+                            (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
                         break;
 
                     case "chat_dialog":
-                        source.ChatDialog = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
-                        break;
-
-                    case "defence":
-                        source.Defence = dataReader.GetByte(i);
-                        break;
-
-                    case "dex":
-                        source.Dex = dataReader.GetByte(i);
-                        break;
-
-                    case "evade":
-                        source.Evade = dataReader.GetByte(i);
+                        source.ChatDialog =
+                            (Nullable<UInt16>)(dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
                         break;
 
                     case "exp":
-                        source.Exp = dataReader.GetInt32(i);
+                        source.Exp = (Int32)dataReader.GetInt32(i);
                         break;
 
                     case "hp":
-                        source.HP = dataReader.GetInt16(i);
+                        source.HP = (SPValueType)dataReader.GetInt16(i);
                         break;
 
                     case "id":
-                        source.ID = dataReader.GetInt32(i);
-                        break;
-
-                    case "imm":
-                        source.Imm = dataReader.GetByte(i);
-                        break;
-
-                    case "int":
-                        source.Int = dataReader.GetByte(i);
+                        source.ID = (Int32)dataReader.GetInt32(i);
                         break;
 
                     case "level":
-                        source.Level = dataReader.GetByte(i);
+                        source.Level = (Byte)dataReader.GetByte(i);
                         break;
 
                     case "map_id":
                         source.MapID = (MapIndex)dataReader.GetUInt16(i);
                         break;
 
-                    case "maxhit":
-                        source.MaxHit = dataReader.GetByte(i);
-                        break;
-
-                    case "maxhp":
-                        source.MaxHP = dataReader.GetInt16(i);
-                        break;
-
-                    case "maxmp":
-                        source.MaxMP = dataReader.GetInt16(i);
-                        break;
-
-                    case "minhit":
-                        source.MinHit = dataReader.GetByte(i);
-                        break;
-
                     case "mp":
-                        source.MP = dataReader.GetInt16(i);
+                        source.MP = (SPValueType)dataReader.GetInt16(i);
                         break;
 
                     case "name":
-                        source.Name = dataReader.GetString(i);
-                        break;
-
-                    case "perc":
-                        source.Perc = dataReader.GetByte(i);
-                        break;
-
-                    case "recov":
-                        source.Recov = dataReader.GetByte(i);
-                        break;
-
-                    case "regen":
-                        source.Regen = dataReader.GetByte(i);
+                        source.Name = (String)dataReader.GetString(i);
                         break;
 
                     case "respawn_map":
-                        source.RespawnMap = (MapIndex?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        source.RespawnMap =
+                            (Nullable<MapIndex>)(dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
                         break;
 
                     case "respawn_x":
-                        source.RespawnX = dataReader.GetFloat(i);
+                        source.RespawnX = (Single)dataReader.GetFloat(i);
                         break;
 
                     case "respawn_y":
-                        source.RespawnY = dataReader.GetFloat(i);
+                        source.RespawnY = (Single)dataReader.GetFloat(i);
+                        break;
+
+                    case "shop_id":
+                        source.ShopID =
+                            (Nullable<ShopID>)(dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+                        break;
+
+                    case "stat_agi":
+                        source.StatAgi = (Int16)dataReader.GetInt16(i);
+                        break;
+
+                    case "stat_defence":
+                        source.StatDefence = (Int16)dataReader.GetInt16(i);
+                        break;
+
+                    case "stat_int":
+                        source.StatInt = (Int16)dataReader.GetInt16(i);
+                        break;
+
+                    case "stat_maxhit":
+                        source.StatMaxhit = (Int16)dataReader.GetInt16(i);
+                        break;
+
+                    case "stat_maxhp":
+                        source.StatMaxhp = (Int16)dataReader.GetInt16(i);
+                        break;
+
+                    case "stat_maxmp":
+                        source.StatMaxmp = (Int16)dataReader.GetInt16(i);
+                        break;
+
+                    case "stat_minhit":
+                        source.StatMinhit = (Int16)dataReader.GetInt16(i);
+                        break;
+
+                    case "stat_str":
+                        source.StatStr = (Int16)dataReader.GetInt16(i);
                         break;
 
                     case "statpoints":
-                        source.StatPoints = dataReader.GetInt32(i);
-                        break;
-
-                    case "str":
-                        source.Str = dataReader.GetByte(i);
-                        break;
-
-                    case "tact":
-                        source.Tact = dataReader.GetByte(i);
-                        break;
-
-                    case "ws":
-                        source.WS = dataReader.GetByte(i);
+                        source.StatPoints = (Int32)dataReader.GetInt32(i);
                         break;
 
                     case "x":
-                        source.X = dataReader.GetFloat(i);
+                        source.X = (Single)dataReader.GetFloat(i);
                         break;
 
                     case "y":
-                        source.Y = dataReader.GetFloat(i);
+                        source.Y = (Single)dataReader.GetFloat(i);
                         break;
                 }
             }

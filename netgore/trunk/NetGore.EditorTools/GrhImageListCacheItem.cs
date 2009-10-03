@@ -2,6 +2,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using NetGore;
 using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace NetGore.EditorTools

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame;
 using NetGore;
 using NetGore.Globalization;
 using NetGore.Graphics;

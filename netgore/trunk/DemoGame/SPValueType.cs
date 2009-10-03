@@ -2,6 +2,8 @@ using System;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame;
+using NetGore;
 using NetGore.IO;
 
 namespace DemoGame
@@ -16,6 +18,10 @@ namespace DemoGame
 
         readonly short _value;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SPValueType"/> struct.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public SPValueType(short value)
         {
             _value = value;

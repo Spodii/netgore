@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Linq;
+using DemoGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -35,7 +36,7 @@ namespace DemoGame.Client
             return true;
         }
 
-        #region IDrawableEntity Members
+        #region IDrawable Members
 
         /// <summary>
         /// Notifies listeners that the object's <see cref="MapRenderLayer"/> has changed.

@@ -1,5 +1,7 @@
 using System.Linq;
+using DemoGame;
 using Microsoft.Xna.Framework;
+using NetGore;
 
 namespace DemoGame.Server
 {

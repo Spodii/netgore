@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Microsoft.Xna.Framework.Graphics;
+using NetGore;
 using Color=System.Drawing.Color;
 using Rectangle=Microsoft.Xna.Framework.Rectangle;
 

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame;
+using NetGore;
 
 namespace DemoGame.Server
 {

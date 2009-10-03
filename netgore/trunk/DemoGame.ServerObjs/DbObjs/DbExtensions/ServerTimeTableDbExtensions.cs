@@ -1,6 +1,8 @@
 using System;
 using System.Data;
 using System.Linq;
+using DemoGame;
+using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.DbObjs
@@ -35,7 +37,7 @@ namespace DemoGame.Server.DbObjs
             Int32 i;
 
             i = dataReader.GetOrdinal("server_time");
-            source.ServerTime = dataReader.GetDateTime(i);
+            source.ServerTime = (DateTime)dataReader.GetDateTime(i);
         }
 
         /// <summary>
@@ -78,7 +80,7 @@ namespace DemoGame.Server.DbObjs
                 switch (dataReader.GetName(i))
                 {
                     case "server_time":
-                        source.ServerTime = dataReader.GetDateTime(i);
+                        source.ServerTime = (DateTime)dataReader.GetDateTime(i);
                         break;
                 }
             }

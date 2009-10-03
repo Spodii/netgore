@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame;
 using DemoGame.Client;
 using DemoGame.Server;
 using DemoGame.Server.Queries;

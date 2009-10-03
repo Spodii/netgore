@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -64,21 +65,7 @@ namespace DemoGame.Client
 
             NewStatLabel(StatType.Str);
             NewStatLabel(StatType.Agi);
-            NewStatLabel(StatType.Dex);
             NewStatLabel(StatType.Int);
-            NewStatLabel(StatType.Bra);
-
-            AddLine();
-
-            NewStatLabel(StatType.WS);
-            NewStatLabel(StatType.Armor);
-            NewStatLabel(StatType.Acc);
-            NewStatLabel(StatType.Evade);
-            NewStatLabel(StatType.Perc);
-            NewStatLabel(StatType.Regen);
-            NewStatLabel(StatType.Recov);
-            NewStatLabel(StatType.Tact);
-            NewStatLabel(StatType.Imm);
         }
 
         void AddLine()

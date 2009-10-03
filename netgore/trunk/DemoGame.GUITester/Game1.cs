@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DemoGame;
 using DemoGame.Client;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

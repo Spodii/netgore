@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame;
+using NetGore;
 using NetGore.Db;
 
 // NOTE: Don't worry, I'll get around to this at some point. -Spodi

@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Reflection;
 using log4net;
+using NetGore;
 
 namespace NetGore.Network
 {

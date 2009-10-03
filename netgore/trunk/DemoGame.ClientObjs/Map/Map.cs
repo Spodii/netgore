@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -292,8 +293,7 @@ namespace DemoGame.Client
         /// <param name="drawableEntities">List of IDrawableEntity objects to draw.</param>
         /// <param name="layer">The MapRenderLayer that is being drawn.</param>
         /// <param name="draw">If true, the layer will be drawn. If false, no drawing will be done.</param>
-        void DrawLayer(SpriteBatch sb, Camera2D camera, IEnumerable<IDrawable> drawableEntities, MapRenderLayer layer,
-                       bool draw)
+        void DrawLayer(SpriteBatch sb, Camera2D camera, IEnumerable<IDrawable> drawableEntities, MapRenderLayer layer, bool draw)
         {
             if (OnStartDrawLayer != null)
                 OnStartDrawLayer(this, layer, sb, camera, draw);

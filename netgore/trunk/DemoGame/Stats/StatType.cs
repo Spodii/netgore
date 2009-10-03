@@ -18,19 +18,8 @@ namespace DemoGame
         MinHit,
         MaxHit,
 
-        Acc,
         Agi,
-        Armor,
-        Bra,
-        Dex,
-        Evade,
-        Imm,
         Int,
-        Perc,
-        Recov,
-        Regen,
-        Str,
-        Tact,
-        WS
+        Str
     }
 }

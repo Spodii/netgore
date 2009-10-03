@@ -1,6 +1,7 @@
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using NetGore;
 using NetGore.IO;
 
 namespace NetGore

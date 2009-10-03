@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using DemoGame;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;

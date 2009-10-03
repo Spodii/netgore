@@ -16,7 +16,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The number of columns in the database table that this class represents.
         /// </summary>
-        public const Int32 ColumnCount = 32;
+        public const Int32 ColumnCount = 22;
 
         /// <summary>
         /// The name of the database table that this class represents.
@@ -28,9 +28,9 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumns = new string[]
         {
-            "agi", "amount", "armor", "bra", "defence", "description", "dex", "evade", "graphic", "height", "hp", "id", "imm", "int"
-            , "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "perc", "reqacc", "reqagi", "reqarmor", "reqbra", "reqdex",
-            "reqevade", "reqimm", "reqint", "type", "value", "width"
+            "amount", "description", "graphic", "height", "hp", "id", "mp", "name", "stat_agi", "stat_defence", "stat_int",
+            "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str",
+            "type", "value", "width"
         };
 
         /// <summary>
@@ -43,22 +43,21 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         {
-            "agi", "amount", "armor", "bra", "defence", "description", "dex", "evade", "graphic", "height", "hp", "imm", "int",
-            "maxhit", "maxhp", "maxmp", "minhit", "mp", "name", "perc", "reqacc", "reqagi", "reqarmor", "reqbra", "reqdex",
-            "reqevade", "reqimm", "reqint", "type", "value", "width"
+            "amount", "description", "graphic", "height", "hp", "mp", "name", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
+            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_req_agi", "stat_req_int", "stat_req_str", "stat_str", "type", "value",
+            "width"
         };
 
         /// <summary>
         /// The fields that are used in the column collection `ReqStat`.
         /// </summary>
-        static readonly String[] _reqStatColumns = new string[]
-        { "reqacc", "reqagi", "reqarmor", "reqbra", "reqdex", "reqevade", "reqimm", "reqint" };
+        static readonly String[] _reqStatColumns = new string[] { "stat_req_agi", "stat_req_int", "stat_req_str" };
 
         /// <summary>
         /// The fields that are used in the column collection `Stat`.
         /// </summary>
         static readonly String[] _statColumns = new string[]
-        { "agi", "armor", "bra", "defence", "dex", "evade", "imm", "int", "maxhit", "maxhp", "maxmp", "minhit", "perc" };
+        { "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
 
         /// <summary>
         /// Dictionary containing the values for the column collection `ReqStat`.
@@ -177,73 +176,52 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// ItemTable constructor.
         /// </summary>
-        /// <param name="agi">The initial value for the corresponding property.</param>
         /// <param name="amount">The initial value for the corresponding property.</param>
-        /// <param name="armor">The initial value for the corresponding property.</param>
-        /// <param name="bra">The initial value for the corresponding property.</param>
-        /// <param name="defence">The initial value for the corresponding property.</param>
         /// <param name="description">The initial value for the corresponding property.</param>
-        /// <param name="dex">The initial value for the corresponding property.</param>
-        /// <param name="evade">The initial value for the corresponding property.</param>
         /// <param name="graphic">The initial value for the corresponding property.</param>
         /// <param name="height">The initial value for the corresponding property.</param>
         /// <param name="hP">The initial value for the corresponding property.</param>
         /// <param name="iD">The initial value for the corresponding property.</param>
-        /// <param name="imm">The initial value for the corresponding property.</param>
-        /// <param name="int">The initial value for the corresponding property.</param>
-        /// <param name="maxHit">The initial value for the corresponding property.</param>
-        /// <param name="maxHP">The initial value for the corresponding property.</param>
-        /// <param name="maxMP">The initial value for the corresponding property.</param>
-        /// <param name="minHit">The initial value for the corresponding property.</param>
         /// <param name="mP">The initial value for the corresponding property.</param>
         /// <param name="name">The initial value for the corresponding property.</param>
-        /// <param name="perc">The initial value for the corresponding property.</param>
-        /// <param name="reqacc">The initial value for the corresponding property.</param>
-        /// <param name="reqagi">The initial value for the corresponding property.</param>
-        /// <param name="reqarmor">The initial value for the corresponding property.</param>
-        /// <param name="reqbra">The initial value for the corresponding property.</param>
-        /// <param name="reqdex">The initial value for the corresponding property.</param>
-        /// <param name="reqevade">The initial value for the corresponding property.</param>
-        /// <param name="reqimm">The initial value for the corresponding property.</param>
-        /// <param name="reqint">The initial value for the corresponding property.</param>
+        /// <param name="statAgi">The initial value for the corresponding property.</param>
+        /// <param name="statDefence">The initial value for the corresponding property.</param>
+        /// <param name="statInt">The initial value for the corresponding property.</param>
+        /// <param name="statMaxhit">The initial value for the corresponding property.</param>
+        /// <param name="statMaxhp">The initial value for the corresponding property.</param>
+        /// <param name="statMaxmp">The initial value for the corresponding property.</param>
+        /// <param name="statMinhit">The initial value for the corresponding property.</param>
+        /// <param name="statReqAgi">The initial value for the corresponding property.</param>
+        /// <param name="statReqInt">The initial value for the corresponding property.</param>
+        /// <param name="statReqStr">The initial value for the corresponding property.</param>
+        /// <param name="statStr">The initial value for the corresponding property.</param>
         /// <param name="type">The initial value for the corresponding property.</param>
         /// <param name="value">The initial value for the corresponding property.</param>
         /// <param name="width">The initial value for the corresponding property.</param>
-        public ItemTable(Int16 @agi, Byte @amount, UInt16 @armor, Int16 @bra, Int16 @defence, String @description, Int16 @dex,
-                         Int16 @evade, GrhIndex @graphic, Byte @height, SPValueType @hP, ItemID @iD, Int16 @imm, Int16 @int,
-                         Int16 @maxHit, Int16 @maxHP, Int16 @maxMP, Int16 @minHit, SPValueType @mP, String @name, Int16 @perc,
-                         Byte @reqacc, Byte @reqagi, Byte @reqarmor, Byte @reqbra, Byte @reqdex, Byte @reqevade, Byte @reqimm,
-                         Byte @reqint, ItemType @type, Int32 @value, Byte @width)
+        public ItemTable(Byte @amount, String @description, GrhIndex @graphic, Byte @height, SPValueType @hP, ItemID @iD,
+                         SPValueType @mP, String @name, Int16 @statAgi, Int16 @statDefence, Int16 @statInt, Int16 @statMaxhit,
+                         Int16 @statMaxhp, Int16 @statMaxmp, Int16 @statMinhit, Int16 @statReqAgi, Int16 @statReqInt,
+                         Int16 @statReqStr, Int16 @statStr, ItemType @type, Int32 @value, Byte @width)
         {
-            SetStat(StatType.Agi, @agi);
             Amount = @amount;
-            SetStat(StatType.Armor, @armor);
-            SetStat(StatType.Bra, @bra);
-            SetStat(StatType.Defence, @defence);
             Description = @description;
-            SetStat(StatType.Dex, @dex);
-            SetStat(StatType.Evade, @evade);
             Graphic = @graphic;
             Height = @height;
             HP = @hP;
             ID = @iD;
-            SetStat(StatType.Imm, @imm);
-            SetStat(StatType.Int, @int);
-            SetStat(StatType.MaxHit, @maxHit);
-            SetStat(StatType.MaxHP, @maxHP);
-            SetStat(StatType.MaxMP, @maxMP);
-            SetStat(StatType.MinHit, @minHit);
             MP = @mP;
             Name = @name;
-            SetStat(StatType.Perc, @perc);
-            SetReqStat(StatType.Acc, @reqacc);
-            SetReqStat(StatType.Agi, @reqagi);
-            SetReqStat(StatType.Armor, @reqarmor);
-            SetReqStat(StatType.Bra, @reqbra);
-            SetReqStat(StatType.Dex, @reqdex);
-            SetReqStat(StatType.Evade, @reqevade);
-            SetReqStat(StatType.Imm, @reqimm);
-            SetReqStat(StatType.Int, @reqint);
+            SetStat(StatType.Agi, @statAgi);
+            SetStat(StatType.Defence, @statDefence);
+            SetStat(StatType.Int, @statInt);
+            SetStat(StatType.MaxHit, @statMaxhit);
+            SetStat(StatType.MaxHP, @statMaxhp);
+            SetStat(StatType.MaxMP, @statMaxmp);
+            SetStat(StatType.MinHit, @statMinhit);
+            SetReqStat(StatType.Agi, @statReqAgi);
+            SetReqStat(StatType.Int, @statReqInt);
+            SetReqStat(StatType.Str, @statReqStr);
+            SetStat(StatType.Str, @statStr);
             Type = @type;
             Value = @value;
             Width = @width;
@@ -267,35 +245,25 @@ namespace DemoGame.Server.DbObjs
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(IItemTable source, IDictionary<String, Object> dic)
         {
-            dic["@agi"] = (Int16)source.GetStat(StatType.Agi);
             dic["@amount"] = source.Amount;
-            dic["@armor"] = (UInt16)source.GetStat(StatType.Armor);
-            dic["@bra"] = (Int16)source.GetStat(StatType.Bra);
-            dic["@defence"] = (Int16)source.GetStat(StatType.Defence);
             dic["@description"] = source.Description;
-            dic["@dex"] = (Int16)source.GetStat(StatType.Dex);
-            dic["@evade"] = (Int16)source.GetStat(StatType.Evade);
             dic["@graphic"] = source.Graphic;
             dic["@height"] = source.Height;
             dic["@hp"] = source.HP;
             dic["@id"] = source.ID;
-            dic["@imm"] = (Int16)source.GetStat(StatType.Imm);
-            dic["@int"] = (Int16)source.GetStat(StatType.Int);
-            dic["@maxhit"] = (Int16)source.GetStat(StatType.MaxHit);
-            dic["@maxhp"] = (Int16)source.GetStat(StatType.MaxHP);
-            dic["@maxmp"] = (Int16)source.GetStat(StatType.MaxMP);
-            dic["@minhit"] = (Int16)source.GetStat(StatType.MinHit);
             dic["@mp"] = source.MP;
             dic["@name"] = source.Name;
-            dic["@perc"] = (Int16)source.GetStat(StatType.Perc);
-            dic["@reqacc"] = (Byte)source.GetReqStat(StatType.Acc);
-            dic["@reqagi"] = (Byte)source.GetReqStat(StatType.Agi);
-            dic["@reqarmor"] = (Byte)source.GetReqStat(StatType.Armor);
-            dic["@reqbra"] = (Byte)source.GetReqStat(StatType.Bra);
-            dic["@reqdex"] = (Byte)source.GetReqStat(StatType.Dex);
-            dic["@reqevade"] = (Byte)source.GetReqStat(StatType.Evade);
-            dic["@reqimm"] = (Byte)source.GetReqStat(StatType.Imm);
-            dic["@reqint"] = (Byte)source.GetReqStat(StatType.Int);
+            dic["@stat_agi"] = (Int16)source.GetStat(StatType.Agi);
+            dic["@stat_defence"] = (Int16)source.GetStat(StatType.Defence);
+            dic["@stat_int"] = (Int16)source.GetStat(StatType.Int);
+            dic["@stat_maxhit"] = (Int16)source.GetStat(StatType.MaxHit);
+            dic["@stat_maxhp"] = (Int16)source.GetStat(StatType.MaxHP);
+            dic["@stat_maxmp"] = (Int16)source.GetStat(StatType.MaxMP);
+            dic["@stat_minhit"] = (Int16)source.GetStat(StatType.MinHit);
+            dic["@stat_req_agi"] = (Int16)source.GetReqStat(StatType.Agi);
+            dic["@stat_req_int"] = (Int16)source.GetReqStat(StatType.Int);
+            dic["@stat_req_str"] = (Int16)source.GetReqStat(StatType.Str);
+            dic["@stat_str"] = (Int16)source.GetStat(StatType.Str);
             dic["@type"] = source.Type;
             dic["@value"] = source.Value;
             dic["@width"] = source.Width;
@@ -318,35 +286,25 @@ namespace DemoGame.Server.DbObjs
         /// <param name="source">The IItemTable to copy the values from.</param>
         public void CopyValuesFrom(IItemTable source)
         {
-            SetStat(StatType.Agi, source.GetStat(StatType.Agi));
             Amount = source.Amount;
-            SetStat(StatType.Armor, source.GetStat(StatType.Armor));
-            SetStat(StatType.Bra, source.GetStat(StatType.Bra));
-            SetStat(StatType.Defence, source.GetStat(StatType.Defence));
             Description = source.Description;
-            SetStat(StatType.Dex, source.GetStat(StatType.Dex));
-            SetStat(StatType.Evade, source.GetStat(StatType.Evade));
             Graphic = source.Graphic;
             Height = source.Height;
             HP = source.HP;
             ID = source.ID;
-            SetStat(StatType.Imm, source.GetStat(StatType.Imm));
-            SetStat(StatType.Int, source.GetStat(StatType.Int));
-            SetStat(StatType.MaxHit, source.GetStat(StatType.MaxHit));
-            SetStat(StatType.MaxHP, source.GetStat(StatType.MaxHP));
-            SetStat(StatType.MaxMP, source.GetStat(StatType.MaxMP));
-            SetStat(StatType.MinHit, source.GetStat(StatType.MinHit));
             MP = source.MP;
             Name = source.Name;
-            SetStat(StatType.Perc, source.GetStat(StatType.Perc));
-            SetReqStat(StatType.Acc, source.GetReqStat(StatType.Acc));
-            SetReqStat(StatType.Agi, source.GetReqStat(StatType.Agi));
-            SetReqStat(StatType.Armor, source.GetReqStat(StatType.Armor));
-            SetReqStat(StatType.Bra, source.GetReqStat(StatType.Bra));
-            SetReqStat(StatType.Dex, source.GetReqStat(StatType.Dex));
-            SetReqStat(StatType.Evade, source.GetReqStat(StatType.Evade));
-            SetReqStat(StatType.Imm, source.GetReqStat(StatType.Imm));
-            SetReqStat(StatType.Int, source.GetReqStat(StatType.Int));
+            SetStat(StatType.Agi, source.GetStat((StatType)StatType.Agi));
+            SetStat(StatType.Defence, source.GetStat((StatType)StatType.Defence));
+            SetStat(StatType.Int, source.GetStat((StatType)StatType.Int));
+            SetStat(StatType.MaxHit, source.GetStat((StatType)StatType.MaxHit));
+            SetStat(StatType.MaxHP, source.GetStat((StatType)StatType.MaxHP));
+            SetStat(StatType.MaxMP, source.GetStat((StatType)StatType.MaxMP));
+            SetStat(StatType.MinHit, source.GetStat((StatType)StatType.MinHit));
+            SetReqStat(StatType.Agi, source.GetReqStat((StatType)StatType.Agi));
+            SetReqStat(StatType.Int, source.GetReqStat((StatType)StatType.Int));
+            SetReqStat(StatType.Str, source.GetReqStat((StatType)StatType.Str));
+            SetStat(StatType.Str, source.GetStat((StatType)StatType.Str));
             Type = source.Type;
             Value = source.Value;
             Width = source.Width;
@@ -363,29 +321,11 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "agi":
-                    return new ColumnMetadata("agi", "", "smallint(6)", "0", typeof(Int16), false, false, false);
-
                 case "amount":
                     return new ColumnMetadata("amount", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
-                case "armor":
-                    return new ColumnMetadata("armor", "", "smallint(5) unsigned", "0", typeof(UInt16), false, false, false);
-
-                case "bra":
-                    return new ColumnMetadata("bra", "", "smallint(6)", "0", typeof(Int16), false, false, false);
-
-                case "defence":
-                    return new ColumnMetadata("defence", "", "smallint(6)", "0", typeof(Int16), false, false, false);
-
                 case "description":
                     return new ColumnMetadata("description", "", "varchar(255)", null, typeof(String), false, false, false);
-
-                case "dex":
-                    return new ColumnMetadata("dex", "", "smallint(6)", "0", typeof(Int16), false, false, false);
-
-                case "evade":
-                    return new ColumnMetadata("evade", "", "smallint(6)", "0", typeof(Int16), false, false, false);
 
                 case "graphic":
                     return new ColumnMetadata("graphic", "", "smallint(5) unsigned", "0", typeof(UInt16), false, false, false);
@@ -399,56 +339,44 @@ namespace DemoGame.Server.DbObjs
                 case "id":
                     return new ColumnMetadata("id", "", "int(11)", null, typeof(Int32), false, true, false);
 
-                case "imm":
-                    return new ColumnMetadata("imm", "", "smallint(6)", "0", typeof(Int16), false, false, false);
-
-                case "int":
-                    return new ColumnMetadata("int", "", "smallint(6)", "0", typeof(Int16), false, false, false);
-
-                case "maxhit":
-                    return new ColumnMetadata("maxhit", "", "smallint(6)", "0", typeof(Int16), false, false, false);
-
-                case "maxhp":
-                    return new ColumnMetadata("maxhp", "", "smallint(6)", "0", typeof(Int16), false, false, false);
-
-                case "maxmp":
-                    return new ColumnMetadata("maxmp", "", "smallint(6)", "0", typeof(Int16), false, false, false);
-
-                case "minhit":
-                    return new ColumnMetadata("minhit", "", "smallint(6)", "0", typeof(Int16), false, false, false);
-
                 case "mp":
                     return new ColumnMetadata("mp", "", "smallint(6)", "0", typeof(Int16), false, false, false);
 
                 case "name":
                     return new ColumnMetadata("name", "", "varchar(255)", null, typeof(String), false, false, false);
 
-                case "perc":
-                    return new ColumnMetadata("perc", "", "smallint(6)", "0", typeof(Int16), false, false, false);
+                case "stat_agi":
+                    return new ColumnMetadata("stat_agi", "", "smallint(6)", "0", typeof(Int16), false, false, false);
 
-                case "reqacc":
-                    return new ColumnMetadata("reqacc", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
+                case "stat_defence":
+                    return new ColumnMetadata("stat_defence", "", "smallint(6)", "0", typeof(Int16), false, false, false);
 
-                case "reqagi":
-                    return new ColumnMetadata("reqagi", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
+                case "stat_int":
+                    return new ColumnMetadata("stat_int", "", "smallint(6)", "0", typeof(Int16), false, false, false);
 
-                case "reqarmor":
-                    return new ColumnMetadata("reqarmor", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
+                case "stat_maxhit":
+                    return new ColumnMetadata("stat_maxhit", "", "smallint(6)", "0", typeof(Int16), false, false, false);
 
-                case "reqbra":
-                    return new ColumnMetadata("reqbra", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
+                case "stat_maxhp":
+                    return new ColumnMetadata("stat_maxhp", "", "smallint(6)", "0", typeof(Int16), false, false, false);
 
-                case "reqdex":
-                    return new ColumnMetadata("reqdex", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
+                case "stat_maxmp":
+                    return new ColumnMetadata("stat_maxmp", "", "smallint(6)", "0", typeof(Int16), false, false, false);
 
-                case "reqevade":
-                    return new ColumnMetadata("reqevade", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
+                case "stat_minhit":
+                    return new ColumnMetadata("stat_minhit", "", "smallint(6)", "0", typeof(Int16), false, false, false);
 
-                case "reqimm":
-                    return new ColumnMetadata("reqimm", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
+                case "stat_req_agi":
+                    return new ColumnMetadata("stat_req_agi", "", "smallint(6)", "0", typeof(Int16), false, false, false);
 
-                case "reqint":
-                    return new ColumnMetadata("reqint", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
+                case "stat_req_int":
+                    return new ColumnMetadata("stat_req_int", "", "smallint(6)", "0", typeof(Int16), false, false, false);
+
+                case "stat_req_str":
+                    return new ColumnMetadata("stat_req_str", "", "smallint(6)", "0", typeof(Int16), false, false, false);
+
+                case "stat_str":
+                    return new ColumnMetadata("stat_str", "", "smallint(6)", null, typeof(Int16), false, false, false);
 
                 case "type":
                     return new ColumnMetadata("type", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
@@ -475,29 +403,11 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "agi":
-                    return GetStat(StatType.Agi);
-
                 case "amount":
                     return Amount;
 
-                case "armor":
-                    return GetStat(StatType.Armor);
-
-                case "bra":
-                    return GetStat(StatType.Bra);
-
-                case "defence":
-                    return GetStat(StatType.Defence);
-
                 case "description":
                     return Description;
-
-                case "dex":
-                    return GetStat(StatType.Dex);
-
-                case "evade":
-                    return GetStat(StatType.Evade);
 
                 case "graphic":
                     return Graphic;
@@ -511,56 +421,44 @@ namespace DemoGame.Server.DbObjs
                 case "id":
                     return ID;
 
-                case "imm":
-                    return GetStat(StatType.Imm);
-
-                case "int":
-                    return GetStat(StatType.Int);
-
-                case "maxhit":
-                    return GetStat(StatType.MaxHit);
-
-                case "maxhp":
-                    return GetStat(StatType.MaxHP);
-
-                case "maxmp":
-                    return GetStat(StatType.MaxMP);
-
-                case "minhit":
-                    return GetStat(StatType.MinHit);
-
                 case "mp":
                     return MP;
 
                 case "name":
                     return Name;
 
-                case "perc":
-                    return GetStat(StatType.Perc);
+                case "stat_agi":
+                    return GetStat(StatType.Agi);
 
-                case "reqacc":
-                    return GetReqStat(StatType.Acc);
+                case "stat_defence":
+                    return GetStat(StatType.Defence);
 
-                case "reqagi":
+                case "stat_int":
+                    return GetStat(StatType.Int);
+
+                case "stat_maxhit":
+                    return GetStat(StatType.MaxHit);
+
+                case "stat_maxhp":
+                    return GetStat(StatType.MaxHP);
+
+                case "stat_maxmp":
+                    return GetStat(StatType.MaxMP);
+
+                case "stat_minhit":
+                    return GetStat(StatType.MinHit);
+
+                case "stat_req_agi":
                     return GetReqStat(StatType.Agi);
 
-                case "reqarmor":
-                    return GetReqStat(StatType.Armor);
-
-                case "reqbra":
-                    return GetReqStat(StatType.Bra);
-
-                case "reqdex":
-                    return GetReqStat(StatType.Dex);
-
-                case "reqevade":
-                    return GetReqStat(StatType.Evade);
-
-                case "reqimm":
-                    return GetReqStat(StatType.Imm);
-
-                case "reqint":
+                case "stat_req_int":
                     return GetReqStat(StatType.Int);
+
+                case "stat_req_str":
+                    return GetReqStat(StatType.Str);
+
+                case "stat_str":
+                    return GetStat(StatType.Str);
 
                 case "type":
                     return Type;
@@ -583,7 +481,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="value">The value to assign to the column for the corresponding <paramref name="key"/>.</param>
         public void SetReqStat(StatType key, Int32 value)
         {
-            _reqStat[key] = (Byte)value;
+            _reqStat[key] = (Int16)value;
         }
 
         /// <summary>
@@ -605,36 +503,12 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "agi":
-                    SetStat(StatType.Agi, (Int32)value);
-                    break;
-
                 case "amount":
                     Amount = (Byte)value;
                     break;
 
-                case "armor":
-                    SetStat(StatType.Armor, (Int32)value);
-                    break;
-
-                case "bra":
-                    SetStat(StatType.Bra, (Int32)value);
-                    break;
-
-                case "defence":
-                    SetStat(StatType.Defence, (Int32)value);
-                    break;
-
                 case "description":
                     Description = (String)value;
-                    break;
-
-                case "dex":
-                    SetStat(StatType.Dex, (Int32)value);
-                    break;
-
-                case "evade":
-                    SetStat(StatType.Evade, (Int32)value);
                     break;
 
                 case "graphic":
@@ -653,30 +527,6 @@ namespace DemoGame.Server.DbObjs
                     ID = (ItemID)value;
                     break;
 
-                case "imm":
-                    SetStat(StatType.Imm, (Int32)value);
-                    break;
-
-                case "int":
-                    SetStat(StatType.Int, (Int32)value);
-                    break;
-
-                case "maxhit":
-                    SetStat(StatType.MaxHit, (Int32)value);
-                    break;
-
-                case "maxhp":
-                    SetStat(StatType.MaxHP, (Int32)value);
-                    break;
-
-                case "maxmp":
-                    SetStat(StatType.MaxMP, (Int32)value);
-                    break;
-
-                case "minhit":
-                    SetStat(StatType.MinHit, (Int32)value);
-                    break;
-
                 case "mp":
                     MP = (SPValueType)value;
                     break;
@@ -685,40 +535,48 @@ namespace DemoGame.Server.DbObjs
                     Name = (String)value;
                     break;
 
-                case "perc":
-                    SetStat(StatType.Perc, (Int32)value);
+                case "stat_agi":
+                    SetStat(StatType.Agi, (Int32)value);
                     break;
 
-                case "reqacc":
-                    SetReqStat(StatType.Acc, (Int32)value);
+                case "stat_defence":
+                    SetStat(StatType.Defence, (Int32)value);
                     break;
 
-                case "reqagi":
+                case "stat_int":
+                    SetStat(StatType.Int, (Int32)value);
+                    break;
+
+                case "stat_maxhit":
+                    SetStat(StatType.MaxHit, (Int32)value);
+                    break;
+
+                case "stat_maxhp":
+                    SetStat(StatType.MaxHP, (Int32)value);
+                    break;
+
+                case "stat_maxmp":
+                    SetStat(StatType.MaxMP, (Int32)value);
+                    break;
+
+                case "stat_minhit":
+                    SetStat(StatType.MinHit, (Int32)value);
+                    break;
+
+                case "stat_req_agi":
                     SetReqStat(StatType.Agi, (Int32)value);
                     break;
 
-                case "reqarmor":
-                    SetReqStat(StatType.Armor, (Int32)value);
-                    break;
-
-                case "reqbra":
-                    SetReqStat(StatType.Bra, (Int32)value);
-                    break;
-
-                case "reqdex":
-                    SetReqStat(StatType.Dex, (Int32)value);
-                    break;
-
-                case "reqevade":
-                    SetReqStat(StatType.Evade, (Int32)value);
-                    break;
-
-                case "reqimm":
-                    SetReqStat(StatType.Imm, (Int32)value);
-                    break;
-
-                case "reqint":
+                case "stat_req_int":
                     SetReqStat(StatType.Int, (Int32)value);
+                    break;
+
+                case "stat_req_str":
+                    SetReqStat(StatType.Str, (Int32)value);
+                    break;
+
+                case "stat_str":
+                    SetStat(StatType.Str, (Int32)value);
                     break;
 
                 case "type":
@@ -756,18 +614,6 @@ namespace DemoGame.Server.DbObjs
         public IEnumerable<KeyValuePair<StatType, Int32>> ReqStats
         {
             get { return _reqStat; }
-        }
-
-        /// <summary>
-        /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
-        /// </summary>
-        /// <param name="key">The key of the column to get.</param>
-        /// <returns>
-        /// The value of the database column for the corresponding <paramref name="key"/>.
-        /// </returns>
-        public Int32 GetStat(StatType key)
-        {
-            return (Int16)_stat[key];
         }
 
         /// <summary>
@@ -851,6 +697,18 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
+        /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
+        /// </summary>
+        /// <param name="key">The key of the column to get.</param>
+        /// <returns>
+        /// The value of the database column for the corresponding <paramref name="key"/>.
+        /// </returns>
+        public Int32 GetStat(StatType key)
+        {
+            return (Int16)_stat[key];
+        }
+
+        /// <summary>
         /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `ReqStat`.
         /// </summary>
         /// <param name="key">The key of the column to get.</param>
@@ -859,7 +717,7 @@ namespace DemoGame.Server.DbObjs
         /// </returns>
         public Int32 GetReqStat(StatType key)
         {
-            return (Byte)_reqStat[key];
+            return (Int16)_reqStat[key];
         }
 
         /// <summary>
@@ -940,10 +798,10 @@ namespace DemoGame.Server.DbObjs
             /// </summary>
             static ReqStatConstDictionary()
             {
-                var asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
+                StatType[] asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
                 _lookupTable = new Int32[asArray.Length];
 
-                for (var i = 0; i < _lookupTable.Length; i++)
+                for (Int32 i = 0; i < _lookupTable.Length; i++)
                 {
                     _lookupTable[i] = (Int32)asArray[i];
                 }
@@ -968,7 +826,7 @@ namespace DemoGame.Server.DbObjs
             /// <filterpriority>1</filterpriority>
             public IEnumerator<KeyValuePair<StatType, Int32>> GetEnumerator()
             {
-                for (var i = 0; i < _values.Length; i++)
+                for (int i = 0; i < _values.Length; i++)
                 {
                     yield return new KeyValuePair<StatType, Int32>((StatType)i, _values[i]);
                 }
@@ -1023,10 +881,10 @@ namespace DemoGame.Server.DbObjs
             /// </summary>
             static StatConstDictionary()
             {
-                var asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
+                StatType[] asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
                 _lookupTable = new Int32[asArray.Length];
 
-                for (var i = 0; i < _lookupTable.Length; i++)
+                for (Int32 i = 0; i < _lookupTable.Length; i++)
                 {
                     _lookupTable[i] = (Int32)asArray[i];
                 }
@@ -1051,7 +909,7 @@ namespace DemoGame.Server.DbObjs
             /// <filterpriority>1</filterpriority>
             public IEnumerator<KeyValuePair<StatType, Int32>> GetEnumerator()
             {
-                for (var i = 0; i < _values.Length; i++)
+                for (int i = 0; i < _values.Length; i++)
                 {
                     yield return new KeyValuePair<StatType, Int32>((StatType)i, _values[i]);
                 }

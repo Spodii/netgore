@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using DemoGame.Server.DbObjs;
 using DemoGame.Server.Queries;
 using log4net;
@@ -1162,8 +1163,8 @@ namespace DemoGame.Server
             _spRecoverTime += _spRecoveryRate;
 
             // Recover
-            HP += 1 + ModStats[StatType.Regen];
-            MP += 1 + ModStats[StatType.Recov];
+            HP += 1 + ModStats[StatType.Str] / 2;
+            MP += 1 + ModStats[StatType.Int] / 2;
         }
 
         /// <summary>

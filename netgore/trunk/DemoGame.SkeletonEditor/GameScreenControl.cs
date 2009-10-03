@@ -1,5 +1,7 @@
 using System.Linq;
 using System.Windows.Forms;
+using DemoGame;
+using NetGore;
 using NetGore.EditorTools.WinForms;
 
 namespace DemoGame.SkeletonEditor

@@ -2,7 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using DemoGame;
 using log4net;
+using NetGore;
 using NetGore.Network;
 
 namespace DemoGame.Server

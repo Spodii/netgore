@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using DemoGame;
 using NetGore;
 
 namespace DemoGame
@@ -34,11 +35,11 @@ namespace DemoGame
             switch (statCollectionType)
             {
                 case StatCollectionType.Base:
-                    return new Stat<StatValueUShort>(statType, initialValue);
+                    return new Stat<StatValueShort>(statType, initialValue);
                 case StatCollectionType.Modified:
-                    return new Stat<StatValueUShort>(statType, initialValue);
+                    return new Stat<StatValueShort>(statType, initialValue);
                 case StatCollectionType.Requirement:
-                    return new Stat<StatValueUShort>(statType, initialValue);
+                    return new Stat<StatValueShort>(statType, initialValue);
 
                 default:
                     throw new ArgumentOutOfRangeException("statCollectionType");

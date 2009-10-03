@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DemoGame;
 using DemoGame.DbObjs;
+using NetGore;
 
 namespace DemoGame.Server.DbObjs
 {
@@ -14,7 +16,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The number of columns in the database table that this class represents.
         /// </summary>
-        public const Int32 ColumnCount = 31;
+        public const Int32 ColumnCount = 20;
 
         /// <summary>
         /// The name of the database table that this class represents.
@@ -26,9 +28,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumns = new string[]
         {
-            "acc", "agi", "ai", "alliance_id", "armor", "body_id", "bra", "defence", "dex", "evade", "exp", "give_cash", "give_exp",
-            "id", "imm", "int", "level", "maxhit", "maxhp", "maxmp", "minhit", "name", "perc", "recov", "regen", "respawn",
-            "shop_id", "statpoints", "str", "tact", "ws"
+            "ai", "alliance_id", "body_id", "exp", "give_cash", "give_exp", "id", "level", "name", "respawn", "shop_id", "stat_agi",
+            "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints"
         };
 
         /// <summary>
@@ -41,19 +42,15 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         {
-            "acc", "agi", "ai", "alliance_id", "armor", "body_id", "bra", "defence", "dex", "evade", "exp", "give_cash", "give_exp",
-            "imm", "int", "level", "maxhit", "maxhp", "maxmp", "minhit", "name", "perc", "recov", "regen", "respawn", "shop_id",
-            "statpoints", "str", "tact", "ws"
+            "ai", "alliance_id", "body_id", "exp", "give_cash", "give_exp", "level", "name", "respawn", "shop_id", "stat_agi",
+            "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints"
         };
 
         /// <summary>
         /// The fields that are used in the column collection `Stat`.
         /// </summary>
         static readonly String[] _statColumns = new string[]
-        {
-            "acc", "agi", "armor", "bra", "defence", "dex", "evade", "imm", "int", "maxhit", "maxhp", "maxmp", "minhit", "perc",
-            "recov", "regen", "str", "tact", "ws"
-        };
+        { "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
 
         /// <summary>
         /// Dictionary containing the values for the column collection `Stat`.
@@ -163,75 +160,51 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// CharacterTemplateTable constructor.
         /// </summary>
-        /// <param name="acc">The initial value for the corresponding property.</param>
-        /// <param name="agi">The initial value for the corresponding property.</param>
         /// <param name="aI">The initial value for the corresponding property.</param>
         /// <param name="allianceID">The initial value for the corresponding property.</param>
-        /// <param name="armor">The initial value for the corresponding property.</param>
         /// <param name="bodyID">The initial value for the corresponding property.</param>
-        /// <param name="bra">The initial value for the corresponding property.</param>
-        /// <param name="defence">The initial value for the corresponding property.</param>
-        /// <param name="dex">The initial value for the corresponding property.</param>
-        /// <param name="evade">The initial value for the corresponding property.</param>
         /// <param name="exp">The initial value for the corresponding property.</param>
         /// <param name="giveCash">The initial value for the corresponding property.</param>
         /// <param name="giveExp">The initial value for the corresponding property.</param>
         /// <param name="iD">The initial value for the corresponding property.</param>
-        /// <param name="imm">The initial value for the corresponding property.</param>
-        /// <param name="int">The initial value for the corresponding property.</param>
         /// <param name="level">The initial value for the corresponding property.</param>
-        /// <param name="maxHit">The initial value for the corresponding property.</param>
-        /// <param name="maxHP">The initial value for the corresponding property.</param>
-        /// <param name="maxMP">The initial value for the corresponding property.</param>
-        /// <param name="minHit">The initial value for the corresponding property.</param>
         /// <param name="name">The initial value for the corresponding property.</param>
-        /// <param name="perc">The initial value for the corresponding property.</param>
-        /// <param name="recov">The initial value for the corresponding property.</param>
-        /// <param name="regen">The initial value for the corresponding property.</param>
         /// <param name="respawn">The initial value for the corresponding property.</param>
         /// <param name="shopID">The initial value for the corresponding property.</param>
+        /// <param name="statAgi">The initial value for the corresponding property.</param>
+        /// <param name="statDefence">The initial value for the corresponding property.</param>
+        /// <param name="statInt">The initial value for the corresponding property.</param>
+        /// <param name="statMaxhit">The initial value for the corresponding property.</param>
+        /// <param name="statMaxhp">The initial value for the corresponding property.</param>
+        /// <param name="statMaxmp">The initial value for the corresponding property.</param>
+        /// <param name="statMinhit">The initial value for the corresponding property.</param>
+        /// <param name="statStr">The initial value for the corresponding property.</param>
         /// <param name="statPoints">The initial value for the corresponding property.</param>
-        /// <param name="str">The initial value for the corresponding property.</param>
-        /// <param name="tact">The initial value for the corresponding property.</param>
-        /// <param name="wS">The initial value for the corresponding property.</param>
-        public CharacterTemplateTable(Byte @acc, Byte @agi, String @aI, AllianceID @allianceID, Byte @armor, BodyIndex @bodyID,
-                                      Byte @bra, Byte @defence, Byte @dex, Byte @evade, Int32 @exp, UInt16 @giveCash,
-                                      UInt16 @giveExp, CharacterTemplateID @iD, Byte @imm, Byte @int, Byte @level, Byte @maxHit,
-                                      UInt16 @maxHP, UInt16 @maxMP, Byte @minHit, String @name, Byte @perc, Byte @recov,
-                                      Byte @regen, UInt16 @respawn, ShopID? @shopID, Int32 @statPoints, Byte @str, Byte @tact,
-                                      Byte @wS)
+        public CharacterTemplateTable(String @aI, AllianceID @allianceID, BodyIndex @bodyID, Int32 @exp, UInt16 @giveCash,
+                                      UInt16 @giveExp, CharacterTemplateID @iD, Byte @level, String @name, UInt16 @respawn,
+                                      ShopID? @shopID, Int16 @statAgi, Int16 @statDefence, Int16 @statInt, Int16 @statMaxhit,
+                                      Int16 @statMaxhp, Int16 @statMaxmp, Int16 @statMinhit, Int16 @statStr, Int32 @statPoints)
         {
-            SetStat(StatType.Acc, @acc);
-            SetStat(StatType.Agi, @agi);
             AI = @aI;
             AllianceID = @allianceID;
-            SetStat(StatType.Armor, @armor);
             BodyID = @bodyID;
-            SetStat(StatType.Bra, @bra);
-            SetStat(StatType.Defence, @defence);
-            SetStat(StatType.Dex, @dex);
-            SetStat(StatType.Evade, @evade);
             Exp = @exp;
             GiveCash = @giveCash;
             GiveExp = @giveExp;
             ID = @iD;
-            SetStat(StatType.Imm, @imm);
-            SetStat(StatType.Int, @int);
             Level = @level;
-            SetStat(StatType.MaxHit, @maxHit);
-            SetStat(StatType.MaxHP, @maxHP);
-            SetStat(StatType.MaxMP, @maxMP);
-            SetStat(StatType.MinHit, @minHit);
             Name = @name;
-            SetStat(StatType.Perc, @perc);
-            SetStat(StatType.Recov, @recov);
-            SetStat(StatType.Regen, @regen);
             Respawn = @respawn;
             ShopID = @shopID;
+            SetStat(StatType.Agi, @statAgi);
+            SetStat(StatType.Defence, @statDefence);
+            SetStat(StatType.Int, @statInt);
+            SetStat(StatType.MaxHit, @statMaxhit);
+            SetStat(StatType.MaxHP, @statMaxhp);
+            SetStat(StatType.MaxMP, @statMaxmp);
+            SetStat(StatType.MinHit, @statMinhit);
+            SetStat(StatType.Str, @statStr);
             StatPoints = @statPoints;
-            SetStat(StatType.Str, @str);
-            SetStat(StatType.Tact, @tact);
-            SetStat(StatType.WS, @wS);
         }
 
         /// <summary>
@@ -252,37 +225,26 @@ namespace DemoGame.Server.DbObjs
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(ICharacterTemplateTable source, IDictionary<String, Object> dic)
         {
-            dic["@acc"] = (Byte)source.GetStat(StatType.Acc);
-            dic["@agi"] = (Byte)source.GetStat(StatType.Agi);
             dic["@ai"] = source.AI;
             dic["@alliance_id"] = source.AllianceID;
-            dic["@armor"] = (Byte)source.GetStat(StatType.Armor);
             dic["@body_id"] = source.BodyID;
-            dic["@bra"] = (Byte)source.GetStat(StatType.Bra);
-            dic["@defence"] = (Byte)source.GetStat(StatType.Defence);
-            dic["@dex"] = (Byte)source.GetStat(StatType.Dex);
-            dic["@evade"] = (Byte)source.GetStat(StatType.Evade);
             dic["@exp"] = source.Exp;
             dic["@give_cash"] = source.GiveCash;
             dic["@give_exp"] = source.GiveExp;
             dic["@id"] = source.ID;
-            dic["@imm"] = (Byte)source.GetStat(StatType.Imm);
-            dic["@int"] = (Byte)source.GetStat(StatType.Int);
             dic["@level"] = source.Level;
-            dic["@maxhit"] = (Byte)source.GetStat(StatType.MaxHit);
-            dic["@maxhp"] = (UInt16)source.GetStat(StatType.MaxHP);
-            dic["@maxmp"] = (UInt16)source.GetStat(StatType.MaxMP);
-            dic["@minhit"] = (Byte)source.GetStat(StatType.MinHit);
             dic["@name"] = source.Name;
-            dic["@perc"] = (Byte)source.GetStat(StatType.Perc);
-            dic["@recov"] = (Byte)source.GetStat(StatType.Recov);
-            dic["@regen"] = (Byte)source.GetStat(StatType.Regen);
             dic["@respawn"] = source.Respawn;
             dic["@shop_id"] = source.ShopID;
+            dic["@stat_agi"] = (Int16)source.GetStat(StatType.Agi);
+            dic["@stat_defence"] = (Int16)source.GetStat(StatType.Defence);
+            dic["@stat_int"] = (Int16)source.GetStat(StatType.Int);
+            dic["@stat_maxhit"] = (Int16)source.GetStat(StatType.MaxHit);
+            dic["@stat_maxhp"] = (Int16)source.GetStat(StatType.MaxHP);
+            dic["@stat_maxmp"] = (Int16)source.GetStat(StatType.MaxMP);
+            dic["@stat_minhit"] = (Int16)source.GetStat(StatType.MinHit);
+            dic["@stat_str"] = (Int16)source.GetStat(StatType.Str);
             dic["@statpoints"] = source.StatPoints;
-            dic["@str"] = (Byte)source.GetStat(StatType.Str);
-            dic["@tact"] = (Byte)source.GetStat(StatType.Tact);
-            dic["@ws"] = (Byte)source.GetStat(StatType.WS);
         }
 
         /// <summary>
@@ -302,37 +264,26 @@ namespace DemoGame.Server.DbObjs
         /// <param name="source">The ICharacterTemplateTable to copy the values from.</param>
         public void CopyValuesFrom(ICharacterTemplateTable source)
         {
-            SetStat(StatType.Acc, source.GetStat(StatType.Acc));
-            SetStat(StatType.Agi, source.GetStat(StatType.Agi));
             AI = source.AI;
             AllianceID = source.AllianceID;
-            SetStat(StatType.Armor, source.GetStat(StatType.Armor));
             BodyID = source.BodyID;
-            SetStat(StatType.Bra, source.GetStat(StatType.Bra));
-            SetStat(StatType.Defence, source.GetStat(StatType.Defence));
-            SetStat(StatType.Dex, source.GetStat(StatType.Dex));
-            SetStat(StatType.Evade, source.GetStat(StatType.Evade));
             Exp = source.Exp;
             GiveCash = source.GiveCash;
             GiveExp = source.GiveExp;
             ID = source.ID;
-            SetStat(StatType.Imm, source.GetStat(StatType.Imm));
-            SetStat(StatType.Int, source.GetStat(StatType.Int));
             Level = source.Level;
-            SetStat(StatType.MaxHit, source.GetStat(StatType.MaxHit));
-            SetStat(StatType.MaxHP, source.GetStat(StatType.MaxHP));
-            SetStat(StatType.MaxMP, source.GetStat(StatType.MaxMP));
-            SetStat(StatType.MinHit, source.GetStat(StatType.MinHit));
             Name = source.Name;
-            SetStat(StatType.Perc, source.GetStat(StatType.Perc));
-            SetStat(StatType.Recov, source.GetStat(StatType.Recov));
-            SetStat(StatType.Regen, source.GetStat(StatType.Regen));
             Respawn = source.Respawn;
             ShopID = source.ShopID;
+            SetStat(StatType.Agi, source.GetStat((StatType)StatType.Agi));
+            SetStat(StatType.Defence, source.GetStat((StatType)StatType.Defence));
+            SetStat(StatType.Int, source.GetStat((StatType)StatType.Int));
+            SetStat(StatType.MaxHit, source.GetStat((StatType)StatType.MaxHit));
+            SetStat(StatType.MaxHP, source.GetStat((StatType)StatType.MaxHP));
+            SetStat(StatType.MaxMP, source.GetStat((StatType)StatType.MaxMP));
+            SetStat(StatType.MinHit, source.GetStat((StatType)StatType.MinHit));
+            SetStat(StatType.Str, source.GetStat((StatType)StatType.Str));
             StatPoints = source.StatPoints;
-            SetStat(StatType.Str, source.GetStat(StatType.Str));
-            SetStat(StatType.Tact, source.GetStat(StatType.Tact));
-            SetStat(StatType.WS, source.GetStat(StatType.WS));
         }
 
         /// <summary>
@@ -346,35 +297,14 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "acc":
-                    return new ColumnMetadata("acc", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "agi":
-                    return new ColumnMetadata("agi", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
                 case "ai":
                     return new ColumnMetadata("ai", "", "varchar(255)", null, typeof(String), true, false, false);
 
                 case "alliance_id":
                     return new ColumnMetadata("alliance_id", "", "tinyint(3) unsigned", null, typeof(Byte), false, false, true);
 
-                case "armor":
-                    return new ColumnMetadata("armor", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
                 case "body_id":
                     return new ColumnMetadata("body_id", "", "smallint(5) unsigned", "1", typeof(UInt16), false, false, false);
-
-                case "bra":
-                    return new ColumnMetadata("bra", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "defence":
-                    return new ColumnMetadata("defence", "", "tinyint(3) unsigned", "0", typeof(Byte), false, false, false);
-
-                case "dex":
-                    return new ColumnMetadata("dex", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "evade":
-                    return new ColumnMetadata("evade", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "exp":
                     return new ColumnMetadata("exp", "", "int(11)", null, typeof(Int32), false, false, false);
@@ -388,38 +318,11 @@ namespace DemoGame.Server.DbObjs
                 case "id":
                     return new ColumnMetadata("id", "", "smallint(5) unsigned", null, typeof(UInt16), false, true, false);
 
-                case "imm":
-                    return new ColumnMetadata("imm", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "int":
-                    return new ColumnMetadata("int", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
                 case "level":
                     return new ColumnMetadata("level", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
-                case "maxhit":
-                    return new ColumnMetadata("maxhit", "", "tinyint(3) unsigned", "2", typeof(Byte), false, false, false);
-
-                case "maxhp":
-                    return new ColumnMetadata("maxhp", "", "smallint(5) unsigned", "50", typeof(UInt16), false, false, false);
-
-                case "maxmp":
-                    return new ColumnMetadata("maxmp", "", "smallint(5) unsigned", "50", typeof(UInt16), false, false, false);
-
-                case "minhit":
-                    return new ColumnMetadata("minhit", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
                 case "name":
                     return new ColumnMetadata("name", "", "varchar(50)", "New NPC", typeof(String), false, false, false);
-
-                case "perc":
-                    return new ColumnMetadata("perc", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "recov":
-                    return new ColumnMetadata("recov", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "regen":
-                    return new ColumnMetadata("regen", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 case "respawn":
                     return new ColumnMetadata("respawn", "", "smallint(5) unsigned", "5", typeof(UInt16), false, false, false);
@@ -427,17 +330,32 @@ namespace DemoGame.Server.DbObjs
                 case "shop_id":
                     return new ColumnMetadata("shop_id", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, true);
 
+                case "stat_agi":
+                    return new ColumnMetadata("stat_agi", "", "smallint(6)", "1", typeof(Int16), false, false, false);
+
+                case "stat_defence":
+                    return new ColumnMetadata("stat_defence", "", "smallint(6)", null, typeof(Int16), false, false, false);
+
+                case "stat_int":
+                    return new ColumnMetadata("stat_int", "", "smallint(6)", "1", typeof(Int16), false, false, false);
+
+                case "stat_maxhit":
+                    return new ColumnMetadata("stat_maxhit", "", "smallint(6)", "2", typeof(Int16), false, false, false);
+
+                case "stat_maxhp":
+                    return new ColumnMetadata("stat_maxhp", "", "smallint(6)", "50", typeof(Int16), false, false, false);
+
+                case "stat_maxmp":
+                    return new ColumnMetadata("stat_maxmp", "", "smallint(6)", "50", typeof(Int16), false, false, false);
+
+                case "stat_minhit":
+                    return new ColumnMetadata("stat_minhit", "", "smallint(6)", "1", typeof(Int16), false, false, false);
+
+                case "stat_str":
+                    return new ColumnMetadata("stat_str", "", "smallint(6)", "1", typeof(Int16), false, false, false);
+
                 case "statpoints":
                     return new ColumnMetadata("statpoints", "", "int(11)", null, typeof(Int32), false, false, false);
-
-                case "str":
-                    return new ColumnMetadata("str", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "tact":
-                    return new ColumnMetadata("tact", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
-
-                case "ws":
-                    return new ColumnMetadata("ws", "", "tinyint(3) unsigned", "1", typeof(Byte), false, false, false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -455,35 +373,14 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "acc":
-                    return GetStat(StatType.Acc);
-
-                case "agi":
-                    return GetStat(StatType.Agi);
-
                 case "ai":
                     return AI;
 
                 case "alliance_id":
                     return AllianceID;
 
-                case "armor":
-                    return GetStat(StatType.Armor);
-
                 case "body_id":
                     return BodyID;
-
-                case "bra":
-                    return GetStat(StatType.Bra);
-
-                case "defence":
-                    return GetStat(StatType.Defence);
-
-                case "dex":
-                    return GetStat(StatType.Dex);
-
-                case "evade":
-                    return GetStat(StatType.Evade);
 
                 case "exp":
                     return Exp;
@@ -497,38 +394,11 @@ namespace DemoGame.Server.DbObjs
                 case "id":
                     return ID;
 
-                case "imm":
-                    return GetStat(StatType.Imm);
-
-                case "int":
-                    return GetStat(StatType.Int);
-
                 case "level":
                     return Level;
 
-                case "maxhit":
-                    return GetStat(StatType.MaxHit);
-
-                case "maxhp":
-                    return GetStat(StatType.MaxHP);
-
-                case "maxmp":
-                    return GetStat(StatType.MaxMP);
-
-                case "minhit":
-                    return GetStat(StatType.MinHit);
-
                 case "name":
                     return Name;
-
-                case "perc":
-                    return GetStat(StatType.Perc);
-
-                case "recov":
-                    return GetStat(StatType.Recov);
-
-                case "regen":
-                    return GetStat(StatType.Regen);
 
                 case "respawn":
                     return Respawn;
@@ -536,17 +406,32 @@ namespace DemoGame.Server.DbObjs
                 case "shop_id":
                     return ShopID;
 
-                case "statpoints":
-                    return StatPoints;
+                case "stat_agi":
+                    return GetStat(StatType.Agi);
 
-                case "str":
+                case "stat_defence":
+                    return GetStat(StatType.Defence);
+
+                case "stat_int":
+                    return GetStat(StatType.Int);
+
+                case "stat_maxhit":
+                    return GetStat(StatType.MaxHit);
+
+                case "stat_maxhp":
+                    return GetStat(StatType.MaxHP);
+
+                case "stat_maxmp":
+                    return GetStat(StatType.MaxMP);
+
+                case "stat_minhit":
+                    return GetStat(StatType.MinHit);
+
+                case "stat_str":
                     return GetStat(StatType.Str);
 
-                case "tact":
-                    return GetStat(StatType.Tact);
-
-                case "ws":
-                    return GetStat(StatType.WS);
+                case "statpoints":
+                    return StatPoints;
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -560,7 +445,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="value">The value to assign to the column for the corresponding <paramref name="key"/>.</param>
         public void SetStat(StatType key, Int32 value)
         {
-            _stat[key] = (Byte)value;
+            _stat[key] = (Int16)value;
         }
 
         /// <summary>
@@ -572,14 +457,6 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "acc":
-                    SetStat(StatType.Acc, (Int32)value);
-                    break;
-
-                case "agi":
-                    SetStat(StatType.Agi, (Int32)value);
-                    break;
-
                 case "ai":
                     AI = (String)value;
                     break;
@@ -588,28 +465,8 @@ namespace DemoGame.Server.DbObjs
                     AllianceID = (AllianceID)value;
                     break;
 
-                case "armor":
-                    SetStat(StatType.Armor, (Int32)value);
-                    break;
-
                 case "body_id":
                     BodyID = (BodyIndex)value;
-                    break;
-
-                case "bra":
-                    SetStat(StatType.Bra, (Int32)value);
-                    break;
-
-                case "defence":
-                    SetStat(StatType.Defence, (Int32)value);
-                    break;
-
-                case "dex":
-                    SetStat(StatType.Dex, (Int32)value);
-                    break;
-
-                case "evade":
-                    SetStat(StatType.Evade, (Int32)value);
                     break;
 
                 case "exp":
@@ -628,48 +485,12 @@ namespace DemoGame.Server.DbObjs
                     ID = (CharacterTemplateID)value;
                     break;
 
-                case "imm":
-                    SetStat(StatType.Imm, (Int32)value);
-                    break;
-
-                case "int":
-                    SetStat(StatType.Int, (Int32)value);
-                    break;
-
                 case "level":
                     Level = (Byte)value;
                     break;
 
-                case "maxhit":
-                    SetStat(StatType.MaxHit, (Int32)value);
-                    break;
-
-                case "maxhp":
-                    SetStat(StatType.MaxHP, (Int32)value);
-                    break;
-
-                case "maxmp":
-                    SetStat(StatType.MaxMP, (Int32)value);
-                    break;
-
-                case "minhit":
-                    SetStat(StatType.MinHit, (Int32)value);
-                    break;
-
                 case "name":
                     Name = (String)value;
-                    break;
-
-                case "perc":
-                    SetStat(StatType.Perc, (Int32)value);
-                    break;
-
-                case "recov":
-                    SetStat(StatType.Recov, (Int32)value);
-                    break;
-
-                case "regen":
-                    SetStat(StatType.Regen, (Int32)value);
                     break;
 
                 case "respawn":
@@ -680,20 +501,40 @@ namespace DemoGame.Server.DbObjs
                     ShopID = (ShopID?)value;
                     break;
 
-                case "statpoints":
-                    StatPoints = (Int32)value;
+                case "stat_agi":
+                    SetStat(StatType.Agi, (Int32)value);
                     break;
 
-                case "str":
+                case "stat_defence":
+                    SetStat(StatType.Defence, (Int32)value);
+                    break;
+
+                case "stat_int":
+                    SetStat(StatType.Int, (Int32)value);
+                    break;
+
+                case "stat_maxhit":
+                    SetStat(StatType.MaxHit, (Int32)value);
+                    break;
+
+                case "stat_maxhp":
+                    SetStat(StatType.MaxHP, (Int32)value);
+                    break;
+
+                case "stat_maxmp":
+                    SetStat(StatType.MaxMP, (Int32)value);
+                    break;
+
+                case "stat_minhit":
+                    SetStat(StatType.MinHit, (Int32)value);
+                    break;
+
+                case "stat_str":
                     SetStat(StatType.Str, (Int32)value);
                     break;
 
-                case "tact":
-                    SetStat(StatType.Tact, (Int32)value);
-                    break;
-
-                case "ws":
-                    SetStat(StatType.WS, (Int32)value);
+                case "statpoints":
+                    StatPoints = (Int32)value;
                     break;
 
                 default:
@@ -710,18 +551,6 @@ namespace DemoGame.Server.DbObjs
         public IEnumerable<KeyValuePair<StatType, Int32>> Stats
         {
             get { return _stat; }
-        }
-
-        /// <summary>
-        /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
-        /// </summary>
-        /// <param name="key">The key of the column to get.</param>
-        /// <returns>
-        /// The value of the database column for the corresponding <paramref name="key"/>.
-        /// </returns>
-        public Int32 GetStat(StatType key)
-        {
-            return (Byte)_stat[key];
         }
 
         /// <summary>
@@ -835,6 +664,18 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
+        /// Gets the value of a database column for the corresponding <paramref name="key"/> for the column collection `Stat`.
+        /// </summary>
+        /// <param name="key">The key of the column to get.</param>
+        /// <returns>
+        /// The value of the database column for the corresponding <paramref name="key"/>.
+        /// </returns>
+        public Int32 GetStat(StatType key)
+        {
+            return (Int16)_stat[key];
+        }
+
+        /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `statpoints`.
         /// The underlying database type is `int(11)`.
         /// </summary>
@@ -892,7 +733,7 @@ namespace DemoGame.Server.DbObjs
             /// </summary>
             static StatConstDictionary()
             {
-                var asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
+                StatType[] asArray = Enum.GetValues(typeof(StatType)).Cast<StatType>().ToArray();
                 _lookupTable = new Int32[asArray.Length];
 
                 for (Int32 i = 0; i < _lookupTable.Length; i++)

@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using DemoGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -124,7 +125,7 @@ namespace DemoGame.Client
             writer.Write("IsForeground", IsForeground);
         }
 
-        #region IDrawableEntity Members
+        #region IDrawable Members
 
         /// <summary>
         /// Checks if in the object is in view of the specified <paramref name="camera"/>.
