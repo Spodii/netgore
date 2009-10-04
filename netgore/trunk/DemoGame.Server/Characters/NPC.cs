@@ -373,10 +373,11 @@ namespace DemoGame.Server
             AIBase newAI;
             try
             {
-                newAI = AIFactory.Create(aiName, this);
+                newAI = AIFactory.Instance.Create(aiName, this);
             }
             catch (KeyNotFoundException)
             {
+                // TODO: Can avoid crash by setting AI to null
                 const string errmsg = "Failed to change to AI to `{0}` for NPC `{1}` - AI not found.";
                 if (log.IsErrorEnabled)
                     log.ErrorFormat(errmsg, aiName, this);

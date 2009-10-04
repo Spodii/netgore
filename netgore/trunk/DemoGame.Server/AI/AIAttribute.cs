@@ -7,7 +7,7 @@ namespace DemoGame.Server
 {
     public sealed class AIAttribute : Attribute
     {
-        public AIAttribute(AIID id)
+        public AIAttribute(int id)
         {
         }
     }

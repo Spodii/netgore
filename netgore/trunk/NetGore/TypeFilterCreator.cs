@@ -98,6 +98,87 @@ namespace NetGore.Collections
         /// </summary>
         public Type Subclass { get; set; }
 
+        bool FilterConstructorParameters(Type type, bool onlyIfRequired)
+        {
+            if (ConstructorParameters == null)
+                return true;
+
+            if (onlyIfRequired && !RequireConstructor)
+                return true;
+
+            const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
+            if (type.GetConstructor(flags, null, ConstructorParameters, null) == null)
+            {
+                if (RequireConstructor)
+                {
+                    const string errmsg =
+                        "Type `{0}` does not have the required constructor containing the parameters: `{1}`.";
+                    string err = string.Format(errmsg, type, GetTypeString(ConstructorParameters));
+                    if (log.IsFatalEnabled)
+                        log.Fatal(err);
+                    throw new TypeFilterException(err);
+                }
+                else
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool FilterInterfaces(Type type, bool onlyIfRequired)
+        {
+            if (Interfaces == null || Interfaces.Count() <= 0)
+                return true;
+
+            if (onlyIfRequired && !RequireInterfaces)
+                return true;
+
+            var i = type.GetInterfaces();
+            bool isValid = (MatchAllInterfaces ? Interfaces.All(x => i.Contains(x)) : Interfaces.Any(x => i.Contains(x)));
+            if (!isValid)
+            {
+                if (RequireInterfaces)
+                {
+                    const string errmsg = "Type `{0}` does not have the required interfaces: `{1}`.";
+                    string err = string.Format(errmsg, type, GetTypeString(Interfaces));
+                    if (log.IsFatalEnabled)
+                        log.Fatal(err);
+                    throw new TypeFilterException(err);
+                }
+                else
+                    return false;
+            }
+
+            return true;
+        }
+
+        bool FilterAttributes(ICustomAttributeProvider type, bool onlyIfRequired)
+        {
+            if (Attributes == null || Attributes.Count() <= 0)
+                return true;
+
+            if (onlyIfRequired && !RequireAttributes)
+                return true;
+
+            var a = type.GetCustomAttributes(true).Select(x => x.GetType());
+            bool isValid = (MatchAllAttributes ? Attributes.All(x => a.Contains(x)) : Attributes.Any(x => a.Contains(x)));
+            if (!isValid)
+            {
+                if (RequireAttributes)
+                {
+                    const string errmsg = "Type `{0}` does not have the required attributes: `{1}`.";
+                    string err = string.Format(errmsg, type, GetTypeString(Attributes));
+                    if (log.IsFatalEnabled)
+                        log.Fatal(err);
+                    throw new TypeFilterException(err);
+                }
+                else
+                    return false;
+            }
+
+            return true;
+        }
+
         bool Filter(Type type)
         {
             // Check the type of Type
@@ -121,67 +202,18 @@ namespace NetGore.Collections
             if (CustomFilter != null && !CustomFilter(type))
                 return false;
 
-            // Check the constructor
-            if (ConstructorParameters != null)
-            {
-                const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-                if (type.GetConstructor(flags, null, ConstructorParameters, null) == null)
-                {
-                    if (RequireConstructor)
-                    {
-                        const string errmsg =
-                            "Type `{0}` does not have the required constructor containing the parameters: `{1}`.";
-                        string err = string.Format(errmsg, type, GetTypeString(ConstructorParameters));
-                        if (log.IsFatalEnabled)
-                            log.Fatal(err);
-                        throw new TypeFilterException(err);
-                    }
-                    else
-                        return false;
-                }
-            }
-
-            // Check the interfaces
-            if (Interfaces != null && Interfaces.Count() > 0)
-            {
-                var i = type.GetInterfaces();
-                bool isValid = (MatchAllInterfaces ? Interfaces.All(x => i.Contains(x)) : Interfaces.Any(x => i.Contains(x)));
-                if (!isValid)
-                {
-                    if (RequireInterfaces)
-                    {
-                        const string errmsg = "Type `{0}` does not have the required interfaces: `{1}`.";
-                        string err = string.Format(errmsg, type, GetTypeString(Interfaces));
-                        if (log.IsFatalEnabled)
-                            log.Fatal(err);
-                        throw new TypeFilterException(err);
-                    }
-                    else
-                        return false;
-                }
-            }
-
-            // Check the attributes
-            if (Attributes != null && Attributes.Count() > 0)
-            {
-                var a = type.GetCustomAttributes(true).Select(x => x.GetType());
-                bool isValid = (MatchAllAttributes ? Attributes.All(x => a.Contains(x)) : Attributes.Any(x => a.Contains(x)));
-                if (!isValid)
-                {
-                    if (RequireAttributes)
-                    {
-                        const string errmsg = "Type `{0}` does not have the required attributes: `{1}`.";
-                        string err = string.Format(errmsg, type, GetTypeString(Attributes));
-                        if (log.IsFatalEnabled)
-                            log.Fatal(err);
-                        throw new TypeFilterException(err);
-                    }
-                    else
-                        return false;
-                }
-            }
-
-            return true;
+            // Check the other stuff
+            // We have to make sure we don't just abort on the first failure since we will still need to throw an
+            // exception if needed
+            // Basically, the process is this:
+            // 1. Check the filter
+            // 2. Once "failed" has reached true, don't let it go back to false
+            // 3. If we have failed, only check the filter if there is a chance it can throw an exception
+            bool failed = !FilterConstructorParameters(type, false);
+            failed |= !FilterInterfaces(type, failed);
+            failed |= !FilterAttributes(type, failed);
+            
+            return !failed;
         }
 
         public Func<Type, bool> GetFilter()

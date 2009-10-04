@@ -8,53 +8,36 @@ using NetGore.Collections;
 
 namespace DemoGame.Server
 {
-    /*
-    public class AIFactoryBase : FactoryTypeCollection
+    public abstract class AIFactoryBase
     {
-        static Func<Type, bool> GetFilter()
-        {
-            var filter = CreateFilter(typeof(AIBase), true, typeof(Character));
+        readonly TypeFactory _typeFactory;
 
-        }
-
-        /// <summary>
-        /// </summary>
-        /// <param name="typeFilter">Filter that determines the Types to go into this FactoryTypeCollection.</param>
-        /// <param name="loadTypeHandler">Initial handler for the OnLoadType event.</param>
-        /// <param name="useGAC">If true, Assemblies from the Global Assembly Cache will be included. If false,
-        /// the Assemblies in the Global Assembly Cache will be ignored and no Types from these Assemblies will
-        /// be found by this FactoryTypeCollection.</param>
-        public AIFactoryBase(Func<Type, bool> typeFilter, FactoryTypeLoadedHandler loadTypeHandler, bool useGAC) : base(, loadTypeHandler, useGAC)
-        {
-        }
-    }
-    */
-    /// <summary>
-    /// Factory for the AIBase.
-    /// </summary>
-    public static class AIFactory
-    {
-        static readonly TypeFactory _typeCollection;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Initializes the <see cref="AIFactory"/> class.
+        /// Initializes a new instance of the <see cref="AIFactoryBase"/> class.
         /// </summary>
-        static AIFactory()
+        protected AIFactoryBase()
         {
             if (log.IsInfoEnabled)
-                log.Info("Initializing the AI factory.");
+                log.Info("Creating AI factory.");
 
             var filter = new TypeFilterCreator
             {
                 IsClass = true,
                 IsAbstract = false,
                 Subclass = typeof(AIBase),
+                Attributes = new Type[] { typeof(AIAttribute) },
+                ConstructorParameters = new Type[] { typeof(Character) },
+                MatchAllAttributes = true,
+                MatchAllInterfaces = true,
+                RequireAttributes = true,
                 RequireConstructor = true,
-                ConstructorParameters = new Type[] { typeof(Character) }
+                RequireInterfaces = true
             };
-            _typeCollection = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
-            _typeCollection.BeginLoading();
+
+            _typeFactory = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
+            _typeFactory.BeginLoading();
         }
 
         /// <summary>
@@ -63,9 +46,9 @@ namespace DemoGame.Server
         /// <param name="aiName">Name of the AI.</param>
         /// <param name="character">Character to bind the AI to.</param>
         /// <returns>An AIBase instance.</returns>
-        public static AIBase Create(string aiName, Character character)
+        public AIBase Create(string aiName, Character character)
         {
-            return (AIBase)_typeCollection.GetTypeInstance(aiName, new object[] { character });
+            return (AIBase)_typeFactory.GetTypeInstance(aiName, new object[] { character });
         }
 
         /// <summary>
@@ -74,10 +57,35 @@ namespace DemoGame.Server
         /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
         /// <param name="name">Name of the Type.</param>
-        static void OnLoadTypeHandler(TypeFactory factoryTypeCollection, Type loadedType, string name)
+        protected virtual void OnLoadTypeHandler(TypeFactory factoryTypeCollection, Type loadedType, string name)
         {
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded AI `{0}` from Type `{1}`.", name, loadedType);
+        }
+    }
+    
+    /// <summary>
+    /// Factory for the AI.
+    /// </summary>
+    public class AIFactory : AIFactoryBase
+    {
+        static readonly AIFactory _instance;
+
+        public static AIFactory Instance { get { return _instance; } }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AIFactory"/> class.
+        /// </summary>
+        AIFactory()
+        {
+        }
+
+        /// <summary>
+        /// Initializes the <see cref="AIFactory"/> class.
+        /// </summary>
+        static AIFactory()
+        {
+            _instance = new AIFactory();
         }
     }
 }
