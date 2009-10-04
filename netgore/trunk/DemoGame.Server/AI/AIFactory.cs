@@ -1,11 +1,7 @@
-using System;
 using System.Linq;
-using System.Reflection;
 using DemoGame;
-using log4net;
 using NetGore;
 using NetGore.AI;
-using NetGore.Collections;
 
 namespace DemoGame.Server
 {
@@ -16,13 +12,9 @@ namespace DemoGame.Server
     {
         static readonly AIFactory _instance;
 
-        public static AIFactory Instance { get { return _instance; } }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AIFactory"/> class.
-        /// </summary>
-        AIFactory() : base(typeof(AIBase))
+        public static AIFactory Instance
         {
+            get { return _instance; }
         }
 
         /// <summary>
@@ -31,6 +23,13 @@ namespace DemoGame.Server
         static AIFactory()
         {
             _instance = new AIFactory();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AIFactory"/> class.
+        /// </summary>
+        AIFactory() : base(typeof(AIBase))
+        {
         }
     }
 }

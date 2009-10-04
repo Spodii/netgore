@@ -9,10 +9,10 @@ using NetGore.Db;
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Contains extension methods for class CharacterTable that assist in performing
+    /// Contains extension methods for class NpcCharacterTable that assist in performing
     /// reads and writes to and from a database.
     /// </summary>
-    public static class CharacterTableDbExtensions
+    public static class NpcCharacterTableDbExtensions
     {
         /// <summary>
         /// Copies the column values into the given DbParameterValues using the database column name
@@ -21,7 +21,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void CopyValues(this ICharacterTable source, DbParameterValues paramValues)
+        public static void CopyValues(this INpcCharacterTable source, DbParameterValues paramValues)
         {
             paramValues["@account_id"] = (int?)source.AccountID;
             paramValues["@ai_id"] = (ushort?)source.AIID;
@@ -31,7 +31,7 @@ namespace DemoGame.Server.DbObjs
             paramValues["@chat_dialog"] = source.ChatDialog;
             paramValues["@exp"] = source.Exp;
             paramValues["@hp"] = (Int16)source.HP;
-            paramValues["@id"] = (Int32)source.ID;
+            paramValues["@id"] = source.ID;
             paramValues["@level"] = source.Level;
             paramValues["@map_id"] = (UInt16)source.MapID;
             paramValues["@mp"] = (Int16)source.MP;
@@ -40,14 +40,14 @@ namespace DemoGame.Server.DbObjs
             paramValues["@respawn_x"] = source.RespawnX;
             paramValues["@respawn_y"] = source.RespawnY;
             paramValues["@shop_id"] = (ushort?)source.ShopID;
-            paramValues["@stat_agi"] = (Int16)source.GetStat(StatType.Agi);
-            paramValues["@stat_defence"] = (Int16)source.GetStat(StatType.Defence);
-            paramValues["@stat_int"] = (Int16)source.GetStat(StatType.Int);
-            paramValues["@stat_maxhit"] = (Int16)source.GetStat(StatType.MaxHit);
-            paramValues["@stat_maxhp"] = (Int16)source.GetStat(StatType.MaxHP);
-            paramValues["@stat_maxmp"] = (Int16)source.GetStat(StatType.MaxMP);
-            paramValues["@stat_minhit"] = (Int16)source.GetStat(StatType.MinHit);
-            paramValues["@stat_str"] = (Int16)source.GetStat(StatType.Str);
+            paramValues["@stat_agi"] = source.StatAgi;
+            paramValues["@stat_defence"] = source.StatDefence;
+            paramValues["@stat_int"] = source.StatInt;
+            paramValues["@stat_maxhit"] = source.StatMaxhit;
+            paramValues["@stat_maxhp"] = source.StatMaxhp;
+            paramValues["@stat_maxmp"] = source.StatMaxmp;
+            paramValues["@stat_minhit"] = source.StatMinhit;
+            paramValues["@stat_str"] = source.StatStr;
             paramValues["@statpoints"] = source.StatPoints;
             paramValues["@x"] = source.X;
             paramValues["@y"] = source.Y;
@@ -60,7 +60,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void ReadValues(this CharacterTable source, IDataReader dataReader)
+        public static void ReadValues(this NpcCharacterTable source, IDataReader dataReader)
         {
             Int32 i;
 
@@ -89,7 +89,7 @@ namespace DemoGame.Server.DbObjs
             source.HP = dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("id");
-            source.ID = (CharacterID)dataReader.GetInt32(i);
+            source.ID = dataReader.GetInt32(i);
 
             i = dataReader.GetOrdinal("level");
             source.Level = dataReader.GetByte(i);
@@ -116,28 +116,28 @@ namespace DemoGame.Server.DbObjs
             source.ShopID = (ShopID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("stat_agi");
-            source.SetStat(StatType.Agi, dataReader.GetInt16(i));
+            source.StatAgi = dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("stat_defence");
-            source.SetStat(StatType.Defence, dataReader.GetInt16(i));
+            source.StatDefence = dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("stat_int");
-            source.SetStat(StatType.Int, dataReader.GetInt16(i));
+            source.StatInt = dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("stat_maxhit");
-            source.SetStat(StatType.MaxHit, dataReader.GetInt16(i));
+            source.StatMaxhit = dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("stat_maxhp");
-            source.SetStat(StatType.MaxHP, dataReader.GetInt16(i));
+            source.StatMaxhp = dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("stat_maxmp");
-            source.SetStat(StatType.MaxMP, dataReader.GetInt16(i));
+            source.StatMaxmp = dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("stat_minhit");
-            source.SetStat(StatType.MinHit, dataReader.GetInt16(i));
+            source.StatMinhit = dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("stat_str");
-            source.SetStat(StatType.Str, dataReader.GetInt16(i));
+            source.StatStr = dataReader.GetInt16(i);
 
             i = dataReader.GetOrdinal("statpoints");
             source.StatPoints = dataReader.GetInt32(i);
@@ -159,7 +159,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void TryCopyValues(this ICharacterTable source, DbParameterValues paramValues)
+        public static void TryCopyValues(this INpcCharacterTable source, DbParameterValues paramValues)
         {
             for (int i = 0; i < paramValues.Count; i++)
             {
@@ -198,7 +198,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@id":
-                        paramValues[i] = (Int32)source.ID;
+                        paramValues[i] = source.ID;
                         break;
 
                     case "@level":
@@ -234,35 +234,35 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "@stat_agi":
-                        paramValues[i] = (Int16)source.GetStat(StatType.Agi);
+                        paramValues[i] = source.StatAgi;
                         break;
 
                     case "@stat_defence":
-                        paramValues[i] = (Int16)source.GetStat(StatType.Defence);
+                        paramValues[i] = source.StatDefence;
                         break;
 
                     case "@stat_int":
-                        paramValues[i] = (Int16)source.GetStat(StatType.Int);
+                        paramValues[i] = source.StatInt;
                         break;
 
                     case "@stat_maxhit":
-                        paramValues[i] = (Int16)source.GetStat(StatType.MaxHit);
+                        paramValues[i] = source.StatMaxhit;
                         break;
 
                     case "@stat_maxhp":
-                        paramValues[i] = (Int16)source.GetStat(StatType.MaxHP);
+                        paramValues[i] = source.StatMaxhp;
                         break;
 
                     case "@stat_maxmp":
-                        paramValues[i] = (Int16)source.GetStat(StatType.MaxMP);
+                        paramValues[i] = source.StatMaxmp;
                         break;
 
                     case "@stat_minhit":
-                        paramValues[i] = (Int16)source.GetStat(StatType.MinHit);
+                        paramValues[i] = source.StatMinhit;
                         break;
 
                     case "@stat_str":
-                        paramValues[i] = (Int16)source.GetStat(StatType.Str);
+                        paramValues[i] = source.StatStr;
                         break;
 
                     case "@statpoints":
@@ -290,7 +290,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void TryReadValues(this CharacterTable source, IDataReader dataReader)
+        public static void TryReadValues(this NpcCharacterTable source, IDataReader dataReader)
         {
             for (int i = 0; i < dataReader.FieldCount; i++)
             {
@@ -330,7 +330,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "id":
-                        source.ID = (CharacterID)dataReader.GetInt32(i);
+                        source.ID = dataReader.GetInt32(i);
                         break;
 
                     case "level":
@@ -366,35 +366,35 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "stat_agi":
-                        source.SetStat(StatType.Agi, dataReader.GetInt16(i));
+                        source.StatAgi = dataReader.GetInt16(i);
                         break;
 
                     case "stat_defence":
-                        source.SetStat(StatType.Defence, dataReader.GetInt16(i));
+                        source.StatDefence = dataReader.GetInt16(i);
                         break;
 
                     case "stat_int":
-                        source.SetStat(StatType.Int, dataReader.GetInt16(i));
+                        source.StatInt = dataReader.GetInt16(i);
                         break;
 
                     case "stat_maxhit":
-                        source.SetStat(StatType.MaxHit, dataReader.GetInt16(i));
+                        source.StatMaxhit = dataReader.GetInt16(i);
                         break;
 
                     case "stat_maxhp":
-                        source.SetStat(StatType.MaxHP, dataReader.GetInt16(i));
+                        source.StatMaxhp = dataReader.GetInt16(i);
                         break;
 
                     case "stat_maxmp":
-                        source.SetStat(StatType.MaxMP, dataReader.GetInt16(i));
+                        source.StatMaxmp = dataReader.GetInt16(i);
                         break;
 
                     case "stat_minhit":
-                        source.SetStat(StatType.MinHit, dataReader.GetInt16(i));
+                        source.StatMinhit = dataReader.GetInt16(i);
                         break;
 
                     case "stat_str":
-                        source.SetStat(StatType.Str, dataReader.GetInt16(i));
+                        source.StatStr = dataReader.GetInt16(i);
                         break;
 
                     case "statpoints":

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore;
 using NUnit.Framework;
 
 #pragma warning disable 219

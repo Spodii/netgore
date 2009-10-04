@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 
 // Good thing I only spent a few hours making this fucking this before realizing there is a "BitArray"... -.-
 

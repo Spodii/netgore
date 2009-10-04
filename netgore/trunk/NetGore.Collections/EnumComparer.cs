@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using NetGore;
 
 // EnumComparer code base credit goes to: http://www.codeproject.com/KB/cs/EnumComparer.aspx
 

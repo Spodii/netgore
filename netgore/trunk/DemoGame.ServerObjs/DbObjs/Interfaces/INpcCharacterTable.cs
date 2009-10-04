@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using DemoGame;
 using NetGore;
@@ -8,9 +7,9 @@ using NetGore.AI;
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `character`.
+    /// Interface for a class that can be used to serialize values to the database table `npc_character`.
     /// </summary>
-    public interface ICharacterTable
+    public interface INpcCharacterTable
     {
         /// <summary>
         /// Gets the value of the database column `account_id`.
@@ -55,7 +54,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// Gets the value of the database column `id`.
         /// </summary>
-        CharacterID ID { get; }
+        Int32 ID { get; }
 
         /// <summary>
         /// Gets the value of the database column `level`.
@@ -98,15 +97,49 @@ namespace DemoGame.Server.DbObjs
         ShopID? ShopID { get; }
 
         /// <summary>
+        /// Gets the value of the database column `stat_agi`.
+        /// </summary>
+        Int16 StatAgi { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_defence`.
+        /// </summary>
+        Int16 StatDefence { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_int`.
+        /// </summary>
+        Int16 StatInt { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_maxhit`.
+        /// </summary>
+        Int16 StatMaxhit { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_maxhp`.
+        /// </summary>
+        Int16 StatMaxhp { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_maxmp`.
+        /// </summary>
+        Int16 StatMaxmp { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `stat_minhit`.
+        /// </summary>
+        Int16 StatMinhit { get; }
+
+        /// <summary>
         /// Gets the value of the database column `statpoints`.
         /// </summary>
         Int32 StatPoints { get; }
 
         /// <summary>
-        /// Gets an IEnumerable of KeyValuePairs containing the values in the `Stat` collection. The
-        /// key is the collection's key and the value is the value for that corresponding key.
+        /// Gets the value of the database column `stat_str`.
         /// </summary>
-        IEnumerable<KeyValuePair<StatType, Int32>> Stats { get; }
+        Int16 StatStr { get; }
 
         /// <summary>
         /// Gets the value of the database column `x`.
@@ -125,16 +158,6 @@ namespace DemoGame.Server.DbObjs
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        ICharacterTable DeepCopy();
-
-        /// <summary>
-        /// Gets the value of the database column in the column collection `Stat`
-        /// that corresponds to the given <paramref name="key"/>.
-        /// </summary>
-        /// <param name="key">The key that represents the column in this column collection.</param>
-        /// <returns>
-        /// The value of the database column with the corresponding <paramref name="key"/>.
-        /// </returns>
-        Int32 GetStat(StatType key);
+        INpcCharacterTable DeepCopy();
     }
 }

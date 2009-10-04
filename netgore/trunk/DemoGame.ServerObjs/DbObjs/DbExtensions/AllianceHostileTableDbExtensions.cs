@@ -45,7 +45,7 @@ namespace DemoGame.Server.DbObjs
             source.HostileID = (AllianceID)dataReader.GetByte(i);
 
             i = dataReader.GetOrdinal("placeholder");
-            source.Placeholder = (dataReader.IsDBNull(i) ? (Nullable<Byte>)null : dataReader.GetByte(i));
+            source.Placeholder = (dataReader.IsDBNull(i) ? (byte?)null : dataReader.GetByte(i));
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "placeholder":
-                        source.Placeholder = (dataReader.IsDBNull(i) ? (Nullable<Byte>)null : dataReader.GetByte(i));
+                        source.Placeholder = (dataReader.IsDBNull(i) ? (byte?)null : dataReader.GetByte(i));
                         break;
                 }
             }

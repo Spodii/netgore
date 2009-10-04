@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -98,6 +98,82 @@ namespace NetGore.Collections
         /// </summary>
         public Type Subclass { get; set; }
 
+        bool Filter(Type type)
+        {
+            // Check the type of Type
+            if (IsClass != null && type.IsClass != IsClass)
+                return false;
+
+            if (IsAbstract != null && type.IsAbstract != IsAbstract)
+                return false;
+
+            if (IsInterface != null && type.IsInterface != IsInterface)
+                return false;
+
+            if (IsEnum != null && type.IsEnum != IsEnum)
+                return false;
+
+            // Check the subclass
+            if (Subclass != null && !type.IsSubclassOf(Subclass))
+                return false;
+
+            // Check the custom filter
+            if (CustomFilter != null && !CustomFilter(type))
+                return false;
+
+            // Check the other stuff
+            // We have to make sure we don't just abort on the first failure since we will still need to throw an
+            // exception if needed
+            // Basically, the process is this:
+            // 1. Do steps 2-4, first for non-required filters, then for required filters
+            // 2. Check the filter
+            // 3. Once "failed" has reached true, don't let it go back to false
+            // 4. If we have failed, only check the filter if there is a chance it can throw an exception
+            bool failed = false;
+
+            // Non-required filters (that way we avoid throwing an exception for as long as possible)
+            failed |= !FilterConstructorParameters(type, false);
+            failed |= !FilterInterfaces(type, false);
+            failed |= !FilterAttributes(type, false);
+
+            if (failed)
+                return false;
+
+            // Required filters
+            failed |= !FilterConstructorParameters(type, true);
+            failed |= !FilterInterfaces(type, true);
+            failed |= !FilterAttributes(type, true);
+
+            return !failed;
+        }
+
+        bool FilterAttributes(Type type, bool mustBeRequired)
+        {
+            if (mustBeRequired != RequireAttributes)
+                return true;
+
+            if (Attributes == null || Attributes.Count() <= 0)
+                return true;
+
+            var a = type.GetCustomAttributes(true).Select(x => x.GetType());
+            bool isValid = (MatchAllAttributes ? Attributes.All(x => a.Contains(x)) : Attributes.Any(x => a.Contains(x)));
+            if (!isValid)
+            {
+                if (RequireAttributes)
+                {
+                    const string errmsg = "Type `{0}` does not have the required attributes: `{1}`.";
+                    string err = string.Format(errmsg, type, GetTypeString(Attributes));
+                    if (log.IsFatalEnabled)
+                        log.Fatal(err);
+                    throw new TypeFilterException(err);
+                }
+                else
+                    return false;
+            }
+
+            return true;
+        }
+
         bool FilterConstructorParameters(Type type, bool mustBeRequired)
         {
             if (mustBeRequired != RequireConstructor)
@@ -111,8 +187,7 @@ namespace NetGore.Collections
             {
                 if (RequireConstructor)
                 {
-                    const string errmsg =
-                        "Type `{0}` does not have the required constructor containing the parameters: `{1}`.";
+                    const string errmsg = "Type `{0}` does not have the required constructor containing the parameters: `{1}`.";
                     string err = string.Format(errmsg, type, GetTypeString(ConstructorParameters));
                     if (log.IsFatalEnabled)
                         log.Fatal(err);
@@ -150,82 +225,6 @@ namespace NetGore.Collections
             }
 
             return true;
-        }
-
-        bool FilterAttributes(Type type, bool mustBeRequired)
-        {
-            if (mustBeRequired != RequireAttributes)
-                return true;
-
-            if (Attributes == null || Attributes.Count() <= 0)
-                return true;
-
-            var a = type.GetCustomAttributes(true).Select(x => x.GetType());
-            bool isValid = (MatchAllAttributes ? Attributes.All(x => a.Contains(x)) : Attributes.Any(x => a.Contains(x)));
-            if (!isValid)
-            {
-                if (RequireAttributes)
-                {
-                    const string errmsg = "Type `{0}` does not have the required attributes: `{1}`.";
-                    string err = string.Format(errmsg, type, GetTypeString(Attributes));
-                    if (log.IsFatalEnabled)
-                        log.Fatal(err);
-                    throw new TypeFilterException(err);
-                }
-                else
-                    return false;
-            }
-
-            return true;
-        }
-
-        bool Filter(Type type)
-        {
-            // Check the type of Type
-            if (IsClass != null && type.IsClass != IsClass)
-                return false;
-
-            if (IsAbstract != null && type.IsAbstract != IsAbstract)
-                return false;
-
-            if (IsInterface != null && type.IsInterface != IsInterface)
-                return false;
-
-            if (IsEnum != null && type.IsEnum != IsEnum)
-                return false;
-
-            // Check the subclass
-            if (Subclass != null && !type.IsSubclassOf(Subclass))
-                return false;
-
-            // Check the custom filter
-            if (CustomFilter != null && !CustomFilter(type))
-                return false;
-
-            // Check the other stuff
-            // We have to make sure we don't just abort on the first failure since we will still need to throw an
-            // exception if needed
-            // Basically, the process is this:
-            // 1. Do steps 2-4, first for non-required filters, then for required filters
-            // 2. Check the filter
-            // 3. Once "failed" has reached true, don't let it go back to false
-            // 4. If we have failed, only check the filter if there is a chance it can throw an exception
-            bool failed = false;
-            
-            // Non-required filters (that way we avoid throwing an exception for as long as possible)
-            failed |= !FilterConstructorParameters(type, false);
-            failed |= !FilterInterfaces(type, false);
-            failed |= !FilterAttributes(type, false);
-
-            if (failed)
-                return false;
-
-            // Required filters
-            failed |= !FilterConstructorParameters(type, true);
-            failed |= !FilterInterfaces(type, true);
-            failed |= !FilterAttributes(type, true);
-            
-            return !failed;
         }
 
         public Func<Type, bool> GetFilter()

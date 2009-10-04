@@ -37,7 +37,7 @@ namespace DemoGame.Server.DbObjs
             Int32 i;
 
             i = dataReader.GetOrdinal("server_time");
-            source.ServerTime = (DateTime)dataReader.GetDateTime(i);
+            source.ServerTime = dataReader.GetDateTime(i);
         }
 
         /// <summary>
@@ -80,7 +80,7 @@ namespace DemoGame.Server.DbObjs
                 switch (dataReader.GetName(i))
                 {
                     case "server_time":
-                        source.ServerTime = (DateTime)dataReader.GetDateTime(i);
+                        source.ServerTime = dataReader.GetDateTime(i);
                         break;
                 }
             }

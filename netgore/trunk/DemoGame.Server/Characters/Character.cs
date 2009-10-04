@@ -9,6 +9,7 @@ using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.AI;
 using NetGore.Db;
 using NetGore.Network;
 using NetGore.NPCChat;
@@ -246,6 +247,11 @@ namespace DemoGame.Server
         {
             get { return _shopManager; }
         }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the Character's AI. Can be null if they have no AI.
+        /// </summary>
+        public abstract IAI AI { get; }
 
         /// <summary>
         /// Gets or sets (protected) the Character's alliance.
@@ -881,6 +887,19 @@ namespace DemoGame.Server
             _exp = v.Exp;
             _statPoints = v.StatPoints;
 
+            // Create the AI
+            if (v.AIID.HasValue)
+            {
+                if (!SetAI(v.AIID.Value))
+                {
+                    const string errmsg = "Failed to set Character `{0}`'s AI to ID `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, this, v.AIID.Value);
+                    Debug.Fail(string.Format(errmsg, this, v.AIID.Value));
+                    RemoveAI();
+                }
+            }
+
             BaseStats.CopyValuesFrom(v.Stats, false);
         }
 
@@ -904,6 +923,19 @@ namespace DemoGame.Server
             RespawnMapIndex = v.RespawnMap;
             RespawnPosition = new Vector2(v.RespawnX, v.RespawnY);
             StatPoints = v.StatPoints;
+
+            // Create the AI
+            if (v.AIID.HasValue)
+            {
+                if (!SetAI(v.AIID.Value))
+                {
+                    const string errmsg = "Failed to set Character `{0}`'s AI to ID `{1}`.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, this, v.AIID.Value);
+                    Debug.Fail(string.Format(errmsg, this, v.AIID.Value));
+                    RemoveAI();
+                }
+            }
 
             // Load the stats
             _baseStats.CopyValuesFrom(v.Stats, false);
@@ -1001,6 +1033,11 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Removes the Character's AI.
+        /// </summary>
+        public abstract void RemoveAI();
+
+        /// <summary>
         /// Saves the Character's information. If IsPersistent is false, this will do nothing, but will not
         /// raise any Exceptions.
         /// </summary>
@@ -1022,6 +1059,20 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.InfoFormat("Saved Character `{0}`.", this);
         }
+
+        /// <summary>
+        /// Attempts to set the Character's AI.
+        /// </summary>
+        /// <param name="aiID">The ID of the new AI to use.</param>
+        /// <returns>True if the AI was successfully set; otherwise false.</returns>
+        public abstract bool SetAI(AIID aiID);
+
+        /// <summary>
+        /// Attempts to set the Character's AI.
+        /// </summary>
+        /// <param name="aiName">The name of the new AI to use.</param>
+        /// <returns>True if the AI was successfully set; otherwise false.</returns>
+        public abstract bool SetAI(string aiName);
 
         /// <summary>
         /// Sets the Character to being loaded. Must be called after the Character has been loaded.
@@ -1306,6 +1357,21 @@ namespace DemoGame.Server
         ICharacterTable ICharacterTable.DeepCopy()
         {
             return new CharacterTable(this);
+        }
+
+        /// <summary>
+        /// Gets the value of the database column `ai_id`.
+        /// </summary>
+        AIID? ICharacterTable.AIID
+        {
+            get
+            {
+                var ai = AI;
+                if (ai == null)
+                    return null;
+
+                return ai.ID;
+            }
         }
 
         /// <summary>

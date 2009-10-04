@@ -2,6 +2,8 @@ using System;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+using DemoGame;
+using NetGore;
 using NetGore.Globalization;
 
 namespace DemoGame.Server

@@ -63,6 +63,7 @@ namespace NetGore.Db.ClassCreator
 
                 // Custom external types
                 const string accountID = "DemoGame.Server.AccountID";
+                const string aiID = "NetGore.AI.AIID";
                 const string allianceID = "DemoGame.Server.AllianceID";
                 const string characterID = "DemoGame.Server.CharacterID";
                 const string characterTemplateID = "DemoGame.Server.CharacterTemplateID";
@@ -125,6 +126,7 @@ namespace NetGore.Db.ClassCreator
                 generator.AddCustomType(bodyID, "*", "body_id");
                 generator.AddCustomType(spValueType, "*", "hp", "mp");
                 generator.AddCustomType(shopID, "*", "shop_id");
+                generator.AddCustomType(aiID, "*", "ai_id");
 
                 // Renaming
                 var formatter = generator.Formatter;
@@ -145,6 +147,7 @@ namespace NetGore.Db.ClassCreator
                 formatter.AddAlias("give_exp", "GiveExp");
                 formatter.AddAlias("give_cash", "GiveCash");
                 formatter.AddAlias("status_effect_id", "StatusEffect");
+                formatter.AddAlias("ai_id", "AIID");
 
                 formatter.AddAlias("Name");
                 formatter.AddAlias("ID");

@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using NetGore;
 using NetGore.Globalization;
 using NUnit.Framework;
 

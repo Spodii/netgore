@@ -1,4 +1,5 @@
 using System.Linq;
+using NetGore;
 using NetGore.Globalization;
 
 namespace NetGore.IO

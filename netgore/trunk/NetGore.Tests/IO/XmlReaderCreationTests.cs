@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
+using NetGore;
 using NUnit.Framework;
 
 namespace NetGore.IO.Tests

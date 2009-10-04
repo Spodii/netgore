@@ -5,9 +5,19 @@ using NetGore.AI;
 
 namespace DemoGame.Server
 {
-    [AI(0)]
+    [AI(_id)]
     public class TestAI : AIBase
     {
+        const int _id = 1;
+
+        /// <summary>
+        /// When overridden in the derived class, gets the ID of this AI.
+        /// </summary>
+        public override AIID ID
+        {
+            get { return new AIID(_id); }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="TestAI"/> class.
         /// </summary>

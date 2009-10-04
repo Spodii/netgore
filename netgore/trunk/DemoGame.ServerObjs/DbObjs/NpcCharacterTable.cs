@@ -9,9 +9,9 @@ using NetGore.AI;
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Provides a strongly-typed structure for the database table `user_character`.
+    /// Provides a strongly-typed structure for the database table `npc_character`.
     /// </summary>
-    public class UserCharacterTable : IUserCharacterTable
+    public class NpcCharacterTable : INpcCharacterTable
     {
         /// <summary>
         /// The number of columns in the database table that this class represents.
@@ -21,7 +21,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The name of the database table that this class represents.
         /// </summary>
-        public const String TableName = "user_character";
+        public const String TableName = "npc_character";
 
         /// <summary>
         /// Array of the database column names.
@@ -213,14 +213,14 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// UserCharacterTable constructor.
+        /// NpcCharacterTable constructor.
         /// </summary>
-        public UserCharacterTable()
+        public NpcCharacterTable()
         {
         }
 
         /// <summary>
-        /// UserCharacterTable constructor.
+        /// NpcCharacterTable constructor.
         /// </summary>
         /// <param name="accountID">The initial value for the corresponding property.</param>
         /// <param name="aIID">The initial value for the corresponding property.</param>
@@ -250,12 +250,12 @@ namespace DemoGame.Server.DbObjs
         /// <param name="statPoints">The initial value for the corresponding property.</param>
         /// <param name="x">The initial value for the corresponding property.</param>
         /// <param name="y">The initial value for the corresponding property.</param>
-        public UserCharacterTable(AccountID? @accountID, AIID? @aIID, BodyIndex @bodyID, Int32 @cash,
-                                  CharacterTemplateID? @characterTemplateID, ushort? @chatDialog, Int32 @exp, SPValueType @hP,
-                                  Int32 @iD, Byte @level, MapIndex @mapID, SPValueType @mP, String @name, MapIndex? @respawnMap,
-                                  Single @respawnX, Single @respawnY, ShopID? @shopID, Int16 @statAgi, Int16 @statDefence,
-                                  Int16 @statInt, Int16 @statMaxhit, Int16 @statMaxhp, Int16 @statMaxmp, Int16 @statMinhit,
-                                  Int16 @statStr, Int32 @statPoints, Single @x, Single @y)
+        public NpcCharacterTable(AccountID? @accountID, AIID? @aIID, BodyIndex @bodyID, Int32 @cash,
+                                 CharacterTemplateID? @characterTemplateID, ushort? @chatDialog, Int32 @exp, SPValueType @hP,
+                                 Int32 @iD, Byte @level, MapIndex @mapID, SPValueType @mP, String @name, MapIndex? @respawnMap,
+                                 Single @respawnX, Single @respawnY, ShopID? @shopID, Int16 @statAgi, Int16 @statDefence,
+                                 Int16 @statInt, Int16 @statMaxhit, Int16 @statMaxhp, Int16 @statMaxmp, Int16 @statMinhit,
+                                 Int16 @statStr, Int32 @statPoints, Single @x, Single @y)
         {
             AccountID = @accountID;
             AIID = @aIID;
@@ -288,10 +288,10 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// UserCharacterTable constructor.
+        /// NpcCharacterTable constructor.
         /// </summary>
-        /// <param name="source">IUserCharacterTable to copy the initial values from.</param>
-        public UserCharacterTable(IUserCharacterTable source)
+        /// <param name="source">INpcCharacterTable to copy the initial values from.</param>
+        public NpcCharacterTable(INpcCharacterTable source)
         {
             CopyValuesFrom(source);
         }
@@ -303,7 +303,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
-        public static void CopyValues(IUserCharacterTable source, IDictionary<String, Object> dic)
+        public static void CopyValues(INpcCharacterTable source, IDictionary<String, Object> dic)
         {
             dic["@account_id"] = source.AccountID;
             dic["@ai_id"] = source.AIID;
@@ -347,10 +347,10 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Copies the values from the given <paramref name="source"/> into this UserCharacterTable.
+        /// Copies the values from the given <paramref name="source"/> into this NpcCharacterTable.
         /// </summary>
-        /// <param name="source">The IUserCharacterTable to copy the values from.</param>
-        public void CopyValuesFrom(IUserCharacterTable source)
+        /// <param name="source">The INpcCharacterTable to copy the values from.</param>
+        public void CopyValuesFrom(INpcCharacterTable source)
         {
             AccountID = source.AccountID;
             AIID = source.AIID;
@@ -709,7 +709,7 @@ namespace DemoGame.Server.DbObjs
             }
         }
 
-        #region IUserCharacterTable Members
+        #region INpcCharacterTable Members
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `account_id`.
@@ -998,9 +998,9 @@ namespace DemoGame.Server.DbObjs
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        public IUserCharacterTable DeepCopy()
+        public INpcCharacterTable DeepCopy()
         {
-            return new UserCharacterTable(this);
+            return new NpcCharacterTable(this);
         }
 
         #endregion

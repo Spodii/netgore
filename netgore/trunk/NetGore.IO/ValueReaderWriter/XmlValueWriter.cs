@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Xml;
+using NetGore;
 using NetGore.Globalization;
 
 // NOTE: This class won't work if you forget to call Dispose. Would be nice to use a destructor to fix that.
