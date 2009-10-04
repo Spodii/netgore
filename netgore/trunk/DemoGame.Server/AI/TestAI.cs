@@ -1,16 +1,25 @@
 using System.Linq;
 using DemoGame;
 using NetGore;
+using NetGore.AI;
 
 namespace DemoGame.Server
 {
     [AI(0)]
     public class TestAI : AIBase
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TestAI"/> class.
+        /// </summary>
+        /// <param name="actor">Character for this AI module to control.</param>
         public TestAI(Character actor) : base(actor)
         {
         }
 
+        /// <summary>
+        /// When overridden in the derived class, updates the AI. This is called at most once per frame, and only
+        /// called whe the Actor is alive and active.
+        /// </summary>
         public override void Update()
         {
             Character target = GetClosestHostile();

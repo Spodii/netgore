@@ -55,6 +55,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AI\AIAttribute.cs" />
+    <Compile Include="AI\AIFactoryBase.cs" />
+    <Compile Include="AI\AIID.cs" />
+    <Compile Include="AI\IAI.cs" />
     <Compile Include="Alignment.cs" />
     <Compile Include="AlignmentHelper.cs" />
     <Compile Include="CharType.cs" />
