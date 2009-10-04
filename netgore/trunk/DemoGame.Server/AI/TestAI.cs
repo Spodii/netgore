@@ -4,6 +4,7 @@ using NetGore;
 
 namespace DemoGame.Server
 {
+    [AI(0)]
     public class TestAI : AIBase
     {
         public TestAI(Character actor) : base(actor)
