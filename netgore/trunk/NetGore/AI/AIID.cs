@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using NetGore.Globalization;
 using NetGore.IO;
 
-namespace DemoGame.Server
+namespace NetGore.AI
 {
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]

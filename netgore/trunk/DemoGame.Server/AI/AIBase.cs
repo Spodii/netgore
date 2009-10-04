@@ -6,6 +6,7 @@ using DemoGame;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.AI;
 
 namespace DemoGame.Server
 {
@@ -14,7 +15,7 @@ namespace DemoGame.Server
     /// of the AIBase must include static method that named "CreateInstance" that accepts a Character
     /// and returns an AIBase.
     /// </summary>
-    public abstract class AIBase
+    public abstract class AIBase : IAI
     {
         static readonly Random _rand = new Random();
 
@@ -125,10 +126,22 @@ namespace DemoGame.Server
             return _rand.Next(min, max);
         }
 
+        #region IAI Members
+
+        /// <summary>
+        /// Gets the <see cref="DynamicEntity"/> that this AI is for.
+        /// </summary>
+        DynamicEntity IAI.Actor
+        {
+            get { return Actor; }
+        }
+
         /// <summary>
         /// When overridden in the derived class, updates the AI. This is called at most once per frame, and only
         /// called whe the <see cref="Actor"/> is alive and active.
         /// </summary>
         public abstract void Update();
+
+        #endregion
     }
 }

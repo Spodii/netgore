@@ -98,12 +98,12 @@ namespace NetGore.Collections
         /// </summary>
         public Type Subclass { get; set; }
 
-        bool FilterConstructorParameters(Type type, bool onlyIfRequired)
+        bool FilterConstructorParameters(Type type, bool mustBeRequired)
         {
-            if (ConstructorParameters == null)
+            if (mustBeRequired != RequireConstructor)
                 return true;
 
-            if (onlyIfRequired && !RequireConstructor)
+            if (ConstructorParameters == null)
                 return true;
 
             const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
@@ -125,12 +125,12 @@ namespace NetGore.Collections
             return true;
         }
 
-        bool FilterInterfaces(Type type, bool onlyIfRequired)
+        bool FilterInterfaces(Type type, bool mustBeRequired)
         {
-            if (Interfaces == null || Interfaces.Count() <= 0)
+            if (mustBeRequired != RequireInterfaces)
                 return true;
 
-            if (onlyIfRequired && !RequireInterfaces)
+            if (Interfaces == null || Interfaces.Count() <= 0)
                 return true;
 
             var i = type.GetInterfaces();
@@ -152,12 +152,12 @@ namespace NetGore.Collections
             return true;
         }
 
-        bool FilterAttributes(ICustomAttributeProvider type, bool onlyIfRequired)
+        bool FilterAttributes(Type type, bool mustBeRequired)
         {
-            if (Attributes == null || Attributes.Count() <= 0)
+            if (mustBeRequired != RequireAttributes)
                 return true;
 
-            if (onlyIfRequired && !RequireAttributes)
+            if (Attributes == null || Attributes.Count() <= 0)
                 return true;
 
             var a = type.GetCustomAttributes(true).Select(x => x.GetType());
@@ -206,12 +206,24 @@ namespace NetGore.Collections
             // We have to make sure we don't just abort on the first failure since we will still need to throw an
             // exception if needed
             // Basically, the process is this:
-            // 1. Check the filter
-            // 2. Once "failed" has reached true, don't let it go back to false
-            // 3. If we have failed, only check the filter if there is a chance it can throw an exception
-            bool failed = !FilterConstructorParameters(type, false);
-            failed |= !FilterInterfaces(type, failed);
-            failed |= !FilterAttributes(type, failed);
+            // 1. Do steps 2-4, first for non-required filters, then for required filters
+            // 2. Check the filter
+            // 3. Once "failed" has reached true, don't let it go back to false
+            // 4. If we have failed, only check the filter if there is a chance it can throw an exception
+            bool failed = false;
+            
+            // Non-required filters (that way we avoid throwing an exception for as long as possible)
+            failed |= !FilterConstructorParameters(type, false);
+            failed |= !FilterInterfaces(type, false);
+            failed |= !FilterAttributes(type, false);
+
+            if (failed)
+                return false;
+
+            // Required filters
+            failed |= !FilterConstructorParameters(type, true);
+            failed |= !FilterInterfaces(type, true);
+            failed |= !FilterAttributes(type, true);
             
             return !failed;
         }

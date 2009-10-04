@@ -9,6 +9,7 @@ using DemoGame.Server.NPCChat;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.AI;
 using NetGore.NPCChat;
 
 namespace DemoGame.Server
@@ -20,7 +21,7 @@ namespace DemoGame.Server
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        AIBase _ai;
+        IAI _ai;
         NPCChatDialogBase _chatDialog;
 
         ushort _giveCash;
@@ -35,9 +36,9 @@ namespace DemoGame.Server
         Shop _shop;
 
         /// <summary>
-        /// Gets the NPC's AI. Can be null.
+        /// Gets the NPC's AI. Can be null if the NPC has no AI.
         /// </summary>
-        public AIBase AI
+        public IAI AI
         {
             get { return _ai; }
         }
@@ -370,7 +371,7 @@ namespace DemoGame.Server
             }
 
             // Set the NPC's new AI
-            AIBase newAI;
+            IAI newAI;
             try
             {
                 newAI = AIFactory.Instance.Create(aiName, this);
@@ -399,7 +400,7 @@ namespace DemoGame.Server
                 return;
 
             // Update the AI
-            AIBase ai = AI;
+            var ai = AI;
             if (ai != null)
                 ai.Update();
 
