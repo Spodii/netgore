@@ -18,7 +18,6 @@ namespace DemoGame.Server
     public abstract class AIBase : IAI
     {
         static readonly Random _rand = new Random();
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly Character _actor;
