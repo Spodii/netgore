@@ -62,8 +62,15 @@ namespace NetGore.NPCChat
         /// </summary>
         static NPCChatResponseActionBase()
         {
-            var filter = FactoryTypeCollection.CreateFilter(typeof(NPCChatResponseActionBase), true, Type.EmptyTypes);
-            _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler, false);
+            var filter = new TypeFilterCreator
+            {
+                IsClass = true,
+                IsAbstract = false,
+                Subclass = typeof(NPCChatResponseActionBase),
+                RequireConstructor = true,
+                ConstructorParameters = Type.EmptyTypes
+            };
+            _typeCollection = new FactoryTypeCollection(filter.GetFilter(), OnLoadTypeHandler, false);
             _typeCollection.BeginLoading();
         }
 

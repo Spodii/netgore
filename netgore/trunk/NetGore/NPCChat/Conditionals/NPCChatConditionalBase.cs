@@ -85,8 +85,15 @@ namespace NetGore.NPCChat.Conditionals
         /// </summary>
         static NPCChatConditionalBase()
         {
-            var filter = FactoryTypeCollection.CreateFilter(typeof(NPCChatConditionalBase), true, Type.EmptyTypes);
-            _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler, false);
+            var filter = new TypeFilterCreator
+            {
+                IsClass = true,
+                IsAbstract = false,
+                Subclass = typeof(NPCChatConditionalBase),
+                RequireConstructor = true,
+                ConstructorParameters = Type.EmptyTypes
+            };
+            _typeCollection = new FactoryTypeCollection(filter.GetFilter(), OnLoadTypeHandler, false);
             _typeCollection.BeginLoading();
         }
 

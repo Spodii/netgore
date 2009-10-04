@@ -45,8 +45,15 @@ namespace DemoGame.Server
             if (log.IsInfoEnabled)
                 log.Info("Initializing the AI factory.");
 
-            var filter = FactoryTypeCollection.CreateFilter(typeof(AIBase), true, typeof(Character));
-            _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler, false);
+            var filter = new TypeFilterCreator
+            {
+                IsClass = true,
+                IsAbstract = false,
+                Subclass = typeof(AIBase),
+                RequireConstructor = true,
+                ConstructorParameters = new Type[] { typeof(Character) }
+            };
+            _typeCollection = new FactoryTypeCollection(filter.GetFilter(), OnLoadTypeHandler, false);
             _typeCollection.BeginLoading();
         }
 

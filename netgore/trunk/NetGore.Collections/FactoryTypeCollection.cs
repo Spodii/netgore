@@ -22,8 +22,6 @@ namespace NetGore.Collections
     /// </summary>
     public class FactoryTypeCollection : IEnumerable<Type>
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Contains a List of Assemblies that have already been loaded (used to prevent loading an Assembly more than once).
         /// </summary>
@@ -139,47 +137,6 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Creates a filter to use on the FactoryTypeCollection used to find instanceable classes that fit the specified
-        /// conditions.
-        /// </summary>
-        /// <param name="subclass">Type of the subclass required.</param>
-        /// <param name="constructorParams">Array of Types for the parameters the constructor must have.</param>
-        /// <returns>A filter to use on the FactoryTypeCollection used to find instanceable classes that fit the specified
-        /// conditions.</returns>
-        public static Func<Type, bool> CreateFilter(Type subclass, params Type[] constructorParams)
-        {
-            return x => SubclassFilter(x, subclass, constructorParams, false);
-        }
-
-        /// <summary>
-        /// Creates a filter to use on the FactoryTypeCollection used to find instanceable classes that fit the specified
-        /// conditions.
-        /// </summary>
-        /// <param name="subclass">Type of the subclass required.</param>
-        /// <param name="requireConstructor">If True, then any instanceable Type found that is a subclass of
-        /// <paramref name="subclass"/>, but does not have a constructor with parameters that match
-        /// <paramref name="constructorParams"/> will result in an Exception being thrown.</param>
-        /// <param name="constructorParams">Array of Types for the parameters the constructor must have.</param>
-        /// <returns>A filter to use on the FactoryTypeCollection used to find instanceable classes that fit the specified
-        /// conditions.</returns>
-        public static Func<Type, bool> CreateFilter(Type subclass, bool requireConstructor, params Type[] constructorParams)
-        {
-            return x => SubclassFilter(x, subclass, constructorParams, requireConstructor);
-        }
-
-        /// <summary>
-        /// Creates a filter to use on the FactoryTypeCollection used to find instanceable classes that fit the specified
-        /// conditions.
-        /// </summary>
-        /// <param name="subclass">Type of the subclass required.</param>
-        /// <returns>A filter to use on the FactoryTypeCollection used to find instanceable classes that fit the specified
-        /// conditions.</returns>
-        public static Func<Type, bool> CreateFilter(Type subclass)
-        {
-            return x => x.IsClass && !x.IsAbstract && x.IsSubclassOf(subclass);
-        }
-
-        /// <summary>
         /// Handles when a new Assembly is loaded.
         /// </summary>
         /// <param name="sender">Sender.</param>
@@ -247,30 +204,6 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Gets a string containing the name of the <paramref name="types"/>.
-        /// </summary>
-        /// <param name="types">The Types.</param>
-        /// <returns>A string containing the name of the <paramref name="types"/>.</returns>
-        static string GetTypeString(Type[] types)
-        {
-            if (types == null || types.Length == 0)
-                return string.Empty;
-
-            if (types.Length == 1)
-                return types[0].Name;
-
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < types.Length; i++)
-            {
-                sb.Append(types[i].Name);
-                sb.Append(", ");
-            }
-            sb.Length -= 2;
-
-            return sb.ToString();
-        }
-
-        /// <summary>
         /// Loads the Types of an Assembly.
         /// </summary>
         /// <param name="assembly">Assembly to load the Types from.</param>
@@ -299,50 +232,6 @@ namespace NetGore.Collections
                 if (OnLoadType != null)
                     OnLoadType(this, type, typeName);
             }
-        }
-
-        /// <summary>
-        /// The method used to check if the <paramref name="type"/> meets the given conditions.
-        /// </summary>
-        /// <param name="type">The type.</param>
-        /// <param name="subclass">The subclass.</param>
-        /// <param name="constructorParams">The constructor params.</param>
-        /// <param name="requireConstructor">If True, then any instanceable Type found that is a subclass of
-        /// <paramref name="subclass"/>, but does not have a constructor with parameters that match
-        /// <paramref name="constructorParams"/> will result in an Exception being thrown.</param>
-        /// <returns>True if the Type should be used; otherwise false.</returns>
-        static bool SubclassFilter(Type type, Type subclass, Type[] constructorParams, bool requireConstructor)
-        {
-            if (!type.IsClass)
-                return false;
-
-            if (type.IsAbstract)
-                return false;
-
-            if (!type.IsSubclassOf(subclass))
-                return false;
-
-            if (constructorParams != null)
-            {
-                const BindingFlags flags = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-                if (type.GetConstructor(flags, null, constructorParams, null) == null)
-                {
-                    if (requireConstructor)
-                    {
-                        const string errmsg =
-                            "Type `{0}` does not have the required constructor containing the parameters: `{1}`.";
-                        string err = string.Format(errmsg, type, GetTypeString(constructorParams));
-                        if (log.IsFatalEnabled)
-                            log.Fatal(err);
-                        Debug.Fail(err);
-                        throw new Exception(err);
-                    }
-                    else
-                        return false;
-                }
-            }
-
-            return true;
         }
 
         #region IEnumerable<Type> Members
