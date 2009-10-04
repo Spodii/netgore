@@ -34,7 +34,7 @@ namespace DemoGame.Server
     /// </summary>
     public static class AIFactory
     {
-        static readonly FactoryTypeCollection _typeCollection;
+        static readonly TypeFactory _typeCollection;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace DemoGame.Server
                 RequireConstructor = true,
                 ConstructorParameters = new Type[] { typeof(Character) }
             };
-            _typeCollection = new FactoryTypeCollection(filter.GetFilter(), OnLoadTypeHandler, false);
+            _typeCollection = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
             _typeCollection.BeginLoading();
         }
 
@@ -74,7 +74,7 @@ namespace DemoGame.Server
         /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
         /// <param name="name">Name of the Type.</param>
-        static void OnLoadTypeHandler(FactoryTypeCollection factoryTypeCollection, Type loadedType, string name)
+        static void OnLoadTypeHandler(TypeFactory factoryTypeCollection, Type loadedType, string name)
         {
             if (log.IsInfoEnabled)
                 log.InfoFormat("Loaded AI `{0}` from Type `{1}`.", name, loadedType);
