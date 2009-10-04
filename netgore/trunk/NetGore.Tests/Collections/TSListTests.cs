@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Linq;
 using System.Threading;
+using NetGore;
 using NUnit.Framework;
 
 namespace NetGore.Collections.Tests

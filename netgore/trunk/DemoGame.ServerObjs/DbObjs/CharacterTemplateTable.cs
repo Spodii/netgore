@@ -5,6 +5,7 @@ using System.Linq;
 using DemoGame;
 using DemoGame.DbObjs;
 using NetGore;
+using NetGore.AI;
 
 namespace DemoGame.Server.DbObjs
 {
@@ -28,8 +29,9 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumns = new string[]
         {
-            "ai", "alliance_id", "body_id", "exp", "give_cash", "give_exp", "id", "level", "name", "respawn", "shop_id", "stat_agi",
-            "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints"
+            "ai_id", "alliance_id", "body_id", "exp", "give_cash", "give_exp", "id", "level", "name", "respawn", "shop_id",
+            "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str",
+            "statpoints"
         };
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         {
-            "ai", "alliance_id", "body_id", "exp", "give_cash", "give_exp", "level", "name", "respawn", "shop_id", "stat_agi",
+            "ai_id", "alliance_id", "body_id", "exp", "give_cash", "give_exp", "level", "name", "respawn", "shop_id", "stat_agi",
             "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints"
         };
 
@@ -58,9 +60,9 @@ namespace DemoGame.Server.DbObjs
         readonly StatConstDictionary _stat = new StatConstDictionary();
 
         /// <summary>
-        /// The field that maps onto the database column `ai`.
+        /// The field that maps onto the database column `ai_id`.
         /// </summary>
-        String _aI;
+        ushort? _aIID;
 
         /// <summary>
         /// The field that maps onto the database column `alliance_id`.
@@ -160,7 +162,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// CharacterTemplateTable constructor.
         /// </summary>
-        /// <param name="aI">The initial value for the corresponding property.</param>
+        /// <param name="aIID">The initial value for the corresponding property.</param>
         /// <param name="allianceID">The initial value for the corresponding property.</param>
         /// <param name="bodyID">The initial value for the corresponding property.</param>
         /// <param name="exp">The initial value for the corresponding property.</param>
@@ -180,12 +182,12 @@ namespace DemoGame.Server.DbObjs
         /// <param name="statMinhit">The initial value for the corresponding property.</param>
         /// <param name="statStr">The initial value for the corresponding property.</param>
         /// <param name="statPoints">The initial value for the corresponding property.</param>
-        public CharacterTemplateTable(String @aI, AllianceID @allianceID, BodyIndex @bodyID, Int32 @exp, UInt16 @giveCash,
+        public CharacterTemplateTable(AIID? @aIID, AllianceID @allianceID, BodyIndex @bodyID, Int32 @exp, UInt16 @giveCash,
                                       UInt16 @giveExp, CharacterTemplateID @iD, Byte @level, String @name, UInt16 @respawn,
                                       ShopID? @shopID, Int16 @statAgi, Int16 @statDefence, Int16 @statInt, Int16 @statMaxhit,
                                       Int16 @statMaxhp, Int16 @statMaxmp, Int16 @statMinhit, Int16 @statStr, Int32 @statPoints)
         {
-            AI = @aI;
+            AIID = @aIID;
             AllianceID = @allianceID;
             BodyID = @bodyID;
             Exp = @exp;
@@ -225,7 +227,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="dic">The Dictionary to copy the values into.</param>
         public static void CopyValues(ICharacterTemplateTable source, IDictionary<String, Object> dic)
         {
-            dic["@ai"] = source.AI;
+            dic["@ai_id"] = source.AIID;
             dic["@alliance_id"] = source.AllianceID;
             dic["@body_id"] = source.BodyID;
             dic["@exp"] = source.Exp;
@@ -264,7 +266,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="source">The ICharacterTemplateTable to copy the values from.</param>
         public void CopyValuesFrom(ICharacterTemplateTable source)
         {
-            AI = source.AI;
+            AIID = source.AIID;
             AllianceID = source.AllianceID;
             BodyID = source.BodyID;
             Exp = source.Exp;
@@ -275,14 +277,14 @@ namespace DemoGame.Server.DbObjs
             Name = source.Name;
             Respawn = source.Respawn;
             ShopID = source.ShopID;
-            SetStat(StatType.Agi, source.GetStat((StatType)StatType.Agi));
-            SetStat(StatType.Defence, source.GetStat((StatType)StatType.Defence));
-            SetStat(StatType.Int, source.GetStat((StatType)StatType.Int));
-            SetStat(StatType.MaxHit, source.GetStat((StatType)StatType.MaxHit));
-            SetStat(StatType.MaxHP, source.GetStat((StatType)StatType.MaxHP));
-            SetStat(StatType.MaxMP, source.GetStat((StatType)StatType.MaxMP));
-            SetStat(StatType.MinHit, source.GetStat((StatType)StatType.MinHit));
-            SetStat(StatType.Str, source.GetStat((StatType)StatType.Str));
+            SetStat(StatType.Agi, source.GetStat(StatType.Agi));
+            SetStat(StatType.Defence, source.GetStat(StatType.Defence));
+            SetStat(StatType.Int, source.GetStat(StatType.Int));
+            SetStat(StatType.MaxHit, source.GetStat(StatType.MaxHit));
+            SetStat(StatType.MaxHP, source.GetStat(StatType.MaxHP));
+            SetStat(StatType.MaxMP, source.GetStat(StatType.MaxMP));
+            SetStat(StatType.MinHit, source.GetStat(StatType.MinHit));
+            SetStat(StatType.Str, source.GetStat(StatType.Str));
             StatPoints = source.StatPoints;
         }
 
@@ -297,8 +299,8 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "ai":
-                    return new ColumnMetadata("ai", "", "varchar(255)", null, typeof(String), true, false, false);
+                case "ai_id":
+                    return new ColumnMetadata("ai_id", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
 
                 case "alliance_id":
                     return new ColumnMetadata("alliance_id", "", "tinyint(3) unsigned", null, typeof(Byte), false, false, true);
@@ -373,8 +375,8 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "ai":
-                    return AI;
+                case "ai_id":
+                    return AIID;
 
                 case "alliance_id":
                     return AllianceID;
@@ -457,8 +459,8 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "ai":
-                    AI = (String)value;
+                case "ai_id":
+                    AIID = (AIID?)value;
                     break;
 
                 case "alliance_id":
@@ -554,13 +556,13 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `ai`.
-        /// The underlying database type is `varchar(255)`.
+        /// Gets or sets the value for the field that maps onto the database column `ai_id`.
+        /// The underlying database type is `smallint(5) unsigned`.
         /// </summary>
-        public String AI
+        public AIID? AIID
         {
-            get { return _aI; }
-            set { _aI = value; }
+            get { return (AIID?)_aIID; }
+            set { _aIID = (ushort?)value; }
         }
 
         /// <summary>

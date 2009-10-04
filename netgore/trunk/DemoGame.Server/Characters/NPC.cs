@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -36,9 +35,9 @@ namespace DemoGame.Server
         Shop _shop;
 
         /// <summary>
-        /// Gets the NPC's AI. Can be null if the NPC has no AI.
+        /// When overridden in the derived class, gets the Character's AI. Can be null if they have no AI.
         /// </summary>
-        public IAI AI
+        public override IAI AI
         {
             get { return _ai; }
         }
@@ -131,10 +130,6 @@ namespace DemoGame.Server
                 throw new ArgumentNullException("template");
 
             ICharacterTemplateTable v = template.TemplateTable;
-
-            // Create the AI
-            if (!string.IsNullOrEmpty(v.AI))
-                SetAI(v.AI);
 
             // Set the rest of the template stuff
             Load(template);
@@ -302,8 +297,10 @@ namespace DemoGame.Server
             if (template == null)
                 return;
 
-            _giveCash = template.TemplateTable.GiveCash;
-            _giveExp = template.TemplateTable.GiveExp;
+            var v = template.TemplateTable;
+
+            _giveCash = v.GiveCash;
+            _giveExp = v.GiveExp;
         }
 
         /// <summary>
@@ -358,36 +355,55 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Sets the NPC's AI.
+        /// Removes the Character's AI.
         /// </summary>
-        /// <param name="aiName">Name of the AI to change to. Use a null or empty string to set the AI to null.</param>
-        public void SetAI(string aiName)
+        public override void RemoveAI()
         {
-            // Check to remove the AI
-            if (string.IsNullOrEmpty(aiName))
+            _ai = null;
+        }
+
+        /// <summary>
+        /// Attempts to set the Character's AI.
+        /// </summary>
+        /// <param name="aiID">The ID of the new AI to use.</param>
+        /// <returns>
+        /// True if the AI was successfully set; otherwise false.
+        /// </returns>
+        public override bool SetAI(AIID aiID)
+        {
+            var newAI = AIFactory.Instance.Create(aiID, this);
+            if (newAI == null)
             {
                 _ai = null;
-                return;
-            }
-
-            // Set the NPC's new AI
-            IAI newAI;
-            try
-            {
-                newAI = AIFactory.Instance.Create(aiName, this);
-            }
-            catch (KeyNotFoundException)
-            {
-                // TODO: Can avoid crash by setting AI to null
-                const string errmsg = "Failed to change to AI to `{0}` for NPC `{1}` - AI not found.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, aiName, this);
-                Debug.Fail(string.Format(errmsg, aiName, this));
-                return;
+                return false;
             }
 
             Debug.Assert(newAI.Actor == this);
             _ai = newAI;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Attempts to set the Character's AI.
+        /// </summary>
+        /// <param name="aiName">The name of the new AI to use.</param>
+        /// <returns>
+        /// True if the AI was successfully set; otherwise false.
+        /// </returns>
+        public override bool SetAI(string aiName)
+        {
+            var newAI = AIFactory.Instance.Create(aiName, this);
+            if (newAI == null)
+            {
+                _ai = null;
+                return false;
+            }
+
+            Debug.Assert(newAI.Actor == this);
+            _ai = newAI;
+
+            return true;
         }
 
         /// <summary>

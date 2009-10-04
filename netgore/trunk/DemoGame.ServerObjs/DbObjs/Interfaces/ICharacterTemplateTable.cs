@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DemoGame;
 using NetGore;
+using NetGore.AI;
 
 namespace DemoGame.Server.DbObjs
 {
@@ -12,9 +13,9 @@ namespace DemoGame.Server.DbObjs
     public interface ICharacterTemplateTable
     {
         /// <summary>
-        /// Gets the value of the database column `ai`.
+        /// Gets the value of the database column `ai_id`.
         /// </summary>
-        String AI { get; }
+        AIID? AIID { get; }
 
         /// <summary>
         /// Gets the value of the database column `alliance_id`.

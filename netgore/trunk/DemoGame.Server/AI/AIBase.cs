@@ -141,6 +141,11 @@ namespace DemoGame.Server
         /// </summary>
         public abstract void Update();
 
+        /// <summary>
+        /// When overridden in the derived class, gets the ID of this AI.
+        /// </summary>
+        public abstract AIID ID { get; }
+
         #endregion
     }
 }

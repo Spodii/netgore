@@ -1,6 +1,7 @@
 using System;
 using System.Data.Common;
 using System.Linq;
+using NetGore;
 
 namespace NetGore.Db
 {

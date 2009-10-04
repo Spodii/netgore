@@ -89,14 +89,14 @@ namespace DemoGame.Server
 
                 Map m = new Map(mapIndex, this);
                 _maps[(int)mapIndex] = m;
+                m.Load();
             }
 
             // Trim down the maps array under the assumption we won't be adding more maps
             _maps.Trim();
 
-            // NOTE: Just temporary until we get real NPC creation going on
-            // Create some test NPCs and items
 #if true
+            // Create some test items
             Random rand = new Random();
             foreach (Map m in Maps)
             {
@@ -109,19 +109,6 @@ namespace DemoGame.Server
                     new ItemEntity(template, new Vector2(x, y), 1, m);
                 }
             }
-
-            // HACK: This is just for testing the persistent NPCs
-#pragma warning disable 168
-            NPC a = new NPC(this, new CharacterID(2));
-            a.SetAI("testAI");
-
-            NPC b = new NPC(this, new CharacterID(3));
-            b.SetAI("testAI");
-
-            NPC talkingGuy = new NPC(this, new CharacterID(4));
-            NPC shopkeeper = new NPC(this, new CharacterID(5));
-            NPC vendingMachine = new NPC(this, new CharacterID(6));
-#pragma warning restore 168
 #endif
         }
 

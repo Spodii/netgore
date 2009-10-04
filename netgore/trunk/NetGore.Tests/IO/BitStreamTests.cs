@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using NetGore;
 using NUnit.Framework;
 
 #pragma warning disable 618,612

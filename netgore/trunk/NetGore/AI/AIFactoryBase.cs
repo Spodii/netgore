@@ -15,10 +15,9 @@ namespace NetGore.AI
     /// <typeparam name="T">The Type of DynamicEntity that uses the AI.</typeparam>
     public abstract class AIFactoryBase<T> where T : DynamicEntity
     {
-        readonly TypeFactory _typeFactory;
-        readonly Dictionary<AIID, Type> _aiByID = new Dictionary<AIID, Type>();
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly Dictionary<AIID, Type> _aiByID = new Dictionary<AIID, Type>();
+        readonly TypeFactory _typeFactory;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AIFactoryBase&lt;T&gt;"/> class.
@@ -69,7 +68,9 @@ namespace NetGore.AI
         public IAI Create(AIID id, T entity)
         {
             var type = _aiByID[id];
-            return (IAI)TypeFactory.GetTypeInstance(type, new object[] { entity });
+            var instance = (IAI)TypeFactory.GetTypeInstance(type, new object[] { entity });
+            Debug.Assert(instance.ID == id);
+            return instance;
         }
 
         /// <summary>
@@ -92,7 +93,7 @@ namespace NetGore.AI
                 // Ensure the ID is not already in use
                 if (_aiByID.ContainsKey(id))
                 {
-                    const string errmsg=  "Failed to load AI `{0}` - AIID `{1}` is already in use by Type `{2}`";
+                    const string errmsg = "Failed to load AI `{0}` - AIID `{1}` is already in use by Type `{2}`";
                     string err = string.Format(errmsg, loadedType, id, _aiByID[id]);
                     if (log.IsFatalEnabled)
                         log.Fatal(err);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DemoGame;
 using NetGore;
+using NetGore.AI;
 
 namespace DemoGame.Server.DbObjs
 {
@@ -15,6 +16,11 @@ namespace DemoGame.Server.DbObjs
         /// Gets the value of the database column `account_id`.
         /// </summary>
         AccountID? AccountID { get; }
+
+        /// <summary>
+        /// Gets the value of the database column `ai_id`.
+        /// </summary>
+        AIID? AIID { get; }
 
         /// <summary>
         /// Gets the value of the database column `body_id`.

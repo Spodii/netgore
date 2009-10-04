@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading;
 using log4net;
+using NetGore;
 
 namespace NetGore.IO
 {

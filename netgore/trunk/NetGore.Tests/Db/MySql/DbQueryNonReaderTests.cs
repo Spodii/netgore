@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using NetGore;
 using NUnit.Framework;
 
 namespace NetGore.Db.MySql.Tests

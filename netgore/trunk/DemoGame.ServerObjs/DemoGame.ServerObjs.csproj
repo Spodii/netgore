@@ -94,6 +94,7 @@
     <Compile Include="DbObjs\DbExtensions\ItemTemplateTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\MapSpawnTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\MapTableDbExtensions.cs" />
+    <Compile Include="DbObjs\DbExtensions\NpcCharacterTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ServerTimeTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ShopItemTableDbExtensions.cs" />
     <Compile Include="DbObjs\DbExtensions\ShopTableDbExtensions.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="DbObjs\Interfaces\IItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IItemTemplateTable.cs" />
     <Compile Include="DbObjs\Interfaces\IMapSpawnTable.cs" />
+    <Compile Include="DbObjs\Interfaces\INpcCharacterTable.cs" />
     <Compile Include="DbObjs\Interfaces\IServerTimeTable.cs" />
     <Compile Include="DbObjs\Interfaces\IShopItemTable.cs" />
     <Compile Include="DbObjs\Interfaces\IShopTable.cs" />
@@ -121,6 +123,7 @@
     <Compile Include="DbObjs\ItemTable.cs" />
     <Compile Include="DbObjs\ItemTemplateTable.cs" />
     <Compile Include="DbObjs\MapSpawnTable.cs" />
+    <Compile Include="DbObjs\NpcCharacterTable.cs" />
     <Compile Include="DbObjs\ServerTimeTable.cs" />
     <Compile Include="DbObjs\ShopItemTable.cs" />
     <Compile Include="DbObjs\ShopTable.cs" />
@@ -147,6 +150,7 @@
     <Compile Include="Queries\Account\SetAccountCurrentIPsNullQuery.cs" />
     <Compile Include="Queries\Account\UpdateTimeLastLoginQuery.cs" />
     <Compile Include="Queries\Character\SelectAccountCharacterInfoQuery.cs" />
+    <Compile Include="Queries\Character\SelectPersistentMapNPCsQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ActiveStatusEffectsIDCreator.cs" />
     <Compile Include="Queries\Character\StatusEffect\DeleteCharacterStatusEffectQuery.cs" />
     <Compile Include="Queries\Character\StatusEffect\ReplaceChracterStatusEffectQuery.cs" />

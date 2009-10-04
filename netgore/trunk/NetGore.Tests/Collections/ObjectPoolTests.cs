@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using NetGore;
 using NUnit.Framework;
 
 // TODO: More ObjectPool tests

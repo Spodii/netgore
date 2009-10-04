@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using DemoGame;
 using DemoGame.Server.DbObjs;
+using DemoGame.Server.Queries;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
@@ -30,11 +31,6 @@ namespace DemoGame.Server
         readonly SafeEnumerator<NPC> _npcEnumerator;
         readonly List<NPC> _npcs;
 
-        /// <summary>
-        /// IEnumerable of the NPCSpawners on this Map.
-        /// </summary>
-        readonly IEnumerable<NPCSpawner> _npcSpawners;
-
         readonly SafeEnumerator<User> _userEnumerator;
         readonly TSList<User> _users;
         readonly World _world;
@@ -45,6 +41,13 @@ namespace DemoGame.Server
         /// or equal to 0, the Map should be considered inactive.
         /// </summary>
         int _inactiveCounter;
+
+        bool _isLoaded = false;
+
+        /// <summary>
+        /// IEnumerable of the NPCSpawners on this Map.
+        /// </summary>
+        IEnumerable<NPCSpawner> _npcSpawners;
 
         /// <summary>
         /// Gets the <see cref="IDbController"/> used by this Map.
@@ -60,6 +63,14 @@ namespace DemoGame.Server
         bool IsInactive
         {
             get { return _inactiveCounter <= 0; }
+        }
+
+        /// <summary>
+        /// Gets if this <see cref="Map"/> has been loaded.
+        /// </summary>
+        public bool IsLoaded
+        {
+            get { return _isLoaded; }
         }
 
         /// <summary>
@@ -109,12 +120,8 @@ namespace DemoGame.Server
             _users = new TSList<User>();
             _userEnumerator = new SafeEnumerator<User>(_users);
 
-            Load(ContentPaths.Build, true);
-
-            _npcSpawners = NPCSpawner.LoadSpawners(this).ToArray();
-
             if (log.IsInfoEnabled)
-                log.InfoFormat("Loaded Map `{0}`.", this);
+                log.InfoFormat("Created Map `{0}`.", this);
         }
 
         /// <summary>
@@ -332,6 +339,31 @@ namespace DemoGame.Server
                 if (syncRegion.Intersects(userRegion))
                     yield return user;
             }
+        }
+
+        /// <summary>
+        /// Loads the map.
+        /// </summary>
+        public void Load()
+        {
+            if (_isLoaded)
+                return;
+
+            _isLoaded = true;
+
+            Load(ContentPaths.Build, true);
+
+            _npcSpawners = NPCSpawner.LoadSpawners(this).ToArray();
+
+            // Spawn persistent NPCs
+            var persistentNPCIDs = DbController.GetQuery<SelectPersistentMapNPCsQuery>().Execute(Index);
+            foreach (var characterID in persistentNPCIDs)
+            {
+                new NPC(World, characterID);
+            }
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Loaded Map `{0}`.", this);
         }
 
         /// <summary>

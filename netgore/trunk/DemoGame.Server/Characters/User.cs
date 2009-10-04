@@ -7,6 +7,7 @@ using DemoGame.Server.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
 using NetGore;
+using NetGore.AI;
 using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
@@ -32,6 +33,14 @@ namespace DemoGame.Server
         readonly UserInventory _userInventory;
         readonly UserStats _userStatsBase;
         readonly UserStats _userStatsMod;
+
+        /// <summary>
+        /// When overridden in the derived class, gets the Character's AI. Can be null if they have no AI.
+        /// </summary>
+        public override IAI AI
+        {
+            get { return null; }
+        }
 
         /// <summary>
         /// Not used by User.
@@ -289,6 +298,13 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Not supported by the User.
+        /// </summary>
+        public override void RemoveAI()
+        {
+        }
+
+        /// <summary>
         /// Sends data to the User. This method is thread-safe.
         /// </summary>
         /// <param name="data">BitStream containing the data to send to the User.</param>
@@ -425,6 +441,26 @@ namespace DemoGame.Server
         public void SendUnreliableBuffered(BitStream data)
         {
             _unreliableBuffer.Enqueue(data);
+        }
+
+        /// <summary>
+        /// Not supported by the User.
+        /// </summary>
+        /// <param name="aiID">Unused.</param>
+        /// <returns>False.</returns>
+        public override bool SetAI(AIID aiID)
+        {
+            return false;
+        }
+
+        /// <summary>
+        /// Not supported by the User.
+        /// </summary>
+        /// <param name="aiName">Unused.</param>
+        /// <returns>False.</returns>
+        public override bool SetAI(string aiName)
+        {
+            return false;
         }
 
         /// <summary>

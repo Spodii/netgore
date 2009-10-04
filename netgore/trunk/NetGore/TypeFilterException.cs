@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Linq;
-using System.Text;
+using NetGore;
 
 namespace NetGore
 {
     public class TypeFilterException : Exception
     {
-        public TypeFilterException(string message)
-            : base(message)
+        public TypeFilterException(string message) : base(message)
         {
         }
     }

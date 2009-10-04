@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using DemoGame;
 using NetGore;
+using NetGore.AI;
 using NetGore.Db;
 
 namespace DemoGame.Server.DbObjs
@@ -23,6 +24,7 @@ namespace DemoGame.Server.DbObjs
         public static void CopyValues(this ICharacterTable source, DbParameterValues paramValues)
         {
             paramValues["@account_id"] = (int?)source.AccountID;
+            paramValues["@ai_id"] = (ushort?)source.AIID;
             paramValues["@body_id"] = (UInt16)source.BodyID;
             paramValues["@cash"] = source.Cash;
             paramValues["@character_template_id"] = (ushort?)source.CharacterTemplateID;
@@ -65,6 +67,9 @@ namespace DemoGame.Server.DbObjs
             i = dataReader.GetOrdinal("account_id");
             source.AccountID = (AccountID?)(dataReader.IsDBNull(i) ? (int?)null : dataReader.GetInt32(i));
 
+            i = dataReader.GetOrdinal("ai_id");
+            source.AIID = (AIID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+
             i = dataReader.GetOrdinal("body_id");
             source.BodyID = (BodyIndex)dataReader.GetUInt16(i);
 
@@ -75,7 +80,7 @@ namespace DemoGame.Server.DbObjs
             source.CharacterTemplateID = (CharacterTemplateID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("chat_dialog");
-            source.ChatDialog = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+            source.ChatDialog = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("exp");
             source.Exp = dataReader.GetInt32(i);
@@ -162,6 +167,10 @@ namespace DemoGame.Server.DbObjs
                 {
                     case "@account_id":
                         paramValues[i] = (int?)source.AccountID;
+                        break;
+
+                    case "@ai_id":
+                        paramValues[i] = (ushort?)source.AIID;
                         break;
 
                     case "@body_id":
@@ -291,6 +300,10 @@ namespace DemoGame.Server.DbObjs
                         source.AccountID = (AccountID?)(dataReader.IsDBNull(i) ? (int?)null : dataReader.GetInt32(i));
                         break;
 
+                    case "ai_id":
+                        source.AIID = (AIID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        break;
+
                     case "body_id":
                         source.BodyID = (BodyIndex)dataReader.GetUInt16(i);
                         break;
@@ -305,7 +318,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "chat_dialog":
-                        source.ChatDialog = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
+                        source.ChatDialog = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
                         break;
 
                     case "exp":

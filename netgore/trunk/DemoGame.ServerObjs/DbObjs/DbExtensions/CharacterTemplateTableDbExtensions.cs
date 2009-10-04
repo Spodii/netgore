@@ -3,6 +3,7 @@ using System.Data;
 using System.Linq;
 using DemoGame;
 using NetGore;
+using NetGore.AI;
 using NetGore.Db;
 
 namespace DemoGame.Server.DbObjs
@@ -22,7 +23,7 @@ namespace DemoGame.Server.DbObjs
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
         public static void CopyValues(this ICharacterTemplateTable source, DbParameterValues paramValues)
         {
-            paramValues["@ai"] = source.AI;
+            paramValues["@ai_id"] = (ushort?)source.AIID;
             paramValues["@alliance_id"] = (Byte)source.AllianceID;
             paramValues["@body_id"] = (UInt16)source.BodyID;
             paramValues["@exp"] = source.Exp;
@@ -55,8 +56,8 @@ namespace DemoGame.Server.DbObjs
         {
             Int32 i;
 
-            i = dataReader.GetOrdinal("ai");
-            source.AI = (dataReader.IsDBNull(i) ? (String)null : dataReader.GetString(i));
+            i = dataReader.GetOrdinal("ai_id");
+            source.AIID = (AIID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("alliance_id");
             source.AllianceID = (AllianceID)dataReader.GetByte(i);
@@ -132,8 +133,8 @@ namespace DemoGame.Server.DbObjs
             {
                 switch (paramValues.GetParameterName(i))
                 {
-                    case "@ai":
-                        paramValues[i] = source.AI;
+                    case "@ai_id":
+                        paramValues[i] = (ushort?)source.AIID;
                         break;
 
                     case "@alliance_id":
@@ -231,8 +232,8 @@ namespace DemoGame.Server.DbObjs
             {
                 switch (dataReader.GetName(i))
                 {
-                    case "ai":
-                        source.AI = (dataReader.IsDBNull(i) ? (String)null : dataReader.GetString(i));
+                    case "ai_id":
+                        source.AIID = (AIID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
                         break;
 
                     case "alliance_id":

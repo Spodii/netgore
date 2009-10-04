@@ -5,6 +5,7 @@ using System.Linq;
 using DemoGame;
 using DemoGame.DbObjs;
 using NetGore;
+using NetGore.AI;
 
 namespace DemoGame.Server.DbObjs
 {
@@ -16,7 +17,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The number of columns in the database table that this class represents.
         /// </summary>
-        public const Int32 ColumnCount = 27;
+        public const Int32 ColumnCount = 28;
 
         /// <summary>
         /// The name of the database table that this class represents.
@@ -28,8 +29,8 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumns = new string[]
         {
-            "account_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "id", "level", "map_id", "mp",
-            "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
+            "account_id", "ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "id", "level", "map_id",
+            "mp", "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
             "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
         };
 
@@ -43,9 +44,9 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         {
-            "account_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "level", "map_id", "mp", "name",
-            "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp",
-            "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
+            "account_id", "ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "level", "map_id", "mp",
+            "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
+            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
         };
 
         /// <summary>
@@ -63,6 +64,11 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `account_id`.
         /// </summary>
         int? _accountID;
+
+        /// <summary>
+        /// The field that maps onto the database column `ai_id`.
+        /// </summary>
+        ushort? _aIID;
 
         /// <summary>
         /// The field that maps onto the database column `body_id`.
@@ -198,6 +204,7 @@ namespace DemoGame.Server.DbObjs
         /// CharacterTable constructor.
         /// </summary>
         /// <param name="accountID">The initial value for the corresponding property.</param>
+        /// <param name="aIID">The initial value for the corresponding property.</param>
         /// <param name="bodyID">The initial value for the corresponding property.</param>
         /// <param name="cash">The initial value for the corresponding property.</param>
         /// <param name="characterTemplateID">The initial value for the corresponding property.</param>
@@ -224,14 +231,15 @@ namespace DemoGame.Server.DbObjs
         /// <param name="statPoints">The initial value for the corresponding property.</param>
         /// <param name="x">The initial value for the corresponding property.</param>
         /// <param name="y">The initial value for the corresponding property.</param>
-        public CharacterTable(AccountID? @accountID, BodyIndex @bodyID, Int32 @cash, CharacterTemplateID? @characterTemplateID,
-                              ushort? @chatDialog, Int32 @exp, SPValueType @hP, CharacterID @iD, Byte @level, MapIndex @mapID,
-                              SPValueType @mP, String @name, MapIndex? @respawnMap, Single @respawnX, Single @respawnY,
-                              ShopID? @shopID, Int16 @statAgi, Int16 @statDefence, Int16 @statInt, Int16 @statMaxhit,
-                              Int16 @statMaxhp, Int16 @statMaxmp, Int16 @statMinhit, Int16 @statStr, Int32 @statPoints, Single @x,
-                              Single @y)
+        public CharacterTable(AccountID? @accountID, AIID? @aIID, BodyIndex @bodyID, Int32 @cash,
+                              CharacterTemplateID? @characterTemplateID, ushort? @chatDialog, Int32 @exp, SPValueType @hP,
+                              CharacterID @iD, Byte @level, MapIndex @mapID, SPValueType @mP, String @name, MapIndex? @respawnMap,
+                              Single @respawnX, Single @respawnY, ShopID? @shopID, Int16 @statAgi, Int16 @statDefence,
+                              Int16 @statInt, Int16 @statMaxhit, Int16 @statMaxhp, Int16 @statMaxmp, Int16 @statMinhit,
+                              Int16 @statStr, Int32 @statPoints, Single @x, Single @y)
         {
             AccountID = @accountID;
+            AIID = @aIID;
             BodyID = @bodyID;
             Cash = @cash;
             CharacterTemplateID = @characterTemplateID;
@@ -279,6 +287,7 @@ namespace DemoGame.Server.DbObjs
         public static void CopyValues(ICharacterTable source, IDictionary<String, Object> dic)
         {
             dic["@account_id"] = source.AccountID;
+            dic["@ai_id"] = source.AIID;
             dic["@body_id"] = source.BodyID;
             dic["@cash"] = source.Cash;
             dic["@character_template_id"] = source.CharacterTemplateID;
@@ -325,6 +334,7 @@ namespace DemoGame.Server.DbObjs
         public void CopyValuesFrom(ICharacterTable source)
         {
             AccountID = source.AccountID;
+            AIID = source.AIID;
             BodyID = source.BodyID;
             Cash = source.Cash;
             CharacterTemplateID = source.CharacterTemplateID;
@@ -340,14 +350,14 @@ namespace DemoGame.Server.DbObjs
             RespawnX = source.RespawnX;
             RespawnY = source.RespawnY;
             ShopID = source.ShopID;
-            SetStat(StatType.Agi, source.GetStat((StatType)StatType.Agi));
-            SetStat(StatType.Defence, source.GetStat((StatType)StatType.Defence));
-            SetStat(StatType.Int, source.GetStat((StatType)StatType.Int));
-            SetStat(StatType.MaxHit, source.GetStat((StatType)StatType.MaxHit));
-            SetStat(StatType.MaxHP, source.GetStat((StatType)StatType.MaxHP));
-            SetStat(StatType.MaxMP, source.GetStat((StatType)StatType.MaxMP));
-            SetStat(StatType.MinHit, source.GetStat((StatType)StatType.MinHit));
-            SetStat(StatType.Str, source.GetStat((StatType)StatType.Str));
+            SetStat(StatType.Agi, source.GetStat(StatType.Agi));
+            SetStat(StatType.Defence, source.GetStat(StatType.Defence));
+            SetStat(StatType.Int, source.GetStat(StatType.Int));
+            SetStat(StatType.MaxHit, source.GetStat(StatType.MaxHit));
+            SetStat(StatType.MaxHP, source.GetStat(StatType.MaxHP));
+            SetStat(StatType.MaxMP, source.GetStat(StatType.MaxMP));
+            SetStat(StatType.MinHit, source.GetStat(StatType.MinHit));
+            SetStat(StatType.Str, source.GetStat(StatType.Str));
             StatPoints = source.StatPoints;
             X = source.X;
             Y = source.Y;
@@ -366,6 +376,9 @@ namespace DemoGame.Server.DbObjs
             {
                 case "account_id":
                     return new ColumnMetadata("account_id", "", "int(11)", null, typeof(int?), true, false, true);
+
+                case "ai_id":
+                    return new ColumnMetadata("ai_id", "", "smallint(5) unsigned", null, typeof(ushort?), true, false, false);
 
                 case "body_id":
                     return new ColumnMetadata("body_id", "", "smallint(5) unsigned", "1", typeof(UInt16), false, false, false);
@@ -464,6 +477,9 @@ namespace DemoGame.Server.DbObjs
             {
                 case "account_id":
                     return AccountID;
+
+                case "ai_id":
+                    return AIID;
 
                 case "body_id":
                     return BodyID;
@@ -569,6 +585,10 @@ namespace DemoGame.Server.DbObjs
             {
                 case "account_id":
                     AccountID = (AccountID?)value;
+                    break;
+
+                case "ai_id":
+                    AIID = (AIID?)value;
                     break;
 
                 case "body_id":
@@ -699,6 +719,16 @@ namespace DemoGame.Server.DbObjs
         {
             get { return (AccountID?)_accountID; }
             set { _accountID = (int?)value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the value for the field that maps onto the database column `ai_id`.
+        /// The underlying database type is `smallint(5) unsigned`.
+        /// </summary>
+        public AIID? AIID
+        {
+            get { return (AIID?)_aIID; }
+            set { _aIID = (ushort?)value; }
         }
 
         /// <summary>
