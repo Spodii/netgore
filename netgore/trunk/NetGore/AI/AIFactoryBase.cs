@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -14,6 +16,7 @@ namespace NetGore.AI
     public abstract class AIFactoryBase<T> where T : DynamicEntity
     {
         readonly TypeFactory _typeFactory;
+        readonly Dictionary<AIID, Type> _aiByID = new Dictionary<AIID, Type>();
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -58,6 +61,18 @@ namespace NetGore.AI
         }
 
         /// <summary>
+        /// Creates an <see cref="IAI"/> instance.
+        /// </summary>
+        /// <param name="id">ID of the AI.</param>
+        /// <param name="entity"><see cref="DynamicEntity"/> to bind the AI to.</param>
+        /// <returns>An <see cref="IAI"/> instance.</returns>
+        public IAI Create(AIID id, T entity)
+        {
+            var type = _aiByID[id];
+            return (IAI)TypeFactory.GetTypeInstance(type, new object[] { entity });
+        }
+
+        /// <summary>
         /// Handles when a new type has been loaded into a <see cref="TypeFactory"/>.
         /// </summary>
         /// <param name="factoryTypeCollection"><see cref="TypeFactory"/> that the event occured on.</param>
@@ -65,8 +80,31 @@ namespace NetGore.AI
         /// <param name="name">Name of the Type.</param>
         protected virtual void OnLoadTypeHandler(TypeFactory factoryTypeCollection, Type loadedType, string name)
         {
-            if (log.IsInfoEnabled)
-                log.InfoFormat("Loaded AI `{0}` from Type `{1}`.", name, loadedType);
+            var aiAttributes = loadedType.GetCustomAttributes(typeof(AIAttribute), false).Cast<AIAttribute>();
+
+            if (aiAttributes.Count() == 0)
+                throw new Exception(string.Format("Expected loaded AI Type {0} to have one or more AIAttributes.", loadedType));
+
+            foreach (var aiAttribute in aiAttributes)
+            {
+                var id = aiAttribute.ID;
+
+                // Ensure the ID is not already in use
+                if (_aiByID.ContainsKey(id))
+                {
+                    const string errmsg=  "Failed to load AI `{0}` - AIID `{1}` is already in use by Type `{2}`";
+                    string err = string.Format(errmsg, loadedType, id, _aiByID[id]);
+                    if (log.IsFatalEnabled)
+                        log.Fatal(err);
+                    Debug.Fail(err);
+                    throw new Exception(err);
+                }
+
+                _aiByID.Add(id, loadedType);
+
+                if (log.IsInfoEnabled)
+                    log.InfoFormat("Loaded AI `{0}` from Type `{1}`.", name, loadedType);
+            }
         }
     }
 }
