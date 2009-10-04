@@ -51,7 +51,7 @@
     <Compile Include="DArray.cs" />
     <Compile Include="DArrayModifyEventArgs.cs" />
     <Compile Include="EnumComparer.cs" />
-    <Compile Include="FactoryTypeCollection.cs" />
+    <Compile Include="TypeFactory.cs" />
     <Compile Include="MeanStack.cs" />
     <Compile Include="Object Pool\IPoolable.cs" />
     <Compile Include="Object Pool\ObjectPoolBase.cs" />

@@ -10,17 +10,17 @@ using log4net;
 namespace NetGore.Collections
 {
     /// <summary>
-    /// Handles when a new type has been loaded into a FactoryTypeCollection.
+    /// Handles when a new type has been loaded into a <see cref="TypeFactory"/>.
     /// </summary>
-    /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
+    /// <param name="typeFactory"><see cref="TypeFactory"/> that the event occured on.</param>
     /// <param name="loadedType">Type that was loaded.</param>
     /// <param name="name">Name of the Type.</param>
-    public delegate void FactoryTypeLoadedHandler(FactoryTypeCollection factoryTypeCollection, Type loadedType, string name);
+    public delegate void TypeFactoryLoadedHandler(TypeFactory typeFactory, Type loadedType, string name);
 
     /// <summary>
     /// A read-only collection of Types that is specialized for an object factory.
     /// </summary>
-    public class FactoryTypeCollection : IEnumerable<Type>
+    public class TypeFactory : IEnumerable<Type>
     {
         /// <summary>
         /// Contains a List of Assemblies that have already been loaded (used to prevent loading an Assembly more than once).
@@ -39,9 +39,9 @@ namespace NetGore.Collections
         bool _isLoaded;
 
         /// <summary>
-        /// Notifies listeners when a Type has been loaded into this FactoryTypeCollection.
+        /// Notifies listeners when a Type has been loaded into this <see cref="TypeFactory"/>.
         /// </summary>
-        public event FactoryTypeLoadedHandler OnLoadType;
+        public event TypeFactoryLoadedHandler OnLoadType;
 
         /// <summary>
         /// Gets a Type from its name.
@@ -82,32 +82,32 @@ namespace NetGore.Collections
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FactoryTypeCollection"/> class.
+        /// Initializes a new instance of the <see cref="TypeFactory"/> class.
         /// </summary>
         /// <param name="typeFilter">Filter that determines the Types to go into this FactoryTypeCollection.</param>
-        public FactoryTypeCollection(Func<Type, bool> typeFilter) : this(typeFilter, null)
+        public TypeFactory(Func<Type, bool> typeFilter) : this(typeFilter, null)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FactoryTypeCollection"/> class.
+        /// Initializes a new instance of the <see cref="TypeFactory"/> class.
         /// </summary>
         /// <param name="typeFilter">Filter that determines the Types to go into this FactoryTypeCollection.</param>
         /// <param name="loadTypeHandler">Initial handler for the OnLoadType event.</param>
-        public FactoryTypeCollection(Func<Type, bool> typeFilter, FactoryTypeLoadedHandler loadTypeHandler)
+        public TypeFactory(Func<Type, bool> typeFilter, TypeFactoryLoadedHandler loadTypeHandler)
             : this(typeFilter, loadTypeHandler, false)
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FactoryTypeCollection"/> class.
+        /// Initializes a new instance of the <see cref="TypeFactory"/> class.
         /// </summary>
         /// <param name="typeFilter">Filter that determines the Types to go into this FactoryTypeCollection.</param>
         /// <param name="loadTypeHandler">Initial handler for the OnLoadType event.</param>
         /// <param name="useGAC">If true, Assemblies from the Global Assembly Cache will be included. If false,
         /// the Assemblies in the Global Assembly Cache will be ignored and no Types from these Assemblies will
         /// be found by this FactoryTypeCollection.</param>
-        public FactoryTypeCollection(Func<Type, bool> typeFilter, FactoryTypeLoadedHandler loadTypeHandler, bool useGAC)
+        public TypeFactory(Func<Type, bool> typeFilter, TypeFactoryLoadedHandler loadTypeHandler, bool useGAC)
         {
             _typeFilter = typeFilter;
             _useGAC = useGAC;

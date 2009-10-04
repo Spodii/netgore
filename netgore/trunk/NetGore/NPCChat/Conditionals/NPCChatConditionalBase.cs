@@ -40,7 +40,7 @@ namespace NetGore.NPCChat.Conditionals
         /// <summary>
         /// Loads and manages the derived Types for this collection.
         /// </summary>
-        static readonly FactoryTypeCollection _typeCollection;
+        static readonly TypeFactory _typeCollection;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -93,7 +93,7 @@ namespace NetGore.NPCChat.Conditionals
                 RequireConstructor = true,
                 ConstructorParameters = Type.EmptyTypes
             };
-            _typeCollection = new FactoryTypeCollection(filter.GetFilter(), OnLoadTypeHandler, false);
+            _typeCollection = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
             _typeCollection.BeginLoading();
         }
 
@@ -219,7 +219,7 @@ namespace NetGore.NPCChat.Conditionals
         /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
         /// <param name="name">Name of the Type.</param>
-        static void OnLoadTypeHandler(FactoryTypeCollection factoryTypeCollection, Type loadedType, string name)
+        static void OnLoadTypeHandler(TypeFactory factoryTypeCollection, Type loadedType, string name)
         {
             var instance = (NPCChatConditionalBase)_typeCollection.GetTypeInstance(name);
 

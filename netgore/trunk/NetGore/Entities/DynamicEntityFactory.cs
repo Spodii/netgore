@@ -14,7 +14,7 @@ namespace NetGore
     public static class DynamicEntityFactory
     {
         public const string TypeNameStringKey = "DynamicEntityType";
-        static readonly FactoryTypeCollection _typeCollection;
+        static readonly TypeFactory _typeCollection;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace NetGore
         {
             // NOTE: It would be nice if the DynamicEntity constructors were required on the Client, but still not the Server (since the server doesn't need to construct all DynamicEntities)
             var filter = new TypeFilterCreator { IsClass = true, IsAbstract = false, Subclass = typeof(DynamicEntity) };
-            _typeCollection = new FactoryTypeCollection(filter.GetFilter(), OnLoadTypeHandler, false);
+            _typeCollection = new TypeFactory(filter.GetFilter(), OnLoadTypeHandler, false);
             _typeCollection.BeginLoading();
         }
 
@@ -34,7 +34,7 @@ namespace NetGore
         /// <param name="factoryTypeCollection">FactoryTypeCollection that the event occured on.</param>
         /// <param name="loadedType">Type that was loaded.</param>
         /// <param name="name">Name of the Type.</param>
-        static void OnLoadTypeHandler(FactoryTypeCollection factoryTypeCollection, Type loadedType, string name)
+        static void OnLoadTypeHandler(TypeFactory factoryTypeCollection, Type loadedType, string name)
         {
             if (log.IsDebugEnabled)
                 log.DebugFormat("Loaded DynamicEntity `{0}` from Type `{1}`.", name, loadedType);
