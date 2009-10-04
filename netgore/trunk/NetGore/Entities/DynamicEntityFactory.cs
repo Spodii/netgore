@@ -22,9 +22,9 @@ namespace NetGore
         /// </summary>
         static DynamicEntityFactory()
         {
-            // NOTE: It would be nice if the constructors were required on the Client, but still not the Server (since the server doesn't need to construct all DynamicEntities)
-            var filter = FactoryTypeCollection.CreateFilter(typeof(DynamicEntity));
-            _typeCollection = new FactoryTypeCollection(filter, OnLoadTypeHandler, false);
+            // NOTE: It would be nice if the DynamicEntity constructors were required on the Client, but still not the Server (since the server doesn't need to construct all DynamicEntities)
+            var filter = new TypeFilterCreator { IsClass = true, IsAbstract = false, Subclass = typeof(DynamicEntity) };
+            _typeCollection = new FactoryTypeCollection(filter.GetFilter(), OnLoadTypeHandler, false);
             _typeCollection.BeginLoading();
         }
 
