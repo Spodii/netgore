@@ -13,7 +13,7 @@ namespace NetGore
         readonly string _path;
 
         /// <summary>
-        /// PathString constructor.
+        /// Initializes a new instance of the <see cref="PathString"/> class.
         /// </summary>
         /// <param name="path">Path of this PathString.</param>
         public PathString(string path)
@@ -22,7 +22,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Joins this PathString with a sub-path.
+        /// Joins this <see cref="PathString"/> with a sub-path.
         /// </summary>
         /// <param name="subPath">Name of the child file or folder from this PathString.</param>
         /// <returns>A new PathString containing the path joining this PathString with the <paramref name="subPath"/>.</returns>
@@ -49,14 +49,24 @@ namespace NetGore
             return _path;
         }
 
-        public static implicit operator string(PathString fps)
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="NetGore.PathString"/> to <see cref="System.String"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator string(PathString value)
         {
-            return fps._path;
+            return value._path;
         }
 
-        public static implicit operator PathString(string path)
+        /// <summary>
+        /// Performs an implicit conversion from <see cref="System.String"/> to <see cref="NetGore.PathString"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The result of the conversion.</returns>
+        public static implicit operator PathString(string value)
         {
-            return new PathString(path);
+            return new PathString(value);
         }
     }
 }

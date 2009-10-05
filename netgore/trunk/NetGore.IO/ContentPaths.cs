@@ -141,6 +141,9 @@ namespace NetGore
             get { return _textures; }
         }
 
+        /// <summary>
+        /// Initializes the <see cref="ContentPaths"/> class.
+        /// </summary>
         static ContentPaths()
         {
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
@@ -149,6 +152,10 @@ namespace NetGore
             _buildPaths = new ContentPaths(GetBuildContentPath(_appRoot));
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentPaths"/> class.
+        /// </summary>
+        /// <param name="rootPath">The root path.</param>
         public ContentPaths(string rootPath)
         {
             _root = Path.GetFullPath(rootPath);
@@ -175,6 +182,14 @@ namespace NetGore
             return Path.Combine(rootPath, childPath);
         }
 
+        
+        /// <summary>
+        /// Combines the <paramref name="root"/> and <paramref name="child"/> directory.
+        /// </summary>
+        /// <param name="root">The root (base) directory.</param>
+        /// <param name="child">The child directory.</param>
+        /// <returns>The <see cref="PathString"/> for the <paramref name="root"/> and <paramref name="child"/>
+        /// directory concatenated.</returns>
         static PathString GetChildPath(string root, string child)
         {
             // Create the desired path
