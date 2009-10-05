@@ -24,7 +24,7 @@ namespace NetGore.IO
         readonly Dictionary<T, string> _messages;
 
         /// <summary>
-        /// MessageCollectionBase constructor.
+        /// Initializes a new instance of the <see cref="MessageCollectionBase&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="file">Path to the file to load the messages from.</param>
         protected MessageCollectionBase(string file) : this(file, null)
@@ -32,7 +32,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// MessageCollectionBase constructor.
+        /// Initializes a new instance of the <see cref="MessageCollectionBase&lt;T&gt;"/> class.
         /// </summary>
         /// <param name="file">Path to the file to load the messages from.</param>
         /// <param name="secondary">Collection of messages to add missing messages from. If null, the
