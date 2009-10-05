@@ -6,7 +6,7 @@ using NetGore;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Assists in smoothing out Entity movement by interpolating the position drawn.
+    /// Assists in smoothing out <see cref="Entity"/> movement by interpolating the position drawn.
     /// </summary>
     public class EntityInterpolator
     {
@@ -20,12 +20,12 @@ namespace NetGore.Graphics
         Vector2 _drawPosition;
 
         /// <summary>
-        /// The absolute value of the greatest velocity of the Entity.
+        /// The absolute value of the greatest velocity of the <see cref="Entity"/>.
         /// </summary>
         Vector2 _greatestVelocity;
 
         /// <summary>
-        /// Gets the position to use when drawing the Entity.
+        /// Gets the position to use when drawing the <see cref="Entity"/>.
         /// </summary>
         public Vector2 DrawPosition
         {
@@ -33,7 +33,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Forces the Interpolator to teleport the DrawPosition to the specified position.
+        /// Forces the <see cref="DrawPosition"/> to the specified position without any interpolation.
         /// </summary>
         /// <param name="position">The new position.</param>
         public void Teleport(Vector2 position)
@@ -44,7 +44,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Updates the drawing position interpolation.
         /// </summary>
-        /// <param name="entity">Entity that this EntityInterpolator is for.</param>
+        /// <param name="entity"><see cref="Entity"/> that this <see cref="EntityInterpolator"/> is for.</param>
         /// <param name="deltaTime">Time elapsed since the last update.</param>
         public void Update(Entity entity, int deltaTime)
         {
@@ -114,7 +114,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Updates the Entity's greatest velocity.
+        /// Updates the <see cref="Entity"/>'s greatest velocity.
         /// </summary>
         /// <param name="currentVelocity">Current velocity.</param>
         void UpdateGreatestVelocity(Vector2 currentVelocity)

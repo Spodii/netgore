@@ -11,33 +11,33 @@ namespace NetGore.Graphics
     public interface ISprite
     {
         /// <summary>
-        /// Gets the source rectangle of the sprite on the texture
+        /// Gets the source rectangle of the sprite on the texture.
         /// </summary>
         Rectangle Source { get; }
 
         /// <summary>
-        /// Gets the texture containing the sprite
+        /// Gets the texture containing the sprite.
         /// </summary>
         Texture2D Texture { get; }
 
         /// <summary>
-        /// Draws the ISprite.
+        /// Draws the <see cref="ISprite"/>.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="spriteBatch"><see cref="SpriteBatch"/> to draw to.</param>
         /// <param name="position">Position to draw to.</param>
-        /// <param name="color">Color to draw with.</param>
+        /// <param name="color"><see cref="Color"/> to draw with.</param>
         void Draw(SpriteBatch spriteBatch, Vector2 position, Color color);
 
         /// <summary>
-        /// Draws the ISprite.
+        /// Draws the <see cref="ISprite"/>.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
-        /// <param name="dest">Rectangle to draw to.</param>
-        /// <param name="color">Color to draw with.</param>
+        /// <param name="spriteBatch"><see cref="SpriteBatch"/> to draw to.</param>
+        /// <param name="dest"><see cref="Rectangle"/> to draw to.</param>
+        /// <param name="color"><see cref="Color"/> to draw with.</param>
         void Draw(SpriteBatch spriteBatch, Rectangle dest, Color color);
 
         /// <summary>
-        /// Updates the ISprite.
+        /// Updates the <see cref="ISprite"/>.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
         void Update(int currentTime);

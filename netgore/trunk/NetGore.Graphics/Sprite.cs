@@ -7,7 +7,7 @@ using NetGore;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Defines an image that is either part of or all of a Texture2D
+    /// Defines an image that is either part of or all of a <see cref="Texture2D"/>.
     /// </summary>
     public class Sprite : ISprite
     {
@@ -40,7 +40,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Sprite constructor
+        /// Initializes a new instance of the <see cref="Sprite"/> class.
         /// </summary>
         /// <param name="texture">Texture used by the Sprite</param>
         /// <param name="source">Source rectangle in the texture for the Sprite</param>
@@ -53,9 +53,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the Sprite
+        /// Draws the Sprite.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
+        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
         /// <param name="dest">A rectangle specifying, in screen coordinates, where the sprite will be drawn. 
         /// If this rectangle is not the same size as sourcerectangle the sprite will be scaled to fit.</param>
         public void Draw(SpriteBatch spriteBatch, Rectangle dest)
@@ -66,10 +66,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the Sprite
+        /// Draws the Sprite.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
-        /// <param name="position">The location, in screen coordinates, where the sprite will be drawn</param>
+        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="position">The location, in screen coordinates, where the sprite will be drawn.</param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             if (spriteBatch == null)
@@ -78,14 +78,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the Sprite
+        /// Draws the Sprite.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
+        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
         /// <param name="dest">A rectangle specifying, in screen coordinates, where the sprite will be drawn. 
         /// If this rectangle is not the same size as sourcerectangle the sprite will be scaled to fit.</param>
         /// <param name="color">The color channel modulation to use. Use Color.White for full color with no tinting.</param>
-        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin</param>
-        /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner</param>
+        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin.</param>
+        /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
         /// <param name="effects">Rotations to apply before rendering</param>
         /// <param name="layerDepth">The sorting depth of the sprite, between 0 (front) and 1 (back). You must specify either 
         /// SpriteSortMode.FrontToBack or SpriteSortMode.BackToFront for this parameter to affect sprite drawing.</param>
@@ -98,15 +98,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the Sprite
+        /// Draws the Sprite.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
-        /// <param name="position">The location, in screen coordinates, where the sprite will be drawn</param>
+        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="position">The location, in screen coordinates, where the sprite will be drawn.</param>
         /// <param name="color">The color channel modulation to use. Use Color.White for full color with no tinting.</param>
-        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin</param>
-        /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner</param>
-        /// <param name="scale">Float containing separate scalar multiples for both the x and y axis</param>
-        /// <param name="effects">Rotations to apply before rendering</param>
+        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin.</param>
+        /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
+        /// <param name="scale">Float containing separate scalar multiples for both the x and y axis.</param>
+        /// <param name="effects">Rotations to apply before rendering.</param>
         /// <param name="layerDepth">The sorting depth of the sprite, between 0 (front) and 1 (back). You must specify either 
         /// SpriteSortMode.FrontToBack or SpriteSortMode.BackToFront for this parameter to affect sprite drawing.</param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, float scale,
@@ -118,15 +118,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the Sprite
+        /// Draws the Sprite.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
-        /// <param name="position">The location, in screen coordinates, where the sprite will be drawn</param>
+        /// <param name="spriteBatch">SpriteBatch to draw to.</param>
+        /// <param name="position">The location, in screen coordinates, where the sprite will be drawn.</param>
         /// <param name="color">The color channel modulation to use. Use Color.White for full color with no tinting.</param>
-        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin</param>
-        /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner</param>
-        /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite</param>
-        /// <param name="effects">Rotations to apply before rendering</param>
+        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin.</param>
+        /// <param name="origin">The origin of the sprite. Specify (0,0) for the upper-left corner.</param>
+        /// <param name="scale">Vector containing separate scalar multiples for the x- and y-axes of the sprite.</param>
+        /// <param name="effects">Rotations to apply before rendering.</param>
         /// <param name="layerDepth">The sorting depth of the sprite, between 0 (front) and 1 (back). You must specify either 
         /// SpriteSortMode.FrontToBack or SpriteSortMode.BackToFront for this parameter to affect sprite drawing.</param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color, float rotation, Vector2 origin, Vector2 scale,
@@ -140,8 +140,9 @@ namespace NetGore.Graphics
         #region ISprite Members
 
         /// <summary>
-        /// Gets or sets the source rectangle in the texture for the Sprite
+        /// Gets the source rectangle of the sprite on the texture.
         /// </summary>
+        /// <value></value>
         public Rectangle Source
         {
             get { return _source; }
@@ -157,8 +158,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the texture used by the Sprite
+        /// Gets the texture containing the sprite.
         /// </summary>
+        /// <value></value>
         public Texture2D Texture
         {
             get { return _texture; }
@@ -174,11 +176,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the Sprite
+        /// Draws the <see cref="ISprite"/>.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
-        /// <param name="position">The location, in screen coordinates, where the sprite will be drawn</param>
-        /// <param name="color">The color channel modulation to use. Use Color.White for full color with no tinting.</param>
+        /// <param name="spriteBatch"><see cref="SpriteBatch"/> to draw to.</param>
+        /// <param name="position">Position to draw to.</param>
+        /// <param name="color"><see cref="Color"/> to draw with.</param>
         public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color)
         {
             if (spriteBatch == null)
@@ -187,12 +189,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws the Sprite
+        /// Draws the <see cref="ISprite"/>.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
-        /// <param name="dest">A rectangle specifying, in screen coordinates, where the sprite will be drawn. 
-        /// If this rectangle is not the same size as sourcerectangle the sprite will be scaled to fit.</param>
-        /// <param name="color">The color channel modulation to use. Use Color.White for full color with no tinting.</param>
+        /// <param name="spriteBatch"><see cref="SpriteBatch"/> to draw to.</param>
+        /// <param name="dest"><see cref="Rectangle"/> to draw to.</param>
+        /// <param name="color"><see cref="Color"/> to draw with.</param>
         public void Draw(SpriteBatch spriteBatch, Rectangle dest, Color color)
         {
             if (spriteBatch == null)
@@ -201,7 +202,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Updates the ISprite.
+        /// Updates the <see cref="ISprite"/>.
         /// </summary>
         /// <param name="currentTime">Current game time.</param>
         public void Update(int currentTime)
