@@ -98,6 +98,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountCharacterInfos.cs" />
+    <Compile Include="AudioManager.cs" />
     <Compile Include="Controls\NPCChatDialogForm.cs" />
     <Compile Include="Controls\ShopForm.cs" />
     <Compile Include="Controls\SkillsForm.cs" />
@@ -143,6 +144,10 @@
     <ProjectReference Include="..\DemoGame.ClientObjs\DemoGame.ClientObjs.csproj">
       <Project>{7313F955-A78D-48A2-B087-8EC22E24ED8A}</Project>
       <Name>DemoGame.ClientObjs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.Audio\NetGore.Audio.csproj">
+      <Project>{DB59800A-5924-4DE7-A349-46B60AF0348F}</Project>
+      <Name>NetGore.Audio</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
       <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
