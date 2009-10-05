@@ -5,32 +5,32 @@ using NetGore;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Manages the frames per second count
+    /// Manages the frames per second count.
     /// </summary>
     public class FrameCounter
     {
         /// <summary>
-        /// Target elapsed time
+        /// Target elapsed time.
         /// </summary>
         readonly TimeSpan _targetElapseTime = TimeSpan.FromSeconds(1);
 
         /// <summary>
-        /// Combination of the elapsed times (resets after hitting one second)
+        /// Combination of the elapsed times (resets after hitting one second).
         /// </summary>
         TimeSpan _elapsedCounter = TimeSpan.Zero;
 
         /// <summary>
-        /// Counts the FPS
+        /// Counts the FPS.
         /// </summary>
         int _frameCounter = 0;
 
         /// <summary>
-        /// Last compelted FPS value
+        /// Last completed FPS value.
         /// </summary>
         int _frameRate = 0;
 
         /// <summary>
-        /// Gets the last FPS rate
+        /// Gets the last FPS. This value is updated once per second.
         /// </summary>
         public int FrameRate
         {
@@ -38,9 +38,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Updates the frame counter and the tick count
+        /// Updates the frame counter and the tick count.
         /// </summary>
-        /// <param name="elapsedTime">The elapsed real time between the frames</param>
+        /// <param name="elapsedTime">The elapsed real time between the frames.</param>
         public void Update(TimeSpan elapsedTime)
         {
             // Increases the frame count

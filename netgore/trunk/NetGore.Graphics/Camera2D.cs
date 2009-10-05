@@ -9,7 +9,7 @@ using NetGore;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Describes a camera for a 2D world
+    /// Describes a camera for a 2D world.
     /// </summary>
     public class Camera2D
     {
@@ -19,22 +19,22 @@ namespace NetGore.Graphics
         IMap _map;
 
         /// <summary>
-        /// Transformation matrix to be used on the SpriteBatch.Begin call
+        /// Transformation matrix to be used on the SpriteBatch.Begin call.
         /// </summary>
         Matrix _matrix = Matrix.Identity;
 
         /// <summary>
-        /// Coordinate of the center of the top-left corner of the camera
+        /// Coordinate of the center of the top-left corner of the camera.
         /// </summary>
         Vector2 _min = Vector2.Zero;
 
         /// <summary>
-        /// Rotation magnitude in radians
+        /// Rotation magnitude in radians.
         /// </summary>
         float _rotation = 0.0f;
 
         /// <summary>
-        /// Scale percent (1 = 100% = normal)
+        /// Scale percent (1 = 100% = normal).
         /// </summary>
         float _scale = 1.0f;
 
@@ -72,7 +72,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the transformation matrix to be used on the SpriteBatch.Begin call
+        /// Gets the transformation matrix to be used on the SpriteBatch.Begin call.
         /// </summary>
         public Matrix Matrix
         {
@@ -80,7 +80,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the coordinates of the bottom-right corner of the camera
+        /// Gets the coordinates of the bottom-right corner of the camera.
         /// </summary>
         public Vector2 Max
         {
@@ -88,7 +88,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the coordinates of the center of the top-left corner of the camera
+        /// Gets or sets the coordinates of the center of the top-left corner of the camera.
         /// </summary>
         public Vector2 Min
         {
@@ -106,7 +106,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the camera rotation magnitude in radians
+        /// Gets or sets the camera rotation magnitude in radians.
         /// </summary>
         public float Rotation
         {
@@ -124,7 +124,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the camera scale percent (1 = 100% = normal)
+        /// Gets or sets the camera scale percent (1 = 100% = normal).
         /// </summary>
         public float Scale
         {
@@ -142,7 +142,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the size of the camera's view area
+        /// Gets or sets the size of the camera's view area.
         /// </summary>
         public Vector2 Size
         {
@@ -187,9 +187,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Camera2D constructor
+        /// Initializes a new instance of the <see cref="Camera2D"/> class.
         /// </summary>
-        /// <param name="screenSize">Size of the screen in pixels</param>
+        /// <param name="screenSize">Size of the screen in pixels.</param>
         public Camera2D(Vector2 screenSize)
         {
             _size = screenSize;
@@ -237,11 +237,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Checks if a specified object is in view of the camera
+        /// Checks if a specified object is in view of the camera.
         /// </summary>
-        /// <param name="grh">Grh to check</param>
-        /// <param name="position">Position to draw the Grh at</param>
-        /// <returns>True if in the view area, else false</returns>
+        /// <param name="grh">Grh to check.</param>
+        /// <param name="position">Position to draw the Grh at.</param>
+        /// <returns>True if in the view area, else false.</returns>
         public bool InView(Grh grh, Vector2 position)
         {
             if (grh == null)
@@ -257,73 +257,73 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Checks if a specified object is in view of the screen
+        /// Checks if a specified object is in view of the screen.
         /// </summary>
-        /// <param name="min">Minimum (top-left) vector</param>
-        /// <param name="max">Maximum (bottom-right) vector</param>
-        /// <returns>True if in the view area, else false</returns>
+        /// <param name="min">Minimum (top-left) vector.</param>
+        /// <param name="max">Maximum (bottom-right) vector.</param>
+        /// <returns>True if in the view area, else false.</returns>
         public bool InView(Vector2 min, Vector2 max)
         {
             return (max.X > Min.X && max.Y > Min.Y && min.X < Min.X + _size.X && min.Y < Min.Y + _size.Y);
         }
 
         /// <summary>
-        /// Checks if a specified object is in view of the screen
+        /// Checks if a specified object is in view of the screen.
         /// </summary>
-        /// <param name="x">X coordinate of the object</param>
-        /// <param name="y">Y coordinate of the object</param>
-        /// <param name="width">Width of the object</param>
-        /// <param name="height">Height of the object</param>
-        /// <returns>True if in the view area, else false</returns>
+        /// <param name="x">X coordinate of the object.</param>
+        /// <param name="y">Y coordinate of the object.</param>
+        /// <param name="width">Width of the object.</param>
+        /// <param name="height">Height of the object.</param>
+        /// <returns>True if in the view area, else false.</returns>
         public bool InView(float x, float y, float width, float height)
         {
             return (x + width > Min.X && y + height > Min.Y && x < Min.X + _size.X && y < Min.Y + _size.Y);
         }
 
         /// <summary>
-        /// Translates a world position to a screen position
+        /// Translates a world position to a screen position.
         /// </summary>
-        /// <param name="p"></param>
-        /// <returns>Screen point for the given world point</returns>
-        public Vector2 ToScreen(Vector2 p)
+        /// <param name="worldPosition">The world position.</param>
+        /// <returns>The screen position for the given <see cref="worldPosition"/>.</returns>
+        public Vector2 ToScreen(Vector2 worldPosition)
         {
-            return (p - Min) * Scale;
+            return (worldPosition - Min) * Scale;
         }
 
         /// <summary>
-        /// Translates a world position to a screen position
+        /// Translates a world position to a screen position.
         /// </summary>
-        /// <param name="x">World point x</param>
-        /// <param name="y">World point x</param>
-        /// <returns>Screen point for the given world point</returns>
-        public Vector2 ToScreen(float x, float y)
+        /// <param name="worldX">The world position X co-ordinate.</param>
+        /// <param name="worldY">The world position Y co-ordinate.</param>
+        /// <returns>The screen position for the given <see cref="worldX"/> and <see cref="worldY"/>.</returns>
+        public Vector2 ToScreen(float worldX, float worldY)
         {
-            return ToScreen(new Vector2(x, y));
+            return ToScreen(new Vector2(worldX, worldY));
         }
 
         /// <summary>
-        /// Translates a screen position to world position
+        /// Translates a screen position to world position.
         /// </summary>
-        /// <param name="p">Screen point</param>
-        /// <returns>World point for the given screen point</returns>
-        public Vector2 ToWorld(Vector2 p)
+        /// <param name="screenPosition">The screen position.</param>
+        /// <returns>The world position for the given <see cref="screenPosition"/>.</returns>
+        public Vector2 ToWorld(Vector2 screenPosition)
         {
-            return (p / Scale) + Min;
+            return (screenPosition / Scale) + Min;
         }
 
         /// <summary>
-        /// Translates a screen position to world position
+        /// Translates a screen position to world position.
         /// </summary>
-        /// <param name="x">Screen point x</param>
-        /// <param name="y">Screen point x</param>
-        /// <returns>World point for the given screen point</returns>
-        public Vector2 ToWorld(float x, float y)
+        /// <param name="screenX">The screen position X co-ordinate.</param>
+        /// <param name="screenY">The screen position Y co-ordinate.</param>
+        /// <returns>The world position for the given <see cref="screenX"/> and <see cref="screenY"/>.</returns>
+        public Vector2 ToWorld(float screenX, float screenY)
         {
-            return ToWorld(new Vector2(x, y));
+            return ToWorld(new Vector2(screenX, screenY));
         }
 
         /// <summary>
-        /// Update the transformation matrix
+        /// Update the transformation matrix.
         /// </summary>
         void UpdateMatrix()
         {
@@ -347,14 +347,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Zooms the camera in and focuses on a specified point
+        /// Zooms the camera in and focuses on a specified point.
         /// </summary>
-        /// <param name="origin">Point to zoom in on</param>
-        /// <param name="size">Original size of the camera view</param>
-        /// <param name="scale">Magnification scale in percent</param>
+        /// <param name="origin">Point to zoom in on (the center of the view).</param>
+        /// <param name="size">The original size of the camera view.</param>
+        /// <param name="scale">Magnification scale in percent. Must be non-zero.</param>
         public void Zoom(Vector2 origin, Vector2 size, float scale)
         {
-            Min = origin - Vector2.Divide(size, 2f * scale);
+            Min = origin - size / (2f * scale);
             Scale = scale;
         }
     }

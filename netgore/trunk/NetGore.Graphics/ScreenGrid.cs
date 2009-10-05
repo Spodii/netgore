@@ -8,7 +8,7 @@ using NetGore;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Draws a grid to the screen
+    /// Draws a grid to the screen.
     /// </summary>
     public class ScreenGrid
     {
@@ -40,7 +40,7 @@ namespace NetGore.Graphics
         float _width = 32;
 
         /// <summary>
-        /// Gets or sets the color of the grid lines
+        /// Gets or sets the color of the grid lines.
         /// </summary>
         public Color Color
         {
@@ -49,21 +49,23 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the height of the grid in pixels
+        /// Gets or sets the height of the grid in pixels. Must be greater than zero.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than
+        /// or equal to zero.</exception>
         public float Height
         {
             get { return _height; }
             set
             {
                 if (value <= 0)
-                    throw new ArgumentOutOfRangeException("value", "Width must be greater than 0.");
+                    throw new ArgumentOutOfRangeException("value", "Height must be greater than 0.");
                 _height = value;
             }
         }
 
         /// <summary>
-        /// Horizontal line for the grid
+        /// Horizontal line for the grid.
         /// </summary>
         public Rectangle HLine
         {
@@ -71,7 +73,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the size of the screen
+        /// Gets or sets the size of the screen.
         /// </summary>
         public Vector2 ScreenSize
         {
@@ -88,7 +90,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Vertical line for the grid
+        /// Vertical line for the grid.
         /// </summary>
         public Rectangle VLine
         {
@@ -96,8 +98,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the width of the grid in pixels
+        /// Gets or sets the width of the grid in pixels. Must be greater than zero.
         /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="value"/> is less than
+        /// or equal to zero.</exception>
         public float Width
         {
             get { return _width; }
@@ -105,24 +109,25 @@ namespace NetGore.Graphics
             {
                 if (value <= 0)
                     throw new ArgumentOutOfRangeException("value", "Width must be greater than 0.");
+
                 _width = value;
             }
         }
 
         /// <summary>
-        /// ScreenGrid constructor
+        /// Initializes a new instance of the <see cref="ScreenGrid"/> class.
         /// </summary>
-        /// <param name="screenSize">Size of the screen in pixels</param>
+        /// <param name="screenSize">Size of the screen in pixels.</param>
         public ScreenGrid(Vector2 screenSize)
         {
             _screenSize = screenSize;
         }
 
         /// <summary>
-        /// Aligns an object's position to the grid
+        /// Aligns an object's position to the grid.
         /// </summary>
-        /// <param name="entity">Entity to edit</param>
-        public void Align<T>(T entity) where T : Entity
+        /// <param name="entity">The <see cref="Entity"/> to edit.</param>
+        public void Align(Entity entity)
         {
             if (entity == null)
             {
@@ -136,20 +141,22 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Aligns a vector's position to the grid, forcing rounding down
+        /// Aligns a position to the grid, forcing rounding down.
         /// </summary>
-        /// <param name="pos">Vector position to align to the grid</param>
-        /// <returns>Vector aligned to the grid</returns>
+        /// <param name="pos">Vector position to align to the grid.</param>
+        /// <returns>Vector aligned to the grid.</returns>
         public Vector2 AlignDown(Vector2 pos)
         {
-            return new Vector2((float)(Math.Floor(pos.X / Width) * Width), (float)(Math.Floor(pos.Y / Height) * Height));
+            float x = (float)(Math.Floor(pos.X / Width) * Width);
+            float y = (float)(Math.Floor(pos.Y / Height) * Height);
+            return new Vector2(x, y);
         }
 
         /// <summary>
-        /// Draws the grid to the SpriteBatch
+        /// Draws the grid.
         /// </summary>
-        /// <param name="sb">SpriteBatch object to use (Begin and End must be handled externally)</param>
-        /// <param name="camera">Camera to use</param>
+        /// <param name="sb">The <see cref="SpriteBatch"/> to draw to.</param>
+        /// <param name="camera">The <see cref="Camera2D"/> describing the view.</param>
         public void Draw(SpriteBatch sb, Camera2D camera)
         {
             if (sb == null)
@@ -199,9 +206,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Snaps a entity's position to the grid
+        /// Snaps an <see cref="Entity"/>'s position to the grid. Intended for when moving an <see cref="Entity"/>.
         /// </summary>
-        /// <param name="entity">Entity to edit</param>
+        /// <param name="entity"><see cref="Entity"/> to snap to the grid.</param>
         public void SnapToGridPosition(Entity entity)
         {
             if (entity == null)
@@ -219,9 +226,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Snaps a entity's size to the grid
+        /// Snaps an <see cref="Entity"/>'s size to the grid. Intended for when resizing an <see cref="Entity"/>.
         /// </summary>
-        /// <param name="entity">Entity to edit</param>
+        /// <param name="entity"><see cref="Entity"/> to snap to the grid.</param>
         public void SnapToGridSize(Entity entity)
         {
             if (entity == null)
