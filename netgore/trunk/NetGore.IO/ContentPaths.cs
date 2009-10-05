@@ -182,7 +182,6 @@ namespace NetGore
             return Path.Combine(rootPath, childPath);
         }
 
-        
         /// <summary>
         /// Combines the <paramref name="root"/> and <paramref name="child"/> directory.
         /// </summary>
