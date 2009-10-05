@@ -63,6 +63,9 @@ namespace NetGore.Globalization
             get { return _info; }
         }
 
+        /// <summary>
+        /// Initializes the <see cref="Parser"/> class.
+        /// </summary>
         static Parser()
         {
             _parserCurrent = new Parser(CultureInfo.CurrentCulture, NumberFormatInfo.CurrentInfo, DateTimeFormatInfo.CurrentInfo);
@@ -70,6 +73,12 @@ namespace NetGore.Globalization
                                           DateTimeFormatInfo.InvariantInfo);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Parser"/> class.
+        /// </summary>
+        /// <param name="culture">The culture information.</param>
+        /// <param name="info">The number format information.</param>
+        /// <param name="dateTimeInfo">The date and time format information.</param>
         Parser(CultureInfo culture, NumberFormatInfo info, DateTimeFormatInfo dateTimeInfo)
         {
             if (culture == null)

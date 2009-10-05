@@ -4,14 +4,14 @@ using NetGore;
 namespace NetGore
 {
     /// <summary>
-    /// Interface for getting the current time.
+    /// Interface for getting the current time in milliseconds.
     /// </summary>
     public interface IGetTime
     {
         /// <summary>
-        /// Gets the current time.
+        /// Gets the current time in milliseconds.
         /// </summary>
-        /// <returns>Current time.</returns>
+        /// <returns>The current time in milliseconds.</returns>
         int GetTime();
     }
 }
