@@ -16,7 +16,6 @@ namespace NetGore.Audio
         readonly SoundID _index;
         readonly string _name;
         readonly SoundEffect _soundEffect;
-        readonly ContentManager _contentManager;
         readonly List<SoundEffectInstance> _instances = new List<SoundEffectInstance>(1);
 
         /// <summary>
@@ -41,7 +40,6 @@ namespace NetGore.Audio
         /// <param name="getAssetName">Func used to get the fully qualified asset name.</param>
         internal Sound(ContentManager cm, IValueReader r, Func<string, string> getAssetName)
         {
-            _contentManager = cm;
             _name = r.ReadString("File");
             _index = new SoundID(r.ReadUShort("Index"));
 
@@ -81,7 +79,6 @@ namespace NetGore.Audio
         /// <param name="assetName">The name of the asset.</param>
         internal Sound(ContentManager cm, SoundID index, string assetName)
         {
-            _contentManager = cm;
             _index = index;
             _name = assetName;
 
