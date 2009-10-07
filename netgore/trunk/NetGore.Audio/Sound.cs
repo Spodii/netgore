@@ -15,13 +15,13 @@ namespace NetGore.Audio
     /// </summary>
     public class Sound : ISound
     {
+        readonly List<SoundEffectInstance3D> _active3DSounds = new List<SoundEffectInstance3D>();
+        readonly AudioEmitter _emitter = new AudioEmitter { Forward = Vector3.Forward, Up = Vector3.Up };
         readonly SoundID _index;
         readonly List<SoundEffectInstance> _instances = new List<SoundEffectInstance>(1);
+        readonly AudioListener _listener = new AudioListener { Forward = Vector3.Forward, Up = Vector3.Up };
         readonly string _name;
         readonly SoundEffect _soundEffect;
-        readonly List<SoundEffectInstance3D> _active3DSounds = new List<SoundEffectInstance3D>();
-        readonly AudioListener _listener = new AudioListener { Forward = Vector3.Forward, Up = Vector3.Up };
-        readonly AudioEmitter _emitter = new AudioEmitter { Forward = Vector3.Forward, Up = Vector3.Up };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sound"/> class.
@@ -131,11 +131,7 @@ namespace NetGore.Audio
         /// Gets or sets the object that is listening to the sounds. If null, 3D sounds will not be able
         /// to be updated.
         /// </summary>
-        public IAudioEmitter Listener
-        {
-            get;
-            set;
-        }
+        public IAudioEmitter Listener { get; set; }
 
         /// <summary>
         /// Gets the name of the <see cref="IAudio"/>.

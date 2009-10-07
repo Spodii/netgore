@@ -1,6 +1,5 @@
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame;
 using NetGore;
 
 namespace DemoGame.MapEditor

@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using DemoGame;
 using DemoGame.DbObjs;
 using log4net;
 using Microsoft.Xna.Framework;
@@ -41,10 +40,10 @@ namespace DemoGame
 
         const string _dynamicEntitiesNodeName = "DynamicEntities";
         const string _headerNodeHeightKey = "Height";
+        const string _headerNodeMusicKey = "Music";
         const string _headerNodeName = "Header";
         const string _headerNodeNameKey = "Name";
         const string _headerNodeWidthKey = "Width";
-        const string _headerNodeMusicKey = "Music";
         const string _miscNodeName = "Misc";
         const string _rootNodeName = "Map";
 
@@ -156,6 +155,11 @@ namespace DemoGame
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the name of the music to play for the map, or empty or null if there is no music.
+        /// </summary>
+        public string Music { get; set; }
 
         /// <summary>
         /// MapBase constructor
@@ -1409,11 +1413,6 @@ namespace DemoGame
         {
             w.WriteManyNodes(_dynamicEntitiesNodeName, DynamicEntities, DynamicEntityFactory.Write);
         }
-
-        /// <summary>
-        /// Gets or sets the name of the music to play for the map, or empty or null if there is no music.
-        /// </summary>
-        public string Music { get; set; }
 
         /// <summary>
         /// Saves the map header

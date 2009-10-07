@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame;
 using DemoGame.Client;
 using DemoGame.Server;
 using DemoGame.Server.Queries;
@@ -12,7 +11,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
-using NetGore.Audio;
 using NetGore.Db;
 using NetGore.EditorTools;
 using NetGore.Globalization;
@@ -283,7 +281,9 @@ namespace DemoGame.MapEditor
                 var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
                 var dupeWalls = Map.FindDuplicateWalls(grhWalls);
                 foreach (var dupeWall in dupeWalls)
+                {
                     Map.RemoveEntity(dupeWall);
+                }
 
                 // Reset some of the variables
                 _camera.Min = Vector2.Zero;
@@ -374,12 +374,6 @@ namespace DemoGame.MapEditor
 
             // Create the world
             _world = new World(this, _camera);
-        }
-
-        void SetMapGUITexts(Map oldMap, Map newMap)
-        {
-            txtMapName.Text = newMap.Name ?? string.Empty;
-            txtMusic.Text = newMap.Music ?? string.Empty;
         }
 
         void BeginEditGrhData(TreeNode node, GrhData gd)
@@ -1144,6 +1138,12 @@ namespace DemoGame.MapEditor
             return;
         }
 
+        void SetMapGUITexts(Map oldMap, Map newMap)
+        {
+            txtMapName.Text = newMap.Name ?? string.Empty;
+            txtMusic.Text = newMap.Music ?? string.Empty;
+        }
+
         void tabPageGrhs_Enter(object sender, EventArgs e)
         {
             treeGrhs.Select();
@@ -1298,6 +1298,14 @@ namespace DemoGame.MapEditor
                 txtMapHeight.BackColor = EditorColors.Error;
         }
 
+        void txtMapName_TextChanged(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            Map.Name = txtMapName.Text;
+        }
+
         void txtMapWidth_TextChanged(object sender, EventArgs e)
         {
             uint o;
@@ -1310,6 +1318,14 @@ namespace DemoGame.MapEditor
             }
             else
                 txtMapWidth.BackColor = EditorColors.Error;
+        }
+
+        void txtMusic_TextChanged(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            Map.Music = txtMusic.Text;
         }
 
         /// <summary>
@@ -1476,22 +1492,6 @@ namespace DemoGame.MapEditor
                     w.WriteEndNode(_displayNodeName);
                 }
             }
-        }
-
-        private void txtMapName_TextChanged(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            Map.Name = txtMapName.Text; 
-        }
-
-        private void txtMusic_TextChanged(object sender, EventArgs e)
-        {
-            if (Map == null)
-                return;
-
-            Map.Music = txtMusic.Text; 
         }
     }
 }

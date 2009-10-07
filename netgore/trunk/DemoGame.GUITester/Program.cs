@@ -1,4 +1,3 @@
-using DemoGame;
 using NetGore;
 
 namespace DemoGame.GUITester

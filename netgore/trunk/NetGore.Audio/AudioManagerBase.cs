@@ -1,11 +1,9 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Media;
 using NetGore.Collections;
 using NetGore.IO;
 
@@ -18,15 +16,29 @@ namespace NetGore.Audio
     /// <typeparam name="TIndex">The Type of index.</typeparam>
     public abstract class AudioManagerBase<T, TIndex> : IDisposable, IEnumerable<T> where T : class, IAudio
     {
+        readonly ContentManager _contentManager;
         readonly DArray<T> _items = new DArray<T>(false);
         readonly Dictionary<string, T> _itemsByName = new Dictionary<string, T>(StringComparer.OrdinalIgnoreCase);
-        readonly ContentManager _contentManager;
+        bool _isDisposed;
 
         /// <summary>
         /// Gets the <see cref="ContentManager"/> used to load the audio tracks in this
         /// <see cref="AudioManagerBase&lt;T, TIndex&gt;"/>.
         /// </summary>
-        public ContentManager ContentManager { get { return _contentManager; } }
+        public ContentManager ContentManager
+        {
+            get { return _contentManager; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the items node in the data file.
+        /// </summary>
+        protected abstract string ItemsNodeName { get; }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the root node in the data file.
+        /// </summary>
+        protected abstract string RootNodeName { get; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="AudioManagerBase&lt;T, TIndex&gt;"/> class.
@@ -37,9 +49,9 @@ namespace NetGore.Audio
         {
             _contentManager = cm;
 
-// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            // ReSharper disable DoNotCallOverridableMethodsInConstructor
             IValueReader r = new XmlValueReader(dataFilePath, RootNodeName);
-// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            // ReSharper restore DoNotCallOverridableMethodsInConstructor
             Load(r);
         }
 
@@ -50,38 +62,6 @@ namespace NetGore.Audio
         /// <param name="assetName">The name of the asset.</param>
         /// <returns>The fully qualified content path for the asset with the given name.</returns>
         protected abstract string GetContentPath(string assetName);
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the root node in the data file.
-        /// </summary>
-        protected abstract string RootNodeName { get; }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the items node in the data file.
-        /// </summary>
-        protected abstract string ItemsNodeName { get;}
-
-        /// <summary>
-        /// When overridden in the derived class, handles creating and reading an object of type <typeparamref name="T"/>
-        /// from the given <paramref name="reader"/>.
-        /// </summary>
-        /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
-        /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
-        protected abstract T ReadHandler(IValueReader reader);
-
-        /// <summary>
-        /// When overridden in the derived class, converts the <paramref name="value"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The converted value.</returns>
-        protected abstract int IndexToInt(TIndex value);
-
-        /// <summary>
-        /// When overridden in the derived class, converts the <paramref name="value"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The converted value.</returns>
-        protected abstract TIndex IntToIndex(int value);
 
         /// <summary>
         /// Gets the audio item at the given <paramref name="index"/>.
@@ -125,6 +105,28 @@ namespace NetGore.Audio
         }
 
         /// <summary>
+        /// When overridden in the derived class, converts the <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The converted value.</returns>
+        protected abstract int IndexToInt(TIndex value);
+
+        /// <summary>
+        /// Allows for additional disposing to be done by derived classes. This disposing takes place before the
+        /// base class is disposed.
+        /// </summary>
+        protected virtual void InternalDispose()
+        {
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, converts the <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The converted value.</returns>
+        protected abstract TIndex IntToIndex(int value);
+
+        /// <summary>
         /// Loads the audio track data.
         /// </summary>
         /// <param name="reader">IValueReader to read the data from.</param>
@@ -146,14 +148,14 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Allows for additional disposing to be done by derived classes. This disposing takes place before the
-        /// base class is disposed.
+        /// When overridden in the derived class, handles creating and reading an object of type <typeparamref name="T"/>
+        /// from the given <paramref name="reader"/>.
         /// </summary>
-        protected virtual void InternalDispose()
-        {
-        }
+        /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
+        /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
+        protected abstract T ReadHandler(IValueReader reader);
 
-        bool _isDisposed;
+        #region IDisposable Members
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -167,6 +169,10 @@ namespace NetGore.Audio
 
             InternalDispose();
         }
+
+        #endregion
+
+        #region IEnumerable<T> Members
 
         /// <summary>
         /// Returns an enumerator that iterates through the collection.
@@ -191,5 +197,7 @@ namespace NetGore.Audio
         {
             return GetEnumerator();
         }
+
+        #endregion
     }
 }

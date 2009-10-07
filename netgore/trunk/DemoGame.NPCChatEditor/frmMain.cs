@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using DemoGame;
 using NetGore;
 using NetGore.EditorTools;
 using NetGore.EditorTools.NPCChat;

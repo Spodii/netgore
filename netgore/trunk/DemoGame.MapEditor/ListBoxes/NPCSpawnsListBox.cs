@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows.Forms;
-using DemoGame;
 using DemoGame.Server;
 using NetGore;
 using NetGore.Db;

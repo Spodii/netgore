@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using DemoGame;
 using DemoGame.Server.Queries;
 using NetGore;
 using NetGore.Db;

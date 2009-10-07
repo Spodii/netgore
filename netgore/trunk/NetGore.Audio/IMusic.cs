@@ -14,18 +14,18 @@ namespace NetGore.Audio
         MusicID Index { get; }
 
         /// <summary>
+        /// Gets the current state of the music track.
+        /// </summary>
+        SoundState State { get; }
+
+        /// <summary>
         /// Pauses the music track if it is playing.
         /// </summary>
         void Pause();
-        
+
         /// <summary>
         /// Resumes the music track if it was paused.
         /// </summary>
         void Resume();
-
-        /// <summary>
-        /// Gets the current state of the music track.
-        /// </summary>
-        SoundState State { get; }
     }
 }

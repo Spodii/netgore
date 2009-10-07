@@ -1,8 +1,7 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
+using System.Data;
+using System.Linq;
 using System.Runtime.InteropServices;
 using NetGore.Globalization;
 using NetGore.IO;
@@ -793,42 +792,6 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Parses the MusicID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <returns>The MusicID parsed from the string.</returns>
-        public static MusicID ParseMusicID(this Parser parser, string value)
-        {
-            return new MusicID(parser.ParseUShort(value));
-        }
-
-        /// <summary>
-        /// Tries to parse the MusicID from a string.
-        /// </summary>
-        /// <param name="parser">The Parser to use.</param>
-        /// <param name="value">The string to parse.</param>
-        /// <param name="outValue">If this method returns true, contains the parsed MusicID.</param>
-        /// <returns>True if the parsing was successfully; otherwise false.</returns>
-        public static bool TryParse(this Parser parser, string value, out MusicID outValue)
-        {
-            ushort tmp;
-            bool ret = parser.TryParse(value, out tmp);
-            outValue = new MusicID(tmp);
-            return ret;
-        }
-
-        /// <summary>
-        /// Reads the MusicID from a BitStream.
-        /// </summary>
-        /// <param name="bitStream">BitStream to read the MusicID from.</param>
-        /// <returns>The MusicID read from the BitStream.</returns>
-        public static MusicID ReadMusicID(this BitStream bitStream)
-        {
-            return MusicID.Read(bitStream);
-        }
-
-        /// <summary>
         /// Reads the MusicID from an IDataReader.
         /// </summary>
         /// <param name="dataReader">IDataReader to read the MusicID from.</param>
@@ -851,6 +814,27 @@ namespace NetGore.Audio
         }
 
         /// <summary>
+        /// Parses the MusicID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <returns>The MusicID parsed from the string.</returns>
+        public static MusicID ParseMusicID(this Parser parser, string value)
+        {
+            return new MusicID(parser.ParseUShort(value));
+        }
+
+        /// <summary>
+        /// Reads the MusicID from a BitStream.
+        /// </summary>
+        /// <param name="bitStream">BitStream to read the MusicID from.</param>
+        /// <returns>The MusicID read from the BitStream.</returns>
+        public static MusicID ReadMusicID(this BitStream bitStream)
+        {
+            return MusicID.Read(bitStream);
+        }
+
+        /// <summary>
         /// Reads the MusicID from an IValueReader.
         /// </summary>
         /// <param name="valueReader">IValueReader to read the MusicID from.</param>
@@ -859,6 +843,21 @@ namespace NetGore.Audio
         public static MusicID ReadMusicID(this IValueReader valueReader, string name)
         {
             return MusicID.Read(valueReader, name);
+        }
+
+        /// <summary>
+        /// Tries to parse the MusicID from a string.
+        /// </summary>
+        /// <param name="parser">The Parser to use.</param>
+        /// <param name="value">The string to parse.</param>
+        /// <param name="outValue">If this method returns true, contains the parsed MusicID.</param>
+        /// <returns>True if the parsing was successfully; otherwise false.</returns>
+        public static bool TryParse(this Parser parser, string value, out MusicID outValue)
+        {
+            ushort tmp;
+            bool ret = parser.TryParse(value, out tmp);
+            outValue = new MusicID(tmp);
+            return ret;
         }
 
         /// <summary>

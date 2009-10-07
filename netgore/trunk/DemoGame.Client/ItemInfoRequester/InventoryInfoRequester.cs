@@ -1,5 +1,4 @@
 using System.Linq;
-using DemoGame;
 using NetGore;
 using NetGore.IO;
 using NetGore.Network;

@@ -5,7 +5,6 @@ using System.Data.Common;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DemoGame;
 using NetGore;
 using NetGore.Db.ClassCreator.Properties;
 
