@@ -6,6 +6,8 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using NetGore.IO;
 
+// TODO: Apply volume fade to 3D sounds based off of distance from emitter and listener
+
 namespace NetGore.Audio
 {
     /// <summary>
