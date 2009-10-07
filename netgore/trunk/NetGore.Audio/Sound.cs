@@ -14,23 +14,9 @@ namespace NetGore.Audio
     public class Sound : ISound
     {
         readonly SoundID _index;
+        readonly List<SoundEffectInstance> _instances = new List<SoundEffectInstance>(1);
         readonly string _name;
         readonly SoundEffect _soundEffect;
-        readonly List<SoundEffectInstance> _instances = new List<SoundEffectInstance>(1);
-
-        /// <summary>
-        /// Gets the unique index of the <see cref="IAudio"/>.
-        /// </summary>
-        /// <returns>The unique index.</returns>
-        int IAudio.GetIndex() { return (int)Index; }
-
-        /// <summary>
-        /// Gets if only one instance of this <see cref="IAudio"/> may be playing at a time.
-        /// </summary>
-        public bool IsSingleInstance
-        {
-            get { return false; }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sound"/> class.
@@ -44,6 +30,20 @@ namespace NetGore.Audio
             _index = new SoundID(r.ReadUShort("Index"));
 
             var assetName = getAssetName(_name);
+            _soundEffect = cm.Load<SoundEffect>(assetName);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Sound"/> class.
+        /// </summary>
+        /// <param name="cm">The <see cref="ContentManager"/>.</param>
+        /// <param name="index">The index.</param>
+        /// <param name="assetName">The name of the asset.</param>
+        internal Sound(ContentManager cm, SoundID index, string assetName)
+        {
+            _index = index;
+            _name = assetName;
+
             _soundEffect = cm.Load<SoundEffect>(assetName);
         }
 
@@ -71,18 +71,23 @@ namespace NetGore.Audio
             return instance;
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Sound"/> class.
-        /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        /// <param name="index">The index.</param>
-        /// <param name="assetName">The name of the asset.</param>
-        internal Sound(ContentManager cm, SoundID index, string assetName)
-        {
-            _index = index;
-            _name = assetName;
+        #region ISound Members
 
-            _soundEffect = cm.Load<SoundEffect>(assetName);
+        /// <summary>
+        /// Gets the unique index of the <see cref="IAudio"/>.
+        /// </summary>
+        /// <returns>The unique index.</returns>
+        int IAudio.GetIndex()
+        {
+            return (int)Index;
+        }
+
+        /// <summary>
+        /// Gets if only one instance of this <see cref="IAudio"/> may be playing at a time.
+        /// </summary>
+        public bool IsSingleInstance
+        {
+            get { return false; }
         }
 
         /// <summary>
@@ -150,8 +155,12 @@ namespace NetGore.Audio
             lock (_instances)
             {
                 foreach (var item in _instances)
+                {
                     item.Stop();
+                }
             }
         }
+
+        #endregion
     }
 }
