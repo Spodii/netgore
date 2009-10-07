@@ -24,5 +24,11 @@ namespace NetGore.Audio
         /// </summary>
         /// <param name="emitter">The object that is emitting the sound.</param>
         void Play(IAudioEmitter emitter);
+
+        /// <summary>
+        /// Gets or sets the object that is listening to the sounds. If null, last known position of the
+        /// listener will be used for the 3D sounds.
+        /// </summary>
+        IAudioEmitter Listener { get; set; }
     }
 }

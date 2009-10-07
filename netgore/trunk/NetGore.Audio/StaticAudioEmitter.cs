@@ -11,6 +11,7 @@ namespace NetGore.Audio
     {
         static readonly Stack<StaticAudioEmitter> _freeObjects = new Stack<StaticAudioEmitter>();
         static readonly object _freeObjectsSync = new object();
+
         Vector2 _position;
 
         /// <summary>

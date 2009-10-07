@@ -49,6 +49,7 @@
     <Compile Include="MusicManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sound.cs" />
+    <Compile Include="SoundEffectInstance3D.cs" />
     <Compile Include="SoundID.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="StaticAudioEmitter.cs" />
