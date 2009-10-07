@@ -17,6 +17,9 @@ namespace NetGore.Audio
         readonly List<SoundEffectInstance> _instances = new List<SoundEffectInstance>(1);
         readonly string _name;
         readonly SoundEffect _soundEffect;
+        readonly List<SoundEffectInstance3D> _active3DSounds = new List<SoundEffectInstance3D>();
+        readonly AudioListener _listener = new AudioListener { Forward = Vector3.Forward, Up = Vector3.Up };
+        readonly AudioEmitter _emitter = new AudioEmitter { Forward = Vector3.Forward, Up = Vector3.Up };
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sound"/> class.
@@ -105,8 +108,10 @@ namespace NetGore.Audio
         /// <param name="position">The world position of the source of the sound.</param>
         public void Play(Vector2 position)
         {
-            // TODO: ...
-            throw new NotImplementedException();
+            var sfx = GetFreeInstance();
+            var emitter = StaticAudioEmitter.Create(position);
+            var sfx3D = SoundEffectInstance3D.Create(sfx, emitter);
+            _active3DSounds.Add(sfx3D);
         }
 
         /// <summary>
@@ -115,8 +120,19 @@ namespace NetGore.Audio
         /// <param name="emitter">The object that is emitting the sound.</param>
         public void Play(IAudioEmitter emitter)
         {
-            // TODO: ...
-            throw new NotImplementedException();
+            var sfx = GetFreeInstance();
+            var sfx3D = SoundEffectInstance3D.Create(sfx, emitter);
+            _active3DSounds.Add(sfx3D);
+        }
+
+        /// <summary>
+        /// Gets or sets the object that is listening to the sounds. If null, 3D sounds will not be able
+        /// to be updated.
+        /// </summary>
+        public IAudioEmitter Listener
+        {
+            get;
+            set;
         }
 
         /// <summary>
@@ -143,7 +159,31 @@ namespace NetGore.Audio
         /// </summary>
         public void Update()
         {
-            // TODO: ...
+            var l = Listener;
+            if (l != null)
+                _listener.Position = new Vector3(l.Position, 0f);
+
+            int i = 0;
+
+            // Update all of the 3d sounds
+            while (i < _active3DSounds.Count)
+            {
+                var current = _active3DSounds[i];
+
+                if (current.Sound.State == SoundState.Playing)
+                {
+                    // Update the playing sound
+                    _emitter.Position = new Vector3(current.Emitter.Position, 0f);
+                    current.Sound.Apply3D(_listener, _emitter);
+                    i++;
+                }
+                else
+                {
+                    // Remove the dead sound
+                    _active3DSounds.RemoveAt(i);
+                    StaticAudioEmitter.TryReturn(current.Emitter);
+                }
+            }
         }
 
         /// <summary>
