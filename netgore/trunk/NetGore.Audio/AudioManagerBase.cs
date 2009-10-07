@@ -1,325 +1,204 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
+using NetGore.Collections;
+using NetGore.IO;
 
 namespace NetGore.Audio
 {
     /// <summary>
-    /// Base class for a manager for all the game audio.
+    /// Base class for a manager of audio tracks.
     /// </summary>
-    public abstract class AudioManagerBase : IDisposable
+    /// <typeparam name="T">The Type of audio track.</typeparam>
+    /// <typeparam name="TIndex">The Type of index.</typeparam>
+    public abstract class AudioManagerBase<T, TIndex> : IDisposable, IEnumerable<T> where T : class, IAudio
     {
-        readonly List<Cue3D> _activeCues = new List<Cue3D>();
-        readonly AudioEngine _audioEngine;
-        readonly AudioEmitter _emitter;
-        readonly Stack<Cue3D> _freeCues = new Stack<Cue3D>();
-        readonly Stack<StaticAudioEmitter> _freeStaticAudioEmitters = new Stack<StaticAudioEmitter>();
-        readonly AudioListener _listener;
-        readonly SoundBank _soundBank;
-        readonly WaveBank _waveBank;
-
-        Cue _musicCue;
+        readonly DArray<T> _items = new DArray<T>(false);
+        readonly Dictionary<string, T> _itemsByName = new Dictionary<string, T>(StringComparer.OrdinalIgnoreCase);
+        readonly ContentManager _contentManager;
 
         /// <summary>
-        /// Gets the Cue being used for the currently set music. Can be null.
+        /// Gets the <see cref="ContentManager"/> used to load the audio tracks in this
+        /// <see cref="AudioManagerBase&lt;T, TIndex&gt;"/>.
         /// </summary>
-        public Cue MusicCue
+        public ContentManager ContentManager { get { return _contentManager; } }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AudioManagerBase&lt;T, TIndex&gt;"/> class.
+        /// </summary>
+        /// <param name="cm">The <see cref="ContentManager"/> used to load the audio tracks.</param>
+        /// <param name="dataFilePath">The file path to the audio data to load.</param>
+        protected AudioManagerBase(ContentManager cm, string dataFilePath)
         {
-            get { return _musicCue; }
+            _contentManager = cm;
+
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
+            IValueReader r = new XmlValueReader(dataFilePath, RootNodeName);
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
+            Load(r);
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AudioManagerBase"/> class.
+        /// When overridden in the derived class, gets the fully qualified content path for the asset with the
+        /// given name.
         /// </summary>
-        /// <param name="settingsFile">The path to the settings file.</param>
-        /// <param name="wavBankFile">The path to the wav bank file.</param>
-        /// <param name="soundBankFile">The path to the sound bank file.</param>
-        protected AudioManagerBase(string settingsFile, string wavBankFile, string soundBankFile)
-        {
-            _audioEngine = new AudioEngine(settingsFile);
-            _waveBank = new WaveBank(_audioEngine, wavBankFile);
-            _soundBank = new SoundBank(_audioEngine, soundBankFile);
-
-            _listener = new AudioListener { Forward = Vector3.Forward, Up = Vector3.Up, Velocity = Vector3.Zero };
-            _emitter = new AudioEmitter { Forward = Vector3.Forward, Up = Vector3.Up, Velocity = Vector3.Zero };
-        }
+        /// <param name="assetName">The name of the asset.</param>
+        /// <returns>The fully qualified content path for the asset with the given name.</returns>
+        protected abstract string GetContentPath(string assetName);
 
         /// <summary>
-        /// Stops and clears the currently set music, or does nothing if no music is set.
+        /// When overridden in the derived class, gets the name of the root node in the data file.
         /// </summary>
-        public void ClearMusic()
-        {
-            if (_musicCue == null)
-                return;
-
-            _musicCue.Stop(AudioStopOptions.AsAuthored);
-            _musicCue = null;
-        }
+        protected abstract string RootNodeName { get; }
 
         /// <summary>
-        /// Updates the <see cref="AudioManager"/>.
+        /// When overridden in the derived class, gets the name of the items node in the data file.
         /// </summary>
-        /// <param name="listenerPosition">The world position of the listener. This is generally where the user's
-        /// character is.</param>
-        protected virtual void DoUpdate(Vector2 listenerPosition)
+        protected abstract string ItemsNodeName { get;}
+
+        /// <summary>
+        /// When overridden in the derived class, handles creating and reading an object of type <typeparamref name="T"/>
+        /// from the given <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
+        /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
+        protected abstract T ReadHandler(IValueReader reader);
+
+        /// <summary>
+        /// When overridden in the derived class, converts the <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The converted value.</returns>
+        protected abstract int IndexToInt(TIndex value);
+
+        /// <summary>
+        /// When overridden in the derived class, converts the <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The converted value.</returns>
+        protected abstract TIndex IntToIndex(int value);
+
+        /// <summary>
+        /// Gets the audio item at the given <paramref name="index"/>.
+        /// </summary>
+        /// <param name="index">The index of the item to get.</param>
+        /// <returns>The item at the given <paramref name="index"/>, or null if the <see cref="index"/> is invalid
+        /// or no item exists for the given <see cref="index"/>.</returns>
+        public T this[TIndex index]
         {
-            int i = 0;
-
-            _listener.Position = new Vector3(listenerPosition, 0f);
-
-            while (i < _activeCues.Count)
+            get
             {
-                var current = _activeCues[i];
-
-                // Check if the cue has stopped
-                if (current.Cue.IsStopped)
-                {
-                    // Remove the cue from the active list and push it into the free list
-                    _activeCues.RemoveAt(i);
-                    FreeCue3D(current);
-                }
-                else
-                {
-                    // Update the position information and move to the next index
-                    UpdateCue3D(current);
-                    i++;
-                }
+                var intIndex = IndexToInt(index);
+                return this[intIndex];
             }
         }
 
         /// <summary>
-        /// Frees up a <see cref="Cue3D"/>.
+        /// Gets the audio item with the given <paramref name="name"/>.
         /// </summary>
-        /// <param name="cue3D">The <see cref="Cue3D"/> to free.</param>
-        void FreeCue3D(Cue3D cue3D)
+        /// <param name="name">The name of the item to get.</param>
+        /// <returns>The item at the given <paramref name="name"/>, or null if the <see cref="name"/> is invalid
+        /// or no item exists for the given <see cref="name"/>.</returns>
+        public T this[string name]
         {
-            _freeCues.Push(cue3D);
-
-            // Keep track of the emitter if it is a StaticAudioEmitter
-            var asSAE = cue3D.Emitter as StaticAudioEmitter;
-            if (asSAE != null)
-                _freeStaticAudioEmitters.Push(asSAE);
-        }
-
-        /// <summary>
-        /// Plays a sound.
-        /// </summary>
-        /// <param name="cueName">The name of the <see cref="Cue"/> to play.</param>
-        /// <param name="worldPosition">The world position to play the sound at.</param>
-        /// <returns>The <see cref="Cue"/> created to play the sound.</returns>
-        public virtual Cue Play(string cueName, Vector2 worldPosition)
-        {
-            // Get a StaticAudioEmitter
-            StaticAudioEmitter emitter;
-
-            if (_freeStaticAudioEmitters.Count > 0)
-                emitter = _freeStaticAudioEmitters.Pop();
-            else
-                emitter = new StaticAudioEmitter();
-
-            // Set up the emitter with the position, then call the other Play
-            emitter.Initialize(worldPosition);
-
-            return Play(cueName, emitter);
-        }
-
-        /// <summary>
-        /// Plays a sound.
-        /// </summary>
-        /// <param name="cueName">The name of the <see cref="Cue"/> to play.</param>
-        /// <param name="emitter">The <see cref="IAudioEmitter"/> that this sound is coming from.</param>
-        /// <returns>The <see cref="Cue"/> created to play the sound.</returns>
-        public virtual Cue Play(string cueName, IAudioEmitter emitter)
-        {
-            // Get the Cue
-            var cue = _soundBank.GetCue(cueName);
-            if (cue == null)
-                throw new ArgumentException("No cue with the specified name found.", "cueName");
-
-            Cue3D cue3D;
-
-            // Get the free Cue3D
-            if (_freeCues.Count > 0)
-                cue3D = _freeCues.Pop();
-            else
-                cue3D = new Cue3D();
-
-            // Initialize and add to the list of live Cue3Ds
-            cue3D.Initialize(cue, emitter);
-            _activeCues.Add(cue3D);
-
-            // Update and play
-            UpdateCue3D(cue3D);
-            cue3D.Cue.Play();
-
-            return cue3D.Cue;
-        }
-
-        /// <summary>
-        /// Sets the music to play.
-        /// </summary>
-        /// <param name="cueName">The name of the <see cref="Cue"/> to play.</param>
-        /// <exception cref="ArgumentException">No <see cref="Cue"/> found with the given
-        /// <paramref name="cueName"/>.</exception>
-        public void SetMusic(string cueName)
-        {
-            // Continue playing if this is already the music set
-            if (MusicCue != null && !string.IsNullOrEmpty(cueName) &&
-                MusicCue.Name.Equals(cueName, StringComparison.OrdinalIgnoreCase))
-                return;
-
-            // Get the Cue
-            var cue = _soundBank.GetCue(cueName);
-            if (cue == null)
-                throw new ArgumentException("No cue with the specified name found.", "cueName");
-
-            // Stop the old music and play the new
-            if (_musicCue != null)
-                _musicCue.Stop(AudioStopOptions.AsAuthored);
-
-            _musicCue = cue;
-            _musicCue.Play();
-        }
-
-        /// <summary>
-        /// Stops all of the sounds playing except for the music.
-        /// </summary>
-        public void StopAll()
-        {
-            StopAll(AudioStopOptions.Immediate);
-        }
-
-        /// <summary>
-        /// Stops all of the sounds playing except for the music.
-        /// </summary>
-        /// <param name="stopOptions">Specifies how to stop the sounds.</param>
-        public void StopAll(AudioStopOptions stopOptions)
-        {
-            foreach (var cue3D in _activeCues)
+            get
             {
-                cue3D.Cue.Stop(stopOptions);
-                FreeCue3D(cue3D);
+                T item;
+                if (!_itemsByName.TryGetValue(name, out item))
+                    return null;
+
+                return item;
             }
-
-            _activeCues.Clear();
         }
 
         /// <summary>
-        /// Updates the <see cref="AudioManager"/>.
+        /// Gets the audio item at the given <paramref name="index"/>.
         /// </summary>
-        /// <param name="listener">The emitter that is listening to the audio. This is generally where the
-        /// user's character is.</param>
-        public void Update(IAudioEmitter listener)
+        /// <param name="index">The index of the item to get.</param>
+        /// <returns>The item at the given <paramref name="index"/>, or null if the <see cref="index"/> is invalid
+        /// or no item exists for the given <see cref="index"/>.</returns>
+        protected T this[int index]
         {
-            DoUpdate(listener.Position);
+            get
+            {
+                if (!_items.CanGet(index))
+                    return null;
+
+                return _items[index];
+            }
         }
 
         /// <summary>
-        /// Updates the <see cref="AudioManager"/>.
+        /// Loads the audio track data.
         /// </summary>
-        /// <param name="listenerPosition">The world position of the listener. This is generally where the user's
-        /// character is.</param>
-        public void Update(Vector2 listenerPosition)
+        /// <param name="reader">IValueReader to read the data from.</param>
+        void Load(IValueReader reader)
         {
-            DoUpdate(listenerPosition);
+            var items = reader.ReadManyNodes<T>(ItemsNodeName, ReadHandler);
+            foreach (var item in items)
+            {
+                int index = item.GetIndex();
+                string name = item.Name;
+
+                // TODO: Better error checking
+                Debug.Assert(this[index] == null);
+                _items.Insert(index, item);
+
+                Debug.Assert(this[name] == null);
+                _itemsByName.Add(name, item);
+            }
         }
 
         /// <summary>
-        /// Updates a <see cref="Cue3D"/>.
+        /// Allows for additional disposing to be done by derived classes. This disposing takes place before the
+        /// base class is disposed.
         /// </summary>
-        /// <param name="cue3D">The <see cref="Cue3D"/> to update.</param>
-        protected virtual void UpdateCue3D(Cue3D cue3D)
+        protected virtual void InternalDispose()
         {
-            _emitter.Position = new Vector3(cue3D.Emitter.Position, 0f);
-            cue3D.Cue.Apply3D(_listener, _emitter);
         }
 
-        #region IDisposable Members
+        bool _isDisposed;
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public virtual void Dispose()
+        public void Dispose()
         {
-            _audioEngine.Dispose();
-            _waveBank.Dispose();
-            _soundBank.Dispose();
-        }
+            if (_isDisposed)
+                return;
 
-        #endregion
+            _isDisposed = true;
 
-        /// <summary>
-        /// Represents a <see cref="Cue"/> and the <see cref="IAudioEmitter"/> it is coming from.
-        /// </summary>
-        protected class Cue3D
-        {
-            Cue _cue;
-            IAudioEmitter _emitter;
-
-            /// <summary>
-            /// Gets the <see cref="Cue"/> being played.
-            /// </summary>
-            public Cue Cue
-            {
-                get { return _cue; }
-            }
-
-            /// <summary>
-            /// Gets the source emitting the sound.
-            /// </summary>
-            public IAudioEmitter Emitter
-            {
-                get { return _emitter; }
-            }
-
-            /// <summary>
-            /// Initializes the <see cref="Cue3D"/>.
-            /// </summary>
-            /// <param name="cue">The <see cref="Cue"/> being played.</param>
-            /// <param name="emitter">The source emitting the sound.</param>
-            public void Initialize(Cue cue, IAudioEmitter emitter)
-            {
-                if (cue == null)
-                    throw new ArgumentNullException("cue");
-                if (emitter == null)
-                    throw new ArgumentNullException("emitter");
-
-                _cue = cue;
-                _emitter = emitter;
-            }
+            InternalDispose();
         }
 
         /// <summary>
-        /// A <see cref="IAudioEmitter"/> implementation for a stationary source.
+        /// Returns an enumerator that iterates through the collection.
         /// </summary>
-        class StaticAudioEmitter : IAudioEmitter
+        /// <returns>
+        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>1</filterpriority>
+        public IEnumerator<T> GetEnumerator()
         {
-            Vector2 _position;
+            return ((IEnumerable<T>)_items).GetEnumerator();
+        }
 
-            /// <summary>
-            /// Initializes the <see cref="StaticAudioEmitter"/>.
-            /// </summary>
-            /// <param name="position">The position of the emitter.</param>
-            public void Initialize(Vector2 position)
-            {
-                _position = position;
-            }
-
-            #region IAudioEmitter Members
-
-            /// <summary>
-            /// Gets the position of the audio emitter.
-            /// </summary>
-            /// <value></value>
-            public Vector2 Position
-            {
-                get { return _position; }
-            }
-
-            #endregion
+        /// <summary>
+        /// Returns an enumerator that iterates through a collection.
+        /// </summary>
+        /// <returns>
+        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
     }
 }

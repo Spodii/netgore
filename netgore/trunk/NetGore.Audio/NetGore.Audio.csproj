@@ -40,13 +40,33 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioManagerBase.cs" />
+    <Compile Include="IAudio.cs" />
     <Compile Include="IAudioEmitter.cs" />
+    <Compile Include="IMusic.cs" />
+    <Compile Include="ISound.cs" />
+    <Compile Include="Music.cs" />
+    <Compile Include="MusicID.cs" />
+    <Compile Include="MusicManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sound.cs" />
+    <Compile Include="SoundID.cs" />
+    <Compile Include="SoundManager.cs" />
+    <Compile Include="StaticAudioEmitter.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetGore.Collections\NetGore.Collections.csproj">
+      <Project>{C45432C4-D511-4874-8BF9-EB91AD6E8839}</Project>
+      <Name>NetGore.Collections</Name>
+      <Private>False</Private>
+    </ProjectReference>
     <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">
       <Project>{CF26A8C6-7162-499C-8870-BF3C29E43532}</Project>
       <Name>NetGore.Globalization</Name>
+      <Private>False</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\NetGore.IO\NetGore.IO.csproj">
+      <Project>{E7C8665B-101F-4930-97B7-68FC2C236971}</Project>
+      <Name>NetGore.IO</Name>
       <Private>False</Private>
     </ProjectReference>
   </ItemGroup>

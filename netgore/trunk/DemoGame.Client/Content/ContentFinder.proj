@@ -7,6 +7,13 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+		<AudioTemplate Include="**\*.wav">
+			<Importer>WavImporter</Importer>
+			<Processor>SoundEffectProcessor</Processor>
+		</AudioTemplate>
+	</ItemGroup>
+	
+	<ItemGroup>
 		<FontTemplate Include="**\*.spritefont">
 			<Importer>FontDescriptionImporter</Importer>
 			<Processor>FontDescriptionProcessor</Processor>
@@ -15,6 +22,9 @@
 	
 	<Target Name="BeforeBuild">
 		<CreateItem Include="@(TextureTemplate)" AdditionalMetadata="Name=%(FileName)">
+			<Output TaskParameter="Include" ItemName="Compile" />
+		</CreateItem>
+		<CreateItem Include="@(AudioTemplate)" AdditionalMetadata="Name=%(FileName)">
 			<Output TaskParameter="Include" ItemName="Compile" />
 		</CreateItem>
 		<CreateItem Include="@(FontTemplate)" AdditionalMetadata="Name=%(FileName)">

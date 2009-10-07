@@ -6,6 +6,7 @@ using NetGore.Audio;
 
 namespace DemoGame.Client
 {
+    /*
     public class AudioManager : AudioManagerBase
     {
         /// <summary>
@@ -16,4 +17,5 @@ namespace DemoGame.Client
         {
         }
     }
+    */
 }

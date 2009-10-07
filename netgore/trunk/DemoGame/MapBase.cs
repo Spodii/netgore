@@ -44,6 +44,7 @@ namespace DemoGame
         const string _headerNodeName = "Header";
         const string _headerNodeNameKey = "Name";
         const string _headerNodeWidthKey = "Width";
+        const string _headerNodeMusicKey = "Music";
         const string _miscNodeName = "Misc";
         const string _rootNodeName = "Map";
 
@@ -1214,7 +1215,8 @@ namespace DemoGame
             var nodeReader = r.ReadNode(_headerNodeName);
 
             // Read the values
-            var name = nodeReader.ReadString(_headerNodeNameKey);
+            Name = nodeReader.ReadString(_headerNodeNameKey);
+            Music = nodeReader.ReadString(_headerNodeMusicKey);
             _width = nodeReader.ReadFloat(_headerNodeWidthKey);
             _height = nodeReader.ReadFloat(_headerNodeHeightKey);
 
@@ -1409,6 +1411,11 @@ namespace DemoGame
         }
 
         /// <summary>
+        /// Gets or sets the name of the music to play for the map, or empty or null if there is no music.
+        /// </summary>
+        public string Music { get; set; }
+
+        /// <summary>
         /// Saves the map header
         /// </summary>
         /// <param name="w">IValueWriter to write to.</param>
@@ -1420,6 +1427,7 @@ namespace DemoGame
             w.WriteStartNode(_headerNodeName);
             {
                 w.Write(_headerNodeNameKey, "INSERT VALUE");
+                w.Write(_headerNodeMusicKey, Music);
                 w.Write(_headerNodeWidthKey, Width);
                 w.Write(_headerNodeHeightKey, Height);
             }

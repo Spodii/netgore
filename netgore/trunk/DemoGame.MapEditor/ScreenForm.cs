@@ -12,6 +12,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Audio;
 using NetGore.Db;
 using NetGore.EditorTools;
 using NetGore.Globalization;
@@ -281,10 +282,8 @@ namespace DemoGame.MapEditor
                 // Remove all of the walls previously created from the MapGrhs
                 var grhWalls = _mapGrhWalls.CreateWallList(Map.MapGrhs);
                 var dupeWalls = Map.FindDuplicateWalls(grhWalls);
-                foreach (WallEntityBase dupeWall in dupeWalls)
-                {
+                foreach (var dupeWall in dupeWalls)
                     Map.RemoveEntity(dupeWall);
-                }
 
                 // Reset some of the variables
                 _camera.Min = Vector2.Zero;
@@ -362,6 +361,7 @@ namespace DemoGame.MapEditor
             OnChangeMap += ((oldMap, newMap) => _camera.Map = newMap);
             OnChangeMap += ((oldMap, newMap) => lstNPCSpawns.SetMap(DbController, newMap));
             OnChangeMap += ((oldMap, newMap) => lstPersistentNPCs.SetMap(DbController, newMap));
+            OnChangeMap += SetMapGUITexts;
 
             // Set up the EntityTypes
             cmbEntityTypes.Items.Clear();
@@ -374,6 +374,12 @@ namespace DemoGame.MapEditor
 
             // Create the world
             _world = new World(this, _camera);
+        }
+
+        void SetMapGUITexts(Map oldMap, Map newMap)
+        {
+            txtMapName.Text = newMap.Name ?? string.Empty;
+            txtMusic.Text = newMap.Music ?? string.Empty;
         }
 
         void BeginEditGrhData(TreeNode node, GrhData gd)
@@ -1119,17 +1125,23 @@ namespace DemoGame.MapEditor
         /// <param name="filePath">Path to the map to use</param>
         void SetMap(string filePath)
         {
-            if (MapBase.IsValidMapFile(filePath))
+            const string errmsg = "Invalid map file selected:{0}{1}";
+
+            if (!MapBase.IsValidMapFile(filePath))
             {
-                MapIndex index;
-                if (Map.TryGetIndexFromPath(filePath, out index))
-                {
-                    Map = new Map(index, _world, GameScreen.GraphicsDevice);
-                    return;
-                }
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
+                return;
             }
 
-            MessageBox.Show(string.Format("Invalid map file selected:{0}{1}", Environment.NewLine, filePath));
+            MapIndex index;
+            if (!Map.TryGetIndexFromPath(filePath, out index))
+            {
+                MessageBox.Show(string.Format(errmsg, Environment.NewLine, filePath));
+                return;
+            }
+
+            Map = new Map(index, _world, GameScreen.GraphicsDevice);
+            return;
         }
 
         void tabPageGrhs_Enter(object sender, EventArgs e)
@@ -1464,6 +1476,22 @@ namespace DemoGame.MapEditor
                     w.WriteEndNode(_displayNodeName);
                 }
             }
+        }
+
+        private void txtMapName_TextChanged(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            Map.Name = txtMapName.Text; 
+        }
+
+        private void txtMusic_TextChanged(object sender, EventArgs e)
+        {
+            if (Map == null)
+                return;
+
+            Map.Music = txtMusic.Text; 
         }
     }
 }
