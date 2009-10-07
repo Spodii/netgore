@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Linq;
-using DemoGame;
 using NetGore;
 using NetGore.Network;
 

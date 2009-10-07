@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using DemoGame;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;

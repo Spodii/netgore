@@ -1,7 +1,6 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using DemoGame;
 using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
