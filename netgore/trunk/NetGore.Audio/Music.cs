@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using NetGore.IO;
 
+// FUTURE: Make the MusicManager work together with this better to unload all but the current playing music track
+
 namespace NetGore.Audio
 {
     /// <summary>

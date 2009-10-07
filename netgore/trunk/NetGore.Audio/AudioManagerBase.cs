@@ -89,13 +89,10 @@ namespace NetGore.Audio
         /// <param name="index">The index of the item to get.</param>
         /// <returns>The item at the given <paramref name="index"/>, or null if the <see cref="index"/> is invalid
         /// or no item exists for the given <see cref="index"/>.</returns>
-        public T this[TIndex index]
+        protected T GetItem(TIndex index)
         {
-            get
-            {
-                var intIndex = IndexToInt(index);
-                return this[intIndex];
-            }
+            var intIndex = IndexToInt(index);
+            return GetItem(intIndex);
         }
 
         /// <summary>
@@ -104,16 +101,13 @@ namespace NetGore.Audio
         /// <param name="name">The name of the item to get.</param>
         /// <returns>The item at the given <paramref name="name"/>, or null if the <see cref="name"/> is invalid
         /// or no item exists for the given <see cref="name"/>.</returns>
-        public T this[string name]
+        protected T GetItem(string name)
         {
-            get
-            {
-                T item;
-                if (!_itemsByName.TryGetValue(name, out item))
-                    return null;
+            T item;
+            if (!_itemsByName.TryGetValue(name, out item))
+                return null;
 
-                return item;
-            }
+            return item;
         }
 
         /// <summary>
@@ -122,15 +116,12 @@ namespace NetGore.Audio
         /// <param name="index">The index of the item to get.</param>
         /// <returns>The item at the given <paramref name="index"/>, or null if the <see cref="index"/> is invalid
         /// or no item exists for the given <see cref="index"/>.</returns>
-        protected T this[int index]
+        protected T GetItem(int index)
         {
-            get
-            {
-                if (!_items.CanGet(index))
-                    return null;
+            if (!_items.CanGet(index))
+                return null;
 
-                return _items[index];
-            }
+            return _items[index];
         }
 
         /// <summary>
@@ -145,11 +136,11 @@ namespace NetGore.Audio
                 int index = item.GetIndex();
                 string name = item.Name;
 
-                // TODO: Better error checking
-                Debug.Assert(this[index] == null);
+                // TODO: Better error handling
+                Debug.Assert(GetItem(index) == null);
                 _items.Insert(index, item);
 
-                Debug.Assert(this[name] == null);
+                Debug.Assert(GetItem(name) == null);
                 _itemsByName.Add(name, item);
             }
         }

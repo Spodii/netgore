@@ -1,5 +1,6 @@
 using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using NetGore.IO;
 
@@ -13,24 +14,45 @@ namespace NetGore.Audio
         static readonly object _instanceLock = new object();
         static MusicManager _instance;
 
-        /// <summary>
-        /// Gets an instance of the <see cref="MusicManager"/> for the given <paramref name="contentManager"/>.
-        /// </summary>
-        /// <param name="contentManager">The <see cref="ContentManager"/>.</param>
-        /// <returns>An instance of the <see cref="MusicManager"/> for the given
-        /// <paramref name="contentManager"/>.</returns>
-        public static MusicManager GetInstance(ContentManager contentManager)
-        {
-            if (_instance == null)
-            {
-                lock (_instanceLock)
-                {
-                    if (_instance == null)
-                        _instance = new MusicManager(contentManager);
-                }
-            }
+        IMusic _currentlyPlaying;
 
-            return _instance;
+        /// <summary>
+        /// Gets the <see cref="IMusic"/> currently playing. Can be null. It is recommended you do not call any of
+        /// the methods on the returned instance.
+        /// </summary>
+        public IMusic CurrentMusic
+        {
+            get { return _currentlyPlaying; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the items node in the data file.
+        /// </summary>
+        protected override string ItemsNodeName
+        {
+            get { return "Tracks"; }
+        }
+
+        /// <summary>
+        /// Gets the state of the music.
+        /// </summary>
+        public SoundState MusicState
+        {
+            get
+            {
+                if (_currentlyPlaying == null)
+                    return SoundState.Stopped;
+
+                return _currentlyPlaying.State;
+            }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the name of the root node in the data file.
+        /// </summary>
+        protected override string RootNodeName
+        {
+            get { return "Music"; }
         }
 
         /// <summary>
@@ -55,30 +77,23 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the name of the root node in the data file.
+        /// Gets an instance of the <see cref="MusicManager"/> for the given <paramref name="contentManager"/>.
         /// </summary>
-        protected override string RootNodeName
+        /// <param name="contentManager">The <see cref="ContentManager"/>.</param>
+        /// <returns>An instance of the <see cref="MusicManager"/> for the given
+        /// <paramref name="contentManager"/>.</returns>
+        public static MusicManager GetInstance(ContentManager contentManager)
         {
-            get { return "Music"; }
-        }
+            if (_instance == null)
+            {
+                lock (_instanceLock)
+                {
+                    if (_instance == null)
+                        _instance = new MusicManager(contentManager);
+                }
+            }
 
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the items node in the data file.
-        /// </summary>
-        protected override string ItemsNodeName
-        {
-            get { return "Tracks"; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles creating and reading an object 
-        /// from the given <paramref name="reader"/>.
-        /// </summary>
-        /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
-        /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
-        protected override IMusic ReadHandler(IValueReader reader)
-        {
-            return new Music(ContentManager, reader, GetContentPath);
+            return _instance;
         }
 
         /// <summary>
@@ -99,6 +114,92 @@ namespace NetGore.Audio
         protected override MusicID IntToIndex(int value)
         {
             return new MusicID(value);
+        }
+
+        /// <summary>
+        /// Pauses the music if there is music already playing.
+        /// </summary>
+        public void Pause()
+        {
+            if (_currentlyPlaying == null)
+                return;
+
+            _currentlyPlaying.Pause();
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles creating and reading an object 
+        /// from the given <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
+        /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
+        protected override IMusic ReadHandler(IValueReader reader)
+        {
+            return new Music(ContentManager, reader, GetContentPath);
+        }
+
+        /// <summary>
+        /// Resumes the music if possible.
+        /// </summary>
+        public void Resume()
+        {
+            if (_currentlyPlaying == null)
+                return;
+
+            _currentlyPlaying.Resume();
+        }
+
+        /// <summary>
+        /// Stops the loaded music.
+        /// </summary>
+        public void Stop()
+        {
+            if (_currentlyPlaying == null)
+                return;
+
+            _currentlyPlaying.Stop();
+            _currentlyPlaying = null;
+        }
+
+        /// <summary>
+        /// Tries to play a music track.
+        /// </summary>
+        /// <param name="name">The name of the track.</param>
+        /// <returns>True if the track was successfully played; otherwise false.</returns>
+        public bool TryPlay(string name)
+        {
+            var item = GetItem(name);
+            return TryPlay(item);
+        }
+
+        /// <summary>
+        /// Tries to play a music track.
+        /// </summary>
+        /// <param name="id">The id track.</param>
+        /// <returns>True if the track was successfully played; otherwise false.</returns>
+        public bool TryPlay(MusicID id)
+        {
+            var item = GetItem(id);
+            return TryPlay(item);
+        }
+
+        /// <summary>
+        /// Tries to play a music track.
+        /// </summary>
+        /// <param name="music">The music.</param>
+        /// <returns>True if the track was successfully played; otherwise false.</returns>
+        bool TryPlay(IMusic music)
+        {
+            if (music == null)
+                return false;
+
+            if (_currentlyPlaying != null)
+                _currentlyPlaying.Stop();
+
+            music.Play();
+            _currentlyPlaying = music;
+
+            return true;
         }
     }
 }
