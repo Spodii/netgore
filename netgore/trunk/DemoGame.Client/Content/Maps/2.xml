@@ -2,6 +2,7 @@
 <Map>
   <Header>
     <Name>INSERT VALUE</Name>
+	<Music>music_main</Music>
     <Width>960</Width>
     <Height>640</Height>
   </Header>
