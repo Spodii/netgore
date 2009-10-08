@@ -9,19 +9,19 @@ namespace NetGore
 {
     /// <summary>
     /// Assists in reading Xml files by creating a period-delimited dictionary for all
-    /// attributes and values
+    /// attributes and values.
     /// </summary>
     public static class XmlInfoReader
     {
         static readonly StringComparer _stringComparer = StringComparer.OrdinalIgnoreCase;
 
         /// <summary>
-        /// Combines two dictionaries together
+        /// Combines two dictionaries together.
         /// </summary>
-        /// <typeparam name="TKey">Key type</typeparam>
-        /// <typeparam name="TValue">Value type</typeparam>
-        /// <param name="dest">Dictionary to add the values to</param>
-        /// <param name="source">Dictionary to get the values from</param>
+        /// <typeparam name="TKey">Key type.</typeparam>
+        /// <typeparam name="TValue">Value type.</typeparam>
+        /// <param name="dest">Dictionary to add the values to.</param>
+        /// <param name="source">Dictionary to get the values from.</param>
         static void CombineDictionaries<TKey, TValue>(IDictionary<TKey, TValue> dest, IDictionary<TKey, TValue> source)
         {
             if (dest == null || source == null || source.Count <= 0)
@@ -35,9 +35,9 @@ namespace NetGore
 
         /// <summary>
         /// Parses a XML file and returns a single-entry list of the base elements containing a
-        /// dictionary holding the attribute values of the elements found
+        /// dictionary holding the attribute values of the elements found.
         /// </summary>
-        /// <param name="filePath">Path to file to parse</param>
+        /// <param name="filePath">Path to file to parse.</param>
         public static List<Dictionary<string, string>> ReadFile(string filePath)
         {
             return ReadFile(filePath, false);
@@ -90,10 +90,10 @@ namespace NetGore
 
         /// <summary>
         /// Reads an Xml node and all the child Xml nodes of the node all
-        /// the way down to the last child of every child
+        /// the way down to the last child of every child.
         /// </summary>
-        /// <param name="nodeList">Root node to read (normally the root Xml file node)</param>
-        /// <returns>A dictionary of all the found values</returns>
+        /// <param name="nodeList">Root node to read (normally the root Xml file node).</param>
+        /// <returns>A dictionary of all the found values.</returns>
         public static Dictionary<string, string> RecursiveReadNodes(XmlNodeList nodeList)
         {
             if (nodeList == null)
@@ -136,11 +136,11 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Resolves all the attributes in a given node
+        /// Resolves all the attributes in a given node.
         /// </summary>
-        /// <param name="node">Node to check</param>
-        /// <param name="parentList">Parent list of the node</param>
-        /// <returns>Dictionary containing the attributes and their values</returns>
+        /// <param name="node">Node to check.</param>
+        /// <param name="parentList">Parent list of the node.</param>
+        /// <returns>Dictionary containing the attributes and their values.</returns>
         static Dictionary<string, string> ResolveAttributes(XmlNode node, string parentList)
         {
             if (node == null)
@@ -170,9 +170,9 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Returns a formatted list of all the parents in the Xml node
+        /// Returns a formatted list of all the parents in the Xml node.
         /// </summary>
-        /// <param name="node">Node to check</param>
+        /// <param name="node">Node to check.</param>
         static string ResolveParentList(XmlNode node)
         {
             if (node == null)
