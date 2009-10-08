@@ -1,17 +1,9 @@
 using System;
 using System.Linq;
 using NetGore;
-using NetGore.IO;
 
 namespace NetGore.Network
 {
-    /// <summary>
-    /// Delegate to a message processor method.
-    /// </summary>
-    /// <param name="conn">Connection the message came from.</param>
-    /// <param name="reader">Binary reader containing the message to be processed.</param>
-    public delegate void MessageProcessorDelegate(IIPSocket conn, BitStream reader);
-
     /// <summary>
     /// Holds information allowing the ability to call a message processor class
     /// for a message of a specified ID just from using attribute tags
