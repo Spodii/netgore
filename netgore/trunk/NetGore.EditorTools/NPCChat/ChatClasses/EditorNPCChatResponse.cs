@@ -9,8 +9,6 @@ using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat
 {
-    public delegate void EditorNPCChatResponseEventHandler(EditorNPCChatResponse response);
-
     /// <summary>
     /// Describes a single response in a NPCChatDialogItemBase.
     /// </summary>
