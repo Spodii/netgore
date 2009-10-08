@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Sound>
-	<Sounds>
+	<Items>
 		<Count>2</Count>
 		<Item0>
 			<File>punch</File>
@@ -10,5 +10,5 @@
 			<File>thunder</File>
 			<Index>2</Index>
 		</Item1>
-	</Sounds>
+	</Items>
 </Sound>

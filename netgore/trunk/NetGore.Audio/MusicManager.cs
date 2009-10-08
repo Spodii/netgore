@@ -26,14 +26,6 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the name of the items node in the data file.
-        /// </summary>
-        protected override string ItemsNodeName
-        {
-            get { return "Tracks"; }
-        }
-
-        /// <summary>
         /// Gets the state of the music.
         /// </summary>
         public SoundState MusicState
@@ -48,18 +40,10 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the name of the root node in the data file.
-        /// </summary>
-        protected override string RootNodeName
-        {
-            get { return "Music"; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="MusicManager"/> class.
         /// </summary>
         /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        MusicManager(ContentManager cm) : base(cm, ContentPaths.Build.Data.Join("music.xml"))
+        MusicManager(ContentManager cm) : base(cm, ContentPaths.Build.Data.Join("music.xml"), "Music")
         {
         }
 
@@ -128,14 +112,17 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// When overridden in the derived class, handles creating and reading an object 
+        /// When overridden in the derived class, handles creating and reading an object
         /// from the given <paramref name="reader"/>.
         /// </summary>
         /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
-        /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
-        protected override IMusic ReadHandler(IValueReader reader)
+        /// <param name="cm">The <see cref="ContentManager"/> to use.</param>
+        /// <returns>
+        /// Instance of the object created using the <paramref name="reader"/>.
+        /// </returns>
+        protected override IMusic ReadHandler(IValueReader reader, ContentManager cm)
         {
-            return new Music(ContentManager, reader, GetContentPath);
+            return new Music(cm, reader, GetContentPath);
         }
 
         /// <summary>
