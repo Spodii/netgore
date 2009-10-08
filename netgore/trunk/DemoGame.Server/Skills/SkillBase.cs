@@ -257,7 +257,7 @@ namespace DemoGame.Server
         class SkillStatCollection : FixedStatCollection
         {
             /// <summary>
-            /// SkillStatCollection constructor.
+            /// Initializes a new instance of the <see cref="SkillStatCollection"/> class.
             /// </summary>
             public SkillStatCollection() : base(Enumerable.Empty<StatType>(), StatCollectionType.Requirement)
             {
