@@ -11,8 +11,8 @@ using NetGore;
 namespace NetGore.Network
 {
     /// <summary>
-    /// A single, basic, thread-safe socket that uses UDP. Each UDPSocket will both send and listen on the
-    /// same port it is created on.
+    /// A single, basic, thread-safe socket that uses UDP. Each <see cref="UDPSocket"/> will both send and listen
+    /// on the same port it is created on.
     /// </summary>
     public class UDPSocket : IDisposable
     {
@@ -54,7 +54,7 @@ namespace NetGore.Network
         int _port;
 
         /// <summary>
-        /// UDPSocket constructor.
+        /// Initializes a new instance of the <see cref="UDPSocket"/> class.
         /// </summary>
         public UDPSocket()
         {
