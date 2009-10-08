@@ -10,8 +10,6 @@ using NetGore.NPCChat;
 
 namespace NetGore.EditorTools.NPCChat
 {
-    public delegate void EditorNPCChatDialogEventHandler(EditorNPCChatDialog dialog);
-
     /// <summary>
     /// Describes all the parts of a conversation that can take place with an NPC.
     /// </summary>

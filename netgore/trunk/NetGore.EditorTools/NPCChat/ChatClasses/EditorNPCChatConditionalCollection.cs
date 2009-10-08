@@ -6,8 +6,6 @@ using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat
 {
-    public delegate void EditorNPCChatConditionalCollectionChangeHandler(EditorNPCChatConditionalCollection source);
-
     public class EditorNPCChatConditionalCollection : NPCChatConditionalCollectionBase
     {
         readonly List<EditorNPCChatConditionalCollectionItem> _items = new List<EditorNPCChatConditionalCollectionItem>();

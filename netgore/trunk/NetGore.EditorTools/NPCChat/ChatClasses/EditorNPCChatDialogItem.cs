@@ -11,8 +11,6 @@ using NetGore.NPCChat.Conditionals;
 
 namespace NetGore.EditorTools.NPCChat
 {
-    public delegate void EditorNPCChatDialogItemEventHandler(EditorNPCChatDialogItem dialogItem);
-
     /// <summary>
     /// Describes a single page of dialog in a NPCChatDialogBase, and the possible responses available for the page.
     /// </summary>

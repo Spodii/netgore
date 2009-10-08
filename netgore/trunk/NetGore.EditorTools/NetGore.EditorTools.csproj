@@ -79,6 +79,10 @@
     <Compile Include="MissingTexturesForm.Designer.cs">
       <DependentUpon>MissingTexturesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="NPCChat\ChatClasses\EditorNPCChatConditionalCollectionChangeHandler.cs" />
+    <Compile Include="NPCChat\ChatClasses\EditorNPCChatDialogEventHandler.cs" />
+    <Compile Include="NPCChat\ChatClasses\EditorNPCChatDialogItemEventHandler.cs" />
+    <Compile Include="NPCChat\ChatClasses\EditorNPCChatResponseEventHandler.cs" />
     <Compile Include="NPCChat\NPCChatConditionalEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
