@@ -11,7 +11,7 @@ using NetGore;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Handles multiple connections from a TCPSocket for both server and client environments
+    /// Handles multiple connections from a <see cref="TCPSocket"/> for both server and client environments.
     /// </summary>
     public class SocketManager : IDisposable
     {
