@@ -36,15 +36,17 @@ namespace NetGore.Graphics.GUI
             get { return _activeScreen; }
             set
             {
-                if (_activeScreen != value)
-                {
-                    GameScreen lastScreen = _activeScreen;
-                    _activeScreen = value;
-                    if (_activeScreen != null)
-                        _activeScreen.Activate();
-                    if (lastScreen != null)
-                        lastScreen.Deactivate();
-                }
+                if (_activeScreen == value)
+                    return;
+
+                GameScreen lastScreen = _activeScreen;
+                _activeScreen = value;
+
+                if (_activeScreen != null)
+                    _activeScreen.Activate();
+
+                if (lastScreen != null)
+                    lastScreen.Deactivate();
             }
         }
 
@@ -212,6 +214,7 @@ namespace NetGore.Graphics.GUI
         /// Sets the currently active <see cref="GameScreen"/> based on the <paramref name="name"/>.
         /// </summary>
         /// <param name="name">The name of the <see cref="GameScreen"/>.</param>
+        /// <exception cref="ArgumentException">No screen with the given <paramref name="name"/> was found.</exception>
         public void SetScreen(string name)
         {
             GameScreen gs = GetScreen(name);
@@ -221,7 +224,7 @@ namespace NetGore.Graphics.GUI
                 string err = string.Format(errmsg, name);
                 if (log.IsFatalEnabled)
                     log.Fatal(err);
-                throw new Exception(err);
+                throw new ArgumentException(err);
             }
 
             ActiveScreen = gs;
