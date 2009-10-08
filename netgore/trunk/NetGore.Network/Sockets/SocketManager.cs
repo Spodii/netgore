@@ -15,7 +15,6 @@ namespace NetGore.Network
     /// </summary>
     public class SocketManager : IDisposable
     {
-        const int _udpPort = 61100; // HACK: Should be able to set the port, not have a constant
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>

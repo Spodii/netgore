@@ -72,19 +72,19 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Binds the UDPSocket to a random available port.
+        /// Binds the <see cref="UDPSocket"/> to a random available port.
         /// </summary>
-        /// <returns>Port that the UDPSocket bound to.</returns>
+        /// <returns>Port that the <see cref="UDPSocket"/> bound to.</returns>
         public int Bind()
         {
             return Bind(0);
         }
 
         /// <summary>
-        /// Binds the UDPSocket to a random available port.
+        /// Binds the <see cref="UDPSocket"/> to the <paramref name="port"/>.
         /// </summary>
         /// <param name="port">Port to bind to.</param>
-        /// <returns>Port that the UDPSocket bound to.</returns>
+        /// <returns>Port that the <see cref="UDPSocket"/> bound to.</returns>
         public int Bind(int port)
         {
             // NOTE: This will probably crash if Bind has already been called

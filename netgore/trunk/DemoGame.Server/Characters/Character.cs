@@ -66,6 +66,11 @@ namespace DemoGame.Server
     public abstract class Character : CharacterEntity, IGetTime, IRespawnable, ICharacterTable
     {
         /// <summary>
+        /// HACK: This is just a temporary const used until we have variable speeds.
+        /// </summary>
+        public const float CharacterMoveSpeed = 0.18f;
+
+        /// <summary>
         /// Amount of time the character must wait between attacks
         /// </summary>
         const int _attackTimeout = 500;
@@ -986,27 +991,25 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Starts moving the character to the left
+        /// Starts moving the character to the left.
         /// </summary>
         public void MoveLeft()
         {
             if (IsMovingLeft)
                 return;
 
-            SetVelocity(Velocity + new Vector2(-0.18f, 0.0f));
-            // HACK: Constant speed value. Be careful, I think this constant is in a few places...
+            SetVelocity(Velocity + new Vector2(-CharacterMoveSpeed, 0.0f));
         }
 
         /// <summary>
-        /// Starts moving the character to the right
+        /// Starts moving the character to the right.
         /// </summary>
         public void MoveRight()
         {
             if (IsMovingRight)
                 return;
 
-            SetVelocity(Velocity + new Vector2(0.18f, 0.0f));
-            // HACK: Constant speed value. Be careful, I think this constant is in a few places...
+            SetVelocity(Velocity + new Vector2(CharacterMoveSpeed, 0.0f));
         }
 
         /// <summary>
