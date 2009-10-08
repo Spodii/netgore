@@ -23,8 +23,7 @@ namespace DemoGame
         /// Synchronizes the BodyInfo index for the CharacterEntity.
         /// </summary>
         [SyncValue("BodyIndex")]
-        // ReSharper disable UnusedMember.Local
-            protected internal BodyIndex BodyInfoIndex // ReSharper restore UnusedMember.Local
+        protected internal BodyIndex BodyInfoIndex
         {
             get { return BodyInfo.Index; }
             set { BodyInfo = BodyInfoManager.Instance.GetBody(value); }
@@ -197,14 +196,17 @@ namespace DemoGame
         /// Moves the character to the new location. Unlike Teleport(), this will not set the
         /// velocity to zero, and is intended for position corrections / resynchronization.
         /// </summary>
-        /// <param name="position">Correct position</param>
+        /// <param name="position">Correct position.</param>
         public virtual void UpdatePosition(Vector2 position)
         {
             base.Teleport(position);
         }
 
-        // ReSharper disable UnusedParameter.Global
-        protected virtual void UpdatePostCollision(float deltaTime) // ReSharper restore UnusedParameter.Global
+        /// <summary>
+        /// Performs the post-collision detection updating.
+        /// </summary>
+        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
+        protected virtual void UpdatePostCollision(float deltaTime)
         {
             // Update the character's state
             UpdateState();
@@ -213,6 +215,7 @@ namespace DemoGame
         /// <summary>
         /// Performs the pre-collision detection updating.
         /// </summary>
+        /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
         protected virtual void UpdatePreCollision(float deltaTime)
         {
             // Update velocity
