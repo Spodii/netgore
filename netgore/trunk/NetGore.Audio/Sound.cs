@@ -42,7 +42,7 @@ namespace NetGore.Audio
 
             _name = r.ReadString("File");
             _index = new SoundID(r.ReadUShort("Index"));
-
+            
             _soundEffect = _audioManager.ContentManager.Load<SoundEffect>(AssetName);
         }
 
