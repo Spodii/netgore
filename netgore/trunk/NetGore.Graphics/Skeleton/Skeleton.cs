@@ -219,7 +219,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets the absolute file path for a Skeleton file.
         /// </summary>
-        /// <param name="skeletonSetName">The name of the Skeleton.</param>
+        /// <param name="skeletonName">The name of the Skeleton.</param>
         /// <param name="contentPath">The content path to use.</param>
         /// <returns>The absolute file path for a Skeleton file.</returns>
         public static string GetFilePath(string skeletonName, ContentPaths contentPath)
