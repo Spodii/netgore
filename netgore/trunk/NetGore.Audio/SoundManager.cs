@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -67,6 +66,48 @@ namespace NetGore.Audio
         }
 
         /// <summary>
+        /// When overridden in the derived class, converts the <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The converted value.</returns>
+        protected override int IDToInt(SoundID value)
+        {
+            return (int)value;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, converts the <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The converted value.</returns>
+        protected override SoundID IntToID(int value)
+        {
+            return new SoundID(value);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, handles creating and reading an object
+        /// from the given <paramref name="reader"/>.
+        /// </summary>
+        /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
+        /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
+        protected override ISound ReadHandler(IValueReader reader)
+        {
+            return new Sound(this, reader);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, stops all the playing audio in this manager.
+        /// </summary>
+        public override void Stop()
+        {
+            foreach (var item in GetAudio)
+            {
+                item.Stop();
+            }
+        }
+
+        /// <summary>
         /// Tries to play an audio track.
         /// </summary>
         /// <param name="id">The audio track to play.</param>
@@ -111,6 +152,28 @@ namespace NetGore.Audio
         }
 
         /// <summary>
+        /// When overridden in the derived class, tries to play an audio track.
+        /// </summary>
+        /// <param name="id">The ID of the audio track.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public override bool TryPlay(SoundID id)
+        {
+            var item = this[id];
+            return TryPlay(item);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, tries to play an audio track.
+        /// </summary>
+        /// <param name="name">The name of the audio track.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public override bool TryPlay(string name)
+        {
+            var item = this[name];
+            return TryPlay(item);
+        }
+
+        /// <summary>
         /// Tries to play an audio track.
         /// </summary>
         /// <param name="sound">The audio track to play.</param>
@@ -152,70 +215,6 @@ namespace NetGore.Audio
 
             sound.Play();
             return true;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, tries to play an audio track.
-        /// </summary>
-        /// <param name="id">The ID of the audio track.</param>
-        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
-        public override bool TryPlay(SoundID id)
-        {
-            var item = this[id];
-            return TryPlay(item);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, tries to play an audio track.
-        /// </summary>
-        /// <param name="name">The name of the audio track.</param>
-        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
-        public override bool TryPlay(string name)
-        {
-            var item = this[name];
-            return TryPlay(item);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, converts the <paramref name="value"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The converted value.</returns>
-        protected override int IDToInt(SoundID value)
-        {
-            return (int)value;
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, converts the <paramref name="value"/>.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The converted value.</returns>
-        protected override SoundID IntToID(int value)
-        {
-            return new SoundID(value);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, handles creating and reading an object
-        /// from the given <paramref name="reader"/>.
-        /// </summary>
-        /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
-        /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
-        protected override ISound ReadHandler(IValueReader reader)
-        {
-            return new Sound(this, reader);
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, stops all the playing audio in this manager.
-        /// </summary>
-        public override void Stop()
-        {
-            foreach (var item in GetAudio)
-            {
-                item.Stop();
-            }
         }
     }
 }
