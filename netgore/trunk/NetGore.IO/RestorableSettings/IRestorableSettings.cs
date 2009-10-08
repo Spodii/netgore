@@ -12,7 +12,7 @@ namespace NetGore.IO
         /// <summary>
         /// Loads the values supplied by the <paramref name="items"/> to reconstruct the settings.
         /// </summary>
-        /// <param name="items">NodeItems containing the values to restore.</param>
+        /// <param name="items">Dictionary containing the values to restore.</param>
         void Load(IDictionary<string, string> items);
 
         /// <summary>
