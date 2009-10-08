@@ -17,8 +17,7 @@ namespace NetGore.Audio
         bool _isDisposed = false;
 
         /// <summary>
-        /// Gets the <see cref="ContentManager"/> used to load the audio tracks in this
-        /// <see cref="AudioManagerBase&lt;T, TIndex&gt;"/>.
+        /// Gets the <see cref="ContentManager"/> used to load the audio tracks in this <see cref="AudioManagerBase"/>.
         /// </summary>
         public ContentManager ContentManager
         {
