@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 using NetGore.Globalization;
 using NetGore.IO;
 
-namespace NetGore.Audio
+namespace NetGore
 {
     /// <summary>
     /// Represents the unique ID of a music track.
