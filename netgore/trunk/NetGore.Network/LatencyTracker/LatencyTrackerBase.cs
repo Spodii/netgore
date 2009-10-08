@@ -5,7 +5,7 @@ using NetGore;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Helper functions for the LatencyTrackerServer and LatencyTrackerClient.
+    /// Helper functions for the <see cref="LatencyTrackerServer"/> and <see cref="LatencyTrackerClient"/>.
     /// </summary>
     static class LatencyTrackerHelper
     {
