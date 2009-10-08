@@ -104,7 +104,6 @@
     <Compile Include="IO\PropertySyncItemType.cs" />
     <Compile Include="IO\PropertySyncStatType.cs" />
     <Compile Include="Stats\Collections\CharacterStatsBase.cs" />
-    <Compile Include="Stats\Collections\FixedStatCollection.cs" />
     <Compile Include="Stats\Collections\FullStatCollection.cs" />
     <Compile Include="Stats\IStatExtensions.cs" />
     <Compile Include="Stats\IModStatContainer.cs" />
@@ -116,7 +115,6 @@
     <Compile Include="Stats\ModStatHelper.cs" />
     <Compile Include="Stats\IStatEventHandler.cs" />
     <Compile Include="Stats\Collections\DynamicStatCollection.cs" />
-    <Compile Include="Stats\Collections\StatCollectionLookupTable.cs" />
     <Compile Include="Stats\StatFactory.cs" />
     <Compile Include="Stats\Collections\StatCollectionType.cs" />
     <Compile Include="Stats\StatType.cs" />
