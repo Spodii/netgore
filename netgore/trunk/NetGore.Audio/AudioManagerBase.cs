@@ -205,20 +205,6 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// When overridden in the derived class, tries to play an audio track.
-        /// </summary>
-        /// <param name="id">The ID of the audio track.</param>
-        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
-        public abstract bool TryPlay(TID id);
-
-        /// <summary>
-        /// When overridden in the derived class, tries to play an audio track.
-        /// </summary>
-        /// <param name="name">The name of the audio track.</param>
-        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
-        public abstract bool TryPlay(string name);
-
-        /// <summary>
         /// When overridden in the derived class, converts the <paramref name="value"/>.
         /// </summary>
         /// <param name="value">The value.</param>
@@ -272,5 +258,19 @@ namespace NetGore.Audio
                 item.UpdateVolume();
             }
         }
+
+        /// <summary>
+        /// When overridden in the derived class, tries to play an audio track.
+        /// </summary>
+        /// <param name="id">The ID of the audio track.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public abstract bool TryPlay(TID id);
+
+        /// <summary>
+        /// When overridden in the derived class, tries to play an audio track.
+        /// </summary>
+        /// <param name="name">The name of the audio track.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public abstract bool TryPlay(string name);
     }
 }
