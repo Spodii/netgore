@@ -20,7 +20,7 @@ namespace NetGore.Network
         public readonly EndPoint RemoteEndPoint;
 
         /// <summary>
-        /// AddressedPacket constructor.
+        /// Initializes a new instance of the <see cref="AddressedPacket"/> struct.
         /// </summary>
         /// <param name="data">The received packet data.</param>
         /// <param name="remoteEndPoint">The EndPoint that the Data came from.</param>
