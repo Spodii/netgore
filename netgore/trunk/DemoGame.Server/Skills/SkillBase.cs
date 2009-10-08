@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -12,15 +13,15 @@ namespace DemoGame.Server
     public abstract class SkillBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly SkillStatCollection _requiredStats = new SkillStatCollection();
+
         readonly SkillType _skillType;
 
         /// <summary>
-        /// Gets the collection of stats required by this Skill.
+        /// Gets an IEnumerable of stats required by this <see cref="SkillBase"/>. Cannot be null.
         /// </summary>
-        public IStatCollection RequiredStats
+        public virtual IEnumerable<KeyValuePair<StatType, int>> RequiredStats
         {
-            get { return _requiredStats; }
+            get { return Enumerable.Empty<KeyValuePair<StatType, int>>(); }
         }
 
         /// <summary>
@@ -196,15 +197,19 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="character">The Character using the skill. Will not be null.</param>
         /// <returns>True if the <paramref name="character"/> has the required stats to use this skill; otherwise false.</returns>
-        bool HasRequiredStats(Character character)
+        public bool HasRequiredStats(Character character)
         {
-            foreach (IStat reqStat in _requiredStats)
+            var reqStats = RequiredStats;
+            if (reqStats == null)
+                return true;
+
+            foreach (var kvp in reqStats)
             {
                 int characterStatValue;
-                if (!character.ModStats.TryGetStatValue(reqStat.StatType, out characterStatValue))
+                if (!character.ModStats.TryGetStatValue(kvp.Key, out characterStatValue))
                     return false;
 
-                if (characterStatValue < reqStat.Value)
+                if (characterStatValue < kvp.Value)
                     return false;
             }
 
@@ -249,20 +254,6 @@ namespace DemoGame.Server
                 user.MP -= mpCost;
 
             return true;
-        }
-
-        /// <summary>
-        /// The StatCollection used for the Skill's required stats.
-        /// </summary>
-        class SkillStatCollection : FixedStatCollection
-        {
-            /// <summary>
-            /// Initializes a new instance of the <see cref="SkillStatCollection"/> class.
-            /// </summary>
-            public SkillStatCollection() : base(Enumerable.Empty<StatType>(), StatCollectionType.Requirement)
-            {
-                // TODO: !! The RequiredStats is never populated
-            }
         }
     }
 }
