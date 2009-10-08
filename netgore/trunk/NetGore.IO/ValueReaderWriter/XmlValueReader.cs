@@ -10,7 +10,7 @@ using NetGore.Globalization;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Implementation of the INamedValueWriter using Xml.
+    /// Implementation of the <see cref="IValueReader"/> using Xml.
     /// </summary>
     public class XmlValueReader : IValueReader
     {
