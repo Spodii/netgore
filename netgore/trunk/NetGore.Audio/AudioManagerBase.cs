@@ -254,7 +254,9 @@ namespace NetGore.Audio
         protected internal override void ReapplyVolume()
         {
             foreach (var item in _items)
+            {
                 item.UpdateVolume();
+            }
         }
     }
 }
