@@ -98,7 +98,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AccountCharacterInfos.cs" />
-    <Compile Include="AudioManager.cs" />
     <Compile Include="Controls\NPCChatDialogForm.cs" />
     <Compile Include="Controls\ShopForm.cs" />
     <Compile Include="Controls\SkillsForm.cs" />
