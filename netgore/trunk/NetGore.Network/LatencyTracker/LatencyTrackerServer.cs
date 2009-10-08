@@ -26,7 +26,7 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// LatencyTrackerServer constructor.
+        /// Initializes a new instance of the <see cref="LatencyTrackerServer"/> class.
         /// </summary>
         /// <param name="port">Port to bind to.</param>
         public LatencyTrackerServer(int port)
