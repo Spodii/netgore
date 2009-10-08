@@ -19,18 +19,6 @@ namespace NetGore.Audio
         readonly string _name;
 
         /// <summary>
-        /// Gets the fully qualified name of the asset used by this <see cref="IAudio"/>. This is the name used
-        /// when loading from the <see cref="ContentManager"/>. It cannot be used to reference this
-        /// <see cref="IAudio"/> in the underlying <see cref="AudioManagerBase"/>.
-        /// </summary>
-        public string AssetName { get { return AudioManager.AssetPrefix + _name; } }
-
-        /// <summary>
-        /// Gets the <see cref="AudioManagerBase"/> that contains this <see cref="IAudio"/>.
-        /// </summary>
-        public AudioManagerBase AudioManager { get { return _audioManager; } }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="Music"/> class.
         /// </summary>
         /// <param name="audioManager">The <see cref="AudioManagerBase"/>.</param>
@@ -45,9 +33,36 @@ namespace NetGore.Audio
 
             _instance = sound.CreateInstance();
             _instance.IsLooped = true;
+            _instance.Volume = AudioManager.Volume;
         }
 
         #region IMusic Members
+
+        /// <summary>
+        /// Gets the fully qualified name of the asset used by this <see cref="IAudio"/>. This is the name used
+        /// when loading from the <see cref="ContentManager"/>. It cannot be used to reference this
+        /// <see cref="IAudio"/> in the underlying <see cref="AudioManagerBase"/>.
+        /// </summary>
+        public string AssetName
+        {
+            get { return AudioManager.AssetPrefix + _name; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="AudioManagerBase"/> that contains this <see cref="IAudio"/>.
+        /// </summary>
+        public AudioManagerBase AudioManager
+        {
+            get { return _audioManager; }
+        }
+
+        /// <summary>
+        /// Updates the volume of the audio to match the volume specified by the <see cref="IAudio.AudioManager"/>.
+        /// </summary>
+        void IAudio.UpdateVolume()
+        {
+            _instance.Volume = AudioManager.Volume;
+        }
 
         /// <summary>
         /// Gets the unique index of the <see cref="IAudio"/>.
