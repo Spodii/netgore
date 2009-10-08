@@ -6,24 +6,17 @@ using NetGore;
 namespace NetGore.Graphics.GUI
 {
     /// <summary>
-    /// Delegate for handling events using the MouseEventArgs
-    /// </summary>
-    /// <param name="sender">Event sender</param>
-    /// <param name="e">Event args</param>
-    public delegate void MouseEventHandler(object sender, MouseEventArgs e);
-
-    /// <summary>
-    /// Event data for mouse related events
+    /// Event data for mouse related events.
     /// </summary>
     public class MouseEventArgs : EventArgs
     {
         /// <summary>
-        /// Gets the location of the click relative to the sender
+        /// Gets the location of the click relative to the sender.
         /// </summary>
         public readonly Vector2 Location;
 
         /// <summary>
-        /// Gets the X-axis location of the click relative to the sender
+        /// Gets the X-axis location of the click relative to the sender.
         /// </summary>
         public float X
         {
@@ -31,7 +24,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the Y-axis location of the click relative to the sender
+        /// Gets the Y-axis location of the click relative to the sender.
         /// </summary>
         public float Y
         {
@@ -39,9 +32,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// MouseEventArgs constructor
+        /// Initializes a new instance of the <see cref="MouseEventArgs"/> class.
         /// </summary>
-        /// <param name="location">Location of the click relative to the sender</param>
+        /// <param name="location">Location of the click relative to the sender.</param>
         public MouseEventArgs(Vector2 location)
         {
             Location = location;

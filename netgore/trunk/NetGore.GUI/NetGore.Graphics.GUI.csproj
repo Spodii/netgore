@@ -70,6 +70,9 @@
     <Compile Include="ControlBorder.cs" />
     <Compile Include="Controls\FormSettings.cs" />
     <Compile Include="Controls\LabelSettings.cs" />
+    <Compile Include="EventArgs\KeyboardEventHandler.cs" />
+    <Compile Include="EventArgs\MouseClickEventHandler.cs" />
+    <Compile Include="EventArgs\MouseEventHandler.cs" />
     <Compile Include="GameControl\GameControl.cs" />
     <Compile Include="GameControl\GameControlCollection.cs" />
     <Compile Include="GameControl\GameControlEventHandler.cs" />
