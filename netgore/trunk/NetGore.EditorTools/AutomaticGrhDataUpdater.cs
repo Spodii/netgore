@@ -18,10 +18,16 @@ namespace NetGore.EditorTools
     /// </summary>
     public static class AutomaticGrhDataUpdater
     {
+        static int _defaultAnimationSpeed = 400;
+
         /// <summary>
-        /// The default speed of a new animation when no speed is specified.
+        /// Gets or sets the default speed of a new animation when no speed is specified.
         /// </summary>
-        public const int DefaultAnimationSpeed = 400;
+        public static int DefaultAnimationSpeed
+        {
+            get { return _defaultAnimationSpeed; }
+            set { _defaultAnimationSpeed = value; }
+        }
 
         /// <summary>
         /// Finds the directories used to store the frames for automatic animations.
