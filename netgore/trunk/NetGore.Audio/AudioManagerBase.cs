@@ -8,6 +8,9 @@ using NetGore.IO;
 
 namespace NetGore.Audio
 {
+    /// <summary>
+    /// Base class for a manager of audio tracks.
+    /// </summary>
     public abstract class AudioManagerBase : IDisposable
     {
         readonly ContentManager _contentManager;
