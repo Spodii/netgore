@@ -23,7 +23,7 @@ namespace NetGore.Network
         uint IP { get; }
 
         /// <summary>
-        /// Gets if this IIPSocket is currently connected.
+        /// Gets if this <see cref="IIPSocket"/> is currently connected.
         /// </summary>
         bool IsConnected { get; }
 
@@ -44,12 +44,12 @@ namespace NetGore.Network
 
         /// <summary>
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag
-        /// is not used in any way by the IIPSocket itself.
+        /// is not used in any way by the <see cref="IIPSocket"/> itself.
         /// </summary>
         object Tag { get; set; }
 
         /// <summary>
-        /// Gets the time that this IIPSocket was created.
+        /// Gets the time that this <see cref="IIPSocket"/> was created.
         /// </summary>
         int TimeCreated { get; }
 
