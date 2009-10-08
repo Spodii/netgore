@@ -13,7 +13,7 @@ namespace NetGore.IO
     /// <summary>
     /// Base class for a collection of messages loaded from a file.
     /// </summary>
-    /// <typeparam name="T">Type of the key.</typeparam>
+    /// <typeparam name="T">The Type of key.</typeparam>
     public abstract class MessageCollectionBase<T> : IEnumerable<KeyValuePair<T, string>>
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
