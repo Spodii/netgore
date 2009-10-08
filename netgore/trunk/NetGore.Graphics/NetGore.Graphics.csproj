@@ -68,6 +68,7 @@
     <Compile Include="EntityInterpolator.cs" />
     <Compile Include="Grh\AnimType.cs" />
     <Compile Include="Grh\ChangeCategorizationHandler.cs" />
+    <Compile Include="Grh\GrhDataEventHandler.cs" />
     <Compile Include="MapBorderDrawer.cs" />
     <Compile Include="Skeleton\SkeletonBodyInfo.cs" />
     <Compile Include="Skeleton\SkeletonBodyItemInfo.cs" />
