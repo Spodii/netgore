@@ -70,7 +70,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// SettingsManager constructor.
+        /// Initializes a new instance of the <see cref="SettingsManager"/> class.
         /// </summary>
         /// <param name="rootNode">Name of the root node. Used to ensure the correct file is loaded when
         /// loading settings. Not required to be unique, but recommended.</param>
@@ -89,7 +89,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// SettingsManager constructor.
+        /// Initializes a new instance of the <see cref="SettingsManager"/> class.
         /// </summary>
         /// <param name="rootNode">Name of the root node. Used to ensure the correct file is loaded when
         /// loading settings. Not required to be unique, but recommended.</param>
@@ -115,7 +115,7 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// SettingsManager constructor.
+        /// Initializes a new instance of the <see cref="SettingsManager"/> class.
         /// </summary>
         /// <param name="rootNode">Name of the root node. Used to ensure the correct file is loaded when
         /// loading settings. Not required to be unique, but recommended.</param>
