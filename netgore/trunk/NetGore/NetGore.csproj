@@ -86,6 +86,7 @@
     <Compile Include="Map\MapEntityIndex.cs" />
     <Compile Include="Map\MapIndex.cs" />
     <Compile Include="MethodInfoHelper.cs" />
+    <Compile Include="MusicID.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionBase.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalCollectionItemBase.cs" />
     <Compile Include="NPCChat\Conditionals\NPCChatConditionalEvaluationType.cs" />
@@ -129,6 +130,7 @@
     <Compile Include="PropertySync\PropertySyncString.cs" />
     <Compile Include="PropertySync\SyncValueAttribute.cs" />
     <Compile Include="Extensions\StackExtensions.cs" />
+    <Compile Include="SoundID.cs" />
     <Compile Include="Stats\StatValueTypes\IStatValueType.cs" />
     <Compile Include="Stats\StatValueTypes\StatValueByte.cs" />
     <Compile Include="Stats\StatValueTypes\StatValueInt.cs" />
