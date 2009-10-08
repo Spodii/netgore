@@ -57,7 +57,7 @@ namespace NetGore.Graphics.GUI
         /// there is often no need to clear the screen. This will only be called while the screen is the 
         /// active screen.
         /// </summary>
-        /// <param name="gameTime">Current GameTime</param>
+        /// <param name="gameTime">Current GameTime.</param>
         public abstract void Draw(GameTime gameTime);
 
         /// <summary>
