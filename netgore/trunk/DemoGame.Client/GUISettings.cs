@@ -31,13 +31,16 @@ namespace DemoGame.Client
 
         int _lastSaveTime = int.MinValue;
 
+        /// <summary>
+        /// Initializes the <see cref="GUISettings"/> class.
+        /// </summary>
         static GUISettings()
         {
             _defaultProfilePath = GetPath(_defaultProfile);
         }
 
         /// <summary>
-        /// GUISettings constructor.
+        /// Initializes a new instance of the <see cref="GUISettings"/> class.
         /// </summary>
         /// <param name="profile">Name of the profile to use for the GUI settings.</param>
         public GUISettings(string profile) : base(_rootNodeName, GetPath(profile), _defaultProfilePath)
