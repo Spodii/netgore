@@ -6,6 +6,9 @@ using NetGore;
 
 namespace NetGore.Graphics.GUI
 {
+    /// <summary>
+    /// Contains the key states needed to invoke a <see cref="GameControl"/>.
+    /// </summary>
     public class GameControlKeys
     {
         /// <summary>
