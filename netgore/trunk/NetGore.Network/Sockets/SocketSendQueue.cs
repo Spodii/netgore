@@ -45,7 +45,7 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// SocketSendQueue constructor.
+        /// Initializes a new instance of the <see cref="SocketSendQueue"/> class.
         /// </summary>
         /// <param name="maxMessageSize">The maximum size of each message in bytes. When concatenating sends, the
         /// messages will never exceed this size.</param>
