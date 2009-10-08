@@ -14,12 +14,23 @@ namespace NetGore.Audio
     /// </summary>
     /// <typeparam name="T">The Type of audio track.</typeparam>
     /// <typeparam name="TIndex">The Type of index.</typeparam>
-    public abstract class AudioManagerBase<T, TIndex> : IDisposable, IEnumerable<T> where T : class, IAudio
+    public abstract class AudioManagerBase<T, TIndex> : IDisposable where T : class, IAudio
     {
         readonly ContentManager _contentManager;
         readonly DArray<T> _items = new DArray<T>(false);
         readonly Dictionary<string, T> _itemsByName = new Dictionary<string, T>(StringComparer.OrdinalIgnoreCase);
         bool _isDisposed;
+
+        /// <summary>
+        /// Gets an IEnumerable of all the audio items in this manager.
+        /// </summary>
+        public IEnumerable<T> GetAudio
+        {
+            get
+            {
+                return _items;
+            }
+        }
 
         /// <summary>
         /// Gets the <see cref="ContentManager"/> used to load the audio tracks in this
@@ -29,6 +40,11 @@ namespace NetGore.Audio
         {
             get { return _contentManager; }
         }
+
+        /// <summary>
+        /// When overridden in the derived class, stops all the playing audio in this manager.
+        /// </summary>
+        public abstract void Stop();
 
         /// <summary>
         /// When overridden in the derived class, gets the name of the items node in the data file.
@@ -168,34 +184,6 @@ namespace NetGore.Audio
             _isDisposed = true;
 
             InternalDispose();
-        }
-
-        #endregion
-
-        #region IEnumerable<T> Members
-
-        /// <summary>
-        /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
-        /// <filterpriority>1</filterpriority>
-        public IEnumerator<T> GetEnumerator()
-        {
-            return ((IEnumerable<T>)_items).GetEnumerator();
-        }
-
-        /// <summary>
-        /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
         }
 
         #endregion
