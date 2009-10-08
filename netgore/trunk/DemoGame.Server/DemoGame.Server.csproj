@@ -125,8 +125,7 @@
     <Compile Include="Queries\SelectAccountQuery.cs" />
     <Compile Include="Queries\TrySetAccountIPIfNullQuery.cs" />
     <Compile Include="Queries\UpdateCharacterQuery.cs" />
-    <Compile Include="Say\SayCommands.cs" />
-    <Compile Include="Say\SayHandler.cs" />
+    <Compile Include="SayHandler.cs" />
     <Compile Include="Networking\ServerPacket.cs" />
     <Compile Include="Networking\ServerPacketHandler.cs" />
     <Compile Include="ServerRuntimeCleaner.cs" />
