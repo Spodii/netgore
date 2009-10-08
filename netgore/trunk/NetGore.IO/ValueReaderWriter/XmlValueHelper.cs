@@ -4,7 +4,10 @@ using NetGore.Globalization;
 
 namespace NetGore.IO
 {
-    static class XmlValueHelper
+    /// <summary>
+    /// Helper class for the <see cref="XmlValueWriter"/> and <see cref="XmlValueReader"/>.
+    /// </summary>
+    internal static class XmlValueHelper
     {
         /// <summary>
         /// The key name used for the Count value when writing a collection.
