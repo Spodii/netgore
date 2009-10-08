@@ -1,55 +1,45 @@
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using log4net;
-using NetGore;
-using NetGore.Network;
 
-// ReSharper disable SuggestBaseTypeForParameter
-// ReSharper disable UnusedMember.Local
-// ReSharper disable UnusedParameter.Local
-
-namespace DemoGame.Server
+namespace NetGore
 {
-    public class SayCommandAttribute : StringCommandBaseAttribute
-    {
-        public SayCommandAttribute(string command) : base(command)
-        {
-        }
-    }
-
     /// <summary>
-    /// Handles processing what Users say.
+    /// Base class for a handler of Say commands.
     /// </summary>
-    public class SayHandler
+    /// <typeparam name="T">The Type of User.</typeparam>
+    public abstract class SayHandlerBase<T> where T : DynamicEntity
     {
-        /// <summary>
-        /// The parser for the Say commands.
-        /// </summary>
-        static readonly SayCommandParser _parser = new SayCommandParser();
-
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly SayCommands _sayCommands;
+
+        readonly StringCommandParser<SayCommandAttribute> _parser;
+        readonly ISayCommands<T> _sayCommands;
 
         /// <summary>
-        /// SayHandler constructor.
+        /// Initializes a new instance of the <see cref="SayHandlerBase&lt;T&gt;"/> class.
         /// </summary>
-        /// <param name="server">Server that the commands are coming from.</param>
-        public SayHandler(Server server)
+        /// <param name="sayCommands">The object containing the Say commands.</param>
+        protected SayHandlerBase(ISayCommands<T> sayCommands)
         {
-            if (server == null)
-                throw new ArgumentNullException("server");
-
-            _sayCommands = new SayCommands(server);
+            _sayCommands = sayCommands;
+            _parser = new StringCommandParser<SayCommandAttribute>(sayCommands.GetType());
         }
 
-        void HandleCommand(User user, string text)
+        /// <summary>
+        /// Handles a command from a <paramref name="user"/>.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="text">The command string.</param>
+        void HandleCommand(T user, string text)
         {
             // Remove the command symbol from the text
-            text = text.Substring(1);
+            text = RemoveCommandSymbol(text);
 
-            // NOTE: This lock makes it so we can only parse one Say command at a time. Might want to use a pool in the future.
+            // Parse
             string output;
             lock (_sayCommands)
             {
@@ -57,22 +47,31 @@ namespace DemoGame.Server
                 _parser.TryParse(_sayCommands, text, out output);
             }
 
-            // Send the resulting message to the User
+            // Handle the output
             if (!string.IsNullOrEmpty(output))
-            {
-                using (PacketWriter pw = ServerPacket.Chat(output))
-                {
-                    user.Send(pw);
-                }
-            }
+                HandleCommandOutput(user, output);
         }
+
+        /// <summary>
+        /// When overridden in the derived class, handles the output from a command.
+        /// </summary>
+        /// <param name="user">The user that the command came from.</param>
+        /// <param name="text">The output text from the command. Will not be null or empty.</param>
+        protected abstract void HandleCommandOutput(T user, string text);
+
+        /// <summary>
+        /// When overridden in the derived class, handles text that was not a command.
+        /// </summary>
+        /// <param name="user">The user the <paramref name="text"/> came from.</param>
+        /// <param name="text">The text that wasn't a command.</param>
+        protected abstract void HandleNonCommand(T user, string text);
 
         /// <summary>
         /// Checks if a Say string is formatted to be a command.
         /// </summary>
         /// <param name="text">String to check.</param>
         /// <returns>True if a command, else false.</returns>
-        static bool IsCommand(string text)
+        protected virtual bool IsCommand(string text)
         {
             // Must be at least 2 characters long to be a command
             if (text.Length < 2)
@@ -95,7 +94,7 @@ namespace DemoGame.Server
         /// </summary>
         /// <param name="text">String to check.</param>
         /// <returns>True if a valid Say string, else false.</returns>
-        static bool IsValidSayString(string text)
+        protected virtual bool IsValidSayString(string text)
         {
             // Check if empty
             if (string.IsNullOrEmpty(text))
@@ -104,7 +103,7 @@ namespace DemoGame.Server
             // Check each character in the string to make sure they are valid
             foreach (char letter in text)
             {
-                int i = Convert.ToInt32(Convert.ToChar(letter));
+                int i = Convert.ToInt32(letter);
                 if (i > 126 || i < 32)
                     return false;
             }
@@ -115,9 +114,9 @@ namespace DemoGame.Server
         /// <summary>
         /// Processes a string of text.
         /// </summary>
-        /// <param name="user">User that the text came from.</param>
+        /// <param name="user">User that the <paramref name="text"/> came from.</param>
         /// <param name="text">Text to process.</param>
-        public void Process(User user, string text)
+        public void Process(T user, string text)
         {
             if (user == null)
                 throw new ArgumentNullException("user");
@@ -143,20 +142,17 @@ namespace DemoGame.Server
             }
 
             // Not a command, so just do a normal, to-area chat
-            using (PacketWriter pw = ServerPacket.ChatSay(user.Name, user.MapEntityIndex, text))
-            {
-                user.Map.SendToArea(user.Center, pw);
-            }
+            HandleNonCommand(user, text);
         }
 
         /// <summary>
-        /// Parser for the Say commands.
+        /// Removes the command symbol from the <paramref name="text"/>.
         /// </summary>
-        class SayCommandParser : StringCommandParser<SayCommandAttribute>
+        /// <param name="text">The string to remove the command symbol from.</param>
+        /// <returns>The <paramref name="text"/> without the command symbol.</returns>
+        protected virtual string RemoveCommandSymbol(string text)
         {
-            public SayCommandParser() : base(typeof(SayCommands))
-            {
-            }
+            return text.Substring(1);
         }
     }
 }
