@@ -41,7 +41,7 @@ namespace NetGore
         readonly PathString _textures;
 
         /// <summary>
-        /// Gets the ContentPaths for the Build content.
+        /// Gets the <see cref="ContentPaths"/> for the Build content.
         /// </summary>
         public static ContentPaths Build
         {
@@ -49,7 +49,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets the ContentPaths for the Development content.
+        /// Gets the <see cref="ContentPaths"/> for the Development content.
         /// </summary>
         public static ContentPaths Dev
         {
