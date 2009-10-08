@@ -50,6 +50,7 @@
     <Compile Include="BoolArray.cs" />
     <Compile Include="DArray.cs" />
     <Compile Include="DArrayModifyEventArgs.cs" />
+    <Compile Include="DArrayModifyEventHandler.cs" />
     <Compile Include="EnumComparer.cs" />
     <Compile Include="MeanFinderHandler.cs" />
     <Compile Include="TypeFactory.cs" />
