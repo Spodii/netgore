@@ -8,7 +8,7 @@ using NetGore;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Implementation of the IValueWriter using a BitStream to perform binary I/O.
+    /// Implementation of the <see cref="IValueWriter"/> using a <see cref="BitStream"/> to perform binary I/O.
     /// </summary>
     public class BinaryValueWriter : IValueWriter
     {
@@ -20,7 +20,7 @@ namespace NetGore.IO
         /// <summary>
         /// Initializes a new instance of the <see cref="BinaryValueWriter"/> class.
         /// </summary>
-        /// <param name="writer">BitStream that will be written to.</param>
+        /// <param name="writer"><see cref="BitStream"/> that will be written to.</param>
         /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
         /// Enum I/O will use the underlying integer value of the Enum.</param>
         public BinaryValueWriter(BitStream writer, bool useEnumNames)
@@ -75,7 +75,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes an unsigned integer of up to 32 bits.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         /// <param name="bits">Number of bits to write.</param>
         public void Write(string name, uint value, int bits)
@@ -128,7 +128,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a boolean.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, bool value)
         {
@@ -138,7 +138,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 32-bit unsigned integer.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, uint value)
         {
@@ -148,7 +148,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 16-bit signed integer.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, short value)
         {
@@ -158,7 +158,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 16-bit unsigned integer.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, ushort value)
         {
@@ -168,7 +168,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 8-bit unsigned integer.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, byte value)
         {
@@ -178,7 +178,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 8-bit signed integer.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, sbyte value)
         {
@@ -199,7 +199,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a variable-length string of up to 65535 characters in length.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">String to write.</param>
         public void Write(string name, string value)
         {
@@ -235,9 +235,9 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Writes the start of a child node in this IValueWriter.
+        /// Writes the start of a child node in this <see cref="IValueWriter"/>.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         public void WriteStartNode(string name)
         {
             const uint reservedValue = 0;
@@ -253,7 +253,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes the end of a child node in this IValueWriter.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         public void WriteEndNode(string name)
         {
             if (_nodeOffsetStack == null || _nodeOffsetStack.Count == 0)
@@ -346,7 +346,7 @@ namespace NetGore.IO
         /// node being created. Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
         /// </summary>
         /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Unused by the BinaryValueWriter.</param>
+        /// <param name="nodeName">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="values">IEnumerable of values to write. If this value is null, it will be treated
         /// the same as if it were an empty IEnumerable.</param>
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
@@ -379,7 +379,7 @@ namespace NetGore.IO
         /// Unlike the WriteMany for IEnumerables, this guarentees that ordering will be preserved.
         /// </summary>
         /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="nodeName">Unused by the BinaryValueWriter.</param>
+        /// <param name="nodeName">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="values">Array of values to write. If this value is null, it will be treated
         /// the same as if it were an empty array.</param>
         /// <param name="writeHandler">Delegate that writes the value to the IValueWriter.</param>
@@ -408,7 +408,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 32-bit signed integer.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, int value)
         {
@@ -418,7 +418,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 64-bit usigned integer.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, ulong value)
         {
@@ -428,7 +428,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 64-bit signed integer.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, long value)
         {
@@ -438,7 +438,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a signed integer of up to 32 bits.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         /// <param name="bits">Number of bits to write.</param>
         public void Write(string name, int value, int bits)
@@ -449,7 +449,7 @@ namespace NetGore.IO
         /// <summary>
         /// Writes a 32-bit floating-point number.
         /// </summary>
-        /// <param name="name">Unused by the BinaryValueWriter.</param>
+        /// <param name="name">Unused by the <see cref="BinaryValueWriter"/>.</param>
         /// <param name="value">Value to write.</param>
         public void Write(string name, float value)
         {

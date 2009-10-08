@@ -6,23 +6,6 @@ using NetGore;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Delegate for reading many items.
-    /// </summary>
-    /// <typeparam name="T">The Type of value.</typeparam>
-    /// <param name="r">IValueReader to read from.</param>
-    /// <param name="name">The item to read.</param>
-    /// <returns>The value read from the IValueReader <paramref name="r"/>.</returns>
-    public delegate T ReadManyHandler<T>(IValueReader r, string name);
-
-    /// <summary>
-    /// Delegate for reading many nodes.
-    /// </summary>
-    /// <typeparam name="T">The Type of node.</typeparam>
-    /// <param name="r">IValueReader to read from.</param>
-    /// <returns>The node read from the IValueReader <paramref name="r"/>.</returns>
-    public delegate T ReadManyNodesHandler<T>(IValueReader r);
-
-    /// <summary>
     /// Interface for an object that reads values written by an IValueReader.
     /// </summary>
     public interface IValueReader
