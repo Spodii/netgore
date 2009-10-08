@@ -4,24 +4,27 @@ using NetGore;
 namespace NetGore.Graphics.GUI
 {
     /// <summary>
-    /// Enum of the different mouse buttons
+    /// Enum of the different mouse buttons.
     /// </summary>
     public enum MouseButtons
     {
         /// <summary>
-        /// None, invalid or unknown mouse button
+        /// None, invalid or unknown mouse button.
         /// </summary>
         None,
+
         /// <summary>
-        /// Left mouse button
+        /// Left mouse button.
         /// </summary>
         Left,
+
         /// <summary>
-        /// Right mouse button
+        /// Right mouse button.
         /// </summary>
         Right,
+
         /// <summary>
-        /// Middle mouse button
+        /// Middle mouse button.
         /// </summary>
         Middle
     }
