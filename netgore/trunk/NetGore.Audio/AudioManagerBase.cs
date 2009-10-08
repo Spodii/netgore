@@ -15,6 +15,12 @@ namespace NetGore.Audio
     {
         readonly ContentManager _contentManager;
         bool _isDisposed = false;
+        readonly string _assetPrefix;
+
+        /// <summary>
+        /// Gets the prefix to give to assets used by this <see cref="AudioManagerBase"/> when loading them.
+        /// </summary>
+        public string AssetPrefix { get { return _assetPrefix; } }
 
         /// <summary>
         /// Gets the <see cref="ContentManager"/> used to load the audio tracks in this <see cref="AudioManagerBase"/>.
@@ -28,18 +34,13 @@ namespace NetGore.Audio
         /// Initializes a new instance of the <see cref="AudioManagerBase"/> class.
         /// </summary>
         /// <param name="cm">The <see cref="ContentManager"/> used to load the audio tracks.</param>
-        protected AudioManagerBase(ContentManager cm)
+        /// <param name="assetPrefix">The prefix to give to assets used by this <see cref="AudioManagerBase"/>
+        /// when loading them.</param>
+        protected AudioManagerBase(ContentManager cm, string assetPrefix)
         {
             _contentManager = cm;
+            _assetPrefix = assetPrefix;
         }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the fully qualified content path for the asset with the
-        /// given name.
-        /// </summary>
-        /// <param name="assetName">The name of the asset.</param>
-        /// <returns>The fully qualified content path for the asset with the given name.</returns>
-        protected abstract string GetContentPath(string assetName);
 
         /// <summary>
         /// Allows for additional disposing to be done by derived classes. This disposing takes place before the
@@ -97,7 +98,9 @@ namespace NetGore.Audio
         /// <param name="cm">The <see cref="ContentManager"/> used to load the audio tracks.</param>
         /// <param name="dataFilePath">The file path to the audio data to load.</param>
         /// <param name="rootNodeName">The name of the root node in the data file being loaded.</param>
-        protected AudioManagerBase(ContentManager cm, string dataFilePath, string rootNodeName) : base(cm)
+        /// <param name="assetPrefix">The prefix to give to assets used by this <see cref="AudioManagerBase"/>
+        /// when loading them.</param>
+        protected AudioManagerBase(ContentManager cm, string dataFilePath, string rootNodeName, string assetPrefix) : base(cm, assetPrefix)
         {
             IValueReader r = new XmlValueReader(dataFilePath, rootNodeName);
             Load(r, cm);

@@ -13,43 +13,35 @@ namespace NetGore.Audio
     /// </summary>
     public class Music : IMusic
     {
-        readonly ContentManager _contentManager;
+        readonly AudioManagerBase _audioManager;
         readonly MusicID _index;
         readonly SoundEffectInstance _instance;
         readonly string _name;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Music"/> class.
+        /// Gets the fully qualified name of the asset used by this <see cref="IAudio"/>. This is the name used
+        /// when loading from the <see cref="ContentManager"/>. It cannot be used to reference this
+        /// <see cref="IAudio"/> in the underlying <see cref="AudioManagerBase"/>.
         /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        /// <param name="r">The <see cref="IValueReader"/> to read the values from.</param>
-        /// <param name="getAssetName">Func used to get the fully qualified asset name.</param>
-        internal Music(ContentManager cm, IValueReader r, Func<string, string> getAssetName)
-        {
-            _contentManager = cm;
-            _name = r.ReadString("File");
-            _index = new MusicID(r.ReadUShort("Index"));
+        public string AssetName { get { return AudioManager.AssetPrefix + _name; } }
 
-            var assetName = getAssetName(_name);
-            var sound = cm.Load<SoundEffect>(assetName);
-
-            _instance = sound.CreateInstance();
-            _instance.IsLooped = true;
-        }
+        /// <summary>
+        /// Gets the <see cref="AudioManagerBase"/> that contains this <see cref="IAudio"/>.
+        /// </summary>
+        public AudioManagerBase AudioManager { get { return _audioManager; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Music"/> class.
         /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        /// <param name="index">The index.</param>
-        /// <param name="assetName">The name of the asset.</param>
-        internal Music(ContentManager cm, MusicID index, string assetName)
+        /// <param name="audioManager">The <see cref="AudioManagerBase"/>.</param>
+        /// <param name="r">The <see cref="IValueReader"/> to read the values from.</param>
+        internal Music(AudioManagerBase audioManager, IValueReader r)
         {
-            _contentManager = cm;
-            _index = index;
-            _name = assetName;
+            _audioManager = audioManager;
+            _name = r.ReadString("File");
+            _index = new MusicID(r.ReadUShort("Index"));
 
-            var sound = cm.Load<SoundEffect>(assetName);
+            var sound = _audioManager.ContentManager.Load<SoundEffect>(AssetName);
 
             _instance = sound.CreateInstance();
             _instance.IsLooped = true;
@@ -77,7 +69,6 @@ namespace NetGore.Audio
         /// <summary>
         /// Gets the music track index.
         /// </summary>
-        /// <value></value>
         public MusicID Index
         {
             get { return _index; }
@@ -86,7 +77,6 @@ namespace NetGore.Audio
         /// <summary>
         /// Gets the name of the <see cref="IAudio"/>.
         /// </summary>
-        /// <value></value>
         public string Name
         {
             get { return _name; }

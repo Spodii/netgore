@@ -1,4 +1,5 @@
 using System.Linq;
+using Microsoft.Xna.Framework.Content;
 
 namespace NetGore.Audio
 {
@@ -13,9 +14,22 @@ namespace NetGore.Audio
         bool IsSingleInstance { get; }
 
         /// <summary>
-        /// Gets the name of the <see cref="IAudio"/>.
+        /// Gets the name of the <see cref="IAudio"/>. This is the name used to reference this particular
+        /// audio track when not referencing it by index.
         /// </summary>
         string Name { get; }
+
+        /// <summary>
+        /// Gets the fully qualified name of the asset used by this <see cref="IAudio"/>. This is the name used
+        /// when loading from the <see cref="ContentManager"/>. It cannot be used to reference this
+        /// <see cref="IAudio"/> in the underlying <see cref="AudioManagerBase"/>.
+        /// </summary>
+        string AssetName { get; }
+
+        /// <summary>
+        /// Gets the <see cref="AudioManagerBase"/> that contains this <see cref="IAudio"/>.
+        /// </summary>
+        AudioManagerBase AudioManager { get; }
 
         /// <summary>
         /// Gets the unique index of the <see cref="IAudio"/>.

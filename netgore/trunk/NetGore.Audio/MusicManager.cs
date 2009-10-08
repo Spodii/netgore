@@ -43,21 +43,8 @@ namespace NetGore.Audio
         /// Initializes a new instance of the <see cref="MusicManager"/> class.
         /// </summary>
         /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        MusicManager(ContentManager cm) : base(cm, ContentPaths.Build.Data.Join("music.xml"), "Music")
+        MusicManager(ContentManager cm) : base(cm, ContentPaths.Build.Data.Join("music.xml"), "Music", "Music" + Path.DirectorySeparatorChar)
         {
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the fully qualified content path for the asset with the
-        /// given name.
-        /// </summary>
-        /// <param name="assetName">The name of the asset.</param>
-        /// <returns>
-        /// The fully qualified content path for the asset with the given name.
-        /// </returns>
-        protected override string GetContentPath(string assetName)
-        {
-            return "Music" + Path.DirectorySeparatorChar + assetName;
         }
 
         /// <summary>
@@ -122,7 +109,7 @@ namespace NetGore.Audio
         /// </returns>
         protected override IMusic ReadHandler(IValueReader reader, ContentManager cm)
         {
-            return new Music(cm, reader, GetContentPath);
+            return new Music(this, reader);
         }
 
         /// <summary>
