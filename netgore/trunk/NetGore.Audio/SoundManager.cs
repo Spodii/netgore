@@ -46,26 +46,10 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// When overridden in the derived class, gets the name of the items node in the data file.
-        /// </summary>
-        protected override string ItemsNodeName
-        {
-            get { return "Sounds"; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the name of the root node in the data file.
-        /// </summary>
-        protected override string RootNodeName
-        {
-            get { return "Sound"; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="SoundManager"/> class.
         /// </summary>
         /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        SoundManager(ContentManager cm) : base(cm, ContentPaths.Build.Data.Join("sounds.xml"))
+        SoundManager(ContentManager cm) : base(cm, ContentPaths.Build.Data.Join("sounds.xml"), "Sound")
         {
         }
 
@@ -125,10 +109,13 @@ namespace NetGore.Audio
         /// from the given <paramref name="reader"/>.
         /// </summary>
         /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
-        /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
-        protected override ISound ReadHandler(IValueReader reader)
+        /// <param name="cm">The <see cref="ContentManager"/> to use.</param>
+        /// <returns>
+        /// Instance of the object created using the <paramref name="reader"/>.
+        /// </returns>
+        protected override ISound ReadHandler(IValueReader reader, ContentManager cm)
         {
-            return new Sound(ContentManager, reader, GetContentPath);
+            return new Sound(cm, reader, GetContentPath);
         }
     }
 }
