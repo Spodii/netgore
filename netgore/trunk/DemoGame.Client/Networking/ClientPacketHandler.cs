@@ -5,8 +5,10 @@ using System.Linq;
 using System.Reflection;
 using DemoGame.Client.NPCChat;
 using log4net;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Audio;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
 using NetGore.Network;
@@ -82,6 +84,8 @@ namespace DemoGame.Client
             get { return GameplayScreen.World; }
         }
 
+        readonly SoundManager _soundManager;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
         /// </summary>
@@ -92,6 +96,8 @@ namespace DemoGame.Client
             _socketSender = socketSender;
             _gameplayScreen = gameplayScreen;
             _ppManager = new MessageProcessorManager(this, ServerPacketIDHelper.Instance.BitsRequired);
+
+            _soundManager = SoundManager.GetInstance(gameplayScreen.ScreenManager.Content);
         }
 
         static List<StyledText> CreateChatText(string name, string method, string message)
@@ -138,6 +144,7 @@ namespace DemoGame.Client
             if (chr == null)
                 return;
 
+            _soundManager.TryPlay("punch");
             chr.Attack();
         }
 
@@ -243,6 +250,54 @@ namespace DemoGame.Client
 
             if (chr == World.UserChar)
                 _gameplayScreen.InfoBox.Add("You have leveled up!");
+        }
+
+        void LogFailPlaySound(SoundID soundID)
+        {
+            const string errmsg = "Failed to play sound with ID `{0}`.";
+            if (log.IsErrorEnabled)
+                log.ErrorFormat(errmsg, soundID);
+
+            Debug.Fail(string.Format(errmsg, soundID));
+        }
+
+        [MessageHandler((byte)ServerPacketID.PlaySound)]
+        void RecvPlaySound(IIPSocket conn, BitStream r)
+        {
+            SoundID soundID = r.ReadSoundID();
+
+            if (!_soundManager.TryPlay(soundID))
+                LogFailPlaySound(soundID);
+        }
+
+        [MessageHandler((byte)ServerPacketID.PlaySoundAt)]
+        void RecvPlaySoundAt(IIPSocket conn, BitStream r)
+        {
+            SoundID soundID = r.ReadSoundID();
+            Vector2 position = r.ReadVector2();
+
+            if (!_soundManager.TryPlay(soundID, position))
+                LogFailPlaySound(soundID);
+        }
+
+        [MessageHandler((byte)ServerPacketID.PlaySoundAtEntity)]
+        void RecvPlaySoundAtEntity(IIPSocket conn, BitStream r)
+        {
+            SoundID soundID = r.ReadSoundID();
+            MapEntityIndex index = r.ReadMapEntityIndex();
+
+            var entity = Map.GetDynamicEntity(index);
+            if (entity == null)
+            {
+                const string errmsg = "Failed to find DynamicEntity with MapEntityIndex `{0}`.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, index);
+                Debug.Fail(string.Format(errmsg, index));
+                return;
+            }
+
+            if (!_soundManager.TryPlay(soundID, entity))
+                LogFailPlaySound(soundID);
         }
 
         [MessageHandler((byte)ServerPacketID.NotifyGetItem)]

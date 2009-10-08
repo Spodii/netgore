@@ -5,6 +5,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Audio;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 
@@ -48,6 +49,10 @@ namespace DemoGame.Client
             screenManager.Add(new CharacterSelectionScreen());
             screenManager.Add(new GameplayScreen());
             screenManager.SetScreen(MainMenuScreen.ScreenName);
+
+            // NOTE: Temporary volume reduction
+            SoundManager.GetInstance(Content).Volume = 0.7f;
+            MusicManager.GetInstance(Content).Volume = 0.2f;
         }
 
         protected override void Initialize()

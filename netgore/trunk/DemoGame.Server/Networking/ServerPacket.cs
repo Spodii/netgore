@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using DemoGame.Server.DbObjs;
+using Microsoft.Xna.Framework;
 using NetGore;
 using NetGore.Network;
 
@@ -142,6 +143,29 @@ namespace DemoGame.Server
             PacketWriter pw = GetWriter(ServerPacketID.NotifyGetItem);
             pw.Write(name);
             pw.Write(amount);
+            return pw;
+        }
+
+        public static PacketWriter PlaySound(SoundID sound)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.PlaySound);
+            pw.Write(sound);
+            return pw;
+        }
+
+        public static PacketWriter PlaySoundAt(SoundID sound, Vector2 position)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.PlaySoundAt);
+            pw.Write(sound);
+            pw.Write(position);
+            return pw;
+        }
+
+        public static PacketWriter PlaySoundAtEntity(SoundID sound, MapEntityIndex mapEntityIndex)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.PlaySoundAtEntity);
+            pw.Write(sound);
+            pw.Write(mapEntityIndex);
             return pw;
         }
 

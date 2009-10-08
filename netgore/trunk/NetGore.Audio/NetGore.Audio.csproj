@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="AudioManagerBase.cs" />
     <Compile Include="IAudio.cs" />
-    <Compile Include="IAudioEmitter.cs" />
     <Compile Include="IMusic.cs" />
     <Compile Include="ISound.cs" />
     <Compile Include="Music.cs" />

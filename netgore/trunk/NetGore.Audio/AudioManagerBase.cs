@@ -17,7 +17,7 @@ namespace NetGore.Audio
         readonly string _assetPrefix;
         readonly ContentManager _contentManager;
         bool _isDisposed = false;
-        float _volume = 0.3f; // NOTE: This should be 1.0f, but I have it reduced for now to avoid annoying me to death.
+        float _volume = 1.0f;
 
         /// <summary>
         /// Gets or sets the master volume of all audio. This value must be in a range of 0.0f to 1.0f, where 0.0f is
@@ -133,8 +133,8 @@ namespace NetGore.Audio
     /// Base class for a manager of audio tracks.
     /// </summary>
     /// <typeparam name="T">The Type of audio track.</typeparam>
-    /// <typeparam name="TIndex">The Type of index.</typeparam>
-    public abstract class AudioManagerBase<T, TIndex> : AudioManagerBase where T : class, IAudio
+    /// <typeparam name="TID">The Type of index.</typeparam>
+    public abstract class AudioManagerBase<T, TID> : AudioManagerBase where T : class, IAudio
     {
         const string _itemsNodeName = "Items";
         readonly DArray<T> _items = new DArray<T>(false);
@@ -164,15 +164,15 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Gets the audio item at the given <paramref name="index"/>.
+        /// Gets the audio item at the given <paramref name="id"/>.
         /// </summary>
-        /// <param name="index">The index of the item to get.</param>
-        /// <returns>The item at the given <paramref name="index"/>, or null if the <see cref="index"/> is invalid
-        /// or no item exists for the given <see cref="index"/>.</returns>
-        protected T GetItem(TIndex index)
+        /// <param name="id">The index of the item to get.</param>
+        /// <returns>The item at the given <paramref name="id"/>, or null if the <see cref="id"/> is invalid
+        /// or no item exists for the given <see cref="id"/>.</returns>
+        protected T GetItem(TID id)
         {
-            var intIndex = IndexToInt(index);
-            return GetItem(intIndex);
+            var intID = IDToInt(id);
+            return GetItem(intID);
         }
 
         /// <summary>
@@ -191,32 +191,46 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Gets the audio item at the given <paramref name="index"/>.
+        /// Gets the audio item at the given <paramref name="id"/>.
         /// </summary>
-        /// <param name="index">The index of the item to get.</param>
-        /// <returns>The item at the given <paramref name="index"/>, or null if the <see cref="index"/> is invalid
-        /// or no item exists for the given <see cref="index"/>.</returns>
-        protected T GetItem(int index)
+        /// <param name="id">The index of the item to get.</param>
+        /// <returns>The item at the given <paramref name="id"/>, or null if the <see cref="id"/> is invalid
+        /// or no item exists for the given <see cref="id"/>.</returns>
+        protected T GetItem(int id)
         {
-            if (!_items.CanGet(index))
+            if (!_items.CanGet(id))
                 return null;
 
-            return _items[index];
+            return _items[id];
         }
 
         /// <summary>
-        /// When overridden in the derived class, converts the <paramref name="value"/>.
+        /// When overridden in the derived class, tries to play an audio track.
         /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns>The converted value.</returns>
-        protected abstract int IndexToInt(TIndex value);
+        /// <param name="id">The ID of the audio track.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public abstract bool TryPlay(TID id);
+
+        /// <summary>
+        /// When overridden in the derived class, tries to play an audio track.
+        /// </summary>
+        /// <param name="name">The name of the audio track.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public abstract bool TryPlay(string name);
 
         /// <summary>
         /// When overridden in the derived class, converts the <paramref name="value"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The converted value.</returns>
-        protected abstract TIndex IntToIndex(int value);
+        protected abstract int IDToInt(TID value);
+
+        /// <summary>
+        /// When overridden in the derived class, converts the <paramref name="value"/>.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns>The converted value.</returns>
+        protected abstract TID IntToID(int value);
 
         /// <summary>
         /// Loads the audio track data.

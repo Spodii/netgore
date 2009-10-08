@@ -73,7 +73,7 @@ namespace NetGore.Audio
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The converted value.</returns>
-        protected override int IndexToInt(MusicID value)
+        protected override int IDToInt(MusicID value)
         {
             return (int)value;
         }
@@ -83,7 +83,7 @@ namespace NetGore.Audio
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The converted value.</returns>
-        protected override MusicID IntToIndex(int value)
+        protected override MusicID IntToID(int value)
         {
             return new MusicID(value);
         }
@@ -134,22 +134,22 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Tries to play a music track.
+        /// When overridden in the derived class, tries to play an audio track.
         /// </summary>
-        /// <param name="name">The name of the track.</param>
-        /// <returns>True if the track was successfully played; otherwise false.</returns>
-        public bool TryPlay(string name)
+        /// <param name="name">The name of the audio track.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public override bool TryPlay(string name)
         {
             var item = GetItem(name);
             return TryPlay(item);
         }
 
         /// <summary>
-        /// Tries to play a music track.
+        /// When overridden in the derived class, tries to play an audio track.
         /// </summary>
-        /// <param name="id">The id track.</param>
-        /// <returns>True if the track was successfully played; otherwise false.</returns>
-        public bool TryPlay(MusicID id)
+        /// <param name="id">The id of the audio track.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public override bool TryPlay(MusicID id)
         {
             var item = GetItem(id);
             return TryPlay(item);
