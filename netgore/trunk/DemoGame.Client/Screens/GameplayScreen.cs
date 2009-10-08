@@ -26,88 +26,31 @@ namespace DemoGame.Client
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        /// <summary>
-        /// Pool for the damage text
-        /// </summary>
         readonly DamageTextPool _damageTextPool = new DamageTextPool();
-
         readonly GameplayScreenControls _gameControls;
-
-        /// <summary>
-        /// Skeleton templates that will remain in memory at all times
-        /// </summary>
         readonly SkeletonManager _skelManager = new SkeletonManager(ContentPaths.Build.Skeletons);
 
         NPCChatDialogForm _chatDialogForm;
-
         ChatForm _chatForm;
-
-        /// <summary>
-        /// Current total time in milliseconds - used as the root of all timing
-        /// in external classes through the GetTime method
-        /// </summary>
         int _currentTime = 0;
-
-        /// <summary>
-        /// Font used for damage
-        /// </summary>
         SpriteFont _damageFont;
-
         bool _disposed;
         EquipmentInfoRequester _equipmentInfoRequester;
         EquippedForm _equippedForm;
-
-        /// <summary>
-        /// GUI Manager
-        /// </summary>
         GUIManager _gui;
-
-        /// <summary>
-        /// Font for the GUI
-        /// </summary>
         SpriteFont _guiFont;
-
         GUISettings _guiSettings;
-
-        /// <summary>
-        /// Information box
-        /// </summary>
         InfoBox _infoBox;
-
         InventoryForm _inventoryForm;
         InventoryInfoRequester _inventoryInfoRequester;
-
-        /// <summary>
-        /// Label used for displaying the latency.
-        /// </summary>
         Label _latencyLabel;
-
         ShopForm _shopForm;
-
         SkillsForm _skillsForm;
-
-        /// <summary>
-        /// Client socket system used to handle the networking for the game
-        /// </summary>
         ClientSockets _socket;
-
-        /// <summary>
-        /// SpriteBatch object used for the drawing (reference to ScreenManager.SpriteBatch)
-        /// </summary>
         SpriteBatch _spriteBatch;
-
-        /// <summary>
-        /// Form used to display stats
-        /// </summary>
         StatsForm _statsForm;
-
         StatusEffectsForm _statusEffectsForm;
-
         UserInfo _userInfo;
-
-        /// <summary>
-        /// Root world of the game
-        /// </summary>
         World _world;
 
         public NPCChatDialogForm ChatDialogForm
