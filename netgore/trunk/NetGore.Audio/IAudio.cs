@@ -9,6 +9,18 @@ namespace NetGore.Audio
     public interface IAudio
     {
         /// <summary>
+        /// Gets the fully qualified name of the asset used by this <see cref="IAudio"/>. This is the name used
+        /// when loading from the <see cref="ContentManager"/>. It cannot be used to reference this
+        /// <see cref="IAudio"/> in the underlying <see cref="AudioManagerBase"/>.
+        /// </summary>
+        string AssetName { get; }
+
+        /// <summary>
+        /// Gets the <see cref="AudioManagerBase"/> that contains this <see cref="IAudio"/>.
+        /// </summary>
+        AudioManagerBase AudioManager { get; }
+
+        /// <summary>
         /// Gets if only one instance of this <see cref="IAudio"/> may be playing at a time.
         /// </summary>
         bool IsSingleInstance { get; }
@@ -20,16 +32,9 @@ namespace NetGore.Audio
         string Name { get; }
 
         /// <summary>
-        /// Gets the fully qualified name of the asset used by this <see cref="IAudio"/>. This is the name used
-        /// when loading from the <see cref="ContentManager"/>. It cannot be used to reference this
-        /// <see cref="IAudio"/> in the underlying <see cref="AudioManagerBase"/>.
+        /// Updates the volume of the audio to match the volume specified by the <see cref="AudioManager"/>.
         /// </summary>
-        string AssetName { get; }
-
-        /// <summary>
-        /// Gets the <see cref="AudioManagerBase"/> that contains this <see cref="IAudio"/>.
-        /// </summary>
-        AudioManagerBase AudioManager { get; }
+        void UpdateVolume();
 
         /// <summary>
         /// Gets the unique index of the <see cref="IAudio"/>.

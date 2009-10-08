@@ -14,14 +14,39 @@ namespace NetGore.Audio
     /// </summary>
     public abstract class AudioManagerBase : IDisposable
     {
+        readonly string _assetPrefix;
         readonly ContentManager _contentManager;
         bool _isDisposed = false;
-        readonly string _assetPrefix;
+        float _volume = 0.3f; // NOTE: This should be 1.0f, but I have it reduced for now to avoid annoying me to death.
+
+        /// <summary>
+        /// Gets or sets the master volume of all audio. This value must be in a range of 0.0f to 1.0f, where 0.0f is
+        /// silence and 1.0f is the full volume. If a value is specified that does not fall into this range, it will be
+        /// altered to fit this range.
+        /// </summary>
+        public static float MasterVolume
+        {
+            get { return SoundEffect.MasterVolume; }
+            set
+            {
+                float v = value;
+
+                if (v > 1.0f)
+                    v = 1.0f;
+                else if (v < 0.0f)
+                    v = 0.0f;
+
+                SoundEffect.MasterVolume = v;
+            }
+        }
 
         /// <summary>
         /// Gets the prefix to give to assets used by this <see cref="AudioManagerBase"/> when loading them.
         /// </summary>
-        public string AssetPrefix { get { return _assetPrefix; } }
+        public string AssetPrefix
+        {
+            get { return _assetPrefix; }
+        }
 
         /// <summary>
         /// Gets the <see cref="ContentManager"/> used to load the audio tracks in this <see cref="AudioManagerBase"/>.
@@ -32,14 +57,13 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// Gets or sets the master volume of all audio. This value must be in a range of 0.0f to 1.0f, where 0.0f is
-        /// silence and 1.0f is the full volume. If a value is specified that does not fall into this range, it will be
-        /// altered to fit this range.
+        /// Gets or sets the volume of all tracks in this <see cref="AudioManagerBase"/>. This value is in a range
+        /// between 0.0f (silence) and 1.0f (full volume).
         /// </summary>
-        public static float MasterVolume
+        public float Volume
         {
-            get { return SoundEffect.MasterVolume; }
-            set 
+            get { return _volume; }
+            set
             {
                 float v = value;
 
@@ -48,7 +72,11 @@ namespace NetGore.Audio
                 else if (v < 0.0f)
                     v = 0.0f;
 
-                SoundEffect.MasterVolume = v; 
+                if (v == _volume)
+                    return;
+
+                _volume = value;
+                ReapplyVolume();
             }
         }
 
@@ -71,6 +99,12 @@ namespace NetGore.Audio
         protected virtual void InternalDispose()
         {
         }
+
+        /// <summary>
+        /// When overridden in the derived class, reapplies the <see cref="Volume"/> property value to all the
+        /// audio tracks in this manager.
+        /// </summary>
+        protected internal abstract void ReapplyVolume();
 
         /// <summary>
         /// When overridden in the derived class, stops all the playing audio in this manager.
@@ -122,10 +156,11 @@ namespace NetGore.Audio
         /// <param name="rootNodeName">The name of the root node in the data file being loaded.</param>
         /// <param name="assetPrefix">The prefix to give to assets used by this <see cref="AudioManagerBase"/>
         /// when loading them.</param>
-        protected AudioManagerBase(ContentManager cm, string dataFilePath, string rootNodeName, string assetPrefix) : base(cm, assetPrefix)
+        protected AudioManagerBase(ContentManager cm, string dataFilePath, string rootNodeName, string assetPrefix)
+            : base(cm, assetPrefix)
         {
             IValueReader r = new XmlValueReader(dataFilePath, rootNodeName);
-            Load(r, cm);
+            Load(r);
         }
 
         /// <summary>
@@ -187,8 +222,7 @@ namespace NetGore.Audio
         /// Loads the audio track data.
         /// </summary>
         /// <param name="reader">IValueReader to read the data from.</param>
-        /// <param name="cm">The <see cref="ContentManager"/> to use.</param>
-        void Load(IValueReader reader, ContentManager cm)
+        void Load(IValueReader reader)
         {
             var items = reader.ReadManyNodes<T>(_itemsNodeName, ReadHandler);
             foreach (var item in items)
@@ -212,5 +246,15 @@ namespace NetGore.Audio
         /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
         /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
         protected abstract T ReadHandler(IValueReader reader);
+
+        /// <summary>
+        /// When overridden in the derived class, reapplies the Volume property value to all the
+        /// audio tracks in this manager.
+        /// </summary>
+        protected internal override void ReapplyVolume()
+        {
+            foreach (var item in _items)
+                item.UpdateVolume();
+        }
     }
 }

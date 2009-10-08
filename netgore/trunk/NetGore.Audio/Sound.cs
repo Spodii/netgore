@@ -16,20 +16,13 @@ namespace NetGore.Audio
     public class Sound : ISound
     {
         readonly List<SoundEffectInstance3D> _active3DSounds = new List<SoundEffectInstance3D>();
+        readonly AudioManagerBase _audioManager;
         readonly AudioEmitter _emitter = new AudioEmitter { Forward = Vector3.Forward, Up = Vector3.Up };
         readonly SoundID _index;
         readonly List<SoundEffectInstance> _instances = new List<SoundEffectInstance>(1);
         readonly AudioListener _listener = new AudioListener { Forward = Vector3.Forward, Up = Vector3.Up };
         readonly string _name;
         readonly SoundEffect _soundEffect;
-        readonly AudioManagerBase _audioManager;
-
-        /// <summary>
-        /// Gets the fully qualified name of the asset used by this <see cref="IAudio"/>. This is the name used
-        /// when loading from the <see cref="ContentManager"/>. It cannot be used to reference this
-        /// <see cref="IAudio"/> in the underlying <see cref="AudioManagerBase"/>.
-        /// </summary>
-        public string AssetName { get { return AudioManager.AssetPrefix + _name; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sound"/> class.
@@ -42,7 +35,7 @@ namespace NetGore.Audio
 
             _name = r.ReadString("File");
             _index = new SoundID(r.ReadUShort("Index"));
-            
+
             _soundEffect = _audioManager.ContentManager.Load<SoundEffect>(AssetName);
         }
 
@@ -67,10 +60,38 @@ namespace NetGore.Audio
             }
 
             instance.IsLooped = false;
+            instance.Volume = AudioManager.Volume;
             return instance;
         }
 
         #region ISound Members
+
+        /// <summary>
+        /// Gets the fully qualified name of the asset used by this <see cref="IAudio"/>. This is the name used
+        /// when loading from the <see cref="ContentManager"/>. It cannot be used to reference this
+        /// <see cref="IAudio"/> in the underlying <see cref="AudioManagerBase"/>.
+        /// </summary>
+        public string AssetName
+        {
+            get { return AudioManager.AssetPrefix + _name; }
+        }
+
+        /// <summary>
+        /// Updates the volume of the audio to match the volume specified by the <see cref="IAudio.AudioManager"/>.
+        /// </summary>
+        public void UpdateVolume()
+        {
+            var v = AudioManager.Volume;
+
+            lock (_instances)
+            {
+                for (int i = 0; i < _instances.Count; i++)
+                {
+                    if (_instances[i].State != SoundState.Playing)
+                        _instances[i].Volume = v;
+                }
+            }
+        }
 
         /// <summary>
         /// Gets the unique index of the <see cref="IAudio"/>.
@@ -130,7 +151,10 @@ namespace NetGore.Audio
         /// <summary>
         /// Gets the <see cref="AudioManagerBase"/> that contains this <see cref="IAudio"/>.
         /// </summary>
-        public AudioManagerBase AudioManager { get { return _audioManager; } }
+        public AudioManagerBase AudioManager
+        {
+            get { return _audioManager; }
+        }
 
         /// <summary>
         /// Gets the name of the <see cref="IAudio"/>.

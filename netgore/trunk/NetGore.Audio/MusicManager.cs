@@ -43,7 +43,8 @@ namespace NetGore.Audio
         /// Initializes a new instance of the <see cref="MusicManager"/> class.
         /// </summary>
         /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        MusicManager(ContentManager cm) : base(cm, ContentPaths.Build.Data.Join("music.xml"), "Music", "Music" + Path.DirectorySeparatorChar)
+        MusicManager(ContentManager cm)
+            : base(cm, ContentPaths.Build.Data.Join("music.xml"), "Music", "Music" + Path.DirectorySeparatorChar)
         {
         }
 
