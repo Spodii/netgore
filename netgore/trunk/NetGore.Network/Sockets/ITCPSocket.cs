@@ -11,7 +11,7 @@ namespace NetGore.Network
     public interface ITCPSocket : ISocketSender, IDisposable
     {
         /// <summary>
-        /// Notifies the listeners when the TCPSocket has been disposed.
+        /// Notifies the listeners when the <see cref="ITCPSocket"/> has been disposed.
         /// </summary>
         event TCPSocketEvent OnDispose;
 
@@ -39,14 +39,14 @@ namespace NetGore.Network
 
         /// <summary>
         /// Gets or sets the optional tag used to identify the socket or hold additional information. This tag
-        /// is not used in any way by the ITCPSocket itself.
+        /// is not used in any way by the <see cref="ITCPSocket"/> itself.
         /// </summary>
         object Tag { get; set; }
 
         /// <summary>
-        /// Gets the queue of complete received data
+        /// Gets the queue of complete received data.
         /// </summary>
-        /// <returns>Queue of received data if any, or null if no queued data</returns>
+        /// <returns>Queue of received data if any, or null if no queued data.</returns>
         byte[][] GetRecvData();
     }
 }

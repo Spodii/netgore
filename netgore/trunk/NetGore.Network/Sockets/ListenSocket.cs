@@ -10,12 +10,6 @@ using NetGore;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Handles a socket Accept event
-    /// </summary>
-    /// <param name="conn">TCPSocket the connection was accepted from</param>
-    public delegate void AcceptHandler(TCPSocket conn);
-
-    /// <summary>
     /// A socket that asynchronously listens for connections, accepts them and returns them
     /// through the OnAccept event.
     /// </summary>
@@ -41,7 +35,7 @@ namespace NetGore.Network
         /// <summary>
         /// Notifies when a connection has been accepted
         /// </summary>
-        public event AcceptHandler OnAccept;
+        public event ListenSocketAcceptHandler OnAccept;
 
         /// <summary>
         /// If the listen socket is correctly working and accepting connections
