@@ -53,7 +53,7 @@ namespace NetGore.EditorTools
                     continue;
 
                 string title = m.Groups["Title"].Value;
-                int speed = DefaultAnimationSpeed; // HACK: Default speed for new animations
+                int speed = DefaultAnimationSpeed;
                 if (m.Groups["Speed"].Success)
                     speed = Parser.Invariant.ParseInt(m.Groups["Speed"].Value);
 
