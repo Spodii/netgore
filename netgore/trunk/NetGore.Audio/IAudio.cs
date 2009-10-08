@@ -32,11 +32,6 @@ namespace NetGore.Audio
         string Name { get; }
 
         /// <summary>
-        /// Updates the volume of the audio to match the volume specified by the <see cref="AudioManager"/>.
-        /// </summary>
-        void UpdateVolume();
-
-        /// <summary>
         /// Gets the unique index of the <see cref="IAudio"/>.
         /// </summary>
         /// <returns>The unique index.</returns>
@@ -58,5 +53,10 @@ namespace NetGore.Audio
         /// Updates the audio.
         /// </summary>
         void Update();
+
+        /// <summary>
+        /// Updates the volume of the audio to match the volume specified by the <see cref="AudioManager"/>.
+        /// </summary>
+        void UpdateVolume();
     }
 }

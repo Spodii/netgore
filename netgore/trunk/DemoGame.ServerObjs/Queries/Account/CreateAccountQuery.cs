@@ -3,7 +3,6 @@ using System.Data.Common;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
-using DemoGame;
 using DemoGame.Server.DbObjs;
 using log4net;
 using MySql.Data.MySqlClient;
