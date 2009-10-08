@@ -22,34 +22,28 @@ namespace NetGore.Audio
         readonly AudioListener _listener = new AudioListener { Forward = Vector3.Forward, Up = Vector3.Up };
         readonly string _name;
         readonly SoundEffect _soundEffect;
+        readonly AudioManagerBase _audioManager;
+
+        /// <summary>
+        /// Gets the fully qualified name of the asset used by this <see cref="IAudio"/>. This is the name used
+        /// when loading from the <see cref="ContentManager"/>. It cannot be used to reference this
+        /// <see cref="IAudio"/> in the underlying <see cref="AudioManagerBase"/>.
+        /// </summary>
+        public string AssetName { get { return AudioManager.AssetPrefix + _name; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Sound"/> class.
         /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/>.</param>
+        /// <param name="audioManager">The <see cref="AudioManagerBase"/>.</param>
         /// <param name="r">The <see cref="IValueReader"/> to read the values from.</param>
-        /// <param name="getAssetName">Func used to get the fully qualified asset name.</param>
-        internal Sound(ContentManager cm, IValueReader r, Func<string, string> getAssetName)
+        internal Sound(AudioManagerBase audioManager, IValueReader r)
         {
+            _audioManager = audioManager;
+
             _name = r.ReadString("File");
             _index = new SoundID(r.ReadUShort("Index"));
 
-            var assetName = getAssetName(_name);
-            _soundEffect = cm.Load<SoundEffect>(assetName);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Sound"/> class.
-        /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        /// <param name="index">The index.</param>
-        /// <param name="assetName">The name of the asset.</param>
-        internal Sound(ContentManager cm, SoundID index, string assetName)
-        {
-            _index = index;
-            _name = assetName;
-
-            _soundEffect = cm.Load<SoundEffect>(assetName);
+            _soundEffect = _audioManager.ContentManager.Load<SoundEffect>(AssetName);
         }
 
         /// <summary>
@@ -134,9 +128,13 @@ namespace NetGore.Audio
         public IAudioEmitter Listener { get; set; }
 
         /// <summary>
+        /// Gets the <see cref="AudioManagerBase"/> that contains this <see cref="IAudio"/>.
+        /// </summary>
+        public AudioManagerBase AudioManager { get { return _audioManager; } }
+
+        /// <summary>
         /// Gets the name of the <see cref="IAudio"/>.
         /// </summary>
-        /// <value></value>
         public string Name
         {
             get { return _name; }
