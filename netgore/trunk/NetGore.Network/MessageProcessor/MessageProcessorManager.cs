@@ -10,7 +10,8 @@ using NetGore.IO;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Manages a group of message processing methods, each identified by the attribute MessageHandlerAttribute.
+    /// Manages a group of message processing methods, each identified by the attribute
+    /// <see cref="MessageHandlerAttribute"/>.
     /// </summary>
     public class MessageProcessorManager
     {
@@ -28,14 +29,12 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Loads a list of all the found message processors. The array will always
-        /// contain 256 indices even if theres isn't a message processor for all
-        /// of them. Only messages marked with the MessageHandler attribute
-        /// will be found and returned.
+        /// Initializes a new instance of the <see cref="MessageProcessorManager"/> class.
         /// </summary>
-        /// <param name="source">Root object instance containing all the classes (null if static)</param>
-        /// <param name="messageIDBitLength">The length of the message ID in bits. Must be between 1 and 8 bits.</param>
-        /// <returns>Returns a list of all the found message processors for a given class</returns>
+        /// <param name="source">Root object instance containing all the classes (null if static).</param>
+        /// <param name="messageIDBitLength">The length of the message ID in bits. Must be between a value
+        /// greater than or equal to 1, and less than or equal to 8.</param>
+        /// <returns>Returns a list of all the found message processors for a given class.</returns>
         public MessageProcessorManager(object source, int messageIDBitLength)
         {
             if (source == null)
@@ -84,9 +83,9 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Handles received data and forwards it to the corresponding MessageProcessors
+        /// Handles received data and forwards it to the corresponding <see cref="MessageProcessor"/>.
         /// </summary>
-        /// <param name="rec">SocketReceiveData to process</param>
+        /// <param name="rec"><see cref="SocketReceiveData"/> to process.</param>
         public void Process(SocketReceiveData rec)
         {
             if (rec.Socket == null)
@@ -109,9 +108,9 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Handles received data and forwards it to the corresponding MessageProcessors.
+        /// Handles received data and forwards it to the corresponding <see cref="MessageProcessor"/>.
         /// </summary>
-        /// <param name="socket">Socket the data came from.</param>
+        /// <param name="socket"><see cref="IIPSocket"/> the data came from.</param>
         /// <param name="data">Data to process.</param>
         public void Process(IIPSocket socket, byte[] data)
         {
@@ -189,9 +188,9 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Handles a list of received data and forwards it to the corresponding MessageProcessors
+        /// Handles a list of received data and forwards it to the corresponding <see cref="MessageProcessor"/>.
         /// </summary>
-        /// <param name="recvData">List of SocketReceiveData to process</param>
+        /// <param name="recvData">List of <see cref="SocketReceiveData"/>s to process.</param>
         public void Process(IEnumerable<SocketReceiveData> recvData)
         {
             if (recvData == null)
@@ -205,10 +204,10 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Checks that the rest of the bitStream contains only unset bits.
+        /// Checks that the rest of the <paramref name="bitStream"/> contains only unset bits.
         /// </summary>
-        /// <param name="bitStream">BitStream to check.</param>
-        /// <returns>True if all of the bits in the <paramref name="bitStream"/> are unset, else false.</returns>
+        /// <param name="bitStream"><see cref="BitStream"/> to check.</param>
+        /// <returns>True if all of the bits in the <paramref name="bitStream"/> are unset; otherwise false.</returns>
         static bool RestOfStreamIsZero(BitStream bitStream)
         {
             while (bitStream.PositionBits < bitStream.LengthBits)
