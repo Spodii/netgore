@@ -7,47 +7,37 @@ using NetGore;
 namespace NetGore.Collections
 {
     /// <summary>
-    /// Delegate for finding the mean of an IEnumerable of values.
-    /// </summary>
-    /// <typeparam name="T">Type of values to work with.</typeparam>
-    /// <param name="values">Array of values to find the mean of.</param>
-    /// <param name="offset">Array offset to start at.</param>
-    /// <param name="count">Number of elements in the array to use.</param>
-    /// <returns>Mean of all the values in the <paramref name="values"/> array.</returns>
-    public delegate T MeanFinder<T>(T[] values, int offset, int count);
-
-    /// <summary>
     /// Contains a collection of methods for finding the mean of different types.
     /// </summary>
     public static class MeanStack
     {
         /// <summary>
-        /// Cache of MeanFinders where the key is the type of MeanFinder to handle.
+        /// Cache of MeanFinders where the key is the type of MeanFinderHandler to handle.
         /// </summary>
         static readonly Dictionary<Type, Delegate> _meanFinders = new Dictionary<Type, Delegate>();
 
         /// <summary>
-        /// Gets the MeanFinder for the specified type.
+        /// Gets the MeanFinderHandler for the specified type.
         /// </summary>
         /// <typeparam name="T">Type to handle the mean for.</typeparam>
-        /// <returns>MeanFinder for the specified type.</returns>
-        public static MeanFinder<T> GetMeanFinder<T>()
+        /// <returns>MeanFinderHandler for the specified type.</returns>
+        public static MeanFinderHandler<T> GetMeanFinder<T>()
         {
             // Try to get the method from the dictionary cache first
             Delegate del;
             if (_meanFinders.TryGetValue(typeof(T), out del))
-                return (MeanFinder<T>)del;
+                return (MeanFinderHandler<T>)del;
 
             // Find the method to handle the type
             MethodInfo method = typeof(MeanStack).GetMethod("Mean", new Type[] { typeof(T[]), typeof(int), typeof(int) });
 
             // Ensure we got a valid method
             if (method == null)
-                throw new MissingMethodException(string.Format("No MeanFinder found for type {0}.", typeof(T)));
+                throw new MissingMethodException(string.Format("No MeanFinderHandler found for type {0}.", typeof(T)));
 
             // Create the delegate
-            del = Delegate.CreateDelegate(typeof(MeanFinder<T>), method);
-            var mf = (MeanFinder<T>)del;
+            del = Delegate.CreateDelegate(typeof(MeanFinderHandler<T>), method);
+            var mf = (MeanFinderHandler<T>)del;
 
             // Add the finder to the dictionary for quick access later
             _meanFinders.Add(typeof(T), mf);
@@ -290,7 +280,7 @@ namespace NetGore.Collections
         /// <summary>
         /// Delegate used to find the mean of the values for type T
         /// </summary>
-        readonly MeanFinder<T> _mf;
+        readonly MeanFinderHandler<T> _mf;
 
         /// <summary>
         /// Highest index of the buffer used.
@@ -303,7 +293,7 @@ namespace NetGore.Collections
         /// <param name="length">Length of the buffer. Defines the number of values this
         /// stack will use for finding the mean.</param>
         /// <param name="mf">Delegate to find the mean of the specified type.</param>
-        public MeanStack(int length, MeanFinder<T> mf)
+        public MeanStack(int length, MeanFinderHandler<T> mf)
         {
             _buffer = new T[length];
             _mf = mf;
