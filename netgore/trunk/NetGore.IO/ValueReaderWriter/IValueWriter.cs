@@ -6,22 +6,6 @@ using NetGore;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Delegate for writing many values. 
-    /// </summary>
-    /// <typeparam name="T">The Type of value.</typeparam>
-    /// <param name="name">The unique name of the value.</param>
-    /// <param name="value">The value to write.</param>
-    public delegate void WriteManyHandler<T>(string name, T value);
-
-    /// <summary>
-    /// Delegate for writing many nodes.
-    /// </summary>
-    /// <typeparam name="T">The Type of node.</typeparam>
-    /// <param name="w">IValueWriter to write to.</param>
-    /// <param name="item">The item to write.</param>
-    public delegate void WriteManyNodesHandler<T>(IValueWriter w, T item);
-
-    /// <summary>
     /// Interface for an object that can write basic values for read-back later by using the unique name
     /// given to each individual value.
     /// </summary>

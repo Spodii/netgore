@@ -65,6 +65,10 @@
     <Compile Include="ValueReaderWriter\IValueWriter.cs" />
     <Compile Include="MessageCollectionBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ValueReaderWriter\ReadManyHandler.cs" />
+    <Compile Include="ValueReaderWriter\ReadManyNodesHandler.cs" />
+    <Compile Include="ValueReaderWriter\WriteManyHandler.cs" />
+    <Compile Include="ValueReaderWriter\WriteManyNodesHandler.cs" />
     <Compile Include="ValueReaderWriter\XmlValueHelper.cs" />
     <Compile Include="ValueReaderWriter\XmlValueReader.cs" />
     <Compile Include="ValueReaderWriter\XmlValueWriter.cs" />
