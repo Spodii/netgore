@@ -11,6 +11,9 @@ namespace DemoGame.Server
     {
         static readonly AIFactory _instance;
 
+        /// <summary>
+        /// Gets the <see cref="AIFactory"/> instance.
+        /// </summary>
         public static AIFactory Instance
         {
             get { return _instance; }
