@@ -112,7 +112,7 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// LatencyTrackerClient constructor.
+        /// Initializes a new instance of the <see cref="LatencyTrackerClient"/> class.
         /// </summary>
         /// <param name="hostAddress">Remote address of the LatencyTrackerServer to ping.</param>
         /// <param name="hostPort">Remote port of the LatencyTrackerServer to ping.</param>
