@@ -14,6 +14,9 @@ namespace DemoGame.Server
             get { return false; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SkillHeal"/> class.
+        /// </summary>
         SkillHeal() : base(SkillType.Heal)
         {
         }
