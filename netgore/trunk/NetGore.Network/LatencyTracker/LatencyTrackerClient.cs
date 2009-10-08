@@ -9,8 +9,8 @@ using NetGore;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Client that pings a LatencyTrackerServer to find the latency between the location of this LatencyTrackerClient
-    /// and the target LatencyTrackerServer.
+    /// Client that pings a <see cref="LatencyTrackerServer"/> to find the latency between the location of
+    /// this <see cref="LatencyTrackerClient"/> and the target <see cref="LatencyTrackerServer"/>.
     /// </summary>
     public class LatencyTrackerClient
     {
