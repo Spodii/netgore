@@ -13,7 +13,7 @@ namespace NetGore.Network
         /// <summary>
         /// Delegate to the processing method
         /// </summary>
-        readonly MessageProcessorDelegate _call;
+        readonly MessageProcessorHandler _call;
 
         /// <summary>
         /// ID of the message the delegate processes.
@@ -23,7 +23,7 @@ namespace NetGore.Network
         /// <summary>
         /// Gets the delegate to the processing method.
         /// </summary>
-        public MessageProcessorDelegate Call
+        public MessageProcessorHandler Call
         {
             get { return _call; }
         }
@@ -37,11 +37,11 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// MessageProcessor constructor.
+        /// Initializes a new instance of the <see cref="MessageProcessor"/> class.
         /// </summary>
         /// <param name="msgID">ID of the message to process. Must be non-zero.</param>
         /// <param name="methodDelegate">Delegate to the processing method.</param>
-        public MessageProcessor(byte msgID, MessageProcessorDelegate methodDelegate)
+        public MessageProcessor(byte msgID, MessageProcessorHandler methodDelegate)
         {
             if (methodDelegate == null)
                 throw new ArgumentNullException("methodDelegate");

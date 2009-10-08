@@ -55,11 +55,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPAddressHelper.cs" />
-    <Compile Include="LatencyTracker\LatencyTrackerBase.cs" />
+    <Compile Include="LatencyTracker\LatencyTrackerHelper.cs" />
     <Compile Include="LatencyTracker\LatencyTrackerServer.cs" />
     <Compile Include="LatencyTracker\LatencyTrackerClient.cs" />
     <Compile Include="MessageProcessor\IMessageProcessor.cs" />
-    <Compile Include="MessageProcessor\MessageProcessorDelegate.cs" />
+    <Compile Include="MessageProcessor\MessageProcessorHandler.cs" />
     <Compile Include="PacketWriter\PacketWriter.cs" />
     <Compile Include="PacketWriter\PacketWriterPool.cs" />
     <Compile Include="Sockets\IIPSocket.cs" />

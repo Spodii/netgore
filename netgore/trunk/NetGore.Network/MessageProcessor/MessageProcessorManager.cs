@@ -45,7 +45,7 @@ namespace NetGore.Network
             _messageIDBitLength = messageIDBitLength;
 
             // Store the types we will use
-            Type mpdType = typeof(MessageProcessorDelegate);
+            Type mpdType = typeof(MessageProcessorHandler);
             Type atbType = typeof(MessageHandlerAttribute);
             Type voidType = typeof(void);
 
@@ -75,7 +75,7 @@ namespace NetGore.Network
                     // Create the message processor for the method
                     foreach (MessageHandlerAttribute atb in atbs)
                     {
-                        MessageProcessorDelegate del = (MessageProcessorDelegate)Delegate.CreateDelegate(mpdType, source, method);
+                        MessageProcessorHandler del = (MessageProcessorHandler)Delegate.CreateDelegate(mpdType, source, method);
                         _processors[atb.MsgID] = new MessageProcessor(atb.MsgID, del);
                     }
                 }
