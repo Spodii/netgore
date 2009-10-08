@@ -13,13 +13,13 @@ namespace NetGore.Network
         /// <summary>
         /// Notifies the listeners when the <see cref="ITCPSocket"/> has been disposed.
         /// </summary>
-        event TCPSocketEvent OnDispose;
+        event TCPSocketEventHandler OnDispose;
 
         /// <summary>
         /// Notifies the listeners when the socket has successfully sent data, and how much data was sent.
         /// Due to internal buffering, OnSend may not be raised for every send.
         /// </summary>
-        event TCPSocketEvent<int> OnSend;
+        event TCPSocketEventHandler<int> OnSend;
 
         /// <summary>
         /// Gets the IPv4 address and port that this IIPSocket is connected to as a string. This string is formatted
