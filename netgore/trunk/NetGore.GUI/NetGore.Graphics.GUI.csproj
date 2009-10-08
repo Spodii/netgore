@@ -92,7 +92,6 @@
     <Compile Include="Controls\Panel.cs" />
     <Compile Include="Controls\PictureBox.cs" />
     <Compile Include="Screen Manager\GameScreen.cs" />
-    <Compile Include="Screen Manager\MenuScreen.cs" />
     <Compile Include="Screen Manager\ScreenManager.cs" />
     <Compile Include="Controls\TextBoxSingleLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
