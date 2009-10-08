@@ -7,8 +7,8 @@ using NetGore;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Server that responds to pings received from a LatencyTrackerClient. This does not actually care about who
-    /// is pinging it or the latency.
+    /// Server that responds to pings received from a <see cref="LatencyTrackerClient"/>. This does not actually
+    /// care about who is pinging it or the latency.
     /// </summary>
     public class LatencyTrackerServer
     {
@@ -18,7 +18,7 @@ namespace NetGore.Network
         readonly UDPSocket _socket;
 
         /// <summary>
-        /// Gets the port that this LatencyTrackerServer is bound to.
+        /// Gets the port that this <see cref="LatencyTrackerServer"/> is bound to.
         /// </summary>
         public int BindPort
         {
@@ -41,7 +41,7 @@ namespace NetGore.Network
         }
 
         /// <summary>
-        /// Updates the buffer and parses any received data. Recommended this is called every frame.
+        /// Updates the buffer and parses any received data. It is recommended that this is called every frame.
         /// </summary>
         public void Update()
         {
