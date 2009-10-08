@@ -8,6 +8,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Audio;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.Network;
@@ -52,6 +53,8 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         UserInfo _userInfo;
         World _world;
+        MusicManager _musicManager;
+        SoundManager _soundManager;
 
         public NPCChatDialogForm ChatDialogForm
         {
@@ -286,7 +289,11 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
+            _soundManager = SoundManager.GetInstance(ScreenManager.Content);
+            _musicManager = MusicManager.GetInstance(ScreenManager.Content);
+
             _world = new World(this, new Camera2D(GameData.ScreenSize));
+            _world.OnChangeMap += World_OnChangeMap;
 
             // Create the socket
             _socket = new ClientSockets(this);
@@ -299,6 +306,24 @@ namespace DemoGame.Client
 
             // Other inits
             InitializeGUI();
+        }
+
+        void World_OnChangeMap(World world, Map item)
+        {
+            // Stop all sounds
+            _soundManager.Stop();
+
+            // Set the new music
+            if (string.IsNullOrEmpty(item.Music))
+                return;
+
+            if (!_musicManager.TryPlay(item.Music))
+            {
+                const string errmsg = "Failed to play map music track: `{0}`";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, item.Music);
+                Debug.Fail(string.Format(errmsg, item.Music));
+            }
         }
 
         /// <summary>

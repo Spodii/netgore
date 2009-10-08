@@ -9,6 +9,10 @@ using NetGore.Graphics;
 
 namespace DemoGame.Client
 {
+    public delegate void WorldEventHandler(World world);
+
+    public delegate void WorldEventHandler<T>(World world, T item);
+
     public class World : WorldBase
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
@@ -43,10 +47,18 @@ namespace DemoGame.Client
             get { return _map; }
             set
             {
+                if (_map == value)
+                    return;
+
                 _map = value;
                 _camera.Map = _map;
+
+                if (OnChangeMap != null)
+                    OnChangeMap(this, _map);
             }
         }
+
+        public event WorldEventHandler<Map> OnChangeMap;
 
         /// <summary>
         /// Gets the user's character given the UserCharIndex

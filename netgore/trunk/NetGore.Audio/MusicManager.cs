@@ -152,7 +152,7 @@ namespace NetGore.Audio
         /// <summary>
         /// Stops the loaded music.
         /// </summary>
-        public void Stop()
+        public override void Stop()
         {
             if (_currentlyPlaying == null)
                 return;

@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Content;
@@ -33,6 +34,15 @@ namespace NetGore.Audio
         public ISound this[string name]
         {
             get { return GetItem(name); }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, stops all the playing audio in this manager.
+        /// </summary>
+        public override void Stop()
+        {
+            foreach (var item in GetAudio)
+                item.Stop();
         }
 
         /// <summary>
