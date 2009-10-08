@@ -5,7 +5,7 @@ using NetGore;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Interface for a class that saves and loads its state values managed by a SettingsManager.
+    /// Interface for a class that saves and loads its state values managed by a <see cref="SettingsManager"/>.
     /// </summary>
     public interface IRestorableSettings
     {
