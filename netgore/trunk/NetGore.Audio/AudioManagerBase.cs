@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using NetGore.Collections;
 using NetGore.IO;
@@ -28,6 +29,27 @@ namespace NetGore.Audio
         public ContentManager ContentManager
         {
             get { return _contentManager; }
+        }
+
+        /// <summary>
+        /// Gets or sets the master volume of all audio. This value must be in a range of 0.0f to 1.0f, where 0.0f is
+        /// silence and 1.0f is the full volume. If a value is specified that does not fall into this range, it will be
+        /// altered to fit this range.
+        /// </summary>
+        public static float MasterVolume
+        {
+            get { return SoundEffect.MasterVolume; }
+            set 
+            {
+                float v = value;
+
+                if (v > 1.0f)
+                    v = 1.0f;
+                else if (v < 0.0f)
+                    v = 0.0f;
+
+                SoundEffect.MasterVolume = v; 
+            }
         }
 
         /// <summary>
@@ -168,7 +190,7 @@ namespace NetGore.Audio
         /// <param name="cm">The <see cref="ContentManager"/> to use.</param>
         void Load(IValueReader reader, ContentManager cm)
         {
-            var items = reader.ReadManyNodes(_itemsNodeName, r => ReadHandler(r, cm));
+            var items = reader.ReadManyNodes<T>(_itemsNodeName, ReadHandler);
             foreach (var item in items)
             {
                 int index = item.GetIndex();
@@ -188,8 +210,7 @@ namespace NetGore.Audio
         /// from the given <paramref name="reader"/>.
         /// </summary>
         /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
-        /// <param name="cm">The <see cref="ContentManager"/> to use.</param>
         /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
-        protected abstract T ReadHandler(IValueReader reader, ContentManager cm);
+        protected abstract T ReadHandler(IValueReader reader);
     }
 }

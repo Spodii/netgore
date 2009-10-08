@@ -103,11 +103,8 @@ namespace NetGore.Audio
         /// from the given <paramref name="reader"/>.
         /// </summary>
         /// <param name="reader"><see cref="IValueReader"/> used to read the object values from.</param>
-        /// <param name="cm">The <see cref="ContentManager"/> to use.</param>
-        /// <returns>
-        /// Instance of the object created using the <paramref name="reader"/>.
-        /// </returns>
-        protected override IMusic ReadHandler(IValueReader reader, ContentManager cm)
+        /// <returns>Instance of the object created using the <paramref name="reader"/>.</returns>
+        protected override IMusic ReadHandler(IValueReader reader)
         {
             return new Music(this, reader);
         }
