@@ -60,6 +60,7 @@
     <Compile Include="SafeEnumerator.cs" />
     <Compile Include="TSDictionary.cs" />
     <Compile Include="TSList.cs" />
+    <Compile Include="TypeFactoryLoadedHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetGore.Globalization\NetGore.Globalization.csproj">
