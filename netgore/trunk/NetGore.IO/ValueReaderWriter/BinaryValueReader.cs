@@ -7,7 +7,7 @@ using NetGore;
 namespace NetGore.IO
 {
     /// <summary>
-    /// Implementation of the IValueReader using a BitStream to perform binary I/O.
+    /// Implementation of the <see cref="IValueReader"/> using a <see cref="BitStream"/> to perform binary I/O.
     /// </summary>
     public class BinaryValueReader : IValueReader
     {
