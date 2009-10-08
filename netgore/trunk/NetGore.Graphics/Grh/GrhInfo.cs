@@ -11,8 +11,6 @@ using NetGore.IO;
 
 namespace NetGore.Graphics
 {
-    public delegate void GrhDataEventHandler(GrhData grhData);
-
     /// <summary>
     /// Holds the GrhDatas and related methods.
     /// </summary>
