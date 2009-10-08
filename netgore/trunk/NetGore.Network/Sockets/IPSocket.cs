@@ -10,7 +10,7 @@ using NetGore.IO;
 namespace NetGore.Network
 {
     /// <summary>
-    /// A socket that abstracts TCP and UDP.
+    /// A socket that can send data over both a reliable and unreliable connection to the same destination.
     /// </summary>
     public class IPSocket : IIPSocket
     {
