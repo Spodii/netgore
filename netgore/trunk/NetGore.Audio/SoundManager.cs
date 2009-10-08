@@ -1,5 +1,7 @@
+using System;
 using System.IO;
 using System.Linq;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using NetGore.IO;
 
@@ -65,11 +67,121 @@ namespace NetGore.Audio
         }
 
         /// <summary>
+        /// Tries to play an audio track.
+        /// </summary>
+        /// <param name="id">The audio track to play.</param>
+        /// <param name="position">The world position of the sound.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public bool TryPlay(SoundID id, Vector2 position)
+        {
+            return TryPlay(this[id], position);
+        }
+
+        /// <summary>
+        /// Tries to play an audio track.
+        /// </summary>
+        /// <param name="name">The audio track to play.</param>
+        /// <param name="position">The world position of the sound.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public bool TryPlay(string name, Vector2 position)
+        {
+            return TryPlay(this[name], position);
+        }
+
+        /// <summary>
+        /// Tries to play an audio track.
+        /// </summary>
+        /// <param name="id">The audio track to play.</param>
+        /// <param name="emitter">The object emitting the sound.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public bool TryPlay(SoundID id, IAudioEmitter emitter)
+        {
+            return TryPlay(this[id], emitter);
+        }
+
+        /// <summary>
+        /// Tries to play an audio track.
+        /// </summary>
+        /// <param name="name">The audio track to play.</param>
+        /// <param name="emitter">The object emitting the sound.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public bool TryPlay(string name, IAudioEmitter emitter)
+        {
+            return TryPlay(this[name], emitter);
+        }
+
+        /// <summary>
+        /// Tries to play an audio track.
+        /// </summary>
+        /// <param name="sound">The audio track to play.</param>
+        /// <param name="emitter">The object emitting the sound.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        static bool TryPlay(ISound sound, IAudioEmitter emitter)
+        {
+            if (sound == null)
+                return false;
+
+            sound.Play(emitter);
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to play an audio track.
+        /// </summary>
+        /// <param name="sound">The audio track to play.</param>
+        /// <param name="position">The position to play the sound.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        static bool TryPlay(ISound sound, Vector2 position)
+        {
+            if (sound == null)
+                return false;
+
+            sound.Play(position);
+            return true;
+        }
+
+        /// <summary>
+        /// Tries to play an audio track.
+        /// </summary>
+        /// <param name="sound">The audio track to play.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        static bool TryPlay(IAudio sound)
+        {
+            if (sound == null)
+                return false;
+
+            sound.Play();
+            return true;
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, tries to play an audio track.
+        /// </summary>
+        /// <param name="id">The ID of the audio track.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public override bool TryPlay(SoundID id)
+        {
+            var item = this[id];
+            return TryPlay(item);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, tries to play an audio track.
+        /// </summary>
+        /// <param name="name">The name of the audio track.</param>
+        /// <returns>True if the audio track was successfully played; otherwise false.</returns>
+        public override bool TryPlay(string name)
+        {
+            var item = this[name];
+            return TryPlay(item);
+        }
+
+        /// <summary>
         /// When overridden in the derived class, converts the <paramref name="value"/>.
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The converted value.</returns>
-        protected override int IndexToInt(SoundID value)
+        protected override int IDToInt(SoundID value)
         {
             return (int)value;
         }
@@ -79,7 +191,7 @@ namespace NetGore.Audio
         /// </summary>
         /// <param name="value">The value.</param>
         /// <returns>The converted value.</returns>
-        protected override SoundID IntToIndex(int value)
+        protected override SoundID IntToID(int value)
         {
             return new SoundID(value);
         }

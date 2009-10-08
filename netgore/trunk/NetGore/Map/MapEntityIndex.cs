@@ -10,7 +10,11 @@ using NetGore.IO;
 namespace NetGore
 {
     /// <summary>
-    /// Represents the integral value of the index of an Entity in respect to the Map it is on.
+    /// Represents the integral value of the index of a <see cref="DynamicEntity"/> in respect to the
+    /// <see cref="IMap"/> it is on. For a single <see cref="IMap"/>, this will contain the same value for
+    /// a <see cref="DynamicEntity"/> on both the server and client, making it a suitable property to use
+    /// to reference a <see cref="DynamicEntity"/> between the client and server. Non-dynamic entities do not
+    /// contain a <see cref="MapEntityIndex"/>.
     /// </summary>
     [Serializable]
     [StructLayout(LayoutKind.Sequential)]

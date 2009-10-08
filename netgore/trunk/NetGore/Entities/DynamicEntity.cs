@@ -30,7 +30,7 @@ namespace NetGore
     /// base class supplies the synchronization of the supplied Properties, and synchronizing of additional
     /// properties through the SyncValue attribute.
     /// </summary>
-    public abstract class DynamicEntity : Entity
+    public abstract class DynamicEntity : Entity, IAudioEmitter
     {
         /// <summary>
         /// How frequently, in milliseconds, the Position and Velocity are synchronized when _syncPnVCount is greater
