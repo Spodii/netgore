@@ -327,9 +327,9 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Structure describing a directory containing frames for an automatic animation.
+        /// Describes a directory containing frames for an automatic animation.
         /// </summary>
-        struct AnimationRegexInfo
+        class AnimationRegexInfo
         {
             /// <summary>
             /// Absolute path to the frames directory.
