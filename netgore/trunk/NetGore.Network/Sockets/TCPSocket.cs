@@ -12,20 +12,6 @@ using NetGore.IO;
 namespace NetGore.Network
 {
     /// <summary>
-    /// Delegate for TCPSocketEvents
-    /// </summary>
-    /// <param name="sender">Sender TCPSocket</param>
-    public delegate void TCPSocketEvent(TCPSocket sender);
-
-    /// <summary>
-    /// Delegate for TCPSocketEvents
-    /// </summary>
-    /// <typeparam name="T">Event args type</typeparam>
-    /// <param name="sender">Sender TCPSocket</param>
-    /// <param name="e">Event args</param>
-    public delegate void TCPSocketEvent<T>(TCPSocket sender, T e);
-
-    /// <summary>
     /// A single, thread-safe socket that uses TCP with the ability to send and receive information
     /// asynchronously. Contains an internal buffer/queue for both sending and receiving data so
     /// there is no need to buffer I/O calls. Due to the usage of an internal 2-byte header that is added
@@ -534,13 +520,13 @@ namespace NetGore.Network
         /// <summary>
         /// Notifies the listeners when the TCPSocket has been disposed.
         /// </summary>
-        public event TCPSocketEvent OnDispose;
+        public event TCPSocketEventHandler OnDispose;
 
         /// <summary>
         /// Notifies the listeners when the socket has successfully sent data, and how much data was sent.
         /// Because the TCPSocket attempts to combine queued sends, OnSend may not be raised for every send.
         /// </summary>
-        public event TCPSocketEvent<int> OnSend;
+        public event TCPSocketEventHandler<int> OnSend;
 
         /// <summary>
         /// Gets the queue of complete received data

@@ -79,6 +79,7 @@
     <Compile Include="Sockets\SocketReceiveEventHandler.cs" />
     <Compile Include="Sockets\SocketSendQueue.cs" />
     <Compile Include="Sockets\TCPSocket.cs" />
+    <Compile Include="Sockets\TCPSocketEventHandler.cs" />
     <Compile Include="Sockets\UDPSocket.cs" />
   </ItemGroup>
   <ItemGroup>
