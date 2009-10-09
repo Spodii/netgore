@@ -5,6 +5,9 @@ using NetGore;
 
 namespace NetGore
 {
+    /// <summary>
+    /// Provides helper methods for the <see cref="Alignment"/> enum.
+    /// </summary>
     public sealed class AlignmentHelper : EnumHelper<Alignment>
     {
         static readonly AlignmentHelper _instance;
