@@ -109,6 +109,8 @@ namespace DemoGame.Server
             _dbController = new DbController(settings.SqlConnectionString());
             DBTableValidator.ValidateTables(_dbController);
 
+            ValidateDbControllerQueryAttributes();
+
             // Load the game data and such
             InitializeScripts();
 
@@ -368,6 +370,22 @@ namespace DemoGame.Server
 
             // Start the main game loop
             GameLoop();
+        }
+
+        /// <summary>
+        /// Ensures we have added the <see cref="DbControllerQueryAttribute"/> where needed.
+        /// </summary>
+        static void ValidateDbControllerQueryAttributes()
+        {
+            const string errmsg = "Type `{0}` fails to implement attribute `{1}`. Ensure this is okay.";
+            var attribType = typeof(DbControllerQueryAttribute);
+
+            new DbControllerQueryAttributeChecker(delegate(DbControllerQueryAttributeChecker sender, Type type)
+                                                  {
+                                                      Debug.Fail(string.Format(errmsg, type, attribType));
+                                                      if (log.IsErrorEnabled)
+                                                          log.ErrorFormat(errmsg, type, attribType);
+                                                  });
         }
 
         #region IDisposable Members

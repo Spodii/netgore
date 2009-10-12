@@ -8,6 +8,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
+    [DbControllerQuery]
     public class InsertMapQuery : DbQueryNonReader<IMapTable>
     {
         static readonly string _queryString = string.Format("INSERT INTO `{0}` {1}", MapTable.TableName,
