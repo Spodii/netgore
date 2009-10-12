@@ -2,12 +2,12 @@
 <Map>
   <Header>
     <Name>INSERT VALUE</Name>
-	<Music>main</Music>
+    <Music>main</Music>
     <Width>960</Width>
     <Height>640</Height>
   </Header>
   <Walls>
-    <Count>47</Count>
+    <Count>45</Count>
     <Item0>
       <Position>0,608</Position>
       <Size>32,32</Size>
@@ -199,50 +199,40 @@
       <CollisionType>Full</CollisionType>
     </Item37>
     <Item38>
-      <Position>416,416</Position>
+      <Position>320,416</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item38>
     <Item39>
-      <Position>384,416</Position>
+      <Position>352,416</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item39>
     <Item40>
-      <Position>320,416</Position>
+      <Position>288,416</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item40>
     <Item41>
-      <Position>352,416</Position>
+      <Position>256,416</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item41>
     <Item42>
-      <Position>288,416</Position>
+      <Position>256,384</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item42>
     <Item43>
-      <Position>256,416</Position>
+      <Position>256,352</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item43>
     <Item44>
-      <Position>256,384</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Item44>
-    <Item45>
-      <Position>256,352</Position>
-      <Size>32,32</Size>
-      <CollisionType>Full</CollisionType>
-    </Item45>
-    <Item46>
       <Position>256,320</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
-    </Item46>
+    </Item44>
   </Walls>
   <DynamicEntities>
     <Count>1</Count>
@@ -266,7 +256,7 @@
         <Item2>125</Item2>
       </UsedIndicies>
       <MapGrhs>
-        <Count>48</Count>
+        <Count>46</Count>
         <Item0>
           <Position>0,608</Position>
           <GrhIndex>2</GrhIndex>
@@ -458,55 +448,45 @@
           <IsForeground>False</IsForeground>
         </Item37>
         <Item38>
-          <Position>416,416</Position>
+          <Position>320,416</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item38>
         <Item39>
-          <Position>384,416</Position>
+          <Position>352,416</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item39>
         <Item40>
-          <Position>320,416</Position>
+          <Position>288,416</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item40>
         <Item41>
-          <Position>352,416</Position>
+          <Position>256,416</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item41>
         <Item42>
-          <Position>288,416</Position>
+          <Position>256,384</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item42>
         <Item43>
-          <Position>256,416</Position>
+          <Position>256,352</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item43>
         <Item44>
-          <Position>256,384</Position>
+          <Position>256,320</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item44>
         <Item45>
-          <Position>256,352</Position>
-          <GrhIndex>5</GrhIndex>
-          <IsForeground>False</IsForeground>
-        </Item45>
-        <Item46>
-          <Position>256,320</Position>
-          <GrhIndex>5</GrhIndex>
-          <IsForeground>False</IsForeground>
-        </Item46>
-        <Item47>
           <Position>288,320</Position>
           <GrhIndex>125</GrhIndex>
           <IsForeground>False</IsForeground>
-        </Item47>
+        </Item45>
       </MapGrhs>
     </MapGrhs>
     <BackgroundImages>
