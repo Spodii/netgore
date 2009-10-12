@@ -45,6 +45,8 @@
   <ItemGroup>
     <Compile Include="DataReaderContainer.cs" />
     <Compile Include="Connections\DbConnectionPool.cs" />
+    <Compile Include="DbControllerQueryAttributeChecker.cs" />
+    <Compile Include="DbControllerQueryAttributeCheckerEventHandler.cs" />
     <Compile Include="DbController\DbControllerBase.cs" />
     <Compile Include="DbController\DbControllerQueryAttribute.cs" />
     <Compile Include="DbController\IDbController.cs" />
