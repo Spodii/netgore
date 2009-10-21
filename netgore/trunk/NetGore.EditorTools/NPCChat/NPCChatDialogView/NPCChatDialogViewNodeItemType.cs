@@ -22,7 +22,7 @@ namespace NetGore.EditorTools.NPCChat
 
         /// <summary>
         /// Handles an object that derives from <see cref="NPCChatDialogItemBase"/> but does not display
-        /// the actual contents of the dialog item. Instead, a node of this type will redirect to the
+        /// the actual contents of the dialog item. Instead, a n of this type will redirect to the
         /// corresponding <see cref="DialogItem"/>.
         /// </summary>
         Redirect,

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using log4net;
@@ -29,7 +30,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Background color of the atlas (not like it matters)
         /// </summary>
-        Color _backColor = new Color(0, 0, 0, 0);
+        Color _backColor = new Color(255, 0, 255, 255);
 
         /// <summary>
         /// Maximum size of the atlas texture (there is such thing as too big...)
@@ -167,12 +168,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Combines as many ITextureAtlas items as possible into an atlas
+        /// Combines as many ITextureAtlas items as possible into an atlas.
         /// </summary>
-        /// <param name="items">Collection of ITextureAtlas items to add to the atlas</param>
-        /// <param name="width">Width of the atlas</param>
-        /// <param name="height">Height of the atlas</param>
-        /// <param name="breakOnAddFail">If true, the method will return instantly after failing to add an item</param>
+        /// <param name="items">Collection of ITextureAtlas items to add to the atlas.</param>
+        /// <param name="width">Width of the atlas.</param>
+        /// <param name="height">Height of the atlas.</param>
+        /// <param name="breakOnAddFail">If true, the method will return instantly after failing to add an item.</param>
         /// <returns>Stack containing all items that were successfully added to the atlas. If the
         /// count of this return value equals the count of the <paramref name="items"/> collection,
         /// all items were successfully added to the atlas of the specified size.</returns>
@@ -186,7 +187,7 @@ namespace NetGore.Graphics
                 throw new ArgumentException(errmsg, "items");
             }
 
-            // Create the node stack for all set nodes
+            // Create the n stack for all set nodes
             var nodeStack = new Stack<AtlasNode>(items.Count);
 
             // Set the positions
@@ -196,7 +197,7 @@ namespace NetGore.Graphics
                 AtlasNode node = root.Insert(ta.SourceRect.Width + Padding * 2, ta.SourceRect.Height + Padding * 2);
                 if (node != null)
                 {
-                    // Assign the TextureAtlas and push the node onto the stack
+                    // Assign the TextureAtlas and push the n onto the stack
                     node.ITextureAtlas = ta;
                     nodeStack.Push(node);
                 }
@@ -211,11 +212,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates the atlas textures
+        /// Creates the atlas textures.
         /// </summary>
-        /// <param name="device">GraphicsDevice to create the textures on</param>
-        /// <param name="atlasInfos">List of atlas creation information</param>
-        /// <returns>List of atlas textures</returns>
+        /// <param name="device">GraphicsDevice to create the textures on.</param>
+        /// <param name="atlasInfos">List of atlas creation information.</param>
+        /// <returns>List of atlas textures.</returns>
         public List<Texture2D> CreateAtlasTextures(GraphicsDevice device, List<TextureAtlasInfo> atlasInfos)
         {
             if (device == null || device.IsDisposed)
@@ -246,10 +247,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates a DepthStencilBuffer
+        /// Creates a DepthStencilBuffer.
         /// </summary>
-        /// <param name="target">RenderTarget to create the DSB for</param>
-        /// <returns>A DSB sized to the RenderTarget</returns>
+        /// <param name="target">RenderTarget to create the DSB for.</param>
+        /// <returns>A DSB sized to the RenderTarget.</returns>
         static DepthStencilBuffer CreateDSB(RenderTarget target)
         {
             if (target == null || target.IsDisposed)
@@ -276,10 +277,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws a list of AtlasItems onto a texture to make the atlas
+        /// Draws a list of AtlasItems onto a texture to make the atlas.
         /// </summary>
-        /// <param name="device">Device to use to create the atlas</param>
-        /// <param name="atlasInfo">Describes the atlas to draw</param>
+        /// <param name="device">Device to use to create the atlas.</param>
+        /// <param name="atlasInfo">Describes the atlas to draw.</param>
         public Texture2D DrawAtlas(GraphicsDevice device, TextureAtlasInfo atlasInfo)
         {
             if (device == null || device.IsDisposed)
@@ -302,13 +303,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Draws a list of AtlasItems onto a texture to make the atlas
+        /// Draws a list of AtlasItems onto a texture to make the atlas.
         /// </summary>
-        /// <param name="items">Items to set onto the atlas</param>
-        /// <param name="device">Device to use to create the atlas</param>
-        /// <param name="width">Width of the atlas</param>
-        /// <param name="height">Height of the atlas</param>
-        /// <returns>Texture2D atlas of all the given AtlasItems</returns>
+        /// <param name="items">Items to set onto the atlas.</param>
+        /// <param name="device">Device to use to create the atlas.</param>
+        /// <param name="width">Width of the atlas.</param>
+        /// <param name="height">Height of the atlas.</param>
+        /// <returns>Texture2D atlas of all the given AtlasItems.</returns>
         Texture2D DrawAtlas(GraphicsDevice device, IEnumerable<AtlasNode> items, int width, int height)
         {
             if (device == null || device.IsDisposed)
@@ -331,7 +332,7 @@ namespace NetGore.Graphics
             SurfaceFormat format = device.PresentationParameters.BackBufferFormat;
             MultiSampleType sample = device.PresentationParameters.MultiSampleType;
             int q = device.PresentationParameters.MultiSampleQuality;
-
+          
             using (RenderTarget2D target = new RenderTarget2D(device, width, height, 1, format, sample, q))
             {
                 // Set the render target to the texture and clear it
@@ -352,6 +353,7 @@ namespace NetGore.Graphics
                             const string errmsg = "Failed to add item `{0}` to atlas - texture is null or disposed.";
                             if (log.IsErrorEnabled)
                                 log.ErrorFormat(errmsg, item);
+                            Debug.Fail(string.Format(errmsg, item));
                             continue;
                         }
 
@@ -413,6 +415,12 @@ namespace NetGore.Graphics
                 // Restore the render target and grab the created texture
                 device.SetRenderTarget(0, null);
                 ret = target.GetTexture();
+
+                // Create a dummy array that will be used to grab some data from the return texture
+                // This will force the texture to be read from, which for some reason is actually required to be
+                // done for some systems... not sure why...
+                int[] dummyIntArray = new int[1];
+                ret.GetData(0, new Rectangle(0, 0, 1, 1), dummyIntArray, 0, 1);
             }
 
             ret.Name = "Texture Atlas";
@@ -528,11 +536,10 @@ namespace NetGore.Graphics
                 throw new ArgumentNullException("atlasInfo");
             }
 
-            foreach (AtlasNode node in atlasInfo.Nodes)
+            foreach (AtlasNode n in atlasInfo.Nodes)
             {
-                Rectangle r = new Rectangle(node.X + Padding, node.Y + Padding, node.Width - Padding * 2,
-                                            node.Height - Padding * 2);
-                node.ITextureAtlas.SetAtlas(tex, r);
+                Rectangle r = new Rectangle(n.X + Padding, n.Y + Padding, n.Width - Padding * 2, n.Height - Padding * 2);
+                n.ITextureAtlas.SetAtlas(tex, r);
             }
         }
 

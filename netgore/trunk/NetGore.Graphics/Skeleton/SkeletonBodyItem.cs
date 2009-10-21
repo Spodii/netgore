@@ -61,13 +61,13 @@ namespace NetGore.Graphics
         /// <param name="skeleton">Skeleton to attach to</param>
         public void Attach(Skeleton skeleton)
         {
-            // Source node
+            // Source n
             if (skeleton == null)
                 Source = null;
             else
                 Source = skeleton.FindNode(ItemInfo.SourceName);
 
-            // Destination node
+            // Destination n
             if (skeleton == null || ItemInfo.DestName.Length == 0)
                 Dest = null;
             else

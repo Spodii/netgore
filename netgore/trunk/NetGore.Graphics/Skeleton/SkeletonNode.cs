@@ -9,7 +9,7 @@ using NetGore.IO;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// A node (joint) for a skeleton model
+    /// A n (joint) for a skeleton model
     /// </summary>
     public class SkeletonNode
     {
@@ -35,32 +35,32 @@ namespace NetGore.Graphics
         internal static readonly Vector2 HalfJointVector = new Vector2(HalfJointSize, HalfJointSize);
 
         /// <summary>
-        /// Nodes that belong to this node
+        /// Nodes that belong to this n
         /// </summary>
         readonly List<SkeletonNode> _nodes = new List<SkeletonNode>();
 
         /// <summary>
-        /// Name of the node. The node name must be unique throughout the whole skeleton.
+        /// Name of the n. The n name must be unique throughout the whole skeleton.
         /// </summary>
-        string _name = "New node";
+        string _name = "New n";
 
         /// <summary>
-        /// Node that this node is attached to (null if none)
+        /// Node that this n is attached to (null if none)
         /// </summary>
         SkeletonNode _parent;
 
         /// <summary>
-        /// Absolute position of the node
+        /// Absolute position of the n
         /// </summary>
         Vector2 _position;
 
         /// <summary>
-        /// Gets or sets if the node is used when the node is part of a skeleton treated as an animation modifier
+        /// Gets or sets if the n is used when the n is part of a skeleton treated as an animation modifier
         /// </summary>
         public bool IsModifier { get; set; }
 
         /// <summary>
-        /// Gets or sets the name of the node. The node name must be unique throughout the whole skeleton.
+        /// Gets or sets the name of the n. The n name must be unique throughout the whole skeleton.
         /// </summary>
         public string Name
         {
@@ -69,7 +69,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the nodes that belong to this node
+        /// Gets the nodes that belong to this n
         /// </summary>
         public List<SkeletonNode> Nodes
         {
@@ -77,7 +77,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the node that this node is attached to (null if none)
+        /// Gets or sets the n that this n is attached to (null if none)
         /// </summary>
         public SkeletonNode Parent
         {
@@ -86,7 +86,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the absolute position of the node
+        /// Gets or sets the absolute position of the n
         /// </summary>
         public Vector2 Position
         {
@@ -95,7 +95,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the X position of the node (equal to Position.X)
+        /// Gets or sets the X position of the n (equal to Position.X)
         /// </summary>
         public float X
         {
@@ -104,7 +104,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the Y position of the node (equal to Position.Y)
+        /// Gets or sets the Y position of the n (equal to Position.Y)
         /// </summary>
         public float Y
         {
@@ -137,14 +137,14 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Adds a child node to the node
+        /// Adds a child n to the n
         /// </summary>
-        /// <param name="node">Child node to add</param>
+        /// <param name="n">Child n to add</param>
         public void Add(SkeletonNode node)
         {
             if (node == null)
             {
-                Debug.Fail("node is null.");
+                Debug.Fail("n is null.");
                 return;
             }
 
@@ -153,19 +153,19 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Creates a deep-copy of the node and all its child nodes
+        /// Creates a deep-copy of the n and all its child nodes
         /// </summary>
-        /// <returns>Duplicate copy of the node</returns>
+        /// <returns>Duplicate copy of the n</returns>
         public SkeletonNode Duplicate()
         {
             return Duplicate(this);
         }
 
         /// <summary>
-        /// Recursively creates a deep-copy of the node and all its child nodes
+        /// Recursively creates a deep-copy of the n and all its child nodes
         /// </summary>
         /// <param name="root">Node to duplicate</param>
-        /// <returns>Duplicate copy of the node</returns>
+        /// <returns>Duplicate copy of the n</returns>
         static SkeletonNode Duplicate(SkeletonNode root)
         {
             if (root == null)
@@ -187,9 +187,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Recursively acquires all children nodes from a given root node
+        /// Recursively acquires all children nodes from a given root n
         /// </summary>
-        /// <returns>A list containing this node and all of its children</returns>
+        /// <returns>A list containing this n and all of its children</returns>
         public List<SkeletonNode> GetAllNodes()
         {
             var ret = GetNodes(this);
@@ -209,9 +209,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Finds the angle between this node and another
+        /// Finds the angle between this n and another
         /// </summary>
-        /// <param name="node">Node to compare to</param>
+        /// <param name="n">Node to compare to</param>
         /// <returns>Angle between the two nodes</returns>
         public float GetAngle(SkeletonNode node)
         {
@@ -222,7 +222,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Finds the angle between this node and its parent
+        /// Finds the angle between this n and its parent
         /// </summary>
         /// <returns>Angle between the two nodes</returns>
         public float GetAngle()
@@ -231,7 +231,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Finds the length of the bone between the node and its parent
+        /// Finds the length of the bone between the n and its parent
         /// </summary>
         /// <returns>Length of the bone</returns>
         public float GetLength()
@@ -243,9 +243,9 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Used to assist the recursive node acquisition
+        /// Used to assist the recursive n acquisition
         /// </summary>
-        /// <param name="root">Root node to work from</param>
+        /// <param name="root">Root n to work from</param>
         /// <returns>Children of the root</returns>
         static List<SkeletonNode> GetNodes(SkeletonNode root)
         {
@@ -268,17 +268,17 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Checks if a given point hits the node
+        /// Checks if a given point hits the n
         /// </summary>
-        /// <param name="camera">World camera (determines node size)</param>
+        /// <param name="camera">World camera (determines n size)</param>
         /// <param name="position">World position</param>
-        /// <param name="node">Node to test against</param>
-        /// <returns>True if the node was hit, else false</returns>
+        /// <param name="n">Node to test against</param>
+        /// <returns>True if the n was hit, else false</returns>
         public static bool HitTest(Camera2D camera, Vector2 position, SkeletonNode node)
         {
             if (node == null)
             {
-                Debug.Fail("node is null.");
+                Debug.Fail("n is null.");
                 return false;
             }
             if (camera == null)
@@ -294,23 +294,23 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Checks if a given point hits the node
+        /// Checks if a given point hits the n
         /// </summary>
-        /// <param name="camera">World camera (determines node size)</param>
+        /// <param name="camera">World camera (determines n size)</param>
         /// <param name="position">World position</param>
-        /// <returns>True if the node was hit, else false</returns>
+        /// <returns>True if the n was hit, else false</returns>
         public bool HitTest(Camera2D camera, Vector2 position)
         {
             return HitTest(camera, position, this);
         }
 
         /// <summary>
-        /// Move the node to a new position while retaining the structure of the child nodes
+        /// Move the n to a new position while retaining the structure of the child nodes
         /// </summary>
-        /// <param name="newPosition">New position to move the node to</param>
+        /// <param name="newPosition">New position to move the n to</param>
         public void MoveTo(Vector2 newPosition)
         {
-            // Apply the position difference to this node and all its children
+            // Apply the position difference to this n and all its children
             Vector2 diff = Position - newPosition;
             if (diff.X != 0 || diff.Y != 0)
                 RecursiveMove(this, diff);
@@ -320,7 +320,7 @@ namespace NetGore.Graphics
         /// Reads the SkeletonNode's values from an IValueReader.
         /// </summary>
         /// <param name="reader">IValueReader to read the values from.</param>
-        /// <returns>The name of the parent SkeletonNode, or null if the SkeletonNode has no parent (root node).
+        /// <returns>The name of the parent SkeletonNode, or null if the SkeletonNode has no parent (root n).
         /// The SkeletonNode's parent must be set manually using this value.</returns>
         public string Read(IValueReader reader)
         {
@@ -337,13 +337,13 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Recursively moves a node and all its children by a given value
+        /// Recursively moves a n and all its children by a given value
         /// </summary>
-        /// <param name="node">Root node to move</param>
-        /// <param name="diff">Distance to move the node</param>
+        /// <param name="n">Root n to move</param>
+        /// <param name="diff">Distance to move the n</param>
         static void RecursiveMove(SkeletonNode node, Vector2 diff)
         {
-            // Move the node
+            // Move the n
             node.Position -= diff;
 
             // Update the children
@@ -354,7 +354,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Removes the node and all of its children from the skeleton
+        /// Removes the n and all of its children from the skeleton
         /// </summary>
         public void Remove()
         {
@@ -366,7 +366,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Rotates all the child nodes of the node
+        /// Rotates all the child nodes of the n
         /// </summary>
         /// <param name="radians">Angle, in radians, of the initial joint</param>
         public void Rotate(float radians)
@@ -381,12 +381,12 @@ namespace NetGore.Graphics
             }
 
             // Finally set the angle. Due to the recursive structure, this will end up set
-            // first on the lowest-level nodes, and last on the highest level node.
+            // first on the lowest-level nodes, and last on the highest level n.
             SetAngle(radians);
         }
 
         /// <summary>
-        /// Rotates all the child nodes of the node
+        /// Rotates all the child nodes of the n
         /// </summary>
         /// <param name="newPosition">New position to rotate to</param>
         public void Rotate(Vector2 newPosition)
@@ -399,7 +399,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Adjusts the node's position without changing the distance
+        /// Adjusts the n's position without changing the distance
         /// to match the angle of a given point. Node must contain a parent.
         /// </summary>
         /// <param name="target">Target point to face</param>
@@ -412,22 +412,22 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Adjusts the node's position without changing the distanec to
+        /// Adjusts the n's position without changing the distanec to
         /// match the given angle. Node must contain a parent.
         /// </summary>
-        /// <param name="radians">The angle, in radians, to create between the node and its parent</param>
+        /// <param name="radians">The angle, in radians, to create between the n and its parent</param>
         public void SetAngle(float radians)
         {
-            // Find the distance between the node and its parent so we can preserve it
+            // Find the distance between the n and its parent so we can preserve it
             float dist = Vector2.Distance(Position, Parent.Position);
 
-            // Find the new position the node will be taking and move to it
+            // Find the new position the n will be taking and move to it
             Vector2 newPos = new Vector2((float)Math.Cos(radians) * dist, (float)Math.Sin(radians) * dist);
             MoveTo(newPos + Parent.Position);
         }
 
         /// <summary>
-        /// Sets the length of the bone (defined by the distance between a node and its parent)
+        /// Sets the length of the bone (defined by the distance between a n and its parent)
         /// </summary>
         /// <param name="length">New length</param>
         public void SetLength(float length)
@@ -439,10 +439,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Sets the length of the bone (defined by the distance between a node and its parent)
+        /// Sets the length of the bone (defined by the distance between a n and its parent)
         /// </summary>
         /// <param name="length">New length</param>
-        /// <param name="radians">Angle of the node to its parent in radians</param>
+        /// <param name="radians">Angle of the n to its parent in radians</param>
         public void SetLength(float length, float radians)
         {
             Vector2 newPos = new Vector2((float)Math.Cos(radians) * length, (float)Math.Sin(radians) * length);

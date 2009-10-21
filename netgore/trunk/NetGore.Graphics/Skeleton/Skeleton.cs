@@ -21,12 +21,12 @@ namespace NetGore.Graphics
         const string _rootNodeName = "SkeletonFrame";
 
         /// <summary>
-        /// Root node of the skeleton
+        /// Root n of the skeleton
         /// </summary>
         SkeletonNode _rootNode = null;
 
         /// <summary>
-        /// Gets or sets the root node of the skeleton
+        /// Gets or sets the root n of the skeleton
         /// </summary>
         public SkeletonNode RootNode
         {
@@ -143,7 +143,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Finds a SkeletonNode by a given name
         /// </summary>
-        /// <param name="name">Name of the node to look for</param>
+        /// <param name="name">Name of the n to look for</param>
         /// <param name="nodes">List of SkeletonNodes to search through</param>
         /// <returns>SkeletonNode with the specified name, or null if none found</returns>
         public static SkeletonNode FindNode(List<SkeletonNode> nodes, string name)
@@ -170,7 +170,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Finds a SkeletonNode by a given name
         /// </summary>
-        /// <param name="name">Name of the node to look for</param>
+        /// <param name="name">Name of the n to look for</param>
         /// <returns>SkeletonNode with the specified name, or null if none found</returns>
         public SkeletonNode FindNode(string name)
         {
@@ -180,8 +180,8 @@ namespace NetGore.Graphics
         /// <summary>
         /// Finds a SkeletonNode by a given name
         /// </summary>
-        /// <param name="rootNode">Root node to look through</param>
-        /// <param name="name">Name of the node to look for</param>
+        /// <param name="rootNode">Root n to look through</param>
+        /// <param name="name">Name of the n to look for</param>
         /// <returns>SkeletonNode with the specified name, or null if none found</returns>
         static SkeletonNode FindNode(SkeletonNode rootNode, string name)
         {
@@ -198,7 +198,7 @@ namespace NetGore.Graphics
 
             if (rootNode.Name == name)
             {
-                // Root node matched the name
+                // Root n matched the name
                 return rootNode;
             }
             else
@@ -257,7 +257,7 @@ namespace NetGore.Graphics
 
             var loadedNodes = reader.ReadManyNodes(_nodesNodeName, x => SkeletonNodeReadHandler(x, nodesWithParents));
 
-            // Add the root node (which should be the only one without a parent)
+            // Add the root n (which should be the only one without a parent)
             var nodesWithoutParents = loadedNodes.Except(nodesWithParents.Select(x => x.Key));
             if (nodesWithoutParents.Count() != 1)
                 throw new Exception("Invalid number of parentless nodes. Was only expected one!");
@@ -275,7 +275,7 @@ namespace NetGore.Graphics
 
                 if (parentNode == null)
                 {
-                    const string errmsg = "Unable to find parent node `{0}` for node `{1}`.";
+                    const string errmsg = "Unable to find parent n `{0}` for n `{1}`.";
                     string err = string.Format(errmsg, parentName, node.Name);
                     throw new Exception(err);
                 }

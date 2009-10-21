@@ -80,7 +80,7 @@ namespace DemoGame.MapEditor
                 var gd = GrhTreeView.GetGrhData(root);
                 if (gd == null)
                 {
-                    Debug.Fail("Invalid GrhData found for node.");
+                    Debug.Fail("Invalid GrhData found for n.");
                     return;
                 }
 
@@ -186,7 +186,7 @@ namespace DemoGame.MapEditor
                 var gd = GrhTreeView.GetGrhData(root);
                 if (gd == null)
                 {
-                    Debug.Fail("Invalid GrhData found for node.");
+                    Debug.Fail("Invalid GrhData found for n.");
                     return;
                 }
 
@@ -211,11 +211,11 @@ namespace DemoGame.MapEditor
             }
             else
             {
-                // Get the GrhData for the node
+                // Get the GrhData for the n
                 var gd = GrhTreeView.GetGrhData(root);
                 if (gd == null)
                 {
-                    Debug.Fail("Invalid GrhData found for node.");
+                    Debug.Fail("Invalid GrhData found for n.");
                     return;
                 }
 

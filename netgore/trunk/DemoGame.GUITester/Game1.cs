@@ -80,7 +80,7 @@ namespace DemoGame.GUITester
             _topBorder = topForm.Border;
 
             Form form = new Form(_gui, "My form", new Vector2(50, 50), new Vector2(200, 200), topForm);
-            TextBoxSingleLine tb = new TextBoxSingleLine("My textboxadsfasdf sd", new Vector2(20, 90), new Vector2(150, 50), form);
+            new TextBoxSingleLine("My textboxadsfasdf sd", new Vector2(20, 90), new Vector2(150, 50), form);
 
             Button b = new Button("Press me", new Vector2(20, 20), new Vector2(80, 30), form);
             b.OnClick += b_OnMouseDown;
@@ -93,8 +93,6 @@ namespace DemoGame.GUITester
 
             Label testLabelF4 = new Label("Click me", Vector2.Zero, f4);
             testLabelF4.OnClick += testLabelF4_OnClick;
-            //testLabelF4.OnMouseLeave += testLabelF4_OnMouseLeave;
-            //testLabelF4.OnMouseEnter += testLabelF4_OnMouseEnter;
 
             topForm.OnBeginDrag += OnDrag;
             topForm.OnEndDrag += OnDrag;
@@ -131,16 +129,6 @@ namespace DemoGame.GUITester
                 source.Text = "Click me!";
             else
                 source.Text = "I was clicked!";
-        }
-
-        static void testLabelF4_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            ((Label)sender).Text = "Mouse entered";
-        }
-
-        static void testLabelF4_OnMouseLeave(object sender, MouseEventArgs e)
-        {
-            ((Label)sender).Text = "Mouse left";
         }
 
         static StyledText[] Tooltip_Button(Control sender, TooltipArgs args)

@@ -62,7 +62,7 @@ namespace NetGore.Graphics
             }
             if (skeleton.RootNode == null)
             {
-                Debug.Fail("skeleton contains no root node.");
+                Debug.Fail("skeleton contains no root n.");
                 return;
             }
             if (sb == null)
@@ -109,7 +109,7 @@ namespace NetGore.Graphics
         /// <param name="camera">Camera to use</param>
         /// <param name="sb">SpriteBatch to draw to</param>
         /// <param name="selectedNode">SpriteBatch to draw to</param>
-        /// <param name="node">Current node being drawn</param>
+        /// <param name="n">Current n being drawn</param>
         /// <param name="colorIndex">Index of the color to use from the ColorList</param>
         static void RecursiveDraw(Camera2D camera, SpriteBatch sb, SkeletonNode selectedNode, SkeletonNode node, int colorIndex)
         {

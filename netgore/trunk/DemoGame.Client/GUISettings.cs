@@ -15,7 +15,7 @@ namespace DemoGame.Client
         const string _defaultProfile = "Default";
 
         /// <summary>
-        /// Root node name used for the settings file.
+        /// Root n name used for the settings file.
         /// </summary>
         const string _rootNodeName = "GUISettings";
 

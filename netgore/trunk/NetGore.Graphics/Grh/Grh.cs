@@ -305,7 +305,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Creates a duplicate (deep copy) of the Grh.
         /// </summary>
-        /// <returns>Duplicate of the Grh</returns>
+        /// <returns>Duplicate of the Grh.</returns>
         public Grh Duplicate()
         {
             return new Grh(_grhData, _anim, _lastUpdated) { _frame = _frame };
@@ -465,68 +465,5 @@ namespace NetGore.Graphics
         }
 
         #endregion
-
-        /*
-        /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
-        /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
-        /// <param name="dest">Top-left corner pixel of the destination.</param>
-        public void DrawUnrounded(SpriteBatch sb, Vector2 dest)
-        {
-            if (!CanDrawGrh(sb))
-                return;
-
-            sb.Draw(Texture, dest, Source, Color.White);
-        }
-
-        /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
-        /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
-        /// <param name="dest">Top-left corner pixel of the destination.</param>
-        /// <param name="color">Color of the sprite (default Color.White).</param>
-        public void DrawUnrounded(SpriteBatch sb, Vector2 dest, Color color)
-        {
-            if (!CanDrawGrh(sb))
-                return;
-
-            sb.Draw(Texture, dest, Source, color);
-        }
-
-        /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
-        /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
-        /// <param name="dest">Top-left corner pixel of the destination.</param>
-        /// <param name="color">Color of the sprite (default Color.White).</param>
-        /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
-        public void DrawUnrounded(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect)
-        {
-            if (!CanDrawGrh(sb))
-                return;
-
-            sb.Draw(Texture, dest, Source, color, 0, Vector2.Zero, 1.0f, effect, 0);
-        }
-
-        /// <summary>
-        /// Draws the current frame of a Grh to an existing SpriteBatch without rounding the destination.
-        /// </summary>
-        /// <param name="sb">SpriteBatch to add the draw to.</param>
-        /// <param name="dest">Top-left corner pixel of the destination.</param>
-        /// <param name="color">Color of the sprite (default Color.White).</param>
-        /// <param name="effect">Sprite effect to use (default SpriteEffects.None).</param>
-        /// <param name="rotation">The angle, in radians, to rotate the sprite around the origin (default 0).</param>
-        /// <param name="origin">The origin of the sprite to rotate around (default Vector2.Zero).</param>
-        /// <param name="scale">Uniform multiply by which to scale the width and height.</param>
-        public void DrawUnrounded(SpriteBatch sb, Vector2 dest, Color color, SpriteEffects effect, float rotation, Vector2 origin,
-                                  float scale)
-        {
-            if (!CanDrawGrh(sb))
-                return;
-                
-            sb.Draw(Texture, dest, Source, color, rotation, origin, scale, effect, 0);
-        }
-        */
     }
 }
