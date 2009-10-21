@@ -17,6 +17,12 @@ namespace DemoGame
         public byte Index { get; protected set; }
         public string Name { get; protected set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountCharacterInfo"/> class.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="name">The name.</param>
+        /// <param name="bodyIndex">Index of the body.</param>
         public AccountCharacterInfo(byte index, string name, BodyIndex bodyIndex)
         {
             Index = index;
@@ -24,6 +30,10 @@ namespace DemoGame
             BodyIndex = bodyIndex;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AccountCharacterInfo"/> class.
+        /// </summary>
+        /// <param name="r">The <see cref="IValueReader"/> used to read the object data from..</param>
         public AccountCharacterInfo(IValueReader r)
         {
             Index = r.ReadByte("Index");

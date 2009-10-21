@@ -57,10 +57,10 @@ namespace NetGore.IO.Tests
             }
         }
 
-        [Test(Description = "Make sure we can create an XmlValueReader at the start of the node to read.")]
+        [Test(Description = "Make sure we can create an XmlValueReader at the start of the n to read.")]
         public void CreateXmlReaderAtNodeTest()
         {
-            // Create the reader at the Values node
+            // Create the reader at the Values n
             XmlReader xmlReader = GetTestXmlValueReaderReader();
             MoveXmlReaderToNode(xmlReader, "Values");
 
@@ -68,10 +68,10 @@ namespace NetGore.IO.Tests
             TestXmlValueReader(r);
         }
 
-        [Test(Description = "Make sure we can create an XmlValueReader INSIDE the node being read.")]
+        [Test(Description = "Make sure we can create an XmlValueReader INSIDE the n being read.")]
         public void CreateXmlReaderInsideNodeTest()
         {
-            // Create the reader at the MyInt node (first value node)
+            // Create the reader at the MyInt n (first value n)
             XmlReader xmlReader = GetTestXmlValueReaderReader();
             MoveXmlReaderToNode(xmlReader, "MyInt");
 

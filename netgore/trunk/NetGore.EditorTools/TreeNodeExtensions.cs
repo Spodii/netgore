@@ -14,8 +14,8 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Gets the 0-based depth of the given TreeNode.
         /// </summary>
-        /// <param name="node">The TreeNode to get the depth of.</param>
-        /// <returns>The depth of the <paramref name="node"/>, where 0 means this is the root node and it has
+        /// <param name="n">The TreeNode to get the depth of.</param>
+        /// <returns>The depth of the <paramref name="n"/>, where 0 means this is the root n and it has
         /// no parent nodes.</returns>
         public static int GetDepth(this TreeNode node)
         {
@@ -30,10 +30,10 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets an IEnumerable of all the parent TreeNodes for the given <paramref name="node"/>.
+        /// Gets an IEnumerable of all the parent TreeNodes for the given <paramref name="n"/>.
         /// </summary>
-        /// <param name="node">The TreeNode to find the parents for.</param>
-        /// <returns>An IEnumerable of all the parent TreeNodes for the given <paramref name="node"/>.</returns>
+        /// <param name="n">The TreeNode to find the parents for.</param>
+        /// <returns>An IEnumerable of all the parent TreeNodes for the given <paramref name="n"/>.</returns>
         public static IEnumerable<TreeNode> GetParents(this TreeNode node)
         {
             TreeNode current = node;
@@ -46,11 +46,11 @@ namespace NetGore.EditorTools
 
         /// <summary>
         /// Gets an IEnumerable of all the TreeNodes that share the same Parent and are on the same depth
-        /// as the given <paramref name="node"/>. That is, all TreeNodes that this <paramref name="node"/>
+        /// as the given <paramref name="n"/>. That is, all TreeNodes that this <paramref name="n"/>
         /// is immediately grouped with.
         /// </summary>
-        /// <param name="node">The TreeNode to fid the sister nodes for.</param>
-        /// <returns>The sister nodes for the given <paramref name="node"/>, but not the <paramref name="node"/>
+        /// <param name="n">The TreeNode to fid the sister nodes for.</param>
+        /// <returns>The sister nodes for the given <paramref name="n"/>, but not the <paramref name="n"/>
         /// itself.</returns>
         public static IEnumerable<TreeNode> GetSisterNodes(this TreeNode node)
         {
@@ -69,7 +69,7 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Swaps this TreeNode with another TreeNode.
         /// </summary>
-        /// <param name="node">This TreeNode.</param>
+        /// <param name="n">This TreeNode.</param>
         /// <param name="other">The TreeNode to swap with.</param>
         /// <param name="swapChildren">If true, the child nodes are also swapped.</param>
         public static void SwapNode(this TreeNode node, TreeNode other, bool swapChildren)

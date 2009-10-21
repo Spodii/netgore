@@ -21,7 +21,7 @@ namespace NetGore.Graphics
         string _sourceName;
 
         /// <summary>
-        /// Gets the name of the destination node.
+        /// Gets the name of the destination n.
         /// </summary>
         public string DestName
         {
@@ -47,7 +47,7 @@ namespace NetGore.Graphics
         public Vector2 Origin { get; set; }
 
         /// <summary>
-        /// Gets the name of the source node.
+        /// Gets the name of the source n.
         /// </summary>
         public string SourceName
         {
@@ -58,8 +58,8 @@ namespace NetGore.Graphics
         /// SkeletonBodyItemInfo constructor.
         /// </summary>
         /// <param name="grhIndex">GrhIndex of the body item.</param>
-        /// <param name="sourceName">Name of the source node.</param>
-        /// <param name="destName">Name of the destination node (String.Empty for no destination).</param>
+        /// <param name="sourceName">Name of the source n.</param>
+        /// <param name="destName">Name of the destination n (String.Empty for no destination).</param>
         /// <param name="offset">Grh drawing offset.</param>
         /// <param name="origin">Grh drawing origin.</param>
         public SkeletonBodyItemInfo(GrhIndex grhIndex, string sourceName, string destName, Vector2 offset, Vector2 origin)

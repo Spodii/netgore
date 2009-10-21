@@ -51,12 +51,12 @@ namespace NetGore.EditorTools
         readonly Stopwatch _watch = new Stopwatch();
 
         /// <summary>
-        /// Occurs after a new Grh node is selected
+        /// Occurs after a new Grh n is selected
         /// </summary>
         public event GrhTreeViewEvent GrhAfterSelect;
 
         /// <summary>
-        /// Occurs before a new Grh node is selected
+        /// Occurs before a new Grh n is selected
         /// </summary>
         public event GrhTreeViewCancelEvent GrhBeforeSelect;
 
@@ -71,12 +71,12 @@ namespace NetGore.EditorTools
         public event GrhTreeViewContextMenuItemClickEvent GrhContextMenuNewGrhClick;
 
         /// <summary>
-        /// Occurs when a Grh node is clicked
+        /// Occurs when a Grh n is clicked
         /// </summary>
         public event GrhTreeNodeMouseClickEvent GrhMouseClick;
 
         /// <summary>
-        /// Occurs when a Grh node is double-clicked
+        /// Occurs when a Grh n is double-clicked
         /// </summary>
         public event GrhTreeNodeMouseClickEvent GrhMouseDoubleClick;
 
@@ -215,11 +215,11 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Adds a node to a tree node collection with support of recursively adding nodes
+        /// Adds a n to a tree n collection with support of recursively adding nodes
         /// to pre-existing nodes under the same branch
         /// </summary>
-        /// <param name="name">Unique name of the node</param>
-        /// <param name="path">Complete path of the node from the root</param>
+        /// <param name="name">Unique name of the n</param>
+        /// <param name="path">Complete path of the n from the root</param>
         /// <param name="separator">Character used to separate the individual nodes of the tree list</param>
         /// <returns>Node added to the tree</returns>
         TreeNode CreateNode(string name, string path, char separator)
@@ -233,7 +233,7 @@ namespace NetGore.EditorTools
             {
                 bool addNew = true;
 
-                // If a node of the same name already exists, append to existing node
+                // If a n of the same name already exists, append to existing n
                 foreach (TreeNode n in nodeColl)
                 {
                     if (n.Text == cats[i])
@@ -244,7 +244,7 @@ namespace NetGore.EditorTools
                     }
                 }
 
-                // If no existing node was found, create a new one (defaulting as a folder)
+                // If no existing n was found, create a new one (defaulting as a folder)
                 if (addNew)
                 {
                     TreeNode newNode = nodeColl.Add(cats[i]);
@@ -255,16 +255,16 @@ namespace NetGore.EditorTools
                 }
             }
 
-            // Check for a node of the same name
+            // Check for a n of the same name
             TreeNode ret;
             if (nodeColl.ContainsKey(name))
             {
-                // We already have the node created, so just use that
+                // We already have the n created, so just use that
                 ret = nodeColl[name];
             }
             else
             {
-                // The node didn't already exist, so create it
+                // The n didn't already exist, so create it
                 ret = nodeColl.Add(cats[cats.Length - 1]);
                 ret.Text = cats[cats.Length - 1];
                 ret.Name = name;
@@ -274,9 +274,9 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Deletes a node from the tree, along with any node under it
+        /// Deletes a n from the tree, along with any n under it
         /// </summary>
-        /// <param name="root">Root node to delete</param>
+        /// <param name="root">Root n to delete</param>
         static void DeleteNode(TreeNode root)
         {
             if (!IsGrhNode(root))
@@ -299,14 +299,14 @@ namespace NetGore.EditorTools
             }
             else
             {
-                // If the node is a Grh, remove the GrhData associated with it
+                // If the n is a Grh, remove the GrhData associated with it
                 GrhData gd = GetGrhData(root);
                 if (gd == null)
-                    throw new Exception("Failed to find a valid GrhData for node.");
+                    throw new Exception("Failed to find a valid GrhData for n.");
                 GrhInfo.Delete(gd);
             }
 
-            // Remove the node from the tree
+            // Remove the n from the tree
             root.Remove();
         }
 
@@ -320,14 +320,14 @@ namespace NetGore.EditorTools
 
         /// <summary>
         /// Creates a duplicate of the tree nodes and structure from the root, giving it a unique name. All GrhDatas
-        /// under the node to be duplicated will be duplicated and placed in a new category with a new GrhIndex,
+        /// under the n to be duplicated will be duplicated and placed in a new category with a new GrhIndex,
         /// but with the same name and structure.
         /// </summary>
-        /// <param name="root">Root node to duplicate from</param>
+        /// <param name="root">Root n to duplicate from</param>
         /// <returns>GrhTreeNode of the root of the new duplicate</returns>
         public GrhTreeNode DuplicateNodes(TreeNode root)
         {
-            // Get a unique name for the new node
+            // Get a unique name for the new n
             string newName = GetUniqueNodeText(root);
             string oldPath = root.FullPath.Replace(PathSeparator, ".");
             string newPath = root.Parent.FullPath.Replace(PathSeparator, ".") + "." + newName;
@@ -340,11 +340,11 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Recursively duplicates a root node and all nodes under it, changing the category. Duplication
+        /// Recursively duplicates a root n and all nodes under it, changing the category. Duplication
         /// actually takes place by duplicating the GrhDatas under the new category, then rebuilding the tree
         /// to let the duplication take effect
         /// </summary>
-        /// <param name="root">Root node to duplicate from</param>
+        /// <param name="root">Root n to duplicate from</param>
         /// <param name="oldCategory">Old category name</param>
         /// <param name="newCategory">New category name</param>
         void DuplicateNodes(TreeNode root, string oldCategory, string newCategory)
@@ -364,7 +364,7 @@ namespace NetGore.EditorTools
                 GrhData oldGrhData = GetGrhData(root);
                 if (oldGrhData == null)
                 {
-                    Debug.Fail("Found a null GrhData for node.");
+                    Debug.Fail("Found a null GrhData for n.");
                     return;
                 }
 
@@ -389,11 +389,11 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Finds the GrhData for a given TreeNode
         /// </summary>
-        /// <param name="node">TreeNode to get the GrhData from</param>
+        /// <param name="n">TreeNode to get the GrhData from</param>
         /// <returns>GrhData for the TreeNode, null if none</returns>
         public static GrhData GetGrhData(TreeNode node)
         {
-            // If a null node, or the node is not a leaf (which means its a folder), return null
+            // If a null n, or the n is not a leaf (which means its a folder), return null
             if (node == null || !IsGrhNode(node))
                 return null;
 
@@ -401,7 +401,7 @@ namespace NetGore.EditorTools
             GrhIndex grhIndex;
             if (!Parser.Current.TryParse(node.Name, out grhIndex))
             {
-                Debug.Fail("Failed to parse GrhIndex of the node.");
+                Debug.Fail("Failed to parse GrhIndex of the n.");
                 return null;
             }
 
@@ -409,7 +409,7 @@ namespace NetGore.EditorTools
             GrhData grhData = GrhInfo.GetData(grhIndex);
             if (grhData == null || grhData.GrhIndex == 0)
             {
-                Debug.Fail("Failed to find the GrhData associated with the node.");
+                Debug.Fail("Failed to find the GrhData associated with the n.");
                 return null;
             }
 
@@ -484,10 +484,10 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Gets a unique text for a node, based off an existing node
+        /// Gets a unique text for a n, based off an existing n
         /// </summary>
-        /// <param name="node">Node to base the text off of</param>
-        /// <returns>Unique node text</returns>
+        /// <param name="n">Node to base the text off of</param>
+        /// <returns>Unique n text</returns>
         static string GetUniqueNodeText(TreeNode node)
         {
             int copyNum = 1;
@@ -558,7 +558,7 @@ namespace NetGore.EditorTools
             if (newNode == destNode)
                 return;
 
-            // If the destination node is a Grh node, move the destination to the folder
+            // If the destination n is a Grh n, move the destination to the folder
             if (TryGetGrhData(destNode))
                 destNode = destNode.Parent;
 
@@ -568,16 +568,16 @@ namespace NetGore.EditorTools
 
             if (IsGrhNode(newNode))
             {
-                // Move a Grh node
+                // Move a Grh n
                 addedNode = (TreeNode)newNode.Clone();
                 destNode.Nodes.Add(addedNode);
                 destNode.Expand();
             }
             else
             {
-                // Move a folder node
+                // Move a folder n
 
-                // Do not allow a node to be moved into its own child
+                // Do not allow a n to be moved into its own child
                 TreeNode tmp = destNode;
                 while (tmp.Parent != null)
                 {
@@ -590,7 +590,7 @@ namespace NetGore.EditorTools
                 destNode.Nodes.Add(addedNode);
             }
 
-            // If a node was added, we will want to update
+            // If a n was added, we will want to update
             destNode.Expand();
             newNode.Remove();
             UpdateGrhsToTree(addedNode);
@@ -607,7 +607,7 @@ namespace NetGore.EditorTools
             TreeNode nodeOver = GetNodeAt(PointToClient(new Point(e.X, e.Y)));
             if (nodeOver != null)
             {
-                // Find the folder the node will drop into
+                // Find the folder the n will drop into
                 TreeNode folderNode = nodeOver;
                 if (!IsGrhNode(folderNode))
                     folderNode = folderNode.Parent;
@@ -631,7 +631,7 @@ namespace NetGore.EditorTools
 
         void GrhTreeView_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            // Change the SelectedNode to the clicked node (normally, right-click doesn't change the selected)
+            // Change the SelectedNode to the clicked n (normally, right-click doesn't change the selected)
             if (e.Node != null)
                 SelectedNode = e.Node;
 
@@ -639,7 +639,7 @@ namespace NetGore.EditorTools
             if (GrhMouseClick == null || e.Node == null || !IsGrhNode(e.Node))
                 return;
 
-            // Get the GrhData for the node clicked, raising the GrhMouseClick event if valid
+            // Get the GrhData for the n clicked, raising the GrhMouseClick event if valid
             GrhData gd = GetGrhData(e.Node);
             if (gd != null)
                 GrhMouseClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
@@ -651,7 +651,7 @@ namespace NetGore.EditorTools
             if (GrhMouseDoubleClick == null || e.Node == null || !IsGrhNode(e.Node))
                 return;
 
-            // Get the GrhData for the node double-clicked, raising the GrhMouseDoubleClick event if valid
+            // Get the GrhData for the n double-clicked, raising the GrhMouseDoubleClick event if valid
             GrhData gd = GetGrhData(e.Node);
             if (gd != null)
                 GrhMouseDoubleClick(this, new GrhTreeNodeMouseClickEventArgs(gd, e));
@@ -698,9 +698,9 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Checks if a node contains a Grh, or is a folder
+        /// Checks if a n contains a Grh, or is a folder
         /// </summary>
-        /// <param name="node">Node to check</param>
+        /// <param name="n">Node to check</param>
         /// <returns>True if a Grh, false if a folder</returns>
         static bool IsGrhNode(TreeNode node)
         {
@@ -747,10 +747,10 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// Counts the number of nodes under the root node, plus the root itself
+        /// Counts the number of nodes under the root n, plus the root itself
         /// </summary>
-        /// <param name="root">Root node to count from</param>
-        /// <returns>Number of nodes under the root node, plus the root itself</returns>
+        /// <param name="root">Root n to count from</param>
+        /// <returns>Number of nodes under the root n, plus the root itself</returns>
         public static int NodeCount(TreeNode root)
         {
             // No root? No count
@@ -775,8 +775,8 @@ namespace NetGore.EditorTools
 
             if (e.KeyCode == Keys.Delete)
             {
-                const string txt = "Are you sure you wish to delete this node?";
-                if (MessageBox.Show(txt, "Delete node?", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                const string txt = "Are you sure you wish to delete this n?";
+                if (MessageBox.Show(txt, "Delete n?", MessageBoxButtons.YesNo) == DialogResult.Yes)
                     DeleteNode(SelectedNode);
             }
         }
@@ -820,11 +820,11 @@ namespace NetGore.EditorTools
         }
 
         /// <summary>
-        /// If a TreeNode contains a node with the given text already
+        /// If a TreeNode contains a n with the given text already
         /// </summary>
-        /// <param name="node">Node to check for texts</param>
+        /// <param name="n">Node to check for texts</param>
         /// <param name="text">Text to check against</param>
-        /// <returns>True if the text exists in the <paramref name="node"/>, else false</returns>
+        /// <returns>True if the text exists in the <paramref name="n"/>, else false</returns>
         static bool TreeContainsText(TreeNode node, string text)
         {
             foreach (TreeNode child in node.Nodes)
@@ -838,12 +838,12 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Finds the GrhData for a given TreeNode
         /// </summary>
-        /// <param name="node">TreeNode to get the GrhData from</param>
+        /// <param name="n">TreeNode to get the GrhData from</param>
         /// <param name="gd">GrhData returned, or null if invalid</param>
         /// <returns>True if a valid GrhData was found, or false if not</returns>
         public static bool TryGetGrhData(TreeNode node, out GrhData gd)
         {
-            // If a null node, or the node is not a leaf (which means its a folder), return null
+            // If a null n, or the n is not a leaf (which means its a folder), return null
             if (node == null || !IsGrhNode(node))
             {
                 gd = null;
@@ -854,7 +854,7 @@ namespace NetGore.EditorTools
             GrhIndex grhIndex;
             if (!Parser.Current.TryParse(node.Name, out grhIndex))
             {
-                Debug.Fail("Failed to parse GrhIndex of the node.");
+                Debug.Fail("Failed to parse GrhIndex of the n.");
                 gd = null;
                 return false;
             }
@@ -863,7 +863,7 @@ namespace NetGore.EditorTools
             GrhData grhData = GrhInfo.GetData(grhIndex);
             if (grhData == null || grhData.GrhIndex == 0)
             {
-                Debug.Fail("Failed to find the GrhData associated with the node.");
+                Debug.Fail("Failed to find the GrhData associated with the n.");
                 gd = null;
                 return false;
             }
@@ -875,11 +875,11 @@ namespace NetGore.EditorTools
         /// <summary>
         /// Finds the GrhData for a given TreeNode
         /// </summary>
-        /// <param name="node">TreeNode to get the GrhData from</param>
+        /// <param name="n">TreeNode to get the GrhData from</param>
         /// <returns>True if a valid GrhData was found, or false if not</returns>
         public static bool TryGetGrhData(TreeNode node)
         {
-            // If a null node, or the node is not a leaf (which means its a folder), return false
+            // If a null n, or the n is not a leaf (which means its a folder), return false
             if (node == null || !IsGrhNode(node))
                 return false;
 
@@ -887,7 +887,7 @@ namespace NetGore.EditorTools
             GrhIndex grhIndex;
             if (!Parser.Current.TryParse(node.Name, out grhIndex))
             {
-                Debug.Fail("Failed to parse GrhIndex of the node.");
+                Debug.Fail("Failed to parse GrhIndex of the n.");
                 return false;
             }
 
@@ -895,7 +895,7 @@ namespace NetGore.EditorTools
             GrhData grhData = GrhInfo.GetData(grhIndex);
             if (grhData == null || grhData.GrhIndex == 0)
             {
-                Debug.Fail("Failed to find the GrhData associated with the node.");
+                Debug.Fail("Failed to find the GrhData associated with the n.");
                 return false;
             }
 
@@ -984,11 +984,11 @@ namespace NetGore.EditorTools
                 GrhData data = GetGrhData(root);
                 if (data == null)
                 {
-                    Debug.Fail("Found a null GrhData for node.");
+                    Debug.Fail("Found a null GrhData for n.");
                     return;
                 }
 
-                // Get the full path of the root node, ensuring the separator is a period
+                // Get the full path of the root n, ensuring the separator is a period
                 string path = root.FullPath.Replace(PathSeparator, ".");
 
                 // Remove the [GrhIndex] part, plus the space before it

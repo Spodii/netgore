@@ -12,7 +12,7 @@ namespace NetGore.Graphics
         AtlasNode _right = null;
 
         /// <summary>
-        /// Gets the height of the node's rectangle (Rect.Height)
+        /// Gets the height of the n's rectangle (Rect.Height)
         /// </summary>
         public int Height
         {
@@ -20,20 +20,20 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets if the node is a leaf (has no children)
+        /// Gets if the n is a leaf (has no children)
         /// </summary>
         public bool IsLeaf
         {
             get
             {
-                // A node will always have the right child set unless a leaf
+                // A n will always have the right child set unless a leaf
                 // When we detatch a set leaf, we always detatch just the left one
                 return Right == null;
             }
         }
 
         /// <summary>
-        /// Gets or sets the ITextureAtlas associated with the node (leaf nodes only)
+        /// Gets or sets the ITextureAtlas associated with the n (leaf nodes only)
         /// </summary>
         public ITextureAtlas ITextureAtlas
         {
@@ -42,7 +42,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the left child node
+        /// Gets or sets the left child n
         /// </summary>
         public AtlasNode Left
         {
@@ -51,7 +51,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets the rectangular area of the node
+        /// Gets or sets the rectangular area of the n
         /// </summary>
         public Rectangle Rect
         {
@@ -60,7 +60,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets or sets te right child node
+        /// Gets or sets te right child n
         /// </summary>
         public AtlasNode Right
         {
@@ -69,7 +69,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the width of the node's rectangle (Rect.Width)
+        /// Gets the width of the n's rectangle (Rect.Width)
         /// </summary>
         public int Width
         {
@@ -77,7 +77,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the X coordinate of the node's rectangle (Rect.X)
+        /// Gets the X coordinate of the n's rectangle (Rect.X)
         /// </summary>
         public int X
         {
@@ -85,7 +85,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the Y coordinate of the node's rectangle (Rect.Y)
+        /// Gets the Y coordinate of the n's rectangle (Rect.Y)
         /// </summary>
         public int Y
         {
@@ -105,14 +105,14 @@ namespace NetGore.Graphics
         /// <summary>
         /// AtlasNode constructor
         /// </summary>
-        /// <param name="rect">Rectangle area for the node</param>
+        /// <param name="rect">Rectangle area for the n</param>
         AtlasNode(Rectangle rect)
         {
             _rect = rect;
         }
 
         /// <summary>
-        /// Inserts an area into the node
+        /// Inserts an area into the n
         /// </summary>
         /// <param name="w">Width of the area to insert</param>
         /// <param name="h">Height of the area to insert</param>
@@ -139,7 +139,7 @@ namespace NetGore.Graphics
                 if (w == Rect.Width && h == Rect.Height)
                     return this;
 
-                // Not a perfect fit, split the node up into new nodes
+                // Not a perfect fit, split the n up into new nodes
                 int diffW = Rect.Width - w;
                 int diffH = Rect.Height - h;
 
@@ -160,7 +160,7 @@ namespace NetGore.Graphics
                 // Insert the rectangle first new child
                 AtlasNode node = Left.Insert(w, h);
 
-                // If the insert is a perfect fit, drop the node from the tree to prevent checking it again
+                // If the insert is a perfect fit, drop the n from the tree to prevent checking it again
                 if (diffW == 0 || diffH == 0)
                     Left = null;
 

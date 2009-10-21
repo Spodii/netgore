@@ -214,7 +214,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Initializes a new instance of the <see cref="GrhData"/> class.
         /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <param name="r">IValueReader to read the values from.</param>
         /// <param name="cm">ContentManager to use.</param>
         public GrhData(IValueReader r, ContentManager cm)
         {
@@ -370,7 +370,7 @@ namespace NetGore.Graphics
         /// <summary>
         /// Reads and loads the GrhData from an IValueReader.
         /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
+        /// <param name="r">IValueReader to read the values from.</param>
         /// <param name="cm">ContentManager to use.</param>
         public void Read(IValueReader r, ContentManager cm)
         {

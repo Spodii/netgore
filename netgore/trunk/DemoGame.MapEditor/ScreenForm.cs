@@ -795,7 +795,7 @@ namespace DemoGame.MapEditor
         {
             string category = "Uncategorized";
 
-            // Check for a valid node
+            // Check for a valid n
             if (node != null)
             {
                 // Try and get the GrhData
@@ -808,7 +808,7 @@ namespace DemoGame.MapEditor
                 }
                 else if (treeGrhs.SelectedNode.Name.Length == 0)
                 {
-                    // No GrhData found, so if the node has no name (is a folder), use its filePath
+                    // No GrhData found, so if the n has no name (is a folder), use its filePath
                     category = treeGrhs.SelectedNode.FullPath.Replace(treeGrhs.PathSeparator, ".");
                 }
             }
@@ -1226,12 +1226,12 @@ namespace DemoGame.MapEditor
 
             if (gd != null && node.Nodes.Count == 0)
             {
-                // Grh node
+                // Grh n
                 BeginEditGrhData(node, gd);
             }
             else if (gd == null)
             {
-                // Folder node
+                // Folder n
                 node.BeginEdit();
             }
         }
@@ -1247,7 +1247,7 @@ namespace DemoGame.MapEditor
             var nodes = treeGrhs.Nodes.Find(gd.GrhIndex.ToString(), true);
             if (nodes.Length == 0)
             {
-                Debug.Fail("Failed to find node.");
+                Debug.Fail("Failed to find n.");
                 return;
             }
 

@@ -110,7 +110,7 @@ namespace DemoGame.SkeletonEditor
         }
 
         /// <summary>
-        /// Gets or sets the currently selected node
+        /// Gets or sets the currently selected n
         /// </summary>
         public SkeletonNode SelectedNode
         {
@@ -533,13 +533,13 @@ namespace DemoGame.SkeletonEditor
             {
                 if (e.Button == MouseButtons.Left)
                 {
-                    // Select new node
+                    // Select new n
                     var nodes = _skeleton.RootNode.GetAllNodes();
                     foreach (SkeletonNode node in nodes)
                     {
                         if (node.HitTest(_camera, _cursorPos))
                         {
-                            SelectedNode = node; // Select the node
+                            SelectedNode = node; // Select the n
                             _moveSelectedNode = true; // Enable dragging
                             break;
                         }
@@ -549,14 +549,14 @@ namespace DemoGame.SkeletonEditor
                 {
                     if (_skeleton.RootNode == null)
                     {
-                        // Create the root node
+                        // Create the root n
                         _skeleton.RootNode = new SkeletonNode(_cursorPos);
                         SelectedNode = _skeleton.RootNode;
                         SelectedNode.Name = "New Root";
                     }
                     else
                     {
-                        // Create a child node
+                        // Create a child n
                         SelectedNode = new SkeletonNode(SelectedNode, _cursorPos);
                     }
                 }
@@ -575,13 +575,13 @@ namespace DemoGame.SkeletonEditor
             {
                 if (ks.Control)
                 {
-                    // Unlocked movement, move the node and its children
+                    // Unlocked movement, move the n and its children
                     SelectedNode.MoveTo(_cursorPos);
                     UpdateNodeInfo();
                 }
                 else
                 {
-                    // Unlocked movement, move just the one node
+                    // Unlocked movement, move just the one n
                     SelectedNode.Position = _cursorPos;
                     UpdateNodeInfo();
                 }
@@ -590,13 +590,13 @@ namespace DemoGame.SkeletonEditor
             {
                 if (ks.Control)
                 {
-                    // Locked movement, the node and all of its children
+                    // Locked movement, the n and all of its children
                     SelectedNode.Rotate(_cursorPos);
                     UpdateNodeInfo();
                 }
                 else
                 {
-                    // Locked movement, move the node and its children
+                    // Locked movement, move the n and its children
                     if (SelectedNode.Parent != null)
                         SelectedNode.SetAngle(_cursorPos);
                     else
