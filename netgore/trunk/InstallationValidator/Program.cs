@@ -167,7 +167,7 @@ namespace InstallationValidator
             string output;
             string error;
             if (
-                !MySqlCommand(string.Format("--user={0} --password={1} --host=a{2}", username, password, host), out output,
+                !MySqlCommand(string.Format("--user={0} --password={1} --host={2}", username, password, host), out output,
                               out error, "exit") || error.ToLower().Contains("access denied"))
             {
                 const string failInfo = "Acess denied for user:`{0}` password:`{1}`";
