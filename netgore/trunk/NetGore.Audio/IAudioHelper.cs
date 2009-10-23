@@ -20,6 +20,6 @@ namespace NetGore.Audio
         /// <summary>
         /// The key to be used in the <see cref="IValueReader"/> and <see cref="IValueWriter"/> for the Index value.
         /// </summary>
-        public const string IndexValueKey = "File";
+        public const string IndexValueKey = "Index";
     }
 }
