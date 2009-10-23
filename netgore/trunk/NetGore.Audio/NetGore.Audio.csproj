@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAudioHelper.cs" />
     <Compile Include="AudioManagerBase.cs" />
     <Compile Include="IAudio.cs" />
     <Compile Include="IMusic.cs" />
