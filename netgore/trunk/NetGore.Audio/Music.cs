@@ -12,6 +12,8 @@ namespace NetGore.Audio
     /// </summary>
     public class Music : IMusic
     {
+        const string _fileValueKey = "File";
+        const string _indexValueKey = "Index";
         readonly AudioManagerBase _audioManager;
         readonly MusicID _index;
         readonly SoundEffectInstance _instance;
@@ -25,8 +27,8 @@ namespace NetGore.Audio
         internal Music(AudioManagerBase audioManager, IValueReader r)
         {
             _audioManager = audioManager;
-            _name = r.ReadString("File");
-            _index = new MusicID(r.ReadUShort("Index"));
+            _name = r.ReadString(_fileValueKey);
+            _index = new MusicID(r.ReadUShort(_indexValueKey));
 
             var sound = _audioManager.ContentManager.Load<SoundEffect>(AssetName);
 
