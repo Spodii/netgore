@@ -1,6 +1,12 @@
+using System;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Threading;
+using log4net;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
 using NetGore.IO;
 
 // FUTURE: Make the MusicManager work together with this better to unload all but the current playing music track
@@ -12,9 +18,11 @@ namespace NetGore.Audio
     /// </summary>
     public class Music : IMusic
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly AudioManagerBase _audioManager;
         readonly MusicID _index;
-        readonly SoundEffectInstance _instance;
+        readonly Song _instance;
         readonly string _name;
 
         /// <summary>
@@ -27,12 +35,7 @@ namespace NetGore.Audio
             _audioManager = audioManager;
             _name = r.ReadString(IAudioHelper.FileValueKey);
             _index = new MusicID(r.ReadUShort(IAudioHelper.IndexValueKey));
-
-            var sound = _audioManager.ContentManager.Load<SoundEffect>(AssetName);
-
-            _instance = sound.CreateInstance();
-            _instance.IsLooped = true;
-            _instance.Volume = AudioManager.Volume;
+            _instance = _audioManager.ContentManager.Load<Song>(AssetName);
         }
 
         #region IMusic Members
@@ -60,7 +63,6 @@ namespace NetGore.Audio
         /// </summary>
         void IAudio.UpdateVolume()
         {
-            _instance.Volume = AudioManager.Volume;
         }
 
         /// <summary>
@@ -102,7 +104,10 @@ namespace NetGore.Audio
         /// </summary>
         public void Play()
         {
-            _instance.Play();
+            // HACK: This is really fucking lame. MediaPlayer gives us MP3 support, but it requires us to have Windows
+            // Media Player installed, and it is slow as hell on the first playback (thus the thread call). So it is either
+            // use wavs (and whore up the memory usage), use MP3s and deal with this crap, or switch music libraries...
+            ThreadPool.QueueUserWorkItem(x => MediaPlayer.Play(_instance));
         }
 
         /// <summary>
@@ -118,7 +123,7 @@ namespace NetGore.Audio
         /// </summary>
         public void Stop()
         {
-            _instance.Stop();
+            MediaPlayer.Stop();
         }
 
         /// <summary>
@@ -126,7 +131,7 @@ namespace NetGore.Audio
         /// </summary>
         public void Pause()
         {
-            _instance.Pause();
+            MediaPlayer.Pause();
         }
 
         /// <summary>
@@ -134,7 +139,7 @@ namespace NetGore.Audio
         /// </summary>
         public void Resume()
         {
-            _instance.Resume();
+            MediaPlayer.Resume();
         }
 
         /// <summary>
@@ -147,7 +152,22 @@ namespace NetGore.Audio
                 if (_instance == null)
                     return SoundState.Stopped;
 
-                return _instance.State;
+                switch (MediaPlayer.State)
+                {
+                    case MediaState.Paused:
+                        return SoundState.Paused;
+                    case MediaState.Playing:
+                        return SoundState.Playing;
+                    case MediaState.Stopped:
+                        return SoundState.Stopped;
+
+                    default:
+                        const string errmsg = "Unknown MediaPlayer state `{0}`. How the hell did this happen!?";
+                        if (log.IsFatalEnabled)
+                            log.FatalFormat(errmsg, MediaPlayer.State);
+                        Debug.Fail(string.Format(errmsg, MediaPlayer.State));
+                        return SoundState.Stopped;
+                }
             }
         }
 
