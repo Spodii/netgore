@@ -1176,7 +1176,6 @@ namespace DemoGame.Server
                 const string errmsg = "Update called on disposed Character `{0}`.";
                 if (log.IsWarnEnabled)
                     log.WarnFormat(errmsg, Name);
-                Debug.Fail(string.Format(errmsg, Name));
                 return;
             }
 
