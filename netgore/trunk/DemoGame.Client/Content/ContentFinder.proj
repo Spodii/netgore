@@ -14,6 +14,13 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+		<SongTemplate Include="**\*.mp3">
+			<Importer>Mp3Importer</Importer>
+			<Processor>SongProcessor</Processor>
+		</SongTemplate>
+	</ItemGroup>
+	
+	<ItemGroup>
 		<FontTemplate Include="**\*.spritefont">
 			<Importer>FontDescriptionImporter</Importer>
 			<Processor>FontDescriptionProcessor</Processor>
@@ -25,6 +32,9 @@
 			<Output TaskParameter="Include" ItemName="Compile" />
 		</CreateItem>
 		<CreateItem Include="@(AudioTemplate)" AdditionalMetadata="Name=%(FileName)">
+			<Output TaskParameter="Include" ItemName="Compile" />
+		</CreateItem>
+		<CreateItem Include="@(SongTemplate)" AdditionalMetadata="Name=%(FileName)">
 			<Output TaskParameter="Include" ItemName="Compile" />
 		</CreateItem>
 		<CreateItem Include="@(FontTemplate)" AdditionalMetadata="Name=%(FileName)">

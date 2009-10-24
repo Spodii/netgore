@@ -2,6 +2,7 @@ using System.IO;
 using System.Linq;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
+using Microsoft.Xna.Framework.Media;
 using NetGore.IO;
 
 namespace NetGore.Audio
@@ -23,6 +24,15 @@ namespace NetGore.Audio
         public IMusic CurrentMusic
         {
             get { return _currentlyPlaying; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, reapplies the Volume property value to all the
+        /// audio tracks in this manager.
+        /// </summary>
+        protected internal override void ReapplyVolume()
+        {
+            MediaPlayer.Volume = MasterVolume;
         }
 
         /// <summary>
