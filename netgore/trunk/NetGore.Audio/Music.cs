@@ -63,6 +63,7 @@ namespace NetGore.Audio
         /// </summary>
         void IAudio.UpdateVolume()
         {
+            MediaPlayer.Volume = _audioManager.Volume;
         }
 
         /// <summary>
@@ -107,7 +108,21 @@ namespace NetGore.Audio
             // HACK: This is really fucking lame. MediaPlayer gives us MP3 support, but it requires us to have Windows
             // Media Player installed, and it is slow as hell on the first playback (thus the thread call). So it is either
             // use wavs (and whore up the memory usage), use MP3s and deal with this crap, or switch music libraries...
-            ThreadPool.QueueUserWorkItem(x => MediaPlayer.Play(_instance));
+            ThreadPool.QueueUserWorkItem(delegate
+            {
+                ((IAudio)this).UpdateVolume();
+
+                try
+                {
+                    MediaPlayer.Play(_instance);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    const string errmsg = "Failed to play music. Exception: {0}";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, ex);
+                }
+            });
         }
 
         /// <summary>

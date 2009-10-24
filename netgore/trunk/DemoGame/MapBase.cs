@@ -432,10 +432,21 @@ namespace DemoGame
         /// Gets the DynamicEntity with the specified index.
         /// </summary>
         /// <param name="mapEntityIndex">Index of the DynamicEntity to get.</param>
-        /// <returns>The DynamicEntity with the specified <paramref name="mapEntityIndex"/>.</returns>
+        /// <returns>The DynamicEntity with the specified <paramref name="mapEntityIndex"/>, or null if
+        /// no <see cref="DynamicEntity"/> was found..</returns>
         public DynamicEntity GetDynamicEntity(MapEntityIndex mapEntityIndex)
         {
-            return _dynamicEntities[(int)mapEntityIndex];
+            if (!_dynamicEntities.CanGet((int)mapEntityIndex))
+                return null;
+
+            try
+            {
+                return _dynamicEntities[(int)mapEntityIndex];
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                return null;
+            }
         }
 
         /// <summary>
@@ -443,10 +454,14 @@ namespace DemoGame
         /// </summary>
         /// <typeparam name="T">Type of DynamicEntity to get.</typeparam>
         /// <param name="mapEntityIndex">Index of the DynamicEntity to get.</param>
-        /// <returns>The DynamicEntity with the specified <paramref name="mapEntityIndex"/>.</returns>
+        /// <returns>The DynamicEntity with the specified <paramref name="mapEntityIndex"/>, or null if
+        /// no <see cref="DynamicEntity"/> was found.</returns>
         public T GetDynamicEntity<T>(MapEntityIndex mapEntityIndex) where T : DynamicEntity
         {
             var dynamicEntity = GetDynamicEntity(mapEntityIndex);
+            if (dynamicEntity == null)
+                return null;
+
             var casted = dynamicEntity as T;
 
             if (casted == null && dynamicEntity != null)
