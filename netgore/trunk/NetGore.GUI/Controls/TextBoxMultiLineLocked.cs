@@ -212,7 +212,7 @@ namespace NetGore.Graphics.GUI
                 _lines.RemoveRange(BufferSize - removeAmount - 1, removeAmount);
 
             // Add the new lines
-            _lines.InsertRange(0, newLines);
+            _lines.InsertRange(0, newLines.Reverse());
 
             // AutoScroll
             switch (AutoScrollMode)
