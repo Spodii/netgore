@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -12,6 +13,47 @@ namespace CodeReleasePreparer
 
         static string _root = null;
 
+        static void AsyncRunBatchFile(params string[] lines)
+        {
+            var filePath = Path.GetTempFileName() + ".bat";
+            File.WriteAllLines(filePath, lines);
+            ProcessStartInfo psi = new ProcessStartInfo(filePath) { CreateNoWindow = true, UseShellExecute = true, WindowStyle = ProcessWindowStyle.Hidden };
+
+            Process.Start(psi);
+        }
+
+        static void DeleteFile(string path)
+        {
+            Console.WriteLine("Delete: " + path);
+
+            var attributes = File.GetAttributes(path);
+            if ((attributes & FileAttributes.ReadOnly) != 0)
+                File.SetAttributes(path, FileAttributes.Normal);
+
+            File.Delete(path);
+        }
+
+        static void DeleteFolder(string path)
+        {
+            if (path.EndsWith(string.Format(@"CodeReleasePreparer{0}bin", Path.DirectorySeparatorChar),
+                              StringComparison.InvariantCultureIgnoreCase))
+                return;
+
+            Console.WriteLine("Delete: " + path);
+
+            foreach (var file in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
+            {
+                DeleteFile(file);
+            }
+
+            foreach (var subDirectory in Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly))
+            {
+                DeleteFolder(subDirectory);
+            }
+
+            Directory.Delete(path);
+        }
+
         static string GetRoot()
         {
             if (_root == null)
@@ -20,10 +62,16 @@ namespace CodeReleasePreparer
             return _root;
         }
 
+        static bool IsValidRootDir()
+        {
+            var files = Directory.GetFiles(GetRoot(), "*", SearchOption.TopDirectoryOnly);
+            return files.Any(x => x.EndsWith("\\NetGore.sln", StringComparison.InvariantCultureIgnoreCase));
+        }
+
         static void Main()
         {
-            string[] _deleteFilePatterns = new string[] { @"\\.resharper.user$", @"\\.suo$", @"\.cachefile$" };
-            string[] _deleteFolderPatterns = new string[] { @"\\.bin$", @"\\_resharper", @"\\obj$", @"\\.svn$" };
+            string[] _deleteFilePatterns = new string[] { @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe" };
+            string[] _deleteFolderPatterns = new string[] { @"\\.bin$", @"\\bin$", @"\\_resharper", @"\\obj$", @"\\.svn$" };
 
             _fileRegexes = new RegexCollection(_deleteFilePatterns);
             _folderRegexes = new RegexCollection(_deleteFolderPatterns);
@@ -39,9 +87,15 @@ namespace CodeReleasePreparer
                 return;
             }
 
+            // Delete crap
             RecursiveDelete(GetRoot(), WillDeleteFolder, WillDeleteFile);
 
-            Console.ReadLine();
+            // Create self-destroying batch file that will delete this program's binaries
+            string programPath = string.Format("{0}CodeReleasePreparer{1}", GetRoot(), Path.DirectorySeparatorChar);
+            AsyncRunBatchFile("CHOICE /c 1 /d 1 /t 2 > nul", "RMDIR /S /Q \"" + programPath + "bin\"",
+                              "RMDIR /S /Q \"" + programPath + "obj\"", "DEL %0");
+
+            Console.WriteLine("Done");
         }
 
         static void RecursiveDelete(string path, Func<string, bool> folderFilter, Func<string, bool> fileFilter)
@@ -61,24 +115,6 @@ namespace CodeReleasePreparer
                 else
                     RecursiveDelete(f, folderFilter, fileFilter);
             }
-        }
-
-        static void DeleteFile(string path)
-        {
-            Console.WriteLine("F: " + path);
-            File.Delete(path);
-        }
-
-        static void DeleteFolder(string path)
-        {
-            Console.WriteLine("D: " + path);
-            Directory.Delete(path);
-        }
-
-        static bool IsValidRootDir()
-        {
-            var files = Directory.GetFiles(GetRoot(), "*", SearchOption.TopDirectoryOnly);
-            return files.Any(x => x.EndsWith("\\NetGore.sln", StringComparison.InvariantCultureIgnoreCase));
         }
 
         static bool WillDeleteFile(string fileName)
