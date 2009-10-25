@@ -72,7 +72,7 @@ namespace DemoGame.Server
                 if (IsInMeleeRange(target))
                     Actor.Attack();
             }
-
+            // Jump randomly
             if (Rand(0, 200) == 0)
                 Actor.Jump();
         }
