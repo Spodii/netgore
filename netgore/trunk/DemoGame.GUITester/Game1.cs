@@ -50,6 +50,8 @@ namespace DemoGame.GUITester
             base.Draw(gameTime);
         }
 
+        TextBox _textBox;
+
         protected override void LoadContent()
         {
             _sb = new SpriteBatch(GraphicsDevice);
@@ -58,11 +60,13 @@ namespace DemoGame.GUITester
 
             _gui = new GUIManager(_font);
 
-            topForm = new Form(_gui, "Primary form", new Vector2(5, 5), new Vector2(500, 500));
+            topForm = new Form(_gui, "Primary form", new Vector2(5, 5), new Vector2(700, 550));
             topForm.OnMouseMove += topForm_OnMouseMove;
 
             TextBoxMultiLineLocked tbmll = new TextBoxMultiLineLocked(string.Empty, new Vector2(10, 10), new Vector2(150, 300),
                                                                       topForm);
+
+            _textBox = new TextBox(_gui, _font, new Vector2(350, 10), new Vector2(300, 200), topForm);
 
             var styledTexts = new List<StyledText>
             {
@@ -87,7 +91,7 @@ namespace DemoGame.GUITester
 
             new CheckBox("Checkbox", new Vector2(20, 200), form);
 
-            Form f2 = new Form(_gui, "My form 2", new Vector2(200, 200), new Vector2(300, 300), topForm);
+            Form f2 = new Form(_gui, "My form 2", new Vector2(200, 250), new Vector2(275, 270), topForm);
             Form f3 = new Form(_gui, "form 3", Vector2.Zero, new Vector2(200, 200), f2);
             Form f4 = new Form(_gui, "form 4", Vector2.Zero, new Vector2(100, 100), f3);
 
