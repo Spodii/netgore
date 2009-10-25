@@ -475,6 +475,23 @@ namespace NetGore.Graphics.GUI
             return ret;
         }
 
+
+        public StyledText ToSingleline()
+        {
+            // TODO: Optimize this so that the same object returns if there is no replacements
+            // TODO: Create unit test for this
+            string newText = _text.Replace("\r\n", "");
+            if (newText.Length > 0)
+                newText = newText.Replace("\n", "");
+
+            return new StyledText(newText, Color);
+        }
+
+        public static StyledText ToSingleline(StyledText text)
+        {
+            return text.ToSingleline();
+        }
+
         public static List<StyledText> ToMultiline(StyledText text)
         {
             var ret = new List<StyledText>();

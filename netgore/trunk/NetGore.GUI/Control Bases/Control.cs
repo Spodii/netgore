@@ -508,9 +508,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Draws the Control
+        /// Draws the Control.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to.</param>
         protected virtual void DrawControl(SpriteBatch spriteBatch)
         {
             if (Border != null)
@@ -518,9 +518,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Draws this Control and all of its children Controls
+        /// Draws this Control and all of its children Controls.
         /// </summary>
-        /// <param name="spriteBatch">SpriteBatch to draw to</param>
+        /// <param name="spriteBatch">The <see cref="SpriteBatch"/> to draw to</param>
         void DrawControlStart(SpriteBatch spriteBatch)
         {
             if (_isDisposed)
@@ -561,7 +561,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the ButtonState for the current and last state for a given mouse button.
+        /// Gets the <see cref="ButtonState"/> for the current and last state for a given mouse button.
         /// </summary>
         /// <param name="button">The mouse button to get the states for.</param>
         /// <param name="state">The current mouse state.</param>
@@ -594,21 +594,21 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Finds the child Control in this Control at a given screen location
+        /// Finds the child Control in this Control at a given screen location.
         /// </summary>
-        /// <param name="point">Screen location to check</param>
-        /// <returns>Child found at the given point if any, else null</returns>
+        /// <param name="point">Screen location to check.</param>
+        /// <returns>Child found at the given point if any, else null.</returns>
         public Control GetChild(Vector2 point)
         {
             return GetChild(point, false);
         }
 
         /// <summary>
-        /// Finds the child Control in this Control at a given screen location
+        /// Finds the child Control in this Control at a given screen location.
         /// </summary>
-        /// <param name="point">Screen location to check</param>
-        /// <param name="canFocusOnly">If true, only controls that can get focus will be checked</param>
-        /// <returns>Child found at the given point if any, else null</returns>
+        /// <param name="point">Screen location to check.</param>
+        /// <param name="canFocusOnly">If true, only controls that can get focus will be checked.</param>
+        /// <returns>Child found at the given point if any, else null.</returns>
         public Control GetChild(Vector2 point, bool canFocusOnly)
         {
             foreach (Control c in Controls)
@@ -624,9 +624,9 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Finds the Control's root Control
+        /// Finds the Control's root Control.
         /// </summary>
-        /// <returns>Root Control for this Control</returns>
+        /// <returns>Root Control for this Control.</returns>
         Control GetRootControl()
         {
             Control root = this;
@@ -638,7 +638,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Notifies the Control it has received focus
+        /// Notifies the Control it has received focus.
         /// </summary>
         internal void HandleFocus()
         {
@@ -650,7 +650,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Notifies the Control it has lost focus
+        /// Notifies the Control it has lost focus.
         /// </summary>
         internal void HandleLostFocus()
         {
@@ -675,19 +675,19 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Checks if a point is in a given region
+        /// Checks if a point is in a given region.
         /// </summary>
-        /// <param name="point">Point to check if the region contains</param>
-        /// <param name="min">Top-left corner of the region</param>
-        /// <param name="max">Bottom-right corner of the region</param>
-        /// <returns>If true, the region contains the point, else false</returns>
+        /// <param name="point">Point to check if the region contains.</param>
+        /// <param name="min">Top-left corner of the region.</param>
+        /// <param name="max">Bottom-right corner of the region.</param>
+        /// <returns>If true, the region contains the point, else false.</returns>
         public static bool IsPointInRegion(Vector2 point, Vector2 min, Vector2 max)
         {
             return point.X >= min.X && point.Y >= min.Y && point.X <= max.X && point.Y <= max.Y;
         }
 
         /// <summary>
-        /// Adjusts the Control's position to keep it in the area of its parent
+        /// Adjusts the Control's position to keep it in the area of its parent.
         /// </summary>
         void KeepInParent()
         {
