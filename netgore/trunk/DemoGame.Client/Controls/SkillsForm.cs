@@ -108,7 +108,7 @@ namespace DemoGame.Client
             public SkillInfo SkillInfo { get; private set; }
 
             public SkillPictureBox(Control parent, SkillInfo skillInfo, Vector2 position)
-                : base(position, new Grh(GrhInfo.GetData(skillInfo.Icon)), parent)
+                : base(new Grh(GrhInfo.GetData(skillInfo.Icon)), position, parent)
             {
                 SkillInfo = skillInfo;
                 Size = _iconSize;

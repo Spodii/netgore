@@ -117,7 +117,7 @@ namespace DemoGame.Client
             }
 
             public EquippedItemPB(EquippedForm parent, Vector2 pos, EquipmentSlot slot)
-                : base(pos, null, new Vector2(_itemWidth, _itemHeight), parent)
+                : base(null, pos, new Vector2(_itemWidth, _itemHeight), parent)
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");

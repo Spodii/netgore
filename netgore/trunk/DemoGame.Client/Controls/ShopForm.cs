@@ -137,7 +137,7 @@ namespace DemoGame.Client.Controls
             }
 
             public ShopItemPB(ShopForm parent, Vector2 pos, ShopItemIndex index)
-                : base(pos, null, new Vector2(_itemWidth, _itemHeight), parent)
+                : base(null, pos, new Vector2(_itemWidth, _itemHeight), parent)
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");

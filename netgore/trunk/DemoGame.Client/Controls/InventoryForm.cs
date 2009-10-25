@@ -137,7 +137,7 @@ namespace DemoGame.Client
             }
 
             public InventoryItemPB(InventoryForm parent, Vector2 pos, InventorySlot slot)
-                : base(pos, null, new Vector2(_itemWidth, _itemHeight), parent)
+                : base(null, pos, new Vector2(_itemWidth, _itemHeight), parent)
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");

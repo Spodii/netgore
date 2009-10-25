@@ -174,7 +174,7 @@ namespace DemoGame.Client
             }
 
             public ToolbarItem(Control parent, ToolbarItemType type, Vector2 pos, ISprite sprite)
-                : base(pos, sprite, new Vector2(_itemSize), parent)
+                : base(sprite, pos, new Vector2(_itemSize), parent)
             {
                 _type = type;
             }
