@@ -70,6 +70,7 @@
     <Compile Include="ControlBorder.cs" />
     <Compile Include="Controls\FormSettings.cs" />
     <Compile Include="Controls\LabelSettings.cs" />
+    <Compile Include="Controls\TextBox.cs" />
     <Compile Include="EventArgs\KeyboardEventHandler.cs" />
     <Compile Include="EventArgs\MouseClickEventHandler.cs" />
     <Compile Include="EventArgs\MouseEventHandler.cs" />

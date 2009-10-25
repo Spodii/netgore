@@ -71,7 +71,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// TextControl constructor.
+        /// Initializes a new instance of the <see cref="TextControl"/> class.
         /// </summary>
         /// <param name="gui">GUIManager used by this Control.</param>
         /// <param name="settings">Settings for this TextControl.</param>
