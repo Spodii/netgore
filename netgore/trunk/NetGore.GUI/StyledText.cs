@@ -106,7 +106,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="input">The <see cref="StyledText"/>s to concatenate.</param>
         /// <returns>The concatenated <see cref="StyledText"/>s that have the same style.</returns>
-        public static IEnumerable<StyledText> Concat(StyledText[] input)
+        public static List<StyledText> Concat(StyledText[] input)
         {
             var ret = new List<StyledText>(input.Length);
 
@@ -129,7 +129,7 @@ namespace NetGore.Graphics.GUI
         /// </summary>
         /// <param name="input">The <see cref="StyledText"/>s to concatenate.</param>
         /// <returns>The concatenated <see cref="StyledText"/>s that have the same style.</returns>
-        public static IEnumerable<StyledText> Concat(List<StyledText> input)
+        public static List<StyledText> Concat(List<StyledText> input)
         {
             var ret = new List<StyledText>(input.Count);
 
