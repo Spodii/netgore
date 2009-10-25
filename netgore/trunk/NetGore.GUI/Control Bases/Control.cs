@@ -335,13 +335,13 @@ namespace NetGore.Graphics.GUI
         public TooltipHandler Tooltip { get; set; }
 
         /// <summary>
-        /// Control constructor
+        /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
-        /// <param name="gui">GUIManager this Control will be part of</param>
-        /// <param name="settings">Default settings for this Control</param>
-        /// <param name="position">Position of the Control reletive to its parent</param>
-        /// <param name="size">Size of the Control</param>
-        /// <param name="parent">Parent Control of this Control (null for a root Control)</param>
+        /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of.</param>
+        /// <param name="settings">Default settings for this Control.</param>
+        /// <param name="position">Position of the Control reletive to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        /// <param name="parent">Parent Control of this Control (or null for a root Control).</param>
         protected Control(GUIManagerBase gui, ControlSettings settings, Vector2 position, Vector2 size, Control parent)
         {
             _settings = settings;
