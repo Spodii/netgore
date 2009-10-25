@@ -77,13 +77,13 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// SpriteControl constructor
+        /// Initializes a new instance of the <see cref="SpriteControl"/> class.
         /// </summary>
-        /// <param name="position">Position of the Control reletive to its parent</param>
         /// <param name="settings">Settings for this PictureControl</param>
+        /// <param name="position">Position of the Control reletive to its parent</param>
         /// <param name="sprite">Sprite to display</param>
         /// <param name="parent">Parent Control of this Control (null for a root Control)</param>
-        protected SpriteControl(Vector2 position, SpriteControlSettings settings, ISprite sprite, Control parent)
+        protected SpriteControl(SpriteControlSettings settings, Vector2 position, ISprite sprite, Control parent)
             : this(parent.GUIManager, settings, position, sprite, Vector2.Zero, parent)
         {
             if (_sprite == null)

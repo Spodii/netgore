@@ -188,7 +188,7 @@ namespace DemoGame.Client
             }
 
             public RaiseStatPB(Vector2 position, ISprite sprite, StatsForm parent, StatType statType)
-                : base(position, sprite, parent)
+                : base(sprite, position, parent)
             {
                 if (parent == null)
                     throw new ArgumentNullException("parent");
