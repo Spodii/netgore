@@ -306,7 +306,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets the <see cref="ControlSettings"/> used by this <see cref="Control"/>.
+        /// Gets the settings used to set up this <see cref="Control"/>.
         /// </summary>
         public ControlSettings Settings
         {
@@ -338,7 +338,7 @@ namespace NetGore.Graphics.GUI
         /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
         /// <param name="gui">The <see cref="GUIManagerBase"/> this Control will be part of.</param>
-        /// <param name="settings">Default settings for this Control.</param>
+        /// <param name="settings">Default settings for this Control. Can be null.</param>
         /// <param name="position">Position of the Control reletive to its parent.</param>
         /// <param name="size">Size of the Control.</param>
         /// <param name="parent">Parent Control of this Control (or null for a root Control).</param>
@@ -351,13 +351,16 @@ namespace NetGore.Graphics.GUI
             Position = position;
             Size = size;
 
-            // Set the settings
-            Border = settings.Border;
-            CanDrag = settings.CanDrag;
-            CanFocus = settings.CanFocus;
-            IsBoundToParentArea = settings.IsBoundToParentArea;
-            IsEnabled = settings.IsEnabled;
-            IsVisible = settings.IsVisible;
+            // Apply the settings.
+            if (_settings != null)
+            {
+                Border = Settings.Border;
+                CanDrag = Settings.CanDrag;
+                CanFocus = Settings.CanFocus;
+                IsBoundToParentArea = Settings.IsBoundToParentArea;
+                IsEnabled = Settings.IsEnabled;
+                IsVisible = Settings.IsVisible;
+            }
 
             // Check for a valid GUIManager
             if (GUIManager == null)

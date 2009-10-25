@@ -58,12 +58,12 @@
   <ItemGroup>
     <Compile Include="Control Bases\ControlEventHandler.cs" />
     <Compile Include="Control Bases\ControlSettings.cs" />
-    <Compile Include="Control Bases\PictureControlSettings.cs" />
+    <Compile Include="Control Bases\SpriteControlSettings.cs" />
     <Compile Include="Control Bases\TextControlSettings.cs" />
     <Compile Include="Controls\ButtonSettings.cs" />
     <Compile Include="Controls\CheckBoxSettings.cs" />
     <Compile Include="Control Bases\Control.cs" />
-    <Compile Include="Control Bases\PictureControl.cs" />
+    <Compile Include="Control Bases\SpriteControl.cs" />
     <Compile Include="Control Bases\TextControl.cs" />
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\CheckBox.cs" />

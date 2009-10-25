@@ -7,7 +7,7 @@ using NetGore;
 namespace NetGore.Graphics.GUI
 {
     /// <summary>
-    /// A control that focuses around displaying a Sprite
+    /// A control that focuses around displaying an <see cref="ISprite"/>.
     /// </summary>
     public abstract class SpriteControl : Control
     {
@@ -15,17 +15,17 @@ namespace NetGore.Graphics.GUI
         bool _stretch = true;
 
         /// <summary>
-        /// Notifies when the Sprite has changed
+        /// Notifies listeners when the Sprite has changed.
         /// </summary>
         public event ControlEventHandler OnChangeSprite;
 
         /// <summary>
-        /// Notifies when the StretchSprite value changes
+        /// Notifies listeners when the StretchSprite value changes.
         /// </summary>
         public event ControlEventHandler OnChangeStretchSprite;
 
         /// <summary>
-        /// Gets or sets the Control's Sprite
+        /// Gets or sets the Control's <see cref="ISprite"/>.
         /// </summary>
         public ISprite Sprite
         {
@@ -42,7 +42,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Gets or sets if the sprite is drawn stretched or not
+        /// Gets or sets if the sprite is drawn stretched or not.
         /// </summary>
         public bool StretchSprite
         {
@@ -59,15 +59,15 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// SpriteControl constructor
+        /// Initializes a new instance of the <see cref="SpriteControl"/> class.
         /// </summary>
-        /// <param name="gui">GUIManager this PictureControl will be part of</param>
-        /// <param name="settings">Settings for this PictureControl</param>
-        /// <param name="position">Position of the PictureControl reletive to its parent</param>
-        /// <param name="sprite">Sprite to display</param>
+        /// <param name="gui">GUIManager this PictureControl will be part of.</param>
+        /// <param name="settings">Settings for this PictureControl.</param>
+        /// <param name="position">Position of the PictureControl reletive to its parent.</param>
+        /// <param name="sprite">Sprite to display.</param>
         /// <param name="size">Size of the PictureControl</param>
-        /// <param name="parent">Parent Control of this PictureControl (null for a root Control)</param>
-        protected SpriteControl(GUIManagerBase gui, PictureControlSettings settings, Vector2 position, ISprite sprite,
+        /// <param name="parent">Parent Control of this PictureControl (null for a root Control).</param>
+        protected SpriteControl(GUIManagerBase gui, SpriteControlSettings settings, Vector2 position, ISprite sprite,
                                 Vector2 size, Control parent) : base(gui, settings, position, size, parent)
         {
             _sprite = sprite;
@@ -83,7 +83,7 @@ namespace NetGore.Graphics.GUI
         /// <param name="settings">Settings for this PictureControl</param>
         /// <param name="sprite">Sprite to display</param>
         /// <param name="parent">Parent Control of this Control (null for a root Control)</param>
-        protected SpriteControl(Vector2 position, PictureControlSettings settings, ISprite sprite, Control parent)
+        protected SpriteControl(Vector2 position, SpriteControlSettings settings, ISprite sprite, Control parent)
             : this(parent.GUIManager, settings, position, sprite, Vector2.Zero, parent)
         {
             if (_sprite == null)

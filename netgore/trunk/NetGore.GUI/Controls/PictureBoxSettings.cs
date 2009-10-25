@@ -3,7 +3,7 @@ using NetGore;
 
 namespace NetGore.Graphics.GUI
 {
-    public class PictureBoxSettings : PictureControlSettings
+    public class PictureBoxSettings : SpriteControlSettings
     {
         static PictureBoxSettings _default = null;
 
