@@ -876,7 +876,7 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
-        /// Updates the Control for anything other than the Mouse or Keyboard
+        /// Updates the <see cref="Control"/> for anything other than the mouse or keyboard.
         /// </summary>
         /// <param name="currentTime">The current time in milliseconds.</param>
         protected virtual void UpdateControl(int currentTime)
