@@ -146,6 +146,18 @@ namespace DemoGame.Server
             return pw;
         }
 
+        public static PacketWriter NotifyLevel(MapEntityIndex mapEntityIndex)
+        {
+            PacketWriter pw = GetWriter(ServerPacketID.NotifyLevel);
+            pw.Write(mapEntityIndex);
+            return pw;
+        }
+
+        public static PacketWriter Ping()
+        {
+            return GetWriter(ServerPacketID.Ping);
+        }
+
         public static PacketWriter PlaySound(SoundID sound)
         {
             PacketWriter pw = GetWriter(ServerPacketID.PlaySound);
@@ -167,18 +179,6 @@ namespace DemoGame.Server
             pw.Write(sound);
             pw.Write(mapEntityIndex);
             return pw;
-        }
-
-        public static PacketWriter NotifyLevel(MapEntityIndex mapEntityIndex)
-        {
-            PacketWriter pw = GetWriter(ServerPacketID.NotifyLevel);
-            pw.Write(mapEntityIndex);
-            return pw;
-        }
-
-        public static PacketWriter Ping()
-        {
-            return GetWriter(ServerPacketID.Ping);
         }
 
         public static PacketWriter RemoveDynamicEntity(DynamicEntity dynamicEntity)

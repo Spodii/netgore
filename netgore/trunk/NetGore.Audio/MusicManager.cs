@@ -27,15 +27,6 @@ namespace NetGore.Audio
         }
 
         /// <summary>
-        /// When overridden in the derived class, reapplies the Volume property value to all the
-        /// audio tracks in this manager.
-        /// </summary>
-        protected internal override void ReapplyVolume()
-        {
-            MediaPlayer.Volume = MasterVolume;
-        }
-
-        /// <summary>
         /// Gets the state of the music.
         /// </summary>
         public SoundState MusicState
@@ -118,6 +109,15 @@ namespace NetGore.Audio
         protected override IMusic ReadHandler(IValueReader reader)
         {
             return new Music(this, reader);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, reapplies the Volume property value to all the
+        /// audio tracks in this manager.
+        /// </summary>
+        protected internal override void ReapplyVolume()
+        {
+            MediaPlayer.Volume = MasterVolume;
         }
 
         /// <summary>
