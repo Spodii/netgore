@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 
 namespace NetGore.Graphics.GUI
 {
@@ -11,11 +8,9 @@ namespace NetGore.Graphics.GUI
     public interface IEditableText
     {
         /// <summary>
-        /// Inserts the specified character to the <see cref="Control"/>'s text at the current position
-        /// of the text cursor.
+        /// Breaks the line at the current position of the text cursor.
         /// </summary>
-        /// <param name="c">The character to insert.</param>
-        void InsertChar(string c);
+        void BreakLine();
 
         /// <summary>
         /// Deletes the character from the <see cref="Control"/>'s text immediately before the current position
@@ -25,14 +20,16 @@ namespace NetGore.Graphics.GUI
         void DeleteChar();
 
         /// <summary>
+        /// Inserts the specified character to the <see cref="Control"/>'s text at the current position
+        /// of the text cursor.
+        /// </summary>
+        /// <param name="c">The character to insert.</param>
+        void InsertChar(string c);
+
+        /// <summary>
         /// Moves the cursor in the specified <paramref name="direction"/> by one character.
         /// </summary>
         /// <param name="direction">The direction to move the cursor.</param>
         void MoveCursor(MoveCursorDirection direction);
-
-        /// <summary>
-        /// Breaks the line at the current position of the text cursor.
-        /// </summary>
-        void BreakLine();
     }
 }

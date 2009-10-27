@@ -180,13 +180,9 @@ namespace NetGore.Graphics.GUI
                     else
                     {
                         if (IsMultiLine && _lines.MovePrevious())
-                        {
                             _cursorLinePosition = _lines.CurrentLine.LineText.Length + 1;
-                        }
                         else
-                        {
                             _cursorLinePosition = 0;
-                        }
                     }
                     break;
 
@@ -196,13 +192,9 @@ namespace NetGore.Graphics.GUI
                     else
                     {
                         if (IsMultiLine && _lines.MoveNext(false))
-                        {
                             _cursorLinePosition = 0;
-                        }
                         else
-                        {
                             _cursorLinePosition = _lines.CurrentLine.LineText.Length;
-                        }
                     }
                     break;
 

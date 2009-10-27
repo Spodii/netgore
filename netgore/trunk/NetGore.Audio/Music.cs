@@ -109,20 +109,20 @@ namespace NetGore.Audio
             // Media Player installed, and it is slow as hell on the first playback (thus the thread call). So it is either
             // use wavs (and whore up the memory usage), use MP3s and deal with this crap, or switch music libraries...
             ThreadPool.QueueUserWorkItem(delegate
-            {
-                ((IAudio)this).UpdateVolume();
+                                         {
+                                             ((IAudio)this).UpdateVolume();
 
-                try
-                {
-                    MediaPlayer.Play(_instance);
-                }
-                catch (InvalidOperationException ex)
-                {
-                    const string errmsg = "Failed to play music. Exception: {0}";
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, ex);
-                }
-            });
+                                             try
+                                             {
+                                                 MediaPlayer.Play(_instance);
+                                             }
+                                             catch (InvalidOperationException ex)
+                                             {
+                                                 const string errmsg = "Failed to play music. Exception: {0}";
+                                                 if (log.IsErrorEnabled)
+                                                     log.ErrorFormat(errmsg, ex);
+                                             }
+                                         });
         }
 
         /// <summary>
