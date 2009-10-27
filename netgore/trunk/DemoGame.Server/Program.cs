@@ -40,9 +40,10 @@ namespace DemoGame.Server
             SetConsoleCtrlHandler(_handler, true);
 
             // Create and start the server
-            _server = new Server();
-            _server.Start();
-            _server.Dispose();
+            using (_server = new Server())
+            {
+                _server.Start();
+            }
         }
 
         [DllImport("Kernel32")]
