@@ -128,7 +128,7 @@ namespace DemoGame.Server
             new ServerRuntimeCleaner(this);
 
             if (log.IsInfoEnabled)
-                log.Info("Server is loaded");
+                log.Info("Server loaded.");
 
             _inputThread = new Thread(HandleInput) { Name = "Input Handler", IsBackground = true };
         }
@@ -180,6 +180,9 @@ namespace DemoGame.Server
 
             _gameTimer.Reset();
             _gameTimer.Start();
+
+            if (log.IsInfoEnabled)
+                log.Info("Server started.");
 
             while (_isRunning)
             {
@@ -363,7 +366,7 @@ namespace DemoGame.Server
         public void Start()
         {
             if (log.IsInfoEnabled)
-                log.Info("Server is starting");
+                log.Info("Starting server...");
 
             // Start the input thread
             _inputThread.Start();
