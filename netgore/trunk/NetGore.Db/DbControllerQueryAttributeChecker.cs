@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using NetGore.Collections;
 
 namespace NetGore.Db
@@ -12,27 +10,9 @@ namespace NetGore.Db
     /// </summary>
     public class DbControllerQueryAttributeChecker
     {
-        readonly Type[] _typesToIgnore;
-        readonly TypeFactory _typeFactory;
         readonly DbControllerQueryAttributeCheckerEventHandler _missingAttributeHandler;
-
-        void LoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)
-        {
-            // Skip private nested types as they cannot be called by the controller anyways
-            if (loadedType.IsNested && !loadedType.IsPublic)
-                return;
-
-            // Filter out types to ignore
-            if (_typesToIgnore != null && _typesToIgnore.Contains(loadedType))
-                return;
-
-            // Check for attribute
-            var attribs = loadedType.GetCustomAttributes(false);
-            if (attribs == null || attribs.Length == 0)
-            {
-                _missingAttributeHandler(this, loadedType);
-            }
-        }
+        readonly TypeFactory _typeFactory;
+        readonly Type[] _typesToIgnore;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbControllerQueryAttributeChecker"/> class.
@@ -43,7 +23,7 @@ namespace NetGore.Db
         /// <param name="typesToIgnore">Optional array of types to ignore. If a type is in this collection, it will
         /// never be invoked by the <paramref name="missingAttributeHandler"/>.</param>
         public DbControllerQueryAttributeChecker(DbControllerQueryAttributeCheckerEventHandler missingAttributeHandler,
-            params Type[] typesToIgnore)
+                                                 params Type[] typesToIgnore)
         {
             if (missingAttributeHandler == null)
                 throw new ArgumentNullException("missingAttributeHandler");
@@ -66,6 +46,22 @@ namespace NetGore.Db
 
             _typeFactory = new TypeFactory(filter.GetFilter(), LoadTypeHandler, false);
             _typeFactory.BeginLoading();
+        }
+
+        void LoadTypeHandler(TypeFactory typeFactory, Type loadedType, string name)
+        {
+            // Skip private nested types as they cannot be called by the controller anyways
+            if (loadedType.IsNested && !loadedType.IsPublic)
+                return;
+
+            // Filter out types to ignore
+            if (_typesToIgnore != null && _typesToIgnore.Contains(loadedType))
+                return;
+
+            // Check for attribute
+            var attribs = loadedType.GetCustomAttributes(false);
+            if (attribs == null || attribs.Length == 0)
+                _missingAttributeHandler(this, loadedType);
         }
     }
 }

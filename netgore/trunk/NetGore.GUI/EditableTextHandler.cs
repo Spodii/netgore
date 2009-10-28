@@ -81,9 +81,7 @@ namespace NetGore.Graphics.GUI
                         string rateStr = rateObj != null ? rateObj.ToString() : null;
 
                         if (delayStr == null || !Parser.Current.TryParse(delayStr, out delay))
-                        {
                             delay = _defaultKeyboardRepeatDelay;
-                        }
                         else
                         {
                             // Delay is stored as a lookup value, not an absolute value
@@ -111,9 +109,7 @@ namespace NetGore.Graphics.GUI
                         }
 
                         if (rateStr == null || !Parser.Current.TryParse(rateStr, out rate) || rate < 0 || rate > 31)
-                        {
                             rate = _defaultKeyboardRepeatRate;
-                        }
                         else
                         {
                             // Equation made to find approximate delay in ms according to:

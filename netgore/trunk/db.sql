@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50138
 File Encoding         : 65001
 
-Date: 2009-10-03 23:14:01
+Date: 2009-10-27 16:13:29
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,7 +33,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-10-03 23:12:10', null);
+INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-10-27 16:00:41', null);
 
 -- ----------------------------
 -- Table structure for `alliance`
@@ -143,9 +143,9 @@ CREATE TABLE `character` (
 -- ----------------------------
 -- Records of character
 -- ----------------------------
-INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '2', null, null, null, '546', '402', '1', '500', '200', '1', '146', '23', '674', '90', '50', '50', '50', '50', '7', '11', '0', '1', '1', '2');
-INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, null, '1', '736', '530', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, null, '1', '741.199', '530', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
+INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '2', null, null, null, '370.4', '338', '1', '500', '200', '1', '176', '24', '704', '95', '50', '50', '50', '50', '7', '11', '0', '1', '1', '2');
+INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, null, '1', '930', '437.96', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, null, '1', '672', '530', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
 INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', null, '0', null, '800', '530', '2', '800', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
 INSERT INTO `character` VALUES ('5', null, null, 'Shopkeeper', '2', '0', null, null, '600', '530', '2', '600', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
 INSERT INTO `character` VALUES ('6', null, null, 'Vending Machine', '2', '1', null, null, '500', '530', '2', '500', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
@@ -295,10 +295,10 @@ INSERT INTO `character_template_inventory` VALUES ('3', '1', '2', '0', '1', '100
 INSERT INTO `character_template_inventory` VALUES ('4', '1', '1', '0', '5', '10000');
 
 -- ----------------------------
--- Table structure for `game_data`
+-- Table structure for `game_constant`
 -- ----------------------------
-DROP TABLE IF EXISTS `game_data`;
-CREATE TABLE `game_data` (
+DROP TABLE IF EXISTS `game_constant`;
+CREATE TABLE `game_constant` (
   `max_characters_per_account` tinyint(3) unsigned NOT NULL,
   `min_account_name_length` tinyint(3) unsigned NOT NULL,
   `max_account_name_length` tinyint(3) unsigned NOT NULL,
@@ -316,9 +316,9 @@ CREATE TABLE `game_data` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
 
 -- ----------------------------
--- Records of game_data
+-- Records of game_constant
 -- ----------------------------
-INSERT INTO `game_data` VALUES ('10', '3', '30', '3', '30', '3', '15', '500', '800', '600', '44446', '44445', '127.0.0.1', '20');
+INSERT INTO `game_constant` VALUES ('10', '3', '30', '3', '30', '3', '15', '500', '800', '600', '44446', '44445', '127.0.0.1', '20');
 
 -- ----------------------------
 -- Table structure for `item`
@@ -405,8 +405,8 @@ CREATE TABLE `map` (
 -- ----------------------------
 -- Records of map
 -- ----------------------------
-INSERT INTO `map` VALUES ('1', '');
-INSERT INTO `map` VALUES ('2', '');
+INSERT INTO `map` VALUES ('1', 'INSERT VALUE');
+INSERT INTO `map` VALUES ('2', 'INSERT VALUE');
 
 -- ----------------------------
 -- Table structure for `map_spawn`
@@ -436,6 +436,19 @@ INSERT INTO `map_spawn` VALUES ('13', '1', '1', '1', null, null, null, null);
 INSERT INTO `map_spawn` VALUES ('14', '1', '1', '1', null, null, null, null);
 
 -- ----------------------------
+-- Table structure for `server_setting`
+-- ----------------------------
+DROP TABLE IF EXISTS `server_setting`;
+CREATE TABLE `server_setting` (
+  `motd` varchar(250) NOT NULL DEFAULT '' COMMENT 'The message of the day.'
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of server_setting
+-- ----------------------------
+INSERT INTO `server_setting` VALUES ('Welcome to NetGore! Use the arrow keys to move, control to attack, alt to talk to NPCs and use world entities, and space to pick up items.');
+
+-- ----------------------------
 -- Table structure for `server_time`
 -- ----------------------------
 DROP TABLE IF EXISTS `server_time`;
@@ -447,7 +460,7 @@ CREATE TABLE `server_time` (
 -- ----------------------------
 -- Records of server_time
 -- ----------------------------
-INSERT INTO `server_time` VALUES ('2009-10-03 23:12:12');
+INSERT INTO `server_time` VALUES ('2009-10-27 16:00:49');
 
 -- ----------------------------
 -- Table structure for `shop`

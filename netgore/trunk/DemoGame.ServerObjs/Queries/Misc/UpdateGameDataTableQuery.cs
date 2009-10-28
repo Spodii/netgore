@@ -8,16 +8,16 @@ using NetGore.Db;
 namespace DemoGame.Server.Queries
 {
     [DbControllerQuery]
-    public class UpdateGameDataTableQuery : DbQueryNonReader<IGameDataTable>
+    public class UpdateGameConstantTableQuery : DbQueryNonReader<IGameConstantTable>
     {
-        static readonly string _queryStr = string.Format("UPDATE `{0}` SET {1}", GameDataTable.TableName,
-                                                         FormatParametersIntoString(GameDataTable.DbColumns));
+        static readonly string _queryStr = string.Format("UPDATE `{0}` SET {1}", GameConstantTable.TableName,
+                                                         FormatParametersIntoString(GameConstantTable.DbColumns));
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="UpdateGameDataTableQuery"/> class.
+        /// Initializes a new instance of the <see cref="UpdateGameConstantTableQuery"/> class.
         /// </summary>
         /// <param name="connectionPool">The connection pool.</param>
-        public UpdateGameDataTableQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
+        public UpdateGameConstantTableQuery(DbConnectionPool connectionPool) : base(connectionPool, _queryStr)
         {
         }
 
@@ -28,7 +28,7 @@ namespace DemoGame.Server.Queries
         /// If null, no parameters will be used.</returns>
         protected override IEnumerable<DbParameter> InitializeParameters()
         {
-            return CreateParameters(GameDataTable.DbColumns.Select(x => "@" + x));
+            return CreateParameters(GameConstantTable.DbColumns.Select(x => "@" + x));
         }
 
         /// <summary>
@@ -37,7 +37,7 @@ namespace DemoGame.Server.Queries
         /// </summary>
         /// <param name="p">Collection of database parameters to set the values for.</param>
         /// <param name="item">The value or object/struct containing the values used to execute the query.</param>
-        protected override void SetParameters(DbParameterValues p, IGameDataTable item)
+        protected override void SetParameters(DbParameterValues p, IGameConstantTable item)
         {
             item.CopyValues(p);
         }

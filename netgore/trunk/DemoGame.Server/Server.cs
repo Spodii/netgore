@@ -1,5 +1,6 @@
 using System;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -50,6 +51,8 @@ namespace DemoGame.Server
         /// </summary>
         readonly object _loginLock = new object();
 
+        readonly List<string> _motd = new List<string>();
+
         readonly ServerSockets _sockets;
 
         readonly int _startupTime = Environment.TickCount;
@@ -66,6 +69,8 @@ namespace DemoGame.Server
         /// </summary>
         bool _isRunning = true;
 
+        IServerSettingTable _serverSettings;
+
         /// <summary>
         /// Gets the DbController used to communicate with the database by this server.
         /// </summary>
@@ -74,18 +79,29 @@ namespace DemoGame.Server
             get { return _dbController; }
         }
 
+        /// <summary>
+        /// Gets if this <see cref="Server"/> has been disposed.
+        /// </summary>
         public bool IsDisposed
         {
             get { return _disposed; }
         }
 
+        public string MOTD
+        {
+            get { return _serverSettings.Motd; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ServerSockets"/> used to manage connections to the server.
+        /// </summary>
         public ServerSockets ServerSockets
         {
             get { return _sockets; }
         }
 
         /// <summary>
-        /// Gets the Environment.TickCount time that the server started
+        /// Gets the time that the server started.
         /// </summary>
         public int StartupTime
         {
@@ -101,7 +117,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Server constructor
+        /// Initializes a new instance of the <see cref="Server"/> class.
         /// </summary>
         public Server()
         {
@@ -115,10 +131,13 @@ namespace DemoGame.Server
             InitializeScripts();
 
             // Update the GameData table
-            IGameDataTable gameDataValues = GetGameDataTableValues();
-            DbController.GetQuery<UpdateGameDataTableQuery>().Execute(gameDataValues);
+            IGameConstantTable gameDataValues = GetGameConstantTableValues();
+            DbController.GetQuery<UpdateGameConstantTableQuery>().Execute(gameDataValues);
             if (log.IsInfoEnabled)
                 log.Info("Updated the GameData table with the current values.");
+
+            // Load the server settings
+            LoadSettings();
 
             // Create the world and sockets
             _world = new World(this);
@@ -134,9 +153,9 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Creates a ScriptTypeCollection with the specified name.
+        /// Creates a <see cref="ScriptTypeCollection"/> with the specified name.
         /// </summary>
-        /// <param name="name">Name of the ScriptTypeCollection.</param>
+        /// <param name="name">Name of the <see cref="ScriptTypeCollection"/>.</param>
         static void CreateScriptTypeCollection(string name)
         {
             if (log.IsInfoEnabled)
@@ -169,7 +188,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Main game loop for the server
+        /// Main game loop for the server.
         /// </summary>
         void GameLoop()
         {
@@ -215,12 +234,12 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Creates an IGameDataTable with the current GameData values.
+        /// Creates an <see cref="IGameConstantTable"/> with the current <see cref="GameData"/> values.
         /// </summary>
-        /// <returns>An IGameDataTable with the current GameData values.</returns>
-        static IGameDataTable GetGameDataTableValues()
+        /// <returns>An <see cref="IGameConstantTable"/> with the current <see cref="GameData"/> values.</returns>
+        static IGameConstantTable GetGameConstantTableValues()
         {
-            GameDataTable gdt = new GameDataTable
+            GameConstantTable gdt = new GameConstantTable
             {
                 MaxAccountNameLength = (byte)GameData.AccountName.MaxLength,
                 MaxAccountPasswordLength = (byte)GameData.AccountPassword.MaxLength,
@@ -282,7 +301,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Handles the server console input
+        /// Handles the server console input.
         /// </summary>
         void HandleInput()
         {
@@ -303,6 +322,23 @@ namespace DemoGame.Server
         static void InitializeScripts()
         {
             CreateScriptTypeCollection("AI");
+        }
+
+        /// <summary>
+        /// Loads the server settings from the database and sets up any settings that need it.
+        /// </summary>
+        void LoadSettings()
+        {
+            if (log.IsInfoEnabled)
+                log.Info("Loading server settings.");
+
+            _serverSettings = DbController.GetQuery<SelectServerSettingsQuery>().Execute();
+
+            // Create the MOTD list
+            var motdLines = _serverSettings.Motd.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+            if (motdLines.Length > 0)
+                _motd.AddRange(motdLines);
+            _motd.TrimExcess();
         }
 
         /// <summary>
@@ -353,7 +389,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Shuts down the Server.
+        /// Shuts down the <see cref="Server"/>.
         /// </summary>
         public void Shutdown()
         {
@@ -361,7 +397,7 @@ namespace DemoGame.Server
         }
 
         /// <summary>
-        /// Starts the Server loop.
+        /// Starts the <see cref="Server"/>.
         /// </summary>
         public void Start()
         {
@@ -394,7 +430,7 @@ namespace DemoGame.Server
         #region IDisposable Members
 
         /// <summary>
-        /// Disposes of the server
+        /// Disposes of the <see cref="Server"/>.
         /// </summary>
         public void Dispose()
         {
@@ -412,9 +448,9 @@ namespace DemoGame.Server
         #region IGetTime Members
 
         /// <summary>
-        /// Gets the current game time where time 0 is when the application started
+        /// Gets the current time in milliseconds.
         /// </summary>
-        /// <returns>Current game time in milliseconds</returns>
+        /// <returns>The current time in milliseconds.</returns>
         public int GetTime()
         {
             return (int)_gameTimer.ElapsedMilliseconds;

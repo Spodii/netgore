@@ -1,16 +1,15 @@
 using System;
 using System.Data;
 using System.Linq;
-using NetGore;
 using NetGore.Db;
 
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Contains extension methods for class GameDataTable that assist in performing
+    /// Contains extension methods for class GameConstantTable that assist in performing
     /// reads and writes to and from a database.
     /// </summary>
-    public static class GameDataTableDbExtensions
+    public static class GameConstantTableDbExtensions
     {
         /// <summary>
         /// Copies the column values into the given DbParameterValues using the database column name
@@ -19,7 +18,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void CopyValues(this IGameDataTable source, DbParameterValues paramValues)
+        public static void CopyValues(this IGameConstantTable source, DbParameterValues paramValues)
         {
             paramValues["@max_account_name_length"] = source.MaxAccountNameLength;
             paramValues["@max_account_password_length"] = source.MaxAccountPasswordLength;
@@ -44,7 +43,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void ReadValues(this GameDataTable source, IDataReader dataReader)
+        public static void ReadValues(this GameConstantTable source, IDataReader dataReader)
         {
             Int32 i;
 
@@ -101,7 +100,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void TryCopyValues(this IGameDataTable source, DbParameterValues paramValues)
+        public static void TryCopyValues(this IGameConstantTable source, DbParameterValues paramValues)
         {
             for (int i = 0; i < paramValues.Count; i++)
             {
@@ -176,7 +175,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void TryReadValues(this GameDataTable source, IDataReader dataReader)
+        public static void TryReadValues(this GameConstantTable source, IDataReader dataReader)
         {
             for (int i = 0; i < dataReader.FieldCount; i++)
             {

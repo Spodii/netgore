@@ -8,6 +8,5 @@ namespace NetGore.Db
     /// </summary>
     /// <param name="sender">The sender.</param>
     /// <param name="type">The type.</param>
-    public delegate void DbControllerQueryAttributeCheckerEventHandler(DbControllerQueryAttributeChecker sender,
-                                                                       Type type);
+    public delegate void DbControllerQueryAttributeCheckerEventHandler(DbControllerQueryAttributeChecker sender, Type type);
 }

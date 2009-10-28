@@ -30,6 +30,7 @@ namespace DemoGame.Client
         readonly Stopwatch _pingWatch = new Stopwatch();
         readonly MessageProcessorManager _ppManager;
         readonly ISocketSender _socketSender;
+        readonly SoundManager _soundManager;
 
         /// <summary>
         /// Notifies listeners when a successful login request has been made.
@@ -84,8 +85,6 @@ namespace DemoGame.Client
             get { return GameplayScreen.World; }
         }
 
-        readonly SoundManager _soundManager;
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ClientPacketHandler"/> class.
         /// </summary>
@@ -107,6 +106,15 @@ namespace DemoGame.Client
             else
                 return new List<StyledText>
                 { new StyledText(name + " " + method + ": ", Color.Green), new StyledText(message, Color.Black) };
+        }
+
+        void LogFailPlaySound(SoundID soundID)
+        {
+            const string errmsg = "Failed to play sound with ID `{0}`.";
+            if (log.IsErrorEnabled)
+                log.ErrorFormat(errmsg, soundID);
+
+            Debug.Fail(string.Format(errmsg, soundID));
         }
 
         public void Ping()
@@ -252,13 +260,25 @@ namespace DemoGame.Client
                 _gameplayScreen.InfoBox.Add("You have leveled up!");
         }
 
-        void LogFailPlaySound(SoundID soundID)
+        [MessageHandler((byte)ServerPacketID.NotifyGetItem)]
+        void RecvNotifyPickup(IIPSocket conn, BitStream r)
         {
-            const string errmsg = "Failed to play sound with ID `{0}`.";
-            if (log.IsErrorEnabled)
-                log.ErrorFormat(errmsg, soundID);
+            string name = r.ReadString();
+            byte amount = r.ReadByte();
 
-            Debug.Fail(string.Format(errmsg, soundID));
+            string msg;
+            if (amount > 1)
+                msg = string.Format("You got {0} {1}s", amount, name);
+            else
+                msg = string.Format("You got a {0}", name);
+
+            _gameplayScreen.InfoBox.Add(msg);
+        }
+
+        [MessageHandler((byte)ServerPacketID.Ping)]
+        void RecvPing(IIPSocket conn, BitStream r)
+        {
+            _pingWatch.Stop();
         }
 
         [MessageHandler((byte)ServerPacketID.PlaySound)]
@@ -298,27 +318,6 @@ namespace DemoGame.Client
 
             if (!_soundManager.TryPlay(soundID, entity))
                 LogFailPlaySound(soundID);
-        }
-
-        [MessageHandler((byte)ServerPacketID.NotifyGetItem)]
-        void RecvNotifyPickup(IIPSocket conn, BitStream r)
-        {
-            string name = r.ReadString();
-            byte amount = r.ReadByte();
-
-            string msg;
-            if (amount > 1)
-                msg = string.Format("You got {0} {1}s", amount, name);
-            else
-                msg = string.Format("You got a {0}", name);
-
-            _gameplayScreen.InfoBox.Add(msg);
-        }
-
-        [MessageHandler((byte)ServerPacketID.Ping)]
-        void RecvPing(IIPSocket conn, BitStream r)
-        {
-            _pingWatch.Stop();
         }
 
         [MessageHandler((byte)ServerPacketID.RemoveDynamicEntity)]

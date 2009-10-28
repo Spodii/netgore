@@ -1,13 +1,12 @@
 using System;
 using System.Linq;
-using NetGore;
 
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Interface for a class that can be used to serialize values to the database table `game_data`.
+    /// Interface for a class that can be used to serialize values to the database table `game_constant`.
     /// </summary>
-    public interface IGameDataTable
+    public interface IGameConstantTable
     {
         /// <summary>
         /// Gets the value of the database column `max_account_name_length`.
@@ -86,6 +85,6 @@ namespace DemoGame.Server.DbObjs
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        IGameDataTable DeepCopy();
+        IGameConstantTable DeepCopy();
     }
 }

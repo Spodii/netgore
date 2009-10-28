@@ -30,6 +30,7 @@ namespace DemoGame.Client
         Map _map;
 
         MapEntityIndex _usercharIndex;
+        public event WorldEventHandler<Map> OnChangeMap;
 
         /// <summary>
         /// Gets the camera used for the active view.
@@ -57,8 +58,6 @@ namespace DemoGame.Client
                     OnChangeMap(this, _map);
             }
         }
-
-        public event WorldEventHandler<Map> OnChangeMap;
 
         /// <summary>
         /// Gets the user's character given the UserCharIndex

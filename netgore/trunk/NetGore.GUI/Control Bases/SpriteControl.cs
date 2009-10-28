@@ -67,8 +67,8 @@ namespace NetGore.Graphics.GUI
         /// <param name="sprite">Sprite to display.</param>
         /// <param name="size">Size of the PictureControl</param>
         /// <param name="parent">Parent Control of this PictureControl (null for a root Control).</param>
-        protected SpriteControl(GUIManagerBase gui, SpriteControlSettings settings, Vector2 position, ISprite sprite,
-                                Vector2 size, Control parent) : base(gui, settings, position, size, parent)
+        protected SpriteControl(GUIManagerBase gui, SpriteControlSettings settings, Vector2 position, ISprite sprite, Vector2 size,
+                                Control parent) : base(gui, settings, position, size, parent)
         {
             _sprite = sprite;
 
