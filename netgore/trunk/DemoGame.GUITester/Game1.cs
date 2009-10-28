@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using DemoGame;
 using DemoGame.Client;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -18,6 +17,7 @@ namespace DemoGame.GUITester
         SpriteFont _font;
         GUIManagerBase _gui;
         SpriteBatch _sb;
+        TextBox _textBox;
         ControlBorder _topBorder;
         Form topForm;
 
@@ -49,8 +49,6 @@ namespace DemoGame.GUITester
 
             base.Draw(gameTime);
         }
-
-        TextBox _textBox;
 
         protected override void LoadContent()
         {

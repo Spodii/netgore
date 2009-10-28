@@ -79,7 +79,7 @@ namespace DemoGame.Server.DbObjs
             source.CharacterTemplateID = (CharacterTemplateID?)(dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("chat_dialog");
-            source.ChatDialog = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+            source.ChatDialog = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
 
             i = dataReader.GetOrdinal("exp");
             source.Exp = dataReader.GetInt32(i);
@@ -317,7 +317,7 @@ namespace DemoGame.Server.DbObjs
                         break;
 
                     case "chat_dialog":
-                        source.ChatDialog = (dataReader.IsDBNull(i) ? (ushort?)null : dataReader.GetUInt16(i));
+                        source.ChatDialog = (dataReader.IsDBNull(i) ? (Nullable<UInt16>)null : dataReader.GetUInt16(i));
                         break;
 
                     case "exp":

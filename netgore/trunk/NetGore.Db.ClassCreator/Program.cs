@@ -48,6 +48,13 @@ namespace NetGore.Db.ClassCreator
             var baseStatColumns = GetStatColumnCollectionItems(StatCollectionType.Base);
             var reqStatColumns = GetStatColumnCollectionItems(StatCollectionType.Requirement);
 
+            Console.WriteLine("This program will generate the code files to match the database." +
+                              " As a result, many code files will be altered. Are you sure you wish to continue?");
+            Console.WriteLine("Press Y to continue, or any other key to abort.");
+
+            if (Console.ReadKey().Key != ConsoleKey.Y)
+                return;
+
             using (var generator = new MySqlClassGenerator("localhost", "root", "", "demogame"))
             {
                 // Custom usings
@@ -168,6 +175,8 @@ namespace NetGore.Db.ClassCreator
                     SaveCodeFile(item);
                 }
             }
+
+            Console.WriteLine("Done");
         }
 
         static void SaveCodeFile(GeneratedTableCode gtc)

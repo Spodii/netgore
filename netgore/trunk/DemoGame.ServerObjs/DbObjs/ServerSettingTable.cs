@@ -6,9 +6,9 @@ using DemoGame.DbObjs;
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Provides a strongly-typed structure for the database table `server_time`.
+    /// Provides a strongly-typed structure for the database table `server_setting`.
     /// </summary>
-    public class ServerTimeTable : IServerTimeTable
+    public class ServerSettingTable : IServerSettingTable
     {
         /// <summary>
         /// The number of columns in the database table that this class represents.
@@ -18,27 +18,27 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The name of the database table that this class represents.
         /// </summary>
-        public const String TableName = "server_time";
+        public const String TableName = "server_setting";
 
         /// <summary>
         /// Array of the database column names.
         /// </summary>
-        static readonly String[] _dbColumns = new string[] { "server_time" };
+        static readonly String[] _dbColumns = new string[] { "motd" };
 
         /// <summary>
         /// Array of the database column names for columns that are primary keys.
         /// </summary>
-        static readonly String[] _dbColumnsKeys = new string[] { "server_time" };
+        static readonly String[] _dbColumnsKeys = new string[] { };
 
         /// <summary>
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
-        static readonly String[] _dbColumnsNonKey = new string[] { };
+        static readonly String[] _dbColumnsNonKey = new string[] { "motd" };
 
         /// <summary>
-        /// The field that maps onto the database column `server_time`.
+        /// The field that maps onto the database column `motd`.
         /// </summary>
-        DateTime _serverTime;
+        String _motd;
 
         /// <summary>
         /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
@@ -65,26 +65,26 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// ServerTimeTable constructor.
+        /// ServerSettingTable constructor.
         /// </summary>
-        public ServerTimeTable()
+        public ServerSettingTable()
         {
         }
 
         /// <summary>
-        /// ServerTimeTable constructor.
+        /// ServerSettingTable constructor.
         /// </summary>
-        /// <param name="serverTime">The initial value for the corresponding property.</param>
-        public ServerTimeTable(DateTime @serverTime)
+        /// <param name="motd">The initial value for the corresponding property.</param>
+        public ServerSettingTable(String @motd)
         {
-            ServerTime = @serverTime;
+            Motd = @motd;
         }
 
         /// <summary>
-        /// ServerTimeTable constructor.
+        /// ServerSettingTable constructor.
         /// </summary>
-        /// <param name="source">IServerTimeTable to copy the initial values from.</param>
-        public ServerTimeTable(IServerTimeTable source)
+        /// <param name="source">IServerSettingTable to copy the initial values from.</param>
+        public ServerSettingTable(IServerSettingTable source)
         {
             CopyValuesFrom(source);
         }
@@ -96,9 +96,9 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
-        public static void CopyValues(IServerTimeTable source, IDictionary<String, Object> dic)
+        public static void CopyValues(IServerSettingTable source, IDictionary<String, Object> dic)
         {
-            dic["@server_time"] = source.ServerTime;
+            dic["@motd"] = source.Motd;
         }
 
         /// <summary>
@@ -113,12 +113,12 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Copies the values from the given <paramref name="source"/> into this ServerTimeTable.
+        /// Copies the values from the given <paramref name="source"/> into this ServerSettingTable.
         /// </summary>
-        /// <param name="source">The IServerTimeTable to copy the values from.</param>
-        public void CopyValuesFrom(IServerTimeTable source)
+        /// <param name="source">The IServerSettingTable to copy the values from.</param>
+        public void CopyValuesFrom(IServerSettingTable source)
         {
-            ServerTime = source.ServerTime;
+            Motd = source.Motd;
         }
 
         /// <summary>
@@ -132,8 +132,9 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "server_time":
-                    return new ColumnMetadata("server_time", "", "datetime", null, typeof(DateTime), false, true, false);
+                case "motd":
+                    return new ColumnMetadata("motd", "The message of the day.", "varchar(0)", "", typeof(String), false, false,
+                                              false);
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -151,8 +152,8 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "server_time":
-                    return ServerTime;
+                case "motd":
+                    return Motd;
 
                 default:
                     throw new ArgumentException("Field not found.", "columnName");
@@ -168,8 +169,8 @@ namespace DemoGame.Server.DbObjs
         {
             switch (columnName)
             {
-                case "server_time":
-                    ServerTime = (DateTime)value;
+                case "motd":
+                    Motd = (String)value;
                     break;
 
                 default:
@@ -177,16 +178,17 @@ namespace DemoGame.Server.DbObjs
             }
         }
 
-        #region IServerTimeTable Members
+        #region IServerSettingTable Members
 
         /// <summary>
-        /// Gets or sets the value for the field that maps onto the database column `server_time`.
-        /// The underlying database type is `datetime`.
+        /// Gets or sets the value for the field that maps onto the database column `motd`.
+        /// The underlying database type is `varchar(0)`. The database column contains the comment: 
+        /// "The message of the day.".
         /// </summary>
-        public DateTime ServerTime
+        public String Motd
         {
-            get { return _serverTime; }
-            set { _serverTime = value; }
+            get { return _motd; }
+            set { _motd = value; }
         }
 
         /// <summary>
@@ -196,9 +198,9 @@ namespace DemoGame.Server.DbObjs
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        public IServerTimeTable DeepCopy()
+        public IServerSettingTable DeepCopy()
         {
-            return new ServerTimeTable(this);
+            return new ServerSettingTable(this);
         }
 
         #endregion

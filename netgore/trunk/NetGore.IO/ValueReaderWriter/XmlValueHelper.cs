@@ -7,7 +7,7 @@ namespace NetGore.IO
     /// <summary>
     /// Helper class for the <see cref="XmlValueWriter"/> and <see cref="XmlValueReader"/>.
     /// </summary>
-    internal static class XmlValueHelper
+    static class XmlValueHelper
     {
         /// <summary>
         /// The key name used for the Count value when writing a collection.

@@ -6,10 +6,10 @@ using NetGore.Db;
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Contains extension methods for class CharacterInventoryTable that assist in performing
+    /// Contains extension methods for class ServerSettingTable that assist in performing
     /// reads and writes to and from a database.
     /// </summary>
-    public static class CharacterInventoryTableDbExtensions
+    public static class ServerSettingTableDbExtensions
     {
         /// <summary>
         /// Copies the column values into the given DbParameterValues using the database column name
@@ -18,11 +18,9 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void CopyValues(this ICharacterInventoryTable source, DbParameterValues paramValues)
+        public static void CopyValues(this IServerSettingTable source, DbParameterValues paramValues)
         {
-            paramValues["@character_id"] = (Int32)source.CharacterID;
-            paramValues["@item_id"] = (Int32)source.ItemID;
-            paramValues["@slot"] = (Byte)source.Slot;
+            paramValues["@motd"] = source.Motd;
         }
 
         /// <summary>
@@ -32,18 +30,12 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void ReadValues(this CharacterInventoryTable source, IDataReader dataReader)
+        public static void ReadValues(this ServerSettingTable source, IDataReader dataReader)
         {
             Int32 i;
 
-            i = dataReader.GetOrdinal("character_id");
-            source.CharacterID = (CharacterID)dataReader.GetInt32(i);
-
-            i = dataReader.GetOrdinal("item_id");
-            source.ItemID = (ItemID)dataReader.GetInt32(i);
-
-            i = dataReader.GetOrdinal("slot");
-            source.Slot = (InventorySlot)dataReader.GetByte(i);
+            i = dataReader.GetOrdinal("motd");
+            source.Motd = dataReader.GetString(i);
         }
 
         /// <summary>
@@ -56,22 +48,14 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="paramValues">The DbParameterValues to copy the values into.</param>
-        public static void TryCopyValues(this ICharacterInventoryTable source, DbParameterValues paramValues)
+        public static void TryCopyValues(this IServerSettingTable source, DbParameterValues paramValues)
         {
             for (int i = 0; i < paramValues.Count; i++)
             {
                 switch (paramValues.GetParameterName(i))
                 {
-                    case "@character_id":
-                        paramValues[i] = (Int32)source.CharacterID;
-                        break;
-
-                    case "@item_id":
-                        paramValues[i] = (Int32)source.ItemID;
-                        break;
-
-                    case "@slot":
-                        paramValues[i] = (Byte)source.Slot;
+                    case "@motd":
+                        paramValues[i] = source.Motd;
                         break;
                 }
             }
@@ -87,22 +71,14 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to add the extension method to.</param>
         /// <param name="dataReader">The IDataReader to read the values from. Must already be ready to be read from.</param>
-        public static void TryReadValues(this CharacterInventoryTable source, IDataReader dataReader)
+        public static void TryReadValues(this ServerSettingTable source, IDataReader dataReader)
         {
             for (int i = 0; i < dataReader.FieldCount; i++)
             {
                 switch (dataReader.GetName(i))
                 {
-                    case "character_id":
-                        source.CharacterID = (CharacterID)dataReader.GetInt32(i);
-                        break;
-
-                    case "item_id":
-                        source.ItemID = (ItemID)dataReader.GetInt32(i);
-                        break;
-
-                    case "slot":
-                        source.Slot = (InventorySlot)dataReader.GetByte(i);
+                    case "motd":
+                        source.Motd = dataReader.GetString(i);
                         break;
                 }
             }

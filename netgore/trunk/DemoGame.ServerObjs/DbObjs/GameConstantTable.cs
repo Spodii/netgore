@@ -2,14 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using DemoGame.DbObjs;
-using NetGore;
 
 namespace DemoGame.Server.DbObjs
 {
     /// <summary>
-    /// Provides a strongly-typed structure for the database table `game_data`.
+    /// Provides a strongly-typed structure for the database table `game_constant`.
     /// </summary>
-    public class GameDataTable : IGameDataTable
+    public class GameConstantTable : IGameConstantTable
     {
         /// <summary>
         /// The number of columns in the database table that this class represents.
@@ -19,7 +18,7 @@ namespace DemoGame.Server.DbObjs
         /// <summary>
         /// The name of the database table that this class represents.
         /// </summary>
-        public const String TableName = "game_data";
+        public const String TableName = "game_constant";
 
         /// <summary>
         /// Array of the database column names.
@@ -141,14 +140,14 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// GameDataTable constructor.
+        /// GameConstantTable constructor.
         /// </summary>
-        public GameDataTable()
+        public GameConstantTable()
         {
         }
 
         /// <summary>
-        /// GameDataTable constructor.
+        /// GameConstantTable constructor.
         /// </summary>
         /// <param name="maxAccountNameLength">The initial value for the corresponding property.</param>
         /// <param name="maxAccountPasswordLength">The initial value for the corresponding property.</param>
@@ -164,11 +163,11 @@ namespace DemoGame.Server.DbObjs
         /// <param name="serverPingPort">The initial value for the corresponding property.</param>
         /// <param name="serverTcpPort">The initial value for the corresponding property.</param>
         /// <param name="worldPhysicsUpdateRate">The initial value for the corresponding property.</param>
-        public GameDataTable(Byte @maxAccountNameLength, Byte @maxAccountPasswordLength, Byte @maxCharacterNameLength,
-                             Byte @maxCharactersPerAccount, UInt16 @maxStatusEffectPower, Byte @minAccountNameLength,
-                             Byte @minAccountPasswordLength, Byte @minCharacterNameLength, UInt16 @screenHeight,
-                             UInt16 @screenWidth, String @serverIp, UInt16 @serverPingPort, UInt16 @serverTcpPort,
-                             UInt16 @worldPhysicsUpdateRate)
+        public GameConstantTable(Byte @maxAccountNameLength, Byte @maxAccountPasswordLength, Byte @maxCharacterNameLength,
+                                 Byte @maxCharactersPerAccount, UInt16 @maxStatusEffectPower, Byte @minAccountNameLength,
+                                 Byte @minAccountPasswordLength, Byte @minCharacterNameLength, UInt16 @screenHeight,
+                                 UInt16 @screenWidth, String @serverIp, UInt16 @serverPingPort, UInt16 @serverTcpPort,
+                                 UInt16 @worldPhysicsUpdateRate)
         {
             MaxAccountNameLength = @maxAccountNameLength;
             MaxAccountPasswordLength = @maxAccountPasswordLength;
@@ -187,10 +186,10 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// GameDataTable constructor.
+        /// GameConstantTable constructor.
         /// </summary>
-        /// <param name="source">IGameDataTable to copy the initial values from.</param>
-        public GameDataTable(IGameDataTable source)
+        /// <param name="source">IGameConstantTable to copy the initial values from.</param>
+        public GameConstantTable(IGameConstantTable source)
         {
             CopyValuesFrom(source);
         }
@@ -202,7 +201,7 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         /// <param name="source">The object to copy the values from.</param>
         /// <param name="dic">The Dictionary to copy the values into.</param>
-        public static void CopyValues(IGameDataTable source, IDictionary<String, Object> dic)
+        public static void CopyValues(IGameConstantTable source, IDictionary<String, Object> dic)
         {
             dic["@max_account_name_length"] = source.MaxAccountNameLength;
             dic["@max_account_password_length"] = source.MaxAccountPasswordLength;
@@ -232,10 +231,10 @@ namespace DemoGame.Server.DbObjs
         }
 
         /// <summary>
-        /// Copies the values from the given <paramref name="source"/> into this GameDataTable.
+        /// Copies the values from the given <paramref name="source"/> into this GameConstantTable.
         /// </summary>
-        /// <param name="source">The IGameDataTable to copy the values from.</param>
-        public void CopyValuesFrom(IGameDataTable source)
+        /// <param name="source">The IGameConstantTable to copy the values from.</param>
+        public void CopyValuesFrom(IGameConstantTable source)
         {
             MaxAccountNameLength = source.MaxAccountNameLength;
             MaxAccountPasswordLength = source.MaxAccountPasswordLength;
@@ -452,7 +451,7 @@ namespace DemoGame.Server.DbObjs
             }
         }
 
-        #region IGameDataTable Members
+        #region IGameConstantTable Members
 
         /// <summary>
         /// Gets or sets the value for the field that maps onto the database column `max_account_name_length`.
@@ -601,9 +600,9 @@ namespace DemoGame.Server.DbObjs
         /// <returns>
         /// A deep copy of this table.
         /// </returns>
-        public IGameDataTable DeepCopy()
+        public IGameConstantTable DeepCopy()
         {
-            return new GameDataTable(this);
+            return new GameConstantTable(this);
         }
 
         #endregion

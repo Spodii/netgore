@@ -263,6 +263,16 @@ namespace DemoGame.Server
 
             // Load the user
             userAccount.SetUser(World, characterID);
+
+            // Send the MOTD
+            var user = userAccount.User;
+            if (user != null && !string.IsNullOrEmpty(Server.MOTD))
+            {
+                using (var pw = ServerPacket.Chat(Server.MOTD))
+                {
+                    user.Send(pw);
+                }
+            }
         }
 
         [MessageHandler((byte)ClientPacketID.SelectNPCChatDialogResponse)]
