@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <GrhDatas>
   <Stationary>
-    <Count>150</Count>
+    <Count>100</Count>
     <Item0>
       <Index>1</Index>
       <Frames>
@@ -115,118 +115,134 @@
       </Texture>
     </Item6>
     <Item7>
+      <Index>8</Index>
+      <Frames>
+        <Count>1</Count>
+        <Item0>8</Item0>
+      </Frames>
+      <Category>
+        <Name>GUI.Default.Controls.TextBox</Name>
+        <Title>Bottom</Title>
+      </Category>
+      <AutomaticSize>True</AutomaticSize>
+      <Texture>
+        <Name>GUI/Default/Controls/TextBox/Bottom</Name>
+        <Source>0,0,4,4</Source>
+      </Texture>
+    </Item7>
+    <Item8>
       <Index>9</Index>
       <Frames>
         <Count>1</Count>
         <Item0>9</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>Background</Title>
+        <Name>GUI.Default.Controls.TextBox</Name>
+        <Title>BottomLeft</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>10,36,4,4</Source>
+        <Name>GUI/Default/Controls/TextBox/BottomLeft</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item7>
-    <Item8>
+    </Item8>
+    <Item9>
       <Index>10</Index>
       <Frames>
         <Count>1</Count>
         <Item0>10</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>Left</Title>
+        <Name>GUI.Default.Controls.TextBox</Name>
+        <Title>BottomRight</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>2,36,4,4</Source>
+        <Name>GUI/Default/Controls/TextBox/BottomRight</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item8>
-    <Item9>
+    </Item9>
+    <Item10>
       <Index>11</Index>
       <Frames>
         <Count>1</Count>
         <Item0>11</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>Right</Title>
+        <Name>GUI.Default.Controls.TextBox</Name>
+        <Title>Left</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>18,36,4,4</Source>
+        <Name>GUI/Default/Controls/TextBox/Left</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item9>
-    <Item10>
+    </Item10>
+    <Item11>
       <Index>12</Index>
       <Frames>
         <Count>1</Count>
         <Item0>12</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>Bottom</Title>
+        <Name>GUI.Default.Controls.TextBox</Name>
+        <Title>Right</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>10,44,4,4</Source>
+        <Name>GUI/Default/Controls/TextBox/Right</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item10>
-    <Item11>
+    </Item11>
+    <Item12>
       <Index>13</Index>
       <Frames>
         <Count>1</Count>
         <Item0>13</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>BottomLeft</Title>
+        <Name>GUI.Default.Controls.TextBox</Name>
+        <Title>Top</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>2,44,4,4</Source>
+        <Name>GUI/Default/Controls/TextBox/Top</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item11>
-    <Item12>
+    </Item12>
+    <Item13>
       <Index>14</Index>
       <Frames>
         <Count>1</Count>
         <Item0>14</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>BottomRight</Title>
+        <Name>GUI.Default.Controls.TextBox</Name>
+        <Title>TopLeft</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>18,44,4,4</Source>
+        <Name>GUI/Default/Controls/TextBox/TopLeft</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item12>
-    <Item13>
+    </Item13>
+    <Item14>
       <Index>15</Index>
       <Frames>
         <Count>1</Count>
         <Item0>15</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Form</Name>
-        <Title>TopLeft</Title>
+        <Name>GUI.Default.Controls.TextBox</Name>
+        <Title>TopRight</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>2,2,4,20</Source>
+        <Name>GUI/Default/Controls/TextBox/TopRight</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item13>
-    <Item14>
+    </Item14>
+    <Item15>
       <Index>16</Index>
       <Frames>
         <Count>1</Count>
@@ -234,15 +250,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Form</Name>
-        <Title>Top</Title>
+        <Title>Background</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>10,2,4,20</Source>
+        <Name>GUI/Default/Controls/Form/Background</Name>
+        <Source>0,0,6,6</Source>
       </Texture>
-    </Item14>
-    <Item15>
+    </Item15>
+    <Item16>
       <Index>17</Index>
       <Frames>
         <Count>1</Count>
@@ -250,223 +266,223 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Form</Name>
-        <Title>TopRight</Title>
+        <Title>Bottom</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>18,2,4,20</Source>
+        <Name>GUI/Default/Controls/Form/Bottom</Name>
+        <Source>0,0,6,6</Source>
       </Texture>
-    </Item15>
-    <Item16>
+    </Item16>
+    <Item17>
       <Index>18</Index>
       <Frames>
         <Count>1</Count>
         <Item0>18</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>Background</Title>
+        <Name>GUI.Default.Controls.Form</Name>
+        <Title>BottomLeft</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>39,41,2,2</Source>
+        <Name>GUI/Default/Controls/Form/BottomLeft</Name>
+        <Source>0,0,6,6</Source>
       </Texture>
-    </Item16>
-    <Item17>
+    </Item17>
+    <Item18>
       <Index>19</Index>
       <Frames>
         <Count>1</Count>
         <Item0>19</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>Left</Title>
+        <Name>GUI.Default.Controls.Form</Name>
+        <Title>BottomRight</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>34,41,2,2</Source>
+        <Name>GUI/Default/Controls/Form/BottomRight</Name>
+        <Source>0,0,6,6</Source>
       </Texture>
-    </Item17>
-    <Item18>
+    </Item18>
+    <Item19>
       <Index>20</Index>
       <Frames>
         <Count>1</Count>
         <Item0>20</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>Right</Title>
+        <Name>GUI.Default.Controls.Form</Name>
+        <Title>Left</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>44,41,2,2</Source>
+        <Name>GUI/Default/Controls/Form/Left</Name>
+        <Source>0,0,6,6</Source>
       </Texture>
-    </Item18>
-    <Item19>
+    </Item19>
+    <Item20>
       <Index>21</Index>
       <Frames>
         <Count>1</Count>
         <Item0>21</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>Bottom</Title>
+        <Name>GUI.Default.Controls.Form</Name>
+        <Title>Right</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>39,46,2,2</Source>
+        <Name>GUI/Default/Controls/Form/Right</Name>
+        <Source>0,0,6,6</Source>
       </Texture>
-    </Item19>
-    <Item20>
+    </Item20>
+    <Item21>
       <Index>22</Index>
       <Frames>
         <Count>1</Count>
         <Item0>22</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
+        <Name>GUI.Default.Controls.Form</Name>
         <Title>Top</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>39,36,2,2</Source>
+        <Name>GUI/Default/Controls/Form/Top</Name>
+        <Source>0,0,6,22</Source>
       </Texture>
-    </Item20>
-    <Item21>
+    </Item21>
+    <Item22>
       <Index>23</Index>
       <Frames>
         <Count>1</Count>
         <Item0>23</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
+        <Name>GUI.Default.Controls.Form</Name>
         <Title>TopLeft</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>34,36,2,2</Source>
+        <Name>GUI/Default/Controls/Form/TopLeft</Name>
+        <Source>0,0,6,22</Source>
       </Texture>
-    </Item21>
-    <Item22>
+    </Item22>
+    <Item23>
       <Index>24</Index>
       <Frames>
         <Count>1</Count>
         <Item0>24</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
+        <Name>GUI.Default.Controls.Form</Name>
         <Title>TopRight</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>44,36,2,2</Source>
+        <Name>GUI/Default/Controls/Form/TopRight</Name>
+        <Source>0,0,6,22</Source>
       </Texture>
-    </Item22>
-    <Item23>
+    </Item23>
+    <Item24>
       <Index>25</Index>
       <Frames>
         <Count>1</Count>
         <Item0>25</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>BottomLeft</Title>
+        <Name>GUI.Default.Controls.CheckBox</Name>
+        <Title>Ticked</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>34,46,2,2</Source>
+        <Name>GUI/Default/Controls/CheckBox/Ticked</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item23>
-    <Item24>
+    </Item24>
+    <Item25>
       <Index>26</Index>
       <Frames>
         <Count>1</Count>
         <Item0>26</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.TextBox</Name>
-        <Title>BottomRight</Title>
+        <Name>GUI.Default.Controls.CheckBox</Name>
+        <Title>TickedMouseOver</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>44,46,2,2</Source>
+        <Name>GUI/Default/Controls/CheckBox/TickedMouseOver</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item24>
-    <Item25>
+    </Item25>
+    <Item26>
       <Index>27</Index>
       <Frames>
         <Count>1</Count>
         <Item0>27</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>Background</Title>
+        <Name>GUI.Default.Controls.CheckBox</Name>
+        <Title>TickedPressed</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>112,36,5,5</Source>
+        <Name>GUI/Default/Controls/CheckBox/TickedPressed</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item25>
-    <Item26>
+    </Item26>
+    <Item27>
       <Index>28</Index>
       <Frames>
         <Count>1</Count>
         <Item0>28</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>Left</Title>
+        <Name>GUI.Default.Controls.CheckBox</Name>
+        <Title>Unticked</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>103,36,5,5</Source>
+        <Name>GUI/Default/Controls/CheckBox/Unticked</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item26>
-    <Item27>
+    </Item27>
+    <Item28>
       <Index>29</Index>
       <Frames>
         <Count>1</Count>
         <Item0>29</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>Top</Title>
+        <Name>GUI.Default.Controls.CheckBox</Name>
+        <Title>UntickedMouseOver</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>112,28,5,5</Source>
+        <Name>GUI/Default/Controls/CheckBox/UntickedMouseOver</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item27>
-    <Item28>
+    </Item28>
+    <Item29>
       <Index>30</Index>
       <Frames>
         <Count>1</Count>
         <Item0>30</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Button</Name>
-        <Title>Right</Title>
+        <Name>GUI.Default.Controls.CheckBox</Name>
+        <Title>UntickedPressed</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>121,36,5,5</Source>
+        <Name>GUI/Default/Controls/CheckBox/UntickedPressed</Name>
+        <Source>0,0,15,15</Source>
       </Texture>
-    </Item28>
-    <Item29>
+    </Item29>
+    <Item30>
       <Index>31</Index>
       <Frames>
         <Count>1</Count>
@@ -474,15 +490,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button</Name>
-        <Title>Bottom</Title>
+        <Title>Background</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>112,44,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Background</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item29>
-    <Item30>
+    </Item30>
+    <Item31>
       <Index>32</Index>
       <Frames>
         <Count>1</Count>
@@ -490,15 +506,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button</Name>
-        <Title>TopLeft</Title>
+        <Title>Bottom</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>103,28,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Bottom</Name>
+        <Source>0,0,7,5</Source>
       </Texture>
-    </Item30>
-    <Item31>
+    </Item31>
+    <Item32>
       <Index>33</Index>
       <Frames>
         <Count>1</Count>
@@ -506,15 +522,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button</Name>
-        <Title>TopRight</Title>
+        <Title>BottomLeft</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>121,28,5,5</Source>
+        <Name>GUI/Default/Controls/Button/BottomLeft</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item31>
-    <Item32>
+    </Item32>
+    <Item33>
       <Index>34</Index>
       <Frames>
         <Count>1</Count>
@@ -522,15 +538,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button</Name>
-        <Title>BottomLeft</Title>
+        <Title>BottomRight</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>103,44,5,5</Source>
+        <Name>GUI/Default/Controls/Button/BottomRight</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item32>
-    <Item33>
+    </Item33>
+    <Item34>
       <Index>35</Index>
       <Frames>
         <Count>1</Count>
@@ -538,79 +554,79 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button</Name>
-        <Title>BottomRight</Title>
+        <Title>Left</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>121,44,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Left</Name>
+        <Source>0,0,5,7</Source>
       </Texture>
-    </Item33>
-    <Item34>
+    </Item34>
+    <Item35>
       <Index>36</Index>
       <Frames>
         <Count>1</Count>
         <Item0>36</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>Background</Title>
+        <Name>GUI.Default.Controls.Button</Name>
+        <Title>Right</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>112,11,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Right</Name>
+        <Source>0,0,5,7</Source>
       </Texture>
-    </Item34>
-    <Item35>
+    </Item35>
+    <Item36>
       <Index>37</Index>
       <Frames>
         <Count>1</Count>
         <Item0>37</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>Left</Title>
+        <Name>GUI.Default.Controls.Button</Name>
+        <Title>Top</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>103,11,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Top</Name>
+        <Source>0,0,7,5</Source>
       </Texture>
-    </Item35>
-    <Item36>
+    </Item36>
+    <Item37>
       <Index>38</Index>
       <Frames>
         <Count>1</Count>
         <Item0>38</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>Top</Title>
+        <Name>GUI.Default.Controls.Button</Name>
+        <Title>TopLeft</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>112,3,5,5</Source>
+        <Name>GUI/Default/Controls/Button/TopLeft</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item36>
-    <Item37>
+    </Item37>
+    <Item38>
       <Index>39</Index>
       <Frames>
         <Count>1</Count>
         <Item0>39</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>Right</Title>
+        <Name>GUI.Default.Controls.Button</Name>
+        <Title>TopRight</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>121,11,5,5</Source>
+        <Name>GUI/Default/Controls/Button/TopRight</Name>
+        <Source>0,0,5,5</Source>
       </Texture>
-    </Item37>
-    <Item38>
+    </Item38>
+    <Item39>
       <Index>40</Index>
       <Frames>
         <Count>1</Count>
@@ -620,13 +636,13 @@
         <Name>GUI.Default.Controls.Button.Pressed</Name>
         <Title>Bottom</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>112,19,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Pressed/Bottom</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item38>
-    <Item39>
+    </Item39>
+    <Item40>
       <Index>41</Index>
       <Frames>
         <Count>1</Count>
@@ -634,15 +650,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>TopLeft</Title>
+        <Title>BottomLeft</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>103,3,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Pressed/BottomLeft</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item39>
-    <Item40>
+    </Item40>
+    <Item41>
       <Index>42</Index>
       <Frames>
         <Count>1</Count>
@@ -650,15 +666,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>TopRight</Title>
+        <Title>BottomRight</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>121,3,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Pressed/BottomRight</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item40>
-    <Item41>
+    </Item41>
+    <Item42>
       <Index>43</Index>
       <Frames>
         <Count>1</Count>
@@ -666,15 +682,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>BottomLeft</Title>
+        <Title>Left</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>103,19,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Pressed/Left</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item41>
-    <Item42>
+    </Item42>
+    <Item43>
       <Index>44</Index>
       <Frames>
         <Count>1</Count>
@@ -682,63 +698,63 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button.Pressed</Name>
-        <Title>BottomRight</Title>
+        <Title>Right</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>121,19,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Pressed/Right</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item42>
-    <Item43>
+    </Item43>
+    <Item44>
       <Index>45</Index>
       <Frames>
         <Count>1</Count>
         <Item0>45</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>Background</Title>
+        <Name>GUI.Default.Controls.Button.Pressed</Name>
+        <Title>Top</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>84,11,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Pressed/Top</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item43>
-    <Item44>
+    </Item44>
+    <Item45>
       <Index>46</Index>
       <Frames>
         <Count>1</Count>
         <Item0>46</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>Left</Title>
+        <Name>GUI.Default.Controls.Button.Pressed</Name>
+        <Title>TopLeft</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>75,11,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Pressed/TopLeft</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item44>
-    <Item45>
+    </Item45>
+    <Item46>
       <Index>47</Index>
       <Frames>
         <Count>1</Count>
         <Item0>47</Item0>
       </Frames>
       <Category>
-        <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>Top</Title>
+        <Name>GUI.Default.Controls.Button.Pressed</Name>
+        <Title>TopRight</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>84,3,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Pressed/TopRight</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item45>
-    <Item46>
+    </Item46>
+    <Item47>
       <Index>48</Index>
       <Frames>
         <Count>1</Count>
@@ -746,15 +762,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>Right</Title>
+        <Title>Bottom</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>93,11,5,5</Source>
+        <Name>GUI/Default/Controls/Button/MouseOver/Bottom</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item46>
-    <Item47>
+    </Item47>
+    <Item48>
       <Index>49</Index>
       <Frames>
         <Count>1</Count>
@@ -762,15 +778,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>Bottom</Title>
+        <Title>BottomLeft</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>84,19,5,5</Source>
+        <Name>GUI/Default/Controls/Button/MouseOver/BottomLeft</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item47>
-    <Item48>
+    </Item48>
+    <Item49>
       <Index>50</Index>
       <Frames>
         <Count>1</Count>
@@ -778,15 +794,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>TopLeft</Title>
+        <Title>BottomRight</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>75,3,5,5</Source>
+        <Name>GUI/Default/Controls/Button/MouseOver/BottomRight</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item48>
-    <Item49>
+    </Item49>
+    <Item50>
       <Index>51</Index>
       <Frames>
         <Count>1</Count>
@@ -794,15 +810,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>TopRight</Title>
+        <Title>Left</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>93,3,5,5</Source>
+        <Name>GUI/Default/Controls/Button/MouseOver/Left</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item49>
-    <Item50>
+    </Item50>
+    <Item51>
       <Index>52</Index>
       <Frames>
         <Count>1</Count>
@@ -810,15 +826,15 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>BottomLeft</Title>
+        <Title>Right</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>75,19,5,5</Source>
+        <Name>GUI/Default/Controls/Button/MouseOver/Right</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item50>
-    <Item51>
+    </Item51>
+    <Item52>
       <Index>53</Index>
       <Frames>
         <Count>1</Count>
@@ -826,111 +842,111 @@
       </Frames>
       <Category>
         <Name>GUI.Default.Controls.Button.MouseOver</Name>
-        <Title>BottomRight</Title>
+        <Title>Top</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>93,19,5,5</Source>
+        <Name>GUI/Default/Controls/Button/MouseOver/Top</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item51>
-    <Item52>
+    </Item52>
+    <Item53>
       <Index>54</Index>
       <Frames>
         <Count>1</Count>
         <Item0>54</Item0>
       </Frames>
       <Category>
-        <Name>GUI.XP.Controls.Button.MouseOver</Name>
-        <Title>Background</Title>
+        <Name>GUI.Default.Controls.TextBox</Name>
+        <Title>Center</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>84,11,5,5</Source>
+        <Name>GUI/Default/Controls/TextBox/Center</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item52>
-    <Item53>
+    </Item53>
+    <Item54>
       <Index>55</Index>
       <Frames>
         <Count>1</Count>
         <Item0>55</Item0>
       </Frames>
       <Category>
-        <Name>GUI.XP.Controls.Button.MouseOver</Name>
-        <Title>Bottom</Title>
+        <Name>GUI.Default.Controls.Button.Pressed</Name>
+        <Title>Background</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>84,19,5,5</Source>
+        <Name>GUI/Default/Controls/Button/Pressed/Background</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item53>
-    <Item54>
+    </Item54>
+    <Item55>
       <Index>56</Index>
       <Frames>
         <Count>1</Count>
         <Item0>56</Item0>
       </Frames>
       <Category>
-        <Name>GUI.XP.Controls.Button.MouseOver</Name>
-        <Title>BottomLeft</Title>
+        <Name>GUI.Default.Controls.Button.MouseOver</Name>
+        <Title>Background</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>75,19,5,5</Source>
+        <Name>GUI/Default/Controls/Button/MouseOver/Background</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item54>
-    <Item55>
+    </Item55>
+    <Item56>
       <Index>57</Index>
       <Frames>
         <Count>1</Count>
         <Item0>57</Item0>
       </Frames>
       <Category>
-        <Name>GUI.XP.Controls.Button.MouseOver</Name>
-        <Title>BottomRight</Title>
+        <Name>GUI.Default.Controls.Button.MouseOver</Name>
+        <Title>TopLeft</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>93,19,5,5</Source>
+        <Name>GUI/Default/Controls/Button/MouseOver/TopLeft</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item55>
-    <Item56>
+    </Item56>
+    <Item57>
       <Index>58</Index>
       <Frames>
         <Count>1</Count>
         <Item0>58</Item0>
       </Frames>
       <Category>
-        <Name>GUI.XP.Controls.Button.MouseOver</Name>
-        <Title>Left</Title>
+        <Name>GUI.Default.Controls.Button.MouseOver</Name>
+        <Title>TopRight</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>75,11,5,5</Source>
+        <Name>GUI/Default/Controls/Button/MouseOver/TopRight</Name>
+        <Source>0,0,7,7</Source>
       </Texture>
-    </Item56>
-    <Item57>
+    </Item57>
+    <Item58>
       <Index>59</Index>
       <Frames>
         <Count>1</Count>
         <Item0>59</Item0>
       </Frames>
       <Category>
-        <Name>GUI.XP.Controls.Button.MouseOver</Name>
-        <Title>Right</Title>
+        <Name>GUI.Default.Controls.TextBox</Name>
+        <Title>Background</Title>
       </Category>
-      <AutomaticSize>False</AutomaticSize>
+      <AutomaticSize>True</AutomaticSize>
       <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>93,11,5,5</Source>
+        <Name>GUI/Default/Controls/TextBox/Background</Name>
+        <Source>0,0,4,4</Source>
       </Texture>
-    </Item57>
-    <Item58>
+    </Item58>
+    <Item59>
       <Index>60</Index>
       <Frames>
         <Count>1</Count>
@@ -945,8 +961,8 @@
         <Name>gui/addstat</Name>
         <Source>1,1,12,12</Source>
       </Texture>
-    </Item58>
-    <Item59>
+    </Item59>
+    <Item60>
       <Index>61</Index>
       <Frames>
         <Count>1</Count>
@@ -961,8 +977,8 @@
         <Name>System/Blank</Name>
         <Source>1,1,2,2</Source>
       </Texture>
-    </Item59>
-    <Item60>
+    </Item60>
+    <Item61>
       <Index>62</Index>
       <Frames>
         <Count>1</Count>
@@ -977,8 +993,8 @@
         <Name>System/Joint</Name>
         <Source>1,1,6,6</Source>
       </Texture>
-    </Item60>
-    <Item61>
+    </Item61>
+    <Item62>
       <Index>63</Index>
       <Frames>
         <Count>1</Count>
@@ -993,8 +1009,8 @@
         <Name>System/Triangle</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item61>
-    <Item62>
+    </Item62>
+    <Item63>
       <Index>64</Index>
       <Frames>
         <Count>1</Count>
@@ -1009,8 +1025,8 @@
         <Name>System/Move</Name>
         <Source>1,1,15,15</Source>
       </Texture>
-    </Item62>
-    <Item63>
+    </Item63>
+    <Item64>
       <Index>65</Index>
       <Frames>
         <Count>1</Count>
@@ -1025,824 +1041,8 @@
         <Name>System/Resize</Name>
         <Source>1,1,6,6</Source>
       </Texture>
-    </Item63>
-    <Item64>
-      <Index>66</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>66</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.MouseOver</Name>
-        <Title>Top</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>84,3,5,5</Source>
-      </Texture>
     </Item64>
     <Item65>
-      <Index>67</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>67</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.MouseOver</Name>
-        <Title>TopLeft</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>75,3,5,5</Source>
-      </Texture>
-    </Item65>
-    <Item66>
-      <Index>68</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>68</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.MouseOver</Name>
-        <Title>TopRight</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>93,3,5,5</Source>
-      </Texture>
-    </Item66>
-    <Item67>
-      <Index>69</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>69</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.Pressed</Name>
-        <Title>Background</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>112,11,5,5</Source>
-      </Texture>
-    </Item67>
-    <Item68>
-      <Index>70</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>70</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.Pressed</Name>
-        <Title>Bottom</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>112,19,5,5</Source>
-      </Texture>
-    </Item68>
-    <Item69>
-      <Index>71</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>71</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.Pressed</Name>
-        <Title>BottomLeft</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>103,19,5,5</Source>
-      </Texture>
-    </Item69>
-    <Item70>
-      <Index>72</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>72</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.Pressed</Name>
-        <Title>BottomRight</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>121,19,5,5</Source>
-      </Texture>
-    </Item70>
-    <Item71>
-      <Index>73</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>73</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.Pressed</Name>
-        <Title>Left</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>103,11,5,5</Source>
-      </Texture>
-    </Item71>
-    <Item72>
-      <Index>74</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>74</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.Pressed</Name>
-        <Title>Right</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>121,11,5,5</Source>
-      </Texture>
-    </Item72>
-    <Item73>
-      <Index>75</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>75</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.Pressed</Name>
-        <Title>Top</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>112,3,5,5</Source>
-      </Texture>
-    </Item73>
-    <Item74>
-      <Index>76</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>76</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.Pressed</Name>
-        <Title>TopLeft</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>103,3,5,5</Source>
-      </Texture>
-    </Item74>
-    <Item75>
-      <Index>77</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>77</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button.Pressed</Name>
-        <Title>TopRight</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>121,3,5,5</Source>
-      </Texture>
-    </Item75>
-    <Item76>
-      <Index>78</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>78</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button</Name>
-        <Title>Background</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>112,36,5,5</Source>
-      </Texture>
-    </Item76>
-    <Item77>
-      <Index>79</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>79</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button</Name>
-        <Title>Bottom</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>112,44,5,5</Source>
-      </Texture>
-    </Item77>
-    <Item78>
-      <Index>80</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>80</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button</Name>
-        <Title>BottomLeft</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>103,44,5,5</Source>
-      </Texture>
-    </Item78>
-    <Item79>
-      <Index>81</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>81</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button</Name>
-        <Title>BottomRight</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>121,44,5,5</Source>
-      </Texture>
-    </Item79>
-    <Item80>
-      <Index>82</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>82</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button</Name>
-        <Title>Left</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>103,36,5,5</Source>
-      </Texture>
-    </Item80>
-    <Item81>
-      <Index>83</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>83</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button</Name>
-        <Title>Right</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>121,36,5,5</Source>
-      </Texture>
-    </Item81>
-    <Item82>
-      <Index>84</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>84</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button</Name>
-        <Title>Top</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>112,28,5,5</Source>
-      </Texture>
-    </Item82>
-    <Item83>
-      <Index>85</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>85</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button</Name>
-        <Title>TopLeft</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>103,28,5,5</Source>
-      </Texture>
-    </Item83>
-    <Item84>
-      <Index>86</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>86</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Button</Name>
-        <Title>TopRight</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>121,28,5,5</Source>
-      </Texture>
-    </Item84>
-    <Item85>
-      <Index>87</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>87</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Form</Name>
-        <Title>Background</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>10,36,4,4</Source>
-      </Texture>
-    </Item85>
-    <Item86>
-      <Index>88</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>88</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Form</Name>
-        <Title>Bottom</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>10,44,4,4</Source>
-      </Texture>
-    </Item86>
-    <Item87>
-      <Index>89</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>89</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Form</Name>
-        <Title>BottomLeft</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>2,44,4,4</Source>
-      </Texture>
-    </Item87>
-    <Item88>
-      <Index>90</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>90</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Form</Name>
-        <Title>BottomRight</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>18,44,4,4</Source>
-      </Texture>
-    </Item88>
-    <Item89>
-      <Index>91</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>91</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Form</Name>
-        <Title>Left</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>2,36,4,4</Source>
-      </Texture>
-    </Item89>
-    <Item90>
-      <Index>92</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>92</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Form</Name>
-        <Title>Right</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>18,36,4,4</Source>
-      </Texture>
-    </Item90>
-    <Item91>
-      <Index>93</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>93</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Form</Name>
-        <Title>Top</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>10,2,52,30</Source>
-      </Texture>
-    </Item91>
-    <Item92>
-      <Index>94</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>94</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Form</Name>
-        <Title>TopLeft</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>2,2,5,30</Source>
-      </Texture>
-    </Item92>
-    <Item93>
-      <Index>95</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>95</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.Form</Name>
-        <Title>TopRight</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>65,2,5,30</Source>
-      </Texture>
-    </Item93>
-    <Item94>
-      <Index>96</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>96</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.TextBox</Name>
-        <Title>Background</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>39,41,2,2</Source>
-      </Texture>
-    </Item94>
-    <Item95>
-      <Index>97</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>97</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.TextBox</Name>
-        <Title>Bottom</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>39,46,2,2</Source>
-      </Texture>
-    </Item95>
-    <Item96>
-      <Index>98</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>98</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.TextBox</Name>
-        <Title>BottomLeft</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>34,46,2,2</Source>
-      </Texture>
-    </Item96>
-    <Item97>
-      <Index>99</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>99</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.TextBox</Name>
-        <Title>BottomRight</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>44,46,2,2</Source>
-      </Texture>
-    </Item97>
-    <Item98>
-      <Index>100</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>100</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.TextBox</Name>
-        <Title>Left</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>34,41,2,2</Source>
-      </Texture>
-    </Item98>
-    <Item99>
-      <Index>101</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>101</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.TextBox</Name>
-        <Title>Right</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>44,41,2,2</Source>
-      </Texture>
-    </Item99>
-    <Item100>
-      <Index>102</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>102</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.TextBox</Name>
-        <Title>Top</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>39,36,2,2</Source>
-      </Texture>
-    </Item100>
-    <Item101>
-      <Index>103</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>103</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.TextBox</Name>
-        <Title>TopLeft</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>34,36,2,2</Source>
-      </Texture>
-    </Item101>
-    <Item102>
-      <Index>104</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>104</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.TextBox</Name>
-        <Title>TopRight</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>44,36,2,2</Source>
-      </Texture>
-    </Item102>
-    <Item103>
-      <Index>105</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>105</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>Unticked</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>65,37,13,13</Source>
-      </Texture>
-    </Item103>
-    <Item104>
-      <Index>106</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>106</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>UntickedMouseOver</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>65,53,13,13</Source>
-      </Texture>
-    </Item104>
-    <Item105>
-      <Index>107</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>107</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>UntickedPressed</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>65,69,13,13</Source>
-      </Texture>
-    </Item105>
-    <Item106>
-      <Index>108</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>108</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>Ticked</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>82,37,13,13</Source>
-      </Texture>
-    </Item106>
-    <Item107>
-      <Index>109</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>109</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>TickedMouseOver</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>82,53,13,13</Source>
-      </Texture>
-    </Item107>
-    <Item108>
-      <Index>110</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>110</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.Default.Controls.CheckBox</Name>
-        <Title>TickedPressed</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/Default/controls</Name>
-        <Source>82,69,13,13</Source>
-      </Texture>
-    </Item108>
-    <Item109>
-      <Index>111</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>111</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.CheckBox</Name>
-        <Title>Ticked</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>82,37,13,13</Source>
-      </Texture>
-    </Item109>
-    <Item110>
-      <Index>112</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>112</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.CheckBox</Name>
-        <Title>TickedMouseOver</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>82,53,13,13</Source>
-      </Texture>
-    </Item110>
-    <Item111>
-      <Index>113</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>113</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.CheckBox</Name>
-        <Title>TickedPressed</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>82,69,13,13</Source>
-      </Texture>
-    </Item111>
-    <Item112>
-      <Index>114</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>114</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.CheckBox</Name>
-        <Title>Unticked</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>65,37,13,13</Source>
-      </Texture>
-    </Item112>
-    <Item113>
-      <Index>115</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>115</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.CheckBox</Name>
-        <Title>UntickedMouseOver</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>65,53,13,13</Source>
-      </Texture>
-    </Item113>
-    <Item114>
-      <Index>116</Index>
-      <Frames>
-        <Count>1</Count>
-        <Item0>116</Item0>
-      </Frames>
-      <Category>
-        <Name>GUI.XP.Controls.CheckBox</Name>
-        <Title>UntickedPressed</Title>
-      </Category>
-      <AutomaticSize>False</AutomaticSize>
-      <Texture>
-        <Name>GUI/XP/controls</Name>
-        <Source>65,69,13,13</Source>
-      </Texture>
-    </Item114>
-    <Item115>
       <Index>117</Index>
       <Frames>
         <Count>1</Count>
@@ -1857,8 +1057,8 @@
         <Name>Effect/_Teleport_frames_400/1</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item115>
-    <Item116>
+    </Item65>
+    <Item66>
       <Index>118</Index>
       <Frames>
         <Count>1</Count>
@@ -1873,8 +1073,8 @@
         <Name>Effect/_Teleport_frames_400/2</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item116>
-    <Item117>
+    </Item66>
+    <Item67>
       <Index>119</Index>
       <Frames>
         <Count>1</Count>
@@ -1889,8 +1089,8 @@
         <Name>Effect/_Teleport_frames_400/3</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item117>
-    <Item118>
+    </Item67>
+    <Item68>
       <Index>120</Index>
       <Frames>
         <Count>1</Count>
@@ -1905,8 +1105,8 @@
         <Name>Effect/_Teleport_frames_400/4</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item118>
-    <Item119>
+    </Item68>
+    <Item69>
       <Index>121</Index>
       <Frames>
         <Count>1</Count>
@@ -1921,8 +1121,8 @@
         <Name>Effect/_Teleport_frames_400/5</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item119>
-    <Item120>
+    </Item69>
+    <Item70>
       <Index>122</Index>
       <Frames>
         <Count>1</Count>
@@ -1937,8 +1137,8 @@
         <Name>Effect/_Teleport_frames_400/6</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item120>
-    <Item121>
+    </Item70>
+    <Item71>
       <Index>123</Index>
       <Frames>
         <Count>1</Count>
@@ -1953,8 +1153,8 @@
         <Name>Effect/_Teleport_frames_400/7</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item121>
-    <Item122>
+    </Item71>
+    <Item72>
       <Index>124</Index>
       <Frames>
         <Count>1</Count>
@@ -1969,8 +1169,8 @@
         <Name>Effect/_Teleport_frames_400/8</Name>
         <Source>0,0,32,64</Source>
       </Texture>
-    </Item122>
-    <Item123>
+    </Item72>
+    <Item73>
       <Index>126</Index>
       <Frames>
         <Count>1</Count>
@@ -1985,8 +1185,8 @@
         <Name>item/melee/titaniumsword</Name>
         <Source>0,0,24,24</Source>
       </Texture>
-    </Item123>
-    <Item124>
+    </Item73>
+    <Item74>
       <Index>127</Index>
       <Frames>
         <Count>1</Count>
@@ -2001,8 +1201,8 @@
         <Name>Item/Potion/Red</Name>
         <Source>1,1,9,16</Source>
       </Texture>
-    </Item124>
-    <Item125>
+    </Item74>
+    <Item75>
       <Index>128</Index>
       <Frames>
         <Count>1</Count>
@@ -2017,8 +1217,8 @@
         <Name>Item/Potion/Blue</Name>
         <Source>1,1,9,16</Source>
       </Texture>
-    </Item125>
-    <Item126>
+    </Item75>
+    <Item76>
       <Index>129</Index>
       <Frames>
         <Count>1</Count>
@@ -2033,8 +1233,8 @@
         <Name>Item/Back/Crystal</Name>
         <Source>0,0,15,25</Source>
       </Texture>
-    </Item126>
-    <Item127>
+    </Item76>
+    <Item77>
       <Index>130</Index>
       <Frames>
         <Count>1</Count>
@@ -2049,8 +1249,8 @@
         <Name>Item/Body/Crystal</Name>
         <Source>0,0,22,22</Source>
       </Texture>
-    </Item127>
-    <Item128>
+    </Item77>
+    <Item78>
       <Index>131</Index>
       <Frames>
         <Count>1</Count>
@@ -2065,8 +1265,8 @@
         <Name>Item/Feet/Crystal</Name>
         <Source>0,0,15,14</Source>
       </Texture>
-    </Item128>
-    <Item129>
+    </Item78>
+    <Item79>
       <Index>132</Index>
       <Frames>
         <Count>1</Count>
@@ -2081,8 +1281,8 @@
         <Name>Item/Head/Crystal</Name>
         <Source>0,0,11,16</Source>
       </Texture>
-    </Item129>
-    <Item130>
+    </Item79>
+    <Item80>
       <Index>133</Index>
       <Frames>
         <Count>1</Count>
@@ -2097,8 +1297,8 @@
         <Name>GUI/Default/Toolbar/Equipped</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item130>
-    <Item131>
+    </Item80>
+    <Item81>
       <Index>134</Index>
       <Frames>
         <Count>1</Count>
@@ -2113,8 +1313,8 @@
         <Name>GUI/Default/Toolbar/Inventory</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item131>
-    <Item132>
+    </Item81>
+    <Item82>
       <Index>135</Index>
       <Frames>
         <Count>1</Count>
@@ -2129,8 +1329,8 @@
         <Name>GUI/Default/Toolbar/Skills</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item132>
-    <Item133>
+    </Item82>
+    <Item83>
       <Index>136</Index>
       <Frames>
         <Count>1</Count>
@@ -2145,8 +1345,8 @@
         <Name>GUI/Default/item_slot</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item133>
-    <Item134>
+    </Item83>
+    <Item84>
       <Index>137</Index>
       <Frames>
         <Count>1</Count>
@@ -2161,8 +1361,8 @@
         <Name>Background/sky</Name>
         <Source>0,0,1024,238</Source>
       </Texture>
-    </Item134>
-    <Item135>
+    </Item84>
+    <Item85>
       <Index>138</Index>
       <Frames>
         <Count>1</Count>
@@ -2177,8 +1377,8 @@
         <Name>Background/trees/dense</Name>
         <Source>0,0,1024,512</Source>
       </Texture>
-    </Item135>
-    <Item136>
+    </Item85>
+    <Item86>
       <Index>139</Index>
       <Frames>
         <Count>1</Count>
@@ -2193,8 +1393,8 @@
         <Name>Background/trees/sparse</Name>
         <Source>0,0,1024,512</Source>
       </Texture>
-    </Item136>
-    <Item137>
+    </Item86>
+    <Item87>
       <Index>140</Index>
       <Frames>
         <Count>1</Count>
@@ -2209,8 +1409,8 @@
         <Name>SkillIcon/heal</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item137>
-    <Item138>
+    </Item87>
+    <Item88>
       <Index>141</Index>
       <Frames>
         <Count>1</Count>
@@ -2225,8 +1425,8 @@
         <Name>StatusIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item138>
-    <Item139>
+    </Item88>
+    <Item89>
       <Index>142</Index>
       <Frames>
         <Count>1</Count>
@@ -2241,8 +1441,8 @@
         <Name>SkillIcon/strengthen</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item139>
-    <Item140>
+    </Item89>
+    <Item90>
       <Index>143</Index>
       <Frames>
         <Count>1</Count>
@@ -2257,8 +1457,8 @@
         <Name>GUI/Default/status icon border</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item140>
-    <Item141>
+    </Item90>
+    <Item91>
       <Index>144</Index>
       <Frames>
         <Count>1</Count>
@@ -2273,8 +1473,8 @@
         <Name>GUI/Default/Toolbar/Stats</Name>
         <Source>0,0,32,32</Source>
       </Texture>
-    </Item141>
-    <Item142>
+    </Item91>
+    <Item92>
       <Index>200</Index>
       <Frames>
         <Count>1</Count>
@@ -2289,8 +1489,8 @@
         <Name>Character/Zombie/Head</Name>
         <Source>0,0,19,19</Source>
       </Texture>
-    </Item142>
-    <Item143>
+    </Item92>
+    <Item93>
       <Index>201</Index>
       <Frames>
         <Count>1</Count>
@@ -2305,8 +1505,8 @@
         <Name>Character/Zombie/Neck</Name>
         <Source>0,0,5,9</Source>
       </Texture>
-    </Item143>
-    <Item144>
+    </Item93>
+    <Item94>
       <Index>202</Index>
       <Frames>
         <Count>1</Count>
@@ -2321,8 +1521,8 @@
         <Name>Character/Zombie/Torso</Name>
         <Source>0,0,16,28</Source>
       </Texture>
-    </Item144>
-    <Item145>
+    </Item94>
+    <Item95>
       <Index>203</Index>
       <Frames>
         <Count>1</Count>
@@ -2337,8 +1537,8 @@
         <Name>Character/Zombie/ArmUpper</Name>
         <Source>0,0,6,10</Source>
       </Texture>
-    </Item145>
-    <Item146>
+    </Item95>
+    <Item96>
       <Index>204</Index>
       <Frames>
         <Count>1</Count>
@@ -2353,8 +1553,8 @@
         <Name>Character/Zombie/ArmLower</Name>
         <Source>0,0,5,21</Source>
       </Texture>
-    </Item146>
-    <Item147>
+    </Item96>
+    <Item97>
       <Index>205</Index>
       <Frames>
         <Count>1</Count>
@@ -2369,8 +1569,8 @@
         <Name>Character/Zombie/LegUpper</Name>
         <Source>0,0,12,22</Source>
       </Texture>
-    </Item147>
-    <Item148>
+    </Item97>
+    <Item98>
       <Index>206</Index>
       <Frames>
         <Count>1</Count>
@@ -2385,8 +1585,8 @@
         <Name>Character/Zombie/LegLower</Name>
         <Source>0,0,13,19</Source>
       </Texture>
-    </Item148>
-    <Item149>
+    </Item98>
+    <Item99>
       <Index>207</Index>
       <Frames>
         <Count>1</Count>
@@ -2401,24 +1601,11 @@
         <Name>Character/Zombie/Shoe</Name>
         <Source>0,0,6,17</Source>
       </Texture>
-    </Item149>
+    </Item99>
   </Stationary>
   <Animated>
-    <Count>2</Count>
+    <Count>1</Count>
     <Item0>
-      <Index>8</Index>
-      <Frames>
-        <Count>2</Count>
-        <Item0>1</Item0>
-        <Item1>3</Item1>
-      </Frames>
-      <Category>
-        <Name>Map.Platform.Grass</Name>
-        <Title>RAPE</Title>
-      </Category>
-      <Speed>100</Speed>
-    </Item0>
-    <Item1>
       <Index>125</Index>
       <Frames>
         <Count>8</Count>
@@ -2436,6 +1623,6 @@
         <Title>Teleport</Title>
       </Category>
       <Speed>400</Speed>
-    </Item1>
+    </Item0>
   </Animated>
 </GrhDatas>

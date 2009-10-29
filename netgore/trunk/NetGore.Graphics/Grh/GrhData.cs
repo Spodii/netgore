@@ -65,7 +65,18 @@ namespace NetGore.Graphics
                     _isUsingAtlas = false;
                     _texture = null;
                     ValidateTexture();
-                    _sourceRect = new Rectangle(0, 0, Texture.Width, Texture.Height);
+
+                    if (Texture == null || Texture.IsDisposed)
+                    {
+                        const string errmsg = "GrhData `{0}` cannot be automatically sized since the texture is null or disposed!";
+                        if (log.IsErrorEnabled)
+                            log.ErrorFormat(errmsg, this);
+                        _sourceRect = new Rectangle(0, 0, 1, 1);
+                    }
+                    else
+                    {
+                        _sourceRect = new Rectangle(0, 0, Texture.Width, Texture.Height);
+                    }
                 }
             }
         }

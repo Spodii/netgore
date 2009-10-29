@@ -1,7 +1,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
 using System.Windows.Forms;
+using log4net;
 using NetGore;
 using NetGore.EditorTools.Properties;
 using NetGore.Graphics;
@@ -18,6 +20,7 @@ namespace NetGore.EditorTools
             new Dictionary<GrhIndex, GrhImageListCacheItem>();
 
         static readonly ImageList _imageList = new ImageList();
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Gets the key for the special image of a closed folder.
@@ -103,7 +106,15 @@ namespace NetGore.EditorTools
             if (ImageList.Images.ContainsKey(key))
                 ImageList.Images.RemoveByKey(key);
 
-            ImageList.Images.Add(key, img);
+            if (img == null)
+            {
+                const string errmsg =
+                    "Failed to create image for GrhData `{0}` - GrhImageList.CreateImage() returned a null image.";
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, grhData);
+            }
+            else
+                ImageList.Images.Add(key, img);
         }
 
         /// <summary>
