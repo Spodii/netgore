@@ -130,7 +130,9 @@ namespace DemoGame.Server.NPCChat
             _value = value;
             _page = page;
             _conditionals = conditionals;
+#if DEBUG
             _text = text;
+#endif
             _actions = actions;
         }
 
