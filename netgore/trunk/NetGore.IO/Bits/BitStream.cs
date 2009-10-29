@@ -685,8 +685,10 @@ namespace NetGore.IO
                 ret.Write(value, remainingBits);
             }
 
+#if DEBUG
             Debug.Assert(ret.LengthBits == bitLength);
             Debug.Assert(PositionBits - initialBitPosition == bitLength);
+#endif
 
             ret.Mode = BitStreamMode.Read;
 
