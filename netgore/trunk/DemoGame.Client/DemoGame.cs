@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -51,8 +52,12 @@ namespace DemoGame.Client
             screenManager.SetScreen(MainMenuScreen.ScreenName);
 
             // NOTE: Temporary volume reduction
-            SoundManager.GetInstance(Content).Volume = 0.7f;
-            MusicManager.GetInstance(Content).Volume = 0.2f;
+            // We use the thread pool due to the potentially long time it can take to load the audio engine
+            ThreadPool.QueueUserWorkItem(delegate
+            {
+                SoundManager.GetInstance(Content).Volume = 0.7f;
+                MusicManager.GetInstance(Content).Volume = 0.2f;
+            });
         }
 
         protected override void Initialize()
