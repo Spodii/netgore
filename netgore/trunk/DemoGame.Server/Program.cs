@@ -37,8 +37,10 @@ namespace DemoGame.Server
         {
             log.Info("Loading server...");
 
-            // This hacks in a callback that will allow us to dispose of the server if the console is closed in any way
-            // Ideally, people would type "quit" or "close" when they want to close it, but hell, not even I do that
+            // This hacks in a callback that will allow us to dispose of the server if the console is closed in any way.
+            // Ideally, people would type "quit" or "close" when they want to close it, but hell, not even I do that.
+            // So by adding this hook, we can dispose of the Server object (most of the time) when the console is closed
+            // without typing "quit".
             _handler += ConsoleCtrlCheck;
             SetConsoleCtrlHandler(_handler, true);
 
