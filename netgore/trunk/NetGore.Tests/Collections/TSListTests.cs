@@ -9,6 +9,8 @@ namespace NetGore.Collections.Tests
     [TestFixture]
     public class TSListTests
     {
+        const int _testRange = 30;
+
         /// <summary>
         /// Dummy method that enumerators over the parameter object.
         /// </summary>
@@ -25,7 +27,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ThreadSafeAddTest()
         {
-            var l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
             for (int i = 0; i < 10; i++)
             {
@@ -42,7 +44,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ThreadSafeFindTest()
         {
-            var l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
             for (int i = 0; i < 10; i++)
             {
@@ -59,7 +61,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ThreadSafeIndexerTest()
         {
-            var l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
             for (int i = 0; i < 10; i++)
             {
@@ -78,7 +80,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ThreadSafeIndexOfTest()
         {
-            var l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
             for (int i = 0; i < 10; i++)
             {
@@ -96,7 +98,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ThreadSafeInsertTest()
         {
-            var l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
             for (int i = 0; i < 10; i++)
             {
@@ -113,7 +115,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ThreadSafeRemoveAtTest()
         {
-            var l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
             for (int i = 0; i < 10; i++)
             {
@@ -130,7 +132,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ThreadSafeRemoveTest()
         {
-            var l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
             for (int i = 0; i < 10; i++)
             {
@@ -147,7 +149,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ThreadSafeToArrayTest()
         {
-            var l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
             for (int i = 0; i < 10; i++)
             {
@@ -164,7 +166,7 @@ namespace NetGore.Collections.Tests
         [Test]
         public void ThreadSafeTrimExcessTest()
         {
-            var l = new TSList<int>(Enumerable.Range(1, 1000));
+            var l = new TSList<int>(Enumerable.Range(1, _testRange));
 
             for (int i = 0; i < 10; i++)
             {
@@ -175,7 +177,7 @@ namespace NetGore.Collections.Tests
             for (int i = 0; i < 10; i++)
             {
                 l.TrimExcess();
-                l.AddRange(Enumerable.Range(1, 100));
+                l.AddRange(Enumerable.Range(1, _testRange / 2));
             }
         }
     }
