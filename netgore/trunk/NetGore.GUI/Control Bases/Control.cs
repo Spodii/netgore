@@ -38,84 +38,89 @@ namespace NetGore.Graphics.GUI
         Vector2 _size;
 
         /// <summary>
-        /// States if a OnClick event will be raised with the OnMouseUp event
+        /// States if a OnClick event will be raised with the OnMouseUp event.
         /// </summary>
         bool _willRaiseClick = false;
 
         /// <summary>
-        /// Notifies when the Control has begun being dragged
+        /// Notifies listeners when the Control has begun being dragged.
         /// </summary>
         public event ControlEventHandler OnBeginDrag;
 
         /// <summary>
-        /// Notifies when the ControlBorder has changed
+        /// Notifies listeners when the ControlBorder has changed.
         /// </summary>
         public event ControlEventHandler OnChangeBorder;
 
         /// <summary>
-        /// Notifies when the Control was clicked
+        /// Notifies listeners when the Control was clicked.
         /// </summary>
         public event MouseClickEventHandler OnClick;
 
         /// <summary>
-        /// Notifies when the Control has been disposed
+        /// Notifies listeners when the Control has been disposed.
         /// </summary>
         public event ControlEventHandler OnDispose;
 
         /// <summary>
-        /// Notifies when the Control has ended being dragged
+        /// Notifies listeners when the Control has ended being dragged.
         /// </summary>
         public event ControlEventHandler OnEndDrag;
 
         /// <summary>
-        /// Notifies when the Control has gained focus
+        /// Notifies listeners when the Control has gained focus.
         /// </summary>
         public event ControlEventHandler OnFocus;
 
         /// <summary>
-        /// Notifies when a key has been pressed down while the Control has focus
+        /// Notifies listeners when a key has been pressed down while the Control has focus.
         /// </summary>
         public event KeyboardEventHandler OnKeyDown;
 
         /// <summary>
-        /// Notifies when a key is being pressed while the Control has focus
+        /// Notifies listeners when a key is being pressed while the Control has focus.
         /// </summary>
         public event KeyboardEventHandler OnKeyPress;
 
         /// <summary>
-        /// Notifies when a key has been raised while the Control has focus
+        /// Notifies listeners when a key has been raised while the Control has focus.
         /// </summary>
         public event KeyboardEventHandler OnKeyUp;
 
         /// <summary>
-        /// Notifies when the Control has lost focus
+        /// Notifies listeners when the Control has lost focus.
         /// </summary>
         public event ControlEventHandler OnLostFocus;
 
         /// <summary>
-        /// Notifies when a mouse button has been pressed down on the Control
+        /// Notifies listeners when a mouse button has been pressed down on the Control.
         /// </summary>
         public event MouseClickEventHandler OnMouseDown;
 
         /// <summary>
-        /// Notifies when the mouse has entered the area of the Control
+        /// Notifies listeners when the mouse has entered the area of the Control.
         /// </summary>
         public event MouseEventHandler OnMouseEnter;
 
         /// <summary>
-        /// Notifies when the mouse has left the area of the Control
+        /// Notifies listeners when the mouse has left the area of the Control.
         /// </summary>
         public event MouseEventHandler OnMouseLeave;
 
         /// <summary>
-        /// Notifies when the mouse has moved over the Control
+        /// Notifies listeners when the mouse has moved over the Control.
         /// </summary>
         public event MouseEventHandler OnMouseMove;
 
         /// <summary>
-        /// Notifies when a mouse button has been raised on the Control
+        /// Notifies listeners when a mouse button has been raised on the Control.
         /// </summary>
         public event MouseClickEventHandler OnMouseUp;
+
+        /// <summary>
+        /// Notifies listeners when the <see cref="Control"/> size has changed.
+        /// </summary>
+        public event ControlEventHandler OnResize;
 
         /// <summary>
         /// Gets or sets the ControlBorder used with this control (can be null)
@@ -320,7 +325,16 @@ namespace NetGore.Graphics.GUI
         public Vector2 Size
         {
             get { return _size; }
-            set { _size = value; }
+            set
+            {
+                if (_size == value)
+                    return;
+
+                _size = value;
+
+                if (OnResize != null)
+                    OnResize(this);
+            }
         }
 
         /// <summary>
