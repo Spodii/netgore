@@ -15,7 +15,7 @@ namespace DemoGame.Client
         public const string ScreenName = "login";
 
         Label _cError;
-        TextBoxSingleLine _cNameText;
+        TextBox _cNameText;
         TextBox _cPasswordText;
         GameplayScreen _gpScreen = null;
         GUIManager _gui;
@@ -114,7 +114,7 @@ namespace DemoGame.Client
             Panel cScreen = new Panel(_gui, Vector2.Zero, ScreenManager.ScreenSize);
 
             new Label("Name:", new Vector2(60, 260), cScreen);
-            _cNameText = new TextBoxSingleLine("Spodi", new Vector2(220, 260), new Vector2(200, 40), cScreen);
+            _cNameText = new TextBox(new Vector2(220, 260), new Vector2(200, 40), cScreen) { IsMultiLine = false, Text = "Spodi"};
 
             new Label("Password:", new Vector2(60, 320), cScreen);
             _cPasswordText = new TextBox(new Vector2(220, 320), new Vector2(200, 40), cScreen) { IsMultiLine = false, Text = "qwerty123" };

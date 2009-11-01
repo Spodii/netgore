@@ -64,8 +64,7 @@ namespace DemoGame.GUITester
             topForm = new Form(_gui, "Primary form", new Vector2(5, 5), new Vector2(700, 550));
             topForm.OnMouseMove += topForm_OnMouseMove;
 
-            TextBoxMultiLineLocked tbmll = new TextBoxMultiLineLocked(string.Empty, new Vector2(10, 10), new Vector2(150, 300),
-                                                                      topForm);
+            TextBox tb = new TextBox(new Vector2(10, 10), new Vector2(150, 300), topForm);
 
             _textBox = new TextBox(_gui, _font, new Vector2(350, 10), new Vector2(200, 200), topForm);
             _textBox.Append("abcdef\nghi\r\njklj\n");
@@ -99,7 +98,7 @@ namespace DemoGame.GUITester
                 new StyledText("Tomato ", Color.Tomato),
                 new StyledText("DarkRed ", Color.DarkRed),
             };
-            tbmll.Append(styledTexts);
+            tb.Append(styledTexts);
 
             _topBorder = topForm.Border;
 

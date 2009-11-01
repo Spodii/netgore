@@ -13,8 +13,10 @@ namespace DemoGame.Client
 
     class ChatForm : Form, IRestorableSettings
     {
-        readonly TextBoxSingleLine _input;
-        readonly TextBoxMultiLineLocked _output;
+        readonly TextBox _input;
+        readonly TextBox _output;
+
+        int _bufferOffset = 0;
 
         /// <summary>
         /// Notifies listeners that a message is trying to be sent from the ChatForm's input box.
@@ -29,16 +31,20 @@ namespace DemoGame.Client
         public ChatForm(Control parent, Vector2 pos) : base(parent.GUIManager, "Chat", pos, new Vector2(300, 150), parent)
         {
             // Add the input and output boxes
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
             float fontHeight = Font.LineSpacing;
+// ReSharper restore DoNotCallOverridableMethodsInConstructor
 
-            Vector2 inputSize = new Vector2(ClientSize.X, fontHeight);
+            int borderHeight = GUIManager.TextBoxSettings.Border != null ? GUIManager.TextBoxSettings.Border.Height : 0;
+
+            Vector2 inputSize = new Vector2(ClientSize.X, fontHeight + borderHeight);
             Vector2 outputSize = new Vector2(ClientSize.X, ClientSize.Y - inputSize.Y);
 
             Vector2 inputPos = new Vector2(0, outputSize.Y);
             Vector2 outputPos = Vector2.Zero;
 
-            _input = new TextBoxSingleLine(string.Empty, inputPos, inputSize, this);
-            _output = new TextBoxMultiLineLocked(string.Empty, outputPos, outputSize, this);
+            _input = new TextBox(inputPos, inputSize, this) { IsMultiLine = false, IsEnabled = true };
+            _output = new TextBox(outputPos, outputSize, this) { IsMultiLine = true, IsEnabled = false };
 
             _input.OnKeyDown += Input_OnKeyDown;
         }
@@ -49,7 +55,7 @@ namespace DemoGame.Client
         /// <param name="text">Text to append to the output TextBox.</param>
         public void AppendToOutput(string text)
         {
-            _output.Append(text);
+            _output.AppendLine(text);
         }
 
         /// <summary>
@@ -59,7 +65,7 @@ namespace DemoGame.Client
         /// <param name="color">Color of the text to append.</param>
         public void AppendToOutput(string text, Color color)
         {
-            _output.Append(text, color);
+            _output.AppendLine(new StyledText(text, color));
         }
 
         /// <summary>
@@ -68,7 +74,7 @@ namespace DemoGame.Client
         /// <param name="text">Text to append to the output TextBox.</param>
         public void AppendToOutput(List<StyledText> text)
         {
-            _output.Append(text);
+            _output.AppendLine(text);
         }
 
         void Input_OnKeyDown(object sender, KeyboardEventArgs e)
@@ -89,14 +95,37 @@ namespace DemoGame.Client
                         break;
 
                     case Keys.PageUp:
-                        _output.BufferOffset += bufferScrollRate;
+                        _bufferOffset += bufferScrollRate;
                         break;
 
                     case Keys.PageDown:
-                        _output.BufferOffset -= bufferScrollRate;
+                        _bufferOffset -= bufferScrollRate;
                         break;
                 }
             }
+        }
+
+        protected override void UpdateControl(int currentTime)
+        {
+            UpdateBufferOffset();
+            base.UpdateControl(currentTime);
+        }
+
+        void UpdateBufferOffset()
+        {
+            if (_bufferOffset > _output.LineCount - _output.MaxVisibleLines)
+                _bufferOffset = _output.LineCount - _output.MaxVisibleLines;
+            
+            if (_bufferOffset < 0)
+                _bufferOffset = 0;
+
+            int pos = _output.LineCount - _bufferOffset - _output.MaxVisibleLines - 1;
+            if (pos < 0)
+                pos = 0;
+            else if (pos >= _output.LineCount)
+                pos = _output.LineCount - 1;
+
+            _output.LineBufferOffset = pos;
         }
 
         #region IRestorableSettings Members

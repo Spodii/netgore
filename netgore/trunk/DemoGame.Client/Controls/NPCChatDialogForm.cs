@@ -21,7 +21,7 @@ namespace DemoGame.Client
         const int _numDisplayedResponses = 4;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly TextBoxMultiLineLocked _dialogTextControl;
+        readonly TextBox _dialogTextControl;
         readonly ResponseText[] _responseTextControls = new ResponseText[_numDisplayedResponses];
         NPCChatDialogBase _dialog;
         NPCChatDialogItemBase _page;
@@ -68,7 +68,7 @@ namespace DemoGame.Client
 
             float responseStartY = ClientSize.Y - (_numDisplayedResponses * spacing);
             Vector2 textboxSize = ClientSize - new Vector2(0, ClientSize.Y - responseStartY);
-            _dialogTextControl = new TextBoxMultiLineLocked(string.Empty, Vector2.Zero, textboxSize, this);
+            _dialogTextControl = new TextBox(Vector2.Zero, textboxSize, this) { IsEnabled = false, IsMultiLine = true };
             _dialogTextControl.OnKeyPress += NPCChatDialogForm_OnKeyPress;
 
             for (byte i = 0; i < _numDisplayedResponses; i++)
