@@ -16,7 +16,7 @@ namespace DemoGame.Client
 
         Label _cError;
         TextBoxSingleLine _cNameText;
-        TextBoxSingleLine _cPasswordText;
+        TextBox _cPasswordText;
         GameplayScreen _gpScreen = null;
         GUIManager _gui;
         SpriteBatch _sb = null;
@@ -117,7 +117,7 @@ namespace DemoGame.Client
             _cNameText = new TextBoxSingleLine("Spodi", new Vector2(220, 260), new Vector2(200, 40), cScreen);
 
             new Label("Password:", new Vector2(60, 320), cScreen);
-            _cPasswordText = new TextBoxSingleLine("qwerty123", new Vector2(220, 320), new Vector2(200, 40), cScreen);
+            _cPasswordText = new TextBox(new Vector2(220, 320), new Vector2(200, 40), cScreen) { IsMultiLine = false, Text = "qwerty123" };
 
             Button cLogin = new Button("Login", new Vector2(60, 380), new Vector2(250, 45), cScreen);
             Button cBack = new Button("Back", new Vector2(60, 440), new Vector2(250, 45), cScreen);

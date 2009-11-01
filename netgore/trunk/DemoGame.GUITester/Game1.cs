@@ -104,7 +104,6 @@ namespace DemoGame.GUITester
             _topBorder = topForm.Border;
 
             Form form = new Form(_gui, "My form", new Vector2(50, 50), new Vector2(200, 200), topForm);
-            new TextBoxSingleLine("My textboxadsfasdf sd", new Vector2(20, 90), new Vector2(150, 50), form);
 
             Button b = new Button("Press me", new Vector2(20, 20), new Vector2(80, 30), form);
             b.OnClick += b_OnMouseDown;

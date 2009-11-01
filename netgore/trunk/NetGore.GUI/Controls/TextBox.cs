@@ -98,7 +98,8 @@ namespace NetGore.Graphics.GUI
 
                 foreach (var line in contents)
                 {
-                    AppendLine(line);
+                    if (line.Count > 0)
+                        AppendLine(line);
                 }
             }
         }
@@ -200,6 +201,17 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TextBox"/> class.
+        /// </summary>
+        /// <param name="position">Position of the Control relative to its parent.</param>
+        /// <param name="size">Size of the Control.</param>
+        /// <param name="parent">Control that this Control belongs to.</param>
+        public TextBox(Vector2 position, Vector2 size, Control parent)
+            : this(parent.GUIManager, parent.GUIManager.TextBoxSettings, parent.GUIManager.Font, position, size, parent)
+        {
+        }
+
+        /// <summary>
         /// Appends the <paramref name="text"/> to the <see cref="TextBox"/> at the end.
         /// </summary>
         /// <param name="text">The text to append.</param>
@@ -221,7 +233,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             if (!IsMultiLine)
-                _lines.LastLine.Append(text.ToSingleline(" "));
+                _lines.LastLine.Append(text.ToSingleline());
             else
             {
                 var textLines = StyledText.ToMultiline(text);
@@ -358,10 +370,22 @@ namespace NetGore.Graphics.GUI
             if (IsMultiLine)
                 return;
 
-            if (LineCharBufferOffset < _cursorLinePosition - _numCharsToDraw + 1)
-                LineCharBufferOffset = _cursorLinePosition - _numCharsToDraw + 1;
+            // Make sure the cursor is in view
+            if (LineCharBufferOffset < _cursorLinePosition - _numCharsToDraw)
+                _lineCharBufferOffset = _cursorLinePosition - _numCharsToDraw;
             else if (LineCharBufferOffset > _cursorLinePosition)
-                LineCharBufferOffset = _cursorLinePosition;
+                _lineCharBufferOffset = _cursorLinePosition;
+
+            // Make sure we don't move the buffer more than we need to (show as many characters as possible on the right side)
+            var firstFitting = _lines.CurrentLine.CountFittingCharactersRight(Font, (int)ClientSize.X);
+            if (_lineCharBufferOffset > firstFitting)
+                _lineCharBufferOffset = firstFitting;
+
+            // Double-check we are in a legal range
+            if (_lineCharBufferOffset < 0)
+                _lineCharBufferOffset = 0;
+            else if (_lineCharBufferOffset > _lines.CurrentLine.LineText.Length)
+                _lineCharBufferOffset = _lines.CurrentLine.LineText.Length;
         }
 
         void GetCharacterAtPoint(Vector2 point, out int lineIndex, out int lineCharIndex)
@@ -673,9 +697,11 @@ namespace NetGore.Graphics.GUI
             /// </summary>
             void Update()
             {
+                var currLine = _textBox._lines.CurrentLine;
+
                 _value =
                     (short)
-                    _textBox._lines.CurrentLine.CountFittingCharacters(_textBox.Font, _textBox.LineCharBufferOffset,
+                    currLine.CountFittingCharactersLeft(_textBox.Font, _textBox.LineCharBufferOffset,
                                                                        (int)_textBox.ClientSize.X);
             }
 

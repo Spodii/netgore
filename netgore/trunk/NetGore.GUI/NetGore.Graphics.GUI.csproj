@@ -72,6 +72,7 @@
     <Compile Include="Controls\LabelSettings.cs" />
     <Compile Include="Controls\TextBox.cs" />
     <Compile Include="TextBoxLine.cs" />
+    <Compile Include="TextBoxLineChangeEventHandler.cs" />
     <Compile Include="TextBoxLines.cs" />
     <Compile Include="EventArgs\KeyboardEventHandler.cs" />
     <Compile Include="EventArgs\MouseClickEventHandler.cs" />
