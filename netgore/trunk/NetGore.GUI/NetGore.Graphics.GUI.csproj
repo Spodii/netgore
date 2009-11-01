@@ -85,8 +85,6 @@
     <Compile Include="IEditableText.cs" />
     <Compile Include="MoveCursorDirection.cs" />
     <Compile Include="StyledText.cs" />
-    <Compile Include="Controls\TextBoxAutoScrollMode.cs" />
-    <Compile Include="Controls\TextBoxMultiLineLocked.cs" />
     <Compile Include="Controls\PanelSettings.cs" />
     <Compile Include="Controls\PictureBoxSettings.cs" />
     <Compile Include="Controls\TextBoxSettings.cs" />
@@ -104,7 +102,6 @@
     <Compile Include="Controls\PictureBox.cs" />
     <Compile Include="Screen Manager\GameScreen.cs" />
     <Compile Include="Screen Manager\ScreenManager.cs" />
-    <Compile Include="Controls\TextBoxSingleLine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tooltip\TooltipHandler.cs" />
     <Compile Include="Tooltip\TooltipArgs.cs" />

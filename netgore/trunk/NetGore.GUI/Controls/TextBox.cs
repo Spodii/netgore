@@ -58,6 +58,11 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Gets the maximum number of possible visible lines. Only valid is <see cref="IsMultiLine"/> is true.
+        /// </summary>
+        public int MaxVisibleLines { get { return _maxVisibleLines; } }
+
+        /// <summary>
         /// Gets or sets the SpriteFont used by the TextControl.
         /// </summary>
         public override SpriteFont Font
@@ -157,6 +162,7 @@ namespace NetGore.Graphics.GUI
             set
             {
                 CursorLinePosition = 0;
+                Clear();
                 Append(value);
             }
         }
@@ -227,6 +233,16 @@ namespace NetGore.Graphics.GUI
         /// Appends the <paramref name="text"/> to the <see cref="TextBox"/> at the end.
         /// </summary>
         /// <param name="text">The text to append.</param>
+        public void Append(IEnumerable<StyledText> text)
+        {
+            foreach (var t in text)
+                Append(t);
+        }
+
+        /// <summary>
+        /// Appends the <paramref name="text"/> to the <see cref="TextBox"/> at the end.
+        /// </summary>
+        /// <param name="text">The text to append.</param>
         public void Append(StyledText text)
         {
             if (text.Text.Length == 0)
@@ -248,6 +264,18 @@ namespace NetGore.Graphics.GUI
             }
 
             _numCharsToDraw.Invalidate();
+        }
+
+        /// <summary>
+        /// Appends the <paramref name="text"/> to the <see cref="TextBox"/> at the end, then inserts a line break.
+        /// </summary>
+        /// <param name="text">The text to append.</param>
+        public void AppendLine(string text)
+        {
+            if (string.IsNullOrEmpty(text))
+                return;
+
+            AppendLine(new StyledText(text));
         }
 
         /// <summary>
@@ -307,7 +335,7 @@ namespace NetGore.Graphics.GUI
 
             // Draw the text
             if (IsMultiLine)
-                _lines.Draw(spriteBatch, Font, LineBufferOffset, _maxVisibleLines, textDrawOffset, ForeColor);
+                _lines.Draw(spriteBatch, Font, LineBufferOffset, MaxVisibleLines, textDrawOffset, ForeColor);
             else
                 _lines.FirstLine.Draw(spriteBatch, Font, textDrawOffset, ForeColor, LineCharBufferOffset, _numCharsToDraw);
 
@@ -356,8 +384,8 @@ namespace NetGore.Graphics.GUI
             if (IsMultiLine)
             {
                 // Change the buffer so that the line the cursor is on is visible
-                if (LineBufferOffset < _lines.CurrentLineIndex - _maxVisibleLines + 1)
-                    LineBufferOffset = _lines.CurrentLineIndex - _maxVisibleLines + 1;
+                if (LineBufferOffset < _lines.CurrentLineIndex - MaxVisibleLines + 1)
+                    LineBufferOffset = _lines.CurrentLineIndex - MaxVisibleLines + 1;
                 else if (LineBufferOffset > _lines.CurrentLineIndex)
                     LineBufferOffset = _lines.CurrentLineIndex;
             }
