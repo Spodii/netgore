@@ -11,20 +11,25 @@ namespace NetGore.Graphics
     public interface ITextureAtlas
     {
         /// <summary>
-        /// Gets the texture source rectangle of the original image
+        /// Gets the texture source <see cref="Rectangle"/> of the original image.
         /// </summary>
         Rectangle SourceRect { get; }
 
         /// <summary>
-        /// Gets the original texture
+        /// Gets the original texture.
         /// </summary>
         Texture2D Texture { get; }
 
         /// <summary>
-        /// Sets the atlas information
+        /// Sets the atlas information.
         /// </summary>
-        /// <param name="texture">Atlas texture</param>
-        /// <param name="atlasSourceRect">Source rect for the image in the atlas texture</param>
+        /// <param name="texture">The atlas texture.</param>
+        /// <param name="atlasSourceRect">The source <see cref="Rectangle"/> for the image in the atlas texture.</param>
         void SetAtlas(Texture2D texture, Rectangle atlasSourceRect);
+
+        /// <summary>
+        /// Removes the atlas from the object and forces it to draw normally.
+        /// </summary>
+        void RemoveAtlas();
     }
 }

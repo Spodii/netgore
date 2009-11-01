@@ -175,6 +175,7 @@ namespace NetGore.Graphics.GUI
                 return;
 
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
             _activeScreen.Draw(gameTime);
         }
 

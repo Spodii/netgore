@@ -598,6 +598,19 @@ namespace NetGore.Graphics
             _isUsingAtlas = true;
         }
 
+        /// <summary>
+        /// Removes the atlas from the object and forces it to draw normally.
+        /// </summary>
+        public void RemoveAtlas()
+        {
+            if (!_isUsingAtlas)
+                return;
+
+            _isUsingAtlas = false;
+            _texture = null;
+            ValidateTexture();
+        }
+
         #endregion
     }
 }
