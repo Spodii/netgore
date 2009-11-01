@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
@@ -14,6 +16,8 @@ namespace NetGore.Graphics.GUI
     /// </summary>
     public class StyledText
     {
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// A <see cref="StyledText"/> with an empty string.
         /// </summary>
@@ -201,7 +205,6 @@ namespace NetGore.Graphics.GUI
                 sb.Length--;
             }
 
-            Debug.Fail("No text fits into the given maxLineLength.");
             return 0;
         }
 
@@ -233,6 +236,37 @@ namespace NetGore.Graphics.GUI
         public bool HasSameStyle(StyledText other)
         {
             return Color == other.Color;
+        }
+
+        /// <summary>
+        /// Splits the StyledText at the given index into two parts. The character at the given
+        /// <paramref name="charIndex"/> will end up in the <paramref name="right"/> side.
+        /// </summary>
+        /// <param name="charIndex">The 0-based character index to split at.</param>
+        /// <param name="left">The left side of the split.</param>
+        /// <param name="right">The right side of the split.</param>
+        /// <exception cref="ArgumentOutOfRangeException"><paramref name="charIndex"/> is less than 0 or greater
+        /// than the length of the <see cref="Text"/>.</exception>
+        public void SplitAt(int charIndex, out StyledText left, out StyledText right)
+        {
+            if (charIndex < 0 || charIndex > Text.Length)
+                throw new ArgumentOutOfRangeException("charIndex");
+
+            if (charIndex == 0)
+            {
+                left = new StyledText(string.Empty, this);
+                right = this;
+            }
+            else if (charIndex == Text.Length)
+            {
+                left = this;
+                right = new StyledText(string.Empty, this);
+            }
+            else
+            {
+                left = Substring(0, charIndex);
+                right = Substring(charIndex);
+            }
         }
 
         /// <summary>
@@ -400,7 +434,7 @@ namespace NetGore.Graphics.GUI
         {
             string s = Text.Substring(startIndex);
             if (string.IsNullOrEmpty(s))
-                return this;
+                return Empty;
 
             return new StyledText(s, Color);
         }
@@ -418,7 +452,7 @@ namespace NetGore.Graphics.GUI
         {
             string s = Text.Substring(startIndex, length);
             if (string.IsNullOrEmpty(s))
-                return this;
+                return Empty;
 
             return new StyledText(s, Color);
         }
@@ -454,23 +488,52 @@ namespace NetGore.Graphics.GUI
                     {
                         string s = currentLineText.ToString();
 
-                        int lastFittingChar = FindLastFittingChar(currentLineText.ToString(), font, maxLineLength);
-                        int splitAt = FindIndexToSplitAt(s, lastFittingChar);
+                        int lastFittingChar = FindLastFittingChar(s, font, maxLineLength);
+                        int splitAt = FindIndexToSplitAt(s, lastFittingChar - 1);
 
-                        StyledText left = current.Substring(0, splitAt + 1);
-                        StyledText right = current.Substring(splitAt + 1);
+                        splitAt -= (s.Length - current.Text.Length);
 
-                        retLine.Add(left);
+                        // Don't try to split farther back than the current styled text block
+                        if (splitAt < -1)
+                            splitAt = -1;
+
+                        if (splitAt + 1 == current.Text.Length)
+                        {
+                            const string errmsg = "Splitting string `{0}` at index `{1}` results in the right side of the split" +
+                                " being an empty string. This will lead to an infinite recusion of split attempts...";
+                            log.FatalFormat(errmsg, s, splitAt);
+                            Debug.Fail(string.Format(errmsg, s, splitAt));
+
+                            // Recover by just not splitting
+                            retLine.Add(current);
+                        }
+                        else
+                        {
+                            StyledText left = current.Substring(0, splitAt + 1);
+                            StyledText right = current.Substring(splitAt + 1);
+
+                            // Split like normal
+                            if (left.Text.Length > 0)
+                                retLine.Add(left);
+                            linePartsStack.Push(right);
+                        }
+
+                        // Add the line to the return list, create the new line buffer, and reset the line string
                         ret.Add(retLine);
                         retLine = new List<StyledText>();
 
                         currentLineText.Length = 0;
-                        linePartsStack.Push(right);
                     }
                 }
 
-                ret.Add(retLine);
+                if (retLine.Count > 0)
+                {
+                    Debug.Assert(ret.Count == 0 || ret.Last() != retLine, "Uh-oh, we added the same line twice...");
+                    ret.Add(retLine);
+                }
             }
+
+            Debug.Assert(ret.All(x => font.MeasureString(ToString(x)).X <= maxLineLength), "One or more lines were greater than the max length.");
 
             return ret;
         }
@@ -529,20 +592,48 @@ namespace NetGore.Graphics.GUI
             return ret;
         }
 
-        public static StyledText ToSingleline(StyledText text)
+        /// <summary>
+        /// Removes all of the line breaks from the <see cref="StyledText"/>.
+        /// </summary>
+        public StyledText ToSingleline()
         {
-            return text.ToSingleline();
+            return ToSingleline(string.Empty);
         }
 
-        public StyledText ToSingleline()
+        /// <summary>
+        /// Removes all of the line breaks from the <see cref="StyledText"/>.
+        /// </summary>
+        /// <param name="replacementString">The string to replace the line breaks with.</param>
+        /// <returns>A <see cref="StyledText"/> with all the line breaks replaced with the given
+        /// <see cref="replacementString"/>.</returns>
+        public StyledText ToSingleline(string replacementString)
         {
             // TODO: Optimize this so that the same object returns if there is no replacements
             // TODO: Create unit test for this
-            string newText = _text.Replace("\r\n", "");
+            string newText = _text.Replace("\r\n", replacementString);
             if (newText.Length > 0)
-                newText = newText.Replace("\n", "");
+                newText = newText.Replace("\n", replacementString);
 
             return new StyledText(newText, Color);
+        }
+
+        /// <summary>
+        /// Returns a <see cref="System.String"/> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String"/> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            return _text;
+        }
+
+        public static string ToString(IEnumerable<StyledText> texts)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var text in texts)
+                sb.Append(text);
+            return sb.ToString();
         }
 
         /// <summary>

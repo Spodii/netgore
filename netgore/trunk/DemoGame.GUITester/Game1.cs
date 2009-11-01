@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using DemoGame.Client;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
@@ -64,7 +67,26 @@ namespace DemoGame.GUITester
             TextBoxMultiLineLocked tbmll = new TextBoxMultiLineLocked(string.Empty, new Vector2(10, 10), new Vector2(150, 300),
                                                                       topForm);
 
-            _textBox = new TextBox(_gui, _font, new Vector2(350, 10), new Vector2(300, 200), topForm);
+            _textBox = new TextBox(_gui, _font, new Vector2(350, 10), new Vector2(200, 200), topForm);
+            _textBox.Append("abcdef\nghi\r\njklj\n");
+
+            for (int i = 0; i < 150; i++)
+            {
+                Color c = new Color((byte)rnd.Next(0, 256), (byte)rnd.Next(256), (byte)rnd.Next(256), 255);
+                _textBox.Append(new StyledText(i + " ", c));
+            }
+
+            _textBox.OnKeyUp += delegate(object sender, KeyboardEventArgs e)
+                                {
+                                    if (e.Keys.Contains(Keys.F1))
+                                        Debug.Fail(_textBox.Text);
+                                    else if (e.Keys.Contains(Keys.F2))
+                                        _textBox.Size += new Vector2(25, 0);
+                                    else if (e.Keys.Contains(Keys.F3))
+                                        _textBox.Size += new Vector2(-25, 0);
+                                    else if (e.Keys.Contains(Keys.F4))
+                                        _textBox.IsMultiLine = !_textBox.IsMultiLine;
+                                };
 
             var styledTexts = new List<StyledText>
             {

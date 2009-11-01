@@ -33,6 +33,15 @@ namespace NetGore
             new Dictionary<string, IEnumerable<MethodInfo>>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
+        /// Gets a dictionary of each command and the method or methods that handle the command.
+        /// </summary>
+        /// <returns>A dictionary of each command and the method or methods that handle the command.</returns>
+        public IDictionary<string, IEnumerable<MethodInfo>> GetCommands()
+        {
+            return _commands;
+        }
+
+        /// <summary>
         /// StringCommandParser constructor.
         /// </summary>
         /// <param name="types">Array of Types to check for methods containing an Attribute of
@@ -196,7 +205,7 @@ namespace NetGore
         /// </summary>
         /// <param name="method">Method to get the parameter information for.</param>
         /// <returns>The parameter information for the <paramref name="method"/>.</returns>
-        static string GetParameterInfo(MethodInfo method)
+        public static string GetParameterInfo(MethodInfo method)
         {
             var parameters = method.GetParameters();
             if (parameters.Length == 0)

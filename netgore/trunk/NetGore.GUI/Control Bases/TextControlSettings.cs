@@ -16,6 +16,7 @@ namespace NetGore.Graphics.GUI
         protected TextControlSettings(Color foreColor, ControlBorder border) : base(border)
         {
             _foreColor = foreColor;
+            CanFocus = true;
         }
     }
 }

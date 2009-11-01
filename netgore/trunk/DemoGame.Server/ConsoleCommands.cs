@@ -61,6 +61,40 @@ namespace DemoGame.Server
             return sb.ToString();
         }
 
+        [ConsoleCommand("Help")]
+        public string Help()
+        {
+            StringBuilder sb = new StringBuilder();
+            var cmdsSorted = _parser.GetCommands().OrderBy(x => x.Key);
+
+            sb.AppendLine("Server console commands:");
+
+            foreach (var cmd in cmdsSorted)
+            {
+                sb.Append(" * ");
+                sb.Append(cmd.Key);
+                sb.Append("(");
+
+                var first = cmd.Value.FirstOrDefault();
+                if (first != null)
+                    sb.Append(ConsoleCommandParser.GetParameterInfo(first));
+
+                sb.Append(")");
+
+                int count = cmd.Value.Count();
+                if (count > 1)
+                {
+                    sb.Append(" [+");
+                    sb.Append(count - 1);
+                    sb.Append(" overload(s)]");
+                }
+
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
+        }
+
         [ConsoleCommand("CountAccountCharacters")]
         public string CountAccountCharacters(string accountName)
         {
