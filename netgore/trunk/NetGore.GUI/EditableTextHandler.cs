@@ -26,6 +26,16 @@ namespace NetGore.Graphics.GUI
         const int _defaultKeyboardRepeatRate = 31;
 
         /// <summary>
+        /// The default blink rate of the insertion point cursor in milliseconds.
+        /// </summary>
+        const int _defaultCursorBlinkRate = 500;
+
+        /// <summary>
+        /// The blink rate of the insertion point cursor in milliseconds.
+        /// </summary>
+        public static readonly int CursorBlinkRate;
+
+        /// <summary>
         /// The number of milliseconds to wait before repeating the keystroke of a held key.
         /// </summary>
         public static readonly int KeyboardRepeatDelay;
@@ -65,14 +75,31 @@ namespace NetGore.Graphics.GUI
         {
             int delay = _defaultKeyboardRepeatDelay;
             int rate = _defaultKeyboardRepeatRate;
+            int blinkRate = _defaultCursorBlinkRate;
 
             try
             {
                 var regSubKey = Registry.CurrentUser.OpenSubKey("Control Panel");
                 if (regSubKey != null)
                 {
-                    regSubKey = regSubKey.OpenSubKey("Keyboard");
-                    if (regSubKey != null)
+                    var desktopKey = regSubKey.OpenSubKey("Desktop");
+                    if (desktopKey != null)
+                    {
+                        object blinkRateObj = regSubKey.GetValue("CursorBlinkRate");
+                        string blinkRateStr = blinkRateObj != null ? blinkRateObj.ToString() : null;
+
+                        if (blinkRateStr == null || !int.TryParse(blinkRateStr, out blinkRate))
+                            blinkRate = _defaultCursorBlinkRate;
+
+                        // Keep in a reasonable range
+                        if (blinkRate < 100)
+                            blinkRate = 100;
+                        if (blinkRate > 2000)
+                            blinkRate = 2000;
+                    }
+
+                    var keyboardKey = regSubKey.OpenSubKey("Keyboard");
+                    if (keyboardKey != null)
                     {
                         object delayObj = regSubKey.GetValue("KeyboardDelay");
                         object rateObj = regSubKey.GetValue("KeyboardSpeed");
@@ -124,16 +151,19 @@ namespace NetGore.Graphics.GUI
                 // Permission to the keys denied
                 delay = _defaultKeyboardRepeatDelay;
                 rate = _defaultKeyboardRepeatRate;
+                blinkRate = _defaultCursorBlinkRate;
             }
             catch (ObjectDisposedException)
             {
                 // Key objects were disposed for some reason
                 delay = _defaultKeyboardRepeatDelay;
                 rate = _defaultKeyboardRepeatRate;
+                blinkRate = _defaultCursorBlinkRate;
             }
 
             KeyboardRepeatDelay = delay;
             KeyboardRepeatRate = rate;
+            CursorBlinkRate = blinkRate;
         }
 
         /// <summary>
@@ -188,6 +218,10 @@ namespace NetGore.Graphics.GUI
 
                 case Keys.Back:
                     Source.DeleteChar();
+                    break;
+
+                case Keys.Enter:
+                    Source.BreakLine();
                     break;
 
                 default:

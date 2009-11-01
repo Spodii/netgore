@@ -20,6 +20,7 @@ namespace NetGore.Graphics.GUI
 
         public TextBoxSettings(ControlBorder border) : base(Color.Black, border)
         {
+            CanDrag = false;
         }
     }
 }

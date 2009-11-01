@@ -23,6 +23,16 @@ namespace DemoGame.Server
     public class Server : IDisposable, IGetTime
     {
         /// <summary>
+        /// The minimum number of milliseconds a connection should be inactive to be considered dead.
+        /// </summary>
+        const int _inactiveConnectionTimeOut = 5000;
+
+        /// <summary>
+        /// The number of milliseconds to wait before checking for inactive connections to remove.
+        /// </summary>
+        const int _removeInactiveConnectionsRate = 60000;
+
+        /// <summary>
         /// Millisecond rate at which the server updates. The server update rate does not affect the rate
         /// at which physics is update, so modifying the update rate will not affect the game
         /// speed. Server update rate is used to determine how frequently the server checks
@@ -201,7 +211,7 @@ namespace DemoGame.Server
             _gameTimer.Start();
 
             if (log.IsInfoEnabled)
-                log.Info("Server started.");
+                log.Info("Server started. Type 'help' for a list of server console commands.");
 
             while (_isRunning)
             {
@@ -209,10 +219,10 @@ namespace DemoGame.Server
                 long loopStartTime = _gameTimer.ElapsedMilliseconds;
 
                 // Check to remove inactive connections
-                if (_gameTimer.ElapsedMilliseconds - lastRemoveConnsTime > 60000)
+                if (_gameTimer.ElapsedMilliseconds - lastRemoveConnsTime > _removeInactiveConnectionsRate)
                 {
                     lastRemoveConnsTime = _gameTimer.ElapsedMilliseconds;
-                    ServerSockets.RemoveInactiveConnections(5000);
+                    ServerSockets.RemoveInactiveConnections(_inactiveConnectionTimeOut);
                 }
 
                 // Update the networking

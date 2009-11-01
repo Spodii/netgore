@@ -23,6 +23,47 @@ namespace NetGore.Graphics.GUI.Tests
         }
 
         [Test]
+        public void SplitAtTest()
+        {
+            StyledText s = new StyledText("abcd", Color.Black);
+            StyledText l;
+            StyledText r;
+
+            s.SplitAt(0, out l, out r);
+            Assert.AreEqual("", l.Text);
+            Assert.AreEqual("abcd", r.Text);
+            Assert.AreEqual(Color.Black, l.Color);
+            Assert.AreEqual(Color.Black, r.Color);
+
+            s.SplitAt(1, out l, out r);
+            Assert.AreEqual("a", l.Text);
+            Assert.AreEqual("bcd", r.Text);
+            Assert.AreEqual(Color.Black, l.Color);
+            Assert.AreEqual(Color.Black, r.Color);
+
+            s.SplitAt(2, out l, out r);
+            Assert.AreEqual("ab", l.Text);
+            Assert.AreEqual("cd", r.Text);
+            Assert.AreEqual(Color.Black, l.Color);
+            Assert.AreEqual(Color.Black, r.Color);
+
+            s.SplitAt(3, out l, out r);
+            Assert.AreEqual("abc", l.Text);
+            Assert.AreEqual("d", r.Text);
+            Assert.AreEqual(Color.Black, l.Color);
+            Assert.AreEqual(Color.Black, r.Color);
+
+            s.SplitAt(4, out l, out r);
+            Assert.AreEqual("abcd", l.Text);
+            Assert.AreEqual("", r.Text);
+            Assert.AreEqual(Color.Black, l.Color);
+            Assert.AreEqual(Color.Black, r.Color);
+
+            Assert.Throws<ArgumentOutOfRangeException>(() => s.SplitAt(-1, out l, out r));
+            Assert.Throws<ArgumentOutOfRangeException>(() => s.SplitAt(5, out l, out r));
+        }
+
+        [Test]
         public void ConcastTestB()
         {
             StyledText s1 = new StyledText("abcd", Color.Black);
