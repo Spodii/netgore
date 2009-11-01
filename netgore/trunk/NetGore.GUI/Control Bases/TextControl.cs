@@ -259,8 +259,8 @@ namespace NetGore.Graphics.GUI
                     return "`";
                 case Keys.Space:
                     return " ";
-                case Keys.Tab:
-                    return "\t";
+                //case Keys.Tab:
+                //    return "\t";
 
                 default:
                     return string.Empty;
@@ -387,8 +387,8 @@ namespace NetGore.Graphics.GUI
                     return "~";
                 case Keys.Space:
                     return " ";
-                case Keys.Tab:
-                    return "\t";
+                //case Keys.Tab:
+                //    return "\t";
 
                 default:
                     return string.Empty;

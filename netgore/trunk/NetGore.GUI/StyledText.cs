@@ -209,6 +209,29 @@ namespace NetGore.Graphics.GUI
         }
 
         /// <summary>
+        /// Finds the 0-based index of the first character that will fit into a single line when starting
+        /// from the end of the line and working backwards.
+        /// </summary>
+        /// <param name="text">The text to check.</param>
+        /// <param name="font">The SpriteFont used to measure the length.</param>
+        /// <param name="maxLineLength">The maximum allowed line length in pixels.</param>
+        /// <returns>The 0-based index of the first character that will fit into a single line.</returns>
+        public static int FindFirstFittingChar(string text, SpriteFont font, int maxLineLength)
+        {
+            StringBuilder sb = new StringBuilder(text);
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                float length = font.MeasureString(sb).X;
+                if (length <= maxLineLength)
+                    return text.Length - sb.Length;
+                sb.Remove(0, 1);
+            }
+
+            return 0;
+        }
+
+        /// <summary>
         /// Gets the width of this StyledText for the given <paramref name="font"/>.
         /// </summary>
         /// <param name="font">The SpriteFont to use to measure.</param>

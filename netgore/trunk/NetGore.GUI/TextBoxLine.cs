@@ -8,15 +8,6 @@ using Microsoft.Xna.Framework.Graphics;
 namespace NetGore.Graphics.GUI
 {
     /// <summary>
-    /// Handles when the <see cref="TextBoxLine"/> has changed.
-    /// </summary>
-    /// <param name="line">The <see cref="TextBoxLine"/> that was changed.</param>
-    /// <param name="difference">The number of characters involved in the change. If greater than zero,
-    /// the change involved adding text to the line. If less than zero, the change involved removing
-    /// text from the line.</param>
-    delegate void TextBoxLineChangeEventHandler(TextBoxLine line, int difference);
-
-    /// <summary>
     /// A single line for a <see cref="TextBox"/>-style <see cref="Control"/>.
     /// </summary>
     class TextBoxLine
@@ -266,16 +257,23 @@ namespace NetGore.Graphics.GUI
         {
             return (int)_texts.Sum(x => x.GetWidth(font));
         }
-        
-        public int CountFittingCharacters(SpriteFont font, int startChar, int maxLineLength)
+
+        public int CountFittingCharactersLeft(SpriteFont font, int startChar, int maxLineLength)
         {
             string subStr;
             if (startChar == 0)
                 subStr = _lineText;
+            else if (startChar >= _lineText.Length)
+                return 1;
             else
                 subStr = _lineText.Substring(startChar);
 
             return StyledText.FindLastFittingChar(subStr, font, maxLineLength);
+        }
+
+        public int CountFittingCharactersRight(SpriteFont font, int maxLineLength)
+        {
+            return StyledText.FindFirstFittingChar(_lineText, font, maxLineLength);
         }
 
         /// <summary>
