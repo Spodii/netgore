@@ -207,6 +207,8 @@ namespace DemoGame.Client
             layerList.Add(drawableEntity);
         }
 
+        TextureAtlas _atlas;
+
         /// <summary>
         /// Constructs an atlas for the map using the given set of GrhIndexes.
         /// </summary>
@@ -219,7 +221,7 @@ namespace DemoGame.Client
                 return;
             }
 
-            TextureAtlas ta = new TextureAtlas();
+            _atlas = new TextureAtlas();
 
             // Loop through each index (they're still a string at this point)
             foreach (GrhIndex index in grhIndexes)
@@ -231,13 +233,13 @@ namespace DemoGame.Client
                 // For stationary, this will just grab a copy of itself from Frames[0]
                 foreach (GrhData frame in gd.Frames)
                 {
-                    if (!ta.AtlasItems.Contains(frame))
-                        ta.AtlasItems.Push(frame);
+                    if (!_atlas.AtlasItems.Contains(frame))
+                        _atlas.AtlasItems.Push(frame);
                 }
             }
 
             // Generate the atlas out of all the items
-            _mapAtlases = ta.Build(_graphics);
+            _mapAtlases = _atlas.Build(_graphics);
         }
 
         /// <summary>
@@ -511,11 +513,11 @@ namespace DemoGame.Client
         /// <summary>
         /// Handles loading of custom values.
         /// </summary>
-        /// <param name="reader">IValueReader to read the misc values from.</param>
-        protected override void LoadMisc(IValueReader r)
+        /// <param name="reader"><see cref="IValueReader"/> to read the misc values from.</param>
+        protected override void LoadMisc(IValueReader reader)
         {
-            LoadGrhs(r);
-            LoadBackgroundImages(r);
+            LoadGrhs(reader);
+            LoadBackgroundImages(reader);
         }
 
         /// <summary>
@@ -615,9 +617,13 @@ namespace DemoGame.Client
         /// </summary>
         public void Dispose()
         {
+            if (_atlas != null && !_atlas.IsDisposed)
+                _atlas.Dispose();
+
             foreach (Texture2D atlas in _mapAtlases)
             {
-                atlas.Dispose();
+                if (atlas != null && !atlas.IsDisposed)
+                    atlas.Dispose();
             }
 
             _mapAtlases.Clear();

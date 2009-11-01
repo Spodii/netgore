@@ -18,58 +18,95 @@ namespace NetGore.Graphics
     /// performance by allowing larger batching. The TextureAtlas can also draw a 1 pixel border
     /// around all ITextureAtlas items which prevents texture filter issues when drawing.
     /// </summary>
-    public class TextureAtlas
+    public class TextureAtlas : IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Stack of all the items to add to the atlas
+        /// Stack of all the items to add to the atlas.
         /// </summary>
         Stack<ITextureAtlas> _atlasItems = new Stack<ITextureAtlas>(32);
 
         /// <summary>
-        /// Background color of the atlas (not like it matters)
+        /// Background color of the atlas (not like it matters).
         /// </summary>
         Color _backColor = new Color(255, 0, 255, 255);
 
+        GraphicsDevice _device;
+        bool _hasBeenBuilt = false;
+        bool _isDisposed = false;
+
         /// <summary>
-        /// Maximum size of the atlas texture (there is such thing as too big...)
+        /// Maximum size of the atlas texture (there is such thing as too big...).
         /// </summary>
         int _maxSize = 2048;
 
         /// <summary>
-        /// Number of pixels to pad around each item in the atlas
+        /// Number of pixels to pad around each item in the atlas.
         /// </summary>
         int _padding = 1;
 
         /// <summary>
-        /// Gets or sets the stack containing items to create the atlas from
+        /// Gets or sets the stack containing items to create the atlas from.
         /// </summary>
+        /// <exception cref="MethodAccessException"><see cref="HasBeenBuilt"/> is true.</exception>
         public Stack<ITextureAtlas> AtlasItems
         {
             get { return _atlasItems; }
-            set { _atlasItems = value; }
+            set
+            {
+                if (HasBeenBuilt)
+                    throw CreateExceptionHasBeenBuilt();
+
+                _atlasItems = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the background color of the atlas texture
+        /// Gets or sets the background color of the atlas texture.
         /// </summary>
+        /// <exception cref="MethodAccessException"><see cref="HasBeenBuilt"/> is true.</exception>
         public Color BackColor
         {
             get { return _backColor; }
-            set { _backColor = value; }
+            set
+            {
+                if (HasBeenBuilt)
+                    throw CreateExceptionHasBeenBuilt();
+
+                _backColor = value;
+            }
         }
 
         /// <summary>
-        /// Gets or sets the maximum size of each atlas texture in pixels
+        /// Gets if this <see cref="TextureAtlas"/> has already been built. If true, it cannot be edited or rebuilt,
+        /// and any attempt to do so will result in a <see cref="MethodAccessException"/>.
         /// </summary>
+        public bool HasBeenBuilt
+        {
+            get { return _hasBeenBuilt; }
+        }
+
+        public bool IsDisposed
+        {
+            get { return _isDisposed; }
+        }
+
+        /// <summary>
+        /// Gets or sets the maximum size of each atlas texture in pixels.
+        /// </summary>
+        /// <exception cref="MethodAccessException"><see cref="HasBeenBuilt"/> is true.</exception>
         public int MaxSize
         {
             get { return _maxSize; }
             set
             {
+                if (HasBeenBuilt)
+                    throw CreateExceptionHasBeenBuilt();
+
                 if (!IsPowerOf2(value))
                     throw new Exception("Maximum size must be a power of 2");
+
                 _maxSize = value;
             }
         }
@@ -77,19 +114,31 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the size of the padding in pixels for each item in the atlas
         /// </summary>
+        /// <exception cref="MethodAccessException"><see cref="HasBeenBuilt"/> is true.</exception>
         public int Padding
         {
             get { return _padding; }
-            set { _padding = value; }
+            set
+            {
+                if (HasBeenBuilt)
+                    throw CreateExceptionHasBeenBuilt();
+
+                _padding = value;
+            }
         }
 
         /// <summary>
-        /// Builds the texture atlas or atlases for the given atlas items
+        /// Builds the texture atlas or atlases for the given atlas items. This must only be called once.
         /// </summary>
-        /// <param name="device">GraphicsDevice to build with</param>
-        /// <returns>List of texture atlases used</returns>
+        /// <param name="device">GraphicsDevice to build with.</param>
+        /// <returns>List of texture atlases used.</returns>
+        /// <exception cref="MethodAccessException"><see cref="HasBeenBuilt"/> is true.</exception>
+        /// <exception cref="ArgumentException">The <see cref="device"/> is null or disposed.</exception>
         public List<Texture2D> Build(GraphicsDevice device)
         {
+            if (HasBeenBuilt)
+                throw CreateExceptionHasBeenBuilt();
+
             if (device == null || device.IsDisposed)
             {
                 const string errmsg = "device is null or invalid.";
@@ -98,14 +147,20 @@ namespace NetGore.Graphics
                 throw new ArgumentException(errmsg, "device");
             }
 
+            _hasBeenBuilt = true;
+
+            // If the device is lost, we must rebuild it to make the atlas valid again
+            _device = device;
+            device.DeviceReset += HandleDeviceReset;
+
             return CreateAtlasTextures(device, Combine(device));
         }
 
         /// <summary>
-        /// Combines a list of ITextureAtlases to an atlas
+        /// Combines a list of ITextureAtlases to an atlas.
         /// </summary>
-        /// <param name="device">Device to use for creating the atlas</param>
-        public List<TextureAtlasInfo> Combine(GraphicsDevice device)
+        /// <param name="device">Device to use for creating the atlas.</param>
+        List<TextureAtlasInfo> Combine(GraphicsDevice device)
         {
             if (device == null || device.IsDisposed)
             {
@@ -217,7 +272,7 @@ namespace NetGore.Graphics
         /// <param name="device">GraphicsDevice to create the textures on.</param>
         /// <param name="atlasInfos">List of atlas creation information.</param>
         /// <returns>List of atlas textures.</returns>
-        public List<Texture2D> CreateAtlasTextures(GraphicsDevice device, List<TextureAtlasInfo> atlasInfos)
+        List<Texture2D> CreateAtlasTextures(GraphicsDevice device, IEnumerable<TextureAtlasInfo> atlasInfos)
         {
             if (device == null || device.IsDisposed)
             {
@@ -276,12 +331,17 @@ namespace NetGore.Graphics
                 return device.DepthStencilBuffer;
         }
 
+        static Exception CreateExceptionHasBeenBuilt()
+        {
+            return new MethodAccessException("Cannot rebuild or alter a method that has already been built.");
+        }
+
         /// <summary>
         /// Draws a list of AtlasItems onto a texture to make the atlas.
         /// </summary>
         /// <param name="device">Device to use to create the atlas.</param>
         /// <param name="atlasInfo">Describes the atlas to draw.</param>
-        public Texture2D DrawAtlas(GraphicsDevice device, TextureAtlasInfo atlasInfo)
+        Texture2D DrawAtlas(GraphicsDevice device, TextureAtlasInfo atlasInfo)
         {
             if (device == null || device.IsDisposed)
             {
@@ -332,7 +392,7 @@ namespace NetGore.Graphics
             SurfaceFormat format = device.PresentationParameters.BackBufferFormat;
             MultiSampleType sample = device.PresentationParameters.MultiSampleType;
             int q = device.PresentationParameters.MultiSampleQuality;
-          
+
             using (RenderTarget2D target = new RenderTarget2D(device, width, height, 1, format, sample, q))
             {
                 // Set the render target to the texture and clear it
@@ -346,6 +406,15 @@ namespace NetGore.Graphics
                     sb.BeginUnfiltered(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.None);
                     foreach (AtlasNode item in items)
                     {
+                        // Make sure we are not already using an atlas, otherwise we'll be drawing atlas -> atlas.
+                        // In theory, this is a fine idea, and just improves performance of generating the new
+                        // atlas. But in reality, we don't want to because we may either get artifacts from the other
+                        // atlas or, even more likely, we are building the atlas because we lost the device in the first
+                        // place. When we lose the device, the RenderTarget2D becomes forever invalid. So if we just
+                        // lost the device and are restoring the atlas, trying to build the atlas again from the
+                        // old atlas will just cause an exception.
+                        item.ITextureAtlas.RemoveAtlas();
+
                         // Grab the texture and make sure it is valid
                         Texture2D tex = item.ITextureAtlas.Texture;
                         if (tex == null || tex.IsDisposed)
@@ -428,10 +497,10 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Increases to the next texture size
+        /// Increases to the next texture size.
         /// </summary>
-        /// <param name="width">New width</param>
-        /// <param name="height">New height</param>
+        /// <param name="width">New width.</param>
+        /// <param name="height">New height.</param>
         static void GetNextSize(ref int width, ref int height)
         {
             if (height < width)
@@ -488,20 +557,36 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Checks if a value is a power of two
+        /// Handles when the <see cref="GraphicsDevice"/> is reset.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>True if a power of 2, else false</returns>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void HandleDeviceReset(object sender, EventArgs e)
+        {
+            foreach (var item in AtlasItems)
+                item.RemoveAtlas();
+
+            // TODO: CreateAtlasTextures(_device, Combine(_device));
+            // The above line WILL rebuild the atlases, but it doesn't want to work properly.
+            // After a few resets and the program will crash again due to accessing invalid memory.
+            // Should check the GrhDatas to see if they are being set back up properly when removing the atlas.
+        }
+
+        /// <summary>
+        /// Checks if a value is a power of two.
+        /// </summary>
+        /// <param name="value">Value to check.</param>
+        /// <returns>True if a power of 2, else false.</returns>
         static bool IsPowerOf2(int value)
         {
             return (value > 0) && ((value & (value - 1)) == 0);
         }
 
         /// <summary>
-        /// Finds the next highest power of 2 for a given value unless the value is already a power of 2
+        /// Finds the next highest power of 2 for a given value unless the value is already a power of 2.
         /// </summary>
-        /// <param name="value">Value to check</param>
-        /// <returns>Next highest power of 2 of the value</returns>
+        /// <param name="value">Value to check.</param>
+        /// <returns>Next highest power of 2 of the value.</returns>
         static int NextPowerOf2(int value)
         {
             value--;
@@ -514,11 +599,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Sets the ITextureAtlases of an atlas info to use a certain texture atlas
+        /// Sets the <see cref="ITextureAtlas"/>es of an atlas info to use a certain texture atlas.
         /// </summary>
-        /// <param name="tex">Texture atlas for the ITextureAtlases to use</param>
-        /// <param name="atlasInfo">Information describing the atlas</param>
-        public void SetAtlas(Texture2D tex, TextureAtlasInfo atlasInfo)
+        /// <param name="tex">Texture atlas for the <see cref="ITextureAtlas"/>es to use.</param>
+        /// <param name="atlasInfo">Information describing the atlas.</param>
+        void SetAtlas(Texture2D tex, TextureAtlasInfo atlasInfo)
         {
             if (tex == null || tex.IsDisposed)
             {
@@ -544,7 +629,7 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Comparison function for sorting sprites by size
+        /// Comparison function for sorting sprites by size.
         /// </summary>
         /// <returns>A signed number indicating the relative values of this instance and value.
         /// Less than zero means this instance is less than value. Zero means this instance is equal to value. 
@@ -569,5 +654,24 @@ namespace NetGore.Graphics
             int bSize = b.SourceRect.Height * b.SourceRect.Width;
             return bSize.CompareTo(aSize);
         }
+
+        #region IDisposable Members
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public void Dispose()
+        {
+            if (_isDisposed)
+                return;
+
+            _isDisposed = true;
+
+            // Remove our event hook so we never rebuild this atlas when the device is lost
+            if (HasBeenBuilt && _device != null && !_device.IsDisposed)
+                _device.DeviceReset -= HandleDeviceReset;
+        }
+
+        #endregion
     }
 }
