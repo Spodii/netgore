@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
 using NetGore.EditorTools;
+using NetGore.IO;
 
 namespace DemoGame.MapEditor
 {

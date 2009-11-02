@@ -10,6 +10,7 @@ using DemoGame.Server.Queries;
 using log4net;
 using NetGore;
 using NetGore.Db;
+using NetGore.IO;
 using NetGore.Network;
 using NetGore.Scripting;
 

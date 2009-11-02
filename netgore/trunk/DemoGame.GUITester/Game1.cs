@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Input;
 using NetGore;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.IO;
 
 namespace DemoGame.GUITester
 {

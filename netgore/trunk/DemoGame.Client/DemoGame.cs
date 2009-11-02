@@ -10,6 +10,7 @@ using NetGore;
 using NetGore.Audio;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.IO;
 
 namespace DemoGame.Client
 {
@@ -104,9 +105,9 @@ namespace DemoGame.Client
             foreach (var gd in GrhInfo.GrhDatas.Where(x => !x.IsAnimated))
             {
                 if (gd.Category.StartsWith("character", StringComparison.OrdinalIgnoreCase))
-                    gdChars.Add(gd); 
+                    gdChars.Add(gd);
                 else if (gd.Category.StartsWith("gui", StringComparison.OrdinalIgnoreCase))
-                    gdGUI.Add(gd); 
+                    gdGUI.Add(gd);
                 else if (!gd.Category.StartsWith("map", StringComparison.OrdinalIgnoreCase))
                     gdNonMap.Add(gd);
             }
