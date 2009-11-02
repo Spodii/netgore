@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50138
 File Encoding         : 65001
 
-Date: 2009-10-27 16:13:29
+Date: 2009-11-01 17:24:35
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -33,7 +33,7 @@ CREATE TABLE `account` (
 -- ----------------------------
 -- Records of account
 -- ----------------------------
-INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-10-27 16:00:41', null);
+INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-11-01 02:07:08', null);
 
 -- ----------------------------
 -- Table structure for `alliance`
@@ -143,9 +143,9 @@ CREATE TABLE `character` (
 -- ----------------------------
 -- Records of character
 -- ----------------------------
-INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '2', null, null, null, '370.4', '338', '1', '500', '200', '1', '176', '24', '704', '95', '50', '50', '50', '50', '7', '11', '0', '1', '1', '2');
-INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, null, '1', '930', '437.96', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, null, '1', '672', '530', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
+INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '1', null, null, null, '368.8', '643.2', '1', '500', '200', '1', '176', '24', '704', '95', '50', '50', '50', '50', '7', '11', '0', '1', '1', '2');
+INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, null, '1', '800', '250', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
+INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, null, '1', '500', '250', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
 INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', null, '0', null, '800', '530', '2', '800', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
 INSERT INTO `character` VALUES ('5', null, null, 'Shopkeeper', '2', '0', null, null, '600', '530', '2', '600', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
 INSERT INTO `character` VALUES ('6', null, null, 'Vending Machine', '2', '1', null, null, '500', '530', '2', '500', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
@@ -186,6 +186,8 @@ CREATE TABLE `character_inventory` (
 -- ----------------------------
 -- Records of character_inventory
 -- ----------------------------
+INSERT INTO `character_inventory` VALUES ('1', '8', '1');
+INSERT INTO `character_inventory` VALUES ('1', '13', '0');
 
 -- ----------------------------
 -- Table structure for `character_status_effect`
@@ -212,22 +214,22 @@ CREATE TABLE `character_status_effect` (
 DROP TABLE IF EXISTS `character_template`;
 CREATE TABLE `character_template` (
   `id` smallint(5) unsigned NOT NULL,
-  `alliance_id` tinyint(3) unsigned NOT NULL,
+  `alliance_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `name` varchar(50) NOT NULL DEFAULT 'New NPC',
   `ai_id` smallint(5) unsigned DEFAULT NULL,
   `shop_id` smallint(5) unsigned DEFAULT NULL,
   `body_id` smallint(5) unsigned NOT NULL DEFAULT '1',
   `respawn` smallint(5) unsigned NOT NULL DEFAULT '5',
   `level` tinyint(3) unsigned NOT NULL DEFAULT '1',
-  `exp` int(11) NOT NULL,
-  `statpoints` int(11) NOT NULL,
+  `exp` int(11) NOT NULL DEFAULT '0',
+  `statpoints` int(11) NOT NULL DEFAULT '0',
   `give_exp` smallint(5) unsigned NOT NULL DEFAULT '0',
   `give_cash` smallint(5) unsigned NOT NULL DEFAULT '0',
   `stat_maxhp` smallint(6) NOT NULL DEFAULT '50',
   `stat_maxmp` smallint(6) NOT NULL DEFAULT '50',
   `stat_minhit` smallint(6) NOT NULL DEFAULT '1',
-  `stat_maxhit` smallint(6) NOT NULL DEFAULT '2',
-  `stat_defence` smallint(6) NOT NULL,
+  `stat_maxhit` smallint(6) NOT NULL DEFAULT '1',
+  `stat_defence` smallint(6) NOT NULL DEFAULT '1',
   `stat_agi` smallint(6) NOT NULL DEFAULT '1',
   `stat_int` smallint(6) NOT NULL DEFAULT '1',
   `stat_str` smallint(6) NOT NULL DEFAULT '1',
@@ -353,6 +355,109 @@ CREATE TABLE `item` (
 -- ----------------------------
 -- Records of item
 -- ----------------------------
+INSERT INTO `item` VALUES ('0', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('1', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('2', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '2', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('3', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('4', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('5', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('6', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('7', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('8', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('9', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('10', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('11', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('12', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('13', '1', '9', '16', 'Healing Potion', 'A healing potion', '2', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('14', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('15', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('16', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('17', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('18', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '2', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('19', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('20', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('21', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('22', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('23', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('24', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('25', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('26', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('27', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('28', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('29', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('30', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('31', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('32', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('33', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('34', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('35', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('36', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('37', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('38', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('39', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('40', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('41', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('42', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('43', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('44', '1', '9', '16', 'Healing Potion', 'A healing potion', '2', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('45', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '2', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('46', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('47', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('48', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('49', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('50', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('51', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('52', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('53', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('54', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('55', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('56', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('57', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('58', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('59', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('60', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('61', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('62', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('63', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('64', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('65', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('66', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('67', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('68', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('69', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('70', '1', '9', '16', 'Healing Potion', 'A healing potion', '3', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('71', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('72', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('73', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('74', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('75', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('76', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('77', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('78', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('79', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('80', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('81', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('82', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('83', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('84', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('85', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('86', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('87', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('88', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('89', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('90', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('91', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('92', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('93', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('94', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('95', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('96', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('97', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('98', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('99', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
+INSERT INTO `item` VALUES ('100', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
+INSERT INTO `item` VALUES ('101', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+INSERT INTO `item` VALUES ('102', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `item_template`
@@ -361,17 +466,17 @@ DROP TABLE IF EXISTS `item_template`;
 CREATE TABLE `item_template` (
   `id` smallint(5) unsigned NOT NULL,
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `width` tinyint(3) unsigned NOT NULL,
-  `height` tinyint(3) unsigned NOT NULL,
+  `width` tinyint(3) unsigned NOT NULL DEFAULT '16',
+  `height` tinyint(3) unsigned NOT NULL DEFAULT '16',
   `name` varchar(255) NOT NULL,
   `description` varchar(255) NOT NULL,
-  `graphic` smallint(5) unsigned NOT NULL,
+  `graphic` smallint(5) unsigned NOT NULL DEFAULT '0',
   `value` int(11) NOT NULL DEFAULT '0',
   `hp` smallint(6) NOT NULL DEFAULT '0',
   `mp` smallint(6) NOT NULL DEFAULT '0',
   `stat_agi` smallint(6) NOT NULL DEFAULT '0',
   `stat_int` smallint(6) NOT NULL DEFAULT '0',
-  `stat_str` smallint(6) NOT NULL,
+  `stat_str` smallint(6) NOT NULL DEFAULT '0',
   `stat_minhit` smallint(6) NOT NULL DEFAULT '0',
   `stat_maxhit` smallint(6) NOT NULL DEFAULT '0',
   `stat_maxhp` smallint(6) NOT NULL DEFAULT '0',
@@ -379,7 +484,7 @@ CREATE TABLE `item_template` (
   `stat_defence` smallint(6) NOT NULL DEFAULT '0',
   `stat_req_agi` smallint(6) NOT NULL DEFAULT '0',
   `stat_req_int` smallint(6) NOT NULL DEFAULT '0',
-  `stat_req_str` smallint(6) NOT NULL,
+  `stat_req_str` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -460,7 +565,7 @@ CREATE TABLE `server_time` (
 -- ----------------------------
 -- Records of server_time
 -- ----------------------------
-INSERT INTO `server_time` VALUES ('2009-10-27 16:00:49');
+INSERT INTO `server_time` VALUES ('2009-11-01 02:11:47');
 
 -- ----------------------------
 -- Table structure for `shop`
