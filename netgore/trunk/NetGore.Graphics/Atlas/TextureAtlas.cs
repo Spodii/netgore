@@ -396,6 +396,12 @@ namespace NetGore.Graphics
         /// </summary>
         class AtlasTextureInfo : IDisposable
         {
+            /// <summary>
+            /// If true, generated atlas textures will be saved to the temp files. Intended to be used for when tweaking
+            /// the atlas generation code. Only possible in debug builds.
+            /// </summary>
+            const bool _saveGeneratedAtlasToTemp = false;
+
             readonly int _height;
             readonly IEnumerable<AtlasTextureItem> _nodes;
             readonly int _width;
@@ -554,6 +560,14 @@ namespace NetGore.Graphics
                     ret = target.GetTexture();
                 }
 
+                // Save the generated atlas
+#pragma warning disable 162
+                // ReSharper disable ConditionIsAlwaysTrueOrFalse
+                if (_saveGeneratedAtlasToTemp)
+                    SaveTextureToTempFile(ret);
+                // ReSharper restore ConditionIsAlwaysTrueOrFalse
+#pragma warning restore 162
+
                 ret.Name = "Texture Atlas";
                 return ret;
             }
@@ -569,6 +583,16 @@ namespace NetGore.Graphics
                     Rectangle r = new Rectangle(n.X + Padding, n.Y + Padding, n.Width - Padding * 2, n.Height - Padding * 2);
                     n.ITextureAtlasable.SetAtlas(_atlasTexture, r);
                 }
+            }
+
+            /// <summary>
+            /// Saves the texture to a temp file.
+            /// </summary>
+            [Conditional("DEBUG")]
+            static void SaveTextureToTempFile(Texture texture)
+            {
+                TempFile f = new TempFile();
+                texture.Save(f.FilePath, ImageFileFormat.Bmp);
             }
 
             #region IDisposable Members
