@@ -386,8 +386,6 @@ namespace NetGore.Graphics
         /// </summary>
         class AtlasTextureInfo : IDisposable
         {
-            // NOTE: Can just use a lighter AtlasTextureItem that doesn't have the child references
-
             readonly int _height;
             readonly IEnumerable<AtlasTextureItem> _nodes;
             readonly int _width;
