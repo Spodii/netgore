@@ -568,7 +568,7 @@ namespace NetGore.Graphics
                 // ReSharper restore ConditionIsAlwaysTrueOrFalse
 #pragma warning restore 162
 
-                ret.Name = "Texture Atlas";
+                ret.Name = "Atlas Texture";
                 return ret;
             }
 
