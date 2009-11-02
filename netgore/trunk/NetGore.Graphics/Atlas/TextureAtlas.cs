@@ -23,11 +23,6 @@ namespace NetGore.Graphics
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Stack of all the items to add to the atlas.
-        /// </summary>
-        Stack<ITextureAtlas> _atlasItems = new Stack<ITextureAtlas>(32);
-
-        /// <summary>
         /// Background color of the atlas (not like it matters).
         /// </summary>
         Color _backColor = new Color(255, 0, 255, 255);
@@ -47,18 +42,17 @@ namespace NetGore.Graphics
         int _padding = 1;
 
         /// <summary>
-        /// Gets or sets the stack containing items to create the atlas from.
+        /// Gets the <see cref="ITextureAtlas"/>es that this <see cref="TextureAtlas"/> was built with, or null
+        /// if <see cref="HasBeenBuilt"/> is false.
         /// </summary>
-        /// <exception cref="MethodAccessException"><see cref="HasBeenBuilt"/> is true.</exception>
-        public Stack<ITextureAtlas> AtlasItems
+        public IEnumerable<ITextureAtlas> AtlasItems
         {
-            get { return _atlasItems; }
-            set
+            get
             {
-                if (HasBeenBuilt)
-                    throw CreateExceptionHasBeenBuilt();
+                if (!HasBeenBuilt || _builtAtlasesInfos == null)
+                    return null;
 
-                _atlasItems = value;
+                return _builtAtlasesInfos.SelectMany(atlasInfo => atlasInfo.Nodes.Select(node => node.ITextureAtlas));
             }
         }
 
@@ -127,14 +121,17 @@ namespace NetGore.Graphics
             }
         }
 
+        IEnumerable<TextureAtlasInfo> _builtAtlasesInfos;
+
         /// <summary>
         /// Builds the texture atlas or atlases for the given atlas items. This must only be called once.
         /// </summary>
         /// <param name="device">GraphicsDevice to build with.</param>
+        /// <param name="atlasItems">The <see cref="ITextureAtlas"/>es to build the atlas with.</param>
         /// <returns>List of texture atlases used.</returns>
         /// <exception cref="MethodAccessException"><see cref="HasBeenBuilt"/> is true.</exception>
         /// <exception cref="ArgumentException">The <see cref="device"/> is null or disposed.</exception>
-        public List<Texture2D> Build(GraphicsDevice device)
+        public List<Texture2D> Build(GraphicsDevice device, IEnumerable<ITextureAtlas> atlasItems)
         {
             if (HasBeenBuilt)
                 throw CreateExceptionHasBeenBuilt();
@@ -149,18 +146,21 @@ namespace NetGore.Graphics
 
             _hasBeenBuilt = true;
 
+            _builtAtlasesInfos = Combine(device, atlasItems);
+
             // If the device is lost, we must rebuild it to make the atlas valid again
             _device = device;
             device.DeviceReset += HandleDeviceReset;
 
-            return CreateAtlasTextures(device, Combine(device));
+            return CreateAtlasTextures(device, _builtAtlasesInfos);
         }
 
         /// <summary>
         /// Combines a list of ITextureAtlases to an atlas.
         /// </summary>
         /// <param name="device">Device to use for creating the atlas.</param>
-        List<TextureAtlasInfo> Combine(GraphicsDevice device)
+        /// <param name="atlasItems">The <see cref="ITextureAtlas"/>es to build the atlas with.</param>
+        List<TextureAtlasInfo> Combine(GraphicsDevice device, IEnumerable<ITextureAtlas> atlasItems)
         {
             if (device == null || device.IsDisposed)
             {
@@ -172,12 +172,12 @@ namespace NetGore.Graphics
 
             var atlasInfos = new List<TextureAtlasInfo>();
 
-            // Ensure we even got anything to work with
-            if (_atlasItems.Count == 0)
+            // Ensure we even have anything to work with
+            if (atlasItems.Count() == 0)
                 return atlasInfos;
 
             // Build the working list and sort it
-            var workingList = new List<ITextureAtlas>(_atlasItems);
+            var workingList = new List<ITextureAtlas>(atlasItems);
             workingList.Sort(SizeCompare);
 
             // Loop until the list is empty
@@ -252,7 +252,7 @@ namespace NetGore.Graphics
                 AtlasNode node = root.Insert(ta.SourceRect.Width + Padding * 2, ta.SourceRect.Height + Padding * 2);
                 if (node != null)
                 {
-                    // Assign the TextureAtlas and push the n onto the stack
+                    // Assign the TextureAtlas and push the node onto the stack
                     node.ITextureAtlas = ta;
                     nodeStack.Push(node);
                 }
@@ -566,7 +566,7 @@ namespace NetGore.Graphics
             foreach (var item in AtlasItems)
                 item.RemoveAtlas();
 
-            // TODO: CreateAtlasTextures(_device, Combine(_device));
+            // TODO: CreateAtlasTextures(_device, _builtAtlasesInfos);
             // The above line WILL rebuild the atlases, but it doesn't want to work properly.
             // After a few resets and the program will crash again due to accessing invalid memory.
             // Should check the GrhDatas to see if they are being set back up properly when removing the atlas.

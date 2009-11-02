@@ -8,9 +8,9 @@ using NetGore;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Information about a texture atlas
+    /// Contains information about a texture atlas.
     /// </summary>
-    public class TextureAtlasInfo
+    internal class TextureAtlasInfo
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 

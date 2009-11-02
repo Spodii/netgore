@@ -221,9 +221,9 @@ namespace DemoGame.Client
                 return;
             }
 
-            _atlas = new TextureAtlas();
+            var atlasItems = new List<ITextureAtlas>();
 
-            // Loop through each index (they're still a string at this point)
+            // Loop through each index
             foreach (GrhIndex index in grhIndexes)
             {
                 GrhData gd = GrhInfo.GetData(index);
@@ -233,13 +233,18 @@ namespace DemoGame.Client
                 // For stationary, this will just grab a copy of itself from Frames[0]
                 foreach (GrhData frame in gd.Frames)
                 {
-                    if (!_atlas.AtlasItems.Contains(frame))
-                        _atlas.AtlasItems.Push(frame);
+                    if (!atlasItems.Contains(frame))
+                        atlasItems.Add(frame);
                 }
             }
 
+            // Dispose of the old atlas if needed
+            if (_atlas != null && !_atlas.IsDisposed)
+                _atlas.Dispose();
+
             // Generate the atlas out of all the items
-            _mapAtlases = _atlas.Build(_graphics);
+            _atlas = new TextureAtlas();
+            _mapAtlases = _atlas.Build(_graphics, atlasItems);
         }
 
         /// <summary>

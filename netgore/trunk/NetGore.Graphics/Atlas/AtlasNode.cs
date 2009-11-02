@@ -4,7 +4,7 @@ using NetGore;
 
 namespace NetGore.Graphics
 {
-    public class AtlasNode
+    internal class AtlasNode
     {
         ITextureAtlas _iTextureAtlas = null;
         AtlasNode _left = null;
