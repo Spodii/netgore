@@ -74,9 +74,7 @@ namespace NetGore.Graphics
                         _sourceRect = new Rectangle(0, 0, 1, 1);
                     }
                     else
-                    {
                         _sourceRect = new Rectangle(0, 0, Texture.Width, Texture.Height);
-                    }
                 }
             }
         }
@@ -92,12 +90,11 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets the ContentManager used by the GrhData
+        /// Gets the <see cref="ContentManager"/> used to load the content for this <see cref="GrhData"/>.
         /// </summary>
         public ContentManager ContentManager
         {
             get { return _cm; }
-            set { _cm = value; }
         }
 
         /// <summary>
@@ -227,11 +224,14 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="r">IValueReader to read the values from.</param>
         /// <param name="cm">ContentManager to use.</param>
-        public GrhData(IValueReader r, ContentManager cm)
+        internal GrhData(IValueReader r, ContentManager cm)
         {
             Read(r, cm);
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GrhData"/> class.
+        /// </summary>
         internal GrhData()
         {
             // Restrict construction to internal only
@@ -484,6 +484,7 @@ namespace NetGore.Graphics
                     const string errmsg = "Failed to load GrhData `{0}.{1}` [{2}] : {3}";
                     if (log.IsErrorEnabled)
                         log.ErrorFormat(errmsg, Category, Title, GrhIndex, ex);
+                    Debug.Fail(string.Format(errmsg, Category, Title, GrhIndex, ex));
                 }
 
                 // If we were using an atlas, we'll have to remove it because the texture was reloaded
@@ -608,7 +609,6 @@ namespace NetGore.Graphics
 
             _isUsingAtlas = false;
             _texture = null;
-            ValidateTexture();
         }
 
         #endregion

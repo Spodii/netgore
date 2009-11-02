@@ -57,6 +57,7 @@
     <Compile Include="ContentPaths.cs" />
     <Compile Include="EnumIOHelper.cs" />
     <Compile Include="FilePathString.cs" />
+    <Compile Include="TempFile.cs" />
     <Compile Include="ValueReaderWriter\BinaryValueReader.cs" />
     <Compile Include="ValueReaderWriter\BinaryValueWriter.cs" />
     <Compile Include="ValueReaderWriter\IEnumValueReader.cs" />

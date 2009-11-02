@@ -11,6 +11,7 @@ using NetGore;
 using NetGore.Audio;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
+using NetGore.IO;
 using NetGore.Network;
 using NetGore.NPCChat;
 

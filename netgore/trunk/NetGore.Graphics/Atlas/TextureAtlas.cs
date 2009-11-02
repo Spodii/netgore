@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using log4net;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
@@ -123,6 +126,8 @@ namespace NetGore.Graphics
             }
         }
 
+        List<Texture2D> _atlasTextures;
+
         /// <summary>
         /// Builds the texture atlas or atlases for the given atlas items. This must only be called once.
         /// </summary>
@@ -145,14 +150,34 @@ namespace NetGore.Graphics
             }
 
             _hasBeenBuilt = true;
+            _device = device;
 
             _builtAtlasesInfos = Combine(device, atlasItems);
 
-            // If the device is lost, we must rebuild it to make the atlas valid again
-            _device = device;
-            device.DeviceReset += HandleDeviceReset;
+            _atlasTextures = CreateAtlasTextures(device, _builtAtlasesInfos);
+            return _atlasTextures;
+        }
 
-            return CreateAtlasTextures(device, _builtAtlasesInfos);
+        /// <summary>
+        /// Handles when the <see cref="GraphicsDevice"/> is reset.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
+        void HandleDeviceReset(object sender, EventArgs e)
+        {
+            // Remove the atlas from all items
+            foreach (var item in AtlasItems)
+                item.RemoveAtlas();
+
+            // Rebuild the atlas
+            CreateAtlasTextures(_device, _builtAtlasesInfos);
+
+            // Remove the atlas from all items
+            foreach (var item in AtlasItems)
+                item.RemoveAtlas();
+
+            // Rebuild the atlas
+            CreateAtlasTextures(_device, _builtAtlasesInfos);
         }
 
         /// <summary>
@@ -393,12 +418,14 @@ namespace NetGore.Graphics
             MultiSampleType sample = device.PresentationParameters.MultiSampleType;
             int q = device.PresentationParameters.MultiSampleQuality;
 
-            using (RenderTarget2D target = new RenderTarget2D(device, width, height, 1, format, sample, q))
+            TempFile tempFile;
+
+            using (RenderTarget2D target = new RenderTarget2D(device, width, height, 1, format, sample, q, RenderTargetUsage.PreserveContents))
             {
                 // Set the render target to the texture and clear it
                 device.DepthStencilBuffer = CreateDSB(target);
                 device.SetRenderTarget(0, target);
-                device.Clear(BackColor);
+                device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, BackColor, 1.0f, 0);
 
                 using (SpriteBatch sb = new SpriteBatch(device))
                 {
@@ -406,19 +433,11 @@ namespace NetGore.Graphics
                     sb.BeginUnfiltered(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.None);
                     foreach (AtlasNode item in items)
                     {
-                        // Make sure we are not already using an atlas, otherwise we'll be drawing atlas -> atlas.
-                        // In theory, this is a fine idea, and just improves performance of generating the new
-                        // atlas. But in reality, we don't want to because we may either get artifacts from the other
-                        // atlas or, even more likely, we are building the atlas because we lost the device in the first
-                        // place. When we lose the device, the RenderTarget2D becomes forever invalid. So if we just
-                        // lost the device and are restoring the atlas, trying to build the atlas again from the
-                        // old atlas will just cause an exception.
-                        item.ITextureAtlas.RemoveAtlas();
-
                         // Grab the texture and make sure it is valid
                         Texture2D tex = item.ITextureAtlas.Texture;
                         if (tex == null || tex.IsDisposed)
                         {
+                            // HACK: Even though we skip invalid textures, we still end up telling the item to use the atlas after it is made, which is obviously no good
                             const string errmsg = "Failed to add item `{0}` to atlas - texture is null or disposed.";
                             if (log.IsErrorEnabled)
                                 log.ErrorFormat(errmsg, item);
@@ -435,7 +454,7 @@ namespace NetGore.Graphics
                         // Create the borders if padded
                         if (Padding == 0)
                             continue;
-
+             
                         // Left border
                         src.Width = 1;
                         dest.X -= 1;
@@ -481,19 +500,27 @@ namespace NetGore.Graphics
                     sb.End();
                 }
 
+                // TODO: At this point, I can break off into a new thread to finish setting up the atlas
+                // This would be a huge help seeing as saving the file can take a few seconds for a huge atlas
+
                 // Restore the render target and grab the created texture
                 device.SetRenderTarget(0, null);
-                ret = target.GetTexture();
-
-                // Create a dummy array that will be used to grab some data from the return texture
-                // This will force the texture to be read from, which for some reason is actually required to be
-                // done for some systems... not sure why...
-                int[] dummyIntArray = new int[1];
-                ret.GetData(0, new Rectangle(0, 0, 1, 1), dummyIntArray, 0, 1);
+                using (ret = target.GetTexture())
+                {
+                    // Save the texture to a temporary file
+                    tempFile = new TempFile();
+                    ret.Save(tempFile.FilePath, ImageFileFormat.Bmp);
+                }
             }
 
-            ret.Name = "Texture Atlas";
-            return ret;
+            // Load the atlas texture back from the file
+            Texture2D atlasTexture = Texture2D.FromFile(_device, tempFile.FilePath);
+            atlasTexture.Name = "Texture Atlas";
+
+            // When the atlas texture is being disposed, dispose of the temp file, too. Easy back-up clean-up. :]
+            atlasTexture.Disposing += delegate { tempFile.Dispose(); };
+
+            return atlasTexture;
         }
 
         /// <summary>
@@ -554,24 +581,6 @@ namespace NetGore.Graphics
             // Finally, force below the maximum size
             width = Math.Min(width, maxSize);
             height = Math.Min(height, maxSize);
-        }
-
-        /// <summary>
-        /// Handles when the <see cref="GraphicsDevice"/> is reset.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
-        void HandleDeviceReset(object sender, EventArgs e)
-        {
-            foreach (var item in AtlasItems)
-            {
-                item.RemoveAtlas();
-            }
-
-            // TODO: CreateAtlasTextures(_device, _builtAtlasesInfos);
-            // The above line WILL rebuild the atlases, but it doesn't want to work properly.
-            // After a few resets and the program will crash again due to accessing invalid memory.
-            // Should check the GrhDatas to see if they are being set back up properly when removing the atlas.
         }
 
         /// <summary>
@@ -670,8 +679,7 @@ namespace NetGore.Graphics
             _isDisposed = true;
 
             // Remove our event hook so we never rebuild this atlas when the device is lost
-            if (HasBeenBuilt && _device != null && !_device.IsDisposed)
-                _device.DeviceReset -= HandleDeviceReset;
+            _device.DeviceReset -= HandleDeviceReset;
         }
 
         #endregion

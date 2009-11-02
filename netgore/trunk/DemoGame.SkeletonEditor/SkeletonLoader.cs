@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using NetGore;
 using NetGore.Globalization;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace DemoGame.SkeletonEditor
 {

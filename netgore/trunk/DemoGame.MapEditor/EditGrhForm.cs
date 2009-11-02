@@ -10,6 +10,7 @@ using NetGore;
 using NetGore.EditorTools;
 using NetGore.Globalization;
 using NetGore.Graphics;
+using NetGore.IO;
 
 namespace DemoGame.MapEditor
 {

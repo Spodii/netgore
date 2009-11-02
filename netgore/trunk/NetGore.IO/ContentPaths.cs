@@ -4,10 +4,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using log4net;
 using NetGore;
 
-namespace NetGore
+namespace NetGore.IO
 {
     /// <summary>
     /// An immutable class that contains the paths for the game content.
@@ -22,12 +23,25 @@ namespace NetGore
         const string _mapsFolder = "Maps";
         const string _settingsFolder = "Settings";
         const string _skeletonsFolder = "Skeletons";
+
+        /// <summary>
+        /// Suffix for temporary files.
+        /// </summary>
+        const string _tempFileSuffix = ".ngtmp";
+
+        const string _tempFolder = "Temp";
         const string _texturesFolder = "Texture";
 
-        static readonly string _appRoot;
+        static readonly PathString _appRoot;
         static readonly ContentPaths _buildPaths;
+        static readonly PathString _temp;
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         static ContentPaths _devPaths;
+
+        /// <summary>
+        /// The current free file index.
+        /// </summary>
+        static volatile int _freeFileIndex = 0;
 
         readonly PathString _data;
         readonly PathString _engine;
@@ -59,6 +73,14 @@ namespace NetGore
                     _devPaths = new ContentPaths(GetDevContentPath(_appRoot));
                 return _devPaths;
             }
+        }
+
+        /// <summary>
+        /// Gets the file path to the Temp directory.
+        /// </summary>
+        public static PathString Temp
+        {
+            get { return _temp; }
         }
 
         /// <summary>
@@ -149,14 +171,24 @@ namespace NetGore
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             _appRoot = Path.GetFullPath(baseDir);
 
+            // Set the temp files path
+            _temp = _appRoot.Join(_tempFolder);
+            if (!Directory.Exists(_temp))
+                Directory.CreateDirectory(_temp);
+
             _buildPaths = new ContentPaths(GetBuildContentPath(_appRoot));
+
+            // Delete temp files in another thread since we don't want to wait for it, and we will almost
+            // definitely delete files faster than we request them (if we don't, we'll just end up skipping them
+            // and end up with a little bit of garbage nobody cares about)
+            ThreadPool.QueueUserWorkItem(delegate { DeleteTempFiles(); });
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ContentPaths"/> class.
         /// </summary>
         /// <param name="rootPath">The root path.</param>
-        public ContentPaths(string rootPath)
+        ContentPaths(string rootPath)
         {
             _root = Path.GetFullPath(rootPath);
 
@@ -169,6 +201,55 @@ namespace NetGore
             _textures = GetChildPath(_root, _texturesFolder);
             _settings = GetChildPath(_root, _settingsFolder);
             _languages = GetChildPath(_root, _languagesFolder);
+        }
+
+        /// <summary>
+        /// Deletes all of the temporary files.
+        /// </summary>
+        static void DeleteTempFiles()
+        {
+            try
+            {
+                // Find all the temp files and free them
+                // FreeTempFile() should suppress any minor exceptions
+                var tempFiles = Directory.GetFiles(Temp, "*" + _tempFileSuffix, SearchOption.TopDirectoryOnly);
+                foreach (var file in tempFiles)
+                {
+                    FreeTempFile(file);
+                }
+            }
+            catch (DirectoryNotFoundException)
+            {
+                // Meh, whatever. Directory doesn't exist, so its not like we need to delete.
+                // It really SHOULD exist, but something else will complain about that later.
+            }
+        }
+
+        /// <summary>
+        /// Frees a file path acquired by <see cref="GetTempFilePath"/>.
+        /// </summary>
+        /// <param name="filePath">The file path to free.</param>
+        internal static void FreeTempFile(PathString filePath)
+        {
+            const string errmsg = "Temp file deletion failed: {0}";
+
+            // Delete... or not, doesn't really matter
+            // Its just a damn temporary file
+            try
+            {
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, ex);
+            }
+            catch (IOException ex)
+            {
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, ex);
+            }
         }
 
         /// <summary>
@@ -237,6 +318,42 @@ namespace NetGore
 
             // Recursively crawl down the tree looking for the development content directory
             return GetDevContentPath(parent.FullName);
+        }
+
+        /// <summary>
+        /// Gets the file path to a free temporary file.
+        /// </summary>
+        /// <returns>The file path to a free temporary file.</returns>
+        internal static PathString GetTempFilePath()
+        {
+            const string errmsg = "Temp file deletion failed: {0}";
+
+            int index = ++_freeFileIndex;
+
+            string filePath = _temp.Join(index + _tempFileSuffix);
+
+            // Delete the file if it already exists
+            // For some exceptions, recursively retry with the next temp file until
+            // we get it right (or the stack overflows :] )
+            try
+            {
+                if (File.Exists(filePath))
+                    File.Delete(filePath);
+            }
+            catch (UnauthorizedAccessException ex)
+            {
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, ex);
+                return GetTempFilePath();
+            }
+            catch (IOException ex)
+            {
+                if (log.IsWarnEnabled)
+                    log.WarnFormat(errmsg, ex);
+                return GetTempFilePath();
+            }
+
+            return filePath;
         }
 
         /// <summary>

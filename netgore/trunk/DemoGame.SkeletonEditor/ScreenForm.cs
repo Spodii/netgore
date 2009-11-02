@@ -12,6 +12,7 @@ using NetGore;
 using NetGore.EditorTools;
 using NetGore.Globalization;
 using NetGore.Graphics;
+using NetGore.IO;
 using Color=System.Drawing.Color;
 
 namespace DemoGame.SkeletonEditor

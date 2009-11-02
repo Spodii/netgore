@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Content;
 using NetGore;
 using NetGore.Globalization;
 using NetGore.Graphics;
+using NetGore.IO;
 using Rectangle=Microsoft.Xna.Framework.Rectangle;
 
 namespace NetGore.EditorTools
