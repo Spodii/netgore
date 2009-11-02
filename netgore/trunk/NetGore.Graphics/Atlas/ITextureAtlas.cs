@@ -6,9 +6,9 @@ using NetGore;
 namespace NetGore.Graphics
 {
     /// <summary>
-    /// Interface for an object that can be set to an atlas
+    /// Interface for an object that can be set to use a texture atlas.
     /// </summary>
-    public interface ITextureAtlas
+    public interface ITextureAtlasable
     {
         /// <summary>
         /// Gets the texture source <see cref="Rectangle"/> of the original image.
