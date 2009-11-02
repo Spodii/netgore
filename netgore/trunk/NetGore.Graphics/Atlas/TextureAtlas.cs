@@ -154,6 +154,9 @@ namespace NetGore.Graphics
 
             _builtAtlasesInfos = Combine(device, atlasItems);
 
+            _device.DeviceReset -= HandleDeviceReset;
+            _device.DeviceReset += HandleDeviceReset;
+
             _atlasTextures = CreateAtlasTextures(device, _builtAtlasesInfos);
             return _atlasTextures;
         }
@@ -165,12 +168,9 @@ namespace NetGore.Graphics
         /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void HandleDeviceReset(object sender, EventArgs e)
         {
-            // Remove the atlas from all items
-            foreach (var item in AtlasItems)
-                item.RemoveAtlas();
-
-            // Rebuild the atlas
-            CreateAtlasTextures(_device, _builtAtlasesInfos);
+            if (_atlasTextures != null)
+                foreach (var item in _atlasTextures)
+                    item.Dispose();
 
             // Remove the atlas from all items
             foreach (var item in AtlasItems)
@@ -418,8 +418,6 @@ namespace NetGore.Graphics
             MultiSampleType sample = device.PresentationParameters.MultiSampleType;
             int q = device.PresentationParameters.MultiSampleQuality;
 
-            TempFile tempFile;
-
             using (RenderTarget2D target = new RenderTarget2D(device, width, height, 1, format, sample, q, RenderTargetUsage.PreserveContents))
             {
                 // Set the render target to the texture and clear it
@@ -430,7 +428,7 @@ namespace NetGore.Graphics
                 using (SpriteBatch sb = new SpriteBatch(device))
                 {
                     // Draw every atlas item to the texture
-                    sb.BeginUnfiltered(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.None);
+                    sb.BeginUnfiltered(SpriteBlendMode.None, SpriteSortMode.Texture, SaveStateMode.SaveState);
                     foreach (AtlasNode item in items)
                     {
                         // Grab the texture and make sure it is valid
@@ -500,27 +498,13 @@ namespace NetGore.Graphics
                     sb.End();
                 }
 
-                // TODO: At this point, I can break off into a new thread to finish setting up the atlas
-                // This would be a huge help seeing as saving the file can take a few seconds for a huge atlas
-
                 // Restore the render target and grab the created texture
                 device.SetRenderTarget(0, null);
-                using (ret = target.GetTexture())
-                {
-                    // Save the texture to a temporary file
-                    tempFile = new TempFile();
-                    ret.Save(tempFile.FilePath, ImageFileFormat.Bmp);
-                }
+                ret = target.GetTexture();
             }
 
-            // Load the atlas texture back from the file
-            Texture2D atlasTexture = Texture2D.FromFile(_device, tempFile.FilePath);
-            atlasTexture.Name = "Texture Atlas";
-
-            // When the atlas texture is being disposed, dispose of the temp file, too. Easy back-up clean-up. :]
-            atlasTexture.Disposing += delegate { tempFile.Dispose(); };
-
-            return atlasTexture;
+            ret.Name = "Texture Atlas";
+            return ret;
         }
 
         /// <summary>
