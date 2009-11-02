@@ -99,9 +99,9 @@ namespace DemoGame.Client
             GrhInfo.Load(ContentPaths.Build, screenManager.MapContent);
 
             // Organize the GrhDatas for the atlases
-            var gdChars = new List<ITextureAtlas>();
-            var gdGUI = new List<ITextureAtlas>();
-            var gdNonMap = new List<ITextureAtlas>();
+            var gdChars = new List<ITextureAtlasable>();
+            var gdGUI = new List<ITextureAtlasable>();
+            var gdNonMap = new List<ITextureAtlasable>();
             foreach (var gd in GrhInfo.GrhDatas.Where(x => !x.IsAnimated))
             {
                 if (gd.Category.StartsWith("character", StringComparison.OrdinalIgnoreCase))
@@ -113,14 +113,9 @@ namespace DemoGame.Client
             }
 
             // Build the atlases, leaving everything but map GrhDatas in an atlas
-            var atlasChars = new TextureAtlas();
-            atlasChars.Build(GraphicsDevice, gdChars);
-
-            var atlasGUI = new TextureAtlas();
-            atlasGUI.Build(GraphicsDevice, gdGUI);
-
-            var atlasMisc = new TextureAtlas();
-            atlasMisc.Build(GraphicsDevice, gdNonMap);
+            var atlasChars = new TextureAtlas(GraphicsDevice, gdChars);
+            var atlasGUI = new TextureAtlas(GraphicsDevice, gdGUI);
+            var atlasMisc = new TextureAtlas(GraphicsDevice, gdNonMap);
 
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process

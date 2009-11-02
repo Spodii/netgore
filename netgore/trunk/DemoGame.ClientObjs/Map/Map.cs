@@ -78,6 +78,8 @@ namespace DemoGame.Client
         /// </summary>
         readonly World _world;
 
+        TextureAtlas _atlas;
+
         /// <summary>
         /// List of atlas textures used for the graphics for the map
         /// </summary>
@@ -207,8 +209,6 @@ namespace DemoGame.Client
             layerList.Add(drawableEntity);
         }
 
-        TextureAtlas _atlas;
-
         /// <summary>
         /// Constructs an atlas for the map using the given set of GrhIndexes.
         /// </summary>
@@ -221,7 +221,7 @@ namespace DemoGame.Client
                 return;
             }
 
-            var atlasItems = new List<ITextureAtlas>();
+            var atlasItems = new List<ITextureAtlasable>();
 
             // Loop through each index
             foreach (GrhIndex index in grhIndexes)
@@ -243,8 +243,7 @@ namespace DemoGame.Client
                 _atlas.Dispose();
 
             // Generate the atlas out of all the items
-            _atlas = new TextureAtlas();
-            _mapAtlases = _atlas.Build(_graphics, atlasItems);
+            _atlas = new TextureAtlas(_graphics, atlasItems);
         }
 
         /// <summary>

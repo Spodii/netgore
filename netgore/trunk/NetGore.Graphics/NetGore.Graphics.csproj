@@ -56,9 +56,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Atlas\AtlasNode.cs" />
+    <Compile Include="Atlas\AtlasTreeNode.cs" />
     <Compile Include="Atlas\ITextureAtlas.cs" />
     <Compile Include="Atlas\TextureAtlas.cs" />
-    <Compile Include="Atlas\TextureAtlasInfo.cs" />
     <Compile Include="Background\BackgroundImage.cs" />
     <Compile Include="Background\BackgroundLayerLayout.cs" />
     <Compile Include="Background\BackgroundLayer.cs" />

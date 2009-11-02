@@ -14,7 +14,7 @@ namespace NetGore.Graphics
     /// <summary>
     /// Holds information representing how a Grh is displayed and functions
     /// </summary>
-    public sealed class GrhData : ITextureAtlas
+    public sealed class GrhData : ITextureAtlasable
     {
         const string _automaticSizeValueKey = "AutomaticSize";
         const string _categoryNameValueKey = "Name";
@@ -547,7 +547,7 @@ namespace NetGore.Graphics
             }
         }
 
-        #region ITextureAtlas Members
+        #region ITextureAtlasable Members
 
         /// <summary>
         /// Gets the texture source rectangle in pixels for a single frame Grh
@@ -578,7 +578,7 @@ namespace NetGore.Graphics
         /// </summary>
         /// <param name="texture">Texture atlas.</param>
         /// <param name="atlasSourceRect">Source rectangle in the atlas.</param>
-        void ITextureAtlas.SetAtlas(Texture2D texture, Rectangle atlasSourceRect)
+        void ITextureAtlasable.SetAtlas(Texture2D texture, Rectangle atlasSourceRect)
         {
             if (texture == null)
                 throw new ArgumentNullException("texture");
