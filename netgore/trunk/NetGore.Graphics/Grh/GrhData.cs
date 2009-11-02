@@ -586,9 +586,9 @@ namespace NetGore.Graphics
             if (IsAnimated)
             {
                 const string errmsg = "An atlas may only be applied on a frame, not an animation!";
-                Debug.Fail(errmsg);
                 if (log.IsFatalEnabled)
                     log.Fatal(errmsg);
+                Debug.Fail(errmsg);
                 return;
             }
 
