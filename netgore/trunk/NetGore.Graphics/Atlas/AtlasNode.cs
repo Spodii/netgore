@@ -11,7 +11,7 @@ namespace NetGore.Graphics
     class AtlasTextureItem
     {
         readonly Rectangle _rect;
-        ITextureAtlasable _iTextureAtlas = null;
+        ITextureAtlasable _iTextureAtlasable = null;
 
         /// <summary>
         /// Gets the node's height.
@@ -24,10 +24,10 @@ namespace NetGore.Graphics
         /// <summary>
         /// Gets or sets the <see cref="ITextureAtlasable"/> associated with the node (leaf nodes only).
         /// </summary>
-        public ITextureAtlasable ITextureAtlas
+        public ITextureAtlasable ITextureAtlasable
         {
-            get { return _iTextureAtlas; }
-            internal set { _iTextureAtlas = value; }
+            get { return _iTextureAtlasable; }
+            internal set { _iTextureAtlasable = value; }
         }
 
         /// <summary>

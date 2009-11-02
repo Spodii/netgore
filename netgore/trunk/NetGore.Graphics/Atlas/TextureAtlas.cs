@@ -65,7 +65,7 @@ namespace NetGore.Graphics
         /// </summary>
         public IEnumerable<ITextureAtlasable> AtlasItems
         {
-            get { return _atlasTextureInfos.SelectMany(x => x.Nodes).Select(x => x.ITextureAtlas); }
+            get { return _atlasTextureInfos.SelectMany(x => x.Nodes).Select(x => x.ITextureAtlasable); }
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace NetGore.Graphics
                     // We made it to the maximum size and still have items left - make a new atlas
                     while (combinedNodes.Count > 0)
                     {
-                        workingList.Remove(combinedNodes.Pop().ITextureAtlas);
+                        workingList.Remove(combinedNodes.Pop().ITextureAtlasable);
                     }
                     atlasInfos.Add(new AtlasTextureInfo(width, height, combinedNodes));
                     width = 0;
@@ -419,7 +419,9 @@ namespace NetGore.Graphics
             {
                 _width = width;
                 _height = height;
-                _nodes = nodes.Where(x => x.ITextureAtlas != null).ToArray();
+
+                // Since we won't be altering the collection, use the smallest footprint possible
+                _nodes = nodes.Where(x => x.ITextureAtlasable != null).ToArray();
             }
 
             /// <summary>
@@ -441,7 +443,7 @@ namespace NetGore.Graphics
                 device.DepthStencilBuffer = oldDSB;
 
                 // Tell all the items to use the new atlas texture
-                ReapplyAtlasTexture(padding);
+                ReapplyAtlasTexture();
             }
 
             /// <summary>
@@ -481,7 +483,7 @@ namespace NetGore.Graphics
                         foreach (AtlasTextureItem item in Nodes)
                         {
                             // Grab the texture and make sure it is valid
-                            Texture2D tex = item.ITextureAtlas.Texture;
+                            Texture2D tex = item.ITextureAtlasable.Texture;
                             if (tex == null || tex.IsDisposed)
                             {
                                 // HACK: Even though we skip invalid textures, we still end up telling the item to use the atlas after it is made, which is obviously no good
@@ -493,7 +495,7 @@ namespace NetGore.Graphics
                             }
 
                             // Draw the actual image (raw, no borders)
-                            Rectangle srcRect = item.ITextureAtlas.SourceRect;
+                            Rectangle srcRect = item.ITextureAtlasable.SourceRect;
                             Vector2 dest = new Vector2(item.Rect.X + padding, item.Y + padding);
                             Rectangle src = srcRect;
                             sb.Draw(tex, dest, src, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
@@ -556,12 +558,16 @@ namespace NetGore.Graphics
                 return ret;
             }
 
-            void ReapplyAtlasTexture(int padding)
+            /// <summary>
+            /// Applies this atlas texture to all of the <see cref="ITextureAtlasable"/> items that the atlas texture
+            /// contains.
+            /// </summary>
+            void ReapplyAtlasTexture()
             {
                 foreach (AtlasTextureItem n in Nodes)
                 {
-                    Rectangle r = new Rectangle(n.X + padding, n.Y + padding, n.Width - padding * 2, n.Height - padding * 2);
-                    n.ITextureAtlas.SetAtlas(_atlasTexture, r);
+                    Rectangle r = new Rectangle(n.X + Padding, n.Y + Padding, n.Width - Padding * 2, n.Height - Padding * 2);
+                    n.ITextureAtlasable.SetAtlas(_atlasTexture, r);
                 }
             }
 

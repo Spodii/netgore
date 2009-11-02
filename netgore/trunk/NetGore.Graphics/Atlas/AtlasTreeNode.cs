@@ -37,9 +37,9 @@ namespace NetGore.Graphics
             }
         }
 
-        ITextureAtlasable ITextureAtlas
+        ITextureAtlasable ITextureAtlasable
         {
-            get { return AtlasNode.ITextureAtlas; }
+            get { return AtlasNode.ITextureAtlasable; }
         }
 
         /// <summary>
@@ -105,14 +105,14 @@ namespace NetGore.Graphics
                     ret = Right.Insert(w, h, atlasItem);
 
                 if (ret != null)
-                    ret.AtlasNode.ITextureAtlas = atlasItem;
+                    ret.AtlasNode.ITextureAtlasable = atlasItem;
 
                 return ret;
             }
             else
             {
                 // Check if it fits and not in use
-                if (ITextureAtlas != null || w > Rect.Width || h > Rect.Height)
+                if (ITextureAtlasable != null || w > Rect.Width || h > Rect.Height)
                     return null;
 
                 // Perfect fit
@@ -143,6 +143,10 @@ namespace NetGore.Graphics
                 // If the insert is a perfect fit, drop the n from the tree to prevent checking it again
                 if (diffW == 0 || diffH == 0)
                     Left = null;
+               
+                // If the node was created, set the atlas item
+                if (node != null)
+                    node.AtlasNode.ITextureAtlasable = atlasItem;
 
                 return node;
             }
