@@ -27,6 +27,8 @@ namespace NetGore.Graphics
         /// </summary>
         Color _backColor = new Color(255, 0, 255, 255);
 
+        IEnumerable<TextureAtlasInfo> _builtAtlasesInfos;
+
         GraphicsDevice _device;
         bool _hasBeenBuilt = false;
         bool _isDisposed = false;
@@ -120,8 +122,6 @@ namespace NetGore.Graphics
                 _padding = value;
             }
         }
-
-        IEnumerable<TextureAtlasInfo> _builtAtlasesInfos;
 
         /// <summary>
         /// Builds the texture atlas or atlases for the given atlas items. This must only be called once.
@@ -564,7 +564,9 @@ namespace NetGore.Graphics
         void HandleDeviceReset(object sender, EventArgs e)
         {
             foreach (var item in AtlasItems)
+            {
                 item.RemoveAtlas();
+            }
 
             // TODO: CreateAtlasTextures(_device, _builtAtlasesInfos);
             // The above line WILL rebuild the atlases, but it doesn't want to work properly.
