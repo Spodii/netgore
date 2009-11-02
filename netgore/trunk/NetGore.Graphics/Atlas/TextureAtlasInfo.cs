@@ -10,16 +10,16 @@ namespace NetGore.Graphics
     /// <summary>
     /// Contains information about a texture atlas.
     /// </summary>
-    internal class TextureAtlasInfo
+    class TextureAtlasInfo
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly int _height;
-        readonly Stack<AtlasNode> _nodes;
+        readonly IEnumerable<AtlasNode> _nodes;
         readonly int _width;
 
         /// <summary>
-        /// Gets the height of the texture atlas
+        /// Gets the height of the atlas texture.
         /// </summary>
         public int Height
         {
@@ -27,15 +27,15 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// Gets a stack of each of the nodes in the atlas
+        /// Gets the <see cref="AtlasNode"/>s that are in this atlas texture.
         /// </summary>
-        public Stack<AtlasNode> Nodes
+        public IEnumerable<AtlasNode> Nodes
         {
             get { return _nodes; }
         }
 
         /// <summary>
-        /// Gets the width of the texture atlas
+        /// Gets the width of the atlas texture.
         /// </summary>
         public int Width
         {
@@ -43,12 +43,12 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
-        /// TextureAtlasInfo constructor
+        /// Initializes a new instance of the <see cref="TextureAtlasInfo"/> class.
         /// </summary>
-        /// <param name="nodes">Stack of each of the nodes in the atlas</param>
-        /// <param name="width">Width of the texture atlas</param>
-        /// <param name="height">Height of the texture atlas</param>
-        public TextureAtlasInfo(Stack<AtlasNode> nodes, int width, int height)
+        /// <param name="nodes">IEnumerable of each of the nodes in the atlas.</param>
+        /// <param name="width">Width of the atlas texture.</param>
+        /// <param name="height">Height of the atlas texture.</param>
+        public TextureAtlasInfo(IEnumerable<AtlasNode> nodes, int width, int height)
         {
             if (nodes == null)
             {
