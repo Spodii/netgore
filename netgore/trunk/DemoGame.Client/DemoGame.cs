@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
@@ -96,28 +97,29 @@ namespace DemoGame.Client
             // end up in an atlas, this will provide them a way to load still.
             GrhInfo.Load(ContentPaths.Build, screenManager.MapContent);
 
-            // Build the texture atlases
-            var atlasChars = new TextureAtlas();
-            var atlasGUI = new TextureAtlas();
-            var atlasMisc = new TextureAtlas();
-
-            foreach (var gd in GrhInfo.GrhDatas)
+            // Organize the GrhDatas for the atlases
+            var gdChars = new List<ITextureAtlas>();
+            var gdGUI = new List<ITextureAtlas>();
+            var gdNonMap = new List<ITextureAtlas>();
+            foreach (var gd in GrhInfo.GrhDatas.Where(x => !x.IsAnimated))
             {
-                if (gd.Frames.Length == 1)
-                {
-                    if (gd.Category.Length > 9 && gd.Category.Substring(0, 9).ToLower() == "character")
-                        atlasChars.AtlasItems.Push(gd); // Characters
-                    else if (gd.Category.Length > 3 && gd.Category.Substring(0, 3).ToLower() == "gui")
-                        atlasGUI.AtlasItems.Push(gd); // GUI
-                    else if (!(gd.Category.Length > 3 && gd.Category.Substring(0, 3).ToLower() == "map"))
-                        atlasMisc.AtlasItems.Push(gd); // Misc
-                }
+                if (gd.Category.StartsWith("character", StringComparison.OrdinalIgnoreCase))
+                    gdChars.Add(gd); 
+                else if (gd.Category.StartsWith("gui", StringComparison.OrdinalIgnoreCase))
+                    gdGUI.Add(gd); 
+                else if (!gd.Category.StartsWith("map", StringComparison.OrdinalIgnoreCase))
+                    gdNonMap.Add(gd);
             }
 
-            // Build the atlases, leaving everything but map Grhs in an atlas
-            atlasChars.Build(GraphicsDevice);
-            atlasGUI.Build(GraphicsDevice);
-            atlasMisc.Build(GraphicsDevice);
+            // Build the atlases, leaving everything but map GrhDatas in an atlas
+            var atlasChars = new TextureAtlas();
+            atlasChars.Build(GraphicsDevice, gdChars);
+
+            var atlasGUI = new TextureAtlas();
+            atlasGUI.Build(GraphicsDevice, gdGUI);
+
+            var atlasMisc = new TextureAtlas();
+            atlasMisc.Build(GraphicsDevice, gdNonMap);
 
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process
