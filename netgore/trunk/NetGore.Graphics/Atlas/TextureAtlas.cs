@@ -16,11 +16,6 @@ namespace NetGore.Graphics
     public class TextureAtlas : IDisposable
     {
         /// <summary>
-        /// The default maximum size of a single texture for a <see cref="TextureAtlas"/>.
-        /// </summary>
-        public const int DefaultMaxSize = 1024;
-
-        /// <summary>
         /// The number of pixels to pad around each item inserted into the atlas.
         /// </summary>
         public const int Padding = 1;
