@@ -7,6 +7,7 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.IO;
 
 namespace NetGore.Graphics
 {
@@ -112,53 +113,16 @@ namespace NetGore.Graphics
 
             // Create an event listener that will allow us to rebuild and reapply the atlas textures
             // whenever the device is lost
-            _device.DeviceLost += HandleDeviceLost;
+            _device.DeviceReset += HandleDeviceLost;
 
             // Build the layout for all the items that will be in the atlas
             _atlasTextureInfos = Combine(atlasItems);
-        }
 
-        /// <summary>
-        /// Combines as many ITextureAtlasable items as possible into an atlas.
-        /// </summary>
-        /// <param name="items">Collection of ITextureAtlasable items to add to the atlas.</param>
-        /// <param name="width">Width of the atlas.</param>
-        /// <param name="height">Height of the atlas.</param>
-        /// <param name="breakOnAddFail">If true, the method will return instantly after failing to add an item.</param>
-        /// <returns>Stack containing all items that were successfully added to the atlas. If the
-        /// count of this return value equals the count of the <paramref name="items"/> collection,
-        /// all items were successfully added to the atlas of the specified size.</returns>
-        static Stack<AtlasTextureItem> CombineSingleTexture(ICollection<ITextureAtlasable> items, int width, int height, bool breakOnAddFail)
-        {
-            if (items == null)
+            // Build and apply each atlas texture
+            foreach (var atlasTextureInfo in _atlasTextureInfos)
             {
-                const string errmsg = "items is null.";
-                if (log.IsFatalEnabled)
-                    log.Fatal(errmsg);
-                throw new ArgumentException(errmsg, "items");
+                atlasTextureInfo.BuildTexture(_device, Padding);
             }
-
-            // Create the n stack for all set nodes
-            var nodeStack = new Stack<AtlasTextureItem>(items.Count);
-
-            // Set the positions
-            var root = new AtlasTreeNode(new AtlasTextureItem(width, height));
-            foreach (var ta in items)
-            {
-                var node = root.Insert(ta.SourceRect.Width + Padding * 2, ta.SourceRect.Height + Padding * 2, ta);
-                if (node != null)
-                {
-                    // Assign the TextureAtlas and push the node onto the stack
-                    nodeStack.Push(node.AtlasNode);
-                }
-                else if (breakOnAddFail)
-                {
-                    // Node didn't fit - return
-                    return nodeStack;
-                }
-            }
-
-            return nodeStack;
         }
 
         /// <summary>
@@ -221,6 +185,50 @@ namespace NetGore.Graphics
         }
 
         /// <summary>
+        /// Combines as many ITextureAtlasable items as possible into an atlas.
+        /// </summary>
+        /// <param name="items">Collection of ITextureAtlasable items to add to the atlas.</param>
+        /// <param name="width">Width of the atlas.</param>
+        /// <param name="height">Height of the atlas.</param>
+        /// <param name="breakOnAddFail">If true, the method will return instantly after failing to add an item.</param>
+        /// <returns>Stack containing all items that were successfully added to the atlas. If the
+        /// count of this return value equals the count of the <paramref name="items"/> collection,
+        /// all items were successfully added to the atlas of the specified size.</returns>
+        static Stack<AtlasTextureItem> CombineSingleTexture(ICollection<ITextureAtlasable> items, int width, int height,
+                                                            bool breakOnAddFail)
+        {
+            if (items == null)
+            {
+                const string errmsg = "items is null.";
+                if (log.IsFatalEnabled)
+                    log.Fatal(errmsg);
+                throw new ArgumentException(errmsg, "items");
+            }
+
+            // Create the n stack for all set nodes
+            var nodeStack = new Stack<AtlasTextureItem>(items.Count);
+
+            // Set the positions
+            var root = new AtlasTreeNode(new AtlasTextureItem(width, height));
+            foreach (var ta in items)
+            {
+                var node = root.Insert(ta.SourceRect.Width + Padding * 2, ta.SourceRect.Height + Padding * 2, ta);
+                if (node != null)
+                {
+                    // Assign the TextureAtlas and push the node onto the stack
+                    nodeStack.Push(node.AtlasNode);
+                }
+                else if (breakOnAddFail)
+                {
+                    // Node didn't fit - return
+                    return nodeStack;
+                }
+            }
+
+            return nodeStack;
+        }
+
+        /// <summary>
         /// Increases to the next texture size.
         /// </summary>
         /// <param name="width">New width.</param>
@@ -280,6 +288,11 @@ namespace NetGore.Graphics
             height = Math.Min(height, maxSize);
         }
 
+        /// <summary>
+        /// Handles when the <see cref="GraphicsDevice"/> is reset.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="System.EventArgs"/> instance containing the event data.</param>
         void HandleDeviceLost(object sender, EventArgs e)
         {
             foreach (var atlasTextureInfo in _atlasTextureInfos)
@@ -365,6 +378,8 @@ namespace NetGore.Graphics
 
             _isDisposed = true;
 
+            GraphicsDevice.DeviceReset -= HandleDeviceLost;
+
             if (_atlasTextureInfos != null)
             {
                 foreach (var item in _atlasTextureInfos)
@@ -404,7 +419,7 @@ namespace NetGore.Graphics
             {
                 _width = width;
                 _height = height;
-                _nodes = nodes;
+                _nodes = nodes.Where(x => x.ITextureAtlas != null).ToArray();
             }
 
             /// <summary>
@@ -457,7 +472,7 @@ namespace NetGore.Graphics
                     // Set the render target to the texture and clear it
                     device.DepthStencilBuffer = null;
                     device.SetRenderTarget(0, target);
-                    device.Clear(ClearOptions.Target | ClearOptions.DepthBuffer, _backColor, 1.0f, 0);
+                    device.Clear(ClearOptions.Target, _backColor, 1.0f, 0);
 
                     using (SpriteBatch sb = new SpriteBatch(device))
                     {
