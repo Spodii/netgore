@@ -62,6 +62,7 @@
     <Compile Include="Tests\DatabasePopulated.cs" />
     <Compile Include="Tests\LoadDbConnectionSettings.cs" />
     <Compile Include="Tests\LoadMySqlData.cs" />
+    <Compile Include="Tests\LoadSchemaFile.cs" />
     <Compile Include="Tests\LoadXNA.cs" />
     <Compile Include="Tests\LocateMySqlExe.cs" />
     <Compile Include="XmlInfoReader.cs" />

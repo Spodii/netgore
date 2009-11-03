@@ -9,7 +9,7 @@ namespace InstallationValidator
     {
         public const string DbSqlFile = "db.sql";
 
-        public static readonly string DBSettingsFile = string.Format("DemoGame.ServerObjs{0}DbSettings.xml",
+        public static readonly string DbSettingsFile = string.Format("DemoGame.ServerObjs{0}DbSettings.xml",
                                                                      Path.DirectorySeparatorChar);
 
         public static readonly string DbSchemaFile = string.Format("InstallationValidator{0}dbschema.bin", Path.DirectorySeparatorChar);
@@ -272,7 +272,7 @@ namespace InstallationValidator
                         " and import the db.sql file. If you use a database name other than" +
                         " `demogame`, make sure you updated the database settings file located at `{0}`." +
                         " See http://netgore.com/wiki/setup-guide.html for more information.";
-                    string err = GetMySqlCommandErrorStr(output, error, failInfo, DBSettingsFile);
+                    string err = GetMySqlCommandErrorStr(output, error, failInfo, DbSettingsFile);
                     if (print)
                         Tester.Test(testName, false, err);
                     return false;
@@ -282,7 +282,7 @@ namespace InstallationValidator
                     const string failInfo =
                         "Failed to open the db.sql file. Please make sure it is in the default location." +
                         " If you continue to get this message, you may have to manually import the database's contents";
-                    string err = GetMySqlCommandErrorStr(output, error, failInfo, DBSettingsFile);
+                    string err = GetMySqlCommandErrorStr(output, error, failInfo, DbSettingsFile);
                     if (print)
                         Tester.Test(testName, false, err);
                     return false;

@@ -13,11 +13,11 @@ namespace InstallationValidator.Tests
         public void Test()
         {
             const string testName = "Load database connection settings";
-            string failInfo = "Failed to load the database connection settings file at " + MySqlHelper.DBSettingsFile;
+            string failInfo = "Failed to load the database connection settings file at " + MySqlHelper.DbSettingsFile;
 
             try
             {
-                MySqlHelper.ConnectionSettings = new DBConnectionSettings(MySqlHelper.DBSettingsFile);
+                MySqlHelper.ConnectionSettings = new DBConnectionSettings(MySqlHelper.DbSettingsFile);
             }
             catch (Exception ex)
             {
