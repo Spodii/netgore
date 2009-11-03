@@ -1,4 +1,3 @@
-
 namespace InstallationValidator.Tests
 {
     public class DatabaseExists : ITestable
@@ -7,9 +6,11 @@ namespace InstallationValidator.Tests
         {
             const string testName = "Database exists";
 
-            string[] commands = new string[] { "use " + MySqlHelper.ConnectionSettings.SqlDatabase, "exit" };
+            string[] commands = new string[] { "use " + MySqlHelper.ConnectionSettings.Database, "exit" };
             return MySqlHelper.TestMySqlCommand(testName, null, commands, print);
         }
+
+        #region ITestable Members
 
         /// <summary>
         /// Runs a test.
@@ -21,5 +22,7 @@ namespace InstallationValidator.Tests
 
             TestInternal(true);
         }
+
+        #endregion
     }
 }

@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
 namespace InstallationValidator.Tests
 {
     public class CheckForMySqlConnector : ITestable
     {
+        #region ITestable Members
+
         /// <summary>
         /// Runs a test.
         /// </summary>
@@ -17,5 +15,7 @@ namespace InstallationValidator.Tests
 
             Tester.Test(testName, AssemblyHelper.IsAssemblyInstalled(KnownAssembly.MySqlData), failInfo);
         }
+
+        #endregion
     }
 }

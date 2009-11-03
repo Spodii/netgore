@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+using System;
 
 namespace InstallationValidator
 {
@@ -11,7 +9,10 @@ namespace InstallationValidator
         /// <summary>
         /// Gets if there has been an error in any of the tests.
         /// </summary>
-        public static bool HasErrors { get { return _hasErrors; } }
+        public static bool HasErrors
+        {
+            get { return _hasErrors; }
+        }
 
         public static void Test(string testName, bool passed, string failMessage)
         {

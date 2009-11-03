@@ -16,10 +16,13 @@ namespace InstallationValidator.Tests
             sb.Length--; // Remove trailing comma
 
             // In the SELECT below, if any of the tables listed don't exist, it will produce the error
-            string[] commands = new string[] { "use " + MySqlHelper.ConnectionSettings.SqlDatabase, "SELECT * FROM " + sb + " WHERE 0=1;", "exit", };
+            string[] commands = new string[]
+            { "use " + MySqlHelper.ConnectionSettings.Database, "SELECT * FROM " + sb + " WHERE 0=1;", "exit", };
 
             return MySqlHelper.TestMySqlCommand(testName, null, commands, print);
         }
+
+        #region ITestable Members
 
         /// <summary>
         /// Runs a test.
@@ -31,5 +34,7 @@ namespace InstallationValidator.Tests
 
             TestInternal(true);
         }
+
+        #endregion
     }
 }

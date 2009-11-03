@@ -5,6 +5,8 @@ namespace InstallationValidator.Tests
 {
     public class LoadDbConnectionSettings : ITestable
     {
+        #region ITestable Members
+
         /// <summary>
         /// Runs a test.
         /// </summary>
@@ -25,5 +27,7 @@ namespace InstallationValidator.Tests
 
             Tester.Test(testName, true, failInfo);
         }
+
+        #endregion
     }
 }

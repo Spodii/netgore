@@ -1,8 +1,9 @@
-
 namespace InstallationValidator.Tests
 {
     public class LocateMySqlExe : ITestable
     {
+        #region ITestable Members
+
         /// <summary>
         /// Runs a test.
         /// </summary>
@@ -13,5 +14,7 @@ namespace InstallationValidator.Tests
 
             Tester.Test(testName, MySqlHelper.MySqlPath != null, failInfo);
         }
+
+        #endregion
     }
 }
