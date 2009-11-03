@@ -7,12 +7,14 @@ namespace InstallationValidator
 {
     public static class MySqlHelper
     {
-        public const string DBSqlFile = "db.sql";
+        public const string DbSqlFile = "db.sql";
 
         public static readonly string DBSettingsFile = string.Format("DemoGame.ServerObjs{0}DbSettings.xml",
                                                                      Path.DirectorySeparatorChar);
 
-        public static readonly string[] DBTables = new string[]
+        public static readonly string DbSchemaFile = string.Format("InstallationValidator{0}dbschema.bin", Path.DirectorySeparatorChar);
+ 
+        public static readonly string[] DbTables = new string[]
         {
             "account", "alliance", "alliance_attackable", "alliance_hostile", "character", "character_equipped",
             "character_inventory", "character_status_effect", "character_template", "character_template_equipped",
@@ -104,7 +106,7 @@ namespace InstallationValidator
 
         static void ImportDatabaseContents()
         {
-            string dbFile = Path.GetFullPath(DBSqlFile);
+            string dbFile = Path.GetFullPath(DbSqlFile);
             bool fileExists = File.Exists(dbFile);
 
             Tester.Test("db.sql file exists", fileExists,

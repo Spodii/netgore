@@ -2,90 +2,17 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
+using InstallationValidator;
 
 namespace CodeReleasePreparer
 {
     class Program
     {
-        static readonly string _mysqldumpPath = FindMySqlFile("mysqldump.exe");
-        static readonly string _mysqlPath = FindMySqlFile("mysql.exe");
+        static readonly string _mysqldumpPath = MySqlHelper.FindMySqlFile("mysqldump.exe");
+        static readonly string _mysqlPath = MySqlHelper.FindMySqlFile("mysql.exe");
         static RegexCollection _fileRegexes;
         static RegexCollection _folderRegexes;
 
-        static string _root = null;
-
-        static void DeleteFile(string path)
-        {
-            if (path.EndsWith("dbdump.bat"))
-                return;
-
-            Console.WriteLine("Delete: " + path);
-
-            var attributes = File.GetAttributes(path);
-            if ((attributes & FileAttributes.ReadOnly) != 0)
-                File.SetAttributes(path, FileAttributes.Normal);
-
-            try
-            {
-                File.Delete(path);
-            }
-            catch (UnauthorizedAccessException)
-            {
-            }
-        }
-
-        static void DeleteFolder(string path)
-        {
-            if (path.EndsWith(string.Format(@"CodeReleasePreparer{0}bin", Path.DirectorySeparatorChar),
-                              StringComparison.InvariantCultureIgnoreCase))
-                return;
-
-            Console.WriteLine("Delete: " + path);
-
-            foreach (var file in Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly))
-            {
-                DeleteFile(file);
-            }
-
-            foreach (var subDirectory in Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly))
-            {
-                DeleteFolder(subDirectory);
-            }
-
-            Directory.Delete(path);
-        }
-
-        static string FindFile(string fileName, string root)
-        {
-            if (!Directory.Exists(root))
-                return null;
-
-            foreach (var file in Directory.GetFiles(root, "*", SearchOption.AllDirectories))
-            {
-                if (Path.GetFileName(file).ToLower().EndsWith(fileName))
-                    return file;
-            }
-
-            return null;
-        }
-
-        static string FindMySqlFile(string fileName)
-        {
-            var filePath =
-                FindFile(fileName, Environment.GetEnvironmentVariable("ProgramFiles(x86)") + Path.DirectorySeparatorChar + "MySql") ??
-                FindFile(fileName, Environment.GetEnvironmentVariable("ProgramFiles") + Path.DirectorySeparatorChar + "MySql");
-
-            return filePath;
-        }
-
-        static string GetRoot()
-        {
-            if (_root == null)
-                _root = Path.GetFullPath("..\\..\\..\\");
-
-            return _root;
-        }
 
         /// <summary>
         /// Checks if the one who is running this program is Spodi.
@@ -116,7 +43,7 @@ namespace CodeReleasePreparer
 
         static bool IsValidRootDir()
         {
-            var files = Directory.GetFiles(GetRoot(), "*", SearchOption.TopDirectoryOnly);
+            var files = Directory.GetFiles(Paths.Root, "*", SearchOption.TopDirectoryOnly);
             return files.Any(x => x.EndsWith("\\NetGore.sln", StringComparison.InvariantCultureIgnoreCase));
         }
 
@@ -171,18 +98,20 @@ namespace CodeReleasePreparer
                 return;
             }
 
-            Console.WriteLine("Root clean directory: " + GetRoot());
+            Console.WriteLine("Root clean directory: " + Paths.Root);
 
             // Check for the mysql files
             if (string.IsNullOrEmpty(_mysqlPath))
             {
                 Console.WriteLine("Failed to find mysql.exe");
+                Console.WriteLine("Press any key to exit...");
                 return;
             }
 
             if (string.IsNullOrEmpty(_mysqldumpPath))
             {
                 Console.WriteLine("Failed to find mysqldump.exe");
+                Console.WriteLine("Press any key to exit...");
                 return;
             }
 
@@ -190,6 +119,22 @@ namespace CodeReleasePreparer
             if (!IsValidRootDir())
             {
                 Console.WriteLine("This program may only be run from the project's default build path!");
+                Console.WriteLine("Press any key to exit...");
+                Console.ReadLine();
+                return;
+            }
+
+            // Save the schema file
+            Console.WriteLine("Updating the database schema file...");
+            string schemaFile = Paths.Root + MySqlHelper.DbSchemaFile;
+            if (File.Exists(schemaFile))
+                File.Delete(schemaFile);
+
+            SchemaSaver.Save();
+
+            if (!File.Exists(schemaFile))
+            {
+                Console.WriteLine("Failed to create database schema file! Path: {0}", schemaFile);
                 Console.WriteLine("Press any key to exit...");
                 Console.ReadLine();
                 return;
@@ -229,18 +174,18 @@ namespace CodeReleasePreparer
 
             // Move dump file
             Console.WriteLine("Moving dump file to trunk root...");
-            const string dbfileRooted = @"..\..\..\" + dbfile;
+            string dbfileRooted = string.Format("..{0}..{0}..{0}", Path.DirectorySeparatorChar) + dbfile;
             if (File.Exists(dbfileRooted))
                 File.Delete(dbfileRooted);
 
             File.Move(dbfile, dbfileRooted);
 
             // Delete crap
-            RecursiveDelete(GetRoot(), WillDeleteFolder, WillDeleteFile);
+            Deleter.RecursiveDelete(Paths.Root, WillDeleteFolder, WillDeleteFile);
 
             // Create self-destroying batch file that will delete this program's binaries
 
-            string programPath = string.Format("{0}CodeReleasePreparer{1}", GetRoot(), Path.DirectorySeparatorChar);
+            string programPath = string.Format("{0}CodeReleasePreparer{1}", Paths.Root, Path.DirectorySeparatorChar);
             RunBatchFile(true, "CHOICE /c 1 /d 1 /t 2 > nul", "RMDIR /S /Q \"" + programPath + "bin\"",
                          "RMDIR /S /Q \"" + programPath + "obj\"", "DEL %0");
 
@@ -282,25 +227,6 @@ namespace CodeReleasePreparer
             error = p.StandardError.ReadToEnd();
         }
 
-        static void RecursiveDelete(string path, Func<string, bool> folderFilter, Func<string, bool> fileFilter)
-        {
-            var files = Directory.GetFiles(path, "*", SearchOption.TopDirectoryOnly);
-            foreach (var f in files)
-            {
-                if (fileFilter(f))
-                    DeleteFile(f);
-            }
-
-            var folders = Directory.GetDirectories(path, "*", SearchOption.TopDirectoryOnly);
-            foreach (var f in folders)
-            {
-                if (folderFilter(f))
-                    DeleteFolder(f);
-                else
-                    RecursiveDelete(f, folderFilter, fileFilter);
-            }
-        }
-
         static void RunBatchFile(bool async, params string[] lines)
         {
             var filePath = Path.GetTempFileName() + ".bat";
@@ -319,7 +245,9 @@ namespace CodeReleasePreparer
                 else
                 {
                     for (int i = 0; i < lines.Length; i++)
+                    {
                         Console.WriteLine(lines[i]);
+                    }
                 }
                 Console.WriteLine("Press any key to continue...");
                 Console.ReadLine();
@@ -338,32 +266,6 @@ namespace CodeReleasePreparer
         static bool WillDeleteFolder(string folderName)
         {
             return _folderRegexes.Matches(folderName);
-        }
-    }
-
-    class RegexCollection
-    {
-        const RegexOptions _options =
-            RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
-
-        readonly Regex[] _regexes;
-
-        public RegexCollection(string[] patterns)
-        {
-            if (patterns == null)
-                throw new ArgumentNullException("patterns");
-
-            _regexes = new Regex[patterns.Length];
-
-            for (int i = 0; i < patterns.Length; i++)
-            {
-                _regexes[i] = new Regex(patterns[i], _options);
-            }
-        }
-
-        public bool Matches(string s)
-        {
-            return _regexes.Any(x => x.IsMatch(s));
         }
     }
 }

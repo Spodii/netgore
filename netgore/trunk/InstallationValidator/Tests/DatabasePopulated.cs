@@ -9,7 +9,7 @@ namespace InstallationValidator.Tests
             const string testName = "Database populated";
 
             StringBuilder sb = new StringBuilder();
-            foreach (var tableName in MySqlHelper.DBTables)
+            foreach (var tableName in MySqlHelper.DbTables)
             {
                 sb.Append("`" + tableName + "`,");
             }
