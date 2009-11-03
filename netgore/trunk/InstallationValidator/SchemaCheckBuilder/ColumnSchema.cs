@@ -1,9 +1,12 @@
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using MySql.Data.MySqlClient;
 
 namespace SchemaCheckBuilder
 {
+    [Serializable]
     public class ColumnSchema
     {
         static readonly string[] _valueNames = new string[]
@@ -66,12 +69,12 @@ namespace SchemaCheckBuilder
             _values = values;
         }
 
-        public ColumnSchema(MySqlDataReader r)
+        public ColumnSchema(IDataReader r)
         {
             _values = ReadValues(r);
         }
 
-        public static IDictionary<string, string> ReadValues(MySqlDataReader r)
+        public static IDictionary<string, string> ReadValues(IDataReader r)
         {
             Dictionary<string, string> d = new Dictionary<string, string>(_valueNames.Length);
             foreach (var v in ValueNames)
@@ -80,7 +83,7 @@ namespace SchemaCheckBuilder
                 if (r.IsDBNull(ordinal))
                     d.Add(v, null);
                 else
-                    d.Add(v, r.GetString(v));
+                    d.Add(v, r.GetString(ordinal));
             }
 
             return d;

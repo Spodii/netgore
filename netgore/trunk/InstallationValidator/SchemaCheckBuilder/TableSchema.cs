@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace SchemaCheckBuilder
 {
+    [Serializable]
     public class TableSchema
     {
         readonly IEnumerable<ColumnSchema> _columns;

@@ -1,4 +1,5 @@
-﻿using NetGore;
+﻿using System;
+using NetGore;
 
 namespace NetGore
 {

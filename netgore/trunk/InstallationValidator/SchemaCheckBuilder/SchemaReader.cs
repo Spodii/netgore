@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using MySql.Data.MySqlClient;
 using NetGore;
 
 namespace SchemaCheckBuilder
 {
+    [Serializable]
     public class SchemaReader
     {
         const string _columnsAlias = "c";
@@ -14,9 +19,7 @@ namespace SchemaCheckBuilder
             "SELECT {0}" + " FROM COLUMNS AS {2}" + " LEFT JOIN TABLES AS t" +
             " ON {2}.TABLE_NAME = t.TABLE_NAME AND c.TABLE_SCHEMA = t.TABLE_SCHEMA" + " WHERE t.TABLE_SCHEMA = '{1}'";
 
-        readonly DBConnectionSettings _dbSettings;
         readonly IEnumerable<TableSchema> _tableSchemas;
-        MySqlConnection _conn;
 
         public IEnumerable<TableSchema> TableSchemas
         {
@@ -25,26 +28,24 @@ namespace SchemaCheckBuilder
 
         public SchemaReader(DBConnectionSettings dbSettings)
         {
-            _dbSettings = dbSettings;
-
-            OpenConnection();
-            _tableSchemas = ExecuteQuery();
-            CloseConnection();
+            var conn = OpenConnection(dbSettings);
+            _tableSchemas = ExecuteQuery(conn, dbSettings);
+            CloseConnection(conn);
         }
 
-        void CloseConnection()
+        static void CloseConnection(IDbConnection conn)
         {
-            _conn.Close();
-            _conn.Dispose();
+            conn.Close();
+            conn.Dispose();
         }
 
-        IEnumerable<TableSchema> ExecuteQuery()
+        static IEnumerable<TableSchema> ExecuteQuery(MySqlConnection conn, DBConnectionSettings dbSettings)
         {
             Dictionary<string, List<ColumnSchema>> tableColumns = new Dictionary<string, List<ColumnSchema>>();
 
-            using (var cmd = _conn.CreateCommand())
+            using (var cmd = conn.CreateCommand())
             {
-                cmd.CommandText = GetQueryString();
+                cmd.CommandText = GetQueryString(dbSettings);
                 using (var r = cmd.ExecuteReader())
                 {
                     while (r.Read())
@@ -64,7 +65,9 @@ namespace SchemaCheckBuilder
             }
 
             var ret = tableColumns.Select(x => new TableSchema(x.Key, x.Value));
-            return ret;
+
+            // ToArray() required to serialize, otherwise it is a LINQ statement
+            return ret.ToArray(); 
         }
 
         static string GetColumnsString()
@@ -82,18 +85,46 @@ namespace SchemaCheckBuilder
             return sb.ToString();
         }
 
-        string GetQueryString()
+        static string GetQueryString(DBConnectionSettings dbSettings)
         {
-            return string.Format(_queryStr, GetColumnsString(), _dbSettings.Database, _columnsAlias);
+            return string.Format(_queryStr, GetColumnsString(), dbSettings.Database, _columnsAlias);
         }
 
-        void OpenConnection()
+        static MySqlConnection OpenConnection(DBConnectionSettings dbSettings)
         {
-            MySqlConnectionStringBuilder s = new MySqlConnectionStringBuilder
-            { UserID = _dbSettings.User, Password = _dbSettings.Pass, Server = _dbSettings.Host, Database = "information_schema" };
+            MySqlConnectionStringBuilder s = new MySqlConnectionStringBuilder { UserID = dbSettings.User, Password = dbSettings.Pass, Server = dbSettings.Host, Database = "information_schema" };
 
-            _conn = new MySqlConnection(s.ToString());
-            _conn.Open();
+            var conn = new MySqlConnection(s.ToString());
+            conn.Open();
+
+            return conn;
+        }
+
+        public void Serialize(string filePath)
+        {
+            using (var s = new FileStream(filePath, FileMode.Create))
+            {
+                BinaryFormatter f = GetBinaryFormatter();
+                f.Serialize(s, this);
+            }
+        }
+
+        static BinaryFormatter GetBinaryFormatter()
+        {
+            return new BinaryFormatter();
+        }
+
+        public static SchemaReader Deserialize(string filePath)
+        {
+            SchemaReader ret;
+
+            using (var s = new FileStream(filePath, FileMode.Open))
+            {
+                BinaryFormatter f = GetBinaryFormatter();
+                ret = (SchemaReader)f.Deserialize(s);
+            }
+
+            return ret;
         }
     }
 }
