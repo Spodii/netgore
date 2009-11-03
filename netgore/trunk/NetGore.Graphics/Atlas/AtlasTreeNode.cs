@@ -143,7 +143,7 @@ namespace NetGore.Graphics
                 // If the insert is a perfect fit, drop the n from the tree to prevent checking it again
                 if (diffW == 0 || diffH == 0)
                     Left = null;
-               
+
                 // If the node was created, set the atlas item
                 if (node != null)
                     node.AtlasNode.ITextureAtlasable = atlasItem;

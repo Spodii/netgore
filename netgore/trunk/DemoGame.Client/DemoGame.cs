@@ -56,10 +56,10 @@ namespace DemoGame.Client
             // NOTE: Temporary volume reduction
             // We use the thread pool due to the potentially long time it can take to load the audio engine
             ThreadPool.QueueUserWorkItem(delegate
-            {
-                SoundManager.GetInstance(Content).Volume = 0.7f;
-                MusicManager.GetInstance(Content).Volume = 0.2f;
-            });
+                                         {
+                                             SoundManager.GetInstance(Content).Volume = 0.7f;
+                                             MusicManager.GetInstance(Content).Volume = 0.2f;
+                                         });
         }
 
         protected override void Initialize()

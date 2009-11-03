@@ -382,7 +382,9 @@ namespace NetGore.Graphics.GUI
                 for (int i = newLines.Count - 1; i > 0; i--)
                 {
                     foreach (var j in newLines[i].Reverse<StyledText>())
+                    {
                         _lines[lineIndex + 1].Insert(j, 0);
+                    }
                 }
             }
             else
