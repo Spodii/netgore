@@ -53,7 +53,12 @@ namespace SchemaCheckBuilder
                 }
             }
         }
-
+        
+        /// <summary>
+        /// Concatenates the <see cref="ColumnSchema"/>s into a comma-delimited string.
+        /// </summary>
+        /// <param name="columns">The <see cref="ColumnSchema"/>s.</param>
+        /// <returns>The <see cref="ColumnSchema"/>s concatenated a comma-delimited string.</returns>
         static string Concat(IEnumerable<ColumnSchema> columns)
         {
             if (columns.Count() == 0)
