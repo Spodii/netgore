@@ -29,7 +29,7 @@ namespace InstallationValidator
 
         static DBConnectionSettings _connectionSettings;
         static bool _hasErrors = false;
-        static string _mysqlPath = FindMySqlFile();
+        static string _mysqlPath = FindMySqlFile("mysql.exe");
 
         /// <summary>
         /// Allow the user to create the database and import the values.
@@ -77,13 +77,11 @@ namespace InstallationValidator
             return null;
         }
 
-        static string FindMySqlFile()
+        static string FindMySqlFile(string fileName)
         {
-            const string file = "mysql.exe";
-
             var filePath =
-                FindFile(file, Environment.GetEnvironmentVariable("ProgramFiles(x86)") + Path.DirectorySeparatorChar + "MySql") ??
-                FindFile(file, Environment.GetEnvironmentVariable("ProgramFiles") + Path.DirectorySeparatorChar + "MySql");
+                FindFile(fileName, Environment.GetEnvironmentVariable("ProgramFiles(x86)") + Path.DirectorySeparatorChar + "MySql") ??
+                FindFile(fileName, Environment.GetEnvironmentVariable("ProgramFiles") + Path.DirectorySeparatorChar + "MySql");
 
             return filePath;
         }
@@ -140,10 +138,8 @@ namespace InstallationValidator
             string[] commands = new string[]
             {
                 "DROP DATABASE IF EXISTS " + _connectionSettings.SqlDatabase + ";",
-                "CREATE DATABASE " + _connectionSettings.SqlDatabase + ";", 
-                "USE " + _connectionSettings.SqlDatabase + ";",
-                "SOURCE " + dbFile, 
-                "exit"
+                "CREATE DATABASE " + _connectionSettings.SqlDatabase + ";", "USE " + _connectionSettings.SqlDatabase + ";",
+                "SOURCE " + dbFile, "exit"
             };
 
             TestMySqlCommand(testName, null, commands);
