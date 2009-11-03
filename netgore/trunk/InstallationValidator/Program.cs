@@ -8,13 +8,13 @@ namespace InstallationValidator
 {
     class Program
     {
-        const string _dbSettingsFile = "DemoGame.ServerObjs\\DbSettings.xml";
-
         const string _mysqlDataAssembly =
             "MySql.Data, Version=6.1.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL";
 
         const string _xnaAssembly =
             "Microsoft.Xna.Framework, Version=3.1.0.0, Culture=neutral, PublicKeyToken=6d5c3888ef60e27d, processorArchitecture=x86";
+
+        static readonly string _dbSettingsFile = string.Format("DemoGame.ServerObjs{0}DbSettings.xml", Path.DirectorySeparatorChar);
 
         static DBConnectionSettings _connectionSettings;
         static bool _hasErrors = false;
@@ -38,8 +38,9 @@ namespace InstallationValidator
         {
             const string file = "mysql.exe";
 
-            var filePath = FindFile(file, Environment.GetEnvironmentVariable("ProgramFiles(x86)") + "\\MySql") ??
-                           FindFile(file, Environment.GetEnvironmentVariable("ProgramFiles") + "\\MySql");
+            var filePath =
+                FindFile(file, Environment.GetEnvironmentVariable("ProgramFiles(x86)") + Path.DirectorySeparatorChar + "MySql") ??
+                FindFile(file, Environment.GetEnvironmentVariable("ProgramFiles") + Path.DirectorySeparatorChar + "MySql");
 
             return filePath;
         }
@@ -223,7 +224,7 @@ namespace InstallationValidator
         static void TestDatabaseFileExists()
         {
             const string testName = "Database connection settings file exists";
-            const string failInfo = "Failed to find the database settings file at " + _dbSettingsFile;
+            string failInfo = "Failed to find the database settings file at " + _dbSettingsFile;
 
             Test(testName, File.Exists(_dbSettingsFile), failInfo);
         }
@@ -231,7 +232,7 @@ namespace InstallationValidator
         static void TestLoadDbConnectionSettings()
         {
             const string testName = "Load database connection settings";
-            const string failInfo = "Failed to load the database connection settings file at " + _dbSettingsFile + ".\n";
+            string failInfo = "Failed to load the database connection settings file at " + _dbSettingsFile;
 
             try
             {
