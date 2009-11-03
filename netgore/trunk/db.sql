@@ -1,23 +1,27 @@
-/*
-Navicat MySQL Data Transfer
+-- MySQL dump 10.13  Distrib 5.1.38, for Win64 (unknown)
+--
+-- Host: localhost    Database: demogame
+-- ------------------------------------------------------
+-- Server version	5.1.38-community
 
-Source Server         : local
-Source Server Version : 50138
-Source Host           : localhost:3306
-Source Database       : demogame
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-Target Server Type    : MYSQL
-Target Server Version : 50138
-File Encoding         : 65001
+--
+-- Table structure for table `account`
+--
 
-Date: 2009-11-01 17:24:35
-*/
-
-SET FOREIGN_KEY_CHECKS=0;
--- ----------------------------
--- Table structure for `account`
--- ----------------------------
 DROP TABLE IF EXISTS `account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `account` (
   `id` int(11) NOT NULL COMMENT 'The account ID.',
   `name` varchar(30) NOT NULL COMMENT 'The account name.',
@@ -29,32 +33,49 @@ CREATE TABLE `account` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of account
--- ----------------------------
-INSERT INTO `account` VALUES ('1', 'Spodi', 'qwerty123', 'spodi@vbgore.com', '2009-09-07 15:43:16', '2009-11-01 02:07:08', null);
+--
+-- Dumping data for table `account`
+--
 
--- ----------------------------
--- Table structure for `alliance`
--- ----------------------------
+LOCK TABLES `account` WRITE;
+/*!40000 ALTER TABLE `account` DISABLE KEYS */;
+INSERT INTO `account` VALUES (1,'Spodi','qwerty123','spodi@vbgore.com','2009-09-07 15:43:16','2009-11-02 14:54:47',NULL);
+/*!40000 ALTER TABLE `account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `alliance`
+--
+
 DROP TABLE IF EXISTS `alliance`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `alliance` (
   `id` tinyint(3) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of alliance
--- ----------------------------
-INSERT INTO `alliance` VALUES ('0', 'user');
-INSERT INTO `alliance` VALUES ('1', 'monster');
+--
+-- Dumping data for table `alliance`
+--
 
--- ----------------------------
--- Table structure for `alliance_attackable`
--- ----------------------------
+LOCK TABLES `alliance` WRITE;
+/*!40000 ALTER TABLE `alliance` DISABLE KEYS */;
+INSERT INTO `alliance` VALUES (0,'user'),(1,'monster');
+/*!40000 ALTER TABLE `alliance` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `alliance_attackable`
+--
+
 DROP TABLE IF EXISTS `alliance_attackable`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `alliance_attackable` (
   `alliance_id` tinyint(3) unsigned NOT NULL,
   `attackable_id` tinyint(3) unsigned NOT NULL,
@@ -65,17 +86,25 @@ CREATE TABLE `alliance_attackable` (
   CONSTRAINT `alliance_attackable_ibfk_3` FOREIGN KEY (`attackable_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `alliance_attackable_ibfk_4` FOREIGN KEY (`alliance_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of alliance_attackable
--- ----------------------------
-INSERT INTO `alliance_attackable` VALUES ('0', '1', null);
-INSERT INTO `alliance_attackable` VALUES ('1', '0', null);
+--
+-- Dumping data for table `alliance_attackable`
+--
 
--- ----------------------------
--- Table structure for `alliance_hostile`
--- ----------------------------
+LOCK TABLES `alliance_attackable` WRITE;
+/*!40000 ALTER TABLE `alliance_attackable` DISABLE KEYS */;
+INSERT INTO `alliance_attackable` VALUES (0,1,NULL),(1,0,NULL);
+/*!40000 ALTER TABLE `alliance_attackable` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `alliance_hostile`
+--
+
 DROP TABLE IF EXISTS `alliance_hostile`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `alliance_hostile` (
   `alliance_id` tinyint(3) unsigned NOT NULL,
   `hostile_id` tinyint(3) unsigned NOT NULL,
@@ -86,17 +115,25 @@ CREATE TABLE `alliance_hostile` (
   CONSTRAINT `alliance_hostile_ibfk_3` FOREIGN KEY (`hostile_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `alliance_hostile_ibfk_4` FOREIGN KEY (`alliance_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of alliance_hostile
--- ----------------------------
-INSERT INTO `alliance_hostile` VALUES ('0', '1', '0');
-INSERT INTO `alliance_hostile` VALUES ('1', '0', '0');
+--
+-- Dumping data for table `alliance_hostile`
+--
 
--- ----------------------------
--- Table structure for `character`
--- ----------------------------
+LOCK TABLES `alliance_hostile` WRITE;
+/*!40000 ALTER TABLE `alliance_hostile` DISABLE KEYS */;
+INSERT INTO `alliance_hostile` VALUES (0,1,0),(1,0,0);
+/*!40000 ALTER TABLE `alliance_hostile` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `character`
+--
+
 DROP TABLE IF EXISTS `character`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character` (
   `id` int(11) NOT NULL,
   `account_id` int(11) DEFAULT NULL,
@@ -139,21 +176,25 @@ CREATE TABLE `character` (
   CONSTRAINT `character_ibfk_5` FOREIGN KEY (`account_id`) REFERENCES `account` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_ibfk_6` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of character
--- ----------------------------
-INSERT INTO `character` VALUES ('1', '1', null, 'Spodi', '1', null, null, null, '368.8', '643.2', '1', '500', '200', '1', '176', '24', '704', '95', '50', '50', '50', '50', '7', '11', '0', '1', '1', '2');
-INSERT INTO `character` VALUES ('2', null, '1', 'Test A', '2', null, null, '1', '800', '250', '2', '800', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
-INSERT INTO `character` VALUES ('3', null, '1', 'Test B', '2', null, null, '1', '500', '250', '2', '500', '250', '1', '3012', '12', '810', '527', '5', '5', '5', '5', '5', '5', '0', '5', '5', '5');
-INSERT INTO `character` VALUES ('4', null, null, 'Talking Guy', '2', null, '0', null, '800', '530', '2', '800', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
-INSERT INTO `character` VALUES ('5', null, null, 'Shopkeeper', '2', '0', null, null, '600', '530', '2', '600', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
-INSERT INTO `character` VALUES ('6', null, null, 'Vending Machine', '2', '1', null, null, '500', '530', '2', '500', '530', '1', '0', '1', '0', '0', '50', '50', '50', '50', '1', '1', '0', '1', '1', '1');
+--
+-- Dumping data for table `character`
+--
 
--- ----------------------------
--- Table structure for `character_equipped`
--- ----------------------------
+LOCK TABLES `character` WRITE;
+/*!40000 ALTER TABLE `character` DISABLE KEYS */;
+INSERT INTO `character` VALUES (1,1,NULL,'Spodi',1,NULL,NULL,NULL,368.8,643.2,1,500,200,1,176,24,704,95,50,50,50,50,7,11,0,1,1,2),(2,NULL,1,'Test A',2,NULL,NULL,1,800,250,2,800,250,1,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(3,NULL,1,'Test B',2,NULL,NULL,1,500,250,2,500,250,1,3012,12,810,527,5,5,5,5,5,5,0,5,5,5),(4,NULL,NULL,'Talking Guy',2,NULL,0,NULL,800,530,2,800,530,1,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(5,NULL,NULL,'Shopkeeper',2,0,NULL,NULL,600,530,2,600,530,1,0,1,0,0,50,50,50,50,1,1,0,1,1,1),(6,NULL,NULL,'Vending Machine',2,1,NULL,NULL,500,530,2,500,530,1,0,1,0,0,50,50,50,50,1,1,0,1,1,1);
+/*!40000 ALTER TABLE `character` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `character_equipped`
+--
+
 DROP TABLE IF EXISTS `character_equipped`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_equipped` (
   `character_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
@@ -163,15 +204,24 @@ CREATE TABLE `character_equipped` (
   CONSTRAINT `character_equipped_ibfk_3` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_equipped_ibfk_4` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of character_equipped
--- ----------------------------
+--
+-- Dumping data for table `character_equipped`
+--
 
--- ----------------------------
--- Table structure for `character_inventory`
--- ----------------------------
+LOCK TABLES `character_equipped` WRITE;
+/*!40000 ALTER TABLE `character_equipped` DISABLE KEYS */;
+/*!40000 ALTER TABLE `character_equipped` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `character_inventory`
+--
+
 DROP TABLE IF EXISTS `character_inventory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_inventory` (
   `character_id` int(11) NOT NULL,
   `item_id` int(11) NOT NULL,
@@ -182,17 +232,25 @@ CREATE TABLE `character_inventory` (
   CONSTRAINT `character_inventory_ibfk_3` FOREIGN KEY (`item_id`) REFERENCES `item` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_inventory_ibfk_4` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of character_inventory
--- ----------------------------
-INSERT INTO `character_inventory` VALUES ('1', '8', '1');
-INSERT INTO `character_inventory` VALUES ('1', '13', '0');
+--
+-- Dumping data for table `character_inventory`
+--
 
--- ----------------------------
--- Table structure for `character_status_effect`
--- ----------------------------
+LOCK TABLES `character_inventory` WRITE;
+/*!40000 ALTER TABLE `character_inventory` DISABLE KEYS */;
+INSERT INTO `character_inventory` VALUES (1,8,1),(1,13,0);
+/*!40000 ALTER TABLE `character_inventory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `character_status_effect`
+--
+
 DROP TABLE IF EXISTS `character_status_effect`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_status_effect` (
   `id` int(11) NOT NULL COMMENT 'Unique ID of the status effect instance.',
   `character_id` int(11) NOT NULL COMMENT 'ID of the Character that the status effect is on.',
@@ -203,15 +261,24 @@ CREATE TABLE `character_status_effect` (
   KEY `character_id` (`character_id`),
   CONSTRAINT `character_status_effect_ibfk_1` FOREIGN KEY (`character_id`) REFERENCES `character` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of character_status_effect
--- ----------------------------
+--
+-- Dumping data for table `character_status_effect`
+--
 
--- ----------------------------
--- Table structure for `character_template`
--- ----------------------------
+LOCK TABLES `character_status_effect` WRITE;
+/*!40000 ALTER TABLE `character_status_effect` DISABLE KEYS */;
+/*!40000 ALTER TABLE `character_status_effect` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `character_template`
+--
+
 DROP TABLE IF EXISTS `character_template`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_template` (
   `id` smallint(5) unsigned NOT NULL,
   `alliance_id` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -239,17 +306,25 @@ CREATE TABLE `character_template` (
   CONSTRAINT `character_template_ibfk_2` FOREIGN KEY (`alliance_id`) REFERENCES `alliance` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_template_ibfk_3` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of character_template
--- ----------------------------
-INSERT INTO `character_template` VALUES ('0', '0', 'User Template', null, null, '1', '5', '1', '0', '0', '0', '0', '50', '50', '1', '2', '0', '1', '1', '1');
-INSERT INTO `character_template` VALUES ('1', '1', 'A Test NPC', '1', null, '1', '2', '0', '0', '0', '5', '5', '5', '5', '0', '0', '0', '1', '1', '1');
+--
+-- Dumping data for table `character_template`
+--
 
--- ----------------------------
--- Table structure for `character_template_equipped`
--- ----------------------------
+LOCK TABLES `character_template` WRITE;
+/*!40000 ALTER TABLE `character_template` DISABLE KEYS */;
+INSERT INTO `character_template` VALUES (0,0,'User Template',NULL,NULL,1,5,1,0,0,0,0,50,50,1,2,0,1,1,1),(1,1,'A Test NPC',1,NULL,1,2,0,0,0,5,5,5,5,0,0,0,1,1,1);
+/*!40000 ALTER TABLE `character_template` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `character_template_equipped`
+--
+
 DROP TABLE IF EXISTS `character_template_equipped`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_template_equipped` (
   `id` int(11) NOT NULL,
   `character_template_id` smallint(5) unsigned NOT NULL,
@@ -261,18 +336,25 @@ CREATE TABLE `character_template_equipped` (
   CONSTRAINT `character_template_equipped_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_template_equipped_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of character_template_equipped
--- ----------------------------
-INSERT INTO `character_template_equipped` VALUES ('0', '1', '5', '5000');
-INSERT INTO `character_template_equipped` VALUES ('1', '1', '4', '5000');
-INSERT INTO `character_template_equipped` VALUES ('2', '1', '3', '10000');
+--
+-- Dumping data for table `character_template_equipped`
+--
 
--- ----------------------------
--- Table structure for `character_template_inventory`
--- ----------------------------
+LOCK TABLES `character_template_equipped` WRITE;
+/*!40000 ALTER TABLE `character_template_equipped` DISABLE KEYS */;
+INSERT INTO `character_template_equipped` VALUES (0,1,5,5000),(1,1,4,5000),(2,1,3,10000);
+/*!40000 ALTER TABLE `character_template_equipped` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `character_template_inventory`
+--
+
 DROP TABLE IF EXISTS `character_template_inventory`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `character_template_inventory` (
   `id` int(11) NOT NULL,
   `character_template_id` smallint(5) unsigned NOT NULL,
@@ -286,20 +368,25 @@ CREATE TABLE `character_template_inventory` (
   CONSTRAINT `character_template_inventory_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `character_template_inventory_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of character_template_inventory
--- ----------------------------
-INSERT INTO `character_template_inventory` VALUES ('0', '1', '5', '0', '2', '10000');
-INSERT INTO `character_template_inventory` VALUES ('1', '1', '4', '1', '2', '5000');
-INSERT INTO `character_template_inventory` VALUES ('2', '1', '3', '1', '1', '5000');
-INSERT INTO `character_template_inventory` VALUES ('3', '1', '2', '0', '1', '10000');
-INSERT INTO `character_template_inventory` VALUES ('4', '1', '1', '0', '5', '10000');
+--
+-- Dumping data for table `character_template_inventory`
+--
 
--- ----------------------------
--- Table structure for `game_constant`
--- ----------------------------
+LOCK TABLES `character_template_inventory` WRITE;
+/*!40000 ALTER TABLE `character_template_inventory` DISABLE KEYS */;
+INSERT INTO `character_template_inventory` VALUES (0,1,5,0,2,10000),(1,1,4,1,2,5000),(2,1,3,1,1,5000),(3,1,2,0,1,10000),(4,1,1,0,5,10000);
+/*!40000 ALTER TABLE `character_template_inventory` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `game_constant`
+--
+
 DROP TABLE IF EXISTS `game_constant`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `game_constant` (
   `max_characters_per_account` tinyint(3) unsigned NOT NULL,
   `min_account_name_length` tinyint(3) unsigned NOT NULL,
@@ -316,16 +403,25 @@ CREATE TABLE `game_constant` (
   `server_ip` varchar(15) NOT NULL,
   `world_physics_update_rate` smallint(5) unsigned NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 ROW_FORMAT=COMPACT;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of game_constant
--- ----------------------------
-INSERT INTO `game_constant` VALUES ('10', '3', '30', '3', '30', '3', '15', '500', '800', '600', '44446', '44445', '127.0.0.1', '20');
+--
+-- Dumping data for table `game_constant`
+--
 
--- ----------------------------
--- Table structure for `item`
--- ----------------------------
+LOCK TABLES `game_constant` WRITE;
+/*!40000 ALTER TABLE `game_constant` DISABLE KEYS */;
+INSERT INTO `game_constant` VALUES (10,3,30,3,30,3,15,500,800,600,44446,44445,'127.0.0.1',20);
+/*!40000 ALTER TABLE `game_constant` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `item`
+--
+
 DROP TABLE IF EXISTS `item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item` (
   `id` int(11) NOT NULL,
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -351,118 +447,25 @@ CREATE TABLE `item` (
   `stat_req_str` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of item
--- ----------------------------
-INSERT INTO `item` VALUES ('0', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('1', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('2', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '2', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('3', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('4', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('5', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('6', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('7', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('8', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('9', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('10', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('11', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('12', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('13', '1', '9', '16', 'Healing Potion', 'A healing potion', '2', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('14', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('15', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('16', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('17', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('18', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '2', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('19', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('20', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('21', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('22', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('23', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('24', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('25', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('26', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('27', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('28', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('29', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('30', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('31', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('32', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('33', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('34', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('35', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('36', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('37', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('38', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('39', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('40', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('41', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('42', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('43', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('44', '1', '9', '16', 'Healing Potion', 'A healing potion', '2', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('45', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '2', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('46', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('47', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('48', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('49', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('50', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('51', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('52', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('53', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('54', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('55', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('56', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('57', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('58', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('59', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('60', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('61', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('62', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('63', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('64', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('65', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('66', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('67', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('68', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('69', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('70', '1', '9', '16', 'Healing Potion', 'A healing potion', '3', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('71', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('72', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('73', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('74', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('75', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('76', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('77', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('78', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('79', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('80', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('81', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('82', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('83', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('84', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('85', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('86', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('87', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('88', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('89', '1', '9', '16', 'Healing Potion', 'A healing potion', '1', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('90', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('91', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('92', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('93', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('94', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('95', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('96', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('97', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('98', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '1', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('99', '1', '9', '16', 'Mana Potion', 'A mana potion', '1', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item` VALUES ('100', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '1', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item` VALUES ('101', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
-INSERT INTO `item` VALUES ('102', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '1', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+--
+-- Dumping data for table `item`
+--
 
--- ----------------------------
--- Table structure for `item_template`
--- ----------------------------
+LOCK TABLES `item` WRITE;
+/*!40000 ALTER TABLE `item` DISABLE KEYS */;
+INSERT INTO `item` VALUES (0,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(1,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(2,3,11,16,'Crystal Helmet','A helmet made out of crystal',2,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(3,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(4,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(5,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(6,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(7,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(8,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(9,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(10,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(11,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(12,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(13,1,9,16,'Healing Potion','A healing potion',2,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(14,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(15,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(16,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(17,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(18,3,11,16,'Crystal Helmet','A helmet made out of crystal',2,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(19,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(20,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(21,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(22,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(23,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(24,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(25,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(26,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(27,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(28,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(29,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(30,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(31,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(32,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(33,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(34,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(35,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(36,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(37,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(38,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(39,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(40,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(41,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(42,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(43,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(44,1,9,16,'Healing Potion','A healing potion',2,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(45,4,22,22,'Crystal Armor','Body armor made out of crystal',2,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(46,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(47,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(48,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(49,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(50,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(51,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(52,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(53,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(54,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(55,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(56,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(57,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(58,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(59,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(60,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(61,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(62,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(63,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(64,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(65,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(66,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(67,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(68,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(69,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(70,1,9,16,'Healing Potion','A healing potion',3,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(71,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(72,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(73,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(74,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(75,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(76,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(77,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(78,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(79,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(80,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(81,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(82,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(83,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(84,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(85,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(86,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(87,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(88,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(89,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(90,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(91,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(92,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(93,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(94,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(95,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(96,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(97,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(98,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(99,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(100,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(101,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(102,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(103,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(104,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(105,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(106,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(107,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(108,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(109,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(110,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(111,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(112,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(113,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(114,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(115,3,11,16,'Crystal Helmet','A helmet made out of crystal',2,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(116,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(117,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(118,3,11,16,'Crystal Helmet','A helmet made out of crystal',2,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(119,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(120,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(121,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(122,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(123,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(124,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(125,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(126,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(127,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(128,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(129,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(130,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(131,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(132,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(133,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(134,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(135,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(136,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(137,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(138,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(139,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(140,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(141,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(142,1,9,16,'Healing Potion','A healing potion',4,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(143,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(144,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(145,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(146,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(147,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(148,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(149,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(150,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(151,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(152,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(153,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(154,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(155,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(156,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(157,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(158,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(159,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(160,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(161,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(162,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(163,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(164,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(165,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(166,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(167,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(168,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(169,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(170,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(171,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(172,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(173,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(174,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(175,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(176,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(177,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(178,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(179,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(180,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(181,2,24,24,'Titanium Sword','A sword made out of titanium',1,126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(182,1,9,16,'Mana Potion','A mana potion',1,128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(183,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(184,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(185,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(186,3,11,16,'Crystal Helmet','A helmet made out of crystal',1,132,50,0,0,0,0,0,0,0,0,0,2,0,0,0),(187,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(188,4,22,22,'Crystal Armor','Body armor made out of crystal',1,130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(189,1,9,16,'Healing Potion','A healing potion',1,127,10,25,0,0,0,0,0,0,0,0,0,0,0,0);
+/*!40000 ALTER TABLE `item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `item_template`
+--
+
 DROP TABLE IF EXISTS `item_template`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item_template` (
   `id` smallint(5) unsigned NOT NULL,
   `type` tinyint(3) unsigned NOT NULL DEFAULT '0',
@@ -487,36 +490,49 @@ CREATE TABLE `item_template` (
   `stat_req_str` smallint(6) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of item_template
--- ----------------------------
-INSERT INTO `item_template` VALUES ('1', '1', '9', '16', 'Healing Potion', 'A healing potion', '127', '10', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('2', '1', '9', '16', 'Mana Potion', 'A mana potion', '128', '10', '0', '25', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('3', '2', '24', '24', 'Titanium Sword', 'A sword made out of titanium', '126', '100', '0', '0', '0', '0', '0', '5', '10', '0', '0', '0', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('4', '4', '22', '22', 'Crystal Armor', 'Body armor made out of crystal', '130', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '5', '0', '0', '0');
-INSERT INTO `item_template` VALUES ('5', '3', '11', '16', 'Crystal Helmet', 'A helmet made out of crystal', '132', '50', '0', '0', '0', '0', '0', '0', '0', '0', '0', '2', '0', '0', '0');
+--
+-- Dumping data for table `item_template`
+--
 
--- ----------------------------
--- Table structure for `map`
--- ----------------------------
+LOCK TABLES `item_template` WRITE;
+/*!40000 ALTER TABLE `item_template` DISABLE KEYS */;
+INSERT INTO `item_template` VALUES (1,1,9,16,'Healing Potion','A healing potion',127,10,25,0,0,0,0,0,0,0,0,0,0,0,0),(2,1,9,16,'Mana Potion','A mana potion',128,10,0,25,0,0,0,0,0,0,0,0,0,0,0),(3,2,24,24,'Titanium Sword','A sword made out of titanium',126,100,0,0,0,0,0,5,10,0,0,0,0,0,0),(4,4,22,22,'Crystal Armor','Body armor made out of crystal',130,50,0,0,0,0,0,0,0,0,0,5,0,0,0),(5,3,11,16,'Crystal Helmet','A helmet made out of crystal',132,50,0,0,0,0,0,0,0,0,0,2,0,0,0);
+/*!40000 ALTER TABLE `item_template` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `map`
+--
+
 DROP TABLE IF EXISTS `map`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `map` (
   `id` smallint(5) unsigned NOT NULL,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of map
--- ----------------------------
-INSERT INTO `map` VALUES ('1', 'INSERT VALUE');
-INSERT INTO `map` VALUES ('2', 'INSERT VALUE');
+--
+-- Dumping data for table `map`
+--
 
--- ----------------------------
--- Table structure for `map_spawn`
--- ----------------------------
+LOCK TABLES `map` WRITE;
+/*!40000 ALTER TABLE `map` DISABLE KEYS */;
+INSERT INTO `map` VALUES (1,'INSERT VALUE'),(2,'INSERT VALUE');
+/*!40000 ALTER TABLE `map` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `map_spawn`
+--
+
 DROP TABLE IF EXISTS `map_spawn`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `map_spawn` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `map_id` smallint(5) unsigned NOT NULL,
@@ -532,62 +548,135 @@ CREATE TABLE `map_spawn` (
   CONSTRAINT `map_spawn_ibfk_1` FOREIGN KEY (`character_template_id`) REFERENCES `character_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `map_spawn_ibfk_2` FOREIGN KEY (`map_id`) REFERENCES `map` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of map_spawn
--- ----------------------------
-INSERT INTO `map_spawn` VALUES ('12', '1', '1', '1', null, null, null, null);
-INSERT INTO `map_spawn` VALUES ('13', '1', '1', '1', null, null, null, null);
-INSERT INTO `map_spawn` VALUES ('14', '1', '1', '1', null, null, null, null);
+--
+-- Dumping data for table `map_spawn`
+--
 
--- ----------------------------
--- Table structure for `server_setting`
--- ----------------------------
+LOCK TABLES `map_spawn` WRITE;
+/*!40000 ALTER TABLE `map_spawn` DISABLE KEYS */;
+INSERT INTO `map_spawn` VALUES (12,1,1,1,NULL,NULL,NULL,NULL),(13,1,1,1,NULL,NULL,NULL,NULL),(14,1,1,1,NULL,NULL,NULL,NULL);
+/*!40000 ALTER TABLE `map_spawn` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `npc_character`
+--
+
+DROP TABLE IF EXISTS `npc_character`;
+/*!50001 DROP VIEW IF EXISTS `npc_character`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `npc_character` (
+  `id` int(11),
+  `account_id` int(11),
+  `character_template_id` smallint(5) unsigned,
+  `name` varchar(30),
+  `map_id` smallint(5) unsigned,
+  `shop_id` smallint(5) unsigned,
+  `chat_dialog` smallint(5) unsigned,
+  `ai_id` smallint(5) unsigned,
+  `x` float,
+  `y` float,
+  `respawn_map` smallint(5) unsigned,
+  `respawn_x` float,
+  `respawn_y` float,
+  `body_id` smallint(5) unsigned,
+  `cash` int(11),
+  `level` tinyint(3) unsigned,
+  `exp` int(11),
+  `statpoints` int(11),
+  `hp` smallint(6),
+  `mp` smallint(6),
+  `stat_maxhp` smallint(6),
+  `stat_maxmp` smallint(6),
+  `stat_minhit` smallint(6),
+  `stat_maxhit` smallint(6),
+  `stat_defence` smallint(6),
+  `stat_agi` smallint(6),
+  `stat_int` smallint(6),
+  `stat_str` smallint(6)
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `server_setting`
+--
+
 DROP TABLE IF EXISTS `server_setting`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `server_setting` (
   `motd` varchar(250) NOT NULL DEFAULT '' COMMENT 'The message of the day.'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of server_setting
--- ----------------------------
+--
+-- Dumping data for table `server_setting`
+--
+
+LOCK TABLES `server_setting` WRITE;
+/*!40000 ALTER TABLE `server_setting` DISABLE KEYS */;
 INSERT INTO `server_setting` VALUES ('Welcome to NetGore! Use the arrow keys to move, control to attack, alt to talk to NPCs and use world entities, and space to pick up items.');
+/*!40000 ALTER TABLE `server_setting` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- ----------------------------
--- Table structure for `server_time`
--- ----------------------------
+--
+-- Table structure for table `server_time`
+--
+
 DROP TABLE IF EXISTS `server_time`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `server_time` (
   `server_time` datetime NOT NULL,
   PRIMARY KEY (`server_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of server_time
--- ----------------------------
-INSERT INTO `server_time` VALUES ('2009-11-01 02:11:47');
+--
+-- Dumping data for table `server_time`
+--
 
--- ----------------------------
--- Table structure for `shop`
--- ----------------------------
+LOCK TABLES `server_time` WRITE;
+/*!40000 ALTER TABLE `server_time` DISABLE KEYS */;
+INSERT INTO `server_time` VALUES ('2009-11-02 14:57:43');
+/*!40000 ALTER TABLE `server_time` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `shop`
+--
+
 DROP TABLE IF EXISTS `shop`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `shop` (
   `id` smallint(5) unsigned NOT NULL,
   `name` varchar(60) NOT NULL,
   `can_buy` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of shop
--- ----------------------------
-INSERT INTO `shop` VALUES ('0', 'Test Shop', '1');
-INSERT INTO `shop` VALUES ('1', 'Soda Vending Machine', '0');
+--
+-- Dumping data for table `shop`
+--
 
--- ----------------------------
--- Table structure for `shop_item`
--- ----------------------------
+LOCK TABLES `shop` WRITE;
+/*!40000 ALTER TABLE `shop` DISABLE KEYS */;
+INSERT INTO `shop` VALUES (0,'Test Shop',1),(1,'Soda Vending Machine',0);
+/*!40000 ALTER TABLE `shop` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `shop_item`
+--
+
 DROP TABLE IF EXISTS `shop_item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `shop_item` (
   `shop_id` smallint(5) unsigned NOT NULL,
   `item_template_id` smallint(5) unsigned NOT NULL,
@@ -596,115 +685,228 @@ CREATE TABLE `shop_item` (
   CONSTRAINT `shop_item_ibfk_1` FOREIGN KEY (`shop_id`) REFERENCES `shop` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `shop_item_ibfk_2` FOREIGN KEY (`item_template_id`) REFERENCES `item_template` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
--- ----------------------------
--- Records of shop_item
--- ----------------------------
-INSERT INTO `shop_item` VALUES ('0', '1');
-INSERT INTO `shop_item` VALUES ('1', '1');
-INSERT INTO `shop_item` VALUES ('0', '2');
-INSERT INTO `shop_item` VALUES ('1', '2');
-INSERT INTO `shop_item` VALUES ('0', '3');
-INSERT INTO `shop_item` VALUES ('0', '4');
-INSERT INTO `shop_item` VALUES ('0', '5');
+--
+-- Dumping data for table `shop_item`
+--
 
--- ----------------------------
--- View structure for `npc_character`
--- ----------------------------
-DROP VIEW IF EXISTS `npc_character`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `npc_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`shop_id` AS `shop_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`ai_id` AS `ai_id`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`stat_maxhp` AS `stat_maxhp`,`character`.`stat_maxmp` AS `stat_maxmp`,`character`.`stat_minhit` AS `stat_minhit`,`character`.`stat_maxhit` AS `stat_maxhit`,`character`.`stat_defence` AS `stat_defence`,`character`.`stat_agi` AS `stat_agi`,`character`.`stat_int` AS `stat_int`,`character`.`stat_str` AS `stat_str` from `character` where isnull(`character`.`account_id`);
+LOCK TABLES `shop_item` WRITE;
+/*!40000 ALTER TABLE `shop_item` DISABLE KEYS */;
+INSERT INTO `shop_item` VALUES (0,1),(1,1),(0,2),(1,2),(0,3),(0,4),(0,5);
+/*!40000 ALTER TABLE `shop_item` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- ----------------------------
--- View structure for `user_character`
--- ----------------------------
-DROP VIEW IF EXISTS `user_character`;
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `user_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`shop_id` AS `shop_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`ai_id` AS `ai_id`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`stat_maxhp` AS `stat_maxhp`,`character`.`stat_maxmp` AS `stat_maxmp`,`character`.`stat_minhit` AS `stat_minhit`,`character`.`stat_maxhit` AS `stat_maxhit`,`character`.`stat_defence` AS `stat_defence`,`character`.`stat_agi` AS `stat_agi`,`character`.`stat_int` AS `stat_int`,`character`.`stat_str` AS `stat_str` from `character` where (`character`.`account_id` is not null);
+--
+-- Temporary table structure for view `user_character`
+--
 
--- ----------------------------
--- Procedure structure for `Rebuild_View_NPC_Character`
--- ----------------------------
-DROP PROCEDURE IF EXISTS `Rebuild_View_NPC_Character`;
+DROP TABLE IF EXISTS `user_character`;
+/*!50001 DROP VIEW IF EXISTS `user_character`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `user_character` (
+  `id` int(11),
+  `account_id` int(11),
+  `character_template_id` smallint(5) unsigned,
+  `name` varchar(30),
+  `map_id` smallint(5) unsigned,
+  `shop_id` smallint(5) unsigned,
+  `chat_dialog` smallint(5) unsigned,
+  `ai_id` smallint(5) unsigned,
+  `x` float,
+  `y` float,
+  `respawn_map` smallint(5) unsigned,
+  `respawn_x` float,
+  `respawn_y` float,
+  `body_id` smallint(5) unsigned,
+  `cash` int(11),
+  `level` tinyint(3) unsigned,
+  `exp` int(11),
+  `statpoints` int(11),
+  `hp` smallint(6),
+  `mp` smallint(6),
+  `stat_maxhp` smallint(6),
+  `stat_maxmp` smallint(6),
+  `stat_minhit` smallint(6),
+  `stat_maxhit` smallint(6),
+  `stat_defence` smallint(6),
+  `stat_agi` smallint(6),
+  `stat_int` smallint(6),
+  `stat_str` smallint(6)
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping routines for database 'demogame'
+--
+/*!50003 DROP FUNCTION IF EXISTS `CreateUserOnAccount` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Rebuild_View_NPC_Character`()
-BEGIN
-	DROP VIEW IF EXISTS `npc_character`;
-	CREATE VIEW npc_character AS SELECT * FROM `character` WHERE `account_id` IS NULL;
-END;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 FUNCTION `CreateUserOnAccount`(accountID INT, characterName VARCHAR(30), characterID INT) RETURNS varchar(100) CHARSET latin1
+BEGIN
+				DECLARE character_count INT DEFAULT 0;
+				DECLARE max_character_count INT DEFAULT 3;
+				DECLARE is_id_free INT DEFAULT 0;
+				DECLARE is_name_free INT DEFAULT 0;
+				DECLARE errorMsg VARCHAR(100) DEFAULT "";
+
+				SELECT COUNT(*) 
+					INTO character_count
+					FROM `character`
+					WHERE account_id = accountID;
+					
+				SELECT `max_characters_per_account` 
+					INTO max_character_count
+					FROM `game_data`;
+					
+				IF character_count > max_character_count THEN
+					SET errorMsg = "No free character slots available in the account.";
+				ELSE
+					SELECT COUNT(*)
+						INTO is_id_free
+						FROM `character`
+						WHERE `id` = characterID;
+				
+					IF is_id_free > 0 THEN
+						SET errorMsg = "The specified CharacterID is not available for use.";
+					ELSE
+						SELECT COUNT(*)
+							INTO is_name_free
+							FROM `user_character`
+							WHERE `name` = characterName;
+						
+						IF is_name_free > 0 THEN
+							SET errorMsg = "The specified character name is not available for use.";
+						ELSE
+							INSERT INTO `character` SET 
+								`id`			= 	characterID,
+								`name`			= 	characterName,
+								`account_id`	= 	accountID;
+						END IF;
+					END IF;
+				END IF;
+				
+				RETURN errorMsg;
+			END */;;
 DELIMITER ;
-
--- ----------------------------
--- Procedure structure for `Rebuild_View_User_Character`
--- ----------------------------
-DROP PROCEDURE IF EXISTS `Rebuild_View_User_Character`;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Rebuild_Views` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Rebuild_View_User_Character`()
-BEGIN
-	DROP VIEW IF EXISTS user_character;
-	CREATE VIEW user_character AS SELECT * FROM `character` WHERE `account_id` IS NOT NULL;
-END;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Rebuild_Views`()
+BEGIN
+	CALL Rebuild_View_NPC_Character();
+	CALL Rebuild_View_User_Character();
+END */;;
 DELIMITER ;
-
--- ----------------------------
--- Procedure structure for `Rebuild_Views`
--- ----------------------------
-DROP PROCEDURE IF EXISTS `Rebuild_Views`;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Rebuild_View_NPC_Character` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `Rebuild_Views`()
-BEGIN
-	CALL Rebuild_View_NPC_Character();
-	CALL Rebuild_View_User_Character();
-END;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Rebuild_View_NPC_Character`()
+BEGIN
+	DROP VIEW IF EXISTS `npc_character`;
+	CREATE VIEW npc_character AS SELECT * FROM `character` WHERE `account_id` IS NULL;
+END */;;
 DELIMITER ;
-
--- ----------------------------
--- Function structure for `CreateUserOnAccount`
--- ----------------------------
-DROP FUNCTION IF EXISTS `CreateUserOnAccount`;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `Rebuild_View_User_Character` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'STRICT_TRANS_TABLES,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` FUNCTION `CreateUserOnAccount`(accountID INT, characterName VARCHAR(30), characterID INT) RETURNS varchar(100) CHARSET latin1
-BEGIN
-				DECLARE character_count INT DEFAULT 0;
-				DECLARE max_character_count INT DEFAULT 3;
-				DECLARE is_id_free INT DEFAULT 0;
-				DECLARE is_name_free INT DEFAULT 0;
-				DECLARE errorMsg VARCHAR(100) DEFAULT "";
-
-				SELECT COUNT(*) 
-					INTO character_count
-					FROM `character`
-					WHERE account_id = accountID;
-					
-				SELECT `max_characters_per_account` 
-					INTO max_character_count
-					FROM `game_data`;
-					
-				IF character_count > max_character_count THEN
-					SET errorMsg = "No free character slots available in the account.";
-				ELSE
-					SELECT COUNT(*)
-						INTO is_id_free
-						FROM `character`
-						WHERE `id` = characterID;
-				
-					IF is_id_free > 0 THEN
-						SET errorMsg = "The specified CharacterID is not available for use.";
-					ELSE
-						SELECT COUNT(*)
-							INTO is_name_free
-							FROM `user_character`
-							WHERE `name` = characterName;
-						
-						IF is_name_free > 0 THEN
-							SET errorMsg = "The specified character name is not available for use.";
-						ELSE
-							INSERT INTO `character` SET 
-								`id`			= 	characterID,
-								`name`			= 	characterName,
-								`account_id`	= 	accountID;
-						END IF;
-					END IF;
-				END IF;
-				
-				RETURN errorMsg;
-			END;;
+/*!50003 CREATE*/ /*!50020 DEFINER=`root`@`localhost`*/ /*!50003 PROCEDURE `Rebuild_View_User_Character`()
+BEGIN
+	DROP VIEW IF EXISTS user_character;
+	CREATE VIEW user_character AS SELECT * FROM `character` WHERE `account_id` IS NOT NULL;
+END */;;
 DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Final view structure for view `npc_character`
+--
+
+/*!50001 DROP TABLE IF EXISTS `npc_character`*/;
+/*!50001 DROP VIEW IF EXISTS `npc_character`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `npc_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`shop_id` AS `shop_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`ai_id` AS `ai_id`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`stat_maxhp` AS `stat_maxhp`,`character`.`stat_maxmp` AS `stat_maxmp`,`character`.`stat_minhit` AS `stat_minhit`,`character`.`stat_maxhit` AS `stat_maxhit`,`character`.`stat_defence` AS `stat_defence`,`character`.`stat_agi` AS `stat_agi`,`character`.`stat_int` AS `stat_int`,`character`.`stat_str` AS `stat_str` from `character` where isnull(`character`.`account_id`) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `user_character`
+--
+
+/*!50001 DROP TABLE IF EXISTS `user_character`*/;
+/*!50001 DROP VIEW IF EXISTS `user_character`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `user_character` AS select `character`.`id` AS `id`,`character`.`account_id` AS `account_id`,`character`.`character_template_id` AS `character_template_id`,`character`.`name` AS `name`,`character`.`map_id` AS `map_id`,`character`.`shop_id` AS `shop_id`,`character`.`chat_dialog` AS `chat_dialog`,`character`.`ai_id` AS `ai_id`,`character`.`x` AS `x`,`character`.`y` AS `y`,`character`.`respawn_map` AS `respawn_map`,`character`.`respawn_x` AS `respawn_x`,`character`.`respawn_y` AS `respawn_y`,`character`.`body_id` AS `body_id`,`character`.`cash` AS `cash`,`character`.`level` AS `level`,`character`.`exp` AS `exp`,`character`.`statpoints` AS `statpoints`,`character`.`hp` AS `hp`,`character`.`mp` AS `mp`,`character`.`stat_maxhp` AS `stat_maxhp`,`character`.`stat_maxmp` AS `stat_maxmp`,`character`.`stat_minhit` AS `stat_minhit`,`character`.`stat_maxhit` AS `stat_maxhit`,`character`.`stat_defence` AS `stat_defence`,`character`.`stat_agi` AS `stat_agi`,`character`.`stat_int` AS `stat_int`,`character`.`stat_str` AS `stat_str` from `character` where (`character`.`account_id` is not null) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2009-11-02 21:38:13

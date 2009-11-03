@@ -2,12 +2,15 @@
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
+using System.Text;
 using NetGore;
 
 namespace InstallationValidator
 {
     class Program
     {
+        const string _dbSqlFile = "db.sql";
+
         const string _mysqlDataAssembly =
             "MySql.Data, Version=6.1.0.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL";
 
@@ -16,9 +19,49 @@ namespace InstallationValidator
 
         static readonly string _dbSettingsFile = string.Format("DemoGame.ServerObjs{0}DbSettings.xml", Path.DirectorySeparatorChar);
 
+        static readonly string[] _dbTables = new string[]
+        {
+            "account", "alliance", "alliance_attackable", "alliance_hostile", "character", "character_equipped",
+            "character_inventory", "character_status_effect", "character_template", "character_template_equipped",
+            "character_template_inventory", "game_constant", "item", "item_template", "map", "map_spawn", "server_setting",
+            "server_time", "shop", "shop_item"
+        };
+
         static DBConnectionSettings _connectionSettings;
         static bool _hasErrors = false;
         static string _mysqlPath = FindMySqlFile();
+
+        /// <summary>
+        /// Allow the user to create the database and import the values.
+        /// </summary>
+        static void AskToImportDatabase(bool dbExists)
+        {
+            string s;
+            if (!dbExists)
+                s = "Database `{0}` does not exist. Do you wish to create it (Y/N)?";
+            else
+                s = "Database `{0}` is not populated. Do you wish to populate it (Y/N)?";
+
+            Write(string.Format("\n" + s + "\n", _connectionSettings.SqlDatabase), ConsoleColor.Green);
+            Write("Additional information:\n", ConsoleColor.Yellow);
+            Write("1. You MUST create the database and import the data at some point.\n", ConsoleColor.White);
+            Write("2. You can always re-run this program and create the database later.\n", ConsoleColor.White);
+            Write("3. Expert users might want to create the database manually.\n", ConsoleColor.White);
+            Write("4. Since the database is empty, no data will be lost, so 'Y' is recommended.\n", ConsoleColor.White);
+
+            // Ask if they want to import the database
+            while (true)
+            {
+                var key = Console.ReadKey();
+                if (key.Key == ConsoleKey.N)
+                    break;
+                if (key.Key == ConsoleKey.Y)
+                {
+                    ImportDatabaseContents();
+                    break;
+                }
+            }
+        }
 
         static string FindFile(string fileName, string root)
         {
@@ -81,6 +124,31 @@ namespace InstallationValidator
             return err + "\n";
         }
 
+        static void ImportDatabaseContents()
+        {
+            string dbFile = Path.GetFullPath(_dbSqlFile);
+            bool fileExists = File.Exists(dbFile);
+
+            Test("db.sql file exists", fileExists,
+                 "Failed to find the db.sql file. Make sure you didn't move/delete it, or run this program from a different directory than the default.");
+
+            if (!fileExists)
+                return;
+
+            const string testName = "Create database and import data";
+
+            string[] commands = new string[]
+            {
+                "DROP DATABASE IF EXISTS " + _connectionSettings.SqlDatabase + ";",
+                "CREATE DATABASE " + _connectionSettings.SqlDatabase + ";", 
+                "USE " + _connectionSettings.SqlDatabase + ";",
+                "SOURCE " + dbFile, 
+                "exit"
+            };
+
+            TestMySqlCommand(testName, null, commands);
+        }
+
         static bool IsAssemblyInstalled(string assemblyName)
         {
             try
@@ -131,9 +199,13 @@ namespace InstallationValidator
             Console.WriteLine();
 
             if (_hasErrors)
-                Write("One or more errors were found. Resolve them for NetGore to work properly.", ConsoleColor.Red);
+            {
+                Write("One or more errors were found. Resolve them for NetGore to work properly.\n", ConsoleColor.Red);
+                Write("If you need help resolving these errors, please ask on the NetGore forums at www.netgore.com.",
+                      ConsoleColor.Yellow);
+            }
             else
-                Write("Congratulations, no errors!", ConsoleColor.Green);
+                Write("Congratulations, no errors! :)", ConsoleColor.Green);
 
             Console.ReadLine();
         }
@@ -183,6 +255,9 @@ namespace InstallationValidator
             const ConsoleColor failColor = ConsoleColor.Red;
             const ConsoleColor testColor = ConsoleColor.Yellow;
             const ConsoleColor msgColor = ConsoleColor.Red;
+
+            if (Console.CursorLeft > 0)
+                Write("\n", normalColor);
 
             Write("[", normalColor);
             Write(passed ? "PASS" : "FAIL", passed ? passColor : failColor);
@@ -271,8 +346,29 @@ namespace InstallationValidator
         /// <param name="command">The primary command (command line command). Leave null or empty to use
         /// the default connection string.</param>
         /// <param name="cmds">The additional commands to execute.</param>
-        static void TestMySqlCommand(string testName, string command, string[] cmds)
+        /// <returns>True if the test was successful; false if the test failed.</returns>
+        static bool TestMySqlCommand(string testName, string command, string[] cmds)
         {
+            return TestMySqlCommand(testName, command, cmds, true);
+        }
+
+        /// <summary>
+        /// Provides a wrapper for a test that does a test on the MySql.exe process. This will call Test()
+        /// and perform internal checks for known errors. All expected errors should be defined in here.
+        /// </summary>
+        /// <param name="testName">The name of the test.</param>
+        /// <param name="command">The primary command (command line command). Leave null or empty to use
+        /// the default connection string.</param>
+        /// <param name="cmds">The additional commands to execute.</param>
+        /// <param name="print">If true, the results will be printed through <see cref="Test"/>. If false, the
+        /// results will not be displayed. Set this to false if you want to run a test without having the
+        /// results be displayed.</param>
+        /// <returns>True if the test was successful; false if the test failed.</returns>
+        static bool TestMySqlCommand(string testName, string command, string[] cmds, bool print)
+        {
+            if (testName == null)
+                testName = "<Unnamed Test>";
+
             // Check for a valid application path
             if (string.IsNullOrEmpty(_mysqlPath) || !File.Exists(_mysqlPath))
             {
@@ -280,8 +376,9 @@ namespace InstallationValidator
                 if (!string.IsNullOrEmpty(_mysqlPath))
                     errmsg += " Supplied path: " + _mysqlPath;
 
-                Test(testName, false, errmsg);
-                return;
+                if (print)
+                    Test(testName, false, errmsg);
+                return false;
             }
 
             // Build the default command string
@@ -307,8 +404,9 @@ namespace InstallationValidator
                 // Generally this means that the process itself crashed or completely failed to run
                 const string failInfo = "Failed to launch mysql.exe. Internal error: {0}";
 
-                Test(testName, false, string.Format(failInfo, ex));
-                return;
+                if (print)
+                    Test(testName, false, string.Format(failInfo, ex));
+                return false;
             }
 
             // Check for a variety of failure messages from the mysql.exe process
@@ -319,8 +417,9 @@ namespace InstallationValidator
                 {
                     const string failInfo = "Access denied. Ensure the connection string contains valid account info: `{0}`";
                     string err = GetMySqlCommandErrorStr(output, error, failInfo, command);
-                    Test(testName, false, err);
-                    return;
+                    if (print)
+                        Test(testName, false, err);
+                    return false;
                 }
                 else if (errorLower.Contains("error 2005"))
                 {
@@ -328,8 +427,9 @@ namespace InstallationValidator
                         "Unknown service host `{0}`. Make sure the host used in the connection string is correct" +
                         " and that the MySql server service has been started: `{0}`";
                     string err = GetMySqlCommandErrorStr(output, error, failInfo, command);
-                    Test(testName, false, err);
-                    return;
+                    if (print)
+                        Test(testName, false, err);
+                    return false;
                 }
                 else if (errorLower.Contains("error 1146"))
                 {
@@ -337,8 +437,9 @@ namespace InstallationValidator
                         "The target database is not populated. Make sure you import the db.sql file." +
                         " See http://netgore.com/wiki/setup-guide.html for more information.";
                     string err = GetMySqlCommandErrorStr(output, error, failInfo);
-                    Test(testName, false, err);
-                    return;
+                    if (print)
+                        Test(testName, false, err);
+                    return false;
                 }
                 else if (errorLower.Contains("error 1049"))
                 {
@@ -348,13 +449,26 @@ namespace InstallationValidator
                         " `demogame`, make sure you updated the database settings file located at `{0}`." +
                         " See http://netgore.com/wiki/setup-guide.html for more information.";
                     string err = GetMySqlCommandErrorStr(output, error, failInfo, _dbSettingsFile);
-                    Test(testName, false, err);
-                    return;
+                    if (print)
+                        Test(testName, false, err);
+                    return false;
+                }
+                else if (errorLower.Contains("failed to open file"))
+                {
+                    const string failInfo =
+                        "Failed to open the db.sql file. Please make sure it is in the default location." +
+                        " If you continue to get this message, you may have to manually import the database's contents";
+                    string err = GetMySqlCommandErrorStr(output, error, failInfo, _dbSettingsFile);
+                    if (print)
+                        Test(testName, false, err);
+                    return false;
                 }
             }
 
             // Successful
-            Test(testName, true, null);
+            if (print)
+                Test(testName, true, null);
+            return true;
         }
 
         static void TestMySqlPath()
@@ -367,23 +481,44 @@ namespace InstallationValidator
 
         static void TestSelectTable()
         {
+            if (!TestSelectTableInternal(false))
+                AskToImportDatabase(true);
+
+            TestSelectTableInternal(true);
+        }
+
+        static bool TestSelectTableInternal(bool print)
+        {
             const string testName = "Database populated";
+
+            StringBuilder sb = new StringBuilder();
+            foreach (var tableName in _dbTables)
+            {
+                sb.Append("`" + tableName + "`,");
+            }
+            sb.Length--; // Remove trailing comma
 
             // In the SELECT below, if any of the tables listed don't exist, it will produce the error
             string[] commands = new string[]
-            {
-                "use " + _connectionSettings.SqlDatabase,
-                "SELECT * FROM `item`,`map`,`shop`,`character`,`character_template`,`account`,`alliance` WHERE 0=1;", "exit",
-            };
-            TestMySqlCommand(testName, null, commands);
+            { "use " + _connectionSettings.SqlDatabase, "SELECT * FROM " + sb + " WHERE 0=1;", "exit", };
+
+            return TestMySqlCommand(testName, null, commands, print);
         }
 
         static void TestUseDatabase()
         {
+            if (!TestUseDatabaseInternal(false))
+                AskToImportDatabase(false);
+
+            TestUseDatabaseInternal(true);
+        }
+
+        static bool TestUseDatabaseInternal(bool print)
+        {
             const string testName = "Database exists";
 
             string[] commands = new string[] { "use " + _connectionSettings.SqlDatabase, "exit" };
-            TestMySqlCommand(testName, null, commands);
+            return TestMySqlCommand(testName, null, commands, print);
         }
 
         static Assembly TryLoadAssembly(string assemblyName)

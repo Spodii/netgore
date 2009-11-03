@@ -4,6 +4,6 @@
     <User>root</User>
     <Pass></Pass>
     <Host>localhost</Host>
-	<Database>demogame</Database>
+	<Database>demogamex</Database>
   </MySql>
 </Settings>
