@@ -24,7 +24,7 @@ namespace InstallationValidator
             {
                 new LocateMySqlExe(), new CheckForXNA(), new LoadXNA(), new CheckForMySqlConnector(), new LoadMySqlData(),
                 new DatabaseFileExists(), new LoadDbConnectionSettings(), new ConnectToDatabase(), new DatabaseExists(),
-                new DatabasePopulated()
+                new LoadSchemaFile(), new DatabasePopulated()
             };
 
             foreach (var test in tests)

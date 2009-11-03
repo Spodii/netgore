@@ -12,9 +12,9 @@ namespace InstallationValidator.Tests
         public void Test()
         {
             const string testName = "Database connection settings file exists";
-            string failInfo = "Failed to find the database settings file at " + MySqlHelper.DBSettingsFile;
+            string failInfo = "Failed to find the database settings file at " + MySqlHelper.DbSettingsFile;
 
-            Tester.Test(testName, File.Exists(MySqlHelper.DBSettingsFile), failInfo);
+            Tester.Test(testName, File.Exists(MySqlHelper.DbSettingsFile), failInfo);
         }
 
         #endregion

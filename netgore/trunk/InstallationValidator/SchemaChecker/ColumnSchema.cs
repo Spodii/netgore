@@ -9,6 +9,9 @@ namespace InstallationValidator.SchemaChecker
     [Serializable]
     public class ColumnSchema
     {
+        /// <summary>
+        /// All the schema value names possible for the <see cref="ColumnSchema"/>.
+        /// </summary>
         static readonly string[] _valueNames = new string[]
         {
             "TABLE_NAME", "COLUMN_NAME", "DATA_TYPE", "CHARACTER_MAXIMUM_LENGTH", "CHARACTER_OCTET_LENGTH", "NUMERIC_PRECISION",
@@ -64,11 +67,19 @@ namespace InstallationValidator.SchemaChecker
             get { return _values[key]; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColumnSchema"/> class.
+        /// </summary>
+        /// <param name="values">The values.</param>
         public ColumnSchema(IDictionary<string, string> values)
         {
             _values = values;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColumnSchema"/> class.
+        /// </summary>
+        /// <param name="r">The <see cref="IDataReader"/> to read the values from.</param>
         public ColumnSchema(IDataReader r)
         {
             _values = ReadValues(r);
