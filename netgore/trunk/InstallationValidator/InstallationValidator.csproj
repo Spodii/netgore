@@ -48,6 +48,14 @@
     <Compile Include="Tester.cs" />
     <Compile Include="Tests\CheckForMySqlConnector.cs" />
     <Compile Include="Tests\CheckForXNA.cs" />
+    <Compile Include="Tests\ConnectToDatabase.cs" />
+    <Compile Include="Tests\DatabaseExists.cs" />
+    <Compile Include="Tests\DatabaseFileExists.cs" />
+    <Compile Include="Tests\DatabasePopulated.cs" />
+    <Compile Include="Tests\LoadDbConnectionSettings.cs" />
+    <Compile Include="Tests\LoadMySqlData.cs" />
+    <Compile Include="Tests\LoadXNA.cs" />
+    <Compile Include="Tests\LocateMySqlExe.cs" />
     <Compile Include="XmlInfoReader.cs" />
   </ItemGroup>
   <ItemGroup>
