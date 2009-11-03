@@ -38,9 +38,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyHelper.cs" />
     <Compile Include="DBConnectionSettings.cs" />
+    <Compile Include="FileFinder.cs" />
+    <Compile Include="ITestable.cs" />
+    <Compile Include="MySqlHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tester.cs" />
+    <Compile Include="Tests\CheckForMySqlConnector.cs" />
+    <Compile Include="Tests\CheckForXNA.cs" />
     <Compile Include="XmlInfoReader.cs" />
   </ItemGroup>
   <ItemGroup>
