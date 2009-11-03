@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -134,6 +134,24 @@ namespace NetGore.Graphics.GUI
             EnsureCacheMatchesActualText();
         }
 
+        public int CountFittingCharactersLeft(SpriteFont font, int startChar, int maxLineLength)
+        {
+            string subStr;
+            if (startChar == 0)
+                subStr = _lineText;
+            else if (startChar >= _lineText.Length)
+                return 1;
+            else
+                subStr = _lineText.Substring(startChar);
+
+            return StyledText.FindLastFittingChar(subStr, font, maxLineLength);
+        }
+
+        public int CountFittingCharactersRight(SpriteFont font, int maxLineLength)
+        {
+            return StyledText.FindFirstFittingChar(_lineText, font, maxLineLength);
+        }
+
         /// <summary>
         /// Draws the line of text.
         /// </summary>
@@ -256,24 +274,6 @@ namespace NetGore.Graphics.GUI
         public int GetWidth(SpriteFont font)
         {
             return (int)_texts.Sum(x => x.GetWidth(font));
-        }
-
-        public int CountFittingCharactersLeft(SpriteFont font, int startChar, int maxLineLength)
-        {
-            string subStr;
-            if (startChar == 0)
-                subStr = _lineText;
-            else if (startChar >= _lineText.Length)
-                return 1;
-            else
-                subStr = _lineText.Substring(startChar);
-
-            return StyledText.FindLastFittingChar(subStr, font, maxLineLength);
-        }
-
-        public int CountFittingCharactersRight(SpriteFont font, int maxLineLength)
-        {
-            return StyledText.FindFirstFittingChar(_lineText, font, maxLineLength);
         }
 
         /// <summary>
