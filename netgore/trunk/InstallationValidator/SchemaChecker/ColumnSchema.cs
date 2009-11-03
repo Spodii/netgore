@@ -4,7 +4,7 @@ using System.Data;
 using System.Linq;
 using MySql.Data.MySqlClient;
 
-namespace SchemaCheckBuilder
+namespace InstallationValidator.SchemaChecker
 {
     [Serializable]
     public class ColumnSchema

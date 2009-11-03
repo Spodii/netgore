@@ -1,8 +1,8 @@
 ﻿using System.IO;
 using System.Linq;
 using InstallationValidator;
+using InstallationValidator.SchemaChecker;
 using NetGore;
-using SchemaCheckBuilder;
 
 namespace CodeReleasePreparer
 {

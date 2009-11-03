@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SchemaCheckBuilder
+namespace InstallationValidator.SchemaChecker
 {
     [Serializable]
     public class TableSchema

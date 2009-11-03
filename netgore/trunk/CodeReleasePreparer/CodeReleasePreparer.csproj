@@ -57,10 +57,6 @@
       <Project>{F3B486E3-E405-47C8-8AB0-E5F3FDEA7BAF}</Project>
       <Name>InstallationValidator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\InstallationValidator\SchemaCheckBuilder\SchemaCheckBuilder.csproj">
-      <Project>{A1E33DAA-2D4C-4101-9F08-2287545A6BFA}</Project>
-      <Name>SchemaCheckBuilder</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
