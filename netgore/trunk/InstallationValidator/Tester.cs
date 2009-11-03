@@ -14,6 +14,13 @@ namespace InstallationValidator
             get { return _hasErrors; }
         }
 
+        /// <summary>
+        /// The main entry point for running a test.
+        /// </summary>
+        /// <param name="testName">The name of the test.</param>
+        /// <param name="passed">True if the test passed; otherwise false.</param>
+        /// <param name="failMessage">If the test failed, this is the message that will be displayed. This should contain
+        /// why the test failed, and how to resolve it so it will pass.</param>
         public static void Test(string testName, bool passed, string failMessage)
         {
             if (!passed)
@@ -43,6 +50,11 @@ namespace InstallationValidator
             Console.WriteLine();
         }
 
+        /// <summary>
+        /// Writes a string to the test output.
+        /// </summary>
+        /// <param name="msg">The message to write. Line breaks must be entered manually with \r.</param>
+        /// <param name="color">The color of the message.</param>
         public static void Write(string msg, ConsoleColor color)
         {
             Console.ForegroundColor = color;
