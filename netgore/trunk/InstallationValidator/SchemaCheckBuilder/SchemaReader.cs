@@ -11,8 +11,8 @@ namespace SchemaCheckBuilder
         const string _columnsAlias = "c";
 
         const string _queryStr =
-            "SELECT {0}" + " FROM COLUMNS AS {2}" + " LEFT JOIN TABLES AS t ON {2}.TABLE_NAME = t.TABLE_NAME" +
-            " WHERE t.TABLE_SCHEMA = '{1}'";
+            "SELECT {0}" + " FROM COLUMNS AS {2}" + " LEFT JOIN TABLES AS t" +
+            " ON {2}.TABLE_NAME = t.TABLE_NAME AND c.TABLE_SCHEMA = t.TABLE_SCHEMA" + " WHERE t.TABLE_SCHEMA = '{1}'";
 
         readonly DBConnectionSettings _dbSettings;
         readonly IEnumerable<TableSchema> _tableSchemas;
@@ -90,12 +90,7 @@ namespace SchemaCheckBuilder
         void OpenConnection()
         {
             MySqlConnectionStringBuilder s = new MySqlConnectionStringBuilder
-            {
-                UserID = _dbSettings.User,
-                Password = _dbSettings.Pass,
-                Server = _dbSettings.Host,
-                Database = "information_schema"
-            };
+            { UserID = _dbSettings.User, Password = _dbSettings.Pass, Server = _dbSettings.Host, Database = "information_schema" };
 
             _conn = new MySqlConnection(s.ToString());
             _conn.Open();

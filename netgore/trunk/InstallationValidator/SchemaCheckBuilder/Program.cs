@@ -12,7 +12,7 @@ namespace SchemaCheckBuilder
             DBConnectionSettings dbs = new DBConnectionSettings("..\\..\\..\\..\\" + MySqlHelper.DBSettingsFile);
             var schema = new SchemaReader(dbs);
 
-            var dbs2 = new DBConnectionSettings(dbs.User, dbs.Pass, "demogame", dbs.Host);
+            var dbs2 = new DBConnectionSettings(dbs.User, dbs.Pass, "dg2", dbs.Host);
             var schema2 = new SchemaReader(dbs2);
 
             var comp = SchemaComparer.Compare(schema, schema2);
