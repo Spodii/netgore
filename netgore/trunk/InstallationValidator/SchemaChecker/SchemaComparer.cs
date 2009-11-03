@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace SchemaCheckBuilder
+namespace InstallationValidator.SchemaChecker
 {
     /// <summary>
     /// Used to compare two <see cref="SchemaReader"/> results.

@@ -8,7 +8,7 @@ using System.Text;
 using MySql.Data.MySqlClient;
 using NetGore;
 
-namespace SchemaCheckBuilder
+namespace InstallationValidator.SchemaChecker
 {
     [Serializable]
     public class SchemaReader
