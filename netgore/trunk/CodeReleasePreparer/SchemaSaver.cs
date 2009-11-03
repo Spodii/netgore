@@ -15,7 +15,7 @@ namespace CodeReleasePreparer
         public static void Save()
         {
             // Load the database settings
-            var dbSettings = new DBConnectionSettings(Paths.Root + MySqlHelper.DBSettingsFile);
+            var dbSettings = new DBConnectionSettings(Paths.Root + MySqlHelper.DbSettingsFile);
 
             // Get the schema
             var schema = new SchemaReader(dbSettings);

@@ -4,10 +4,18 @@ using System.IO;
 using System.Linq;
 using InstallationValidator;
 
+// ReSharper disable ConditionIsAlwaysTrueOrFalse
+#pragma warning disable 162
+
 namespace CodeReleasePreparer
 {
     class Program
     {
+        /// <summary>
+        /// If true, ONLY the database schema part will be built. Otherwise, a complete clean will be done.
+        /// </summary>
+        const bool _buildSchemaOnly = false;
+
         static readonly string _mysqldumpPath = MySqlHelper.FindMySqlFile("mysqldump.exe");
         static readonly string _mysqlPath = MySqlHelper.FindMySqlFile("mysql.exe");
         static RegexCollection _fileRegexes;
@@ -137,6 +145,13 @@ namespace CodeReleasePreparer
                 Console.WriteLine("Failed to create database schema file! Path: {0}", schemaFile);
                 Console.WriteLine("Press any key to exit...");
                 Console.ReadLine();
+                return;
+            }
+
+            if (_buildSchemaOnly)
+            {
+                Console.WriteLine("_buildSchemaOnly is set - will not progress any farther.");
+                Console.WriteLine("Done!");
                 return;
             }
 
