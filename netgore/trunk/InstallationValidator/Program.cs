@@ -160,6 +160,15 @@ namespace InstallationValidator
 
         static void Main()
         {
+            Write("Warning: ", ConsoleColor.Yellow);
+            Write(
+                "This program will most likely NOT be able to detect if your current database" +
+                " is from an older release of NetGore. If you are upgrading, please make sure you" +
+                "use the new `db.sql` file. If you delete your old database, this program will" +
+                "import the new database for you.\n\n" +
+            "If you want to try and upgrade your database, you can attempt to do so with a program" + 
+            " such as mysqldiff:\n" + "http://www.adamspiers.org/computing/mysqldiff/\n\n", ConsoleColor.White);
+
             if (string.IsNullOrEmpty(_mysqlPath) || !File.Exists(_mysqlPath))
             {
                 Console.WriteLine("Failed to automatically find the path to mysql.exe.");
