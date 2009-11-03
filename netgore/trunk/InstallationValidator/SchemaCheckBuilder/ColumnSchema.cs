@@ -9,7 +9,7 @@ namespace SchemaCheckBuilder
         static readonly string[] _valueNames = new string[]
         {
             "TABLE_NAME", "COLUMN_NAME", "DATA_TYPE", "CHARACTER_MAXIMUM_LENGTH", "CHARACTER_OCTET_LENGTH", "NUMERIC_PRECISION",
-            "NUMERIC_SCALE", "COLUMN_TYPE", "CHARACTER_SET_NAME", "COLUMN_KEY", "EXTRA", "COLUMN_DEFAULT"
+            "NUMERIC_SCALE", "COLUMN_TYPE", "CHARACTER_SET_NAME", "COLUMN_KEY", "EXTRA", "COLUMN_DEFAULT", "IS_NULLABLE"
         };
 
         /// <summary>
