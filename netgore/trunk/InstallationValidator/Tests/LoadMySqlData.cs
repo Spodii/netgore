@@ -1,8 +1,9 @@
-
 namespace InstallationValidator.Tests
 {
     public class LoadMySqlData : ITestable
     {
+        #region ITestable Members
+
         /// <summary>
         /// Runs a test.
         /// </summary>
@@ -13,5 +14,7 @@ namespace InstallationValidator.Tests
 
             Tester.Test(testName, AssemblyHelper.TryLoadAssembly(KnownAssembly.MySqlData) != null, failInfo);
         }
+
+        #endregion
     }
 }

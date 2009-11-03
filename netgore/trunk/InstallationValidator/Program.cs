@@ -1,6 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Text;
+using System;
 using InstallationValidator.Tests;
 using NetGore;
 
@@ -24,8 +22,9 @@ namespace InstallationValidator
 
             ITestable[] tests = new ITestable[]
             {
-                new LocateMySqlExe(), new CheckForXNA(), new LoadXNA(), new CheckForMySqlConnector(), new LoadMySqlData(), new DatabaseFileExists(),
-                new LoadDbConnectionSettings(), new ConnectToDatabase(), new DatabaseExists(), new DatabasePopulated()
+                new LocateMySqlExe(), new CheckForXNA(), new LoadXNA(), new CheckForMySqlConnector(), new LoadMySqlData(),
+                new DatabaseFileExists(), new LoadDbConnectionSettings(), new ConnectToDatabase(), new DatabaseExists(),
+                new DatabasePopulated()
             };
 
             foreach (var test in tests)
@@ -39,7 +38,7 @@ namespace InstallationValidator
             {
                 Tester.Write("One or more errors were found. Resolve them for NetGore to work properly.\n", ConsoleColor.Red);
                 Tester.Write("If you need help resolving these errors, please ask on the NetGore forums at www.netgore.com.",
-                      ConsoleColor.Yellow);
+                             ConsoleColor.Yellow);
             }
             else
                 Tester.Write("Congratulations, no errors! :)", ConsoleColor.Green);

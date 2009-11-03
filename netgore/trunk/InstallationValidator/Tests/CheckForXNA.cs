@@ -1,9 +1,9 @@
-﻿using System.Collections.Generic;
-
 namespace InstallationValidator.Tests
 {
     public class CheckForXNA : ITestable
     {
+        #region ITestable Members
+
         /// <summary>
         /// Runs a test.
         /// </summary>
@@ -14,5 +14,7 @@ namespace InstallationValidator.Tests
 
             Tester.Test(testName, AssemblyHelper.IsAssemblyInstalled(KnownAssembly.Xna), failInfo);
         }
+
+        #endregion
     }
 }
