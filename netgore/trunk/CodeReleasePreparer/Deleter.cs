@@ -32,7 +32,7 @@ namespace CodeReleasePreparer
 
         public static void DeleteFile(string path)
         {
-            Thread.Sleep(5);
+            Thread.Sleep(1);
 
             if (path.EndsWith("dbdump.bat"))
                 return;
