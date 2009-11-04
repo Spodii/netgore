@@ -639,7 +639,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/Pressed/Bottom</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,7,5</Source>
       </Texture>
     </Item39>
     <Item40>
@@ -655,7 +655,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/Pressed/BottomLeft</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item40>
     <Item41>
@@ -671,7 +671,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/Pressed/BottomRight</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item41>
     <Item42>
@@ -687,7 +687,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/Pressed/Left</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,7</Source>
       </Texture>
     </Item42>
     <Item43>
@@ -703,7 +703,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/Pressed/Right</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,7</Source>
       </Texture>
     </Item43>
     <Item44>
@@ -719,7 +719,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/Pressed/Top</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,7,5</Source>
       </Texture>
     </Item44>
     <Item45>
@@ -735,7 +735,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/Pressed/TopLeft</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item45>
     <Item46>
@@ -751,7 +751,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/Pressed/TopRight</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item46>
     <Item47>
@@ -767,7 +767,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/MouseOver/Bottom</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,7,5</Source>
       </Texture>
     </Item47>
     <Item48>
@@ -783,7 +783,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/MouseOver/BottomLeft</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item48>
     <Item49>
@@ -799,7 +799,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/MouseOver/BottomRight</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item49>
     <Item50>
@@ -815,7 +815,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/MouseOver/Left</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,7</Source>
       </Texture>
     </Item50>
     <Item51>
@@ -831,7 +831,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/MouseOver/Right</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,7</Source>
       </Texture>
     </Item51>
     <Item52>
@@ -847,7 +847,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/MouseOver/Top</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,7,5</Source>
       </Texture>
     </Item52>
     <Item53>
@@ -911,7 +911,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/MouseOver/TopLeft</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item56>
     <Item57>
@@ -927,7 +927,7 @@
       <AutomaticSize>True</AutomaticSize>
       <Texture>
         <Name>GUI/Default/Controls/Button/MouseOver/TopRight</Name>
-        <Source>0,0,7,7</Source>
+        <Source>0,0,5,5</Source>
       </Texture>
     </Item57>
     <Item58>
