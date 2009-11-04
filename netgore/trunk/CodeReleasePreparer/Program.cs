@@ -57,7 +57,7 @@ namespace CodeReleasePreparer
         static void Main()
         {
             string[] _deleteFilePatterns = new string[] { @"\.resharper\.user$", @"\.suo$", @"\.cachefile$", @"\.vshost\.exe" };
-            string[] _deleteFolderPatterns = new string[] { @"\\.bin$", @"\\bin$", @"\\_resharper", @"\\obj$", @"\\.svn$" };
+            string[] _deleteFolderPatterns = new string[] { @"\\.bin$", @"\\bin$", @"\\_resharper", @"\\obj$", @"\\.svn$", @"\\Documentation$" };
 
             _fileRegexes = new RegexCollection(_deleteFilePatterns);
             _folderRegexes = new RegexCollection(_deleteFolderPatterns);
