@@ -7,9 +7,9 @@
     <Height>800</Height>
   </Header>
   <Walls>
-    <Count>193</Count>
+    <Count>195</Count>
     <Item0>
-      <Position>1536,736</Position>
+      <Position>1568,736</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item0>
@@ -284,87 +284,87 @@
       <CollisionType>Full</CollisionType>
     </Item54>
     <Item55>
-      <Position>1536,704</Position>
+      <Position>1568,704</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item55>
     <Item56>
-      <Position>1536,672</Position>
+      <Position>1568,672</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item56>
     <Item57>
-      <Position>1536,512</Position>
+      <Position>1568,512</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item57>
     <Item58>
-      <Position>1536,480</Position>
+      <Position>1568,480</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item58>
     <Item59>
-      <Position>1536,448</Position>
+      <Position>1568,448</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item59>
     <Item60>
-      <Position>1536,416</Position>
+      <Position>1568,416</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item60>
     <Item61>
-      <Position>1536,384</Position>
+      <Position>1568,384</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item61>
     <Item62>
-      <Position>1536,320</Position>
+      <Position>1568,320</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item62>
     <Item63>
-      <Position>1536,288</Position>
+      <Position>1568,288</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item63>
     <Item64>
-      <Position>1536,256</Position>
+      <Position>1568,256</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item64>
     <Item65>
-      <Position>1536,352</Position>
+      <Position>1568,352</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item65>
     <Item66>
-      <Position>1536,224</Position>
+      <Position>1568,224</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item66>
     <Item67>
-      <Position>1536,192</Position>
+      <Position>1568,192</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item67>
     <Item68>
-      <Position>1536,160</Position>
+      <Position>1568,160</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item68>
     <Item69>
-      <Position>1536,128</Position>
+      <Position>1568,128</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item69>
     <Item70>
-      <Position>1536,96</Position>
+      <Position>1568,96</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item70>
     <Item71>
-      <Position>1536,64</Position>
+      <Position>1568,64</Position>
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item71>
@@ -954,7 +954,7 @@
       <CollisionType>TriangleTopLeft</CollisionType>
     </Item188>
     <Item189>
-      <Position>1536,32</Position>
+      <Position>1568,32</Position>
       <Size>32,32</Size>
       <CollisionType>TriangleTopRight</CollisionType>
     </Item189>
@@ -973,6 +973,16 @@
       <Size>32,32</Size>
       <CollisionType>Full</CollisionType>
     </Item192>
+    <Item193>
+      <Position>1536,736</Position>
+      <Size>32,32</Size>
+      <CollisionType>Full</CollisionType>
+    </Item193>
+    <Item194>
+      <Position>1536,32</Position>
+      <Size>32,32</Size>
+      <CollisionType>Full</CollisionType>
+    </Item194>
   </Walls>
   <DynamicEntities>
     <Count>1</Count>
@@ -999,9 +1009,9 @@
         <Item5>125</Item5>
       </UsedIndicies>
       <MapGrhs>
-        <Count>194</Count>
+        <Count>196</Count>
         <Item0>
-          <Position>1536,736</Position>
+          <Position>1568,736</Position>
           <GrhIndex>2</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item0>
@@ -1276,87 +1286,87 @@
           <IsForeground>False</IsForeground>
         </Item54>
         <Item55>
-          <Position>1536,704</Position>
+          <Position>1568,704</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item55>
         <Item56>
-          <Position>1536,672</Position>
+          <Position>1568,672</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item56>
         <Item57>
-          <Position>1536,512</Position>
+          <Position>1568,512</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item57>
         <Item58>
-          <Position>1536,480</Position>
+          <Position>1568,480</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item58>
         <Item59>
-          <Position>1536,448</Position>
+          <Position>1568,448</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item59>
         <Item60>
-          <Position>1536,416</Position>
+          <Position>1568,416</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item60>
         <Item61>
-          <Position>1536,384</Position>
+          <Position>1568,384</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item61>
         <Item62>
-          <Position>1536,320</Position>
+          <Position>1568,320</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item62>
         <Item63>
-          <Position>1536,288</Position>
+          <Position>1568,288</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item63>
         <Item64>
-          <Position>1536,256</Position>
+          <Position>1568,256</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item64>
         <Item65>
-          <Position>1536,352</Position>
+          <Position>1568,352</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item65>
         <Item66>
-          <Position>1536,224</Position>
+          <Position>1568,224</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item66>
         <Item67>
-          <Position>1536,192</Position>
+          <Position>1568,192</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item67>
         <Item68>
-          <Position>1536,160</Position>
+          <Position>1568,160</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item68>
         <Item69>
-          <Position>1536,128</Position>
+          <Position>1568,128</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item69>
         <Item70>
-          <Position>1536,96</Position>
+          <Position>1568,96</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item70>
         <Item71>
-          <Position>1536,64</Position>
+          <Position>1568,64</Position>
           <GrhIndex>5</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item71>
@@ -1946,7 +1956,7 @@
           <IsForeground>False</IsForeground>
         </Item188>
         <Item189>
-          <Position>1536,32</Position>
+          <Position>1568,32</Position>
           <GrhIndex>3</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item189>
@@ -1970,6 +1980,16 @@
           <GrhIndex>125</GrhIndex>
           <IsForeground>False</IsForeground>
         </Item193>
+        <Item194>
+          <Position>1536,736</Position>
+          <GrhIndex>2</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item194>
+        <Item195>
+          <Position>1536,32</Position>
+          <GrhIndex>5</GrhIndex>
+          <IsForeground>False</IsForeground>
+        </Item195>
       </MapGrhs>
     </MapGrhs>
     <BackgroundImages>
