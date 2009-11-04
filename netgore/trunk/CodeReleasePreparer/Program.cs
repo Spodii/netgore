@@ -194,12 +194,13 @@ namespace CodeReleasePreparer
 
             File.Move(dbfile, dbfileRooted);
 
-            // Delete crap
-            Deleter.RecursiveDelete(Paths.Root, WillDeleteFolder, WillDeleteFile);
-
             // Remove version control references
             Console.WriteLine("Deleting version control references...");
             VersionControlCleaner.Run(Paths.Root);
+
+            // Delete crap
+            Console.WriteLine("Deleting unneeded files/folders...");
+            Deleter.RecursiveDelete(Paths.Root, WillDeleteFolder, WillDeleteFile);
 
             // Create self-destroying batch file that will delete this program's binaries
             Console.WriteLine("Creating self-destruct batch file...");
