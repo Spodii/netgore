@@ -24,6 +24,22 @@ namespace CodeReleasePreparer
             }
         }
 
+        /// <summary>
+        /// Replaces all matches with the given replacement string.
+        /// </summary>
+        /// <param name="input">The input string.</param>
+        /// <param name="replacement">The replacement string.</param>
+        /// <returns>The string with all the replacements made to it.</returns>
+        public string ReplaceMatches(string input, string replacement)
+        {
+            string s = input;
+
+            foreach (var r in _regexes)
+                s = r.Replace(s, replacement);
+
+            return s;
+        }
+
         public bool Matches(string s)
         {
             return _regexes.Any(x => x.IsMatch(s));

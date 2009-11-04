@@ -21,7 +21,6 @@ namespace CodeReleasePreparer
         static RegexCollection _fileRegexes;
         static RegexCollection _folderRegexes;
 
-
         /// <summary>
         /// Checks if the one who is running this program is Spodi.
         /// </summary>
@@ -198,8 +197,12 @@ namespace CodeReleasePreparer
             // Delete crap
             Deleter.RecursiveDelete(Paths.Root, WillDeleteFolder, WillDeleteFile);
 
-            // Create self-destroying batch file that will delete this program's binaries
+            // Remove version control references
+            Console.WriteLine("Deleting version control references...");
+            VersionControlCleaner.Run(Paths.Root);
 
+            // Create self-destroying batch file that will delete this program's binaries
+            Console.WriteLine("Creating self-destruct batch file...");
             string programPath = string.Format("{0}CodeReleasePreparer{1}", Paths.Root, Path.DirectorySeparatorChar);
             RunBatchFile(true, "CHOICE /c 1 /d 1 /t 2 > nul", "RMDIR /S /Q \"" + programPath + "bin\"",
                          "RMDIR /S /Q \"" + programPath + "obj\"", "DEL %0");
