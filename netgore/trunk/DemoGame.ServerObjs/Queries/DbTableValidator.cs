@@ -67,12 +67,5 @@ namespace DemoGame.Server.Queries
             ValidateCharacterTable(db);
             ValidateCharacterTemplateTable(db);
         }
-
-        static void Warn(string message, params object[] parameters)
-        {
-            if (log.IsWarnEnabled)
-                log.WarnFormat(message, parameters);
-            Debug.Fail(string.Format(message, parameters));
-        }
     }
 }
