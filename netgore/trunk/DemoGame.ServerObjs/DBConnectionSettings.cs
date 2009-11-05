@@ -7,7 +7,7 @@ namespace DemoGame.Server
     /// <summary>
     /// Settings for the database connection.
     /// </summary>
-    public class DBConnectionSettings
+    public class DbConnectionSettings
     {
         readonly string _sqlDatabase;
         readonly string _sqlHost;
@@ -49,7 +49,7 @@ namespace DemoGame.Server
         /// <summary>
         /// ServerSettings constructor.
         /// </summary>
-        public DBConnectionSettings()
+        public DbConnectionSettings()
         {
             var dic = XmlInfoReader.ReadFile("DbSettings.xml")[0];
             _sqlUser = dic["MySql.User"];

@@ -132,9 +132,9 @@ namespace DemoGame.Server
         /// </summary>
         public Server()
         {
-            DBConnectionSettings settings = new DBConnectionSettings();
+            DbConnectionSettings settings = new DbConnectionSettings();
             _dbController = new DbController(settings.SqlConnectionString());
-            DBTableValidator.ValidateTables(_dbController);
+            DbTableValidator.ValidateTables(_dbController);
 
             ValidateDbControllerQueryAttributes();
 

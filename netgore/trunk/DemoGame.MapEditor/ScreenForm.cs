@@ -898,7 +898,7 @@ namespace DemoGame.MapEditor
         void LoadEditor()
         {
             // Read the database connection
-            DBConnectionSettings settings = new DBConnectionSettings();
+            DbConnectionSettings settings = new DbConnectionSettings();
             _dbController = new DbController(settings.SqlConnectionString());
 
             // Create the engine objects 

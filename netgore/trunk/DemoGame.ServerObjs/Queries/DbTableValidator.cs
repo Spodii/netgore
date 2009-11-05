@@ -10,7 +10,7 @@ using NetGore.Db;
 
 namespace DemoGame.Server.Queries
 {
-    public static class DBTableValidator
+    public static class DbTableValidator
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
@@ -37,7 +37,7 @@ namespace DemoGame.Server.Queries
 
             Debug.Fail(string.Format(message, parameters));
 
-            throw new Exception(string.Format("DB tables validation failed. Reason: " + message, parameters));
+            throw new Exception(string.Format("Database tables validation failed. Reason: " + message, parameters));
         }
 
         /// <summary>
