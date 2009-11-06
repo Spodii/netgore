@@ -3,6 +3,9 @@ using NetGore;
 
 namespace NetGore
 {
+    /// <summary>
+    /// Provides helper methods for the <see cref="CollisionType"/> enum.
+    /// </summary>
     public sealed class CollisionTypeHelper : EnumHelper<CollisionType>
     {
         static readonly CollisionTypeHelper _instance;
