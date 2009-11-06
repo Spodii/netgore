@@ -7,8 +7,8 @@ using NetGore;
 namespace NetGore
 {
     /// <summary>
-    /// The base class of all entities which simply contains a CollisionBox, Velocity, and Weight that defines
-    /// where the entity is, how it is moving and how strongly gravity affects it.
+    /// The base class of all entities, which are physical objects that reside in the virtual world, and can interact
+    /// with other entities.
     /// </summary>
     public abstract class Entity : IDisposable
     {
