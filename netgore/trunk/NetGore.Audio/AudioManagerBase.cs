@@ -169,7 +169,7 @@ namespace NetGore.Audio
         /// <param name="id">The index of the item to get.</param>
         /// <returns>The item at the given <paramref name="id"/>, or null if the <see cref="id"/> is invalid
         /// or no item exists for the given <see cref="id"/>.</returns>
-        protected T GetItem(TID id)
+        public T GetItem(TID id)
         {
             var intID = IDToInt(id);
             return GetItem(intID);
@@ -181,7 +181,7 @@ namespace NetGore.Audio
         /// <param name="name">The name of the item to get.</param>
         /// <returns>The item at the given <paramref name="name"/>, or null if the <see cref="name"/> is invalid
         /// or no item exists for the given <see cref="name"/>.</returns>
-        protected T GetItem(string name)
+        public T GetItem(string name)
         {
             T item;
             if (!_itemsByName.TryGetValue(name, out item))

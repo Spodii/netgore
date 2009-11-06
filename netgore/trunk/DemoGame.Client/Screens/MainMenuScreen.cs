@@ -17,6 +17,7 @@ namespace DemoGame.Client
 
         public MainMenuScreen() : base(ScreenName)
         {
+            PlayMusic = false;
         }
 
         void cLogin_OnClick(object sender, MouseClickEventArgs e)

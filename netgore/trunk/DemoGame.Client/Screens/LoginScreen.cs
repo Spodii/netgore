@@ -27,6 +27,7 @@ namespace DemoGame.Client
         /// </summary>
         public LoginScreen() : base(ScreenName)
         {
+            PlayMusic = false;
         }
 
         /// <summary>
@@ -53,6 +54,8 @@ namespace DemoGame.Client
             _sockets.OnFailedConnect += sockets_OnFailedConnect;
             _sockets.PacketHandler.OnLoginUnsuccessful += sockets_OnLoginUnsuccessful;
             _sockets.PacketHandler.OnLoginSuccessful += sockets_OnLoginSuccessful;
+
+            base.Activate();
         }
 
         void cBack_OnClick(object sender, MouseClickEventArgs e)

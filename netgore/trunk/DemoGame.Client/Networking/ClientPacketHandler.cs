@@ -30,7 +30,6 @@ namespace DemoGame.Client
         readonly Stopwatch _pingWatch = new Stopwatch();
         readonly MessageProcessorManager _ppManager;
         readonly ISocketSender _socketSender;
-        readonly SoundManager _soundManager;
 
         /// <summary>
         /// Notifies listeners when a successful login request has been made.
@@ -95,8 +94,6 @@ namespace DemoGame.Client
             _socketSender = socketSender;
             _gameplayScreen = gameplayScreen;
             _ppManager = new MessageProcessorManager(this, ServerPacketIDHelper.Instance.BitsRequired);
-
-            _soundManager = SoundManager.GetInstance(gameplayScreen.ScreenManager.Content);
         }
 
         static List<StyledText> CreateChatText(string name, string method, string message)
@@ -108,7 +105,7 @@ namespace DemoGame.Client
                 { new StyledText(name + " " + method + ": ", Color.Green), new StyledText(message, Color.Black) };
         }
 
-        void LogFailPlaySound(SoundID soundID)
+        static void LogFailPlaySound(SoundID soundID)
         {
             const string errmsg = "Failed to play sound with ID `{0}`.";
             if (log.IsErrorEnabled)
@@ -152,9 +149,11 @@ namespace DemoGame.Client
             if (chr == null)
                 return;
 
-            _soundManager.TryPlay("punch");
+            SoundManager.TryPlay("punch");
             chr.Attack();
         }
+
+        SoundManager SoundManager { get { return GameplayScreen.SoundManager; } }
 
         [MessageHandler((byte)ServerPacketID.CharDamage)]
         void RecvCharDamage(IIPSocket conn, BitStream r)
@@ -286,7 +285,7 @@ namespace DemoGame.Client
         {
             SoundID soundID = r.ReadSoundID();
 
-            if (!_soundManager.TryPlay(soundID))
+            if (!SoundManager.TryPlay(soundID))
                 LogFailPlaySound(soundID);
         }
 
@@ -296,7 +295,7 @@ namespace DemoGame.Client
             SoundID soundID = r.ReadSoundID();
             Vector2 position = r.ReadVector2();
 
-            if (!_soundManager.TryPlay(soundID, position))
+            if (!SoundManager.TryPlay(soundID, position))
                 LogFailPlaySound(soundID);
         }
 
@@ -316,7 +315,7 @@ namespace DemoGame.Client
                 return;
             }
 
-            if (!_soundManager.TryPlay(soundID, entity))
+            if (!SoundManager.TryPlay(soundID, entity))
                 LogFailPlaySound(soundID);
         }
 
