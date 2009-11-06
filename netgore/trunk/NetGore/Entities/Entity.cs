@@ -211,7 +211,7 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Checks if the Entity intersects with a CollisionBox.
+        /// Checks if the <see cref="Entity"/> intersects with a CollisionBox.
         /// </summary>
         /// <param name="collisionBox">CollisionBox to check against.</param>
         /// <returns>True if the two occupy any common space, else false.</returns>
@@ -221,10 +221,11 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Checks if the Entity intersects with another Entity.
+        /// Checks if the <see cref="Entity"/> intersects with another <see cref="Entity"/>.
         /// </summary>
-        /// <param name="other">Entity to check against.</param>
-        /// <returns>True if the two occupy any common space, else false.</returns>
+        /// <param name="other"><see cref="Entity"/> to check against.</param>
+        /// <returns>True if this <see cref="Entity"/> and the <paramref name="other"/> <see cref="Entity"/>
+        /// occupy any of the same world space; otherwise false.</returns>
         public bool Intersect(Entity other)
         {
             return CB.Intersect(other.CB);
