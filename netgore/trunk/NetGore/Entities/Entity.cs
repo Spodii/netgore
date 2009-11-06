@@ -172,8 +172,8 @@ namespace NetGore
         /// two entities in question were a moving Character and a stationary wall, this Entity would be
         /// the Wall and <paramref name="collider"/> would be the Character.
         /// </summary>
-        /// <param name="collider">Entity that collided into us</param>
-        /// <param name="displacement">Displacement between the two Entities</param>
+        /// <param name="collider">Entity that collided into us.</param>
+        /// <param name="displacement">Displacement between the two Entities.</param>
         public virtual void CollideFrom(Entity collider, Vector2 displacement)
         {
         }
@@ -184,8 +184,8 @@ namespace NetGore
         /// two Entities in question were a moving Character and a stationary Wall, this Entity would be
         /// the Character and <paramref name="collideWith"/> would be the Wall.
         /// </summary>
-        /// <param name="collideWith">Entity that this Entity collided with</param>
-        /// <param name="displacement">Displacement between the two Entities</param>
+        /// <param name="collideWith">Entity that this Entity collided with.</param>
+        /// <param name="displacement">Displacement between the two Entities.</param>
         public virtual void CollideInto(Entity collideWith, Vector2 displacement)
         {
         }
@@ -201,10 +201,10 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Checks if the entity contains a point
+        /// Checks if this <see cref="Entity"/> contains a point.
         /// </summary>
-        /// <param name="p">Point to check against</param>
-        /// <returns>True if the entity contains point p, else false</returns>
+        /// <param name="p">Point to check against.</param>
+        /// <returns>True if this <see cref="Entity"/> contains point <paramref name="p"/>; otherwise false.</returns>
         public bool HitTest(Vector2 p)
         {
             return CB.HitTest(p);
