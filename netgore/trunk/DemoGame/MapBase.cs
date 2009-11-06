@@ -1726,9 +1726,11 @@ namespace DemoGame
         /// CollideFrom().
         /// </summary>
         /// <param name="entity">Entity to check against other Entities. If the CollisionType is
-        /// CollisionType.None, or if null, this will always return 0 and no collision detection
-        /// will take place.</param>
-        /// <returns>Number of collisions the <paramref name="entity"/> made with other entities</returns>
+        /// CollisionType.None, or if <paramref name="entity"/> is null, this will always return 0 and no
+        /// collision detection will take place.</param>
+        /// <returns>
+        /// Number of collisions the <paramref name="entity"/> made with other entities.
+        /// </returns>
         public int CheckCollisions(Entity entity)
         {
             // Check for a null entity
