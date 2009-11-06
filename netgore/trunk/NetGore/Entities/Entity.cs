@@ -341,9 +341,9 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Updates the Entity.
+        /// Updates this <see cref="Entity"/>.
         /// </summary>
-        /// <param name="imap">Map that this Entity is on.</param>
+        /// <param name="imap">The map that this <see cref="Entity"/> is on.</param>
         /// <param name="deltaTime">Time elapsed (in milliseconds) since the last update.</param>
         public virtual void Update(IMap imap, float deltaTime)
         {
@@ -357,9 +357,9 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Perform pre-collision velocity and position updating
+        /// Perform pre-collision velocity and position updating.
         /// </summary>
-        /// <param name="deltaTime">Elapsed time since last update</param>
+        /// <param name="deltaTime">The amount of that that has elapsed time since last update.</param>
         public virtual void UpdateVelocity(float deltaTime)
         {
             // Only perform movement if moving
@@ -387,7 +387,7 @@ namespace NetGore
         #region IDisposable Members
 
         /// <summary>
-        /// Disposes of the Entity.
+        /// Disposes of the <see cref="Entity"/>.
         /// </summary>
         public void Dispose()
         {
