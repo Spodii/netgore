@@ -31,6 +31,7 @@ namespace DemoGame.Client
         /// </summary>
         public CharacterSelectionScreen() : base(ScreenName)
         {
+            PlayMusic = false;
         }
 
         /// <summary>

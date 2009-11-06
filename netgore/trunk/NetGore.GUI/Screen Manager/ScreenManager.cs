@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
+using NetGore.Audio;
 
 namespace NetGore.Graphics.GUI
 {
@@ -23,10 +24,22 @@ namespace NetGore.Graphics.GUI
         readonly FrameCounter _fps = new FrameCounter();
         readonly ContentManager _mapContent;
         readonly Dictionary<string, GameScreen> _screens = new Dictionary<string, GameScreen>(8, StringComparer.OrdinalIgnoreCase);
+        readonly MusicManager _musicManager;
+        readonly SoundManager _soundManager;
 
         GameScreen _activeScreen;
         SpriteFont _menuFont;
         SpriteBatch _sb;
+
+        /// <summary>
+        /// Gets the <see cref="MusicManager"/> managed by this <see cref="ScreenManager"/>.
+        /// </summary>
+        public MusicManager MusicManager { get { return _musicManager; } }
+
+        /// <summary>
+        /// Gets the <see cref="SoundManager"/> managed by this <see cref="ScreenManager"/>.
+        /// </summary>
+        public SoundManager SoundManager { get { return _soundManager; } }
 
         /// <summary>
         /// Gets or sets the currently active <see cref="GameScreen"/>.
@@ -125,6 +138,9 @@ namespace NetGore.Graphics.GUI
 
             _content = new ContentManager(game.Services, "Content");
             _mapContent = new ContentManager(game.Services, "Content");
+
+            _soundManager = SoundManager.GetInstance(_content);
+            _musicManager = MusicManager.GetInstance(_content);
         }
 
         /// <summary>

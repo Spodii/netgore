@@ -54,8 +54,6 @@ namespace DemoGame.Client
         StatusEffectsForm _statusEffectsForm;
         UserInfo _userInfo;
         World _world;
-        MusicManager _musicManager;
-        SoundManager _soundManager;
 
         public NPCChatDialogForm ChatDialogForm
         {
@@ -290,9 +288,6 @@ namespace DemoGame.Client
         /// </summary>
         public override void Initialize()
         {
-            _soundManager = SoundManager.GetInstance(ScreenManager.Content);
-            _musicManager = MusicManager.GetInstance(ScreenManager.Content);
-
             _world = new World(this, new Camera2D(GameData.ScreenSize));
             _world.OnChangeMap += World_OnChangeMap;
 
@@ -309,21 +304,28 @@ namespace DemoGame.Client
             InitializeGUI();
         }
 
-        void World_OnChangeMap(World world, Map item)
+        void World_OnChangeMap(World world, Map map)
         {
             // Stop all sounds
-            _soundManager.Stop();
+            SoundManager.Stop();
 
             // Set the new music
-            if (string.IsNullOrEmpty(item.Music))
-                return;
-
-            if (!_musicManager.TryPlay(item.Music))
+            if (string.IsNullOrEmpty(map.Music))
             {
-                const string errmsg = "Failed to play map music track: `{0}`";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, item.Music);
-                Debug.Fail(string.Format(errmsg, item.Music));
+                PlayMusic = false;
+                return;
+            }
+            else if (!MusicManager.TryPlay(map.Music))
+            {
+                IMusic musicTrack = MusicManager.GetItem(map.Music);
+                if (musicTrack == null)
+                {
+                    const string errmsg = "Failed to play map music track: `{0}`";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, map.Music);
+                    Debug.Fail(string.Format(errmsg, map.Music));
+                }
+                ScreenMusic = musicTrack;
             }
         }
 

@@ -57,8 +57,8 @@ namespace DemoGame.Client
             // We use the thread pool due to the potentially long time it can take to load the audio engine
             ThreadPool.QueueUserWorkItem(delegate
                                          {
-                                             SoundManager.GetInstance(Content).Volume = 0.7f;
-                                             MusicManager.GetInstance(Content).Volume = 0.2f;
+                                             screenManager.SoundManager.Volume = 0.7f;
+                                             screenManager.MusicManager.Volume = 0.2f;
                                          });
         }
 
@@ -116,10 +116,24 @@ namespace DemoGame.Client
             var atlasChars = new TextureAtlas(GraphicsDevice, gdChars);
             var atlasGUI = new TextureAtlas(GraphicsDevice, gdGUI);
             var atlasMisc = new TextureAtlas(GraphicsDevice, gdNonMap);
+            _globalAtlases = new TextureAtlas[] { atlasChars, atlasGUI, atlasMisc };
 
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process
             screenManager.MapContent.Unload();
+        }
+
+        IEnumerable<TextureAtlas> _globalAtlases;
+
+        protected override void Dispose(bool disposing)
+        {
+            if (_globalAtlases != null)
+            {
+                foreach (var atlas in _globalAtlases)
+                    atlas.Dispose();
+            }
+
+            base.Dispose(disposing);
         }
     }
 
