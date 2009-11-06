@@ -1765,6 +1765,7 @@ namespace DemoGame
                 Debug.Assert(cdStack.Count == 0, "This should be empty already since we should have popped every Entity in it.");
                 cdStack.Clear();
 
+                // FUTURE: This lock will probably result in hundreds of locks per second. That ain't pretty...
                 // Lock the entity grid
                 lock (_entityGridLock)
                 {
