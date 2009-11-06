@@ -269,9 +269,9 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Resizes the Entity
+        /// Resizes the <see cref="Entity"/>.
         /// </summary>
-        /// <param name="size">New size of the Entity</param>
+        /// <param name="size">The new size of this <see cref="Entity"/>.</param>
         public virtual void Resize(Vector2 size)
         {
             if (size == _collisionBox.Size)
@@ -285,35 +285,61 @@ namespace NetGore
                 OnResize(this, oldSize);
         }
 
+        /// <summary>
+        /// Sets the <see cref="Entity"/>'s <see cref="CollisionType"/> directly without any chance to be overridden.
+        /// This should only be used for synchronization.
+        /// </summary>
+        /// <param name="newCollisionType">The new <see cref="CollisionType"/> value.</param>
         protected internal void SetCollisionTypeRaw(CollisionType newCollisionType)
         {
             _ct = newCollisionType;
         }
 
+        /// <summary>
+        /// Sets the <see cref="Entity"/>'s <see cref="Position"/> directly without any chance to be overridden.
+        /// This should only be used for synchronization.
+        /// </summary>
+        /// <param name="newPosition">The new <see cref="Position"/> value.</param>
         protected internal void SetPositionRaw(Vector2 newPosition)
         {
             CB.Teleport(newPosition);
         }
 
+        /// <summary>
+        /// Sets the <see cref="Entity"/>'s <see cref="Size"/> directly without any chance to be overridden.
+        /// This should only be used for synchronization.
+        /// </summary>
+        /// <param name="newSize">The new <see cref="Size"/> value.</param>
         protected internal void SetSizeRaw(Vector2 newSize)
         {
             CB.Resize(newSize);
         }
 
         /// <summary>
-        /// Sets the velocity of the entity
+        /// Sets the velocity of the <see cref="Entity"/>.
         /// </summary>
-        /// <param name="newVelocity">New velocity</param>
+        /// <param name="newVelocity">The new velocity.</param>
         public virtual void SetVelocity(Vector2 newVelocity)
         {
             _velocity = newVelocity;
         }
 
+
+        /// <summary>
+        /// Sets the <see cref="Entity"/>'s <see cref="Velocity"/> directly without any chance to be overridden.
+        /// This should only be used for synchronization.
+        /// </summary>
+        /// <param name="newVelocity">The new <see cref="Velocity"/> value.</param>
         protected internal void SetVelocityRaw(Vector2 newVelocity)
         {
             _velocity = newVelocity;
         }
 
+        /// <summary>
+        /// Sets the <see cref="Entity"/>'s <see cref="Weight"/> directly without any chance to be overridden.
+        /// This should only be used for synchronization.
+        /// </summary>
+        /// <param name="newWeight">The new <see cref="Weight"/> value.</param>
         protected internal void SetWeightRaw(float newWeight)
         {
             _weight = newWeight;
