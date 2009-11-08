@@ -655,7 +655,7 @@ namespace DemoGame
         /// <param name="rect">Region to check for Entities.</param>
         /// <param name="condition">Condition the Entities must meet.</param>
         /// <returns>All Entities found intersecting the given region.</returns>
-        public List<Entity> GetEntities(Rectangle rect, Predicate<Entity> condition)
+        public IEnumerable<Entity> GetEntities(Rectangle rect, Predicate<Entity> condition)
         {
             var ret = new List<Entity>(16);
 
@@ -689,8 +689,8 @@ namespace DemoGame
         /// Gets the Entities found intersecting the given region
         /// </summary>
         /// <param name="rect">Region to check for Entities</param>
-        /// <returns>List of all Entities found intersecting the given region</returns>
-        public List<Entity> GetEntities(Rectangle rect)
+        /// <returns>All Entities found intersecting the given region</returns>
+        public IEnumerable<Entity> GetEntities(Rectangle rect)
         {
             return GetEntities(rect, null);
         }
