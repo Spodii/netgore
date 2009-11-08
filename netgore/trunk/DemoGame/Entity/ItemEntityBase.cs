@@ -88,26 +88,7 @@ namespace DemoGame
         {
             // Collision against a wall
             if (collideWith is WallEntityBase)
-            {
-                // Move the item away from the wall
-                Move(displacement);
-
-                // Check for vertical collision
-                if (displacement.Y != 0)
-                {
-                    if (Velocity.Y >= 0 && displacement.Y < 0)
-                    {
-                        // Collision from falling
-                        SetVelocity(new Vector2(Velocity.X, 0.0f));
-                        OnGround = true;
-                    }
-                    else if (Velocity.Y < 0 && displacement.Y > 0)
-                    {
-                        // Collision from rising
-                        SetVelocity(new Vector2(Velocity.X, 0.0f));
-                    }
-                }
-            }
+                WallEntityBase.HandleCollideInto(this, displacement);
         }
 
         /// <summary>

@@ -71,6 +71,28 @@ namespace NetGore
             SetCollisionTypeRaw(ct);
         }
 
+        public static void HandleCollideInto(Entity other, Vector2 displacement)
+        {
+            // Move the other entity away from the wall
+            other.Move(displacement);
+
+            // Check for vertical collision
+            if (displacement.Y != 0)
+            {
+                if (other.Velocity.Y >= 0 && displacement.Y < 0)
+                {
+                    // Collision from falling (land on feet)
+                    other.SetVelocity(new Vector2(other.Velocity.X, 0.0f));
+                    other.OnGround = true;
+                }
+                else if (other.Velocity.Y < 0 && displacement.Y > 0)
+                {
+                    // Collision from rising (hit head)
+                    other.SetVelocity(new Vector2(other.Velocity.X, 0.0f));
+                }
+            }
+        }
+
         public void Write(IValueWriter w)
         {
             w.Write(_valueKeyPosition, Position);
