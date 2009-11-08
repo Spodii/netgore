@@ -88,13 +88,16 @@ namespace NetGore
         }
 
         /// <summary>
-        /// Gets or sets (protected) if the character is currently on the ground (only applies to moving entities)
+        /// Gets or sets if the character is currently on the ground. This value only applies to moving entities.
         /// </summary>
         [Browsable(false)]
         public bool OnGround
         {
             get { return _onGround; }
-            protected set { _onGround = value; }
+            set { 
+                // TODO: The setter on this shouldn't be public... or even protected. How will we accomplish that?
+                _onGround = value; 
+            }
         }
 
         /// <summary>
