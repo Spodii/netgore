@@ -464,7 +464,7 @@ namespace DemoGame
 
             var casted = dynamicEntity as T;
 
-            if (casted == null && dynamicEntity != null)
+            if (casted == null)
             {
                 const string errmsg = "DynamicEntity found, but was of type `{0}`, not type `{1}` like expected!";
                 Debug.Fail(string.Format(errmsg, dynamicEntity.GetType(), typeof(T)));
@@ -476,11 +476,11 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets a list of all entities containing a given point
+        /// Gets all entities containing a given point.
         /// </summary>
-        /// <param name="p">Point to find the entities at</param>
-        /// <returns>All entities containing the given point</returns>
-        public List<Entity> GetEntities(Vector2 p)
+        /// <param name="p">Point to find the entities at.</param>
+        /// <returns>All of the entities at the given point.</returns>
+        public IEnumerable<Entity> GetEntities(Vector2 p)
         {
             // Get and validate the grid segment
             var gridSegment = GetEntityGrid(p);
@@ -507,12 +507,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets a list of all entities containing a given point
+        /// Gets all entities at the given point.
         /// </summary>
-        /// <param name="p">Point to find the entities at</param>
-        /// <typeparam name="T">Type to convert to</typeparam>
-        /// <returns>All entities containing the given point</returns>
-        public List<T> GetEntities<T>(Vector2 p) where T : Entity
+        /// <param name="p">The point to find the entities at.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
+        /// <returns>All entities containing the given point that are of the given type.</returns>
+        public IEnumerable<T> GetEntities<T>(Vector2 p) where T : Entity
         {
             // Get and validate the grid segment
             var gridSegment = GetEntityGrid(p);
@@ -544,12 +544,12 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the Entities found intersecting the given region
+        /// Gets the Entities found intersecting the given region.
         /// </summary>
-        /// <param name="rect">Region to check for Entities</param>
-        /// <typeparam name="T">Type of Entity to convert to</typeparam>
-        /// <returns>List of all Entities found intersecting the given region</returns>
-        public List<T> GetEntities<T>(Rectangle rect) where T : Entity
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <typeparam name="T">Type of Entity to look for.</typeparam>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public IEnumerable<T> GetEntities<T>(Rectangle rect) where T : Entity
         {
             var ret = new List<T>(16);
 
@@ -581,36 +581,36 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the Entities found intersecting the given region
+        /// Gets the Entities found intersecting the given region.
         /// </summary>
-        /// <param name="cb">CollisionBox to check for Entities in</param>
-        /// <param name="condition">Condition the Entities must meet</param>
-        /// <returns>List of all Entities found intersecting the given region</returns>
-        public List<Entity> GetEntities(CollisionBox cb, Predicate<Entity> condition)
+        /// <param name="cb">CollisionBox to check for Entities in.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public IEnumerable<Entity> GetEntities(CollisionBox cb, Predicate<Entity> condition)
         {
             return GetEntities(cb.ToRectangle(), condition);
         }
 
         /// <summary>
-        /// Gets the Entities found intersecting the given region
+        /// Gets the Entities found intersecting the given region.
         /// </summary>
-        /// <param name="cb">Region to check for Entities in</param>
-        /// <param name="condition">Condition the Entities must meet</param>
-        /// <typeparam name="T">Type of Entity to convert to</typeparam>
-        /// <returns>List of all Entities found intersecting the given region</returns>
-        public List<T> GetEntities<T>(CollisionBox cb, Predicate<T> condition) where T : Entity
+        /// <param name="cb">Region to check for Entities in.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <typeparam name="T">Type of Entity to convert to.</typeparam>
+        /// <returns>List of all Entities found intersecting the given region.</returns>
+        public IEnumerable<T> GetEntities<T>(CollisionBox cb, Predicate<T> condition) where T : Entity
         {
             return GetEntities(cb.ToRectangle(), condition);
         }
 
         /// <summary>
-        /// Gets the Entities found intersecting the given region
+        /// Gets the Entities found intersecting the given region.
         /// </summary>
-        /// <param name="rect">Region to check for Entities</param>
-        /// <param name="condition">Condition the Entities must meet</param>
-        /// <typeparam name="T">Type of Entity to convert to</typeparam>
-        /// <returns>List of all Entities found intersecting the given region</returns>
-        public List<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <typeparam name="T">Type of Entity to convert to.</typeparam>
+        /// <returns>List of all Entities found intersecting the given region.</returns>
+        public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
         {
             var ret = new List<T>();
 
@@ -650,11 +650,11 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the Entities found intersecting the given region
+        /// Gets the Entities found intersecting the given region.
         /// </summary>
-        /// <param name="rect">Region to check for Entities</param>
-        /// <param name="condition">Condition the Entities must meet</param>
-        /// <returns>List of all Entities found intersecting the given region</returns>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <returns>All Entities found intersecting the given region.</returns>
         public List<Entity> GetEntities(Rectangle rect, Predicate<Entity> condition)
         {
             var ret = new List<Entity>(16);
@@ -979,7 +979,7 @@ namespace DemoGame
         /// </summary>
         /// <param name="rect">Rectangle of the area to check</param>
         /// <returns>A list containing all ItemEntityBases that intersect the specified area</returns>
-        public List<ItemEntityBase> GetItems(Rectangle rect)
+        public IEnumerable<ItemEntityBase> GetItems(Rectangle rect)
         {
             return GetEntities<ItemEntityBase>(rect);
         }
@@ -990,7 +990,7 @@ namespace DemoGame
         /// <param name="min">Min point of the collision area</param>
         /// <param name="max">Max point of the collision area</param>
         /// <returns>A list containing all ItemEntityBases that intersect the specified area</returns>
-        public List<ItemEntityBase> GetItems(Vector2 min, Vector2 max)
+        public IEnumerable<ItemEntityBase> GetItems(Vector2 min, Vector2 max)
         {
             var size = max - min;
             return GetItems(new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y));
@@ -1091,11 +1091,11 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Returns a list of all the walls in a given area
+        /// Gets all the walls in a given area
         /// </summary>
         /// <param name="cb">Collision box area to find walls from</param>
         /// <returns>List of walls in the area</returns>
-        public List<WallEntityBase> GetWalls(CollisionBox cb)
+        public IEnumerable<WallEntityBase> GetWalls(CollisionBox cb)
         {
             if (cb == null)
             {
@@ -1103,7 +1103,7 @@ namespace DemoGame
                 Debug.Fail(errmsg);
                 if (log.IsErrorEnabled)
                     log.Error(errmsg);
-                return new List<WallEntityBase>(0);
+                return Enumerable.Empty<WallEntityBase>();
             }
 
             return GetEntities<WallEntityBase>(cb.ToRectangle());
