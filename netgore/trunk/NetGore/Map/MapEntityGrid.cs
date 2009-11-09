@@ -232,7 +232,7 @@ namespace DemoGame
             if (minY < 0)
                 minY = 0;
 
-            // TODO: For some reason this last check here likes to fail a lot. I think it is because gravity pushes an Entity out of the map temporarily when they are down low. Ideally, this condition is NEVER reached.
+            // NOTE: For some reason this last check here likes to fail a lot. I think it is because gravity pushes an Entity out of the map temporarily when they are down low. Ideally, this condition is NEVER reached.
             if (maxY >= GridSize.Y)
                 maxY = GridSize.Y - 1;
 
