@@ -58,6 +58,7 @@
     <Compile Include="AccountCharacterInfo.cs" />
     <Compile Include="AccountCharacterInfoExtensions.cs" />
     <Compile Include="Body\BodyInfoManager.cs" />
+    <Compile Include="IMapEntityCollectionExtensions.cs" />
     <Compile Include="IO\BitStreamExtensions.cs" />
     <Compile Include="Body\BodyIndex.cs" />
     <Compile Include="Body\BodyInfo.cs" />
