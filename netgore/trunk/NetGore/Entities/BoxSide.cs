@@ -6,7 +6,7 @@ namespace NetGore
     /// <summary>
     /// Represents the side of a box.
     /// </summary>
-    enum BoxSide
+    public enum BoxSide
     {
         /// <summary>
         /// The left side.
