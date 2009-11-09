@@ -37,6 +37,25 @@ namespace NetGore
             return true;
         }
 
+        public static bool HasDuplicates<T>(this IEnumerable<T> source)
+        {
+            if (source.Count() <= 1)
+                return false;
+
+            var a = source.ToArray();
+
+            for (int outer = 0; outer < a.Length - 1; outer++)
+            {
+                for (int inner = outer + 1; inner < a.Length; inner++)
+                {
+                    if (a[inner].Equals(a[outer]))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Combines all items in an IEnumerable together into a delimited string.
         /// </summary>

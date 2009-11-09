@@ -15,6 +15,7 @@ using NetGore.IO;
 // TODO: Refactor out the grid logic completely from the map
 
 // FUTURE: Improve how characters handle when they hit the map's borders
+// TODO: Rename WallGridSize to EntityGridSize
 
 namespace DemoGame
 {
@@ -23,6 +24,515 @@ namespace DemoGame
     /// </summary>
     /// <param name="map">MapBase that the event came from.</param>
     public delegate void MapBaseEventHandler(MapBase map);
+
+    public class MapEntityGrid
+    {
+        /// <summary>
+        /// Size of each segment of the wall grid in pixels (smallest requires more
+        /// memory but often less checks (to an extent))
+        /// </summary>
+        protected const int WallGridSize = 128;
+
+        /// <summary>
+        /// Two-dimensional grid of references to entities in that sector.
+        /// </summary>
+        List<Entity>[,] _entityGrid;
+
+        public Point GridSize
+        {
+            get { return new Point(_entityGrid.GetLength(0), _entityGrid.GetLength(1)); }
+        }
+
+        protected IEnumerable<Entity> this[int x, int y]
+        {
+            get
+            {
+                if (!IsLegalGridIndex(x, y))
+                    return Enumerable.Empty<Entity>();
+
+                return _entityGrid[x, y];
+            }
+        }
+
+        protected IEnumerable<Entity> this[Point gridIndex]
+        {
+            get { return this[gridIndex.X, gridIndex.Y]; }
+        }
+
+        public void Add(IEnumerable<Entity> entities)
+        {
+            foreach (var entity in entities)
+            {
+                Add(entity);
+            }
+        }
+
+        /// <summary>
+        /// Adds an <see cref="Entity"/> to the grid.
+        /// </summary>
+        /// <param name="entity">The <see cref="Entity"/> to add to the grid.</param>
+        public void Add(Entity entity)
+        {
+            var minX = (int)entity.CB.Min.X / WallGridSize;
+            var minY = (int)entity.CB.Min.Y / WallGridSize;
+            var maxX = (int)entity.CB.Max.X / WallGridSize;
+            var maxY = (int)entity.CB.Max.Y / WallGridSize;
+
+            // Keep in range of the grid
+            if (minX < 0)
+                minX = 0;
+
+            if (maxX >= GridSize.X)
+                maxX = GridSize.X - 1;
+
+            if (minY < 0)
+                minY = 0;
+
+            if (maxY >= GridSize.Y)
+                maxY = GridSize.Y - 1;
+
+            // Add to all the segments of the grid
+            for (var x = minX; x <= maxX; x++)
+            {
+                for (var y = minY; y <= maxY; y++)
+                {
+                    if (!_entityGrid[x, y].Contains(entity))
+                        _entityGrid[x, y].Add(entity);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Builds a two-dimensional array of Lists to use as the grid of entities.
+        /// </summary>
+        /// <returns>A two-dimensional array of Lists to use as the grid of entities.</returns>
+        static List<Entity>[,] BuildEntityGrid(float width, float height)
+        {
+            var gridWidth = (int)Math.Ceiling(width / WallGridSize);
+            var gridHeight = (int)Math.Ceiling(height / WallGridSize);
+
+            // Create the array
+            var retGrid = new List<Entity>[gridWidth,gridHeight];
+
+            // Create the lists
+            for (var x = 0; x < gridWidth; x++)
+            {
+                for (var y = 0; y < gridHeight; y++)
+                {
+                    retGrid[x, y] = new List<Entity>();
+                }
+            }
+
+            return retGrid;
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="rect">The map area to check.</param>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public bool ContainsEntities(Rectangle rect)
+        {
+            return GetEntityGrids(rect).SelectMany(x => x).Any(x => x.CB.Intersect(rect));
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="rect">The map area to check.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
+        /// <see cref="Entity"/> will be ignored.</typeparam>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public bool ContainsEntities<T>(Rectangle rect) where T : Entity
+        {
+            return GetEntityGrids(rect).SelectMany(x => x).OfType<T>().Any(x => x.CB.Intersect(rect));
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="point">The map point to check.</param>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public bool ContainsEntities(Vector2 point)
+        {
+            var gridSegment = this[MapPositionToGridIndex(point)];
+            return gridSegment.Any(x => x.CB.HitTest(point));
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="point">The map point to check.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
+        /// <see cref="Entity"/> will be ignored.</typeparam>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public bool ContainsEntities<T>(Vector2 point) where T : Entity
+        {
+            var gridSegment = this[MapPositionToGridIndex(point)];
+            return gridSegment.OfType<T>().Any(x => x.CB.HitTest(point));
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="cb">The map area to check.</param>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public bool ContainsEntities(CollisionBox cb)
+        {
+            return ContainsEntities(cb.ToRectangle());
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="cb">The map area to check.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
+        /// <see cref="Entity"/> will be ignored.</typeparam>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public bool ContainsEntities<T>(CollisionBox cb) where T : Entity
+        {
+            return ContainsEntities<T>(cb.ToRectangle());
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="cb">CollisionBox to check for Entities in.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public IEnumerable<Entity> GetEntities(CollisionBox cb, Predicate<Entity> condition)
+        {
+            return GetEntities(cb.ToRectangle(), condition);
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public IEnumerable<Entity> GetEntities(Rectangle rect, Predicate<Entity> condition)
+        {
+            return GetEntities(rect).Where(x => condition(x));
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public IEnumerable<Entity> GetEntities(Rectangle rect)
+        {
+            var gridSegments = GetEntityGrids(rect);
+            var matches = gridSegments.SelectMany(x => x).Where(x => x.CB.Intersect(rect)).Distinct();
+            return matches;
+        }
+
+        /// <summary>
+        /// Gets all entities at the given point.
+        /// </summary>
+        /// <param name="p">The point to find the entities at.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
+        /// <returns>All entities containing the given point that are of the given type.</returns>
+        public IEnumerable<T> GetEntities<T>(Vector2 p) where T : Entity
+        {
+            var gridSegment = this[MapPositionToGridIndex(p)];
+            var matches = gridSegment.OfType<T>().Where(x => x.CB.HitTest(p));
+            Debug.Assert(!matches.HasDuplicates(), "Somehow we had duplicates even though we only used one grid segment!");
+            return matches;
+        }
+
+        /// <summary>
+        /// Gets all entities at the given point.
+        /// </summary>
+        /// <param name="p">The point to find the entities at.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
+        /// <returns>All entities containing the given point that are of the given type.</returns>
+        public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition) where T : Entity
+        {
+            return GetEntities<T>(p).Where(x => condition(x));
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <typeparam name="T">Type of Entity to look for.</typeparam>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public IEnumerable<T> GetEntities<T>(Rectangle rect) where T : Entity
+        {
+            var gridSegments = GetEntityGrids(rect);
+            var matches = gridSegments.SelectMany(x => x).OfType<T>().Where(x => x.CB.Intersect(rect)).Distinct();
+            return matches;
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="cb">Region to check for Entities in.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <typeparam name="T">Type of Entity to convert to.</typeparam>
+        /// <returns>List of all Entities found intersecting the given region.</returns>
+        public IEnumerable<T> GetEntities<T>(CollisionBox cb, Predicate<T> condition) where T : Entity
+        {
+            return GetEntities(cb.ToRectangle(), condition);
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <typeparam name="T">Type of Entity to convert to.</typeparam>
+        /// <returns>List of all Entities found intersecting the given region.</returns>
+        public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
+        {
+            return GetEntities<T>(rect).Where(x => condition(x));
+        }
+
+        /// <summary>
+        /// Gets all entities containing a given point.
+        /// </summary>
+        /// <param name="p">Point to find the entities at.</param>
+        /// <returns>All of the entities at the given point.</returns>
+        public IEnumerable<Entity> GetEntities(Vector2 p)
+        {
+            var gridSegment = this[MapPositionToGridIndex(p)];
+            var matches = gridSegment.Where(x => x.CB.HitTest(p));
+            Debug.Assert(!matches.HasDuplicates(), "Somehow we had duplicates even though we only used one grid segment!");
+            return matches;
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found in the given region.
+        /// </summary>
+        /// <param name="rect">Region to find the <see cref="Entity"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="Entity"/> must meet.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <returns>The first <see cref="Entity"/> found in the given region, or null if none found.</returns>
+        public T GetEntity<T>(Rectangle rect, Predicate<T> condition) where T : Entity
+        {
+            return GetEntities(rect, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found in the given region.
+        /// </summary>
+        /// <param name="rect">Region to find the <see cref="Entity"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="Entity"/> must meet.</param>
+        /// <returns>The first <see cref="Entity"/> found in the given region, or null if none found.</returns>
+        public Entity GetEntity(Rectangle rect, Predicate<Entity> condition)
+        {
+            return GetEntities(rect, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <param name="condition">Condition the <see cref="Entity"/> must meet.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for. Any other type of <see cref="Entity"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public T GetEntity<T>(Vector2 p, Predicate<T> condition) where T : Entity
+        {
+            return GetEntities(p, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for. Any other type of <see cref="Entity"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public T GetEntity<T>(Vector2 p) where T : Entity
+        {
+            return GetEntities<T>(p).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public Entity GetEntity(Vector2 p)
+        {
+            return GetEntities(p).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <param name="condition">Condition the <see cref="Entity"/> must meet.</param>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public Entity GetEntity(Vector2 p, Predicate<Entity> condition)
+        {
+            return GetEntities(p, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first Entity found in the given region
+        /// </summary>
+        /// <param name="rect">Region to check for the Entity</param>
+        /// <returns>First Entity found at the given point, or null if none found</returns>
+        public Entity GetEntity(Rectangle rect)
+        {
+            return GetEntities(rect).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first Entity found in the given region
+        /// </summary>
+        /// <param name="rect">Region to check for the Entity</param>
+        /// <typeparam name="T">Type to convert to</typeparam>
+        /// <returns>First Entity found at the given point, or null if none found</returns>
+        public T GetEntity<T>(Rectangle rect) where T : Entity
+        {
+            return GetEntities<T>(rect).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the grid segment for each intersection on the entity grid.
+        /// </summary>
+        /// <param name="rect">Map area to get the grid segments for.</param>
+        /// <returns>An IEnumerable of all grid segments intersected by the specified <paramref name="rect"/>.</returns>
+        protected IEnumerable<IEnumerable<Entity>> GetEntityGrids(Rectangle rect)
+        {
+            var minX = rect.X / WallGridSize;
+            var minY = rect.Y / WallGridSize;
+            var maxX = rect.Right / WallGridSize;
+            var maxY = rect.Bottom / WallGridSize;
+
+            // Keep in range of the grid
+            if (minX < 0)
+                minX = 0;
+
+            if (maxX >= GridSize.X)
+                maxX = GridSize.X - 1;
+
+            if (minY < 0)
+                minY = 0;
+
+            // TODO: For some reason this last check here likes to fail a lot. I think it is because gravity pushes an Entity out of the map temporarily when they are down low. Ideally, this condition is NEVER reached.
+            if (maxY >= GridSize.Y)
+                maxY = GridSize.Y - 1;
+
+            // Return the grid segments
+            for (var x = minX; x <= maxX; x++)
+            {
+                for (var y = minY; y <= maxY; y++)
+                {
+                    yield return this[x, y];
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets the first IUsableEntity that intersects a specified area.
+        /// </summary>
+        /// <param name="rect">Rectangle of the area to check.</param>
+        /// <param name="charEntity">CharacterEntity that must be able to use the IUsableEntity.</param>
+        /// <returns>First IUsableEntity that intersects the specified area that the charEntity
+        /// is able to use, or null if none.</returns>
+        public IUsableEntity GetUsable(Rectangle rect, CharacterEntity charEntity)
+        {
+            // NOTE: This doesn't really belong in here. Maybe make it an extension?
+            return GetEntities(rect).OfType<IUsableEntity>().Where(x => x.CanUse(charEntity)).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first IUsableEntity that intersects a specified area.
+        /// </summary>
+        /// <param name="cb">CollisionBox of the area to check.</param>
+        /// <param name="charEntity">CharacterEntity that must be able to use the IUsableEntity.</param>
+        /// <returns>First IUsableEntity that intersects the specified area that the charEntity
+        /// is able to use, or null if none.</returns>
+        public IUsableEntity GetUsable(CollisionBox cb, CharacterEntity charEntity)
+        {
+            // NOTE: This doesn't really belong in here. Maybe make it an extension?
+            return GetUsable(cb.ToRectangle(), charEntity);
+        }
+
+        protected bool IsLegalGridIndex(Point point)
+        {
+            return IsLegalGridIndex(point.X, point.Y);
+        }
+
+        protected bool IsLegalGridIndex(int x, int y)
+        {
+            return x >= 0 && x < _entityGrid.GetLength(0) && y >= 0 && y < _entityGrid.GetLength(1);
+        }
+
+        static Point MapPositionToGridIndex(Vector2 position)
+        {
+            var x = position.X / WallGridSize;
+            var y = position.Y / WallGridSize;
+            return new Point((int)x, (int)y);
+        }
+
+        public void Remove(Entity entity)
+        {
+            foreach (var gridSegment in _entityGrid)
+            {
+                gridSegment.Remove(entity);
+            }
+        }
+
+        /// <summary>
+        /// Sets the source map to a new size and clears out all existing entities in the grid.
+        /// </summary>
+        /// <param name="size">The new size of the source map.</param>
+        public void SetMapSize(Vector2 size)
+        {
+            _entityGrid = BuildEntityGrid(size.X, size.Y);
+        }
+
+        public void UpdateEntity(Entity entity, Vector2 oldPos)
+        {
+            // FUTURE: Can optimize this method quite a lot by only adding/removing from changed grid segments
+
+            // Check that the entity changed grid segments by comparing the lowest grid segments
+            // of the old position and current position
+            var minX = (int)oldPos.X / WallGridSize;
+            var minY = (int)oldPos.Y / WallGridSize;
+            var newMinX = (int)entity.CB.Min.X / WallGridSize;
+            var newMinY = (int)entity.CB.Min.Y / WallGridSize;
+
+            if (minX == newMinX && minY == newMinY)
+                return; // No change in grid segment
+
+            var maxX = (int)(oldPos.X + entity.CB.Width) / WallGridSize;
+            var maxY = (int)(oldPos.Y + entity.CB.Height) / WallGridSize;
+
+            // Keep in range of the grid
+            if (minX < 0)
+                minX = 0;
+
+            if (maxX >= GridSize.X)
+                maxX = GridSize.X - 1;
+
+            if (minY < 0)
+                minY = 0;
+
+            if (maxY >= GridSize.Y)
+                maxY = GridSize.Y - 1;
+
+            // Remove the entity from the old grid position
+            for (var x = minX; x <= maxX; x++)
+            {
+                for (var y = minY; y <= maxY; y++)
+                {
+                    _entityGrid[x, y].Remove(entity);
+                }
+            }
+
+            // Re-add the entity to the grid
+            Add(entity);
+        }
+    }
 
     /// <summary>
     /// Base map class
@@ -34,13 +544,15 @@ namespace DemoGame
         /// </summary>
         public const string MapFileSuffix = "xml";
 
-        /// <summary>
-        /// Size of each segment of the wall grid in pixels (smallest requires more
-        /// memory but often less checks (to an extent))
-        /// </summary>
-        protected const int WallGridSize = 128;
-
         const string _dynamicEntitiesNodeName = "DynamicEntities";
+
+        /// <summary>
+        /// The number of additional pixels to search in each direction around an entity when finding
+        /// a valid place to put the entity. Larger values will allow for a better chance of finding a valid position,
+        /// but will allow the entity to warp farther away from their initial position.
+        /// </summary>
+        const int _findValidPlacementPadding = 128;
+
         const string _headerNodeHeightKey = "Height";
         const string _headerNodeMusicKey = "Music";
         const string _headerNodeName = "Header";
@@ -73,10 +585,7 @@ namespace DemoGame
         /// </summary>
         readonly SafeEnumerator<Entity> _entityEnumerator;
 
-        /// <summary>
-        /// Lock used for updating entities that have moved in the entity grid
-        /// </summary>
-        readonly object _entityGridLock = new object();
+        readonly MapEntityGrid _entityGrid = new MapEntityGrid();
 
         /// <summary>
         /// Interface used to get the time
@@ -92,11 +601,6 @@ namespace DemoGame
         /// StopWatch used to update the map
         /// </summary>
         readonly Stopwatch _updateStopWatch = new Stopwatch();
-
-        /// <summary>
-        /// Two-dimensional grid of references to entities in that sector
-        /// </summary>
-        List<Entity>[,] _entityGrid;
 
         /// <summary>
         /// Height of the map in pixels
@@ -129,6 +633,15 @@ namespace DemoGame
         public IEnumerable<DynamicEntity> DynamicEntities
         {
             get { return _dyanmicEntityEnumerator; }
+        }
+
+        public MapEntityGrid EntityGrid
+        {
+            get
+            {
+                // NOTE: This is only temporary. Should have an interface that only allows looking for entities (IEntityFinder?)
+                return _entityGrid;
+            }
         }
 
         /// <summary>
@@ -261,9 +774,8 @@ namespace DemoGame
             // Add to the one-dimensional entity list
             _entities.Add(entity);
 
-            // Also add the entity to the grid if it exists
-            lock (_entityGridLock)
-                AddEntityToGrid(entity);
+            // Also add the entity to the grid
+            _entityGrid.Add(entity);
 
             // Add the event hooks
             AddEntityEventHooks(entity);
@@ -273,72 +785,13 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Adds an entity to an entity grid
-        /// </summary>
-        /// <param name="entity">Entity to add to the grid</param>
-        void AddEntityToGrid(Entity entity)
-        {
-            var minX = (int)entity.CB.Min.X / WallGridSize;
-            var minY = (int)entity.CB.Min.Y / WallGridSize;
-            var maxX = (int)entity.CB.Max.X / WallGridSize;
-            var maxY = (int)entity.CB.Max.Y / WallGridSize;
-
-            // Keep in range of the grid
-            if (minX < 0)
-                minX = 0;
-            if (maxX > _entityGrid.GetLength(0) - 1)
-                maxX = _entityGrid.GetLength(0) - 1;
-            if (minY < 0)
-                minY = 0;
-            if (maxY > _entityGrid.GetLength(1) - 1)
-                maxY = _entityGrid.GetLength(1) - 1;
-
-            // Add to all the segments of the grid
-            for (var x = minX; x <= maxX; x++)
-            {
-                for (var y = minY; y <= maxY; y++)
-                {
-                    if (!_entityGrid[x, y].Contains(entity))
-                        _entityGrid[x, y].Add(entity);
-                    else
-                    {
-                        // Debug.Fail(".Contains() should return false.");
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Builds a two-dimensional array of Lists to use as the grid of entities.
-        /// </summary>
-        /// <returns>A two-dimensional array of Lists to use as the grid of entities.</returns>
-        static List<Entity>[,] BuildEntityGrid(float width, float height)
-        {
-            var gridWidth = (int)Math.Ceiling(width / WallGridSize);
-            var gridHeight = (int)Math.Ceiling(height / WallGridSize);
-
-            // Create the array
-            var retGrid = new List<Entity>[gridWidth,gridHeight];
-
-            // Create the lists
-            for (var x = 0; x < gridWidth; x++)
-            {
-                for (var y = 0; y < gridHeight; y++)
-                {
-                    retGrid[x, y] = new List<Entity>(32);
-                }
-            }
-
-            return retGrid;
-        }
-
-        /// <summary>
         /// If the given point is in the map's boundaries
         /// </summary>
         /// <param name="p">Point to check</param>
         /// <returns>True if the point is in the map's boundaries, else false</returns>
         public bool Contains(Vector2 p)
         {
+            // TODO: Get rid of this method? That, or rename it.
             return p.X >= 0 && p.Y >= 0 && p.X <= Width && p.Y <= Height;
         }
 
@@ -349,6 +802,7 @@ namespace DemoGame
         /// <returns>True if the Rectangle is in the map's boundaries, else false</returns>
         public bool Contains(Rectangle rect)
         {
+            // TODO: Get rid of this method? That, or rename it.
             return rect.X >= 0 && rect.Y >= 0 & rect.Right <= Width && rect.Bottom <= Height;
         }
 
@@ -359,6 +813,7 @@ namespace DemoGame
         /// <returns>True if the CollisionBox is in the map's boundaries, else false</returns>
         public bool Contains(CollisionBox cb)
         {
+            // TODO: Get rid of this method? That, or rename it.
             return Contains(cb.ToRectangle());
         }
 
@@ -386,7 +841,7 @@ namespace DemoGame
         /// <param name="oldPos">Position the entity was at before moving</param>
         void Entity_OnMove(Entity entity, Vector2 oldPos)
         {
-            UpdateEntityGrid(entity, oldPos);
+            _entityGrid.UpdateEntity(entity, oldPos);
             ForceEntityInMapBoundaries(entity);
         }
 
@@ -478,651 +933,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets all entities containing a given point.
-        /// </summary>
-        /// <param name="p">Point to find the entities at.</param>
-        /// <returns>All of the entities at the given point.</returns>
-        public IEnumerable<Entity> GetEntities(Vector2 p)
-        {
-            // Get and validate the grid segment
-            var gridSegment = GetEntityGrid(p);
-            if (gridSegment == null)
-                return new List<Entity>(0);
-
-            var ret = new List<Entity>(gridSegment.Count());
-
-            // Iterate through all entities and return those who contain the segment
-            foreach (var entity in gridSegment)
-            {
-                // Hit test
-                if (!entity.CB.HitTest(p))
-                    continue;
-
-                // Duplicates check
-                if (ret.Contains(entity))
-                    continue;
-
-                ret.Add(entity);
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="point">The map point to check.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities(Vector2 point)
-        {
-            var gridSegment = GetEntityGrid(point);
-            if (gridSegment == null)
-                return false;
-
-            // Iterate through each entity in the grid segment
-            foreach (var entity in gridSegment)
-            {
-                // Intersection check
-                if (entity.CB.HitTest(point))
-                    return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="point">The map point to check.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
-        /// <see cref="Entity"/> will be ignored.</typeparam>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(Vector2 point) where T : Entity
-        {
-            var gridSegment = GetEntityGrid(point);
-            if (gridSegment == null)
-                return false;
-
-            // Iterate through each entity in the grid segment
-            foreach (var entity in gridSegment.OfType<T>())
-            {
-                // Intersection check
-                if (entity.CB.HitTest(point))
-                    return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets all entities at the given point.
-        /// </summary>
-        /// <param name="p">The point to find the entities at.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
-        /// <returns>All entities containing the given point that are of the given type.</returns>
-        public IEnumerable<T> GetEntities<T>(Vector2 p) where T : Entity
-        {
-            // Get and validate the grid segment
-            var gridSegment = GetEntityGrid(p);
-            if (gridSegment == null)
-                return Enumerable.Empty<T>();
-
-            var ret = new List<T>(gridSegment.Count());
-
-            // Iterate through all entities and return those who contain the segment
-            foreach (var entity in gridSegment)
-            {
-                // Type cast check
-                var entityT = entity as T;
-                if (entityT == null)
-                    continue;
-
-                // Hit test
-                if (!entityT.CB.HitTest(p))
-                    continue;
-
-                // Duplicates check
-                if (ret.Contains(entityT))
-                    continue;
-
-                ret.Add(entityT);
-            }
-
-            return ret;
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="cb">The map area to check.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
-        /// <see cref="Entity"/> will be ignored.</typeparam>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(CollisionBox cb) where T : Entity
-        {
-            return ContainsEntities<T>(cb.ToRectangle());
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="cb">The map area to check.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities(CollisionBox cb)
-        {
-            return ContainsEntities(cb.ToRectangle());
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="rect">The map area to check.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities(Rectangle rect)
-        {
-            // Iterate through the grid segments
-            foreach (var gridSegment in GetEntityGrids(rect))
-            {
-                // Iterate through each entity in the grid segment
-                foreach (var entity in gridSegment)
-                {
-                    // Intersection check
-                    if (entity.CB.Intersect(rect))
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="rect">The map area to check.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
-        /// <see cref="Entity"/> will be ignored.</typeparam>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(Rectangle rect) where T : Entity
-        {
-            // Iterate through the grid segments
-            foreach (var gridSegment in GetEntityGrids(rect))
-            {
-                // Iterate through each entity in the grid segment
-                foreach (var entity in gridSegment.OfType<T>())
-                {
-                    // Intersection check
-                    if (entity.CB.Intersect(rect))
-                        return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets the Entities found intersecting the given region.
-        /// </summary>
-        /// <param name="rect">Region to check for Entities.</param>
-        /// <typeparam name="T">Type of Entity to look for.</typeparam>
-        /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<T> GetEntities<T>(Rectangle rect) where T : Entity
-        {
-            var ret = new List<T>(16);
-
-            // Iterate through the grid segments
-            foreach (var gridSegment in GetEntityGrids(rect))
-            {
-                // Iterate through each entity in the grid segment
-                foreach (var entity in gridSegment)
-                {
-                    // Type cast check
-                    var entityT = entity as T;
-                    if (entityT == null)
-                        continue;
-
-                    // Intersection check
-                    if (!entityT.CB.Intersect(rect))
-                        continue;
-
-                    // Duplicates check
-                    if (ret.Contains(entityT))
-                        continue;
-
-                    ret.Add(entityT);
-                }
-            }
-
-            // Return the results
-            return ret;
-        }
-
-        /// <summary>
-        /// Gets the Entities found intersecting the given region.
-        /// </summary>
-        /// <param name="cb">CollisionBox to check for Entities in.</param>
-        /// <param name="condition">Condition the Entities must meet.</param>
-        /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<Entity> GetEntities(CollisionBox cb, Predicate<Entity> condition)
-        {
-            return GetEntities(cb.ToRectangle(), condition);
-        }
-
-        /// <summary>
-        /// Gets the Entities found intersecting the given region.
-        /// </summary>
-        /// <param name="cb">Region to check for Entities in.</param>
-        /// <param name="condition">Condition the Entities must meet.</param>
-        /// <typeparam name="T">Type of Entity to convert to.</typeparam>
-        /// <returns>List of all Entities found intersecting the given region.</returns>
-        public IEnumerable<T> GetEntities<T>(CollisionBox cb, Predicate<T> condition) where T : Entity
-        {
-            return GetEntities(cb.ToRectangle(), condition);
-        }
-
-        /// <summary>
-        /// Gets the Entities found intersecting the given region.
-        /// </summary>
-        /// <param name="rect">Region to check for Entities.</param>
-        /// <param name="condition">Condition the Entities must meet.</param>
-        /// <typeparam name="T">Type of Entity to convert to.</typeparam>
-        /// <returns>List of all Entities found intersecting the given region.</returns>
-        public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
-        {
-            var ret = new List<T>();
-
-            // If condition is null, don't use it
-            if (condition == null)
-                return GetEntities<T>(rect);
-
-            // Iterate through the grid segments
-            foreach (var gridSegment in GetEntityGrids(rect))
-            {
-                // Iterate through each entity in the grid segment
-                foreach (var entity in gridSegment)
-                {
-                    // Type cast check
-                    var entityT = entity as T;
-                    if (entityT == null)
-                        continue;
-
-                    // Intersection check
-                    if (!entityT.CB.Intersect(rect))
-                        continue;
-
-                    // Duplicates check
-                    if (ret.Contains(entityT))
-                        continue;
-
-                    // Condition check
-                    if (!condition(entityT))
-                        continue;
-
-                    ret.Add(entityT);
-                }
-            }
-
-            // Return the results
-            return ret;
-        }
-
-        /// <summary>
-        /// Checks if a <see cref="CollisionBox"/> is in a place that is inside of the map and does not intersect
-        /// any <see cref="WallEntityBase"/>s.
-        /// </summary>
-        /// <param name="cb">The <see cref="CollisionBox"/> containing the placement to check.</param>
-        /// <returns>True if the <see cref="CollisionBox"/> is in an area that does not intersect any
-        /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
-        public bool IsValidPlacementPosition(CollisionBox cb)
-        {
-            return IsInMapBoundaries(cb) && !ContainsEntities(cb);
-        }
-
-        /// <summary>
-        /// Checks if a <see cref="Rectangle"/> is in a place that is inside of the map and does not intersect
-        /// any <see cref="WallEntityBase"/>s.
-        /// </summary>
-        /// <param name="rect">The <see cref="Rectangle"/> containing the placement to check.</param>
-        /// <returns>True if the <see cref="Rectangle"/> is in an area that does not intersect any
-        /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
-        public bool IsValidPlacementPosition(Rectangle rect)
-        {
-            return IsInMapBoundaries(rect) && !ContainsEntities<WallEntity>(rect);
-        }
-
-        /// <summary>
-        /// Gets the possible positions to place the given <see cref="CollisionBox"/> around an
-        /// <see cref="Entity"/>.
-        /// </summary>
-        /// <param name="entity">The <see cref="Entity"/> to place around.</param>
-        /// <param name="cb">The <see cref="CollisionBox"/> describing the area to be placed.</param>
-        /// <returns>An IEnumerable of the min positions to place the <paramref name="cb"/> around the
-        /// given <paramref name="entity"/>.</returns>
-        static IEnumerable<Vector2> GetPositionsAroundEntity(Entity entity, CollisionBox cb)
-        {
-            var srcCB = entity.CB;
-
-            // Top
-            yield return new Vector2(cb.Min.X, srcCB.Min.Y - cb.Height - 1);
-
-            // Bottom
-            yield return new Vector2(cb.Min.X, srcCB.Max.Y + 1);
-
-            // Left
-            yield return new Vector2(srcCB.Min.X - cb.Width - 1, cb.Min.Y);
-
-            // Right
-            yield return new Vector2(srcCB.Max.X + 1, cb.Min.Y);
-
-
-            // Top, left-aligned
-            yield return new Vector2(srcCB.Min.X, srcCB.Min.Y - cb.Height - 1);
-
-            // Top, right-aligned
-            yield return new Vector2(srcCB.Max.X - cb.Width, srcCB.Min.Y - cb.Height - 1);
-
-
-            // Bottom, left-aligned
-            yield return new Vector2(srcCB.Min.X, srcCB.Max.Y + 1);
-
-            // Bottom, right-aligned
-            yield return new Vector2(srcCB.Max.X - cb.Width, srcCB.Max.Y + 1);
-
-
-            // Left, top-aligned
-            yield return new Vector2(srcCB.Min.X - cb.Width - 1, srcCB.Min.Y);
-
-            // Left, bottom-aligned
-            yield return new Vector2(srcCB.Min.X - cb.Width - 1, srcCB.Max.Y - cb.Height);
-
-
-            // Right, top-aligned
-            yield return new Vector2(srcCB.Max.X + 1, srcCB.Min.Y);
-
-            // Right, bottom-aligned
-            yield return new Vector2(srcCB.Max.X + 1, srcCB.Max.Y - cb.Height);
-        }
-
-        public bool IsValidPlacementPosition(Vector2 position, Vector2 size)
-        {
-            var rect = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
-            return IsValidPlacementPosition(rect);
-        }
-
-        /// <summary>
-        /// The number of additional pixels to search in each direction around an entity when finding
-        /// a valid place to put the entity. Larger values will allow for a better chance of finding a valid position,
-        /// but will allow the entity to warp farther away from their initial position.
-        /// </summary>
-        const int _findValidPlacementPadding = 128;
-
-        /// <summary>
-        /// Checks if a <see cref="CollisionBox"/> is in a place that is inside of the map and does not intersect
-        /// any <see cref="WallEntityBase"/>s.
-        /// </summary>
-        /// <param name="cb">The <see cref="CollisionBox"/> containing the placement to check.</param>
-        /// <param name="closestValidPosition">When this method returns false, contains the closest valid position
-        /// that the <see cref="CollisionBox"/> can be at to not intersect any <see cref="WallEntityBase"/>s.</param>
-        /// <param name="validPositionFound">When this method returns false, contains if the
-        /// <see cref="closestValidPosition"/> that was found is valid. If false, no near-by legal position could be
-        /// found that the <see cref="CollisionBox"/> could occupy without causing any intersections.</param>
-        /// <returns>True if the <see cref="CollisionBox"/> is in an area that does not intersect any
-        /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
-        public bool IsValidPlacementPosition(CollisionBox cb, out Vector2 closestValidPosition, out bool validPositionFound)
-        {
-            // Perform the initial check to see if we need to even find a new position
-            if (IsValidPlacementPosition(cb))
-            {
-                // No intersections - already a valid position
-                closestValidPosition = cb.Min;
-                validPositionFound = true;
-                return true;
-            }
-
-            // Intersections were found, so we have to find a valid position
-            // First, grab the walls in the region around the cb
-            var nearbyWallsRect = new Rectangle((int)cb.Min.X - _findValidPlacementPadding, (int)cb.Min.Y - _findValidPlacementPadding, (int)cb.Width + (_findValidPlacementPadding * 2), (int)cb.Height + (_findValidPlacementPadding * 2));
-            var nearbyWalls = GetWalls(nearbyWallsRect);
-
-            // Next, find the legal positions we can place the cb
-            var cbSize = cb.Size;
-            var validPlacementPositions = nearbyWalls.SelectMany(wall => GetPositionsAroundEntity(wall, cb)).Where(p => IsValidPlacementPosition(p, cbSize));
-
-            // If there are 0 legal positions, we're F'd in the A
-            if (validPlacementPositions.Count() == 0)
-            {
-                // Failure :(
-                validPositionFound = false;
-                closestValidPosition = Vector2.Zero;
-            }
-            else
-            {
-                // One or more legal positions found, so find the closest one and use that
-                validPositionFound = true;
-                var cbMin = cb.Min;
-                closestValidPosition = validPlacementPositions.MinElement(x => x.QuickDistance(cbMin));
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Gets the Entities found intersecting the given region.
-        /// </summary>
-        /// <param name="rect">Region to check for Entities.</param>
-        /// <param name="condition">Condition the Entities must meet.</param>
-        /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<Entity> GetEntities(Rectangle rect, Predicate<Entity> condition)
-        {
-            var ret = new List<Entity>(16);
-
-            // Iterate through the grid segments
-            foreach (var gridSegment in GetEntityGrids(rect))
-            {
-                // Iterate through each entity in the grid segment
-                foreach (var entity in gridSegment)
-                {
-                    // Intersection check
-                    if (!entity.CB.Intersect(rect))
-                        continue;
-
-                    // Duplicates check
-                    if (ret.Contains(entity))
-                        continue;
-
-                    // Condition check
-                    if (condition == null || !condition(entity))
-                        continue;
-
-                    ret.Add(entity);
-                }
-            }
-
-            // Return the results
-            return ret;
-        }
-
-        /// <summary>
-        /// Gets the Entities found intersecting the given region
-        /// </summary>
-        /// <param name="rect">Region to check for Entities</param>
-        /// <returns>All Entities found intersecting the given region</returns>
-        public IEnumerable<Entity> GetEntities(Rectangle rect)
-        {
-            return GetEntities(rect, null);
-        }
-
-        /// <summary>
-        /// Gets the first Entity found in the given region
-        /// </summary>
-        /// <param name="rect">Region to check for the Entity</param>
-        /// <param name="condition">Condition the Entity must meet</param>
-        /// <returns>First Entity found at the given point, or null if none found</returns>
-        public Entity GetEntity(Rectangle rect, Predicate<Entity> condition)
-        {
-            // Iterate through the grid segments
-            foreach (var gridSegment in GetEntityGrids(rect))
-            {
-                // Iterate through each entity in the grid segment
-                foreach (var entity in gridSegment)
-                {
-                    // Intersection check
-                    if (!entity.CB.Intersect(rect))
-                        continue;
-
-                    // Condition check
-                    if (condition == null || !condition(entity))
-                        continue;
-
-                    return entity;
-                }
-            }
-
-            // No entity found
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the first Entity found in the given region
-        /// </summary>
-        /// <param name="rect">Region to check for the Entity</param>
-        /// <returns>First Entity found at the given point, or null if none found</returns>
-        public Entity GetEntity(Rectangle rect)
-        {
-            return GetEntity(rect, null);
-        }
-
-        /// <summary>
-        /// Gets the first Entity found in the given region
-        /// </summary>
-        /// <param name="rect">Region to check for the Entity</param>
-        /// <typeparam name="T">Type to convert to</typeparam>
-        /// <returns>First Entity found at the given point, or null if none found</returns>
-        public T GetEntity<T>(Rectangle rect) where T : Entity
-        {
-            return GetEntity<T>(rect, null);
-        }
-
-        /// <summary>
-        /// Gets the first Entity of type <typeparamref name="T"/> found in the given region.
-        /// </summary>
-        /// <typeparam name="T">Type of Entity to look for.</typeparam>
-        /// <param name="rect">Region to check for the Entity.</param>
-        /// <param name="condition">Condition the entity must meet.</param>
-        /// <returns>First Entity found at the given point, or null if none found.</returns>
-        public T GetEntity<T>(Rectangle rect, Func<T, bool> condition) where T : Entity
-        {
-            // Grab the segments
-            var grids = GetEntityGrids(rect);
-
-            // Select the Entities
-            var entities = grids.SelectMany(x => x);
-
-            // Find the entities of the type we want
-            var typedEntities = entities.OfType<T>();
-
-            // Find the entities that hit the target rect
-            typedEntities = typedEntities.Where(entity => entity.CB.Intersect(rect));
-
-            // Test against the custom condition
-            if (condition != null)
-                typedEntities = typedEntities.Where(condition);
-
-            // Return first match, if any
-            var match = typedEntities.FirstOrDefault();
-
-            return match;
-        }
-
-        /// <summary>
-        /// Gets the first Entity found at the given point
-        /// </summary>
-        /// <param name="p">Point to find the entity at</param>
-        /// <param name="condition">Condition the entity must meet</param>
-        /// <typeparam name="T">Type to convert to</typeparam>
-        /// <returns>First entity found at the given point, or null if none found</returns>
-        public T GetEntity<T>(Vector2 p, Predicate<T> condition) where T : Entity
-        {
-            // Get and validate the grid segment
-            var gridSegment = GetEntityGrid(p);
-            if (gridSegment == null)
-                return null;
-
-            // Iterate through all entities and return the first one to contain the segment
-            foreach (var entity in gridSegment)
-            {
-                // Type cast check
-                var entityT = entity as T;
-                if (entityT == null)
-                    continue;
-
-                // Hit test check
-                if (!entityT.CB.HitTest(p))
-                    continue;
-
-                // Condition check
-                if (condition == null || !condition(entityT))
-                    continue;
-
-                return entityT;
-            }
-
-            // None found
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the first Entity found at the given point
-        /// </summary>
-        /// <param name="p">Point to find the entity at</param>
-        /// <param name="condition">Condition the entity must meet</param>
-        /// <returns>First entity found at the given point, or null if none found</returns>
-        public Entity GetEntity(Vector2 p, Predicate<Entity> condition)
-        {
-            // Get and validate the grid segment
-            var gridSegment = GetEntityGrid(p);
-            if (gridSegment == null)
-                return null;
-
-            // Iterate through all entities and return the first one to contain the segment
-            foreach (var entity in gridSegment)
-            {
-                // Hit test check
-                if (!entity.CB.HitTest(p))
-                    continue;
-
-                // Condition check
-                if (condition == null || !condition(entity))
-                    continue;
-
-                return entity;
-            }
-
-            // None found
-            return null;
-        }
-
-        /// <summary>
-        /// Gets the first Entity found at the given point
-        /// </summary>
-        /// <param name="p">Point to find the entity at</param>
-        /// <returns>First entity found at the given point, or null if none found</returns>
-        /// <typeparam name="T">Type of Entity to look for</typeparam>
-        public T GetEntity<T>(Vector2 p) where T : Entity
-        {
-            return GetEntity<T>(p, null);
-        }
-
-        /// <summary>
-        /// Gets an entity at the given point
-        /// </summary>
-        /// <param name="p">Point to find the entity at</param>
-        /// <returns>First entity found at the given point, or null if none found</returns>
-        public Entity GetEntity(Vector2 p)
-        {
-            return GetEntity(p, null);
-        }
-
-        /// <summary>
         /// Allows an entity to be grabbed by index. Intended only for performance cases where iterating
         /// through the entire entity set would not be optimal (such as comparing the entities to each other).
         /// </summary>
@@ -1139,108 +949,6 @@ namespace DemoGame
 
             // Get the entity at the index
             return _entities[index];
-        }
-
-        /// <summary>
-        /// Gets the Entity grid containing the given coordinate
-        /// </summary>
-        /// <param name="p">Coordinate to find the grid for</param>
-        /// <returns>Entity grid containing the given coordinate, or null if an invalid location</returns>
-        protected IEnumerable<Entity> GetEntityGrid(Vector2 p)
-        {
-            var x = (int)p.X / WallGridSize;
-            var y = (int)p.Y / WallGridSize;
-
-            // Validate location
-            if (x < 0 || x > _entityGrid.GetLength(0) - 1 || y < 0 || y > _entityGrid.GetLength(1) - 1)
-                return null;
-
-            // Return the grid segment
-            return _entityGrid[x, y];
-        }
-
-        /// <summary>
-        /// Gets the grid segment for each intersection on the entity grid.
-        /// </summary>
-        /// <param name="cb">Map area to get the grid segments for.</param>
-        /// <returns>An IEnumerable of all grid segments intersected by <paramref name="cb"/>.</returns>
-        protected IEnumerable<IEnumerable<Entity>> GetEntityGrids(CollisionBox cb)
-        {
-            if (cb == null)
-            {
-                Debug.Fail("Parameter cb is null.");
-                return new List<IEnumerable<Entity>>(0);
-            }
-
-            return GetEntityGrids(cb.ToRectangle());
-        }
-
-        /// <summary>
-        /// Gets the grid segment for each intersection on the entity grid.
-        /// </summary>
-        /// <param name="rect">Map area to get the grid segments for.</param>
-        /// <returns>An IEnumerable of all grid segments intersected by the specified <paramref name="rect"/>.</returns>
-        protected IEnumerable<IEnumerable<Entity>> GetEntityGrids(Rectangle rect)
-        {
-            var minX = rect.X / WallGridSize;
-            var minY = rect.Y / WallGridSize;
-            var maxX = rect.Right / WallGridSize;
-            var maxY = rect.Bottom / WallGridSize;
-
-            // Keep in range of the grid
-            if (minX < 0)
-                minX = 0;
-
-            if (maxX > _entityGrid.GetLength(0) - 1)
-                maxX = _entityGrid.GetLength(0) - 1;
-
-            if (minY < 0)
-                minY = 0;
-
-            // TODO: For some reason this last check here likes to fail a lot. I think it is because gravity pushes an Entity out of the map temporarily when they are down low. Ideally, this condition is NEVER reached.
-            if (maxY > _entityGrid.GetLength(1) - 1)
-                maxY = _entityGrid.GetLength(1) - 1;
-
-            // Count the number of grid segments
-            var segmentCount = (maxX - minX + 1) * (maxY - minY + 1);
-
-            // Combine the grid segments
-            var ret = new List<List<Entity>>(segmentCount);
-            for (var x = minX; x <= maxX; x++)
-            {
-                for (var y = minY; y <= maxY; y++)
-                {
-                    ret.Add(_entityGrid[x, y]);
-                }
-            }
-
-            // A little hack to get List<List<T>> to return as IEnumerable<IEnumerable<T>>
-            foreach (var item in ret)
-            {
-                yield return item;
-            }
-        }
-
-        /// <summary>
-        /// Gets all the items that intersect a specified area
-        /// </summary>
-        /// <param name="rect">Rectangle of the area to check</param>
-        /// <returns>A list containing all ItemEntityBases that intersect the specified area</returns>
-        public IEnumerable<ItemEntityBase> GetItems(Rectangle rect)
-        {
-            return GetEntities<ItemEntityBase>(rect);
-        }
-
-        /// <summary>
-        /// Gets all the ItemEntityBases that intersect a specified area
-        /// </summary>
-        /// <param name="min">Min point of the collision area</param>
-        /// <param name="max">Max point of the collision area</param>
-        /// <returns>A list containing all ItemEntityBases that intersect the specified area</returns>
-        public IEnumerable<ItemEntityBase> GetItems(Vector2 min, Vector2 max)
-        {
-            var size = max - min;
-            return GetItems(new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y));
         }
 
         /// <summary>
@@ -1293,82 +1001,57 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the first IUsableEntity that intersects a specified area
+        /// Gets the possible positions to place the given <see cref="CollisionBox"/> around an
+        /// <see cref="Entity"/>.
         /// </summary>
-        /// <param name="rect">Rectangle of the area to check</param>
-        /// <param name="charEntity">CharacterEntity that must be able to use the IUsableEntity</param>
-        /// <returns>First IUsableEntity that intersects the specified area that the charEntity
-        /// is able to use, or null if none</returns>
-        public IUsableEntity GetUsable(Rectangle rect, CharacterEntity charEntity)
+        /// <param name="entity">The <see cref="Entity"/> to place around.</param>
+        /// <param name="cb">The <see cref="CollisionBox"/> describing the area to be placed.</param>
+        /// <returns>An IEnumerable of the min positions to place the <paramref name="cb"/> around the
+        /// given <paramref name="entity"/>.</returns>
+        static IEnumerable<Vector2> GetPositionsAroundEntity(Entity entity, CollisionBox cb)
         {
-            // Predicate that will check if an Entity inherits interface IUsableEntity,
-            // and if it can be used by the specified CharacterEntity
-            Predicate<Entity> pred = delegate(Entity entity)
-                                     {
-                                         var usable = entity as IUsableEntity;
-                                         if (usable == null)
-                                             return false;
+            var srcCB = entity.CB;
 
-                                         return usable.CanUse(charEntity);
-                                     };
+            // Top
+            yield return new Vector2(cb.Min.X, srcCB.Min.Y - cb.Height - 1);
 
-            return GetEntity(rect, pred) as IUsableEntity;
-        }
+            // Bottom
+            yield return new Vector2(cb.Min.X, srcCB.Max.Y + 1);
 
-        /// <summary>
-        /// Gets the first IUsableEntity that intersects a specified area
-        /// </summary>
-        /// <param name="cb">CollisionBox of the area to check</param>
-        /// <param name="charEntity">CharacterEntity that must be able to use the IUsableEntity</param>
-        /// <returns>First IUsableEntity that intersects the specified area that the charEntity
-        /// is able to use, or null if none</returns>
-        public IUsableEntity GetUsable(CollisionBox cb, CharacterEntity charEntity)
-        {
-            return GetUsable(cb.ToRectangle(), charEntity);
-        }
+            // Left
+            yield return new Vector2(srcCB.Min.X - cb.Width - 1, cb.Min.Y);
 
-        /// <summary>
-        /// Gets a wall matching specified conditions
-        /// </summary>
-        /// <param name="p">Point on the map contained in the wall</param>
-        /// <returns>First wall meeting the condition, null if none found</returns>
-        public WallEntityBase GetWall(Vector2 p)
-        {
-            return GetEntity<WallEntityBase>(p);
-        }
+            // Right
+            yield return new Vector2(srcCB.Max.X + 1, cb.Min.Y);
 
-        /// <summary>
-        /// Gets all the <see cref="WallEntityBase"/>s in a given area.
-        /// </summary>
-        /// <param name="rect"><see cref="Rectangle"/> describing the area to find walls from.</param>
-        /// <returns>IEnumerable of all of the walls in the specified area.</returns>
-        public IEnumerable<WallEntityBase> GetWalls(Rectangle rect)
-        {
-            return GetEntities<WallEntityBase>(rect);
-        }
+            // Top, left-aligned
+            yield return new Vector2(srcCB.Min.X, srcCB.Min.Y - cb.Height - 1);
 
-        /// <summary>
-        /// Gets all the <see cref="WallEntityBase"/>s in a given area.
-        /// </summary>
-        /// <param name="cb"><see cref="CollisionBox"/> describing the area to find walls from.</param>
-        /// <returns>IEnumerable of all of the walls in the specified area.</returns>
-        public IEnumerable<WallEntityBase> GetWalls(CollisionBox cb)
-        {
-            if (cb == null)
-            {
-                const string errmsg = "Parameter cb is null - falling back to returning empty list.";
-                Debug.Fail(errmsg);
-                if (log.IsErrorEnabled)
-                    log.Error(errmsg);
-                return Enumerable.Empty<WallEntityBase>();
-            }
+            // Top, right-aligned
+            yield return new Vector2(srcCB.Max.X - cb.Width, srcCB.Min.Y - cb.Height - 1);
 
-            return GetWalls(cb.ToRectangle());
+            // Bottom, left-aligned
+            yield return new Vector2(srcCB.Min.X, srcCB.Max.Y + 1);
+
+            // Bottom, right-aligned
+            yield return new Vector2(srcCB.Max.X - cb.Width, srcCB.Max.Y + 1);
+
+            // Left, top-aligned
+            yield return new Vector2(srcCB.Min.X - cb.Width - 1, srcCB.Min.Y);
+
+            // Left, bottom-aligned
+            yield return new Vector2(srcCB.Min.X - cb.Width - 1, srcCB.Max.Y - cb.Height);
+
+            // Right, top-aligned
+            yield return new Vector2(srcCB.Max.X + 1, srcCB.Min.Y);
+
+            // Right, bottom-aligned
+            yield return new Vector2(srcCB.Max.X + 1, srcCB.Max.Y - cb.Height);
         }
 
         public bool IsInMapBoundaries(Vector2 min, Vector2 max)
         {
-            return IsInMapBoundaries(min) && IsInMapBoundaries(max); 
+            return IsInMapBoundaries(min) && IsInMapBoundaries(max);
         }
 
         public bool IsInMapBoundaries(CollisionBox cb)
@@ -1421,6 +1104,90 @@ namespace DemoGame
 
             // All checks passed
             return true;
+        }
+
+        /// <summary>
+        /// Checks if a <see cref="CollisionBox"/> is in a place that is inside of the map and does not intersect
+        /// any <see cref="WallEntityBase"/>s.
+        /// </summary>
+        /// <param name="cb">The <see cref="CollisionBox"/> containing the placement to check.</param>
+        /// <returns>True if the <see cref="CollisionBox"/> is in an area that does not intersect any
+        /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
+        public bool IsValidPlacementPosition(CollisionBox cb)
+        {
+            return IsInMapBoundaries(cb) && !_entityGrid.ContainsEntities(cb);
+        }
+
+        /// <summary>
+        /// Checks if a <see cref="Rectangle"/> is in a place that is inside of the map and does not intersect
+        /// any <see cref="WallEntityBase"/>s.
+        /// </summary>
+        /// <param name="rect">The <see cref="Rectangle"/> containing the placement to check.</param>
+        /// <returns>True if the <see cref="Rectangle"/> is in an area that does not intersect any
+        /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
+        public bool IsValidPlacementPosition(Rectangle rect)
+        {
+            return IsInMapBoundaries(rect) && !_entityGrid.ContainsEntities<WallEntity>(rect);
+        }
+
+        public bool IsValidPlacementPosition(Vector2 position, Vector2 size)
+        {
+            var rect = new Rectangle((int)position.X, (int)position.Y, (int)size.X, (int)size.Y);
+            return IsValidPlacementPosition(rect);
+        }
+
+        /// <summary>
+        /// Checks if a <see cref="CollisionBox"/> is in a place that is inside of the map and does not intersect
+        /// any <see cref="WallEntityBase"/>s.
+        /// </summary>
+        /// <param name="cb">The <see cref="CollisionBox"/> containing the placement to check.</param>
+        /// <param name="closestValidPosition">When this method returns false, contains the closest valid position
+        /// that the <see cref="CollisionBox"/> can be at to not intersect any <see cref="WallEntityBase"/>s.</param>
+        /// <param name="validPositionFound">When this method returns false, contains if the
+        /// <see cref="closestValidPosition"/> that was found is valid. If false, no near-by legal position could be
+        /// found that the <see cref="CollisionBox"/> could occupy without causing any intersections.</param>
+        /// <returns>True if the <see cref="CollisionBox"/> is in an area that does not intersect any
+        /// <see cref="WallEntityBase"/>s; otherwise false.</returns>
+        public bool IsValidPlacementPosition(CollisionBox cb, out Vector2 closestValidPosition, out bool validPositionFound)
+        {
+            // Perform the initial check to see if we need to even find a new position
+            if (IsValidPlacementPosition(cb))
+            {
+                // No intersections - already a valid position
+                closestValidPosition = cb.Min;
+                validPositionFound = true;
+                return true;
+            }
+
+            // Intersections were found, so we have to find a valid position
+            // First, grab the walls in the region around the cb
+            var nearbyWallsRect = new Rectangle((int)cb.Min.X - _findValidPlacementPadding,
+                                                (int)cb.Min.Y - _findValidPlacementPadding,
+                                                (int)cb.Width + (_findValidPlacementPadding * 2),
+                                                (int)cb.Height + (_findValidPlacementPadding * 2));
+            var nearbyWalls = _entityGrid.GetEntities<WallEntityBase>(nearbyWallsRect);
+
+            // Next, find the legal positions we can place the cb
+            var cbSize = cb.Size;
+            var validPlacementPositions =
+                nearbyWalls.SelectMany(wall => GetPositionsAroundEntity(wall, cb)).Where(p => IsValidPlacementPosition(p, cbSize));
+
+            // If there are 0 legal positions, we're F'd in the A
+            if (validPlacementPositions.Count() == 0)
+            {
+                // Failure :(
+                validPositionFound = false;
+                closestValidPosition = Vector2.Zero;
+            }
+            else
+            {
+                // One or more legal positions found, so find the closest one and use that
+                validPositionFound = true;
+                var cbMin = cb.Min;
+                closestValidPosition = validPlacementPositions.MinElement(x => x.QuickDistance(cbMin));
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -1519,7 +1286,7 @@ namespace DemoGame
             _height = nodeReader.ReadFloat(_headerNodeHeightKey);
 
             // Build the entity grid
-            _entityGrid = BuildEntityGrid(Width, Height);
+            _entityGrid.SetMapSize(Size);
         }
 
         /// <summary>
@@ -1576,14 +1343,8 @@ namespace DemoGame
                 _dynamicEntities.RemoveAt((int)dynamicEntity.MapEntityIndex);
             }
 
-            // Remove the entity from the grid, iterating through every segment to ensure we get all references
-            lock (_entityGridLock)
-            {
-                foreach (var segment in _entityGrid)
-                {
-                    segment.Remove(entity);
-                }
-            }
+            // Remove the entity from the grid
+            _entityGrid.Remove(entity);
 
             // Allow for additional processing
             EntityRemoved(entity);
@@ -1593,24 +1354,6 @@ namespace DemoGame
         {
             entity.OnDispose -= Entity_OnDispose;
             entity.OnMove -= Entity_OnMove;
-        }
-
-        /// <summary>
-        /// Rebuilds the EntityGrid to the map's current size
-        /// </summary>
-        void ResizeEntityGrid()
-        {
-            lock (_entityGridLock)
-            {
-                // Get the new grid
-                _entityGrid = BuildEntityGrid(Width, Height);
-
-                // Re-add all the entities
-                foreach (var entity in Entities)
-                {
-                    AddEntityToGrid(entity);
-                }
-            }
         }
 
         /// <summary>
@@ -1799,7 +1542,10 @@ namespace DemoGame
             // Update the map's size
             _width = newSize.X;
             _height = newSize.Y;
-            ResizeEntityGrid();
+
+            // Update the grid's size
+            _entityGrid.SetMapSize(Size);
+            _entityGrid.Add(Entities);
         }
 
         /// <summary>
@@ -1921,50 +1667,6 @@ namespace DemoGame
             }
         }
 
-        void UpdateEntityGrid(Entity entity, Vector2 oldPos)
-        {
-            // Check that the entity changed grid segments by comparing the lowest grid segments
-            // of the old position and current position
-            var minX = (int)oldPos.X / WallGridSize;
-            var minY = (int)oldPos.Y / WallGridSize;
-            var newMinX = (int)entity.CB.Min.X / WallGridSize;
-            var newMinY = (int)entity.CB.Min.Y / WallGridSize;
-
-            if (minX == newMinX && minY == newMinY)
-                return; // No change in grid segment
-
-            var maxX = (int)(oldPos.X + entity.CB.Width) / WallGridSize;
-            var maxY = (int)(oldPos.Y + entity.CB.Height) / WallGridSize;
-
-            // Keep in range of the grid
-            if (minX < 0)
-                minX = 0;
-            if (maxX > _entityGrid.GetLength(0) - 1)
-                maxX = _entityGrid.GetLength(0) - 1;
-            if (minY < 0)
-                minY = 0;
-            if (maxY > _entityGrid.GetLength(1) - 1)
-                maxY = _entityGrid.GetLength(1) - 1;
-
-            // Lock the entity grid
-            lock (_entityGridLock)
-            {
-                // FUTURE: Can optimize by only adding/removing from changed grid segments
-
-                // Remove the entity from the old grid position
-                for (var x = minX; x <= maxX; x++)
-                {
-                    for (var y = minY; y <= maxY; y++)
-                    {
-                        _entityGrid[x, y].Remove(entity);
-                    }
-                }
-
-                // Re-add the entity to the grid
-                AddEntityToGrid(entity);
-            }
-        }
-
         #region IMap Members
 
         /// <summary>
@@ -2022,69 +1724,33 @@ namespace DemoGame
                 return 0;
             }
 
-            // Entity does not support collision detection
+            // Check that this entity even supports collision detection
             if (entity.CollisionType == CollisionType.None)
                 return 0;
 
-            var collisions = 0;
+            int collisions = 0;
 
-            var cdStack = new Stack<Entity>();
+            // Get the entities we have a rectangular collision with
 
-            // Iterate through the grid segments
-            foreach (var gridSegment in GetEntityGrids(entity.CB))
+            // It is absolutely VITAL that we have the ToArray() at the end (or to any other type of collection). Even
+            // though it may look like it is useless since we just enumerate over it immediately after, this will
+            // ensure that any logic in CollideInto and CollideFrom in the Entity updating that moves the Entity will
+            // not break the enumeration by changing the underlying collection.
+            var rectCollisionEntities =
+                _entityGrid.GetEntities(entity.CB.ToRectangle(), x => x.CollisionType != CollisionType.None).ToArray();
+
+            // Do real collision detection on the entities, and handle it if the collision test passes
+            foreach (var collideEntity in rectCollisionEntities)
             {
-                var segment = gridSegment;
+                // Get the displacement vector if the two entities collided
+                var displacement = CollisionBox.MTD(entity.CB, collideEntity.CB, collideEntity.CollisionType);
 
-                // Check that the segment even has any entities besides us
-                var segCount = segment.Count();
-                if (segCount == 0 || (segCount == 1 && segment.Contains(entity)))
-                    continue;
-
-                // Clear our stack, since we use the same object for every segment
-                Debug.Assert(cdStack.Count == 0, "This should be empty already since we should have popped every Entity in it.");
-                cdStack.Clear();
-
-                // FUTURE: This lock will probably result in hundreds of locks per second. That ain't pretty...
-                // Lock the entity grid
-                lock (_entityGridLock)
+                // If there is a displacement value, forward it to the collision notifiers
+                if (displacement != Vector2.Zero)
                 {
-                    // Iterate through each wall in the grid segment
-                    foreach (var collideEntity in segment)
-                    {
-                        // Make sure we are not trying to collide with ourself
-                        if (collideEntity == entity)
-                            continue;
-
-                        // Check that the entity even supports collision detection
-                        if (collideEntity.CollisionType == CollisionType.None)
-                            continue;
-
-                        // Filter out quickly with basic rectangular collision detection
-                        if (!entity.Intersect(collideEntity))
-                            continue;
-
-                        // Add the entity to our stack of entities to check for collision (if we haven't already)
-                        if (!cdStack.Contains(collideEntity))
-                            cdStack.Push(collideEntity);
-                    }
-                }
-
-                // Now that we have our entities to test, test them all
-                while (cdStack.Count > 0)
-                {
-                    // Pop the entity to test against
-                    var collideEntity = cdStack.Pop();
-
-                    // Get the displacement vector if the two entities collided
-                    var displacement = CollisionBox.MTD(entity.CB, collideEntity.CB, collideEntity.CollisionType);
-
-                    // If there is a displacement value, forward it to the collision notifiers
-                    if (displacement != Vector2.Zero)
-                    {
-                        entity.CollideInto(collideEntity, displacement);
-                        collideEntity.CollideFrom(entity, displacement);
-                        collisions++;
-                    }
+                    entity.CollideInto(collideEntity, displacement);
+                    collideEntity.CollideFrom(entity, displacement);
+                    collisions++;
                 }
             }
 
