@@ -85,6 +85,7 @@
     <Compile Include="Items\InventorySlotExtensions.cs" />
     <Compile Include="Items\ItemInfo.cs" />
     <Compile Include="Items\ItemTypeHelper.cs" />
+    <Compile Include="MapEntityGrid.cs" />
     <Compile Include="Packets\ClientPacketIDHelper.cs" />
     <Compile Include="Packets\ServerPacketIDHelper.cs" />
     <Compile Include="Shop\ShopItemIndex.cs" />
