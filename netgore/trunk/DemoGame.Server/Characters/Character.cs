@@ -528,6 +528,8 @@ namespace DemoGame.Server
             if (newMap != null)
                 newMap.AddEntity(this);
 
+            Teleport(Position);
+
             _spSync.ForceSynchronize();
         }
 
@@ -915,7 +917,10 @@ namespace DemoGame.Server
             _accountID = v.AccountID;
 
             BodyInfo = BodyInfoManager.Instance.GetBody(v.BodyID);
-            CB = new CollisionBox(new Vector2(v.X, v.Y), BodyInfo.Width, BodyInfo.Height);
+
+            Vector2 position = new Vector2(v.X, v.Y);
+            CB = new CollisionBox(position, BodyInfo.Width, BodyInfo.Height);
+
             ((PersistentCharacterStatusEffects)StatusEffects).Load();
 
             // Set the character information
@@ -1130,19 +1135,56 @@ namespace DemoGame.Server
         }
 
         /// <summary>
+        /// Validates the given <paramref name="position"/> by attempting to make it a legal position if it is not
+        /// one already.
+        /// </summary>
+        /// <param name="position">The position to validate.</param>
+        /// <returns>If the <paramref name="position"/> was already valid, or no valid position was found, contains
+        /// the same value as the <paramref name="position"/>; otherwise, contains the corrected valid position.</returns>
+        Vector2 ValidatePosition(Vector2 position)
+        {
+            if (Map == null)
+                return position;
+
+            Vector2 closestLegalPosition;
+            bool isClosestPositionValid;
+            if (!Map.IsValidPlacementPosition(CB, out closestLegalPosition, out isClosestPositionValid))
+            {
+                if (isClosestPositionValid)
+                {
+                    return closestLegalPosition;
+                }
+                else
+                {
+                    // TODO: Could not find a valid position for the Character
+                }
+            }
+
+            return position;
+        }
+
+        /// <summary>
         /// Teleports the character to a new position and informs clients in the area of
         /// interest that the character has teleported.
         /// </summary>
         /// <param name="position">Position to teleport to.</param>
         public override void Teleport(Vector2 position)
         {
-            if (Map == null && IsAlive && IsLoaded)
+            if (Map == null)
             {
-                const string errmsg = "Attempted to teleport a Character `{0}` while their map was null.";
-                if (log.IsErrorEnabled)
-                    log.ErrorFormat(errmsg, this);
-                Debug.Fail(string.Format(errmsg, this));
-                return;
+                if (IsAlive && IsLoaded)
+                {
+                    // If the map is null, but they are alive and loaded, we have a problem...
+                    const string errmsg = "Attempted to teleport a Character `{0}` while their map was null.";
+                    if (log.IsErrorEnabled)
+                        log.ErrorFormat(errmsg, this);
+                    Debug.Fail(string.Format(errmsg, this));
+                }
+            }
+            else
+            {
+                // Make sure the position we teleport to is valid
+                position = ValidatePosition(position);
             }
 
             base.Teleport(position);
