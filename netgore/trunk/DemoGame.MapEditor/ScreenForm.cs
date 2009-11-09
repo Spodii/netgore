@@ -209,7 +209,7 @@ namespace DemoGame.MapEditor
         }
 
         /// <summary>
-        /// Gets or sets the cursor position, taking the camera position into consideration
+        /// Gets or sets the cursor position, taking the camera position into consideration.
         /// </summary>
         public Vector2 CursorPos
         {
@@ -636,9 +636,7 @@ namespace DemoGame.MapEditor
                 {
                     _selectedGrh.Draw(_sb, drawPos, _drawPreviewColor);
                 }
-                    // ReSharper disable EmptyGeneralCatchClause
-                catch
-                    // ReSharper restore EmptyGeneralCatchClause
+                catch (Exception)
                 {
                 }
             }
