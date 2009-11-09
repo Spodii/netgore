@@ -83,6 +83,7 @@
     <Compile Include="Extensions\IValueReaderExtensions.cs" />
     <Compile Include="Extensions\IValueWriterExtensions.cs" />
     <Compile Include="IAudioEmitter.cs" />
+    <Compile Include="Map\IMapEntityCollection.cs" />
     <Compile Include="Map\MapEntityAttribute.cs" />
     <Compile Include="Map\MapEntityIndex.cs" />
     <Compile Include="Map\MapIndex.cs" />
