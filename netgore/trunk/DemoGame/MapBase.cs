@@ -25,7 +25,294 @@ namespace DemoGame
     /// <param name="map">MapBase that the event came from.</param>
     public delegate void MapBaseEventHandler(MapBase map);
 
-    public class MapEntityGrid
+    /// <summary>
+    /// Interface for an object that supports searching entities on a map.
+    /// </summary>
+    public interface IMapEntityCollection
+    {
+        /// <summary>
+        /// Gets all entities containing a given point.
+        /// </summary>
+        /// <param name="p">Point to find the entities at.</param>
+        /// <returns>All of the entities at the given point.</returns>
+        IEnumerable<Entity> GetEntities(Vector2 p);
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        IEnumerable<Entity> GetEntities(Rectangle rect);
+
+        /// <summary>
+        /// Gets all entities at the given point.
+        /// </summary>
+        /// <param name="p">The point to find the entities at.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
+        /// <returns>All entities containing the given point that are of the given type.</returns>
+        IEnumerable<T> GetEntities<T>(Vector2 p) where T : Entity;
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <typeparam name="T">Type of Entity to look for.</typeparam>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        IEnumerable<T> GetEntities<T>(Rectangle rect) where T : Entity;
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="point">The map point to check.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
+        /// <see cref="Entity"/> will be ignored.</typeparam>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        bool ContainsEntities<T>(Vector2 point) where T : Entity;
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="point">The map point to check.</param>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        bool ContainsEntities(Vector2 point);
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="rect">The map area to check.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
+        /// <see cref="Entity"/> will be ignored.</typeparam>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        bool ContainsEntities<T>(Rectangle rect) where T : Entity;
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="rect">The map area to check.</param>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        bool ContainsEntities(Rectangle rect);
+    }
+
+    public static class IMapEntityCollectionExtensions
+    {
+        /// <summary>
+        /// Gets all entities at the given point.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="p">The point to find the entities at.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
+        /// <returns>All entities containing the given point that are of the given type.</returns>
+        public static IEnumerable<T> GetEntities<T>(this IMapEntityCollection c, Vector2 p, Predicate<T> condition) where T : Entity
+        {
+            return c.GetEntities<T>(p).Where(x => condition(x));
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="cb">CollisionBox to check for Entities in.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public static IEnumerable<Entity> GetEntities(this IMapEntityCollection c, CollisionBox cb, Predicate<Entity> condition)
+        {
+            return c.GetEntities(cb.ToRectangle(), condition);
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <returns>All Entities found intersecting the given region.</returns>
+        public static IEnumerable<Entity> GetEntities(this IMapEntityCollection c, Rectangle rect, Predicate<Entity> condition)
+        {
+            return c.GetEntities(rect).Where(x => condition(x));
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="cb">Region to check for Entities in.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <typeparam name="T">Type of Entity to convert to.</typeparam>
+        /// <returns>List of all Entities found intersecting the given region.</returns>
+        public static IEnumerable<T> GetEntities<T>(this IMapEntityCollection c, CollisionBox cb, Predicate<T> condition) where T : Entity
+        {
+            return c.GetEntities(cb.ToRectangle(), condition);
+        }
+
+        /// <summary>
+        /// Gets the Entities found intersecting the given region.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="rect">Region to check for Entities.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <typeparam name="T">Type of Entity to convert to.</typeparam>
+        /// <returns>List of all Entities found intersecting the given region.</returns>
+        public static IEnumerable<T> GetEntities<T>(this IMapEntityCollection c, Rectangle rect, Predicate<T> condition) where T : Entity
+        {
+            return c.GetEntities<T>(rect).Where(x => condition(x));
+        }
+
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found in the given region.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="rect">Region to find the <see cref="Entity"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="Entity"/> must meet.</param>
+        /// <param name="condition">Condition the Entities must meet.</param>
+        /// <returns>The first <see cref="Entity"/> found in the given region, or null if none found.</returns>
+        public static T GetEntity<T>(this IMapEntityCollection c, Rectangle rect, Predicate<T> condition) where T : Entity
+        {
+            return c.GetEntities(rect, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found in the given region.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="rect">Region to find the <see cref="Entity"/> in.</param>
+        /// <param name="condition">Additional condition an <see cref="Entity"/> must meet.</param>
+        /// <returns>The first <see cref="Entity"/> found in the given region, or null if none found.</returns>
+        public static Entity GetEntity(this IMapEntityCollection c, Rectangle rect, Predicate<Entity> condition)
+        {
+            return c.GetEntities(rect, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <param name="condition">Condition the <see cref="Entity"/> must meet.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for. Any other type of <see cref="Entity"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public static T GetEntity<T>(this IMapEntityCollection c, Vector2 p, Predicate<T> condition) where T : Entity
+        {
+            return c.GetEntities(p, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to look for. Any other type of <see cref="Entity"/>
+        /// will be ignored.</typeparam>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public static T GetEntity<T>(this IMapEntityCollection c, Vector2 p) where T : Entity
+        {
+            return c.GetEntities<T>(p).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public static Entity GetEntity(this IMapEntityCollection c, Vector2 p)
+        {
+            return c.GetEntities(p).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="Entity"/> found at the given point.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="p">Point to find the entity at.</param>
+        /// <param name="condition">Condition the <see cref="Entity"/> must meet.</param>
+        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
+        public static Entity GetEntity(this IMapEntityCollection c, Vector2 p, Predicate<Entity> condition)
+        {
+            return c.GetEntities(p, condition).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first Entity found in the given region
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="rect">Region to check for the Entity</param>
+        /// <returns>First Entity found at the given point, or null if none found</returns>
+        public static Entity GetEntity(this IMapEntityCollection c, Rectangle rect)
+        {
+            return c.GetEntities(rect).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first Entity found in the given region
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="rect">Region to check for the Entity</param>
+        /// <typeparam name="T">Type to convert to</typeparam>
+        /// <returns>First Entity found at the given point, or null if none found</returns>
+        public static T GetEntity<T>(this IMapEntityCollection c, Rectangle rect) where T : Entity
+        {
+            return c.GetEntities<T>(rect).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="cb">The map area to check.</param>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public static bool ContainsEntities(this IMapEntityCollection c, CollisionBox cb)
+        {
+            return c.ContainsEntities(cb.ToRectangle());
+        }
+
+        /// <summary>
+        /// Gets if the specified area or location contains any entities.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="cb">The map area to check.</param>
+        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
+        /// <see cref="Entity"/> will be ignored.</typeparam>
+        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
+        public static bool ContainsEntities<T>(this IMapEntityCollection c, CollisionBox cb) where T : Entity
+        {
+            return c.ContainsEntities<T>(cb.ToRectangle());
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="IUsableEntity"/> that intersects a specified area.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="rect"><see cref="Rectangle"/> of the area to check.</param>
+        /// <param name="charEntity"><see cref="CharacterEntity"/> that must be able to use the
+        /// <see cref="IUsableEntity"/>.</param>
+        /// <returns>First <see cref="IUsableEntity"/> that intersects the specified area that the
+        /// <paramref name="charEntity"/> is able to use, or null if none.</returns>
+        public static IUsableEntity GetUsable(this IMapEntityCollection c, Rectangle rect, CharacterEntity charEntity)
+        {
+            // NOTE: This doesn't really belong in here. Maybe make it an extension?
+            return c.GetEntities(rect).OfType<IUsableEntity>().Where(x => x.CanUse(charEntity)).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Gets the first <see cref="IUsableEntity"/> that intersects a specified area.
+        /// </summary>
+        /// <param name="c">The <see cref="IMapEntityCollection"/>.</param>
+        /// <param name="cb"><see cref="CollisionBox"/> of the area to check.</param>
+        /// <param name="charEntity"><see cref="CharacterEntity"/> that must be able to use the
+        /// <see cref="IUsableEntity"/>.</param>
+        /// <returns>First <see cref="IUsableEntity"/> that intersects the specified area that the
+        /// <paramref name="charEntity"/> is able to use, or null if none.</returns>
+        public static IUsableEntity GetUsable(this IMapEntityCollection c, CollisionBox cb, CharacterEntity charEntity)
+        {
+            // NOTE: This doesn't really belong in here. Maybe make it an extension?
+            return c.GetUsable(cb.ToRectangle(), charEntity);
+        }
+    }
+
+    public class MapEntityGrid : IMapEntityCollection
     {
         /// <summary>
         /// Size of each segment of the wall grid in pixels (smallest requires more
@@ -173,50 +460,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="cb">The map area to check.</param>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities(CollisionBox cb)
-        {
-            return ContainsEntities(cb.ToRectangle());
-        }
-
-        /// <summary>
-        /// Gets if the specified area or location contains any entities.
-        /// </summary>
-        /// <param name="cb">The map area to check.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to check against. All other types of
-        /// <see cref="Entity"/> will be ignored.</typeparam>
-        /// <returns>True if the specified area or location contains any entities; otherwise false.</returns>
-        public bool ContainsEntities<T>(CollisionBox cb) where T : Entity
-        {
-            return ContainsEntities<T>(cb.ToRectangle());
-        }
-
-        /// <summary>
-        /// Gets the Entities found intersecting the given region.
-        /// </summary>
-        /// <param name="cb">CollisionBox to check for Entities in.</param>
-        /// <param name="condition">Condition the Entities must meet.</param>
-        /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<Entity> GetEntities(CollisionBox cb, Predicate<Entity> condition)
-        {
-            return GetEntities(cb.ToRectangle(), condition);
-        }
-
-        /// <summary>
-        /// Gets the Entities found intersecting the given region.
-        /// </summary>
-        /// <param name="rect">Region to check for Entities.</param>
-        /// <param name="condition">Condition the Entities must meet.</param>
-        /// <returns>All Entities found intersecting the given region.</returns>
-        public IEnumerable<Entity> GetEntities(Rectangle rect, Predicate<Entity> condition)
-        {
-            return GetEntities(rect).Where(x => condition(x));
-        }
-
-        /// <summary>
         /// Gets the Entities found intersecting the given region.
         /// </summary>
         /// <param name="rect">Region to check for Entities.</param>
@@ -243,18 +486,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets all entities at the given point.
-        /// </summary>
-        /// <param name="p">The point to find the entities at.</param>
-        /// <param name="condition">Condition the Entities must meet.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to look for.</typeparam>
-        /// <returns>All entities containing the given point that are of the given type.</returns>
-        public IEnumerable<T> GetEntities<T>(Vector2 p, Predicate<T> condition) where T : Entity
-        {
-            return GetEntities<T>(p).Where(x => condition(x));
-        }
-
-        /// <summary>
         /// Gets the Entities found intersecting the given region.
         /// </summary>
         /// <param name="rect">Region to check for Entities.</param>
@@ -268,30 +499,6 @@ namespace DemoGame
         }
 
         /// <summary>
-        /// Gets the Entities found intersecting the given region.
-        /// </summary>
-        /// <param name="cb">Region to check for Entities in.</param>
-        /// <param name="condition">Condition the Entities must meet.</param>
-        /// <typeparam name="T">Type of Entity to convert to.</typeparam>
-        /// <returns>List of all Entities found intersecting the given region.</returns>
-        public IEnumerable<T> GetEntities<T>(CollisionBox cb, Predicate<T> condition) where T : Entity
-        {
-            return GetEntities(cb.ToRectangle(), condition);
-        }
-
-        /// <summary>
-        /// Gets the Entities found intersecting the given region.
-        /// </summary>
-        /// <param name="rect">Region to check for Entities.</param>
-        /// <param name="condition">Condition the Entities must meet.</param>
-        /// <typeparam name="T">Type of Entity to convert to.</typeparam>
-        /// <returns>List of all Entities found intersecting the given region.</returns>
-        public IEnumerable<T> GetEntities<T>(Rectangle rect, Predicate<T> condition) where T : Entity
-        {
-            return GetEntities<T>(rect).Where(x => condition(x));
-        }
-
-        /// <summary>
         /// Gets all entities containing a given point.
         /// </summary>
         /// <param name="p">Point to find the entities at.</param>
@@ -302,96 +509,6 @@ namespace DemoGame
             var matches = gridSegment.Where(x => x.CB.HitTest(p));
             Debug.Assert(!matches.HasDuplicates(), "Somehow we had duplicates even though we only used one grid segment!");
             return matches;
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="Entity"/> found in the given region.
-        /// </summary>
-        /// <param name="rect">Region to find the <see cref="Entity"/> in.</param>
-        /// <param name="condition">Additional condition an <see cref="Entity"/> must meet.</param>
-        /// <param name="condition">Condition the Entities must meet.</param>
-        /// <returns>The first <see cref="Entity"/> found in the given region, or null if none found.</returns>
-        public T GetEntity<T>(Rectangle rect, Predicate<T> condition) where T : Entity
-        {
-            return GetEntities(rect, condition).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="Entity"/> found in the given region.
-        /// </summary>
-        /// <param name="rect">Region to find the <see cref="Entity"/> in.</param>
-        /// <param name="condition">Additional condition an <see cref="Entity"/> must meet.</param>
-        /// <returns>The first <see cref="Entity"/> found in the given region, or null if none found.</returns>
-        public Entity GetEntity(Rectangle rect, Predicate<Entity> condition)
-        {
-            return GetEntities(rect, condition).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="Entity"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
-        /// <param name="condition">Condition the <see cref="Entity"/> must meet.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to look for. Any other type of <see cref="Entity"/>
-        /// will be ignored.</typeparam>
-        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
-        public T GetEntity<T>(Vector2 p, Predicate<T> condition) where T : Entity
-        {
-            return GetEntities(p, condition).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="Entity"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
-        /// <typeparam name="T">The type of <see cref="Entity"/> to look for. Any other type of <see cref="Entity"/>
-        /// will be ignored.</typeparam>
-        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
-        public T GetEntity<T>(Vector2 p) where T : Entity
-        {
-            return GetEntities<T>(p).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="Entity"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
-        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
-        public Entity GetEntity(Vector2 p)
-        {
-            return GetEntities(p).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first <see cref="Entity"/> found at the given point.
-        /// </summary>
-        /// <param name="p">Point to find the entity at.</param>
-        /// <param name="condition">Condition the <see cref="Entity"/> must meet.</param>
-        /// <returns>First <see cref="Entity"/> found at the given point, or null if none found.</returns>
-        public Entity GetEntity(Vector2 p, Predicate<Entity> condition)
-        {
-            return GetEntities(p, condition).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first Entity found in the given region
-        /// </summary>
-        /// <param name="rect">Region to check for the Entity</param>
-        /// <returns>First Entity found at the given point, or null if none found</returns>
-        public Entity GetEntity(Rectangle rect)
-        {
-            return GetEntities(rect).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first Entity found in the given region
-        /// </summary>
-        /// <param name="rect">Region to check for the Entity</param>
-        /// <typeparam name="T">Type to convert to</typeparam>
-        /// <returns>First Entity found at the given point, or null if none found</returns>
-        public T GetEntity<T>(Rectangle rect) where T : Entity
-        {
-            return GetEntities<T>(rect).FirstOrDefault();
         }
 
         /// <summary>
@@ -428,32 +545,6 @@ namespace DemoGame
                     yield return this[x, y];
                 }
             }
-        }
-
-        /// <summary>
-        /// Gets the first IUsableEntity that intersects a specified area.
-        /// </summary>
-        /// <param name="rect">Rectangle of the area to check.</param>
-        /// <param name="charEntity">CharacterEntity that must be able to use the IUsableEntity.</param>
-        /// <returns>First IUsableEntity that intersects the specified area that the charEntity
-        /// is able to use, or null if none.</returns>
-        public IUsableEntity GetUsable(Rectangle rect, CharacterEntity charEntity)
-        {
-            // NOTE: This doesn't really belong in here. Maybe make it an extension?
-            return GetEntities(rect).OfType<IUsableEntity>().Where(x => x.CanUse(charEntity)).FirstOrDefault();
-        }
-
-        /// <summary>
-        /// Gets the first IUsableEntity that intersects a specified area.
-        /// </summary>
-        /// <param name="cb">CollisionBox of the area to check.</param>
-        /// <param name="charEntity">CharacterEntity that must be able to use the IUsableEntity.</param>
-        /// <returns>First IUsableEntity that intersects the specified area that the charEntity
-        /// is able to use, or null if none.</returns>
-        public IUsableEntity GetUsable(CollisionBox cb, CharacterEntity charEntity)
-        {
-            // NOTE: This doesn't really belong in here. Maybe make it an extension?
-            return GetUsable(cb.ToRectangle(), charEntity);
         }
 
         protected bool IsLegalGridIndex(Point point)
@@ -639,7 +730,7 @@ namespace DemoGame
         {
             get
             {
-                // NOTE: This is only temporary. Should have an interface that only allows looking for entities (IEntityFinder?)
+                // NOTE: This is only temporary. Should have an interface that only allows looking for entities (IMapEntityCollection?)
                 return _entityGrid;
             }
         }
