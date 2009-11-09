@@ -31,7 +31,7 @@ namespace DemoGame.MapEditor
             Vector2 cursorPos = screen.CursorPos;
 
             // Set the selected entity to the first entity we find at the cursor
-            _selectedEntity = screen.Map.GetEntity(cursorPos, entity => !(entity is WallEntityBase || entity is CharacterEntity));
+            _selectedEntity = screen.Map.EntityGrid.GetEntity(cursorPos, entity => !(entity is WallEntityBase || entity is CharacterEntity));
 
             // Set the offset
             if (_selectedEntity != null)
@@ -70,7 +70,7 @@ namespace DemoGame.MapEditor
             else
             {
                 // Set the tooltip to the entity under the cursor
-                Entity hoverEntity = map.GetEntity(screen.CursorPos);
+                Entity hoverEntity = map.EntityGrid.GetEntity(screen.CursorPos);
                 if (hoverEntity == null)
                     _toolTip = string.Empty;
                 else

@@ -81,7 +81,7 @@ namespace DemoGame.MapEditor
             else
             {
                 // Check for wall collision for quick dragging
-                WallEntityBase w = screen.Map.GetWall(cursorPos);
+                WallEntityBase w = screen.Map.EntityGrid.GetEntity<WallEntityBase>(cursorPos);
                 if (w == null)
                     return;
 
@@ -226,7 +226,12 @@ namespace DemoGame.MapEditor
 
             if (_mouseDragStart != Vector2.Zero && screen.SelectedTransBox == null)
             {
-                var walls = screen.Map.GetWalls(new CollisionBox(_mouseDragStart, mouseDragEnd));
+                Vector2 min = _mouseDragStart.Min(mouseDragEnd);
+                Vector2 max = _mouseDragStart.Max(mouseDragEnd);
+                Vector2 size = max - min;
+
+                var rect = new Rectangle((int)min.X, (int)min.Y, (int)size.X, (int)size.Y);
+                var walls = screen.Map.EntityGrid.GetEntities<WallEntityBase>(rect);
                 if (e.Button == MouseButtons.Left)
                 {
                     // Selection dragging

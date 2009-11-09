@@ -143,7 +143,7 @@ namespace DemoGame.Client
         void HandleGameControl_PickUp(GameControl sender)
         {
             Rectangle userRect = UserChar.CB.ToRectangle();
-            ItemEntity pickupItem = Map.GetEntity<ItemEntity>(userRect);
+            ItemEntity pickupItem = Map.EntityGrid.GetEntity<ItemEntity>(userRect);
             if (pickupItem == null)
                 return;
 
@@ -167,7 +167,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_TalkToNPC(GameControl sender)
         {
-            CharacterEntity npc = Map.GetEntity<CharacterEntity>(UserChar.CB.ToRectangle(), x => x.HasChatDialog);
+            CharacterEntity npc = Map.EntityGrid.GetEntity<CharacterEntity>(UserChar.CB.ToRectangle(), x => x.HasChatDialog);
             if (npc == null)
                 return;
 
@@ -179,7 +179,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_Use(GameControl sender)
         {
-            DynamicEntity useEntity = Map.GetEntity<DynamicEntity>(UserChar.CB.ToRectangle(), UsableEntityFilter);
+            DynamicEntity useEntity = Map.EntityGrid.GetEntity<DynamicEntity>(UserChar.CB.ToRectangle(), UsableEntityFilter);
             if (useEntity == null)
                 return;
 
