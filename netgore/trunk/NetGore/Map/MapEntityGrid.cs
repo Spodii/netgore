@@ -7,6 +7,10 @@ using NetGore;
 
 namespace DemoGame
 {
+    /// <summary>
+    /// Provides an optimized tracking grid that allows for faster look-up of Entities on a map based off of
+    /// a variety of parameters.
+    /// </summary>
     public class MapEntityGrid : IMapEntityCollection
     {
         /// <summary>
@@ -242,11 +246,22 @@ namespace DemoGame
             }
         }
 
+        /// <summary>
+        /// Gets if the given point is a legal grid index.
+        /// </summary>
+        /// <param name="point">The grid x and y co-ordinate.</param>
+        /// <returns>True if the given point is a legal grid index; otherwise false.</returns>
         protected bool IsLegalGridIndex(Point point)
         {
             return IsLegalGridIndex(point.X, point.Y);
         }
 
+        /// <summary>
+        /// Gets if the given point is a legal grid index.
+        /// </summary>
+        /// <param name="x">The grid x co-ordinate.</param>
+        /// <param name="y">The grid y co-ordinate.</param>
+        /// <returns>True if the given point is a legal grid index; otherwise false.</returns>
         protected bool IsLegalGridIndex(int x, int y)
         {
             return x >= 0 && x < _entityGrid.GetLength(0) && y >= 0 && y < _entityGrid.GetLength(1);
