@@ -21,6 +21,11 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "character_status_effect";
 
         /// <summary>
+        /// The field that maps onto the database column `character_id`.
+        /// </summary>
+        Int32 _characterID;
+
+        /// <summary>
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[] { "character_id", "id", "power", "status_effect_id", "time_left_secs" };
@@ -34,11 +39,6 @@ namespace DemoGame.Server.DbObjs
         /// Array of the database column names for columns that are not primary keys.
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[] { "character_id", "power", "status_effect_id", "time_left_secs" };
-
-        /// <summary>
-        /// The field that maps onto the database column `character_id`.
-        /// </summary>
-        Int32 _characterID;
 
         /// <summary>
         /// The field that maps onto the database column `id`.
@@ -59,30 +59,6 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `time_left_secs`.
         /// </summary>
         UInt16 _timeLeftSecs;
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-        /// </summary>
-        public static IEnumerable<String> DbColumns
-        {
-            get { return _dbColumns; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbKeyColumns
-        {
-            get { return _dbColumnsKeys; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbNonKeyColumns
-        {
-            get { return _dbColumnsNonKey; }
-        }
 
         /// <summary>
         /// CharacterStatusEffectTable constructor.
@@ -116,6 +92,30 @@ namespace DemoGame.Server.DbObjs
         public CharacterStatusEffectTable(ICharacterStatusEffectTable source)
         {
             CopyValuesFrom(source);
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
         }
 
         /// <summary>

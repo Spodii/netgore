@@ -21,6 +21,11 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "account";
 
         /// <summary>
+        /// The field that maps onto the database column `current_ip`.
+        /// </summary>
+        uint? _currentIp;
+
+        /// <summary>
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[]
@@ -36,11 +41,6 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         { "current_ip", "email", "name", "password", "time_created", "time_last_login" };
-
-        /// <summary>
-        /// The field that maps onto the database column `current_ip`.
-        /// </summary>
-        uint? _currentIp;
 
         /// <summary>
         /// The field that maps onto the database column `email`.
@@ -71,30 +71,6 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `time_last_login`.
         /// </summary>
         DateTime _timeLastLogin;
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-        /// </summary>
-        public static IEnumerable<String> DbColumns
-        {
-            get { return _dbColumns; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbKeyColumns
-        {
-            get { return _dbColumnsKeys; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbNonKeyColumns
-        {
-            get { return _dbColumnsNonKey; }
-        }
 
         /// <summary>
         /// AccountTable constructor.
@@ -132,6 +108,30 @@ namespace DemoGame.Server.DbObjs
         public AccountTable(IAccountTable source)
         {
             CopyValuesFrom(source);
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
         }
 
         /// <summary>

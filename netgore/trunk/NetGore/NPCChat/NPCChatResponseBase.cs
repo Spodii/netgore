@@ -17,6 +17,22 @@ namespace NetGore.NPCChat
         public const ushort EndConversationPage = ushort.MaxValue;
 
         /// <summary>
+        /// NPCChatResponseBase constructor.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        protected NPCChatResponseBase(IValueReader reader)
+        {
+            Read(reader);
+        }
+
+        /// <summary>
+        /// NPCChatResponseBase constructor.
+        /// </summary>
+        protected NPCChatResponseBase()
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the <see cref="NPCChatResponseActionBase"/>s that are
         /// executed when selecting this <see cref="NPCChatResponseBase"/>. This value will never be null, but
         /// it can be an empty IEnumerable.
@@ -55,22 +71,6 @@ namespace NetGore.NPCChat
         /// When overridden in the derived class, gets the unique 0-based response index value for this response.
         /// </summary>
         public abstract byte Value { get; }
-
-        /// <summary>
-        /// NPCChatResponseBase constructor.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        protected NPCChatResponseBase(IValueReader reader)
-        {
-            Read(reader);
-        }
-
-        /// <summary>
-        /// NPCChatResponseBase constructor.
-        /// </summary>
-        protected NPCChatResponseBase()
-        {
-        }
 
         /// <summary>
         /// Checks if the conditionals to use this NPCChatResponseBase pass for the given <paramref name="user"/>

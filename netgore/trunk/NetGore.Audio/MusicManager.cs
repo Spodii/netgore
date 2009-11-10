@@ -12,10 +12,18 @@ namespace NetGore.Audio
     /// </summary>
     public sealed class MusicManager : AudioManagerBase<IMusic, MusicID>
     {
-        static readonly object _instanceLock = new object();
-        static MusicManager _instance;
-
         IMusic _currentlyPlaying;
+        static MusicManager _instance;
+        static readonly object _instanceLock = new object();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MusicManager"/> class.
+        /// </summary>
+        /// <param name="cm">The <see cref="ContentManager"/>.</param>
+        MusicManager(ContentManager cm)
+            : base(cm, ContentPaths.Build.Data.Join("music.xml"), "Music", "Music" + Path.DirectorySeparatorChar)
+        {
+        }
 
         /// <summary>
         /// Gets the <see cref="IMusic"/> currently playing. Can be null. It is recommended you do not call any of
@@ -38,15 +46,6 @@ namespace NetGore.Audio
 
                 return _currentlyPlaying.State;
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MusicManager"/> class.
-        /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        MusicManager(ContentManager cm)
-            : base(cm, ContentPaths.Build.Data.Join("music.xml"), "Music", "Music" + Path.DirectorySeparatorChar)
-        {
         }
 
         /// <summary>

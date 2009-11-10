@@ -17,14 +17,6 @@ namespace DemoGame.Server
         SelectShopQuery _selectShopQuery;
 
         /// <summary>
-        /// Gets an instance of the <see cref="ShopManager"/>.
-        /// </summary>
-        public static ShopManager Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// Initializes the <see cref="ShopManager"/> class.
         /// </summary>
         static ShopManager()
@@ -38,6 +30,14 @@ namespace DemoGame.Server
         /// <param name="dbController">The IDbController.</param>
         ShopManager(IDbController dbController) : base(dbController)
         {
+        }
+
+        /// <summary>
+        /// Gets an instance of the <see cref="ShopManager"/>.
+        /// </summary>
+        public static ShopManager Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

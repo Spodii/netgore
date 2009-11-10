@@ -15,20 +15,20 @@ namespace NetGore.Db
         bool _disposed;
 
         /// <summary>
-        /// Gets the ConnectionString used for the connections made in this DbConnectionPool.
-        /// </summary>
-        public string ConnectionString
-        {
-            get { return _connectionString; }
-        }
-
-        /// <summary>
         /// DbConnectionPool constructor
         /// </summary>
         /// <param name="connectionString">ConnectionString used for the connections made in this DbConnectionPool.</param>
         protected DbConnectionPool(string connectionString)
         {
             _connectionString = connectionString;
+        }
+
+        /// <summary>
+        /// Gets the ConnectionString used for the connections made in this DbConnectionPool.
+        /// </summary>
+        public string ConnectionString
+        {
+            get { return _connectionString; }
         }
 
         /// <summary>

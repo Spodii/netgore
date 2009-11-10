@@ -24,42 +24,6 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "character";
 
         /// <summary>
-        /// Array of the database column names.
-        /// </summary>
-        static readonly String[] _dbColumns = new string[]
-        {
-            "account_id", "ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "id", "level", "map_id",
-            "mp", "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
-            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
-        };
-
-        /// <summary>
-        /// Array of the database column names for columns that are primary keys.
-        /// </summary>
-        static readonly String[] _dbColumnsKeys = new string[] { "id" };
-
-        /// <summary>
-        /// Array of the database column names for columns that are not primary keys.
-        /// </summary>
-        static readonly String[] _dbColumnsNonKey = new string[]
-        {
-            "account_id", "ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "level", "map_id", "mp",
-            "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
-            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
-        };
-
-        /// <summary>
-        /// The fields that are used in the column collection `Stat`.
-        /// </summary>
-        static readonly String[] _statColumns = new string[]
-        { "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
-
-        /// <summary>
-        /// Dictionary containing the values for the column collection `Stat`.
-        /// </summary>
-        readonly StatConstDictionary _stat = new StatConstDictionary();
-
-        /// <summary>
         /// The field that maps onto the database column `account_id`.
         /// </summary>
         int? _accountID;
@@ -88,6 +52,31 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `chat_dialog`.
         /// </summary>
         ushort? _chatDialog;
+
+        /// <summary>
+        /// Array of the database column names.
+        /// </summary>
+        static readonly String[] _dbColumns = new string[]
+        {
+            "account_id", "ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "id", "level", "map_id",
+            "mp", "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
+            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
+        };
+
+        /// <summary>
+        /// Array of the database column names for columns that are primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsKeys = new string[] { "id" };
+
+        /// <summary>
+        /// Array of the database column names for columns that are not primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsNonKey = new string[]
+        {
+            "account_id", "ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "level", "map_id", "mp",
+            "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
+            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
+        };
 
         /// <summary>
         /// The field that maps onto the database column `exp`.
@@ -145,6 +134,17 @@ namespace DemoGame.Server.DbObjs
         ushort? _shopID;
 
         /// <summary>
+        /// Dictionary containing the values for the column collection `Stat`.
+        /// </summary>
+        readonly StatConstDictionary _stat = new StatConstDictionary();
+
+        /// <summary>
+        /// The fields that are used in the column collection `Stat`.
+        /// </summary>
+        static readonly String[] _statColumns = new string[]
+        { "stat_agi", "stat_defence", "stat_int", "stat_maxhit", "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str" };
+
+        /// <summary>
         /// The field that maps onto the database column `statpoints`.
         /// </summary>
         Int32 _statPoints;
@@ -158,39 +158,6 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `y`.
         /// </summary>
         Single _y;
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-        /// </summary>
-        public static IEnumerable<String> DbColumns
-        {
-            get { return _dbColumns; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbKeyColumns
-        {
-            get { return _dbColumnsKeys; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbNonKeyColumns
-        {
-            get { return _dbColumnsNonKey; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the name of the database
-        /// columns used in the column collection `Stat`.
-        /// </summary>
-        public static IEnumerable<String> StatColumns
-        {
-            get { return _statColumns; }
-        }
 
         /// <summary>
         /// CharacterTable constructor.
@@ -274,6 +241,39 @@ namespace DemoGame.Server.DbObjs
         public CharacterTable(ICharacterTable source)
         {
             CopyValuesFrom(source);
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the name of the database
+        /// columns used in the column collection `Stat`.
+        /// </summary>
+        public static IEnumerable<String> StatColumns
+        {
+            get { return _statColumns; }
         }
 
         /// <summary>
@@ -955,17 +955,6 @@ namespace DemoGame.Server.DbObjs
             readonly Int32[] _values;
 
             /// <summary>
-            /// Gets or sets an item's value using the <paramref name="key"/>.
-            /// </summary>
-            /// <param name="key">The key for the value to get or set.</param>
-            /// <returns>The item's value for the corresponding <paramref name="key"/>.</returns>
-            public Int32 this[StatType key]
-            {
-                get { return _values[_lookupTable[(Int32)key]]; }
-                set { _values[_lookupTable[(Int32)key]] = value; }
-            }
-
-            /// <summary>
             /// StatConstDictionary static constructor.
             /// </summary>
             static StatConstDictionary()
@@ -985,6 +974,17 @@ namespace DemoGame.Server.DbObjs
             public StatConstDictionary()
             {
                 _values = new Int32[_lookupTable.Length];
+            }
+
+            /// <summary>
+            /// Gets or sets an item's value using the <paramref name="key"/>.
+            /// </summary>
+            /// <param name="key">The key for the value to get or set.</param>
+            /// <returns>The item's value for the corresponding <paramref name="key"/>.</returns>
+            public Int32 this[StatType key]
+            {
+                get { return _values[_lookupTable[(Int32)key]]; }
+                set { _values[_lookupTable[(Int32)key]] = value; }
             }
 
             #region IEnumerable<KeyValuePair<StatType,int>> Members

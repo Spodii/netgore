@@ -20,14 +20,6 @@ namespace DemoGame.Server
         SelectCharacterTemplateQuery _selectCharacterTemplateQuery;
 
         /// <summary>
-        /// Gets an instance of the <see cref="CharacterTemplateManager"/>.
-        /// </summary>
-        public static CharacterTemplateManager Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// Initializes the <see cref="CharacterTemplateManager"/> class.
         /// </summary>
         static CharacterTemplateManager()
@@ -41,6 +33,14 @@ namespace DemoGame.Server
         /// <param name="dbController">The IDbController.</param>
         CharacterTemplateManager(IDbController dbController) : base(dbController)
         {
+        }
+
+        /// <summary>
+        /// Gets an instance of the <see cref="CharacterTemplateManager"/>.
+        /// </summary>
+        public static CharacterTemplateManager Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

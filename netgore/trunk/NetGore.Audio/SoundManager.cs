@@ -11,8 +11,17 @@ namespace NetGore.Audio
     /// </summary>
     public sealed class SoundManager : AudioManagerBase<ISound, SoundID>
     {
-        static readonly object _instanceLock = new object();
         static SoundManager _instance;
+        static readonly object _instanceLock = new object();
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SoundManager"/> class.
+        /// </summary>
+        /// <param name="cm">The <see cref="ContentManager"/>.</param>
+        SoundManager(ContentManager cm)
+            : base(cm, ContentPaths.Build.Data.Join("sounds.xml"), "Sound", "Sounds" + Path.DirectorySeparatorChar)
+        {
+        }
 
         /// <summary>
         /// Gets the sound object at the given <paramref name="index"/>.
@@ -34,15 +43,6 @@ namespace NetGore.Audio
         public ISound this[string name]
         {
             get { return GetItem(name); }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SoundManager"/> class.
-        /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/>.</param>
-        SoundManager(ContentManager cm)
-            : base(cm, ContentPaths.Build.Data.Join("sounds.xml"), "Sound", "Sounds" + Path.DirectorySeparatorChar)
-        {
         }
 
         /// <summary>

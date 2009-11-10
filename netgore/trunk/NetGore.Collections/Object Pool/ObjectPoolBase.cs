@@ -16,12 +16,16 @@ namespace NetGore.Collections
     /// <typeparam name="T">Type of the item to be pooled</typeparam>
     public class ObjectPool<T> : IEnumerable<T> where T : IPoolable<T>, new()
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         /// <summary>
         /// Stack of all the LinkedListNodes that have been freed and need to be reused
         /// </summary>
         readonly Stack<LinkedListNode<T>> _free = new Stack<LinkedListNode<T>>(16);
+
+        /// <summary>
+        /// Highest used node in the pool, which lets us end enumerating earlier. A null value
+        /// means that the whole pool will be iterated through.
+        /// </summary>
+        LinkedListNode<T> _highNode = null;
 
         /// <summary>
         /// LinkedList containing all the active pool objects
@@ -33,11 +37,7 @@ namespace NetGore.Collections
         /// </summary>
         readonly object _poolLock = new object();
 
-        /// <summary>
-        /// Highest used node in the pool, which lets us end enumerating earlier. A null value
-        /// means that the whole pool will be iterated through.
-        /// </summary>
-        LinkedListNode<T> _highNode = null;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Gets the number of live items in the ObjectPool.
@@ -239,10 +239,10 @@ namespace NetGore.Collections
         /// </summary>
         public struct Enumerator : IEnumerator<T>
         {
+            T _current;
             readonly LinkedListNode<T> _high;
             readonly LinkedList<T> _list;
 
-            T _current;
             LinkedListNode<T> _node;
 
             /// <summary>

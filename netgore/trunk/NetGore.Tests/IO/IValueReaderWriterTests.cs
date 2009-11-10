@@ -13,370 +13,16 @@ namespace NetGore.IO.Tests
     [TestFixture]
     public class IValueReaderWriterTests
     {
-        /// <summary>
-        /// Base class for a IValueReader and IValueWriter creator.
-        /// </summary>
-        abstract class ReaderWriterCreatorBase : IDisposable
-        {
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public abstract bool SupportsNameLookup { get; }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public abstract bool SupportsNodes { get; }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public abstract IValueReader GetReader();
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public abstract IValueWriter GetWriter();
-
-            #region IDisposable Members
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            /// <filterpriority>2</filterpriority>
-            public virtual void Dispose()
-            {
-            }
-
-            #endregion
-        }
-
-        static readonly List<string> _createdTempFiles = new List<string>();
-
-        /// <summary>
-        /// Gets the path for a temp file.
-        /// </summary>
-        /// <returns>The path for a temp file.</returns>
-        static string GetTempFile()
-        {
-            if (_createdTempFiles.Count > 3)
-            {
-                // Do a garbage collection to see if there is crap still out there, but waiting to be destructed
-                GC.Collect();
-                if (_createdTempFiles.Count > 3)
-                    throw new Exception("Too many temp files are out. Make sure they are being released!");
-                else
-                    Debug.Fail("Too many objects are using the destructor to clear the temp files. Use IDisposable, damnit!");
-            }
-
-            string ret = Path.GetTempFileName();
-            _createdTempFiles.Add(ret);
-            return ret;
-        }
-
-        /// <summary>
-        /// Releases a file used with GetTempFile().
-        /// </summary>
-        /// <param name="filePath">Path to the file to release.</param>
-        static void ReleaseFile(string filePath)
-        {
-            _createdTempFiles.Remove(filePath);
-
-            if (File.Exists(filePath))
-                File.Delete(filePath);
-        }
-
-        /// <summary>
-        /// BinaryValueReader/Writer, using a file.
-        /// </summary>
-        class FileBinaryValueReaderWriterCreator : ReaderWriterCreatorBase
-        {
-            readonly string _filePath = GetTempFile();
-
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public override bool SupportsNameLookup
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public override bool SupportsNodes
-            {
-                get { return true; }
-            }
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            public override void Dispose()
-            {
-                ReleaseFile(_filePath);
-                GC.SuppressFinalize(this);
-
-                base.Dispose();
-            }
-
-            ~FileBinaryValueReaderWriterCreator()
-            {
-                ReleaseFile(_filePath);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public override IValueReader GetReader()
-            {
-                return new BinaryValueReader(_filePath);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public override IValueWriter GetWriter()
-            {
-                return new BinaryValueWriter(_filePath);
-            }
-        }
-
-        /// <summary>
-        /// BitStream using the ByteArray to transfer data from the reader to writer
-        /// </summary>
-        class BitStreamByteArrayReaderWriterCreator : ReaderWriterCreatorBase
-        {
-            readonly BitStream _writeStream = new BitStream(BitStreamMode.Write, _bufferSize);
-
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public override bool SupportsNameLookup
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public override bool SupportsNodes
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public override IValueReader GetReader()
-            {
-                var buffer = _writeStream.GetBuffer();
-                return new BitStream(buffer);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public override IValueWriter GetWriter()
-            {
-                return _writeStream;
-            }
-        }
-
-        /// <summary>
-        /// BitStream
-        /// </summary>
-        class BitStreamReaderWriterCreator : ReaderWriterCreatorBase
-        {
-            readonly BitStream _stream = new BitStream(BitStreamMode.Write, _bufferSize);
-
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public override bool SupportsNameLookup
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public override bool SupportsNodes
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public override IValueReader GetReader()
-            {
-                _stream.Mode = BitStreamMode.Read;
-                return _stream;
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public override IValueWriter GetWriter()
-            {
-                return _stream;
-            }
-        }
-
-        /// <summary>
-        /// XmlValueReader/Writer.
-        /// </summary>
-        class XmlValueReaderWriterCreator : ReaderWriterCreatorBase
-        {
-            const string _rootNodeName = "TestRootNode";
-
-            readonly string _filePath = GetTempFile();
-
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public override bool SupportsNameLookup
-            {
-                get { return true; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public override bool SupportsNodes
-            {
-                get { return true; }
-            }
-
-            /// <summary>
-            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-            /// </summary>
-            public override void Dispose()
-            {
-                ReleaseFile(_filePath);
-                GC.SuppressFinalize(this);
-
-                base.Dispose();
-            }
-
-            ~XmlValueReaderWriterCreator()
-            {
-                ReleaseFile(_filePath);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public override IValueReader GetReader()
-            {
-                return new XmlValueReader(_filePath, _rootNodeName);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public override IValueWriter GetWriter()
-            {
-                return new XmlValueWriter(_filePath, _rootNodeName);
-            }
-        }
-
-        /// <summary>
-        /// BinaryValueReader/Writer, using memory.
-        /// </summary>
-        class MemoryBinaryValueReaderWriterCreator : ReaderWriterCreatorBase
-        {
-            readonly BitStream _stream = new BitStream(BitStreamMode.Write, _bufferSize);
-
-            /// <summary>
-            /// When overridden in the derived class, gets if name lookup is supported.
-            /// </summary>
-            public override bool SupportsNameLookup
-            {
-                get { return false; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets if nodes are supported.
-            /// </summary>
-            public override bool SupportsNodes
-            {
-                get { return true; }
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueReader instance used to read the values
-            /// written by the IValueWriter created with GetWriter().
-            /// </summary>
-            /// <returns>The IValueWriter instance.</returns>
-            public override IValueReader GetReader()
-            {
-                _stream.Mode = BitStreamMode.Read;
-                return new BinaryValueReader(_stream);
-            }
-
-            /// <summary>
-            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
-            /// </summary>
-            /// <returns>The IValueReader instance.</returns>
-            public override IValueWriter GetWriter()
-            {
-                return new BinaryValueWriter(_stream);
-            }
-        }
-
-        /// <summary>
-        /// Handler for getting a ReaderWriterCreatorBase instance. 
-        /// </summary>
-        /// <returns>The ReaderWriterCreatorBase instance.</returns>
-        delegate ReaderWriterCreatorBase CreateCreatorHandler();
-
-        /// <summary>
-        /// Handler for writing a value.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="w">IValueWriter to write to.</param>
-        /// <param name="name">Name to use for writing.</param>
-        /// <param name="value">Value to write.</param>
-        delegate void WriteTestValuesHandler<T>(IValueWriter w, string name, T value);
-
-        /// <summary>
-        /// Handler for reading a value.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="r">IValueReader to read from.</param>
-        /// <param name="name">Name to use for reading.</param>
-        /// <returns>The read value.</returns>
-        delegate T ReadTestValuesHandler<T>(IValueReader r, string name);
-
-        /// <summary>
-        /// Handler for creating a value from a double.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to create.</typeparam>
-        /// <param name="value">The value to give the new type. Round is fine as long as it is consistent.</param>
-        /// <returns>The new value as type <typeparamref name="T"/>.</returns>
-        delegate T CreateValueTypeHandler<T>(double value);
+        const int _bufferSize = 1024 * 1024;
 
         /// <summary>
         /// The CreateCreatorHandlers that will be used to create the ReaderWriterCreatorBase instances.
         /// </summary>
         static readonly IEnumerable<CreateCreatorHandler> _createCreators;
+
+        static readonly List<string> _createdTempFiles = new List<string>();
+
+        static readonly object[] _emptyObjArray = new object[0];
 
         /// <summary>
         /// Initializes the <see cref="IValueReaderWriterTests"/> class.
@@ -391,82 +37,6 @@ namespace NetGore.IO.Tests
                 () => new BitStreamByteArrayReaderWriterCreator()
             };
         }
-
-        /// <summary>
-        /// Writes multiple test values. This is not like IValueWriter.WriteValues as it does not use nodes
-        /// nor does it track the number of items written. This is just to make it easy to write many
-        /// values over a loop.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="w">IValueWriter to write to.</param>
-        /// <param name="values">The values to write.</param>
-        /// <param name="writeHandler">The write handler.</param>
-        static void WriteTestValues<T>(IValueWriter w, T[] values, WriteTestValuesHandler<T> writeHandler)
-        {
-            for (int i = 0; i < values.Length; i++)
-            {
-                writeHandler(w, GetValueKey(i), values[i]);
-            }
-        }
-
-        /// <summary>
-        /// Gets the key for a value.
-        /// </summary>
-        /// <param name="i">The index of the value.</param>
-        /// <returns>The key for a value with index of <paramref name="i"/>.</returns>
-        static string GetValueKey(int i)
-        {
-            return "V" + Parser.Invariant.ToString(i);
-        }
-
-        /// <summary>
-        /// Reads multiple test values. This is not like IValueReader.ReadValues as it does not use nodes
-        /// nor does it track the number of items written. This is just to make it easy to read many
-        /// values over a loop.
-        /// </summary>
-        /// <typeparam name="T">The Type of value to write.</typeparam>
-        /// <param name="r">IValueReader to read from.</param>
-        /// <param name="expected">The values expected to be read.</param>
-        /// <param name="readHandler">The read handler.</param>
-        static void ReadTestValues<T>(IValueReader r, T[] expected, ReadTestValuesHandler<T> readHandler)
-        {
-            var actual = new T[expected.Length];
-
-            for (int i = 0; i < expected.Length; i++)
-            {
-                actual[i] = readHandler(r, GetValueKey(i));
-            }
-
-            const string errmsg = "Writer Type: `{0}`";
-            AssertArraysEqual(expected, actual, errmsg, r.GetType());
-        }
-
-        /// <summary>
-        /// Gets a range of values.
-        /// </summary>
-        /// <typeparam name="T">The Type to get the value as.</typeparam>
-        /// <param name="start">The start value.</param>
-        /// <param name="count">The number of values to get.</param>
-        /// <param name="step">The step between each value.</param>
-        /// <param name="creator">Handler to convert a double to type <typeparamref name="T"/>.</param>
-        /// <returns>The array of values.</returns>
-        static T[] Range<T>(double start, int count, double step, CreateValueTypeHandler<T> creator)
-        {
-            var ret = new T[count];
-
-            double current = start;
-            for (int i = 0; i < count; i++)
-            {
-                ret[i] = creator(current);
-                current += step;
-            }
-
-            return ret;
-        }
-
-        const int _bufferSize = 1024 * 1024;
-
-        static readonly object[] _emptyObjArray = new object[0];
 
         static void AssertArraysEqual<T>(T[] expected, T[] actual)
         {
@@ -492,6 +62,37 @@ namespace NetGore.IO.Tests
             }
         }
 
+        /// <summary>
+        /// Gets the path for a temp file.
+        /// </summary>
+        /// <returns>The path for a temp file.</returns>
+        static string GetTempFile()
+        {
+            if (_createdTempFiles.Count > 3)
+            {
+                // Do a garbage collection to see if there is crap still out there, but waiting to be destructed
+                GC.Collect();
+                if (_createdTempFiles.Count > 3)
+                    throw new Exception("Too many temp files are out. Make sure they are being released!");
+                else
+                    Debug.Fail("Too many objects are using the destructor to clear the temp files. Use IDisposable, damnit!");
+            }
+
+            string ret = Path.GetTempFileName();
+            _createdTempFiles.Add(ret);
+            return ret;
+        }
+
+        /// <summary>
+        /// Gets the key for a value.
+        /// </summary>
+        /// <param name="i">The index of the value.</param>
+        /// <returns>The key for a value with index of <paramref name="i"/>.</returns>
+        static string GetValueKey(int i)
+        {
+            return "V" + Parser.Invariant.ToString(i);
+        }
+
         static string Implode(IEnumerable<string> src)
         {
             StringBuilder sb = new StringBuilder();
@@ -503,39 +104,61 @@ namespace NetGore.IO.Tests
             return sb.ToString();
         }
 
-        enum TestEnum
+        /// <summary>
+        /// Gets a range of values.
+        /// </summary>
+        /// <typeparam name="T">The Type to get the value as.</typeparam>
+        /// <param name="start">The start value.</param>
+        /// <param name="count">The number of values to get.</param>
+        /// <param name="step">The step between each value.</param>
+        /// <param name="creator">Handler to convert a double to type <typeparamref name="T"/>.</param>
+        /// <returns>The array of values.</returns>
+        static T[] Range<T>(double start, int count, double step, CreateValueTypeHandler<T> creator)
         {
-            A = -100,
-            B,
-            Cee = 0,
-            Dee,
-            Eeie,
-            Effffuh,
-            G,
-            Ayche = 100
+            var ret = new T[count];
+
+            double current = start;
+            for (int i = 0; i < count; i++)
+            {
+                ret[i] = creator(current);
+                current += step;
+            }
+
+            return ret;
         }
 
-        sealed class TestEnumHelper : EnumHelper<TestEnum>
+        /// <summary>
+        /// Reads multiple test values. This is not like IValueReader.ReadValues as it does not use nodes
+        /// nor does it track the number of items written. This is just to make it easy to read many
+        /// values over a loop.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="r">IValueReader to read from.</param>
+        /// <param name="expected">The values expected to be read.</param>
+        /// <param name="readHandler">The read handler.</param>
+        static void ReadTestValues<T>(IValueReader r, T[] expected, ReadTestValuesHandler<T> readHandler)
         {
-            /// <summary>
-            /// When overridden in the derived class, casts an int to type TestEnum.
-            /// </summary>
-            /// <param name="value">The int value.</param>
-            /// <returns>The <paramref name="value"/> casted to type TestEnum.</returns>
-            protected override TestEnum FromInt(int value)
+            var actual = new T[expected.Length];
+
+            for (int i = 0; i < expected.Length; i++)
             {
-                return (TestEnum)value;
+                actual[i] = readHandler(r, GetValueKey(i));
             }
 
-            /// <summary>
-            /// When overridden in the derived class, casts type TestEnum to an int.
-            /// </summary>
-            /// <param name="value">The value.</param>
-            /// <returns>The <paramref name="value"/> casted to an int.</returns>
-            protected override int ToInt(TestEnum value)
-            {
-                return (int)value;
-            }
+            const string errmsg = "Writer Type: `{0}`";
+            AssertArraysEqual(expected, actual, errmsg, r.GetType());
+        }
+
+        /// <summary>
+        /// Releases a file used with GetTempFile().
+        /// </summary>
+        /// <param name="filePath">Path to the file to release.</param>
+        static void ReleaseFile(string filePath)
+        {
+            _createdTempFiles.Remove(filePath);
+
+            if (File.Exists(filePath))
+                File.Delete(filePath);
         }
 
         [Test]
@@ -1827,6 +1450,383 @@ namespace NetGore.IO.Tests
                         ReadTestValues(r, v1, ((preader, pname) => preader.ReadUShort(pname)));
                     }
                 }
+            }
+        }
+
+        /// <summary>
+        /// Writes multiple test values. This is not like IValueWriter.WriteValues as it does not use nodes
+        /// nor does it track the number of items written. This is just to make it easy to write many
+        /// values over a loop.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="values">The values to write.</param>
+        /// <param name="writeHandler">The write handler.</param>
+        static void WriteTestValues<T>(IValueWriter w, T[] values, WriteTestValuesHandler<T> writeHandler)
+        {
+            for (int i = 0; i < values.Length; i++)
+            {
+                writeHandler(w, GetValueKey(i), values[i]);
+            }
+        }
+
+        /// <summary>
+        /// BitStream using the ByteArray to transfer data from the reader to writer
+        /// </summary>
+        class BitStreamByteArrayReaderWriterCreator : ReaderWriterCreatorBase
+        {
+            readonly BitStream _writeStream = new BitStream(BitStreamMode.Write, _bufferSize);
+
+            /// <summary>
+            /// When overridden in the derived class, gets if name lookup is supported.
+            /// </summary>
+            public override bool SupportsNameLookup
+            {
+                get { return false; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets if nodes are supported.
+            /// </summary>
+            public override bool SupportsNodes
+            {
+                get { return false; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueReader instance used to read the values
+            /// written by the IValueWriter created with GetWriter().
+            /// </summary>
+            /// <returns>The IValueWriter instance.</returns>
+            public override IValueReader GetReader()
+            {
+                var buffer = _writeStream.GetBuffer();
+                return new BitStream(buffer);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
+            /// </summary>
+            /// <returns>The IValueReader instance.</returns>
+            public override IValueWriter GetWriter()
+            {
+                return _writeStream;
+            }
+        }
+
+        /// <summary>
+        /// BitStream
+        /// </summary>
+        class BitStreamReaderWriterCreator : ReaderWriterCreatorBase
+        {
+            readonly BitStream _stream = new BitStream(BitStreamMode.Write, _bufferSize);
+
+            /// <summary>
+            /// When overridden in the derived class, gets if name lookup is supported.
+            /// </summary>
+            public override bool SupportsNameLookup
+            {
+                get { return false; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets if nodes are supported.
+            /// </summary>
+            public override bool SupportsNodes
+            {
+                get { return false; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueReader instance used to read the values
+            /// written by the IValueWriter created with GetWriter().
+            /// </summary>
+            /// <returns>The IValueWriter instance.</returns>
+            public override IValueReader GetReader()
+            {
+                _stream.Mode = BitStreamMode.Read;
+                return _stream;
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
+            /// </summary>
+            /// <returns>The IValueReader instance.</returns>
+            public override IValueWriter GetWriter()
+            {
+                return _stream;
+            }
+        }
+
+        /// <summary>
+        /// Handler for getting a ReaderWriterCreatorBase instance. 
+        /// </summary>
+        /// <returns>The ReaderWriterCreatorBase instance.</returns>
+        delegate ReaderWriterCreatorBase CreateCreatorHandler();
+
+        /// <summary>
+        /// Handler for creating a value from a double.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to create.</typeparam>
+        /// <param name="value">The value to give the new type. Round is fine as long as it is consistent.</param>
+        /// <returns>The new value as type <typeparamref name="T"/>.</returns>
+        delegate T CreateValueTypeHandler<T>(double value);
+
+        /// <summary>
+        /// BinaryValueReader/Writer, using a file.
+        /// </summary>
+        class FileBinaryValueReaderWriterCreator : ReaderWriterCreatorBase
+        {
+            readonly string _filePath = GetTempFile();
+
+            /// <summary>
+            /// When overridden in the derived class, gets if name lookup is supported.
+            /// </summary>
+            public override bool SupportsNameLookup
+            {
+                get { return false; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets if nodes are supported.
+            /// </summary>
+            public override bool SupportsNodes
+            {
+                get { return true; }
+            }
+
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// </summary>
+            public override void Dispose()
+            {
+                ReleaseFile(_filePath);
+                GC.SuppressFinalize(this);
+
+                base.Dispose();
+            }
+
+            ~FileBinaryValueReaderWriterCreator()
+            {
+                ReleaseFile(_filePath);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueReader instance used to read the values
+            /// written by the IValueWriter created with GetWriter().
+            /// </summary>
+            /// <returns>The IValueWriter instance.</returns>
+            public override IValueReader GetReader()
+            {
+                return new BinaryValueReader(_filePath);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
+            /// </summary>
+            /// <returns>The IValueReader instance.</returns>
+            public override IValueWriter GetWriter()
+            {
+                return new BinaryValueWriter(_filePath);
+            }
+        }
+
+        /// <summary>
+        /// BinaryValueReader/Writer, using memory.
+        /// </summary>
+        class MemoryBinaryValueReaderWriterCreator : ReaderWriterCreatorBase
+        {
+            readonly BitStream _stream = new BitStream(BitStreamMode.Write, _bufferSize);
+
+            /// <summary>
+            /// When overridden in the derived class, gets if name lookup is supported.
+            /// </summary>
+            public override bool SupportsNameLookup
+            {
+                get { return false; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets if nodes are supported.
+            /// </summary>
+            public override bool SupportsNodes
+            {
+                get { return true; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueReader instance used to read the values
+            /// written by the IValueWriter created with GetWriter().
+            /// </summary>
+            /// <returns>The IValueWriter instance.</returns>
+            public override IValueReader GetReader()
+            {
+                _stream.Mode = BitStreamMode.Read;
+                return new BinaryValueReader(_stream);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
+            /// </summary>
+            /// <returns>The IValueReader instance.</returns>
+            public override IValueWriter GetWriter()
+            {
+                return new BinaryValueWriter(_stream);
+            }
+        }
+
+        /// <summary>
+        /// Base class for a IValueReader and IValueWriter creator.
+        /// </summary>
+        abstract class ReaderWriterCreatorBase : IDisposable
+        {
+            /// <summary>
+            /// When overridden in the derived class, gets if name lookup is supported.
+            /// </summary>
+            public abstract bool SupportsNameLookup { get; }
+
+            /// <summary>
+            /// When overridden in the derived class, gets if nodes are supported.
+            /// </summary>
+            public abstract bool SupportsNodes { get; }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueReader instance used to read the values
+            /// written by the IValueWriter created with GetWriter().
+            /// </summary>
+            /// <returns>The IValueWriter instance.</returns>
+            public abstract IValueReader GetReader();
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
+            /// </summary>
+            /// <returns>The IValueReader instance.</returns>
+            public abstract IValueWriter GetWriter();
+
+            #region IDisposable Members
+
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// </summary>
+            /// <filterpriority>2</filterpriority>
+            public virtual void Dispose()
+            {
+            }
+
+            #endregion
+        }
+
+        /// <summary>
+        /// Handler for reading a value.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="r">IValueReader to read from.</param>
+        /// <param name="name">Name to use for reading.</param>
+        /// <returns>The read value.</returns>
+        delegate T ReadTestValuesHandler<T>(IValueReader r, string name);
+
+        enum TestEnum
+        {
+            A = -100,
+            B,
+            Cee = 0,
+            Dee,
+            Eeie,
+            Effffuh,
+            G,
+            Ayche = 100
+        }
+
+        sealed class TestEnumHelper : EnumHelper<TestEnum>
+        {
+            /// <summary>
+            /// When overridden in the derived class, casts an int to type TestEnum.
+            /// </summary>
+            /// <param name="value">The int value.</param>
+            /// <returns>The <paramref name="value"/> casted to type TestEnum.</returns>
+            protected override TestEnum FromInt(int value)
+            {
+                return (TestEnum)value;
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, casts type TestEnum to an int.
+            /// </summary>
+            /// <param name="value">The value.</param>
+            /// <returns>The <paramref name="value"/> casted to an int.</returns>
+            protected override int ToInt(TestEnum value)
+            {
+                return (int)value;
+            }
+        }
+
+        /// <summary>
+        /// Handler for writing a value.
+        /// </summary>
+        /// <typeparam name="T">The Type of value to write.</typeparam>
+        /// <param name="w">IValueWriter to write to.</param>
+        /// <param name="name">Name to use for writing.</param>
+        /// <param name="value">Value to write.</param>
+        delegate void WriteTestValuesHandler<T>(IValueWriter w, string name, T value);
+
+        /// <summary>
+        /// XmlValueReader/Writer.
+        /// </summary>
+        class XmlValueReaderWriterCreator : ReaderWriterCreatorBase
+        {
+            const string _rootNodeName = "TestRootNode";
+
+            readonly string _filePath = GetTempFile();
+
+            /// <summary>
+            /// When overridden in the derived class, gets if name lookup is supported.
+            /// </summary>
+            public override bool SupportsNameLookup
+            {
+                get { return true; }
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets if nodes are supported.
+            /// </summary>
+            public override bool SupportsNodes
+            {
+                get { return true; }
+            }
+
+            /// <summary>
+            /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            /// </summary>
+            public override void Dispose()
+            {
+                ReleaseFile(_filePath);
+                GC.SuppressFinalize(this);
+
+                base.Dispose();
+            }
+
+            ~XmlValueReaderWriterCreator()
+            {
+                ReleaseFile(_filePath);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueReader instance used to read the values
+            /// written by the IValueWriter created with GetWriter().
+            /// </summary>
+            /// <returns>The IValueWriter instance.</returns>
+            public override IValueReader GetReader()
+            {
+                return new XmlValueReader(_filePath, _rootNodeName);
+            }
+
+            /// <summary>
+            /// When overridden in the derived class, gets the IValueWriter instance. This method is always called first.
+            /// </summary>
+            /// <returns>The IValueReader instance.</returns>
+            public override IValueWriter GetWriter()
+            {
+                return new XmlValueWriter(_filePath, _rootNodeName);
             }
         }
     }

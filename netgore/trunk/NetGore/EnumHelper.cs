@@ -14,46 +14,14 @@ namespace NetGore
     public abstract class EnumHelper<T> : IEnumValueReader<T>, IEnumValueWriter<T>
         where T : struct, IComparable, IConvertible, IFormattable
     {
-        static readonly Type[] _supportedTypes = new Type[]
-        { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int) };
-
-        static readonly T[] _values;
-
         readonly int _bitsRequired;
         readonly int _maxValue;
         readonly int _minValue;
 
-        /// <summary>
-        /// Gets the defined values the Enum of type <typeparamref name="T"/>.
-        /// </summary>
-        public static IEnumerable<T> Values
-        {
-            get { return _values; }
-        }
+        static readonly Type[] _supportedTypes = new Type[]
+        { typeof(byte), typeof(sbyte), typeof(short), typeof(ushort), typeof(int) };
 
-        /// <summary>
-        /// Gets the number of bits required to write the enums values.
-        /// </summary>
-        public int BitsRequired
-        {
-            get { return _bitsRequired; }
-        }
-
-        /// <summary>
-        /// Gets the maximum defined enum value.
-        /// </summary>
-        public int MaxValue
-        {
-            get { return _maxValue; }
-        }
-
-        /// <summary>
-        /// Gets the minimum defined enum value.
-        /// </summary>
-        public int MinValue
-        {
-            get { return _minValue; }
-        }
+        static readonly T[] _values;
 
         /// <summary>
         /// Initializes the <see cref="EnumHelper&lt;T&gt;"/> class.
@@ -89,6 +57,38 @@ namespace NetGore
             Debug.Assert(diff >= uint.MinValue);
 
             _bitsRequired = BitOps.RequiredBits((uint)diff);
+        }
+
+        /// <summary>
+        /// Gets the number of bits required to write the enums values.
+        /// </summary>
+        public int BitsRequired
+        {
+            get { return _bitsRequired; }
+        }
+
+        /// <summary>
+        /// Gets the maximum defined enum value.
+        /// </summary>
+        public int MaxValue
+        {
+            get { return _maxValue; }
+        }
+
+        /// <summary>
+        /// Gets the minimum defined enum value.
+        /// </summary>
+        public int MinValue
+        {
+            get { return _minValue; }
+        }
+
+        /// <summary>
+        /// Gets the defined values the Enum of type <typeparamref name="T"/>.
+        /// </summary>
+        public static IEnumerable<T> Values
+        {
+            get { return _values; }
         }
 
         static MethodAccessException CreateGenericTypeIsNotEnumException()

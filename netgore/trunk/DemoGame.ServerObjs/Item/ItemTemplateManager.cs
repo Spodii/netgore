@@ -19,14 +19,6 @@ namespace DemoGame.Server
         SelectItemTemplateQuery _selectItemTemplateQuery;
 
         /// <summary>
-        /// Gets an instance of the <see cref="ItemTemplateManager"/>.
-        /// </summary>
-        public static ItemTemplateManager Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// Initializes the <see cref="ItemTemplateManager"/> class.
         /// </summary>
         static ItemTemplateManager()
@@ -40,6 +32,14 @@ namespace DemoGame.Server
         /// <param name="dbController">The IDbController.</param>
         ItemTemplateManager(IDbController dbController) : base(dbController)
         {
+        }
+
+        /// <summary>
+        /// Gets an instance of the <see cref="ItemTemplateManager"/>.
+        /// </summary>
+        public static ItemTemplateManager Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

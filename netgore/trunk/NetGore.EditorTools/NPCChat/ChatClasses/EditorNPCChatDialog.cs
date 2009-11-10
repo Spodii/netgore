@@ -15,15 +15,30 @@ namespace NetGore.EditorTools.NPCChat
     /// </summary>
     public class EditorNPCChatDialog : NPCChatDialogBase
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         ushort _index;
         EditorNPCChatDialogItem[] _items = new EditorNPCChatDialogItem[8];
         string _title;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Notifies listeners when the EditorNPCChatDialog has changed.
         /// </summary>
         public event EditorNPCChatDialogEventHandler OnChange;
+
+        /// <summary>
+        /// EditorNPCChatDialog constructor.
+        /// </summary>
+        public EditorNPCChatDialog()
+        {
+        }
+
+        /// <summary>
+        /// EditorNPCChatDialog constructor.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        public EditorNPCChatDialog(IValueReader reader) : base(reader)
+        {
+        }
 
         /// <summary>
         /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
@@ -49,21 +64,6 @@ namespace NetGore.EditorTools.NPCChat
         public override string Title
         {
             get { return _title; }
-        }
-
-        /// <summary>
-        /// EditorNPCChatDialog constructor.
-        /// </summary>
-        public EditorNPCChatDialog()
-        {
-        }
-
-        /// <summary>
-        /// EditorNPCChatDialog constructor.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        public EditorNPCChatDialog(IValueReader reader) : base(reader)
-        {
         }
 
         /// <summary>

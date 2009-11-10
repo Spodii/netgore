@@ -22,6 +22,16 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "map_spawn";
 
         /// <summary>
+        /// The field that maps onto the database column `amount`.
+        /// </summary>
+        Byte _amount;
+
+        /// <summary>
+        /// The field that maps onto the database column `character_template_id`.
+        /// </summary>
+        UInt16 _characterTemplateID;
+
+        /// <summary>
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[]
@@ -37,16 +47,6 @@ namespace DemoGame.Server.DbObjs
         /// </summary>
         static readonly String[] _dbColumnsNonKey = new string[]
         { "amount", "character_template_id", "height", "map_id", "width", "x", "y" };
-
-        /// <summary>
-        /// The field that maps onto the database column `amount`.
-        /// </summary>
-        Byte _amount;
-
-        /// <summary>
-        /// The field that maps onto the database column `character_template_id`.
-        /// </summary>
-        UInt16 _characterTemplateID;
 
         /// <summary>
         /// The field that maps onto the database column `height`.
@@ -77,30 +77,6 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `y`.
         /// </summary>
         ushort? _y;
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-        /// </summary>
-        public static IEnumerable<String> DbColumns
-        {
-            get { return _dbColumns; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbKeyColumns
-        {
-            get { return _dbColumnsKeys; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbNonKeyColumns
-        {
-            get { return _dbColumnsNonKey; }
-        }
 
         /// <summary>
         /// MapSpawnTable constructor.
@@ -140,6 +116,30 @@ namespace DemoGame.Server.DbObjs
         public MapSpawnTable(IMapSpawnTable source)
         {
             CopyValuesFrom(source);
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
         }
 
         /// <summary>

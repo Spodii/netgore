@@ -10,6 +10,24 @@ namespace NetGore.Db.ClassCreator
         static readonly char[] _vowels = new char[] { 'a', 'e', 'i', 'o', 'u' };
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ColumnCollection"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="keyType">Type of the key.</param>
+        /// <param name="valueType">Type of the value.</param>
+        /// <param name="tables">The tables.</param>
+        /// <param name="columns">The columns.</param>
+        public ColumnCollection(string name, Type keyType, Type valueType, IEnumerable<string> tables,
+                                IEnumerable<ColumnCollectionItem> columns)
+        {
+            Name = name;
+            KeyType = keyType;
+            ValueType = valueType;
+            Tables = tables;
+            Columns = columns;
+        }
+
+        /// <summary>
         /// Gets the name of the collection property.
         /// </summary>
         /// <value>The name of the collection property.</value>
@@ -60,23 +78,5 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <value>The type of the value.</value>
         public Type ValueType { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ColumnCollection"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="keyType">Type of the key.</param>
-        /// <param name="valueType">Type of the value.</param>
-        /// <param name="tables">The tables.</param>
-        /// <param name="columns">The columns.</param>
-        public ColumnCollection(string name, Type keyType, Type valueType, IEnumerable<string> tables,
-                                IEnumerable<ColumnCollectionItem> columns)
-        {
-            Name = name;
-            KeyType = keyType;
-            ValueType = valueType;
-            Tables = tables;
-            Columns = columns;
-        }
     }
 }

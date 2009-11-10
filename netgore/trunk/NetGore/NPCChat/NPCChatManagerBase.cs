@@ -17,17 +17,18 @@ namespace NetGore.NPCChat
     /// </summary>
     public abstract class NPCChatManagerBase : IEnumerable<NPCChatDialogBase>
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         readonly bool _isReadonly;
         readonly DArray<NPCChatDialogBase> _npcChatDialogs = new DArray<NPCChatDialogBase>(32, false);
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// Gets if this NPCChatManagerBase is read-only.
+        /// NPCChatManagerBase constructor.
         /// </summary>
-        public bool IsReadonly
+        /// <param name="isReadonly">If this manager is read-only.</param>
+        protected NPCChatManagerBase(bool isReadonly)
         {
-            get { return _isReadonly; }
+            _isReadonly = isReadonly;
+            Load();
         }
 
         /// <summary>
@@ -61,13 +62,11 @@ namespace NetGore.NPCChat
         }
 
         /// <summary>
-        /// NPCChatManagerBase constructor.
+        /// Gets if this NPCChatManagerBase is read-only.
         /// </summary>
-        /// <param name="isReadonly">If this manager is read-only.</param>
-        protected NPCChatManagerBase(bool isReadonly)
+        public bool IsReadonly
         {
-            _isReadonly = isReadonly;
-            Load();
+            get { return _isReadonly; }
         }
 
         /// <summary>

@@ -34,25 +34,66 @@ namespace NetGore.IO
 
         static readonly PathString _appRoot;
         static readonly ContentPaths _buildPaths;
-        static readonly PathString _temp;
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        readonly PathString _data;
         static ContentPaths _devPaths;
+        readonly PathString _engine;
+        readonly PathString _fonts;
 
         /// <summary>
         /// The current free file index.
         /// </summary>
         static volatile int _freeFileIndex = 0;
 
-        readonly PathString _data;
-        readonly PathString _engine;
-        readonly PathString _fonts;
         readonly PathString _grhs;
         readonly PathString _languages;
         readonly PathString _maps;
         readonly PathString _root;
         readonly PathString _settings;
         readonly PathString _skeletons;
+        static readonly PathString _temp;
         readonly PathString _textures;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// Initializes the <see cref="ContentPaths"/> class.
+        /// </summary>
+        static ContentPaths()
+        {
+            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+            _appRoot = Path.GetFullPath(baseDir);
+
+            // Set the temp files path
+            _temp = _appRoot.Join(_tempFolder);
+            if (!Directory.Exists(_temp))
+                Directory.CreateDirectory(_temp);
+
+            _buildPaths = new ContentPaths(GetBuildContentPath(_appRoot));
+
+            // Delete temp files in another thread since we don't want to wait for it, and we will almost
+            // definitely delete files faster than we request them (if we don't, we'll just end up skipping them
+            // and end up with a little bit of garbage nobody cares about)
+            ThreadPool.QueueUserWorkItem(delegate { DeleteTempFiles(); });
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ContentPaths"/> class.
+        /// </summary>
+        /// <param name="rootPath">The root path.</param>
+        ContentPaths(string rootPath)
+        {
+            _root = Path.GetFullPath(rootPath);
+
+            _data = GetChildPath(_root, _dataFolder);
+            _maps = GetChildPath(_root, _mapsFolder);
+            _engine = GetChildPath(_root, _engineFolder);
+            _fonts = GetChildPath(_root, _fontsFolder);
+            _grhs = GetChildPath(_root, _grhsFolder);
+            _skeletons = GetChildPath(_root, _skeletonsFolder);
+            _textures = GetChildPath(_root, _texturesFolder);
+            _settings = GetChildPath(_root, _settingsFolder);
+            _languages = GetChildPath(_root, _languagesFolder);
+        }
 
         /// <summary>
         /// Gets the <see cref="ContentPaths"/> for the Build content.
@@ -60,6 +101,14 @@ namespace NetGore.IO
         public static ContentPaths Build
         {
             get { return _buildPaths; }
+        }
+
+        /// <summary>
+        /// Gets the file path to the Data directory.
+        /// </summary>
+        public PathString Data
+        {
+            get { return _data; }
         }
 
         /// <summary>
@@ -73,22 +122,6 @@ namespace NetGore.IO
                     _devPaths = new ContentPaths(GetDevContentPath(_appRoot));
                 return _devPaths;
             }
-        }
-
-        /// <summary>
-        /// Gets the file path to the Temp directory.
-        /// </summary>
-        public static PathString Temp
-        {
-            get { return _temp; }
-        }
-
-        /// <summary>
-        /// Gets the file path to the Data directory.
-        /// </summary>
-        public PathString Data
-        {
-            get { return _data; }
         }
 
         /// <summary>
@@ -156,51 +189,19 @@ namespace NetGore.IO
         }
 
         /// <summary>
+        /// Gets the file path to the Temp directory.
+        /// </summary>
+        public static PathString Temp
+        {
+            get { return _temp; }
+        }
+
+        /// <summary>
         /// Gets the file path to the Textures directory.
         /// </summary>
         public PathString Textures
         {
             get { return _textures; }
-        }
-
-        /// <summary>
-        /// Initializes the <see cref="ContentPaths"/> class.
-        /// </summary>
-        static ContentPaths()
-        {
-            string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-            _appRoot = Path.GetFullPath(baseDir);
-
-            // Set the temp files path
-            _temp = _appRoot.Join(_tempFolder);
-            if (!Directory.Exists(_temp))
-                Directory.CreateDirectory(_temp);
-
-            _buildPaths = new ContentPaths(GetBuildContentPath(_appRoot));
-
-            // Delete temp files in another thread since we don't want to wait for it, and we will almost
-            // definitely delete files faster than we request them (if we don't, we'll just end up skipping them
-            // and end up with a little bit of garbage nobody cares about)
-            ThreadPool.QueueUserWorkItem(delegate { DeleteTempFiles(); });
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ContentPaths"/> class.
-        /// </summary>
-        /// <param name="rootPath">The root path.</param>
-        ContentPaths(string rootPath)
-        {
-            _root = Path.GetFullPath(rootPath);
-
-            _data = GetChildPath(_root, _dataFolder);
-            _maps = GetChildPath(_root, _mapsFolder);
-            _engine = GetChildPath(_root, _engineFolder);
-            _fonts = GetChildPath(_root, _fontsFolder);
-            _grhs = GetChildPath(_root, _grhsFolder);
-            _skeletons = GetChildPath(_root, _skeletonsFolder);
-            _textures = GetChildPath(_root, _texturesFolder);
-            _settings = GetChildPath(_root, _settingsFolder);
-            _languages = GetChildPath(_root, _languagesFolder);
         }
 
         /// <summary>

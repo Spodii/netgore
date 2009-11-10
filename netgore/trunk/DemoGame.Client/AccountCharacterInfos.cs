@@ -9,6 +9,11 @@ namespace DemoGame.Client
         AccountCharacterInfo[] _charInfos;
         bool _isLoaded;
 
+        public AccountCharacterInfo this[byte index]
+        {
+            get { return _charInfos[index]; }
+        }
+
         public byte Count
         {
             get { return (byte)_charInfos.Length; }
@@ -17,11 +22,6 @@ namespace DemoGame.Client
         public bool IsLoaded
         {
             get { return _isLoaded; }
-        }
-
-        public AccountCharacterInfo this[byte index]
-        {
-            get { return _charInfos[index]; }
         }
 
         public void SetInfos(AccountCharacterInfo[] charInfos)

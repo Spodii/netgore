@@ -12,18 +12,6 @@ namespace NetGore.NPCChat
     public abstract class NPCChatDialogBase
     {
         /// <summary>
-        /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
-        /// distinguish each NPCChatDialogBase from one another.
-        /// </summary>
-        public abstract ushort Index { get; }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the title for this dialog. The title is primarily
-        /// used for debugging and development purposes only.
-        /// </summary>
-        public abstract string Title { get; }
-
-        /// <summary>
         /// NPCChatDialogBase constructor.
         /// </summary>
         protected NPCChatDialogBase()
@@ -38,6 +26,18 @@ namespace NetGore.NPCChat
         {
             Read(reader);
         }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the unique index of this NPCChatDialogBase. This is used to
+        /// distinguish each NPCChatDialogBase from one another.
+        /// </summary>
+        public abstract ushort Index { get; }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the title for this dialog. The title is primarily
+        /// used for debugging and development purposes only.
+        /// </summary>
+        public abstract string Title { get; }
 
         /// <summary>
         /// When overridden in the derived class, creates an NPCChatDialogItemBase using the given IValueReader.

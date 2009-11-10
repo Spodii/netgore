@@ -12,38 +12,11 @@ namespace NetGore.EditorTools.NPCChat
 
     public class EditorNPCChatConditionalCollectionItem : NPCChatConditionalCollectionItemBase
     {
-        readonly List<NPCChatConditionalParameter> _parameters = new List<NPCChatConditionalParameter>();
         NPCChatConditionalBase _conditional;
         bool _not;
+        readonly List<NPCChatConditionalParameter> _parameters = new List<NPCChatConditionalParameter>();
 
         public event EditorNPCChatConditionalCollectionItemHandler OnChange;
-
-        /// <summary>
-        /// When overridden in the derived class, gets the NPCChatConditionalBase.
-        /// </summary>
-        public override NPCChatConditionalBase Conditional
-        {
-            get { return _conditional; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets a boolean that, if true, the result of this conditional
-        /// when evaluating will be flipped. That is, True becomes False and vise versa. If false, the
-        /// evaluated value is unchanged.
-        /// </summary>
-        public override bool Not
-        {
-            get { return _not; }
-        }
-
-        /// <summary>
-        /// When overridden in the derived class, gets the collection of parameters to use when evaluating
-        /// the conditional.
-        /// </summary>
-        public override NPCChatConditionalParameter[] Parameters
-        {
-            get { return _parameters.ToArray(); }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollectionItem"/> class.
@@ -98,6 +71,33 @@ namespace NetGore.EditorTools.NPCChat
 
             _not = false;
             SetConditional(conditional);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the NPCChatConditionalBase.
+        /// </summary>
+        public override NPCChatConditionalBase Conditional
+        {
+            get { return _conditional; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets a boolean that, if true, the result of this conditional
+        /// when evaluating will be flipped. That is, True becomes False and vise versa. If false, the
+        /// evaluated value is unchanged.
+        /// </summary>
+        public override bool Not
+        {
+            get { return _not; }
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the collection of parameters to use when evaluating
+        /// the conditional.
+        /// </summary>
+        public override NPCChatConditionalParameter[] Parameters
+        {
+            get { return _parameters.ToArray(); }
         }
 
         /// <summary>

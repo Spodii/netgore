@@ -17,30 +17,6 @@ namespace NetGore
         readonly Regex _regex;
 
         /// <summary>
-        /// Gets the set of allowed characters.
-        /// </summary>
-        public CharType AllowedChars
-        {
-            get { return _allowedChars; }
-        }
-
-        /// <summary>
-        /// Gets the maximum string length allowed.
-        /// </summary>
-        public int MaxLength
-        {
-            get { return _maxLength; }
-        }
-
-        /// <summary>
-        /// Gets the minimum string length allowed.
-        /// </summary>
-        public int MinLength
-        {
-            get { return _minLength; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="StringRules"/> class.
         /// </summary>
         /// <param name="minLength">The minimum string length allowed.</param>
@@ -77,6 +53,30 @@ namespace NetGore
             string regexStr = BuildRegexString(minLength, maxLength, allowedChars);
 
             _regex = new Regex(regexStr, RegexOptions.Compiled | regexOptions);
+        }
+
+        /// <summary>
+        /// Gets the set of allowed characters.
+        /// </summary>
+        public CharType AllowedChars
+        {
+            get { return _allowedChars; }
+        }
+
+        /// <summary>
+        /// Gets the maximum string length allowed.
+        /// </summary>
+        public int MaxLength
+        {
+            get { return _maxLength; }
+        }
+
+        /// <summary>
+        /// Gets the minimum string length allowed.
+        /// </summary>
+        public int MinLength
+        {
+            get { return _minLength; }
         }
 
         /// <summary>
