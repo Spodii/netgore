@@ -50,7 +50,7 @@ namespace NetGore
         /// True if <paramref name="other"/> and this instance are the same type and represent the same value; otherwise, false.
         /// </returns>
         /// <param name="other">Another object to compare to. 
-        /// </param><filterpriority>2</filterpriority>
+        /// </param>
         public bool Equals(MapIndex other)
         {
             return other._value == _value;

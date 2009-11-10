@@ -39,7 +39,6 @@ namespace DemoGame.Server.NPCChat.Conditionals
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        /// <filterpriority>1</filterpriority>
         public override IEnumerator<NPCChatConditionalCollectionItemBase> GetEnumerator()
         {
             foreach (NPCChatConditionalCollectionItemBase item in _items)

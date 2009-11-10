@@ -157,7 +157,6 @@ namespace DemoGame.Server
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
         public virtual void Dispose()
         {
         }
@@ -172,7 +171,6 @@ namespace DemoGame.Server
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        /// <filterpriority>1</filterpriority>
         public abstract IEnumerator<ActiveStatusEffect> GetEnumerator();
 
         /// <summary>
@@ -181,7 +179,6 @@ namespace DemoGame.Server
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        /// <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

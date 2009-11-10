@@ -247,7 +247,6 @@ namespace DemoGame.Server
         /// <returns>
         /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
         /// </returns>
-        /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
             return string.Format("{0} [{1}]", Name, ID);
@@ -470,7 +469,6 @@ namespace DemoGame.Server
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
             ThreadAsserts.IsMainThread();

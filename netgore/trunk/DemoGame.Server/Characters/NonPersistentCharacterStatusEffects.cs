@@ -25,7 +25,6 @@ namespace DemoGame.Server
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        /// <filterpriority>1</filterpriority>
         public override IEnumerator<ActiveStatusEffect> GetEnumerator()
         {
             return _statusEffects.GetEnumerator();
