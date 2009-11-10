@@ -142,8 +142,7 @@ namespace DemoGame.Client
 
         void HandleGameControl_PickUp(GameControl sender)
         {
-            Rectangle userRect = UserChar.CB.ToRectangle();
-            ItemEntity pickupItem = Map.EntityGrid.GetEntity<ItemEntity>(userRect);
+            ItemEntity pickupItem = Map.EntityGrid.GetEntity<ItemEntity>(UserChar.GetPickupRegion());
             if (pickupItem == null)
                 return;
 

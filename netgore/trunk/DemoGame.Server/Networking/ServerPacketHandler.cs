@@ -172,11 +172,22 @@ namespace DemoGame.Server
             if (!TryGetMap(conn, out user, out map))
                 return;
 
-            // TODO: Distance validation on ItemEntity pickup
-
+            // Get the item
             ItemEntityBase item;
-            if (map.TryGetDynamicEntity(mapEntityIndex, out item))
-                item.Pickup(user);
+            if (!map.TryGetDynamicEntity(mapEntityIndex, out item))
+                return;
+
+            // Ensure the distance is valid
+            if (!user.IsInPickupRegion(item))
+            {
+                const string errmsg = "User `{0}` failed to pick up item `{1}` - distance was too great.";
+                if (log.IsInfoEnabled)
+                    log.InfoFormat(errmsg, user, item);
+                return;
+            }
+
+            // Pick it up
+            item.Pickup(user);
         }
 
         [MessageHandler((byte)ClientPacketID.Ping)]
