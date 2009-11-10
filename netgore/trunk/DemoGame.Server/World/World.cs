@@ -269,7 +269,7 @@ namespace DemoGame.Server
         /// <returns>An array of all the Users in the world.</returns>
         public User[] GetUsers()
         {
-            // NOTE: We use this instead of returning the _users.Values IEnumerable to avoid issues with the collection changing
+            // We MUST use ToArray() instead of returning the IEnumerable to avoid issues with the collection changing
             return _users.Values.ToArray();
         }
 
