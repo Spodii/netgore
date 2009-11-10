@@ -42,9 +42,15 @@ namespace DemoGame.Server
         /// </summary>
         const long _serverUpdateRate = 5; // 200 FPS
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        readonly ConsoleCommands _consoleCommands;
+
+        /// <summary>
+        /// Queue of the inputs from the console that need to be handled.
+        /// </summary>
+        readonly Queue<string> _consoleInputBuffer = new Queue<string>();
 
         readonly IDbController _dbController;
+        bool _disposed;
 
         /// <summary>
         /// Stopwatch to track the total elapsed time the game has been running
@@ -57,12 +63,18 @@ namespace DemoGame.Server
         readonly Thread _inputThread;
 
         /// <summary>
+        /// If the server is running
+        /// </summary>
+        bool _isRunning = true;
+
+        /// <summary>
         /// Lock used to ensure that only one account is logging in at a time. The main intention of this is to prevent
         /// a race condition allowing an account to log in twice from two places at once.
         /// </summary>
         readonly object _loginLock = new object();
 
         readonly List<string> _motd = new List<string>();
+        IServerSettingTable _serverSettings;
 
         readonly ServerSockets _sockets;
 
@@ -73,14 +85,44 @@ namespace DemoGame.Server
         /// </summary>
         readonly World _world;
 
-        bool _disposed;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
-        /// If the server is running
+        /// Initializes a new instance of the <see cref="Server"/> class.
         /// </summary>
-        bool _isRunning = true;
+        public Server()
+        {
+            DbConnectionSettings settings = new DbConnectionSettings();
+            _dbController = new DbController(settings.SqlConnectionString());
+            DbTableValidator.ValidateTables(_dbController);
 
-        IServerSettingTable _serverSettings;
+            ValidateDbControllerQueryAttributes();
+
+            // Load the game data and such
+            InitializeScripts();
+
+            // Update the GameData table
+            IGameConstantTable gameDataValues = GetGameConstantTableValues();
+            DbController.GetQuery<UpdateGameConstantTableQuery>().Execute(gameDataValues);
+            if (log.IsInfoEnabled)
+                log.Info("Updated the GameData table with the current values.");
+
+            // Load the server settings
+            LoadSettings();
+
+            // Create some objects
+            _world = new World(this);
+            _sockets = new ServerSockets(this);
+            _consoleCommands = new ConsoleCommands(this);
+
+            // Clean-up
+            new ServerRuntimeCleaner(this);
+
+            if (log.IsInfoEnabled)
+                log.Info("Server loaded.");
+
+            _inputThread = new Thread(HandleInput) { Name = "Input Handler", IsBackground = true };
+        }
 
         /// <summary>
         /// Gets the DbController used to communicate with the database by this server.
@@ -125,42 +167,6 @@ namespace DemoGame.Server
         public World World
         {
             get { return _world; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Server"/> class.
-        /// </summary>
-        public Server()
-        {
-            DbConnectionSettings settings = new DbConnectionSettings();
-            _dbController = new DbController(settings.SqlConnectionString());
-            DbTableValidator.ValidateTables(_dbController);
-
-            ValidateDbControllerQueryAttributes();
-
-            // Load the game data and such
-            InitializeScripts();
-
-            // Update the GameData table
-            IGameConstantTable gameDataValues = GetGameConstantTableValues();
-            DbController.GetQuery<UpdateGameConstantTableQuery>().Execute(gameDataValues);
-            if (log.IsInfoEnabled)
-                log.Info("Updated the GameData table with the current values.");
-
-            // Load the server settings
-            LoadSettings();
-
-            // Create the world and sockets
-            _world = new World(this);
-            _sockets = new ServerSockets(this);
-
-            // Clean-up
-            new ServerRuntimeCleaner(this);
-
-            if (log.IsInfoEnabled)
-                log.Info("Server loaded.");
-
-            _inputThread = new Thread(HandleInput) { Name = "Input Handler", IsBackground = true };
         }
 
         /// <summary>
@@ -228,6 +234,18 @@ namespace DemoGame.Server
 
                 // Update the networking
                 ServerSockets.Heartbeat();
+
+                // Handle input from the console
+                lock (_consoleInputBuffer)
+                {
+                    while (_consoleInputBuffer.Count > 0)
+                    {
+                        string inputStr = _consoleInputBuffer.Dequeue();
+                        var resultStr = _consoleCommands.ExecuteCommand(inputStr);
+                        if (!string.IsNullOrEmpty(resultStr))
+                            Console.WriteLine(resultStr);
+                    }
+                }
 
                 // Update the world
                 _world.Update();
@@ -316,14 +334,16 @@ namespace DemoGame.Server
         /// </summary>
         void HandleInput()
         {
-            ConsoleCommands consoleCommands = new ConsoleCommands(this);
-
             while (_isRunning)
             {
                 string input = Console.ReadLine();
-                string resultStr = consoleCommands.ExecuteCommand(input);
-                if (!string.IsNullOrEmpty(resultStr))
-                    Console.WriteLine(resultStr);
+                if (!string.IsNullOrEmpty(input))
+                {
+                    lock (_consoleInputBuffer)
+                    {
+                        _consoleInputBuffer.Enqueue(input);
+                    }
+                }
             }
         }
 
