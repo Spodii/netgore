@@ -13,6 +13,11 @@ namespace NetGore.Db.ClassCreator
     public abstract class DbClassGenerator : IDisposable
     {
         /// <summary>
+        /// Name given to all extension method's first parameter.
+        /// </summary>
+        const string _extensionParamName = "source";
+
+        /// <summary>
         /// Name of the class used to store the column metadata.
         /// </summary>
         public const string ColumnMetadataClassName = "ColumnMetadata";
@@ -52,11 +57,6 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         public const string TryCopyValuesMethodName = "TryCopyValues";
 
-        /// <summary>
-        /// Name given to all extension method's first parameter.
-        /// </summary>
-        const string _extensionParamName = "source";
-
         readonly List<ColumnCollection> _columnCollections = new List<ColumnCollection>();
         readonly List<CustomTypeMapping> _customTypes = new List<CustomTypeMapping>();
 
@@ -65,15 +65,23 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         readonly Dictionary<Type, string> _dataReaderReadMethods = new Dictionary<Type, string>();
 
+        DbConnection _dbConnction;
         readonly Dictionary<string, IEnumerable<DbColumnInfo>> _dbTables = new Dictionary<string, IEnumerable<DbColumnInfo>>();
+        bool _isDbContentLoaded = false;
 
         /// <summary>
         /// Using directives to add.
         /// </summary>
         readonly List<string> _usings = new List<string>();
 
-        DbConnection _dbConnction;
-        bool _isDbContentLoaded = false;
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DbClassGenerator"/> class.
+        /// </summary>
+        protected DbClassGenerator()
+        {
+            Formatter = new CSharpCodeFormatter();
+            SetDataReaderReadMethod(typeof(float), "GetFloat");
+        }
 
         /// <summary>
         /// Gets the DbConnection used to connect to the database.
@@ -87,15 +95,6 @@ namespace NetGore.Db.ClassCreator
         /// Gets or sets the CodeFormatter to use. Default is the CSharpCodeFormatter.
         /// </summary>
         public CodeFormatter Formatter { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DbClassGenerator"/> class.
-        /// </summary>
-        protected DbClassGenerator()
-        {
-            Formatter = new CSharpCodeFormatter();
-            SetDataReaderReadMethod(typeof(float), "GetFloat");
-        }
 
         /// <summary>
         /// Adds a column to the column collection.

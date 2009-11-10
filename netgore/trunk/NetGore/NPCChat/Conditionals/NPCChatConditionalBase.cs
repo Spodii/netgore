@@ -32,10 +32,14 @@ namespace NetGore.NPCChat.Conditionals
         static readonly Dictionary<string, NPCChatConditionalBase> _instances =
             new Dictionary<string, NPCChatConditionalBase>(_nameComparer);
 
+        readonly string _name;
+
         /// <summary>
         /// <see cref="StringComparer"/> used for the <see cref="Name"/>.
         /// </summary>
         static readonly StringComparer _nameComparer = StringComparer.Ordinal;
+
+        readonly NPCChatConditionalParameterType[] _parameterTypes;
 
         /// <summary>
         /// Loads and manages the derived Types for this collection.
@@ -43,42 +47,6 @@ namespace NetGore.NPCChat.Conditionals
         static readonly TypeFactory _typeCollection;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        readonly string _name;
-        readonly NPCChatConditionalParameterType[] _parameterTypes;
-
-        /// <summary>
-        /// Gets an IEnumerable of the <see cref="NPCChatConditionalBase"/>s.
-        /// </summary>
-        public static IEnumerable<NPCChatConditionalBase> Conditionals
-        {
-            get { return _instances.Values; }
-        }
-
-        /// <summary>
-        /// Gets the unique name for this <see cref="NPCChatConditionalBase"/>. This string is case-sensitive.
-        /// </summary>
-        public string Name
-        {
-            get { return _name; }
-        }
-
-        /// <summary>
-        /// Gets the number of parameters required by this <see cref="NPCChatConditionalBase"/>.
-        /// </summary>
-        public int ParameterCount
-        {
-            get { return _parameterTypes.Length; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of the <see cref="NPCChatConditionalParameterType"/> used in this
-        /// <see cref="NPCChatConditionalBase"/>.
-        /// </summary>
-        public IEnumerable<NPCChatConditionalParameterType> ParameterTypes
-        {
-            get { return _parameterTypes; }
-        }
 
         /// <summary>
         /// Initializes the <see cref="NPCChatConditionalBase"/> class.
@@ -113,6 +81,39 @@ namespace NetGore.NPCChat.Conditionals
 
             _name = name;
             _parameterTypes = parameterTypes;
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="NPCChatConditionalBase"/>s.
+        /// </summary>
+        public static IEnumerable<NPCChatConditionalBase> Conditionals
+        {
+            get { return _instances.Values; }
+        }
+
+        /// <summary>
+        /// Gets the unique name for this <see cref="NPCChatConditionalBase"/>. This string is case-sensitive.
+        /// </summary>
+        public string Name
+        {
+            get { return _name; }
+        }
+
+        /// <summary>
+        /// Gets the number of parameters required by this <see cref="NPCChatConditionalBase"/>.
+        /// </summary>
+        public int ParameterCount
+        {
+            get { return _parameterTypes.Length; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="NPCChatConditionalParameterType"/> used in this
+        /// <see cref="NPCChatConditionalBase"/>.
+        /// </summary>
+        public IEnumerable<NPCChatConditionalParameterType> ParameterTypes
+        {
+            get { return _parameterTypes; }
         }
 
         /// <summary>

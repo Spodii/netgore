@@ -23,31 +23,6 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "user_character";
 
         /// <summary>
-        /// Array of the database column names.
-        /// </summary>
-        static readonly String[] _dbColumns = new string[]
-        {
-            "account_id", "ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "id", "level", "map_id",
-            "mp", "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
-            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
-        };
-
-        /// <summary>
-        /// Array of the database column names for columns that are primary keys.
-        /// </summary>
-        static readonly String[] _dbColumnsKeys = new string[] { };
-
-        /// <summary>
-        /// Array of the database column names for columns that are not primary keys.
-        /// </summary>
-        static readonly String[] _dbColumnsNonKey = new string[]
-        {
-            "account_id", "ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "id", "level", "map_id",
-            "mp", "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
-            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
-        };
-
-        /// <summary>
         /// The field that maps onto the database column `account_id`.
         /// </summary>
         int? _accountID;
@@ -76,6 +51,31 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `chat_dialog`.
         /// </summary>
         ushort? _chatDialog;
+
+        /// <summary>
+        /// Array of the database column names.
+        /// </summary>
+        static readonly String[] _dbColumns = new string[]
+        {
+            "account_id", "ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "id", "level", "map_id",
+            "mp", "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
+            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
+        };
+
+        /// <summary>
+        /// Array of the database column names for columns that are primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsKeys = new string[] { };
+
+        /// <summary>
+        /// Array of the database column names for columns that are not primary keys.
+        /// </summary>
+        static readonly String[] _dbColumnsNonKey = new string[]
+        {
+            "account_id", "ai_id", "body_id", "cash", "character_template_id", "chat_dialog", "exp", "hp", "id", "level", "map_id",
+            "mp", "name", "respawn_map", "respawn_x", "respawn_y", "shop_id", "stat_agi", "stat_defence", "stat_int", "stat_maxhit",
+            "stat_maxhp", "stat_maxmp", "stat_minhit", "stat_str", "statpoints", "x", "y"
+        };
 
         /// <summary>
         /// The field that maps onto the database column `exp`.
@@ -188,30 +188,6 @@ namespace DemoGame.Server.DbObjs
         Single _y;
 
         /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-        /// </summary>
-        public static IEnumerable<String> DbColumns
-        {
-            get { return _dbColumns; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbKeyColumns
-        {
-            get { return _dbColumnsKeys; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbNonKeyColumns
-        {
-            get { return _dbColumnsNonKey; }
-        }
-
-        /// <summary>
         /// UserCharacterTable constructor.
         /// </summary>
         public UserCharacterTable()
@@ -293,6 +269,30 @@ namespace DemoGame.Server.DbObjs
         public UserCharacterTable(IUserCharacterTable source)
         {
             CopyValuesFrom(source);
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
         }
 
         /// <summary>

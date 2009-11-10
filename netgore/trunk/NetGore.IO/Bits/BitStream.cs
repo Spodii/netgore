@@ -16,11 +16,6 @@ namespace NetGore.IO
     public class BitStream : IValueReader, IValueWriter
     {
         /// <summary>
-        /// Default maximum length of a string when the maximum length is not specified.
-        /// </summary>
-        public const ushort DefaultStringMaxLength = ushort.MaxValue - 1;
-
-        /// <summary>
         /// The number of bits in a byte.
         /// </summary>
         const int _bitsByte = sizeof(byte) * 8;
@@ -56,16 +51,9 @@ namespace NetGore.IO
         const int _highBit = (sizeof(byte) * 8) - 1;
 
         /// <summary>
-        /// Default BitStreamBufferMode for reading
+        /// Default maximum length of a string when the maximum length is not specified.
         /// </summary>
-        static BitStreamBufferMode _defaultBufferReadMode = BitStreamBufferMode.Dynamic;
-
-        /// <summary>
-        /// Default BitStreamBufferMode for writing
-        /// </summary>
-        static BitStreamBufferMode _defaultBufferWriteMode = BitStreamBufferMode.Dynamic;
-
-        readonly bool _useEnumNames = false;
+        public const ushort DefaultStringMaxLength = ushort.MaxValue - 1;
 
         /// <summary>
         /// Data buffer
@@ -77,6 +65,16 @@ namespace NetGore.IO
         /// buffer came from. When writing, this is where the work buffer will go.
         /// </summary>
         int _bufferPos = 0;
+
+        /// <summary>
+        /// Default BitStreamBufferMode for reading
+        /// </summary>
+        static BitStreamBufferMode _defaultBufferReadMode = BitStreamBufferMode.Dynamic;
+
+        /// <summary>
+        /// Default BitStreamBufferMode for writing
+        /// </summary>
+        static BitStreamBufferMode _defaultBufferWriteMode = BitStreamBufferMode.Dynamic;
 
         /// <summary>
         /// Highest index that has been written to
@@ -92,6 +90,8 @@ namespace NetGore.IO
         /// How the buffer is handled when using reading operations 
         /// </summary>
         BitStreamBufferMode _readMode = _defaultBufferReadMode;
+
+        readonly bool _useEnumNames = false;
 
         /// <summary>
         /// Buffer used to read and write the current bits from. Even though
@@ -111,6 +111,74 @@ namespace NetGore.IO
         BitStreamBufferMode _writeMode = _defaultBufferWriteMode;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="BitStream"/> class.
+        /// </summary>
+        /// <param name="buffer">The initial buffer (default mode set to read). A shallow copy of this object
+        /// is used, so altering the buffer directly will alter the stream.</param>
+        public BitStream(byte[] buffer) : this(buffer, false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BitStream"/> class.
+        /// </summary>
+        /// <param name="buffer">The initial buffer (default mode set to read). A shallow copy of this object
+        /// is used, so altering the buffer directly will alter the stream.</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        public BitStream(byte[] buffer, bool useEnumNames)
+        {
+            _useEnumNames = useEnumNames;
+
+            if (buffer == null)
+                throw new ArgumentNullException("buffer");
+            if (buffer.Length == 0)
+                throw new ArgumentException("buffer.Length == 0", "buffer");
+
+            _mode = BitStreamMode.Read;
+            SetBuffer(buffer);
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BitStream"/> class.
+        /// </summary>
+        /// <param name="mode">Initial I/O mode to create the bit stream in</param>
+        /// <param name="bufferSize">Initial size of the internal buffer in bytes (must be greater than 0)</param>
+        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
+        /// Enum I/O will use the underlying integer value of the Enum.</param>
+        public BitStream(BitStreamMode mode, int bufferSize, bool useEnumNames)
+        {
+            _useEnumNames = useEnumNames;
+
+            // If the buffer size is invalid, silently fix it
+            if (bufferSize < 1)
+            {
+                Debug.Fail("bufferSize less than 1.");
+                bufferSize = 2;
+            }
+
+            _mode = mode;
+            _buffer = new byte[bufferSize];
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BitStream"/> class.
+        /// </summary>
+        /// <param name="mode">Initial I/O mode to create the bit stream in</param>
+        /// <param name="bufferSize">Initial size of the internal buffer in bytes (must be greater than 0)</param>
+        public BitStream(BitStreamMode mode, int bufferSize) : this(mode, bufferSize, false)
+        {
+        }
+
+        /// <summary>
+        /// Gets the length of the internal buffer in bytes.
+        /// </summary>
+        public int BufferLength
+        {
+            get { return _buffer.Length; }
+        }
+
+        /// <summary>
         /// Gets or sets the default BitStreamMode used for the read buffer for new BitStreams.
         /// </summary>
         public static BitStreamBufferMode DefaultReadBufferMode
@@ -126,14 +194,6 @@ namespace NetGore.IO
         {
             get { return _defaultBufferWriteMode; }
             set { _defaultBufferWriteMode = value; }
-        }
-
-        /// <summary>
-        /// Gets the length of the internal buffer in bytes.
-        /// </summary>
-        public int BufferLength
-        {
-            get { return _buffer.Length; }
         }
 
         /// <summary>
@@ -247,66 +307,6 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BitStream"/> class.
-        /// </summary>
-        /// <param name="buffer">The initial buffer (default mode set to read). A shallow copy of this object
-        /// is used, so altering the buffer directly will alter the stream.</param>
-        public BitStream(byte[] buffer) : this(buffer, false)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BitStream"/> class.
-        /// </summary>
-        /// <param name="buffer">The initial buffer (default mode set to read). A shallow copy of this object
-        /// is used, so altering the buffer directly will alter the stream.</param>
-        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
-        /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public BitStream(byte[] buffer, bool useEnumNames)
-        {
-            _useEnumNames = useEnumNames;
-
-            if (buffer == null)
-                throw new ArgumentNullException("buffer");
-            if (buffer.Length == 0)
-                throw new ArgumentException("buffer.Length == 0", "buffer");
-
-            _mode = BitStreamMode.Read;
-            SetBuffer(buffer);
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BitStream"/> class.
-        /// </summary>
-        /// <param name="mode">Initial I/O mode to create the bit stream in</param>
-        /// <param name="bufferSize">Initial size of the internal buffer in bytes (must be greater than 0)</param>
-        /// <param name="useEnumNames">If true, Enums I/O will be done using the Enum's name. If false,
-        /// Enum I/O will use the underlying integer value of the Enum.</param>
-        public BitStream(BitStreamMode mode, int bufferSize, bool useEnumNames)
-        {
-            _useEnumNames = useEnumNames;
-
-            // If the buffer size is invalid, silently fix it
-            if (bufferSize < 1)
-            {
-                Debug.Fail("bufferSize less than 1.");
-                bufferSize = 2;
-            }
-
-            _mode = mode;
-            _buffer = new byte[bufferSize];
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="BitStream"/> class.
-        /// </summary>
-        /// <param name="mode">Initial I/O mode to create the bit stream in</param>
-        /// <param name="bufferSize">Initial size of the internal buffer in bytes (must be greater than 0)</param>
-        public BitStream(BitStreamMode mode, int bufferSize) : this(mode, bufferSize, false)
-        {
-        }
-
-        /// <summary>
         /// If a number of bits can fit into the buffer without overflowing. If
         /// the buffer is set to automatically expand, this will always be true.
         /// </summary>
@@ -413,24 +413,6 @@ namespace NetGore.IO
             _workBufferPos = _highBit;
             _workBuffer = 0;
         }
-
-        /*
-        /// <summary>
-        /// Takes a partial series of bits from a int and returns it
-        /// in the first bits of a new int
-        /// </summary>
-        /// <param name="value">Value to grab the bits from</param>
-        /// <param name="bitPosition">Bit position of the largest bit where 0 is
-        /// the right-most (smallest) bit</param>
-        /// <param name="length">Number of bits to read (0 = 1 bit, 1 = 2 bits, etc)</param>
-        static int GetBits(int value, int bitPosition, int length)
-        {
-            // Unused method, but preserved because of references to it in comments
-            value >>= bitPosition - length;
-            int mask = (1 << (length + 1)) - 1;
-            return value & mask;
-        }
-        */
 
         /// <summary>
         /// Gets the byte buffer (shallow copy) used by the BitStream. When called in Write mode, 

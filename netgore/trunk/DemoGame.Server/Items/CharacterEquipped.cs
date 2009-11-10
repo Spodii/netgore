@@ -12,12 +12,22 @@ namespace DemoGame.Server
 {
     public abstract class CharacterEquipped : EquippedBase<ItemEntity>, IDisposable, IModStatContainer
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         readonly Character _character;
 
-        readonly bool _isPersistent;
         bool _disposed = false;
+        readonly bool _isPersistent;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        protected CharacterEquipped(Character character)
+        {
+            if (character == null)
+                throw new ArgumentNullException("character");
+
+            _character = character;
+            _isPersistent = character.IsPersistent;
+
+            AddListeners();
+        }
 
         /// <summary>
         /// Gets the Character that this UserEquipped belongs to.
@@ -30,17 +40,6 @@ namespace DemoGame.Server
         public IDbController DbController
         {
             get { return Character.DbController; }
-        }
-
-        protected CharacterEquipped(Character character)
-        {
-            if (character == null)
-                throw new ArgumentNullException("character");
-
-            _character = character;
-            _isPersistent = character.IsPersistent;
-
-            AddListeners();
         }
 
         void AddListeners()

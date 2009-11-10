@@ -19,11 +19,6 @@ namespace DemoGame.Client
         readonly Func<IValueReader, TValue> _reader;
         readonly Action<IValueWriter, TValue> _writer;
 
-        public TValue this[TKey key]
-        {
-            get { return _dict[key]; }
-        }
-
         public InfoManager(string fileName, IEqualityComparer<TKey> comparer, Func<IValueReader, TValue> reader,
                            Action<IValueWriter, TValue> writer, Func<TValue, TKey> getKey)
         {
@@ -38,6 +33,11 @@ namespace DemoGame.Client
             {
                 _dict.Add(value.Key, value.Value);
             }
+        }
+
+        public TValue this[TKey key]
+        {
+            get { return _dict[key]; }
         }
 
         public void AddMissingTypes(IEnumerable<TKey> keys, Func<TKey, TValue> creator)

@@ -13,10 +13,18 @@ namespace DemoGame.Client
     /// </summary>
     public class Inventory : InventoryBase
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly ItemEntity[] _buffer = new ItemEntity[MaxInventorySize];
 
         readonly ISocketSender _socket;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        public Inventory(ISocketSender socket)
+        {
+            if (socket == null)
+                throw new ArgumentNullException("socket");
+
+            _socket = socket;
+        }
 
         /// <summary>
         /// Gets an inventory item.
@@ -60,14 +68,6 @@ namespace DemoGame.Client
 
                 _buffer[(int)slot] = value;
             }
-        }
-
-        public Inventory(ISocketSender socket)
-        {
-            if (socket == null)
-                throw new ArgumentNullException("socket");
-
-            _socket = socket;
         }
 
         public void Drop(InventorySlot slot)

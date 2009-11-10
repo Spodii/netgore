@@ -18,6 +18,22 @@ namespace NetGore.NPCChat
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
+        /// NPCChatDialogItemBase constructor.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        protected NPCChatDialogItemBase(IValueReader reader)
+        {
+            Read(reader);
+        }
+
+        /// <summary>
+        /// NPCChatDialogItemBase constructor.
+        /// </summary>
+        protected NPCChatDialogItemBase()
+        {
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
         /// conditionals used to evaluate if this NPCChatDialogItemBase may be used. If this value is null, it
         /// is assumed that there are no conditionals attached to this NPCChatDialogItemBase, and should be treated
@@ -55,22 +71,6 @@ namespace NetGore.NPCChat
         /// used for debugging and development purposes only.
         /// </summary>
         public abstract string Title { get; }
-
-        /// <summary>
-        /// NPCChatDialogItemBase constructor.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        protected NPCChatDialogItemBase(IValueReader reader)
-        {
-            Read(reader);
-        }
-
-        /// <summary>
-        /// NPCChatDialogItemBase constructor.
-        /// </summary>
-        protected NPCChatDialogItemBase()
-        {
-        }
 
         /// <summary>
         /// Asserts that, if IsBranch is true, there are only 2 responses.

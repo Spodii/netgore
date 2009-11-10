@@ -25,14 +25,14 @@ namespace NetGore.Collections
         /// </summary>
         const int _defaultSize = 8;
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly BitArray _isIndexUsed = new BitArray(_defaultSize, false);
-
-        readonly bool _trackFree;
         T[] _buffer;
         Stack<int> _freeIndices;
         int _highestIndex = -1;
+        readonly BitArray _isIndexUsed = new BitArray(_defaultSize, false);
+
+        readonly bool _trackFree;
         int _version = 0;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Notifies when an item has been added to the DArray
@@ -43,24 +43,6 @@ namespace NetGore.Collections
         /// Notifies when an item has been removed from the DArray
         /// </summary>
         public event DArrayModifyEventHandler<T> OnRemove;
-
-        /// <summary>
-        /// Gets the length of the DArray.
-        /// </summary>
-        public int Length
-        {
-            get { return _highestIndex + 1; }
-        }
-
-        /// <summary>
-        /// Gets if free indices are tracked. If disabled, you will not be able to use 
-        /// Add() and will have to use the indices directly through this[index]. Must
-        /// be set in the constructor.
-        /// </summary>
-        public bool TrackFree
-        {
-            get { return _trackFree; }
-        }
 
         /// <summary>
         /// DArray constructor
@@ -114,6 +96,24 @@ namespace NetGore.Collections
             {
                 Add(item);
             }
+        }
+
+        /// <summary>
+        /// Gets the length of the DArray.
+        /// </summary>
+        public int Length
+        {
+            get { return _highestIndex + 1; }
+        }
+
+        /// <summary>
+        /// Gets if free indices are tracked. If disabled, you will not be able to use 
+        /// Add() and will have to use the indices directly through this[index]. Must
+        /// be set in the constructor.
+        /// </summary>
+        public bool TrackFree
+        {
+            get { return _trackFree; }
         }
 
         /// <summary>
@@ -562,10 +562,10 @@ namespace NetGore.Collections
         /// </summary>
         public struct Enumerator : IEnumerator<T>
         {
-            readonly DArray<T> _items;
-            readonly int _version;
             T _current;
             int _index;
+            readonly DArray<T> _items;
+            readonly int _version;
 
             internal Enumerator(DArray<T> source)
             {

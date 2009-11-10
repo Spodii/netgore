@@ -24,44 +24,11 @@ namespace NetGore.Globalization
         const NumberStyles _nsULong = NumberStyles.Integer;
         const NumberStyles _nsUShort = NumberStyles.Integer;
 
-        static readonly Parser _parserCurrent;
-        static readonly Parser _parserInvariant;
-
         readonly CultureInfo _culture;
         readonly DateTimeFormatInfo _dateTimeInfo;
         readonly NumberFormatInfo _info;
-
-        /// <summary>
-        /// Gets the Parser for the current culture.
-        /// </summary>
-        public static Parser Current
-        {
-            get { return _parserCurrent; }
-        }
-
-        /// <summary>
-        /// Gets the Parser for an invariant culture.
-        /// </summary>
-        public static Parser Invariant
-        {
-            get { return _parserInvariant; }
-        }
-
-        /// <summary>
-        /// Gets the CultureInfo used for this Parser.
-        /// </summary>
-        public CultureInfo CultureInfo
-        {
-            get { return _culture; }
-        }
-
-        /// <summary>
-        /// Gets the NumberFormatInfo used for this Parser.
-        /// </summary>
-        public NumberFormatInfo NumberFormatInfo
-        {
-            get { return _info; }
-        }
+        static readonly Parser _parserCurrent;
+        static readonly Parser _parserInvariant;
 
         /// <summary>
         /// Initializes the <see cref="Parser"/> class.
@@ -91,6 +58,38 @@ namespace NetGore.Globalization
             _culture = culture;
             _info = info;
             _dateTimeInfo = dateTimeInfo;
+        }
+
+        /// <summary>
+        /// Gets the CultureInfo used for this Parser.
+        /// </summary>
+        public CultureInfo CultureInfo
+        {
+            get { return _culture; }
+        }
+
+        /// <summary>
+        /// Gets the Parser for the current culture.
+        /// </summary>
+        public static Parser Current
+        {
+            get { return _parserCurrent; }
+        }
+
+        /// <summary>
+        /// Gets the Parser for an invariant culture.
+        /// </summary>
+        public static Parser Invariant
+        {
+            get { return _parserInvariant; }
+        }
+
+        /// <summary>
+        /// Gets the NumberFormatInfo used for this Parser.
+        /// </summary>
+        public NumberFormatInfo NumberFormatInfo
+        {
+            get { return _info; }
         }
 
         public bool ParseBool(string s)

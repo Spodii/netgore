@@ -22,13 +22,29 @@ namespace DemoGame.NPCChatEditor
 {
     public partial class frmMain : Form
     {
+        bool _doNotUpdateObj;
+        object _editingObj;
+
         /// <summary>
         /// Contains the <see cref="NPCChatConditionalBase"/>s available.
         /// </summary>
         static readonly NPCChatConditionalBase[] _npcChatConditionals;
 
-        bool _doNotUpdateObj;
-        object _editingObj;
+        /// <summary>
+        /// Initializes the <see cref="frmMain"/> class.
+        /// </summary>
+        static frmMain()
+        {
+            _npcChatConditionals = NPCChatConditionalBase.Conditionals.OrderBy(x => x.Name).ToArray();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="frmMain"/> class.
+        /// </summary>
+        public frmMain()
+        {
+            InitializeComponent();
+        }
 
         /// <summary>
         /// Gets the EditorNPCChatDialog currently being edited.
@@ -60,22 +76,6 @@ namespace DemoGame.NPCChatEditor
         TreeNode EditingObjAsTreeNode
         {
             get { return _editingObj as TreeNode; }
-        }
-
-        /// <summary>
-        /// Initializes the <see cref="frmMain"/> class.
-        /// </summary>
-        static frmMain()
-        {
-            _npcChatConditionals = NPCChatConditionalBase.Conditionals.OrderBy(x => x.Name).ToArray();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="frmMain"/> class.
-        /// </summary>
-        public frmMain()
-        {
-            InitializeComponent();
         }
 
         void btnAddAction_Click(object sender, EventArgs e)

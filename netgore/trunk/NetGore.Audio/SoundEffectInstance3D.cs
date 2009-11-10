@@ -10,11 +10,18 @@ namespace NetGore.Audio
     /// </summary>
     public class SoundEffectInstance3D
     {
+        IAudioEmitter _emitter;
         static readonly Stack<SoundEffectInstance3D> _freeObjects = new Stack<SoundEffectInstance3D>();
         static readonly object _freeObjectsSync = new object();
 
-        IAudioEmitter _emitter;
         SoundEffectInstance _sound;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SoundEffectInstance3D"/> class.
+        /// </summary>
+        SoundEffectInstance3D()
+        {
+        }
 
         /// <summary>
         /// Gets the <see cref="IAudioEmitter"/> emitting the <see cref="Sound"/>.
@@ -30,13 +37,6 @@ namespace NetGore.Audio
         public SoundEffectInstance Sound
         {
             get { return _sound; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="SoundEffectInstance3D"/> class.
-        /// </summary>
-        SoundEffectInstance3D()
-        {
         }
 
         /// <summary>

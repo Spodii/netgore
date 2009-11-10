@@ -14,37 +14,21 @@ namespace NetGore.Db
     /// </summary>
     public abstract class DbQueryBase : IDbQueryHandler
     {
+        const string _disposedErrorMessage = "Can not access methods on a disposed object.";
+        const int _initialStackSize = 2;
+
         /// <summary>
         /// The prefix character for database query parameters.
         /// </summary>
         public const string ParameterPrefix = "@";
 
-        const string _disposedErrorMessage = "Can not access methods on a disposed object.";
-        const int _initialStackSize = 2;
-
         readonly Stack<DbCommand> _commands = new Stack<DbCommand>(_initialStackSize);
         readonly object _commandsLock = new object();
         readonly string _commandText;
         readonly DbConnectionPool _connectionPool;
+        bool _disposed;
         readonly bool _hasParameters;
         readonly IEnumerable<DbParameter> _parameters;
-        bool _disposed;
-
-        /// <summary>
-        /// Gets if this DbQueryBase contains a query that has any parameters.
-        /// </summary>
-        public bool HasParameters
-        {
-            get { return _hasParameters; }
-        }
-
-        /// <summary>
-        /// Gets if this DbQueryBase has been disposed.
-        /// </summary>
-        public bool IsDisposed
-        {
-            get { return _disposed; }
-        }
 
         protected DbQueryBase(DbConnectionPool connectionPool, string commandText)
         {
@@ -63,6 +47,22 @@ namespace NetGore.Db
 
             // Keep track if we have any parameters or not
             _hasParameters = (_parameters.Count() > 0);
+        }
+
+        /// <summary>
+        /// Gets if this DbQueryBase contains a query that has any parameters.
+        /// </summary>
+        public bool HasParameters
+        {
+            get { return _hasParameters; }
+        }
+
+        /// <summary>
+        /// Gets if this DbQueryBase has been disposed.
+        /// </summary>
+        public bool IsDisposed
+        {
+            get { return _disposed; }
         }
 
         /// <summary>

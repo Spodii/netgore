@@ -13,10 +13,6 @@ namespace DemoGame
         const string _valueKeyIndex = "Index";
         const string _valueKeyName = "Name";
 
-        public BodyIndex BodyIndex { get; protected set; }
-        public byte Index { get; protected set; }
-        public string Name { get; protected set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="AccountCharacterInfo"/> class.
         /// </summary>
@@ -40,6 +36,10 @@ namespace DemoGame
             Name = r.ReadString("Name");
             BodyIndex = r.ReadBodyIndex("BodyIndex");
         }
+
+        public BodyIndex BodyIndex { get; protected set; }
+        public byte Index { get; protected set; }
+        public string Name { get; protected set; }
 
         public void Write(IValueWriter w)
         {

@@ -14,10 +14,10 @@ namespace DemoGame.Server.Queries
         const string _queryString = "UPDATE `" + ItemTable.TableName + "` SET `{0}`=@value WHERE `id`=@itemID";
         readonly DbConnectionPool _connectionPool;
 
+        bool _disposed;
+
         readonly Dictionary<string, InternalUpdateItemFieldQuery> _fieldQueries =
             new Dictionary<string, InternalUpdateItemFieldQuery>(StringComparer.OrdinalIgnoreCase);
-
-        bool _disposed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpdateItemFieldQuery"/> class.

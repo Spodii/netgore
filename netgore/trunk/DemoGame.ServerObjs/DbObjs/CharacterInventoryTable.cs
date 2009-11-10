@@ -21,6 +21,11 @@ namespace DemoGame.Server.DbObjs
         public const String TableName = "character_inventory";
 
         /// <summary>
+        /// The field that maps onto the database column `character_id`.
+        /// </summary>
+        Int32 _characterID;
+
+        /// <summary>
         /// Array of the database column names.
         /// </summary>
         static readonly String[] _dbColumns = new string[] { "character_id", "item_id", "slot" };
@@ -36,11 +41,6 @@ namespace DemoGame.Server.DbObjs
         static readonly String[] _dbColumnsNonKey = new string[] { "item_id" };
 
         /// <summary>
-        /// The field that maps onto the database column `character_id`.
-        /// </summary>
-        Int32 _characterID;
-
-        /// <summary>
         /// The field that maps onto the database column `item_id`.
         /// </summary>
         Int32 _itemID;
@@ -49,30 +49,6 @@ namespace DemoGame.Server.DbObjs
         /// The field that maps onto the database column `slot`.
         /// </summary>
         Byte _slot;
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-        /// </summary>
-        public static IEnumerable<String> DbColumns
-        {
-            get { return _dbColumns; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbKeyColumns
-        {
-            get { return _dbColumnsKeys; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbNonKeyColumns
-        {
-            get { return _dbColumnsNonKey; }
-        }
 
         /// <summary>
         /// CharacterInventoryTable constructor.
@@ -101,6 +77,30 @@ namespace DemoGame.Server.DbObjs
         public CharacterInventoryTable(ICharacterInventoryTable source)
         {
             CopyValuesFrom(source);
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
         }
 
         /// <summary>

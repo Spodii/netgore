@@ -7,6 +7,28 @@ namespace NetGore.Db.ClassCreator
     public class DbColumnInfo
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DbColumnInfo"/> class.
+        /// </summary>
+        /// <param name="name">The name.</param>
+        /// <param name="databaseType">Type of the database.</param>
+        /// <param name="type">The type.</param>
+        /// <param name="nullable">if set to <c>true</c> [nullable].</param>
+        /// <param name="defaultValue">The default value.</param>
+        /// <param name="comment">The comment.</param>
+        /// <param name="keyType">Type of the key.</param>
+        public DbColumnInfo(string name, string databaseType, Type type, bool nullable, object defaultValue, string comment,
+                            DbColumnKeyType keyType)
+        {
+            Name = name;
+            DatabaseType = databaseType;
+            Type = type;
+            IsNullable = nullable;
+            DefaultValue = defaultValue;
+            Comment = comment;
+            KeyType = keyType;
+        }
+
+        /// <summary>
         /// Gets or sets the comment.
         /// </summary>
         /// <value>The comment.</value>
@@ -47,27 +69,5 @@ namespace NetGore.Db.ClassCreator
         /// </summary>
         /// <value>The type.</value>
         public Type Type { get; set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DbColumnInfo"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="databaseType">Type of the database.</param>
-        /// <param name="type">The type.</param>
-        /// <param name="nullable">if set to <c>true</c> [nullable].</param>
-        /// <param name="defaultValue">The default value.</param>
-        /// <param name="comment">The comment.</param>
-        /// <param name="keyType">Type of the key.</param>
-        public DbColumnInfo(string name, string databaseType, Type type, bool nullable, object defaultValue, string comment,
-                            DbColumnKeyType keyType)
-        {
-            Name = name;
-            DatabaseType = databaseType;
-            Type = type;
-            IsNullable = nullable;
-            DefaultValue = defaultValue;
-            Comment = comment;
-            KeyType = keyType;
-        }
     }
 }

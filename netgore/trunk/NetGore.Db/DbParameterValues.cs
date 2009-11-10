@@ -18,11 +18,15 @@ namespace NetGore.Db
         readonly DbParameterCollection _collection;
 
         /// <summary>
-        /// Gets the number of parameters in this collection.
+        /// DbParameterValues constructor.
         /// </summary>
-        public int Count
+        /// <param name="dbParameterCollection">DbParameterCollection to wrap around.</param>
+        public DbParameterValues(DbParameterCollection dbParameterCollection)
         {
-            get { return _collection.Count; }
+            if (dbParameterCollection == null)
+                throw new ArgumentNullException("dbParameterCollection");
+
+            _collection = dbParameterCollection;
         }
 
         /// <summary>
@@ -48,15 +52,11 @@ namespace NetGore.Db
         }
 
         /// <summary>
-        /// DbParameterValues constructor.
+        /// Gets the number of parameters in this collection.
         /// </summary>
-        /// <param name="dbParameterCollection">DbParameterCollection to wrap around.</param>
-        public DbParameterValues(DbParameterCollection dbParameterCollection)
+        public int Count
         {
-            if (dbParameterCollection == null)
-                throw new ArgumentNullException("dbParameterCollection");
-
-            _collection = dbParameterCollection;
+            get { return _collection.Count; }
         }
 
         /// <summary>

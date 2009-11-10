@@ -46,30 +46,6 @@ namespace DemoGame.DbObjs
         String _name;
 
         /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
-        /// </summary>
-        public static IEnumerable<String> DbColumns
-        {
-            get { return _dbColumns; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbKeyColumns
-        {
-            get { return _dbColumnsKeys; }
-        }
-
-        /// <summary>
-        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
-        /// </summary>
-        public static IEnumerable<String> DbNonKeyColumns
-        {
-            get { return _dbColumnsNonKey; }
-        }
-
-        /// <summary>
         /// MapTable constructor.
         /// </summary>
         public MapTable()
@@ -94,6 +70,30 @@ namespace DemoGame.DbObjs
         public MapTable(IMapTable source)
         {
             CopyValuesFrom(source);
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns for the table that this class represents.
+        /// </summary>
+        public static IEnumerable<String> DbColumns
+        {
+            get { return _dbColumns; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbKeyColumns
+        {
+            get { return _dbColumnsKeys; }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of strings containing the names of the database columns that are not primary keys.
+        /// </summary>
+        public static IEnumerable<String> DbNonKeyColumns
+        {
+            get { return _dbColumnsNonKey; }
         }
 
         /// <summary>

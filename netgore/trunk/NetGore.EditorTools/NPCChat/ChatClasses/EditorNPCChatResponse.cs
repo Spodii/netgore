@@ -26,6 +26,33 @@ namespace NetGore.EditorTools.NPCChat
         public event EditorNPCChatResponseEventHandler OnChange;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatResponse"/> class.
+        /// </summary>
+        /// <param name="text">The text.</param>
+        public EditorNPCChatResponse(string text) : this(EndConversationPage, text)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatResponse"/> class.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        public EditorNPCChatResponse(IValueReader reader) : base(reader)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatResponse"/> class.
+        /// </summary>
+        /// <param name="page">The page.</param>
+        /// <param name="text">The text.</param>
+        public EditorNPCChatResponse(ushort page, string text)
+        {
+            _page = page;
+            _text = text;
+        }
+
+        /// <summary>
         /// When overridden in the derived class, gets the <see cref="NPCChatResponseActionBase"/>s that are
         /// executed when selecting this <see cref="NPCChatResponseBase"/>. This value will never be null, but
         /// it can be an empty IEnumerable.
@@ -93,33 +120,6 @@ namespace NetGore.EditorTools.NPCChat
         public override byte Value
         {
             get { return _value; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditorNPCChatResponse"/> class.
-        /// </summary>
-        /// <param name="text">The text.</param>
-        public EditorNPCChatResponse(string text) : this(EndConversationPage, text)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditorNPCChatResponse"/> class.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        public EditorNPCChatResponse(IValueReader reader) : base(reader)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditorNPCChatResponse"/> class.
-        /// </summary>
-        /// <param name="page">The page.</param>
-        /// <param name="text">The text.</param>
-        public EditorNPCChatResponse(ushort page, string text)
-        {
-            _page = page;
-            _text = text;
         }
 
         /// <summary>

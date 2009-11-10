@@ -15,19 +15,11 @@ namespace DemoGame.Server
     /// </summary>
     public class Shop : IShopTable
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly bool _canBuy;
         readonly ShopID _id;
         readonly string _name;
         readonly ShopItem[] _shopItems;
-
-        /// <summary>
-        /// Gets an IEnumerable of the <see cref="ShopItem"/>s in this <see cref="Shop"/>.
-        /// </summary>
-        public IEnumerable<ShopItem> ShopItems
-        {
-            get { return _shopItems; }
-        }
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Shop"/> class.
@@ -59,6 +51,14 @@ namespace DemoGame.Server
                 Debug.Fail(err);
                 throw new Exception(err);
             }
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of the <see cref="ShopItem"/>s in this <see cref="Shop"/>.
+        /// </summary>
+        public IEnumerable<ShopItem> ShopItems
+        {
+            get { return _shopItems; }
         }
 
         /// <summary>

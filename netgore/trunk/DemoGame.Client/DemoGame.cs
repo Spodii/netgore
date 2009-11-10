@@ -7,7 +7,6 @@ using log4net;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using NetGore;
-using NetGore.Audio;
 using NetGore.Graphics;
 using NetGore.Graphics.GUI;
 using NetGore.IO;
@@ -19,6 +18,7 @@ namespace DemoGame.Client
     /// </summary>
     public class DemoGame : Game
     {
+        IEnumerable<TextureAtlas> _globalAtlases;
         readonly GraphicsDeviceManager graphics;
         ScreenManager screenManager;
 
@@ -60,6 +60,19 @@ namespace DemoGame.Client
                                              screenManager.SoundManager.Volume = 0.7f;
                                              screenManager.MusicManager.Volume = 0.2f;
                                          });
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (_globalAtlases != null)
+            {
+                foreach (var atlas in _globalAtlases)
+                {
+                    atlas.Dispose();
+                }
+            }
+
+            base.Dispose(disposing);
         }
 
         protected override void Initialize()
@@ -121,19 +134,6 @@ namespace DemoGame.Client
             // Unload all of the textures temporarily loaded into the MapContent
             // from the texture atlasing process
             screenManager.MapContent.Unload();
-        }
-
-        IEnumerable<TextureAtlas> _globalAtlases;
-
-        protected override void Dispose(bool disposing)
-        {
-            if (_globalAtlases != null)
-            {
-                foreach (var atlas in _globalAtlases)
-                    atlas.Dispose();
-            }
-
-            base.Dispose(disposing);
         }
     }
 

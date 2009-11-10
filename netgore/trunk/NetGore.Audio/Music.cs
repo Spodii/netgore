@@ -18,12 +18,11 @@ namespace NetGore.Audio
     /// </summary>
     public class Music : IMusic
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         readonly AudioManagerBase _audioManager;
         readonly MusicID _index;
         readonly Song _instance;
         readonly string _name;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Music"/> class.

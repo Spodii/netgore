@@ -8,22 +8,13 @@ namespace NetGore.EditorTools.NPCChat
 {
     public class EditorNPCChatConditionalCollection : NPCChatConditionalCollectionBase
     {
-        readonly List<EditorNPCChatConditionalCollectionItem> _items = new List<EditorNPCChatConditionalCollectionItem>();
         NPCChatConditionalEvaluationType _evaluationType;
+        readonly List<EditorNPCChatConditionalCollectionItem> _items = new List<EditorNPCChatConditionalCollectionItem>();
 
         /// <summary>
         /// Notifies listeners when this EditorNPCChatConditionalCollection changes.
         /// </summary>
         public event EditorNPCChatConditionalCollectionChangeHandler OnChange;
-
-        /// <summary>
-        /// When overridden in the derived class, gets the NPCChatConditionalEvaluationType
-        /// used when evaluating this conditional collection.
-        /// </summary>
-        public override NPCChatConditionalEvaluationType EvaluationType
-        {
-            get { return _evaluationType; }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="EditorNPCChatConditionalCollection"/> class.
@@ -63,6 +54,15 @@ namespace NetGore.EditorTools.NPCChat
         public EditorNPCChatConditionalCollection(IValueReader reader)
         {
             Read(reader);
+        }
+
+        /// <summary>
+        /// When overridden in the derived class, gets the NPCChatConditionalEvaluationType
+        /// used when evaluating this conditional collection.
+        /// </summary>
+        public override NPCChatConditionalEvaluationType EvaluationType
+        {
+            get { return _evaluationType; }
         }
 
         /// <summary>

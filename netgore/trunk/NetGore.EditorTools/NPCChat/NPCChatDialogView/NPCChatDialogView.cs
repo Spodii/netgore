@@ -15,18 +15,18 @@ namespace NetGore.EditorTools.NPCChat
     /// </summary>
     public class NPCChatDialogView : TreeView
     {
-        /// <summary>
-        /// Maps the objects handled by a TreeNode to the TreeNodes that handle it.
-        /// </summary>
-        readonly Dictionary<object, List<NPCChatDialogViewNode>> _objToTreeNode =
-            new Dictionary<object, List<NPCChatDialogViewNode>>();
-
         Color _nodeForeColorBranch = Color.DarkRed;
         Color _nodeForeColorGoTo = Color.Blue;
         Color _nodeForeColorNormal = Color.Black;
         Color _nodeForeColorResponse = Color.Green;
 
         EditorNPCChatDialog _npcChatDialog;
+
+        /// <summary>
+        /// Maps the objects handled by a TreeNode to the TreeNodes that handle it.
+        /// </summary>
+        readonly Dictionary<object, List<NPCChatDialogViewNode>> _objToTreeNode =
+            new Dictionary<object, List<NPCChatDialogViewNode>>();
 
         /// <summary>
         /// Gets or sets the font color of branch chat dialog nodes.

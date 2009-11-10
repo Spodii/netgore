@@ -9,18 +9,9 @@ namespace DemoGame.Server
     /// </summary>
     public class ShopItem : IShopItemTable
     {
-        static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
-
         readonly IItemTemplateTable _itemTemplate;
+        static readonly ItemTemplateManager _itemTemplateManager = ItemTemplateManager.Instance;
         readonly ShopID _shopID;
-
-        /// <summary>
-        /// Gets the template for this shop item.
-        /// </summary>
-        public IItemTemplateTable ItemTemplate
-        {
-            get { return _itemTemplate; }
-        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ShopItem"/> class.
@@ -30,6 +21,14 @@ namespace DemoGame.Server
         {
             _shopID = shopItemTable.ShopID;
             _itemTemplate = _itemTemplateManager[shopItemTable.ItemTemplateID];
+        }
+
+        /// <summary>
+        /// Gets the template for this shop item.
+        /// </summary>
+        public IItemTemplateTable ItemTemplate
+        {
+            get { return _itemTemplate; }
         }
 
         #region IShopItemTable Members

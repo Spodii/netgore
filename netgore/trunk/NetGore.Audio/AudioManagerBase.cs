@@ -20,6 +20,34 @@ namespace NetGore.Audio
         float _volume = 1.0f;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AudioManagerBase"/> class.
+        /// </summary>
+        /// <param name="cm">The <see cref="ContentManager"/> used to load the audio tracks.</param>
+        /// <param name="assetPrefix">The prefix to give to assets used by this <see cref="AudioManagerBase"/>
+        /// when loading them.</param>
+        protected AudioManagerBase(ContentManager cm, string assetPrefix)
+        {
+            _contentManager = cm;
+            _assetPrefix = assetPrefix;
+        }
+
+        /// <summary>
+        /// Gets the prefix to give to assets used by this <see cref="AudioManagerBase"/> when loading them.
+        /// </summary>
+        public string AssetPrefix
+        {
+            get { return _assetPrefix; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="ContentManager"/> used to load the audio tracks in this <see cref="AudioManagerBase"/>.
+        /// </summary>
+        public ContentManager ContentManager
+        {
+            get { return _contentManager; }
+        }
+
+        /// <summary>
         /// Gets or sets the master volume of all audio. This value must be in a range of 0.0f to 1.0f, where 0.0f is
         /// silence and 1.0f is the full volume. If a value is specified that does not fall into this range, it will be
         /// altered to fit this range.
@@ -38,22 +66,6 @@ namespace NetGore.Audio
 
                 SoundEffect.MasterVolume = v;
             }
-        }
-
-        /// <summary>
-        /// Gets the prefix to give to assets used by this <see cref="AudioManagerBase"/> when loading them.
-        /// </summary>
-        public string AssetPrefix
-        {
-            get { return _assetPrefix; }
-        }
-
-        /// <summary>
-        /// Gets the <see cref="ContentManager"/> used to load the audio tracks in this <see cref="AudioManagerBase"/>.
-        /// </summary>
-        public ContentManager ContentManager
-        {
-            get { return _contentManager; }
         }
 
         /// <summary>
@@ -78,18 +90,6 @@ namespace NetGore.Audio
                 _volume = value;
                 ReapplyVolume();
             }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="AudioManagerBase"/> class.
-        /// </summary>
-        /// <param name="cm">The <see cref="ContentManager"/> used to load the audio tracks.</param>
-        /// <param name="assetPrefix">The prefix to give to assets used by this <see cref="AudioManagerBase"/>
-        /// when loading them.</param>
-        protected AudioManagerBase(ContentManager cm, string assetPrefix)
-        {
-            _contentManager = cm;
-            _assetPrefix = assetPrefix;
         }
 
         /// <summary>
@@ -141,14 +141,6 @@ namespace NetGore.Audio
         readonly Dictionary<string, T> _itemsByName = new Dictionary<string, T>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
-        /// Gets an IEnumerable of all the audio items in this manager.
-        /// </summary>
-        public IEnumerable<T> GetAudio
-        {
-            get { return _items; }
-        }
-
-        /// <summary>
         /// Initializes a new instance of the <see cref="AudioManagerBase&lt;T, TIndex&gt;"/> class.
         /// </summary>
         /// <param name="cm">The <see cref="ContentManager"/> used to load the audio tracks.</param>
@@ -161,6 +153,14 @@ namespace NetGore.Audio
         {
             IValueReader r = new XmlValueReader(dataFilePath, rootNodeName);
             Load(r);
+        }
+
+        /// <summary>
+        /// Gets an IEnumerable of all the audio items in this manager.
+        /// </summary>
+        public IEnumerable<T> GetAudio
+        {
+            get { return _items; }
         }
 
         /// <summary>

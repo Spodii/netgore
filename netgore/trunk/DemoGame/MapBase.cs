@@ -28,11 +28,6 @@ namespace DemoGame
     /// </summary>
     public abstract class MapBase : IMap, IMapTable
     {
-        /// <summary>
-        /// The suffix used for map files. Does not include the period prefix.
-        /// </summary>
-        public const string MapFileSuffix = "xml";
-
         const string _dynamicEntitiesNodeName = "DynamicEntities";
 
         /// <summary>
@@ -52,7 +47,10 @@ namespace DemoGame
 
         const string _wallsNodeName = "Walls";
 
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        /// <summary>
+        /// The suffix used for map files. Does not include the period prefix.
+        /// </summary>
+        public const string MapFileSuffix = "xml";
 
         /// <summary>
         /// Enumerator for the DynamicEntities.
@@ -82,16 +80,6 @@ namespace DemoGame
         readonly IGetTime _getTime;
 
         /// <summary>
-        /// Index of the map
-        /// </summary>
-        readonly MapIndex _mapIndex;
-
-        /// <summary>
-        /// StopWatch used to update the map
-        /// </summary>
-        readonly Stopwatch _updateStopWatch = new Stopwatch();
-
-        /// <summary>
         /// Height of the map in pixels
         /// </summary>
         float _height = float.MinValue;
@@ -102,19 +90,52 @@ namespace DemoGame
         bool _isUpdating = true;
 
         /// <summary>
+        /// Index of the map
+        /// </summary>
+        readonly MapIndex _mapIndex;
+
+        /// <summary>
         /// Name of the map
         /// </summary>
         string _name = null;
+
+        /// <summary>
+        /// StopWatch used to update the map
+        /// </summary>
+        readonly Stopwatch _updateStopWatch = new Stopwatch();
 
         /// <summary>
         /// Width of the map in pixels
         /// </summary>
         float _width = float.MinValue;
 
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         /// <summary>
         /// Notifies listeners that the Map has been saved.
         /// </summary>
         public event MapBaseEventHandler OnSave;
+
+        /// <summary>
+        /// MapBase constructor
+        /// </summary>
+        /// <param name="mapIndex">Index of the map</param>
+        /// <param name="getTime">Interface used to get the time</param>
+        protected MapBase(MapIndex mapIndex, IGetTime getTime)
+        {
+            if (getTime == null)
+                throw new ArgumentNullException("getTime");
+
+            _getTime = getTime;
+            _mapIndex = mapIndex;
+            _updateStopWatch.Start();
+
+            _entities = new List<Entity>();
+            _entityEnumerator = new SafeEnumerator<Entity>(_entities);
+
+            _dynamicEntities = new DArray<DynamicEntity>(true);
+            _dyanmicEntityEnumerator = new SafeEnumerator<DynamicEntity>(_dynamicEntities);
+        }
 
         /// <summary>
         /// Gets a thread-safe IEnumerable of all the DynamicEntities on the Map.
@@ -164,27 +185,6 @@ namespace DemoGame
         /// Gets or sets the name of the music to play for the map, or empty or null if there is no music.
         /// </summary>
         public string Music { get; set; }
-
-        /// <summary>
-        /// MapBase constructor
-        /// </summary>
-        /// <param name="mapIndex">Index of the map</param>
-        /// <param name="getTime">Interface used to get the time</param>
-        protected MapBase(MapIndex mapIndex, IGetTime getTime)
-        {
-            if (getTime == null)
-                throw new ArgumentNullException("getTime");
-
-            _getTime = getTime;
-            _mapIndex = mapIndex;
-            _updateStopWatch.Start();
-
-            _entities = new List<Entity>();
-            _entityEnumerator = new SafeEnumerator<Entity>(_entities);
-
-            _dynamicEntities = new DArray<DynamicEntity>(true);
-            _dyanmicEntityEnumerator = new SafeEnumerator<DynamicEntity>(_dynamicEntities);
-        }
 
         /// <summary>
         /// Adds a DynamicEntity to the Map, using the pre-determined unique index.

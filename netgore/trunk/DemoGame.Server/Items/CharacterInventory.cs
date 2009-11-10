@@ -12,14 +12,22 @@ namespace DemoGame.Server
 {
     public abstract class CharacterInventory : InventoryBase<ItemEntity>, IDisposable
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
         readonly Character _character;
 
-        readonly bool _isPersistent;
         bool _disposed = false;
 
         bool _isLoading;
+        readonly bool _isPersistent;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        protected CharacterInventory(Character character)
+        {
+            if (character == null)
+                throw new ArgumentNullException("character");
+
+            _character = character;
+            _isPersistent = character.IsPersistent;
+        }
 
         /// <summary>
         /// Gets the Character that this Inventory belongs to.
@@ -35,15 +43,6 @@ namespace DemoGame.Server
         public IDbController DbController
         {
             get { return Character.DbController; }
-        }
-
-        protected CharacterInventory(Character character)
-        {
-            if (character == null)
-                throw new ArgumentNullException("character");
-
-            _character = character;
-            _isPersistent = character.IsPersistent;
         }
 
         public void DecreaseItemAmount(InventorySlot slot)

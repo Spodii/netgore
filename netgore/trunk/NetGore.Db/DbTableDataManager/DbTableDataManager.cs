@@ -16,35 +16,9 @@ namespace NetGore.Db
     /// <typeparam name="TItem">The Type of item.</typeparam>
     public abstract class DbTableDataManager<TID, TItem> : IEnumerable<TItem>
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
         readonly IDbController _dbController;
         readonly DArray<TItem> _items = new DArray<TItem>(32, false);
-
-        /// <summary>
-        /// Gets the <see cref="IDbController"/> used by this DbTableDataManager.
-        /// </summary>
-        public IDbController DbController
-        {
-            get { return _dbController; }
-        }
-
-        /// <summary>
-        /// Gets the item at the given <paramref name="id"/>.
-        /// </summary>
-        /// <param name="id">The ID of the item to get.</param>
-        /// <returns>The item at the given <paramref name="id"/>.</returns>
-        public TItem this[TID id]
-        {
-            get { return _items[IDToInt(id)]; }
-        }
-
-        /// <summary>
-        /// Gets the length of the internal buffer where the greatest item index is equal to the <see cref="Length"/> - 1.
-        /// </summary>
-        public int Length
-        {
-            get { return _items.Length; }
-        }
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DbTableDataManager&lt;TID, TItem&gt;"/> class.
@@ -62,6 +36,32 @@ namespace NetGore.Db
             // ReSharper restore DoNotCallOverridableMethodsInConstructor
 
             LoadAll();
+        }
+
+        /// <summary>
+        /// Gets the item at the given <paramref name="id"/>.
+        /// </summary>
+        /// <param name="id">The ID of the item to get.</param>
+        /// <returns>The item at the given <paramref name="id"/>.</returns>
+        public TItem this[TID id]
+        {
+            get { return _items[IDToInt(id)]; }
+        }
+
+        /// <summary>
+        /// Gets the <see cref="IDbController"/> used by this DbTableDataManager.
+        /// </summary>
+        public IDbController DbController
+        {
+            get { return _dbController; }
+        }
+
+        /// <summary>
+        /// Gets the length of the internal buffer where the greatest item index is equal to the <see cref="Length"/> - 1.
+        /// </summary>
+        public int Length
+        {
+            get { return _items.Length; }
         }
 
         /// <summary>

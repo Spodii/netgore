@@ -9,6 +9,21 @@ namespace DemoGame
         static readonly StatTypeHelper _instance;
 
         /// <summary>
+        /// Initializes the <see cref="StatTypeHelper"/> class.
+        /// </summary>
+        static StatTypeHelper()
+        {
+            _instance = new StatTypeHelper();
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StatTypeHelper"/> class.
+        /// </summary>
+        StatTypeHelper()
+        {
+        }
+
+        /// <summary>
         /// Gets the <see cref="StatTypeHelper"/> instance.
         /// </summary>
         public static StatTypeHelper Instance
@@ -22,21 +37,6 @@ namespace DemoGame
         public static IEnumerable<StatType> RaisableStats
         {
             get { return Values; }
-        }
-
-        /// <summary>
-        /// Initializes the <see cref="StatTypeHelper"/> class.
-        /// </summary>
-        static StatTypeHelper()
-        {
-            _instance = new StatTypeHelper();
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="StatTypeHelper"/> class.
-        /// </summary>
-        StatTypeHelper()
-        {
         }
 
         /// <summary>

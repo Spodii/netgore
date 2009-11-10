@@ -17,15 +17,56 @@ namespace DemoGame.Server
     /// </summary>
     public class MapSpawnValues : IMapSpawnTable
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-
-        readonly MapSpawnValuesID _id;
-
         CharacterTemplateID _characterTemplateID;
         IDbController _dbController;
+        readonly MapSpawnValuesID _id;
         MapIndex _mapIndex;
         byte _spawnAmount;
         MapSpawnRect _spawnArea;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
+        /// <summary>
+        /// MapSpawnValues constructor.
+        /// </summary>
+        /// <param name="dbController">The IDbController used to synchronize changes to the values.</param>
+        /// <param name="mapIndex">The index of the Map that these values are for.</param>
+        /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
+        public MapSpawnValues(IDbController dbController, MapIndex mapIndex, CharacterTemplateID characterTemplateID)
+            : this(
+                dbController, GetFreeID(dbController), mapIndex, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
+        {
+            DbController.GetQuery<InsertMapSpawnQuery>().Execute(this);
+        }
+
+        /// <summary>
+        /// MapSpawnValues constructor.
+        /// </summary>
+        /// <param name="dbController">The IDbController used to synchronize changes to the values.</param>
+        /// <param name="v">The IMapSpawnTable containing the values to use.</param>
+        MapSpawnValues(IDbController dbController, IMapSpawnTable v)
+            : this(dbController, v.ID, v.MapID, v.CharacterTemplateID, v.Amount, new MapSpawnRect(v))
+        {
+        }
+
+        /// <summary>
+        /// MapSpawnValues constructor.
+        /// </summary>
+        /// <param name="dbController">The DbController used to synchronize changes to the values.</param>
+        /// <param name="id">The unique ID of this MapSpawnValues.</param>
+        /// <param name="mapIndex">The index of the Map that these values are for.</param>
+        /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
+        /// <param name="spawnAmount">The maximum number of Characters that will be spawned by this MapSpawnValues.</param>
+        /// <param name="spawnRect">The area on the map the spawning will take place at.</param>
+        MapSpawnValues(IDbController dbController, MapSpawnValuesID id, MapIndex mapIndex, CharacterTemplateID characterTemplateID,
+                       byte spawnAmount, MapSpawnRect spawnRect)
+        {
+            _dbController = dbController;
+            _id = id;
+            _mapIndex = mapIndex;
+            _characterTemplateID = characterTemplateID;
+            _spawnAmount = spawnAmount;
+            _spawnArea = spawnRect;
+        }
 
         /// <summary>
         /// Gets the IDbController used to synchronize changes to the values.
@@ -84,49 +125,6 @@ namespace DemoGame.Server
                 _spawnArea = value;
                 UpdateDB();
             }
-        }
-
-        /// <summary>
-        /// MapSpawnValues constructor.
-        /// </summary>
-        /// <param name="dbController">The IDbController used to synchronize changes to the values.</param>
-        /// <param name="mapIndex">The index of the Map that these values are for.</param>
-        /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
-        public MapSpawnValues(IDbController dbController, MapIndex mapIndex, CharacterTemplateID characterTemplateID)
-            : this(
-                dbController, GetFreeID(dbController), mapIndex, characterTemplateID, 1, new MapSpawnRect(null, null, null, null))
-        {
-            DbController.GetQuery<InsertMapSpawnQuery>().Execute(this);
-        }
-
-        /// <summary>
-        /// MapSpawnValues constructor.
-        /// </summary>
-        /// <param name="dbController">The IDbController used to synchronize changes to the values.</param>
-        /// <param name="v">The IMapSpawnTable containing the values to use.</param>
-        MapSpawnValues(IDbController dbController, IMapSpawnTable v)
-            : this(dbController, v.ID, v.MapID, v.CharacterTemplateID, v.Amount, new MapSpawnRect(v))
-        {
-        }
-
-        /// <summary>
-        /// MapSpawnValues constructor.
-        /// </summary>
-        /// <param name="dbController">The DbController used to synchronize changes to the values.</param>
-        /// <param name="id">The unique ID of this MapSpawnValues.</param>
-        /// <param name="mapIndex">The index of the Map that these values are for.</param>
-        /// <param name="characterTemplateID">The CharacterTemplateID of the CharacterTemplate to spawn.</param>
-        /// <param name="spawnAmount">The maximum number of Characters that will be spawned by this MapSpawnValues.</param>
-        /// <param name="spawnRect">The area on the map the spawning will take place at.</param>
-        MapSpawnValues(IDbController dbController, MapSpawnValuesID id, MapIndex mapIndex, CharacterTemplateID characterTemplateID,
-                       byte spawnAmount, MapSpawnRect spawnRect)
-        {
-            _dbController = dbController;
-            _id = id;
-            _mapIndex = mapIndex;
-            _characterTemplateID = characterTemplateID;
-            _spawnAmount = spawnAmount;
-            _spawnArea = spawnRect;
         }
 
         /// <summary>

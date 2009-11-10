@@ -16,18 +16,57 @@ namespace NetGore.EditorTools.NPCChat
     /// </summary>
     public class EditorNPCChatDialogItem : NPCChatDialogItemBase
     {
-        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
         NPCChatConditionalCollectionBase _conditionals;
         ushort _index;
         bool _isBranch;
+        readonly List<EditorNPCChatResponse> _responses = new List<EditorNPCChatResponse>();
         string _text;
         string _title;
+        static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         /// <summary>
         /// Notifies listeners when any of the object's property values have changed.
         /// </summary>
         public event EditorNPCChatDialogItemEventHandler OnChange;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
+        /// </summary>
+        /// <param name="reader">IValueReader to read the values from.</param>
+        public EditorNPCChatDialogItem(IValueReader reader) : base(reader)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        public EditorNPCChatDialogItem(ushort index) : this(index, string.Empty)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="text">The text.</param>
+        public EditorNPCChatDialogItem(ushort index, string text) : this(index, text, string.Empty)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
+        /// </summary>
+        /// <param name="index">The index.</param>
+        /// <param name="text">The text.</param>
+        /// <param name="title">The title.</param>
+        public EditorNPCChatDialogItem(ushort index, string text, string title)
+        {
+            SetText(text);
+            SetTitle(title);
+
+            _index = index;
+        }
 
         /// <summary>
         /// When overridden in the derived class, gets the NPCChatConditionalCollectionBase that contains the
@@ -91,45 +130,6 @@ namespace NetGore.EditorTools.NPCChat
         public override string Title
         {
             get { return _title; }
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
-        /// </summary>
-        /// <param name="reader">IValueReader to read the values from.</param>
-        public EditorNPCChatDialogItem(IValueReader reader) : base(reader)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        public EditorNPCChatDialogItem(ushort index) : this(index, string.Empty)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <param name="text">The text.</param>
-        public EditorNPCChatDialogItem(ushort index, string text) : this(index, text, string.Empty)
-        {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="EditorNPCChatDialogItem"/> class.
-        /// </summary>
-        /// <param name="index">The index.</param>
-        /// <param name="text">The text.</param>
-        /// <param name="title">The title.</param>
-        public EditorNPCChatDialogItem(ushort index, string text, string title)
-        {
-            SetText(text);
-            SetTitle(title);
-
-            _index = index;
         }
 
         /// <summary>

@@ -49,6 +49,30 @@ namespace DemoGame.DbObjs
         readonly Type _type;
 
         /// <summary>
+        /// ColumnMetadata constructor.
+        /// </summary>
+        /// <param name="name">A string containing the database column type.</param>
+        /// <param name="comment">The comment of the column from the database.</param>
+        /// <param name="databaseType">A string containing the database column type.</param>
+        /// <param name="defaultValue">The default value of the database column. Can be null.</param>
+        /// <param name="type">The system Type used with this database column.</param>
+        /// <param name="nullable">If this database column's value can be null.</param>
+        /// <param name="isPrimaryKey">If this database column is a primary key.</param>
+        /// <param name="isForeignKey">If this database column is a foreign key.</param>
+        public ColumnMetadata(string name, string comment, string databaseType, object defaultValue, Type type, bool nullable,
+                              bool isPrimaryKey, bool isForeignKey)
+        {
+            _name = name;
+            _comment = comment;
+            _databaseType = databaseType;
+            _defaultValue = defaultValue;
+            _type = type;
+            _nullable = nullable;
+            _isPrimaryKey = isPrimaryKey;
+            _isForeignKey = isForeignKey;
+        }
+
+        /// <summary>
         /// Gets the database comment of the column from the database.
         /// </summary>
         public string Comment
@@ -110,30 +134,6 @@ namespace DemoGame.DbObjs
         public Type Type
         {
             get { return _type; }
-        }
-
-        /// <summary>
-        /// ColumnMetadata constructor.
-        /// </summary>
-        /// <param name="name">A string containing the database column type.</param>
-        /// <param name="comment">The comment of the column from the database.</param>
-        /// <param name="databaseType">A string containing the database column type.</param>
-        /// <param name="defaultValue">The default value of the database column. Can be null.</param>
-        /// <param name="type">The system Type used with this database column.</param>
-        /// <param name="nullable">If this database column's value can be null.</param>
-        /// <param name="isPrimaryKey">If this database column is a primary key.</param>
-        /// <param name="isForeignKey">If this database column is a foreign key.</param>
-        public ColumnMetadata(string name, string comment, string databaseType, object defaultValue, Type type, bool nullable,
-                              bool isPrimaryKey, bool isForeignKey)
-        {
-            _name = name;
-            _comment = comment;
-            _databaseType = databaseType;
-            _defaultValue = defaultValue;
-            _type = type;
-            _nullable = nullable;
-            _isPrimaryKey = isPrimaryKey;
-            _isForeignKey = isForeignKey;
         }
     }
 }

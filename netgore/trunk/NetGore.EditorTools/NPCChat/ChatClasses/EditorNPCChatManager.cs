@@ -11,18 +11,18 @@ namespace NetGore.EditorTools.NPCChat
         static readonly EditorNPCChatManager _instance = new EditorNPCChatManager();
 
         /// <summary>
+        /// ManagerImplementation constructor.
+        /// </summary>
+        EditorNPCChatManager() : base(false)
+        {
+        }
+
+        /// <summary>
         /// Gets an IEnmerable of the EditorNPCChatDialogs in this collection.
         /// </summary>
         public static IEnumerable<EditorNPCChatDialog> Dialogs
         {
             get { return _instance.Cast<EditorNPCChatDialog>(); }
-        }
-
-        /// <summary>
-        /// ManagerImplementation constructor.
-        /// </summary>
-        EditorNPCChatManager() : base(false)
-        {
         }
 
         /// <summary>
