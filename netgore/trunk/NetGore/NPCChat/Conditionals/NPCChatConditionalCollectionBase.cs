@@ -100,7 +100,6 @@ namespace NetGore.NPCChat.Conditionals
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        
         public abstract IEnumerator<NPCChatConditionalCollectionItemBase> GetEnumerator();
 
         /// <summary>
@@ -109,7 +108,6 @@ namespace NetGore.NPCChat.Conditionals
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

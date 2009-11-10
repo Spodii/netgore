@@ -103,7 +103,6 @@ namespace NetGore.EditorTools.NPCChat
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        
         public override IEnumerator<NPCChatConditionalCollectionItemBase> GetEnumerator()
         {
             foreach (var item in _items)
