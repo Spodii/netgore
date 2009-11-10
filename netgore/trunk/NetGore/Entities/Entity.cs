@@ -12,8 +12,6 @@ namespace NetGore
     /// </summary>
     public abstract class Entity : IDisposable
     {
-        readonly object _disposeLock = new object();
-
         CollisionBox _collisionBox;
         CollisionType _ct = CollisionType.Full;
         bool _isDisposed;
@@ -420,14 +418,13 @@ namespace NetGore
         /// </summary>
         public void Dispose()
         {
-            // Check if the Entity has already been disposed
-            lock (_disposeLock)
-            {
-                if (IsDisposed)
-                    return;
+            ThreadAsserts.IsMainThread();
 
-                _isDisposed = true;
-            }
+            // Check if the Entity has already been disposed
+            if (IsDisposed)
+                return;
+
+            _isDisposed = true;
 
             // Notify listeners that the Entity is being disposed
             if (OnDispose != null)

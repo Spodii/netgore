@@ -8,13 +8,11 @@ using NetGore;
 namespace DemoGame.Client
 {
     /// <summary>
-    /// Box that displays non-interactive, short-lived messages in a cycling manner. All methods
-    /// are thread-safe.
+    /// Box that displays non-interactive, short-lived messages in a cycling manner.
     /// </summary>
     public class InfoBox
     {
         readonly List<InfoBoxItem> _items;
-        readonly object _itemsLock = new object();
         readonly SpriteFont _sf;
 
         Color _defaultColor = Color.Green;
@@ -86,19 +84,18 @@ namespace DemoGame.Client
         /// <param name="color">Color of the message's text</param>
         public void Add(string message, Color color)
         {
+            ThreadAsserts.IsMainThread();
+
             InfoBoxItem newItem = new InfoBoxItem(Environment.TickCount, message, color, _sf);
 
-            lock (_itemsLock)
+            // If we are full, remove the old messages until we have room
+            while (_items.Count >= _maxItems)
             {
-                // If we are full, remove the old messages until we have room
-                while (_items.Count >= _maxItems)
-                {
-                    _items.RemoveAt(0);
-                }
-
-                // Add the new item to the list
-                _items.Add(newItem);
+                _items.RemoveAt(0);
             }
+
+            // Add the new item to the list
+            _items.Add(newItem);
         }
 
         /// <summary>
@@ -107,32 +104,30 @@ namespace DemoGame.Client
         /// <param name="sb">SpriteBatch to draw with</param>
         public void Draw(SpriteBatch sb)
         {
-            lock (_itemsLock)
+            ThreadAsserts.IsMainThread();
+
+            // Remove dead items
+            while (_items.Count > 0 && _items[0].CreatedTime + _messageLife < Environment.TickCount)
             {
-                // Remove dead items
-                while (_items.Count > 0 && _items[0].CreatedTime + _messageLife < Environment.TickCount)
-                {
-                    _items.RemoveAt(0);
-                }
+                _items.RemoveAt(0);
+            }
 
-                // Loop through all items
-                for (int i = 0; i < _items.Count; i++)
-                {
-                    InfoBoxItem item = _items[i];
+            // Loop through all items
+            int i = 0;
+            foreach (var item in _items)
+            {
+                // Set the position
+                Vector2 pos = _position;
+                pos.Y -= _sf.LineSpacing * (i++ + 1);
+                pos.X -= item.Width;
 
-                    // Set the position
-                    Vector2 pos = _position;
-                    pos.Y -= _sf.LineSpacing * (i + 1);
-                    pos.X -= item.Width;
+                // Set the color
+                int lifeLeft = (item.CreatedTime + _messageLife) - Environment.TickCount;
+                byte alpha = (byte)Math.Min(255, lifeLeft);
+                Color color = new Color(item.Color.R, item.Color.G, item.Color.B, alpha);
 
-                    // Set the color
-                    int lifeLeft = (item.CreatedTime + _messageLife) - Environment.TickCount;
-                    byte alpha = (byte)Math.Min(255, lifeLeft);
-                    Color color = new Color(item.Color.R, item.Color.G, item.Color.B, alpha);
-
-                    // Draw
-                    sb.DrawString(_sf, item.Message, pos, color);
-                }
+                // Draw
+                sb.DrawString(_sf, item.Message, pos, color);
             }
         }
 

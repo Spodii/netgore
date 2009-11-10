@@ -190,7 +190,7 @@ namespace NetGore.Network
         /// <summary>
         /// Handles a list of received data and forwards it to the corresponding <see cref="MessageProcessor"/>.
         /// </summary>
-        /// <param name="recvData">List of <see cref="SocketReceiveData"/>s to process.</param>
+        /// <param name="recvData">IEnumerable of <see cref="SocketReceiveData"/>s to process.</param>
         public void Process(IEnumerable<SocketReceiveData> recvData)
         {
             if (recvData == null)

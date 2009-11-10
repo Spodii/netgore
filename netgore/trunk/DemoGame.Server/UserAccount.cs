@@ -18,14 +18,9 @@ namespace DemoGame.Server
     public class UserAccount : AccountTable, IDisposable
     {
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         readonly List<CharacterID> _characterIDs = new List<CharacterID>();
         readonly IDbController _dbController;
-
-        /// <summary>
-        /// Lock used for setting the user.
-        /// </summary>
-        readonly object _setUserLock = new object();
-
         readonly IIPSocket _socket;
 
         User _user;
@@ -85,16 +80,13 @@ namespace DemoGame.Server
         /// </summary>
         public void CloseUser()
         {
-            User u;
+            ThreadAsserts.IsMainThread();
 
-            lock (_setUserLock)
-            {
-                u = _user;
-                if (u == null)
-                    return;
+            User u = _user;
+            if (u == null)
+                return;
 
-                _user = null;
-            }
+            _user = null;
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Closed User `{0}` on account `{1}`.", u, this);
@@ -220,35 +212,33 @@ namespace DemoGame.Server
         /// <param name="characterID">The CharacterID of the user to use.</param>
         public void SetUser(World world, CharacterID characterID)
         {
-            lock (_setUserLock)
+            ThreadAsserts.IsMainThread();
+
+            // Make sure the user is not already set
+            if (User != null)
             {
-                // Make sure the user is not already set
-                if (User != null)
-                {
-                    const string errmsg = "Cannot use SetUser when the User is not null.";
-                    Debug.Fail(errmsg);
-                    if (log.IsErrorEnabled)
-                        log.Error(errmsg);
-                    return;
-                }
-
-                // Make sure the CharacterID is an ID of a character belonging to this UserAccount
-                if (!_characterIDs.Contains(characterID))
-                {
-                    const string errmsg = "Cannot use CharacterID `{0}` - that character does not belong to this UserAccount.";
-                    Debug.Fail(string.Format(errmsg, characterID));
-                    if (log.IsErrorEnabled)
-                        log.ErrorFormat(errmsg, characterID);
-                    return;
-                }
-
-                // Load the User
-                _user = new User(_socket, world, characterID);
+                const string errmsg = "Cannot use SetUser when the User is not null.";
+                Debug.Fail(errmsg);
+                if (log.IsErrorEnabled)
+                    log.Error(errmsg);
+                return;
             }
 
-            User u = User;
-            if (log.IsInfoEnabled && u != null)
-                log.InfoFormat("Set User `{0}` on account `{1}`.", u, this);
+            // Make sure the CharacterID is an ID of a character belonging to this UserAccount
+            if (!_characterIDs.Contains(characterID))
+            {
+                const string errmsg = "Cannot use CharacterID `{0}` - that character does not belong to this UserAccount.";
+                Debug.Fail(string.Format(errmsg, characterID));
+                if (log.IsErrorEnabled)
+                    log.ErrorFormat(errmsg, characterID);
+                return;
+            }
+
+            // Load the User
+            _user = new User(_socket, world, characterID);
+
+            if (log.IsInfoEnabled)
+                log.InfoFormat("Set User `{0}` on account `{1}`.", _user, this);
         }
 
         /// <summary>

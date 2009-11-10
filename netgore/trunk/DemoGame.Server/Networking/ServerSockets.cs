@@ -31,6 +31,14 @@ namespace DemoGame.Server
         {
             ThreadAsserts.IsMainThread();
 
+            // Close down connections
+            foreach (var conn in _packetHandler.GetDisconnectedSockets())
+            {
+                UserAccount account = World.GetUserAccount(conn);
+                if (account != null)
+                    account.Dispose();
+            }
+
             // Process received data
             var recvData = GetReceivedData();
             _packetHandler.Process(recvData);

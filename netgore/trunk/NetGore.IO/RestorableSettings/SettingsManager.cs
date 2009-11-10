@@ -41,7 +41,6 @@ namespace NetGore.IO
             new Dictionary<string, IRestorableSettings>(StringComparer.OrdinalIgnoreCase);
 
         readonly string _rootNode;
-        readonly object _syncRoot = new object();
         bool _disposed = false;
 
         /// <summary>
@@ -237,16 +236,13 @@ namespace NetGore.IO
         }
 
         /// <summary>
-        /// Saves the settings for all the tracked IRestorableSettings objects.
+        /// Saves the settings for all the tracked <see cref="IRestorableSettings"/> objects.
         /// </summary>
         public void Save()
         {
-            lock (_syncRoot)
+            using (IValueWriter w = new XmlValueWriter(_filePath, _rootNode))
             {
-                using (IValueWriter w = new XmlValueWriter(_filePath, _rootNode))
-                {
-                    w.WriteManyNodes(_itemsNodeName, _objs, Write);
-                }
+                w.WriteManyNodes(_itemsNodeName, _objs, Write);
             }
         }
 
