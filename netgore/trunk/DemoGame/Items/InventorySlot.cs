@@ -79,7 +79,6 @@ namespace DemoGame
         /// <returns>
         /// A 32-bit signed integer that is the hash code for this instance.
         /// </returns>
-        
         public override int GetHashCode()
         {
             return _value.GetHashCode();
@@ -233,7 +232,6 @@ namespace DemoGame
         /// <returns>
         /// The enumerated constant that is the <see cref="T:System.TypeCode"/> of the class or value type that implements this interface.
         /// </returns>
-        
         public TypeCode GetTypeCode()
         {
             return _value.GetTypeCode();

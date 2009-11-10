@@ -232,7 +232,6 @@ namespace NetGore
         /// <returns>
         /// The enumerated constant that is the <see cref="T:System.TypeCode"/> of the class or value type that implements this interface.
         /// </returns>
-        
         public TypeCode GetTypeCode()
         {
             return _value.GetTypeCode();

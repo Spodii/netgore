@@ -8,14 +8,6 @@ namespace DemoGame
         static readonly SkillTypeHelper _instance;
 
         /// <summary>
-        /// Gets the <see cref="SkillTypeHelper"/> instance.
-        /// </summary>
-        public static SkillTypeHelper Instance
-        {
-            get { return _instance; }
-        }
-
-        /// <summary>
         /// Initializes the <see cref="SkillTypeHelper"/> class.
         /// </summary>
         static SkillTypeHelper()
@@ -28,6 +20,14 @@ namespace DemoGame
         /// </summary>
         SkillTypeHelper()
         {
+        }
+
+        /// <summary>
+        /// Gets the <see cref="SkillTypeHelper"/> instance.
+        /// </summary>
+        public static SkillTypeHelper Instance
+        {
+            get { return _instance; }
         }
 
         /// <summary>

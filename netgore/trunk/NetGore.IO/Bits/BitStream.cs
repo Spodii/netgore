@@ -3197,7 +3197,6 @@ namespace NetGore.IO
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        
         void IDisposable.Dispose()
         {
             HandleDispose();

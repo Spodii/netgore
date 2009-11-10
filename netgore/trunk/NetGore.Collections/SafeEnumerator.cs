@@ -15,6 +15,12 @@ namespace NetGore.Collections
     public class SafeEnumerator<T> : IEnumerable<T>
     {
         /// <summary>
+        /// Buffer containing all of the items to be enumerated over. This is what is actually ultimately enumerated
+        /// over instead of the _source.
+        /// </summary>
+        T[] _buffer;
+
+        /// <summary>
         /// If true, the source is a read-only ICollection so the buffer does not need to be updated
         /// every call to GetEnumerator().
         /// </summary>
@@ -31,36 +37,15 @@ namespace NetGore.Collections
         readonly ICollection<T> _sourceAsCollection;
 
         /// <summary>
-        /// If true, we can optimize for using the _sourceAsCollection instead of _source to make use
-        /// of all the extra stuff an ICollection provides.
-        /// </summary>
-        readonly bool _useCollection;
-
-        /// <summary>
-        /// Buffer containing all of the items to be enumerated over. This is what is actually ultimately enumerated
-        /// over instead of the _source.
-        /// </summary>
-        T[] _buffer;
-
-        /// <summary>
         /// Length to enumerate over in the buffer. Allows us to avoid having to clear the buffer.
         /// </summary>
         int _sourceLength;
 
         /// <summary>
-        /// Gets if any element that matches default(<typeparamref name="T"/>) will be skipped. Recommended to only
-        /// be used when <typeparamref name="T"/> is a class. By default, this is false unless <typeparamref name="T"/>
-        /// is a class.
+        /// If true, we can optimize for using the _sourceAsCollection instead of _source to make use
+        /// of all the extra stuff an ICollection provides.
         /// </summary>
-        public bool SkipDefault { get; private set; }
-
-        /// <summary>
-        /// Gets the source that is being enumerated over.
-        /// </summary>
-        public IEnumerable<T> Source
-        {
-            get { return _source; }
-        }
+        readonly bool _useCollection;
 
         /// <summary>
         /// SafeEnumerator constructor
@@ -106,6 +91,21 @@ namespace NetGore.Collections
         /// <param name="source">Source to enumerate over.</param>
         public SafeEnumerator(IEnumerable<T> source) : this(source, typeof(T).IsClass)
         {
+        }
+
+        /// <summary>
+        /// Gets if any element that matches default(<typeparamref name="T"/>) will be skipped. Recommended to only
+        /// be used when <typeparamref name="T"/> is a class. By default, this is false unless <typeparamref name="T"/>
+        /// is a class.
+        /// </summary>
+        public bool SkipDefault { get; private set; }
+
+        /// <summary>
+        /// Gets the source that is being enumerated over.
+        /// </summary>
+        public IEnumerable<T> Source
+        {
+            get { return _source; }
         }
 
         /// <summary>
@@ -189,8 +189,8 @@ namespace NetGore.Collections
         {
             readonly T[] _array;
             readonly int _endIndex;
-            readonly bool _skipDefault;
             int _index;
+            readonly bool _skipDefault;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="SafeEnumerator&lt;T&gt;.Enumerator"/> class.

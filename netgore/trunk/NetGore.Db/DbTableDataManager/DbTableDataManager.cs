@@ -151,7 +151,6 @@ namespace NetGore.Db
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
-        
         public IEnumerator<TItem> GetEnumerator()
         {
             foreach (var item in _items)
@@ -166,7 +165,6 @@ namespace NetGore.Db
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();
