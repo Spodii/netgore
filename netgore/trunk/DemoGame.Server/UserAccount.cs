@@ -473,6 +473,8 @@ namespace DemoGame.Server
         /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
+            ThreadAsserts.IsMainThread();
+
             // Make sure the User is closed
             CloseUser();
 
