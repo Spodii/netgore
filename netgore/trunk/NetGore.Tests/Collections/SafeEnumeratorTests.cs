@@ -228,6 +228,54 @@ namespace NetGore.Collections.Tests
         }
 
         [Test]
+        public void AddRemoveTest()
+        {
+            List<string> a = new List<string>();
+            a.AddRange(new string[] {"a", "b", "c", "d", "e"});
+            var o = new SafeEnumerator<string>(a);
+            
+            Assert.AreEqual(5, o.Count());
+            Assert.IsTrue(o.Contains("a"));
+            Assert.IsTrue(o.Contains("b"));
+            Assert.IsTrue(o.Contains("c"));
+            Assert.IsTrue(o.Contains("d"));
+            Assert.IsTrue(o.Contains("e"));
+            Assert.IsFalse(o.HasDuplicates());
+
+            a.Remove("b");
+
+            Assert.AreEqual(4, o.Count());
+            Assert.IsTrue(o.Contains("a"));
+            Assert.IsTrue(o.Contains("c"));
+            Assert.IsTrue(o.Contains("d"));
+            Assert.IsTrue(o.Contains("e"));
+            Assert.IsFalse(o.HasDuplicates());
+
+            a.Remove("e");
+
+            Assert.AreEqual(3, o.Count());
+            Assert.IsTrue(o.Contains("a"));
+            Assert.IsTrue(o.Contains("c"));
+            Assert.IsTrue(o.Contains("d"));
+            Assert.IsFalse(o.HasDuplicates());
+
+            a.Remove("a");
+
+            Assert.AreEqual(2, o.Count());
+            Assert.IsTrue(o.Contains("c"));
+            Assert.IsTrue(o.Contains("d"));
+            Assert.IsFalse(o.HasDuplicates());
+
+            a.Add("x");
+
+            Assert.AreEqual(3, o.Count());
+            Assert.IsTrue(o.Contains("c"));
+            Assert.IsTrue(o.Contains("d"));
+            Assert.IsTrue(o.Contains("x"));
+            Assert.IsFalse(o.HasDuplicates());
+        }
+
+        [Test]
         public void EnumerateTSListTest()
         {
             EnumerateTest(new TSList<int>(Enumerable.Range(0, 100)));

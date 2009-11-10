@@ -27,10 +27,8 @@ namespace DemoGame.Server
         const int _emptyMapNoUpdateDelay = 60000;
 
         static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        readonly SafeEnumerator<NPC> _npcEnumerator;
-        readonly List<NPC> _npcs;
 
-        readonly SafeEnumerator<User> _userEnumerator;
+        readonly List<NPC> _npcs;
         readonly TSList<User> _users;
         readonly World _world;
         bool _disposed;
@@ -77,7 +75,7 @@ namespace DemoGame.Server
         /// </summary>
         public IEnumerable<NPC> NPCs
         {
-            get { return _npcEnumerator; }
+            get { return _npcs; }
         }
 
         /// <summary>
@@ -93,7 +91,7 @@ namespace DemoGame.Server
         /// </summary>
         public IEnumerable<User> Users
         {
-            get { return _userEnumerator; }
+            get { return _users; }
         }
 
         /// <summary>
@@ -114,10 +112,7 @@ namespace DemoGame.Server
             _world = world;
 
             _npcs = new List<NPC>();
-            _npcEnumerator = new SafeEnumerator<NPC>(_npcs);
-
             _users = new TSList<User>();
-            _userEnumerator = new SafeEnumerator<User>(_users);
 
             if (log.IsInfoEnabled)
                 log.InfoFormat("Created Map `{0}`.", this);
@@ -441,6 +436,15 @@ namespace DemoGame.Server
                 // Tell the user to change the map
                 ServerPacket.SetMap(pw, Index);
                 user.Send(pw);
+
+                // NOTE: !! Temp
+                Debug.Print("Map: " + Index);
+                foreach (var de in DynamicEntities)
+                    Debug.Print(de.MapEntityIndex + " - " + de);
+
+                if (DynamicEntities.HasDuplicates())
+                {
+                }
 
                 // Send dynamic entities
                 foreach (DynamicEntity dynamicEntity in DynamicEntities)

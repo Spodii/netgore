@@ -41,8 +41,6 @@ namespace DemoGame.Client
         /// </summary>
         readonly List<BackgroundImage> _backgroundImages = new List<BackgroundImage>();
 
-        readonly SafeEnumerator<BackgroundImage> _backgroundImagesEnumerator;
-
         /// <summary>
         /// List of IDrawableEntity objects in the background layer
         /// </summary>
@@ -122,7 +120,7 @@ namespace DemoGame.Client
         /// </summary>
         public IEnumerable<BackgroundImage> BackgroundImages
         {
-            get { return _backgroundImagesEnumerator; }
+            get { return _backgroundImages; }
         }
 
         /// <summary>
@@ -159,7 +157,6 @@ namespace DemoGame.Client
         {
             _graphics = graphics;
             _world = parent;
-            _backgroundImagesEnumerator = new SafeEnumerator<BackgroundImage>(_backgroundImages, true);
         }
 
         public void AddBackgroundImage(BackgroundImage bgImage)

@@ -53,11 +53,6 @@ namespace DemoGame
         public const string MapFileSuffix = "xml";
 
         /// <summary>
-        /// Enumerator for the DynamicEntities.
-        /// </summary>
-        readonly SafeEnumerator<DynamicEntity> _dyanmicEntityEnumerator;
-
-        /// <summary>
         /// Collection of DynamicEntities on this map.
         /// </summary>
         readonly DArray<DynamicEntity> _dynamicEntities;
@@ -66,11 +61,6 @@ namespace DemoGame
         /// List of entities in the map
         /// </summary>
         readonly List<Entity> _entities;
-
-        /// <summary>
-        /// Enumerator for the Entities.
-        /// </summary>
-        readonly SafeEnumerator<Entity> _entityEnumerator;
 
         readonly MapEntityGrid _entityGrid = new MapEntityGrid();
 
@@ -131,10 +121,7 @@ namespace DemoGame
             _updateStopWatch.Start();
 
             _entities = new List<Entity>();
-            _entityEnumerator = new SafeEnumerator<Entity>(_entities);
-
             _dynamicEntities = new DArray<DynamicEntity>(true);
-            _dyanmicEntityEnumerator = new SafeEnumerator<DynamicEntity>(_dynamicEntities);
         }
 
         /// <summary>
@@ -142,7 +129,7 @@ namespace DemoGame
         /// </summary>
         public IEnumerable<DynamicEntity> DynamicEntities
         {
-            get { return _dyanmicEntityEnumerator; }
+            get { return _dynamicEntities; }
         }
 
         public MapEntityGrid EntityGrid
@@ -1171,7 +1158,7 @@ namespace DemoGame
         /// </summary>
         public IEnumerable<Entity> Entities
         {
-            get { return _entityEnumerator; }
+            get { return _entities; }
         }
 
         /// <summary>

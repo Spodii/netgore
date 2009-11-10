@@ -113,6 +113,8 @@ namespace NetGore.Collections
         /// </summary>
         void UpdateBuffer()
         {
+            Array.Clear(_buffer, 0, _buffer.Length);
+
             if (_useCollection)
             {
                 // Get the size of the source
@@ -163,11 +165,6 @@ namespace NetGore.Collections
             // Update the buffer for a non-readonly source
             if (!_isSourceReadonly)
                 UpdateBuffer();
-
-            // Return the enumerator for the buffer
-            if (_source is TSList<T>)
-            {
-            }
 
             return new Enumerator(_buffer, _sourceLength, SkipDefault);
         }
