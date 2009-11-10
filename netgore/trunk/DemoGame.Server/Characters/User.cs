@@ -750,7 +750,6 @@ namespace DemoGame.Server
 
         public class UserShoppingState
         {
-            readonly object _changeShopLock = new object();
             readonly User _user;
 
             Map _shopMap;
@@ -802,51 +801,42 @@ namespace DemoGame.Server
             }
 
             /// <summary>
-            /// A thread-safe way to get the shop reference. This will also perform validation checks to ensure
-            /// that the shop can be used to buy from/sell to.
+            /// Performs validation checks on the shop to ensure it is valid. If the shop is invalid,
+            /// <see cref="_shoppingAt"/> and other values will be set to null.
             /// </summary>
-            /// <returns>The shop instance, or null if the shop is closed or invalid.</returns>
-            Shop TryGetShopReferenceThreadSafe()
+            void ValidateShop()
             {
-                Shop shop;
+                ThreadAsserts.IsMainThread();
 
-                lock (_changeShopLock)
+                // Check for a valid shop
+                if (_shoppingAt == null || _shopOwner == null || _shopMap == null)
+                    return;
+
+                // Check for a valid distance
+                if (!IsValidDistance(_shopOwner))
                 {
-                    // Check for a valid shop
-                    if (_shoppingAt == null || _shopOwner == null || _shopMap == null)
-                        return null;
-
-                    // Check for a valid distance
-                    if (!IsValidDistance(_shopOwner))
-                    {
-                        // Stop shopping
-                        SendStopShopping();
-                        _shoppingAt = null;
-                        _shopOwner = null;
-                        _shopMap = null;
-                        return null;
-                    }
-
-                    // Store values locally so we can finish shopping without a lock
-                    // If you want to use other locals outside of the lock, like _shopOwner, apply the same pattern
-                    shop = _shoppingAt;
+                    // Stop shopping
+                    SendStopShopping();
+                    _shoppingAt = null;
+                    _shopOwner = null;
+                    _shopMap = null;
                 }
-
-                return shop;
             }
 
             public bool TryPurchase(ShopItemIndex slot, byte amount)
             {
+                ThreadAsserts.IsMainThread();
+
                 if (!slot.IsLegalValue())
                     return false;
 
                 // Get the shop
-                var shop = TryGetShopReferenceThreadSafe();
-                if (shop == null)
+                ValidateShop();
+                if (_shoppingAt == null)
                     return false;
 
                 // Get and validate the item
-                var shopItem = shop.GetShopItem(slot);
+                var shopItem = _shoppingAt.GetShopItem(slot);
                 if (shopItem == null)
                     return false;
 
@@ -856,19 +846,23 @@ namespace DemoGame.Server
 
             public bool TrySellInventory(InventorySlot slot, byte amount)
             {
-                var shop = TryGetShopReferenceThreadSafe();
-                if (shop == null)
+                ThreadAsserts.IsMainThread();
+
+                ValidateShop();
+                if (_shoppingAt == null)
                     return false;
 
                 // Make sure the shop buys stuff
-                if (!shop.CanBuy)
+                if (!_shoppingAt.CanBuy)
                     return false;
 
-                return User.TrySellInventoryItem(slot, amount, shop);
+                return User.TrySellInventoryItem(slot, amount, _shoppingAt);
             }
 
             public bool TryStartShopping(Character shopkeeper)
             {
+                ThreadAsserts.IsMainThread();
+
                 if (shopkeeper == null)
                     return false;
 
@@ -877,6 +871,8 @@ namespace DemoGame.Server
 
             public bool TryStartShopping(Shop shop, DynamicEntity shopkeeper, Map entityMap)
             {
+                ThreadAsserts.IsMainThread();
+
                 if (shop == null || shopkeeper == null || entityMap == null)
                     return false;
 
@@ -886,17 +882,14 @@ namespace DemoGame.Server
                 if (!IsValidDistance(shopkeeper))
                     return false;
 
-                lock (_changeShopLock)
-                {
-                    // If the User was already shopping somewhere else, stop that shopping
-                    if (_shoppingAt != null)
-                        SendStopShopping();
+                // If the User was already shopping somewhere else, stop that shopping
+                if (_shoppingAt != null)
+                    SendStopShopping();
 
-                    // Start the shopping
-                    _shoppingAt = shop;
-                    _shopOwner = shopkeeper;
-                    _shopMap = entityMap;
-                }
+                // Start the shopping
+                _shoppingAt = shop;
+                _shopOwner = shopkeeper;
+                _shopMap = entityMap;
 
                 SendStartShopping(shop);
 

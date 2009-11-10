@@ -132,6 +132,8 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.Login)]
         void RecvLogin(IIPSocket conn, BitStream r)
         {
+            ThreadAsserts.IsMainThread();
+
             string name = r.ReadString();
             string password = r.ReadString();
 
@@ -247,6 +249,8 @@ namespace DemoGame.Server
         [MessageHandler((byte)ClientPacketID.SelectAccountCharacter)]
         void RecvSelectAccountCharacter(IIPSocket conn, BitStream r)
         {
+            ThreadAsserts.IsMainThread();
+
             byte index = r.ReadByte();
 
             // Ensure the client is in a valid state to select an account character
@@ -451,14 +455,34 @@ namespace DemoGame.Server
         /// A connection has been lost with a client.
         /// </summary>
         /// <param name="conn">Connection the user was using.</param>
-        static void ServerSockets_OnDisconnect(IIPSocket conn)
+        void ServerSockets_OnDisconnect(IIPSocket conn)
         {
-            // If there is an account connected to the connection, be sure to close it
-            UserAccount account = World.GetUserAccount(conn);
-            if (account == null)
-                return;
+            lock (_disconnectedSockets)
+            {
+                _disconnectedSockets.Enqueue(conn);
+            }
+        }
 
-            account.Dispose();
+        readonly Queue<IIPSocket> _disconnectedSockets = new Queue<IIPSocket>();
+
+        /// <summary>
+        /// Gets the <see cref="IIPSocket"/>s that have been disconnected since the last call to this method.
+        /// </summary>
+        /// <returns>The <see cref="IIPSocket"/>s that have been disconnected since the last call to this method.</returns>
+        public IEnumerable<IIPSocket> GetDisconnectedSockets()
+        {
+            if (_disconnectedSockets.Count == 0)
+                return Enumerable.Empty<IIPSocket>();
+
+            lock (_disconnectedSockets)
+            {
+                if (_disconnectedSockets.Count == 0)
+                    return Enumerable.Empty<IIPSocket>();
+
+                var ret = _disconnectedSockets.ToArray();
+                _disconnectedSockets.Clear();
+                return ret;
+            }
         }
 
         static bool TryGetMap(Character user, out Map map)
@@ -551,30 +575,12 @@ namespace DemoGame.Server
         #region IMessageProcessor Members
 
         /// <summary>
-        /// Handles received data and forwards it to the corresponding MessageProcessors.
-        /// </summary>
-        /// <param name="rec">SocketReceiveData to process.</param>
-        public void Process(SocketReceiveData rec)
-        {
-            _ppManager.Process(rec);
-        }
-
-        /// <summary>
-        /// Handles received data and forwards it to the corresponding MessageProcessors.
-        /// </summary>
-        /// <param name="socket">Socket the data came from.</param>
-        /// <param name="data">Data to process.</param>
-        public void Process(IIPSocket socket, byte[] data)
-        {
-            _ppManager.Process(socket, data);
-        }
-
-        /// <summary>
         /// Handles a list of received data and forwards it to the corresponding MessageProcessors.
         /// </summary>
         /// <param name="recvData">List of SocketReceiveData to process.</param>
         public void Process(IEnumerable<SocketReceiveData> recvData)
         {
+            ThreadAsserts.IsMainThread();
             _ppManager.Process(recvData);
         }
 

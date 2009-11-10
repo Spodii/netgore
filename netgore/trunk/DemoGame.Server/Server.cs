@@ -58,12 +58,6 @@ namespace DemoGame.Server
         /// </summary>
         bool _isRunning = true;
 
-        /// <summary>
-        /// Lock used to ensure that only one account is logging in at a time. The main intention of this is to prevent
-        /// a race condition allowing an account to log in twice from two places at once.
-        /// </summary>
-        readonly object _loginLock = new object();
-
         readonly List<string> _motd = new List<string>();
         IServerSettingTable _serverSettings;
 
@@ -349,6 +343,8 @@ namespace DemoGame.Server
         /// <param name="password">Entered password for this account.</param>
         public void LoginAccount(IIPSocket conn, string name, string password)
         {
+            ThreadAsserts.IsMainThread();
+
             if (conn == null)
             {
                 if (log.IsErrorEnabled)
@@ -358,12 +354,7 @@ namespace DemoGame.Server
 
             // Try to log in the account
             UserAccount userAccount;
-            AccountLoginResult loginResult;
-
-            lock (_loginLock)
-            {
-                loginResult = UserAccount.Login(DbController, conn, name, password, out userAccount);
-            }
+            AccountLoginResult loginResult = UserAccount.Login(DbController, conn, name, password, out userAccount);
 
             // Check that the login was successful
             if (loginResult != AccountLoginResult.Successful)

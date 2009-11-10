@@ -703,25 +703,6 @@ namespace DemoGame.Client
         #region IMessageProcessor Members
 
         /// <summary>
-        /// Handles received data and forwards it to the corresponding MessageProcessors.
-        /// </summary>
-        /// <param name="rec">SocketReceiveData to process.</param>
-        public void Process(SocketReceiveData rec)
-        {
-            _ppManager.Process(rec);
-        }
-
-        /// <summary>
-        /// Handles received data and forwards it to the corresponding MessageProcessors.
-        /// </summary>
-        /// <param name="socket">Socket the data came from.</param>
-        /// <param name="data">Data to process.</param>
-        public void Process(IIPSocket socket, byte[] data)
-        {
-            _ppManager.Process(socket, data);
-        }
-
-        /// <summary>
         /// Handles a list of received data and forwards it to the corresponding MessageProcessors.
         /// </summary>
         /// <param name="recvData">List of SocketReceiveData to process.</param>
